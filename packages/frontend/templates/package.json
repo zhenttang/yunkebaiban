@@ -1,0 +1,23 @@
+{
+  "name": "@affine/templates",
+  "private": true,
+  "sideEffect": false,
+  "version": "0.21.0",
+  "scripts": {
+    "build": "node ./build-edgeless.mjs && node ./build-stickers-from-metadata.mjs",
+    "build-legacy": "node ./build-edgeless.mjs && node ./build-stickers.mjs",
+    "generate-metadata": "node ./generate-metadata-from-cdn.mjs",
+    "postinstall": "yarn build"
+  },
+  "type": "module",
+  "exports": {
+    "./onboarding.zip": "./onboarding/onboarding.zip",
+    "./edgeless": "./edgeless-templates.gen.ts",
+    "./stickers": "./stickers-templates-cdn.gen.ts",
+    "./stickers-legacy": "./stickers-templates.gen.ts",
+    "./build-edgeless": "./build-edgeless.mjs"
+  },
+  "devDependencies": {
+    "jszip": "^3.10.1"
+  }
+}

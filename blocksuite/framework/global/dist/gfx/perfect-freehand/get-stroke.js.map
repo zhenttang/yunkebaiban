@@ -1,0 +1,1 @@
+{"version":3,"file":"get-stroke.js","sourceRoot":"","sources":["../../../src/gfx/perfect-freehand/get-stroke.ts"],"names":[],"mappings":"AACA,OAAO,EAAE,sBAAsB,EAAE,MAAM,gCAAgC,CAAC;AACxE,OAAO,EAAE,eAAe,EAAE,MAAM,wBAAwB,CAAC;AAGzD;;;;;;;;;;;;;GAaG;AAEH,MAAM,UAAU,SAAS,CACvB,MAAsE,EACtE,UAAyB,EAAmB;IAE5C,OAAO,sBAAsB,CAAC,eAAe,CAAC,MAAM,EAAE,OAAO,CAAC,EAAE,OAAO,CAAC,CAAC;AAC3E,CAAC"}

@@ -1,0 +1,16 @@
+{
+  "CORSRules": [
+    {
+      "AllowedOrigins": ["*"],
+      "AllowedMethods": ["GET", "HEAD", "OPTIONS"],
+      "AllowedHeaders": ["*"],
+      "ExposeHeaders": ["*"],
+      "MaxAgeSeconds": 600
+    }
+  ],
+  "ResponseHeaders": {
+    "Cross-Origin-Resource-Policy": "cross-origin",
+    "Cross-Origin-Embedder-Policy": "unsafe-none",
+    "Access-Control-Allow-Origin": "*"
+  }
+} 

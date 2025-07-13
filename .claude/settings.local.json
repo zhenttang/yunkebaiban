@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find:*)",
+      "Bash(ls:*)",
+      "Bash(rg:*)",
+      "Bash(grep:*)",
+      "Bash(yarn cache clean:*)",
+      "Bash(rm:*)",
+      "Bash(mkdir:*)",
+      "Bash(node:*)",
+      "Bash(perl:*)",
+      "mcp__ide__getDiagnostics",
+      "Bash(npm run type-check:*)",
+      "Bash(npm run typecheck:*)",
+      "Bash(tree:*)",
+      "Bash(yarn why:*)",
+      "Bash(npx depcheck:*)",
+      "Bash(yarn list:*)"
+    ],
+    "deny": []
+  }
+}

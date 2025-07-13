@@ -1,0 +1,371 @@
+{
+  "metrics": {
+    "enabled": {
+      "type": "Boolean",
+      "desc": "启用指标和跟踪数据收集"
+    }
+  },
+  "crypto": {
+    "privateKey": {
+      "type": "String",
+      "desc": "加密模块用于创建签名令牌或加密数据的私钥",
+      "env": "AFFINE_PRIVATE_KEY"
+    }
+  },
+  "job": {
+    "queue": {
+      "type": "Object",
+      "desc": "任务队列配置",
+      "link": "https://api.docs.bullmq.io/interfaces/v5.QueueOptions.html"
+    },
+    "worker": {
+      "type": "Object",
+      "desc": "任务工作线程配置",
+      "link": "https://api.docs.bullmq.io/interfaces/v5.WorkerOptions.html"
+    },
+    "queues.copilot": {
+      "type": "Object",
+      "desc": "AI助手任务队列配置"
+    },
+    "queues.doc": {
+      "type": "Object",
+      "desc": "文档任务队列配置"
+    },
+    "queues.indexer": {
+      "type": "Object",
+      "desc": "索引任务队列配置"
+    },
+    "queues.notification": {
+      "type": "Object",
+      "desc": "通知任务队列配置"
+    },
+    "queues.nightly": {
+      "type": "Object",
+      "desc": "定时任务队列配置"
+    }
+  },
+  "throttle": {
+    "enabled": {
+      "type": "Boolean",
+      "desc": "是否启用限流控制"
+    },
+    "throttlers.default": {
+      "type": "Object",
+      "desc": "默认限流器配置"
+    },
+    "throttlers.strict": {
+      "type": "Object",
+      "desc": "严格限流器配置"
+    }
+  },
+  "auth": {
+    "allowSignup": {
+      "type": "Boolean",
+      "desc": "是否允许新用户注册。"
+    },
+    "requireEmailDomainVerification": {
+      "type": "Boolean",
+      "desc": "在访问受限资源前是否需要验证邮箱域名记录。"
+    },
+    "requireEmailVerification": {
+      "type": "Boolean",
+      "desc": "在访问受限资源前是否需要验证邮箱（未实现）。"
+    },
+    "passwordRequirements": {
+      "type": "Object",
+      "desc": "设置新密码时的密码强度要求。"
+    },
+    "session.ttl": {
+      "type": "Number",
+      "desc": "应用程序认证过期时间（秒）。"
+    },
+    "session.ttr": {
+      "type": "Number",
+      "desc": "应用程序认证刷新时间（秒）。"
+    }
+  },
+  "mailer": {
+    "SMTP.host": {
+      "type": "String",
+      "desc": "邮件服务器主机地址（例如：smtp.gmail.com）",
+      "env": "MAILER_HOST"
+    },
+    "SMTP.port": {
+      "type": "Number",
+      "desc": "邮件服务器端口（通常为25、465或587）",
+      "env": "MAILER_PORT"
+    },
+    "SMTP.username": {
+      "type": "String",
+      "desc": "用于认证邮件服务器的用户名",
+      "env": "MAILER_USER"
+    },
+    "SMTP.password": {
+      "type": "String",
+      "desc": "用于认证邮件服务器的密码",
+      "env": "MAILER_PASSWORD"
+    },
+    "SMTP.sender": {
+      "type": "String",
+      "desc": "所有邮件的发送者（例如：\"AFFiNE团队 <noreply@affine.pro>\"）",
+      "env": "MAILER_SENDER"
+    },
+    "SMTP.ignoreTLS": {
+      "type": "Boolean",
+      "desc": "是否忽略邮件服务器的TLS证书验证。为自签名证书启用此选项。",
+      "env": "MAILER_IGNORE_TLS"
+    }
+  },
+  "doc": {
+    "experimental.yocto": {
+      "type": "Boolean",
+      "desc": "在使用Yjs合并更新时同时使用`y-octo`进行合并"
+    },
+    "history.interval": {
+      "type": "Number",
+      "desc": "文档更新时创建新历史快照的最小时间间隔（毫秒）"
+    }
+  },
+  "storages": {
+    "avatar.publicPath": {
+      "type": "String",
+      "desc": "用户头像的公开访问路径前缀。"
+    },
+    "avatar.storage": {
+      "type": "Object",
+      "desc": "用户头像存储的配置。"
+    },
+    "blob.storage": {
+      "type": "Object",
+      "desc": "所有上传文件（图片、视频等）的存储配置。"
+    }
+  },
+  "websocket": {
+    "transports": {
+      "type": "Array",
+      "desc": "用于接收WebSocket流量的启用传输方式",
+      "link": "https://docs.nestjs.com/websockets/gateways#transports"
+    },
+    "maxHttpBufferSize": {
+      "type": "Number",
+      "desc": "消息允许的最大字节数或字符数，超过此值将关闭会话（防止DoS攻击）"
+    }
+  },
+  "server": {
+    "name": {
+      "type": "String",
+      "desc": "服务器的可识别名称。连接到AFFiNE桌面端时将显示此名称。"
+    },
+    "externalUrl": {
+      "type": "String",
+      "desc": "AFFiNE服务器的基础URL，用于生成外部链接。\n如果未指定，默认为`[server.protocol]://[server.host][:server.port]`。\n    ",
+      "env": "AFFINE_SERVER_EXTERNAL_URL"
+    },
+    "https": {
+      "type": "Boolean",
+      "desc": "服务器是否部署在启用SSL的域名上(https://)。",
+      "env": "AFFINE_SERVER_HTTPS"
+    },
+    "host": {
+      "type": "String",
+      "desc": "服务器部署的位置(FQDN)。",
+      "env": "AFFINE_SERVER_HOST"
+    },
+    "port": {
+      "type": "Number",
+      "desc": "服务器监听的端口。",
+      "env": "AFFINE_SERVER_PORT"
+    },
+    "path": {
+      "type": "String",
+      "desc": "服务器部署的子路径(如果有的话)。(例如: /affine)",
+      "env": "AFFINE_SERVER_SUB_PATH"
+    }
+  },
+  "flags": {
+    "earlyAccessControl": {
+      "type": "Boolean",
+      "desc": "仅允许具有早期访问功能的用户访问应用程序"
+    }
+  },
+  "docService": {
+    "endpoint": {
+      "type": "String",
+      "desc": "文档服务的端点",
+      "env": "DOC_SERVICE_ENDPOINT"
+    }
+  },
+  "client": {
+    "versionControl.enabled": {
+      "type": "Boolean",
+      "desc": "在访问服务器前是否检查客户端版本"
+    },
+    "versionControl.requiredVersion": {
+      "type": "String",
+      "desc": "允许访问服务器的应用程序版本范围。需要启用'client/versionControl.enabled'才能生效"
+    }
+  },
+  "captcha": {
+    "enabled": {
+      "type": "Boolean",
+      "desc": "用户认证应用程序时是否检查验证码挑战"
+    },
+    "config": {
+      "type": "Object",
+      "desc": "验证码插件的配置"
+    }
+  },
+  "copilot": {
+    "enabled": {
+      "type": "Boolean",
+      "desc": "是否启用AI助手插件。"
+    },
+    "providers.openai": {
+      "type": "Object",
+      "desc": "OpenAI提供商配置。",
+      "link": "https://github.com/openai/openai-node"
+    },
+    "providers.deepseek": {
+      "type": "Object",
+      "desc": "DeepSeek提供商配置。",
+      "link": "https://api-docs.deepseek.com/zh-cn/"
+    },
+    "providers.fal": {
+      "type": "Object",
+      "desc": "FAL提供商配置。"
+    },
+    "providers.gemini": {
+      "type": "Object",
+      "desc": "Gemini提供商配置。"
+    },
+    "providers.geminiVertex": {
+      "type": "Object",
+      "desc": "Google Vertex AI中的Gemini提供商配置。"
+    },
+    "providers.perplexity": {
+      "type": "Object",
+      "desc": "Perplexity提供商配置。"
+    },
+    "providers.anthropic": {
+      "type": "Object",
+      "desc": "Anthropic提供商配置。"
+    },
+    "providers.anthropicVertex": {
+      "type": "Object",
+      "desc": "Google Vertex AI中的Anthropic提供商配置。"
+    },
+    "unsplash": {
+      "type": "Object",
+      "desc": "Unsplash密钥配置。"
+    },
+    "exa": {
+      "type": "Object",
+      "desc": "Exa网络搜索密钥配置。"
+    },
+    "storage": {
+      "type": "Object",
+      "desc": "存储提供商配置。"
+    }
+  },
+  "customerIo": {
+    "enabled": {
+      "type": "Boolean",
+      "desc": "启用Customer.io集成"
+    },
+    "token": {
+      "type": "String",
+      "desc": "Customer.io令牌"
+    }
+  },
+  "indexer": {
+    "enabled": {
+      "type": "Boolean",
+      "desc": "启用索引插件",
+      "env": "AFFINE_INDEXER_ENABLED"
+    },
+    "provider.type": {
+      "type": "String",
+      "desc": "索引搜索服务提供商名称",
+      "env": "AFFINE_INDEXER_SEARCH_PROVIDER"
+    },
+    "provider.endpoint": {
+      "type": "String",
+      "desc": "索引搜索服务端点",
+      "env": "AFFINE_INDEXER_SEARCH_ENDPOINT"
+    },
+    "provider.apiKey": {
+      "type": "String",
+      "desc": "索引搜索服务API密钥。对Elasticsearch可选",
+      "link": "https://www.elastic.co/guide/server/current/api-key.html",
+      "env": "AFFINE_INDEXER_SEARCH_API_KEY"
+    },
+    "provider.username": {
+      "type": "String",
+      "desc": "索引搜索服务认证用户名，如未设置则禁用基本认证。对Elasticsearch可选",
+      "link": "https://www.elastic.co/guide/en/elasticsearch/reference/current/http-clients.html",
+      "env": "AFFINE_INDEXER_SEARCH_USERNAME"
+    },
+    "provider.password": {
+      "type": "String",
+      "desc": "索引搜索服务认证密码，如未设置则禁用基本认证。对Elasticsearch可选",
+      "env": "AFFINE_INDEXER_SEARCH_PASSWORD"
+    },
+    "autoIndex.batchSize": {
+      "type": "Number",
+      "desc": "每批自动索引的工作区数量"
+    }
+  },
+  "oauth": {
+    "providers.google": {
+      "type": "Object",
+      "desc": "Google OAuth提供商配置",
+      "link": "https://developers.google.com/identity/protocols/oauth2/web-server"
+    },
+    "providers.github": {
+      "type": "Object",
+      "desc": "GitHub OAuth提供商配置",
+      "link": "https://docs.github.com/en/apps/oauth-apps"
+    },
+    "providers.oidc": {
+      "type": "Object",
+      "desc": "OIDC OAuth提供商配置",
+      "link": "https://openid.net/specs/openid-connect-core-1_0.html"
+    },
+    "providers.apple": {
+      "type": "Object",
+      "desc": "Apple OAuth提供商配置",
+      "link": "https://developer.apple.com/documentation/sign_in_with_apple/sign_in_with_apple_js/implementing_sign_in_with_apple_in_your_app"
+    }
+  },
+  "payment": {
+    "enabled": {
+      "type": "Boolean",
+      "desc": "是否启用支付插件"
+    },
+    "showLifetimePrice": {
+      "type": "Boolean",
+      "desc": "是否启用终身价格并允许用户支付"
+    },
+    "apiKey": {
+      "type": "String",
+      "desc": "启用支付服务的Stripe API密钥",
+      "env": "STRIPE_API_KEY"
+    },
+    "webhookKey": {
+      "type": "String",
+      "desc": "启用支付服务的Stripe webhook密钥",
+      "env": "STRIPE_WEBHOOK_KEY"
+    },
+    "stripe": {
+      "type": "Object",
+      "desc": "Stripe SDK选项",
+      "link": "https://docs.stripe.com/api"
+    }
+  },
+  "worker": {
+    "allowedOrigin": {
+      "type": "Array",
+      "desc": "允许的来源"
+    }
+  }
+}

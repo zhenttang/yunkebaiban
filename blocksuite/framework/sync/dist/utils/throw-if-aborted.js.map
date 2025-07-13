@@ -1,0 +1,1 @@
+{"version":3,"file":"throw-if-aborted.js","sourceRoot":"","sources":["../../src/utils/throw-if-aborted.ts"],"names":[],"mappings":"AAAA,kFAAkF;AAClF,MAAM,UAAU,cAAc,CAAC,KAAmB;IAChD,IAAI,KAAK,EAAE,OAAO,EAAE,CAAC;QACnB,MAAM,KAAK,CAAC,MAAM,CAAC;IACrB,CAAC;IACD,OAAO,IAAI,CAAC;AACd,CAAC;AAED,MAAM,CAAC,MAAM,aAAa,GAAG,eAAe,CAAC"}

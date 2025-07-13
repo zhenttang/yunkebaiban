@@ -1,0 +1,1 @@
+{"version":3,"file":"engine.d.ts","sourceRoot":"","sources":["../../src/awareness/engine.ts"],"names":[],"mappings":"AAAA,OAAO,KAAK,EAAE,SAAS,EAAE,MAAM,uBAAuB,CAAC;AAEvD,OAAO,KAAK,EAAE,eAAe,EAAE,MAAM,aAAa,CAAC;AAEnD,qBAAa,eAAe;IAExB,QAAQ,CAAC,SAAS,EAAE,SAAS;IAC7B,QAAQ,CAAC,OAAO,EAAE,eAAe,EAAE;gBAD1B,SAAS,EAAE,SAAS,EACpB,OAAO,EAAE,eAAe,EAAE;IAGrC,OAAO;IAIP,UAAU;CAGX"}

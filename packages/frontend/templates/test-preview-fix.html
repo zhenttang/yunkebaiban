@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CDN预览测试</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .test-item { margin: 20px 0; padding: 15px; border: 1px solid #ccc; border-radius: 5px; }
+        .preview-img { max-width: 100px; max-height: 100px; border: 1px solid #ddd; }
+        .status { font-weight: bold; }
+        .success { color: green; }
+        .error { color: red; }
+    </style>
+</head>
+<body>
+    <h1>AFFiNE CDN 预览图测试</h1>
+    
+    <div class="test-item">
+        <h3>测试 1: ai-complex-4 (原始URL)</h3>
+        <p>URL: <code>https://yckeji0316-1312042802.cos.ap-beijing.myqcloud.com/localFile/stickers/stickers/AI%20Complex/Cover/ai-complex-4.svg</code></p>
+        <img id="test1" 
+             src="https://yckeji0316-1312042802.cos.ap-beijing.myqcloud.com/localFile/stickers/stickers/AI%20Complex/Cover/ai-complex-4.svg" 
+             class="preview-img"
+             alt="Test 1"
+             crossorigin="anonymous"
+             onload="showStatus('test1-status', 'success', '✅ 加载成功')"
+             onerror="showStatus('test1-status', 'error', '❌ 加载失败')">
+        <div id="test1-status" class="status">加载中...</div>
+    </div>
+
+    <div class="test-item">
+        <h3>测试 2: 简化URL结构测试</h3>
+        <p>URL: <code>https://yckeji0316-1312042802.cos.ap-beijing.myqcloud.com/localFile/stickers/stickers/AI Complex/Cover/ai-complex-1.svg</code></p>
+        <img id="test2" 
+             src="https://yckeji0316-1312042802.cos.ap-beijing.myqcloud.com/localFile/stickers/stickers/AI Complex/Cover/ai-complex-1.svg" 
+             class="preview-img"
+             alt="Test 2"
+             crossorigin="anonymous"
+             onload="showStatus('test2-status', 'success', '✅ 加载成功')"
+             onerror="showStatus('test2-status', 'error', '❌ 加载失败')">
+        <div id="test2-status" class="status">加载中...</div>
+    </div>
+
+    <div class="test-item">
+        <h3>测试 3: 使用Fetch API测试</h3>
+        <button onclick="testFetch()">测试 Fetch API</button>
+        <div id="fetch-result" class="status">点击按钮开始测试</div>
+    </div>
+
+    <script>
+        function showStatus(elementId, className, message) {
+            const element = document.getElementById(elementId);
+            element.className = `status ${className}`;
+            element.textContent = message;
+        }
+
+        async function testFetch() {
+            const resultDiv = document.getElementById('fetch-result');
+            resultDiv.textContent = '测试中...';
+            
+            try {
+                const url = 'https://yckeji0316-1312042802.cos.ap-beijing.myqcloud.com/localFile/stickers/stickers/AI%20Complex/Cover/ai-complex-4.svg';
+                const response = await fetch(url, {
+                    method: 'GET',
+                    mode: 'cors'
+                });
+                
+                if (response.ok) {
+                    const text = await response.text();
+                    resultDiv.className = 'status success';
+                    resultDiv.innerHTML = `✅ Fetch成功<br>状态: ${response.status}<br>内容长度: ${text.length} 字符<br>内容类型: ${response.headers.get('content-type')}`;
+                } else {
+                    resultDiv.className = 'status error';
+                    resultDiv.textContent = `❌ Fetch失败: ${response.status} ${response.statusText}`;
+                }
+            } catch (error) {
+                resultDiv.className = 'status error';
+                resultDiv.textContent = `❌ Fetch错误: ${error.message}`;
+            }
+        }
+
+        // 延迟检查加载状态
+        setTimeout(() => {
+            ['test1-status', 'test2-status'].forEach(id => {
+                const element = document.getElementById(id);
+                if (element.textContent === '加载中...') {
+                    element.className = 'status error';
+                    element.textContent = '❌ 加载超时';
+                }
+            });
+        }, 10000);
+    </script>
+</body>
+</html> 

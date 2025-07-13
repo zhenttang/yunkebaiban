@@ -1,0 +1,11 @@
+cos:
+  base:
+    secretid: YOUR_SECRET_ID
+    secretkey: YOUR_SECRET_KEY
+    sessiontoken: ""
+    protocol: https
+  buckets:
+    - name: yckeji0316-1312042802
+      alias: main
+      region: ap-beijing
+      endpoint: ""
