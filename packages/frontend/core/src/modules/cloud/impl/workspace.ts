@@ -78,31 +78,73 @@ export function configureWorkspaceProvider(framework: Framework) {
       },
 
       async createWorkspace(request: CreateWorkspaceRequest): Promise<WorkspaceInfo> {
-        const res = await fetchService.fetch('/api/workspaces', {
+        console.log('开始创建工作空间请求', {
+          url: '/api/workspaces',
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify(request),
+          cookies: document.cookie,
+          requestBody: request
         });
-
-        if (!res.ok) {
-          let errorMessage = `HTTP ${res.status}`;
-          try {
-            const errorData = await res.json();
-            errorMessage = errorData.error || errorData.message || errorMessage;
-          } catch (e) {
-            errorMessage = res.statusText || errorMessage;
-          }
-          throw new Error(errorMessage);
-        }
-
-        const data = await res.json();
-        if (data.success && data.workspace) {
-          return data.workspace;
-        }
         
-        throw new Error(data.error || 'Failed to create workspace');
+        try {
+          const res = await fetchService.fetch('/api/workspaces', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(request),
+          });
+          
+          console.log('创建工作空间响应状态', {
+            status: res.status,
+            statusText: res.statusText,
+            headers: Object.fromEntries([...res.headers.entries()]),
+            cookies: document.cookie
+          });
+          
+          // 克隆响应以便可以多次读取body
+          const resClone = res.clone();
+          
+          // 记录原始响应内容
+          resClone.text().then(text => {
+            console.log('创建工作空间响应原始内容:', text);
+            try {
+              const jsonData = JSON.parse(text);
+              console.log('创建工作空间响应JSON数据:', jsonData);
+            } catch (e) {
+              console.error('响应内容不是有效JSON:', e);
+            }
+          }).catch(err => {
+            console.error('读取响应内容失败:', err);
+          });
+
+          if (!res.ok) {
+            let errorMessage = `HTTP ${res.status}`;
+            try {
+              const errorData = await res.json();
+              errorMessage = errorData.error || errorData.message || errorMessage;
+              console.error('创建工作空间失败，错误详情:', errorData);
+            } catch (e) {
+              errorMessage = res.statusText || errorMessage;
+              console.error('解析错误响应失败:', e);
+            }
+            throw new Error(errorMessage);
+          }
+
+          const data = await res.json();
+          console.log('创建工作空间成功，返回数据:', data);
+          
+          if (data.success && data.workspace) {
+            return data.workspace;
+          }
+          
+          throw new Error(data.error || 'Failed to create workspace');
+        } catch (error) {
+          console.error('创建工作空间请求异常:', error);
+          throw error;
+        }
       },
 
       async updateWorkspace(workspaceId: string, request: UpdateWorkspaceRequest): Promise<WorkspaceInfo> {

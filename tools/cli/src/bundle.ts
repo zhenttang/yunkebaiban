@@ -146,18 +146,18 @@ const defaultDevServerConfig: DevServerConfiguration = {
   proxy: [
     {
       context: '/api',
-      target: 'http://localhost:3010',
+      target: 'http://localhost:8080',
       logLevel: httpProxyMiddlewareLogLevel,
     },
     {
       context: '/socket.io',
-      target: 'http://localhost:3010',
+      target: 'http://localhost:8080',
       ws: true,
       logLevel: httpProxyMiddlewareLogLevel,
     },
     {
       context: '/graphql',
-      target: 'http://localhost:3010',
+      target: 'http://localhost:8080',
       logLevel: httpProxyMiddlewareLogLevel,
     },
   ],

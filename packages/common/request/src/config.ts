@@ -1,0 +1,140 @@
+import { 
+  ApiEndpoints,
+  EnvironmentConfig, 
+  EnvironmentType, 
+  RequestConfig, 
+  RetryConfig, 
+  TimeoutConfig 
+} from './types';
+
+/**
+ * 默认超时配置
+ */
+export const DEFAULT_TIMEOUT: TimeoutConfig = {
+  request: 60000, // 60秒请求超时
+  response: 60000 // 60秒响应超时
+};
+
+/**
+ * 默认重试配置
+ */
+export const DEFAULT_RETRY: RetryConfig = {
+  maxRetries: 3, // 最多重试3次
+  retryDelay: 1000, // 1秒后重试
+  statusCodesToRetry: [408, 429, 500, 502, 503, 504] // 这些状态码会触发重试
+};
+
+/**
+ * API端点配置
+ */
+export const API_ENDPOINTS: ApiEndpoints = {
+  auth: {
+    login: '/api/auth/login',
+    register: '/api/auth/register',
+    logout: '/api/auth/logout',
+    refresh: '/api/auth/refresh'
+  },
+  workspaces: {
+    list: '/api/workspaces',
+    create: '/api/workspaces',
+    get: '/api/workspaces/:id',
+    update: '/api/workspaces/:id',
+    delete: '/api/workspaces/:id',
+    invite: '/api/workspaces/:id/invite',
+    createInviteLink: '/api/workspaces/:id/invite-link'
+  },
+  docs: {
+    list: '/api/workspaces/:workspaceId/docs',
+    create: '/api/workspaces/:workspaceId/docs',
+    get: '/api/workspaces/:workspaceId/docs/:id',
+    update: '/api/workspaces/:workspaceId/docs/:id',
+    delete: '/api/workspaces/:workspaceId/docs/:id'
+  },
+  users: {
+    profile: '/api/users/profile',
+    update: '/api/users/profile'
+  }
+};
+
+/**
+ * 环境配置
+ */
+export const environments: Record<EnvironmentType, EnvironmentConfig> = {
+  [EnvironmentType.DEV]: {
+    env: EnvironmentType.DEV,
+    baseUrl: 'http://localhost:8080',
+    apiVersion: 'v1',
+    enableLogging: true,
+    enableCache: false,
+    enableMock: false
+  },
+  [EnvironmentType.TEST]: {
+    env: EnvironmentType.TEST,
+    baseUrl: 'http://localhost:8080',
+    apiVersion: 'v1',
+    enableLogging: true,
+    enableCache: true,
+    enableMock: false
+  },
+  [EnvironmentType.PROD]: {
+    env: EnvironmentType.PROD,
+    baseUrl: 'https://api.affine.pro',
+    apiVersion: 'v1',
+    enableLogging: false,
+    enableCache: true,
+    enableMock: false
+  }
+};
+
+/**
+ * 获取当前环境
+ */
+export const getCurrentEnvironment = (): EnvironmentType => {
+  // 在浏览器环境下，从window对象或环境变量中获取
+  if (typeof window !== 'undefined') {
+    // @ts-ignore
+    if (window.BUILD_CONFIG && window.BUILD_CONFIG.environment) {
+      // @ts-ignore
+      return window.BUILD_CONFIG.environment;
+    }
+  }
+
+  // 在Node环境下，从process.env中获取
+  if (typeof process !== 'undefined' && process.env) {
+    return (process.env.NODE_ENV as EnvironmentType) || EnvironmentType.DEV;
+  }
+
+  // 默认开发环境
+  return EnvironmentType.DEV;
+};
+
+/**
+ * 创建请求配置
+ */
+export const createRequestConfig = (env = getCurrentEnvironment()): RequestConfig => {
+  const environment = environments[env];
+
+  // 开发环境使用代理配置
+  const proxyConfig = env === EnvironmentType.DEV ? {
+    target: 'http://localhost:8080',
+    changeOrigin: true,
+    timeout: 120000 // 120秒代理超时，解决创建工作区504问题
+  } : undefined;
+
+  return {
+    environment,
+    timeout: DEFAULT_TIMEOUT,
+    retry: DEFAULT_RETRY,
+    endpoints: API_ENDPOINTS,
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    },
+    proxy: proxyConfig
+  };
+};
+
+/**
+ * 默认请求配置
+ */
+export const defaultRequestConfig = createRequestConfig(); 

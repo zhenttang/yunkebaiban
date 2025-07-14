@@ -12,7 +12,6 @@
     { "path": "../electron-api" },
     { "path": "../../common/env" },
     { "path": "../../common/error" },
-    { "path": "../../common/graphql" },
     { "path": "../i18n" },
     { "path": "../../common/nbstore" },
     { "path": "../track" },

@@ -10,7 +10,6 @@
     { "path": "../reader" },
     { "path": "../infra" },
     { "path": "../error" },
-    { "path": "../graphql" },
     { "path": "../../../blocksuite/affine/all" }
   ]
 }

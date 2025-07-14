@@ -8,7 +8,6 @@
   "include": ["./src"],
   "references": [
     { "path": "../../../../tools/utils" },
-    { "path": "../../native" },
     { "path": "../../../common/nbstore" },
     { "path": "../../../common/infra" }
   ]

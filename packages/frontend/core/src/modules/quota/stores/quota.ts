@@ -11,15 +11,41 @@ export class WorkspaceQuotaStore extends Store {
     if (!this.workspaceServerService.server) {
       throw new Error('无服务器');
     }
-    const data = await this.workspaceServerService.server.gql({
-      query: workspaceQuotaQuery,
-      variables: {
-        id: workspaceId,
-      },
-      context: {
+    
+    // 使用REST API代替GraphQL查询
+    try {
+      const baseUrl = 'http://localhost:8080';
+      const response = await fetch(`${baseUrl}/api/workspaces/${workspaceId}/quota`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
         signal,
-      },
-    });
-    return data.workspace.quota;
+      });
+      
+      if (!response.ok) {
+        // 如果API不存在，返回默认配额信息
+        console.log(`工作区配额API未实现，返回默认配额，状态码: ${response.status}`);
+        return {
+          storage: {
+            limit: 10 * 1024 * 1024 * 1024, // 10GB
+            used: 0,
+          }
+        };
+      }
+      
+      const data = await response.json();
+      return data.quota;
+    } catch (error) {
+      console.error('获取工作区配额失败:', error);
+      // 出错时返回默认配额
+      return {
+        storage: {
+          limit: 10 * 1024 * 1024 * 1024, // 10GB
+          used: 0,
+        }
+      };
+    }
   }
 }

@@ -160,7 +160,7 @@ export function configureCloudModule(framework: Framework) {
     .service(InvitationService, [AcceptInviteStore, InviteInfoStore])
     .store(AcceptInviteStore, [GraphQLService])
     .service(PublicUserService, [PublicUserStore])
-    .store(PublicUserStore, [GraphQLService])
+    .store(PublicUserStore, [GraphQLService, FetchService])
     .service(UserSettingsService, [UserSettingsStore])
     .store(UserSettingsStore, [GraphQLService]);
 

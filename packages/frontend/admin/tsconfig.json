@@ -11,7 +11,6 @@
     { "path": "../component" },
     { "path": "../core" },
     { "path": "../../common/error" },
-    { "path": "../../common/graphql" },
     { "path": "../routes" },
     { "path": "../../common/infra" }
   ]
