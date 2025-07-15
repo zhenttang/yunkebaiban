@@ -22,7 +22,7 @@ import { exhaustMap, map, tap } from 'rxjs';
 import { ServerScope } from '../scopes/server';
 import { AuthService } from '../services/auth';
 import { FetchService } from '../services/fetch';
-import { GraphQLService } from '../services/graphql';
+// import { GraphQLService } from '../services/graphql'; // 已移除GraphQL支持
 import { ServerConfigStore } from '../stores/server-config';
 import type { ServerListStore } from '../stores/server-list';
 import type { ServerConfig, ServerMetadata } from '../types';
@@ -43,7 +43,7 @@ export class Server extends Entity<{
 
   readonly serverConfigStore = this.scope.framework.get(ServerConfigStore);
   readonly fetch = this.scope.framework.get(FetchService).fetch;
-  readonly gql = this.scope.framework.get(GraphQLService).gql;
+  // readonly gql = this.scope.framework.get(GraphQLService).gql; // GraphQL已移除
   get account$() {
     return this.scope.framework.get(AuthService).session.account$;
   }

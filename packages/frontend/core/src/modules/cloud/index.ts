@@ -97,12 +97,16 @@ import { DocCreatedByService } from './services/doc-created-by';
 import { DocUpdatedByService } from './services/doc-updated-by';
 import { DocCreatedByUpdatedBySyncService } from './services/doc-created-by-updated-by-sync';
 import { WorkspacePermissionService } from '../permissions';
-import { DocScope, DocService, DocsService } from '../doc';
+import { DocScope, DocService, DocsService, DocCreateMiddleware } from '../doc';
 import { DocCreatedByUpdatedBySyncStore } from './stores/doc-created-by-updated-by-sync';
 import { GlobalDialogService } from '../dialogs';
+import { configureDocProvider } from './impl/doc';
+import { DocProvider } from './provider/doc';
+import { CloudSyncMiddleware } from '../doc/providers/cloud-sync-middleware';
 
 export function configureCloudModule(framework: Framework) {
   configureDefaultAuthProvider(framework);
+  configureDocProvider(framework);
 
   framework
     .service(ServersService, [ServerListStore, ServerConfigStore])
@@ -168,6 +172,7 @@ export function configureCloudModule(framework: Framework) {
     .scope(WorkspaceScope)
     .service(WorkspaceServerService)
     .service(DocCreatedByService, [WorkspaceServerService])
+    .service(CloudSyncMiddleware, [WorkspaceService, DocProvider])
     .scope(DocScope)
     .service(DocUpdatedByService, [WorkspaceServerService])
     .service(CloudDocMetaService)

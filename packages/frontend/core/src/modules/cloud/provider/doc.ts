@@ -22,9 +22,6 @@ export interface DocCollaborator {
 
 export interface CreateDocRequest {
   title?: string;
-  summary?: string;
-  public?: boolean;
-  mode?: number;
 }
 
 export interface UpdateDocRequest {

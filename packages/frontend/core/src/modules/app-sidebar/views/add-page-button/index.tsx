@@ -87,6 +87,7 @@ function AddPageWithAsk({ className, style }: AddPageButtonProps) {
 
   const createPage = useCallback(
     (e?: MouseEvent) => {
+      console.log('🚀 [AddPageButton.createPage] 用户点击新建页面按钮');
       createDoc(e, 'page');
       track.$.navigationPanel.$.createDoc();
       track.$.sidebar.newDoc.quickStart({ with: 'page' });
@@ -95,6 +96,7 @@ function AddPageWithAsk({ className, style }: AddPageButtonProps) {
   );
   const createEdgeless = useCallback(
     (e?: MouseEvent) => {
+      console.log('🚀 [AddPageButton.createEdgeless] 用户点击新建白板按钮');
       createDoc(e, 'edgeless');
       track.$.navigationPanel.$.createDoc();
       track.$.sidebar.newDoc.quickStart({ with: 'edgeless' });

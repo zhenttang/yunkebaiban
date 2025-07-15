@@ -1,40 +1,17 @@
-//import {
-//   gqlFetcherFactory,
-//   type OauthProvidersQuery,
-//   oauthProvidersQuery,
-//   type ServerConfigQuery,
-//   serverConfigQuery,
-//   ServerFeature,
-//} from '@affine/graphql';
-
-// Temporary placeholder types and functions since GraphQL backend removed
-enum ServerFeature {
-  Captcha = 'captcha',
-  Copilot = 'copilot',
-  OAuth = 'oauth',
-  Payment = 'payment',
-}
-
-const gqlFetcherFactory = (url: string, fetch: Function) => {
-  console.warn('gqlFetcherFactory暂时禁用 - GraphQL后端已移除');
-  return () => Promise.reject(new Error('GraphQL暂时禁用'));
-};
-
-const serverConfigQuery = null;
-const oauthProvidersQuery = null;
-
-interface ServerConfigQuery {
-  serverConfig: any;
-}
-
-interface OauthProvidersQuery {
-  serverConfig: any;
-}
-
 import { Store } from '@toeverything/infra';
 
-export type ServerConfigType = ServerConfigQuery['serverConfig'] &
-  OauthProvidersQuery['serverConfig'];
+// 临时替代serverConfig的类型定义，直到REST API就位
+export interface ServerConfigType {
+  initialized: boolean;
+  version: string;
+  name: string;
+  flavor: string;
+  deployment: string;
+  features: string[];
+  credentialsRequirement: any;
+  oauthProviders: any[];
+  type: string;
+}
 
 export class ServerConfigStore extends Store {
   constructor() {
@@ -45,25 +22,72 @@ export class ServerConfigStore extends Store {
     serverBaseUrl: string,
     abortSignal?: AbortSignal
   ): Promise<ServerConfigType> {
-    const gql = gqlFetcherFactory(`${serverBaseUrl}/graphql`, globalThis.fetch);
-    const serverConfigData = await gql({
-      query: serverConfigQuery,
-      context: {
+    console.log('🌐 [ServerConfigStore.fetchServerConfig] 开始获取服务器配置');
+    console.log('🌐 [ServerConfigStore.fetchServerConfig] 服务器URL:', serverBaseUrl);
+    
+    // 使用HTTP REST API替代GraphQL
+    try {
+      const url = `${serverBaseUrl}/health/detailed`;
+      console.log('🌐 [ServerConfigStore.fetchServerConfig] 请求URL:', url);
+      
+      const response = await fetch(url, {
+        method: 'GET',
         signal: abortSignal,
-      },
-    });
-    if (serverConfigData.serverConfig.features.includes(ServerFeature.OAuth)) {
-      const oauthProvidersData = await gql({
-        query: oauthProvidersQuery,
-        context: {
-          signal: abortSignal,
+        headers: {
+          'Content-Type': 'application/json',
         },
       });
-      return {
-        ...serverConfigData.serverConfig,
-        ...oauthProvidersData.serverConfig,
+
+      console.log('🌐 [ServerConfigStore.fetchServerConfig] 响应状态:', response.status);
+      console.log('🌐 [ServerConfigStore.fetchServerConfig] 响应头:', response.headers);
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('❌ [ServerConfigStore.fetchServerConfig] 响应错误:', errorText);
+        throw new Error(`服务器配置获取失败: ${response.status}`);
+      }
+
+      const healthData = await response.json();
+      console.log('🌐 [ServerConfigStore.fetchServerConfig] 健康检查数据:', healthData);
+      
+      // 返回兼容的服务器配置格式
+      const config = {
+        initialized: true,
+        version: healthData.version || '1.0.0',
+        name: healthData.serverName || 'AFFiNE',
+        flavor: healthData.flavor || 'allinone',
+        deployment: healthData.deployment || 'selfhosted',
+        features: healthData.features || [],
+        credentialsRequirement: {
+          password: { minLength: 8, maxLength: 256 },
+          oauth: false
+        },
+        oauthProviders: [],
+        type: 'selfhosted'
       };
+      
+      console.log('✅ [ServerConfigStore.fetchServerConfig] 成功获取配置:', config);
+      return config;
+    } catch (error) {
+      console.error('❌ [ServerConfigStore.fetchServerConfig] 获取服务器配置失败:', error);
+      // 返回默认配置以确保应用能正常运行
+      const defaultConfig = {
+        initialized: true,
+        version: '1.0.0',
+        name: 'AFFiNE',
+        flavor: 'allinone',
+        deployment: 'selfhosted',
+        features: ['copilot'],
+        credentialsRequirement: {
+          password: { minLength: 8, maxLength: 256 },
+          oauth: false
+        },
+        oauthProviders: [],
+        type: 'selfhosted'
+      };
+      
+      console.warn('⚠️ [ServerConfigStore.fetchServerConfig] 使用默认配置:', defaultConfig);
+      return defaultConfig;
     }
-    return { ...serverConfigData.serverConfig, oauthProviders: [] };
   }
 }

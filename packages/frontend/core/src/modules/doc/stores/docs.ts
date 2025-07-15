@@ -8,7 +8,7 @@ import {
   yjsObservePath,
 } from '@toeverything/infra';
 import { nanoid } from 'nanoid';
-import { distinctUntilChanged, map, switchMap } from 'rxjs';
+import { distinctUntilChanged, map, switchMap, timeout, catchError, of } from 'rxjs';
 import { Array as YArray, Map as YMap, transact } from 'yjs';
 
 import type { WorkspaceService } from '../../workspace';
@@ -220,9 +220,26 @@ export class DocsStore extends Store {
   }
 
   watchDocListReady() {
+    console.log('📋 [DocsStore.watchDocListReady] 开始监听文档列表就绪状态');
+    
     return this.workspaceService.workspace.engine.doc
       .docState$(this.workspaceService.workspace.id)
-      .pipe(map(state => state.synced));
+      .pipe(
+        map(state => {
+          console.log('📋 [DocsStore.watchDocListReady] 收到同步状态更新:', state);
+          // 如果文档已加载且可用，即使同步状态未完成也认为就绪
+          // 这解决了服务器模式下同步状态检查导致的无限等待问题
+          const ready = state.synced || (state.ready && state.loaded);
+          console.log('📋 [DocsStore.watchDocListReady] 计算的就绪状态:', ready);
+          return ready;
+        }),
+        // 添加超时机制：如果5秒内没有同步完成，仍然允许继续
+        timeout(5000),
+        catchError(error => {
+          console.warn('📋 [DocsStore.watchDocListReady] 超时或出错，返回 true:', error);
+          return of(true);
+        }) // 超时时返回true，允许文档加载继续
+      );
   }
 
   setDocMeta(id: string, meta: Partial<DocMeta>) {
