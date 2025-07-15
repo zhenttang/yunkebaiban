@@ -14,11 +14,11 @@ interface AppConfig {
 
 const config: CapacitorConfig & AppConfig = {
   appId: 'app.affine.pro',
-  appName: 'AFFiNE',
+  appName: '云科',
   webDir: 'dist',
   affineVersion: packageJson.version,
   ios: {
-    scheme: 'AFFiNE',
+    scheme: '云科',
     path: '.',
     webContentsDebuggingEnabled: true,
   },

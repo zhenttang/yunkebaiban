@@ -61,7 +61,7 @@ export const BUILD_IN_SERVERS: (ServerMetadata & { config: ServerConfig })[] = [
     id: 'affine-cloud',
     baseUrl: 'http://localhost:8080',
     config: {
-      serverName: 'AFFiNE Local Java Backend',
+      serverName: '云科 Local Java Backend',
       features: [
         ServerFeature.Captcha,
         ServerFeature.Copilot,

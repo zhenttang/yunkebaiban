@@ -127,6 +127,7 @@
     { "path": "./packages/common/infra" },
     { "path": "./packages/common/nbstore" },
     { "path": "./packages/common/reader" },
+    { "path": "./packages/common/request" },
     { "path": "./packages/frontend/admin" },
     { "path": "./packages/frontend/apps/android" },
     { "path": "./packages/frontend/apps/electron" },

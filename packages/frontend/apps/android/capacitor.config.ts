@@ -13,7 +13,7 @@ interface AppConfig {
 
 const config: CapacitorConfig & AppConfig = {
   appId: 'app.affine.pro',
-  appName: 'AFFiNE',
+  appName: '云科',
   webDir: 'dist',
   affineVersion: packageJson.version,
   android: {

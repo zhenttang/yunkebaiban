@@ -1170,6 +1170,11 @@ export const PackageList = [
     workspaceDependencies: ['blocksuite/affine/all'],
   },
   {
+    location: 'packages/common/request',
+    name: '@affine/request',
+    workspaceDependencies: [],
+  },
+  {
     location: 'packages/frontend/admin',
     name: '@affine/admin',
     workspaceDependencies: [
@@ -1182,7 +1187,7 @@ export const PackageList = [
   },
   {
     location: 'packages/frontend/apps/android',
-    name: '@affine/android',
+    name: '@yunke/android',
     workspaceDependencies: [
       'packages/frontend/component',
       'packages/frontend/core',
@@ -1433,8 +1438,9 @@ export type PackageName =
   | '@toeverything/infra'
   | '@affine/nbstore'
   | '@affine/reader'
+  | '@affine/request'
   | '@affine/admin'
-  | '@affine/android'
+  | '@yunke/android'
   | '@affine/electron'
   | '@affine/electron-renderer'
   | '@affine/ios'

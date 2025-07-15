@@ -1,7 +1,7 @@
 {
-  "name": "@affine/android",
+  "name": "@yunke/android",
   "version": "0.21.0",
-  "description": "AFFiNE Desktop Web application",
+  "description": "云科 Desktop Web application",
   "private": true,
   "scripts": {
     "build": "affine bundle",
