@@ -1,7 +1,7 @@
 import { Toaster } from '@affine/admin/components/ui/sonner';
 import { lazy, ROUTES } from '@affine/routes';
 import { withSentryReactRouterV7Routing } from '@sentry/react';
-import { useEffect } from 'react';
+import { useEffect, Component, ErrorInfo, ReactNode, Suspense, useState } from 'react';
 import {
   BrowserRouter,
   Navigate,
@@ -14,8 +14,52 @@ import { toast } from 'sonner';
 import { SWRConfig } from 'swr';
 
 import { TooltipProvider } from './components/ui/tooltip';
-import { isAdmin, useCurrentUser, useServerConfig } from './modules/common';
+import { isAdmin, useCurrentUser, useServerConfig, useRevalidateCurrentUser } from './modules/common';
 import { Layout } from './modules/layout';
+
+interface ErrorBoundaryProps {
+  children: ReactNode;
+  fallback?: ReactNode;
+}
+
+interface ErrorBoundaryState {
+  hasError: boolean;
+  error?: Error;
+}
+
+class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
+  constructor(props: ErrorBoundaryProps) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError(error: Error): ErrorBoundaryState {
+    return { hasError: true, error };
+  }
+
+  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+    console.error('Error caught by boundary:', error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return this.props.fallback || (
+        <div className="p-8 text-center">
+          <h2 className="text-2xl font-bold mb-4">出现错误</h2>
+          <p className="text-gray-600 mb-4">页面加载失败，请刷新页面重试</p>
+          <button 
+            onClick={() => window.location.reload()}
+            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+          >
+            刷新页面
+          </button>
+        </div>
+      );
+    }
+
+    return this.props.children;
+  }
+}
 
 export const Setup = lazy(
   () => import(/* webpackChunkName: "setup" */ './modules/setup')
@@ -42,17 +86,51 @@ const Routes = window.SENTRY_RELEASE
 
 function AuthenticatedRoutes() {
   const user = useCurrentUser();
+  const [retryCount, setRetryCount] = useState(0);
+  const revalidateUser = useRevalidateCurrentUser();
+  const location = useLocation();
+
+  console.log('AuthenticatedRoutes:', user === undefined ? '加载中' : user === null ? '未登录' : `已登录: ${user.email}, isAdmin: ${isAdmin(user)}`);
+  console.log('当前路径:', location.pathname);
 
   useEffect(() => {
     if (user && !isAdmin(user)) {
+      console.log('用户不是管理员，显示错误提示');
       toast.error('您不是管理员，请使用管理员账户登录。');
     }
   }, [user]);
 
-  if (!user || !isAdmin(user)) {
-    return <Navigate to="/admin/auth" />;
+  // 如果用户数据还在加载中，显示加载状态
+  if (user === undefined) {
+    console.log('显示LoadingSpinner');
+    return (
+      <div className="flex flex-col items-center justify-center h-screen">
+        <LoadingSpinner />
+        <div className="mt-4 text-center">
+          <p className="text-gray-600 mb-2">正在加载用户信息...</p>
+          {retryCount > 0 && (
+            <button 
+              onClick={() => {
+                setRetryCount(c => c + 1);
+                revalidateUser();
+              }}
+              className="text-blue-500 hover:text-blue-700 underline text-sm"
+            >
+              网络较慢？点击重试
+            </button>
+          )}
+        </div>
+      </div>
+    );
   }
 
+  // 如果用户未登录或不是管理员，重定向到登录页
+  if (!user || !isAdmin(user)) {
+    console.log('重定向到登录页，当前路径:', location.pathname);
+    return <Navigate to="/admin/auth" replace />;
+  }
+
+  console.log('显示管理界面');
   return (
     <Layout>
       <Outlet />
@@ -64,50 +142,68 @@ function RootRoutes() {
   const config = useServerConfig();
   const location = useLocation();
 
+  console.log(`RootRoutes: ${location.pathname}, initialized: ${config.initialized}`);
+
   if (!config.initialized && location.pathname !== '/admin/setup') {
+    console.log('重定向到setup页面');
     return <Navigate to="/admin/setup" />;
   }
 
   if (/^\/admin\/?$/.test(location.pathname)) {
+    console.log('重定向到/admin/accounts');
     return <Navigate to="/admin/accounts" />;
   }
 
   return <Outlet />;
 }
 
+const LoadingSpinner = () => (
+  <div className="flex items-center justify-center h-screen">
+    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+  </div>
+);
+
 export const App = () => {
   return (
-    <TooltipProvider>
-      <SWRConfig
-        value={{
-          revalidateOnFocus: false,
-          revalidateOnMount: false,
-        }}
-      >
-        <BrowserRouter basename={environment.subPath}>
-          <Routes>
-            <Route path={ROUTES.admin.index} element={<RootRoutes />}>
-              <Route path={ROUTES.admin.auth} element={<Auth />} />
-              <Route path={ROUTES.admin.setup} element={<Setup />} />
-              <Route element={<AuthenticatedRoutes />}>
-                <Route path={ROUTES.admin.accounts} element={<Accounts />} />
-                <Route path={ROUTES.admin.ai} element={<AI />} />
-                <Route path={ROUTES.admin.about} element={<About />} />
-                <Route
-                  path={ROUTES.admin.settings.index}
-                  element={<Settings />}
-                >
-                  <Route
-                    path={ROUTES.admin.settings.module}
-                    element={<Settings />}
-                  />
+    <ErrorBoundary>
+      <TooltipProvider>
+        <SWRConfig
+          value={{
+            revalidateOnFocus: true,
+            revalidateOnMount: true,
+            revalidateIfStale: true,
+            refreshInterval: 0,
+            dedupingInterval: 2000,
+          }}
+        >
+          <BrowserRouter basename={globalThis.environment?.subPath || ''}>
+            <Suspense fallback={<LoadingSpinner />}>
+              <Routes>
+                <Route path="/" element={<Navigate to="/admin" />} />
+                <Route path={ROUTES.admin.index} element={<RootRoutes />}>
+                  <Route path={ROUTES.admin.auth} element={<Auth />} />
+                  <Route path={ROUTES.admin.setup} element={<Setup />} />
+                  <Route element={<AuthenticatedRoutes />}>
+                    <Route path={ROUTES.admin.accounts} element={<Accounts />} />
+                    <Route path={ROUTES.admin.ai} element={<AI />} />
+                    <Route path={ROUTES.admin.about} element={<About />} />
+                    <Route
+                      path={ROUTES.admin.settings.index}
+                      element={<Settings />}
+                    >
+                      <Route
+                        path={ROUTES.admin.settings.module}
+                        element={<Settings />}
+                      />
+                    </Route>
+                  </Route>
                 </Route>
-              </Route>
-            </Route>
-          </Routes>
-        </BrowserRouter>
-      </SWRConfig>
-      <Toaster />
-    </TooltipProvider>
+              </Routes>
+            </Suspense>
+          </BrowserRouter>
+        </SWRConfig>
+        <Toaster />
+      </TooltipProvider>
+    </ErrorBoundary>
   );
 };

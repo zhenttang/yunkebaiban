@@ -29,7 +29,8 @@ export class AxiosHttpClient implements HttpClient {
     this.axios = axios.create({
       baseURL: defaultRequestConfig.environment.baseUrl,
       timeout: defaultRequestConfig.timeout.request,
-      headers: defaultRequestConfig.headers
+      headers: defaultRequestConfig.headers,
+      withCredentials: true // 支持跨域Cookie
     });
 
     // 设置拦截器

@@ -187,7 +187,7 @@ export class EmbedCardEditModal extends SignalWatcher(
 
     const title = this.title$.value.trim();
     if (title.length === 0) {
-      toast(this.host, 'Title can not be empty');
+      toast(this.host, '标题不能为空');
       return;
     }
 

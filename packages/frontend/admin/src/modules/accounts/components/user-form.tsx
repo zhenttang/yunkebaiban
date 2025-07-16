@@ -235,7 +235,7 @@ function InputItem({
 }
 
 const validateCreateUser = (user: Partial<UserInput>) => {
-  return !!user.name && !!user.email && !!user.features;
+  return !!user.name && !!user.email && Array.isArray(user.features);
 };
 
 const validateUpdateUser = (user: Partial<UserInput>) => {

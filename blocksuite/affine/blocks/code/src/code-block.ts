@@ -372,10 +372,10 @@ export class CodeBlockComponent extends CaptionedBlockComponent<CodeBlockModel> 
     this.std.clipboard
       .copySlice(slice)
       .then(() => {
-        this.notificationService?.toast('Copied to clipboard');
+        this.notificationService?.toast('已复制到剪贴板');
       })
       .catch(e => {
-        this.notificationService?.toast('Copied failed, something went wrong');
+        this.notificationService?.toast('复制失败，出现了问题');
         console.error(e);
       });
   }

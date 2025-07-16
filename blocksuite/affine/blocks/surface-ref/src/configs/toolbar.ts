@@ -46,7 +46,7 @@ export const surfaceRefToolbarModuleConfig: ToolbarModuleConfig = {
           .pipe(copySelectedModelsCommand)
           .run();
 
-        toast(surfaceRefBlock.std.host, 'Copied to clipboard');
+        toast(surfaceRefBlock.std.host, '已复制到剪贴板');
       },
     },
     {

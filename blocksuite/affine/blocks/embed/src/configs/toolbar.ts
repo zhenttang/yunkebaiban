@@ -363,7 +363,7 @@ function createBuiltinToolbarConfigForExternal(
               const slice = Slice.fromModels(ctx.store, [model]);
               ctx.clipboard
                 .copySlice(slice)
-                .then(() => toast(ctx.host, 'Copied to clipboard'))
+                .then(() => toast(ctx.host, '已复制到剪贴板'))
                 .catch(console.error);
             },
           },

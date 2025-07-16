@@ -2,7 +2,8 @@ import { execSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 
 import { Path, ProjectRoot } from '@affine-tools/utils/path';
-import { Repository } from '@napi-rs/simple-git';
+// 移除simple-git导入
+// import { Repository } from '@napi-rs/simple-git';
 import HTMLPlugin from 'html-webpack-plugin';
 import { once } from 'lodash-es';
 import type { Compiler, WebpackPluginInstance } from 'webpack';
@@ -42,15 +43,11 @@ const gitShortHash = once(() => {
   }
   
   try {
-    const repo = new Repository(ProjectRoot.value);
-    const shortSha = repo.head().target()?.substring(0, 9);
-    if (shortSha) {
-      return shortSha;
-    }
-    
+    // 移除Repository的使用，直接使用execSync
     try {
       const sha = execSync(`git rev-parse --short HEAD`, {
         encoding: 'utf-8',
+        cwd: ProjectRoot.value,
       }).trim();
       return sha;
     } catch (e) {
@@ -58,7 +55,7 @@ const gitShortHash = once(() => {
       return 'dev000000';
     }
   } catch (e) {
-    console.warn('打开git仓库失败，使用默认值');
+    console.warn('获取git信息失败，使用默认值');
     return 'dev000000';
   }
 });

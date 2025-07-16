@@ -38,7 +38,7 @@ export const RenameModal = ({
   const onConfirm = () => {
     const newFileName = fileName + extension;
     if (!newFileName) {
-      toast(editorHost, 'File name cannot be empty');
+      toast(editorHost, '文件名不能为空');
       return;
     }
     model.store.updateBlock(model, {

@@ -1,3 +1,3 @@
 export const Component = () => {
-  return <div>/404</div>;
+  return <div>页面未找到</div>;
 };

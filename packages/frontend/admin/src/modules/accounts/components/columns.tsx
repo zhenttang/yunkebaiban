@@ -146,7 +146,7 @@ export const useColumns = ({
             <div className="flex flex-col gap-1 max-w-full overflow-hidden">
               <div className="text-sm font-medium max-w-full overflow-hidden gap-[6px]">
                 <span>{row.original.name}</span>
-                {row.original.features.includes(FeatureType.Admin) && (
+                {row.original.features?.includes(FeatureType.Admin) && (
                   <span
                     className="ml-2 rounded px-2 py-0.5 text-xs h-5 border text-center inline-flex items-center font-normal"
                     style={{

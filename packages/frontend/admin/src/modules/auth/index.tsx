@@ -1,24 +1,13 @@
 import { Button } from '@affine/admin/components/ui/button';
 import { Input } from '@affine/admin/components/ui/input';
 import { Label } from '@affine/admin/components/ui/label';
-// import { FeatureType, getUserFeaturesQuery } from '@affine/graphql';
-
-// Temporary placeholders to replace @affine/graphql imports
-enum FeatureType {
-  Admin = 'admin',
-}
-
-const getUserFeaturesQuery = {
-  op: 'GetUserFeatures',
-  query: 'query GetUserFeatures { currentUser { features } }',
-};
 
 import type { FormEvent } from 'react';
 import { useCallback, useRef } from 'react';
 import { Navigate } from 'react-router-dom';
 import { toast } from 'sonner';
 
-import { affineFetch } from '../../fetch-utils';
+import { httpClient } from '../../../../../common/request/src';
 import { isAdmin, useCurrentUser, useRevalidateCurrentUser } from '../common';
 import logo from './logo.svg';
 
@@ -27,65 +16,63 @@ export function Auth() {
   const revalidate = useRevalidateCurrentUser();
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
+  
+  console.log('Auth组件:', currentUser === undefined ? '加载中' : currentUser === null ? '未登录' : `已登录: ${currentUser.email}, isAdmin: ${isAdmin(currentUser)}`);
+  
   const login = useCallback(
-    (e: FormEvent) => {
+    async (e: FormEvent) => {
       e.preventDefault();
       e.stopPropagation();
       if (!emailRef.current || !passwordRef.current) return;
-      affineFetch('/api/auth/sign-in', {
-        method: 'POST',
-        body: JSON.stringify({
+      
+      console.log('=== 开始登录流程 ===');
+      console.log('登录前 currentUser:', currentUser);
+      console.log('登录前 isAdmin(currentUser):', currentUser ? isAdmin(currentUser) : 'currentUser is null/undefined');
+      
+      try {
+        const result = await httpClient.post('/api/auth/sign-in', {
           email: emailRef.current?.value,
           password: passwordRef.current?.value,
-        }),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-        .then(async response => {
-          if (!response.ok) {
-            const data = await response.json();
-            throw new Error(data.message || '登录失败');
-          }
-          return response.json();
-        })
-        .then(() =>
-          affineFetch('/graphql', {
-            method: 'POST',
-            body: JSON.stringify({
-              operationName: getUserFeaturesQuery.op,
-              query: getUserFeaturesQuery.query,
-              variables: {},
-            }),
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          })
-        )
-        .then(res => res.json())
-        .then(
-          async ({
-            data: {
-              currentUser: { features },
-            },
-          }) => {
-            if (features.includes(FeatureType.Admin)) {
-              toast.success('登录成功');
-              await revalidate();
-            } else {
-              toast.error('您不是管理员');
+        });
+        
+        console.log('登录API响应:', result);
+        if (result.success) {
+          // 保存令牌到localStorage
+          if (result.token) {
+            localStorage.setItem('affine-admin-token', result.token);
+            console.log('令牌已保存到localStorage');
+            
+            if (result.refreshToken) {
+              localStorage.setItem('affine-admin-refresh-token', result.refreshToken);
+              console.log('刷新令牌已保存到localStorage');
             }
           }
-        )
-        .catch(err => {
-          toast.error(`登录失败: ${err.message}`);
-        });
+          
+          toast.success('登录成功');
+          console.log('=== 开始revalidate用户信息 ===');
+          
+          // 立即触发用户信息刷新，然后等待状态更新
+          await revalidate();
+          console.log('=== revalidate完成 ===');
+          
+          // 短暂延迟确保状态已更新
+          setTimeout(() => {
+            console.log('登录后状态检查，准备跳转');
+          }, 200);
+        } else {
+          toast.error(result.message || '登录失败');
+        }
+      } catch (err: any) {
+        console.error('登录API错误:', err);
+        toast.error(`登录失败: ${err.message || '未知错误'}`);
+      }
     },
-    [revalidate]
+    [revalidate, currentUser]
   );
 
   if (currentUser && isAdmin(currentUser)) {
-    return <Navigate to="/admin" />;
+    console.log('已登录管理员，重定向到账户页面');
+    return <Navigate to="/admin/accounts" replace />;
   }
 
   return (

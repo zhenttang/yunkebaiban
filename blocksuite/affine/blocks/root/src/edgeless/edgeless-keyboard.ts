@@ -301,7 +301,7 @@ export class EdgelessPageKeyboardManager extends PageKeyboardManager {
             return;
           }
 
-          toast(this.rootComponent.host, 'Zoom to selection');
+          toast(this.rootComponent.host, '缩放至选中内容');
 
           this.gfx.viewport.setViewportByBound(
             bound,

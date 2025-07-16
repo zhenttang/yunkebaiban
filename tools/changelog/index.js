@@ -2,7 +2,55 @@ import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { Repository, Sort } from '@napi-rs/simple-git';
+// import { Repository, Sort } from '@napi-rs/simple-git';
+import fs from 'node:fs';
+import path from 'node:path';
+import { execSync } from 'node:child_process';
+
+// 替代Repository的简单实现
+class SimpleGitRepository {
+  constructor(path) {
+    this.path = path;
+  }
+
+  // 简单实现，通过执行git命令获取提交
+  getCommits(options = {}) {
+    const { sort = 'none', order = 'default' } = options;
+    try {
+      const format = '%H%n%an%n%ae%n%at%n%s%n%b%n--COMMIT--';
+      const cmd = `git -C "${this.path}" log --format="${format}"`;
+      const output = execSync(cmd).toString();
+      
+      const commits = output.split('--COMMIT--\n')
+        .filter(Boolean)
+        .map(commitStr => {
+          const [hash, author, email, timestamp, subject, ...bodyLines] = commitStr.split('\n');
+          const body = bodyLines.join('\n').trim();
+          return {
+            hash,
+            author,
+            email,
+            timestamp: Number(timestamp) * 1000, // 转为毫秒
+            subject,
+            body
+          };
+        });
+      
+      return commits;
+    } catch (error) {
+      console.error('Error getting commits:', error);
+      return [];
+    }
+  }
+}
+
+// 替代Sort枚举
+const Sort = {
+  NONE: 'none',
+  TOPOLOGICAL: 'topo',
+  TIME: 'time',
+};
+
 import { WebClient } from '@slack/web-api';
 import {
   generateMarkdown,
@@ -26,7 +74,7 @@ const {
 
 const slack = new WebClient(SLACK_BOT_TOKEN);
 const rootDir = join(fileURLToPath(import.meta.url), '..', '..', '..');
-const repo = new Repository(rootDir);
+const repo = new SimpleGitRepository(rootDir);
 
 /**
  * @param {import('@napi-rs/simple-git').Repository} repo
@@ -140,7 +188,7 @@ const previousBlocksuiteVersion =
   previousPkgJson.dependencies['@blocksuite/affine'];
 
 if (blocksuiteVersion !== previousBlocksuiteVersion) {
-  const blockSuiteRepo = new Repository(
+  const blockSuiteRepo = new SimpleGitRepository(
     BLOCKSUITE_REPO_PATH ?? join(rootDir, '..', 'blocksuite')
   );
   console.log(

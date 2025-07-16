@@ -37,47 +37,56 @@ type ImportUsersMutation = {
 
 const createUserMutation = {
   id: 'createUser',
-  query: 'mutation CreateUser($input: CreateUserInput!) { createUser(input: $input) { id name email } }',
+  endpoint: '/api/auth/register',
+  method: 'POST' as const,
 };
 
 const deleteUserMutation = {
   id: 'deleteUser',
-  query: 'mutation DeleteUser($id: String!) { deleteUser(id: $id) { success } }',
+  endpoint: '/api/users/{id}',
+  method: 'DELETE' as const,
 };
 
 const disableUserMutation = {
   id: 'disableUser',
-  query: 'mutation DisableUser($id: String!) { banUser(id: $id) { id email } }',
+  endpoint: '/api/users/{id}/enabled',
+  method: 'PUT' as const,
 };
 
 const enableUserMutation = {
   id: 'enableUser',
-  query: 'mutation EnableUser($id: String!) { enableUser(id: $id) { id email } }',
+  endpoint: '/api/users/{id}/enabled',
+  method: 'PUT' as const,
 };
 
 const importUsersMutation = {
   id: 'importUsers',
-  query: 'mutation ImportUsers($input: ImportUsersInput!) { importUsers(input: $input) { success created updated errors } }',
+  endpoint: '/api/admin/users/import',
+  method: 'POST' as const,
 };
 
 const listUsersQuery = {
   id: 'listUsers',
-  query: 'query ListUsers { users { id name email features } }',
+  endpoint: '/api/admin/users',
+  method: 'GET' as const,
 };
 
 const updateAccountFeaturesMutation = {
   id: 'updateAccountFeatures',
-  query: 'mutation UpdateAccountFeatures($userId: String!, $features: [String!]!) { updateUserFeatures(userId: $userId, features: $features) { success } }',
+  endpoint: '/api/users/{userId}/features',
+  method: 'PUT' as const,
 };
 
 const updateAccountMutation = {
   id: 'updateAccount',
-  query: 'mutation UpdateAccount($id: String!, $input: UpdateUserInput!) { updateUser(id: $id, input: $input) { id name email } }',
+  endpoint: '/api/users/{id}',
+  method: 'PUT' as const,
 };
 
 const createChangePasswordUrlMutation = {
   id: 'createChangePasswordUrl',
-  query: 'mutation CreateChangePasswordUrl($userId: String!, $callbackUrl: String!) { createChangePasswordUrl(userId: $userId, callbackUrl: $callbackUrl) }',
+  endpoint: '/api/auth/reset-password',
+  method: 'POST' as const,
 };
 
 import { useCallback, useMemo, useState } from 'react';

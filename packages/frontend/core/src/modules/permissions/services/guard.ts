@@ -77,12 +77,19 @@ export class GuardService extends Service {
           >,
           this.isAdmin$,
         ]).subscribe(([permissions, isAdmin]) => {
+          console.log('🛡️ [GuardService.can$] 权限检查:', { action, docId, permissions, isAdmin });
+          
           if (isAdmin) {
+            console.log('🛡️ [GuardService.can$] 管理员权限，返回 true');
             return subscriber.next(true);
           }
+          
           const current = permissions[action] ?? undefined;
+          console.log('🛡️ [GuardService.can$] 当前权限:', { action, current, prev });
+          
           if (current !== prev) {
             prev = current;
+            console.log('🛡️ [GuardService.can$] 权限变化，发送:', current);
             subscriber.next(current);
           }
         });
@@ -174,8 +181,13 @@ export class GuardService extends Service {
     }
     
     try {
-      const permissions = await this.guardStore.getWorkspacePermissions();
-      console.log('🛡️ [GuardService.loadWorkspacePermission] 成功获取权限:', permissions);
+      const response = await this.guardStore.getWorkspacePermissions();
+      console.log('🛡️ [GuardService.loadWorkspacePermission] 成功获取权限:', response);
+      
+      // 提取实际的权限对象
+      const permissions = response.permissions || response;
+      console.log('🛡️ [GuardService.loadWorkspacePermission] 解析后的权限:', permissions);
+      
       this.workspacePermissions$.next(permissions);
       return permissions;
     } catch (error) {
@@ -206,12 +218,21 @@ export class GuardService extends Service {
     }
     
     try {
-      const permissions = await this.guardStore.getDocPermissions(docId);
-      console.log('🛡️ [GuardService.loadDocPermission] 成功获取文档权限:', permissions);
-      this.docPermissions$.next({
+      const response = await this.guardStore.getDocPermissions(docId);
+      console.log('🛡️ [GuardService.loadDocPermission] 成功获取文档权限:', response);
+      
+      // 提取实际的权限对象
+      const permissions = response.permissions || response;
+      console.log('🛡️ [GuardService.loadDocPermission] 解析后的权限:', permissions);
+      
+      const newDocPermissions = {
         ...this.docPermissions$.value,
         [docId]: permissions,
-      });
+      };
+      console.log('🛡️ [GuardService.loadDocPermission] 更新 docPermissions$:', newDocPermissions);
+      this.docPermissions$.next(newDocPermissions);
+      
+      console.log('🛡️ [GuardService.loadDocPermission] 更新后的 docPermissions$ 值:', this.docPermissions$.value);
       return permissions;
     } catch (error) {
       console.error('❌ [GuardService.loadDocPermission] 获取文档权限失败:', error);

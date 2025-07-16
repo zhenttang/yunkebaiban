@@ -1,29 +1,22 @@
-// import type {
-//   GraphQLQuery,
-//   MutationOptions,
-//   QueryResponse,
-//   QueryVariables,
-//   RecursiveMaybeFields,
-// } from '@affine/graphql';
-
-// Temporary type definitions to replace @affine/graphql imports
-type GraphQLQuery = {
+// REST API mutation类型定义
+interface RestApiMutation {
   id: string;
-  operationName?: string;
-  query: string;
+  endpoint: string;
+  method?: 'GET' | 'POST' | 'PUT' | 'DELETE';
   __type?: any;
-};
+}
 
-type QueryResponse<Query extends GraphQLQuery> = Query extends { __type?: infer T } ? T : any;
+type QueryResponse<Query extends RestApiMutation> = Query extends { __type?: infer T } ? T : any;
 
-type QueryVariables<Query extends GraphQLQuery> = any;
+type QueryVariables<Query extends RestApiMutation> = any;
 
-type MutationOptions<Mutation extends GraphQLQuery> = {
+type MutationOptions<Mutation extends RestApiMutation> = {
   mutation: Mutation;
   variables?: QueryVariables<Mutation>;
 };
 
 type RecursiveMaybeFields<T> = T;
+
 import type { GraphQLError } from 'graphql';
 import { useMemo } from 'react';
 import type { Key } from 'swr';
@@ -34,23 +27,32 @@ import type {
 } from 'swr/mutation';
 import useSWRMutation from 'swr/mutation';
 
-import { gqlFetcher } from './use-query';
+import { httpClient } from '../../../common/request/src';
+
+// REST API mutation fetcher
+const restMutationFetcher = async (options: MutationOptions<any> & { variables?: any }) => {
+  const { mutation, variables } = options;
+  const { endpoint, method = 'POST' } = mutation;
+  
+  if (method === 'GET') {
+    const params = variables ? new URLSearchParams(variables) : undefined;
+    const url = params ? `${endpoint}?${params.toString()}` : endpoint;
+    return await httpClient.get(url);
+  } else {
+    return await httpClient.request(endpoint, {
+      method,
+      data: variables,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+  }
+};
 
 /**
- * A useSWRMutation wrapper for sending graphql mutations
- *
- * @example
- *
- * ```ts
- * import { someMutation } from '@affine/graphql'
- *
- * const { trigger } = useMutation({
- *  mutation: someMutation,
- * })
- *
- * trigger({ name: 'John Doe' })
+ * A useSWRMutation wrapper for sending REST API mutations
  */
-export function useMutation<Mutation extends GraphQLQuery, K extends Key = Key>(
+export function useMutation<Mutation extends RestApiMutation, K extends Key = Key>(
   options: Omit<MutationOptions<Mutation>, 'variables'>,
   config?: Omit<
     SWRMutationConfiguration<
@@ -68,15 +70,14 @@ export function useMutation<Mutation extends GraphQLQuery, K extends Key = Key>(
   QueryVariables<Mutation>
 >;
 export function useMutation(
-  options: Omit<MutationOptions<GraphQLQuery>, 'variables'>,
+  options: Omit<MutationOptions<RestApiMutation>, 'variables'>,
   config?: any
 ) {
   return useSWRMutation(
-    () => ['cloud', options.mutation.id],
+    () => ['rest-api', options.mutation.id],
     (_: unknown[], { arg }: { arg: any }) =>
-      gqlFetcher({
+      restMutationFetcher({
         ...options,
-        query: options.mutation,
         variables: arg,
       }),
     config
@@ -88,7 +89,7 @@ export const useMutateQueryResource = () => {
   const { mutate } = useSWRConfig();
   const revalidateResource = useMemo(
     () =>
-      <Q extends GraphQLQuery>(
+      <Q extends RestApiMutation>(
         query: Q,
         varsFilter: (
           vars: RecursiveMaybeFields<QueryVariables<Q>>
@@ -97,7 +98,7 @@ export const useMutateQueryResource = () => {
         return mutate(key => {
           const res =
             Array.isArray(key) &&
-            key[0] === 'cloud' &&
+            key[0] === 'rest-api' &&
             key[1] === query.id &&
             varsFilter(key[2]);
           if (res) {

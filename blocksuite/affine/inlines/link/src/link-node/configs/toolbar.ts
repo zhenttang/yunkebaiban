@@ -62,7 +62,7 @@ export const builtinInlineLinkToolbarConfig = {
             ctx.reset();
 
             navigator.clipboard.writeText(link).catch(console.error);
-            toast(ctx.host, 'Copied link to clipboard');
+            toast(ctx.host, '链接已复制到剪贴板');
 
             ctx.track('CopiedLink', {
               ...trackBaseProps,

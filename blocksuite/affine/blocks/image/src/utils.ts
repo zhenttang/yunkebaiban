@@ -65,7 +65,7 @@ export async function downloadImageBlob(
   const { host, blobUrl, resourceController } = block;
 
   if (!blobUrl) {
-    toast(host, 'Failed to download image!');
+    toast(host, '图片下载失败！');
     return;
   }
 

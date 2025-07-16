@@ -246,7 +246,7 @@ export class PresentationToolbar extends EdgelessToolbarToolMixin(
     const min = 0;
     const max = frames.length - 1;
     if (this._currentFrameIndex === frames.length - 1) {
-      toast(this.host, 'You have reached the last frame');
+      toast(this.host, '您已到达最后一个框架');
     } else {
       this._currentFrameIndex = clamp(this._currentFrameIndex + 1, min, max);
     }
@@ -257,7 +257,7 @@ export class PresentationToolbar extends EdgelessToolbarToolMixin(
     const min = 0;
     const max = frames.length - 1;
     if (this._currentFrameIndex === 0) {
-      toast(this.host, 'You have reached the first frame');
+      toast(this.host, '您已到达第一个框架');
     } else {
       this._currentFrameIndex = clamp(this._currentFrameIndex - 1, min, max);
     }
@@ -325,7 +325,7 @@ export class PresentationToolbar extends EdgelessToolbarToolMixin(
             if (!store.getStorage('presentNoFrameToastShown')) {
               toast(
                 this.host,
-                'The presentation requires at least 1 frame. You can firstly create a frame.',
+                '演示文稿至少需要 1 个框架。您可以先创建一个框架。',
                 5000
               );
               store.setStorage('presentNoFrameToastShown', true);

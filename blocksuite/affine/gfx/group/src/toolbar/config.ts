@@ -66,7 +66,7 @@ export const groupToolbarConfig = {
           lastNoteId
         );
 
-        toast(ctx.host, 'Group has been inserted into doc');
+        toast(ctx.host, '分组已插入到文档中');
       },
     },
     {

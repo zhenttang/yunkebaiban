@@ -36,7 +36,7 @@ type ConfigGroup<T extends AppConfigModule> = {
 };
 const IGNORED_MODULES: (keyof AppConfig)[] = [];
 
-if (environment.isSelfHosted) {
+if (globalThis.environment?.isSelfHosted) {
   IGNORED_MODULES.push('payment');
 }
 

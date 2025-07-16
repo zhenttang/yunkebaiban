@@ -6,7 +6,8 @@ import { useQuery } from '@affine/admin/use-query';
 // Temporary placeholder to replace @affine/graphql imports
 const getUserByEmailQuery = {
   id: 'getUserByEmail',
-  query: 'query GetUserByEmail($email: String!) { user(email: $email) { id name email features } }',
+  endpoint: '/api/users/check-email',
+  method: 'GET' as const,
 };
 
 import { ExportIcon, ImportIcon, PlusIcon, SearchIcon } from '@blocksuite/icons/rc';
@@ -40,12 +41,15 @@ interface DataTableToolbarProps<TData> {
 
 const useSearch = () => {
   const [value, setValue] = useState('');
-  const { data } = useQuery({
-    query: getUserByEmailQuery,
-    variables: { email: value },
-  });
+  
+  // 暂时禁用搜索功能，避免API错误
+  // const { data } = useQuery({
+  //   query: getUserByEmailQuery,
+  //   variables: { email: value },
+  // });
 
-  const result = useMemo(() => data?.userByEmail, [data]);
+  // const result = useMemo(() => data?.userByEmail, [data]);
+  const result = null; // 暂时返回null
 
   return {
     result,

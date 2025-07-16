@@ -1,10 +1,19 @@
 import { useQuery } from '@affine/admin/use-query';
-// import { listUsersQuery } from '@affine/graphql';
 
-// Temporary placeholder to replace @affine/graphql imports
+// REST API查询定义
 const listUsersQuery = {
   id: 'listUsers',
-  query: 'query ListUsers($filter: UserFilterInput) { users(filter: $filter) { id name email features } usersCount }',
+  endpoint: '/api/admin/users',
+  method: 'GET' as const,
+  __type: {} as {
+    users: Array<{
+      id: string;
+      name: string;
+      email: string;
+      features: string[];
+    }>;
+    total: number;
+  },
 };
 
 import { useState } from 'react';
@@ -14,22 +23,44 @@ export const useUserList = () => {
     pageIndex: 0,
     pageSize: 10,
   });
+  
   const {
-    data: { users, usersCount },
+    data,
+    error
   } = useQuery({
     query: listUsersQuery,
     variables: {
-      filter: {
-        first: pagination.pageSize,
-        skip: pagination.pageIndex * pagination.pageSize,
-      },
+      page: pagination.pageIndex,
+      size: pagination.pageSize,
     },
+  }, {
+    suspense: false, // 防止错误导致整个组件崩溃
+    shouldRetryOnError: false,
   });
 
+  // 如果有错误，返回空数据而不是让组件崩溃
+  if (error) {
+    console.warn('无法加载用户列表:', error);
+    return {
+      users: [] as Array<{
+        id: string;
+        name: string;
+        email: string;
+        features: string[];
+      }>,
+      pagination,
+      setPagination,
+      usersCount: 0,
+    };
+  }
+
   return {
-    users,
+    users: (data?.users || []).map(user => ({
+      ...user,
+      features: user.features || [] // 确保 features 始终是数组
+    })),
     pagination,
     setPagination,
-    usersCount,
+    usersCount: data?.totalElements || data?.total || 0,
   };
 };
