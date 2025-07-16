@@ -22,6 +22,7 @@ import { SecurityItem } from './security-item';
 import { InfraItem } from './infra-item';
 import { MonitoringItem } from './monitoring-item';
 import { UserDropdown } from './user-dropdown';
+import { useNav } from './context';
 
 // 定义不同菜单项的颜色方案
 const menuColors = {
@@ -163,11 +164,25 @@ interface NavItemProps {
 
 const NavItem = ({ icon, label, to, isCollapsed, colorKey }: NavItemProps) => {
   const colors = menuColors[colorKey];
+  const { setCurrentModule } = useNav();
+
+  // 从路径中提取模块名称
+  const handleClick = () => {
+    console.log('NavItem点击:', to);
+    if (to.includes('/admin/settings/')) {
+      const module = to.split('/admin/settings/')[1];
+      if (module) {
+        console.log('设置模块:', module);
+        setCurrentModule(module);
+      }
+    }
+  };
 
   if (isCollapsed) {
     return (
       <NavLink
         to={to}
+        onClick={handleClick}
         className={({ isActive }) => cn(
           buttonVariants({
             variant: 'ghost',
@@ -200,6 +215,7 @@ const NavItem = ({ icon, label, to, isCollapsed, colorKey }: NavItemProps) => {
   return (
     <NavLink
       to={to}
+      onClick={handleClick}
       className={({ isActive }) => cn(
         buttonVariants({
           variant: 'ghost',

@@ -187,15 +187,8 @@ export const App = () => {
                     <Route path={ROUTES.admin.accounts} element={<Accounts />} />
                     <Route path={ROUTES.admin.ai} element={<AI />} />
                     <Route path={ROUTES.admin.about} element={<About />} />
-                    <Route
-                      path={ROUTES.admin.settings.index}
-                      element={<Settings />}
-                    >
-                      <Route
-                        path={ROUTES.admin.settings.module}
-                        element={<Settings />}
-                      />
-                    </Route>
+                    <Route path={ROUTES.admin.settings.index} element={<Settings />} />
+                    <Route path={ROUTES.admin.settings.module} element={<Settings />} />
                   </Route>
                 </Route>
               </Routes>

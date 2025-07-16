@@ -153,7 +153,7 @@ export const useCurrentUser = (): NonNullable<GetCurrentUserResponse>['user'] | 
   
   const result = data?.user || null;
   if (result) {
-    console.log('用户已加载:', result.email, 'features:', result.features);
+    // console.log('用户已加载:', result.email, 'features:', result.features);
   }
   return result;
 };
@@ -162,9 +162,10 @@ export function isAdmin(
   user: NonNullable<GetCurrentUserResponse>['user'] | null | undefined
 ) {
   const result = user?.features?.includes(FeatureType.Admin) || false;
-  if (user) {
-    console.log(`isAdmin检查: ${user.email} -> ${result}`);
-  }
+  // 移除频繁的控制台输出，避免无限循环
+  // if (user) {
+  //   console.log(`isAdmin检查: ${user.email} -> ${result}`);
+  // }
   return result;
 }
 

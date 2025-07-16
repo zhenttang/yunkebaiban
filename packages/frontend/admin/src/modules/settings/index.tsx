@@ -3,7 +3,7 @@ import { ScrollArea } from '@affine/admin/components/ui/scroll-area';
 import { get } from 'lodash-es';
 import { CheckIcon } from 'lucide-react';
 import { useCallback, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
 import { Header } from '../header';
 import { useNav } from '../nav/context';
@@ -19,17 +19,21 @@ export function SettingsPage() {
   const { appConfig, update, save, patchedAppConfig, updates } = useAppConfig();
   const { module } = useParams<{ module?: string }>();
   const { setCurrentModule } = useNav();
+  const navigate = useNavigate();
   const disableSave = Object.keys(updates).length === 0;
 
   // 同步URL参数到context
   useEffect(() => {
+    console.log('Settings组件 - URL参数module:', module);
     if (module) {
+      console.log('设置currentModule为:', module);
       setCurrentModule(module);
     } else {
-      // 默认显示第一个配置模块
-      setCurrentModule('server');
+      // 如果没有模块参数，重定向到默认模块
+      console.log('没有模块参数，重定向到server');
+      navigate('/admin/settings/server', { replace: true });
     }
-  }, [module, setCurrentModule]);
+  }, [module, setCurrentModule, navigate]);
 
   const saveChanges = useCallback(() => {
     if (disableSave) {
@@ -74,12 +78,27 @@ const AdminPanel = ({
   onUpdate: (path: string, value: any) => void;
 }) => {
   const { currentModule } = useNav();
+  console.log('AdminPanel - currentModule:', currentModule);
+  
   const group = ALL_SETTING_GROUPS.find(
     group => group.module === currentModule
   );
+  
+  console.log('AdminPanel - 找到的group:', group);
 
   if (!group) {
-    return null;
+    console.log('AdminPanel - 没有找到group，可用的模块:', ALL_SETTING_GROUPS.map(g => g.module));
+    return (
+      <div className="flex flex-col h-full gap-5 py-5 px-6 w-full max-w-[800px] mx-auto">
+        <div className="text-2xl font-semibold">模块未找到</div>
+        <div className="text-gray-600">
+          配置模块 "{currentModule}" 不存在或尚未配置。
+        </div>
+        <div className="text-sm text-gray-500">
+          当前可用的配置模块：{ALL_SETTING_GROUPS.map(g => g.module).join(', ')}
+        </div>
+      </div>
+    );
   }
 
   const { name, module, fields, operations } = group;
@@ -130,3 +149,5 @@ const AdminPanel = ({
     </ScrollArea>
   );
 };
+
+export default SettingsPage;
