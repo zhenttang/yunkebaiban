@@ -16,11 +16,19 @@ import { KNOWN_CONFIG_GROUPS, UNKNOWN_CONFIG_GROUPS } from '../settings/config';
 import { NormalSubItem } from './collapsible-item';
 import { useNav } from './context';
 
-// 系统设置中保留的配置组
+// 系统设置中保留的配置组 - 显示更多高级配置
 const SYSTEM_CONFIG_GROUPS = [
   {
-    name: '人工智能',
-    module: 'copilot',
+    name: '任务管理',
+    module: 'job',
+  },
+  {
+    name: '文档服务',
+    module: 'doc',
+  },
+  {
+    name: 'WebSocket',
+    module: 'websocket',
   },
 ];
 
@@ -158,7 +166,7 @@ export const SettingsItem = ({ isCollapsed }: { isCollapsed: boolean }) => {
             <div className="flex items-center justify-center p-1 mr-2.5 rounded-full w-5 h-5 bg-emerald-100/70 text-emerald-600">
               <SettingsIcon fontSize={18} />
             </div>
-            <span className="font-medium">系统设置</span>
+            <span className="font-medium">高级设置</span>
           </div>
         </AccordionTrigger>
 

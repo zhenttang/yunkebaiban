@@ -2,7 +2,8 @@ import { Button } from '@affine/admin/components/ui/button';
 import { ScrollArea } from '@affine/admin/components/ui/scroll-area';
 import { get } from 'lodash-es';
 import { CheckIcon } from 'lucide-react';
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 
 import { Header } from '../header';
 import { useNav } from '../nav/context';
@@ -16,7 +17,19 @@ import { useAppConfig } from './use-app-config';
 
 export function SettingsPage() {
   const { appConfig, update, save, patchedAppConfig, updates } = useAppConfig();
+  const { module } = useParams<{ module?: string }>();
+  const { setCurrentModule } = useNav();
   const disableSave = Object.keys(updates).length === 0;
+
+  // 同步URL参数到context
+  useEffect(() => {
+    if (module) {
+      setCurrentModule(module);
+    } else {
+      // 默认显示第一个配置模块
+      setCurrentModule('server');
+    }
+  }, [module, setCurrentModule]);
 
   const saveChanges = useCallback(() => {
     if (disableSave) {

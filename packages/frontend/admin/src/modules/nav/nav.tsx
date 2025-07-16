@@ -1,6 +1,18 @@
 import { buttonVariants } from '@affine/admin/components/ui/button';
 import { cn } from '@affine/admin/utils';
-import { AccountIcon, AiOutlineIcon, SelfhostIcon, SettingsIcon } from '@blocksuite/icons/rc';
+import { 
+  AccountIcon, 
+  AiOutlineIcon, 
+  SelfhostIcon, 
+  SettingsIcon,
+  DatabaseTableViewIcon,
+  EmailIcon,
+  LockIcon,
+  PluginIcon,
+  ProgressIcon,
+  ComputerPanelIcon,
+  CloudBubbleIcon
+} from '@blocksuite/icons/rc';
 import { cssVarV2 } from '@toeverything/theme/v2';
 import { NavLink } from 'react-router-dom';
 
@@ -89,6 +101,39 @@ const menuColors = {
     iconBg: 'bg-indigo-100/80',
     iconColor: 'text-indigo-500',
     glow: 'shadow-[0_0_15px_rgba(99,102,241,0.3)]'
+  },
+  storage: {
+    from: 'from-orange-400/20',
+    to: 'to-orange-500/30',
+    activeBg: 'bg-gradient-to-br from-orange-50/80 to-orange-100/80',
+    activeBorder: 'border-orange-200/50',
+    activeText: 'text-orange-700',
+    hoverBg: 'hover:bg-orange-50/50',
+    iconBg: 'bg-orange-100/80',
+    iconColor: 'text-orange-500',
+    glow: 'shadow-[0_0_15px_rgba(249,115,22,0.3)]'
+  },
+  notification: {
+    from: 'from-pink-400/20',
+    to: 'to-pink-500/30',
+    activeBg: 'bg-gradient-to-br from-pink-50/80 to-pink-100/80',
+    activeBorder: 'border-pink-200/50',
+    activeText: 'text-pink-700',
+    hoverBg: 'hover:bg-pink-50/50',
+    iconBg: 'bg-pink-100/80',
+    iconColor: 'text-pink-500',
+    glow: 'shadow-[0_0_15px_rgba(236,72,153,0.3)]'
+  },
+  oauth: {
+    from: 'from-violet-400/20',
+    to: 'to-violet-500/30',
+    activeBg: 'bg-gradient-to-br from-violet-50/80 to-violet-100/80',
+    activeBorder: 'border-violet-200/50',
+    activeText: 'text-violet-700',
+    hoverBg: 'hover:bg-violet-50/50',
+    iconBg: 'bg-violet-100/80',
+    iconColor: 'text-violet-500',
+    glow: 'shadow-[0_0_15px_rgba(139,92,246,0.3)]'
   }
 };
 
@@ -101,6 +146,9 @@ function getMenuColorsByPath(path: string) {
   if (path.includes('infra')) return menuColors.infra;
   if (path.includes('monitoring')) return menuColors.monitoring;
   if (path.includes('about')) return menuColors.about;
+  if (path.includes('storage')) return menuColors.storage;
+  if (path.includes('notification')) return menuColors.notification;
+  if (path.includes('oauth')) return menuColors.oauth;
   return menuColors.accounts; // 默认值
 }
 
@@ -193,45 +241,178 @@ export function Nav({ isCollapsed = false }: NavProps) {
   return (
     <div
       className={cn(
-        'flex flex-col gap-4 py-3 justify-between flex-grow h-full overflow-hidden',
+        'flex flex-col py-3 justify-between h-full',
         isCollapsed && 'overflow-visible'
       )}
     >
       <nav
         className={cn(
-          'flex flex-1 flex-col gap-2 px-3 flex-grow overflow-hidden',
+          'flex flex-1 flex-col gap-2 px-3 overflow-y-auto overflow-x-hidden scrollbar-thin scrollbar-track-transparent scrollbar-thumb-slate-300 hover:scrollbar-thumb-slate-400',
           isCollapsed && 'items-center px-0 gap-2 overflow-visible'
         )}
+        style={{
+          // 为 Firefox 自定义滚动条样式
+          scrollbarWidth: 'thin',
+          scrollbarColor: '#cbd5e1 transparent',
+        }}
       >
-        <NavItem
-          to="/admin/accounts"
-          icon={<AccountIcon fontSize={18} />}
-          label="账户管理"
-          isCollapsed={isCollapsed}
-          colorKey="accounts"
-        />
-        <NavItem
-          to="/admin/ai"
-          icon={<AiOutlineIcon fontSize={18} />}
-          label="人工智能"
-          isCollapsed={isCollapsed}
-          colorKey="ai"
-        />
-        <SettingsItem isCollapsed={isCollapsed} />
-        <SecurityItem isCollapsed={isCollapsed} />
-        <InfraItem isCollapsed={isCollapsed} />
-        <MonitoringItem isCollapsed={isCollapsed} />
-        <NavItem
-          to="/admin/about"
-          icon={<SelfhostIcon fontSize={18} />}
-          label="关于"
-          isCollapsed={isCollapsed}
-          colorKey="about"
-        />
+        {/* 核心管理功能 */}
+        <div className={cn(
+          "space-y-1",
+          !isCollapsed && "mb-2"
+        )}>
+          {!isCollapsed && (
+            <div className="text-xs font-semibold text-slate-400 px-2 mb-2 sticky top-0 bg-white/80 backdrop-blur-sm z-10">核心功能</div>
+          )}
+          <NavItem
+            to="/admin/accounts"
+            icon={<AccountIcon fontSize={18} />}
+            label="账户管理"
+            isCollapsed={isCollapsed}
+            colorKey="accounts"
+          />
+          <NavItem
+            to="/admin/ai"
+            icon={<AiOutlineIcon fontSize={18} />}
+            label="人工智能"
+            isCollapsed={isCollapsed}
+            colorKey="ai"
+          />
+        </div>
+
+        {/* 基础设置 */}
+        <div className={cn(
+          "space-y-1",
+          !isCollapsed && "mb-2"
+        )}>
+          {!isCollapsed && (
+            <div className="text-xs font-semibold text-slate-400 px-2 mb-2 sticky top-0 bg-white/80 backdrop-blur-sm z-10">基础设置</div>
+          )}
+          <NavItem
+            to="/admin/settings/server"
+            icon={<ComputerPanelIcon fontSize={18} />}
+            label="服务器设置"
+            isCollapsed={isCollapsed}
+            colorKey="settings"
+          />
+          <NavItem
+            to="/admin/settings/auth"
+            icon={<LockIcon fontSize={18} />}
+            label="认证授权"
+            isCollapsed={isCollapsed}
+            colorKey="security"
+          />
+          <NavItem
+            to="/admin/settings/oauth"
+            icon={<PluginIcon fontSize={18} />}
+            label="第三方登录"
+            isCollapsed={isCollapsed}
+            colorKey="oauth"
+          />
+        </div>
+
+        {/* 服务集成 */}
+        <div className={cn(
+          "space-y-1",
+          !isCollapsed && "mb-2"
+        )}>
+          {!isCollapsed && (
+            <div className="text-xs font-semibold text-slate-400 px-2 mb-2 sticky top-0 bg-white/80 backdrop-blur-sm z-10">服务集成</div>
+          )}
+          <NavItem
+            to="/admin/settings/storages"
+            icon={<DatabaseTableViewIcon fontSize={18} />}
+            label="存储服务"
+            isCollapsed={isCollapsed}
+            colorKey="storage"
+          />
+          <NavItem
+            to="/admin/settings/mailer"
+            icon={<EmailIcon fontSize={18} />}
+            label="邮件通知"
+            isCollapsed={isCollapsed}
+            colorKey="notification"
+          />
+          <NavItem
+            to="/admin/settings/copilot"
+            icon={<AiOutlineIcon fontSize={18} />}
+            label="AI配置"
+            isCollapsed={isCollapsed}
+            colorKey="ai"
+          />
+          <NavItem
+            to="/admin/settings/payment"
+            icon={<CloudBubbleIcon fontSize={18} />}
+            label="支付系统"
+            isCollapsed={isCollapsed}
+            colorKey="oauth"
+          />
+        </div>
+
+        {/* 监控运维 */}
+        <div className={cn(
+          "space-y-1",
+          !isCollapsed && "mb-2"
+        )}>
+          {!isCollapsed && (
+            <div className="text-xs font-semibold text-slate-400 px-2 mb-2 sticky top-0 bg-white/80 backdrop-blur-sm z-10">监控运维</div>
+          )}
+          <NavItem
+            to="/admin/settings/throttle"
+            icon={<ProgressIcon fontSize={18} />}
+            label="访问限流"
+            isCollapsed={isCollapsed}
+            colorKey="monitoring"
+          />
+          <NavItem
+            to="/admin/settings/job"
+            icon={<SettingsIcon fontSize={18} />}
+            label="任务管理"
+            isCollapsed={isCollapsed}
+            colorKey="monitoring"
+          />
+          <NavItem
+            to="/admin/settings/metrics"
+            icon={<ProgressIcon fontSize={18} />}
+            label="性能监控"
+            isCollapsed={isCollapsed}
+            colorKey="monitoring"
+          />
+          <NavItem
+            to="/admin/settings/indexer"
+            icon={<ComputerPanelIcon fontSize={18} />}
+            label="搜索索引"
+            isCollapsed={isCollapsed}
+            colorKey="monitoring"
+          />
+        </div>
+
+        {/* 高级功能 */}
+        <div className={cn(
+          "space-y-1",
+          !isCollapsed && "mb-4"
+        )}>
+          {!isCollapsed && (
+            <div className="text-xs font-semibold text-slate-400 px-2 mb-2 sticky top-0 bg-white/80 backdrop-blur-sm z-10">高级功能</div>
+          )}
+          <SettingsItem isCollapsed={isCollapsed} />
+        </div>
+        
+        {/* 系统信息 - 用 margin-top: auto 推到底部 */}
+        <div className="mt-auto pt-4">
+          <NavItem
+            to="/admin/about"
+            icon={<SelfhostIcon fontSize={18} />}
+            label="关于"
+            isCollapsed={isCollapsed}
+            colorKey="about"
+          />
+        </div>
       </nav>
+      
       <div
         className={cn(
-          'flex gap-2 px-3 flex-col overflow-hidden mt-auto pt-4 border-t border-slate-100',
+          'flex gap-2 px-3 flex-col mt-4 pt-4 border-t border-slate-100',
           isCollapsed && 'items-center px-0 gap-1 border-t'
         )}
       >
