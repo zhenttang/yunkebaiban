@@ -4,13 +4,14 @@ export const workspaceAndUserWrapper = style({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
-  gap: 8,
+  gap: 12,
+  padding: '4px 0',
 });
 export const quickSearchAndNewPage = style({
   display: 'flex',
   alignItems: 'center',
-  gap: 8,
-  padding: '8px 0',
+  gap: 10,
+  padding: '12px 0',
   marginLeft: -8,
 });
 export const quickSearch = style({
@@ -24,5 +25,6 @@ export const workspaceWrapper = style({
 });
 
 export const bottomContainer = style({
-  gap: 8,
+  gap: 10,
+  padding: '8px 0',
 });

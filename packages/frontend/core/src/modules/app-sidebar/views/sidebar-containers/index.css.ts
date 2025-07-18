@@ -1,9 +1,10 @@
 import { cssVar } from '@toeverything/theme';
 import { globalStyle, style } from '@vanilla-extract/css';
 export const baseContainer = style({
-  padding: '4px 16px',
+  padding: '8px 16px',
   display: 'flex',
   flexFlow: 'column nowrap',
+  gap: '2px',
   ':empty': {
     display: 'none',
   },
@@ -32,9 +33,9 @@ export const scrollTopBorder = style({
 });
 export const scrollableViewport = style({
   height: '100%',
-  marginTop: '4px',
+  marginTop: '6px',
   // safe area to avoid bottom clipping
-  paddingBottom: 8,
+  paddingBottom: 12,
 });
 globalStyle(`${scrollableViewport} > div`, {
   maxWidth: '100%',
@@ -44,10 +45,10 @@ export const scrollableContainer = style([
   baseContainer,
   {
     height: '100%',
-    padding: '0px 8px',
+    padding: '0px 12px',
     display: 'flex',
     flexDirection: 'column',
-    gap: 8,
+    gap: 10,
   },
 ]);
 export const scrollbar = style({

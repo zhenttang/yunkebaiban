@@ -8,31 +8,49 @@ export const linkItemRoot = style({
 export const itemRoot = style({
   display: 'inline-flex',
   alignItems: 'center',
-  borderRadius: '4px',
+  borderRadius: '8px',
   textAlign: 'left',
   color: 'inherit',
   width: '100%',
-  minHeight: '30px',
+  minHeight: '36px',
   userSelect: 'none',
   cursor: 'pointer',
-  padding: '0 4px',
+  padding: '8px 12px',
   fontSize: cssVar('fontSm'),
+  fontWeight: '500',
   position: 'relative',
-  marginTop: '0px',
+  marginTop: '2px',
+  marginBottom: '2px',
+  transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
   selectors: {
     '&:hover': {
       background: cssVar('hoverColor'),
+      transform: 'translateX(2px)',
+      boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)',
     },
     '&[data-active="true"]': {
       background: cssVar('hoverColor'),
+      fontWeight: '600',
+      boxShadow: '0 2px 12px rgba(0, 0, 0, 0.08)',
+      transform: 'translateX(1px)',
+    },
+    '&[data-active="true"]:hover': {
+      transform: 'translateX(3px)',
+      boxShadow: '0 4px 16px rgba(0, 0, 0, 0.12)',
+    },
+    '&:active': {
+      transform: 'translateX(1px) scale(0.98)',
+      transition: 'all 0.1s ease-out',
     },
     '&[data-disabled="true"]': {
       cursor: 'default',
       color: cssVar('textSecondaryColor'),
       pointerEvents: 'none',
+      opacity: 0.6,
     },
     '&[data-dragging="true"]': {
       opacity: 0.5,
+      transform: 'rotate(1deg) scale(0.95)',
     },
   },
 });
@@ -43,6 +61,7 @@ export const itemMain = style({
   flex: 1,
   position: 'relative',
   gap: 12,
+  minHeight: '20px',
 });
 export const itemRenameAnchor = style({
   pointerEvents: 'none',
@@ -60,6 +79,8 @@ export const itemContent = style({
   flex: 1,
   color: cssVarV2('text/primary'),
   lineHeight: cssVar('lineHeight'),
+  fontWeight: '500',
+  fontSize: cssVar('fontSm'),
 });
 export const postfix = style({
   display: 'flex',
@@ -68,6 +89,7 @@ export const postfix = style({
   position: 'absolute',
   opacity: 0,
   pointerEvents: 'none',
+  transition: 'opacity 0.2s ease-in-out',
   selectors: {
     [`${itemRoot}:hover &`]: {
       opacity: 1,
@@ -80,23 +102,24 @@ export const iconContainer = style({
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
-  width: 20,
-  height: 20,
+  width: 24,
+  height: 24,
+  minWidth: 24,
   color: cssVarV2('icon/primary'),
   fontSize: 20,
 });
 export const collapsedIconContainer = style({
-  width: '16px',
-  height: '16px',
+  width: '20px',
+  height: '20px',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  borderRadius: '2px',
-  transition: 'transform 0.2s',
+  borderRadius: '4px',
+  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
   color: cssVarV2('icon/primary'),
   selectors: {
     '&[data-collapsed="true"]': {
-      transform: 'rotate(-90deg)',
+      transform: 'rotate(-90deg) scale(0.9)',
     },
     '&[data-disabled="true"]': {
       opacity: 0.3,
@@ -104,14 +127,18 @@ export const collapsedIconContainer = style({
     },
     '&:hover': {
       background: cssVar('hoverColor'),
+      transform: 'scale(1.1)',
+    },
+    '&:hover[data-collapsed="true"]': {
+      transform: 'rotate(-90deg) scale(1.0)',
     },
   },
 });
 export const collapsedIcon = style({
-  transition: 'transform 0.2s ease-in-out',
+  transition: 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
   selectors: {
     '&[data-collapsed="true"]': {
-      transform: 'rotate(-90deg)',
+      transform: 'rotate(-90deg) scale(0.9)',
     },
   },
 });
@@ -128,26 +155,28 @@ export const collapseContentPlaceholder = style({
 const draggedOverAnimation = keyframes({
   '0%': {
     opacity: 1,
+    transform: 'scale(1)',
   },
-  '60%': {
-    opacity: 1,
+  '25%': {
+    opacity: 0.8,
+    transform: 'scale(1.02)',
   },
-  '70%': {
-    opacity: 0,
+  '50%': {
+    opacity: 0.6,
+    transform: 'scale(0.98)',
   },
-  '80%': {
-    opacity: 1,
-  },
-  '90%': {
-    opacity: 0,
+  '75%': {
+    opacity: 0.8,
+    transform: 'scale(1.02)',
   },
   '100%': {
     opacity: 1,
+    transform: 'scale(1)',
   },
 });
 
 export const contentContainer = style({
-  marginTop: 2,
+  marginTop: 4,
   paddingLeft: levelIndent,
   position: 'relative',
 });

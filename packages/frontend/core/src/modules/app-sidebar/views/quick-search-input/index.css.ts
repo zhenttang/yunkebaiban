@@ -5,24 +5,39 @@ export const root = style({
   display: 'inline-flex',
   background: cssVarV2('button/siderbarPrimary/background'),
   alignItems: 'center',
-  borderRadius: '8px',
+  borderRadius: '10px',
   fontSize: cssVar('fontSm'),
+  fontWeight: '500',
   width: '100%',
-  height: '30px',
+  height: '36px',
+  minHeight: '36px',
   userSelect: 'none',
   cursor: 'pointer',
-  padding: '0 12px 0 20px',
+  padding: '8px 16px',
   position: 'relative',
   whiteSpace: 'nowrap',
   overflow: 'hidden',
+  transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
   ':hover': {
     background: cssVarV2('layer/background/hoverOverlay'),
+    transform: 'translateY(-1px)',
+    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.06)',
+  },
+  ':active': {
+    transform: 'translateY(0px) scale(0.98)',
+    transition: 'all 0.1s ease-out',
   },
 });
 export const icon = style({
-  marginRight: '8px',
+  marginRight: '12px',
   color: cssVarV2('icon/primary'),
-  fontSize: '20px',
+  fontSize: '18px',
+  transition: 'transform 0.2s ease-out',
+  selectors: {
+    [`${root}:hover &`]: {
+      transform: 'scale(1.1)',
+    },
+  },
 });
 export const spacer = style({
   flex: 1,

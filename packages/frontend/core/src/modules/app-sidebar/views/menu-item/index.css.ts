@@ -7,44 +7,56 @@ export const linkItemRoot = style({
 export const root = style({
   display: 'inline-flex',
   alignItems: 'center',
-  borderRadius: '4px',
+  borderRadius: '8px',
   textAlign: 'left',
   color: 'inherit',
   width: '100%',
-  minHeight: '30px',
+  minHeight: '36px',
   userSelect: 'none',
   cursor: 'pointer',
-  padding: '0 2px 0 12px',
+  padding: '8px 12px',
   fontSize: cssVar('fontSm'),
-  marginTop: '4px',
+  fontWeight: '500',
+  marginTop: '2px',
+  marginBottom: '2px',
   position: 'relative',
+  transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
   selectors: {
     '&:hover': {
       background: cssVar('hoverColor'),
+      transform: 'translateX(2px)',
+      boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)',
     },
     '&[data-active="true"]': {
       background: cssVar('hoverColor'),
+      fontWeight: '600',
+      boxShadow: '0 2px 12px rgba(0, 0, 0, 0.08)',
+      transform: 'translateX(1px)',
+    },
+    '&[data-active="true"]:hover': {
+      transform: 'translateX(3px)',
+      boxShadow: '0 4px 16px rgba(0, 0, 0, 0.12)',
+    },
+    '&:active': {
+      transform: 'translateX(1px) scale(0.98)',
+      transition: 'all 0.1s ease-out',
     },
     '&[data-disabled="true"]': {
       cursor: 'default',
       color: cssVar('textSecondaryColor'),
       pointerEvents: 'none',
+      opacity: 0.6,
     },
-    // this is not visible in dark mode
-    // '&[data-active="true"]:hover': {
-    //   background:
-    //     // make this a variable?
-    //     'linear-gradient(0deg, rgba(0, 0, 0, 0.04), rgba(0, 0, 0, 0.04)), rgba(0, 0, 0, 0.04)',
-    // },
     '&[data-collapsible="true"]': {
-      paddingLeft: '4px',
-      paddingRight: '4px',
+      paddingLeft: '8px',
+      paddingRight: '8px',
     },
     '&[data-collapsible="false"]:is([data-active="true"], :hover)': {
-      width: 'calc(100% + 8px + 8px)',
+      width: 'calc(100% + 16px)',
       transform: 'translateX(-8px)',
-      paddingLeft: '20px',
-      paddingRight: '10px',
+      paddingLeft: '24px',
+      paddingRight: '12px',
+      borderRadius: '12px',
     },
     [`${linkItemRoot}:first-of-type &`]: {
       marginTop: '0px',
@@ -76,17 +88,17 @@ export const icon = style({
   fontSize: '20px',
 });
 export const collapsedIconContainer = style({
-  width: '16px',
-  height: '16px',
+  width: '20px',
+  height: '20px',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  borderRadius: '2px',
-  transition: 'transform 0.2s',
+  borderRadius: '4px',
+  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
   color: 'inherit',
   selectors: {
     '&[data-collapsed="true"]': {
-      transform: 'rotate(-90deg)',
+      transform: 'rotate(-90deg) scale(0.9)',
     },
     '&[data-disabled="true"]': {
       opacity: 0.3,
@@ -94,26 +106,31 @@ export const collapsedIconContainer = style({
     },
     '&:hover': {
       background: cssVar('hoverColor'),
+      transform: 'scale(1.1)',
+    },
+    '&:hover[data-collapsed="true"]': {
+      transform: 'rotate(-90deg) scale(1.0)',
     },
   },
 });
 export const iconsContainer = style({
   display: 'flex',
   alignItems: 'center',
-  justifyContent: 'flex-start',
-  width: '28px',
+  justifyContent: 'center',
+  width: '32px',
+  minWidth: '32px',
   flexShrink: 0,
   selectors: {
     '&[data-collapsible="true"]': {
-      width: '44px',
+      width: '48px',
     },
   },
 });
 export const collapsedIcon = style({
-  transition: 'transform 0.2s ease-in-out',
+  transition: 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
   selectors: {
     '&[data-collapsed="true"]': {
-      transform: 'rotate(-90deg)',
+      transform: 'rotate(-90deg) scale(0.9)',
     },
   },
 });
