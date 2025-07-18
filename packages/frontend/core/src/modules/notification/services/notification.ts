@@ -1,7 +1,6 @@
-// import type { DocMode } from '@affine/graphql';
 import { Service } from '@toeverything/infra';
 
-import type { NotificationStore } from '../stores/notification';
+import type { NotificationStore, DocMode } from '../stores/notification';
 
 export class NotificationService extends Service {
   constructor(private readonly store: NotificationStore) {
@@ -18,7 +17,7 @@ export class NotificationService extends Service {
       elementId?: string;
       mode: DocMode;
     }
-  ): Promise<string> {
+  ): Promise<boolean> {
     return this.store.mentionUser(userId, workspaceId, doc);
   }
 }

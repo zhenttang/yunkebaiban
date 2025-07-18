@@ -1,42 +1,70 @@
-// import {
-//   type DocMode,
-//   type ListNotificationsQuery,
-//   listNotificationsQuery,
-//   mentionUserMutation,
-//   notificationCountQuery,
-//   type PaginationInput,
-//   readNotificationMutation,
-//   type UnionNotificationBodyType,
-// } from '@affine/graphql';
 import { Store } from '@toeverything/infra';
 import { map } from 'rxjs';
 
-import type { GraphQLService, ServerService } from '../../cloud';
+import type { FetchService, ServerService } from '../../cloud';
 import type { GlobalSessionState } from '../../storage';
 
-// Temporary placeholder types since GraphQL is removed
+// 通知类型定义
 export type Notification = {
   id: string;
-  type: string;
-  title: string;
-  body?: any;
+  userId: string;
+  type: NotificationType;
+  level: NotificationLevel;
+  body: Record<string, any>;
   read: boolean;
   createdAt: string;
+  updatedAt: string;
 };
 
-export type NotificationBody = any;
-
-// Temporary NotificationType enum
+// 通知类型枚举
 export enum NotificationType {
-  // Add notification types as needed
-  GENERAL = 'GENERAL',
-  MENTION = 'MENTION',
-  INVITATION = 'INVITATION',
+  MENTION = 'Mention',
+  INVITATION = 'Invitation',
+  INVITATION_ACCEPTED = 'InvitationAccepted',
+  INVITATION_BLOCKED = 'InvitationBlocked',
+  INVITATION_REJECTED = 'InvitationRejected',
+  INVITATION_REVIEW_REQUEST = 'InvitationReviewRequest',
+  INVITATION_REVIEW_APPROVED = 'InvitationReviewApproved',
+  INVITATION_REVIEW_DECLINED = 'InvitationReviewDeclined',
 }
+
+// 通知级别枚举
+export enum NotificationLevel {
+  HIGH = 'High',
+  DEFAULT = 'Default',
+  LOW = 'Low',
+  MIN = 'Min',
+  NONE = 'None',
+}
+
+// 分页参数
+export type PaginationInput = {
+  page: number;
+  size: number;
+};
+
+// 通知列表响应
+export type NotificationListResponse = {
+  notifications: Notification[];
+  totalElements: number;
+  totalPages: number;
+  currentPage: number;
+  pageSize: number;
+  hasNext: boolean;
+  hasPrevious: boolean;
+};
+
+// 通知数量响应
+export type NotificationCountResponse = {
+  count: number;
+};
+
+// 文档模式
+export type DocMode = 'edgeless' | 'page';
 
 export class NotificationStore extends Store {
   constructor(
-    private readonly gqlService: GraphQLService,
+    private readonly fetchService: FetchService,
     private readonly serverService: ServerService,
     private readonly globalSessionState: GlobalSessionState
   ) {
@@ -63,38 +91,53 @@ export class NotificationStore extends Store {
     );
   }
 
-  async getNotificationCount(signal?: AbortSignal) {
-    const result = await this.gqlService.gql({
-      query: notificationCountQuery,
-      context: {
+  async getNotificationCount(signal?: AbortSignal): Promise<number> {
+    try {
+      const result = await this.fetchService.fetch('/api/notifications/count', {
+        method: 'GET',
         signal,
-      },
-    });
+      });
 
-    return result.currentUser?.notificationCount;
+      const data: NotificationCountResponse = await result.json();
+      return data.count;
+    } catch (error) {
+      console.error('Error getting notification count:', error);
+      return 0;
+    }
   }
 
-  async listNotification(pagination: PaginationInput, signal?: AbortSignal) {
-    const result = await this.gqlService.gql({
-      query: listNotificationsQuery,
-      variables: {
-        pagination: pagination,
-      },
-      context: {
-        signal,
-      },
-    });
+  async listNotification(pagination: PaginationInput, signal?: AbortSignal): Promise<NotificationListResponse | null> {
+    try {
+      const params = new URLSearchParams({
+        page: pagination.page.toString(),
+        size: pagination.size.toString(),
+      });
 
-    return result.currentUser?.notifications;
+      const result = await this.fetchService.fetch(`/api/notifications?${params.toString()}`, {
+        method: 'GET',
+        signal,
+      });
+
+      const data: NotificationListResponse = await result.json();
+      return data;
+    } catch (error) {
+      console.error('Error listing notifications:', error);
+      return null;
+    }
   }
 
-  readNotification(id: string) {
-    return this.gqlService.gql({
-      query: readNotificationMutation,
-      variables: {
-        id,
-      },
-    });
+  async readNotification(id: string): Promise<boolean> {
+    try {
+      const result = await this.fetchService.fetch(`/api/notifications/${id}/read`, {
+        method: 'PUT',
+      });
+
+      const data = await result.json();
+      return data.success || false;
+    } catch (error) {
+      console.error('Error marking notification as read:', error);
+      return false;
+    }
   }
 
   async mentionUser(
@@ -107,17 +150,76 @@ export class NotificationStore extends Store {
       elementId?: string;
       mode: DocMode;
     }
-  ) {
-    const result = await this.gqlService.gql({
-      query: mentionUserMutation,
-      variables: {
-        input: {
+  ): Promise<boolean> {
+    try {
+      const result = await this.fetchService.fetch('/api/notifications/mention', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
           userId,
           workspaceId,
           doc,
-        },
-      },
-    });
-    return result.mentionUser;
+        }),
+      });
+
+      const data = await result.json();
+      return data.success || false;
+    } catch (error) {
+      console.error('Error mentioning user:', error);
+      return false;
+    }
+  }
+
+  /**
+   * 删除通知
+   */
+  async deleteNotification(id: string): Promise<boolean> {
+    try {
+      const result = await this.fetchService.fetch(`/api/notifications/${id}`, {
+        method: 'DELETE',
+      });
+
+      const data = await result.json();
+      return data.success || false;
+    } catch (error) {
+      console.error('Error deleting notification:', error);
+      return false;
+    }
+  }
+
+  /**
+   * 标记所有通知为已读
+   */
+  async markAllAsRead(): Promise<number> {
+    try {
+      const result = await this.fetchService.fetch('/api/notifications/read-all', {
+        method: 'PUT',
+      });
+
+      const data = await result.json();
+      return data.count || 0;
+    } catch (error) {
+      console.error('Error marking all notifications as read:', error);
+      return 0;
+    }
+  }
+
+  /**
+   * 获取通知详情
+   */
+  async getNotificationById(id: string): Promise<Notification | null> {
+    try {
+      const result = await this.fetchService.fetch(`/api/notifications/${id}`, {
+        method: 'GET',
+      });
+
+      const data = await result.json();
+      return data.notification || null;
+    } catch (error) {
+      console.error('Error getting notification by id:', error);
+      return null;
+    }
   }
 }

@@ -8,7 +8,7 @@ import type { Framework } from '@toeverything/infra';
 
 import {
   AuthService,
-  GraphQLService,
+  FetchService,
   ServerScope,
   ServerService,
 } from '../cloud';
@@ -28,7 +28,7 @@ export function configureNotificationModule(framework: Framework) {
       NotificationCountService,
     ])
     .store(NotificationStore, [
-      GraphQLService,
+      FetchService,
       ServerService,
       GlobalSessionState,
     ]);
