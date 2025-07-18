@@ -1,6 +1,6 @@
 import { useDocMetaHelper } from '@affine/core/components/hooks/use-block-suite-page-meta';
 import { useDocCollectionPage } from '@affine/core/components/hooks/use-block-suite-workspace-page';
-import { FetchService, GraphQLService } from '@affine/core/modules/cloud';
+import { FetchService } from '@affine/core/modules/cloud';
 import {
   type WorkspaceFlavourProvider,
   WorkspaceService,
@@ -8,12 +8,10 @@ import {
 } from '@affine/core/modules/workspace';
 import { WorkspaceImpl } from '@affine/core/modules/workspace/impls/workspace';
 import { DebugLogger } from '@affine/debug';
-// import type { ListHistoryQuery } from '@affine/graphql';
-// import { listHistoryQuery, recoverDocMutation } from '@affine/graphql';
 import { i18nTime } from '@affine/i18n';
 import type { Workspace } from '@blocksuite/affine/store';
 import { useService } from '@toeverything/infra';
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState, useCallback } from 'react';
 import useSWRImmutable from 'swr/immutable';
 import {
   applyUpdate,
@@ -23,53 +21,121 @@ import {
   UndoManager,
 } from 'yjs';
 
-import {
-  useMutateQueryResource,
-  useMutation,
-} from '../../../components/hooks/use-mutation';
-import { useQueryInfinite } from '../../../components/hooks/use-query';
+import { useMutation } from '../../../components/hooks/use-mutation';
 
 const logger = new DebugLogger('page-history');
 
-type DocHistory = ListHistoryQuery['workspace']['histories'][number];
+// 定义Java后端API的类型
+interface DocHistory {
+  id: string;
+  timestamp: string;
+  workspaceId: string;
+  pageDocId: string;
+  version: string;
+  title?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+interface ListHistoryResponse {
+  histories: DocHistory[];
+  total: number;
+  hasMore: boolean;
+}
+
+// Java后端API调用函数
+const fetchHistoryList = async (
+  fetchService: FetchService,
+  workspaceId: string,
+  pageDocId: string,
+  before?: string,
+  take: number = 10
+): Promise<ListHistoryResponse> => {
+  const params = new URLSearchParams({
+    workspaceId,
+    pageDocId,
+    take: take.toString(),
+  });
+  
+  if (before) {
+    params.append('before', before);
+  }
+
+  const response = await fetchService.fetch(`/api/workspaces/${workspaceId}/docs/${pageDocId}/histories?${params}`);
+  
+  if (!response.ok) {
+    throw new Error('Failed to fetch history list');
+  }
+  
+  return response.json();
+};
+
+const recoverDocumentVersion = async (
+  fetchService: FetchService,
+  workspaceId: string,
+  docId: string,
+  timestamp: string
+): Promise<void> => {
+  const response = await fetchService.fetch(`/api/workspaces/${workspaceId}/docs/${docId}/recover`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      timestamp,
+    }),
+  });
+  
+  if (!response.ok) {
+    throw new Error('Failed to recover document version');
+  }
+};
 
 export const useDocSnapshotList = (workspaceId: string, pageDocId: string) => {
+  const fetchService = useService(FetchService);
+  const [histories, setHistories] = useState<DocHistory[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
   const pageSize = 10;
-  const { data, loadingMore, loadMore } = useQueryInfinite({
-    query: listHistoryQuery,
-    getVariables: (_, previousPageData) => {
-      // use the timestamp of the last history as the cursor
-      const before = previousPageData?.workspace.histories.at(-1)?.timestamp;
-      const vars = {
-        pageDocId: pageDocId,
-        workspaceId: workspaceId,
-        before: before,
-        take: pageSize,
-      };
 
-      return vars;
-    },
-  });
-
-  const shouldLoadMore = useMemo(() => {
-    if (!data) {
-      return false;
+  const loadHistories = useCallback(async (before?: string) => {
+    if (loading) return;
+    
+    setLoading(true);
+    try {
+      const response = await fetchHistoryList(fetchService, workspaceId, pageDocId, before, pageSize);
+      
+      if (before) {
+        // 加载更多
+        setHistories(prev => [...prev, ...response.histories]);
+      } else {
+        // 初始加载
+        setHistories(response.histories);
+      }
+      
+      setHasMore(response.hasMore);
+    } catch (error) {
+      console.error('Failed to load histories:', error);
+      setHistories([]);
+      setHasMore(false);
+    } finally {
+      setLoading(false);
     }
-    const lastPage = data.at(-1);
-    if (!lastPage) {
-      return false;
-    }
-    return lastPage.workspace.histories.length === pageSize;
-  }, [data]);
+  }, [fetchService, workspaceId, pageDocId, loading]);
 
-  const histories = useMemo(() => {
-    if (!data) {
-      return [];
+  const loadMore = useCallback(() => {
+    if (hasMore && !loading && histories.length > 0) {
+      const lastHistory = histories[histories.length - 1];
+      loadHistories(lastHistory.timestamp);
     }
-    return data.flatMap(page => page.workspace.histories);
-  }, [data]);
+  }, [hasMore, loading, histories, loadHistories]);
 
-  return [histories, shouldLoadMore ? loadMore : false, !!loadingMore] as const;
+  // 初始加载
+  useEffect(() => {
+    loadHistories();
+  }, [workspaceId, pageDocId]); // 注意：不包含 loadHistories 以避免无限循环
+
+  return [histories, hasMore ? loadMore : false, loading] as const;
 };
 
 const snapshotFetcher = async (
@@ -164,7 +230,6 @@ export const useSnapshotPage = (
   const affineWorkspace = useService(WorkspaceService).workspace;
   const workspacesService = useService(WorkspacesService);
   const fetchService = useService(FetchService);
-  const graphQLService = useService(GraphQLService);
   const snapshot = usePageHistory(docCollection.id, pageDocId, ts);
   const page = useMemo(() => {
     if (!ts) {
@@ -207,7 +272,6 @@ export const useSnapshotPage = (
     affineWorkspace.meta,
     docCollection,
     fetchService,
-    graphQLService,
     workspacesService,
   ]);
 
@@ -276,9 +340,11 @@ export function revertUpdate(
 
 export const useRestorePage = (docCollection: Workspace, pageId: string) => {
   const page = useDocCollectionPage(docCollection, pageId);
-  const mutateQueryResource = useMutateQueryResource();
+  const fetchService = useService(FetchService);
   const { trigger: recover, isMutating } = useMutation({
-    mutation: recoverDocMutation,
+    mutationFn: async (variables: { docId: string; timestamp: string; workspaceId: string }) => {
+      return recoverDocumentVersion(fetchService, variables.workspaceId, variables.docId, variables.timestamp);
+    },
   });
   const { getDocMeta, setDocTitle } = useDocMetaHelper();
 
@@ -308,17 +374,13 @@ export const useRestorePage = (docCollection: Workspace, pageId: string) => {
         workspaceId: docCollection.id,
       });
 
-      await mutateQueryResource(listHistoryQuery, vars => {
-        return (
-          vars.pageDocId === pageDocId && vars.workspaceId === docCollection.id
-        );
-      });
-
+      // 刷新历史记录列表（使用Java后端的缓存清理）
+      // 这里可能需要调用其他API来刷新缓存
+      
       logger.info('页面已恢复', pageDocId, version);
     };
   }, [
     getDocMeta,
-    mutateQueryResource,
     page,
     pageId,
     recover,

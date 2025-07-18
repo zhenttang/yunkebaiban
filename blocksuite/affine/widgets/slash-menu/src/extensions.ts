@@ -9,6 +9,7 @@ import { literal, unsafeStatic } from 'lit/static-html.js';
 
 import { defaultSlashMenuConfig } from './config';
 import { AFFINE_SLASH_MENU_WIDGET } from './consts';
+import { headingEnhancementSlashMenuConfig } from './heading-enhancement-config';
 import type { SlashMenuConfig } from './types';
 import { mergeSlashMenuConfigs } from './utils';
 
@@ -25,6 +26,7 @@ export class SlashMenuExtension extends Extension {
     di.add(this, [StdIdentifier]);
 
     SlashMenuConfigExtension('default', defaultSlashMenuConfig).setup(di);
+    SlashMenuConfigExtension('heading-enhancement', headingEnhancementSlashMenuConfig).setup(di);
   }
 
   constructor(readonly std: BlockStdScope) {
