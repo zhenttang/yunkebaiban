@@ -19,7 +19,7 @@ import {
   SplitViewIcon,
 } from '@blocksuite/icons/rc';
 import { useLiveData, useService } from '@toeverything/infra';
-import { memo, useCallback, useContext } from 'react';
+import { forwardRef, memo, useCallback, useContext } from 'react';
 
 import { useBlockSuiteMetaHelper } from '../../hooks/affine/use-block-suite-meta-helper';
 import { IsFavoriteIcon } from '../../pure/icons';
@@ -29,41 +29,43 @@ export interface QuickActionProps extends IconButtonProps {
   doc: DocRecord;
 }
 
-export const QuickFavorite = memo(function QuickFavorite({
-  doc,
-  onClick,
-  ...iconButtonProps
-}: QuickActionProps) {
-  const contextValue = useContext(DocExplorerContext);
-  const quickFavorite = useLiveData(contextValue.quickFavorite$);
+export const QuickFavorite = memo(
+  forwardRef<HTMLButtonElement, QuickActionProps>(function QuickFavorite(
+    { doc, onClick, ...iconButtonProps },
+    ref
+  ) {
+    const contextValue = useContext(DocExplorerContext);
+    const quickFavorite = useLiveData(contextValue.quickFavorite$);
 
-  const favAdapter = useService(CompatibleFavoriteItemsAdapter);
-  const favourite = useLiveData(favAdapter.isFavorite$(doc.id, 'doc'));
+    const favAdapter = useService(CompatibleFavoriteItemsAdapter);
+    const favourite = useLiveData(favAdapter.isFavorite$(doc.id, 'doc'));
 
-  const toggleFavorite = useCallback(
-    (e: React.MouseEvent<HTMLButtonElement>) => {
-      onClick?.(e);
-      e.stopPropagation();
-      e.preventDefault();
-      track.allDocs.list.docMenu.toggleFavorite();
-      favAdapter.toggle(doc.id, 'doc');
-    },
-    [doc.id, favAdapter, onClick]
-  );
+    const toggleFavorite = useCallback(
+      (e: React.MouseEvent<HTMLButtonElement>) => {
+        onClick?.(e);
+        e.stopPropagation();
+        e.preventDefault();
+        track.allDocs.list.docMenu.toggleFavorite();
+        favAdapter.toggle(doc.id, 'doc');
+      },
+      [doc.id, favAdapter, onClick]
+    );
 
-  if (!quickFavorite) {
-    return null;
-  }
+    if (!quickFavorite) {
+      return null;
+    }
 
-  return (
-    <IconButton
-      icon={<IsFavoriteIcon favorite={favourite} />}
-      onClick={toggleFavorite}
-      data-testid="doc-list-operation-favorite"
-      {...iconButtonProps}
-    />
-  );
-});
+    return (
+      <IconButton
+        ref={ref}
+        icon={<IsFavoriteIcon favorite={favourite} />}
+        onClick={toggleFavorite}
+        data-testid="doc-list-operation-favorite"
+        {...iconButtonProps}
+      />
+    );
+  })
+);
 
 export const QuickTab = memo(function QuickTab({
   doc,

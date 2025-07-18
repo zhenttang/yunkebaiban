@@ -163,8 +163,8 @@ export const RootAppSidebar = memo((): ReactElement => {
         <div className={workspaceAndUserWrapper}>
           <div className={workspaceWrapper}>
             <WorkspaceNavigator
-              showEnableCloudButton
-              showSyncStatus
+              showEnableCloudButton={false}
+              showSyncStatus={false}
               open={workspaceSelectorOpen}
               onOpenChange={onWorkspaceSelectorOpenChange}
             />
@@ -217,6 +217,24 @@ export const RootAppSidebar = memo((): ReactElement => {
         </CollapsibleSection>
       </SidebarScrollableContainer>
       <SidebarContainer className={bottomContainer}>
+        {/* 云端连接状态指示器 */}
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '6px',
+          padding: '6px 12px',
+          margin: '4px 8px',
+          borderRadius: '6px',
+          backgroundColor: 'rgba(16, 185, 129, 0.1)',
+          border: '1px solid rgba(16, 185, 129, 0.3)',
+          fontSize: '11px',
+          fontWeight: '500',
+          color: '#10b981',
+          cursor: 'pointer',
+        }} title="云端连接状态：已连接">
+          <span style={{ fontSize: '12px' }}>☁️</span>
+          <span>云端已连接</span>
+        </div>
         <SidebarAudioPlayer />
         {BUILD_CONFIG.isElectron ? <UpdaterButton /> : <AppDownloadButton />}
       </SidebarContainer>

@@ -78,6 +78,12 @@ export function configureWorkspaceProvider(framework: Framework) {
       },
 
       async createWorkspace(request: CreateWorkspaceRequest): Promise<WorkspaceInfo> {
+        console.log('=== 前端 WorkspaceProvider.createWorkspace 开始 ===');
+        console.log('创建工作空间请求参数:', request);
+        console.log('当前页面URL:', window.location.href);
+        console.log('当前Cookie:', document.cookie);
+        console.log('localStorage中的token:', localStorage.getItem('affine-admin-token'));
+        
         console.log('开始创建工作空间请求', {
           url: '/api/workspaces',
           method: 'POST',

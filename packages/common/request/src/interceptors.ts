@@ -23,14 +23,32 @@ export const setupRequestInterceptors = (instance: AxiosInstance): void => {
   // 请求前添加认证头
   instance.interceptors.request.use(
     (config: AxiosRequestConfig) => {
+      console.log('=== 前端请求拦截器 ===');
+      console.log('请求URL:', config.url);
+      console.log('请求方法:', config.method);
+      console.log('请求头:', config.headers);
+      console.log('请求体:', config.data);
+      
       const token = tokenManager.get();
       if (token) {
         config.headers = config.headers || {};
         config.headers['Authorization'] = `Bearer ${token}`;
+        console.log('添加认证头:', `Bearer ${token.substring(0, 20)}...`);
+      } else {
+        console.log('未找到认证令牌');
       }
+      
+      console.log('最终请求配置:', {
+        url: config.url,
+        method: config.method,
+        headers: config.headers,
+        data: config.data
+      });
+      
       return config;
     },
     (error: AxiosError) => {
+      console.error('请求拦截器错误:', error);
       return Promise.reject(error);
     }
   );
@@ -61,6 +79,12 @@ export const setupResponseInterceptors = (instance: AxiosInstance): void => {
 
   instance.interceptors.response.use(
     (response: AxiosResponse) => {
+      console.log('=== 前端响应拦截器 ===');
+      console.log('响应URL:', response.config.url);
+      console.log('响应状态:', response.status);
+      console.log('响应头:', response.headers);
+      console.log('响应数据:', response.data);
+      
       // 处理成功响应，直接返回数据部分
       return response;
     },

@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>测试工作区创建</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .log {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 10px;
+            margin: 10px 0;
+            max-height: 300px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 12px;
+        }
+        .error {
+            color: red;
+        }
+        .success {
+            color: green;
+        }
+        .info {
+            color: blue;
+        }
+    </style>
+</head>
+<body>
+    <h1>AFFiNE 工作区创建测试</h1>
+    
+    <div class="section">
+        <h2>1. 用户认证测试</h2>
+        <button onclick="testLogin()">测试登录</button>
+        <button onclick="checkAuthStatus()">检查认证状态</button>
+        <div id="authLog" class="log"></div>
+    </div>
+
+    <div class="section">
+        <h2>2. 工作区创建测试</h2>
+        <button onclick="testCreateWorkspace()">创建工作区</button>
+        <button onclick="testGetWorkspaces()">获取工作区列表</button>
+        <div id="workspaceLog" class="log"></div>
+    </div>
+
+    <div class="section">
+        <h2>3. 网络请求监控</h2>
+        <button onclick="clearLogs()">清空日志</button>
+        <button onclick="exportLogs()">导出日志</button>
+        <div id="networkLog" class="log"></div>
+    </div>
+
+    <script>
+        // 日志记录函数
+        function log(message, type = 'info', containerId = 'networkLog') {
+            const container = document.getElementById(containerId);
+            const timestamp = new Date().toLocaleTimeString();
+            const logEntry = document.createElement('div');
+            logEntry.className = type;
+            logEntry.textContent = `[${timestamp}] ${message}`;
+            container.appendChild(logEntry);
+            container.scrollTop = container.scrollHeight;
+            
+            // 同时输出到控制台
+            console.log(`[${timestamp}] ${message}`);
+        }
+
+        // 监听所有网络请求
+        const originalFetch = window.fetch;
+        window.fetch = async function(...args) {
+            const [url, options = {}] = args;
+            
+            log(`🚀 发送请求: ${options.method || 'GET'} ${url}`, 'info');
+            log(`📤 请求头: ${JSON.stringify(options.headers || {})}`, 'info');
+            if (options.body) {
+                log(`📤 请求体: ${options.body}`, 'info');
+            }
+            
+            try {
+                const response = await originalFetch.apply(this, args);
+                const responseClone = response.clone();
+                
+                log(`📥 响应状态: ${response.status} ${response.statusText}`, 
+                    response.ok ? 'success' : 'error');
+                log(`📥 响应头: ${JSON.stringify(Object.fromEntries(response.headers.entries()))}`, 'info');
+                
+                // 尝试读取响应体
+                try {
+                    const responseText = await responseClone.text();
+                    if (responseText) {
+                        log(`📥 响应体: ${responseText}`, response.ok ? 'success' : 'error');
+                    }
+                } catch (e) {
+                    log(`📥 无法读取响应体: ${e.message}`, 'error');
+                }
+                
+                return response;
+            } catch (error) {
+                log(`❌ 请求失败: ${error.message}`, 'error');
+                throw error;
+            }
+        };
+
+        // 测试登录
+        async function testLogin() {
+            log('=== 开始测试登录 ===', 'info', 'authLog');
+            
+            try {
+                const response = await fetch('/api/auth/sign-in', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        email: 'test@example.com',
+                        password: 'password123',
+                        callbackUrl: null,
+                        clientNonce: null
+                    }),
+                    credentials: 'include'
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok && data.success) {
+                    log('✅ 登录成功', 'success', 'authLog');
+                    log(`用户信息: ${JSON.stringify(data.user)}`, 'success', 'authLog');
+                    
+                    // 保存token到localStorage
+                    if (data.token) {
+                        localStorage.setItem('affine-admin-token', data.token);
+                        log('✅ Token已保存到localStorage', 'success', 'authLog');
+                    }
+                } else {
+                    log(`❌ 登录失败: ${data.error || data.message}`, 'error', 'authLog');
+                }
+            } catch (error) {
+                log(`❌ 登录请求异常: ${error.message}`, 'error', 'authLog');
+            }
+        }
+
+        // 检查认证状态
+        async function checkAuthStatus() {
+            log('=== 检查认证状态 ===', 'info', 'authLog');
+            
+            try {
+                const token = localStorage.getItem('affine-admin-token');
+                log(`本地Token: ${token ? token.substring(0, 20) + '...' : '无'}`, 'info', 'authLog');
+                
+                const response = await fetch('/api/auth/session', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+                    },
+                    credentials: 'include'
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    if (data.user) {
+                        log('✅ 用户已认证', 'success', 'authLog');
+                        log(`用户信息: ${JSON.stringify(data.user)}`, 'success', 'authLog');
+                    } else {
+                        log('⚠️ 用户未认证', 'info', 'authLog');
+                    }
+                } else {
+                    log(`❌ 检查认证状态失败: ${response.status}`, 'error', 'authLog');
+                }
+            } catch (error) {
+                log(`❌ 检查认证状态异常: ${error.message}`, 'error', 'authLog');
+            }
+        }
+
+        // 测试创建工作区
+        async function testCreateWorkspace() {
+            log('=== 开始测试创建工作区 ===', 'info', 'workspaceLog');
+            
+            try {
+                const token = localStorage.getItem('affine-admin-token');
+                if (!token) {
+                    log('❌ 未找到认证Token，请先登录', 'error', 'workspaceLog');
+                    return;
+                }
+                
+                const workspaceData = {
+                    name: `测试工作区 ${new Date().toLocaleString()}`,
+                    isPublic: false,
+                    enableAi: true,
+                    enableUrlPreview: false,
+                    enableDocEmbedding: true
+                };
+                
+                log(`📤 创建工作区请求数据: ${JSON.stringify(workspaceData)}`, 'info', 'workspaceLog');
+                
+                const response = await fetch('/api/workspaces', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(workspaceData),
+                    credentials: 'include'
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok && data.success) {
+                    log('✅ 工作区创建成功', 'success', 'workspaceLog');
+                    log(`工作区信息: ${JSON.stringify(data.workspace)}`, 'success', 'workspaceLog');
+                } else {
+                    log(`❌ 工作区创建失败: ${data.error || data.message}`, 'error', 'workspaceLog');
+                }
+            } catch (error) {
+                log(`❌ 创建工作区请求异常: ${error.message}`, 'error', 'workspaceLog');
+            }
+        }
+
+        // 测试获取工作区列表
+        async function testGetWorkspaces() {
+            log('=== 开始测试获取工作区列表 ===', 'info', 'workspaceLog');
+            
+            try {
+                const token = localStorage.getItem('affine-admin-token');
+                if (!token) {
+                    log('❌ 未找到认证Token，请先登录', 'error', 'workspaceLog');
+                    return;
+                }
+                
+                const response = await fetch('/api/workspaces', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    credentials: 'include'
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    log('✅ 获取工作区列表成功', 'success', 'workspaceLog');
+                    log(`工作区数量: ${data.count || 0}`, 'success', 'workspaceLog');
+                    if (data.workspaces && data.workspaces.length > 0) {
+                        data.workspaces.forEach((ws, index) => {
+                            const workspace = ws.workspace || ws;
+                            log(`工作区 ${index + 1}: ${workspace.name} (${workspace.id})`, 'success', 'workspaceLog');
+                        });
+                    } else {
+                        log('📝 暂无工作区', 'info', 'workspaceLog');
+                    }
+                } else {
+                    log(`❌ 获取工作区列表失败: ${data.error || data.message}`, 'error', 'workspaceLog');
+                }
+            } catch (error) {
+                log(`❌ 获取工作区列表异常: ${error.message}`, 'error', 'workspaceLog');
+            }
+        }
+
+        // 清空日志
+        function clearLogs() {
+            document.getElementById('authLog').innerHTML = '';
+            document.getElementById('workspaceLog').innerHTML = '';
+            document.getElementById('networkLog').innerHTML = '';
+        }
+
+        // 导出日志
+        function exportLogs() {
+            const authLog = document.getElementById('authLog').textContent;
+            const workspaceLog = document.getElementById('workspaceLog').textContent;
+            const networkLog = document.getElementById('networkLog').textContent;
+            
+            const allLogs = `=== 认证日志 ===\n${authLog}\n\n=== 工作区日志 ===\n${workspaceLog}\n\n=== 网络日志 ===\n${networkLog}`;
+            
+            const blob = new Blob([allLogs], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `affine-test-logs-${new Date().toISOString().replace(/[:.]/g, '-')}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        // 页面加载完成后自动检查认证状态
+        window.addEventListener('load', () => {
+            log('🚀 测试页面加载完成', 'info');
+            checkAuthStatus();
+        });
+    </script>
+</body>
+</html>

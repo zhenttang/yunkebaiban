@@ -13,9 +13,11 @@ import {
 import { updateBlockType } from '@blocksuite/affine/blocks/note';
 import { BlockSelection, TextSelection } from '@blocksuite/std';
 import { useLiveData, useService } from '@toeverything/infra';
+import clsx from 'clsx';
 import { type ReactElement, useCallback, useState } from 'react';
 
 import { EditorService } from '../../modules/editor';
+import * as styles from './block-commands-sidebar.css';
 
 interface BlockCommand {
   id: string;
@@ -539,211 +541,69 @@ export function BlockCommandsSidebar() {
   // 检查编辑器是否可用
   const isEditorReady = Boolean(editorContainer?.host?.std);
 
-  // 样式对象
-  const sidebarStyle: React.CSSProperties = {
-    position: 'fixed',
-    top: '60px',
-    right: '20px',
-    width: isCollapsed ? '48px' : '280px',
-    height: 'calc(100vh - 80px)',
-    backgroundColor: 'white',
-    border: '1px solid #e5e7eb',
-    borderRadius: '8px',
-    boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
-    zIndex: 1000,
-    transition: 'width 0.3s ease',
-    overflow: 'hidden',
-    display: 'flex',
-    flexDirection: 'column',
-    opacity: isEditorReady ? 1 : 0.5,
-  };
-
-  const headerStyle: React.CSSProperties = {
-    display: 'flex',
-    alignItems: 'center',
-    padding: '12px',
-    borderBottom: '1px solid #e5e7eb',
-    backgroundColor: '#f9fafb',
-    minHeight: '48px',
-    cursor: 'default',
-  };
-
-  const toggleButtonStyle: React.CSSProperties = {
-    background: 'none',
-    border: 'none',
-    cursor: 'pointer',
-    padding: '6px 10px',
-    borderRadius: '4px',
-    color: '#374151',
-    fontSize: '14px',
-    fontWeight: 'bold',
-    transition: 'background-color 0.2s ease',
-  };
-
-  const titleStyle: React.CSSProperties = {
-    marginLeft: '8px',
-    fontSize: '14px',
-    fontWeight: '600',
-    color: '#374151',
-    userSelect: 'none',
-  };
-
-  const contentStyle: React.CSSProperties = {
-    flex: 1,
-    overflow: 'auto',
-    padding: '8px',
-  };
-
-  const groupStyle: React.CSSProperties = {
-    marginBottom: '8px',
-  };
-
-  const groupHeaderStyle: React.CSSProperties = {
-    width: '100%',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    padding: '10px 12px',
-    backgroundColor: '#f9fafb',
-    border: 'none',
-    borderRadius: '6px',
-    cursor: 'pointer',
-    fontSize: '13px',
-    fontWeight: '600',
-    color: '#374151',
-    transition: 'all 0.2s ease',
-    userSelect: 'none',
-  };
-
-  const activeStyle: React.CSSProperties = {
-    backgroundColor: '#3b82f6',
-    color: 'white',
-  };
-
-  const commandsStyle: React.CSSProperties = {
-    marginTop: '4px',
-    paddingLeft: '8px',
-  };
-
-  const commandItemStyle: React.CSSProperties = {
-    width: '100%',
-    display: 'flex',
-    alignItems: 'center',
-    padding: '10px 12px',
-    backgroundColor: 'transparent',
-    border: 'none',
-    borderRadius: '6px',
-    cursor: isEditorReady ? 'pointer' : 'not-allowed',
-    textAlign: 'left',
-    marginBottom: '2px',
-    transition: 'background-color 0.2s ease',
-    userSelect: 'none',
-    opacity: isEditorReady ? 1 : 0.6,
-  };
-
-  const commandIconStyle: React.CSSProperties = {
-    width: '20px',
-    height: '20px',
-    marginRight: '12px',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    color: '#6b7280',
-    flexShrink: 0,
-  };
-
-  const commandInfoStyle: React.CSSProperties = {
-    flex: 1,
-    minWidth: 0,
-  };
-
-  const commandNameStyle: React.CSSProperties = {
-    fontSize: '13px',
-    fontWeight: '500',
-    color: '#374151',
-    marginBottom: '2px',
-    lineHeight: '1.2',
-  };
-
-  const commandDescriptionStyle: React.CSSProperties = {
-    fontSize: '11px',
-    color: '#6b7280',
-    lineHeight: '1.3',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-    whiteSpace: 'nowrap',
-  };
-
   return (
-    <div style={sidebarStyle}>
-      <div style={headerStyle}>
+    <div 
+      className={clsx(
+        styles.sidebarContainer,
+        isCollapsed ? styles.sidebarCollapsed : styles.sidebarExpanded,
+        !isEditorReady && styles.sidebarDisabled
+      )}
+    >
+      {/* 状态指示器 */}
+      <div 
+        className={clsx(
+          styles.statusIndicator,
+          !isEditorReady && styles.statusIndicatorDisabled
+        )}
+      />
+      
+      <div className={styles.header}>
         <button 
-          style={toggleButtonStyle} 
+          className={styles.toggleButton}
           onClick={toggleSidebar}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.backgroundColor = '#f3f4f6';
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.backgroundColor = 'transparent';
-          }}
         >
-          {isCollapsed ? '<' : '>'}
+          {isCollapsed ? '◀' : '▶'}
         </button>
         {!isCollapsed && (
-          <span style={titleStyle}>
+          <span className={styles.title}>
             块命令 {!isEditorReady && '(等待编辑器...)'}
           </span>
         )}
       </div>
 
       {!isCollapsed && (
-        <div style={contentStyle}>
+        <div className={styles.content}>
           {blockGroups.map((group) => (
-            <div key={group.name} style={groupStyle}>
+            <div key={group.name} className={styles.group}>
               <button
-                style={{
-                  ...groupHeaderStyle,
-                  ...(selectedGroup === group.commands[0].group ? activeStyle : {}),
-                }}
+                className={clsx(
+                  styles.groupHeader,
+                  selectedGroup === group.commands[0].group && styles.groupHeaderActive
+                )}
                 onClick={() => handleGroupClick(group.commands[0].group)}
-                onMouseEnter={(e) => {
-                  if (selectedGroup !== group.commands[0].group) {
-                    e.currentTarget.style.backgroundColor = '#f3f4f6';
-                  }
-                }}
-                onMouseLeave={(e) => {
-                  if (selectedGroup !== group.commands[0].group) {
-                    e.currentTarget.style.backgroundColor = '#f9fafb';
-                  }
-                }}
               >
                 <span>{group.name}</span>
-                <span style={{ fontSize: '16px', fontWeight: 'bold' }}>
+                <span className={styles.groupIcon}>
                   {selectedGroup === group.commands[0].group ? '−' : '+'}
                 </span>
               </button>
 
               {selectedGroup === group.commands[0].group && (
-                <div style={commandsStyle}>
+                <div className={styles.commands}>
                   {group.commands.map((command) => (
                     <button
                       key={command.id}
-                      style={commandItemStyle}
+                      className={clsx(
+                        styles.commandItem,
+                        !isEditorReady && styles.commandItemDisabled
+                      )}
                       onClick={(e) => isEditorReady && handleCommandClick(command, e)}
                       title={isEditorReady ? command.description : '等待编辑器准备就绪...'}
-                      onMouseEnter={(e) => {
-                        if (isEditorReady) {
-                          e.currentTarget.style.backgroundColor = '#f3f4f6';
-                        }
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.backgroundColor = 'transparent';
-                      }}
                     >
-                      <div style={commandIconStyle}>{command.icon}</div>
-                      <div style={commandInfoStyle}>
-                        <div style={commandNameStyle}>{command.name}</div>
-                        <div style={commandDescriptionStyle}>
+                      <div className={styles.commandIcon}>{command.icon}</div>
+                      <div className={styles.commandInfo}>
+                        <div className={styles.commandName}>{command.name}</div>
+                        <div className={styles.commandDescription}>
                           {command.description}
                         </div>
                       </div>
@@ -753,8 +613,36 @@ export function BlockCommandsSidebar() {
               )}
             </div>
           ))}
+          
+          {blockGroups.length === 0 && (
+            <div className={styles.emptyState}>
+              暂无可用命令
+            </div>
+          )}
         </div>
       )}
+
+      {/* 折叠状态下的功能指示器 */}
+      <div className={styles.collapsedIndicators}>
+        {blockGroups.map((group, index) => (
+          <div
+            key={group.name}
+            className={clsx(
+              styles.collapsedIndicator,
+              selectedGroup === group.commands[0].group && styles.collapsedIndicatorActive
+            )}
+            onClick={() => {
+              setIsCollapsed(false);
+              setTimeout(() => handleGroupClick(group.commands[0].group), 100);
+            }}
+            title={`${group.name} (${group.commands.length} 个命令)`}
+          >
+            {index === 0 && '¶'}  {/* 基础块 */}
+            {index === 1 && '📅'} {/* 日期时间 */}
+            {index === 2 && '⚡'}  {/* 操作 */}
+          </div>
+        ))}
+      </div>
     </div>
   );
 } 

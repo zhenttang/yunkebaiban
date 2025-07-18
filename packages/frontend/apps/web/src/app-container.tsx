@@ -1,4 +1,5 @@
 import type { PropsWithChildren } from 'react';
+import { SocketIOTestButton } from '@affine/core/components/socket-io-test-button';
 
 interface AppContainerProps {
   fallback?: boolean;
@@ -15,6 +16,7 @@ export function AppContainer({
   return (
     <div className="affine-app" data-platform="web">
       {children}
+      <SocketIOTestButton />
     </div>
   );
 } 

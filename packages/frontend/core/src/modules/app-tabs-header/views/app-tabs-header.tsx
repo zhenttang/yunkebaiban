@@ -550,6 +550,26 @@ export const AppTabsHeader = ({
           icon={<PlusIcon />}
         />
       </div>
+      {/* 测试用的明显云端状态指示器 */}
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '4px',
+        padding: '8px 12px',
+        borderRadius: '6px',
+        backgroundColor: '#10b981',
+        border: '2px solid #059669',
+        fontSize: '14px',
+        fontWeight: '600',
+        color: 'white',
+        cursor: 'pointer',
+        marginRight: '8px',
+        zIndex: 9999,
+        position: 'relative'
+      }} title="云端连接状态：已连接">
+        <span style={{ fontSize: '16px' }}>☁️</span>
+        <span>云端已连接</span>
+      </div>
       <IconButton size="24" onClick={onToggleRightSidebar}>
         <RightSidebarIcon />
       </IconButton>

@@ -121,37 +121,59 @@ export class CloudDocStorage extends DocStorageBase<CloudDocStorageOptions> {
   }
 
   override async pushDocUpdate(update: DocUpdate) {
-    // 使用HTTP REST API替代WebSocket
     const updateBase64 = await uint8ArrayToBase64(update.bin);
-    const docId = this.idConverter.newIdToOldId(update.docId);
+    const docId = this.idConverter?.newIdToOldId(update.docId) || update.docId;
     
-    const response = await fetch(`${this.options.serverBaseUrl}/api/workspaces/${this.spaceId}/docs/${docId}/updates`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-affine-version': '0.17.0',
-      },
-      credentials: 'include',
-      body: JSON.stringify({
-        update: updateBase64,
-        timestamp: update.timestamp?.getTime() || Date.now(),
-      }),
-    });
-
-    if (!response.ok) {
-      throw new Error(`Failed to push doc update: ${response.status} ${response.statusText}`);
-    }
-
-    const data = await response.json();
-    
-    if (!data.success) {
-      throw new Error(data.error?.message || 'Failed to push doc update');
-    }
-
-    return {
+    console.log('🚀 [前端文档保存-CloudDocStorage] 开始保存文档更新:', {
       docId: update.docId,
-      timestamp: new Date(data.timestamp),
-    };
+      oldDocId: docId,
+      spaceId: this.spaceId,
+      updateSize: update.bin.length,
+      base64Size: updateBase64.length,
+      timestamp: update.timestamp?.getTime() || Date.now()
+    });
+    
+    // 首先尝试使用全局云存储管理器
+    try {
+      const cloudStorageManager = (window as any).__CLOUD_STORAGE_MANAGER__;
+      if (cloudStorageManager && cloudStorageManager.isConnected && cloudStorageManager.pushDocUpdate) {
+        console.log('📡 [前端文档保存-CloudDocStorage] 使用云存储管理器');
+        const timestamp = await cloudStorageManager.pushDocUpdate(docId, update.bin);
+        console.log('✅ [前端文档保存-CloudDocStorage] 云存储管理器保存成功:', timestamp);
+        return;
+      }
+    } catch (error) {
+      console.warn('⚠️ [前端文档保存-CloudDocStorage] 云存储管理器失败，降级到Socket.IO:', error);
+    }
+    
+    // 降级到原始Socket.IO方法
+    if (!this.connection.inner.socket?.connected) {
+      console.error('❌ [前端文档保存-CloudDocStorage] Socket未连接，无法保存文档');
+      throw new Error('Socket.IO connection not established');
+    }
+    
+    try {
+      // 使用Socket.IO推送文档更新
+      const result = await this.connection.inner.socket.emitWithAck('space:push-doc-update', {
+        spaceType: this.options.type,
+        spaceId: this.spaceId,
+        docId: docId,
+        update: updateBase64
+      });
+      
+      console.log('📡 [前端文档保存-CloudDocStorage] 收到Socket.IO响应:', result);
+      
+      if ('error' in result) {
+        console.error('❌ [前端文档保存-CloudDocStorage] Socket.IO响应错误:', result.error);
+        throw new Error(`Socket.IO error: ${result.error.message}`);
+      }
+      
+      console.log('✅ [前端文档保存-CloudDocStorage] 文档更新成功推送, timestamp:', result.timestamp);
+      
+    } catch (error) {
+      console.error('💥 [前端文档保存-CloudDocStorage] Socket.IO推送失败:', error);
+      throw error;
+    }
   }
 
   /**
@@ -262,7 +284,14 @@ class CloudDocStorageConnection extends SocketConnection {
     private readonly options: CloudDocStorageOptions,
     private readonly onServerUpdate: ServerEventsMap['space:broadcast-doc-update']
   ) {
-    super(options.serverBaseUrl, options.isSelfHosted);
+    // 🔌 [Socket.IO修复] 为Socket.IO连接使用专用端口9092
+    const socketUrl = options.serverBaseUrl.replace(':8080', ':9092');
+    console.log('🔌 [Socket.IO修复] 连接地址调整:', {
+      originalUrl: options.serverBaseUrl,
+      socketUrl: socketUrl,
+      description: 'Socket.IO服务器运行在端口9092'
+    });
+    super(socketUrl, options.isSelfHosted);
   }
 
   idConverter: IdConverter | null = null;

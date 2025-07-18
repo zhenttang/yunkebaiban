@@ -343,6 +343,12 @@ export class DocSyncPeer {
             : localDocRecord?.bin;
         if (diff && !isEmptyUpdate(diff)) {
           throwIfAborted(signal);
+          console.log('🔄 [同步] 准备推送文档差异更新:', {
+            docId,
+            peerId: this.peerId,
+            diffSize: diff.length,
+            uniqueId: this.uniqueId
+          });
           const { timestamp: remoteClock } = await this.remote.pushDocUpdate(
             {
               bin: diff,
@@ -350,6 +356,11 @@ export class DocSyncPeer {
             },
             this.uniqueId
           );
+          console.log('✅ [同步] 差异更新推送成功:', {
+            docId,
+            remoteClock,
+            peerId: this.peerId
+          });
           this.schedule({
             type: 'save',
             docId,

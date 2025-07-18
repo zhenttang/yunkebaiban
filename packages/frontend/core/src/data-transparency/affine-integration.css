@@ -1,0 +1,586 @@
+/* AFFiNE 数据透明化集成样式 */
+
+/* 1. 文档状态指示器样式 */
+.document-status-indicator {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  margin-left: 8px;
+}
+
+.document-status-indicator .status-button {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  background: transparent;
+  border: 1px solid var(--dt-border-color);
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: all 0.2s ease;
+}
+
+.document-status-indicator .status-button:hover {
+  background: var(--dt-background-color);
+  border-color: var(--dt-primary-color);
+}
+
+.document-status-indicator .main-status {
+  font-size: 14px;
+}
+
+.document-status-indicator .storage-indicators {
+  font-size: 10px;
+  opacity: 0.8;
+}
+
+.document-status-indicator .offline-count {
+  background: var(--dt-warning-color);
+  color: white;
+  padding: 1px 4px;
+  border-radius: 2px;
+  font-size: 9px;
+  font-weight: bold;
+}
+
+/* 悬浮提示 */
+.document-status-indicator .status-tooltip {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: 4px;
+  background: rgba(0, 0, 0, 0.9);
+  color: white;
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 1000;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.document-status-indicator .status-tooltip::before {
+  content: '';
+  position: absolute;
+  top: -4px;
+  left: 12px;
+  width: 0;
+  height: 0;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-bottom: 4px solid rgba(0, 0, 0, 0.9);
+}
+
+.document-status-indicator .status-line {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 2px;
+}
+
+.document-status-indicator .status-line:last-child {
+  margin-bottom: 0;
+}
+
+.document-status-indicator .status-line .label {
+  opacity: 0.7;
+}
+
+.document-status-indicator .status-line .value {
+  font-weight: 500;
+}
+
+/* 详细面板 */
+.document-status-indicator .status-detail-panel {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: 4px;
+  width: 320px;
+  background: white;
+  border: 1px solid var(--dt-border-color);
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+/* 2. 工作空间数据面板样式 */
+.workspace-data-panel {
+  padding: 12px;
+  border: 1px solid var(--dt-border-color);
+  border-radius: 8px;
+  margin-bottom: 12px;
+  background: white;
+}
+
+.workspace-data-panel.collapsed {
+  padding: 8px;
+  display: flex;
+  justify-content: center;
+}
+
+.workspace-data-panel .collapsed-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.workspace-data-panel .expand-button {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: transparent;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.workspace-data-panel .expand-button:hover {
+  background: var(--dt-background-color);
+}
+
+.workspace-data-panel .expand-button .icon {
+  font-size: 16px;
+}
+
+.workspace-data-panel .expand-button .status-dot {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  font-size: 8px;
+}
+
+.workspace-data-panel .panel-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.workspace-data-panel .panel-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--dt-text-color);
+  width: 100%;
+  text-align: left;
+}
+
+.workspace-data-panel .panel-toggle:hover {
+  color: var(--dt-primary-color);
+}
+
+.workspace-data-panel .panel-toggle .arrow {
+  margin-left: auto;
+  font-size: 12px;
+  transition: transform 0.2s ease;
+}
+
+.workspace-data-panel .status-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 12px;
+}
+
+.workspace-data-panel .status-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.workspace-data-panel .status-item.warning {
+  color: var(--dt-warning-color);
+}
+
+.workspace-data-panel .status-item .label {
+  color: var(--dt-text-light);
+}
+
+.workspace-data-panel .status-item .value.connected {
+  color: var(--dt-success-color);
+}
+
+.workspace-data-panel .status-item .value.disconnected {
+  color: var(--dt-error-color);
+}
+
+.workspace-data-panel .detailed-panel {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--dt-border-color);
+}
+
+/* 3. 文档数据标签页样式 */
+.document-data-tab {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.document-data-tab .tab-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--dt-border-color);
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--dt-text-light);
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.document-data-tab .tab-header:hover {
+  color: var(--dt-text-color);
+  background: var(--dt-background-color);
+}
+
+.document-data-tab .tab-header.active {
+  color: var(--dt-primary-color);
+  background: rgba(25, 118, 210, 0.1);
+}
+
+.document-data-tab .tab-header.active::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--dt-primary-color);
+}
+
+.document-data-tab .tab-icon {
+  font-size: 14px;
+}
+
+.document-data-tab .notification-badge {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 6px;
+  height: 6px;
+  background: var(--dt-warning-color);
+  border-radius: 50%;
+  font-size: 8px;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.document-data-tab .tab-content {
+  flex: 1;
+  padding: 16px;
+  overflow-y: auto;
+}
+
+.document-data-tab .loading-state,
+.document-data-tab .error-state {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  color: var(--dt-text-light);
+  font-size: 14px;
+}
+
+.document-data-tab .error-state {
+  color: var(--dt-error-color);
+}
+
+/* 4. 编辑器状态栏样式 */
+.editor-status-bar {
+  display: flex;
+  align-items: center;
+  padding: 8px 16px;
+  background: var(--dt-background-color);
+  border-top: 1px solid var(--dt-border-color);
+  font-size: 12px;
+  color: var(--dt-text-light);
+}
+
+.editor-status-bar .status-bar-content {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+}
+
+.editor-status-bar .main-status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.editor-status-bar .status-icon {
+  font-size: 14px;
+}
+
+.editor-status-bar .status-text {
+  font-weight: 500;
+  color: var(--dt-text-color);
+}
+
+.editor-status-bar .sync-progress {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.editor-status-bar .progress-bar {
+  width: 60px;
+  height: 4px;
+  background: var(--dt-border-color);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.editor-status-bar .progress-fill {
+  height: 100%;
+  background: var(--dt-primary-color);
+  transition: width 0.3s ease;
+}
+
+.editor-status-bar .progress-text {
+  font-size: 11px;
+  color: var(--dt-text-light);
+}
+
+.editor-status-bar .last-update {
+  font-size: 11px;
+  color: var(--dt-text-light);
+}
+
+.editor-status-bar .storage-indicators {
+  display: flex;
+  gap: 4px;
+  margin-left: auto;
+}
+
+.editor-status-bar .storage-indicator {
+  font-size: 12px;
+  opacity: 0.7;
+}
+
+.editor-status-bar .details-button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 12px;
+  padding: 2px 4px;
+  border-radius: 2px;
+  transition: background 0.2s ease;
+}
+
+.editor-status-bar .details-button:hover {
+  background: var(--dt-border-color);
+}
+
+.editor-status-bar .status-details-panel {
+  position: absolute;
+  bottom: 100%;
+  right: 0;
+  margin-bottom: 4px;
+  width: 300px;
+  background: white;
+  border: 1px solid var(--dt-border-color);
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+/* 5. 数据透明化设置样式 */
+.data-transparency-settings {
+  padding: 20px;
+  max-width: 600px;
+}
+
+.data-transparency-settings h3 {
+  margin: 0 0 20px 0;
+  color: var(--dt-text-color);
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.data-transparency-settings h4 {
+  margin: 16px 0 12px 0;
+  color: var(--dt-text-color);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.data-transparency-settings .settings-section {
+  margin-bottom: 24px;
+  padding: 16px;
+  background: white;
+  border: 1px solid var(--dt-border-color);
+  border-radius: 8px;
+}
+
+.data-transparency-settings label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  color: var(--dt-text-color);
+}
+
+.data-transparency-settings label:last-child {
+  margin-bottom: 0;
+}
+
+.data-transparency-settings input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  margin: 0;
+}
+
+.data-transparency-settings select {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid var(--dt-border-color);
+  border-radius: 4px;
+  font-size: 14px;
+  background: white;
+  color: var(--dt-text-color);
+}
+
+.data-transparency-settings select:focus {
+  outline: none;
+  border-color: var(--dt-primary-color);
+}
+
+.data-transparency-settings .loading-indicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px;
+  background: rgba(25, 118, 210, 0.1);
+  border: 1px solid var(--dt-primary-color);
+  border-radius: 4px;
+  color: var(--dt-primary-color);
+  font-size: 14px;
+}
+
+.data-transparency-settings .loading-indicator::before {
+  content: '🔄';
+  animation: rotate 1s linear infinite;
+}
+
+/* 6. 响应式设计 */
+@media (max-width: 768px) {
+  .document-status-indicator .status-detail-panel {
+    width: 280px;
+    left: auto;
+    right: 0;
+  }
+  
+  .workspace-data-panel {
+    padding: 8px;
+  }
+  
+  .editor-status-bar {
+    padding: 6px 12px;
+  }
+  
+  .editor-status-bar .status-bar-content {
+    gap: 8px;
+  }
+  
+  .editor-status-bar .storage-indicators {
+    display: none;
+  }
+  
+  .data-transparency-settings {
+    padding: 16px;
+  }
+}
+
+/* 7. 暗色主题支持 */
+[data-theme="dark"] {
+  --dt-text-color: #e0e0e0;
+  --dt-text-light: #b0b0b0;
+  --dt-background-color: #2d2d2d;
+  --dt-border-color: #404040;
+}
+
+[data-theme="dark"] .document-status-indicator .status-tooltip {
+  background: rgba(255, 255, 255, 0.9);
+  color: #333;
+}
+
+[data-theme="dark"] .document-status-indicator .status-tooltip::before {
+  border-bottom-color: rgba(255, 255, 255, 0.9);
+}
+
+[data-theme="dark"] .document-status-indicator .status-detail-panel,
+[data-theme="dark"] .editor-status-bar .status-details-panel {
+  background: #2d2d2d;
+  border-color: #404040;
+}
+
+[data-theme="dark"] .workspace-data-panel,
+[data-theme="dark"] .data-transparency-settings .settings-section {
+  background: #2d2d2d;
+  border-color: #404040;
+}
+
+/* 8. 动画效果 */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.document-status-indicator .status-tooltip,
+.document-status-indicator .status-detail-panel,
+.editor-status-bar .status-details-panel {
+  animation: fadeIn 0.2s ease-out;
+}
+
+.workspace-data-panel .detailed-panel {
+  animation: slideIn 0.3s ease-out;
+}
+
+/* 9. 打印样式 */
+@media print {
+  .document-status-indicator,
+  .workspace-data-panel,
+  .document-data-tab,
+  .editor-status-bar {
+    display: none !important;
+  }
+}

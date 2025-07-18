@@ -24,7 +24,8 @@ export class CloudAwarenessStorage extends AwarenessStorageBase {
   }
 
   connection = new SocketConnection(
-    this.options.serverBaseUrl,
+    // 🔌 [Socket.IO修复] 为Socket.IO连接使用专用端口9092
+    this.options.serverBaseUrl.replace(':8080', ':9092'),
     this.options.isSelfHosted
   );
 

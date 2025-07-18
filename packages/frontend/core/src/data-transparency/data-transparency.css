@@ -1,0 +1,652 @@
+/* 数据透明化组件样式 */
+
+/* 基础变量 */
+:root {
+  --dt-primary-color: #1976d2;
+  --dt-success-color: #4caf50;
+  --dt-warning-color: #ff9800;
+  --dt-error-color: #f44336;
+  --dt-info-color: #2196f3;
+  --dt-purple-color: #9c27b0;
+  --dt-grey-color: #607d8b;
+  --dt-border-color: #e0e0e0;
+  --dt-background-color: #f5f5f5;
+  --dt-text-color: #333;
+  --dt-text-light: #666;
+  --dt-border-radius: 8px;
+  --dt-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+/* 数据状态图标 */
+.data-status-icon {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  font-size: 16px;
+  line-height: 20px;
+  text-align: center;
+  border-radius: 50%;
+  margin-right: 8px;
+}
+
+.data-status-icon.available {
+  color: var(--dt-success-color);
+  background-color: rgba(76, 175, 80, 0.1);
+}
+
+.data-status-icon.unavailable {
+  color: var(--dt-error-color);
+  background-color: rgba(244, 67, 54, 0.1);
+}
+
+.data-status-icon.syncing {
+  color: var(--dt-warning-color);
+  background-color: rgba(255, 152, 0, 0.1);
+  animation: rotate 1s linear infinite;
+}
+
+.data-status-icon.error {
+  color: var(--dt-error-color);
+  background-color: rgba(244, 67, 54, 0.1);
+}
+
+.data-status-icon.conflict {
+  color: var(--dt-purple-color);
+  background-color: rgba(156, 39, 176, 0.1);
+}
+
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* 存储位置指示器 */
+.storage-location {
+  display: flex;
+  flex-direction: column;
+  padding: 12px;
+  border: 1px solid var(--dt-border-color);
+  border-radius: var(--dt-border-radius);
+  background-color: white;
+  margin-bottom: 8px;
+  transition: all 0.3s ease;
+}
+
+.storage-location:hover {
+  box-shadow: var(--dt-shadow);
+}
+
+.storage-location.available {
+  border-color: var(--dt-success-color);
+}
+
+.storage-location.unavailable {
+  border-color: var(--dt-border-color);
+  background-color: var(--dt-background-color);
+}
+
+.location-header {
+  display: flex;
+  align-items: center;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.location-name {
+  color: var(--dt-text-color);
+}
+
+.location-details {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--dt-text-light);
+}
+
+.location-details .size,
+.location-details .last-updated {
+  display: block;
+}
+
+/* 同步状态指示器 */
+.sync-status {
+  padding: 12px;
+  border: 1px solid var(--dt-border-color);
+  border-radius: var(--dt-border-radius);
+  background-color: white;
+  margin-bottom: 8px;
+}
+
+.sync-status.synced {
+  border-color: var(--dt-success-color);
+  background-color: rgba(76, 175, 80, 0.05);
+}
+
+.sync-status.pending {
+  border-color: var(--dt-warning-color);
+  background-color: rgba(255, 152, 0, 0.05);
+}
+
+.sync-status.failed {
+  border-color: var(--dt-error-color);
+  background-color: rgba(244, 67, 54, 0.05);
+}
+
+.sync-status.conflict {
+  border-color: var(--dt-purple-color);
+  background-color: rgba(156, 39, 176, 0.05);
+}
+
+.sync-status.offline {
+  border-color: var(--dt-grey-color);
+  background-color: rgba(96, 125, 139, 0.05);
+}
+
+.status-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.status-description {
+  font-weight: 500;
+  color: var(--dt-text-color);
+}
+
+.progress-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.progress-bar {
+  flex: 1;
+  height: 6px;
+  background-color: var(--dt-border-color);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.3s ease;
+}
+
+.progress-text {
+  font-size: 12px;
+  color: var(--dt-text-light);
+  min-width: 30px;
+}
+
+.last-sync {
+  font-size: 12px;
+  color: var(--dt-text-light);
+}
+
+/* 数据完整性指示器 */
+.integrity-status {
+  padding: 12px;
+  border: 1px solid var(--dt-border-color);
+  border-radius: var(--dt-border-radius);
+  background-color: white;
+  margin-bottom: 8px;
+}
+
+.integrity-status.intact {
+  border-color: var(--dt-success-color);
+  background-color: rgba(76, 175, 80, 0.05);
+}
+
+.integrity-status.corrupted {
+  border-color: var(--dt-error-color);
+  background-color: rgba(244, 67, 54, 0.05);
+}
+
+.integrity-status.partial {
+  border-color: var(--dt-warning-color);
+  background-color: rgba(255, 152, 0, 0.05);
+}
+
+.integrity-status.missing {
+  border-color: var(--dt-grey-color);
+  background-color: rgba(96, 125, 139, 0.05);
+}
+
+.check-time {
+  font-size: 12px;
+  color: var(--dt-text-light);
+  margin-top: 4px;
+}
+
+/* 文档数据透明化组件 */
+.document-transparency {
+  border: 1px solid var(--dt-border-color);
+  border-radius: var(--dt-border-radius);
+  background-color: white;
+  margin-bottom: 16px;
+  overflow: hidden;
+}
+
+.document-transparency.loading,
+.document-transparency.error,
+.document-transparency.empty {
+  padding: 20px;
+  text-align: center;
+}
+
+.document-transparency.compact {
+  border: none;
+  margin-bottom: 8px;
+}
+
+.loading-spinner {
+  color: var(--dt-warning-color);
+  font-size: 14px;
+}
+
+.error-message {
+  color: var(--dt-error-color);
+  font-size: 14px;
+  margin-bottom: 12px;
+}
+
+.retry-button {
+  background-color: var(--dt-primary-color);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.retry-button:hover {
+  background-color: #1565c0;
+}
+
+.transparency-header {
+  display: flex;
+  align-items: center;
+  padding: 16px;
+  border-bottom: 1px solid var(--dt-border-color);
+  background-color: var(--dt-background-color);
+}
+
+.document-title {
+  flex: 1;
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--dt-text-color);
+}
+
+.expand-button,
+.refresh-button {
+  background-color: transparent;
+  border: 1px solid var(--dt-border-color);
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  margin-left: 8px;
+}
+
+.expand-button:hover,
+.refresh-button:hover {
+  background-color: var(--dt-border-color);
+}
+
+.transparency-content {
+  padding: 16px;
+}
+
+.section {
+  margin-bottom: 24px;
+}
+
+.section h4 {
+  margin: 0 0 12px 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--dt-text-color);
+}
+
+.storage-locations {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+}
+
+/* 紧凑模式 */
+.compact-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+}
+
+.compact-description {
+  color: var(--dt-text-color);
+}
+
+.offline-count {
+  background-color: var(--dt-warning-color);
+  color: white;
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 10px;
+}
+
+/* 离线操作 */
+.offline-operations {
+  padding: 12px;
+  border: 1px solid var(--dt-border-color);
+  border-radius: var(--dt-border-radius);
+  background-color: white;
+}
+
+.operation-summary {
+  font-weight: 500;
+  color: var(--dt-text-color);
+  margin-bottom: 8px;
+}
+
+.operation-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.operation-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  background-color: var(--dt-background-color);
+  border-radius: 4px;
+  font-size: 12px;
+}
+
+.operation-type {
+  color: var(--dt-text-color);
+  font-weight: 500;
+}
+
+.operation-time {
+  color: var(--dt-text-light);
+}
+
+.operation-size {
+  color: var(--dt-text-light);
+  margin-left: auto;
+}
+
+/* 版本信息 */
+.version-info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  border: 1px solid var(--dt-border-color);
+  border-radius: var(--dt-border-radius);
+  background-color: white;
+}
+
+.version-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+}
+
+.version-label {
+  color: var(--dt-text-light);
+  min-width: 80px;
+}
+
+.version-value {
+  color: var(--dt-text-color);
+  font-family: monospace;
+}
+
+.version-value.consistent {
+  color: var(--dt-success-color);
+}
+
+.version-value.inconsistent {
+  color: var(--dt-error-color);
+}
+
+/* 工作空间数据透明化组件 */
+.workspace-transparency {
+  border: 1px solid var(--dt-border-color);
+  border-radius: var(--dt-border-radius);
+  background-color: white;
+  margin-bottom: 16px;
+}
+
+.workspace-transparency.loading,
+.workspace-transparency.error,
+.workspace-transparency.empty {
+  padding: 40px;
+  text-align: center;
+}
+
+.workspace-title {
+  flex: 1;
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--dt-text-color);
+}
+
+.section h3 {
+  margin: 0 0 16px 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--dt-text-color);
+}
+
+/* 存储摘要 */
+.storage-summary,
+.sync-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 16px;
+}
+
+.summary-item {
+  display: flex;
+  flex-direction: column;
+  padding: 12px;
+  border: 1px solid var(--dt-border-color);
+  border-radius: var(--dt-border-radius);
+  background-color: white;
+}
+
+.summary-label {
+  font-size: 12px;
+  color: var(--dt-text-light);
+  margin-bottom: 4px;
+}
+
+.summary-value {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--dt-text-color);
+}
+
+/* 连接状态 */
+.connection-status {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.status-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border: 1px solid var(--dt-border-color);
+  border-radius: var(--dt-border-radius);
+  background-color: white;
+}
+
+.status-label {
+  color: var(--dt-text-light);
+  font-size: 12px;
+}
+
+.status-value {
+  color: var(--dt-text-color);
+  font-weight: 500;
+  margin-left: auto;
+}
+
+/* 文档列表 */
+.documents-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.document-item {
+  border: 1px solid var(--dt-border-color);
+  border-radius: var(--dt-border-radius);
+  background-color: white;
+  overflow: hidden;
+}
+
+.document-header {
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.document-header:hover {
+  background-color: var(--dt-background-color);
+}
+
+.document-header .document-title {
+  flex: 1;
+  margin: 0;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--dt-text-color);
+}
+
+.document-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-right: 12px;
+}
+
+.status-text {
+  font-size: 12px;
+  color: var(--dt-text-light);
+}
+
+.offline-badge {
+  background-color: var(--dt-warning-color);
+  color: white;
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 10px;
+}
+
+.document-details {
+  border-top: 1px solid var(--dt-border-color);
+  padding: 16px;
+  background-color: var(--dt-background-color);
+}
+
+/* 数据透明化控制面板 */
+.data-transparency-panel {
+  border: 1px solid var(--dt-border-color);
+  border-radius: var(--dt-border-radius);
+  background-color: white;
+  margin-bottom: 16px;
+}
+
+.data-transparency-panel.loading {
+  padding: 40px;
+  text-align: center;
+}
+
+.panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px;
+  border-bottom: 1px solid var(--dt-border-color);
+  background-color: var(--dt-background-color);
+}
+
+.panel-header h2 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--dt-text-color);
+}
+
+.panel-controls {
+  display: flex;
+  gap: 16px;
+}
+
+.panel-controls label {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--dt-text-light);
+  cursor: pointer;
+}
+
+.panel-controls input[type="checkbox"] {
+  margin: 0;
+}
+
+.panel-content {
+  padding: 16px;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .storage-locations {
+    grid-template-columns: 1fr;
+  }
+  
+  .storage-summary,
+  .sync-summary {
+    grid-template-columns: 1fr;
+  }
+  
+  .panel-header {
+    flex-direction: column;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  
+  .panel-controls {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .transparency-header {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  
+  .document-header {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+}

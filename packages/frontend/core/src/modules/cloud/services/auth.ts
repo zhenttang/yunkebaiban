@@ -176,12 +176,25 @@ export class AuthService extends Service {
     verifyToken?: string;
     challenge?: string;
   }) {
+    console.log('=== AuthService.signInPassword 开始 ===');
+    console.log('登录凭据:', { email: credential.email, hasPassword: !!credential.password });
+    
     track.$.$.auth.signIn({ method: 'password' });
     try {
+      console.log('调用 AuthStore.signInPassword');
       await this.store.signInPassword(credential);
+      
+      console.log('登录成功，重新验证会话');
       this.session.revalidate();
+      
+      console.log('发送登录成功事件');
       track.$.$.auth.signedIn({ method: 'password' });
+      
+      console.log('=== AuthService.signInPassword 完成 ===');
     } catch (e) {
+      console.error('=== AuthService.signInPassword 失败 ===');
+      console.error('登录失败:', e);
+      
       track.$.$.auth.signInFail({
         method: 'password',
         reason: UserFriendlyError.fromAny(e).name,

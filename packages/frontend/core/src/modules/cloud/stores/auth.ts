@@ -114,7 +114,11 @@ export class AuthStore extends Store {
     verifyToken?: string;
     challenge?: string;
   }) {
+    console.log('=== AuthStore.signInPassword 开始 ===');
+    console.log('登录凭据:', { email: credential.email, hasPassword: !!credential.password });
+    
     const user = await this.authProvider.signInPassword(credential);
+    console.log('AuthProvider 返回用户信息:', user);
     
     // 登录成功后，存储用户会话信息
     if (user) {
@@ -130,7 +134,12 @@ export class AuthStore extends Store {
         token: null, // Java后端使用Cookie，不需要token
         expiresAt: null,
       };
+      
+      console.log('存储会话信息到缓存:', sessionInfo);
       this.setCachedAuthSession(sessionInfo);
+      console.log('=== AuthStore.signInPassword 完成 ===');
+    } else {
+      console.warn('AuthProvider 返回空用户信息');
     }
   }
 

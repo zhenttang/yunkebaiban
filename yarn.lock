@@ -9878,11 +9878,12 @@ __metadata:
 "@swc/core-win32-x64-msvc@npm:1.12.11":
   version: 1.12.11
   resolution: "@swc/core-win32-x64-msvc@npm:1.12.11"
+  checksum: 10/f01726d0b8763214f4e76f376703637d07ef64061ca6aa79ab95b60bb9f73d28ede180cb014e7e2c768c20787173fd7ec296b68de306e65bc454c491a9ff9b25
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
 
-"@swc/core@npm:^1.10.1, @swc/core@npm:^1.11.31":
+"@swc/core@npm:1.12.11, @swc/core@npm:^1.10.1, @swc/core@npm:^1.11.31":
   version: 1.12.11
   resolution: "@swc/core@npm:1.12.11"
   dependencies:
@@ -12058,6 +12059,8 @@ __metadata:
     "@magic-works/i18n-codegen": "npm:^0.6.1"
     "@playwright/test": "npm:=1.52.0"
     "@smarttools/eslint-plugin-rxjs": "npm:^1.0.8"
+    "@swc/core": "npm:1.12.11"
+    "@swc/core-win32-x64-msvc": "npm:1.12.11"
     "@taplo/cli": "npm:^0.7.0"
     "@toeverything/infra": "workspace:*"
     "@types/eslint": "npm:^9.6.1"

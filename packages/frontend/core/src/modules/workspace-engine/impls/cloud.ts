@@ -165,7 +165,9 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
       docStorage: DocStorage
     ) => Promise<void>
   ): Promise<WorkspaceMetadata> {
-    console.log('CloudWorkspaceFlavourProvider - 开始创建工作空间');
+    console.log('=== 前端 CloudWorkspaceFlavourProvider.createWorkspace 开始 ===');
+    console.log('当前认证状态:', this.authService.session.account$.value);
+    console.log('当前服务器信息:', this.server.id, this.server.serverMetadata.baseUrl);
     
     // 构造请求数据
     const requestData = {
@@ -183,7 +185,8 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
         'Content-Type': 'application/json',
       },
       cookies: document.cookie,
-      requestBody: requestData
+      requestBody: requestData,
+      currentUser: this.authService.session.account$.value
     });
     
     try {
