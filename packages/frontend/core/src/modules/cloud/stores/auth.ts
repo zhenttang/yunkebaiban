@@ -52,20 +52,59 @@ export class AuthStore extends Store {
     this.globalState.set('auth-client-nonce', nonce);
   }
 
+  // JWT token管理方法
+  getStoredToken(): string | null {
+    // 优先从GlobalState获取，如果没有则从localStorage获取（兼容管理员模块）
+    return this.globalState.get<string>(`${this.serverService.server.id}-auth-token`) ||
+           localStorage.getItem('affine-admin-token');
+  }
+
+  getStoredRefreshToken(): string | null {
+    return this.globalState.get<string>(`${this.serverService.server.id}-auth-refresh-token`);
+  }
+
+  setStoredTokens(token: string, refreshToken: string) {
+    // 存储到GlobalState（核心模块）
+    this.globalState.set(`${this.serverService.server.id}-auth-token`, token);
+    this.globalState.set(`${this.serverService.server.id}-auth-refresh-token`, refreshToken);
+    
+    // 同时存储到localStorage（兼容管理员模块）
+    localStorage.setItem('affine-admin-token', token);
+    localStorage.setItem('affine-admin-refresh-token', refreshToken);
+  }
+
+  clearStoredTokens() {
+    // 清除GlobalState（核心模块）
+    this.globalState.set(`${this.serverService.server.id}-auth-token`, null);
+    this.globalState.set(`${this.serverService.server.id}-auth-refresh-token`, null);
+    
+    // 清除localStorage（兼容管理员模块）
+    localStorage.removeItem('affine-admin-token');
+    localStorage.removeItem('affine-admin-refresh-token');
+  }
+
   async fetchSession() {
     const url = `/api/auth/session`;
+    
+    // 从localStorage获取JWT token
+    const token = this.getStoredToken();
+    if (!token) {
+      return { user: null };
+    }
+    
     const options: RequestInit = {
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
       },
-      credentials: 'include', // 包含cookies，因为Java后端使用cookie认证
     };
 
     const res = await this.fetchService.fetch(url, options);
     
     if (!res.ok) {
       if (res.status === 401) {
-        // 未认证，返回空会话
+        // 未认证或token过期，清除本地token
+        this.clearStoredTokens();
         return { user: null };
       }
       const errorData = await res.json().catch(() => ({}));
@@ -74,29 +113,52 @@ export class AuthStore extends Store {
     
     const data = await res.json();
     
-    // Java后端返回 { user: userInfo } 或 { user: null }
+    // 如果有用户信息，更新缓存的会话
     if (data.user) {
-      // 如果有用户信息，更新缓存的会话
       const sessionInfo = {
         user: data.user,
-        token: null, // Java后端使用Cookie认证
-        expiresAt: null,
+        token: token,
+        expiresAt: null, // JWT的过期时间在token中
       };
       this.setCachedAuthSession(sessionInfo);
       return { user: data.user };
     }
     
-    // 如果没有用户信息，清除缓存的会话
+    // 如果没有用户信息，清除缓存的会话和token
     this.setCachedAuthSession(null);
+    this.clearStoredTokens();
     return { user: null };
   }
 
   async signInMagicLink(email: string, token: string) {
-    await this.authProvider.signInMagicLink(
+    console.log('=== AuthStore.signInMagicLink 开始 ===');
+    console.log('Magic Link 登录凭据:', { email, token });
+    
+    const result = await this.authProvider.signInMagicLink(
       email,
       token,
       this.getClientNonce()
     );
+    
+    console.log('AuthProvider 返回结果:', result);
+    
+    // 登录成功后，存储JWT token和用户会话信息
+    if (result && result.user) {
+      // 存储JWT tokens
+      this.setStoredTokens(result.token, result.refreshToken);
+      
+      const sessionInfo = {
+        user: result.user,
+        token: result.token,
+        expiresAt: null, // JWT的过期时间在token中
+      };
+      
+      console.log('存储会话信息和JWT token到缓存:', sessionInfo);
+      this.setCachedAuthSession(sessionInfo);
+      console.log('=== AuthStore.signInMagicLink 完成 ===');
+    } else {
+      console.warn('AuthProvider 返回空结果');
+    }
   }
 
   async signInOauth(code: string, state: string, provider: string) {
@@ -108,6 +170,35 @@ export class AuthStore extends Store {
     );
   }
 
+  async signInWithCode(credential: {
+    email: string;
+    code: string;
+  }) {
+    console.log('=== AuthStore.signInWithCode 开始 ===');
+    console.log('验证码登录凭据:', { email: credential.email, code: credential.code });
+    
+    const result = await this.authProvider.signInWithCode(credential);
+    console.log('AuthProvider 返回结果:', result);
+    
+    // 登录成功后，存储JWT token和用户会话信息
+    if (result && result.user) {
+      // 存储JWT tokens
+      this.setStoredTokens(result.token, result.refreshToken);
+      
+      const sessionInfo = {
+        user: result.user,
+        token: result.token,
+        expiresAt: null, // JWT的过期时间在token中
+      };
+      
+      console.log('存储会话信息和JWT token到缓存:', sessionInfo);
+      this.setCachedAuthSession(sessionInfo);
+      console.log('=== AuthStore.signInWithCode 完成 ===');
+    } else {
+      console.warn('AuthProvider 返回空结果');
+    }
+  }
+
   async signInPassword(credential: {
     email: string;
     password: string;
@@ -117,34 +208,33 @@ export class AuthStore extends Store {
     console.log('=== AuthStore.signInPassword 开始 ===');
     console.log('登录凭据:', { email: credential.email, hasPassword: !!credential.password });
     
-    const user = await this.authProvider.signInPassword(credential);
-    console.log('AuthProvider 返回用户信息:', user);
+    const result = await this.authProvider.signInPassword(credential);
+    console.log('AuthProvider 返回结果:', result);
     
-    // 登录成功后，存储用户会话信息
-    if (user) {
+    // 登录成功后，存储JWT token和用户会话信息
+    if (result && result.user) {
+      // 存储JWT tokens
+      this.setStoredTokens(result.token, result.refreshToken);
+      
       const sessionInfo = {
-        user: {
-          id: user.id,
-          email: user.email,
-          name: user.name,
-          hasPassword: user.hasPassword,
-          avatarUrl: user.avatarUrl,
-          emailVerified: user.emailVerified,
-        },
-        token: null, // Java后端使用Cookie，不需要token
-        expiresAt: null,
+        user: result.user,
+        token: result.token,
+        expiresAt: null, // JWT的过期时间在token中
       };
       
-      console.log('存储会话信息到缓存:', sessionInfo);
+      console.log('存储会话信息和JWT token到缓存:', sessionInfo);
       this.setCachedAuthSession(sessionInfo);
       console.log('=== AuthStore.signInPassword 完成 ===');
     } else {
-      console.warn('AuthProvider 返回空用户信息');
+      console.warn('AuthProvider 返回空结果');
     }
   }
 
   async signOut() {
     await this.authProvider.signOut();
+    // 清除JWT tokens和会话信息
+    this.clearStoredTokens();
+    this.setCachedAuthSession(null);
   }
 
   async uploadAvatar(file: File) {

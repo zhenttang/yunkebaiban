@@ -87,6 +87,7 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
   private readonly authService: AuthService;
   // private readonly graphqlService: GraphQLService;
   private readonly featureFlagService: FeatureFlagService;
+  private readonly fetchService: any; // FetchService
   private readonly unsubscribeAccountChanged: () => void;
 
   constructor(
@@ -96,6 +97,14 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
     this.authService = server.scope.get(AuthService);
     // this.graphqlService = server.scope.get(GraphQLService);
     this.featureFlagService = server.scope.get(FeatureFlagService);
+    // 获取FetchService实例
+    try {
+      this.fetchService = server.scope.get('FetchService');
+    } catch (e) {
+      // 如果无法获取FetchService，设置为null，后续使用原生fetch
+      this.fetchService = null;
+      console.warn('Unable to get FetchService:', e);
+    }
     this.unsubscribeAccountChanged = this.server.scope.eventBus.on(
       AccountChanged,
       () => {
@@ -105,6 +114,33 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
   }
 
   readonly flavour = this.server.id;
+
+  /**
+   * 发送带JWT token的HTTP请求
+   */
+  private async fetchWithAuth(url: string, options: RequestInit = {}): Promise<Response> {
+    if (this.fetchService) {
+      // 使用FetchService发送请求，确保包含JWT token
+      return await this.fetchService.fetch(url, options);
+    } else {
+      // 回退方案：手动添加JWT token
+      const headers = {
+        ...options.headers,
+      } as Record<string, string>;
+      
+      // 尝试从localStorage获取JWT token
+      const token = localStorage.getItem('affine-admin-token');
+      if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+      }
+      
+      return await fetch(url, {
+        ...options,
+        headers,
+        credentials: 'include',
+      });
+    }
+  }
 
   DocStorageType =
     BUILD_CONFIG.isElectron || BUILD_CONFIG.isIOS || BUILD_CONFIG.isAndroid
@@ -135,16 +171,14 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
 
   async deleteWorkspace(id: string): Promise<void> {
     // 使用REST API替代GraphQL删除工作空间
-    const baseUrl = 'http://localhost:8080';
     
     try {
       console.log(`[调试] 删除工作空间: ${id}`);
-      const response = await fetch(`${baseUrl}/api/workspaces/${id}`, {
+      const response = await this.fetchWithAuth(`/api/workspaces/${id}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
         },
-        credentials: 'include',
       });
       
       if (!response.ok) {
@@ -190,15 +224,42 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
     });
     
     try {
-      // 使用REST API创建工作区，替换GraphQL查询
-      const response = await fetch('/api/workspaces', {
-        method: 'POST',
-        headers: {
+      let response: Response;
+      
+      if (this.fetchService) {
+        // 使用FetchService发送请求，确保包含JWT token
+        console.log('使用FetchService发送创建工作空间请求');
+        response = await this.fetchService.fetch('/api/workspaces', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(requestData),
+        });
+      } else {
+        // 回退方案：手动添加JWT token
+        console.log('使用原生fetch发送创建工作空间请求，手动添加JWT token');
+        
+        const headers: Record<string, string> = {
           'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(requestData),
-        credentials: 'include',
-      });
+        };
+        
+        // 尝试从localStorage获取JWT token
+        const token = localStorage.getItem('affine-admin-token');
+        if (token) {
+          headers['Authorization'] = `Bearer ${token}`;
+          console.log('添加JWT token到请求头');
+        } else {
+          console.warn('未找到JWT token');
+        }
+        
+        response = await fetch('/api/workspaces', {
+          method: 'POST',
+          headers,
+          body: JSON.stringify(requestData),
+          credentials: 'include',
+        });
+      }
       
       console.log('创建工作空间响应状态', {
         status: response.status,
@@ -336,14 +397,13 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
             return null; // no cloud workspace if no account
           }
 
-          // 使用REST API替代GraphQL查询
+          // 使用带认证的REST API替代GraphQL查询
           try {
-            const response = await fetch('/api/workspaces', {
+            const response = await this.fetchWithAuth('/api/workspaces', {
               method: 'GET',
               headers: {
                 'Content-Type': 'application/json',
               },
-              credentials: 'include',
               signal,
             });
             
@@ -577,13 +637,11 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
         
         const finalSignal = signal || controller.signal;
         
-        const baseUrl = 'http://localhost:8080';
-        const response = await fetch(`${baseUrl}/api/docs/${docId}/workspace`, {
+        const response = await this.fetchWithAuth(`/api/docs/${docId}/workspace`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
           },
-          credentials: 'include',
           signal: finalSignal,
         });
         
@@ -716,7 +774,6 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
   }
 
   private async getWorkspaceInfo(workspaceId: string, signal?: AbortSignal) {
-    const baseUrl = 'http://localhost:8080';
     const maxRetries = 3;
     const retryDelay = 1000;
     
@@ -740,12 +797,11 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
         
         const finalSignal = signal || controller.signal;
         
-        const response = await fetch(`${baseUrl}/api/workspaces/${workspaceId}`, {
+        const response = await this.fetchWithAuth(`/api/workspaces/${workspaceId}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
           },
-          credentials: 'include',
           signal: finalSignal,
         });
         

@@ -61,6 +61,37 @@ export class AuthService extends Service {
     // this.session.revalidate();
   }
 
+  async signInWithCode(credential: {
+    email: string;
+    code: string;
+  }) {
+    console.log('=== AuthService.signInWithCode 开始 ===');
+    console.log('验证码登录凭据:', { email: credential.email, code: credential.code });
+    
+    track.$.$.auth.signIn({ method: 'verification-code' });
+    try {
+      console.log('调用 AuthStore.signInWithCode');
+      await this.store.signInWithCode(credential);
+      
+      console.log('验证码登录成功，重新验证会话');
+      this.session.revalidate();
+      
+      console.log('发送登录成功事件');
+      track.$.$.auth.signedIn({ method: 'verification-code' });
+      
+      console.log('=== AuthService.signInWithCode 完成 ===');
+    } catch (e) {
+      console.error('=== AuthService.signInWithCode 失败 ===');
+      console.error('验证码登录失败:', e);
+      
+      track.$.$.auth.signInFail({
+        method: 'verification-code',
+        reason: UserFriendlyError.fromAny(e).name,
+      });
+      throw e;
+    }
+  }
+
   async sendEmailMagicLink(
     email: string,
     verifyToken?: string,
@@ -102,13 +133,25 @@ export class AuthService extends Service {
   }
 
   async signInMagicLink(email: string, token: string, byLink = true) {
+    console.log('=== AuthService.signInMagicLink 开始 ===');
+    console.log('Magic Link 登录凭据:', { email, token, byLink });
+    
     const method = byLink ? 'magic-link' : 'otp';
     try {
+      console.log('调用 AuthStore.signInMagicLink');
       await this.store.signInMagicLink(email, token);
 
+      console.log('Magic Link 登录成功，重新验证会话');
       this.session.revalidate();
+      
+      console.log('发送登录成功事件');
       track.$.$.auth.signedIn({ method });
+      
+      console.log('=== AuthService.signInMagicLink 完成 ===');
     } catch (e) {
+      console.error('=== AuthService.signInMagicLink 失败 ===');
+      console.error('Magic Link 登录失败:', e);
+      
       track.$.$.auth.signInFail({
         method,
         reason: UserFriendlyError.fromAny(e).name,

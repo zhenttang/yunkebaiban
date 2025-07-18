@@ -29,6 +29,12 @@ export function configureDefaultAuthProvider(framework: Framework) {
         if (!data.success) {
           throw new Error(data.error || 'Magic link sign in failed');
         }
+        
+        return {
+          user: data.user,
+          token: data.token,
+          refreshToken: data.refreshToken
+        };
       },
 
       async signInOauth(
@@ -60,6 +66,40 @@ export function configureDefaultAuthProvider(framework: Framework) {
         return { redirectUri: data.redirectUri };
       },
       
+      async signInWithCode(credential: {
+        email: string;
+        code: string;
+      }) {
+        console.log('=== AuthProvider.signInWithCode 开始 ===');
+        console.log('验证码登录凭据:', { email: credential.email, code: credential.code });
+        
+        const response = await this.fetchService.fetch('/api/auth/sign-in-with-code', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email: credential.email,
+            code: credential.code,
+          }),
+        });
+
+        if (!response.ok) {
+          const error = await response.json();
+          console.error('验证码登录失败:', error);
+          throw new Error(error.message || 'Verification code sign-in failed');
+        }
+
+        const data = await response.json();
+        console.log('验证码登录成功响应:', data);
+        
+        return {
+          user: data.user,
+          token: data.token,
+          refreshToken: data.refreshToken
+        };
+      },
+
       async signInPassword(credential: {
         email: string;
         password: string;
@@ -113,8 +153,12 @@ export function configureDefaultAuthProvider(framework: Framework) {
           throw new Error(data.error || 'Password sign in failed');
         }
         
-        // 登录成功后，返回用户信息以便前端存储
-        return data.user;
+        // 登录成功后，返回用户信息和JWT令牌
+        return {
+          user: data.user,
+          token: data.token,
+          refreshToken: data.refreshToken
+        };
       },
       
       async sendVerificationCode(email: string) {
@@ -193,8 +237,12 @@ export function configureDefaultAuthProvider(framework: Framework) {
           throw new Error(data.error || 'Verification code sign in failed');
         }
 
-        // 登录成功后，返回用户信息以便前端存储
-        return data.user;
+        // 登录成功后，返回用户信息和JWT令牌
+        return {
+          user: data.user,
+          token: data.token,
+          refreshToken: data.refreshToken
+        };
       },
       
       async signOut() {

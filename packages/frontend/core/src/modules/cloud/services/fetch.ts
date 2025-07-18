@@ -3,13 +3,17 @@ import { UserFriendlyError } from '@affine/error';
 import { fromPromise, Service } from '@toeverything/infra';
 
 import type { ServerService } from './server';
+import type { AuthStore } from '../stores/auth';
 
 const logger = new DebugLogger('affine:fetch');
 
 export type FetchInit = RequestInit & { timeout?: number };
 
 export class FetchService extends Service {
-  constructor(private readonly serverService: ServerService) {
+  constructor(
+    private readonly serverService: ServerService,
+    private readonly authStore?: AuthStore
+  ) {
     super();
   }
   rxFetch = (
@@ -47,17 +51,33 @@ export class FetchService extends Service {
 
     let res: Response;
 
+    // 准备headers，包含JWT token
+    const headers = {
+      ...init?.headers,
+      'x-affine-version': BUILD_CONFIG.appVersion,
+    };
+
+    // 如果有AuthStore且不是登录接口，添加JWT token
+    if (this.authStore && !this.isAuthEndpoint(input)) {
+      // 检查authStore是否有getStoredToken方法
+      if (typeof this.authStore.getStoredToken === 'function') {
+        const token = this.authStore.getStoredToken();
+        if (token) {
+          headers['Authorization'] = `Bearer ${token}`;
+        }
+      } else {
+        console.warn('AuthStore.getStoredToken is not a function', this.authStore);
+      }
+    }
+
     try {
       res = await globalThis.fetch(
         new URL(input, this.serverService.server.serverMetadata.baseUrl),
         {
           ...init,
           signal: abortController.signal,
-          credentials: 'include', // 始终包含cookies
-          headers: {
-            ...init?.headers,
-            'x-affine-version': BUILD_CONFIG.appVersion,
-          },
+          // 移除credentials: 'include' - 不再使用Cookie
+          headers,
         }
       );
     } catch (err: any) {
@@ -96,4 +116,20 @@ export class FetchService extends Service {
 
     return res;
   };
+
+  /**
+   * 检查是否为认证相关的端点（这些端点不需要JWT token）
+   */
+  private isAuthEndpoint(url: string): boolean {
+    const authEndpoints = [
+      '/api/auth/sign-in',
+      '/api/auth/sign-in-with-code',
+      '/api/auth/register',
+      '/api/auth/refresh',
+      '/api/auth/magic-link',
+      '/api/auth/send-verification-code',
+      '/api/auth/preflight',
+    ];
+    return authEndpoints.some(endpoint => url.includes(endpoint));
+  }
 }
