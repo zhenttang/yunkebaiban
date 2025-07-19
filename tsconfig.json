@@ -28,6 +28,10 @@
     "sourceMap": true,
     "importsNotUsedAsValues": "remove",
 
+    // 装饰器支持
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+
     // 互操作约束
     "forceConsistentCasingInFileNames": true,
     "allowSyntheticDefaultImports": true,

@@ -152,7 +152,8 @@ export function createHTMLTargetConfig(
                   externalHelpers: false,
                   transform: {
                     useDefineForClassFields: false,
-                    decoratorVersion: '2022-03',
+                    legacyDecorator: true,
+                    decoratorMetadata: true,
                   },
                 },
                 sourceMaps: true,
@@ -179,7 +180,8 @@ export function createHTMLTargetConfig(
                   transform: {
                     react: { runtime: 'automatic' },
                     useDefineForClassFields: false,
-                    decoratorVersion: '2022-03',
+                    legacyDecorator: true,
+                    decoratorMetadata: true,
                   },
                 },
                 sourceMaps: true,
@@ -437,7 +439,8 @@ export function createWorkerTargetConfig(
                   externalHelpers: false,
                   transform: {
                     useDefineForClassFields: false,
-                    decoratorVersion: '2022-03',
+                    legacyDecorator: true,
+                    decoratorMetadata: true,
                   },
                 },
                 sourceMaps: true,

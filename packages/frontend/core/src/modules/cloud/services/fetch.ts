@@ -11,8 +11,7 @@ export type FetchInit = RequestInit & { timeout?: number };
 
 export class FetchService extends Service {
   constructor(
-    private readonly serverService: ServerService,
-    private readonly authStore?: AuthStore
+    private readonly serverService: ServerService
   ) {
     super();
   }
@@ -57,16 +56,22 @@ export class FetchService extends Service {
       'x-affine-version': BUILD_CONFIG.appVersion,
     };
 
-    // 如果有AuthStore且不是登录接口，添加JWT token
-    if (this.authStore && !this.isAuthEndpoint(input)) {
-      // 检查authStore是否有getStoredToken方法
-      if (typeof this.authStore.getStoredToken === 'function') {
-        const token = this.authStore.getStoredToken();
+    // 如果不是登录接口，尝试添加JWT token
+    if (!this.isAuthEndpoint(input)) {
+      try {
+        // 通过全局变量或localStorage获取token，避免循环依赖
+        let token = null;
+        
+        // 方法1：从localStorage直接获取（兼容现有逻辑）
+        token = globalThis.localStorage?.getItem('affine-admin-token') || 
+                globalThis.localStorage?.getItem('affine-access-token');
+        
         if (token) {
           headers['Authorization'] = `Bearer ${token}`;
         }
-      } else {
-        console.warn('AuthStore.getStoredToken is not a function', this.authStore);
+      } catch (error) {
+        // 如果无法获取token，继续执行但记录警告
+        console.warn('Failed to get token for authorization:', error);
       }
     }
 
