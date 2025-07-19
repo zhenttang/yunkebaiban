@@ -22,6 +22,11 @@ import { launchStage } from './windows-manager/stage';
 
 app.enableSandbox();
 
+logger.info(`[Main] Starting AFFiNE Desktop (${buildType})`);
+logger.info(`[Main] DEV_SERVER_URL: ${process.env.DEV_SERVER_URL}`);
+logger.info(`[Main] NODE_ENV: ${process.env.NODE_ENV}`);
+logger.info(`[Main] isDev: ${isDev}`);
+
 app.commandLine.appendSwitch('enable-features', 'CSSTextAutoSpace');
 if (isDev) {
   // In electron the dev server will be resolved to 0.0.0.0, but it

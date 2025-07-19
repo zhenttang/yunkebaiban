@@ -899,6 +899,38 @@ export class WebContentViewsManager {
       if (process.env.SKIP_ONBOARDING) {
         this.skipOnboarding(view).catch(err => logger.error(err));
       }
+      
+      // 添加控制台日志监听
+      view.webContents.on('console-message', (event, level, message, line, sourceId) => {
+        const levelName = ['verbose', 'info', 'warning', 'error'][level] || 'unknown';
+        logger.info(`[Renderer Console ${levelName.toUpperCase()}] ${message} (${sourceId}:${line})`);
+      });
+      
+      // 监听页面错误
+      view.webContents.executeJavaScript(`
+        window.addEventListener('error', (event) => {
+          console.error('[Page Error]', event.error?.message || event.message, event.error?.stack);
+        });
+        
+        window.addEventListener('unhandledrejection', (event) => {
+          console.error('[Unhandled Promise Rejection]', event.reason);
+        });
+        
+        // 监听网络请求
+        const originalFetch = window.fetch;
+        window.fetch = function(...args) {
+          console.log('[Fetch Request]', args[0], args[1]?.method || 'GET');
+          return originalFetch.apply(this, args)
+            .then(response => {
+              console.log('[Fetch Response]', args[0], response.status, response.ok);
+              return response;
+            })
+            .catch(error => {
+              console.error('[Fetch Error]', args[0], error.message);
+              throw error;
+            });
+        };
+      `).catch(err => logger.error('Failed to inject debug scripts:', err));
     });
 
     // reorder will add to main window when loaded
