@@ -35,7 +35,7 @@ const serverConfigQuery = {
 
 const currentUserQuery = {
   id: 'currentUser', 
-  endpoint: '/api/auth/me', // 使用现有的用户信息接口
+  endpoint: '/api/auth/me', // 使用新添加的用户信息接口
   method: 'GET' as const,
   __type: {} as GetCurrentUserResponse,
 };

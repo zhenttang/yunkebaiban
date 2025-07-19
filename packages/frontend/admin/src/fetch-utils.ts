@@ -1,7 +1,9 @@
 /**
  * Custom fetch utility for AFFiNE admin panel
- * Automatically adds headers and handles Java backend integration
+ * 现在使用统一的httpClient，而不是独立的fetch实现
  */
+
+import { httpClient } from '../../../common/request/src';
 
 // 获取应用版本，如果未定义则使用默认值
 const getAppVersion = () => {
@@ -12,31 +14,49 @@ const getAppVersion = () => {
 };
 
 /**
- * Wrapper around fetch that automatically adds required headers for Java backend
+ * Wrapper around the unified httpClient for admin panel
+ * 使用统一的httpClient，自动包含JWT认证
  * @param input Request URL
  * @param init Request initialization options
  * @returns Promise with the fetch Response
  */
-export const affineFetch = (
+export const affineFetch = async (
   input: RequestInfo | URL,
   init?: RequestInit
 ): Promise<Response> => {
-  // 获取存储的认证token
-  const token = localStorage.getItem('affine-admin-token');
+  const url = typeof input === 'string' ? input : input.toString();
+  const method = init?.method || 'GET';
   
-  const headers: HeadersInit = {
-    'Content-Type': 'application/json',
-    'x-affine-version': getAppVersion(),
-    ...init?.headers,
-  };
+  // 使用统一的httpClient发送请求
+  try {
+    const headers = {
+      'x-affine-version': getAppVersion(),
+      ...init?.headers,
+    };
 
-  // 如果有认证token，添加到请求头
-  if (token) {
-    headers['Authorization'] = `Bearer ${token}`;
+    const response = await httpClient.request(url, {
+      method: method as any,
+      headers,
+      data: init?.body ? JSON.parse(init.body as string) : undefined,
+    });
+
+    // 将httpClient的响应转换为fetch Response格式
+    return new Response(JSON.stringify(response.data), {
+      status: response.status,
+      statusText: response.statusText,
+      headers: new Headers(response.headers as any),
+    });
+  } catch (error: any) {
+    // 处理httpClient的错误格式
+    if (error.response) {
+      return new Response(JSON.stringify(error.response.data || {}), {
+        status: error.response.status,
+        statusText: error.response.statusText || 'Error',
+        headers: new Headers(error.response.headers as any),
+      });
+    }
+    
+    // 网络错误或其他错误
+    throw error;
   }
-
-  return fetch(input, {
-    ...init,
-    headers,
-  });
 };

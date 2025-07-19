@@ -2,7 +2,6 @@ import { Button } from '@affine/admin/components/ui/button';
 import { Input } from '@affine/admin/components/ui/input';
 import { Label } from '@affine/admin/components/ui/label';
 
-import type { FormEvent } from 'react';
 import { useCallback, useRef } from 'react';
 import { Navigate } from 'react-router-dom';
 import { toast } from 'sonner';
@@ -17,27 +16,42 @@ export function Auth() {
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
   
-  console.log('Auth组件:', currentUser === undefined ? '加载中' : currentUser === null ? '未登录' : `已登录: ${currentUser.email}, isAdmin: ${isAdmin(currentUser)}`);
+  console.log('Auth组件渲染:', currentUser === undefined ? '加载中' : currentUser === null ? '未登录' : `已登录: ${currentUser.email}, isAdmin: ${isAdmin(currentUser)}`);
+  console.log('当前URL:', window.location.href);
   
   const login = useCallback(
-    async (e: FormEvent) => {
-      e.preventDefault();
-      e.stopPropagation();
-      if (!emailRef.current || !passwordRef.current) return;
+    async () => {
+      console.log('=== 登录事件触发 ===');
+      
+      if (!emailRef.current || !passwordRef.current) {
+        console.error('表单输入引用缺失');
+        return;
+      }
+      
+      const email = emailRef.current.value;
+      const password = passwordRef.current.value;
+      
+      console.log('登录表单数据:', { email, password: password ? '[有密码]' : '[无密码]' });
+      
+      if (!email || !password) {
+        toast.error('请输入邮箱和密码');
+        return;
+      }
       
       console.log('=== 开始登录流程 ===');
       console.log('登录前 currentUser:', currentUser);
       console.log('登录前 isAdmin(currentUser):', currentUser ? isAdmin(currentUser) : 'currentUser is null/undefined');
       
       try {
+        console.log('发送登录请求到:', '/api/auth/sign-in');
         const result = await httpClient.post('/api/auth/sign-in', {
-          email: emailRef.current?.value,
-          password: passwordRef.current?.value,
+          email,
+          password,
         });
         
         console.log('登录API响应:', result);
         if (result.success) {
-          // 保存令牌到localStorage
+          // 保存令牌到localStorage（与统一认证系统兼容）
           if (result.token) {
             localStorage.setItem('affine-admin-token', result.token);
             console.log('令牌已保存到localStorage');
@@ -60,6 +74,7 @@ export function Auth() {
             console.log('登录后状态检查，准备跳转');
           }, 200);
         } else {
+          console.error('登录失败:', result.message);
           toast.error(result.message || '登录失败');
         }
       } catch (err: any) {
@@ -75,6 +90,7 @@ export function Auth() {
     return <Navigate to="/admin/accounts" replace />;
   }
 
+  console.log('渲染登录表单');
   return (
     <div className="w-full lg:grid lg:min-h-[600px] lg:grid-cols-2 xl:min-h-[800px] h-screen">
       <div className="flex items-center justify-center py-12">
@@ -85,36 +101,36 @@ export function Auth() {
               请在下方输入邮箱以登录您的账户
             </p>
           </div>
-          <form onSubmit={login} action="#">
-            <div className="grid gap-4">
-              <div className="grid gap-2">
-                <Label htmlFor="email">邮箱</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  ref={emailRef}
-                  placeholder="邮箱@示例.com"
-                  autoComplete="email"
-                  required
-                />
-              </div>
-              <div className="grid gap-2">
-                <div className="flex items-center">
-                  <Label htmlFor="password">密码</Label>
-                </div>
-                <Input
-                  id="password"
-                  type="password"
-                  ref={passwordRef}
-                  autoComplete="current-password"
-                  required
-                />
-              </div>
-              <Button onClick={login} type="submit" className="w-full">
-                登录
-              </Button>
+          <div className="grid gap-4">
+            <div className="grid gap-2">
+              <Label htmlFor="email">邮箱</Label>
+              <Input
+                id="email"
+                type="email"
+                ref={emailRef}
+                placeholder="邮箱@示例.com"
+                autoComplete="email"
+                required
+                onKeyDown={(e) => e.key === 'Enter' && login()}
+              />
             </div>
-          </form>
+            <div className="grid gap-2">
+              <div className="flex items-center">
+                <Label htmlFor="password">密码</Label>
+              </div>
+              <Input
+                id="password"
+                type="password"
+                ref={passwordRef}
+                autoComplete="current-password"
+                required
+                onKeyDown={(e) => e.key === 'Enter' && login()}
+              />
+            </div>
+            <Button onClick={login} type="button" className="w-full">
+              登录
+            </Button>
+          </div>
         </div>
       </div>
       <div className="hidden bg-muted lg:flex lg:justify-center">

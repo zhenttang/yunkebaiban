@@ -73,8 +73,25 @@ export class ErrorHandler {
     // 对特定错误进行特殊处理
     switch (error.code) {
       case ErrorCode.AUTH_EXPIRED:
-        // 认证过期，可以触发重定向到登录页
-        window.location.href = '/login';
+        // 认证过期，根据当前页面重定向到相应登录页
+        const currentPath = window.location.pathname;
+        console.warn('AUTH_EXPIRED错误，当前路径:', currentPath);
+        
+        // 临时禁用自动重定向，用于调试
+        if (currentPath.startsWith('/admin/auth')) {
+          console.warn('在admin登录页面，不执行重定向避免循环');
+          break;
+        }
+        
+        if (currentPath.startsWith('/admin')) {
+          // 如果在admin页面，重定向到admin登录页
+          console.warn('重定向到admin登录页');
+          window.location.href = '/admin/auth';
+        } else {
+          // 其他页面重定向到默认登录页
+          console.warn('重定向到默认登录页');
+          window.location.href = '/login';
+        }
         break;
       
       case ErrorCode.NETWORK_ERROR:

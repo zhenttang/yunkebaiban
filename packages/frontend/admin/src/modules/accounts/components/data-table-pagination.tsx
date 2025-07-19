@@ -18,10 +18,12 @@ import { useCallback, useRef, useTransition } from 'react';
 
 interface DataTablePaginationProps<TData> {
   table: Table<TData>;
+  onRefresh?: () => void;
 }
 
 export function DataTablePagination<TData>({
   table,
+  onRefresh,
 }: DataTablePaginationProps<TData>): React.ReactElement {
   const [isPending, startTransition] = useTransition();
   const contentRef = useRef<HTMLDivElement>(null);
@@ -58,9 +60,13 @@ export function DataTablePagination<TData>({
   }, [table]);
 
   const handleRefresh = useCallback(() => {
-    // 这里触发一个刷新操作
-    window.location.reload();
-  }, []);
+    // 使用传递的刷新函数，如果没有则降级为页面刷新
+    if (onRefresh) {
+      onRefresh();
+    } else {
+      window.location.reload();
+    }
+  }, [onRefresh]);
 
   return (
     <div className="flex flex-wrap items-center justify-between gap-3 py-1">

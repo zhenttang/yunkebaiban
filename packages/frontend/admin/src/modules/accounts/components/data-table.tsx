@@ -35,6 +35,19 @@ interface DataTableProps<TData, TValue> {
       pageSize: number;
     }>
   >;
+  // 新增的搜索和筛选功能
+  filters?: {
+    search?: string;
+    enabled?: boolean;
+    registered?: boolean;
+  };
+  onSearch?: (searchTerm: string) => void;
+  onFilterByStatus?: (enabled?: boolean, registered?: boolean) => void;
+  onClearFilters?: () => void;
+  onRefresh?: () => void;
+  loading?: boolean;
+  hasNext?: boolean;
+  hasPrevious?: boolean;
 }
 
 export function DataTable<TData extends { id: string }, TValue>({
@@ -45,6 +58,15 @@ export function DataTable<TData extends { id: string }, TValue>({
   selectedUsers,
   setMemoUsers,
   onPaginationChange,
+  // 新增的props
+  filters,
+  onSearch,
+  onFilterByStatus,
+  onClearFilters,
+  onRefresh,
+  loading = false,
+  hasNext = false,
+  hasPrevious = false,
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = useState({});
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -88,6 +110,13 @@ export function DataTable<TData extends { id: string }, TValue>({
         selectedUsers={selectedUsers}
         setRowCount={setRowCount}
         setMemoUsers={setMemoUsers}
+        // 传递新的搜索和筛选功能
+        filters={filters}
+        onSearch={onSearch}
+        onFilterByStatus={onFilterByStatus}
+        onClearFilters={onClearFilters}
+        onRefresh={onRefresh}
+        loading={loading}
       />
       <div className="rounded-xl border border-slate-200/70 shadow-[0_8px_30px_rgb(0,0,0,0.04)] flex-1 flex flex-col overflow-hidden bg-white/60 backdrop-blur-xl relative colorful-container">
         <div className="absolute inset-0 animate-gradient-shift bg-gradient-to-br from-blue-500/[0.02] via-purple-500/[0.015] to-green-500/[0.02] pointer-events-none"></div>
@@ -188,7 +217,7 @@ export function DataTable<TData extends { id: string }, TValue>({
       </div>
 
       <div className="mt-auto">
-        <DataTablePagination table={table} />
+        <DataTablePagination table={table} onRefresh={onRefresh} />
       </div>
     </div>
   );

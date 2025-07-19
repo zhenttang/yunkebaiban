@@ -60,8 +60,10 @@ const StatusItem = ({
 );
 export const useColumns = ({
   setSelectedUserIds,
+  refreshUsers,
 }: {
   setSelectedUserIds: Dispatch<SetStateAction<Set<string>>>;
+  refreshUsers?: () => void;
 }) => {
   const columns: ColumnDef<UserType>[] = useMemo(() => {
     return [

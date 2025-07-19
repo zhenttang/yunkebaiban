@@ -150,4 +150,4 @@ const AdminPanel = ({
   );
 };
 
-export default SettingsPage;
+export { SettingsPage as Component };

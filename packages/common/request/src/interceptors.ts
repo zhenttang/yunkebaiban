@@ -102,9 +102,17 @@ export const setupResponseInterceptors = (instance: AxiosInstance): void => {
       
       // 处理401错误 - 令牌过期
       if (error.response.status === 401 && originalRequest) {
+        // 对于登录接口的401错误，直接返回，不当作令牌过期处理
+        if (originalRequest.url?.includes('/api/auth/sign-in')) {
+          return Promise.reject({
+            code: 'AUTH_FAILED',
+            message: error.response.data?.message || '用户名或密码错误',
+            response: error.response
+          });
+        }
+        
         // 防止无限循环刷新
-        if (originalRequest.url?.includes('/api/auth/refresh') || 
-            originalRequest.url?.includes('/api/auth/sign-in')) {
+        if (originalRequest.url?.includes('/api/auth/refresh')) {
           tokenManager.remove();
           localStorage.removeItem('affine-admin-refresh-token');
           

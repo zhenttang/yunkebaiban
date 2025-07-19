@@ -374,6 +374,13 @@ export function Nav({ isCollapsed = false }: NavProps) {
             <div className="text-xs font-semibold text-slate-400 px-2 mb-2 sticky top-0 bg-white/80 backdrop-blur-sm z-10">监控运维</div>
           )}
           <NavItem
+            to="/admin/monitoring"
+            icon={<ProgressIcon fontSize={18} />}
+            label="系统监控"
+            isCollapsed={isCollapsed}
+            colorKey="monitoring"
+          />
+          <NavItem
             to="/admin/settings/throttle"
             icon={<ProgressIcon fontSize={18} />}
             label="访问限流"

@@ -79,6 +79,9 @@ export const Settings = lazy(
 export const Auth = lazy(
   () => import(/* webpackChunkName: "auth" */ './modules/auth')
 );
+export const Monitoring = lazy(
+  () => import(/* webpackChunkName: "monitoring" */ './modules/monitoring')
+);
 
 const Routes = window.SENTRY_RELEASE
   ? withSentryReactRouterV7Routing(ReactRouterRoutes)
@@ -180,15 +183,16 @@ export const App = () => {
             <Suspense fallback={<LoadingSpinner />}>
               <Routes>
                 <Route path="/" element={<Navigate to="/admin" />} />
-                <Route path={ROUTES.admin.index} element={<RootRoutes />}>
-                  <Route path={ROUTES.admin.auth} element={<Auth />} />
-                  <Route path={ROUTES.admin.setup} element={<Setup />} />
+                <Route path="/admin" element={<RootRoutes />}>
+                  <Route path="auth" element={<Auth />} />
+                  <Route path="setup" element={<Setup />} />
                   <Route element={<AuthenticatedRoutes />}>
-                    <Route path={ROUTES.admin.accounts} element={<Accounts />} />
-                    <Route path={ROUTES.admin.ai} element={<AI />} />
-                    <Route path={ROUTES.admin.about} element={<About />} />
-                    <Route path={ROUTES.admin.settings.index} element={<Settings />} />
-                    <Route path={ROUTES.admin.settings.module} element={<Settings />} />
+                    <Route path="accounts" element={<Accounts />} />
+                    <Route path="ai" element={<AI />} />
+                    <Route path="monitoring" element={<Monitoring />} />
+                    <Route path="about" element={<About />} />
+                    <Route path="settings" element={<Settings />} />
+                    <Route path="settings/:module" element={<Settings />} />
                   </Route>
                 </Route>
               </Routes>

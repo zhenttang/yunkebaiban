@@ -37,31 +37,37 @@ type ImportUsersMutation = {
 
 const createUserMutation = {
   id: 'createUser',
-  endpoint: '/api/auth/register',
+  endpoint: '/api/admin/users',
   method: 'POST' as const,
 };
 
 const deleteUserMutation = {
   id: 'deleteUser',
-  endpoint: '/api/users/{id}',
+  endpoint: '/api/admin/users/{id}',
   method: 'DELETE' as const,
 };
 
 const disableUserMutation = {
-  id: 'disableUser',
-  endpoint: '/api/users/{id}/enabled',
-  method: 'PUT' as const,
+  id: 'toggleUserStatus',
+  endpoint: '/api/admin/users/{id}/toggle-status',
+  method: 'POST' as const,
 };
 
 const enableUserMutation = {
-  id: 'enableUser',
-  endpoint: '/api/users/{id}/enabled',
-  method: 'PUT' as const,
+  id: 'toggleUserStatus',
+  endpoint: '/api/admin/users/{id}/toggle-status',
+  method: 'POST' as const,
+};
+
+const batchOperationMutation = {
+  id: 'batchOperation',
+  endpoint: '/api/admin/users/batch',
+  method: 'POST' as const,
 };
 
 const importUsersMutation = {
   id: 'importUsers',
-  endpoint: '/api/admin/users/import',
+  endpoint: '/api/admin/users/batch-import',
   method: 'POST' as const,
 };
 
@@ -71,21 +77,21 @@ const listUsersQuery = {
   method: 'GET' as const,
 };
 
-const updateAccountFeaturesMutation = {
-  id: 'updateAccountFeatures',
-  endpoint: '/api/users/{userId}/features',
+const updateAccountMutation = {
+  id: 'updateAccount',
+  endpoint: '/api/admin/users/{id}',
   method: 'PUT' as const,
 };
 
-const updateAccountMutation = {
-  id: 'updateAccount',
-  endpoint: '/api/users/{id}',
+const updateAccountFeaturesMutation = {
+  id: 'updateAccountFeatures',
+  endpoint: '/api/admin/users/{userId}/features',
   method: 'PUT' as const,
 };
 
 const createChangePasswordUrlMutation = {
-  id: 'createChangePasswordUrl',
-  endpoint: '/api/auth/reset-password',
+  id: 'resetPassword',
+  endpoint: '/api/admin/users/{userId}/reset-password',
   method: 'POST' as const,
 };
 
@@ -120,22 +126,22 @@ export const useCreateUser = () => {
   const create = useAsyncCallback(
     async ({ name, email, password, features }: UserInput) => {
       try {
-        const account = await createAccount({
-          input: {
-            name,
-            email,
-            password: password === '' ? undefined : password,
-          },
-        });
-
-        await updateAccountFeatures({
-          userId: account.createUser.id,
+        const response = await createAccount({
+          name,
+          email,
+          password: password === '' ? undefined : password,
           features,
         });
+
         await revalidate(listUsersQuery);
-        toast('账户更新成功');
+        if (response?.success) {
+          toast('用户创建成功');
+        } else {
+          toast.error('创建用户失败: ' + (response?.message || '未知错误'));
+        }
       } catch (e) {
-        toast.error('更新账户失败: ' + (e as Error).message);
+        console.error('创建用户错误:', e);
+        toast.error('创建用户失败: ' + (e as Error).message);
       }
     },
     [createAccount, revalidate, updateAccountFeatures]
@@ -167,21 +173,22 @@ export const useUpdateUser = () => {
       features,
     }: UserInput & { userId: string }) => {
       try {
-        await updateAccount({
+        const response = await updateAccount({
           id: userId,
-          input: {
-            name,
-            email,
-          },
-        });
-        await updateAccountFeatures({
-          userId,
+          name,
+          email,
           features,
         });
+        
         await revalidate(listUsersQuery);
-        toast('账户更新成功');
+        if (response?.success) {
+          toast('用户更新成功');
+        } else {
+          toast.error('更新用户失败: ' + (response?.message || '未知错误'));
+        }
       } catch (e) {
-        toast.error('更新账户失败: ' + (e as Error).message);
+        console.error('更新用户错误:', e);
+        toast.error('更新用户失败: ' + (e as Error).message);
       }
     },
     [revalidate, updateAccount, updateAccountFeatures]
@@ -201,14 +208,21 @@ export const useResetUserPassword = () => {
       setResetPasswordLink('');
       resetPassword({
         userId: id,
-        callbackUrl: '/auth/changePassword',
+        password: undefined, // 让后端生成随机密码
       })
         .then(res => {
-          setResetPasswordLink(res.createChangePasswordUrl);
-          callback?.();
+          if (res?.success) {
+            // 如果后端返回了新密码，设置为链接
+            setResetPasswordLink(res.newPassword || '密码已重置');
+            toast('密码重置成功');
+            callback?.();
+          } else {
+            toast.error('重置密码失败: ' + (res?.message || '未知错误'));
+          }
         })
         .catch(e => {
-          toast.error('重置密码失败: ' + e.message);
+          console.error('重置密码错误:', e);
+          toast.error('重置密码失败: ' + (e?.message || '网络错误'));
         });
     },
     [resetPassword]
@@ -232,13 +246,18 @@ export const useDeleteUser = () => {
   const deleteById = useAsyncCallback(
     async (id: string, callback?: () => void) => {
       await deleteUserById({ id })
-        .then(async () => {
+        .then(async (response) => {
           await revalidate(listUsersQuery);
-          toast('用户删除成功');
+          if (response?.success) {
+            toast('用户删除成功');
+          } else {
+            toast.error('删除用户失败: ' + (response?.message || '未知错误'));
+          }
           callback?.();
         })
         .catch(e => {
-          toast.error('删除用户失败: ' + e.message);
+          console.error('删除用户错误:', e);
+          toast.error('删除用户失败: ' + (e?.message || '网络错误'));
         });
     },
     [deleteUserById, revalidate]
@@ -248,7 +267,7 @@ export const useDeleteUser = () => {
 };
 
 export const useEnableUser = () => {
-  const { trigger: enableUserById } = useMutation({
+  const { trigger: toggleUserStatus } = useMutation({
     mutation: enableUserMutation,
   });
 
@@ -256,23 +275,29 @@ export const useEnableUser = () => {
 
   const enableById = useAsyncCallback(
     async (id: string, callback?: () => void) => {
-      await enableUserById({ id })
-        .then(async ({ enableUser }) => {
+      await toggleUserStatus({ id })
+        .then(async (response) => {
           await revalidate(listUsersQuery);
-          toast(`用户 ${enableUser.email} 启用成功`);
+          if (response?.success) {
+            toast(response.message || '用户状态更新成功');
+          } else {
+            toast.error('更新用户状态失败: ' + (response?.message || '未知错误'));
+          }
           callback?.();
         })
         .catch(e => {
-          toast.error('启用用户失败: ' + e.message);
+          console.error('切换用户状态错误:', e);
+          toast.error('切换用户状态失败: ' + (e?.message || '网络错误'));
         });
     },
-    [enableUserById, revalidate]
+    [toggleUserStatus, revalidate]
   );
 
   return enableById;
 };
+
 export const useDisableUser = () => {
-  const { trigger: disableUserById } = useMutation({
+  const { trigger: toggleUserStatus } = useMutation({
     mutation: disableUserMutation,
   });
 
@@ -280,20 +305,63 @@ export const useDisableUser = () => {
 
   const disableById = useAsyncCallback(
     async (id: string, callback?: () => void) => {
-      await disableUserById({ id })
-        .then(async ({ banUser }) => {
+      await toggleUserStatus({ id })
+        .then(async (response) => {
           await revalidate(listUsersQuery);
-          toast(`用户 ${banUser.email} 禁用成功`);
+          if (response?.success) {
+            toast(response.message || '用户状态更新成功');
+          } else {
+            toast.error('更新用户状态失败: ' + (response?.message || '未知错误'));
+          }
           callback?.();
         })
         .catch(e => {
-          toast.error('禁用用户失败: ' + e.message);
+          console.error('切换用户状态错误:', e);
+          toast.error('切换用户状态失败: ' + (e?.message || '网络错误'));
         });
     },
-    [disableUserById, revalidate]
+    [toggleUserStatus, revalidate]
   );
 
   return disableById;
+};
+
+export const useBatchOperation = () => {
+  const { trigger: batchOperation } = useMutation({
+    mutation: batchOperationMutation,
+  });
+  const revalidate = useMutateQueryResource();
+
+  const executeBatchOperation = useCallback(
+    async (userIds: string[], operation: 'enable' | 'disable' | 'delete', callback?: () => void) => {
+      try {
+        const response = await batchOperation({
+          userIds,
+          operation,
+        });
+        
+        await revalidate(listUsersQuery);
+        
+        if (response?.success) {
+          const operationText = {
+            enable: '启用',
+            disable: '禁用',
+            delete: '删除'
+          }[operation];
+          toast(`成功${operationText} ${response.affected || userIds.length} 个用户`);
+          callback?.();
+        } else {
+          toast.error(`批量操作失败: ${response?.message || '未知错误'}`);
+        }
+      } catch (e) {
+        console.error('批量操作错误:', e);
+        toast.error(`批量操作失败: ${e?.message || '网络错误'}`);
+      }
+    },
+    [batchOperation, revalidate]
+  );
+
+  return executeBatchOperation;
 };
 
 export const useImportUsers = () => {
@@ -304,17 +372,32 @@ export const useImportUsers = () => {
 
   const handleImportUsers = useCallback(
     async (
-      input: ImportUsersInput,
-      callback?: (importUsers: UserImportReturnType) => void
+      file: File,
+      callback?: (result: UserImportReturnType) => void
     ) => {
-      await importUsers({ input })
-        .then(async ({ importUsers }) => {
-          await revalidate(listUsersQuery);
-          callback?.(importUsers);
-        })
-        .catch(e => {
-          toast.error('导入用户失败: ' + e.message);
-        });
+      const formData = new FormData();
+      formData.append('file', file);
+      
+      try {
+        const response = await importUsers(formData);
+        await revalidate(listUsersQuery);
+        
+        if (response?.success) {
+          const result = {
+            success: true,
+            created: response.created || 0,
+            updated: response.updated || 0,
+            errors: response.errors || [],
+          };
+          callback?.(result);
+          toast(`成功导入 ${result.created} 个用户${result.updated > 0 ? `，更新 ${result.updated} 个用户` : ''}`);
+        } else {
+          toast.error('导入用户失败: ' + (response?.message || '未知错误'));
+        }
+      } catch (e) {
+        console.error('导入用户错误:', e);
+        toast.error('导入用户失败: ' + (e?.message || '网络错误'));
+      }
     },
     [importUsers, revalidate]
   );

@@ -4,6 +4,7 @@ import type { ComponentType } from 'react';
 import CONFIG_DESCRIPTORS from '../../config.json';
 import type { ConfigInputProps } from './config-input-row';
 import { SendTestEmail } from './operations/send-test-email';
+import { StorageConfigOperation } from './operations/storage-config';
 export type ConfigType = 'String' | 'Number' | 'Boolean' | 'JSON' | 'Enum';
 
 type ConfigDescriptor = {
@@ -131,6 +132,7 @@ export const KNOWN_CONFIG_GROUPS = [
         desc: '用户头像的公开路径前缀（例如 https://my-bucket.s3.amazonaws.com/）',
       },
     ],
+    operations: [StorageConfigOperation],
   } as ConfigGroup<'storages'>,
   {
     name: '第三方登录',
