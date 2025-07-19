@@ -1,0 +1,8 @@
+{
+  "name": "@affine/native",
+  "version": "0.21.0",
+  "private": true,
+  "main": "index.js",
+  "types": "index.d.ts",
+  "description": "Mock implementation of @affine/native for development without Rust"
+}

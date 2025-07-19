@@ -134,7 +134,10 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
         headers['Authorization'] = `Bearer ${token}`;
       }
       
-      return await fetch(url, {
+      // 确保使用完整的URL，特别是在桌面端
+      const fullUrl = url.startsWith('http') ? url : `http://localhost:8080${url}`;
+      
+      return await fetch(fullUrl, {
         ...options,
         headers,
         credentials: 'include',

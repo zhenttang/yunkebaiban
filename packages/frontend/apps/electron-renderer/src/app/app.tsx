@@ -14,6 +14,14 @@ import { DesktopThemeSync } from './theme-sync';
 
 const { frameworkProvider } = setupEffects();
 
+// 调试信息
+console.log('BUILD_CONFIG:', {
+  isElectron: BUILD_CONFIG.isElectron,
+  debug: BUILD_CONFIG.debug,
+  distribution: BUILD_CONFIG.distribution,
+});
+console.log('location.pathname:', location.pathname);
+
 const desktopWhiteList = [
   '/open-app/signin-redirect',
   '/open-app/url',
@@ -23,6 +31,8 @@ const desktopWhiteList = [
   '/oauth',
   '/magic-link',
 ];
+// 临时注释掉这个检查，让桌面应用能够正常启动
+/*
 if (
   !BUILD_CONFIG.isElectron &&
   BUILD_CONFIG.debug &&
@@ -31,6 +41,7 @@ if (
   document.body.innerHTML = `<h1 style="color:red;font-size:5rem;text-align:center;">Don't run electron entry in browser.</h1>`;
   throw new Error('错误的分发版本');
 }
+*/
 
 const cache = createEmotionCache();
 

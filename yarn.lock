@@ -420,6 +420,7 @@ __metadata:
   resolution: "@affine/electron@workspace:packages/frontend/apps/electron"
   dependencies:
     "@affine-tools/utils": "workspace:*"
+    "@affine/native": "workspace:*"
     "@affine/nbstore": "workspace:*"
     "@electron-forge/cli": "npm:^7.6.0"
     "@electron-forge/core": "npm:^7.6.0"
@@ -568,6 +569,12 @@ __metadata:
     react-dom: "npm:^19.0.0"
     react-router-dom: "npm:^6.28.0"
     typescript: "npm:^5.7.2"
+  languageName: unknown
+  linkType: soft
+
+"@affine/native@workspace:packages/frontend/native-mock":
+  version: 0.0.0-use.local
+  resolution: "@affine/native@workspace:packages/frontend/native-mock"
   languageName: unknown
   linkType: soft
 

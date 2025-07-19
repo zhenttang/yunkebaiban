@@ -21,7 +21,7 @@
   },
   "scripts": {
     "start": "electron .",
-    "dev": "cross-env DEV_SERVER_URL=http://localhost:8080 node ./scripts/dev.ts",
+    "dev": "cross-env DEV_SERVER_URL=http://localhost:8081 DISABLE_DEV_OVERLAY=true node ./scripts/dev.ts",
     "dev:prod": "node ./scripts/dev.ts",
     "build": "cross-env NODE_ENV=production node ./scripts/build-layers.ts",
     "build:dev": "node ./scripts/build-layers.ts",
@@ -75,6 +75,7 @@
     "zod": "^3.24.1"
   },
   "dependencies": {
+    "@affine/native": "workspace:*",
     "async-call-rpc": "^6.4.2",
     "electron-updater": "^6.3.9",
     "link-preview-js": "^3.0.12",

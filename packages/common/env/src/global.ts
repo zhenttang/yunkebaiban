@@ -1,5 +1,26 @@
 import { UaHelper } from './ua-helper.js';
 
+interface Environment {
+  isLinux: boolean;
+  isMacOs: boolean;
+  isSafari: boolean;
+  isWindows: boolean;
+  isFireFox: boolean;
+  isChrome: boolean;
+  isIOS: boolean;
+  isPwa: boolean;
+  isMobile: boolean;
+  isSelfHosted: boolean;
+  publicPath: string;
+  subPath: string;
+  chromeVersion?: number;
+}
+
+declare global {
+  var environment: Environment;
+  var $AFFINE_SETUP: boolean;
+}
+
 export function setupGlobal() {
   if (globalThis.$AFFINE_SETUP) {
     return;
@@ -72,10 +93,8 @@ function applyEnvironmentOverrides(environment: Environment) {
     // all environments should have default value
     // so ignore non-defined overrides
     if (name in environment) {
-      // @ts-expect-error safe
-      environment[name] =
-        // @ts-expect-error safe
-        typeof environment[name] === 'string'
+      (environment as any)[name] =
+        typeof (environment as any)[name] === 'string'
           ? meta.content
           : JSON.parse(meta.content);
     }

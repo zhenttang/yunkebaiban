@@ -18,6 +18,7 @@
     "packages/common/*",
     "packages/frontend/*",
     "packages/frontend/apps/*",
+    "packages/frontend/native-mock",
     "tools/@types/*",
     "tools/changelog",
     "tools/cli",
@@ -109,6 +110,7 @@
   "resolutions": {
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "@affine/native": "workspace:packages/frontend/native-mock",
     "array-buffer-byte-length": "npm:@nolyfill/array-buffer-byte-length@^1",
     "array-includes": "npm:@nolyfill/array-includes@^1",
     "array.prototype.flat": "npm:@nolyfill/array.prototype.flat@^1",

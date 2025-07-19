@@ -75,7 +75,7 @@ export const RouteContainer = () => {
       </div>
 
       <AffineErrorBoundary>
-        <Suspense>
+        <Suspense fallback={<div style={{ padding: '20px', textAlign: 'center' }}>加载中...</div>}>
           <Outlet />
         </Suspense>
       </AffineErrorBoundary>

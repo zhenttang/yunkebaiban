@@ -1,11 +1,15 @@
 export const mainHost = '.';
 export const anotherHost = 'another-host';
 
-export const mainWindowOrigin = `file://${mainHost}`;
+// 开发模式下使用web开发服务器
+const isDev = process.env.NODE_ENV === 'development';
+const webDevServer = 'http://localhost:8081';
+
+export const mainWindowOrigin = isDev ? webDevServer : `file://${mainHost}`;
 export const anotherOrigin = `file://${anotherHost}`;
 
 export const onboardingViewUrl = `${mainWindowOrigin}/onboarding`;
-export const shellViewUrl = `${mainWindowOrigin}/shell.html`;
+export const shellViewUrl = isDev ? `${webDevServer}/` : `${mainWindowOrigin}/shell.html`;
 export const backgroundWorkerViewUrl = `${mainWindowOrigin}/background-worker.html`;
 export const customThemeViewUrl = `${mainWindowOrigin}/theme-editor.html`;
 
