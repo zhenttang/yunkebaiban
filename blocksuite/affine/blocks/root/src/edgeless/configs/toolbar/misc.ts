@@ -74,9 +74,9 @@ export const builtinMiscToolbarConfig = {
     {
       placement: ActionPlacement.Start,
       id: 'b.add-frame',
-      label: 'Frame',
+      label: '框架',
       showLabel: true,
-      tooltip: 'Frame',
+      tooltip: '框架',
       icon: FrameIcon(),
       when(ctx) {
         const models = ctx.getSurfaceModels();
@@ -117,9 +117,9 @@ export const builtinMiscToolbarConfig = {
     {
       placement: ActionPlacement.Start,
       id: 'c.add-group',
-      label: 'Group',
+      label: '组',
       showLabel: true,
-      tooltip: 'Group',
+      tooltip: '组',
       icon: GroupingIcon(),
       when(ctx) {
         const models = ctx.getSurfaceModels();
@@ -168,8 +168,8 @@ export const builtinMiscToolbarConfig = {
 
         return renderAlignmentMenu(ctx, models, {
           icon: AlignLeftIcon(),
-          label: 'Align objects',
-          tooltip: 'Align objects',
+          label: '对齐对象',
+          tooltip: '对齐对象',
         });
       },
     },

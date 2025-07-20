@@ -105,26 +105,37 @@ export class CloudBlobStorage extends BlobStorageBase {
         throw new OverSizeError(this.humanReadableBlobSizeLimitCache);
       }
       
-      // Temporary: GraphQL functionality disabled
-      throw new Error('Blob storage temporarily disabled - GraphQL backend removed');
+      // 使用REST API上传blob - 替代原来的GraphQL方式
+      const formData = new FormData();
+      const file = new File([blob.data], blob.key, { type: blob.mime });
+      formData.append('file', file);
       
-      // 尝试上传
-      // try {
-      // await this.connection.gql({
-      //   query: setBlobMutation,
-      //   variables: {
-      //     workspaceId: this.options.id,
-      //     blob: new File([blob.data], blob.key, { type: blob.mime }),
-      //   },
-      //   context: {
-      //     signal,
-      //   },
-      // });
-      // } catch (err) {
-      //   console.error('File upload failed, details:', err);
-      //   throw err;
-      // }
+      console.log('🔄 [CloudBlobStorage] 开始上传blob');
+      console.log(`  📊 参数: key=${blob.key}, size=${blob.data.byteLength}, type=${blob.mime}`);
+      console.log(`  📋 文件对象:`, file);
+      
+      const res = await this.connection.fetch(
+        `/api/workspaces/${this.options.id}/blobs/${blob.key}`,
+        {
+          method: 'PUT',
+          body: formData,
+          headers: {
+            'x-affine-version': BUILD_CONFIG.appVersion,
+          },
+          signal,
+        }
+      );
+      
+      if (!res.ok) {
+        const errorText = await res.text();
+        console.error('❌ [CloudBlobStorage] 上传失败:', res.status, errorText);
+        throw new Error(`Blob upload failed: ${res.status} - ${errorText}`);
+      }
+      
+      console.log('✅ [CloudBlobStorage] Blob上传成功');
+      
     } catch (err) {
+      console.error('❌ [CloudBlobStorage] 上传错误:', err);
       const userFriendlyError = UserFriendlyError.fromAny(err);
       if (userFriendlyError.is('STORAGE_QUOTA_EXCEEDED')) {
         throw new OverCapacityError();
@@ -139,39 +150,93 @@ export class CloudBlobStorage extends BlobStorageBase {
     }
   }
 
-  override async delete(_key: string, _permanently: boolean) {
-    // Temporary: GraphQL functionality disabled
-    throw new Error('Blob delete temporarily disabled - GraphQL backend removed');
-    
-    // await this.connection.gql({
-    //   query: deleteBlobMutation,
-    //   variables: { workspaceId: this.options.id, key, permanently },
-    // });
+  override async delete(key: string, permanently: boolean) {
+    try {
+      console.log('🗑️ [CloudBlobStorage] 开始删除blob');
+      console.log(`  📊 参数: key=${key}, permanently=${permanently}`);
+      
+      const res = await this.connection.fetch(
+        `/api/workspaces/${this.options.id}/blobs/${key}?permanently=${permanently}`,
+        {
+          method: 'DELETE',
+          headers: {
+            'x-affine-version': BUILD_CONFIG.appVersion,
+          },
+        }
+      );
+      
+      if (!res.ok) {
+        const errorText = await res.text();
+        console.error('❌ [CloudBlobStorage] 删除失败:', res.status, errorText);
+        throw new Error(`Blob delete failed: ${res.status} - ${errorText}`);
+      }
+      
+      console.log('✅ [CloudBlobStorage] Blob删除成功');
+    } catch (err) {
+      console.error('❌ [CloudBlobStorage] 删除错误:', err);
+      throw err;
+    }
   }
 
   override async release() {
-    // Temporary: GraphQL functionality disabled
-    throw new Error('Blob release temporarily disabled - GraphQL backend removed');
-    
-    // await this.connection.gql({
-    //   query: releaseDeletedBlobsMutation,
-    //   variables: { workspaceId: this.options.id },
-    // });
+    try {
+      console.log('🧹 [CloudBlobStorage] 开始释放已删除的blobs');
+      
+      const res = await this.connection.fetch(
+        `/api/workspaces/${this.options.id}/blobs/release`,
+        {
+          method: 'POST',
+          headers: {
+            'x-affine-version': BUILD_CONFIG.appVersion,
+          },
+        }
+      );
+      
+      if (!res.ok) {
+        const errorText = await res.text();
+        console.error('❌ [CloudBlobStorage] 释放失败:', res.status, errorText);
+        throw new Error(`Blob release failed: ${res.status} - ${errorText}`);
+      }
+      
+      console.log('✅ [CloudBlobStorage] Blob释放成功');
+    } catch (err) {
+      console.error('❌ [CloudBlobStorage] 释放错误:', err);
+      throw err;
+    }
   }
 
   override async list() {
-    // Temporary: GraphQL functionality disabled
-    return [];
-    
-    // const res = await this.connection.gql({
-    //   query: listBlobsQuery,
-    //   variables: { workspaceId: this.options.id },
-    // });
-
-    // return res.workspace.blobs.map(blob => ({
-    //   ...blob,
-    //   createdAt: new Date(blob.createdAt),
-    // }));
+    try {
+      console.log('📋 [CloudBlobStorage] 开始列出blobs');
+      
+      const res = await this.connection.fetch(
+        `/api/workspaces/${this.options.id}/blobs`,
+        {
+          method: 'GET',
+          headers: {
+            'x-affine-version': BUILD_CONFIG.appVersion,
+          },
+        }
+      );
+      
+      if (!res.ok) {
+        const errorText = await res.text();
+        console.error('❌ [CloudBlobStorage] 列表获取失败:', res.status, errorText);
+        throw new Error(`Blob list failed: ${res.status} - ${errorText}`);
+      }
+      
+      const blobList = await res.json();
+      console.log('✅ [CloudBlobStorage] Blob列表获取成功:', blobList.length);
+      
+      return blobList.map((blob: any) => ({
+        ...blob,
+        createdAt: new Date(blob.createdAt),
+      }));
+    } catch (err) {
+      console.error('❌ [CloudBlobStorage] 列表错误:', err);
+      // 如果获取失败，返回空数组而不是抛出错误
+      return [];
+    }
   }
 
   private humanReadableBlobSizeLimitCache: string | null = null;

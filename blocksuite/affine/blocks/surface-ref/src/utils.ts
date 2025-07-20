@@ -118,19 +118,19 @@ export const TYPE_ICON_MAP: {
   };
 } = {
   'affine:frame': {
-    name: 'Frame',
+    name: '框架',
     icon: FrameIcon(),
   },
   group: {
-    name: 'Group',
+    name: '组',
     icon: GroupIcon(),
   },
   mindmap: {
-    name: 'Mind map',
+    name: '思维导图',
     icon: MindmapIcon(),
   },
   edgeless: {
-    name: 'Edgeless content',
+    name: '无边界内容',
     icon: EdgelessIcon(),
   },
 };

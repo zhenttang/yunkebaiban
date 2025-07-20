@@ -9,7 +9,7 @@ export const EdgelessTooltip = html`<svg width="170" height="106" viewBox="0 0 1
 <rect x="100.5" y="42.6565" width="141" height="51" stroke="#1E96EB" stroke-width="3" stroke-dasharray="5 5"/>
 <circle cx="101.5" cy="43.5" r="6" fill="white" stroke="#1E96EB" stroke-width="3"/>
 <rect x="105" y="8" width="59" height="26" rx="10" fill="black" fill-opacity="0.1"/>
-<text fill="#121212" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="117" y="25.3636">Group</tspan></text>
+<text fill="#121212" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" letter-spacing="0em"><tspan x="117" y="25.3636">组</tspan></text>
 <mask id="mask1_16460_1252" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="98" height="106">
 <path d="M0 1.5C0 0.947717 0.447715 0.5 1 0.5H96.2527C96.8927 0.5 97.368 1.09278 97.2288 1.71742L74.1743 105.217C74.0725 105.675 73.6667 106 73.1982 106H0.999999C0.447715 106 0 105.552 0 105V1.5Z" fill="#F4F4F5"/>
 </mask>
@@ -31,10 +31,10 @@ export const EdgelessTooltip = html`<svg width="170" height="106" viewBox="0 0 1
 export const FrameTooltip = html`<svg width="170" height="89" viewBox="0 0 170 89" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g clip-path="url(#clip0_5269_147682)">
 <rect width="170" height="89" fill="white"/>
-<text fill="#8E8D91" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="10" letter-spacing="0px"><tspan x="8" y="16.6364">Create a blank frame in Edgeless</tspan></text>
+<text fill="#8E8D91" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="10" letter-spacing="0px"><tspan x="8" y="16.6364">在无边界模式中创建空白框架</tspan></text>
 <rect x="16" y="45" width="164" height="59" rx="3" stroke="black" stroke-opacity="0.52" stroke-width="2"/>
 <rect x="15" y="27" width="32" height="13" rx="3" fill="black" fill-opacity="0.95"/>
-<text fill="white" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="8" font-weight="500" letter-spacing="0px"><tspan x="19" y="35.8182">Frame</tspan></text>
+<text fill="white" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="8" font-weight="500" letter-spacing="0px"><tspan x="19" y="35.8182">框架</tspan></text>
 </g>
 <defs>
 <clipPath id="clip0_5269_147682">

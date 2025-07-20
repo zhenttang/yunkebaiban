@@ -142,7 +142,7 @@ export class AutoCompleteFrameOverlay extends AutoCompleteTargetOverlay {
     ctx.fillStyle = 'white';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.fillText('Frame', x + titleWidth / 2, titleY + titleHeight / 2);
+    ctx.fillText('框架', x + titleWidth / 2, titleY + titleHeight / 2);
 
     // frame stroke
     ctx.globalAlpha = 0.4;

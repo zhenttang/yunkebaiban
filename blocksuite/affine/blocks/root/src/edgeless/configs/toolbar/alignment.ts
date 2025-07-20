@@ -49,22 +49,22 @@ type AlignmentMap = Record<
 
 const HORIZONTAL_ALIGNMENT = [
   {
-    key: 'Align left',
+    key: '左对齐',
     value: Alignment.Left,
     icon: AlignLeftIcon(),
   },
   {
-    key: 'Align horizontally',
+    key: '水平居中对齐',
     value: Alignment.Horizontally,
     icon: AlignHorizontalCenterIcon(),
   },
   {
-    key: 'Align right',
+    key: '右对齐',
     value: Alignment.Right,
     icon: AlignRightIcon(),
   },
   {
-    key: 'Distribute horizontally',
+    key: '水平分布',
     value: Alignment.DistributeHorizontally,
     icon: DistributeHorizontalIcon(),
   },
@@ -72,22 +72,22 @@ const HORIZONTAL_ALIGNMENT = [
 
 const VERTICAL_ALIGNMENT = [
   {
-    key: 'Align top',
+    key: '顶部对齐',
     value: Alignment.Top,
     icon: AlignTopIcon(),
   },
   {
-    key: 'Align vertically',
+    key: '垂直居中对齐',
     value: Alignment.Vertically,
     icon: AlignVerticalCenterIcon(),
   },
   {
-    key: 'Align bottom',
+    key: '底部对齐',
     value: Alignment.Bottom,
     icon: AlignBottomIcon(),
   },
   {
-    key: 'Distribute vertically',
+    key: '垂直分布',
     value: Alignment.DistributeVertically,
     icon: DistributeVerticalIcon(),
   },
@@ -95,12 +95,12 @@ const VERTICAL_ALIGNMENT = [
 
 const AUTO_ALIGNMENT = [
   {
-    key: 'Auto arrange',
+    key: '自动排列',
     value: Alignment.AutoArrange,
     icon: AutoTidyUpIcon(),
   },
   {
-    key: 'Resize & Align',
+    key: '调整大小并对齐',
     value: Alignment.AutoResize,
     icon: ResizeTidyUpIcon(),
   },

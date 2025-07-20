@@ -52,12 +52,12 @@ const surfaceRefSlashMenuConfig: SlashMenuConfig = {
     let index = 0;
 
     const insertBlankFrameItem: SlashMenuItem = {
-      name: 'Frame',
-      description: 'Insert a blank frame',
+      name: '框架',
+      description: '插入空白框架',
       icon: FrameIcon(),
       tooltip: {
         figure: FrameTooltip,
-        caption: 'Frame',
+        caption: '框架',
       },
       group: `5_Edgeless Element@${index++}`,
       action: () => {
@@ -69,11 +69,11 @@ const surfaceRefSlashMenuConfig: SlashMenuConfig = {
 
     const insertMindMapItem: SlashMenuItem = {
       name: '思维导图',
-      description: 'Insert a mind map',
+      description: '插入思维导图',
       icon: MindmapIcon(),
       tooltip: {
         figure: MindMapTooltip,
-        caption: 'Edgeless',
+        caption: '无边界',
       },
       group: `5_Edgeless Element@${index++}`,
       action: () => {
@@ -123,12 +123,12 @@ const surfaceRefSlashMenuConfig: SlashMenuConfig = {
     };
 
     const frameItems = frameMgr.frames.map<SlashMenuActionItem>(frameModel => ({
-      name: 'Frame: ' + frameModel.props.title,
+      name: '框架: ' + frameModel.props.title,
       icon: FrameIcon(),
       group: `5_Edgeless Element@${index++}`,
       tooltip: {
         figure: EdgelessTooltip,
-        caption: 'Edgeless',
+        caption: '无边界',
       },
       action: () => {
         insertSurfaceRefAndSelect(frameModel.id);
@@ -137,12 +137,12 @@ const surfaceRefSlashMenuConfig: SlashMenuConfig = {
 
     const groupElements = crud.getElementsByType('group');
     const groupItems = groupElements.map<SlashMenuActionItem>(group => ({
-      name: 'Group: ' + group.title.toString(),
+      name: '组: ' + group.title.toString(),
       icon: GroupingIcon(),
       group: `5_Edgeless Element@${index++}`,
       tooltip: {
         figure: EdgelessTooltip,
-        caption: 'Edgeless',
+        caption: '无边界',
       },
       action: () => {
         insertSurfaceRefAndSelect(group.id);

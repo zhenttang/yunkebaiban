@@ -9,19 +9,19 @@ import { FrameConfig } from './config.js';
 
 export const buildFrameDenseMenu: DenseMenuBuilder = (edgeless, gfx) =>
   menu.subMenu({
-    name: 'Frame',
+    name: '框架',
     prefix: FrameIcon({ width: '20px', height: '20px' }),
     select: () => gfx.tool.setTool(FrameTool),
     isSelected: gfx.tool.currentToolName$.peek() === 'frame',
     options: {
       items: [
         menu.action({
-          name: 'Custom',
+          name: '自定义',
           select: () => gfx.tool.setTool(FrameTool),
         }),
         ...FrameConfig.map(config =>
           menu.action({
-            name: `Slide ${config.name}`,
+            name: `幻灯片 ${config.name}`,
             select: () => {
               const frame = edgeless.std.get(EdgelessFrameManagerIdentifier);
               gfx.tool.setTool(DefaultTool);
