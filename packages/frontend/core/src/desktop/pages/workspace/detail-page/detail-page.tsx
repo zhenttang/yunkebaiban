@@ -55,6 +55,7 @@ import { nanoid } from 'nanoid';
 import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import type { Subscription } from 'rxjs';
+import { SaveStatusIndicator } from '../../../../../../apps/web/src/components/save-status-indicator';
 
 import { PageNotFound } from '../../404';
 import * as styles from './detail-page.css';
@@ -294,6 +295,8 @@ const DetailPageImpl = memo(function DetailPageImpl() {
           {/* Add a key to force rerender when page changed, to avoid error boundary persisting. */}
           <AffineErrorBoundary key={doc.id}>
             <TopTip pageId={doc.id} workspace={workspace} />
+            {/* 云存储状态指示器 - 只在文档编辑页面显示 */}
+            <SaveStatusIndicator />
             <Scrollable.Root>
               <Scrollable.Viewport
                 onScroll={handleScroll}

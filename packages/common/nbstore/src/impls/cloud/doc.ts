@@ -124,54 +124,92 @@ export class CloudDocStorage extends DocStorageBase<CloudDocStorageOptions> {
     const updateBase64 = await uint8ArrayToBase64(update.bin);
     const docId = this.idConverter?.newIdToOldId(update.docId) || update.docId;
     
-    console.log('🚀 [前端文档保存-CloudDocStorage] 开始保存文档更新:', {
-      docId: update.docId,
-      oldDocId: docId,
+    console.log('🚀 [NBStore-CloudDocStorage] 开始处理文档更新推送');
+    console.log('  📊 文档信息:', {
+      originalDocId: update.docId,
+      convertedDocId: docId,
       spaceId: this.spaceId,
+      spaceType: this.options.type
+    });
+    console.log('  📦 数据信息:', {
       updateSize: update.bin.length,
       base64Size: updateBase64.length,
-      timestamp: update.timestamp?.getTime() || Date.now()
+      timestamp: update.timestamp?.getTime() || Date.now(),
+      hasTimestamp: !!update.timestamp
     });
     
     // 首先尝试使用全局云存储管理器
+    console.log('  🔍 检查全局云存储管理器...');
     try {
       const cloudStorageManager = (window as any).__CLOUD_STORAGE_MANAGER__;
+      console.log('  📋 云存储管理器状态:', {
+        exists: !!cloudStorageManager,
+        isConnected: cloudStorageManager?.isConnected,
+        hasPushMethod: !!cloudStorageManager?.pushDocUpdate
+      });
+      
       if (cloudStorageManager && cloudStorageManager.isConnected && cloudStorageManager.pushDocUpdate) {
-        console.log('📡 [前端文档保存-CloudDocStorage] 使用云存储管理器');
+        console.log('  📡 使用云存储管理器进行推送...');
         const timestamp = await cloudStorageManager.pushDocUpdate(docId, update.bin);
-        console.log('✅ [前端文档保存-CloudDocStorage] 云存储管理器保存成功:', timestamp);
+        console.log('✅ [NBStore-CloudDocStorage] 云存储管理器推送成功');
+        console.log('  📊 结果: timestamp =', timestamp);
         return;
+      } else {
+        console.log('  ⚠️ 云存储管理器不可用，准备降级到Socket.IO');
       }
     } catch (error) {
-      console.warn('⚠️ [前端文档保存-CloudDocStorage] 云存储管理器失败，降级到Socket.IO:', error);
+      console.warn('⚠️ [NBStore-CloudDocStorage] 云存储管理器推送失败，降级到Socket.IO');
+      console.warn('  🔍 错误详情:', error);
     }
     
     // 降级到原始Socket.IO方法
+    console.log('  🔌 检查Socket.IO连接状态...');
+    console.log('  📊 Socket状态:', {
+      hasSocket: !!this.connection.inner.socket,
+      isConnected: this.connection.inner.socket?.connected,
+      socketId: this.connection.inner.socket?.id
+    });
+    
     if (!this.connection.inner.socket?.connected) {
-      console.error('❌ [前端文档保存-CloudDocStorage] Socket未连接，无法保存文档');
+      console.error('❌ [NBStore-CloudDocStorage] Socket未连接，无法保存文档');
+      console.error('  🔍 连接详情:', {
+        socket: !!this.connection.inner.socket,
+        connected: this.connection.inner.socket?.connected,
+        readyState: this.connection.inner.socket?.connected ? 'connected' : 'disconnected'
+      });
       throw new Error('Socket.IO connection not established');
     }
     
     try {
-      // 使用Socket.IO推送文档更新
-      const result = await this.connection.inner.socket.emitWithAck('space:push-doc-update', {
+      console.log('  📤 使用Socket.IO推送文档更新...');
+      const requestData = {
         spaceType: this.options.type,
         spaceId: this.spaceId,
         docId: docId,
         update: updateBase64
+      };
+      console.log('  📋 Socket.IO请求数据:', {
+        ...requestData,
+        update: `${updateBase64.substring(0, 50)}...(${updateBase64.length}字符)`
       });
       
-      console.log('📡 [前端文档保存-CloudDocStorage] 收到Socket.IO响应:', result);
+      const result = await this.connection.inner.socket.emitWithAck('space:push-doc-update', requestData);
+      
+      console.log('  📥 收到Socket.IO服务器响应:', result);
       
       if ('error' in result) {
-        console.error('❌ [前端文档保存-CloudDocStorage] Socket.IO响应错误:', result.error);
+        console.error('❌ [NBStore-CloudDocStorage] Socket.IO服务器返回错误:', result.error);
         throw new Error(`Socket.IO error: ${result.error.message}`);
       }
       
-      console.log('✅ [前端文档保存-CloudDocStorage] 文档更新成功推送, timestamp:', result.timestamp);
+      console.log('✅ [NBStore-CloudDocStorage] Socket.IO文档更新推送成功');
+      console.log('  📊 推送结果: timestamp =', result.timestamp);
       
     } catch (error) {
-      console.error('💥 [前端文档保存-CloudDocStorage] Socket.IO推送失败:', error);
+      console.error('💥 [NBStore-CloudDocStorage] Socket.IO推送失败');
+      console.error('  🔍 错误类型:', error?.constructor?.name);
+      console.error('  📋 错误消息:', error?.message);
+      console.error('  📚 完整错误:', error);
       throw error;
     }
   }

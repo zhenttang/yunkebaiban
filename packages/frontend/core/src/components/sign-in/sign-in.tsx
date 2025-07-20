@@ -162,54 +162,50 @@ export const SignInStep = ({
           {t['com.affine.auth.sign.email.continue']()}
         </Button>
 
-        {!isSelfhosted && (
-          <>
-            <div className={style.authMessage}>
-              {/*prettier-ignore*/}
-              <Trans i18nKey="com.affine.auth.sign.message">
-                By clicking &quot;Continue with Google/Email&quot; above, you acknowledge that
-                您同意 AFFiNE 的 <a href="https://affine.pro/terms" target="_blank" rel="noreferrer">服务条款</a> 和 <a href="https://affine.pro/privacy" target="_blank" rel="noreferrer">隐私政策</a>。
-            </Trans>
-            </div>
-            <div className={style.skipDivider}>
-              <div className={style.skipDividerLine} />
-              <span className={style.skipDividerText}>或</span>
-              <div className={style.skipDividerLine} />
-            </div>
-            <div className={style.skipSection}>
-              {BUILD_CONFIG.isNative ? (
-                <Button
-                  variant="plain"
-                  className={style.addSelfhostedButton}
-                  prefix={
-                    <PublishIcon className={style.addSelfhostedButtonPrefix} />
-                  }
-                  onClick={onAddSelfhosted}
-                >
-                  {t['com.affine.auth.sign.add-selfhosted']()}
-                </Button>
-              ) : (
-                <div className={style.skipText}>
-                  {t['com.affine.mobile.sign-in.skip.hint']()}
-                </div>
-              )}
+        <>
+          <div className={style.authMessage}>
+            {/*prettier-ignore*/}
+            <Trans i18nKey="com.affine.auth.sign.message">
+              By clicking &quot;Continue with Google/Email&quot; above, you acknowledge that
+              您同意 AFFiNE 的 <a href="https://affine.pro/terms" target="_blank" rel="noreferrer">服务条款</a> 和 <a href="https://affine.pro/privacy" target="_blank" rel="noreferrer">隐私政策</a>。
+          </Trans>
+          </div>
+          <div className={style.skipDivider}>
+            <div className={style.skipDividerLine} />
+            <span className={style.skipDividerText}>或</span>
+            <div className={style.skipDividerLine} />
+          </div>
+          <div className={style.skipSection}>
+            {BUILD_CONFIG.isNative ? (
               <Button
                 variant="plain"
-                onClick={onSkip}
-                className={style.skipLink}
-                prefix={<LocalWorkspaceIcon className={style.skipLinkIcon} />}
+                className={style.addSelfhostedButton}
+                prefix={
+                  <PublishIcon className={style.addSelfhostedButtonPrefix} />
+                }
+                onClick={onAddSelfhosted}
               >
-                {t['com.affine.mobile.sign-in.skip.link']()}
+                {t['com.affine.auth.sign.add-selfhosted']()}
               </Button>
-            </div>
-          </>
-        )}
+            ) : (
+              <div className={style.skipText}>
+                {t['com.affine.mobile.sign-in.skip.hint']()}
+              </div>
+            )}
+            <Button
+              variant="plain"
+              onClick={onSkip}
+              className={style.skipLink}
+              prefix={<LocalWorkspaceIcon className={style.skipLinkIcon} />}
+            >
+              {t['com.affine.mobile.sign-in.skip.link']()}
+            </Button>
+          </div>
+        </>
       </AuthContent>
-      {isSelfhosted && (
-        <AuthFooter>
-          <Back changeState={changeState} />
-        </AuthFooter>
-      )}
+      <AuthFooter>
+        <Back changeState={changeState} />
+      </AuthFooter>
     </AuthContainer>
   );
 };

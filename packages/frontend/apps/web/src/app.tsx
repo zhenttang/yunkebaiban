@@ -23,6 +23,7 @@ import { RouterProvider } from 'react-router-dom';
 import { CloudStorageProvider, useCloudStorage } from './cloud-storage-manager';
 import { DocumentEditTest } from './document-edit-test';
 import { WorkspaceCloudStatus } from './components/workspace-cloud-status';
+import { SaveStatusIndicator } from './components/save-status-indicator';
 
 // 云存储状态指示器组件 - 简化版本，与左上角状态保持一致
 const CloudStorageIndicator = () => {

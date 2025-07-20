@@ -261,25 +261,83 @@ export const CloudStorageProvider = ({
 
   // 推送文档更新 - 增强版本支持队列
   const pushDocUpdate = async (docId: string, update: Uint8Array): Promise<number> => {
+    console.log('🚀 [云存储管理器-推送] 开始处理文档更新推送');
+    console.log(`  📊 请求参数: docId=${docId}, updateSize=${update.length}字节`);
+    console.log(`  🔗 当前状态: workspaceId=${currentWorkspaceId}, online=${isOnline}, socketConnected=${socket?.connected}, isConnected=${isConnected}`);
+    
+    // 详细分析前端发送的原始数据
+    console.log('🔍 [云存储管理器-推送] 详细数据分析:');
+    console.log(`  📦 原始数据类型: ${update.constructor.name}`);
+    console.log(`  📊 数据长度: ${update.length}字节`);
+    console.log(`  🔢 前20字节数值: [${Array.from(update.slice(0, 20)).join(', ')}]`);
+    console.log(`  🔤 前20字节十六进制: ${Array.from(update.slice(0, 20)).map(b => b.toString(16).padStart(2, '0')).join(' ')}`);
+    
+    // 尝试将数据解读为不同格式
+    try {
+      const asString = new TextDecoder('utf-8', { fatal: false }).decode(update.slice(0, 100));
+      console.log(`  📝 UTF-8解码尝试(前100字节): "${asString}"`);
+    } catch (e) {
+      console.log(`  ⚠️ UTF-8解码失败: ${e.message}`);
+    }
+    
+    // 查找可能的文本内容模式
+    const dataView = new DataView(update.buffer, update.byteOffset, update.byteLength);
+    console.log(`  🧮 DataView长度: ${dataView.byteLength}`);
+    
+    // 扫描数据中的可打印字符
+    let printableChars = '';
+    for (let i = 0; i < Math.min(200, update.length); i++) {
+      const byte = update[i];
+      if (byte >= 32 && byte <= 126) { // ASCII可打印字符
+        printableChars += String.fromCharCode(byte);
+      } else if (printableChars.length > 0) {
+        printableChars += '.';
+      }
+    }
+    if (printableChars.length > 0) {
+      console.log(`  📄 可打印字符序列: "${printableChars}"`);
+    }
+    
+    // 检查是否包含中文字符
+    const chineseRegex = /[\u4e00-\u9fff]/g;
+    const fullString = new TextDecoder('utf-8', { fatal: false }).decode(update);
+    const chineseMatches = fullString.match(chineseRegex);
+    if (chineseMatches) {
+      console.log(`  🈳 发现中文字符: ${chineseMatches.slice(0, 10).join('')}${chineseMatches.length > 10 ? '...' : ''} (共${chineseMatches.length}个)`);
+    }
+    
+    // 查找重复字符模式
+    const repeatedPattern = fullString.match(/([1-9])\1{10,}/g);
+    if (repeatedPattern) {
+      console.log(`  🔁 发现重复字符模式: ${repeatedPattern.slice(0, 3).map(p => `"${p.substring(0, 20)}..."`).join(', ')}`);
+    }
+    
     if (!currentWorkspaceId) {
-      throw new Error('No current workspace available');
+      const error = 'No current workspace available';
+      console.error('❌ [云存储管理器-推送] 错误:', error);
+      throw new Error(error);
     }
 
     // 如果网络离线，将操作加入队列
     if (!isOnline) {
-      console.log('📦 [云存储管理器] 网络离线，将操作加入队列');
+      console.log('📦 [云存储管理器-推送] 网络离线，将操作加入队列');
+      saveOfflineOperation(docId, update);
       return new Promise((resolve, reject) => {
         pendingOperations.current.push({ docId, update, resolve, reject });
       });
     }
 
-    if (!socket?.connected) {
+    if (!socket?.connected || !isConnected) {
       // 如果Socket未连接但网络在线，尝试重连并将操作加入队列
-      console.log('🔄 [云存储管理器] Socket未连接，将操作加入队列并尝试重连');
+      console.log('🔄 [云存储管理器-推送] Socket未连接，将操作加入队列并尝试重连');
+      console.log(`  📊 重连状态: attempts=${reconnectAttempts.current}/${maxReconnectAttempts}, socket?.connected=${socket?.connected}, isConnected=${isConnected}`);
       
       // 异步触发重连
       if (reconnectAttempts.current < maxReconnectAttempts) {
+        console.log('  🔄 异步触发重连...');
         setTimeout(() => connectToSocket(), 0);
+      } else {
+        console.warn('  ⚠️ 已达到最大重连次数，不再重连');
       }
       
       return new Promise((resolve, reject) => {
@@ -289,30 +347,89 @@ export const CloudStorageProvider = ({
 
     const updateBase64 = uint8ArrayToBase64(update);
     
-    console.log('🚀 [云存储管理器] 推送文档更新:', {
-      docId,
-      updateSize: update.length,
-      base64Size: updateBase64.length,
-      workspaceId: currentWorkspaceId
-    });
+    // 详细记录Base64编码过程
+    console.log('🔄 [云存储管理器-推送] Base64编码过程:');
+    console.log(`  📊 编码前: ${update.length}字节`);
+    console.log(`  📊 编码后: ${updateBase64.length}字符`);
+    console.log(`  🔤 Base64前50字符: ${updateBase64.substring(0, 50)}...`);
+    console.log(`  🔍 Base64最后50字符: ...${updateBase64.substring(Math.max(0, updateBase64.length - 50))}`);
+    
+    // 验证Base64编码的可逆性
+    try {
+      const decoded = new Uint8Array(atob(updateBase64).split('').map(c => c.charCodeAt(0)));
+      const isIdentical = decoded.length === update.length && decoded.every((v, i) => v === update[i]);
+      console.log(`  ✅ Base64编码验证: 长度匹配=${decoded.length === update.length}, 内容匹配=${isIdentical}`);
+      if (!isIdentical) {
+        console.log(`  ⚠️ 编码前后数据不匹配! 原始前10字节: [${Array.from(update.slice(0, 10)).join(',')}]`);
+        console.log(`  ⚠️ 编码前后数据不匹配! 解码前10字节: [${Array.from(decoded.slice(0, 10)).join(',')}]`);
+      }
+    } catch (e) {
+      console.error(`  ❌ Base64编码验证失败: ${e.message}`);
+    }
+    
+    console.log('🚀 [云存储管理器-推送] 准备发送Socket.IO请求');
+    console.log(`  📦 数据详情: originalSize=${update.length}字节, base64Size=${updateBase64.length}字符`);
+    console.log(`  🔗 Socket状态: id=${socket.id}, connected=${socket.connected}`);
 
     try {
-      const result = await socket.emitWithAck('space:push-doc-update', {
+      console.log('  📤 发送space:push-doc-update事件...');
+      const requestData = {
         spaceType: 'userspace',
         spaceId: currentWorkspaceId,
         docId: docId,
         update: updateBase64
-      });
+      };
+      
+      // 详细记录请求数据
+      console.log('  📋 Socket.IO请求详情:');
+      console.log(`    🏢 spaceType: "${requestData.spaceType}"`);
+      console.log(`    🆔 spaceId: "${requestData.spaceId}"`);
+      console.log(`    📄 docId: "${requestData.docId}"`);
+      console.log(`    📦 update数据长度: ${requestData.update.length}字符`);
+      console.log(`    📝 update数据样本: "${requestData.update.substring(0, 100)}..."`);
+      
+      // 记录发送时间
+      const sendTime = performance.now();
+      console.log(`  ⏰ 发送时间戳: ${sendTime}ms`);
+      
+      const result = await socket.emitWithAck('space:push-doc-update', requestData);
+      
+      // 记录响应时间
+      const responseTime = performance.now();
+      const latency = responseTime - sendTime;
+      console.log(`  ⏱️ 响应延迟: ${latency.toFixed(2)}ms`);
+      
+      console.log('  📥 收到服务器响应:');
+      console.log(`    📊 响应类型: ${typeof result}`);
+      console.log(`    🔍 响应内容: ${JSON.stringify(result, null, 2)}`);
+      
+      // 详细分析响应数据
+      if (result && typeof result === 'object') {
+        console.log('  🔬 响应数据分析:');
+        Object.keys(result).forEach(key => {
+          const value = result[key];
+          console.log(`    ${key}: ${typeof value} = ${JSON.stringify(value)}`);
+        });
+      }
 
       if ('error' in result) {
+        console.error('❌ [云存储管理器-推送] 服务器返回错误:', result.error);
         throw new Error(result.error.message);
       }
 
       setLastSync(new Date(result.timestamp));
-      console.log('✅ [云存储管理器] 文档更新成功:', result.timestamp);
+      console.log('✅ [云存储管理器-推送] 文档更新成功');
+      console.log(`  📊 处理结果: timestamp=${result.timestamp}, 最后同步时间=${new Date(result.timestamp).toLocaleTimeString()}`);
       return result.timestamp;
     } catch (error) {
-      console.error('❌ [云存储管理器] 文档更新失败:', error);
+      console.error('❌ [云存储管理器-推送] 文档更新失败');
+      console.error('  🔍 错误详情:', error);
+      console.error('  📚 完整错误对象:', error);
+      
+      // 保存为离线操作
+      console.log('  💾 保存为离线操作...');
+      saveOfflineOperation(docId, update);
+      
       throw error;
     }
   };
