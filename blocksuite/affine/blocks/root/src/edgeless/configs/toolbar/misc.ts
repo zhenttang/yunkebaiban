@@ -322,32 +322,229 @@ export const builtinLockedToolbarConfig = {
     {
       placement: ActionPlacement.End,
       id: 'b.unlock',
-      label: '点击解锁',
+      label: '长按解锁',
       showLabel: true,
       icon: UnlockIcon(),
-      run(ctx) {
+      content(ctx) {
         const models = ctx.getSurfaceModels();
-        if (!models.length) return;
+        if (!models.length) return null;
 
-        const elements = new Set(
-          models.map(model =>
-            ctx.matchModel(model.group, MindmapElementModel)
-              ? model.group
-              : model
-          )
-        );
+        const { label, icon } = this;
+        let isHolding = false;
+        let progress = 0;
+        let animationId: number | null = null;
+        let holdTimeout: number | null = null;
+        const HOLD_DURATION = 2000; // 2秒长按时间
 
-        ctx.store.captureSync();
+        const executeUnlock = () => {
+          const elements = new Set(
+            models.map(model =>
+              ctx.matchModel(model.group, MindmapElementModel)
+                ? model.group
+                : model
+            )
+          );
 
-        for (const element of elements) {
-          if (element instanceof GroupElementModel) {
-            ctx.command.exec(ungroupCommand, { group: element });
-          } else {
-            element.lockedBySelf = false;
+          ctx.store.captureSync();
+
+          for (const element of elements) {
+            if (element instanceof GroupElementModel) {
+              ctx.command.exec(ungroupCommand, { group: element });
+            } else {
+              element.lockedBySelf = false;
+            }
+
+            track(ctx, element, 'unlock');
           }
+        };
 
-          track(ctx, element, 'unlock');
-        }
+        const updateProgress = (buttonEl: HTMLElement) => {
+          if (!isHolding) return;
+          
+          progress = Math.min(progress + 16 / HOLD_DURATION, 1); // 16ms per frame
+          const percentage = Math.round(progress * 100);
+          
+          // 更新进度条宽度
+          const progressBar = buttonEl.querySelector('.unlock-progress') as HTMLElement;
+          if (progressBar) {
+            progressBar.style.width = `${percentage}%`;
+          }
+          
+          // 更新百分比文字
+          const progressText = buttonEl.querySelector('.progress-text') as HTMLElement;
+          if (progressText) {
+            progressText.textContent = `${percentage}%`;
+          }
+          
+          // 更新文字颜色
+          const textEl = buttonEl.querySelector('.unlock-text') as HTMLElement;
+          if (textEl) {
+            const intensity = progress;
+            textEl.style.color = `rgb(${Math.floor(55 - intensity * 20)}, ${Math.floor(65 + intensity * 90)}, ${Math.floor(81 - intensity * 40)})`;
+          }
+          
+          if (progress >= 1) {
+            // 解锁完成
+            executeUnlock();
+            resetProgress(buttonEl);
+          } else {
+            animationId = requestAnimationFrame(() => updateProgress(buttonEl));
+          }
+        };
+
+        const resetProgress = (buttonEl: HTMLElement) => {
+          isHolding = false;
+          progress = 0;
+          if (animationId) {
+            cancelAnimationFrame(animationId);
+            animationId = null;
+          }
+          if (holdTimeout) {
+            clearTimeout(holdTimeout);
+            holdTimeout = null;
+          }
+          
+          // 重置进度条宽度
+          const progressBar = buttonEl.querySelector('.unlock-progress') as HTMLElement;
+          if (progressBar) {
+            progressBar.style.width = '0%';
+          }
+          
+          // 重置百分比文字
+          const progressText = buttonEl.querySelector('.progress-text') as HTMLElement;
+          if (progressText) {
+            progressText.textContent = '0%';
+          }
+          
+          // 重置文字颜色
+          const textEl = buttonEl.querySelector('.unlock-text') as HTMLElement;
+          if (textEl) {
+            textEl.style.color = '#374151';
+          }
+        };
+
+        const handlePointerDown = (e: PointerEvent) => {
+          e.stopPropagation();
+          e.preventDefault();
+          
+          const buttonEl = e.currentTarget as HTMLElement;
+          isHolding = true;
+          progress = 0;
+          
+          // 开始动画
+          updateProgress(buttonEl);
+          
+          // 添加全局释放监听器
+          const handlePointerUp = () => {
+            resetProgress(buttonEl);
+            document.removeEventListener('pointerup', handlePointerUp);
+            document.removeEventListener('pointercancel', handlePointerUp);
+          };
+          
+          document.addEventListener('pointerup', handlePointerUp);
+          document.addEventListener('pointercancel', handlePointerUp);
+        };
+
+        return html`
+          <div
+            style="
+              display: flex;
+              align-items: center;
+              gap: 10px;
+              padding: 6px 12px;
+              background: rgba(255, 255, 255, 0.95);
+              border: 1px solid rgba(0, 0, 0, 0.1);
+              border-radius: 20px;
+              cursor: pointer;
+              user-select: none;
+              backdrop-filter: blur(8px);
+              box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+              transition: all 0.2s ease;
+              min-width: 100px;
+            "
+            @pointerdown=${handlePointerDown}
+            @contextmenu=${(e: Event) => e.preventDefault()}
+            @mouseenter=${(e: Event) => {
+              const target = e.currentTarget as HTMLElement;
+              target.style.transform = 'scale(1.02)';
+              target.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.15)';
+            }}
+            @mouseleave=${(e: Event) => {
+              const target = e.currentTarget as HTMLElement;
+              target.style.transform = 'scale(1)';
+              target.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.1)';
+            }}
+          >
+            <!-- 图标 - 使用简单的🔓 emoji -->
+            <div style="
+              width: 18px; 
+              height: 18px; 
+              display: flex; 
+              align-items: center; 
+              justify-content: center;
+              opacity: 0.8;
+              font-size: 14px;
+            ">
+              🔓
+            </div>
+            
+            <!-- 进度条和文字 -->
+            <div style="
+              flex: 1;
+              display: flex;
+              flex-direction: column;
+              gap: 4px;
+            ">
+              <!-- 文字 -->
+              <div
+                class="unlock-text"
+                style="
+                  font-size: 12px;
+                  font-weight: 500;
+                  color: #374151;
+                  line-height: 1;
+                  transition: color 0.2s ease;
+                "
+              >${label}</div>
+              
+              <!-- 进度条背景 -->
+              <div style="
+                width: 100%;
+                height: 4px;
+                background: rgba(0, 0, 0, 0.08);
+                border-radius: 2px;
+                overflow: hidden;
+                position: relative;
+              ">
+                <!-- 进度条填充 -->
+                <div
+                  class="unlock-progress"
+                  style="
+                    height: 100%;
+                    width: 0%;
+                    background: linear-gradient(90deg, #10b981, #34d399);
+                    border-radius: 2px;
+                    transition: width 0.15s ease-out;
+                    position: relative;
+                  "
+                ></div>
+              </div>
+            </div>
+            
+            <!-- 百分比 -->
+            <div
+              class="progress-text"
+              style="
+                font-size: 11px;
+                color: #6b7280;
+                font-weight: 600;
+                min-width: 28px;
+                text-align: right;
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', monospace;
+              "
+            >0%</div>
+          </div>
+        `;
       },
     },
   ],
