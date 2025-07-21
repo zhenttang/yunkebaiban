@@ -6,7 +6,7 @@ import { UrlService } from '@affine/core/modules/url';
 import { UserFriendlyError } from '@affine/error';
 // import { OAuthProviderType } from '@affine/graphql';
 
-// Temporary placeholder enum since GraphQL backend removed
+// GraphQL后端移除后的临时占位符枚举
 enum OAuthProviderType {
   Phone = 'phone',
   WeChat = 'wechat',

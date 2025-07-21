@@ -22,7 +22,7 @@ export class ObjectPool<Key, T> {
       exist.rc++;
       let released = false;
       const release = () => {
-        // avoid double release
+        // 避免重复释放
         if (released) {
           return;
         }
@@ -56,7 +56,7 @@ export class ObjectPool<Key, T> {
       clearInterval(this.timeoutToGc);
     }
 
-    // do gc every 1s
+    // 每1秒执行一次gc
     this.timeoutToGc = setInterval(() => {
       this.gc();
     }, 1000);
@@ -64,7 +64,7 @@ export class ObjectPool<Key, T> {
 
   private gc() {
     for (const [key, { obj, rc }] of new Map(
-      this.objects /* clone the map, because the origin will be modified during iteration */
+      this.objects /* 克隆映射，因为原始映射在迭代过程中将被修改 */
     )) {
       if (
         rc === 0 &&
@@ -82,7 +82,7 @@ export class ObjectPool<Key, T> {
       }
     }
 
-    // if all object has referrer, stop gc
+    // 如果所有对象都有引用者，停止gc
     if (this.timeoutToGc) {
       clearInterval(this.timeoutToGc);
     }

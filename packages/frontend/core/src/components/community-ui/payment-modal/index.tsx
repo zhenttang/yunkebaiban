@@ -52,7 +52,7 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
             }, 2000);
           }
         } catch (err) {
-          console.error('Check payment status failed:', err);
+          console.error('检查支付状态失败:', err);
         }
       }, 2000);
     }

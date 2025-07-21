@@ -22,12 +22,12 @@ export const validatePassword = (
   password: string | undefined,
   passwordLimits: { minLength: number; maxLength: number }
 ): { valid: boolean; error?: string } => {
-  // if password is empty, it is valid
+  // 如果密码为空，则为有效
   if (!password || password.trim() === '') {
     return { valid: true };
   }
 
-  // check password length
+  // 检查密码长度
   if (
     password.length < passwordLimits.minLength ||
     password.length > passwordLimits.maxLength
@@ -38,7 +38,7 @@ export const validatePassword = (
     };
   }
 
-  // TODO(@Jimmfly): check password contains at least one letter and one number
+  // TODO(@Jimmfly): 检查密码至少包含一个字母和一个数字
 
   // const hasLetter = /[a-zA-Z]/.test(password);
   // const hasNumber = /[0-9]/.test(password);
@@ -113,7 +113,7 @@ export const exportImportResults = (results: ParsedUser[]) => {
     ),
   ].join('\n');
 
-  // Create and download the file
+  // 创建并下载文件
   downloadCsv(
     csvContent,
     `import_results_${new Date().toISOString().slice(0, 10)}.csv`
@@ -126,7 +126,7 @@ export const exportImportResults = (results: ParsedUser[]) => {
  * Utility function for downloading CSV content with proper UTF-8 encoding for international characters
  */
 export const downloadCsv = (csvContent: string, filename: string) => {
-  // Add BOM (Byte Order Mark) to force Excel to interpret the file as UTF-8
+  // 添加BOM(字节顺序标记)以强制Excel将文件解释为UTF-8编码
   const BOM = '\uFEFF';
   const csvContentWithBOM = BOM + csvContent;
 
@@ -210,17 +210,17 @@ export const validateUsers = (
   users: ParsedUser[],
   passwordLimits: { minLength: number; maxLength: number }
 ): ParsedUser[] => {
-  // validate emails
+  // 验证邮箱地址
   const emailValidatedUsers = validateEmails(users);
 
-  // validate password
+  // 验证密码
   return emailValidatedUsers.map(user => {
-    // if email is invalid, return
+    // 如果邮箱无效，则返回
     if (user.valid === false) {
       return user;
     }
 
-    // validate password
+    // 验证密码
     const passwordValidation = validatePassword(user.password, passwordLimits);
     if (!passwordValidation.valid) {
       return {

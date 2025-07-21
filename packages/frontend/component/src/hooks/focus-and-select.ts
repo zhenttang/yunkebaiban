@@ -7,8 +7,8 @@ export const useAutoFocus = <T extends HTMLElement = HTMLElement>(
 
   useLayoutEffect(() => {
     if (ref.current && autoFocus) {
-      // to avoid clicking on something focusable(e.g MenuItem),
-      // then the input will not be focused
+      // 避免点击可聚焦元素（如菜单项）时，
+      // 输入框不会获得焦点
       setTimeout(() => {
         ref.current?.focus();
       }, 0);

@@ -27,7 +27,7 @@ function AccountPage() {
     error
   } = useUserList();
   
-  // Remember the user temporarily, because userList is paginated on the server side,can't get all users at once.
+  // 临时记住用户信息，因为用户列表在服务端进行分页，无法一次性获取所有用户
   const [memoUsers, setMemoUsers] = useState<UserType[]>([]);
   const [selectedUserIds, setSelectedUserIds] = useState<Set<string>>(new Set<string>());
   

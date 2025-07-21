@@ -1,29 +1,29 @@
 /**
- * modified version of useRefEffect from https://github.com/jantimon/react-use-ref-effect/blob/master/src/index.tsx
+ * 修改自 useRefEffect https://github.com/jantimon/react-use-ref-effect/blob/master/src/index.tsx
  */
 import { useDebugValue, useEffect, useState } from 'react';
 
-// internalRef is used as a reference and therefore save to be used inside an effect
+// internalRef 用作引用，因此可以安全地在 effect 中使用
 /* eslint-disable react-hooks/exhaustive-deps */
 
-// the `process.env.NODE_ENV !== 'production'` condition is resolved by the build tool
+// `process.env.NODE_ENV !== 'production'` 条件由构建工具解析
 
 const noop: (...args: any[]) => any = () => {};
 
 /**
- * `useRefEffect` returns a mutable ref object to be connected with a DOM Node.
+ * `useRefEffect` 返回一个可变的 ref 对象，用于连接 DOM 节点。
  *
- * The returned object will persist for the full lifetime of the component.
- * Accepts a function that contains imperative, possibly effectful code.
+ * 返回的对象将在组件的整个生命周期内保持。
+ * 接受一个包含命令式、可能有副作用代码的函数。
  *
- * @param effect Imperative function that can return a cleanup function
- * @param deps If present, effect will only activate if the ref or the values in the list change.
+ * @param effect 可以返回清理函数的命令式函数
+ * @param deps 如果存在，只有当 ref 或列表中的值发生变化时，effect 才会激活
  */
 export const useRefEffect = <T>(
   effect: (element: T) => void | (() => void),
   dependencies: any[] = []
 ): React.RefCallback<T> & React.MutableRefObject<T | null> => {
-  // Use the initial state as mutable reference
+  // 使用初始状态作为可变引用
   const internalRef = useState(() => {
     let currentValue = null as T | null;
     let cleanupPreviousEffect = noop as () => void;
@@ -32,7 +32,7 @@ export const useRefEffect = <T>(
      * React.RefCallback
      */
     const setRefValue = (newElement: T | null) => {
-      // Only execute if dependencies or element changed:
+      // 仅在依赖项或元素发生变化时执行：
       if (
         internalRef.dependencies_ !== currentDeps ||
         currentValue !== newElement
@@ -46,7 +46,7 @@ export const useRefEffect = <T>(
       }
     };
     return {
-      /** Execute the effects cleanup function */
+      /** 执行 effect 的清理函数 */
       cleanup_: () => {
         cleanupPreviousEffect();
         cleanupPreviousEffect = noop;
@@ -58,24 +58,24 @@ export const useRefEffect = <T>(
     } as {
       cleanup_: () => void;
       ref_: React.RefCallback<T> & React.MutableRefObject<T | null>;
-      // Those two properties will be set immediately after initialisation
+      // 这两个属性将在初始化后立即设置
       effect_: typeof effect;
       dependencies_: typeof dependencies;
     };
   })[0];
 
-  // Show the current ref value in development
-  // in react dev tools
+  // 在开发环境下在 React 开发工具中
+  // 显示当前 ref 值
   if (BUILD_CONFIG.debug) {
     useDebugValue(internalRef.ref_.current);
   }
 
-  // Keep a ref to the latest callback
+  // 保持对最新回调的引用
   internalRef.effect_ = effect;
 
   useEffect(
     () => {
-      // Run effect if dependencies change
+      // 如果依赖项发生变化则运行 effect
       internalRef.ref_(internalRef.ref_.current);
       return () => {
         if (internalRef.dependencies_ === dependencies) {
@@ -83,7 +83,7 @@ export const useRefEffect = <T>(
           internalRef.dependencies_ = [];
         }
       };
-    }, // Keep a ref to the latest dependencies
+    }, // 保持对最新依赖项的引用
     (internalRef.dependencies_ = dependencies)
   );
 

@@ -5,7 +5,7 @@ import { beforeAll, beforeEach, describe, expect, test, vi } from 'vitest';
 
 import { enableAutoTrack, makeTracker } from '../auto';
 
-describe('callable events chain', () => {
+describe('可调用事件链', () => {
   const call = vi.fn();
   const track = makeTracker(call);
 
@@ -13,7 +13,7 @@ describe('callable events chain', () => {
     call.mockClear();
   });
 
-  test('should call track with event and props', () => {
+  test('应该使用事件和属性调用track', () => {
     // @ts-expect-error fake chain
     track.pageA.segmentA.moduleA.eventA();
 
@@ -24,7 +24,7 @@ describe('callable events chain', () => {
     });
   });
 
-  test('should be able to override props', () => {
+  test('应该能够覆盖属性', () => {
     // @ts-expect-error fake chain
     track.pageA.segmentA.moduleA.eventA({ page: 'pageB', control: 'controlA' });
 
@@ -36,7 +36,7 @@ describe('callable events chain', () => {
     });
   });
 
-  test('should be able to append custom props', () => {
+  test('应该能够附加自定义属性', () => {
     // @ts-expect-error fake chain
     track.pageA.segmentA.moduleA.eventA({ custom: 'prop' });
 
@@ -48,7 +48,7 @@ describe('callable events chain', () => {
     });
   });
 
-  test('should be able to ignore matrix named with placeholder `$`', () => {
+  test('应该能够忽略使用占位符`$`命名的矩阵', () => {
     // @ts-expect-error fake chain
     track.$.segmentA.moduleA.eventA();
     // @ts-expect-error fake chain
@@ -80,7 +80,7 @@ describe('callable events chain', () => {
   });
 });
 
-describe('auto track with dom dataset', () => {
+describe('使用DOM dataset自动跟踪', () => {
   const root = document.createElement('div');
   const call = vi.fn();
   beforeAll(() => {
@@ -89,7 +89,7 @@ describe('auto track with dom dataset', () => {
     return enableAutoTrack(root, call);
   });
 
-  test('should ignore if data-event-props not set', () => {
+  test('如果未设置data-event-props应该忽略', () => {
     const nonTrackBtn = document.createElement('button');
     root.append(nonTrackBtn);
 
@@ -98,7 +98,7 @@ describe('auto track with dom dataset', () => {
     expect(call).not.toBeCalled();
   });
 
-  test('should track event with props', () => {
+  test('应该使用属性跟踪事件', () => {
     const btn = document.createElement('button');
     btn.dataset.eventProps = 'allDocs.header.actions.createDoc';
     root.append(btn);
@@ -112,7 +112,7 @@ describe('auto track with dom dataset', () => {
     });
   });
 
-  test('should track event with single', () => {
+  test('应该使用单个参数跟踪事件', () => {
     const btn = document.createElement('button');
     btn.dataset.eventProps = 'allDocs.header.actions.createDoc';
     btn.dataset.eventArg = 'test';
@@ -128,7 +128,7 @@ describe('auto track with dom dataset', () => {
     });
   });
 
-  test('should track event with multiple args', () => {
+  test('应该使用多个参数跟踪事件', () => {
     const btn = document.createElement('button');
     btn.dataset.eventProps = 'allDocs.header.actions.createDoc';
     btn.dataset.eventArgsFoo = 'bar';

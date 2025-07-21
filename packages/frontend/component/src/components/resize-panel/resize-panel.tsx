@@ -110,7 +110,7 @@ const ResizeHandle = ({
       document.addEventListener(
         'mouseup',
         () => {
-          // if not resized, toggle sidebar
+          // 如果没有调整大小，则切换侧边栏
           if (!resized) {
             onOpen(false);
           }

@@ -87,7 +87,7 @@ export const useColumns = ({
                     ])
                 );
               } else {
-                // remove selected users in the current page
+                // 移除当前页面中的已选用户
                 setSelectedUserIds(
                   prev =>
                     new Set(

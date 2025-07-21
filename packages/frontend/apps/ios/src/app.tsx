@@ -113,9 +113,9 @@ framework.impl(ValidatorProvider, {
   },
 });
 framework.impl(VirtualKeyboardProvider, {
-  // We dose not provide show and hide because:
-  // - Keyboard.show() is not implemented
-  // - Keyboard.hide() will blur the current editor
+  // 我们不提供show和hide因为：
+  // - Keyboard.show()未实现
+  // - Keyboard.hide()会失焦当前编辑器
   onChange: callback => {
     let disposeRef = {
       dispose: () => {},
@@ -210,7 +210,7 @@ framework.scope(ServerScope).override(AuthProvider, resolver => {
 
 const frameworkProvider = framework.provider();
 
-// ------ some apis for native ------
+// ------ 原生端的一些API ------
 (window as any).getCurrentServerBaseUrl = () => {
   const globalContextService = frameworkProvider.get(GlobalContextService);
   const currentServerId = globalContextService.globalContext.serverId.get();
@@ -305,7 +305,7 @@ const frameworkProvider = framework.provider();
     }
 
     const workbench = workspace.scope.get(WorkbenchService).workbench;
-    await workspace.engine.doc.waitForDocReady(workspace.id); // wait for root doc ready
+    await workspace.engine.doc.waitForDocReady(workspace.id); // 等待根文档准备就绪
     const docId = await MarkdownTransformer.importMarkdownToDoc({
       collection: workspace.docCollection,
       schema: getAFFiNEWorkspaceSchema(),
@@ -314,7 +314,7 @@ const frameworkProvider = framework.provider();
     });
     const docsService = workspace.scope.get(DocsService);
     if (docId) {
-      // only support page mode for now
+      // 目前仅支持页面模式
       await docsService.changeDocTitle(docId, title);
       docsService.list.setPrimaryMode(docId, 'page');
       workbench.openDoc(docId);
@@ -327,14 +327,14 @@ const frameworkProvider = framework.provider();
   }
 };
 
-// setup application lifecycle events, and emit application start event
+// 设置应用程序生命周期事件，并触发应用程序启动事件
 window.addEventListener('focus', () => {
   frameworkProvider.get(LifecycleService).applicationFocus();
 });
 frameworkProvider.get(LifecycleService).applicationStart();
 
 CapacitorApp.addListener('appUrlOpen', ({ url }) => {
-  // try to close browser if it's open
+  // 如果浏览器已打开，尝试关闭它
   Browser.close().catch(e => console.error('关闭浏览器失败', e));
 
   const urlObj = new URL(url);

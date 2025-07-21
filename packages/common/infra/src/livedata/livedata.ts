@@ -29,26 +29,26 @@ import { shallowEqual } from '../utils/shallow-equal';
 const logger = new DebugLogger('livedata');
 
 /**
- * LiveData is a reactive data type.
+ * LiveData是一种响应式数据类型。
  *
- * ## basic usage
+ * ## 基本用法
  *
  * @example
  * ```ts
- * const livedata = new LiveData(0); // create livedata with initial value
+ * const livedata = new LiveData(0); // 使用初始值创建 livedata
  *
- * livedata.next(1); // update value
+ * livedata.next(1); // 更新值
  *
- * console.log(livedata.value); // get current value
+ * console.log(livedata.value); // 获取当前值
  *
- * livedata.subscribe(v => { // subscribe to value changes
+ * livedata.subscribe(v => { // 订阅值变化
  *  console.log(v); // 1
  * });
  * ```
  *
- * ## observable
+ * ## 可观察对象
  *
- * LiveData is a rxjs observable, you can use rxjs operators.
+ * LiveData是rxjs可观察对象，您可以使用rxjs操作符。
  *
  * @example
  * ```ts
@@ -59,28 +59,28 @@ const logger = new DebugLogger('livedata');
  * )
  * ```
  *
- * NOTICE: different from normal observable, LiveData will always emit the latest value when you subscribe to it.
+ * 注意：与普通的可观察对象不同，LiveData在您订阅时总是会发出最新的值。
  *
- * ## from observable
+ * ## 从可观察对象创建
  *
- * LiveData can be created from observable or from other livedata.
+ * LiveData可以从可观察对象或其他livedata创建。
  *
  * @example
  * ```ts
  * const A = LiveData.from(
- *   of(1, 2, 3, 4), // from observable
- *   0 // initial value
+ *   of(1, 2, 3, 4), // 从可观察对象
+ *   0 // 初始值
  * );
  *
  * const B = LiveData.from(
- *   A.pipe(map(v => 'from a ' + v)), // from other livedata
- *   '' // initial value
+ *   A.pipe(map(v => 'from a ' + v)), // 从其他livedata
+ *   '' // 初始值
  * );
  * ```
  *
- * ## Why is it called LiveData
+ * ## 为什么叫LiveData
  *
- * This API is very similar to LiveData in Android, as both are based on Observable, so I named it LiveData.
+ * 这个API与Android中的LiveData非常相似，因为两者都基于Observable，所以我将其命名为LiveData。
  *
  * @see {@link https://rxjs.dev/api/index/class/BehaviorSubject}
  * @see {@link https://developer.android.com/topic/libraries/architecture/livedata}

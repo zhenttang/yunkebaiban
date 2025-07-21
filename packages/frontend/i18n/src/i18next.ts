@@ -40,12 +40,12 @@ export const getOrCreateI18n = (): i18n => {
       .init({
         lng: defaultLng,
         fallbackLng: code => {
-          // always fallback to english
+          // 总是回退到英语
           const fallbacks: string[] = [defaultLng];
           const langPart = code.split('-')[0];
 
-          // fallback xx-YY to xx, e.g. es-AR to es
-          // fallback zh-Hant to zh-Hans
+          // 回退 xx-YY 到 xx，例如 es-AR 到 es
+          // 回退 zh-Hant 到 zh-Hans
           if (langPart === 'cn') {
             fallbacks.push('zh-Hans');
           } else if (
@@ -66,7 +66,7 @@ export const getOrCreateI18n = (): i18n => {
           },
         },
         interpolation: {
-          escapeValue: false, // not needed for react as it escapes by default
+          escapeValue: false, // React默认已转义，不需要
         },
       })
       .then(() => {
@@ -80,11 +80,11 @@ export const getOrCreateI18n = (): i18n => {
 
 declare module 'i18next' {
   interface CustomTypeOptions {
-    // NOTE(@forehalo):
-    //   DO NOT ENABLE THIS
-    //   This could bring typecheck for <Trans /> component,
-    //   but it will make typecheck of whole codebase so laggy!
-    //   check [./react.ts]
+    // 注意(@forehalo):
+    //   请勿启用此项
+    //   这可以为 <Trans /> 组件带来类型检查，
+    //   但会让整个代码库的类型检查变得非常卡顿！
+    //   查看 [./react.ts]
     // resources: {
     //   translation: LanguageResource;
     // };
@@ -123,7 +123,7 @@ export function createI18nWrapper(getI18nFn: () => i18n) {
       if (i18n.exists(key)) {
         return i18n.t(key, options);
       } else {
-        // unknown translate key 'xxx.xxx' returns itself
+        // 未知翻译键 'xxx.xxx' 返回自身
         return key;
       }
     },

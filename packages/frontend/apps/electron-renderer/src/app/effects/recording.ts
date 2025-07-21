@@ -23,7 +23,7 @@ async function saveRecordingBlob(blobEngine: BlobEngine, filepath: string) {
     type: 'audio/mp4',
   });
   const blobId = await blobEngine.set(blob);
-  logger.debug('Recording saved', blobId);
+  logger.debug('录制已保存', blobId);
   return { blob, blobId };
 }
 
@@ -33,7 +33,7 @@ export function setupRecordingEvents(frameworkProvider: FrameworkProvider) {
       if ((await apis?.ui.isActiveTab()) && status?.status === 'ready') {
         using currentWorkspace = getCurrentWorkspace(frameworkProvider);
         if (!currentWorkspace) {
-          // maybe the workspace is not ready yet, eg. for shared workspace view
+          // 工作区可能还未就绪，例如在共享工作区视图中
           await apis?.recording.handleBlockCreationFailed(status.id);
           return;
         }
@@ -52,20 +52,20 @@ export function setupRecordingEvents(frameworkProvider: FrameworkProvider) {
           onStoreLoad: (doc, { noteId }) => {
             (async () => {
               if (status.filepath) {
-                // it takes a while to save the blob, so we show the attachment first
+                // 保存blob需要一些时间，所以我们先显示附件
                 const { blobId, blob } = await saveRecordingBlob(
                   doc.workspace.blobSync,
                   status.filepath
                 );
 
-                // name + timestamp(readable) + extension
+                // 名称 + 时间戳（可读） + 扩展名
                 const attachmentName =
                   (status.appName ?? '系统音频') +
                   ' ' +
                   timestamp +
                   '.opus';
 
-                // add size and sourceId to the attachment later
+                // 稍后将大小和sourceId添加到附件
                 const attachmentId = doc.addBlock(
                   'affine:attachment',
                   {
@@ -103,7 +103,7 @@ export function setupRecordingEvents(frameworkProvider: FrameworkProvider) {
                     });
                   })
                   .catch(err => {
-                    logger.error('Failed to transcribe recording', err);
+                    logger.error('录制转录失败', err);
                   });
               } else {
                 throw new Error('未找到附件模型');
@@ -113,7 +113,7 @@ export function setupRecordingEvents(frameworkProvider: FrameworkProvider) {
                 await apis?.recording.handleBlockCreationSuccess(status.id);
               })
               .catch(error => {
-                logger.error('Failed to transcribe recording', error);
+                logger.error('录制转录失败', error);
                 return apis?.recording.handleBlockCreationFailed(
                   status.id,
                   error

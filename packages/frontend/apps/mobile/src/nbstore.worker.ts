@@ -18,14 +18,14 @@ const consumer = new StoreManagerConsumer([
 ]);
 
 if ('onconnect' in globalThis) {
-  // if in shared worker
+  // 如果在共享worker中
 
   (globalThis as any).onconnect = (event: MessageEvent) => {
     const port = event.ports[0];
     consumer.bindConsumer(new OpConsumer<WorkerManagerOps>(port));
   };
 } else {
-  // if in worker
+  // 如果在worker中
   consumer.bindConsumer(
     new OpConsumer<WorkerManagerOps>(globalThis as MessageCommunicapable)
   );

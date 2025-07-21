@@ -12,11 +12,11 @@ import {
 } from 'rxjs';
 
 /**
- * Like exhaustMap, but also includes the trailing value emitted from the source observable while waiting for the preceding inner observable to complete
+ * 类似exhaustMap，但还包括在等待前一个内部可观察对象完成时从源可观察对象发出的尾随值
  *
- * Original code adapted from https://github.com/ReactiveX/rxjs/issues/5004
- * @param {function<T, K>(value: T, ?index: number): ObservableInput<K>} project - A function that, when applied to an item emitted by the
- * source Observable, returns a projected Observable.
+ * 原始代码改编自 https://github.com/ReactiveX/rxjs/issues/5004
+ * @param {function<T, K>(value: T, ?index: number): ObservableInput<K>} project - 一个函数，当应用于源
+ * Observable发出的项目时，返回一个投影的Observable。
  */
 export function exhaustMapWithTrailing<T, R>(
   project: (value: T, index: number) => ObservableInput<R>

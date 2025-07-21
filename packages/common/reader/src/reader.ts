@@ -98,7 +98,7 @@ function generateMarkdownPreviewBuilder(
     for (const meta of pages.toArray()) {
       adapterConfigs.set(
         'title:' + meta.get('id'),
-        meta.get('title')?.toString() ?? 'Untitled'
+        meta.get('title')?.toString() ?? '未命名'
       );
     }
   };

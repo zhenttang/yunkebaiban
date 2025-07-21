@@ -15,10 +15,9 @@ type DistributiveOmit<T, K extends string | number | symbol> = T extends any
 type PropsWithoutRef<T> = DistributiveOmit<T, 'ref'>;
 
 /**
- * Creates a type to be used for the props of a web component used directly in
- * React JSX.
+ * 创建一个类型，用于在 React JSX 中直接使用的 Web 组件的属性。
  *
- * Example:
+ * 示例：
  *
  * ```ts
  * declare module "react" {
@@ -39,8 +38,7 @@ export type WebComponentProps<I extends HTMLElement> = React.DetailedHTMLProps<
 type EmptyObject = {};
 
 /**
- * Type of the React component wrapping the web component. This is the return
- * type of `createComponent`.
+ * 包装 Web 组件的 React 组件类型。这是 `createComponent` 的返回类型。
  */
 export type ReactWebComponent<
   I extends HTMLElement,

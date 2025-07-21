@@ -22,7 +22,7 @@ export interface ImportUsersDialogProps {
 }
 
 /**
- * Dialog for importing users from a CSV file
+ * 从CSV文件导入用户的对话框
  */
 export function ImportUsersDialog({
   open,

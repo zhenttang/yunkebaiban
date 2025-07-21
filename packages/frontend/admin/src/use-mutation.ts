@@ -1,4 +1,4 @@
-// REST API mutation类型定义
+// REST API变更操作类型定义
 interface RestApiMutation {
   id: string;
   endpoint: string;

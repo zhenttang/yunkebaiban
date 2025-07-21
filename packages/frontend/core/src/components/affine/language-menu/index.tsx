@@ -7,7 +7,7 @@ import { memo } from 'react';
 
 import * as styles from './style.css';
 
-// Fixme: keyboard focus should be supported by Menu component
+// 修复：Menu组件应该支持键盘焦点
 const LanguageMenuContent = memo(function LanguageMenuContent({
   current,
   onChange,

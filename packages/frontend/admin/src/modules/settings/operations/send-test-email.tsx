@@ -4,7 +4,7 @@ import { notify } from '@affine/component';
 import type { UserFriendlyError } from '@affine/error';
 // import { sendTestEmailMutation } from '@affine/graphql';
 
-// Temporary placeholder to replace @affine/graphql imports
+// 临时占位符，用于替代 @affine/graphql 导入
 const sendTestEmailMutation = {
   id: 'sendTestEmail',
   query: 'mutation SendTestEmail($smtpConfig: SMTPConfigInput!) { sendTestEmail(smtpConfig: $smtpConfig) { success } }',

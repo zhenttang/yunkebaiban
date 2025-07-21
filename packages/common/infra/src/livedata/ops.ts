@@ -23,7 +23,7 @@ import { MANUALLY_STOP } from '../utils';
 import type { LiveData } from './livedata';
 
 /**
- * An operator that maps the value to the `LiveData`.
+ * 一个将值映射到`LiveData`的操作符。
  */
 export function mapInto<T>(l$: LiveData<T>) {
   return pipe(
@@ -35,11 +35,11 @@ export function mapInto<T>(l$: LiveData<T>) {
 }
 
 /**
- * An operator that catches the error and sends it to the `LiveData`.
+ * 一个捕获错误并将其发送到`LiveData`的操作符。
  *
- * The `LiveData` will be set to `null` when the observable completes. This is useful for error state recovery.
+ * 当可观察对象完成时，`LiveData`将被设置为`null`。这对错误状态恢复很有用。
  *
- * @param cb A callback that will be called when an error occurs.
+ * @param cb 发生错误时将调用的回调函数。
  */
 export function catchErrorInto<Error = any>(
   l$: LiveData<Error | null>,
@@ -56,7 +56,7 @@ export function catchErrorInto<Error = any>(
 }
 
 /**
- * An operator that calls the callback when the observable starts.
+ * 一个在可观察对象开始时调用回调函数的操作符。
  */
 export function onStart<T>(cb: () => void): OperatorFunction<T, T> {
   return observable$ =>
@@ -67,7 +67,7 @@ export function onStart<T>(cb: () => void): OperatorFunction<T, T> {
 }
 
 /**
- * An operator that calls the callback when the observable completes.
+ * 一个在可观察对象完成时调用回调函数的操作符。
  */
 export function onComplete<T>(cb: () => void): OperatorFunction<T, T> {
   return observable$ =>
@@ -88,9 +88,9 @@ export function onComplete<T>(cb: () => void): OperatorFunction<T, T> {
 }
 
 /**
- * Convert a promise to an observable.
+ * 将Promise转换为可观察对象。
  *
- * like `from` but support `AbortSignal`.
+ * 类似于`from`但支持`AbortSignal`。
  */
 export function fromPromise<T>(
   promise: Promise<T> | ((signal: AbortSignal) => Promise<T>)
@@ -115,7 +115,7 @@ export function fromPromise<T>(
 }
 
 /**
- * An operator that retries the source observable when an error occurs.
+ * 一个在出现错误时重试源可观察对象的操作符。
  *
  * https://en.wikipedia.org/wiki/Exponential_backoff
  */

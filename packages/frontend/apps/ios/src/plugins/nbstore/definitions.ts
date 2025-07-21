@@ -1,6 +1,6 @@
 export interface Blob {
   key: string;
-  // base64 encoded data
+  // base64编码数据
   data: string;
   mime: string;
   size: number;
@@ -9,7 +9,7 @@ export interface Blob {
 
 export interface SetBlob {
   key: string;
-  // base64 encoded data
+  // base64编码数据
   data: string;
   mime: string;
 }
@@ -44,7 +44,7 @@ export interface NbStorePlugin {
   getDocSnapshot: (options: { id: string; docId: string }) => Promise<
     | {
         docId: string;
-        // base64 encoded data
+        // base64编码数据
         bin: string;
         timestamp: number;
       }
@@ -60,7 +60,7 @@ export interface NbStorePlugin {
     updates: {
       docId: string;
       timestamp: number;
-      // base64 encoded data
+      // base64编码数据
       bin: string;
     }[];
   }>;

@@ -18,7 +18,7 @@ export class AIButtonService extends Service {
 
   presentAIButton = effect(
     distinctUntilChanged(),
-    throttleTime<boolean>(1000), // throttle time to avoid frequent calls
+    throttleTime<boolean>(1000), // 节流时间以避免频繁调用
     exhaustMapWithTrailing((present: boolean) => {
       return fromPromise(async () => {
         if (!this.aiButtonProvider) {

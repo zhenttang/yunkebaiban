@@ -1,6 +1,6 @@
 // import type { FeatureType, ListUsersQuery } from '@affine/graphql';
 
-// Temporary placeholders to replace @affine/graphql imports
+// 临时占位符，用于替代 @affine/graphql 导入
 export enum FeatureType {
   Admin = 'admin',
   Pro = 'pro',

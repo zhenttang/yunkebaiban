@@ -14,8 +14,8 @@ if (typeof localStorage !== 'undefined') {
   }
 
   if (!enabled) {
-    // NOTE(@forehalo): mixpanel will read local storage flag and doesn't need to be manually opt_out at startup time.
-    // see: https://docs.mixpanel.com/docs/privacy/protecting-user-data
+    // 注意(@forehalo): mixpanel会读取本地存储标志，无需在启动时手动退出跟踪。
+    // 参考: https://docs.mixpanel.com/docs/privacy/protecting-user-data
     // mixpanel.opt_out_tracking();
     sentry.disable();
   }

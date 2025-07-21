@@ -17,84 +17,84 @@ import type {
 } from './types.js';
 
 /**
- * A container of services.
+ * 服务容器。
  *
- * Container basically is a tuple of `[scope, identifier, variant, factory]` with some helper methods.
- * It just stores the definitions of services. It never holds any instances of services.
+ * 容器本质上是一个包含 `[作用域, 标识符, 变体, 工厂]` 的元组，以及一些辅助方法。
+ * 它仅存储服务的定义，从不持有任何服务实例。
  *
- * # Usage
+ * # 用法
  *
  * ```ts
  * const services = new Container();
  * class ServiceA {
  *   // ...
  * }
- * // add a service
+ * // 添加一个服务
  * services.add(ServiceA);
  *
  * class ServiceB {
  *   constructor(serviceA: ServiceA) {}
  * }
- * // add a service with dependency
+ * // 添加带依赖的服务
  * services.add(ServiceB, [ServiceA]);
- *                         ^ dependency class/identifier, match ServiceB's constructor
+ *                         ^ 依赖类/标识符，与 ServiceB 的构造函数匹配
  *
  * const FeatureA = createIdentifier<FeatureA>('Config');
  *
- * // add a implementation for a service identifier
+ * // 为服务标识符添加实现
  * services.addImpl(FeatureA, ServiceA);
  *
- * // override a service
+ * // 覆盖一个服务
  * services.override(ServiceA, NewServiceA);
  *
- * // create a service provider
+ * // 创建服务提供者
  * const provider = services.provider();
  * ```
  *
- * # The data structure
+ * # 数据结构
  *
- * The data structure of Container is a three-layer nested Map, used to represent the tuple of
- * `[scope, identifier, variant, factory]`.
- * Such a data structure ensures that a service factory can be uniquely determined by `[scope, identifier, variant]`.
+ * Container 的数据结构是一个三层嵌套的 Map，用于表示元组
+ * `[作用域, 标识符, 变体, 工厂]`。
+ * 这种数据结构确保服务工厂可以通过 `[作用域, 标识符, 变体]` 唯一确定。
  *
- * When a service added:
+ * 当添加服务时：
  *
  * ```ts
  * services.add(ServiceClass)
  * ```
  *
- * The data structure will be:
+ * 数据结构将是：
  *
  * ```ts
  * Map {
- *  '': Map {                      // scope
- *   'ServiceClass': Map {         // identifier
- *     'default':                  // variant
- *        () => new ServiceClass() // factory
+ *  '': Map {                      // 作用域
+ *   'ServiceClass': Map {         // 标识符
+ *     'default':                  // 变体
+ *        () => new ServiceClass() // 工厂
  *  }
  * }
  * ```
  *
- * # Dependency relationship
+ * # 依赖关系
  *
- * The dependency relationships of services are not actually stored in the Container,
- * but are transformed into a factory function when the service is added.
+ * 服务的依赖关系实际上不存储在 Container 中，
+ * 而是在添加服务时转换为工厂函数。
  *
- * For example:
+ * 例如：
  *
  * ```ts
  * services.add(ServiceB, [ServiceA]);
  *
- * // is equivalent to
+ * // 等价于
  * services.addFactory(ServiceB, (provider) => new ServiceB(provider.get(ServiceA)));
  * ```
  *
- * For multiple implementations of the same service identifier, can be defined as:
+ * 对于同一服务标识符的多个实现，可以定义为：
  *
  * ```ts
  * services.add(ServiceB, [[FeatureA]]);
  *
- * // is equivalent to
+ * // 等价于
  * services.addFactory(ServiceB, (provider) => new ServiceB(provider.getAll(FeatureA)));
  * ```
  */
@@ -119,9 +119,9 @@ export class Container {
   }
 
   /**
-   * Create an empty service container.
+   * 创建一个空的服务容器。
    *
-   * same as `new Container()`
+   * 等同于 `new Container()`
    */
   static get EMPTY() {
     return new Container();
@@ -142,7 +142,7 @@ export class Container {
   }
 
   /**
-   * The number of services in the container.
+   * 容器中服务的数量。
    */
   get size() {
     let size = 0;

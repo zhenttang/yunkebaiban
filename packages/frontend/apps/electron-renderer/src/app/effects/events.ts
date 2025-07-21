@@ -12,7 +12,7 @@ import { setupRecordingEvents } from './recording';
 import { getCurrentWorkspace } from './utils';
 
 export function setupEvents(frameworkProvider: FrameworkProvider) {
-  // setup application lifecycle events, and emit application start event
+  // 设置应用程序生命周期事件，并触发应用程序启动事件
   window.addEventListener('focus', () => {
     frameworkProvider.get(LifecycleService).applicationFocus();
   });
@@ -31,7 +31,7 @@ export function setupEvents(frameworkProvider: FrameworkProvider) {
     }
     const { workspace } = currentWorkspace;
     const workspaceDialogService = workspace.scope.get(WorkspaceDialogService);
-    // close all other dialogs first
+    // 先关闭所有其他对话框
     workspaceDialogService.closeAll();
     workspaceDialogService.open('setting', {
       activeTab: activeTab as unknown as SettingTab,

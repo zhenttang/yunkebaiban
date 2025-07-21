@@ -49,7 +49,7 @@ export abstract class AutoReconnectConnection<T = any>
   get inner(): T {
     if (this._inner === undefined) {
       throw new Error(
-        `Connection ${this.constructor.name} has not been established.`
+        `连接 ${this.constructor.name} 尚未建立。`
       );
     }
 
@@ -75,7 +75,7 @@ export abstract class AutoReconnectConnection<T = any>
   private setStatus(status: ConnectionStatus, error?: Error) {
     const shouldEmit = status !== this._status || error !== this._error;
     this._status = status;
-    // we only clear-up error when status is connected
+    // 只有在状态为connected时才清除错误
     if (error || status === 'connected') {
       this._error = error;
     }
@@ -108,14 +108,14 @@ export abstract class AutoReconnectConnection<T = any>
             try {
               this.doDisconnect(value);
             } catch (error) {
-              console.error('failed to disconnect', error);
+              console.error('断开连接失败', error);
             }
           }
         })
         .catch(error => {
           if (!signal.aborted) {
             clearTimeout(timeout);
-            console.error('failed to connect', error);
+            console.error('连接失败', error);
             this.handleError(error as any);
           }
         });
@@ -130,7 +130,7 @@ export abstract class AutoReconnectConnection<T = any>
         this.doDisconnect(this._inner);
       }
     } catch (error) {
-      console.error('failed to disconnect', error);
+      console.error('断开连接失败', error);
     }
     this.reconnectingAbort = undefined;
     this.connectingAbort = undefined;
@@ -138,15 +138,15 @@ export abstract class AutoReconnectConnection<T = any>
   }
 
   private handleError(reason?: Error) {
-    // on error
-    console.error('connection error, will reconnect', reason);
+    // 发生错误时
+    console.error('连接错误，将重新连接', reason);
     this.innerDisconnect();
-    // if the connection is closed, do not reconnect
+    // 如果连接已关闭，不要重新连接
     if (this.status === 'closed') {
       return;
     }
     this.setStatus('error', reason);
-    // reconnect
+    // 重新连接
 
     this.reconnectingAbort = new AbortController();
     const signal = this.reconnectingAbort.signal;

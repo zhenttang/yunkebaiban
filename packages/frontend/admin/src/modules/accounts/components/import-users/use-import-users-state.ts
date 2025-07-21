@@ -33,7 +33,7 @@ export function useImportUsersState({
   const [isFormatError, setIsFormatError] = useState(false);
   const importUsers = useImportUsers();
 
-  // Reset all states when dialog is closed
+  // 关闭对话框时重置所有状态
   const resetState = useCallback(() => {
     setIsPreviewMode(false);
     setParsedUsers([]);

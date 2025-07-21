@@ -28,16 +28,16 @@ export class Framework {
   > = new Map();
 
   /**
-   * Create an empty framework.
+   * 创建一个空的框架。
    *
-   * same as `new Framework()`
+   * 等同于 `new Framework()`
    */
   static get EMPTY() {
     return new Framework();
   }
 
   /**
-   * The number of components in the framework.
+   * 框架中组件的数量。
    */
   get componentCount() {
     let count = 0;
@@ -92,7 +92,7 @@ export class Framework {
   }
 
   /**
-   * @internal Use {@link impl} instead.
+   * @internal 使用 {@link impl} 代替。
    */
   addValue<T>(
     identifier: GeneralIdentifier<T>,
@@ -109,7 +109,7 @@ export class Framework {
   }
 
   /**
-   * @internal Use {@link impl} instead.
+   * @internal 使用 {@link impl} 代替。
    */
   addFactory<T>(
     identifier: GeneralIdentifier<T>,
@@ -119,7 +119,7 @@ export class Framework {
       override,
     }: { scope?: FrameworkScopeStack; override?: boolean } = {}
   ) {
-    // convert scope to string
+    // 将作用域转换为字符串
     const normalizedScope = stringifyScope(scope ?? ROOT_SCOPE);
     const normalizedIdentifier = parseIdentifier(identifier);
     const normalizedVariant = normalizedIdentifier.variant ?? DEFAULT_VARIANT;
@@ -132,7 +132,7 @@ export class Framework {
       services.get(normalizedIdentifier.identifierName) ??
       new Map<ComponentVariant, ComponentFactory>();
 
-    // throw if service already exists, unless it is an override
+    // 如果服务已存在则抛出异常，除非是覆盖操作
     if (variants.has(normalizedVariant) && !override) {
       throw new DuplicateDefinitionError(normalizedIdentifier);
     }
@@ -160,16 +160,16 @@ export class Framework {
   }
 
   /**
-   * Create a service provider from the collection.
+   * 从集合中创建服务提供者。
    *
    * @example
    * ```ts
-   * provider() // create a service provider for root scope
-   * provider(ScopeA, parentProvider) // create a service provider for scope A
+   * provider() // 为根作用域创建服务提供者
+   * provider(ScopeA, parentProvider) // 为作用域A创建服务提供者
    * ```
    *
-   * @param scope The scope of the service provider, default to the root scope.
-   * @param parent The parent service provider, it is required if the scope is not the root scope.
+   * @param scope 服务提供者的作用域，默认为根作用域。
+   * @param parent 父级服务提供者，如果作用域不是根作用域则必需。
    */
   provider(
     scope: FrameworkScopeStack = ROOT_SCOPE,
@@ -204,11 +204,11 @@ export class Framework {
   }
 
   /**
-   * Clone the entire service collection.
+   * 克隆整个服务集合。
    *
-   * This method is quite cheap as it only clones the references.
+   * 这个方法的开销很小，因为它只克隆引用。
    *
-   * @returns A new service collection with the same services.
+   * @returns 具有相同服务的新服务集合。
    */
   clone(): Framework {
     const di = new Framework();
@@ -224,7 +224,7 @@ export class Framework {
 }
 
 /**
- * A helper class to edit a framework.
+ * 用于编辑框架的辅助类。
  */
 class FrameworkEditor {
   private currentScopeStack: FrameworkScopeStack = ROOT_SCOPE;
@@ -232,7 +232,7 @@ class FrameworkEditor {
   constructor(private readonly collection: Framework) {}
 
   /**
-   * Add a service to the framework.
+   * 向框架添加服务。
    *
    * @see {@link Framework}
    *
@@ -281,7 +281,7 @@ class FrameworkEditor {
   };
 
   /**
-   * Add a store to the framework.
+   * 向框架添加存储。
    *
    * @see {@link Framework}
    *
@@ -330,7 +330,7 @@ class FrameworkEditor {
   };
 
   /**
-   * Add an entity to the framework.
+   * 向框架添加实体。
    */
   entity = <
     Arg1 extends Type<Entity<any>>,
@@ -359,7 +359,7 @@ class FrameworkEditor {
   };
 
   /**
-   * Add an implementation for identifier to the collection.
+   * 为标识符向集合添加实现。
    *
    * @see {@link Framework}
    *
@@ -401,7 +401,7 @@ class FrameworkEditor {
   };
 
   /**
-   * same as {@link impl} but this method will override the component if it exists.
+   * 与 {@link impl} 相同，但如果组件已存在，此方法会覆盖它。
    *
    * @see {@link Framework}
    *
@@ -450,7 +450,7 @@ class FrameworkEditor {
   };
 
   /**
-   * Set the scope for the service registered subsequently
+   * 设置后续注册服务的作用域
    *
    * @example
    *
@@ -477,7 +477,7 @@ class FrameworkEditor {
 }
 
 /**
- * Convert dependencies definition to a factory function.
+ * 将依赖定义转换为工厂函数。
  */
 function dependenciesToFactory(
   cls: any,
@@ -512,7 +512,7 @@ function dependenciesToFactory(
   };
 }
 
-// a hack to check if a function is a constructor
+// 用于检查函数是否为构造函数的技巧
 // https://github.com/zloirock/core-js/blob/232c8462c26c75864b4397b7f643a4f57c6981d5/packages/core-js/internals/is-constructor.js#L15
 function isConstructor(cls: any) {
   try {

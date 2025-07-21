@@ -1,10 +1,10 @@
 import { LiveData } from '@toeverything/infra';
 
-// to share the state between general & edgeless dialog,
-// so that we can avoid showing edgeless dialog when general dialog is opened
+// 在通用对话框和画板对话框之间共享状态，
+// 以便在通用对话框打开时避免显示画板对话框
 export const showAIOnboardingGeneral$ = new LiveData(false);
 
-// avoid notifying multiple times
+// 避免多次通知
 export const edgelessNotifyId$ = new LiveData<string | number | undefined>(
   undefined
 );

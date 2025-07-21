@@ -16,7 +16,7 @@ function createStoreManagerClient() {
       ev.data.portId === portId
     ) {
       portFromWorker = ev.ports[0];
-      // connect portForWorker and portFromWorker
+      // 连接portForWorker和portFromWorker
       portFromWorker.addEventListener('message', ev => {
         portForWorker.postMessage(ev.data, [...ev.ports]);
       });
@@ -33,7 +33,7 @@ function createStoreManagerClient() {
 
   // oxlint-disable-next-line no-non-null-assertion
   apis!.worker.connectWorker('affine-shared-worker', portId).catch(err => {
-    console.error('failed to connect worker', err);
+    console.error('连接worker失败', err);
   });
 
   const storeManager = new StoreManagerClient(new OpClient(portForOpClient));

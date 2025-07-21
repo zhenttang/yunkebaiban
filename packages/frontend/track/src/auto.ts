@@ -15,7 +15,7 @@ export function makeTracker(trackFn: TrackFn): CallableEventsChain {
       get(target, prop) {
         if (
           typeof prop !== 'string' ||
-          prop === '$$typeof' /* webpack hot-reload reads this prop */
+          prop === '$$typeof' /* webpack热重载读取此属性 */
         ) {
           return undefined;
         }
@@ -50,7 +50,7 @@ export function makeTracker(trackFn: TrackFn): CallableEventsChain {
 }
 
 /**
- * listen on clicking on all subtree elements and auto track events if defined
+ * 监听所有子树元素的点击，如果定义了相关事件则自动追踪
  *
  * @example
  *
@@ -58,7 +58,7 @@ export function makeTracker(trackFn: TrackFn): CallableEventsChain {
  * <button
  *   data-event-chain='$.cmdk.settings.changeLanguage'
  *   data-event-arg='cn'
- *   <!-- or -->
+ *   <!-- 或者 -->
  *   data-event-args-foo='bar'
  * />
  * ```

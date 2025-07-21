@@ -47,12 +47,12 @@ type NavActionArg = {
 };
 
 /**
- * Date picker
+ * 日期选择器
  */
 export class DatePicker extends WithDisposable(LitElement) {
   static override styles = datePickerStyle;
 
-  /** current active month */
+  /** 当前活动月份 */
   private _cursor = new Date();
 
   private readonly _maxYear = 2099;

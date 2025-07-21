@@ -107,12 +107,12 @@ function isEqualUint8Arrays(a: Uint8Array, b: Uint8Array) {
 
 /**
  *
- * @param local - local doc data
- * @param localSv - local doc state vector
- * @param remoteDiff - remote doc data diff with local doc state vector,
- * should calculated by `Y.diffUpdate(remoteDocData, localSv)`
- * @param remoteSv - remote doc state vector
- * @returns null if no diff, otherwise return the diff data
+ * @param local - 本地文档数据
+ * @param localSv - 本地文档状态向量
+ * @param remoteDiff - 远程文档数据与本地文档状态向量的差异,
+ * 应该通过 `Y.diffUpdate(remoteDocData, localSv)` 计算
+ * @param remoteSv - 远程文档状态向量
+ * @returns 如果没有差异返回null，否则返回差异数据
  */
 function docDiffUpdate(
   local: Uint8Array,
@@ -120,26 +120,26 @@ function docDiffUpdate(
   remoteDiff: Uint8Array,
   remoteSv: Uint8Array
 ) {
-  // if localSv is not equal to remoteSv, return the diff data
+  // 如果localSv不等于remoteSv，返回差异数据
   if (!isEqualUint8Arrays(localSv, remoteSv)) {
     return diffUpdate(local, remoteSv);
   }
 
-  // localDiff is the deletedSet of local doc
+  // localDiff是本地文档的删除集
   const localDiff = diffUpdate(local, localSv);
 
-  // if localDiff is equal to remoteDiff, return null, means no diff
+  // 如果localDiff等于remoteDiff，返回null，表示没有差异
   if (isEqualUint8Arrays(localDiff, remoteDiff)) {
     return null;
   } else {
-    // otherwise, return the diff data
+    // 否则，返回差异数据
     return diffUpdate(local, remoteSv);
   }
 }
 
 export class DocSyncPeer {
   /**
-   * random unique id for recognize self in "update" event
+   * 用于在"update"事件中识别自己的随机唯一ID
    */
   private readonly uniqueId = `sync:${this.peerId}:${nanoid()}`;
   private readonly prioritySettings = new Map<string, number>();
@@ -176,7 +176,7 @@ export class DocSyncPeer {
           errorMessage: null,
         });
       } else if (!this.status.syncing) {
-        // if syncing = false, jobMap is empty
+        // 如果syncing = false，jobMap为空
         subscribe.next({
           total: this.status.docs.size,
           syncing: this.status.docs.size,
@@ -251,7 +251,7 @@ export class DocSyncPeer {
       ) {
         await this.jobs.pullAndPush(docId, signal);
       } else {
-        // no need to push
+        // 无需推送
         const pulled =
           (await this.syncMetadata.getPeerPulledRemoteClock(this.peerId, docId))
             ?.timestamp ?? null;
@@ -461,7 +461,7 @@ export class DocSyncPeer {
             this.uniqueId
           );
 
-          // schedule push job to mark the timestamp as pushed timestamp
+          // 安排推送作业以将时间戳标记为已推送时间戳
           this.schedule({
             type: 'push',
             docId,
@@ -505,10 +505,10 @@ export class DocSyncPeer {
       update: Uint8Array;
       clock: Date;
     }) => {
-      // try add doc for new doc
+      // 尝试为新文档添加文档
       this.actions.addDoc(docId);
 
-      // schedule push job
+      // 安排推送作业
       this.schedule({
         type: 'push',
         docId,
@@ -525,11 +525,11 @@ export class DocSyncPeer {
       update: Uint8Array;
       remoteClock: Date;
     }) => {
-      // try add doc for new doc
+      // 尝试为新文档添加文档
       this.actions.addDoc(docId);
       this.actions.updateRemoteClock(docId, remoteClock);
 
-      // schedule push job
+      // 安排推送作业
       this.schedule({
         type: 'save',
         docId,
@@ -547,12 +547,12 @@ export class DocSyncPeer {
         if (signal?.aborted) {
           return;
         }
-        console.warn('Sync error, retry in 5s', err);
+        console.warn('同步错误，5秒后重试', err);
         this.status.errorMessage =
           err instanceof Error ? err.message : `${err}`;
         this.statusUpdatedSubject$.next(true);
       } finally {
-        // reset all status
+        // 重置所有状态
         this.status = {
           docs: new Set(),
           connectedDocs: new Set(),
@@ -561,20 +561,20 @@ export class DocSyncPeer {
           remoteClocks: new ClockMap(new Map()),
           syncing: false,
           skipped: false,
-          // tell ui to show retrying status
+          // 告诉UI显示重试状态
           retrying: true,
-          // error message from last retry
+          // 来自上次重试的错误消息
           errorMessage: this.status.errorMessage,
         };
         this.statusUpdatedSubject$.next(true);
       }
-      // wait for 5s before next retry
+      // 等待5秒后进行下一次重试
       await Promise.race([
         new Promise<void>(resolve => {
           setTimeout(resolve, 5000);
         }),
         new Promise((_, reject) => {
-          // exit if manually stopped
+          // 如果手动停止则退出
           if (signal?.aborted) {
             reject(signal.reason);
           }
@@ -589,7 +589,7 @@ export class DocSyncPeer {
   private async retryLoop(signal?: AbortSignal) {
     throwIfAborted(signal);
     if (this.local.isReadonly) {
-      // Local is readonly, skip sync
+      // 本地为只读，跳过同步
       this.status.skipped = true;
       this.statusUpdatedSubject$.next(true);
       await new Promise((_, reject) => {
@@ -610,7 +610,7 @@ export class DocSyncPeer {
     const disposes: (() => void)[] = [];
 
     try {
-      // wait for all storages to connect, timeout after 30s
+      // 等待所有存储连接，30秒后超时
       await Promise.race([
         Promise.all([
           this.local.connection.waitForConnected(signal),
@@ -629,13 +629,13 @@ export class DocSyncPeer {
         }),
       ]);
 
-      console.info('Remote sync started');
+      console.info('远程同步开始');
       this.status.syncing = true;
       this.statusUpdatedSubject$.next(true);
 
-      // throw error if failed to connect
+      // 如果连接失败则抛出错误
       for (const storage of [this.remote, this.local, this.syncMetadata]) {
-        // abort if disconnected
+        // 如果断开连接则中止
         disposes.push(
           storage.connection.onStatusChanged((_status, error) => {
             abort.abort('Storage disconnected:' + error);
@@ -643,18 +643,18 @@ export class DocSyncPeer {
         );
       }
 
-      // reset retrying flag after connected with server
+      // 连接服务器后重置重试标志
       this.status.retrying = false;
       this.statusUpdatedSubject$.next(true);
 
-      // subscribe local doc updates
+      // 订阅本地文档更新
       disposes.push(
         this.local.subscribeDocUpdate((update, origin) => {
           if (
             origin === this.uniqueId ||
             origin?.startsWith(
               `sync:${this.peerId}:`
-              // skip if peerId is same
+              // 如果peerId相同则跳过
             )
           ) {
             return;
@@ -666,7 +666,7 @@ export class DocSyncPeer {
           });
         })
       );
-      // subscribe remote doc updates
+      // 订阅远程文档更新
       disposes.push(
         this.remote.subscribeDocUpdate(({ bin, docId, timestamp }, origin) => {
           if (origin === this.uniqueId) {
@@ -680,14 +680,14 @@ export class DocSyncPeer {
         })
       );
 
-      // add all docs from local
+      // 从本地添加所有文档
       const localDocs = Object.keys(await this.local.getDocTimestamps());
       throwIfAborted(signal);
       for (const docId of localDocs) {
         this.actions.addDoc(docId);
       }
 
-      // get cached clocks from metadata
+      // 从元数据获取缓存的时钟
       const cachedClocks = await this.syncMetadata.getPeerRemoteClocks(
         this.peerId
       );
@@ -698,7 +698,7 @@ export class DocSyncPeer {
       }
       this.statusUpdatedSubject$.next(true);
 
-      // get new clocks from server
+      // 从服务器获取新时钟
       const maxClockValue = this.status.remoteClocks.max;
       const newClocks = await this.remote.getDocTimestamps(maxClockValue);
       for (const [id, v] of Object.entries(newClocks)) {
@@ -713,12 +713,12 @@ export class DocSyncPeer {
         });
       }
 
-      // add all docs from remote
+      // 从远程添加所有文档
       for (const docId of this.status.remoteClocks.keys()) {
         this.actions.addDoc(docId);
       }
 
-      // begin to process jobs
+      // 开始处理作业
 
       while (true) {
         throwIfAborted(signal);
@@ -726,7 +726,7 @@ export class DocSyncPeer {
         const docId = await this.status.jobDocQueue.asyncPop(signal);
 
         while (true) {
-          // batch process jobs for the same doc
+          // 批量处理同一文档的作业
           const jobs = this.status.jobMap.get(docId);
           if (!jobs || jobs.length === 0) {
             this.status.jobMap.delete(docId);
@@ -778,7 +778,7 @@ export class DocSyncPeer {
         dispose();
       }
       this.status.syncing = false;
-      console.info('Remote sync ended');
+      console.info('远程同步结束');
     }
   }
 

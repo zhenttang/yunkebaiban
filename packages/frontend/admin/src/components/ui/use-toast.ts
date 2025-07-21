@@ -1,4 +1,4 @@
-// Inspired by react-hot-toast library
+// 受 react-hot-toast 库启发
 import type {
   ToastActionElement,
   ToastProps,

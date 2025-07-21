@@ -30,7 +30,7 @@ export class CloudDocStorage extends DocStorageBase<CloudDocStorageOptions> {
   }
   get idConverter() {
     if (!this.connection.idConverter) {
-      throw new Error('Id converter not initialized');
+      throw new Error('ID转换器未初始化');
     }
     return this.connection.idConverter;
   }
@@ -66,7 +66,7 @@ export class CloudDocStorage extends DocStorageBase<CloudDocStorageOptions> {
       if (response.error.name === 'DOC_NOT_FOUND') {
         return null;
       }
-      // TODO: use [UserFriendlyError]
+      // TODO: 使用 [用户友好错误]
       throw new Error(response.error.message);
     }
 
@@ -390,7 +390,7 @@ class CloudDocStorageConnection extends SocketConnection {
             if (response.error.name === 'DOC_NOT_FOUND') {
               return null;
             }
-            // TODO: use [UserFriendlyError]
+            // TODO: 使用 [用户友好错误]
             throw new Error(response.error.message);
           }
 

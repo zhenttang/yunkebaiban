@@ -60,7 +60,7 @@ export function getInternalViewExtensions() {
   return [
     FoundationViewExtension,
 
-    // Gfx
+    // 图形编辑
     PointerViewExtension,
     GfxNoteViewExtension,
     BrushViewExtension,
@@ -72,7 +72,7 @@ export function getInternalViewExtensions() {
     TemplateViewExtension,
     GfxLinkViewExtension,
 
-    // Block
+    // 块组件
     AttachmentViewExtension,
     BookmarkViewExtension,
     CalloutViewExtension,
@@ -94,7 +94,7 @@ export function getInternalViewExtensions() {
     SurfaceViewExtension,
     RootViewExtension,
 
-    // Inline
+    // 内联组件
     FootnoteViewExtension,
     LinkViewExtension,
     ReferenceViewExtension,
@@ -102,8 +102,8 @@ export function getInternalViewExtensions() {
     MentionViewExtension,
     InlinePresetViewExtension,
 
-    // Widget
-    // order will affect the z-index of the widget
+    // 小组件
+    // 顺序会影响小组件的 z-index
     DragHandleViewExtension,
     EdgelessAutoConnectViewExtension,
     FrameTitleViewExtension,
@@ -121,7 +121,7 @@ export function getInternalViewExtensions() {
     NoteSlicerViewExtension,
     EdgelessToolbarViewExtension,
 
-    // Fragment
+    // 片段
     DocTitleViewExtension,
     FramePanelViewExtension,
     OutlineViewExtension,

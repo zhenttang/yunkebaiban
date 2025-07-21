@@ -1,10 +1,10 @@
-// #region Path Parameter Types
+// #region 路径参数类型
 export interface RouteParamsTypes {
   admin: { settings: { module: { module: string } } };
 }
 // #endregion
 
-// #region Absolute Paths
+// #region 绝对路径
 export const ROUTES = {
   index: '/',
   admin: {
@@ -20,7 +20,7 @@ export const ROUTES = {
 };
 // #endregion
 
-// #region Relative Paths
+// #region 相对路径
 export const RELATIVE_ROUTES = {
   index: '/',
   admin: {
@@ -36,7 +36,7 @@ export const RELATIVE_ROUTES = {
 };
 // #endregion
 
-// #region Path Factories
+// #region 路径工厂
 const home = () => '/';
 const admin = () => '/admin';
 admin.auth = () => '/admin/auth';

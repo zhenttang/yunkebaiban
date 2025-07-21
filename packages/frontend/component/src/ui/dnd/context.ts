@@ -4,18 +4,18 @@ import type { DNDData, fromExternalData, toExternalData } from './types';
 
 export const DNDContext = createContext<{
   /**
-   * external data adapter.
-   * Convert the external data to the draggable data that are known to affine.
+   * 外部数据适配器。
+   * 将外部数据转换为 Affine 认识的可拖动数据。
    *
-   * if this is provided, the drop target will handle external elements as well.
+   * 如果提供了此项，放置目标也将处理外部元素。
    *
    * @default undefined
    */
   fromExternalData?: fromExternalData<DNDData>;
 
   /**
-   * Convert the draggable data to the external data.
-   * Mainly used to be consumed by blocksuite.
+   * 将可拖动数据转换为外部数据。
+   * 主要用于被 blocksuite 消费。
    *
    * @default undefined
    */

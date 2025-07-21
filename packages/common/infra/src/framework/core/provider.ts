@@ -122,7 +122,7 @@ export class ComponentCachePool {
           try {
             i[Symbol.dispose]();
           } catch (err) {
-            // make a uncaught exception
+            // 产生一个未捕获异常
             setTimeout(() => {
               throw err;
             }, 0);
@@ -330,12 +330,12 @@ export class FrameworkStackProvider extends FrameworkProvider {
 
   constructor(providers: FrameworkProvider[]) {
     if (providers.length === 0) {
-      throw new Error('FrameworkStackProvider must have at least one provider');
+      throw new Error('框架堆栈提供者必须至少有一个提供者');
     }
     super();
     this.stack = [...providers];
 
-    // use the collection and eventBus from the first provider
+    // 使用第一个提供者的集合和事件总线
     this.collection = this.stack[0].collection;
     this.eventBus = this.stack[0].eventBus;
   }
@@ -377,6 +377,6 @@ export class FrameworkStackProvider extends FrameworkProvider {
   }
 
   dispose(): void {
-    // No need to handle the disposal of providers in the stack, as they are passed in externally
+    // 不需要处理堆栈中提供者的释放，因为它们是从外部传入的
   }
 }

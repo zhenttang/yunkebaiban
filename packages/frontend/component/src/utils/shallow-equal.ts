@@ -1,4 +1,4 @@
-// credit: https://github.com/facebook/fbjs/blob/main/packages/fbjs/src/core/shallowEqual.js
+// 来源: https://github.com/facebook/fbjs/blob/main/packages/fbjs/src/core/shallowEqual.js
 export function shallowEqual(objA: any, objB: any) {
   if (Object.is(objA, objB)) {
     return true;
@@ -20,7 +20,7 @@ export function shallowEqual(objA: any, objB: any) {
     return false;
   }
 
-  // Test for A's keys different from B.
+  // 测试 A 的键是否与 B 不同
   for (const key of keysA) {
     if (
       !Object.prototype.hasOwnProperty.call(objB, key) ||

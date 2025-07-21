@@ -4,7 +4,7 @@ const CONNECTIONS: Map<string, AutoReconnectConnection<any>> = new Map();
 export function share<T extends AutoReconnectConnection<any>>(conn: T): T {
   if (!conn.shareId) {
     throw new Error(
-      `Connection ${conn.constructor.name} is not shareable.\nIf you want to make it shareable, please override [shareId].`
+      `连接 ${conn.constructor.name} 不可共享。\n如果你想让它可共享，请重写 [shareId]。`
     );
   }
 

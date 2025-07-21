@@ -37,10 +37,10 @@ export function setupGlobal() {
     isPwa: false,
     isMobile: false,
     isSelfHosted: false,
-    // publicPath is the root of assets files
+    // publicPath 是资源文件的根路径
     publicPath: '/',
-    // subPath is the path to access the affine service
-    subPath: '',
+    // subPath 是访问 affine 服务的路径
+    subPath: ''
   };
 
   if (globalThis.navigator) {
@@ -58,7 +58,7 @@ export function setupGlobal() {
       isIOS: uaHelper.isIOS,
       isPwa: uaHelper.isStandalone,
     };
-    // Chrome on iOS is still Safari
+    // iOS 上的 Chrome 仍然是 Safari
     if (environment.isChrome && !environment.isIOS) {
       environment = {
         ...environment,
@@ -90,8 +90,8 @@ function applyEnvironmentOverrides(environment: Environment) {
 
     const name = meta.name.substring(4);
 
-    // all environments should have default value
-    // so ignore non-defined overrides
+    // 所有环境变量都应该有默认值
+    // 因此忽略未定义的覆盖值
     if (name in environment) {
       (environment as any)[name] =
         typeof (environment as any)[name] === 'string'

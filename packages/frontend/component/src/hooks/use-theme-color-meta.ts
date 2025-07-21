@@ -13,7 +13,7 @@ function getMeta() {
     return meta;
   }
 
-  // create and append meta
+  // 创建并添加 meta 标签
   meta = document.createElement('meta');
   meta.name = 'theme-color';
   document.head.append(meta);
@@ -25,7 +25,7 @@ export const useThemeColorMeta = (color: string) => {
     const meta = getMeta();
     const old = meta.content;
     meta.content = color;
-    // also modify document background (for over scroll bounce effect)
+    // 同时修改文档背景（用于过度滚动弹跳效果）
     const oldBg = document.documentElement.style.backgroundColor;
     document.documentElement.style.backgroundColor = color;
 

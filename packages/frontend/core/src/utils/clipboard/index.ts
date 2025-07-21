@@ -9,7 +9,7 @@ const clipboardWriteTextIsSupported =
   'clipboard' in navigator && 'writeText' in navigator.clipboard;
 
 export const copyTextToClipboard = async (text: string) => {
-  // 1. try using Async API first, works on HTTPS domain
+  // 1. 首先尝试使用异步 API，在 HTTPS 域上工作
   if (clipboardWriteTextIsSupported) {
     try {
       await navigator.clipboard.writeText(text);
@@ -19,7 +19,7 @@ export const copyTextToClipboard = async (text: string) => {
     }
   }
 
-  // 2. try using `document.execCommand`
+  // 2. 尝试使用 `document.execCommand`
   // https://github.com/zenorocha/clipboard.js/blob/master/src/actions/copy.js
   return fakeCopyAction(text);
 };
@@ -36,7 +36,7 @@ export const copyLinkToBlockStdScopeClipboard = async (
     try {
       await clipboard.writeToClipboard(items => {
         items['text/plain'] = text;
-        // wrap a link
+        // 包装为一个链接
         items['text/html'] = `<a href="${text}">${text}</a>`;
         return items;
       });

@@ -61,7 +61,7 @@ framework.impl(PopupWindowProvider, {
     const targetUrl = new URL(target);
 
     let url: string;
-    // safe to open directly if in the same origin
+    // 如果在相同域下，可以安全地直接打开
     if (targetUrl.origin === location.origin) {
       url = target;
     } else {
@@ -137,7 +137,7 @@ framework.impl(VirtualKeyboardProvider, {
 });
 const frameworkProvider = framework.provider();
 
-// setup application lifecycle events, and emit application start event
+// 设置应用程序生命周期事件，并触发应用程序启动事件
 window.addEventListener('focus', () => {
   frameworkProvider.get(LifecycleService).applicationFocus();
 });

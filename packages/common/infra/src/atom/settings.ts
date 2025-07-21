@@ -42,13 +42,13 @@ const appSettingBaseAtom = atomWithStorage<AppSetting>(
 
 type SetStateAction<Value> = Value | ((prev: Value) => Value);
 
-// todo(@pengx17): use global state instead
+// todo(@pengx17): 使用全局状态代替
 const appSettingEffect = atomEffect(get => {
   const settings = get(appSettingBaseAtom);
-  // some values in settings should be synced into electron side
+  // settings中的一些值应该同步到electron端
   if (BUILD_CONFIG.isElectron) {
     logger.debug('同步设置到electron', settings);
-    // this api type in @affine/electron-api, but it is circular dependency this package, use any here
+    // 这个api类型在@affine/electron-api中，但它与这个包是循环依赖，这里使用any
     (window as any).__apis?.updater
       .setConfig({
         autoCheckUpdate: settings.autoCheckUpdate,

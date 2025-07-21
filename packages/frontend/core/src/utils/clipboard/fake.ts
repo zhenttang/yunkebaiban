@@ -1,16 +1,16 @@
 const createFakeElement = (text: string) => {
   const isRTL = document.documentElement.getAttribute('dir') === 'rtl';
   const fakeElement = document.createElement('textarea');
-  // Prevent zooming on iOS
+  // 防止在 iOS 上缩放
   fakeElement.style.fontSize = '12pt';
-  // Reset box model
+  // 重置盒模型
   fakeElement.style.border = '0';
   fakeElement.style.padding = '0';
   fakeElement.style.margin = '0';
-  // Move element out of screen horizontally
+  // 将元素水平移出屏幕
   fakeElement.style.position = 'absolute';
   fakeElement.style[isRTL ? 'right' : 'left'] = '-9999px';
-  // Move element to the same position vertically
+  // 将元素垂直移动到相同位置
   const yPosition = window.pageYOffset || document.documentElement.scrollTop;
   fakeElement.style.top = `${yPosition}px`;
 

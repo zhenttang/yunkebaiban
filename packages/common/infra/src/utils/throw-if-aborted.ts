@@ -1,4 +1,4 @@
-// because AbortSignal.throwIfAborted is not available in abortcontroller-polyfill
+// 因为AbortSignal.throwIfAborted在abortcontroller-polyfill中不可用
 export function throwIfAborted(abort?: AbortSignal) {
   if (abort?.aborted) {
     throw new Error(abort.reason);

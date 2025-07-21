@@ -2,14 +2,14 @@ export function stringToColour(str: string) {
   str = str || 'affine';
   let colour = '#';
   let hash = 0;
-  // str to hash
+  // str 转换为 hash
   for (
     let i = 0;
     i < str.length;
     hash = str.charCodeAt(i++) + ((hash << 5) - hash)
   );
 
-  // int/hash to hex
+  // int/hash 转换为十六进制
   for (
     let i = 0;
     i < 3;

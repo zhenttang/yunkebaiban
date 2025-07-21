@@ -22,7 +22,7 @@ type QueryOptions<Query extends RestApiQuery> = {
 
 type QueryResponse<Query extends RestApiQuery> = Query extends { __type?: infer T } ? T : any;
 
-// REST API fetcher
+// REST API获取器
 const restFetcher = async (options: QueryOptions<any>) => {
   const { query, variables } = options;
   const { endpoint, method = 'GET' } = query;

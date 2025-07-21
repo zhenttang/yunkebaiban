@@ -5,7 +5,7 @@ export const workbenchViewIconNameSchema = z.enum([
   'allDocs',
   'collection',
   'tag',
-  'doc', // refers to a doc whose mode is not yet being resolved
+  'doc', // 指向模式尚未确定的文档
   'page',
   'edgeless',
   'journal',
@@ -22,7 +22,7 @@ export const workbenchViewMetaSchema = z.object({
       search: z.string().optional(),
     })
     .optional(),
-  // todo: move title/module to cached stated
+  // 待办：将标题/模块移至缓存状态
   title: z.string().optional(),
   iconName: workbenchViewIconNameSchema.optional(),
 });
@@ -63,22 +63,22 @@ export type MenubarStateSchema = z.infer<typeof MenubarStateSchema>;
 
 export const MeetingSettingsKey = 'meetingSettings' as const;
 export const MeetingSettingsSchema = z.object({
-  // global meeting feature control
+  // 全局会议功能控制
   enabled: z.boolean().default(false),
 
-  // if false (and enabled = false), show a prompt page
+  // 如果为false（且enabled=false），显示提示页面
   betaDisclaimerAccepted: z.boolean().default(false),
 
-  // when recording is saved, where to create the recording block
+  // 保存录制内容时，在何处创建录制块
   recordingSavingMode: z.enum(['new-doc', 'journal-today']).default('new-doc'),
 
-  // whether to enable generation of summary for new meeting recordings
+  // 是否为新会议录制启用摘要生成
   autoTranscriptionSummary: z.boolean().default(true),
 
-  // whether to enable generation of todo list for new meeting recordings
+  // 是否为新会议录制启用待办事项列表生成
   autoTranscriptionTodo: z.boolean().default(true),
 
-  // recording reactions to new meeting events
+  // 对新会议事件的录制响应
   recordingMode: z.enum(['none', 'prompt', 'auto-start']).default('prompt'),
 });
 

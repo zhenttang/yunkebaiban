@@ -129,7 +129,7 @@ const AdminPanel = ({
                 field: `${module}/${field.key}${field.sub ? `/${field.sub}` : ''}`,
                 desc: field.desc ?? descriptor.desc,
                 type: field.type ?? descriptor.type,
-                // @ts-expect-error for enum type
+                // @ts-expect-error 枚举类型
                 options: field.options,
                 defaultValue: get(
                   appConfig[module],

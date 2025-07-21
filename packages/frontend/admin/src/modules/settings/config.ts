@@ -56,7 +56,7 @@ export const KNOWN_CONFIG_GROUPS = [
     module: 'auth',
     fields: [
       'allowSignup',
-      // nested json object
+      // 嵌套的JSON对象
       {
         key: 'passwordRequirements',
         sub: 'min',
@@ -288,7 +288,7 @@ export const UNKNOWN_CONFIG_GROUPS = ALL_CONFIGURABLE_MODULES.filter(
   return {
     name,
     module,
-    // @ts-expect-error allow
+    // @ts-expect-error 允许类型错误
     fields: Object.keys(CONFIG_DESCRIPTORS[module]),
     operations: undefined,
   };

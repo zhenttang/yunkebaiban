@@ -13,7 +13,7 @@ import { Menu, MenuItem } from '../menu';
 import * as styles from './audio-player.css';
 import { AudioWaveform } from './audio-waveform';
 
-// Format seconds to mm:ss
+// 将秒数格式化为 mm:ss
 const formatTime = (seconds: number): string => {
   const mins = Math.floor(seconds / 60);
   const secs = Math.floor(seconds % 60);
@@ -21,11 +21,11 @@ const formatTime = (seconds: number): string => {
 };
 
 export interface AudioPlayerProps {
-  // Audio metadata
+  // 音频元数据
   name: string;
-  description?: ReactNode; // Display file size or error message
+  description?: ReactNode; // 显示文件大小或错误信息
   waveform: number[] | null;
-  // Playback state
+  // 播放状态
   playbackState: 'idle' | 'playing' | 'paused' | 'stopped';
   seekTime: number;
   duration: number;
@@ -35,18 +35,18 @@ export interface AudioPlayerProps {
 
   onClick?: MouseEventHandler<HTMLDivElement>;
 
-  // Playback controls
+  // 播放控制
   onPlay: MouseEventHandler;
   onPause: MouseEventHandler;
   onStop: MouseEventHandler;
   onSeek: (newTime: number) => void;
 
-  // Playback rate
+  // 播放速率
   playbackRate: number;
   onPlaybackRateChange: (rate: number) => void;
 }
 
-// Playback rate options
+// 播放速率选项
 const playbackRates = [0.5, 0.75, 1, 1.5, 1.75, 2, 3];
 
 export const AudioPlayer = ({

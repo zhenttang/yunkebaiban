@@ -17,6 +17,6 @@ export function DataTableColumnHeader<TData, TValue>({
     return <div className={cn(className)}>{title}</div>;
   }
 
-  // TODO(@Jimmfly): add sort
+  // TODO(@Jimmfly): 添加排序功能
   return <div className={cn(className)}>{title}</div>;
 }

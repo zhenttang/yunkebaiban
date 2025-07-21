@@ -1,5 +1,5 @@
 /**
- * Custom fetch utility for AFFiNE admin panel
+ * AFFiNE管理面板的自定义fetch工具
  * 现在使用统一的httpClient，而不是独立的fetch实现
  */
 
@@ -10,15 +10,15 @@ const getAppVersion = () => {
   if (typeof BUILD_CONFIG !== 'undefined' && BUILD_CONFIG.appVersion) {
     return BUILD_CONFIG.appVersion;
   }
-  return '0.21.0'; // 默认版本号
+  return '0.21.0'; // 默认版本
 };
 
 /**
- * Wrapper around the unified httpClient for admin panel
+ * 管理面板统一httpClient的包装器
  * 使用统一的httpClient，自动包含JWT认证
- * @param input Request URL
- * @param init Request initialization options
- * @returns Promise with the fetch Response
+ * @param input 请求URL
+ * @param init 请求初始化选项
+ * @returns 返回fetch Response的Promise
  */
 export const affineFetch = async (
   input: RequestInfo | URL,

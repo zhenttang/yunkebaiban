@@ -10,7 +10,7 @@ export class AsyncLock {
       };
     });
 
-    // Atomic check and set of lock state
+    // 原子性地检查和设置锁状态
     const currentLock = this._lock;
     this._lock = nextLock;
 

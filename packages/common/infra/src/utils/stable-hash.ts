@@ -1,33 +1,31 @@
-// copied from https://github.com/shuding/stable-hash
+// 复制自 https://github.com/shuding/stable-hash
 
-// Use WeakMap to store the object-key mapping so the objects can still be
-// garbage collected. WeakMap uses a hashtable under the hood, so the lookup
-// complexity is almost O(1).
+// 使用WeakMap存储对象-键映射，这样对象仍然可以被
+// 垃圾回收。WeakMap底层使用哈希表，所以查找
+// 复杂度几乎是O(1)。
 const table = new WeakMap<object, string>();
 
-// A counter of the key.
+// 键的计数器。
 let counter = 0;
 
-// A stable hash implementation that supports:
-//  - Fast and ensures unique hash properties
-//  - Handles unserializable values
-//  - Handles object key ordering
-//  - Generates short results
+// 一个稳定的哈希实现，支持：
+//  - 快速并确保唯一哈希属性
+//  - 处理不可序列化的值
+//  - 处理对象键顺序
+//  - 生成简短结果
 //
-// This is not a serialization function, and the result is not guaranteed to be
-// parsable.
+// 这不是一个序列化函数，结果不保证可解析。
 export function stableHash(arg: any): string {
   const type = typeof arg;
   const constructor = arg && arg.constructor;
   const isDate = constructor === Date;
 
   if (Object(arg) === arg && !isDate && constructor !== RegExp) {
-    // Object/function, not null/date/regexp. Use WeakMap to store the id first.
-    // If it's already hashed, directly return the result.
+    // 对象/函数，不是null/date/regexp。首先使用WeakMap存储id。
+    // 如果已经被哈希化，直接返回结果。
     let result = table.get(arg);
     if (result) return result;
-    // Store the hash first for circular reference detection before entering the
-    // recursive `stableHash` calls.
+    // 在进入递归`stableHash`调用之前，首先存储哈希以检测循环引用。
     // For other objects like set and map, we use this id directly as the hash.
     result = ++counter + '~';
     table.set(arg, result);

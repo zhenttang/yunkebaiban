@@ -39,7 +39,7 @@ export interface DocStorageOptions {
   id: string;
 
   /**
-   * open as readonly mode.
+   * 以只读模式打开。
    */
   readonlyMode?: boolean;
 }
@@ -49,47 +49,47 @@ export interface DocStorage extends Storage {
   readonly isReadonly: boolean;
   readonly spaceId: string;
   /**
-   * Get a doc record with latest binary.
+   * 获取包含最新二进制数据的文档记录。
    */
   getDoc(docId: string): Promise<DocRecord | null>;
   /**
-   * Get a yjs binary diff with the given state vector.
+   * 根据给定的状态向量获取yjs二进制差异。
    */
   getDocDiff(docId: string, state?: Uint8Array): Promise<DocDiff | null>;
   /**
-   * Push updates into storage
+   * 将更新推送到存储中
    *
-   * @param origin - Internal identifier to recognize the source in the "update" event. Will not be stored or transferred.
+   * @param origin - 内部标识符，用于在"update"事件中识别来源。不会被存储或传输。
    */
   pushDocUpdate(update: DocUpdate, origin?: string): Promise<DocClock>;
 
   /**
-   * Get the timestamp of the latest update of a doc.
+   * 获取文档最新更新的时间戳。
    */
   getDocTimestamp(docId: string): Promise<DocClock | null>;
 
   /**
-   * Get all docs timestamps info. especially for useful in sync process.
+   * 获取所有文档的时间戳信息。特别适用于同步过程。
    */
   getDocTimestamps(after?: Date): Promise<DocClocks>;
 
   /**
-   * Delete a specific doc data with all snapshots and updates
+   * 删除特定文档数据及其所有快照和更新
    */
   deleteDoc(docId: string): Promise<void>;
 
   /**
-   * Subscribe on doc updates emitted from storage itself.
+   * 订阅存储本身发出的文档更新。
    *
-   * NOTE:
+   * 注意：
    *
-   *   There is not always update emitted from storage itself.
+   *   存储本身并不总是发出更新。
    *
-   *   For example, in Sqlite storage, the update will only come from user's updating on docs,
-   *   in other words, the update will never somehow auto generated in storage internally.
+   *   例如，在Sqlite存储中，更新只会来自用户对文档的更新，
+   *   换句话说，存储内部永远不会自动生成更新。
    *
-   *   But for Cloud storage, there will be updates broadcasted from other clients,
-   *   so the storage will emit updates to notify the client to integrate them.
+   *   但对于云存储，会有来自其他客户端的更新广播，
+   *   所以存储会发出更新来通知客户端集成它们。
    */
   subscribeDocUpdate(
     callback: (update: DocRecord, origin?: string) => void
@@ -129,11 +129,11 @@ export abstract class DocStorageBase<Opts = {}> implements DocStorage {
         editor,
       };
 
-      // if is readonly, we will not set the new snapshot
+      // 如果是只读模式，我们不会设置新快照
       if (!this.isReadonly) {
         await this.setDocSnapshot(newSnapshot, snapshot);
 
-        // always mark updates as merged unless throws
+        // 除非抛出异常，否则总是标记更新已合并
         await this.markUpdatesMerged(docId, updates);
       }
 
@@ -174,7 +174,7 @@ export abstract class DocStorageBase<Opts = {}> implements DocStorage {
     };
   }
 
-  // REGION: api for internal usage
+  // 区域：内部使用的API
   protected on(
     event: 'update',
     callback: (update: DocRecord, origin: string) => void
@@ -205,23 +205,23 @@ export abstract class DocStorageBase<Opts = {}> implements DocStorage {
   }
 
   /**
-   * Get a doc snapshot from storage
+   * 从存储中获取文档快照
    */
   protected abstract getDocSnapshot(docId: string): Promise<DocRecord | null>;
   /**
-   * Set the doc snapshot into storage
+   * 将文档快照设置到存储中
    *
    * @safety
-   * be careful when implementing this method.
+   * 实现此方法时要小心。
    *
-   * It might be called with outdated snapshot when running in multi-thread environment.
+   * 在多线程环境中运行时，可能会使用过时的快照调用此方法。
    *
-   * A common solution is update the snapshot record is DB only when the coming one's timestamp is newer.
+   * 常见的解决方案是只有当新快照的时间戳更新时才在数据库中更新快照记录。
    *
    * @example
    * ```ts
    * await using _lock = await this.lockDocForUpdate(docId);
-   * // set snapshot
+   * // 设置快照
    *
    * ```
    */
@@ -231,16 +231,16 @@ export abstract class DocStorageBase<Opts = {}> implements DocStorage {
   ): Promise<boolean>;
 
   /**
-   * Get all updates of a doc that haven't been merged into snapshot.
+   * 获取文档中尚未合并到快照的所有更新。
    *
-   * Updates queue design exists for a performace concern:
-   * A huge amount of write time will be saved if we don't merge updates into snapshot immediately.
-   * Updates will be merged into snapshot when the latest doc is requested.
+   * 更新队列设计是出于性能考虑：
+   * 如果我们不立即将更新合并到快照中，可以节省大量写入时间。
+   * 当请求最新文档时，更新会被合并到快照中。
    */
   protected abstract getDocUpdates(docId: string): Promise<DocRecord[]>;
 
   /**
-   * Mark updates as merged into snapshot.
+   * 标记更新已合并到快照中。
    */
   protected abstract markUpdatesMerged(
     docId: string,
@@ -248,7 +248,7 @@ export abstract class DocStorageBase<Opts = {}> implements DocStorage {
   ): Promise<number>;
 
   /**
-   * Merge doc updates into a single update.
+   * 将文档更新合并为单个更新。
    */
   protected async squash(updates: DocRecord[]): Promise<DocRecord> {
     const lastUpdate = updates.at(-1);
@@ -256,7 +256,7 @@ export abstract class DocStorageBase<Opts = {}> implements DocStorage {
       throw new Error('No updates to be squashed.');
     }
 
-    // fast return
+    // 快速返回
     if (updates.length === 1) {
       return lastUpdate;
     }

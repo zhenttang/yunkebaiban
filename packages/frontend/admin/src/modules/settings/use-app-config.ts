@@ -9,7 +9,7 @@ import { UserFriendlyError } from '@affine/error';
 //   updateAppConfigMutation,
 // } from '@affine/graphql';
 
-// Temporary placeholders to replace @affine/graphql imports
+// 临时占位符，用于替代 @affine/graphql 导入
 type UpdateAppConfigInput = {
   module: string;
   key: string;
@@ -57,8 +57,8 @@ export const useAppConfig = () => {
         max: 128,
       },
       session: {
-        ttl: 604800, // 7 days
-        ttr: 86400,  // 1 day
+        ttl: 604800, // 7天
+        ttr: 86400,  // 1天
       },
     },
     mailer: {

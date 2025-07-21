@@ -34,7 +34,7 @@ export async function downloadBlob(blob: Blob, filename: string) {
 }
 
 export async function downloadResourceWithUrl(url: string, filename: string) {
-  // given input url may not have correct mime type
+  // 给定的输入URL可能没有正确的MIME类型
   const blob = await resourceUrlToBlob(url);
   if (!blob) return;
 

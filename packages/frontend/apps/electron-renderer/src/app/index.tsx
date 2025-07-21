@@ -8,11 +8,11 @@ import { createRoot } from 'react-dom/client';
 import { App } from './app';
 
 function main() {
-  // load persistent config for electron
-  // TODO(@Peng): should be sync, but it's not necessary for now
+  // 为electron加载持久化配置
+  // TODO(@Peng): 应该是同步的，但目前不是必需的
   appConfigProxy
     .getSync()
-    .catch(() => console.error('failed to load app config'));
+    .catch(() => console.error('加载应用配置失败'));
 
   mountApp();
 }

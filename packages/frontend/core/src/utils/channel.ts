@@ -16,7 +16,7 @@ export const schemeToChannel = {
   'affine-canary': 'canary',
   'affine-beta': 'beta',
   'affine-internal': 'internal',
-  'affine-dev': 'canary', // dev does not have a dedicated app. use canary as the placeholder.
+  'affine-dev': 'canary', // dev 没有专门的应用，使用 canary 作为占位符
 } as Record<Scheme, Channel>;
 
 export const channelToScheme = {

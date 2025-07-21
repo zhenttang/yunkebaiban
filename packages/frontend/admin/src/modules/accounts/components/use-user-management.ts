@@ -17,7 +17,7 @@ import { useAsyncCallback } from '@affine/core/components/hooks/affine-async-hoo
 //   updateAccountMutation,
 // } from '@affine/graphql';
 
-// Temporary placeholders to replace @affine/graphql imports
+// 临时占位符，用于替代 @affine/graphql 导入
 type ImportUsersInput = {
   users: {
     name: string;
@@ -436,7 +436,7 @@ export const useExportUsers = () => {
 
       const csvContent = csvRows.join('\n');
 
-      // Add BOM (Byte Order Mark) to force Excel to interpret the file as UTF-8
+      // 添加BOM(字节顺序标记)以强制Excel将文件解释为UTF-8编码
       const BOM = '\uFEFF';
       const csvContentWithBOM = BOM + csvContent;
 

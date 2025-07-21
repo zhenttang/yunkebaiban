@@ -9,7 +9,7 @@ export const FrameworkProviderContext = React.createContext<FrameworkProvider>(
 );
 
 export function useFramework(): FrameworkProvider {
-  return useContext(FrameworkProviderContext); // never null, because the default value
+  return useContext(FrameworkProviderContext); // 不会为空，因为有默认值
 }
 
 export function useService<T>(identifier: GeneralIdentifier<T>): T {
@@ -17,9 +17,9 @@ export function useService<T>(identifier: GeneralIdentifier<T>): T {
 }
 
 /**
- * Hook to get services from the current framework stack.
+ * 从当前框架堆栈获取服务的钩子。
  *
- * Automatically converts the service name to camelCase.
+ * 自动将服务名称转换为驼峰命名法。
  *
  * @example
  * ```ts
@@ -69,7 +69,7 @@ export const FrameworkScope = ({
 
   const nextStack = useMemo(() => {
     if (!scope) return provider;
-    // make sure the stack order is inside to outside
+    // 确保堆栈顺序从内到外
     return new FrameworkStackProvider([scope.framework, provider]);
   }, [scope, provider]);
 

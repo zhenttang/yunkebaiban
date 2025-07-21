@@ -1,4 +1,4 @@
-// the following import is used to ensure the block suite editor effects are run
+// 以下导入用于确保块组件编辑器效果被执行
 import '../blocksuite/block-suite-editor';
 
 import { DebugLogger } from '@affine/debug';
@@ -36,7 +36,7 @@ export async function buildShowcaseWorkspace(
 
   const docsService = workspace.scope.get(DocsService);
 
-  // should jump to "入门指南"
+  // 应该跳转到“入门指南”
   const defaultDoc = docsService.list.docs$.value.find(p =>
           p.title$.value.startsWith('入门指南')
   );
@@ -44,7 +44,7 @@ export async function buildShowcaseWorkspace(
     p.title$.value.startsWith('How to use folder and Tags')
   );
 
-  // create default organize
+  // 创建默认组织
   if (folderTutorialDoc) {
     const organizeService = workspace.scope.get(OrganizeService);
     const folderId = organizeService.folderTree.rootFolder.createFolder(

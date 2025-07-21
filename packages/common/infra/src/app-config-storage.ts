@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 export const appConfigSchema = z.object({
-  /** whether to show onboarding first */
+  /** 是否显示新手引导 */
   onBoarding: z.boolean().optional().default(true),
 });
 
@@ -12,14 +12,14 @@ const _storage: Record<number, any> = {};
 let _inMemoryId = 0;
 
 interface StorageOptions<T> {
-  /** default config */
+  /** 默认配置 */
   config: T;
   get?: () => T;
   set?: (data: T) => void;
 }
 
 /**
- * Storage for app configuration, stored in memory by default
+ * 应用程序配置的存储，默认存储在内存中
  */
 class Storage<T extends object> {
   private _cfg: T;

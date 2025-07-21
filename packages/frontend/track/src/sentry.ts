@@ -12,7 +12,7 @@ function createSentry() {
   const wrapped = {
     init() {
       if (!globalThis.SENTRY_RELEASE) {
-        // https://docs.sentry.io/platforms/javascript/guides/react/#configure
+        // https://docs.sentry.io/platforms/javascript/guides/react/#配置
         client = Sentry.init({
           dsn: BUILD_CONFIG.SENTRY_DSN,
           debug: BUILD_CONFIG.debug ?? false,
