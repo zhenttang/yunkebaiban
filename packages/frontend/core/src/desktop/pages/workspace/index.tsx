@@ -40,6 +40,7 @@ import { AppContainer } from '../../components/app-container';
 import { PageNotFound } from '../404';
 import { WorkspaceLayout } from './layouts/workspace-layout';
 import { SharePage } from './share/share-page';
+import { StandaloneCommunityPage } from './standalone-community';
 
 declare global {
   /**
@@ -101,6 +102,40 @@ export const Component = (): ReactElement => {
     } else {
       return null;
     }
+  }, [location.pathname]);
+
+  // check if we are in community route, if so, render community page directly
+  const communityRoute = useMemo(() => {
+    const communityMatch = matchPath(
+      '/workspace/:workspaceId/community/:docId',
+      location.pathname
+    );
+    if (
+      communityMatch &&
+      communityMatch.params.docId &&
+      communityMatch.params.workspaceId
+    ) {
+      return {
+        docId: communityMatch.params.docId,
+        workspaceId: communityMatch.params.workspaceId,
+      };
+    }
+    
+    const communityListMatch = matchPath(
+      '/workspace/:workspaceId/community',
+      location.pathname
+    );
+    if (
+      communityListMatch &&
+      communityListMatch.params.workspaceId
+    ) {
+      return {
+        workspaceId: communityListMatch.params.workspaceId,
+        isList: true,
+      };
+    }
+    
+    return null;
   }, [location.pathname]);
 
   const [workspaceNotFound, setWorkspaceNotFound] = useState(false);
@@ -205,6 +240,16 @@ export const Component = (): ReactElement => {
         </FrameworkScope>
       );
     }
+    
+    // Handle community routes even when workspace is not found
+    if (communityRoute) {
+      return (
+        <FrameworkScope scope={server?.scope}>
+          <StandaloneCommunityPage />
+        </FrameworkScope>
+      );
+    }
+    
     return (
       <FrameworkScope scope={server?.scope}>
         <AffineOtherPageLayout>
