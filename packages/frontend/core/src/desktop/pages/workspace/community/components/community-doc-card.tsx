@@ -19,23 +19,11 @@ const PERMISSION_LABELS = {
 
 // 模拟用户权限检查函数
 const checkUserPermission = (docPermission: string): boolean => {
-  // 在实际应用中，这里会根据用户的实际权限来判断
-  // 现在为了演示，我们假设用户对所有PUBLIC文档有权限
-  console.log('🔐 检查用户权限:', { docPermission });
+  // 社区功能不需要验证权限，所有文档都应该可以访问
+  console.log('🔐 社区文档权限检查（已跳过）:', { docPermission });
   
-  // 模拟权限检查逻辑
-  switch (docPermission) {
-    case 'PUBLIC':
-      return true; // 公开文档所有人都能访问
-    case 'COLLABORATOR':
-      return true; // 假设当前用户是协作者
-    case 'ADMIN':
-      return false; // 假设当前用户不是管理员
-    case 'CUSTOM':
-      return true; // 假设用户在自定义权限列表中
-    default:
-      return false;
-  }
+  // 社区功能始终返回 true，允许访问所有文档
+  return true;
 };
 
 export const CommunityDocCard = ({ doc }: CommunityDocCardProps) => {
@@ -47,14 +35,8 @@ export const CommunityDocCard = ({ doc }: CommunityDocCardProps) => {
   const hasPermission = checkUserPermission(doc.permission);
 
   const handleClick = () => {
-    // 权限预检查
-    if (!hasPermission) {
-      console.log('❌ 用户无权访问此文档:', doc.id);
-      setShowPermissionModal(true);
-      return;
-    }
-
-    console.log('✅ 权限检查通过，跳转到详情页:', doc.id);
+    // 社区功能不需要权限检查，直接跳转
+    console.log('✅ 社区文档点击，直接跳转到详情页:', doc.id);
     navigate(`/workspace/${doc.workspaceId}/community/${doc.id}`);
   };
 

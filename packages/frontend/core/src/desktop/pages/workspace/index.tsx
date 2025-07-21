@@ -80,31 +80,7 @@ export const Component = (): ReactElement => {
   const location = useLocation();
   const [searchParams] = useSearchParams();
 
-  // check if we are in detail doc route, if so, maybe render share page
-  const detailDocRoute = useMemo(() => {
-    const match = matchPath(
-      '/workspace/:workspaceId/:docId',
-      location.pathname
-    );
-    if (
-      match &&
-      match.params.docId &&
-      match.params.workspaceId &&
-      // TODO(eyhn): need a better way to check if it's a docId
-      workbenchRoutes.find(route =>
-        matchPath(route.path, '/' + match.params.docId)
-      )?.path === '/:pageId'
-    ) {
-      return {
-        docId: match.params.docId,
-        workspaceId: match.params.workspaceId,
-      };
-    } else {
-      return null;
-    }
-  }, [location.pathname]);
-
-  // check if we are in community route, if so, render community page directly
+  // check if we are in community route first, if so, render community page directly
   const communityRoute = useMemo(() => {
     const communityMatch = matchPath(
       '/workspace/:workspaceId/community/:docId',
@@ -138,6 +114,35 @@ export const Component = (): ReactElement => {
     return null;
   }, [location.pathname]);
 
+  // check if we are in detail doc route, if so, maybe render share page
+  const detailDocRoute = useMemo(() => {
+    // 如果已经匹配到社区路由，则不再检查文档详情路由
+    if (communityRoute) {
+      return null;
+    }
+    
+    const match = matchPath(
+      '/workspace/:workspaceId/:docId',
+      location.pathname
+    );
+    if (
+      match &&
+      match.params.docId &&
+      match.params.workspaceId &&
+      // TODO(eyhn): need a better way to check if it's a docId
+      workbenchRoutes.find(route =>
+        matchPath(route.path, '/' + match.params.docId)
+      )?.path === '/:pageId'
+    ) {
+      return {
+        docId: match.params.docId,
+        workspaceId: match.params.workspaceId,
+      };
+    } else {
+      return null;
+    }
+  }, [location.pathname, communityRoute]);
+
   const [workspaceNotFound, setWorkspaceNotFound] = useState(false);
   const listLoading = useLiveData(workspacesService.list.isRevalidating$);
   const workspaces = useLiveData(workspacesService.list.workspaces$);
@@ -145,15 +150,34 @@ export const Component = (): ReactElement => {
     return workspaces.find(({ id }) => id === params.workspaceId);
   }, [workspaces, params.workspaceId]);
 
+  // 对于社区路由，创建一个虚拟的工作空间元数据
+  const effectiveMeta = useMemo(() => {
+    if (communityRoute && !meta) {
+      // 创建虚拟工作空间元数据，仅用于社区功能
+      return {
+        id: params.workspaceId || 'community-virtual',
+        flavour: 'local',
+        initialized: true,
+      } as WorkspaceMetadata;
+    }
+    return meta;
+  }, [communityRoute, meta, params.workspaceId]);
+
   // if listLoading is false, we can show 404 page, otherwise we should show loading page.
   useEffect(() => {
+    // 对于社区路由，不设置 workspaceNotFound
+    if (communityRoute) {
+      setWorkspaceNotFound(false);
+      return;
+    }
+    
     if (listLoading === false && meta === undefined) {
       setWorkspaceNotFound(true);
     }
     if (meta) {
       setWorkspaceNotFound(false);
     }
-  }, [listLoading, meta, workspacesService]);
+  }, [listLoading, meta, workspacesService, communityRoute]);
 
   // if workspace is not found, we should retry
   const retryTimesRef = useRef(3);
@@ -230,6 +254,15 @@ export const Component = (): ReactElement => {
   ]);
 
   if (workspaceNotFound) {
+    // Handle community routes first, even when workspace is not found
+    if (communityRoute) {
+      return (
+        <FrameworkScope scope={server?.scope}>
+          <StandaloneCommunityPage />
+        </FrameworkScope>
+      );
+    }
+    
     if (detailDocRoute) {
       return (
         <FrameworkScope scope={server?.scope}>
@@ -237,15 +270,6 @@ export const Component = (): ReactElement => {
             docId={detailDocRoute.docId}
             workspaceId={detailDocRoute.workspaceId}
           />
-        </FrameworkScope>
-      );
-    }
-    
-    // Handle community routes even when workspace is not found
-    if (communityRoute) {
-      return (
-        <FrameworkScope scope={server?.scope}>
-          <StandaloneCommunityPage />
         </FrameworkScope>
       );
     }
@@ -258,13 +282,13 @@ export const Component = (): ReactElement => {
       </FrameworkScope>
     );
   }
-  if (!meta) {
+  if (!effectiveMeta) {
     return <AppContainer fallback />;
   }
 
   return (
     <FrameworkScope scope={server?.scope}>
-      <WorkspacePage meta={meta} />
+      <WorkspacePage meta={effectiveMeta} />
     </FrameworkScope>
   );
 };

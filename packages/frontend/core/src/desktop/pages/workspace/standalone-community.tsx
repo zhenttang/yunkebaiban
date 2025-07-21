@@ -5,6 +5,7 @@ import { ArrowLeftSmallIcon } from '@blocksuite/icons/rc';
 
 import { useCommunityDocDetail } from './community/hooks/use-community';
 import { formatDate } from './community/utils';
+import { CommunityDocList } from './community/components/community-doc-list';
 
 /**
  * 独立的社区详情页面组件
@@ -322,40 +323,36 @@ export const StandaloneCommunityPage = () => {
   // 社区列表页
   return (
     <AffineOtherPageLayout>
-      <div style={{ 
-        textAlign: 'center', 
-        padding: '60px 20px',
-        maxWidth: '600px',
-        margin: '0 auto'
+      <div style={{
+        maxWidth: '1200px',
+        margin: '0 auto',
+        padding: '20px'
       }}>
-        <h2 style={{
-          fontSize: '24px',
-          fontWeight: '600',
-          color: 'var(--affine-text-primary-color)',
-          marginBottom: '16px'
+        {/* 社区头部 */}
+        <div style={{
+          marginBottom: '32px',
+          borderBottom: '1px solid var(--affine-border-color)',
+          paddingBottom: '20px'
         }}>
-          社区功能
-        </h2>
-        <p style={{
-          fontSize: '16px',
-          color: 'var(--affine-text-secondary-color)',
-          lineHeight: '1.6',
-          marginBottom: '24px'
-        }}>
-          社区列表功能需要有效的工作空间权限才能访问。<br/>
-          请确保您有权限访问工作空间: <strong>{workspaceId}</strong>
-        </p>
-        <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
-          <Button onClick={() => navigate('/')}>
-            返回首页
-          </Button>
-          <Button 
-            variant="plain" 
-            onClick={() => navigate(`/workspace/${workspaceId}`)}
-          >
-            访问工作空间
-          </Button>
+          <h1 style={{
+            margin: '0 0 8px 0',
+            fontSize: '28px',
+            fontWeight: '700',
+            color: 'var(--affine-text-primary-color)'
+          }}>
+            社区
+          </h1>
+          <p style={{
+            margin: 0,
+            fontSize: '16px',
+            color: 'var(--affine-text-secondary-color)'
+          }}>
+            浏览和发现社区分享的文档
+          </p>
         </div>
+
+        {/* 动态导入社区列表组件 */}
+        <CommunityDocList workspaceId={workspaceId!} />
       </div>
     </AffineOtherPageLayout>
   );
