@@ -20,6 +20,7 @@ import { DocDisplayMetaService } from '@affine/core/modules/doc-display-meta';
 import { EditorService } from '@affine/core/modules/editor';
 import { JournalService } from '@affine/core/modules/journal';
 import { SharePageButton } from '@affine/core/modules/share-menu';
+import { CommunityShareButton } from './community-share-button';
 import { TemplateDocService } from '@affine/core/modules/template-doc';
 import { ViewIcon, ViewTitle } from '@affine/core/modules/workbench';
 import type { Workspace } from '@affine/core/modules/workspace';
@@ -180,6 +181,14 @@ export function NormalPageHeader({ page, workspace }: PageHeaderProps) {
 
       {page && !hideShare ? (
         <SharePageButton workspace={workspace} page={page} />
+      ) : null}
+
+      {page && !hideShare ? (
+        <CommunityShareButton 
+          docId={page.id} 
+          workspaceId={workspace.id} 
+          docTitle={page.meta?.title || 'Untitled'} 
+        />
       ) : null}
 
       {showDivider ? (

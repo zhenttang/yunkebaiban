@@ -211,6 +211,49 @@ export class GuardService extends Service {
   private readonly loadDocPermission = async (docId: string) => {
     console.log('🛡️ [GuardService.loadDocPermission] 开始加载文档权限, docId:', docId);
     console.log('🛡️ [GuardService.loadDocPermission] 工作空间类型:', this.workspaceService.workspace.flavour);
+    console.log('🛡️ [GuardService.loadDocPermission] 当前URL:', window.location.pathname);
+    
+    // 跳过特殊路径的权限检查
+    if (docId === 'community') {
+      console.log('🛡️ [GuardService.loadDocPermission] 跳过社区页面权限检查');
+      const communityPermissions = {
+        'Doc_Read': true,
+        'Doc_Write': false,
+        'Doc_Delete': false,
+        'Doc_Update': false,
+        'Doc_Create': false,
+      } as Record<DocPermissionActions, boolean>;
+      
+      this.docPermissions$.next({
+        ...this.docPermissions$.value,
+        [docId]: communityPermissions,
+      });
+      return communityPermissions;
+    }
+    
+    // 检查是否是社区文档详情页（通过当前URL判断）
+    const currentPath = window.location.pathname;
+    const isCommunityDetailPage = currentPath.includes('/community/') && docId !== 'community';
+    
+    // 更宽泛的社区相关页面检查
+    const isCommunityRelated = currentPath.includes('/community');
+    
+    if (isCommunityDetailPage || (isCommunityRelated && docId.match(/^[0-9]+$/))) {
+      console.log('🛡️ [GuardService.loadDocPermission] 跳过社区文档详情页权限检查, docId:', docId, 'URL:', currentPath);
+      const communityDocPermissions = {
+        'Doc_Read': true,
+        'Doc_Write': false,
+        'Doc_Delete': false,
+        'Doc_Update': false,
+        'Doc_Create': false,
+      } as Record<DocPermissionActions, boolean>;
+      
+      this.docPermissions$.next({
+        ...this.docPermissions$.value,
+        [docId]: communityDocPermissions,
+      });
+      return communityDocPermissions;
+    }
     
     if (this.workspaceService.workspace.flavour === 'local') {
       console.log('🛡️ [GuardService.loadDocPermission] 本地模式，返回空权限');
@@ -236,6 +279,25 @@ export class GuardService extends Service {
       return permissions;
     } catch (error) {
       console.error('❌ [GuardService.loadDocPermission] 获取文档权限失败:', error);
+      
+      // 如果是社区相关错误，给予读取权限
+      if (currentPath.includes('/community')) {
+        console.log('🛡️ [GuardService.loadDocPermission] 社区相关错误，给予读取权限');
+        const communityFallbackPermissions = {
+          'Doc_Read': true,
+          'Doc_Write': false,
+          'Doc_Delete': false,
+          'Doc_Update': false,
+          'Doc_Create': false,
+        } as Record<DocPermissionActions, boolean>;
+        
+        this.docPermissions$.next({
+          ...this.docPermissions$.value,
+          [docId]: communityFallbackPermissions,
+        });
+        return communityFallbackPermissions;
+      }
+      
       // 临时解决方案：返回基本文档权限以避免卡住
       const defaultPermissions = {
         'Doc_Read': true,

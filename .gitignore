@@ -67,3 +67,7 @@ Thumbs.db
 packages/frontend/admin/node_modules/
 packages/common/auth/node_modules/
 packages/frontend/apps/electron-renderer/dist/
+blocksuite/framework/store/dist/
+blocksuite/framework/std/dist/
+blocksuite/affine/shared/dist/
+blocksuite/affine/model/dist/

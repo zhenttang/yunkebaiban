@@ -86,6 +86,15 @@ export interface ApiEndpoints {
     profile: string;
     update: string;
   };
+
+  /** 社区相关 */
+  community: {
+    shareDoc: string;
+    getCommunityDocs: string;
+    unshareDoc: string;
+    updatePermission: string;
+    incrementView: string;
+  };
 }
 
 /**
@@ -240,4 +249,7 @@ export interface HttpClient {
    * @param reason 取消原因
    */
   cancelAll(reason?: string): void;
-} 
+}
+
+// 导出社区相关类型
+export * from './types/community'; 
