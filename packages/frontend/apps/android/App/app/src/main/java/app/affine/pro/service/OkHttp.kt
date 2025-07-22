@@ -4,8 +4,8 @@ import app.affine.pro.AFFiNEApp
 import app.affine.pro.CapacitorConfig
 import app.affine.pro.utils.dataStore
 import app.affine.pro.utils.set
-import com.google.firebase.crashlytics.ktx.crashlytics
-import com.google.firebase.ktx.Firebase
+// import com.google.firebase.crashlytics.ktx.crashlytics  // 禁用Firebase
+// import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
@@ -66,7 +66,7 @@ object CookieStore {
             cookies.find { it.name == AFFINE_USER_ID }?.let {
                 Timber.d("Update user id [${it.value}]")
                 AFFiNEApp.context().dataStore.set(host + AFFINE_USER_ID, it.toString())
-                Firebase.crashlytics.setUserId(it.value)
+                // Firebase.crashlytics.setUserId(it.value)  // 禁用Firebase
             }
         }
     }

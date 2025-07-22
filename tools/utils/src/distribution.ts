@@ -11,6 +11,7 @@ export const PackageToDistribution = new Map<
   ['@affine/mobile', 'mobile'],
   ['@affine/ios', 'ios'],
   ['@affine/android', 'android'],
+  ['@yunke/android', 'android'],
 ]);
 
 export const AliasToPackage = new Map<string, PackageName>([

@@ -12,13 +12,13 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updateMargins
 import androidx.lifecycle.lifecycleScope
 import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat
-import app.affine.pro.ai.AIActivity
+// import app.affine.pro.ai.AIActivity  // 禁用AI功能
 import app.affine.pro.plugin.AIButtonPlugin
 import app.affine.pro.plugin.AFFiNEThemePlugin
 import app.affine.pro.plugin.AuthPlugin
 import app.affine.pro.plugin.HashCashPlugin
 import app.affine.pro.plugin.NbStorePlugin
-import app.affine.pro.service.GraphQLService
+// import app.affine.pro.service.GraphQLService  // 禁用GraphQL
 import app.affine.pro.service.SSEService
 import app.affine.pro.service.WebService
 import app.affine.pro.utils.px2dp
@@ -40,8 +40,8 @@ class MainActivity : BridgeActivity(), AIButtonPlugin.Callback, AFFiNEThemePlugi
     @Inject
     lateinit var sseService: SSEService
 
-    @Inject
-    lateinit var graphQLService: GraphQLService
+    // @Inject  // 禁用GraphQL服务
+    // lateinit var graphQLService: GraphQLService
 
     init {
         registerPlugins(
@@ -127,8 +127,8 @@ class MainActivity : BridgeActivity(), AIButtonPlugin.Callback, AFFiNEThemePlugi
         lifecycleScope.launch {
             webService.update(bridge)
             sseService.updateServer(bridge)
-            graphQLService.updateServer(bridge)
-            AIActivity.open(this@MainActivity)
+            // graphQLService.updateServer(bridge)  // 禁用GraphQL
+            // AIActivity.open(this@MainActivity)  // 禁用AI功能
         }
     }
 

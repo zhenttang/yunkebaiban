@@ -47,7 +47,8 @@ function getBundleConfigs(pkg: Package) {
     case '@affine/web':
     case '@affine/mobile':
     case '@affine/ios':
-    case '@affine/android': {
+    case '@affine/android':
+    case '@yunke/android': {
       const workerConfigs = getBaseWorkerConfigs(pkg);
       workerConfigs.push(
         createWorkerTargetConfig(

@@ -4,11 +4,11 @@ import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
 import app.affine.pro.utils.logger.AffineDebugTree
-import app.affine.pro.utils.logger.CrashlyticsTree
-import app.affine.pro.utils.logger.FileTree
-import com.google.firebase.crashlytics.ktx.crashlytics
-import com.google.firebase.crashlytics.setCustomKeys
-import com.google.firebase.ktx.Firebase
+// import app.affine.pro.utils.logger.CrashlyticsTree  // 禁用Firebase
+// import app.affine.pro.utils.logger.FileTree  // 禁用Firebase
+// import com.google.firebase.crashlytics.ktx.crashlytics
+// import com.google.firebase.crashlytics.setCustomKeys
+// import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 
@@ -22,15 +22,16 @@ class AFFiNEApp : Application() {
         if (BuildConfig.DEBUG) {
             Timber.plant(AffineDebugTree())
         } else {
-            Timber.plant(CrashlyticsTree(), FileTree(applicationContext))
+            Timber.plant(AffineDebugTree())  // 临时使用调试树替代Firebase依赖
+            // Timber.plant(CrashlyticsTree(), FileTree(applicationContext))  // 禁用Firebase
         }
         Timber.i("Application started.")
         // init capacitor config
         CapacitorConfig.init(baseContext)
-        // init crashlytics
-        Firebase.crashlytics.setCustomKeys {
-            key("affine_version", CapacitorConfig.getAffineVersion())
-        }
+        // init crashlytics - 已禁用Firebase
+        // Firebase.crashlytics.setCustomKeys {
+        //     key("affine_version", CapacitorConfig.getAffineVersion())
+        // }
     }
 
     override fun onTerminate() {

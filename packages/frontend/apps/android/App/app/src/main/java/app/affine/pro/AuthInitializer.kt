@@ -5,7 +5,7 @@ import app.affine.pro.service.CookieStore
 import app.affine.pro.utils.dataStore
 import app.affine.pro.utils.get
 import app.affine.pro.utils.getCurrentServerBaseUrl
-import app.affine.pro.utils.logger.FileTree
+// import app.affine.pro.utils.logger.FileTree  // 禁用Firebase相关功能
 import com.getcapacitor.Bridge
 import com.getcapacitor.WebViewListener
 import kotlinx.coroutines.Dispatchers
@@ -40,7 +40,7 @@ object AuthInitializer {
                                 ?: error("Parse user id cookie fail:[ cookie = $userIdCookieStr ]"),
                         )
                         CookieStore.saveCookies(server.host, cookies)
-                        FileTree.get()?.checkAndUploadOldLogs(server)
+                        // FileTree.get()?.checkAndUploadOldLogs(server)  // 禁用日志上传功能
                     } catch (e: Exception) {
                         Timber.w(e, "[init] load persistent cookies fail.")
                     }
