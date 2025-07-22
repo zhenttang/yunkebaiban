@@ -2,7 +2,7 @@ import { Button } from '@affine/admin/components/ui/button';
 import { ScrollArea } from '@affine/admin/components/ui/scroll-area';
 import { get } from 'lodash-es';
 import { CheckIcon } from 'lucide-react';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, lazy, Suspense } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
 import { Header } from '../header';
@@ -14,6 +14,10 @@ import {
 } from './config';
 import { type ConfigInputProps, ConfigRow } from './config-input-row';
 import { useAppConfig } from './use-app-config';
+
+// 懒加载特殊页面
+const ServerSettingsPage = lazy(() => import('./server'));
+const AuthSettingsPage = lazy(() => import('./auth'));
 
 export function SettingsPage() {
   const { appConfig, update, save, patchedAppConfig, updates } = useAppConfig();
@@ -34,6 +38,37 @@ export function SettingsPage() {
       navigate('/admin/settings/server', { replace: true });
     }
   }, [module, setCurrentModule, navigate]);
+
+  // 如果是特殊设置模块，渲染特殊页面
+  if (module === 'server') {
+    return (
+      <Suspense fallback={
+        <div className="h-screen flex-1 flex-col flex">
+          <Header title="服务器设置" />
+          <div className="flex-1 flex items-center justify-center">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
+          </div>
+        </div>
+      }>
+        <ServerSettingsPage />
+      </Suspense>
+    );
+  }
+
+  if (module === 'auth') {
+    return (
+      <Suspense fallback={
+        <div className="h-screen flex-1 flex-col flex">
+          <Header title="认证授权" />
+          <div className="flex-1 flex items-center justify-center">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
+          </div>
+        </div>
+      }>
+        <AuthSettingsPage />
+      </Suspense>
+    );
+  }
 
   const saveChanges = useCallback(() => {
     if (disableSave) {
