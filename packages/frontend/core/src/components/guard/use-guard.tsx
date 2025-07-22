@@ -15,12 +15,12 @@ export const useGuard = <
   const guardService = useService(GuardService);
   useEffect(() => {
     guardService.revalidateCan(action, ...args);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps 禁用依赖检查
   }, [action, guardService, ...args]);
 
   const livedata$ = useMemo(
     () => guardService.can$(action, ...args),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps 禁用依赖检查
     [action, guardService, ...args]
   );
 

@@ -40,7 +40,7 @@ export interface MemberSelectorInlineProps extends MemberSelectorProps {
   modalMenu?: boolean;
   menuClassName?: string;
   readonly?: boolean;
-  title?: ReactNode; // only used for mobile
+  title?: ReactNode; // 仅用于移动端
   placeholder?: ReactNode;
   ref?: React.Ref<MenuRef>;
   onEditorClose?: () => void;
@@ -79,7 +79,7 @@ export const MemberSelector = ({
   const searchedMembers = useLiveData(memberSearchService.result$);
 
   useEffect(() => {
-    // reset the search text when the component is mounted
+    // 组件挂载时重置搜索文本
     memberSearchService.reset();
     memberSearchService.loadMore();
   }, [memberSearchService]);
@@ -94,10 +94,10 @@ export const MemberSelector = ({
   const [focusedIndex, setFocusedIndex] = useState<number>(-1);
   const [focusedInlineIndex, setFocusedInlineIndex] = useState<number>(-1);
 
-  // -1: no focus
+  // -1: 无焦点
   const safeFocusedIndex = clamp(focusedIndex, -1, searchedMembers.length - 1);
-  // inline tags focus index can go beyond the length of tagIds
-  // using -1 and tagIds.length to make keyboard navigation easier
+  // 内联标签焦点索引可以超出tagIds的长度
+  // 使用-1和tagIds.length来简化键盘导航
   const safeInlineFocusedIndex = clamp(focusedInlineIndex, -1, selected.length);
 
   const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -181,7 +181,7 @@ export const MemberSelector = ({
           )
           ?.scrollIntoView({ block: 'nearest' });
         setFocusedIndex(newFocusedIndex);
-        // reset inline focus
+        // 重置内联焦点
         setFocusedInlineIndex(selected.length + 1);
       } else if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
         if (inputValue.length > 0 || selected.length === 0) {
@@ -194,7 +194,7 @@ export const MemberSelector = ({
 
         e.preventDefault();
         setFocusedInlineIndex(newItemToFocus);
-        // reset tag list focus
+        // 重置标签列表焦点
         setFocusedIndex(-1);
       }
     },

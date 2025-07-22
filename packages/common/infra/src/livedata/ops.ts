@@ -172,16 +172,16 @@ export function smartRetry<T>({
 }
 
 /**
- * An operator that combines `exhaustMap` and `switchMap`.
+ * 一个结合了`exhaustMap`和`switchMap`的操作符。
  *
- * This operator executes the `comparator` on each input, acting as an `exhaustMap` when the `comparator` returns `true`
- * and acting as a `switchMap` when the comparator returns `false`.
+ * 该操作符对每个输入执行`comparator`，当`comparator`返回`true`时作为`exhaustMap`，
+ * 当comparator返回`false`时作为`switchMap`。
  *
- * It is more useful for async processes that are relatively stable in results but sensitive to input.
- * For example, when requesting the user's subscription status, `exhaustMap` is used because the user's subscription
- * does not change often, but when switching users, the request should be made immediately like `switchMap`.
+ * 它对于结果相对稳定但对输入敏感的异步进程更有用。
+ * 例如，在请求用户的订阅状态时，使用`exhaustMap`因为用户的订阅
+ * 不经常变化，但在切换用户时，应该像`switchMap`一样立即发出请求。
  *
- * @param onSwitch callback will be executed when `switchMap` occurs (including the first execution).
+ * @param onSwitch 当发生`switchMap`时将执行的回调（包括第一次执行）。
  */
 export function exhaustMapSwitchUntilChanged<T, O extends ObservableInput<any>>(
   comparator: (previous: T, current: T) => boolean,

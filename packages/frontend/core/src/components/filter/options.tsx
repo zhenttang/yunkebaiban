@@ -32,7 +32,7 @@ export const FilterOptionsGroup = ({
   const [currentStep, setCurrentStep] = useState(initialStep);
 
   const handleNextStep = useCallback(() => {
-    // Add a small delay between steps to prevent the next menu from automatically closing due to the previous menu's close event
+    // 在步骤之间添加小延迟，防止下一个菜单因前一个菜单的关闭事件而自动关闭
     setTimeout(() => {
       if (currentStep < stepCount - 1) {
         setCurrentStep(currentStep + 1);

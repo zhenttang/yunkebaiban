@@ -1,6 +1,6 @@
 import { atom } from 'jotai';
 
-// make page history controllable by atom to make it easier to use in CMDK
+// 通过atom控制页面历史记录，以便在CMDK中更容易使用
 export const pageHistoryModalAtom = atom({
   open: false,
   pageId: '',

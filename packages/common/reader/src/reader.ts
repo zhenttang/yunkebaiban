@@ -174,7 +174,7 @@ function generateMarkdownPreviewBuilder(
         b => b.blockId === currentBlock?.parentBlockId
       );
 
-      // reach the root block. do not count it.
+      // 到达根块。不计算它。
       if (!currentBlock || currentBlock.flavour !== 'affine:list') {
         break;
       }
@@ -183,7 +183,7 @@ function generateMarkdownPreviewBuilder(
     return parentBlockCount;
   }
 
-  // only works for list block
+  // 仅适用于列表块
   function indentMarkdown(markdown: string, depth: number) {
     if (depth <= 0) {
       return markdown;
@@ -373,7 +373,7 @@ function generateMarkdownPreviewBuilder(
     } else if (flavour === 'affine:image') {
       markdown = generateImageMarkdownPreview(block);
     } else if (flavour === 'affine:surface' || flavour === 'affine:page') {
-      // skip
+      // 跳过
     } else if (flavour === 'affine:latex') {
       markdown = generateLatexMarkdownPreview(block);
     } else if (bookmarkFlavours.has(flavour)) {
@@ -396,13 +396,13 @@ function generateMarkdownPreviewBuilder(
   return generateMarkdownPreview;
 }
 
-// remove the indent of the first line of list
-// e.g.,
+// 移除列表第一行的缩进
+// 例如：
 // ```
 //     - list item 1
 //       - list item 2
 // ```
-// becomes
+// 变成
 // ```
 // - list item 1
 //   - list item 2
@@ -418,12 +418,12 @@ function unindentMarkdown(markdown: string) {
 
     if (indent > 0) {
       if (!firstListFound) {
-        // For the first list item, remove all indentation
+        // 对于第一个列表项，移除所有缩进
         firstListFound = true;
         baseIndent = indent;
         current = current.trimStart();
       } else {
-        // For subsequent list items, maintain relative indentation
+        // 对于后续列表项，保持相对缩进
         current =
           ' '.repeat(Math.max(0, indent - baseIndent)) + current.trimStart();
       }
@@ -469,8 +469,8 @@ export async function readAllBlocksFromDoc({
     return undefined;
   }
 
-  // build a parent map for quick lookup
-  // for each block, record its parent id
+  // 构建父级映射以快速查找
+  // 对于每个块，记录其父级id
   const parentMap: Record<string, string | null> = {};
   for (const [id, block] of blocks.entries()) {
     const children = block.get('sys:children') as YArray<string> | undefined;
@@ -481,7 +481,7 @@ export async function readAllBlocksFromDoc({
     }
   }
 
-  // find the nearest block that satisfies the predicate
+  // 找到满足谓词的最近块
   const nearest = (
     blockId: string,
     predicate: (block: YMap<any>) => boolean
@@ -514,7 +514,7 @@ export async function readAllBlocksFromDoc({
   }
 
   const queue: { parent?: string; id: string }[] = [{ id: rootBlockId }];
-  const visited = new Set<string>(); // avoid loop
+  const visited = new Set<string>(); // 避免循环
 
   const pushChildren = (id: string, block: YMap<any>) => {
     const children = block.get('sys:children');
@@ -529,7 +529,7 @@ export async function readAllBlocksFromDoc({
     }
   };
 
-  // #region first loop - generate block base info
+  // #region 第一次循环 - 生成块基本信息
   while (queue.length) {
     const next = queue.pop();
     if (!next) {
@@ -547,11 +547,11 @@ export async function readAllBlocksFromDoc({
     const parentFlavour = parentBlock?.get('sys:flavour')?.toString();
     const noteBlock = nearestByFlavour(blockId, 'affine:note');
 
-    // display mode:
-    // - both: page and edgeless -> fallback to page
-    // - page: only page -> page
-    // - edgeless: only edgeless -> edgeless
-    // - undefined: edgeless (assuming it is a normal element on the edgeless)
+    // 显示模式：
+    // - both: page and edgeless -> 退回到page
+    // - page: 仅page -> page
+    // - edgeless: 仅edgeless -> edgeless
+    // - undefined: edgeless（假设它是edgeless上的普通元素）
     let displayMode = noteBlock?.get('prop:displayMode') ?? 'edgeless';
 
     if (displayMode === 'both') {
@@ -608,7 +608,7 @@ export async function readAllBlocksFromDoc({
       );
 
       const databaseName =
-        flavour === 'affine:paragraph' && parentFlavour === 'affine:database' // if block is a database row
+        flavour === 'affine:paragraph' && parentFlavour === 'affine:database' // 如果块是数据库行
           ? parentBlock?.get('prop:title')?.toString()
           : undefined;
 
@@ -638,7 +638,7 @@ export async function readAllBlocksFromDoc({
     ) {
       const pageId = block.get('prop:pageId');
       if (typeof pageId === 'string') {
-        // reference info
+        // 引用信息
         const params = block.get('prop:params') ?? {};
         blockDocuments.push({
           ...commonBlockProps,
@@ -761,7 +761,7 @@ export async function readAllBlocksFromDoc({
   }
   // #endregion
 
-  // #region second loop - generate markdown preview
+  // #region 第二次循环 - 生成markdown预览
   const TARGET_PREVIEW_CHARACTER = 500;
   const TARGET_PREVIOUS_BLOCK = 1;
   const TARGET_FOLLOW_BLOCK = 4;
@@ -769,7 +769,7 @@ export async function readAllBlocksFromDoc({
     if (block.ref?.length) {
       const target = block;
 
-      // should only generate the markdown preview belong to the same affine:note
+      // 应该只生成属于同一个affine:note的markdown预览
       const noteBlock = nearestByFlavour(block.blockId, 'affine:note');
 
       const sameNoteBlocks = noteBlock
@@ -779,7 +779,7 @@ export async function readAllBlocksFromDoc({
           )
         : [];
 
-      // only generate markdown preview for reference blocks
+      // 只为引用块生成markdown预览
       let previewText = (await generateMarkdownPreview(target)) ?? '';
       let previousBlock = 0;
       let followBlock = 0;
@@ -791,11 +791,11 @@ export async function readAllBlocksFromDoc({
       while (
         !(
           (
-            previewText.length > TARGET_PREVIEW_CHARACTER || // stop if preview text reaches the limit
+            previewText.length > TARGET_PREVIEW_CHARACTER || // 如果预览文本达到限制则停止
             ((previousBlock >= TARGET_PREVIOUS_BLOCK || previousIndex < 0) &&
               (followBlock >= TARGET_FOLLOW_BLOCK ||
                 followIndex >= sameNoteBlocks.length))
-          ) // stop if no more blocks, or preview block reaches the limit
+          ) // 如果没有更多块，或者预览块达到限制则停止
         )
       ) {
         if (previousBlock < TARGET_PREVIOUS_BLOCK) {
@@ -807,7 +807,7 @@ export async function readAllBlocksFromDoc({
             markdown &&
             !previewText.startsWith(
               markdown
-            ) /* A small hack to skip blocks with the same content */
+            ) /* 一个小技巧，跳过具有相同内容的块 */
           ) {
             previewText = markdown + '\n' + previewText;
             previousBlock++;
@@ -822,7 +822,7 @@ export async function readAllBlocksFromDoc({
             markdown &&
             !previewText.endsWith(
               markdown
-            ) /* A small hack to skip blocks with the same content */
+            ) /* 一个小技巧，跳过具有相同内容的块 */
           ) {
             previewText = previewText + '\n' + markdown;
             followBlock++;

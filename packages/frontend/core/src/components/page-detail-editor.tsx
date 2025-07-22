@@ -12,7 +12,7 @@ import { EditorSettingService } from '../modules/editor-setting';
 import * as styles from './page-detail-editor.css';
 
 declare global {
-  // oxlint-disable-next-line no-var
+  // oxlint-disable-next-line no-var 禁用no-var规则
   var currentEditor: AffineEditorContainer | undefined;
 }
 

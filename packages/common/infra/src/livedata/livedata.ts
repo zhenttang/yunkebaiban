@@ -203,7 +203,7 @@ export class LiveData<T = unknown>
 
           try {
             if (LiveData.GLOBAL_COMPUTED_RECURSIVE_COUNT > 10) {
-              subscribe.error(new Error('computed recursive limit exceeded'));
+              subscribe.error(new Error('计算属性递归限制超出'));
             } else {
               subscribe.next(compute(getfn));
             }
@@ -241,11 +241,11 @@ export class LiveData<T = unknown>
   private readonly upstreamSubscription: Subscription | undefined;
 
   /**
-   * When the upstream Observable of livedata throws an error, livedata will enter poisoned state. This is an
-   * unrecoverable abnormal state. Any operation on livedata will throw a PoisonedError.
+   * 当livedata的上游可观察对象抛出错误时，livedata将进入中毒状态。这是一个
+   * 不可恢复的异常状态。对livedata的任何操作都将抛出PoisonedError。
    *
-   * Since the development specification for livedata is not to throw any error, entering the poisoned state usually
-   * means a programming error.
+   * 由于livedata的开发规范是不抛出任何错误，进入中毒状态通常
+   * 意味着编程错误。
    */
   private isPoisoned = false;
   private poisonedError: PoisonedError | null = null;
@@ -265,11 +265,11 @@ export class LiveData<T = unknown>
         },
         complete: () => {
           if (!this.raw$.closed) {
-            logger.error('livedata upstream unexpected complete');
+            logger.error('livedata上游意外完成');
           }
         },
         error: err => {
-          logger.error('uncatched error in livedata', err);
+          logger.error('livedata中的未捕获错误', err);
           this.isPoisoned = true;
           this.poisonedError = new PoisonedError(err);
           this.raw$.error(this.poisonedError);
@@ -359,14 +359,14 @@ export class LiveData<T = unknown>
           },
         })
       ),
-      undefined as R // is safe
+      undefined as R // 是安全的
     );
 
     return sub$;
   }
 
   /**
-   * same as map, but do shallow equal check before emit
+   * 与 map 相同，但在发出前会做浅层相等检查
    */
   selector<R>(selector: (v: T) => R): LiveData<R> {
     const sub$ = LiveData.from(
@@ -385,7 +385,7 @@ export class LiveData<T = unknown>
           },
         });
       }),
-      undefined as R // is safe
+      undefined as R // 是安全的
     );
 
     return sub$;
@@ -467,7 +467,7 @@ export class LiveData<T = unknown>
   }
 
   /**
-   * flatten the livedata
+   * 将livedata扩展
    *
    * ```
    * new LiveData(new LiveData(0)).flat() // LiveData<number>
@@ -586,7 +586,7 @@ export type Flat<T> = T extends LiveData<infer P> ? LiveData<Unwrap<P>> : T;
 export class PoisonedError extends Error {
   constructor(originalError: any) {
     super(
-      'The livedata is poisoned, original error: ' +
+      'livedata已中毒，原始错误：' +
         (originalError instanceof Error ? originalError.stack : originalError)
     );
   }

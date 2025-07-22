@@ -80,7 +80,7 @@ export const WorkspaceSideEffects = () => {
 
           return { doc, mode };
         }).pipe(
-          timeout(10000 /* 10s */),
+          timeout(10000 /* 10秒 */),
           tap(({ mode, doc }) => {
             if (doc) {
               docsList.setPrimaryMode(doc.id, mode as DocMode);

@@ -15,7 +15,7 @@ export function RootRouter() {
   const navigate = useNavigate();
   const [ready, setReady] = useState(false);
   useEffect(() => {
-    // a hack to make sure router is ready
+    // 确保路由就绪的hack方法
     setReady(true);
   }, []);
 

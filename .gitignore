@@ -72,3 +72,12 @@ blocksuite/framework/std/dist/
 blocksuite/affine/shared/dist/
 blocksuite/affine/model/dist/
 blocksuite/affine/components/dist/
+blocksuite/affine/blocks/attachment/dist/
+blocksuite/affine/blocks/embed/dist/
+blocksuite/affine/blocks/surface/dist/
+blocksuite/affine/ext-loader/dist/
+blocksuite/affine/gfx/pointer/dist/
+blocksuite/affine/inlines/reference/dist/
+blocksuite/affine/rich-text/dist/
+blocksuite/affine/widgets/slash-menu/dist/
+blocksuite/affine/widgets/edgeless-toolbar/dist/

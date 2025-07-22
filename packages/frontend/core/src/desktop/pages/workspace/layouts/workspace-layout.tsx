@@ -22,7 +22,7 @@ export const WorkspaceLayout = function WorkspaceLayout({
     <SWRConfigProvider>
       <WorkspaceDialogs />
 
-      {/* ---- some side-effect components ---- */}
+      {/* ---- 一些副作用组件 ---- */}
       {currentWorkspace?.flavour !== 'local' ? (
         <QuotaCheck workspaceMeta={currentWorkspace.meta} />
       ) : null}
@@ -32,8 +32,8 @@ export const WorkspaceLayout = function WorkspaceLayout({
       <DocumentTitle />
 
       <WorkspaceLayoutInner>{children}</WorkspaceLayoutInner>
-      {/* should show after workspace loaded */}
-      {/* FIXME: wait for better ai, <WorkspaceAIOnboarding /> */}
+      {/* 应该在工作区加载后显示 */}
+      {/* FIXME: 等待更好的 ai, <WorkspaceAIOnboarding /> */}
       <AIIsland />
       <uniReactRoot.Root />
     </SWRConfigProvider>
@@ -41,7 +41,7 @@ export const WorkspaceLayout = function WorkspaceLayout({
 };
 
 /**
- * Wraps the workspace layout main router view
+ * 包装工作区布局主路由视图
  */
 const WorkspaceLayoutUIContainer = ({ children }: PropsWithChildren) => {
   const workbench = useService(WorkbenchService).workbench;

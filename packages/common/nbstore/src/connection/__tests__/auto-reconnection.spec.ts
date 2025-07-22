@@ -54,7 +54,7 @@ test('connect and disconnect', async () => {
     expect(connection.status).toBe('closed');
   });
 
-  // connect twice
+  // 连接两次
   connection.connect();
   connection.connect();
 
@@ -75,7 +75,7 @@ test('connect and disconnect', async () => {
     expect(connection.status).toBe('closed');
   });
 
-  // calling connect disconnect consecutively, the previous connect call will be aborted.
+  // 连续调用连接和断开连接，之前的连接调用将被中止。
   connection.connect();
   connection.disconnect();
 
@@ -98,7 +98,7 @@ test('connect and disconnect', async () => {
     expect(connection.status).toBe('closed');
   });
 
-  // if connection is not listening to abort event, disconnect will be called
+  // 如果连接没有监听中止事件，则会调用断开连接
   connection.notListenAbort = true;
   connection.connect();
   connection.disconnect();
@@ -190,7 +190,7 @@ test('retry when error', async () => {
     expect(connection.error?.message).toBe('test error');
   });
 
-  // waitfor reconnect
+  // 等待重新连接
   await vitest.waitFor(() => {
     expect(connection.connectCount).toBe(2);
     expect(connection.disconnectCount).toBe(1);
@@ -198,7 +198,7 @@ test('retry when error', async () => {
     expect(connection.error).toBeUndefined();
   });
 
-  // do not reconnect if the connection is closed
+  // 如果连接已关闭，则不重新连接
   connection.disconnect();
   connection.triggerError(new Error('test error2'));
   await new Promise(resolve => setTimeout(resolve, 1000));
@@ -241,7 +241,7 @@ test('connecting timeout', async () => {
     expect(connection.error?.message).toBe('connecting timeout');
   });
 
-  // wait for reconnect
+  // 等待重新连接
   await vitest.waitFor(() => {
     expect(connection.connectCount).toBe(2);
     expect(connection.disconnectCount).toBe(0);
@@ -249,7 +249,7 @@ test('connecting timeout', async () => {
     expect(connection.error?.message).toBe('connecting timeout');
   });
 
-  // trigger error while connecting
+  // 连接时触发错误
   connection.triggerError(new Error('test error2'));
   connection.triggerError(new Error('test error2'));
 
@@ -260,7 +260,7 @@ test('connecting timeout', async () => {
     expect(connection.error?.message).toBe('test error2');
   });
 
-  // wait for reconnect
+  // 等待重新连接
   await vitest.waitFor(() => {
     expect(connection.connectCount).toBe(3);
     expect(connection.disconnectCount).toBe(0);
@@ -268,17 +268,17 @@ test('connecting timeout', async () => {
     expect(connection.error).toBeUndefined();
   });
 
-  // trigger error after connected
+  // 连接后触发错误
   connection.triggerError(new Error('test error3'));
 
   await vitest.waitFor(() => {
     expect(connection.connectCount).toBe(3);
-    expect(connection.disconnectCount).toBe(1); // previous connect is disconnected
+    expect(connection.disconnectCount).toBe(1); // 之前的连接已断开
     expect(connection.status).toBe('error');
     expect(connection.error?.message).toBe('test error3');
   });
 
-  // reconnect and timeout again
+  // 重新连接并再次超时
   await vitest.waitFor(() => {
     expect(connection.connectCount).toBe(4);
   });
@@ -297,7 +297,7 @@ test('connecting timeout', async () => {
 
   await new Promise(resolve => setTimeout(resolve, 1000));
 
-  // no reconnect after disconnect
+  // 断开连接后不再重新连接
   expect(connection.connectCount).toBe(5);
   expect(connection.status).toBe('closed');
 });

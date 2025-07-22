@@ -103,7 +103,7 @@ const DetailPageImpl = memo(function DetailPageImpl() {
   const peekView = useService(PeekViewService).peekView;
 
   const isActiveView = useIsActiveView();
-  // TODO(@eyhn): remove jotai here
+  // TODO(@eyhn): 在这里移除 jotai
   const [_, setActiveBlockSuiteEditor] = useActiveBlocksuiteEditor();
 
   const enableAI = useEnableAI();
@@ -179,7 +179,7 @@ const DetailPageImpl = memo(function DetailPageImpl() {
         const refNodeSlots = std.getOptional(RefNodeSlotsProvider);
         if (refNodeSlots) {
           disposable.add(
-            // the event should not be emitted by AffineReference
+            // 该事件不应由 AffineReference 发出
             refNodeSlots.docLinkClicked.subscribe(
               ({ pageId, params, openMode, event, host }) => {
                 if (host !== editorContainer.host) {
@@ -203,7 +203,7 @@ const DetailPageImpl = memo(function DetailPageImpl() {
                     if (openMode === 'open-in-active-view') {
                       return 'active';
                     }
-                    // split view is only supported on electron
+                    // 分屏视图仅在 electron 中支持
                     if (openMode === 'open-in-new-view') {
                       return BUILD_CONFIG.isElectron ? 'tail' : 'new-tab';
                     }
@@ -243,7 +243,7 @@ const DetailPageImpl = memo(function DetailPageImpl() {
 
       const unbind = editor.bindEditorContainer(
         editorContainer,
-        (editorContainer as any).docTitle, // set from proxy
+        (editorContainer as any).docTitle, // 从代理设置
         scrollViewportRef.current
       );
 

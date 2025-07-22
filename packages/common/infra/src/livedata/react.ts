@@ -15,7 +15,7 @@ function undefinedGetSnapshot() {
 }
 
 /**
- * subscribe LiveData and return the value.
+ * 订阅 LiveData 并返回值。
  */
 export function useLiveData<Input extends LiveData<any> | null | undefined>(
   liveData: Input

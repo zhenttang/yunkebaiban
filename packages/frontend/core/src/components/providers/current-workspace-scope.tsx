@@ -15,7 +15,7 @@ export const CurrentWorkspaceScopeProvider = ({
   );
   const workspace = useWorkspace(workspaceMeta);
   if (!workspace) {
-    // todo(@pengx17): render a loading/error component here if not found?
+    // todo(@pengx17): 如果未找到，在此渲染加载/错误组件？
     return null;
   }
   return <FrameworkScope scope={workspace.scope}>{children}</FrameworkScope>;

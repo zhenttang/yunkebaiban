@@ -1,5 +1,4 @@
 // 此文件不应有副作用
-// This file should has not side effect
 
 declare global {
   // oxlint-disable-next-line no-var

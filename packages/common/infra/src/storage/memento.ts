@@ -3,7 +3,7 @@ import type { Observable } from 'rxjs';
 import { LiveData } from '../livedata';
 
 /**
- * A memento represents a storage utility. It can store and retrieve values, and observe changes.
+ * Memento 代表一个存储工具。它可以存储和检索值，并观察变化。
  */
 export interface Memento {
   get<T>(key: string): T | undefined;
@@ -15,7 +15,7 @@ export interface Memento {
 }
 
 /**
- * A simple implementation of Memento. Used for testing.
+ * Memento 的简单实现。用于测试。
  */
 export class MemoryMemento implements Memento {
   private readonly data = new Map<string, LiveData<any>>();

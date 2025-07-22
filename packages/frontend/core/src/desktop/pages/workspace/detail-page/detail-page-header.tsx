@@ -143,7 +143,7 @@ export function NormalPageHeader({ page, workspace }: PageHeaderProps) {
   const onRename = useCallback(() => {
     setTimeout(
       () => titleInputHandleRef.current?.triggerEdit(),
-      500 /* wait for menu animation end */
+      500 /* 等待菜单动画结束 */
     );
   }, []);
 

@@ -21,7 +21,7 @@ export const CurrentServerScopeProvider = ({
   );
 
   if (!serverService) {
-    // todo(@pengx17): render a loading/error component here if not found?
+    // todo(@pengx17): 如果未找到，在此渲染加载/错误组件？
     return null;
   }
 

@@ -44,15 +44,15 @@ import { StandaloneCommunityPage } from './standalone-community';
 
 declare global {
   /**
-   * @internal debug only
+   * @internal 仅用于调试
    */
-  // oxlint-disable-next-line no-var
+  // oxlint-disable-next-line no-var 禁用no-var规则
   var currentWorkspace: Workspace | undefined;
-  // oxlint-disable-next-line no-var
+  // oxlint-disable-next-line no-var 禁用no-var规则
   var exportWorkspaceSnapshot: (docs?: string[]) => Promise<void>;
-  // oxlint-disable-next-line no-var
+  // oxlint-disable-next-line no-var 禁用no-var规则
   var importWorkspaceSnapshot: () => Promise<void>;
-  // oxlint-disable-next-line no-var
+  // oxlint-disable-next-line no-var 禁用no-var规则
   var Y: typeof _Y;
   interface WindowEventMap {
     'affine:workspace:change': CustomEvent<{ id: string }>;
@@ -80,7 +80,7 @@ export const Component = (): ReactElement => {
   const location = useLocation();
   const [searchParams] = useSearchParams();
 
-  // check if we are in community route first, if so, render community page directly
+  // 首先检查我们是否在社区路由中，如果是，直接渲染社区页面
   const communityRoute = useMemo(() => {
     const communityMatch = matchPath(
       '/workspace/:workspaceId/community/:docId',
@@ -114,7 +114,7 @@ export const Component = (): ReactElement => {
     return null;
   }, [location.pathname]);
 
-  // check if we are in detail doc route, if so, maybe render share page
+  // 检查我们是否在文档详情路由中，如果是，可能渲染分享页面
   const detailDocRoute = useMemo(() => {
     // 如果已经匹配到社区路由，则不再检查文档详情路由
     if (communityRoute) {
@@ -129,7 +129,7 @@ export const Component = (): ReactElement => {
       match &&
       match.params.docId &&
       match.params.workspaceId &&
-      // TODO(eyhn): need a better way to check if it's a docId
+      // TODO(eyhn): 需要更好的方式来检查是否为docId
       workbenchRoutes.find(route =>
         matchPath(route.path, '/' + match.params.docId)
       )?.path === '/:pageId'
@@ -163,7 +163,7 @@ export const Component = (): ReactElement => {
     return meta;
   }, [communityRoute, meta, params.workspaceId]);
 
-  // if listLoading is false, we can show 404 page, otherwise we should show loading page.
+  // 如果 listLoading 为 false，我们可以显示 404 页面，否则应该显示加载页面。
   useEffect(() => {
     // 对于社区路由，不设置 workspaceNotFound
     if (communityRoute) {
@@ -179,11 +179,11 @@ export const Component = (): ReactElement => {
     }
   }, [listLoading, meta, workspacesService, communityRoute]);
 
-  // if workspace is not found, we should retry
+  // 如果工作区未找到，我们应该重试
   const retryTimesRef = useRef(3);
   useEffect(() => {
     if (params.workspaceId) {
-      retryTimesRef.current = 3; // reset retry times
+      retryTimesRef.current = 3; // 重置重试次数
       workspacesService.list.revalidate();
     }
   }, [params.workspaceId, workspacesService]);
@@ -200,13 +200,13 @@ export const Component = (): ReactElement => {
     return;
   }, [listLoading, meta, workspaceNotFound, workspacesService]);
 
-  // server search params
+  // 来自搜索参数的服务器
   const serverFromSearchParams = useLiveData(
     searchParams.has('server')
       ? serversService.serverByBaseUrl$(searchParams.get('server') as string)
       : undefined
   );
-  // server from workspace
+  // 来自工作区的服务器
   const serverFromWorkspace = useLiveData(
     meta?.flavour && meta.flavour !== 'local'
       ? serversService.server$(meta?.flavour)
@@ -230,9 +230,9 @@ export const Component = (): ReactElement => {
     server,
   ]);
 
-  // if server is not found, and we have server in search params, we should show add selfhosted dialog
+  // 如果未找到服务器，且搜索参数中有服务器，我们应该显示添加自托管对话框
   const needAddSelfhosted = server === undefined && searchParams.has('server');
-  // use ref to avoid useEffect trigger twice
+  // 使用ref避免useEffect触发两次
   const addSelfhostedDialogOpened = useRef<boolean>(false);
 
   useEffect(() => {

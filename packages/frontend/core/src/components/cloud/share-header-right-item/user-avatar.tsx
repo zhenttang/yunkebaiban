@@ -19,7 +19,7 @@ const UserInfo = () => {
   const plan = useLiveData(subscription.pro$)?.plan;
 
   if (!user) {
-    // TODO(@eyhn): loading UI
+    // TODO(@eyhn): 加载界面
     return null;
   }
   return (

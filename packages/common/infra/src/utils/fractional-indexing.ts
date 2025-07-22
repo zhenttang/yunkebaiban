@@ -30,11 +30,11 @@ export function generateFractionalIndexingKeyBetween(
   }
 
   if (a !== null && b !== null && a >= b) {
-    throw new Error('a should be smaller than b');
+    throw new Error('a 应该小于 b');
   }
 
-  // get the subkey in full key
-  // e.g.
+  // 获取完整键中的子键
+  // 例如：
   // a0xxxx -> a
   // a0x0xxxx -> a0x
   function subkey(key: string | null) {

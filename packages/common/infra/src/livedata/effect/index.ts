@@ -7,19 +7,19 @@ const logger = new DebugLogger('effect');
 export type Effect<T> = (T | undefined extends T // hack to detect if T is unknown
   ? () => void
   : (value: T) => void) & {
-  // unsubscribe effect, all ongoing effects will be cancelled.
+  // 取消订阅副作用，所有正在进行的副作用将被取消。
   unsubscribe: () => void;
-  // reset internal state, all ongoing effects will be cancelled.
+  // 重置内部状态，所有正在进行的副作用将被取消。
   reset: () => void;
 };
 
 /**
- * Create an effect.
+ * 创建一个副作用。
  *
  * `effect( op1, op2, op3, ... )`
  *
- * You can think of an effect as a pipeline. When the effect is called, argument will be sent to the pipeline,
- * and the operators in the pipeline can be triggered.
+ * 您可以将副作用视为一个管道。当调用副作用时，参数将被发送到管道，
+ * 管道中的操作符可以被触发。
  *
  *
  *
@@ -36,10 +36,10 @@ export type Effect<T> = (T | undefined extends T // hack to detect if T is unkno
  *   )
  * );
  *
- * // emit value to effect
+ * // 向副作用发出值
  * loadUser(1);
  *
- * // unsubscribe effect, will stop all ongoing processes
+ * // 取消订阅副作用，将停止所有正在进行的进程
  * loadUser.unsubscribe();
  * ```
  */
@@ -96,15 +96,15 @@ export function effect(...args: any[]) {
   function subscribe() {
     subscription = subject$.pipe.apply(subject$, args as any).subscribe({
       complete() {
-        const error = new EffectError('effect unexpected complete');
-        // make a uncaught exception
+        const error = new EffectError('副作用意外完成');
+        // 制造一个未捕获异常
         setTimeout(() => {
           throw error;
         }, 0);
       },
       error(error) {
-        const effectError = new EffectError('effect uncaught error', error);
-        // make a uncaught exception
+        const effectError = new EffectError('副作用未捕获错误', error);
+        // 制造一个未捕获异常
         setTimeout(() => {
           throw effectError;
         }, 0);

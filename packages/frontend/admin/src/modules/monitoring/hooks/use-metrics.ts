@@ -152,7 +152,7 @@ export function useMetrics() {
   };
 }
 
-// 历史数据Hook
+// 历史数据钩子
 export function useHistoryMetrics(type: string, timeRange: string) {
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
@@ -186,7 +186,7 @@ export function useHistoryMetrics(type: string, timeRange: string) {
   };
 }
 
-// 实时指标Hook (WebSocket或定时轮询)
+// 实时指标钩子 (WebSocket或定时轮询)
 export function useRealTimeMetrics(interval: number = 5000) {
   const [metrics, setMetrics] = useState<any>({});
   const [connected, setConnected] = useState(false);
