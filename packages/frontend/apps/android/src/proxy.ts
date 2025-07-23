@@ -18,24 +18,45 @@ globalThis.fetch = async (input: RequestInfo | URL, init?: RequestInit) => {
   return rawFetch(request);
 };
 
+// 🔧 添加Socket.IO服务检测和降级策略
+async function checkSocketIOAvailability() {
+  try {
+    const response = await fetch('http://192.168.31.28:9092/socket.io/');
+    console.log('✅ Socket.IO服务可用');
+    return true;
+  } catch (error) {
+    console.warn('⚠️ Socket.IO服务不可用，切换到本地模式:', error);
+    // 通知应用禁用云同步
+    window.dispatchEvent(new CustomEvent('socketio-unavailable'));
+    return false;
+  }
+}
+
+// 检查Socket.IO可用性
+setTimeout(() => {
+  checkSocketIOAvailability();
+}, 1000);
+
+// 🔧 临时禁用XMLHttpRequest拦截器，因为它阻塞了Socket.IO
+// 但先添加一个调试拦截器来确认请求类型
 const rawXMLHttpRequest = globalThis.XMLHttpRequest;
 globalThis.XMLHttpRequest = class extends rawXMLHttpRequest {
+  private pendingUrl: string | undefined;
+  
+  override open(method: string, url: string | URL, async?: boolean, user?: string | null, password?: string | null): void {
+    this.pendingUrl = typeof url === 'string' ? url : url.toString();
+    console.log('🔍 XHR Open:', method, this.pendingUrl);
+    return super.open(method, url, async, user, password);
+  }
+  
   override send(body?: Document | XMLHttpRequestBodyInit | null): void {
-    const origin = new URL(this.responseURL, globalThis.location.origin).origin;
-
-    readEndpointToken(origin).then(
-      token => {
-        if (token) {
-          this.setRequestHeader('Authorization', `Bearer ${token}`);
-        }
-        return super.send(body);
-      },
-      () => {
-        throw new Error('读取令牌失败');
-      }
-    );
+    console.log('🔍 XHR Send:', this.pendingUrl);
+    // 直接发送所有请求，不做任何拦截
+    return super.send(body);
   }
 };
+
+console.log('🔧 Android代理已加载 - XMLHttpRequest拦截器设为透明模式');
 
 export async function readEndpointToken(
   endpoint: string

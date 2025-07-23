@@ -279,7 +279,20 @@ export const SelectorMenu = ({ onClose }: { onClose?: () => void }) => {
   const serversService = useService(ServersService);
   const { jumpToPage } = useNavigateHelper();
 
+  // 🚨 关键调试：检查工作区数据和flavour值
+  console.log('🔍 SelectorMenu工作区数据调试:');
+  console.log('- 总工作区数量:', workspaces.length);
+  workspaces.forEach((ws, index) => {
+    console.log(`- 工作区${index + 1}:`, {
+      id: ws.id,
+      flavour: ws.flavour,
+      name: ws.meta?.name || 'Unknown'
+    });
+  });
+
   const servers = useLiveData(serversService.servers$);
+  console.log('🔍 服务器列表调试:', servers.map(s => ({ id: s.id, baseUrl: s.baseUrl })));
+  
   const affineCloudServer = useMemo(
     () => servers.find(s => s.id === 'affine-cloud') as Server,
     [servers]
@@ -290,27 +303,31 @@ export const SelectorMenu = ({ onClose }: { onClose?: () => void }) => {
   );
 
   const cloudWorkspaces = useMemo(
-    () =>
-      workspaces.filter(
+    () => {
+      const filtered = workspaces.filter(
         ({ flavour }) => flavour !== 'local'
-      ) as WorkspaceMetadata[],
+      ) as WorkspaceMetadata[];
+      console.log('🔍 云端工作区过滤结果:', filtered.length, '个');
+      return filtered;
+    },
     [workspaces]
   );
 
   const localWorkspaces = useMemo(
-    () =>
-      workspaces.filter(
+    () => {
+      const filtered = workspaces.filter(
         ({ flavour }) => flavour === 'local'
-      ) as WorkspaceMetadata[],
+      ) as WorkspaceMetadata[];
+      console.log('🔍 本地工作区过滤结果:', filtered.length, '个');
+      return filtered;
+    },
     [workspaces]
   );
 
   const handleClickWorkspace = useCallback(
     (workspaceMetadata: WorkspaceMetadata) => {
       const id = workspaceMetadata.id;
-      if (id !== currentWorkspace?.id) {
-        jumpToPage(id, 'home');
-      }
+      jumpToPage(id, 'home');
       onClose?.();
     },
     [onClose, jumpToPage]

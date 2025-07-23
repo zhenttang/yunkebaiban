@@ -29,6 +29,9 @@ const config: CapacitorConfig & AppConfig = {
   },
   server: {
     cleartext: true,
+    allowMixedContent: true,
+    hostname: 'localhost',
+    androidScheme: 'http',
   },
   plugins: {
     CapacitorHttp: {

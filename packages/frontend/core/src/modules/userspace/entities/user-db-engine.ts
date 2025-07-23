@@ -18,11 +18,17 @@ export class UserDBEngine extends Entity<{
   readonly client: StoreClient;
 
   DocStorageType =
-    BUILD_CONFIG.isElectron || BUILD_CONFIG.isIOS || BUILD_CONFIG.isAndroid
+    // Android Capacitor应用强制使用IndexedDB
+    (BUILD_CONFIG.isAndroid && typeof window !== 'undefined' && (window as any).Capacitor) 
+      ? IndexedDBDocStorage
+    : BUILD_CONFIG.isElectron || BUILD_CONFIG.isIOS || BUILD_CONFIG.isAndroid
       ? SqliteDocStorage
       : IndexedDBDocStorage;
   DocSyncStorageType =
-    BUILD_CONFIG.isElectron || BUILD_CONFIG.isIOS || BUILD_CONFIG.isAndroid
+    // Android Capacitor应用强制使用IndexedDB
+    (BUILD_CONFIG.isAndroid && typeof window !== 'undefined' && (window as any).Capacitor) 
+      ? IndexedDBDocSyncStorage
+    : BUILD_CONFIG.isElectron || BUILD_CONFIG.isIOS || BUILD_CONFIG.isAndroid
       ? SqliteDocSyncStorage
       : IndexedDBDocSyncStorage;
 

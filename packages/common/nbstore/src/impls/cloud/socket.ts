@@ -168,10 +168,17 @@ class SocketManager {
   constructor(endpoint: string, isSelfHosted: boolean) {
     this.socketIOManager = new SocketIOManager(endpoint, {
       autoConnect: false,
-      transports: isSelfHosted ? ['polling', 'websocket'] : ['websocket'], // self-hosted server may not support websocket
+      // 🔧 Android修复：强制使用polling优先，因为Android Capacitor可能有websocket问题
+      transports: ['polling', 'websocket'], // 强制polling优先
       secure: new URL(endpoint).protocol === 'https:',
       // we will handle reconnection by ourselves
       reconnection: false,
+    });
+    console.log('🔌 Socket.IO配置:', {
+      endpoint,
+      isSelfHosted,
+      transports: ['polling', 'websocket'],
+      secure: new URL(endpoint).protocol === 'https:'
     });
     this.socket = this.socketIOManager.socket('/', {
       auth(cb) {

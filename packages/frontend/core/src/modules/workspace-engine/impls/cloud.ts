@@ -146,7 +146,10 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
   }
 
   DocStorageType =
-    BUILD_CONFIG.isElectron || BUILD_CONFIG.isIOS || BUILD_CONFIG.isAndroid
+    // Android Capacitor应用强制使用IndexedDB
+    (BUILD_CONFIG.isAndroid && typeof window !== 'undefined' && (window as any).Capacitor) 
+      ? IndexedDBDocStorage
+    : BUILD_CONFIG.isElectron || BUILD_CONFIG.isIOS || BUILD_CONFIG.isAndroid
       ? SqliteDocStorage
       : IndexedDBDocStorage;
   DocStorageV1Type = BUILD_CONFIG.isElectron
@@ -155,7 +158,10 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
       ? IndexedDBV1DocStorage
       : undefined;
   BlobStorageType =
-    BUILD_CONFIG.isElectron || BUILD_CONFIG.isIOS || BUILD_CONFIG.isAndroid
+    // Android Capacitor应用强制使用IndexedDB
+    (BUILD_CONFIG.isAndroid && typeof window !== 'undefined' && (window as any).Capacitor) 
+      ? IndexedDBBlobStorage
+    : BUILD_CONFIG.isElectron || BUILD_CONFIG.isIOS || BUILD_CONFIG.isAndroid
       ? SqliteBlobStorage
       : IndexedDBBlobStorage;
   BlobStorageV1Type = BUILD_CONFIG.isElectron
@@ -164,11 +170,17 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
       ? IndexedDBV1BlobStorage
       : undefined;
   DocSyncStorageType =
-    BUILD_CONFIG.isElectron || BUILD_CONFIG.isIOS || BUILD_CONFIG.isAndroid
+    // Android Capacitor应用强制使用IndexedDB
+    (BUILD_CONFIG.isAndroid && typeof window !== 'undefined' && (window as any).Capacitor) 
+      ? IndexedDBDocSyncStorage
+    : BUILD_CONFIG.isElectron || BUILD_CONFIG.isIOS || BUILD_CONFIG.isAndroid
       ? SqliteDocSyncStorage
       : IndexedDBDocSyncStorage;
   BlobSyncStorageType =
-    BUILD_CONFIG.isElectron || BUILD_CONFIG.isIOS || BUILD_CONFIG.isAndroid
+    // Android Capacitor应用强制使用IndexedDB
+    (BUILD_CONFIG.isAndroid && typeof window !== 'undefined' && (window as any).Capacitor) 
+      ? IndexedDBBlobSyncStorage
+    : BUILD_CONFIG.isElectron || BUILD_CONFIG.isIOS || BUILD_CONFIG.isAndroid
       ? SqliteBlobSyncStorage
       : IndexedDBBlobSyncStorage;
 

@@ -62,7 +62,7 @@ export const API_ENDPOINTS: ApiEndpoints = {
 export const environments: Record<EnvironmentType, EnvironmentConfig> = {
   [EnvironmentType.DEV]: {
     env: EnvironmentType.DEV,
-    baseUrl: 'http://localhost:8080',
+    baseUrl: 'http://192.168.31.28:8080',
     apiVersion: 'v1',
     enableLogging: true,
     enableCache: false,
@@ -116,7 +116,7 @@ export const createRequestConfig = (env = getCurrentEnvironment()): RequestConfi
 
   // 开发环境使用代理配置
   const proxyConfig = env === EnvironmentType.DEV ? {
-    target: 'http://localhost:8080',
+    target: 'http://192.168.31.28:8080',
     changeOrigin: true,
     timeout: 120000 // 120秒代理超时，解决创建工作区504问题
   } : undefined;

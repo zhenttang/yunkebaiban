@@ -23,32 +23,39 @@ export const setupRequestInterceptors = (instance: AxiosInstance): void => {
   // 请求前添加认证头
   instance.interceptors.request.use(
     (config: AxiosRequestConfig) => {
-      console.log('=== 前端请求拦截器 ===');
-      console.log('请求URL:', config.url);
-      console.log('请求方法:', config.method);
+      console.log('=== 🚀 发起请求 ===');
+      console.log('完整URL:', `${config.baseURL}${config.url}`);
+      console.log('请求方法:', config.method?.toUpperCase());
+      console.log('BaseURL:', config.baseURL);
+      console.log('相对URL:', config.url);
       console.log('请求头:', config.headers);
+      console.log('请求参数:', config.params);
       console.log('请求体:', config.data);
+      console.log('超时设置:', config.timeout);
+      console.log('跨域设置:', config.withCredentials);
       
       const token = tokenManager.get();
       if (token) {
         config.headers = config.headers || {};
         config.headers['Authorization'] = `Bearer ${token}`;
-        console.log('添加认证头:', `Bearer ${token.substring(0, 20)}...`);
+        console.log('✅ 添加认证头:', `Bearer ${token.substring(0, 20)}...`);
       } else {
-        console.log('未找到认证令牌');
+        console.log('⚠️  未找到认证令牌');
       }
       
-      console.log('最终请求配置:', {
-        url: config.url,
+      console.log('=== 📡 最终请求配置 ===');
+      console.log('完整请求配置:', {
+        url: `${config.baseURL}${config.url}`,
         method: config.method,
         headers: config.headers,
-        data: config.data
+        timeout: config.timeout,
+        withCredentials: config.withCredentials
       });
       
       return config;
     },
     (error: AxiosError) => {
-      console.error('请求拦截器错误:', error);
+      console.error('❌ 请求拦截器错误:', error);
       return Promise.reject(error);
     }
   );
@@ -79,7 +86,7 @@ export const setupResponseInterceptors = (instance: AxiosInstance): void => {
 
   instance.interceptors.response.use(
     (response: AxiosResponse) => {
-      console.log('=== 前端响应拦截器 ===');
+      console.log('=== 🟢 响应成功 ===');
       console.log('响应URL:', response.config.url);
       console.log('响应状态:', response.status);
       console.log('响应头:', response.headers);
@@ -89,12 +96,27 @@ export const setupResponseInterceptors = (instance: AxiosInstance): void => {
       return response;
     },
     async (error: AxiosError) => {
+      console.log('=== 🔴 响应失败 ===');
+      console.log('错误类型:', error.code);
+      console.log('错误消息:', error.message);
+      console.log('请求URL:', error.config?.url);
+      console.log('请求方法:', error.config?.method);
+      console.log('错误详情:', error);
+      
       if (!error.response) {
+        console.log('=== 🌐 网络错误详情 ===');
+        console.log('没有响应对象，可能是网络连接问题');
+        console.log('Error Code:', error.code);
+        console.log('Error Message:', error.message);
+        console.log('是否连接超时:', error.code === 'ECONNABORTED');
+        console.log('是否网络不可达:', error.code === 'ENOTFOUND');
+        
         // 网络错误或请求被取消
         return Promise.reject({
           code: 'NETWORK_ERROR',
-          message: '网络连接失败，请检查您的网络连接',
-          details: error
+          message: `网络错误: ${error.message}`,
+          details: error,
+          networkError: true
         });
       }
 

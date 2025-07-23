@@ -4,6 +4,7 @@ import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.Gravity
 import android.view.View
+import android.webkit.WebSettings
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
@@ -81,15 +82,27 @@ class MainActivity : BridgeActivity(), AIButtonPlugin.Callback, AFFiNEThemePlugi
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        
+        android.util.Log.d("AffineApp", "=== MainActivity onCreate 开始 ===")
+        android.util.Log.d("AffineApp", "应用包名: ${packageName}")
+        android.util.Log.d("AffineApp", "应用版本: ${packageManager.getPackageInfo(packageName, 0).versionName}")
+        android.util.Log.d("AffineApp", "系统版本: ${android.os.Build.VERSION.RELEASE}")
+        android.util.Log.d("AffineApp", "设备型号: ${android.os.Build.MODEL}")
+        
         ViewCompat.setOnApplyWindowInsetsListener(window.decorView) { v, insets ->
             navHeight = px2dp(insets.getInsets(WindowInsetsCompat.Type.navigationBars()).bottom)
+            android.util.Log.d("AffineApp", "导航栏高度: $navHeight dp")
             ViewCompat.onApplyWindowInsets(v, insets)
         }
+        
+        android.util.Log.d("AffineApp", "=== MainActivity onCreate 完成 ===")
     }
 
     override fun load() {
         super.load()
+        android.util.Log.d("AffineApp", "=== MainActivity.load() 开始 ===")
         AuthInitializer.initialize(bridge)
+        android.util.Log.d("AffineApp", "=== MainActivity.load() 完成 ===")
     }
 
     override fun present() {

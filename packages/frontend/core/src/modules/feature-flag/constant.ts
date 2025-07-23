@@ -196,7 +196,7 @@ export const AFFINE_FLAGS = {
     description:
       'com.affine.settings.workspace.experimental-features.enable-mobile-edgeless-editing.description',
     configurable: isMobile,
-    defaultState: false,
+    defaultState: true, // 🔧 Android修复：启用移动端无界编辑
   },
   enable_pdf_embed_preview: {
     category: 'affine',

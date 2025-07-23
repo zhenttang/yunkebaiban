@@ -46,7 +46,7 @@ interface CloudStorageProviderProps {
 
 export const CloudStorageProvider = ({ 
   children, 
-  serverUrl = 'http://localhost:9092'
+  serverUrl = 'http://192.168.31.28:9092'  // 修复：使用实际的局域网IP地址
 }: CloudStorageProviderProps) => {
   const params = useParams();
   const [isConnected, setIsConnected] = useState(false);

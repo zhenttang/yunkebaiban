@@ -59,7 +59,7 @@ export const BUILD_IN_SERVERS: (ServerMetadata & { config: ServerConfig })[] = [
   // 强制使用本地Java后端，无论什么环境
   {
     id: 'affine-cloud',
-    baseUrl: 'http://localhost:8080',
+    baseUrl: 'http://192.168.31.28:8080',
     config: {
       serverName: '云科 Local Java Backend',
       features: [
