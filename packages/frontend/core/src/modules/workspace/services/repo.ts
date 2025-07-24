@@ -89,15 +89,83 @@ export class WorkspaceRepositoryService extends Service {
     logger.info(
       `open workspace [${openOptions.metadata.flavour}] ${openOptions.metadata.id} `
     );
+    
+    // Android环境下的特殊处理
+    const isAndroid = typeof window !== 'undefined' && 
+                     window.Capacitor && 
+                     window.Capacitor.getPlatform && 
+                     window.Capacitor.getPlatform() === 'android';
+    
+    if (isAndroid) {
+      logger.info('检测到Android环境，正在初始化工作区...');
+    }
+    
     const flavourProvider = this.flavoursService.flavours$.value.find(
       p => p.flavour === openOptions.metadata.flavour
     );
+    
+    if (!flavourProvider) {
+      logger.error(`找不到工作区类型提供者: ${openOptions.metadata.flavour}`);
+      logger.error('可用的工作区类型:', this.flavoursService.flavours$.value.map(p => p.flavour));
+      throw new Error(
+        `找不到工作区类型提供者：${openOptions.metadata.flavour}`
+      );
+    }
+    
     const engineWorkerInitOptions =
       customEngineWorkerInitOptions ??
-      flavourProvider?.getEngineWorkerInitOptions(openOptions.metadata.id);
+      (() => {
+        try {
+          console.log('🔧 [WorkspaceRepositoryService] 尝试获取engineWorkerInitOptions');
+          console.log('  - flavourProvider存在:', !!flavourProvider);
+          console.log('  - flavourProvider.getEngineWorkerInitOptions存在:', !!flavourProvider?.getEngineWorkerInitOptions);
+          console.log('  - workspaceId:', openOptions.metadata.id);
+          
+          if (!flavourProvider) {
+            throw new Error('flavourProvider不存在');
+          }
+          
+          if (!flavourProvider.getEngineWorkerInitOptions) {
+            throw new Error('flavourProvider.getEngineWorkerInitOptions方法不存在');
+          }
+          
+          const result = flavourProvider.getEngineWorkerInitOptions(openOptions.metadata.id);
+          console.log('✅ [WorkspaceRepositoryService] 成功获取engineWorkerInitOptions');
+          return result;
+        } catch (error) {
+          console.error('❌ [WorkspaceRepositoryService] 获取engineWorkerInitOptions失败:', error);
+          
+          // Android环境下提供备用配置
+          if (isAndroid) {
+            console.warn('🤖 [WorkspaceRepositoryService] Android环境下使用备用engineWorkerInitOptions');
+            return {
+              local: {
+                doc: { name: 'IndexedDBDocStorage', opts: { flavour: openOptions.metadata.flavour, type: 'workspace', id: openOptions.metadata.id } },
+                blob: { name: 'IndexedDBBlobStorage', opts: { flavour: openOptions.metadata.flavour, type: 'workspace', id: openOptions.metadata.id } },
+                docSync: { name: 'IndexedDBDocSyncStorage', opts: { flavour: openOptions.metadata.flavour, type: 'workspace', id: openOptions.metadata.id } },
+                blobSync: { name: 'IndexedDBBlobSyncStorage', opts: { flavour: openOptions.metadata.flavour, type: 'workspace', id: openOptions.metadata.id } },
+                awareness: { name: 'BroadcastChannelAwarenessStorage', opts: { id: `${openOptions.metadata.flavour}:${openOptions.metadata.id}` } },
+                indexer: { name: 'IndexedDBIndexerStorage', opts: { flavour: openOptions.metadata.flavour, type: 'workspace', id: openOptions.metadata.id } },
+                indexerSync: { name: 'IndexedDBIndexerSyncStorage', opts: { flavour: openOptions.metadata.flavour, type: 'workspace', id: openOptions.metadata.id } }
+              },
+              remotes: {
+                [`cloud:${openOptions.metadata.flavour}`]: {
+                  doc: { name: 'CloudDocStorage', opts: { type: 'workspace', id: openOptions.metadata.id, serverBaseUrl: 'http://192.168.31.28:8080', isSelfHosted: true } },
+                  blob: { name: 'CloudBlobStorage', opts: { id: openOptions.metadata.id, serverBaseUrl: 'http://192.168.31.28:8080' } },
+                  awareness: { name: 'CloudAwarenessStorage', opts: { type: 'workspace', id: openOptions.metadata.id, serverBaseUrl: 'http://192.168.31.28:8080', isSelfHosted: true } }
+                }
+              }
+            };
+          }
+          
+          throw error;
+        }
+      })();
+    
     if (!engineWorkerInitOptions) {
+      logger.error('无法获取引擎初始化选项');
       throw new Error(
-        `未知的工作区类型：${openOptions.metadata.flavour}`
+        `无法获取工作区引擎初始化选项：${openOptions.metadata.flavour}`
       );
     }
 
@@ -108,7 +176,26 @@ export class WorkspaceRepositoryService extends Service {
 
     const workspace = workspaceScope.get(WorkspaceService).workspace;
 
-    workspace.engine.start();
+    // Android环境下安全启动引擎
+    try {
+      console.log('🚀 [WorkspaceRepositoryService] 尝试启动工作空间引擎');
+      console.log('  - workspace存在:', !!workspace);
+      console.log('  - workspace.engine存在:', !!workspace.engine);
+      
+      if (!workspace) {
+        throw new Error('workspace不存在');
+      }
+      
+      if (!workspace.engine) {
+        throw new Error('workspace.engine不存在');
+      }
+      
+      workspace.engine.start();
+      console.log('✅ [WorkspaceRepositoryService] 工作空间引擎启动成功');
+    } catch (error) {
+      console.error('❌ [WorkspaceRepositoryService] 工作空间引擎启动失败:', error);
+      throw error;
+    }
 
     workspaceScope.emitEvent(WorkspaceInitialized, workspace);
 

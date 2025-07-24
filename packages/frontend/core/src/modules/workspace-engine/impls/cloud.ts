@@ -96,7 +96,16 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
   ) {
     this.authService = server.scope.get(AuthService);
     // this.graphqlService = server.scope.get(GraphQLService);
-    this.featureFlagService = server.scope.get(FeatureFlagService);
+    
+    // 🔧 修复Android WebView环境下FeatureFlagService初始化失败问题
+    try {
+      this.featureFlagService = server.scope.get(FeatureFlagService);
+    } catch (e) {
+      // 如果无法获取FeatureFlagService，设置为null，后续使用默认值
+      this.featureFlagService = null;
+      console.warn('Unable to get FeatureFlagService, using defaults:', e);
+    }
+    
     // 获取FetchService实例
     try {
       this.fetchService = server.scope.get('FetchService');
@@ -105,6 +114,30 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
       this.fetchService = null;
       console.warn('Unable to get FetchService:', e);
     }
+    
+    // 🔧 Android环境下验证存储类型加载
+    if ((window as any).BUILD_CONFIG?.isAndroid) {
+      console.log('🤖 [CloudWorkspaceFlavourProvider] Android环境初始化检查');
+      console.log('存储类型加载状态:');
+      console.log('  - DocStorageType:', !!this.DocStorageType);
+      console.log('  - BlobStorageType:', !!this.BlobStorageType);
+      console.log('  - DocSyncStorageType:', !!this.DocSyncStorageType);
+      console.log('  - BlobSyncStorageType:', !!this.BlobSyncStorageType);
+      
+      // 确保存储类型有identifier属性
+      const ensureIdentifier = (storageType: any, name: string, fallback: string) => {
+        if (storageType && !storageType.identifier) {
+          console.warn(`⚠️ ${name}缺少identifier属性，添加默认值: ${fallback}`);
+          storageType.identifier = fallback;
+        }
+      };
+      
+      ensureIdentifier(this.DocStorageType, 'DocStorageType', 'IndexedDBDocStorage');
+      ensureIdentifier(this.BlobStorageType, 'BlobStorageType', 'IndexedDBBlobStorage');
+      ensureIdentifier(this.DocSyncStorageType, 'DocSyncStorageType', 'IndexedDBDocSyncStorage');
+      ensureIdentifier(this.BlobSyncStorageType, 'BlobSyncStorageType', 'IndexedDBBlobSyncStorage');
+    }
+    
     this.unsubscribeAccountChanged = this.server.scope.eventBus.on(
       AccountChanged,
       () => {
@@ -145,44 +178,82 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
     }
   }
 
-  DocStorageType =
+  // 修复Android环境下存储类型的动态加载问题
+  DocStorageType = (() => {
     // Android Capacitor应用强制使用IndexedDB
-    (BUILD_CONFIG.isAndroid && typeof window !== 'undefined' && (window as any).Capacitor) 
-      ? IndexedDBDocStorage
-    : BUILD_CONFIG.isElectron || BUILD_CONFIG.isIOS || BUILD_CONFIG.isAndroid
-      ? SqliteDocStorage
-      : IndexedDBDocStorage;
+    if (BUILD_CONFIG.isAndroid && typeof window !== 'undefined' && (window as any).Capacitor) {
+      console.log('🤖 [CloudWorkspaceFlavourProvider] Android Capacitor环境，使用IndexedDB');
+      return IndexedDBDocStorage;
+    }
+    if (BUILD_CONFIG.isElectron || BUILD_CONFIG.isIOS) {
+      return SqliteDocStorage;
+    }
+    // Android非Capacitor环境也使用IndexedDB
+    if (BUILD_CONFIG.isAndroid) {
+      console.log('🤖 [CloudWorkspaceFlavourProvider] Android环境，使用IndexedDB');
+      return IndexedDBDocStorage;
+    }
+    return IndexedDBDocStorage;
+  })();
+  
   DocStorageV1Type = BUILD_CONFIG.isElectron
     ? SqliteV1DocStorage
-    : BUILD_CONFIG.isWeb || BUILD_CONFIG.isMobileWeb
+    : BUILD_CONFIG.isWeb || BUILD_CONFIG.isMobileWeb || BUILD_CONFIG.isAndroid
       ? IndexedDBV1DocStorage
       : undefined;
-  BlobStorageType =
+      
+  BlobStorageType = (() => {
     // Android Capacitor应用强制使用IndexedDB
-    (BUILD_CONFIG.isAndroid && typeof window !== 'undefined' && (window as any).Capacitor) 
-      ? IndexedDBBlobStorage
-    : BUILD_CONFIG.isElectron || BUILD_CONFIG.isIOS || BUILD_CONFIG.isAndroid
-      ? SqliteBlobStorage
-      : IndexedDBBlobStorage;
+    if (BUILD_CONFIG.isAndroid && typeof window !== 'undefined' && (window as any).Capacitor) {
+      console.log('🤖 [CloudWorkspaceFlavourProvider] Android Capacitor环境，使用IndexedDB');
+      return IndexedDBBlobStorage;
+    }
+    if (BUILD_CONFIG.isElectron || BUILD_CONFIG.isIOS) {
+      return SqliteBlobStorage;
+    }
+    // Android非Capacitor环境也使用IndexedDB
+    if (BUILD_CONFIG.isAndroid) {
+      console.log('🤖 [CloudWorkspaceFlavourProvider] Android环境，使用IndexedDB');
+      return IndexedDBBlobStorage;
+    }
+    return IndexedDBBlobStorage;
+  })();
+  
   BlobStorageV1Type = BUILD_CONFIG.isElectron
     ? SqliteV1BlobStorage
-    : BUILD_CONFIG.isWeb || BUILD_CONFIG.isMobileWeb
+    : BUILD_CONFIG.isWeb || BUILD_CONFIG.isMobileWeb || BUILD_CONFIG.isAndroid
       ? IndexedDBV1BlobStorage
       : undefined;
-  DocSyncStorageType =
+      
+  DocSyncStorageType = (() => {
     // Android Capacitor应用强制使用IndexedDB
-    (BUILD_CONFIG.isAndroid && typeof window !== 'undefined' && (window as any).Capacitor) 
-      ? IndexedDBDocSyncStorage
-    : BUILD_CONFIG.isElectron || BUILD_CONFIG.isIOS || BUILD_CONFIG.isAndroid
-      ? SqliteDocSyncStorage
-      : IndexedDBDocSyncStorage;
-  BlobSyncStorageType =
+    if (BUILD_CONFIG.isAndroid && typeof window !== 'undefined' && (window as any).Capacitor) {
+      return IndexedDBDocSyncStorage;
+    }
+    if (BUILD_CONFIG.isElectron || BUILD_CONFIG.isIOS) {
+      return SqliteDocSyncStorage;
+    }
+    // Android非Capacitor环境也使用IndexedDB
+    if (BUILD_CONFIG.isAndroid) {
+      return IndexedDBDocSyncStorage;
+    }
+    return IndexedDBDocSyncStorage;
+  })();
+  
+  BlobSyncStorageType = (() => {
     // Android Capacitor应用强制使用IndexedDB
-    (BUILD_CONFIG.isAndroid && typeof window !== 'undefined' && (window as any).Capacitor) 
-      ? IndexedDBBlobSyncStorage
-    : BUILD_CONFIG.isElectron || BUILD_CONFIG.isIOS || BUILD_CONFIG.isAndroid
-      ? SqliteBlobSyncStorage
-      : IndexedDBBlobSyncStorage;
+    if (BUILD_CONFIG.isAndroid && typeof window !== 'undefined' && (window as any).Capacitor) {
+      return IndexedDBBlobSyncStorage;
+    }
+    if (BUILD_CONFIG.isElectron || BUILD_CONFIG.isIOS) {
+      return SqliteBlobSyncStorage;
+    }
+    // Android非Capacitor环境也使用IndexedDB
+    if (BUILD_CONFIG.isAndroid) {
+      return IndexedDBBlobSyncStorage;
+    }
+    return IndexedDBBlobSyncStorage;
+  })();
 
   async deleteWorkspace(id: string): Promise<void> {
     // 使用REST API替代GraphQL删除工作空间
@@ -883,10 +954,214 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
   }
 
   getEngineWorkerInitOptions(workspaceId: string): WorkerInitOptions {
+    // 🔧 Android WebView专用：添加全面的安全检查
+    console.log('🔧 [CloudWorkspaceFlavourProvider] getEngineWorkerInitOptions 被调用');
+    console.log('  - workspaceId:', workspaceId);
+    console.log('  - this.flavour:', this.flavour);
+    console.log('  - this.server:', !!this.server);
+    console.log('  - this.server.serverMetadata:', !!this.server?.serverMetadata);
+    console.log('  - this.server.config$:', !!this.server?.config$);
+    
+    // 🛡️ 防御性检查：确保所有必需的属性都存在
+    if (!this.server) {
+      console.error('❌ [CloudWorkspaceFlavourProvider] server 未定义');
+      throw new Error('Server not initialized');
+    }
+    
+    if (!this.server.serverMetadata) {
+      console.error('❌ [CloudWorkspaceFlavourProvider] server.serverMetadata 未定义');
+      throw new Error('Server metadata not initialized');
+    }
+    
+    if (!this.server.config$) {
+      console.error('❌ [CloudWorkspaceFlavourProvider] server.config$ 未定义');
+      throw new Error('Server config not initialized');
+    }
+    
+    // 验证存储类型是否正确加载
+    const storageTypes = {
+      'DocStorageType': this.DocStorageType,
+      'BlobStorageType': this.BlobStorageType,
+      'DocSyncStorageType': this.DocSyncStorageType,
+      'BlobSyncStorageType': this.BlobSyncStorageType,
+      'DocStorageV1Type': this.DocStorageV1Type,
+      'BlobStorageV1Type': this.BlobStorageV1Type
+    };
+    
+    // 检查每个存储类型
+    for (const [name, type] of Object.entries(storageTypes)) {
+      if (type) {
+        console.log(`  - ${name}:`, {
+          exists: !!type,
+          hasIdentifier: !!type.identifier,
+          identifier: type.identifier || 'undefined',
+          typeString: type.toString ? type.toString() : 'no toString'
+        });
+      } else {
+        console.log(`  - ${name}: null/undefined`);
+      }
+    }
+    
+    // 🛡️ 防御性获取服务器配置 - 修复Android WebView环境下的undefined访问
+    const getServerConfig = () => {
+      try {
+        // 深度检查每一层属性以避免 "Cannot read properties of undefined (reading 'get')" 错误
+        if (!this.server) {
+          console.warn('⚠️ [CloudWorkspaceFlavourProvider] server未定义，使用默认配置');
+          return { type: ServerDeploymentType.Selfhosted };
+        }
+        
+        if (!this.server.config$) {
+          console.warn('⚠️ [CloudWorkspaceFlavourProvider] server.config$未定义，使用默认配置');
+          return { type: ServerDeploymentType.Selfhosted };
+        }
+        
+        // 安全访问config$.value，这里可能是导致错误的地方
+        let configValue;
+        try {
+          configValue = this.server.config$.value;
+        } catch (valueAccessError) {
+          console.error('❌ [CloudWorkspaceFlavourProvider] 访问config$.value时出错:', valueAccessError);
+          return { type: ServerDeploymentType.Selfhosted };
+        }
+        
+        if (!configValue) {
+          console.warn('⚠️ [CloudWorkspaceFlavourProvider] config$.value为空，使用默认配置');
+          return { type: ServerDeploymentType.Selfhosted };
+        }
+        
+        console.log('✅ [CloudWorkspaceFlavourProvider] 成功获取服务器配置:', configValue);
+        return configValue;
+      } catch (error) {
+        console.error('❌ [CloudWorkspaceFlavourProvider] 获取服务器配置时发生未预期错误:', error);
+        console.error('错误堆栈:', error.stack);
+        return { type: ServerDeploymentType.Selfhosted };
+      }
+    };
+    
+    const serverConfig = getServerConfig();
+    const serverBaseUrl = this.server.serverMetadata?.baseUrl || 'http://localhost:8080';
+    
+    // Android环境下的特殊处理
+    if ((window as any).BUILD_CONFIG?.isAndroid) {
+      console.log('🤖 [CloudWorkspaceFlavourProvider] Android环境检测到，使用备用配置');
+      
+      // 如果存储类没有identifier属性，使用备用值
+      const getIdentifier = (type: any, fallback: string) => {
+        if (!type || !type.identifier) {
+          console.warn(`⚠️ [CloudWorkspaceFlavourProvider] ${fallback} 类型缺少identifier属性，使用备用值`);
+          return fallback;
+        }
+        return type.identifier;
+      };
+      
+      return {
+        local: {
+          doc: {
+            name: getIdentifier(this.DocStorageType, 'IndexedDBDocStorage'),
+            opts: {
+              flavour: this.flavour,
+              type: 'workspace',
+              id: workspaceId,
+            },
+          },
+          blob: {
+            name: getIdentifier(this.BlobStorageType, 'IndexedDBBlobStorage'),
+            opts: {
+              flavour: this.flavour,
+              type: 'workspace',
+              id: workspaceId,
+            },
+          },
+          docSync: {
+            name: getIdentifier(this.DocSyncStorageType, 'IndexedDBDocSyncStorage'),
+            opts: {
+              flavour: this.flavour,
+              type: 'workspace',
+              id: workspaceId,
+            },
+          },
+          blobSync: {
+            name: getIdentifier(this.BlobSyncStorageType, 'IndexedDBBlobSyncStorage'),
+            opts: {
+              flavour: this.flavour,
+              type: 'workspace',
+              id: workspaceId,
+            },
+          },
+          awareness: {
+            name: 'BroadcastChannelAwarenessStorage',
+            opts: {
+              id: `${this.flavour}:${workspaceId}`,
+            },
+          },
+          indexer: {
+            name: 'IndexedDBIndexerStorage',
+            opts: {
+              flavour: this.flavour,
+              type: 'workspace',
+              id: workspaceId,
+            },
+          },
+          indexerSync: {
+            name: 'IndexedDBIndexerSyncStorage',
+            opts: {
+              flavour: this.flavour,
+              type: 'workspace',
+              id: workspaceId,
+            },
+          },
+        },
+        remotes: {
+          [`cloud:${this.flavour}`]: {
+            doc: {
+              name: 'CloudDocStorage',
+              opts: {
+                type: 'workspace',
+                id: workspaceId,
+                serverBaseUrl: serverBaseUrl,
+                isSelfHosted: serverConfig.type === ServerDeploymentType.Selfhosted,
+              },
+            },
+            blob: {
+              name: 'CloudBlobStorage',
+              opts: {
+                id: workspaceId,
+                serverBaseUrl: serverBaseUrl,
+              },
+            },
+            awareness: {
+              name: 'CloudAwarenessStorage',
+              opts: {
+                type: 'workspace',
+                id: workspaceId,
+                serverBaseUrl: serverBaseUrl,
+                isSelfHosted: serverConfig.type === ServerDeploymentType.Selfhosted,
+              },
+            },
+          },
+          v1: {}, // Android环境下禁用v1存储
+        },
+      };
+    }
+    
+    // 非Android环境，使用原有逻辑但增加安全检查
+    const getStorageIdentifier = (type: any, fallback: string) => {
+      if (!type) {
+        console.warn(`⚠️ [CloudWorkspaceFlavourProvider] 存储类型为空，使用备用值: ${fallback}`);
+        return fallback;
+      }
+      if (!type.identifier) {
+        console.warn(`⚠️ [CloudWorkspaceFlavourProvider] 存储类型缺少identifier，使用备用值: ${fallback}`);
+        return fallback;
+      }
+      return type.identifier;
+    };
+    
     return {
       local: {
         doc: {
-          name: this.DocStorageType.identifier,
+          name: getStorageIdentifier(this.DocStorageType, 'IndexedDBDocStorage'),
           opts: {
             flavour: this.flavour,
             type: 'workspace',
@@ -894,7 +1169,7 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
           },
         },
         blob: {
-          name: this.BlobStorageType.identifier,
+          name: getStorageIdentifier(this.BlobStorageType, 'IndexedDBBlobStorage'),
           opts: {
             flavour: this.flavour,
             type: 'workspace',
@@ -902,7 +1177,7 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
           },
         },
         docSync: {
-          name: this.DocSyncStorageType.identifier,
+          name: getStorageIdentifier(this.DocSyncStorageType, 'IndexedDBDocSyncStorage'),
           opts: {
             flavour: this.flavour,
             type: 'workspace',
@@ -910,7 +1185,7 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
           },
         },
         blobSync: {
-          name: this.BlobSyncStorageType.identifier,
+          name: getStorageIdentifier(this.BlobSyncStorageType, 'IndexedDBBlobSyncStorage'),
           opts: {
             flavour: this.flavour,
             type: 'workspace',
@@ -923,14 +1198,14 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
             id: `${this.flavour}:${workspaceId}`,
           },
         },
-        indexer: this.featureFlagService.flags.enable_cloud_indexer.value
+        indexer: (this.featureFlagService && this.featureFlagService.flags?.enable_cloud_indexer?.value)
           ? {
               name: 'CloudIndexerStorage',
               opts: {
                 flavour: this.flavour,
                 type: 'workspace',
                 id: workspaceId,
-                serverBaseUrl: this.server.serverMetadata.baseUrl,
+                serverBaseUrl: serverBaseUrl,
               },
             }
           : {
@@ -957,17 +1232,15 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
             opts: {
               type: 'workspace',
               id: workspaceId,
-              serverBaseUrl: this.server.serverMetadata.baseUrl,
-              isSelfHosted:
-                this.server.config$.value.type ===
-                ServerDeploymentType.Selfhosted,
+              serverBaseUrl: serverBaseUrl,
+              isSelfHosted: serverConfig.type === ServerDeploymentType.Selfhosted,
             },
           },
           blob: {
             name: 'CloudBlobStorage',
             opts: {
               id: workspaceId,
-              serverBaseUrl: this.server.serverMetadata.baseUrl,
+              serverBaseUrl: serverBaseUrl,
             },
           },
           awareness: {
@@ -975,17 +1248,15 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
             opts: {
               type: 'workspace',
               id: workspaceId,
-              serverBaseUrl: this.server.serverMetadata.baseUrl,
-              isSelfHosted:
-                this.server.config$.value.type ===
-                ServerDeploymentType.Selfhosted,
+              serverBaseUrl: serverBaseUrl,
+              isSelfHosted: serverConfig.type === ServerDeploymentType.Selfhosted,
             },
           },
         },
         v1: {
           doc: this.DocStorageV1Type
             ? {
-                name: this.DocStorageV1Type.identifier,
+                name: getStorageIdentifier(this.DocStorageV1Type, 'IndexedDBV1DocStorage'),
                 opts: {
                   id: workspaceId,
                   type: 'workspace',
@@ -994,7 +1265,7 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
             : undefined,
           blob: this.BlobStorageV1Type
             ? {
-                name: this.BlobStorageV1Type.identifier,
+                name: getStorageIdentifier(this.BlobStorageV1Type, 'IndexedDBV1BlobStorage'),
                 opts: {
                   id: workspaceId,
                   type: 'workspace',

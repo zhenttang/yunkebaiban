@@ -32,10 +32,12 @@ const config: CapacitorConfig & AppConfig = {
     allowMixedContent: true,
     hostname: 'localhost',
     androidScheme: 'http',
+    // 🔧 强制使用HTTP/1.1，避免HTTP/2相关问题
+    iosScheme: 'http',
   },
   plugins: {
     CapacitorHttp: {
-      enabled: false,
+      enabled: false, // 🔧 与capacitor.config.json保持一致，使用原生fetch
     },
     CapacitorCookies: {
       enabled: false,

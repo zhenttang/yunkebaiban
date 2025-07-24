@@ -62,7 +62,7 @@ export const NavigationPanelDocNode = ({
   const docTitle = useLiveData(docDisplayMetaService.title$(docId));
   const isInTrash = useLiveData(docRecord?.trash$);
   const enableEmojiIcon = useLiveData(
-    featureFlagService.flags.enable_emoji_doc_icon.$
+    featureFlagService?.flags?.enable_emoji_doc_icon?.$ || null
   );
 
   const Icon = useCallback(

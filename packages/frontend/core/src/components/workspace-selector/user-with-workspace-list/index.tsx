@@ -77,7 +77,7 @@ export const UserWithWorkspaceList = ({
   const onNewWorkspace = useCallback(() => {
     if (
       !isAuthenticated &&
-      !featureFlagService.flags.enable_local_workspace.value
+      !featureFlagService?.flags?.enable_local_workspace?.value
     ) {
       return openSignInModal();
     }

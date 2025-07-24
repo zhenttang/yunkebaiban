@@ -101,15 +101,7 @@ export class AuthSession extends Entity {
             console.log('Session changed, updating cached session');
             this.store.setCachedAuthSession(sessionInfo);
             console.log('Session updated, new cached session:', this.store.getCachedAuthSession());
-            
-            // 强制UI更新 - 确保LiveData实例被更新
-            if (sessionInfo) {
-              console.log('Forcing UI update with authenticated status');
-              this.status$.next('authenticated');
-            } else {
-              console.log('Forcing UI update with unauthenticated status');
-              this.status$.next('unauthenticated');
-            }
+            // 移除强制UI更新，因为setCachedAuthSession已经会触发watchCachedAuthSession的更新
           } else {
             console.log('Session unchanged, no update needed');
           }

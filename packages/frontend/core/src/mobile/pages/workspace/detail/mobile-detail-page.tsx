@@ -79,11 +79,11 @@ const DetailPageImpl = () => {
   const editorContainer = useLiveData(editor.editorContainer$);
 
   const enableKeyboardToolbar =
-    featureFlagService.flags.enable_mobile_keyboard_toolbar.value;
+    featureFlagService?.flags?.enable_mobile_keyboard_toolbar?.value || false;
   const enableEdgelessEditing =
-    featureFlagService.flags.enable_mobile_edgeless_editing.value;
+    featureFlagService?.flags?.enable_mobile_edgeless_editing?.value || false;
   const enableAIButton = useLiveData(
-    featureFlagService.flags.enable_mobile_ai_button.$
+    featureFlagService?.flags?.enable_mobile_ai_button?.$ || null
   );
 
   // TODO(@eyhn): remove jotai here

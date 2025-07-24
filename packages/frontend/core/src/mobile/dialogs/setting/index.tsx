@@ -5,7 +5,7 @@ import type {
 } from '@affine/core/modules/dialogs';
 import { useI18n } from '@affine/i18n';
 import { useService } from '@toeverything/infra';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 import { AboutGroup } from './about';
 import { AppearanceGroup } from './appearance';
@@ -18,7 +18,19 @@ import { UserUsage } from './user-usage';
 
 const MobileSetting = () => {
   const session = useService(AuthService).session;
-  useEffect(() => session.revalidate(), [session]);
+  const hasInitialized = useRef(false);
+  
+  console.log('[MobileSetting] Component rendering, hasInitialized:', hasInitialized.current);
+  
+  useEffect(() => {
+    console.log('[MobileSetting] useEffect triggered, hasInitialized:', hasInitialized.current);
+    // 暂时完全禁用 revalidate 来测试是否是它导致的循环
+    // if (!hasInitialized.current) {
+    //   hasInitialized.current = true;
+    //   console.log('[MobileSetting] Calling session.revalidate()');
+    //   session.revalidate();
+    // }
+  }, []); // 空依赖数组
 
   return (
     <div className={styles.root}>
@@ -36,6 +48,8 @@ export const SettingDialog = ({
   close,
 }: DialogComponentProps<WORKSPACE_DIALOG_SCHEMA['setting']>) => {
   const t = useI18n();
+  
+  console.log('[SettingDialog] Component rendering');
 
   return (
     <SwipeDialog

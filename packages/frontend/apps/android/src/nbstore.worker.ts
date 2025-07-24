@@ -64,11 +64,17 @@ const consumer = new OpConsumer<WorkerManagerOps>(
   globalThis as MessageCommunicapable
 );
 
-// Android环境禁用SQLite存储，使用IndexedDB替代
+// Android环境使用Web存储方案：IndexedDB + BroadcastChannel + Cloud
+// 与BUILD_CONFIG配置保持一致，确保存储后端选择正确
 const storeManager = new StoreManagerConsumer([
-  ...idbStorages,
-  ...broadcastChannelStorages,
-  ...cloudStorages,
+  ...idbStorages,        // IndexedDB作为主要本地存储
+  ...broadcastChannelStorages, // 跨Tab通信
+  ...cloudStorages,      // 云端同步存储
 ]);
+
+console.log('🔧 Android Worker存储配置:', {
+  storageTypes: ['IndexedDB', 'BroadcastChannel', 'Cloud'],
+  buildConfig: (globalThis as any).BUILD_CONFIG
+});
 
 storeManager.bindConsumer(consumer);

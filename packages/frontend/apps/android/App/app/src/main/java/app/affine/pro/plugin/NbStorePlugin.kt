@@ -24,7 +24,8 @@ class NbStorePlugin : Plugin() {
         launch(Dispatchers.IO) {
             try {
                 val spaceId = call.getString("spaceId") ?: ""
-                docStoragePool.connect(spaceId)
+                val path = call.getString("path") ?: "/data/data/app.affine.pro/files/nbstore"
+                docStoragePool.connect(spaceId, path)
                 Timber.i("NbStore connect() - 已连接到原生SQLite数据库: $spaceId")
                 call.resolve()
             } catch (e: Exception) {
@@ -70,7 +71,8 @@ class NbStorePlugin : Plugin() {
                 val spaceId = call.getString("spaceId") ?: ""
                 val docId = call.getString("docId") ?: ""
                 val update = call.getArray("update")?.toList<Int>()?.map { it.toByte() }?.toByteArray() ?: byteArrayOf()
-                val timestamp = docStoragePool.pushDocUpdate(spaceId, docId, update)
+                val updateString = update.joinToString(",") { it.toString() }
+                val timestamp = docStoragePool.pushUpdate(spaceId, docId, updateString)
                 call.resolve(JSObject().put("timestamp", timestamp))
             } catch (e: Exception) {
                 call.reject("Failed to push update, ${e.message}", null, e)

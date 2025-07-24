@@ -8,7 +8,7 @@ import {
 import { useLiveData, useService } from '@toeverything/infra';
 import { cssVar } from '@toeverything/theme';
 import { cssVarV2 } from '@toeverything/theme/v2';
-import { type ReactNode, useEffect } from 'react';
+import { type ReactNode, useEffect, useRef } from 'react';
 
 import { SettingGroup } from '../group';
 import * as styles from './style.css';
@@ -84,6 +84,7 @@ const UsagePanel = () => {
 
 const CloudUsage = () => {
   const quota = useService(UserQuotaService).quota;
+  const hasRevalidated = useRef(false);
 
   const color = useLiveData(quota.color$);
   const usedFormatted = useLiveData(quota.usedFormatted$);
@@ -91,9 +92,12 @@ const CloudUsage = () => {
   const percent = useLiveData(quota.percent$);
 
   useEffect(() => {
-    // revalidate quota to get the latest status
-    quota.revalidate();
-  }, [quota]);
+    // revalidate quota to get the latest status, but only once
+    if (!hasRevalidated.current) {
+      hasRevalidated.current = true;
+      quota.revalidate();
+    }
+  }, []); // 空依赖数组，只在组件挂载时执行
 
   const loading = percent === null;
 
@@ -110,6 +114,7 @@ const CloudUsage = () => {
 };
 const AiUsage = () => {
   const copilotQuotaService = useService(UserCopilotQuotaService);
+  const hasRevalidated = useRef(false);
 
   const copilotActionLimit = useLiveData(
     copilotQuotaService.copilotQuota.copilotActionLimit$
@@ -121,8 +126,12 @@ const AiUsage = () => {
   const loadError = useLiveData(copilotQuotaService.copilotQuota.error$);
 
   useEffect(() => {
-    copilotQuotaService.copilotQuota.revalidate();
-  }, [copilotQuotaService]);
+    // revalidate copilot quota to get the latest status, but only once
+    if (!hasRevalidated.current) {
+      hasRevalidated.current = true;
+      copilotQuotaService.copilotQuota.revalidate();
+    }
+  }, []); // 空依赖数组，只在组件挂载时执行
 
   if (loading || loadError) {
     return <Loading />;

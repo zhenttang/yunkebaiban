@@ -2,7 +2,7 @@ import { ServerService, SubscriptionService } from '@affine/core/modules/cloud';
 // import { SubscriptionPlan } from '@affine/graphql';
 import { useLiveData, useServices } from '@toeverything/infra';
 import clsx from 'clsx';
-import { forwardRef, type HTMLProps, useEffect } from 'react';
+import { forwardRef, type HTMLProps, useEffect, useRef } from 'react';
 
 import { tag } from './style.css';
 
@@ -14,6 +14,8 @@ export const UserPlanTag = forwardRef<
     ServerService,
     SubscriptionService,
   });
+  const hasRevalidated = useRef(false);
+  
   const hasPayment = useLiveData(
     serverService.server.features$.map(r => r?.payment)
   );
@@ -26,9 +28,12 @@ export const UserPlanTag = forwardRef<
   const isLoading = plan === null;
 
   useEffect(() => {
-    // revalidate subscription to get the latest status
-    subscriptionService.subscription.revalidate();
-  }, [subscriptionService]);
+    // revalidate subscription to get the latest status, but only once
+    if (!hasRevalidated.current) {
+      hasRevalidated.current = true;
+      subscriptionService.subscription.revalidate();
+    }
+  }, []); // 空依赖数组，只在组件挂载时执行
 
   if (!hasPayment) return null;
 

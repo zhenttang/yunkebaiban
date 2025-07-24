@@ -16,7 +16,7 @@ export const AddWorkspace = ({
   const t = useI18n();
   const featureFlagService = useService(FeatureFlagService);
   const enableLocalWorkspace = useLiveData(
-    featureFlagService.flags.enable_local_workspace.$
+    featureFlagService?.flags?.enable_local_workspace?.$ || null
   );
 
   return (

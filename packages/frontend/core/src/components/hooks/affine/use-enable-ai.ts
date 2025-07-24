@@ -4,7 +4,7 @@ import { useLiveData, useService } from '@toeverything/infra';
 
 export const useEnableAI = () => {
   const featureFlagService = useService(FeatureFlagService);
-  const aiFeature = useLiveData(featureFlagService.flags.enable_ai.$);
+  const aiFeature = useLiveData(featureFlagService?.flags?.enable_ai?.$ || null);
 
   const serverService = useService(ServerService);
   const serverConfig = useLiveData(serverService.server.features$);

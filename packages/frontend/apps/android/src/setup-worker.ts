@@ -1,16 +1,18 @@
-// 在Worker环境中修改BUILD_CONFIG，确保Android使用Web存储方案
+// Worker环境统一配置：与主线程保持一致，使用Web存储方案
 if (typeof globalThis !== 'undefined') {
   const originalIsAndroid = (globalThis as any).BUILD_CONFIG?.isAndroid || false;
   
+  // 🔧 关键修复：与主线程保持完全一致的配置
   (globalThis as any).BUILD_CONFIG = {
     ...(globalThis as any).BUILD_CONFIG,
-    isAndroid: false,  // 关键：设为false以使用IndexedDB
-    isWeb: true,       // 设为true确保使用Web存储
-    isMobileWeb: true, // 标记为移动Web
+    isAndroid: false,       // 与主线程保持一致：使用IndexedDB存储
+    isWeb: true,           // 与主线程保持一致：Web存储后端
+    isMobileWeb: true,     // 与主线程保持一致：移动Web环境
+    isMobileEdition: true, // 保持移动版特性
     _originalIsAndroid: originalIsAndroid // 保存原始值
   };
   
-  console.log('🔧 Android BUILD_CONFIG在setup-worker.ts中已修改:', (globalThis as any).BUILD_CONFIG);
+  console.log('🔧 Android Worker BUILD_CONFIG统一配置:', (globalThis as any).BUILD_CONFIG);
 }
 
 import '@affine/core/bootstrap/browser';

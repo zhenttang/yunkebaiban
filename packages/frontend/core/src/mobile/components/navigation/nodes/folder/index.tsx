@@ -133,7 +133,7 @@ const NavigationPanelFolderNodeFolder = ({
     });
   const name = useLiveData(node.name$);
   const enableEmojiIcon = useLiveData(
-    featureFlagService.flags.enable_emoji_folder_icon.$
+    featureFlagService?.flags?.enable_emoji_folder_icon?.$ || null
   );
   const [collapsed, setCollapsed] = useState(true);
 
