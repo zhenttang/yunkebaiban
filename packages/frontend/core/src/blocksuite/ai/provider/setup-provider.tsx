@@ -63,11 +63,25 @@ export function setupAIProvider(
     if (sessionId) return sessionId;
     if (retry) return AIProvider.LAST_ACTION_SESSIONID;
 
-    return client.createSession({
-      workspaceId,
-      docId,
-      promptName,
-    });
+    try {
+      console.log(`[AI调试] 开始创建会话:`, { workspaceId, docId, promptName });
+      
+      const newSessionId = await client.createSession({
+        workspaceId,
+        docId,
+        title: promptName,  // 修复参数名称：promptName -> title
+      });
+      
+      if (!newSessionId || newSessionId === 'undefined') {
+        throw new Error('createSession returned empty or invalid sessionId');
+      }
+      
+      console.log(`[AI调试] 会话创建成功: ${newSessionId}`);
+      return newSessionId;
+    } catch (error) {
+      console.error('[AI调试] 会话创建失败:', error);
+      throw new Error(`Failed to create session: ${error.message || error}`);
+    }
   }
 
   AIProvider.provide('userInfo', () => {
@@ -596,7 +610,7 @@ export function setupAIProvider(
     updateSession: async (sessionId: string, promptName: string) => {
       return client.updateSession({
         sessionId,
-        promptName,
+        title: promptName,  // 修复参数名称：promptName -> title
       });
     },
   });

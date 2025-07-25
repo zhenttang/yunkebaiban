@@ -624,10 +624,43 @@ export class AIChatInput extends SignalWatcher(
         modelId: this.modelId,
       });
 
-      for await (const text of stream) {
+      for await (const event of stream) {
+        // console.log(`[AI_DEBUG] 收到流式事件:`, event);
+        
+        // 修复: event是AffineTextEvent对象，需要获取data字段
+        const text = event.data;
+        // console.log(`[AI_DEBUG] 提取的文本内容:`, JSON.stringify(text));
+        
+        // 添加null安全检查，防止undefined导致的错误
+        if (!text || typeof text !== 'string') {
+          console.warn(`[AI_DEBUG] 无效的文本内容，跳过:`, text);
+          continue;
+        }
+        
         const messages = [...this.chatContextValue.messages];
+        if (messages.length === 0) {
+          console.warn(`[AI_DEBUG] messages数组为空，无法更新消息内容`);
+          return;
+        }
         const last = messages[messages.length - 1] as ChatMessage;
-        last.content += text;
+        if (!last) {
+          console.warn(`[AI_DEBUG] 最后一条消息为undefined，无法更新内容`);
+          return;
+        }
+        
+        // 确保last.content存在且为字符串
+        if (typeof last.content !== 'string') {
+          last.content = '';
+        }
+        
+        // 智能添加空格：如果当前文本以字母结尾，新文本以字母开头，则添加空格
+        const needsSpace = last.content.length > 0 && 
+                          /[a-zA-Z0-9]$/.test(last.content) && 
+                          /^[a-zA-Z0-9]/.test(text);
+        
+        last.content += (needsSpace ? ' ' : '') + text;
+        
+        // 始终更新消息和状态，确保流式内容能实时显示
         this.updateContext({ messages, status: 'transmitting' });
       }
 
@@ -672,7 +705,15 @@ export class AIChatInput extends SignalWatcher(
 
   private readonly _postUpdateMessages = async () => {
     const { messages } = this.chatContextValue;
+    if (messages.length === 0) {
+      console.warn(`[AI_DEBUG] _postUpdateMessages: messages数组为空`);
+      return;
+    }
     const last = messages[messages.length - 1] as ChatMessage;
+    if (!last) {
+      console.warn(`[AI_DEBUG] _postUpdateMessages: 最后一条消息为undefined`);
+      return;
+    }
     if (!last.id) {
       const sessionId = await this.getSessionId();
       const historyIds = await AIProvider.histories?.ids(

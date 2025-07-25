@@ -156,6 +156,7 @@ import {
   ValidatorProvider,
 } from '@affine/core/modules/cloud';
 import { FeatureFlagService } from '@affine/core/modules/feature-flag';
+import { getBaseUrl } from '@affine/config';
 
 // 不需要再次定义BUILD_CONFIG，已经在文件开头处理了
 import { DocsService } from '@affine/core/modules/doc';
@@ -692,7 +693,7 @@ window.addEventListener('affine-auth-initialized', (event: any) => {
 });
 
 // Android专用：全局替换localhost为实际服务器地址
-const ANDROID_SERVER_HOST = '192.168.31.28:8080';
+const ANDROID_SERVER_HOST = 'localhost:8080';
 
 // 最关键：拦截所有网络请求，查看是否到达服务器
 const originalFetch = window.fetch;
@@ -813,8 +814,8 @@ setTimeout(() => {
     const actualBaseUrl = currentServer?.serverMetadata?.baseUrl || currentServer?.baseUrl;
     console.log('🎯 实际使用的BaseURL:', actualBaseUrl);
     
-    if (actualBaseUrl && !actualBaseUrl.includes('192.168.31.28:8080')) {
-      console.error('❌ BaseURL配置错误! 期望包含192.168.31.28:8080，实际:', actualBaseUrl);
+    if (actualBaseUrl && !actualBaseUrl.includes('localhost:8080')) {
+      console.error('❌ BaseURL配置错误! 期望包含localhost:8080，实际:', actualBaseUrl);
     } else {
       console.log('✅ BaseURL配置正确');
     }
@@ -905,7 +906,7 @@ setTimeout(() => {
     try {
       if (!frameworkProvider) {
         console.error('❌ frameworkProvider未初始化');
-        return 'http://192.168.31.28:8080'; // 返回默认值
+        return getBaseUrl(); // 使用统一配置管理
       }
       const globalContextService = frameworkProvider.get(GlobalContextService);
       const currentServerId = globalContextService.globalContext.serverId.get();
@@ -917,7 +918,7 @@ setTimeout(() => {
       return currentServer.baseUrl;
     } catch (error) {
       console.error('❌ getCurrentServerBaseUrl错误:', error);
-      return 'http://192.168.31.28:8080'; // 返回默认值
+      return getBaseUrl(); // 使用统一配置管理
     }
   };
   

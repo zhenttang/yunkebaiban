@@ -24,10 +24,18 @@ import { type AIError } from '../../provider';
 
 export class ChatMessageAssistant extends WithDisposable(ShadowlessElement) {
   static override styles = css`
+    :host {
+      display: block;
+    }
+    
     .message-info {
       color: var(--affine-placeholder-color);
       font-size: var(--affine-font-xs);
       font-weight: 400;
+    }
+    
+    .item-wrapper {
+      /* 移除所有动画，保持简洁 */
     }
   `;
 

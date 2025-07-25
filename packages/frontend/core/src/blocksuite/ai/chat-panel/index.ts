@@ -174,7 +174,7 @@ export class ChatPanel extends SignalWatcher(
 
   private readonly _getSessionId = async () => {
     if (this.session) {
-      return this.session.id;
+      return this.session.sessionId;  // 修复：使用sessionId而不是id
     }
     const sessions = (
       (await AIProvider.session?.getSessions(
@@ -184,12 +184,12 @@ export class ChatPanel extends SignalWatcher(
       )) || []
     ).filter(session => !session.parentSessionId);
     this.session = sessions.at(-1);
-    return this.session?.id;
+    return this.session?.sessionId;  // 修复：使用sessionId而不是id
   };
 
   private readonly _createSessionId = async () => {
     if (this.session) {
-      return this.session.id;
+      return this.session.sessionId;  // 修复：使用sessionId而不是id
     }
     const sessionId = await AIProvider.session?.createSession({
       docId: this.doc.id,
@@ -259,7 +259,7 @@ export class ChatPanel extends SignalWatcher(
     }
   };
 
-  private readonly _throttledScrollToEnd = throttle(this._scrollToEnd, 600);
+  private readonly _throttledScrollToEnd = throttle(this._scrollToEnd, 1500);
 
   private readonly _initPanel = async () => {
     try {
@@ -319,19 +319,22 @@ export class ChatPanel extends SignalWatcher(
       this._wheelTriggered = false;
     }
 
+    // 优化滚动逻辑：减少在流式传输时的滚动频率
     if (
       _changedProperties.has('chatContextValue') &&
       (this.chatContextValue.status === 'loading' ||
         this.chatContextValue.status === 'error' ||
         this.chatContextValue.status === 'success')
     ) {
-      setTimeout(this._scrollToEnd, 500);
+      // 只在非流式状态时立即滚动
+      setTimeout(this._scrollToEnd, 300);
     }
 
     if (
       _changedProperties.has('chatContextValue') &&
       this.chatContextValue.status === 'transmitting'
     ) {
+      // 流式传输时使用节流滚动，减少滚动频率
       this._throttledScrollToEnd();
     }
   }

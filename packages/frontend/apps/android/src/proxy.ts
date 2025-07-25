@@ -1,4 +1,5 @@
 import { openDB } from 'idb';
+import { getSocketIOUrl } from '@affine/config';
 
 /**
  * the below code includes the custom fetch and xmlhttprequest implementation for ios webview.
@@ -21,7 +22,7 @@ globalThis.fetch = async (input: RequestInfo | URL, init?: RequestInit) => {
 // 🔧 添加Socket.IO服务检测和降级策略
 async function checkSocketIOAvailability() {
   try {
-    const response = await fetch('http://192.168.31.28:9092/socket.io/');
+    const response = await fetch(getSocketIOUrl() + '/socket.io/');
     console.log('✅ Socket.IO服务可用');
     return true;
   } catch (error) {

@@ -1,6 +1,7 @@
 import { DebugLogger } from '@affine/debug';
 import type { WorkerInitOptions } from '@affine/nbstore/worker/client';
 import { ObjectPool, Service } from '@toeverything/infra';
+import { getBaseUrl } from '@affine/config';
 
 import type { Workspace } from '../entities/workspace';
 import { WorkspaceInitialized } from '../events';
@@ -150,9 +151,9 @@ export class WorkspaceRepositoryService extends Service {
               },
               remotes: {
                 [`cloud:${openOptions.metadata.flavour}`]: {
-                  doc: { name: 'CloudDocStorage', opts: { type: 'workspace', id: openOptions.metadata.id, serverBaseUrl: 'http://192.168.31.28:8080', isSelfHosted: true } },
-                  blob: { name: 'CloudBlobStorage', opts: { id: openOptions.metadata.id, serverBaseUrl: 'http://192.168.31.28:8080' } },
-                  awareness: { name: 'CloudAwarenessStorage', opts: { type: 'workspace', id: openOptions.metadata.id, serverBaseUrl: 'http://192.168.31.28:8080', isSelfHosted: true } }
+                  doc: { name: 'CloudDocStorage', opts: { type: 'workspace', id: openOptions.metadata.id, serverBaseUrl: getBaseUrl(), isSelfHosted: true } },
+                  blob: { name: 'CloudBlobStorage', opts: { id: openOptions.metadata.id, serverBaseUrl: getBaseUrl() } },
+                  awareness: { name: 'CloudAwarenessStorage', opts: { type: 'workspace', id: openOptions.metadata.id, serverBaseUrl: getBaseUrl(), isSelfHosted: true } }
                 }
               }
             };

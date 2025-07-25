@@ -129,6 +129,8 @@ export class TextRenderer extends WithDisposable(ShadowlessElement) {
     }
 
     .ai-answer-text-editor {
+      counter-reset: list-counter; /* 重置列表计数器 */
+      
       .affine-note-block-container {
         > .affine-block-children-container {
           > :first-child:not(affine-callout),
@@ -143,9 +145,55 @@ export class TextRenderer extends WithDisposable(ShadowlessElement) {
       }
 
       .affine-paragraph-block-container {
-        line-height: 22px;
-        margin: 0;
+        line-height: 1.6;
+        margin: 6px 0;
         padding: 0;
+        
+        /* 改善标题样式 */
+        &[data-type="h1"] {
+          font-size: 1.875rem;
+          font-weight: 700;
+          margin: 16px 0 12px 0;
+          line-height: 1.2;
+          border-bottom: 2px solid var(--affine-border-color);
+          padding-bottom: 8px;
+        }
+        
+        &[data-type="h2"] {
+          font-size: 1.5rem;
+          font-weight: 600;
+          margin: 14px 0 10px 0;
+          line-height: 1.3;
+        }
+        
+        &[data-type="h3"] {
+          font-size: 1.25rem;
+          font-weight: 600;
+          margin: 12px 0 8px 0;
+          line-height: 1.4;
+        }
+        
+        &[data-type="h4"] {
+          font-size: 1.125rem;
+          font-weight: 600;
+          margin: 10px 0 6px 0;
+          line-height: 1.4;
+        }
+        
+        &[data-type="h5"] {
+          font-size: 1rem;
+          font-weight: 600;
+          margin: 8px 0 4px 0;
+          line-height: 1.5;
+        }
+        
+        &[data-type="h6"] {
+          font-size: 0.875rem;
+          font-weight: 600;
+          margin: 6px 0 4px 0;
+          line-height: 1.5;
+          color: var(--affine-text-secondary-color);
+        }
 
         .h6 {
           padding-left: 16px;
@@ -160,6 +208,119 @@ export class TextRenderer extends WithDisposable(ShadowlessElement) {
           }
         }
       }
+      
+      /* 改善代码块显示 */
+      .affine-code-block-container {
+        margin: 12px 0;
+        border-radius: 6px;
+        background: var(--affine-background-secondary-color);
+        padding: 12px;
+        font-family: var(--affine-font-code-family);
+        
+        pre {
+          margin: 0;
+          white-space: pre-wrap;
+          word-break: break-word;
+        }
+      }
+      
+      /* 改善列表显示 */
+      .affine-list-block-container {
+        margin: 6px 0;
+        line-height: 1.6;
+        
+        &[data-type="bulleted"] {
+          padding-left: 24px;
+          position: relative;
+          
+          &::before {
+            content: "•";
+            position: absolute;
+            left: 8px;
+            color: var(--affine-text-primary-color);
+          }
+        }
+        
+        &[data-type="numbered"] {
+          padding-left: 24px;
+          counter-increment: list-counter;
+          position: relative;
+          
+          &::before {
+            content: counter(list-counter) ".";
+            position: absolute;
+            left: 8px;
+            color: var(--affine-text-primary-color);
+          }
+        }
+      }
+      
+      /* 改善分割线显示 */
+      .affine-divider-block-container {
+        margin: 16px 0;
+        border-top: 1px solid var(--affine-border-color);
+        height: 1px;
+      }
+      
+      /* 改善换行和文字显示 */
+      rich-text {
+        white-space: pre-wrap;
+        word-break: break-word;
+        
+        v-text, v-element {
+          white-space: pre-wrap;
+        }
+      }
+    }
+
+    /* 简化的流式输出动画效果 */
+    .text-renderer-container[data-state="generating"] {
+      .ai-answer-text-editor {
+        /* 只保留最后一个元素的光标效果 */
+        .affine-note-block-container > .affine-block-children-container > :last-child {
+          position: relative;
+          
+          &::after {
+            content: '';
+            display: inline-block;
+            width: 1px;
+            height: 1em;
+            background-color: var(--affine-primary-color);
+            margin-left: 2px;
+            animation: simpleBlink 1s infinite;
+            vertical-align: baseline;
+          }
+        }
+      }
+    }
+
+    /* 简化的光标闪烁动画 */
+    @keyframes simpleBlink {
+      0%, 50% {
+        opacity: 1;
+      }
+      51%, 100% {
+        opacity: 0;
+      }
+    }
+
+    /* 流式输出完成时移除光标 */
+    .text-renderer-container[data-state="finished"] {
+      .ai-answer-text-editor .affine-note-block-container > .affine-block-children-container > :last-child::after {
+        display: none;
+      }
+    }
+
+    /* 移除所有可能造成卡顿的复杂动画 */
+    .text-renderer-container * {
+      /* 禁用可能引起重排的属性动画 */
+      animation: none !important;
+      transition: none !important;
+    }
+
+    /* 只保留光标动画 */
+    .text-renderer-container[data-state="generating"] .ai-answer-text-editor .affine-note-block-container > .affine-block-children-container > :last-child::after {
+      animation: simpleBlink 1s infinite !important;
     }
 
     .text-renderer-container {
@@ -169,6 +330,9 @@ export class TextRenderer extends WithDisposable(ShadowlessElement) {
       overscroll-behavior-y: none;
       min-height: fit-content;
       height: auto;
+      /* 优化滚动条显示 */
+      scrollbar-width: thin;
+      scrollbar-color: var(--affine-border-color) transparent;
     }
     .text-renderer-container.show-scrollbar::-webkit-scrollbar {
       width: 5px;
@@ -235,7 +399,7 @@ export class TextRenderer extends WithDisposable(ShadowlessElement) {
       'affine:note',
       'affine:table',
       'affine:surface',
-      'affine:paragraph',
+      'affine:paragraph', // 段落支持标题格式
       'affine:callout',
       'affine:code',
       'affine:list',
@@ -292,41 +456,59 @@ export class TextRenderer extends WithDisposable(ShadowlessElement) {
         provider = container.provider();
       }
       if (latestAnswer && schema) {
+        // 预处理markdown内容，确保换行符正确处理
+        const processedAnswer = latestAnswer
+          .replace(/\r\n/g, '\n') // 统一换行符
+          .replace(/\r/g, '\n')   // 统一换行符
+          .trim(); // 移除首尾空白
+        
         const middlewares = [
           defaultImageProxyMiddleware,
           codeBlockWrapMiddleware(true),
           ...(this.options.additionalMiddlewares ?? []),
         ];
         const affineFeatureFlagService = this.options.affineFeatureFlagService;
+        
+        // 异步更新，避免阻塞UI
         markDownToDoc(
           provider,
           schema,
-          latestAnswer,
+          processedAnswer,
           middlewares,
           affineFeatureFlagService
         )
           .then(doc => {
-            this.disposeDoc();
-            this._doc = doc.doc.getStore({
-              query: this._query,
-            });
-            this.disposables.add(() => {
-              doc.doc.removeStore({ query: this._query });
-            });
-            this._doc.readonly = true;
-            this.requestUpdate();
-            if (this.state !== 'generating') {
-              this._doc.load();
-              // LinkPreviewService & ImageProxyService config should read from host settings
-              const imageProxyService =
-                this.host?.std.store.get(ImageProxyService);
-              if (imageProxyService) {
-                this._doc
-                  ?.get(ImageProxyService)
-                  .setImageProxyURL(imageProxyService.imageProxyURL);
+            // 使用requestAnimationFrame确保DOM更新在下一帧
+            requestAnimationFrame(() => {
+              const oldDoc = this._doc;
+              this._doc = doc.doc.getStore({
+                query: this._query,
+              });
+              this.disposables.add(() => {
+                doc.doc.removeStore({ query: this._query });
+              });
+              this._doc.readonly = true;
+              
+              // 先更新再清理旧的，减少空白时间
+              this.requestUpdate();
+              
+              if (oldDoc) {
+                oldDoc.dispose();
+                oldDoc.workspace.dispose();
               }
-              this._clearTimer();
-            }
+              
+              if (this.state !== 'generating') {
+                this._doc.load();
+                const imageProxyService =
+                  this.host?.std.store.get(ImageProxyService);
+                if (imageProxyService) {
+                  this._doc
+                    ?.get(ImageProxyService)
+                    .setImageProxyURL(imageProxyService.imageProxyURL);
+                }
+                this._clearTimer();
+              }
+            });
           })
           .catch(console.error);
       }
@@ -338,7 +520,8 @@ export class TextRenderer extends WithDisposable(ShadowlessElement) {
     this._answers.push(this.answer);
     this._updateDoc();
     if (this.state === 'generating') {
-      this._timer = setInterval(this._updateDoc, 600);
+      // 增加更新间隔，减少卡顿，从300ms增加到500ms
+      this._timer = setInterval(this._updateDoc, 500);
     }
   }
 
@@ -347,13 +530,23 @@ export class TextRenderer extends WithDisposable(ShadowlessElement) {
   }
 
   private disposeDoc() {
-    this._doc?.dispose();
-    this._doc?.workspace.dispose();
+    if (this._doc) {
+      try {
+        this._doc.dispose();
+        this._doc.workspace.dispose();
+      } catch (error) {
+        // 忽略清理时的错误，避免影响性能
+        console.warn('Error disposing doc:', error);
+      }
+    }
   }
 
   override disconnectedCallback() {
     super.disconnectedCallback();
     this._clearTimer();
+    if (this._updateTimer) {
+      clearTimeout(this._updateTimer);
+    }
     this.disposeDoc();
   }
 
@@ -368,8 +561,14 @@ export class TextRenderer extends WithDisposable(ShadowlessElement) {
       'custom-heading': !!customHeading,
     });
     const theme = this.host?.std.get(ThemeProvider).app$.value;
+    
     return html`
-      <div class=${classes} data-testid=${testId} data-app-theme=${theme}>
+      <div 
+        class=${classes} 
+        data-testid=${testId} 
+        data-app-theme=${theme}
+        data-state=${this.state}
+      >
         ${keyed(
           this._doc,
           html`<div class="ai-answer-text-editor affine-page-viewport">
@@ -386,11 +585,19 @@ export class TextRenderer extends WithDisposable(ShadowlessElement) {
 
   override shouldUpdate(changedProperties: PropertyValues) {
     if (changedProperties.has('answer')) {
-      this._answers.push(this.answer);
-      this._updateDoc();
+      // 只有当内容真正改变时才更新
+      const oldAnswer = changedProperties.get('answer');
+      if (oldAnswer !== this.answer) {
+        this._answers.push(this.answer);
+        // 使用防抖，避免过于频繁的更新
+        clearTimeout(this._updateTimer);
+        this._updateTimer = setTimeout(this._updateDoc, 100);
+      }
     }
     return true;
   }
+
+  private _updateTimer?: ReturnType<typeof setTimeout>;
 
   override updated(changedProperties: PropertyValues) {
     super.updated(changedProperties);
@@ -402,9 +609,10 @@ export class TextRenderer extends WithDisposable(ShadowlessElement) {
           this._maxContainerHeight,
           this._container.scrollHeight
         );
-        // Apply min-height to prevent shrinking
+        // Apply min-height to prevent shrinking during streaming
         this._container.style.minHeight = `${this._maxContainerHeight}px`;
       } else {
+        // 适当延迟清除最小高度
         setTimeout(() => {
           this._maxContainerHeight = 0;
           this._container.style.minHeight = '';

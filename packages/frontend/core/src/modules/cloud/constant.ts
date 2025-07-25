@@ -6,6 +6,23 @@
 
 // import { environment } from '@affine/env/constant';
 
+// 临时内联配置，避免编译问题
+function getConfiguredBaseUrl(): string {
+  if (typeof window !== 'undefined') {
+    const buildConfig = (window as any).BUILD_CONFIG;
+    if (buildConfig?.isAndroid || buildConfig?.platform === 'android') {
+      return 'http://localhost:8080';
+    }
+    
+    if (window.location.hostname !== 'localhost' && 
+        window.location.hostname !== '127.0.0.1') {
+      return 'https://your-domain.com:443';
+    }
+  }
+  
+  return 'http://localhost:8080';
+}
+
 // 使用全局的 environment 变量
 // Environment 类型已在全局类型定义中声明
 
@@ -56,10 +73,10 @@ import type {
 } from './types';
 
 export const BUILD_IN_SERVERS: (ServerMetadata & { config: ServerConfig })[] = [
-  // 强制使用本地Java后端，无论什么环境
+  // 使用统一配置管理的服务器地址
   {
     id: 'affine-cloud',
-    baseUrl: 'http://192.168.31.28:8080',
+    baseUrl: getConfiguredBaseUrl(),
     config: {
       serverName: '云科 Local Java Backend',
       features: [
@@ -80,4 +97,4 @@ export const BUILD_IN_SERVERS: (ServerMetadata & { config: ServerConfig })[] = [
   },
 ];
 
-// 原始的复杂配置逻辑已简化，现在直接指向本地Java后端
+// 原始的复杂配置逻辑已简化，现在使用统一配置管理

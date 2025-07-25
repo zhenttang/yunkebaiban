@@ -323,7 +323,7 @@ export class PlaygroundContent extends SignalWatcher(
       <div class="playground-content">
         ${repeat(
           this.sessions,
-          session => session.id,
+          session => session.sessionId,  // 修复：使用sessionId而不是id
           session => html`
             <div class="playground-chat-item">
               <playground-chat

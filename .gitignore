@@ -82,3 +82,5 @@ blocksuite/affine/rich-text/dist/
 blocksuite/affine/widgets/slash-menu/dist/
 blocksuite/affine/widgets/edgeless-toolbar/dist/
 packages/frontend/apps/android/dist/
+packages/frontend/routes/node_modules/vite/dist/
+tools/cli/node_modules/

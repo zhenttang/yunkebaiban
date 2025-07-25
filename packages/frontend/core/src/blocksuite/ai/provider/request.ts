@@ -83,11 +83,26 @@ async function createMessage({
     params,
   });
   
+  // 验证sessionId - 修复关键问题
+  if (!sessionId || sessionId === 'undefined') {
+    const error = new Error('sessionId is required but was undefined or invalid');
+    console.error(`[AI_DEBUG] createMessage failed:`, error);
+    throw error;
+  }
+  
+  // 验证content
+  if (content === undefined || content === null) {
+    const error = new Error('content is required but was undefined or null');
+    console.error(`[AI_DEBUG] createMessage failed:`, error);
+    throw error;
+  }
+  
   const hasAttachments = attachments && attachments.length > 0;
   const options: Parameters<CopilotClient['createMessage']>[0] = {
     sessionId,
+    role: 'user',  // 保持小写，由copilot-client.ts内部处理转换
     content,
-    params,
+    // 移除 params 字段，CopilotClient.createMessage 不接受此参数
   };
 
   if (hasAttachments) {
@@ -95,8 +110,9 @@ async function createMessage({
       attachments,
       attachment => typeof attachment === 'string'
     ) as [string[], (Blob | File)[]];
-    options.attachments = stringAttachments;
-    options.blobs = (
+    
+    // 处理文件attachments：将blobs转换为File对象，合并到attachments中
+    const processedBlobs = (
       await Promise.all(
         blobs.map(resizeImage).map(async blob => {
           const file = await blob;
@@ -107,12 +123,54 @@ async function createMessage({
         })
       )
     ).filter(Boolean) as File[];
+    
+    // 合并字符串attachments和处理后的文件attachments
+    options.attachments = [...stringAttachments, ...processedBlobs];
   }
 
-  console.log(`[AI_DEBUG] Calling client.createMessage with options:`, options);
-  const result = await client.createMessage(options);
-  console.log(`[AI_DEBUG] client.createMessage returned messageId:`, result);
-  return result;
+  console.log(`[AI_DEBUG] Calling client.createMessage with options:`, {
+    ...options,
+    content: options.content?.substring(0, 100) + '...'
+  });
+  
+  try {
+    const result = await client.createMessage(options);
+    console.log(`[AI_DEBUG] client.createMessage returned message:`, result);
+    
+    if (!result) {
+      const error = new Error('createMessage returned null/undefined result');
+      console.error(`[AI_DEBUG] createMessage validation failed:`, error);
+      throw error;
+    }
+    
+    if (!result.messageId && !result.id) {
+      const error = new Error('createMessage returned result without messageId/id');
+      console.error(`[AI_DEBUG] createMessage validation failed:`, error, result);
+      throw error;
+    }
+    
+    return result.messageId || result.id; // 修复：返回messageId或id，以兼容不同格式
+  } catch (error) {
+    console.error(`[AI_DEBUG] createMessage failed:`, {
+      sessionId,
+      hasContent: !!content,
+      contentLength: content?.length,
+      hasAttachments,
+      error,
+      errorMessage: error?.message,
+      errorCode: error?.code,
+      errorStatus: error?.status,
+      errorType: typeof error,
+      errorStack: error?.stack
+    });
+    
+    // 重新抛出错误，保持原有的错误信息但加强调试信息
+    if (error?.message) {
+      throw new Error(`createMessage failed: ${error.message}`);
+    } else {
+      throw new Error(`createMessage failed: ${error}`);
+    }
+  }
 }
 
 export function textToText({
@@ -147,25 +205,18 @@ export function textToText({
   if (stream) {
     return {
       [Symbol.asyncIterator]: async function* () {
-        if (!retry) {
-          messageId = await createMessage({
-            client,
-            sessionId,
-            content,
-            attachments,
-            params,
-          });
-        }
-        const eventSource = client.chatTextStream(
-          {
-            sessionId,
-            messageId,
-            reasoning,
-            webSearch,
-            modelId,
-          },
-          workflow ? 'workflow' : undefined
-        );
+        console.log(`[AI_DEBUG] 流式模式: 使用POST方法发送完整消息`);
+        
+        // 使用POST方法发送消息并接收流式响应
+        const eventSource = client.chatTextStreamWithContent({
+          sessionId,
+          content,
+          reasoning,
+          webSearch,
+          modelId,
+          attachments: attachments || []
+        });
+        
         AIProvider.LAST_ACTION_SESSIONID = sessionId;
 
         if (signal) {
@@ -194,7 +245,8 @@ export function textToText({
             signal,
           })) {
             if (event.type === 'message') {
-              yield event.data;
+              // 修复: 传递完整的事件对象而不是只传递data字段
+              yield event;
             }
           }
         }

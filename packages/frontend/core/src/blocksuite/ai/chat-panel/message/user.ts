@@ -10,6 +10,10 @@ import { type ChatMessage } from '../../components/ai-chat-messages';
 
 export class ChatMessageUser extends WithDisposable(ShadowlessElement) {
   static override styles = css`
+    :host {
+      display: block;
+    }
+    
     .chat-message-user {
       display: flex;
       flex-direction: column;

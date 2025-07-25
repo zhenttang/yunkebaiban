@@ -2,6 +2,23 @@ import { useState, useEffect, useRef, createContext, useContext, useMemo } from 
 import { useParams } from 'react-router-dom';
 import type { Socket } from 'socket.io-client';
 
+// 临时内联配置，避免编译问题
+function getSocketIOUrl(): string {
+  if (typeof window !== 'undefined') {
+    const buildConfig = (window as any).BUILD_CONFIG;
+    if (buildConfig?.isAndroid || buildConfig?.platform === 'android') {
+      return 'http://localhost:9092';
+    }
+    
+    if (window.location.hostname !== 'localhost' && 
+        window.location.hostname !== '127.0.0.1') {
+      return 'https://your-domain.com:9092';
+    }
+  }
+  
+  return 'http://localhost:9092';
+}
+
 // 本地缓存键
 const OFFLINE_OPERATIONS_KEY = 'cloud_storage_offline_operations';
 const LAST_SYNC_KEY = 'cloud_storage_last_sync';
@@ -46,7 +63,7 @@ interface CloudStorageProviderProps {
 
 export const CloudStorageProvider = ({ 
   children, 
-  serverUrl = 'http://192.168.31.28:9092'  // 修复：使用实际的局域网IP地址
+  serverUrl = getSocketIOUrl()  // 使用内联配置管理
 }: CloudStorageProviderProps) => {
   const params = useParams();
   const [isConnected, setIsConnected] = useState(false);

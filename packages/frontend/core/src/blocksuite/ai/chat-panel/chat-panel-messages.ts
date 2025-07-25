@@ -128,6 +128,9 @@ export class ChatPanelMessages extends WithDisposable(ShadowlessElement) {
     }
   `;
 
+  private _lastScrollTime = 0;
+  private readonly _scrollThrottleMs = 150; // 节流时间
+
   @state()
   accessor _selectionValue: BaseSelection[] = [];
 
@@ -219,8 +222,8 @@ export class ChatPanelMessages extends WithDisposable(ShadowlessElement) {
     const filteredItems = messages.filter(item => {
       return (
         isChatMessage(item) ||
-        item.messages?.length === 3 ||
-        (HISTORY_IMAGE_ACTIONS.includes(item.action) &&
+        (isChatAction(item) && item.messages?.length === 3) ||
+        (isChatAction(item) && HISTORY_IMAGE_ACTIONS.includes(item.action) &&
           item.messages?.length === 2)
       );
     });
@@ -341,15 +344,90 @@ export class ChatPanelMessages extends WithDisposable(ShadowlessElement) {
     if (_changedProperties.has('isLoading')) {
       this.canScrollDown = false;
     }
+    
+    // 改进的滚动策略
+    if (_changedProperties.has('chatContextValue')) {
+      const { status, messages } = this.chatContextValue;
+      const lastMessage = messages[messages.length - 1];
+      
+      // 如果是用户消息，立即滚动到底部
+      if (lastMessage && 'role' in lastMessage && lastMessage.role === 'user') {
+        requestAnimationFrame(() => {
+          if (!this.messagesContainer) return;
+          this.messagesContainer.scrollTo({
+            top: this.messagesContainer.scrollHeight,
+            behavior: 'smooth',
+          });
+        });
+      }
+      // 如果是AI正在传输中，进行适度的跟进滚动
+      else if (status === 'transmitting' && lastMessage && 'role' in lastMessage && lastMessage.role === 'assistant') {
+        requestAnimationFrame(() => {
+          this.smoothScrollFollow();
+        });
+      }
+      // 如果AI完成回复，确保滚动到适当位置
+      else if (status === 'success') {
+        requestAnimationFrame(() => {
+          this.scrollToEnd();
+        });
+      }
+    }
+  }
+
+  // 新增：平滑跟进滚动方法
+  smoothScrollFollow() {
+    if (!this.messagesContainer) return;
+    
+    // 节流控制，避免过于频繁的滚动
+    const now = Date.now();
+    if (now - this._lastScrollTime < this._scrollThrottleMs) {
+      return;
+    }
+    this._lastScrollTime = now;
+    
+    const { scrollTop, scrollHeight, clientHeight } = this.messagesContainer;
+    const maxScrollTop = scrollHeight - clientHeight;
+    const lineHeight = 22;
+    
+    // 只有当用户接近底部时才跟进滚动（容差为4行）
+    const isNearBottom = maxScrollTop - scrollTop <= lineHeight * 4;
+    
+    if (isNearBottom && maxScrollTop > scrollTop) {
+      // 计算需要滚动的距离，最多滚动2行的距离
+      const scrollDistance = Math.min(lineHeight * 2, maxScrollTop - scrollTop);
+      
+      this.messagesContainer.scrollTo({
+        top: scrollTop + scrollDistance,
+        behavior: 'smooth',
+      });
+    }
   }
 
   scrollToEnd() {
     requestAnimationFrame(() => {
       if (!this.messagesContainer) return;
-      this.messagesContainer.scrollTo({
-        top: this.messagesContainer.scrollHeight,
-        behavior: 'smooth',
-      });
+      
+      // 获取当前滚动位置和总高度
+      const { scrollTop, scrollHeight, clientHeight } = this.messagesContainer;
+      const maxScrollTop = scrollHeight - clientHeight;
+      
+      // 计算一行文字的大小（基于CSS line-height: 22px）
+      const lineHeight = 22;
+      
+      // 如果已经接近底部（在2行范围内），直接滚动到底部
+      if (maxScrollTop - scrollTop <= lineHeight * 2) {
+        this.messagesContainer.scrollTo({
+          top: maxScrollTop,
+          behavior: 'smooth',
+        });
+      } else {
+        // 否则只滚动一行的距离
+        this.messagesContainer.scrollTo({
+          top: scrollTop + lineHeight,
+          behavior: 'smooth',
+        });
+      }
     });
   }
 
@@ -361,7 +439,15 @@ export class ChatPanelMessages extends WithDisposable(ShadowlessElement) {
 
       const abortController = new AbortController();
       const messages = [...this.chatContextValue.messages];
+      if (messages.length === 0) {
+        console.warn('[AI_DEBUG] retry: messages数组为空，无法重试');
+        return;
+      }
       const last = messages[messages.length - 1];
+      if (!last) {
+        console.warn('[AI_DEBUG] retry: 最后一条消息为undefined，无法重试');
+        return;
+      }
       if ('content' in last) {
         last.content = '';
         last.createdAt = new Date().toISOString();
@@ -382,10 +468,43 @@ export class ChatPanelMessages extends WithDisposable(ShadowlessElement) {
         isRootSession: true,
       });
       this.updateContext({ abortController });
-      for await (const text of stream) {
+      for await (const event of stream) {
+        console.log(`[AI_DEBUG] retry收到流式事件:`, event);
+        
+        // 修复: event是AffineTextEvent对象，需要获取data字段
+        const text = event.data;
+        console.log(`[AI_DEBUG] retry提取的文本内容:`, JSON.stringify(text));
+        
+        // 添加null安全检查，防止undefined导致的错误
+        if (!text || typeof text !== 'string') {
+          console.warn(`[AI_DEBUG] retry: 无效的文本内容，跳过:`, text);
+          continue;
+        }
+        
         const messages = [...this.chatContextValue.messages];
+        if (messages.length === 0) {
+          console.warn(`[AI_DEBUG] retry: 流式处理时messages数组为空`);
+          return;
+        }
         const last = messages[messages.length - 1] as ChatMessage;
-        last.content += text;
+        if (!last) {
+          console.warn(`[AI_DEBUG] retry: 流式处理时最后一条消息为undefined`);
+          return;
+        }
+        
+        // 确保last.content存在且为字符串
+        if (typeof last.content !== 'string') {
+          last.content = '';
+        }
+        
+        // 智能添加空格：如果当前文本以字母结尾，新文本以字母开头，则添加空格
+        const needsSpace = last.content.length > 0 && 
+                          /[a-zA-Z0-9]$/.test(last.content) && 
+                          /^[a-zA-Z0-9]/.test(text);
+        
+        last.content += (needsSpace ? ' ' : '') + text;
+        
+        // 始终更新消息和状态，确保流式内容能实时显示
         this.updateContext({ messages, status: 'transmitting' });
       }
 

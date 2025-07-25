@@ -7,6 +7,24 @@ import {
   TimeoutConfig 
 } from './types';
 
+// 临时内联配置管理，避免编译问题
+function getConfiguredBaseUrl(): string {
+  // 检测环境
+  if (typeof window !== 'undefined') {
+    const buildConfig = (window as any).BUILD_CONFIG;
+    if (buildConfig?.isAndroid || buildConfig?.platform === 'android') {
+      return 'http://localhost:8080';
+    }
+    
+    if (window.location.hostname !== 'localhost' && 
+        window.location.hostname !== '127.0.0.1') {
+      return 'https://your-domain.com:443';
+    }
+  }
+  
+  return 'http://localhost:8080';
+}
+
 /**
  * 默认超时配置
  */
@@ -57,12 +75,12 @@ export const API_ENDPOINTS: ApiEndpoints = {
 };
 
 /**
- * 环境配置
+ * 环境配置 - 使用统一配置管理
  */
 export const environments: Record<EnvironmentType, EnvironmentConfig> = {
   [EnvironmentType.DEV]: {
     env: EnvironmentType.DEV,
-    baseUrl: 'http://192.168.31.28:8080',
+    baseUrl: getConfiguredBaseUrl(),
     apiVersion: 'v1',
     enableLogging: true,
     enableCache: false,
@@ -70,7 +88,7 @@ export const environments: Record<EnvironmentType, EnvironmentConfig> = {
   },
   [EnvironmentType.TEST]: {
     env: EnvironmentType.TEST,
-    baseUrl: 'http://localhost:8080',
+    baseUrl: getConfiguredBaseUrl(),
     apiVersion: 'v1',
     enableLogging: true,
     enableCache: true,
@@ -78,7 +96,7 @@ export const environments: Record<EnvironmentType, EnvironmentConfig> = {
   },
   [EnvironmentType.PROD]: {
     env: EnvironmentType.PROD,
-    baseUrl: 'https://api.affine.pro',
+    baseUrl: getConfiguredBaseUrl(),
     apiVersion: 'v1',
     enableLogging: false,
     enableCache: true,
@@ -90,15 +108,19 @@ export const environments: Record<EnvironmentType, EnvironmentConfig> = {
  * 获取当前环境
  */
 export const getCurrentEnvironment = (): EnvironmentType => {
-  // 在浏览器环境下，从window对象或环境变量中获取
+  // 检测环境
   if (typeof window !== 'undefined') {
-    // @ts-ignore
-    if (window.BUILD_CONFIG && window.BUILD_CONFIG.environment) {
-      // @ts-ignore
-      return window.BUILD_CONFIG.environment;
+    const buildConfig = (window as any).BUILD_CONFIG;
+    if (buildConfig?.isAndroid || buildConfig?.platform === 'android') {
+      return EnvironmentType.DEV;
+    }
+    
+    if (window.location.hostname !== 'localhost' && 
+        window.location.hostname !== '127.0.0.1') {
+      return EnvironmentType.PROD;
     }
   }
-
+  
   // 在Node环境下，从process.env中获取
   if (typeof process !== 'undefined' && process.env) {
     return (process.env.NODE_ENV as EnvironmentType) || EnvironmentType.DEV;
@@ -116,7 +138,7 @@ export const createRequestConfig = (env = getCurrentEnvironment()): RequestConfi
 
   // 开发环境使用代理配置
   const proxyConfig = env === EnvironmentType.DEV ? {
-    target: 'http://192.168.31.28:8080',
+    target: getConfiguredBaseUrl(),
     changeOrigin: true,
     timeout: 120000 // 120秒代理超时，解决创建工作区504问题
   } : undefined;
