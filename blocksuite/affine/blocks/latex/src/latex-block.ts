@@ -52,7 +52,7 @@ export class LatexBlockComponent extends CaptionedBlockComponent<LatexBlockModel
 
         if (latex.length === 0) {
           render(
-            html`<span class="latex-block-empty-placeholder">Equation</span>`,
+            html`<span class="latex-block-empty-placeholder">公式</span>`,
             katexContainer
           );
         } else {
@@ -73,7 +73,7 @@ export class LatexBlockComponent extends CaptionedBlockComponent<LatexBlockModel
             // @ts-expect-error lit hack won't fix
             delete katexContainer['_$litPart$'];
             render(
-              html`<span class="latex-block-error-placeholder" @click=${this._clearInvalidLatex}>Invalid LaTeX: ${latex.substring(0, 20)}${latex.length > 20 ? '...' : ''} (click to clear)</span>`,
+              html`<span class="latex-block-error-placeholder" @click=${this._clearInvalidLatex}>无效的LaTeX语法: ${latex.substring(0, 20)}${latex.length > 20 ? '...' : ''} (点击清除)</span>`,
               katexContainer
             );
           }

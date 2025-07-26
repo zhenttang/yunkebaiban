@@ -195,7 +195,7 @@ export class LatexEditorMenu extends SignalWatcher(
           })}</span
         >
       </div>
-      <div class="latex-editor-hint">Shift Enter to line break</div>
+      <div class="latex-editor-hint">Shift+Enter 换行</div>
     </div>`;
   }
 
