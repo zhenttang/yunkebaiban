@@ -292,18 +292,23 @@ export class AdvancedCollapse extends WithDisposable(ShadowlessElement) {
   `;
 
   @property({ attribute: false })
-  model!: ParagraphBlockModel;
+  declare model: ParagraphBlockModel;
 
   @property({ attribute: false })
-  settings: CollapseSettings = {
-    enablePreview: true,
-    previewLength: 150,
-    animationDuration: 300,
-    collapseIcon: '▶',
-    expandIcon: '▼',
-    showChildCount: true,
-    preserveFormatting: true,
-  };
+  declare settings: CollapseSettings;
+
+  constructor() {
+    super();
+    this.settings = {
+      enablePreview: true,
+      previewLength: 150,
+      animationDuration: 300,
+      collapseIcon: '▶',
+      expandIcon: '▼',
+      showChildCount: true,
+      preserveFormatting: true,
+    };
+  }
 
   @state()
   private _state: CollapseState = {

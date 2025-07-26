@@ -91,14 +91,34 @@ export class WorkspaceProfile extends Entity<{ metadata: WorkspaceMetadata }> {
     })
   );
 
+  private subscriptions: (() => void)[] = [];
+
   syncWithWorkspace(workspace: Workspace) {
-    workspace.name$.subscribe(name => {
+    // 清理之前的订阅
+    this.subscriptions.forEach(unsub => unsub());
+    this.subscriptions = [];
+
+    // 添加新的订阅并保存取消函数
+    const nameSubscription = workspace.name$.subscribe(name => {
       const old = this.profile$.value;
       this.setProfile({ ...old, name: name ?? old?.name });
     });
-    workspace.avatar$.subscribe(avatar => {
+    
+    const avatarSubscription = workspace.avatar$.subscribe(avatar => {
       const old = this.profile$.value;
       this.setProfile({ ...old, avatar: avatar ?? old?.avatar });
     });
+
+    this.subscriptions.push(
+      () => nameSubscription.unsubscribe(),
+      () => avatarSubscription.unsubscribe()
+    );
+  }
+
+  override dispose() {
+    // 清理所有订阅
+    this.subscriptions.forEach(unsub => unsub());
+    this.subscriptions = [];
+    super.dispose?.();
   }
 }

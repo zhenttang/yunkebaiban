@@ -260,7 +260,7 @@ export class WordCountDisplay extends WithDisposable(ShadowlessElement) {
   `;
 
   @property({ attribute: false })
-  model!: WordCountBlockModel;
+  declare model: WordCountBlockModel;
 
   @state()
   private _result: WordCountResult | null = null;

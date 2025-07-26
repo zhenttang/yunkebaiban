@@ -63,7 +63,6 @@ export class EventBus {
   }
 
   emit<T>(event: FrameworkEvent<T>, payload: T) {
-    logger.debug('Emitting event', event.id, payload);
     const listeners = this.listeners[event.id];
     if (!listeners) {
       return;

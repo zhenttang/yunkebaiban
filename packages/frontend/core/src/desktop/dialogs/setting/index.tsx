@@ -176,7 +176,10 @@ const SettingModalInner = ({
       (settingState.activeTab === 'plans' ||
         settingState.activeTab === 'workspace:billing')
     ) {
-      setSettingState({ activeTab: 'workspace:license' });
+      // 使用 setTimeout 避免同步状态更新导致的循环
+      setTimeout(() => {
+        setSettingState({ activeTab: 'workspace:license' });
+      }, 0);
     }
   }, [isSelfhosted, settingState.activeTab]);
 

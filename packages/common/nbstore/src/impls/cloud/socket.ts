@@ -174,12 +174,6 @@ class SocketManager {
       // we will handle reconnection by ourselves
       reconnection: false,
     });
-    console.log('🔌 Socket.IO配置:', {
-      endpoint,
-      isSelfHosted,
-      transports: ['polling', 'websocket'],
-      secure: new URL(endpoint).protocol === 'https:'
-    });
     this.socket = this.socketIOManager.socket('/', {
       auth(cb) {
         if (authMethod) {

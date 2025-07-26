@@ -29,14 +29,12 @@ export const TeamCard = () => {
   const [openCancelModal, setOpenCancelModal] = useState(false);
 
   useEffect(() => {
+    // revalidate all services - only on mount to avoid infinite loops
     workspaceSubscriptionService.subscription.revalidate();
     workspaceQuotaService.quota.revalidate();
     subscriptionService.prices.revalidate();
-  }, [
-    subscriptionService,
-    workspaceQuotaService,
-    workspaceSubscriptionService,
-  ]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const expiration = teamSubscription?.canceledAt;
   const nextBillingDate = teamSubscription?.nextBillAt;

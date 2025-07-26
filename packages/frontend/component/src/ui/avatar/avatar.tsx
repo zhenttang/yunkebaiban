@@ -30,6 +30,7 @@ import { IconButton } from '../button';
 import type { TooltipProps } from '../tooltip';
 import { Tooltip } from '../tooltip';
 import { ColorfulFallback } from './colorful-fallback';
+import { SVGAvatarGenerator } from './svg-avatar-generator';
 import * as style from './style.css';
 import { blurVar, sizeVar } from './style.css';
 
@@ -50,6 +51,18 @@ export type AvatarProps = {
    * @default '50%'
    */
   rounded?: number | string;
+  /**
+   * Avatar generation mode
+   * @default 'uploaded'
+   */
+  generateMode?: 'uploaded' | 'svg-generated';
+  /**
+   * SVG avatar configuration
+   */
+  svgConfig?: {
+    seed?: string | number;
+    onGenerate?: () => void;
+  };
 
   fallbackProps?: AvatarFallbackProps;
   imageProps?: Omit<
@@ -110,6 +123,8 @@ export const Avatar = forwardRef<HTMLSpanElement, AvatarProps>(
         className: removeButtonClassName,
         ...removeButtonProps
       } = {},
+      generateMode = 'uploaded',
+      svgConfig,
       ...props
     },
     ref
@@ -165,6 +180,13 @@ export const Avatar = forwardRef<HTMLSpanElement, AvatarProps>(
                 height={size * window.devicePixelRatio}
                 {...imageProps}
               />
+            ) : generateMode === 'svg-generated' ? (
+              <SVGAvatarGenerator
+                size={size}
+                className={style.avatarImage}
+                seed={svgConfig?.seed}
+                onGenerate={svgConfig?.onGenerate}
+              />
             ) : (
               <AvatarImage
                 className={style.avatarImage}
@@ -174,7 +196,7 @@ export const Avatar = forwardRef<HTMLSpanElement, AvatarProps>(
               />
             )}
 
-            {!image /* no fallback on canvas mode */ &&
+            {!image && generateMode !== 'svg-generated' /* no fallback on canvas mode or svg mode */ &&
               (firstCharOfName ? (
                 /* if name is not empty, use first char of name as fallback */
                 <AvatarFallback

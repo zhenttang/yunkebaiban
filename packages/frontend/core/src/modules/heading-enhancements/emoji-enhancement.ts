@@ -359,18 +359,23 @@ export class EmojiEnhancement extends WithDisposable(ShadowlessElement) {
   `;
 
   @property({ attribute: false })
-  model!: ParagraphBlockModel;
+  declare model: ParagraphBlockModel;
 
   @property({ attribute: false })
-  settings: EmojiSettings = {
-    enabled: true,
-    autoSuggest: true,
-    showShortcuts: true,
-    maxSuggestions: 20,
-    contextLength: 100,
-    categories: ['smileys', 'people', 'nature', 'food', 'activities', 'travel', 'objects', 'symbols'],
-    customEmojis: {},
-  };
+  declare settings: EmojiSettings;
+
+  constructor() {
+    super();
+    this.settings = {
+      enabled: true,
+      autoSuggest: true,
+      showShortcuts: true,
+      maxSuggestions: 20,
+      contextLength: 100,
+      categories: ['smileys', 'people', 'nature', 'food', 'activities', 'travel', 'objects', 'symbols'],
+      customEmojis: {},
+    };
+  }
 
   @state()
   private _suggestions: EmojiSuggestion[] = [];

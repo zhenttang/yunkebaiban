@@ -519,11 +519,9 @@ export function BlockCommandsSidebar() {
 
   const toggleSidebar = useCallback(() => {
     setIsCollapsed(!isCollapsed);
-    console.log('切换侧边栏:', !isCollapsed);
   }, [isCollapsed]);
 
   const handleGroupClick = useCallback((groupName: string) => {
-    console.log('点击分组:', groupName);
     if (selectedGroup === groupName) {
       setSelectedGroup(null);
     } else {

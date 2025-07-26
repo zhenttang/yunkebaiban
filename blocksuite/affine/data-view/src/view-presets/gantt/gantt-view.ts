@@ -15,7 +15,6 @@ import './components/gantt-task-bar.js'; // 引入任务条组件
 @customElement('gantt-view')
 export class GanttView extends LitElement {
   static {
-    console.log('🏗️ [GanttView] Class definition loaded');
   }
   static override styles = css`
     :host {

@@ -77,19 +77,14 @@ export class GuardService extends Service {
           >,
           this.isAdmin$,
         ]).subscribe(([permissions, isAdmin]) => {
-          console.log('🛡️ [GuardService.can$] 权限检查:', { action, docId, permissions, isAdmin });
-          
           if (isAdmin) {
-            console.log('🛡️ [GuardService.can$] 管理员权限，返回 true');
             return subscriber.next(true);
           }
           
           const current = permissions[action] ?? undefined;
-          console.log('🛡️ [GuardService.can$] 当前权限:', { action, current, prev });
           
           if (current !== prev) {
             prev = current;
-            console.log('🛡️ [GuardService.can$] 权限变化，发送:', current);
             subscriber.next(current);
           }
         });
@@ -172,21 +167,15 @@ export class GuardService extends Service {
   );
 
   private readonly loadWorkspacePermission = async () => {
-    console.log('🛡️ [GuardService.loadWorkspacePermission] 开始加载工作空间权限');
-    console.log('🛡️ [GuardService.loadWorkspacePermission] 工作空间类型:', this.workspaceService.workspace.flavour);
-    
     if (this.workspaceService.workspace.flavour === 'local') {
-      console.log('🛡️ [GuardService.loadWorkspacePermission] 本地模式，返回空权限');
       return {} as Record<WorkspacePermissionActions, boolean>;
     }
     
     try {
       const response = await this.guardStore.getWorkspacePermissions();
-      console.log('🛡️ [GuardService.loadWorkspacePermission] 成功获取权限:', response);
       
       // 提取实际的权限对象
       const permissions = response.permissions || response;
-      console.log('🛡️ [GuardService.loadWorkspacePermission] 解析后的权限:', permissions);
       
       this.workspacePermissions$.next(permissions);
       return permissions;
@@ -209,13 +198,8 @@ export class GuardService extends Service {
   };
 
   private readonly loadDocPermission = async (docId: string) => {
-    console.log('🛡️ [GuardService.loadDocPermission] 开始加载文档权限, docId:', docId);
-    console.log('🛡️ [GuardService.loadDocPermission] 工作空间类型:', this.workspaceService.workspace.flavour);
-    console.log('🛡️ [GuardService.loadDocPermission] 当前URL:', window.location.pathname);
-    
     // 跳过特殊路径的权限检查
     if (docId === 'community') {
-      console.log('🛡️ [GuardService.loadDocPermission] 跳过社区页面权限检查');
       const communityPermissions = {
         'Doc_Read': true,
         'Doc_Write': false,
@@ -239,7 +223,6 @@ export class GuardService extends Service {
     const isCommunityRelated = currentPath.includes('/community');
     
     if (isCommunityDetailPage || (isCommunityRelated && docId.match(/^[0-9]+$/))) {
-      console.log('🛡️ [GuardService.loadDocPermission] 跳过社区文档详情页权限检查, docId:', docId, 'URL:', currentPath);
       const communityDocPermissions = {
         'Doc_Read': true,
         'Doc_Write': false,
@@ -262,20 +245,15 @@ export class GuardService extends Service {
     
     try {
       const response = await this.guardStore.getDocPermissions(docId);
-      console.log('🛡️ [GuardService.loadDocPermission] 成功获取文档权限:', response);
       
       // 提取实际的权限对象
       const permissions = response.permissions || response;
-      console.log('🛡️ [GuardService.loadDocPermission] 解析后的权限:', permissions);
       
       const newDocPermissions = {
         ...this.docPermissions$.value,
         [docId]: permissions,
       };
-      console.log('🛡️ [GuardService.loadDocPermission] 更新 docPermissions$:', newDocPermissions);
       this.docPermissions$.next(newDocPermissions);
-      
-      console.log('🛡️ [GuardService.loadDocPermission] 更新后的 docPermissions$ 值:', this.docPermissions$.value);
       return permissions;
     } catch (error) {
       console.error('❌ [GuardService.loadDocPermission] 获取文档权限失败:', error);

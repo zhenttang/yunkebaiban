@@ -4,12 +4,14 @@ import {
   LiveData,
   onComplete,
   onStart,
+  OnEvent,
   Service,
   smartRetry,
 } from '@toeverything/infra';
 import { catchError, EMPTY, exhaustMap, groupBy, mergeMap, tap } from 'rxjs';
 
 import type { PublicUserStore } from '../stores/public-user';
+import { AvatarUpdated } from '../events/avatar-updated';
 
 type RemovedUserInfo = {
   id: string;
@@ -26,6 +28,7 @@ type ExistedUserInfo = {
 
 export type PublicUserInfo = RemovedUserInfo | ExistedUserInfo;
 
+@OnEvent(AvatarUpdated, e => e.onAvatarUpdated)
 export class PublicUserService extends Service {
   constructor(private readonly store: PublicUserStore) {
     super();
@@ -72,6 +75,23 @@ export class PublicUserService extends Service {
     const errors = this.errors$.value;
     errors.set(id, error);
     this.errors$.next(errors);
+  }
+
+  // 处理头像更新事件
+  private onAvatarUpdated(event: { userId: string; avatarUrl: string | null }) {
+    // 立即触发用户数据重新加载
+    this.revalidate(event.userId);
+    
+    // 也可以直接更新缓存中的数据（如果存在）
+    const currentUser = this.publicUsers$.value.get(event.userId);
+    if (currentUser && !('removed' in currentUser && currentUser.removed)) {
+      const updatedUser = {
+        ...currentUser,
+        avatar: event.avatarUrl,
+        avatarUrl: event.avatarUrl
+      };
+      this.setPublicUser(event.userId, updatedUser);
+    }
   }
 
   revalidate = effect(

@@ -105,7 +105,6 @@ export const CloudStorageProvider = ({
     localStorage.setItem(OFFLINE_OPERATIONS_KEY, JSON.stringify(operations));
     setOfflineOperationsCount(operations.length);
     
-    console.log('💾 [云存储管理器] 离线操作已保存:', operation.id);
   };
 
   const getOfflineOperations = (): OfflineOperation[] => {
@@ -130,11 +129,9 @@ export const CloudStorageProvider = ({
       .sort((a, b) => a.timestamp - b.timestamp); // 按时间顺序排序
 
     if (operations.length === 0) {
-      console.log('✅ [云存储管理器] 没有离线操作需要同步');
       return;
     }
 
-    console.log(`🔄 [云存储管理器] 开始同步 ${operations.length} 个离线操作`);
 
     let successCount = 0;
     let failureCount = 0;
@@ -153,7 +150,6 @@ export const CloudStorageProvider = ({
         }
 
         successCount++;
-        console.log(`✅ [云存储管理器] 离线操作同步成功: ${operation.id}`);
         
       } catch (error) {
         failureCount++;
@@ -166,14 +162,12 @@ export const CloudStorageProvider = ({
       // 所有操作都成功，清除离线缓存
       clearOfflineOperations();
       setLastSync(new Date());
-      console.log(`🎉 [云存储管理器] 所有 ${successCount} 个离线操作同步成功`);
     } else {
       // 有失败的操作，只移除成功的操作
       const remainingOperations = getOfflineOperations()
         .filter(op => !operations.some(syncOp => syncOp.id === op.id) || op.workspaceId !== currentWorkspaceId);
       localStorage.setItem(OFFLINE_OPERATIONS_KEY, JSON.stringify(remainingOperations));
       setOfflineOperationsCount(remainingOperations.length);
-      console.log(`⚠️ [云存储管理器] 同步完成: ${successCount} 成功, ${failureCount} 失败`);
     }
   };
 
@@ -203,7 +197,6 @@ export const CloudStorageProvider = ({
   // 网络状态监听
   useEffect(() => {
     const handleOnline = () => {
-      console.log('🌐 [云存储管理器] 网络恢复在线');
       setIsOnline(true);
       // 网络恢复时立即尝试重连
       if (!isConnected && currentWorkspaceId) {
@@ -213,7 +206,6 @@ export const CloudStorageProvider = ({
     };
 
     const handleOffline = () => {
-      console.log('🚫 [云存储管理器] 网络离线');
       setIsOnline(false);
       setStorageMode('local');
     };
@@ -232,7 +224,6 @@ export const CloudStorageProvider = ({
     const operations = [...pendingOperations.current];
     pendingOperations.current = [];
 
-    console.log(`🔄 [云存储管理器] 处理 ${operations.length} 个排队操作`);
 
     for (const operation of operations) {
       try {
@@ -247,7 +238,6 @@ export const CloudStorageProvider = ({
   // 监听workspaceId变化，重新连接
   useEffect(() => {
     if (currentWorkspaceId) {
-      console.log('🔄 [云存储管理器] 工作空间变化，重新连接:', currentWorkspaceId);
       // 重置连接状态
       setIsConnected(false);
       setStorageMode('detecting');
@@ -283,7 +273,6 @@ export const CloudStorageProvider = ({
     // console.log(`  🔗 当前状态: workspaceId=${currentWorkspaceId}, online=${isOnline}, socketConnected=${socket?.connected}, isConnected=${isConnected}`);
     
     // 详细分析前端发送的原始数据
-    console.log('🔍 [云存储管理器-推送] 详细数据分析:');
     console.log(`  📦 原始数据类型: ${update.constructor.name}`);
     console.log(`  📊 数据长度: ${update.length}字节`);
     console.log(`  🔢 前20字节数值: [${Array.from(update.slice(0, 20)).join(', ')}]`);
@@ -337,7 +326,6 @@ export const CloudStorageProvider = ({
 
     // 如果网络离线，将操作加入队列
     if (!isOnline) {
-      console.log('📦 [云存储管理器-推送] 网络离线，将操作加入队列');
       saveOfflineOperation(docId, update);
       return new Promise((resolve, reject) => {
         pendingOperations.current.push({ docId, update, resolve, reject });
@@ -346,15 +334,13 @@ export const CloudStorageProvider = ({
 
     if (!socket?.connected || !isConnected) {
       // 如果Socket未连接但网络在线，尝试重连并将操作加入队列
-      console.log('🔄 [云存储管理器-推送] Socket未连接，将操作加入队列并尝试重连');
-      console.log(`  📊 重连状态: attempts=${reconnectAttempts.current}/${maxReconnectAttempts}, socket?.connected=${socket?.connected}, isConnected=${isConnected}`);
       
       // 异步触发重连
       if (reconnectAttempts.current < maxReconnectAttempts) {
-        console.log('  🔄 异步触发重连...');
+        // 异步触发重连
         setTimeout(() => connectToSocket(), 0);
       } else {
-        console.warn('  ⚠️ 已达到最大重连次数，不再重连');
+        // 已达到最大重连次数，不再重连
       }
       
       return new Promise((resolve, reject) => {
@@ -365,7 +351,6 @@ export const CloudStorageProvider = ({
     const updateBase64 = uint8ArrayToBase64(update);
     
     // 详细记录Base64编码过程
-    console.log('🔄 [云存储管理器-推送] Base64编码过程:');
     console.log(`  📊 编码前: ${update.length}字节`);
     console.log(`  📊 编码后: ${updateBase64.length}字符`);
     console.log(`  🔤 Base64前50字符: ${updateBase64.substring(0, 50)}...`);
@@ -384,7 +369,6 @@ export const CloudStorageProvider = ({
       console.error(`  ❌ Base64编码验证失败: ${e.message}`);
     }
     
-    console.log('🚀 [云存储管理器-推送] 准备发送Socket.IO请求');
     console.log(`  📦 数据详情: originalSize=${update.length}字节, base64Size=${updateBase64.length}字符`);
     console.log(`  🔗 Socket状态: id=${socket.id}, connected=${socket.connected}`);
 
@@ -435,18 +419,12 @@ export const CloudStorageProvider = ({
       }
 
       setLastSync(new Date(result.timestamp));
-      console.log('✅ [云存储管理器-推送] 文档更新成功');
-      console.log(`  📊 处理结果: timestamp=${result.timestamp}, 最后同步时间=${new Date(result.timestamp).toLocaleTimeString()}`);
       return result.timestamp;
     } catch (error) {
-      console.error('❌ [云存储管理器-推送] 文档更新失败');
-      console.error('  🔍 错误详情:', error);
-      console.error('  📚 完整错误对象:', error);
+      console.error('❌ [云存储管理器-推送] 文档更新失败:', error);
       
       // 保存为离线操作
-      console.log('  💾 保存为离线操作...');
       saveOfflineOperation(docId, update);
-      
       throw error;
     }
   };
@@ -468,7 +446,6 @@ export const CloudStorageProvider = ({
 
     // 检查是否超过最大重连次数
     if (reconnectAttempts.current >= maxReconnectAttempts) {
-      console.error('❌ [云存储管理器] 超过最大重连次数，停止重连');
       setStorageMode('local');
       return;
     }
@@ -491,7 +468,6 @@ export const CloudStorageProvider = ({
 
       // 连接成功
       newSocket.on('connect', () => {
-        console.log('✅ [云存储管理器] Socket连接成功');
         setIsConnected(true);
         setSocket(newSocket);
         reconnectAttempts.current = 0;
@@ -506,7 +482,6 @@ export const CloudStorageProvider = ({
             console.error('❌ [云存储管理器] 空间加入失败:', response.error);
             setStorageMode('error');
           } else {
-            console.log('✅ [云存储管理器] 空间加入成功:', currentWorkspaceId);
             setStorageMode('cloud');
             setLastSync(new Date());
             
@@ -530,7 +505,6 @@ export const CloudStorageProvider = ({
 
       // 连接断开
       newSocket.on('disconnect', (reason) => {
-        console.log('🔌 [云存储管理器] 连接断开:', reason);
         setIsConnected(false);
         
         // 如果是意外断开，尝试重连
@@ -583,7 +557,6 @@ export const CloudStorageProvider = ({
 
   // 手动重连
   const reconnect = async (): Promise<void> => {
-    console.log('🔄 [云存储管理器] 手动重连');
     
     // 清除重连定时器
     if (reconnectTimeout.current) {

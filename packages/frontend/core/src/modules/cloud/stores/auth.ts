@@ -254,6 +254,9 @@ export class AuthStore extends Store {
     if (!data.success) {
       throw new Error(data.error || '上传头像失败');
     }
+    
+    // 返回新的头像URL
+    return data.avatarUrl;
   }
 
   async removeAvatar() {

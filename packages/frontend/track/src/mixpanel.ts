@@ -41,7 +41,6 @@ function createMixpanel() {
     },
     // 提供一种覆盖默认属性的方法
     register(props: Dict) {
-      logger.debug('register with', props);
       mixpanel.register(props);
     },
     reset() {
@@ -55,7 +54,6 @@ function createMixpanel() {
         },
         properties as Record<string, unknown>
       );
-      logger.debug('track', event_name, middlewareProperties);
 
       mixpanel.track(event_name as string, middlewareProperties);
     },
@@ -90,7 +88,6 @@ function createMixpanel() {
         },
         properties as Record<string, unknown>
       );
-      logger.debug('track_pageview', middlewareProperties);
       mixpanel.track_pageview(middlewareProperties);
     },
   };

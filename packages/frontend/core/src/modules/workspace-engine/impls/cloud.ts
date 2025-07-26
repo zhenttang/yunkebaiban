@@ -259,7 +259,6 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
     // 使用REST API替代GraphQL删除工作空间
     
     try {
-      console.log(`[调试] 删除工作空间: ${id}`);
       const response = await this.fetchWithAuth(`/api/workspaces/${id}`, {
         method: 'DELETE',
         headers: {
@@ -271,7 +270,6 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
         throw new Error(`删除工作空间失败: ${response.status}`);
       }
       
-      console.log(`[调试] 工作空间删除成功: ${id}`);
     } catch (error) {
       console.error('删除工作空间失败:', error);
       throw error;
@@ -298,23 +296,11 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
       enableDocEmbedding: true
     };
     
-    console.log('准备发送创建工作空间请求', {
-      url: '/api/workspaces',
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      cookies: document.cookie,
-      requestBody: requestData,
-      currentUser: this.authService.session.account$.value
-    });
-    
     try {
       let response: Response;
       
       if (this.fetchService) {
         // 使用FetchService发送请求，确保包含JWT token
-        console.log('使用FetchService发送创建工作空间请求');
         response = await this.fetchService.fetch('/api/workspaces', {
           method: 'POST',
           headers: {
@@ -324,7 +310,6 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
         });
       } else {
         // 回退方案：手动添加JWT token
-        console.log('使用原生fetch发送创建工作空间请求，手动添加JWT token');
         
         const headers: Record<string, string> = {
           'Content-Type': 'application/json',
@@ -347,22 +332,13 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
         });
       }
       
-      console.log('创建工作空间响应状态', {
-        status: response.status,
-        statusText: response.statusText,
-        headers: Object.fromEntries([...response.headers.entries()]),
-        cookies: document.cookie
-      });
-      
       // 克隆响应以便可以多次读取body
       const responseClone = response.clone();
       
       // 记录原始响应内容
       responseClone.text().then(text => {
-        console.log('创建工作空间响应原始内容:', text);
         try {
           const jsonData = JSON.parse(text);
-          console.log('创建工作空间响应JSON数据:', jsonData);
         } catch (e) {
           console.error('响应内容不是有效JSON:', e);
         }
@@ -376,7 +352,6 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
       }
 
       const data = await response.json();
-      console.log('创建工作空间成功，解析响应数据:', data);
       
       if (!data.success || !data.workspace) {
         console.error('创建工作区失败: 响应格式不正确', data);
@@ -384,7 +359,6 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
       }
 
       const workspaceId = data.workspace.id;
-      console.log('工作区创建成功，ID:', workspaceId);
 
       // 保存初始状态到本地存储，然后同步到云端
       const blobStorage = new this.BlobStorageType({
@@ -498,7 +472,6 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
             }
             
             const data = await response.json();
-            console.log('获取工作区列表响应:', data);
             
             if (!data.workspaces) {
               return {
@@ -536,7 +509,6 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
           tap(data => {
             if (data) {
               const { accountId, workspaces } = data;
-              console.log('排序前的工作空间:', workspaces);
               const sorted = workspaces.sort((a: any, b: any) => {
                 // 安全地访问id属性，添加空值检查
                 if (!a || !a.id) return 1;
@@ -588,7 +560,6 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
       const workspaceMatch = currentUrl.match(/^\/workspace\/([^\/]+)/);
       if (workspaceMatch) {
         const workspaceId = workspaceMatch[1];
-        console.log(`[调试] 从URL获取工作空间ID: ${workspaceId}`);
         return workspaceId;
       }
       
@@ -599,7 +570,6 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
         const validWorkspaces = workspaces.filter(ws => ws.id && ws.id.length > 0);
         if (validWorkspaces.length > 0) {
           const workspaceId = validWorkspaces[0].id;
-          console.log(`[调试] 从工作空间列表获取第一个工作空间ID: ${workspaceId}`);
           return workspaceId;
         }
       }
@@ -608,7 +578,6 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
       try {
         const lastWorkspaceId = localStorage.getItem('lastWorkspaceId');
         if (lastWorkspaceId && lastWorkspaceId.length > 0) {
-          console.log(`[调试] 从localStorage获取最后访问的工作空间ID: ${lastWorkspaceId}`);
           return lastWorkspaceId;
         }
       } catch (storageError) {
@@ -618,7 +587,6 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
       // 4. 如果都没有，尝试创建一个默认工作空间ID
       // 注意：这里不直接创建工作空间，只是生成一个临时ID用于fallback
       const defaultWorkspaceId = `default-workspace-${Date.now()}`;
-      console.log(`[调试] 生成默认工作空间ID: ${defaultWorkspaceId}`);
       
       // 保存到localStorage以便后续使用
       try {
@@ -639,8 +607,6 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
     id: string,
     signal?: AbortSignal
   ): Promise<WorkspaceProfileInfo | undefined> {
-    console.log(`[调试] getWorkspaceProfile 被调用，ID: ${id}`);
-    
     try {
       let workspaceId = id;
       
@@ -648,48 +614,36 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
       const isUUID = id.match(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i);
       
       if (isUUID) {
-        console.log(`[调试] 检测到UUID格式ID，可能是文档ID: ${id}`);
-        
         // 先检查缓存
         if (this.docWorkspaceMapping.has(id)) {
           workspaceId = this.docWorkspaceMapping.get(id)!;
-          console.log(`[调试] 从缓存获取文档 ${id} 对应的工作空间ID: ${workspaceId}`);
         } else {
           // 尝试从当前工作空间上下文获取工作空间ID
           const currentWorkspaceId = this.getCurrentWorkspaceId();
           if (currentWorkspaceId && currentWorkspaceId !== id) {
-            console.log(`[调试] 从当前工作空间上下文获取工作空间ID: ${currentWorkspaceId}`);
             workspaceId = currentWorkspaceId;
             // 保存到缓存，避免后续重复查询
             this.docWorkspaceMapping.set(id, workspaceId);
           } else {
             // 如果无法从上下文获取，或者上下文返回的也是同一个ID，尝试API查询
             try {
-              console.log(`[调试] 尝试从API获取文档 ${id} 对应的工作空间ID`);
               workspaceId = await this.getWorkspaceIdFromDoc(id, signal);
-              console.log(`[调试] API返回工作空间ID: ${workspaceId}`);
             } catch (apiError) {
-              console.warn(`[调试] API获取工作空间ID失败，使用默认配置:`, apiError);
               return this.getDefaultWorkspaceProfile();
             }
           }
         }
-      } else {
-        console.log(`[调试] 直接使用提供的工作空间ID: ${id}`);
       }
       
       // 确保我们有有效的工作空间ID
       if (!workspaceId || workspaceId === id && isUUID) {
-        console.warn(`[调试] 无法解析有效的工作空间ID，使用默认配置`);
         return this.getDefaultWorkspaceProfile();
       }
       
       // 使用确定的工作空间ID获取工作空间信息
-      console.log(`[调试] 获取工作空间信息, ID: ${workspaceId}`);
       const workspace = await this.getWorkspaceInfo(workspaceId, signal);
       
       if (!workspace) {
-        console.warn(`[调试] 无法获取工作空间信息: ${workspaceId}`);
         return this.getDefaultWorkspaceProfile();
       }
       
@@ -701,7 +655,6 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
         isTeam: Boolean(workspace.team),
       };
       
-      console.log('[调试] 工作空间资料:', profile);
       return profile;
       
     } catch (error) {
@@ -716,7 +669,6 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
     
     for (let attempt = 1; attempt <= maxRetries; attempt++) {
       try {
-        console.log(`[调试] 尝试第 ${attempt} 次获取文档 ${docId} 对应的工作空间ID`);
         
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 5000); // 5秒超时
@@ -738,7 +690,6 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
           if (data.success && data.workspaceId) {
             // 保存到缓存
             this.docWorkspaceMapping.set(docId, data.workspaceId);
-            console.log(`[调试] API返回文档 ${docId} 对应的工作空间ID: ${data.workspaceId}`);
             return data.workspaceId;
           }
         }
@@ -748,7 +699,6 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
           console.warn(`[调试] 文档 ${docId} 在数据库中不存在，尝试使用当前工作空间ID`);
           const currentWorkspaceId = this.getCurrentWorkspaceId();
           if (currentWorkspaceId) {
-            console.log(`[调试] 使用当前工作空间ID: ${currentWorkspaceId}`);
             // 保存到缓存
             this.docWorkspaceMapping.set(docId, currentWorkspaceId);
             return currentWorkspaceId;
@@ -764,7 +714,6 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
           console.warn(`[调试] 所有重试均失败，尝试使用当前工作空间ID`);
           const currentWorkspaceId = this.getCurrentWorkspaceId();
           if (currentWorkspaceId) {
-            console.log(`[调试] 使用当前工作空间ID作为fallback: ${currentWorkspaceId}`);
             // 保存到缓存
             this.docWorkspaceMapping.set(docId, currentWorkspaceId);
             return currentWorkspaceId;
@@ -865,7 +814,6 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
     
     // 如果是默认工作空间ID，直接返回默认信息，不发送API请求
     if (workspaceId.startsWith('default-workspace-')) {
-      console.log(`[调试] 检测到默认工作空间ID，返回默认信息: ${workspaceId}`);
       return {
         id: workspaceId,
         name: 'Default Workspace',
@@ -876,8 +824,6 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
     
     for (let attempt = 1; attempt <= maxRetries; attempt++) {
       try {
-        console.log(`[调试] 尝试第 ${attempt} 次获取工作空间信息: ${workspaceId}`);
-        
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 8000); // 8秒超时
         
@@ -893,13 +839,10 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
         
         clearTimeout(timeoutId);
         
-        console.log(`[调试] 工作空间信息响应状态: ${response.status}, 尝试: ${attempt}`);
-        
         if (response.ok) {
           const data = await response.json();
           if (data.success || data.workspace || data.id) {
             const workspace = data.workspace || data;
-            console.log(`[调试] 成功获取工作空间信息:`, workspace);
             return {
               id: workspace.id || workspaceId,
               name: workspace.name || 'Default Workspace',
@@ -910,10 +853,8 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
         }
         
         if (response.status === 404) {
-          console.warn(`[调试] 工作空间不存在: ${workspaceId}`);
           // 如果是UUID格式的工作空间ID且不存在，尝试作为默认工作空间处理
           if (workspaceId.match(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i)) {
-            console.log(`[调试] UUID格式的工作空间不存在，返回默认信息: ${workspaceId}`);
             return {
               id: workspaceId,
               name: 'Default Workspace',
@@ -954,14 +895,6 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
   }
 
   getEngineWorkerInitOptions(workspaceId: string): WorkerInitOptions {
-    // 🔧 Android WebView专用：添加全面的安全检查
-    console.log('🔧 [CloudWorkspaceFlavourProvider] getEngineWorkerInitOptions 被调用');
-    console.log('  - workspaceId:', workspaceId);
-    console.log('  - this.flavour:', this.flavour);
-    console.log('  - this.server:', !!this.server);
-    console.log('  - this.server.serverMetadata:', !!this.server?.serverMetadata);
-    console.log('  - this.server.config$:', !!this.server?.config$);
-    
     // 🛡️ 防御性检查：确保所有必需的属性都存在
     if (!this.server) {
       console.error('❌ [CloudWorkspaceFlavourProvider] server 未定义');
@@ -987,20 +920,6 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
       'DocStorageV1Type': this.DocStorageV1Type,
       'BlobStorageV1Type': this.BlobStorageV1Type
     };
-    
-    // 检查每个存储类型
-    for (const [name, type] of Object.entries(storageTypes)) {
-      if (type) {
-        console.log(`  - ${name}:`, {
-          exists: !!type,
-          hasIdentifier: !!type.identifier,
-          identifier: type.identifier || 'undefined',
-          typeString: type.toString ? type.toString() : 'no toString'
-        });
-      } else {
-        console.log(`  - ${name}: null/undefined`);
-      }
-    }
     
     // 🛡️ 防御性获取服务器配置 - 修复Android WebView环境下的undefined访问
     const getServerConfig = () => {
@@ -1030,7 +949,6 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
           return { type: ServerDeploymentType.Selfhosted };
         }
         
-        console.log('✅ [CloudWorkspaceFlavourProvider] 成功获取服务器配置:', configValue);
         return configValue;
       } catch (error) {
         console.error('❌ [CloudWorkspaceFlavourProvider] 获取服务器配置时发生未预期错误:', error);

@@ -33,7 +33,6 @@ export class FetchService extends Service {
    * fetch with custom custom timeout and error handling.
    */
   fetch = async (input: string, init?: FetchInit): Promise<Response> => {
-    logger.debug('fetch', input);
     const externalSignal = init?.signal;
     if (externalSignal?.aborted) {
       throw externalSignal.reason;
@@ -70,8 +69,7 @@ export class FetchService extends Service {
           headers['Authorization'] = `Bearer ${token}`;
         }
       } catch (error) {
-        // 如果无法获取token，继续执行但记录警告
-        console.warn('Failed to get token for authorization:', error);
+        // 如果无法获取token，继续执行
       }
     }
 
@@ -101,7 +99,6 @@ export class FetchService extends Service {
     if (!res.ok) {
       if (res.status === 504) {
         const error = new Error('网关超时');
-        logger.debug('网络错误', error);
         throw new UserFriendlyError({
           status: 504,
           code: 'NETWORK_ERROR',

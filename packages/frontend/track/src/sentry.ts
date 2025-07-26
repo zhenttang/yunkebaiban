@@ -15,7 +15,7 @@ function createSentry() {
         // https://docs.sentry.io/platforms/javascript/guides/react/#配置
         client = Sentry.init({
           dsn: BUILD_CONFIG.SENTRY_DSN,
-          debug: BUILD_CONFIG.debug ?? false,
+          debug: false, // 禁用Sentry调试日志
           environment: BUILD_CONFIG.appBuildType,
           integrations: [
             Sentry.reactRouterV6BrowserTracingIntegration({

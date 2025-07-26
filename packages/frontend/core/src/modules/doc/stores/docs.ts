@@ -220,17 +220,14 @@ export class DocsStore extends Store {
   }
 
   watchDocListReady() {
-    console.log('📋 [DocsStore.watchDocListReady] 开始监听文档列表就绪状态');
     
     return this.workspaceService.workspace.engine.doc
       .docState$(this.workspaceService.workspace.id)
       .pipe(
         map(state => {
-          console.log('📋 [DocsStore.watchDocListReady] 收到同步状态更新:', state);
           // 如果文档已加载且可用，即使同步状态未完成也认为就绪
           // 这解决了服务器模式下同步状态检查导致的无限等待问题
           const ready = state.synced || (state.ready && state.loaded);
-          console.log('📋 [DocsStore.watchDocListReady] 计算的就绪状态:', ready);
           return ready;
         }),
         // 添加超时机制：如果5秒内没有同步完成，仍然允许继续

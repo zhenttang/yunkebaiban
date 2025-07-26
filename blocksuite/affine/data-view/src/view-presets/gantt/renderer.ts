@@ -10,27 +10,21 @@ import { GanttWorkingDaySegment } from './components/gantt-working-day-segment.j
 // 注册所有自定义元素
 if (!customElements.get('gantt-view')) {
   customElements.define('gantt-view', GanttView);
-  console.log('✅ [GanttRenderer] Registered gantt-view element');
 }
 if (!customElements.get('gantt-timeline-header')) {
   customElements.define('gantt-timeline-header', GanttTimelineHeader);
-  console.log('✅ [GanttRenderer] Registered gantt-timeline-header element');
 }
 if (!customElements.get('gantt-task-bar')) {
   customElements.define('gantt-task-bar', GanttTaskBar);
-  console.log('✅ [GanttRenderer] Registered gantt-task-bar element');
 }
 if (!customElements.get('gantt-working-day-segment')) {
   customElements.define('gantt-working-day-segment', GanttWorkingDaySegment);
-  console.log('✅ [GanttRenderer] Registered gantt-working-day-segment element');
 }
 if (!customElements.get('dv-gantt-view-ui')) {
   customElements.define('dv-gantt-view-ui', GanttViewUI);
-  console.log('✅ [GanttRenderer] Registered dv-gantt-view-ui element');
 }
 if (!customElements.get('mobile-gantt-view-ui')) {
   customElements.define('mobile-gantt-view-ui', MobileGanttViewUI);
-  console.log('✅ [GanttRenderer] Registered mobile-gantt-view-ui element');
 }
 
 export const ganttViewMeta = ganttViewModel.createMeta({

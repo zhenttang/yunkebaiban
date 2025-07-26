@@ -32,6 +32,14 @@ import { WorkspaceAvatar } from '../../workspace-avatar';
 import * as styles from './styles.css';
 export { PureWorkspaceCard } from './pure-workspace-card';
 
+// Create a ref-forwarding wrapper for CollaborationIcon to fix React ref warnings
+const CollaborationIconWithRef = forwardRef<HTMLSpanElement, any>((props, ref) => (
+  <span ref={ref} style={{ display: 'inline-flex', alignItems: 'center' }}>
+    <CollaborationIcon {...props} />
+  </span>
+));
+CollaborationIconWithRef.displayName = 'CollaborationIconWithRef';
+
 const CloudWorkspaceStatus = () => {
   return (
     <>
@@ -348,7 +356,7 @@ export const WorkspaceCard = forwardRef<
             <Tooltip
               content={t['com.affine.settings.workspace.state.joined']()}
             >
-              <CollaborationIcon className={styles.collaborationIcon} />
+              <CollaborationIconWithRef className={styles.collaborationIcon} />
             </Tooltip>
           )}
           {hideTeamWorkspaceIcon || !information?.isTeam ? null : (

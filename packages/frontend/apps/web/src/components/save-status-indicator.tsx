@@ -93,7 +93,6 @@ export const SaveStatusIndicator: React.FC<SaveStatusIndicatorProps> = () => {
       return;
     }
 
-    console.log('🚀 [保存状态指示器] 开始手动保存');
     console.log('  📊 路由参数:', { 
       workspaceId: finalWorkspaceId, 
       docId: actualDocId, 
@@ -111,18 +110,11 @@ export const SaveStatusIndicator: React.FC<SaveStatusIndicatorProps> = () => {
                          document.querySelector('.ProseMirror')?.textContent ||
                          `手动保存测试内容 - ${new Date().toISOString()}`;
       
-      console.log('📝 [保存状态指示器] 获取页面内容:');
-      console.log('  🔍 查找选择器结果:');
-      console.log('    [data-block-id]:', document.querySelector('[data-block-id]')?.textContent?.substring(0, 100));
-      console.log('    .affine-page-viewport:', document.querySelector('.affine-page-viewport')?.textContent?.substring(0, 100));
-      console.log('    [contenteditable]:', document.querySelector('[contenteditable]')?.textContent?.substring(0, 100));
-      console.log('    .ProseMirror:', document.querySelector('.ProseMirror')?.textContent?.substring(0, 100));
       console.log('  📄 最终选择的内容:', pageContent.substring(0, 200) + '...');
       console.log('  📊 内容长度:', pageContent.length, '字符');
 
       // 创建YJS更新数据
       const updateData = createMockYjsUpdate(pageContent);
-      console.log('📦 [保存状态指示器] 创建YJS更新数据:');
       console.log('  📊 原始内容:', pageContent);
       console.log('  📦 更新数据大小:', updateData.length, '字节');
       console.log('  🔍 更新数据前20字节:', Array.from(updateData.slice(0, 20)).map(b => b.toString(16).padStart(2, '0')).join(' '));
@@ -134,7 +126,6 @@ export const SaveStatusIndicator: React.FC<SaveStatusIndicatorProps> = () => {
       console.log('  📊 Base64长度:', base64String.length, '字符');
 
       // 使用云存储管理器推送更新
-      console.log('📤 [保存状态指示器] 调用云存储管理器推送更新...');
       console.log(`  📊 传递给pushDocUpdate的参数:`);
       console.log(`    docId: "${actualDocId}"`);
       console.log(`    updateData类型: ${updateData.constructor.name}`);
@@ -157,7 +148,6 @@ export const SaveStatusIndicator: React.FC<SaveStatusIndicatorProps> = () => {
       
       const timestamp = await cloudStorage.pushDocUpdate(actualDocId, updateData);
       
-      console.log('✅ [保存状态指示器] 手动保存成功:', timestamp);
       setSaveStatus('saved');
       setLastSaveTime(new Date(timestamp));
 
@@ -173,7 +163,6 @@ export const SaveStatusIndicator: React.FC<SaveStatusIndicatorProps> = () => {
   useEffect(() => {
     const handleInput = () => {
       if (saveStatus !== 'saving') {
-        console.log('⌨️ [保存状态指示器] 检测到输入，标记为未保存');
         setSaveStatus('unsaved');
       }
     };

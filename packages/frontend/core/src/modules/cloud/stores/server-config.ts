@@ -22,13 +22,10 @@ export class ServerConfigStore extends Store {
     serverBaseUrl: string,
     abortSignal?: AbortSignal
   ): Promise<ServerConfigType> {
-    console.log('🌐 [ServerConfigStore.fetchServerConfig] 开始获取服务器配置');
-    console.log('🌐 [ServerConfigStore.fetchServerConfig] 服务器URL:', serverBaseUrl);
     
     // 使用HTTP REST API替代GraphQL
     try {
       const url = `${serverBaseUrl}/health/detailed`;
-      console.log('🌐 [ServerConfigStore.fetchServerConfig] 请求URL:', url);
       
       const response = await fetch(url, {
         method: 'GET',
@@ -38,8 +35,6 @@ export class ServerConfigStore extends Store {
         },
       });
 
-      console.log('🌐 [ServerConfigStore.fetchServerConfig] 响应状态:', response.status);
-      console.log('🌐 [ServerConfigStore.fetchServerConfig] 响应头:', response.headers);
 
       if (!response.ok) {
         const errorText = await response.text();
@@ -48,7 +43,6 @@ export class ServerConfigStore extends Store {
       }
 
       const healthData = await response.json();
-      console.log('🌐 [ServerConfigStore.fetchServerConfig] 健康检查数据:', healthData);
       
       // 返回兼容的服务器配置格式
       const config = {
@@ -66,7 +60,6 @@ export class ServerConfigStore extends Store {
         type: 'selfhosted'
       };
       
-      console.log('✅ [ServerConfigStore.fetchServerConfig] 成功获取配置:', config);
       return config;
     } catch (error) {
       console.error('❌ [ServerConfigStore.fetchServerConfig] 获取服务器配置失败:', error);
@@ -86,7 +79,6 @@ export class ServerConfigStore extends Store {
         type: 'selfhosted'
       };
       
-      console.warn('⚠️ [ServerConfigStore.fetchServerConfig] 使用默认配置:', defaultConfig);
       return defaultConfig;
     }
   }

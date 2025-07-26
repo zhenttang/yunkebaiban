@@ -98,10 +98,7 @@ export class DocsService extends Service {
   }
 
   open(docId: string) {
-    console.log('📖 [DocsService.open] 开始打开文档:', docId);
-    
     const docRecord = this.list.doc$(docId).value;
-    console.log('📖 [DocsService.open] docRecord:', docRecord);
     
     if (!docRecord) {
       console.error('❌ [DocsService.open] 文档记录未找到:', docId);
@@ -109,7 +106,6 @@ export class DocsService extends Service {
     }
     
     const blockSuiteDoc = this.store.getBlockSuiteDoc(docId);
-    console.log('📖 [DocsService.open] blockSuiteDoc:', blockSuiteDoc);
     
     if (!blockSuiteDoc) {
       console.error('❌ [DocsService.open] BlockSuite 文档未找到:', docId);
@@ -118,11 +114,9 @@ export class DocsService extends Service {
 
     const exists = this.pool.get(docId);
     if (exists) {
-      console.log('📖 [DocsService.open] 从池中获取已存在的文档:', docId);
       return { doc: exists.obj, release: exists.release };
     }
 
-    console.log('📖 [DocsService.open] 创建新的文档实例:', docId);
     const docScope = this.framework.createScope(DocScope, {
       docId,
       blockSuiteDoc,
@@ -131,7 +125,6 @@ export class DocsService extends Service {
 
     try {
       blockSuiteDoc.load();
-      console.log('✅ [DocsService.open] BlockSuite 文档加载成功');
     } catch (e) {
       console.error('❌ [DocsService.open] 加载文档失败:', {
         docId,
@@ -149,12 +142,10 @@ export class DocsService extends Service {
 
     const { obj, release } = this.pool.put(docId, doc);
 
-    console.log('✅ [DocsService.open] 文档打开成功:', docId);
     return { doc: obj, release };
   }
 
   createDoc(options: DocCreateOptions = {}) {
-    console.log('📝 [DocsService.createDoc] 开始创建文档:', options);
     
     for (const middleware of this.docCreateMiddlewares) {
       options = middleware.beforeCreate
@@ -162,10 +153,8 @@ export class DocsService extends Service {
         : options;
     }
     
-    console.log('📝 [DocsService.createDoc] 中间件处理后的选项:', options);
     
     const id = this.store.createDoc(options.id);
-    console.log('📝 [DocsService.createDoc] 创建的文档ID:', id);
     
     const docStore = this.store.getBlockSuiteDoc(id);
     if (!docStore) {
@@ -173,15 +162,12 @@ export class DocsService extends Service {
       throw new Error('创建文档失败');
     }
 
-    console.log('📝 [DocsService.createDoc] BlockSuite 文档创建成功:', docStore);
     
     if (options.skipInit !== true) {
       initDocFromProps(docStore, options.docProps, options);
-      console.log('📝 [DocsService.createDoc] 文档初始化完成');
     }
     
     const docRecord = this.list.doc$(id).value;
-    console.log('📝 [DocsService.createDoc] 获取文档记录:', docRecord);
     
     if (!docRecord) {
       console.error('❌ [DocsService.createDoc] 无法获取文档记录, ID:', id);
@@ -190,17 +176,14 @@ export class DocsService extends Service {
     
     if (options.primaryMode) {
       docRecord.setPrimaryMode(options.primaryMode);
-      console.log('📝 [DocsService.createDoc] 设置主要模式:', options.primaryMode);
     }
     
     if (options.isTemplate) {
       docRecord.setProperty('isTemplate', true);
-      console.log('📝 [DocsService.createDoc] 设置为模板');
     }
     
     for (const middleware of this.docCreateMiddlewares) {
       middleware.afterCreate?.(docRecord, options);
-      console.log('📝 [DocsService.createDoc] 执行 afterCreate 中间件');
     }
     
     docRecord.setCreatedAt(Date.now());
@@ -211,7 +194,6 @@ export class DocsService extends Service {
       docCreateOptions: options,
     });
     
-    console.log('✅ [DocsService.createDoc] 文档创建完成:', id);
     return docRecord;
   }
 

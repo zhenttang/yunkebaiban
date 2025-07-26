@@ -117,10 +117,6 @@ export class WorkspaceRepositoryService extends Service {
       customEngineWorkerInitOptions ??
       (() => {
         try {
-          console.log('🔧 [WorkspaceRepositoryService] 尝试获取engineWorkerInitOptions');
-          console.log('  - flavourProvider存在:', !!flavourProvider);
-          console.log('  - flavourProvider.getEngineWorkerInitOptions存在:', !!flavourProvider?.getEngineWorkerInitOptions);
-          console.log('  - workspaceId:', openOptions.metadata.id);
           
           if (!flavourProvider) {
             throw new Error('flavourProvider不存在');
@@ -130,9 +126,7 @@ export class WorkspaceRepositoryService extends Service {
             throw new Error('flavourProvider.getEngineWorkerInitOptions方法不存在');
           }
           
-          const result = flavourProvider.getEngineWorkerInitOptions(openOptions.metadata.id);
-          console.log('✅ [WorkspaceRepositoryService] 成功获取engineWorkerInitOptions');
-          return result;
+          return flavourProvider.getEngineWorkerInitOptions(openOptions.metadata.id);
         } catch (error) {
           console.error('❌ [WorkspaceRepositoryService] 获取engineWorkerInitOptions失败:', error);
           
@@ -179,9 +173,6 @@ export class WorkspaceRepositoryService extends Service {
 
     // Android环境下安全启动引擎
     try {
-      console.log('🚀 [WorkspaceRepositoryService] 尝试启动工作空间引擎');
-      console.log('  - workspace存在:', !!workspace);
-      console.log('  - workspace.engine存在:', !!workspace.engine);
       
       if (!workspace) {
         throw new Error('workspace不存在');
@@ -192,7 +183,6 @@ export class WorkspaceRepositoryService extends Service {
       }
       
       workspace.engine.start();
-      console.log('✅ [WorkspaceRepositoryService] 工作空间引擎启动成功');
     } catch (error) {
       console.error('❌ [WorkspaceRepositoryService] 工作空间引擎启动失败:', error);
       throw error;

@@ -393,22 +393,16 @@ export const Component = () => {
   const params = useParams();
   const recentPages = useService(RecentDocsService);
 
-  console.log('🎯 [DetailPage.Component] 页面组件渲染，params:', params);
-
   useEffect(() => {
     if (params.pageId) {
       const pageId = params.pageId;
-      console.log('🎯 [DetailPage.Component] 设置当前页面ID:', pageId);
       localStorage.setItem('last_page_id', pageId);
-
       recentPages.addRecentDoc(pageId);
     }
   }, [params, recentPages]);
 
   const pageId = params.pageId;
   const canAccess = useGuard('Doc_Read', pageId ?? '');
-
-  console.log('🎯 [DetailPage.Component] 页面权限检查结果:', canAccess);
 
   return pageId ? (
     <DetailPageWrapper

@@ -29,8 +29,10 @@ export const WorkspaceSettingBilling = () => {
   );
 
   useEffect(() => {
+    // revalidate subscription - only on mount
     subscriptionService?.subscription.revalidate();
-  }, [subscriptionService?.subscription]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   if (workspace === null) {
     return null;

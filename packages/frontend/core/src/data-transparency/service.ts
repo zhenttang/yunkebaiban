@@ -40,7 +40,6 @@ export class DataTransparencyService extends EventEmitter {
   async initialize(): Promise<void> {
     if (this.isInitialized) return;
 
-    console.log('🔍 [数据透明化服务] 初始化...');
     
     // 初始化全局事件监听
     this.setupGlobalListeners();
@@ -48,7 +47,6 @@ export class DataTransparencyService extends EventEmitter {
     this.isInitialized = true;
     this.emit('initialized');
     
-    console.log('✅ [数据透明化服务] 初始化完成');
   }
 
   /**
@@ -155,7 +153,6 @@ export class DataTransparencyService extends EventEmitter {
    * 刷新所有检测器
    */
   async refreshAll(): Promise<void> {
-    console.log('🔄 [数据透明化服务] 刷新所有检测器...');
     
     const promises = Array.from(this.detectors.values()).map(detector => {
       detector.emit('refresh-requested');
@@ -179,7 +176,6 @@ export class DataTransparencyService extends EventEmitter {
    * 清理不使用的检测器
    */
   cleanupDetectors(): void {
-    console.log('🧹 [数据透明化服务] 清理不使用的检测器...');
     
     // 这里可以实现清理逻辑，比如清理超过一定时间未使用的检测器
     // 暂时保留所有检测器
@@ -196,7 +192,6 @@ export class DataTransparencyService extends EventEmitter {
     // 更新所有检测器的配置
     this.detectors.forEach((detector, workspaceId) => {
       // 这里需要检测器支持配置更新
-      console.log(`🔄 [数据透明化服务] 更新检测器配置 ${workspaceId}`);
     });
     
     this.emit('config-updated', this.config);
@@ -236,7 +231,6 @@ export class DataTransparencyService extends EventEmitter {
     const cloudManager = (window as any).__CLOUD_STORAGE_MANAGER__;
     if (cloudManager) {
       // 可以监听云存储状态变化并触发检测器更新
-      console.log('🔗 [数据透明化服务] 连接到云存储管理器');
     }
 
     // 监听网络状态变化

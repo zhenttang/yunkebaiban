@@ -8,7 +8,6 @@ import { UserFriendlyError } from '@affine/error';
 
 // 临时占位符函数和类型，因为GraphQL后端已被移除
 const gqlFetcherFactory = (endpoint: string, fetch: Function) => {
-  console.warn('gqlFetcherFactory暂时禁用 - GraphQL后端已移除');
   return async (options: any) => {
     throw new Error('GraphQL操作暂时禁用 - 后端已改为Java');
   };

@@ -606,22 +606,27 @@ export class DocumentStructureVisualization extends WithDisposable(ShadowlessEle
   `;
 
   @property({ attribute: false })
-  model!: BlockModel;
+  declare model: BlockModel;
 
   @property({ attribute: false })
-  settings: StructureSettings = {
-    showWordCount: true,
-    showCreateTime: true,
-    showTags: false,
-    maxDepth: 6,
-    viewMode: 'tree',
-    theme: 'light',
-    enableSearch: true,
-    enableFilter: true,
-    enableExport: true,
-    autoUpdate: true,
-    compactMode: false,
-  };
+  declare settings: StructureSettings;
+
+  constructor() {
+    super();
+    this.settings = {
+      showWordCount: true,
+      showCreateTime: true,
+      showTags: false,
+      maxDepth: 6,
+      viewMode: 'tree',
+      theme: 'light',
+      enableSearch: true,
+      enableFilter: true,
+      enableExport: true,
+      autoUpdate: true,
+      compactMode: false,
+    };
+  }
 
   @state()
   private _documentTree: DocumentNode[] = [];

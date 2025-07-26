@@ -10,10 +10,11 @@ import {
   onStart,
 } from '@toeverything/infra';
 import { isEqual } from 'lodash-es';
-import { tap } from 'rxjs';
+import { debounceTime, tap } from 'rxjs';
 
 import { validateAndReduceImage } from '../../../utils/reduce-image';
 import type { AccountProfile, AuthStore } from '../stores/auth';
+import { AvatarUpdated } from '../events/avatar-updated';
 
 export interface AuthSessionInfo {
   account: AuthAccountInfo;
@@ -44,8 +45,7 @@ export type AuthSessionStatus = (
 export class AuthSession extends Entity {
   session$: LiveData<AuthSessionUnauthenticated | AuthSessionAuthenticated> =
     LiveData.from(this.store.watchCachedAuthSession(), null).map(session => {
-      console.log('Session$ mapping called with session:', session);
-      const result = session
+      return session
         ? {
             status: 'authenticated',
             session: session as AuthSessionInfo,
@@ -53,14 +53,9 @@ export class AuthSession extends Entity {
         : {
             status: 'unauthenticated',
           };
-      console.log('Session$ result:', result);
-      return result;
     });
 
-  status$ = this.session$.map(session => {
-    console.log('Status$ mapping called with session status:', session.status);
-    return session.status;
-  });
+  status$ = this.session$.map(session => session.status);
 
   account$ = this.session$.map(session =>
     session.status === 'authenticated' ? session.session.account : null
@@ -74,55 +69,78 @@ export class AuthSession extends Entity {
 
   isRevalidating$ = new LiveData(false);
 
+  // 添加循环检测机制
+  private revalidateCallCount = 0;
+  private revalidateResetTimeout: NodeJS.Timeout | null = null;
+  private lastRevalidateTime = 0;
+
   constructor(private readonly store: AuthStore) {
     super();
   }
 
   revalidate = effect(
-    exhaustMapWithTrailing(() =>
-      fromPromise(() => this.getSession()).pipe(
+    exhaustMapWithTrailing(() => {
+      // 防止短时间内频繁调用
+      const now = Date.now();
+      if (now - this.lastRevalidateTime < 500) {
+        return fromPromise(() => Promise.resolve(null));
+      }
+      
+      // 循环检测机制
+      this.revalidateCallCount++;
+      this.lastRevalidateTime = now;
+      
+      // 重置计数器
+      if (this.revalidateResetTimeout) {
+        clearTimeout(this.revalidateResetTimeout);
+      }
+      this.revalidateResetTimeout = setTimeout(() => {
+        this.revalidateCallCount = 0;
+      }, 5000); // 5秒内重置计数
+      
+      // 如果5秒内调用超过10次，触发断路器
+      if (this.revalidateCallCount > 10) {
+        return fromPromise(() => Promise.resolve(null));
+      }
+      
+      return fromPromise(() => this.getSession()).pipe(
+        debounceTime(500), // 增加防抖时间到500ms
         backoffRetry({
           count: 3,
         }),
         tap(sessionInfo => {
-          console.log('Session revalidate result:', sessionInfo);
-          console.log('Current cached session:', this.store.getCachedAuthSession());
+          // 更严格的变化检查，包括深度比较
+          const currentSession = this.store.getCachedAuthSession();
+          let hasChanged = false;
           
-          // 检查会话是否发生变化
-          const currentSessionJson = JSON.stringify(this.store.getCachedAuthSession());
-          const newSessionJson = JSON.stringify(sessionInfo);
-          const hasChanged = currentSessionJson !== newSessionJson;
-          
-          console.log('Session changed?', hasChanged);
-          console.log('Current session JSON:', currentSessionJson);
-          console.log('New session JSON:', newSessionJson);
+          if (!currentSession && !sessionInfo) {
+            hasChanged = false;
+          } else if (!currentSession || !sessionInfo) {
+            hasChanged = true;
+          } else {
+            // 深度比较账户信息
+            hasChanged = !isEqual(currentSession.account, sessionInfo.account);
+          }
           
           if (hasChanged) {
-            console.log('Session changed, updating cached session');
             this.store.setCachedAuthSession(sessionInfo);
-            console.log('Session updated, new cached session:', this.store.getCachedAuthSession());
-            // 移除强制UI更新，因为setCachedAuthSession已经会触发watchCachedAuthSession的更新
           } else {
-            console.log('Session unchanged, no update needed');
           }
         }),
         onStart(() => {
-          console.log('Session revalidation started');
           this.isRevalidating$.next(true);
         }),
         onComplete(() => {
-          console.log('Session revalidation completed');
           this.isRevalidating$.next(false);
         })
-      )
-    )
+      );
+    })
   );
 
   private async getSession(): Promise<AuthSessionInfo | null> {
     try {
       const session = await this.store.fetchSession();
 
-      console.log('Session response:', session);
 
       if (session?.user) {
         const account = {
@@ -135,14 +153,11 @@ export class AuthSession extends Entity {
         const result = {
           account,
         };
-        console.log('Session account created:', result);
         return result;
       } else {
-        console.log('No user in session response, returning null');
         return null;
       }
     } catch (e) {
-      console.error('Error fetching session:', e);
       if (UserFriendlyError.fromAny(e).is('UNSUPPORTED_CLIENT_VERSION')) {
         return null;
       }
@@ -160,12 +175,47 @@ export class AuthSession extends Entity {
 
   async removeAvatar() {
     await this.store.removeAvatar();
+    
+    // 发送头像删除事件，通知其他缓存服务更新
+    const currentSession = this.store.getCachedAuthSession();
+    if (currentSession) {
+      this.eventBus.emit(AvatarUpdated, {
+        userId: currentSession.account.id,
+        avatarUrl: null
+      });
+    }
+    
     await this.waitForRevalidation();
   }
 
   async uploadAvatar(file: File) {
     const reducedFile = await validateAndReduceImage(file);
-    await this.store.uploadAvatar(reducedFile);
+    const avatarUrl = await this.store.uploadAvatar(reducedFile);
+    
+    // 立即更新缓存的会话信息，包含新的头像URL
+    const currentSession = this.store.getCachedAuthSession();
+    if (currentSession && avatarUrl) {
+      const updatedSession = {
+        ...currentSession,
+        account: {
+          ...currentSession.account,
+          avatar: avatarUrl,
+          info: currentSession.account.info ? {
+            ...currentSession.account.info,
+            avatarUrl: avatarUrl
+          } : currentSession.account.info
+        }
+      };
+      this.store.setCachedAuthSession(updatedSession);
+      
+      // 发送头像更新事件，通知其他缓存服务更新
+      this.eventBus.emit(AvatarUpdated, {
+        userId: currentSession.account.id,
+        avatarUrl: avatarUrl
+      });
+    }
+    
+    // 然后异步重新验证最新状态
     await this.waitForRevalidation();
   }
 

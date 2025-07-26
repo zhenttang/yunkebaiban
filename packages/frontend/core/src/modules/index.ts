@@ -11,6 +11,7 @@ import { configureAppSidebarModule } from './app-sidebar';
 import { configAtMenuConfigModule } from './at-menu-config';
 import { configureBlobManagementModule } from './blob-management';
 import { configureCloudModule } from './cloud';
+import { configureConsoleHomepageModule } from './console-homepage';
 import { configureCollectionModule } from './collection';
 import { configureCollectionRulesModule } from './collection-rules';
 import { configureWorkspaceDBModule } from './db';
@@ -120,4 +121,5 @@ export function configureCommonModules(framework: Framework) {
   configureCollectionRulesModule(framework);
   configureIndexerEmbeddingModule(framework);
   configureTemporaryUserModule(framework);
+  configureConsoleHomepageModule(framework);
 }

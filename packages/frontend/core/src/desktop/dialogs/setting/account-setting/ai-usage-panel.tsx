@@ -28,15 +28,19 @@ export const AIUsagePanel = ({
   );
   const subscriptionService = useService(SubscriptionService);
   const aiSubscription = useLiveData(subscriptionService.subscription.ai$);
-  useEffect(() => {
-    // revalidate latest subscription status
-    subscriptionService.subscription.revalidate();
-    subscriptionService.prices.revalidate();
-  }, [subscriptionService]);
+  
+  // 移除重复的 revalidate 调用，依赖父组件的统一数据加载
+  // useEffect(() => {
+  //   subscriptionService.subscription.revalidate();
+  //   subscriptionService.prices.revalidate();
+  // }, []);
+  
   const copilotQuotaService = useService(UserCopilotQuotaService);
-  useEffect(() => {
-    copilotQuotaService.copilotQuota.revalidate();
-  }, [copilotQuotaService]);
+  
+  // 移除重复的 revalidate 调用，依赖 AccountChanged 事件自动触发更新
+  // useEffect(() => {
+  //   copilotQuotaService.copilotQuota.revalidate();
+  // }, []);
   const copilotActionLimit = useLiveData(
     copilotQuotaService.copilotQuota.copilotActionLimit$
   );

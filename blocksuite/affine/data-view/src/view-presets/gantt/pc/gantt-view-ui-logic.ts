@@ -19,27 +19,22 @@ export class GanttViewUILogic extends DataViewUILogicBase<GanttSingleView, any> 
 
   constructor(root: DataViewRootUILogic, view: GanttSingleView) {
     super(root, view);
-    console.log('🎯 [GanttViewUILogic] Constructor called with view:', view);
   }
 
   clearSelection = (): void => {
-    console.log('🧹 [GanttViewUILogic] Clear selection called');
     // Clear any selected tasks or timeline selections
   };
 
   addRow = (position: InsertToPosition): string | undefined => {
-    console.log('➕ [GanttViewUILogic] Add row called with position:', position);
     // Add a new row/task to the gantt chart
     return this.view.rowAdd(position);
   };
 
   focusFirstCell = (): void => {
-    console.log('🎯 [GanttViewUILogic] Focus first cell called');
     // Focus the first cell in the gantt view
   };
 
   showIndicator = (evt: MouseEvent): boolean => {
-    console.log('👁️ [GanttViewUILogic] Show indicator called');
     // Show drop indicator for drag operations
     return false;
   };

@@ -80,11 +80,9 @@ export const AffineCommandRegistry = new (class {
       );
     }
 
-    commandLogger.debug(`Registered command ${command.id}`);
     return () => {
       unsubKb?.();
       this.commands.delete(command.id);
-      commandLogger.debug(`Unregistered command ${command.id}`);
     };
   }
 

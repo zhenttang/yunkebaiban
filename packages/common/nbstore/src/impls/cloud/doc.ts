@@ -163,12 +163,6 @@ export class CloudDocStorage extends DocStorageBase<CloudDocStorageOptions> {
     }
     
     // 降级到原始Socket.IO方法
-    console.log('  🔌 检查Socket.IO连接状态...');
-    console.log('  📊 Socket状态:', {
-      hasSocket: !!this.connection.inner.socket,
-      isConnected: this.connection.inner.socket?.connected,
-      socketId: this.connection.inner.socket?.id
-    });
     
     if (!this.connection.inner.socket?.connected) {
       console.error('❌ [NBStore-CloudDocStorage] Socket未连接，无法保存文档');
@@ -322,13 +316,8 @@ class CloudDocStorageConnection extends SocketConnection {
     private readonly options: CloudDocStorageOptions,
     private readonly onServerUpdate: ServerEventsMap['space:broadcast-doc-update']
   ) {
-    // 🔌 [Socket.IO修复] 为Socket.IO连接使用专用端口9092
+    // 为Socket.IO连接使用专用端口9092
     const socketUrl = options.serverBaseUrl.replace(':8080', ':9092');
-    console.log('🔌 [Socket.IO修复] 连接地址调整:', {
-      originalUrl: options.serverBaseUrl,
-      socketUrl: socketUrl,
-      description: 'Socket.IO服务器运行在端口9092'
-    });
     super(socketUrl, options.isSelfHosted);
   }
 

@@ -24,6 +24,9 @@ export class AuthService extends Service {
     store: this.store,
   });
 
+  private lastEmittedAccountId: string | null = null;
+  private accountChangeTimeout: NodeJS.Timeout | null = null;
+
   constructor(
     private readonly fetchService: FetchService,
     private readonly store: AuthStore,
@@ -43,12 +46,27 @@ export class AuthService extends Service {
         skip(1) // skip the initial value
       )
       .subscribe(({ account }) => {
-        if (account === null) {
-          this.eventBus.emit(AccountLoggedOut, account);
-        } else {
-          this.eventBus.emit(AccountLoggedIn, account);
+        // 防止重复发送相同账户变化事件
+        if (account?.id === this.lastEmittedAccountId) {
+          return;
         }
-        this.eventBus.emit(AccountChanged, account);
+        
+        // 清除之前的超时，实现防抖
+        if (this.accountChangeTimeout) {
+          clearTimeout(this.accountChangeTimeout);
+        }
+        
+        // 设置防抖延迟，避免频繁触发
+        this.accountChangeTimeout = setTimeout(() => {
+          this.lastEmittedAccountId = account?.id || null;
+          
+          if (account === null) {
+            this.eventBus.emit(AccountLoggedOut, account);
+          } else {
+            this.eventBus.emit(AccountLoggedIn, account);
+          }
+          this.eventBus.emit(AccountChanged, account);
+        }, 300); // 300ms防抖延迟
       });
   }
 

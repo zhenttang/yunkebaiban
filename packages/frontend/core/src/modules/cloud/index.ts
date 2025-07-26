@@ -133,6 +133,8 @@ export function configureCloudModule(framework: Framework) {
       AuthProvider,
     ])
     .entity(AuthSession, [AuthStore])
+    .service(PublicUserService, [PublicUserStore])
+    .store(PublicUserStore, [GraphQLService, FetchService])
     .service(SubscriptionService, [SubscriptionStore])
     .store(SubscriptionStore, [
       GraphQLService,
@@ -163,8 +165,6 @@ export function configureCloudModule(framework: Framework) {
     .store(InviteInfoStore, [GraphQLService])
     .service(InvitationService, [AcceptInviteStore, InviteInfoStore])
     .store(AcceptInviteStore, [GraphQLService])
-    .service(PublicUserService, [PublicUserStore])
-    .store(PublicUserStore, [GraphQLService, FetchService])
     .service(UserSettingsService, [UserSettingsStore])
     .store(UserSettingsStore, [GraphQLService]);
 

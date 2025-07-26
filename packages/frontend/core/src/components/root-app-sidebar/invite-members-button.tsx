@@ -4,7 +4,15 @@ import { WorkspaceService } from '@affine/core/modules/workspace';
 import { useI18n } from '@affine/i18n';
 import { CollaborationIcon } from '@blocksuite/icons/rc';
 import { useService } from '@toeverything/infra';
-import { useCallback } from 'react';
+import { useCallback, forwardRef } from 'react';
+
+// Wrap CollaborationIcon to support ref forwarding by wrapping it in a span
+const CollaborationIconWithRef = forwardRef<HTMLSpanElement>((props, ref) => (
+  <span ref={ref} style={{ display: 'inline-flex', alignItems: 'center' }}>
+    <CollaborationIcon {...props} />
+  </span>
+));
+CollaborationIconWithRef.displayName = 'CollaborationIconWithRef';
 
 export const InviteMembersButton = () => {
   const workspace = useService(WorkspaceService).workspace;
@@ -27,7 +35,7 @@ export const InviteMembersButton = () => {
   return (
     <MenuItem
       data-testid="slider-bar-invite-members-button"
-      icon={<CollaborationIcon />}
+      icon={<CollaborationIconWithRef />}
       onClick={onOpenInviteMembersModal}
     >
       {t['Invite Members']()}

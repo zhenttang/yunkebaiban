@@ -14,6 +14,7 @@ import * as styles from './storage-progress.css';
 export interface StorageProgressProgress {
   upgradable?: boolean;
   onUpgrade: () => void;
+  noAutoRevalidate?: boolean; // 新增属性，避免重复revalidate
 }
 
 enum ButtonType {
@@ -21,14 +22,18 @@ enum ButtonType {
   Default = 'secondary',
 }
 
-export const StorageProgress = ({ onUpgrade }: StorageProgressProgress) => {
+export const StorageProgress = ({ onUpgrade, noAutoRevalidate = true }: StorageProgressProgress) => {
   const t = useI18n();
   const quota = useService(UserQuotaService).quota;
 
-  useEffect(() => {
-    // revalidate quota to get the latest status
-    quota.revalidate();
-  }, [quota]);
+  // 移除重复的 revalidate 调用，默认禁用自动重新验证
+  // 依赖父组件的统一数据加载和 AccountChanged 事件自动触发更新
+  // useEffect(() => {
+  //   if (!noAutoRevalidate) {
+  //     quota.revalidate();
+  //   }
+  // }, []);
+  
   const color = useLiveData(quota.color$);
   const usedFormatted = useLiveData(quota.usedFormatted$);
   const maxFormatted = useLiveData(quota.maxFormatted$);
@@ -39,10 +44,13 @@ export const StorageProgress = ({ onUpgrade }: StorageProgressProgress) => {
     serverService.server.features$.map(f => f?.payment)
   );
   const subscription = useService(SubscriptionService).subscription;
-  useEffect(() => {
-    // revalidate subscription to get the latest status
-    subscription.revalidate();
-  }, [subscription]);
+  
+  // 移除重复的 subscription revalidate 调用
+  // useEffect(() => {
+  //   if (!noAutoRevalidate) {
+  //     subscription.revalidate();
+  //   }
+  // }, []);
 
   const proSubscription = useLiveData(subscription.pro$);
   const isFreeUser = !proSubscription;

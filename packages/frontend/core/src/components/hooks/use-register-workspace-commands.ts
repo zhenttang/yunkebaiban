@@ -120,11 +120,9 @@ export function useRegisterWorkspaceCommands() {
       unsub();
     };
   }, [
-    store,
     t,
     currentWorkspace.docCollection,
     navigationHelper,
-    globalDialogService,
     workspaceDialogService,
     workbenchService,
   ]);
