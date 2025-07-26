@@ -21,25 +21,25 @@ export const SaveStatusIndicator: React.FC<SaveStatusIndicatorProps> = () => {
   const docId = params.pageId; // 在AFFiNE中，pageId就是docId
 
   // 调试信息 - 显示所有可能的参数
-  console.log('🔍 [SaveStatusIndicator] 路由参数调试:', {
-    allParams: params,
-    workspaceId: params.workspaceId,
-    pageId: params.pageId,
-    docId: params.docId,
-    id: params.id,
-    pathname: window.location.pathname,
-    search: window.location.search,
-    hash: window.location.hash,
-    href: window.location.href
-  });
+  // console.log('🔍 [SaveStatusIndicator] 路由参数调试:', {
+  //   allParams: params,
+  //   workspaceId: params.workspaceId,
+  //   pageId: params.pageId,
+  //   docId: params.docId,
+  //   id: params.id,
+  //   pathname: window.location.pathname,
+  //   search: window.location.search,
+  //   hash: window.location.hash,
+  //   href: window.location.href
+  // });
 
   // 尝试从URL路径中解析docId
   const pathSegments = window.location.pathname.split('/').filter(Boolean);
-  console.log('🔍 [SaveStatusIndicator] URL路径分析:', {
-    pathSegments,
-    potentialDocId: pathSegments[pathSegments.length - 1],
-    isWorkspacePath: pathSegments[0] === 'workspace'
-  });
+  // console.log('🔍 [SaveStatusIndicator] URL路径分析:', {
+  //   pathSegments,
+  //   potentialDocId: pathSegments[pathSegments.length - 1],
+  //   isWorkspacePath: pathSegments[0] === 'workspace'
+  // });
 
   // 智能获取docId
   const finalDocId = useMemo(() => {

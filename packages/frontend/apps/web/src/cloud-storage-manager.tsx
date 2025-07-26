@@ -278,9 +278,9 @@ export const CloudStorageProvider = ({
 
   // 推送文档更新 - 增强版本支持队列
   const pushDocUpdate = async (docId: string, update: Uint8Array): Promise<number> => {
-    console.log('🚀 [云存储管理器-推送] 开始处理文档更新推送');
-    console.log(`  📊 请求参数: docId=${docId}, updateSize=${update.length}字节`);
-    console.log(`  🔗 当前状态: workspaceId=${currentWorkspaceId}, online=${isOnline}, socketConnected=${socket?.connected}, isConnected=${isConnected}`);
+    // console.log('🚀 [云存储管理器-推送] 开始处理文档更新推送');
+    // console.log(`  📊 请求参数: docId=${docId}, updateSize=${update.length}字节`);
+    // console.log(`  🔗 当前状态: workspaceId=${currentWorkspaceId}, online=${isOnline}, socketConnected=${socket?.connected}, isConnected=${isConnected}`);
     
     // 详细分析前端发送的原始数据
     console.log('🔍 [云存储管理器-推送] 详细数据分析:');
@@ -474,11 +474,11 @@ export const CloudStorageProvider = ({
     }
 
     try {
-      console.log('🔗 [云存储管理器] 开始连接...', { 
-        serverUrl, 
-        workspaceId: currentWorkspaceId,
-        attempt: reconnectAttempts.current + 1
-      });
+      // console.log('🔗 [云存储管理器] 开始连接...', { 
+      //   serverUrl, 
+      //   workspaceId: currentWorkspaceId,
+      //   attempt: reconnectAttempts.current + 1
+      // });
       setStorageMode('detecting');
 
       const { io } = await import('socket.io-client');
@@ -544,7 +544,7 @@ export const CloudStorageProvider = ({
       // 设置连接超时
       setTimeout(() => {
         if (!newSocket.connected) {
-          console.warn('⏰ [云存储管理器] 连接超时');
+          // console.warn('⏰ [云存储管理器] 连接超时');
           newSocket.disconnect();
           scheduleReconnect();
         }
@@ -572,7 +572,7 @@ export const CloudStorageProvider = ({
     // 指数退避：2^attempts * 1000ms，最长30秒
     const delay = Math.min(Math.pow(2, reconnectAttempts.current) * 1000, 30000);
     
-    console.log(`⏱️ [云存储管理器] ${delay}ms后进行第${reconnectAttempts.current + 1}次重连`);
+    // console.log(`⏱️ [云存储管理器] ${delay}ms后进行第${reconnectAttempts.current + 1}次重连`);
     setStorageMode('detecting');
     
     reconnectTimeout.current = setTimeout(() => {

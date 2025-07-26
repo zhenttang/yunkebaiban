@@ -59,17 +59,17 @@ export class DocStoragePool {
   }
   
   async connect(universalId, path) {
-    console.log('[MOCK->JAVA] DocStoragePool.connect:', universalId, path);
+    // console.log('[MOCK->JAVA] DocStoragePool.connect:', universalId, path);
     this.connections.set(universalId, { path, workspaceId: universalId });
   }
   
   async disconnect(universalId) {
-    console.log('[MOCK->JAVA] DocStoragePool.disconnect:', universalId);
+    // console.log('[MOCK->JAVA] DocStoragePool.disconnect:', universalId);
     this.connections.delete(universalId);
   }
   
   async setSpaceId(universalId, spaceId) {
-    console.log('[MOCK->JAVA] DocStoragePool.setSpaceId:', universalId, spaceId);
+    // console.log('[MOCK->JAVA] DocStoragePool.setSpaceId:', universalId, spaceId);
     const connection = this.connections.get(universalId);
     if (connection) {
       connection.workspaceId = spaceId;
@@ -77,7 +77,7 @@ export class DocStoragePool {
   }
   
   async pushUpdate(universalId, docId, update) {
-    console.log('[MOCK->JAVA] DocStoragePool.pushUpdate:', universalId, docId);
+    // console.log('[MOCK->JAVA] DocStoragePool.pushUpdate:', universalId, docId);
     try {
       // 将更新发送到Java后端
       const response = await fetchWithAuth(`/api/workspaces/${universalId}/docs/${docId}`, {
@@ -101,7 +101,7 @@ export class DocStoragePool {
   }
   
   async getDocSnapshot(universalId, docId) {
-    console.log('[MOCK->JAVA] DocStoragePool.getDocSnapshot:', universalId, docId);
+    // console.log('[MOCK->JAVA] DocStoragePool.getDocSnapshot:', universalId, docId);
     try {
       // 从Java后端获取文档快照
       const response = await fetchWithAuth(`/api/workspaces/${universalId}/docs/${docId}`);
@@ -124,7 +124,7 @@ export class DocStoragePool {
   }
   
   async setDocSnapshot(universalId, snapshot) {
-    console.log('[MOCK->JAVA] DocStoragePool.setDocSnapshot:', universalId);
+    // console.log('[MOCK->JAVA] DocStoragePool.setDocSnapshot:', universalId);
     try {
       // 这个方法通常用于批量设置，我们可以简单返回成功
       return true;

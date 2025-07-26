@@ -603,8 +603,8 @@ export class DatabaseBlockDataSource extends DataSourceBase {
   }
 
   viewMetaGet(type: string): ViewMeta {
-    console.log('🔍 [DataSource] Looking for view meta type:', type);
-    console.log('📋 [DataSource] Available types in databaseBlockViewMap:', Object.keys(databaseBlockViewMap));
+    // console.log('🔍 [DataSource] Looking for view meta type:', type);
+    // console.log('📋 [DataSource] Available types in databaseBlockViewMap:', Object.keys(databaseBlockViewMap));
     
     const view = databaseBlockViewMap[type];
     if (!view) {
@@ -615,7 +615,7 @@ export class DatabaseBlockDataSource extends DataSourceBase {
         `Unknown view type: ${type}`
       );
     }
-    console.log('✅ [DataSource] Found view for type:', type, view);
+    // console.log('✅ [DataSource] Found view for type:', type, view);
     return view;
   }
 

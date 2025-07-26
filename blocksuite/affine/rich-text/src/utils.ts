@@ -13,12 +13,12 @@ export function insertContent(
   attributes?: AffineTextAttributes
 ) {
   if (!model.text) {
-    console.error("无法插入文本！未找到文本");
+    // console.error("无法插入文本！未找到文本");
     return;
   }
   const inlineEditor = getInlineEditorByModel(std, model);
   if (!inlineEditor) {
-    console.error("无法插入文本！未找到内联编辑器");
+    // console.error("无法插入文本！未找到内联编辑器");
     return;
   }
   const inlineRange = inlineEditor.getInlineRange();

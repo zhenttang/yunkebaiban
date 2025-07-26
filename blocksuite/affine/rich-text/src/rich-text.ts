@@ -157,7 +157,7 @@ export class RichText extends WithDisposable(ShadowlessElement) {
 
   private _init() {
     if (this.inlineEditor) {
-      console.error('Inline editor already exists.');
+      // console.error('Inline editor already exists.');
       return;
     }
 

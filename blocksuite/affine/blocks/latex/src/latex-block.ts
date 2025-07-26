@@ -44,7 +44,6 @@ export class LatexBlockComponent extends CaptionedBlockComponent<LatexBlockModel
     disposables.add(
       effect(() => {
         const latex = this.model.props.latex$.value;
-        console.log('LaTeX content:', JSON.stringify(latex), 'length:', latex.length);
 
         katexContainer.replaceChildren();
         // @ts-expect-error lit hack won't fix
@@ -68,7 +67,6 @@ export class LatexBlockComponent extends CaptionedBlockComponent<LatexBlockModel
               throwOnError: false, // 不抛出错误，而是显示错误信息
             });
           } catch (error) {
-            console.warn('LaTeX rendering failed:', error, 'for latex:', latex);
             katexContainer.replaceChildren();
             // @ts-expect-error lit hack won't fix
             delete katexContainer['_$litPart$'];
