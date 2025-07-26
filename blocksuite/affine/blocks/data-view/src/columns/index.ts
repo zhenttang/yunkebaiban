@@ -4,6 +4,7 @@ import { propertyPresets } from '@blocksuite/data-view/property-presets';
 
 export const queryBlockColumns = [
   propertyPresets.datePropertyConfig,
+  propertyPresets.dateRangePropertyConfig, // 🆕 添加日期范围属性
   propertyPresets.numberPropertyConfig,
   propertyPresets.progressPropertyConfig,
   propertyPresets.selectPropertyConfig,

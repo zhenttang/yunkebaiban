@@ -588,7 +588,7 @@ export class DatabaseBlockDataSource extends DataSourceBase {
   }
 
   viewDataGet(viewId: string): DataViewDataType | undefined {
-    return this.viewDataList$.value.find(data => data.id === viewId)!;
+    return this.viewDataList$.value.find(data => data.id === viewId);
   }
 
   viewDataMoveTo(id: string, position: InsertToPosition): void {
@@ -603,13 +603,19 @@ export class DatabaseBlockDataSource extends DataSourceBase {
   }
 
   viewMetaGet(type: string): ViewMeta {
+    console.log('🔍 [DataSource] Looking for view meta type:', type);
+    console.log('📋 [DataSource] Available types in databaseBlockViewMap:', Object.keys(databaseBlockViewMap));
+    
     const view = databaseBlockViewMap[type];
     if (!view) {
+      console.error('❌ [DataSource] View not found for type:', type);
+      console.error('📋 [DataSource] Available view map:', databaseBlockViewMap);
       throw new BlockSuiteError(
         ErrorCode.DatabaseBlockError,
         `Unknown view type: ${type}`
       );
     }
+    console.log('✅ [DataSource] Found view for type:', type, view);
     return view;
   }
 
@@ -617,6 +623,10 @@ export class DatabaseBlockDataSource extends DataSourceBase {
     const view = this.viewDataGet(viewId);
     if (!view) {
       return;
+    }
+    if (!view.mode) {
+      // 如果 mode 是 undefined，跳过这个视图
+      return undefined;
     }
     return this.viewMetaGet(view.mode);
   }

@@ -6,6 +6,7 @@ import { viewPresets } from '@blocksuite/data-view/view-presets';
 import {
   DatabaseKanbanViewIcon,
   DatabaseTableViewIcon,
+  DateTimeIcon, // 用作甘特图图标
 } from '@blocksuite/icons/lit';
 
 import { insertDatabaseBlockCommand } from '../commands';
@@ -65,6 +66,38 @@ export const databaseSlashMenuConfig: SlashMenuConfig = {
           .pipe(getSelectedModelsCommand)
           .pipe(insertDatabaseBlockCommand, {
             viewType: viewPresets.kanbanViewMeta.type,
+            place: 'after',
+            removeEmptyLine: true,
+          })
+          .pipe(({ insertedDatabaseBlockId }) => {
+            if (insertedDatabaseBlockId) {
+              const telemetry = std.getOptional(TelemetryProvider);
+              telemetry?.track('BlockCreated', {
+                blockType: 'affine:database',
+              });
+            }
+          })
+          .run();
+      },
+    },
+
+    {
+      name: 'Gantt View',
+      description: '以甘特图格式显示项目时间线。',
+      searchAlias: ['database', 'gantt', '甘特图', 'timeline'],
+      icon: DateTimeIcon(), 
+      tooltip: {
+        caption: 'Gantt View',
+      },
+      group: '7_Database@1',
+      when: ({ model }) =>
+        !isInsideBlockByFlavour(model.store, model, 'affine:edgeless-text'),
+      action: ({ std }) => {
+        std.command
+          .chain()
+          .pipe(getSelectedModelsCommand)
+          .pipe(insertDatabaseBlockCommand, {
+            viewType: viewPresets.ganttViewMeta.type,
             place: 'after',
             removeEmptyLine: true,
           })

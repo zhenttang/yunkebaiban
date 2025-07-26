@@ -73,16 +73,30 @@ export class ViewManagerBase implements ViewManager {
   }
 
   viewAdd(type: DataViewMode): string {
-    const meta = this.dataSource.viewMetaGet(type);
-    const data = meta.model.defaultData(this);
-    const id = this.dataSource.viewDataAdd({
-      ...data,
-      id: nanoid(),
-      name: meta.model.defaultName,
-      mode: type,
-    });
-    this.setCurrentView(id);
-    return id;
+    console.log('🎯 [ViewManager] Adding view of type:', type);
+    console.log('📋 [ViewManager] Available view metas:', this.viewMetas.map(m => m.type));
+    
+    try {
+      const meta = this.dataSource.viewMetaGet(type);
+      console.log('✅ [ViewManager] Found meta for type:', type, meta);
+      
+      const data = meta.model.defaultData(this);
+      console.log('📊 [ViewManager] Generated default data:', data);
+      
+      const id = this.dataSource.viewDataAdd({
+        ...data,
+        id: nanoid(),
+        name: meta.model.defaultName,
+        mode: type,
+      });
+      console.log('🎉 [ViewManager] Created view with id:', id);
+      
+      this.setCurrentView(id);
+      return id;
+    } catch (error) {
+      console.error('❌ [ViewManager] Failed to add view:', error);
+      throw error;
+    }
   }
 
   viewChangeType(id: string, type: string): void {

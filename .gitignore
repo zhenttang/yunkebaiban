@@ -1,5 +1,6 @@
 # Dependencies
-/node_modules
+node_modules/
+**/node_modules/
 /.pnp
 .pnp.js
 
@@ -16,7 +17,8 @@
 /coverage
 
 # Production build files
-/dist
+dist/
+**/dist/
 /build
 /out
 /.next
@@ -63,24 +65,4 @@ next-env.d.ts
 .history
 
 # System files
-Thumbs.db 
-packages/frontend/admin/node_modules/
-packages/common/auth/node_modules/
-packages/frontend/apps/electron-renderer/dist/
-blocksuite/framework/store/dist/
-blocksuite/framework/std/dist/
-blocksuite/affine/shared/dist/
-blocksuite/affine/model/dist/
-blocksuite/affine/components/dist/
-blocksuite/affine/blocks/attachment/dist/
-blocksuite/affine/blocks/embed/dist/
-blocksuite/affine/blocks/surface/dist/
-blocksuite/affine/ext-loader/dist/
-blocksuite/affine/gfx/pointer/dist/
-blocksuite/affine/inlines/reference/dist/
-blocksuite/affine/rich-text/dist/
-blocksuite/affine/widgets/slash-menu/dist/
-blocksuite/affine/widgets/edgeless-toolbar/dist/
-packages/frontend/apps/android/dist/
-packages/frontend/routes/node_modules/vite/dist/
-tools/cli/node_modules/
+Thumbs.db

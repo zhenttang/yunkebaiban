@@ -9,6 +9,7 @@ export * from './converts.js';
 const {
   checkboxPropertyConfig,
   datePropertyConfig,
+  dateRangePropertyConfig, // 🆕 添加日期范围属性
   multiSelectPropertyConfig,
   numberPropertyConfig,
   progressPropertyConfig,
@@ -17,6 +18,7 @@ const {
 export const databaseBlockProperties = {
   checkboxColumnConfig: checkboxPropertyConfig,
   dateColumnConfig: datePropertyConfig,
+  dateRangeColumnConfig: dateRangePropertyConfig, // 🆕 添加日期范围属性配置
   multiSelectColumnConfig: multiSelectPropertyConfig,
   numberColumnConfig: numberPropertyConfig,
   progressColumnConfig: progressPropertyConfig,

@@ -1,5 +1,6 @@
 import { checkboxPropertyConfig } from './checkbox/cell-renderer.js';
 import { datePropertyConfig } from './date/cell-renderer.js';
+import { dateRangePropertyConfig } from './date-range/cell-renderer.js';
 import { imagePropertyConfig } from './image/cell-renderer.js';
 import { multiSelectPropertyConfig } from './multi-select/cell-renderer.js';
 import { numberPropertyConfig } from './number/cell-renderer.js';
@@ -10,9 +11,12 @@ import { textPropertyConfig } from './text/cell-renderer.js';
 export * from './converts.js';
 export * from './number/types.js';
 export * from './select/define.js';
+export * from './date-range/index.js';
+
 export const propertyPresets = {
   checkboxPropertyConfig,
   datePropertyConfig,
+  dateRangePropertyConfig,
   imagePropertyConfig,
   multiSelectPropertyConfig,
   numberPropertyConfig,

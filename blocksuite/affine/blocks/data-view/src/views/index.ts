@@ -4,6 +4,7 @@ import { viewPresets } from '@blocksuite/data-view/view-presets';
 export const blockQueryViews: ViewMeta[] = [
   viewPresets.tableViewMeta,
   viewPresets.kanbanViewMeta,
+  viewPresets.ganttViewMeta, // 🆕 添加甘特图视图
 ];
 
 export const blockQueryViewMap = Object.fromEntries(
