@@ -6,7 +6,7 @@ export const latexBlockStyles = css`
     display: flex;
     position: relative;
     width: 100%;
-    height: 100%;
+    min-height: 40px;
     padding: 10px 24px;
     flex-direction: column;
     align-items: center;

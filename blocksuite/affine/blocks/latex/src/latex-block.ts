@@ -44,6 +44,7 @@ export class LatexBlockComponent extends CaptionedBlockComponent<LatexBlockModel
     disposables.add(
       effect(() => {
         const latex = this.model.props.latex$.value;
+        console.log('LaTeX content:', JSON.stringify(latex), 'length:', latex.length);
 
         katexContainer.replaceChildren();
         // @ts-expect-error lit hack won't fix
@@ -56,17 +57,23 @@ export class LatexBlockComponent extends CaptionedBlockComponent<LatexBlockModel
           );
         } else {
           try {
+            // 强制检查文档模式
+            if (document.compatMode === 'BackCompat') {
+              console.warn('Document is in quirks mode, this may cause KaTeX issues');
+            }
+            
             katex.render(latex, katexContainer, {
               displayMode: true,
+              strict: false, // 允许一些非标准的LaTeX语法
+              throwOnError: false, // 不抛出错误，而是显示错误信息
             });
-          } catch {
+          } catch (error) {
+            console.warn('LaTeX rendering failed:', error, 'for latex:', latex);
             katexContainer.replaceChildren();
             // @ts-expect-error lit hack won't fix
             delete katexContainer['_$litPart$'];
             render(
-              html`<span class="latex-block-error-placeholder"
-                >Error equation</span
-              >`,
+              html`<span class="latex-block-error-placeholder" @click=${this._clearInvalidLatex}>Invalid LaTeX: ${latex.substring(0, 20)}${latex.length > 20 ? '...' : ''} (click to clear)</span>`,
               katexContainer
             );
           }
@@ -74,6 +81,10 @@ export class LatexBlockComponent extends CaptionedBlockComponent<LatexBlockModel
       })
     );
   }
+
+  private _clearInvalidLatex = () => {
+    this.model.props.latex$.value = '';
+  };
 
   private _handleClick() {
     if (this.store.readonly) return;
