@@ -200,7 +200,7 @@ export function AppUpdaterButton({
         }
       } else {
         urlService.openPopupWindow(
-          `https://github.com/toeverything/AFFiNE/releases/tag/v${updateAvailable.version}`
+          `https://gitcode.com/xiaoleixiaolei/releases/tag/v${updateAvailable.version}`
         );
       }
     } else if (changelogUnread) {

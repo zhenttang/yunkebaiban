@@ -21,7 +21,7 @@
       '<p class="p2">',
       '看起来AFFiNE无法在此环境中运行。',
       "请确保您使用的是受支持的浏览器，或将您的设备操作系统更新到最新版本。",
-      '如果问题仍然存在，请访问我们的 <a href="https://github.com/toeverything/AFFiNE/issues">支持页面</a> 获取进一步帮助。',
+      '如果问题仍然存在，请访问我们的 <a href="https://gitcode.com/xiaoleixiaolei/issues">支持页面</a> 获取进一步帮助。',
       '</p>',
       '</div>',
       '</div>',

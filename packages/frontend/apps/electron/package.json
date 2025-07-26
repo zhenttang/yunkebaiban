@@ -5,11 +5,11 @@
   "main": "./dist/main.js",
   "author": "toeverything",
   "repository": {
-    "url": "https://github.com/toeverything/AFFiNE",
+    "url": "https://gitcode.com/xiaoleixiaolei",
     "type": "git"
   },
   "description": "AFFiNE Desktop App",
-  "homepage": "https://github.com/toeverything/AFFiNE",
+  "homepage": "https://gitcode.com/xiaoleixiaolei",
   "exports": {
     "./helper/exposed": "./src/helper/exposed.ts",
     "./main/exposed": "./src/main/exposed.ts",

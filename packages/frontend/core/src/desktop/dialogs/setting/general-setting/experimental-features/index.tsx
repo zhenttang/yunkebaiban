@@ -102,7 +102,7 @@ const FeedbackIcon = ({ type }: { type: Flag['feedbackType'] }) => {
 const feedbackLink: Record<NonNullable<Flag['feedbackType']>, string> = {
   discord: BUILD_CONFIG.discordUrl,
   email: 'mailto:support@toeverything.info',
-  github: 'https://github.com/toeverything/AFFiNE/issues',
+  github: 'https://gitcode.com/xiaoleixiaolei/issues',
 };
 
 const ExperimentalFeaturesItem = ({

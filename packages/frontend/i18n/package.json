@@ -15,7 +15,7 @@
   "keywords": [],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/toeverything/AFFiNE.git"
+    "url": "git+https://gitcode.com/xiaoleixiaolei.git"
   },
   "dependencies": {
     "@affine/debug": "workspace:*",

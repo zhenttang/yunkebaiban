@@ -43,7 +43,7 @@ export function getBuildConfig(
         appVersion: pkg.version,
         // editorVersion: pkg.dependencies['@blocksuite/affine'],
         editorVersion: pkg.version,
-        githubUrl: 'https://github.com/toeverything/AFFiNE',
+        githubUrl: 'https://gitcode.com/xiaoleixiaolei',
         changelogUrl: 'https://affine.pro/what-is-new',
         downloadUrl: 'https://affine.pro/download',
         pricingUrl: 'https://affine.pro/pricing',
@@ -61,14 +61,14 @@ export function getBuildConfig(
       return {
         ...this.stable,
         appBuildType: 'beta' as const,
-        changelogUrl: 'https://github.com/toeverything/AFFiNE/releases',
+        changelogUrl: 'https://gitcode.com/xiaoleixiaolei/releases',
       };
     },
     get internal() {
       return {
         ...this.stable,
         appBuildType: 'internal' as const,
-        changelogUrl: 'https://github.com/toeverything/AFFiNE/releases',
+        changelogUrl: 'https://gitcode.com/xiaoleixiaolei/releases',
       };
     },
     // canary版本将更激进并启用所有功能
@@ -76,7 +76,7 @@ export function getBuildConfig(
       return {
         ...this.stable,
         appBuildType: 'canary' as const,
-        changelogUrl: 'https://github.com/toeverything/AFFiNE/releases',
+        changelogUrl: 'https://gitcode.com/xiaoleixiaolei/releases',
       };
     },
   };
