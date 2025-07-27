@@ -5,13 +5,16 @@ import { CodeStoreExtension } from '@blocksuite/affine-block-code/store';
 import { DataViewStoreExtension } from '@blocksuite/affine-block-data-view/store';
 import { DatabaseStoreExtension } from '@blocksuite/affine-block-database/store';
 import { DividerStoreExtension } from '@blocksuite/affine-block-divider/store';
+import { DrawioStoreExtension } from '@blocksuite/affine-block-drawio/store';
 import { EdgelessTextStoreExtension } from '@blocksuite/affine-block-edgeless-text/store';
 import { EmbedStoreExtension } from '@blocksuite/affine-block-embed/store';
 import { EmbedDocStoreExtension } from '@blocksuite/affine-block-embed-doc/store';
+import { ExcalidrawStoreExtension } from '@blocksuite/affine-block-excalidraw/store';
 import { FrameStoreExtension } from '@blocksuite/affine-block-frame/store';
 import { ImageStoreExtension } from '@blocksuite/affine-block-image/store';
 import { LatexStoreExtension } from '@blocksuite/affine-block-latex/store';
 import { ListStoreExtension } from '@blocksuite/affine-block-list/store';
+import { MermaidStoreExtension } from '@blocksuite/affine-block-mermaid/store';
 import { NoteStoreExtension } from '@blocksuite/affine-block-note/store';
 import { ParagraphStoreExtension } from '@blocksuite/affine-block-paragraph/store';
 import { RootStoreExtension } from '@blocksuite/affine-block-root/store';
@@ -42,13 +45,16 @@ export function getInternalStoreExtensions() {
     DataViewStoreExtension,
     DatabaseStoreExtension,
     DividerStoreExtension,
+    DrawioStoreExtension,
     EdgelessTextStoreExtension,
     EmbedStoreExtension,
     EmbedDocStoreExtension,
+    ExcalidrawStoreExtension,
     FrameStoreExtension,
     ImageStoreExtension,
     LatexStoreExtension,
     ListStoreExtension,
+    MermaidStoreExtension,
     NoteStoreExtension,
     ParagraphStoreExtension,
     SurfaceRefStoreExtension,

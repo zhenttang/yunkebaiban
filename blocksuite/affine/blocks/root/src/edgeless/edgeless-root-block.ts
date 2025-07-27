@@ -27,7 +27,6 @@ import {
   requestConnectedFrame,
   requestThrottledConnectedFrame,
 } from '@blocksuite/affine-shared/utils';
-import { IS_WINDOWS } from '@blocksuite/global/env';
 import { Bound, Point, Vec } from '@blocksuite/global/gfx';
 import {
   BlockComponent,
@@ -356,7 +355,8 @@ export class EdgelessRootBlockComponent extends BlockComponent<
         }
         // pan
         else {
-          const simulateHorizontalScroll = IS_WINDOWS && e.shiftKey;
+          // 支持所有平台的 shift + 滚轮横向移动
+          const simulateHorizontalScroll = e.shiftKey;
           const dx = simulateHorizontalScroll
             ? e.deltaY / viewport.zoom
             : e.deltaX / viewport.zoom;

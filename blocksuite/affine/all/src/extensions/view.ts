@@ -18,6 +18,9 @@ import { RootViewExtension } from '@blocksuite/affine-block-root/view';
 import { SurfaceViewExtension } from '@blocksuite/affine-block-surface/view';
 import { SurfaceRefViewExtension } from '@blocksuite/affine-block-surface-ref/view';
 import { TableViewExtension } from '@blocksuite/affine-block-table/view';
+import { MermaidViewExtension } from '@blocksuite/affine-block-mermaid/view';
+import { DrawioViewExtension } from '@blocksuite/affine-block-drawio/view';
+import { ExcalidrawViewExtension } from '@blocksuite/affine-block-excalidraw/view';
 import { FoundationViewExtension } from '@blocksuite/affine-foundation/view';
 import { AdapterPanelViewExtension } from '@blocksuite/affine-fragment-adapter-panel/view';
 import { DocTitleViewExtension } from '@blocksuite/affine-fragment-doc-title/view';
@@ -91,6 +94,9 @@ export function getInternalViewExtensions() {
     ParagraphViewExtension,
     SurfaceRefViewExtension,
     TableViewExtension,
+    MermaidViewExtension,
+    DrawioViewExtension,
+    ExcalidrawViewExtension,
     SurfaceViewExtension,
     RootViewExtension,
 
