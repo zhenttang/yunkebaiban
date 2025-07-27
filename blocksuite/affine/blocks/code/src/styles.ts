@@ -20,6 +20,51 @@ export const codeBlockStyles = css`
     padding: 12px;
   }
 
+  /* 折叠状态下的样式调整 */
+  .affine-code-block-container.collapsed {
+    padding-bottom: 16px;
+  }
+
+  .affine-code-block-container.collapsed rich-text {
+    max-height: 120px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .affine-code-block-container.collapsed rich-text::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 40px;
+    background: linear-gradient(transparent, var(--affine-background-code-block));
+    pointer-events: none;
+  }
+
+  /* 折叠指示器 */
+  .collapsed-indicator {
+    position: absolute;
+    bottom: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 4px 12px;
+    background: var(--affine-background-secondary-color, #f5f5f5);
+    border: 1px solid var(--affine-border-color, #e0e0e0);
+    border-radius: 16px;
+    font-size: var(--affine-font-xs);
+    color: var(--affine-text-secondary-color);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    z-index: 2;
+  }
+
+  .collapsed-indicator:hover {
+    background: var(--affine-hover-color, #f0f0f0);
+    color: var(--affine-primary-color, #1976d2);
+    border-color: var(--affine-primary-color, #1976d2);
+  }
+
   ${scrollbarStyle('.affine-code-block-container rich-text')}
 
   .affine-code-block-container .inline-editor {

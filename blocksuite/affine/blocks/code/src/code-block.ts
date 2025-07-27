@@ -39,6 +39,8 @@ export class CodeBlockComponent extends CaptionedBlockComponent<CodeBlockModel> 
   static override styles = codeBlockStyles;
 
   private _inlineRangeProvider: InlineRangeProvider | null = null;
+  private _collapsed = false;
+  private _showCollapseButton = false;
 
   highlightTokens$: Signal<ThemedToken[][]> = signal([]);
 
@@ -157,6 +159,16 @@ export class CodeBlockComponent extends CaptionedBlockComponent<CodeBlockModel> 
       effect(() => {
         noop(this.highlightTokens$.value);
         this._richTextElement?.inlineEditor?.render();
+      })
+    );
+
+    // 检查代码长度，决定是否显示折叠按钮
+    this.disposables.add(
+      this.model.props.text.deltas$.subscribe(() => {
+        const text = this.model.props.text.toString();
+        const lineCount = text.split('\n').length;
+        this._showCollapseButton = lineCount > 10; // 超过10行显示折叠按钮
+        this.requestUpdate();
       })
     );
 
@@ -399,6 +411,9 @@ export class CodeBlockComponent extends CaptionedBlockComponent<CodeBlockModel> 
     );
     const shouldRenderPreview = preview && previewContext;
 
+    const text = this.model.props.text.toString();
+    const lineCount = text.split('\n').length;
+
     return html`
       <div
         class=${classMap({
@@ -406,6 +421,7 @@ export class CodeBlockComponent extends CaptionedBlockComponent<CodeBlockModel> 
           mobile: IS_MOBILE,
           wrap: this.model.props.wrap,
           'disable-line-numbers': !showLineNumbers,
+          collapsed: this._collapsed,
         })}
       >
         <rich-text
@@ -442,9 +458,28 @@ export class CodeBlockComponent extends CaptionedBlockComponent<CodeBlockModel> 
         >
           ${previewContext?.renderer(this.model)}
         </div>
+
+        <!-- 折叠状态下的行数指示器 -->
+        ${this._collapsed && this._showCollapseButton
+          ? html`
+              <div class="collapsed-indicator" @click=${this.toggleCollapse}>
+                <span>共 ${lineCount} 行，点击展开</span>
+              </div>
+            `
+          : nothing}
+
         ${this.renderChildren(this.model)} ${Object.values(this.widgets)}
       </div>
     `;
+  }
+
+  toggleCollapse = () => {
+    this._collapsed = !this._collapsed;
+    this.requestUpdate();
+  };
+
+  get collapsed() {
+    return this._collapsed;
   }
 
   setWrap(wrap: boolean) {

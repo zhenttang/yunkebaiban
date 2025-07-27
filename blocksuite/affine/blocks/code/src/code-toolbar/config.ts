@@ -16,7 +16,13 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 
 import { CodeBlockConfigExtension } from '../code-block-config.js';
 import type { CodeBlockToolbarContext } from './context.js';
+import { CollapseButton } from './components/collapse-button.js';
 import { duplicateCodeBlock } from './utils.js';
+
+// 注册自定义元素
+if (!customElements.get('collapse-button')) {
+  customElements.define('collapse-button', CollapseButton);
+}
 
 export const PRIMARY_GROUPS: MenuItemGroup<CodeBlockToolbarContext>[] = [
   {
@@ -52,6 +58,23 @@ export const PRIMARY_GROUPS: MenuItemGroup<CodeBlockToolbarContext>[] = [
             render: () => html`
               <preview-button .blockComponent=${blockComponent}>
               </preview-button>
+            `,
+          };
+        },
+      },
+      {
+        type: 'collapse',
+        when: ({ blockComponent }) => {
+          const text = blockComponent.model.props.text.toString();
+          const lineCount = text.split('\n').length;
+          return lineCount > 10; // 只在超过10行时显示
+        },
+        generate: ({ blockComponent }) => {
+          return {
+            action: noop,
+            render: () => html`
+              <collapse-button .blockComponent=${blockComponent}>
+              </collapse-button>
             `,
           };
         },
