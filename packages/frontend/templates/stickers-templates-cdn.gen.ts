@@ -1,7 +1,7 @@
 
 /* eslint-disable */
 // @ts-nocheck
-// Generated from metadata at 2025-07-13T14:50:10.644Z
+// Generated from metadata at 2025-07-24T07:52:03.520Z
 
 
 // 资源缓存

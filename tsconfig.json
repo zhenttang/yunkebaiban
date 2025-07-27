@@ -125,6 +125,8 @@
     { "path": "./blocksuite/framework/sync" },
     { "path": "./blocksuite/integration-test" },
     { "path": "./blocksuite/playground" },
+    { "path": "./packages/common/auth" },
+    { "path": "./packages/common/config" },
     { "path": "./packages/common/debug" },
     { "path": "./packages/common/env" },
     { "path": "./packages/common/error" },

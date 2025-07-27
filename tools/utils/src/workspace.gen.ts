@@ -1130,6 +1130,16 @@ export const PackageList = [
     ],
   },
   {
+    location: 'packages/common/auth',
+    name: '@affine/auth',
+    workspaceDependencies: [],
+  },
+  {
+    location: 'packages/common/config',
+    name: '@affine/config',
+    workspaceDependencies: [],
+  },
+  {
     location: 'packages/common/debug',
     name: '@affine/debug',
     workspaceDependencies: [],
@@ -1202,6 +1212,7 @@ export const PackageList = [
     location: 'packages/frontend/apps/electron',
     name: '@affine/electron',
     workspaceDependencies: [
+      'packages/frontend/native-mock',
       'tools/utils',
       'packages/common/nbstore',
       'packages/common/infra',
@@ -1307,6 +1318,11 @@ export const PackageList = [
       'tools/cli',
       'tools/utils',
     ],
+  },
+  {
+    location: 'packages/frontend/native-mock',
+    name: '@affine/native',
+    workspaceDependencies: [],
   },
   {
     location: 'packages/frontend/routes',
@@ -1436,6 +1452,8 @@ export type PackageName =
   | '@blocksuite/sync'
   | '@blocksuite/integration-test'
   | '@blocksuite/playground'
+  | '@affine/auth'
+  | '@affine/config'
   | '@affine/debug'
   | '@affine/env'
   | '@affine/error'
@@ -1454,6 +1472,7 @@ export type PackageName =
   | '@affine/core'
   | '@affine/electron-api'
   | '@affine/i18n'
+  | '@affine/native'
   | '@affine/routes'
   | '@affine/templates'
   | '@affine/track'
