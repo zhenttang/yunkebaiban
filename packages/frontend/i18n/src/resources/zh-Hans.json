@@ -1122,6 +1122,7 @@
   "com.affine.split-view-folder-warning.description": "拆分视图不支持文件夹。",
   "do-not-show-this-again": "不再显示此内容",
   "com.affine.quicksearch.group.creation": "新建",
+  "com.affine.quicksearch.group.embeddedcontent": "\"{{query}}\" 的嵌入内容",
   "com.affine.quicksearch.group.searchfor": "搜索 \"{{query}}\"",
   "com.affine.resetSyncStatus.button": "重置同步",
   "com.affine.resetSyncStatus.description": "此操作可能会修复一些同步问题。",

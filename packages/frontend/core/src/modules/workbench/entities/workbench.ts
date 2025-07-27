@@ -136,20 +136,29 @@ export class Workbench extends Entity {
   }
 
   open(to: To, option: WorkbenchOpenOptions = {}) {
+    console.log('[Workbench] open method called:', { to, option });
+    
     if (option.at === 'new-tab') {
+      console.log('[Workbench] Opening in new tab');
       this.newTab(to, {
         show: option.show,
       });
     } else {
       const { at = 'active', replaceHistory = false } = option;
+      console.log('[Workbench] Opening in existing view:', { at, replaceHistory });
+      
       let view = this.viewAt(at);
+      console.log('[Workbench] Current view:', !!view);
+      
       if (!view) {
+        console.log('[Workbench] Creating new view');
         const newIndex = this.createView(at, to, option.show);
         view = this.viewAt(newIndex);
         if (!view) {
           throw new Unreachable();
         }
       } else {
+        console.log('[Workbench] Using existing view, navigating to:', to);
         if (replaceHistory) {
           view.history.replace(to);
         } else {
@@ -187,15 +196,43 @@ export class Workbench extends Entity {
     const isString = typeof id === 'string';
     const docId = isString ? id : id.docId;
 
+    console.log('[Workbench] openDoc called with:', {
+      id,
+      isString,
+      docId,
+      options
+    });
+
     let query = '';
     if (!isString) {
       const search = toDocSearchParams(omit(id, ['docId']));
+      console.log('[Workbench] Generated search params:', search?.toString());
       if (search?.size) {
         query = `?${search.toString()}`;
       }
     }
 
-    this.open(`/${docId}${query}`, options);
+    // 检查当前是否在 workspace 路由中
+    const currentLocation = window.location.pathname;
+    const workspaceMatch = currentLocation.match(/^\/workspace\/([^\/]+)\//);
+    
+    if (workspaceMatch) {
+      // 如果在 workspace 路由中，构建完整的 workspace URL
+      const workspaceId = workspaceMatch[1];
+      const fullWorkspaceUrl = `/workspace/${workspaceId}/${docId}${query}`;
+      console.log('[Workbench] In workspace route, navigating to full workspace URL:', fullWorkspaceUrl);
+      
+      // 使用浏览器的 history API 进行页面级导航
+      window.history.pushState(null, '', fullWorkspaceUrl);
+      
+      // 触发 popstate 事件，让 React Router 感知到变化
+      window.dispatchEvent(new PopStateEvent('popstate'));
+    } else {
+      // 如果在 workbench 路由中，使用原有逻辑
+      const finalUrl = `/${docId}${query}`;
+      console.log('[Workbench] In workbench route, opening URL:', finalUrl);
+      this.open(finalUrl, options);
+    }
   }
 
   openAttachment(

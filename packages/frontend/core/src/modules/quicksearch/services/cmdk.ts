@@ -68,14 +68,18 @@ export class CMDKQuickSearchService extends Service {
             result.source === 'docs' &&
               track.$.cmdk.results.searchResultsDocs();
 
-            const options: { docId: string; blockIds?: string[] } = {
+            const options: { docId: string; blockIds?: string[]; refreshKey?: string } = {
               docId: doc.docId,
             };
             if (doc.blockId) {
               options.blockIds = [doc.blockId];
+              // 总是添加 refreshKey 确保 URL 参数变化
+              options.refreshKey = Date.now().toString();
             }
 
+            // 直接导航，refreshKey 确保参数变化
             this.workbenchService.workbench.openDoc(options);
+            
             return;
           }
 

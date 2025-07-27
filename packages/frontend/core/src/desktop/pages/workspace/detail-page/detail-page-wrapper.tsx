@@ -1,8 +1,12 @@
 import { type Doc, DocsService } from '@affine/core/modules/doc';
 import type { Editor } from '@affine/core/modules/editor';
 import { EditorsService } from '@affine/core/modules/editor';
+import { preprocessParams, paramsParseOptions } from '@affine/core/modules/navigation/utils';
 import { ViewService } from '@affine/core/modules/workbench/services/view';
 import { WorkspaceService } from '@affine/core/modules/workspace';
+import { Bound } from '@blocksuite/affine/global/gfx';
+import { GfxControllerIdentifier } from '@blocksuite/affine/std/gfx';
+import { HighlightSelection } from '@blocksuite/affine/shared/selection';
 import { FrameworkScope, useLiveData, useService } from '@toeverything/infra';
 import {
   type PropsWithChildren,
@@ -13,6 +17,8 @@ import {
   useRef,
   useState,
 } from 'react';
+import { useSearchParams } from 'react-router-dom';
+import queryString from 'query-string';
 
 // Android专用服务包装器
 const AndroidEditorsServiceWrapper = {
@@ -408,6 +414,377 @@ export const DetailPageWrapper = ({
   canAccess?: boolean;
 }>) => {
   const { doc, editor, docListReady } = useLoadDoc(pageId);
+  const [searchParams] = useSearchParams();
+  
+  // 解析 URL 参数并设置到 editor 的 selector
+  useEffect(() => {
+    if (!editor) {
+      return;
+    }
+
+    const params = preprocessParams(
+      queryString.parse(searchParams.toString(), paramsParseOptions)
+    );
+
+    // 如果有 blockIds，直接进行文本定位和滚动
+    if (params.blockIds?.length) {
+      const blockId = params.blockIds[0];
+      
+      // 延迟执行，确保编辑器已完全渲染
+      setTimeout(() => {
+        locateAndScrollToBlock(blockId, editor);
+      }, 1000); // 增加延迟到 1000ms
+      
+      // 同时设置 editor selector（用于 BlockSuite 的内部处理）
+      editor.selector$.next(params);
+    } else if (params.elementIds?.length || params.mode) {
+      editor.selector$.next(params);
+    }
+  }, [editor, searchParams.toString()]);
+
+  // 文本定位和滚动的核心函数
+  const locateAndScrollToBlock = async (blockId: string, editor: any) => {
+    // 先尝试通过 BlockSuite API，这是更准确的方法
+    await tryBlockSuiteLocate(blockId, editor);
+  };
+  
+  // 通过 BlockSuite API 尝试定位
+  const tryBlockSuiteLocate = async (blockId: string, editor: any) => {
+    try {
+      // 获取 BlockSuite 编辑器容器
+      let editorContainer = editor.editorContainer$.value;
+      
+      if (!editorContainer || !editorContainer.host) {
+        // 等待编辑器容器准备好
+        await new Promise(resolve => setTimeout(resolve, 500));
+        const retryContainer = editor.editorContainer$.value;
+        if (!retryContainer || !retryContainer.host) {
+          return;
+        }
+        // 使用重试后的容器
+        editorContainer = retryContainer;
+      }
+      
+      // 获取文档和块
+      const host = editorContainer.host;
+      const doc = host.doc;
+      
+      // 尝试不同的方式获取块
+      let block = null;
+      
+      // 方法1: 通过 doc.getBlock
+      if (doc && typeof doc.getBlock === 'function') {
+        block = doc.getBlock(blockId);
+      }
+      
+      // 方法2: 通过 host.view.getBlock
+      if (!block && host.view && typeof host.view.getBlock === 'function') {
+        block = host.view.getBlock(blockId);
+      }
+      
+      // 方法3: 通过 store
+      if (!block && doc && doc.store) {
+        block = doc.store.getBlock(blockId);
+      }
+      
+      if (block) {
+        // 检查当前是否在 Edgeless 模式
+        const currentMode = editor.mode$.value;
+        
+        if (currentMode === 'edgeless') {
+          // Edgeless 模式下的处理
+          const model = block.model || block;
+          
+          if (model && model.xywh) {
+            // 获取 GFX controller
+            const gfx = host.std?.get(GfxControllerIdentifier);
+            
+            if (gfx && gfx.viewport) {
+              // 解析边界
+              const bound = Bound.deserialize(model.xywh);
+              
+              // 获取当前视口中心点
+              const currentCenterX = gfx.viewport.centerX;
+              const currentCenterY = gfx.viewport.centerY;
+              
+              // 计算目标中心点
+              const targetX = bound.center[0];
+              const targetY = bound.center[1];
+              
+              // 创建超流畅动画效果
+              const startTime = performance.now();
+              const animationDuration = 1200; // 缩短到1.2秒，感觉更快
+              
+              const animateToTarget = (currentTime: number) => {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / animationDuration, 1);
+                
+                // 使用更平滑的缓动函数 (ease-in-out-cubic)
+                const easeProgress = progress < 0.5 
+                  ? 4 * progress * progress * progress 
+                  : 1 - Math.pow(-2 * progress + 2, 3) / 2;
+                
+                const currentX = currentCenterX + (targetX - currentCenterX) * easeProgress;
+                const currentY = currentCenterY + (targetY - currentCenterY) * easeProgress;
+                
+                gfx.viewport.setCenter(currentX, currentY);
+                
+                if (progress < 1) {
+                  requestAnimationFrame(animateToTarget);
+                }
+              };
+              
+              requestAnimationFrame(animateToTarget);
+              
+              // 等待视口动画完成
+              await new Promise(resolve => setTimeout(resolve, 800));
+              
+              // 设置选择以高亮块
+              const selection = host.std?.selection;
+              if (selection) {
+                // 清除现有选择
+                selection.clear();
+                
+                // 创建块选择
+                selection.setGroup('scene', [
+                  selection.create(HighlightSelection, {
+                    mode: 'edgeless',
+                    blockIds: [blockId],
+                  })
+                ]);
+                
+                // 添加超流畅脉冲高亮动画
+                setTimeout(() => {
+                  const blockElement = host.querySelector(`[data-block-id="${blockId}"]`);
+                  
+                  if (blockElement instanceof HTMLElement) {
+                    const originalBg = blockElement.style.backgroundColor;
+                    const originalTransform = blockElement.style.transform;
+                    const originalBoxShadow = blockElement.style.boxShadow;
+                    
+                    // 创建CSS关键帧动画
+                    const styleSheet = document.createElement('style');
+                    styleSheet.textContent = `
+                      @keyframes pulse-highlight {
+                        0% { 
+                          background-color: ${originalBg || 'transparent'};
+                          transform: scale(1);
+                          box-shadow: none;
+                        }
+                        15% { 
+                          background-color: #ffd700;
+                          transform: scale(1.05);
+                          box-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+                        }
+                        30% { 
+                          background-color: #ffd700;
+                          transform: scale(1.02);
+                          box-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
+                        }
+                        45% { 
+                          background-color: #ffd700;
+                          transform: scale(1.05);
+                          box-shadow: 0 0 25px rgba(255, 215, 0, 0.9);
+                        }
+                        60% { 
+                          background-color: #ffd700;
+                          transform: scale(1.03);
+                          box-shadow: 0 0 18px rgba(255, 215, 0, 0.7);
+                        }
+                        100% { 
+                          background-color: ${originalBg || 'transparent'};
+                          transform: scale(1);
+                          box-shadow: none;
+                        }
+                      }
+                    `;
+                    document.head.appendChild(styleSheet);
+                    
+                    // 应用动画
+                    blockElement.style.animation = 'pulse-highlight 2.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards';
+                    
+                    // 清理
+                    setTimeout(() => {
+                      blockElement.style.animation = '';
+                      document.head.removeChild(styleSheet);
+                    }, 2500);
+                  }
+                }, 150);
+              }
+            }
+          } else {
+            // 对于没有 xywh 的块（如文本块），使用 DOM 坐标定位
+            const blockElement = host.querySelector(`[data-block-id="${blockId}"]`);
+            
+            if (blockElement) {
+              // 获取 GFX controller
+              const gfx = host.std?.get(GfxControllerIdentifier);
+              
+              if (gfx && gfx.viewport) {
+                // 获取元素的边界矩形
+                const rect = blockElement.getBoundingClientRect();
+                
+                // 获取编辑器容器的边界矩形，用于坐标转换
+                const editorContainer = host.closest('.affine-editor-container') || host;
+                const containerRect = editorContainer.getBoundingClientRect();
+                
+                // 计算相对于编辑器的坐标
+                const relativeX = rect.left - containerRect.left + rect.width / 2;
+                const relativeY = rect.top - containerRect.top + rect.height / 2;
+                
+                // 转换为 Edgeless 坐标系
+                const viewportRect = gfx.viewport.viewportBounds;
+                const zoom = gfx.viewport.zoom;
+                
+                // 计算目标坐标（考虑缩放和偏移）
+                const targetX = viewportRect.x + relativeX / zoom;
+                const targetY = viewportRect.y + relativeY / zoom;
+                
+                // 获取当前视口中心点
+                const currentCenterX = gfx.viewport.centerX;
+                const currentCenterY = gfx.viewport.centerY;
+                
+                // 创建超流畅动画效果
+                const startTime = performance.now();
+                const animationDuration = 1200; // 缩短到1.2秒，感觉更快
+                
+                const animateToTarget = (currentTime: number) => {
+                  const elapsed = currentTime - startTime;
+                  const progress = Math.min(elapsed / animationDuration, 1);
+                  
+                  // 使用更平滑的缓动函数 (ease-in-out-cubic)
+                  const easeProgress = progress < 0.5 
+                    ? 4 * progress * progress * progress 
+                    : 1 - Math.pow(-2 * progress + 2, 3) / 2;
+                  
+                  const currentX = currentCenterX + (targetX - currentCenterX) * easeProgress;
+                  const currentY = currentCenterY + (targetY - currentCenterY) * easeProgress;
+                  
+                  gfx.viewport.setCenter(currentX, currentY);
+                  
+                  if (progress < 1) {
+                    requestAnimationFrame(animateToTarget);
+                  }
+                };
+                
+                requestAnimationFrame(animateToTarget);
+                
+                // 等待视口动画完成
+                await new Promise(resolve => setTimeout(resolve, 800));
+                
+                // 设置选择
+                const selection = host.std?.selection;
+                if (selection) {
+                  selection.clear();
+                  selection.setGroup('scene', [
+                    selection.create(HighlightSelection, {
+                      mode: 'edgeless',
+                      blockIds: [blockId],
+                    })
+                  ]);
+                  
+                  // 添加超流畅脉冲高亮动画
+                  setTimeout(() => {
+                    const originalBg = blockElement.style.backgroundColor;
+                    const originalTransform = blockElement.style.transform;
+                    const originalBoxShadow = blockElement.style.boxShadow;
+                    
+                    // 创建CSS关键帧动画
+                    const styleSheet = document.createElement('style');
+                    styleSheet.textContent = `
+                      @keyframes pulse-highlight {
+                        0% { 
+                          background-color: ${originalBg || 'transparent'};
+                          transform: scale(1);
+                          box-shadow: none;
+                        }
+                        15% { 
+                          background-color: #ffd700;
+                          transform: scale(1.05);
+                          box-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+                        }
+                        30% { 
+                          background-color: #ffd700;
+                          transform: scale(1.02);
+                          box-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
+                        }
+                        45% { 
+                          background-color: #ffd700;
+                          transform: scale(1.05);
+                          box-shadow: 0 0 25px rgba(255, 215, 0, 0.9);
+                        }
+                        60% { 
+                          background-color: #ffd700;
+                          transform: scale(1.03);
+                          box-shadow: 0 0 18px rgba(255, 215, 0, 0.7);
+                        }
+                        100% { 
+                          background-color: ${originalBg || 'transparent'};
+                          transform: scale(1);
+                          box-shadow: none;
+                        }
+                      }
+                    `;
+                    document.head.appendChild(styleSheet);
+                    
+                    // 应用动画
+                    blockElement.style.animation = 'pulse-highlight 2.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards';
+                    
+                    // 清理
+                    setTimeout(() => {
+                      blockElement.style.animation = '';
+                      document.head.removeChild(styleSheet);
+                    }, 2500);
+                  }, 150);
+                }
+              }
+            }
+          }
+        } else {
+          // Page 模式下的处理（原有逻辑）
+          const selection = host.std?.selection;
+          if (selection) {
+            selection.setGroup('note', [
+              selection.create('text', {
+                from: { blockId: blockId, index: 0, length: 0 },
+                to: null
+              })
+            ]);
+            
+            // 滚动到视图
+            const blockElement = host.querySelector(`[data-block-id="${blockId}"]`);
+            if (blockElement) {
+              blockElement.scrollIntoView({
+                behavior: 'smooth',
+                block: 'center'
+              });
+            }
+          }
+        }
+      } else {
+        // 尝试通过 DOM 查找作为后备方案
+        const blockElement = document.querySelector(`[data-block-id="${blockId}"]`);
+        
+        if (blockElement && editorContainer.host) {
+          const currentMode = editor.mode$.value;
+          if (currentMode === 'edgeless') {
+            // 尝试从 DOM 元素获取位置信息
+            const rect = blockElement.getBoundingClientRect();
+            
+            // 这里可能需要更复杂的坐标转换逻辑
+          } else {
+            // Page 模式下直接滚动
+            blockElement.scrollIntoView({
+              behavior: 'smooth',
+              block: 'center'
+            });
+          }
+        }
+      }
+    } catch (error) {
+      console.error('[DetailPageWrapper] Error in BlockSuite locate:', error);
+    }
+  };
   
   // 使用 ref 缓存渲染结果，避免因为状态快速变化导致的频繁重渲染
   const renderCacheRef = useRef<{

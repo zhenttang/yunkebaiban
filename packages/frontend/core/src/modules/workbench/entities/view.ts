@@ -66,8 +66,15 @@ export class View extends Entity<{
 
   location$ = LiveData.from<Location>(
     new Observable(subscriber => {
+      console.log('[View] location$ observable created, initial location:', this.history.location);
       subscriber.next(this.history.location);
       return this.history.listen(update => {
+        console.log('[View] location$ change detected:', {
+          action: update.action,
+          location: update.location,
+          pathname: update.location.pathname,
+          search: update.location.search
+        });
         subscriber.next(update.location);
       });
     }),
@@ -136,7 +143,18 @@ export class View extends Entity<{
   }
 
   push(path: To) {
+    console.log('[View] push called:', {
+      path,
+      currentLocation: this.history.location,
+      entriesLength: this.history.entries.length,
+      currentIndex: this.history.index
+    });
     this.history.push(path);
+    console.log('[View] push completed:', {
+      newLocation: this.history.location,
+      newEntriesLength: this.history.entries.length,
+      newIndex: this.history.index
+    });
   }
 
   go(n: number) {
@@ -144,7 +162,18 @@ export class View extends Entity<{
   }
 
   replace(path: To) {
+    console.log('[View] replace called:', {
+      path,
+      currentLocation: this.history.location,
+      entriesLength: this.history.entries.length,
+      currentIndex: this.history.index
+    });
     this.history.replace(path);
+    console.log('[View] replace completed:', {
+      newLocation: this.history.location,
+      newEntriesLength: this.history.entries.length,
+      newIndex: this.history.index
+    });
   }
 
   setSize(size?: number) {

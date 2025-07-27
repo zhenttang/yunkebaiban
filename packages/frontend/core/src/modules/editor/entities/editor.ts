@@ -1,5 +1,6 @@
 import type { AffineEditorContainer } from '@affine/core/blocksuite/block-suite-editor';
 import type { DefaultOpenProperty } from '@affine/core/components/properties';
+import { Bound } from '@blocksuite/affine/global/gfx';
 import { PresentTool } from '@blocksuite/affine/blocks/frame';
 import { DefaultTool } from '@blocksuite/affine/blocks/surface';
 import type { DocTitle } from '@blocksuite/affine/fragments/doc-title';
@@ -291,6 +292,33 @@ export class Editor extends Entity {
             [key]: [id],
           }),
         ]);
+
+        // 在 Edgeless 模式下，需要额外移动 viewport 到选中的块
+        if (mode === 'edgeless' && gfx) {
+          // 等待一帧，确保选择已经生效
+          requestAnimationFrame(() => {
+            try {
+              // 获取被选中的块
+              const doc = editorContainer.host?.doc;
+              const block = doc?.getBlock?.(id);
+              
+              if (block?.model?.xywh) {
+                const bound = Bound.deserialize(block.model.xywh);
+                
+                // 使用 surface 的 fitToViewport 方法，这是 AFFiNE 的标准方式
+                const surface = editorContainer.host?.querySelector('affine-surface');
+                if (surface && typeof surface.fitToViewport === 'function') {
+                  surface.fitToViewport(bound);
+                } else {
+                  // 如果没有 surface，直接使用 viewport API
+                  gfx.viewport.setViewportByBound(bound, [50, 50, 50, 50], true);
+                }
+              }
+            } catch (error) {
+              console.error('[Editor] Error moving viewport:', error);
+            }
+          });
+        }
       });
     unsubs.push(subscription.unsubscribe.bind(subscription));
 
