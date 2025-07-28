@@ -74,7 +74,208 @@ export class ImageBlockComponent extends CaptionedBlockComponent<ImageBlockModel
     }
     console.log('Opening crop modal...');
     this._cropModalOpen = true;
+    
+    // 创建全局模态框
+    this._createGlobalModal();
+    
+    // 强制更新组件以确保状态变化被渲染
+    this.requestUpdate();
   };
+
+  private _createGlobalModal() {
+    // 移除可能存在的旧模态框
+    const existingModal = document.querySelector('image-crop-modal[data-global="true"]');
+    if (existingModal) {
+      existingModal.remove();
+    }
+
+    // 检查自定义元素是否已注册，如果没有则使用简单模态框
+    if (!customElements.get('image-crop-modal')) {
+      console.error('image-crop-modal element is not registered, using simple modal');
+      this._createSimpleModal();
+      return;
+    }
+
+    // 创建新的全局模态框
+    const modal = document.createElement('image-crop-modal') as any;
+    modal.setAttribute('data-global', 'true');
+    modal.imageUrl = this.blobUrl || '';
+    modal.open = true;
+    
+    // 添加事件监听器
+    modal.addEventListener('crop-save', this._handleCropSave);
+    modal.addEventListener('crop-cancel', this._handleCropCancel);
+    modal.addEventListener('crop-error', this._handleCropError);
+    
+    // 添加到body
+    document.body.appendChild(modal);
+    
+    console.log('Global modal created and added to body');
+  }
+
+  private _createSimpleModal() {
+    console.log('Creating simple fallback modal');
+    
+    // 创建简单的HTML模态框
+    const overlay = document.createElement('div');
+    overlay.id = 'simple-crop-modal';
+    overlay.style.cssText = `
+      position: fixed !important;
+      top: 0 !important;
+      left: 0 !important;
+      right: 0 !important;
+      bottom: 0 !important;
+      background: rgba(0, 0, 0, 0.8) !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      z-index: 999999 !important;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+    `;
+
+    const modal = document.createElement('div');
+    modal.style.cssText = `
+      background: white !important;
+      border-radius: 12px !important;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3) !important;
+      width: 90vw !important;
+      max-width: 900px !important;
+      height: 80vh !important;
+      max-height: 700px !important;
+      display: flex !important;
+      flex-direction: column !important;
+      overflow: hidden !important;
+    `;
+
+    const header = document.createElement('div');
+    header.style.cssText = `
+      display: flex !important;
+      align-items: center !important;
+      justify-content: space-between !important;
+      padding: 16px 20px !important;
+      border-bottom: 1px solid #e0e0e0 !important;
+      background: #f5f5f5 !important;
+    `;
+
+    const title = document.createElement('h3');
+    title.textContent = '图片剪裁';
+    title.style.cssText = `
+      margin: 0 !important;
+      font-size: 18px !important;
+      font-weight: 600 !important;
+      color: #333 !important;
+    `;
+
+    const buttonContainer = document.createElement('div');
+    buttonContainer.style.cssText = `
+      display: flex !important;
+      gap: 8px !important;
+    `;
+
+    const saveButton = document.createElement('button');
+    saveButton.textContent = '保存';
+    saveButton.style.cssText = `
+      padding: 8px 16px !important;
+      background: #007bff !important;
+      color: white !important;
+      border: none !important;
+      border-radius: 6px !important;
+      cursor: pointer !important;
+      font-size: 14px !important;
+    `;
+
+    const cancelButton = document.createElement('button');
+    cancelButton.textContent = '取消';
+    cancelButton.style.cssText = `
+      padding: 8px 16px !important;
+      background: #6c757d !important;
+      color: white !important;
+      border: none !important;
+      border-radius: 6px !important;
+      cursor: pointer !important;
+      font-size: 14px !important;
+    `;
+
+    const body = document.createElement('div');
+    body.style.cssText = `
+      flex: 1 !important;
+      background: #000 !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      position: relative !important;
+    `;
+
+    const img = document.createElement('img');
+    img.src = this.blobUrl || '';
+    img.style.cssText = `
+      max-width: 90% !important;
+      max-height: 90% !important;
+      object-fit: contain !important;
+      border: 2px dashed #fff !important;
+    `;
+
+    const info = document.createElement('div');
+    info.textContent = '📏 简化版剪裁界面 - 点击保存完成剪裁';
+    info.style.cssText = `
+      position: absolute !important;
+      bottom: 20px !important;
+      left: 50% !important;
+      transform: translateX(-50%) !important;
+      background: rgba(0, 0, 0, 0.8) !important;
+      color: white !important;
+      padding: 10px 20px !important;
+      border-radius: 20px !important;
+      font-size: 14px !important;
+    `;
+
+    // 事件处理
+    const closeModal = () => {
+      overlay.remove();
+      this._cropModalOpen = false;
+    };
+
+    const saveImage = async () => {
+      try {
+        if (this.blobUrl) {
+          const response = await fetch(this.blobUrl);
+          const blob = await response.blob();
+          const url = URL.createObjectURL(blob);
+          
+          const event = new CustomEvent('crop-save', {
+            detail: { blob, url },
+            bubbles: true,
+          });
+          
+          await this._handleCropSave(event);
+          closeModal();
+        }
+      } catch (error) {
+        console.error('Failed to save image:', error);
+        closeModal();
+      }
+    };
+
+    saveButton.addEventListener('click', saveImage);
+    cancelButton.addEventListener('click', closeModal);
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) closeModal();
+    });
+
+    // 组装DOM
+    buttonContainer.appendChild(saveButton);
+    buttonContainer.appendChild(cancelButton);
+    header.appendChild(title);
+    header.appendChild(buttonContainer);
+    body.appendChild(img);
+    body.appendChild(info);
+    modal.appendChild(header);
+    modal.appendChild(body);
+    overlay.appendChild(modal);
+
+    document.body.appendChild(overlay);
+    console.log('Simple modal created and added to body');
+  }
 
   private _handleCropSave = async (event: CustomEvent<CropResult>) => {
     const { blob, url } = event.detail;
@@ -93,19 +294,41 @@ export class ImageBlockComponent extends CaptionedBlockComponent<ImageBlockModel
       URL.revokeObjectURL(url);
       
       this._cropModalOpen = false;
+      this._removeGlobalModal();
     } catch (error) {
       console.error('Failed to save cropped image:', error);
     }
   };
 
   private _handleCropCancel = () => {
+    console.log('Crop cancelled, closing modal');
     this._cropModalOpen = false;
+    this._removeGlobalModal();
+    this.requestUpdate();
   };
 
   private _handleCropError = (event: CustomEvent) => {
     console.error('Crop error:', event.detail);
     this._cropModalOpen = false;
+    this._removeGlobalModal();
+    this.requestUpdate();
   };
+
+  private _removeGlobalModal() {
+    // 移除自定义元素模态框
+    const existingModal = document.querySelector('image-crop-modal[data-global="true"]');
+    if (existingModal) {
+      existingModal.remove();
+      console.log('Global modal removed from body');
+    }
+    
+    // 移除简单模态框
+    const simpleModal = document.getElementById('simple-crop-modal');
+    if (simpleModal) {
+      simpleModal.remove();
+      console.log('Simple modal removed from body');
+    }
+  }
 
   get resizableImg() {
     return this.pageImage?.resizeImg;

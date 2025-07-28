@@ -191,6 +191,20 @@ export const PackageList = [
     ],
   },
   {
+    location: 'blocksuite/affine/blocks/drawio',
+    name: '@blocksuite/affine-block-drawio',
+    workspaceDependencies: [
+      'blocksuite/affine/components',
+      'blocksuite/affine/ext-loader',
+      'blocksuite/affine/model',
+      'blocksuite/affine/shared',
+      'blocksuite/affine/widgets/slash-menu',
+      'blocksuite/framework/global',
+      'blocksuite/framework/std',
+      'blocksuite/framework/store',
+    ],
+  },
+  {
     location: 'blocksuite/affine/blocks/edgeless-text',
     name: '@blocksuite/affine-block-edgeless-text',
     workspaceDependencies: [
@@ -237,6 +251,20 @@ export const PackageList = [
       'blocksuite/affine/inlines/reference',
       'blocksuite/affine/model',
       'blocksuite/affine/rich-text',
+      'blocksuite/affine/shared',
+      'blocksuite/affine/widgets/slash-menu',
+      'blocksuite/framework/global',
+      'blocksuite/framework/std',
+      'blocksuite/framework/store',
+    ],
+  },
+  {
+    location: 'blocksuite/affine/blocks/excalidraw',
+    name: '@blocksuite/affine-block-excalidraw',
+    workspaceDependencies: [
+      'blocksuite/affine/components',
+      'blocksuite/affine/ext-loader',
+      'blocksuite/affine/model',
       'blocksuite/affine/shared',
       'blocksuite/affine/widgets/slash-menu',
       'blocksuite/framework/global',
@@ -306,6 +334,20 @@ export const PackageList = [
       'blocksuite/affine/model',
       'blocksuite/affine/rich-text',
       'blocksuite/affine/shared',
+      'blocksuite/framework/global',
+      'blocksuite/framework/std',
+      'blocksuite/framework/store',
+    ],
+  },
+  {
+    location: 'blocksuite/affine/blocks/mermaid',
+    name: '@blocksuite/affine-block-mermaid',
+    workspaceDependencies: [
+      'blocksuite/affine/components',
+      'blocksuite/affine/ext-loader',
+      'blocksuite/affine/model',
+      'blocksuite/affine/shared',
+      'blocksuite/affine/widgets/slash-menu',
       'blocksuite/framework/global',
       'blocksuite/framework/std',
       'blocksuite/framework/store',
@@ -1389,13 +1431,16 @@ export type PackageName =
   | '@blocksuite/affine-block-data-view'
   | '@blocksuite/affine-block-database'
   | '@blocksuite/affine-block-divider'
+  | '@blocksuite/affine-block-drawio'
   | '@blocksuite/affine-block-edgeless-text'
   | '@blocksuite/affine-block-embed'
   | '@blocksuite/affine-block-embed-doc'
+  | '@blocksuite/affine-block-excalidraw'
   | '@blocksuite/affine-block-frame'
   | '@blocksuite/affine-block-image'
   | '@blocksuite/affine-block-latex'
   | '@blocksuite/affine-block-list'
+  | '@blocksuite/affine-block-mermaid'
   | '@blocksuite/affine-block-note'
   | '@blocksuite/affine-block-paragraph'
   | '@blocksuite/affine-block-root'
