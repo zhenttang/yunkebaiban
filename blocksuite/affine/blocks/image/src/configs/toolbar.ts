@@ -11,6 +11,7 @@ import {
   DeleteIcon,
   DownloadIcon,
   DuplicateIcon,
+  EditIcon,
 } from '@blocksuite/icons/lit';
 import { BlockFlavourIdentifier } from '@blocksuite/std';
 import type { ExtensionType } from '@blocksuite/store';
@@ -27,7 +28,7 @@ const trackBaseProps = {
 const builtinToolbarConfig = {
   actions: [
     {
-      id: 'a.download',
+      id: 'b.download',
       tooltip: '下载',
       icon: DownloadIcon(),
       run(ctx) {
@@ -36,7 +37,30 @@ const builtinToolbarConfig = {
       },
     },
     {
-      id: 'b.caption',
+      id: 'a.crop',
+      tooltip: '剪裁',
+      icon: EditIcon(),
+      when(ctx) {
+        console.log('Crop button when condition checked');
+        const block = ctx.getCurrentBlockByType(ImageBlockComponent);
+        const hasBlob = Boolean(block?.blobUrl);
+        console.log('Has blob URL:', hasBlob, 'Block:', block);
+        return hasBlob;
+      },
+      run(ctx) {
+        console.log('=== CROP BUTTON CLICKED ===');
+        const block = ctx.getCurrentBlockByType(ImageBlockComponent);
+        console.log('Block found:', block);
+        if (block) {
+          console.log('Calling openCropModal on block');
+          block.openCropModal();
+        } else {
+          console.error('No image block found in context');
+        }
+      },
+    },
+    {
+      id: 'c.caption',
       tooltip: '标题',
       icon: CaptionIcon(),
       run(ctx) {
@@ -119,7 +143,20 @@ const builtinToolbarConfig = {
 const builtinSurfaceToolbarConfig = {
   actions: [
     {
-      id: 'a.download',
+      id: 'a.crop',
+      tooltip: '剪裁',
+      icon: EditIcon(),
+      when(ctx) {
+        const surfaces = ctx.getSurfaceModelsByType(ImageBlockModel);
+        return surfaces.length === 1 && Boolean(surfaces[0]?.props.sourceId);
+      },
+      run(ctx) {
+        const block = ctx.getCurrentBlockByType(ImageEdgelessBlockComponent);
+        block?.openCropModal();
+      },
+    },
+    {
+      id: 'b.download',
       tooltip: '下载',
       icon: DownloadIcon(),
       run(ctx) {
@@ -128,7 +165,7 @@ const builtinSurfaceToolbarConfig = {
       },
     },
     {
-      id: 'b.caption',
+      id: 'c.caption',
       tooltip: '标题',
       icon: CaptionIcon(),
       run(ctx) {

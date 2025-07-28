@@ -184,7 +184,8 @@
     "yjs": "13.6.21"
   },
   "dependencies": {
-    "@swc/core": "1.12.11"
+    "@swc/core": "1.12.11",
+    "react-easy-crop": "^5.5.0"
   },
   "optionalDependencies": {
     "@swc/core-darwin-arm64": "1.12.11",

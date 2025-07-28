@@ -13,11 +13,13 @@ import { BlockSelection } from '@blocksuite/std';
 import { computed } from '@preact/signals-core';
 import { cssVarV2 } from '@toeverything/theme/v2';
 import { html } from 'lit';
-import { query } from 'lit/decorators.js';
+import { query, state } from 'lit/decorators.js';
 import { styleMap } from 'lit/directives/style-map.js';
 import { when } from 'lit/directives/when.js';
 
 import type { ImageBlockPageComponent } from './components/page-image-block';
+import type { CropResult } from './components/image-crop-modal.js';
+import './components/image-crop-modal.js';
 import {
   copyImageBlob,
   downloadImageBlob,
@@ -41,6 +43,9 @@ export class ImageBlockComponent extends CaptionedBlockComponent<ImageBlockModel
     'Image'
   );
 
+  @state()
+  private accessor _cropModalOpen = false;
+
   get blobUrl() {
     return this.resourceController.blobUrl$.value;
   }
@@ -59,6 +64,47 @@ export class ImageBlockComponent extends CaptionedBlockComponent<ImageBlockModel
 
   refreshData = () => {
     refreshData(this).catch(console.error);
+  };
+
+  openCropModal = () => {
+    console.log('openCropModal called', { blobUrl: this.blobUrl, modalOpen: this._cropModalOpen });
+    if (!this.blobUrl) {
+      console.log('No blobUrl available');
+      return;
+    }
+    console.log('Opening crop modal...');
+    this._cropModalOpen = true;
+  };
+
+  private _handleCropSave = async (event: CustomEvent<CropResult>) => {
+    const { blob, url } = event.detail;
+    
+    try {
+      // 上传剪裁后的图片
+      const blobSync = this.std.store.blobSync;
+      const sourceId = await blobSync.set(blob);
+      
+      // 更新模型
+      this.std.store.updateBlock(this.model, {
+        sourceId,
+      });
+      
+      // 清理临时URL
+      URL.revokeObjectURL(url);
+      
+      this._cropModalOpen = false;
+    } catch (error) {
+      console.error('Failed to save cropped image:', error);
+    }
+  };
+
+  private _handleCropCancel = () => {
+    this._cropModalOpen = false;
+  };
+
+  private _handleCropError = (event: CustomEvent) => {
+    console.error('Crop error:', event.detail);
+    this._cropModalOpen = false;
   };
 
   get resizableImg() {
@@ -120,6 +166,9 @@ export class ImageBlockComponent extends CaptionedBlockComponent<ImageBlockModel
   override firstUpdated() {
     // lazy bindings
     this.disposables.addFromEvent(this, 'click', this._handleClick);
+    this.disposables.addFromEvent(this, 'crop-save', this._handleCropSave);
+    this.disposables.addFromEvent(this, 'crop-cancel', this._handleCropCancel);
+    this.disposables.addFromEvent(this, 'crop-error', this._handleCropError);
     this._initHover();
   }
 
@@ -158,6 +207,11 @@ export class ImageBlockComponent extends CaptionedBlockComponent<ImageBlockModel
             ></affine-image-fallback-card>`
         )}
       </div>
+
+      <image-crop-modal
+        .imageUrl=${blobUrl || ''}
+        .open=${this._cropModalOpen}
+      ></image-crop-modal>
 
       ${Object.values(this.widgets)}
     `;

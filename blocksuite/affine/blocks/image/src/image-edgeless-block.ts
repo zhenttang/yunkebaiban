@@ -13,10 +13,12 @@ import { GfxBlockComponent } from '@blocksuite/std';
 import { GfxViewInteractionExtension } from '@blocksuite/std/gfx';
 import { computed } from '@preact/signals-core';
 import { css, html } from 'lit';
-import { query } from 'lit/decorators.js';
+import { query, state } from 'lit/decorators.js';
 import { styleMap } from 'lit/directives/style-map.js';
 import { when } from 'lit/directives/when.js';
 
+import type { CropResult } from './components/image-crop-modal.js';
+import './components/image-crop-modal.js';
 import {
   copyImageBlob,
   downloadImageBlob,
@@ -70,6 +72,9 @@ export class ImageEdgelessBlockComponent extends GfxBlockComponent<ImageBlockMod
     'Image'
   );
 
+  @state()
+  private accessor _cropModalOpen = false;
+
   get blobUrl() {
     return this.resourceController.blobUrl$.value;
   }
@@ -88,6 +93,42 @@ export class ImageEdgelessBlockComponent extends GfxBlockComponent<ImageBlockMod
 
   refreshData = () => {
     refreshData(this).catch(console.error);
+  };
+
+  openCropModal = () => {
+    if (!this.blobUrl) return;
+    this._cropModalOpen = true;
+  };
+
+  private _handleCropSave = async (event: CustomEvent<CropResult>) => {
+    const { blob, url } = event.detail;
+    
+    try {
+      // 上传剪裁后的图片
+      const blobSync = this.std.store.blobSync;
+      const sourceId = await blobSync.set(blob);
+      
+      // 更新模型
+      this.std.store.updateBlock(this.model, {
+        sourceId,
+      });
+      
+      // 清理临时URL
+      URL.revokeObjectURL(url);
+      
+      this._cropModalOpen = false;
+    } catch (error) {
+      console.error('Failed to save cropped image:', error);
+    }
+  };
+
+  private _handleCropCancel = () => {
+    this._cropModalOpen = false;
+  };
+
+  private _handleCropError = (event: CustomEvent) => {
+    console.error('Crop error:', event.detail);
+    this._cropModalOpen = false;
   };
 
   private _handleError() {
@@ -111,6 +152,11 @@ export class ImageEdgelessBlockComponent extends GfxBlockComponent<ImageBlockMod
         this.refreshData();
       })
     );
+
+    // 添加剪裁事件监听器
+    this.disposables.addFromEvent(this, 'crop-save', this._handleCropSave);
+    this.disposables.addFromEvent(this, 'crop-cancel', this._handleCropCancel);
+    this.disposables.addFromEvent(this, 'crop-error', this._handleCropError);
   }
 
   override renderGfxBlock() {
@@ -177,6 +223,11 @@ export class ImageEdgelessBlockComponent extends GfxBlockComponent<ImageBlockMod
         <affine-block-selection .block=${this}></affine-block-selection>
       </div>
       <block-caption-editor></block-caption-editor>
+
+      <image-crop-modal
+        .imageUrl=${blobUrl || ''}
+        .open=${this._cropModalOpen}
+      ></image-crop-modal>
 
       ${Object.values(this.widgets)}
     `;
