@@ -86,18 +86,42 @@ export class IndexedDBDocStorage extends DocStorageBase<IDBConnectionOptions> {
   }
 
   protected override async getDocSnapshot(docId: string) {
+    console.log('💾 [IndexedDBDocStorage] 开始获取文档快照 (IndexedDB):', {
+      docId: docId,
+      spaceId: this.spaceId,
+      timestamp: new Date().toISOString()
+    });
+
     const trx = this.db.transaction('snapshots', 'readonly');
     const record = await trx.store.get(docId);
 
+    console.log('💾 [IndexedDBDocStorage] IndexedDB查询结果:', {
+      docId: docId,
+      hasRecord: !!record,
+      recordSize: record?.bin?.length || 0,
+      recordHex: record?.bin ? 
+        Array.from(record.bin.slice(0, 20)).map(b => b.toString(16).padStart(2, '0')).join(' ') : 'null'
+    });
+
     if (!record) {
+      console.warn('⚠️ [IndexedDBDocStorage] IndexedDB中未找到记录:', { docId });
       return null;
     }
 
-    return {
+    const result = {
       docId,
       bin: record.bin,
       timestamp: record.updatedAt,
     };
+
+    console.log('✅ [IndexedDBDocStorage] 文档快照获取成功:', {
+      docId: docId,
+      binSize: result.bin.length,
+      binHex: Array.from(result.bin.slice(0, 20)).map(b => b.toString(16).padStart(2, '0')).join(' '),
+      timestamp: result.timestamp
+    });
+
+    return result;
   }
 
   override async deleteDoc(docId: string) {

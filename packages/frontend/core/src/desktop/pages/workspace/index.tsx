@@ -369,6 +369,11 @@ const WorkspacePage = ({ meta }: { meta: WorkspaceMetadata }) => {
 
   useLayoutEffect(() => {
     console.log('🏗️ [WorkspacePage] useLayoutEffect 开始，打开工作空间:', meta.id);
+    console.log('🔍 [WorkspacePage] 工作空间元数据:', {
+      id: meta.id,
+      flavour: meta.flavour,
+      initialized: meta.initialized
+    });
     
     try {
       const ref = workspacesService.open({ metadata: meta });
@@ -378,17 +383,34 @@ const WorkspacePage = ({ meta }: { meta: WorkspaceMetadata }) => {
         console.log('✅ [WorkspacePage] 工作空间对象已就绪:', {
           id: ref.workspace.id,
           flavour: ref.workspace.flavour,
-          initialized: ref.workspace.meta?.initialized
+          initialized: ref.workspace.meta?.initialized,
+          engine: !!ref.workspace.engine,
+          docCollection: !!ref.workspace.docCollection
         });
+        
+        // 添加根文档状态监听
+        const docStateSub = ref.workspace.engine.doc
+          .docState$(ref.workspace.id)
+          .subscribe((state) => {
+            console.log('📄 [WorkspacePage] 根文档状态监听器:', {
+              workspaceId: ref.workspace.id,
+              ready: state.ready,
+              loading: state.loading,
+              error: state.error,
+              syncing: state.syncing
+            });
+          });
+        
         setWorkspace(ref.workspace);
+        
+        return () => {
+          console.log('🧹 [WorkspacePage] 清理工作空间引用');
+          docStateSub.unsubscribe();
+          ref.dispose();
+        };
       } else {
         console.error('❌ [WorkspacePage] 工作空间对象为空');
       }
-      
-      return () => {
-        console.log('🧹 [WorkspacePage] 清理工作空间引用');
-        ref.dispose();
-      };
     } catch (error) {
       console.error('💥 [WorkspacePage] 打开工作空间失败:', error);
       setWorkspace(null);

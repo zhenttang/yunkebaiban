@@ -143,12 +143,25 @@ export class DocFrontend {
       updating: boolean;
     }>(subscribe => {
       const next = () => {
+        const readyStatus = this.status.readyDocs.has(docId);
+        const loadedStatus = this.status.connectedDocs.has(docId);
+        const updatingStatus = (this.status.jobMap.get(docId)?.length ?? 0) > 0 ||
+            this.status.currentJob?.docId === docId;
+            
+        console.log('📊 [DocFrontend] 文档状态更新:', {
+          docId: docId,
+          ready: readyStatus,
+          loaded: loadedStatus,
+          updating: updatingStatus,
+          readyDocsCount: this.status.readyDocs.size,
+          connectedDocsCount: this.status.connectedDocs.size,
+          timestamp: new Date().toISOString()
+        });
+        
         subscribe.next({
-          ready: this.status.readyDocs.has(docId),
-          loaded: this.status.connectedDocs.has(docId),
-          updating:
-            (this.status.jobMap.get(docId)?.length ?? 0) > 0 ||
-            this.status.currentJob?.docId === docId,
+          ready: readyStatus,
+          loaded: loadedStatus,
+          updating: updatingStatus,
         });
       };
       next();
@@ -312,13 +325,42 @@ export class DocFrontend {
       // mark doc as loaded
       doc.emit('sync', [true, doc]);
 
+      console.log('📞 [DocFrontend] 准备调用storage.getDoc:', {
+        docId: job.docId,
+        storageType: this.storage.constructor.name,
+        storageIdentifier: (this.storage as any).constructor.identifier || 'unknown',
+        hasGetDocMethod: typeof this.storage.getDoc === 'function',
+        storageInstance: !!this.storage
+      });
+
       const docRecord = await this.storage.getDoc(job.docId);
       throwIfAborted(signal);
 
-      if (docRecord && !isEmptyUpdate(docRecord.bin)) {
-        this.applyUpdate(job.docId, docRecord.bin);
+      console.log('🔍 [DocFrontend] 文档加载检查:', {
+        docId: job.docId,
+        hasDocRecord: !!docRecord,
+        binSize: docRecord?.bin?.length || 0,
+        isEmptyUpdate: docRecord ? isEmptyUpdate(docRecord.bin) : 'no-record',
+        storageType: this.storage.constructor.name,
+        storageIdentifier: (this.storage as any).constructor.identifier || 'unknown',
+        timestamp: new Date().toISOString()
+      });
 
+      if (docRecord && !isEmptyUpdate(docRecord.bin)) {
+        console.log('✅ [DocFrontend] 文档数据有效，应用更新并标记为ready:', {
+          docId: job.docId,
+          binSize: docRecord.bin.length,
+          binHex: Array.from(docRecord.bin.slice(0, 20)).map(b => b.toString(16).padStart(2, '0')).join(' ')
+        });
+        this.applyUpdate(job.docId, docRecord.bin);
         this.status.readyDocs.add(job.docId);
+      } else {
+        console.warn('⚠️ [DocFrontend] 文档数据无效，无法标记为ready:', {
+          docId: job.docId,
+          hasDocRecord: !!docRecord,
+          binSize: docRecord?.bin?.length || 0,
+          reason: !docRecord ? 'no-doc-record' : 'empty-update'
+        });
       }
 
       this.status.connectedDocs.add(job.docId);

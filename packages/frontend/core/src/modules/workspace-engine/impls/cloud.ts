@@ -422,6 +422,15 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
         flavour: this.flavour,
         type: 'workspace',
       });
+      
+      console.log('🏭 [CloudWorkspaceFlavourProvider] 文档存储实例化:', {
+        workspaceId: workspaceId,
+        storageClass: this.DocStorageType.name,
+        storageIdentifier: this.DocStorageType.identifier,
+        flavour: this.flavour,
+        type: 'workspace'
+      });
+      
       docStorage.connection.connect();
       await docStorage.connection.waitForConnected();
 
@@ -462,12 +471,17 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
         await initial(docCollection, blobStorage, docStorage);
 
         // save workspace to local storage, should be vary fast
+        console.log('💾 [CreateWorkspace] 保存初始数据到本地存储...');
         for (const subdocs of docList) {
           await docStorage.pushDocUpdate({
             docId: subdocs.guid,
             bin: encodeStateAsUpdate(subdocs),
           });
         }
+
+        // 🔥 新增：立即同步到云端
+        console.log('🌐 [CreateWorkspace] 开始同步初始数据到云端...');
+        await this.syncInitialDataToCloud(workspaceId, docList, blobStorage);
 
         const accountId = this.authService.session.account$.value?.id;
         await this.writeInitialDocProperties(
@@ -481,6 +495,8 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
 
         this.revalidate();
         await this.waitForLoaded();
+        
+        console.log('✅ [CreateWorkspace] 工作空间创建和同步完成');
       } finally {
         docCollection.dispose();
       }
@@ -494,6 +510,70 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
       throw error;
     }
   }
+  
+  /**
+   * 🔥 核心方法：同步初始数据到云端
+   */
+  private async syncInitialDataToCloud(
+    workspaceId: string, 
+    docList: Set<YDoc>, 
+    blobStorage: BlobStorage
+  ): Promise<void> {
+    console.log('🌐 [SyncToCloud] 开始同步，文档数量:', docList.size);
+    
+    // 创建云端存储实例
+    const cloudDocStorage = new (await import('@affine/nbstore/cloud')).CloudDocStorage({
+      id: workspaceId,
+      flavour: this.flavour,
+      type: 'workspace' as any,
+      serverBaseUrl: this.server.serverMetadata.baseUrl,
+      isSelfHosted: true, // 根据实际情况调整
+    });
+
+    try {
+      // 连接到云端存储
+      await cloudDocStorage.connection.connect();
+      await cloudDocStorage.connection.waitForConnected();
+      
+      console.log('🔗 [SyncToCloud] 云端连接建立成功');
+
+      // 同步每个文档
+      let syncedCount = 0;
+      for (const doc of docList) {
+        try {
+          console.log(`📄 [SyncToCloud] 同步文档: ${doc.guid}`);
+          
+          await cloudDocStorage.pushDocUpdate({
+            docId: doc.guid,
+            bin: encodeStateAsUpdate(doc),
+            timestamp: new Date(),
+          });
+          
+          syncedCount++;
+          console.log(`✅ [SyncToCloud] 文档同步成功: ${doc.guid}`);
+          
+        } catch (docError) {
+          console.error(`❌ [SyncToCloud] 文档同步失败: ${doc.guid}`, docError);
+          // 继续同步其他文档，不中断整个流程
+        }
+      }
+      
+      console.log(`🎉 [SyncToCloud] 同步完成: ${syncedCount}/${docList.size} 个文档`);
+      
+    } catch (error) {
+      console.error('❌ [SyncToCloud] 云端同步失败:', error);
+      // 不抛出错误，允许工作空间创建完成，只是同步失败
+      console.warn('⚠️ [SyncToCloud] 初始同步失败，但工作空间仍可正常使用，稍后可手动同步');
+    } finally {
+      try {
+        await cloudDocStorage.connection.disconnect();
+        console.log('🔌 [SyncToCloud] 云端连接已断开');
+      } catch (disconnectError) {
+        console.warn('⚠️ [SyncToCloud] 断开连接时出错:', disconnectError);
+      }
+    }
+  }
+
   revalidate = effect(
     map(() => {
       return { accountId: this.authService.session.account$.value?.id };
@@ -776,13 +856,22 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
         return this.getDefaultWorkspaceProfile();
       }
       
+      // 🔧 [CRITICAL-FIX] 修复角色比较 - 后端返回大写枚举值，前端需要处理大小写不敏感比较
+      const role = (workspace.role || '').toUpperCase();
       const profile: WorkspaceProfileInfo = {
         name: workspace.name || '未命名工作空间',
         avatar: undefined,
-        isOwner: workspace.role === 'owner',
-        isAdmin: workspace.role === 'admin',
+        isOwner: role === 'OWNER',
+        isAdmin: role === 'OWNER' || role === 'ADMIN',
         isTeam: Boolean(workspace.team),
       };
+      
+      logger.info(`🔧 [CRITICAL-DEBUG] 前端角色判断过程:`, {
+        originalRole: workspace.role,
+        normalizedRole: role,
+        isOwner: profile.isOwner,
+        isAdmin: profile.isAdmin
+      });
       
       logger.info(`✅ [CloudWorkspaceFlavourProvider] 成功获取工作空间资料:`, profile);
       return profile;
@@ -971,12 +1060,27 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
         
         if (response.ok) {
           const data = await response.json();
+          
+          // 🔧 [CRITICAL-DEBUG] 记录完整的后端响应数据
+          logger.info(`🔧 [CRITICAL-DEBUG] 后端API响应数据:`, data);
+          
           if (data.success || data.workspace || data.id) {
             const workspace = data.workspace || data;
+            
+            // 🔧 [CRITICAL-FIX] 修复角色获取 - 从正确的位置获取role信息
+            // 后端返回结构: { success: true, workspace: {...}, role: "OWNER", isOwner: true, isAdmin: true }
+            const role = data.role || workspace.role || 'viewer';
+            
+            logger.info(`🔧 [CRITICAL-DEBUG] 角色获取过程:`, {
+              dataRole: data.role,
+              workspaceRole: workspace.role, 
+              finalRole: role
+            });
+            
             return {
               id: workspace.id || workspaceId,
               name: workspace.name || 'Default Workspace',
-              role: workspace.role || 'viewer',
+              role: role,
               team: Boolean(workspace.team),
             };
           }

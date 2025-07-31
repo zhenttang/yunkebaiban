@@ -72,67 +72,105 @@ export class CloudDocStorage extends DocStorageBase<CloudDocStorageOptions> {
   );
 
   override async getDocSnapshot(docId: string) {
+    console.log('🌐 [CloudDocStorage] 开始获取文档快照:', {
+      docId: docId,
+      spaceType: this.spaceType,
+      spaceId: this.spaceId,
+      oldDocId: this.idConverter.newIdToOldId(docId),
+      timestamp: new Date().toISOString()
+    });
+
     const response = await this.socket.emitWithAck('space:load-doc', {
       spaceType: this.spaceType,
       spaceId: this.spaceId,
       docId: this.idConverter.newIdToOldId(docId),
     });
 
+    console.log('🌐 [CloudDocStorage] Socket.IO响应:', {
+      docId: docId,
+      hasError: 'error' in response,
+      errorType: 'error' in response ? response.error?.name : null,
+      hasData: 'data' in response,
+      dataSize: 'data' in response ? response.data?.missing?.length || 0 : 0,
+      timestamp: 'data' in response ? response.data?.timestamp : null
+    });
+
     if ('error' in response) {
       if (response.error.name === 'DOC_NOT_FOUND') {
+        console.warn('⚠️ [CloudDocStorage] 文档未找到:', { docId });
         return null;
       }
+      console.error('❌ [CloudDocStorage] Socket.IO错误:', response.error);
       // TODO: 使用 [用户友好错误]
       throw new Error(response.error.message);
     }
 
+    const binaryData = base64ToUint8Array(response.data.missing);
+    console.log('✅ [CloudDocStorage] 文档快照获取成功:', {
+      docId: docId,
+      base64Length: response.data.missing?.length || 0,
+      binaryLength: binaryData.length,
+      binaryHex: Array.from(binaryData.slice(0, 20)).map(b => b.toString(16).padStart(2, '0')).join(' '),
+      timestamp: response.data.timestamp
+    });
+
     return {
       docId,
-      bin: base64ToUint8Array(response.data.missing),
+      bin: binaryData,
       timestamp: new Date(response.data.timestamp),
     };
   }
 
   override async getDocDiff(docId: string, state?: Uint8Array) {
-    // 使用HTTP REST API替代WebSocket
-    const oldDocId = this.idConverter.newIdToOldId(docId);
-    const url = new URL(`${this.options.serverBaseUrl}/api/workspaces/${this.spaceId}/docs/${oldDocId}`);
-    
-    if (state) {
-      url.searchParams.set('stateVector', await uint8ArrayToBase64(state));
-    }
-
-    const response = await fetch(url.toString(), {
-      method: 'GET',
-      headers: {
-        'Accept': 'application/json',
-        'x-affine-version': '0.17.0',
-      },
-      credentials: 'include',
+    console.log('🌐 [CloudDocStorage] 调用getDocDiff:', {
+      docId: docId,
+      hasStateVector: !!state,
+      stateVectorLength: state?.length || 0,
+      timestamp: new Date().toISOString()
     });
 
-    if (response.status === 404) {
-      return null;
-    }
+    // 严格按照AFFiNE标准使用WebSocket
+    const response = await this.socket.emitWithAck('space:load-doc', {
+      spaceType: this.spaceType,
+      spaceId: this.spaceId,
+      docId: this.idConverter.newIdToOldId(docId),
+      stateVector: state ? await uint8ArrayToBase64(state) : undefined, // 支持状态向量
+    });
 
-    if (!response.ok) {
-      throw new Error(`Failed to get doc diff: ${response.status} ${response.statusText}`);
-    }
+    console.log('🌐 [CloudDocStorage] Socket.IO响应:', {
+      docId: docId,
+      hasError: 'error' in response,
+      errorType: 'error' in response ? response.error?.name : null,
+      hasData: 'data' in response,
+      dataSize: 'data' in response ? response.data?.missing?.length || 0 : 0,
+      timestamp: 'data' in response ? response.data?.timestamp : null
+    });
 
-    const data = await response.json();
-    
-    if (!data.success) {
-      if (data.error?.name === 'DOC_NOT_FOUND') {
+    if ('error' in response) {
+      if (response.error.name === 'DOC_NOT_FOUND') {
+        console.warn('⚠️ [CloudDocStorage] 文档未找到:', { docId });
         return null;
       }
-      throw new Error(data.error?.message || 'Failed to get doc diff');
+      console.error('❌ [CloudDocStorage] Socket.IO错误:', response.error);
+      throw new Error(response.error.message);
     }
+
+    // 按照AFFiNE标准返回完整的diff数据
+    const missingData = base64ToUint8Array(response.data.missing);
+    const stateData = base64ToUint8Array(response.data.state);
+    
+    console.log('✅ [CloudDocStorage] 文档差异获取成功:', {
+      docId: docId,
+      missingLength: missingData.length,
+      stateLength: stateData.length,
+      timestamp: response.data.timestamp
+    });
 
     return {
       docId,
-      missing: base64ToUint8Array(data.missing),
-      state: base64ToUint8Array(data.state),
-      timestamp: new Date(data.timestamp),
+      missing: missingData,      // 缺失的更新数据
+      state: stateData,          // 当前状态向量
+      timestamp: new Date(response.data.timestamp),
     };
   }
 
@@ -166,6 +204,13 @@ export class CloudDocStorage extends DocStorageBase<CloudDocStorageOptions> {
       
       if (cloudStorageManager && cloudStorageManager.isConnected && cloudStorageManager.pushDocUpdate) {
         console.log('  📡 使用云存储管理器进行推送...');
+        console.log('  🔍 [CRITICAL-FIX] 传递给云存储管理器的参数:');
+        console.log('    📄 docId:', docId);
+        console.log('    🔢 docId长度:', docId?.length);
+        console.log('    🆔 docId格式验证: 是否为标准UUID:', docId?.length === 36 && docId?.includes('-'));
+        console.log('    📦 update.bin类型:', update.bin.constructor.name);
+        console.log('    📊 update.bin长度:', update.bin.length);
+        
         const timestamp = await cloudStorageManager.pushDocUpdate(docId, update.bin);
         console.log('✅ [NBStore-CloudDocStorage] 云存储管理器推送成功');
         console.log('  📊 结果: timestamp =', timestamp);

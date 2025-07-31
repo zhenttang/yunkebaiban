@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, createContext, useContext, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import type { Socket } from 'socket.io-client';
+import { uint8ArrayToBase64, base64ToUint8Array, isEmptyUpdate, isValidYjsUpdate, logYjsUpdateInfo } from './utils/yjs-utils';
 
 /**
  * 获取Socket.IO连接URL
@@ -33,13 +34,14 @@ function getSocketIOUrl(): string {
 const OFFLINE_OPERATIONS_KEY = 'cloud_storage_offline_operations';
 const LAST_SYNC_KEY = 'cloud_storage_last_sync';
 
-// 离线操作类型
+// 离线操作类型 - 严格按照AFFiNE格式
 interface OfflineOperation {
   id: string;
   docId: string;
   update: string; // Base64编码的更新数据
   timestamp: number;
-  workspaceId: string;
+  spaceId: string; // 使用spaceId而不是workspaceId
+  spaceType: 'workspace' | 'userspace'; // 添加空间类型
 }
 
 export interface CloudStorageStatus {
@@ -92,16 +94,19 @@ export const CloudStorageProvider = ({
   }>>([]);
   const [offlineOperationsCount, setOfflineOperationsCount] = useState(0);
 
-  // 本地缓存操作管理
-  const saveOfflineOperation = (docId: string, update: Uint8Array) => {
+  // 保存离线操作 - 按照AFFiNE标准格式
+  const saveOfflineOperation = async (docId: string, update: Uint8Array) => {
     if (!currentWorkspaceId) return;
+    
+    const updateBase64 = await uint8ArrayToBase64(update);
     
     const operation: OfflineOperation = {
       id: `${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
       docId,
-      update: uint8ArrayToBase64(update),
+      update: updateBase64, // 保存Base64编码的数据
       timestamp: Date.now(),
-      workspaceId: currentWorkspaceId
+      spaceId: currentWorkspaceId, // 使用spaceId
+      spaceType: 'workspace' // 添加空间类型
     };
 
     // 从localStorage读取现有操作
@@ -127,7 +132,7 @@ export const CloudStorageProvider = ({
     setOfflineOperationsCount(0);
   };
 
-  // 同步离线操作
+  // 同步离线操作 - 按照AFFiNE标准格式
   const syncOfflineOperations = async (): Promise<void> => {
     if (!currentWorkspaceId || !socket?.connected) {
       console.warn('⚠️ [云存储管理器] 无法同步：缺少workspace或连接');
@@ -135,24 +140,24 @@ export const CloudStorageProvider = ({
     }
 
     const operations = getOfflineOperations()
-      .filter(op => op.workspaceId === currentWorkspaceId) // 只同步当前workspace的操作
+      .filter(op => op.spaceId === currentWorkspaceId) // 使用spaceId过滤
       .sort((a, b) => a.timestamp - b.timestamp); // 按时间顺序排序
 
     if (operations.length === 0) {
       return;
     }
 
-
     let successCount = 0;
     let failureCount = 0;
 
     for (const operation of operations) {
       try {
+        // 按照AFFiNE标准格式发送
         const result = await socket.emitWithAck('space:push-doc-update', {
-          spaceType: 'userspace',
-          spaceId: operation.workspaceId,
+          spaceType: operation.spaceType || 'workspace',
+          spaceId: operation.spaceId,
           docId: operation.docId,
-          update: operation.update
+          update: operation.update // 直接使用Base64字符串
         });
 
         if ('error' in result) {
@@ -175,7 +180,7 @@ export const CloudStorageProvider = ({
     } else {
       // 有失败的操作，只移除成功的操作
       const remainingOperations = getOfflineOperations()
-        .filter(op => !operations.some(syncOp => syncOp.id === op.id) || op.workspaceId !== currentWorkspaceId);
+        .filter(op => !operations.some(syncOp => syncOp.id === op.id) || op.spaceId !== currentWorkspaceId);
       localStorage.setItem(OFFLINE_OPERATIONS_KEY, JSON.stringify(remainingOperations));
       setOfflineOperationsCount(remainingOperations.length);
     }
@@ -189,17 +194,46 @@ export const CloudStorageProvider = ({
 
   // 动态获取当前workspaceId
   const currentWorkspaceId = useMemo(() => {
+    console.log('🔍 [currentWorkspaceId] 开始计算当前工作空间ID...');
+    console.log('  📋 URL params.workspaceId:', params.workspaceId);
+    
     // 从URL路由参数获取
     if (params.workspaceId) {
-      return params.workspaceId;
+      console.log('  ✅ 使用URL参数作为workspaceId:', params.workspaceId);
+      console.log('  🔍 URL参数格式验证: 长度=', params.workspaceId.length, '包含连字符=', params.workspaceId.includes('-'));
+      
+      // 🔧 [CRITICAL-FIX] 确保workspaceId始终为长UUID格式
+      const workspaceId = params.workspaceId;
+      if (workspaceId.length === 36 && workspaceId.includes('-')) {
+        console.log('  ✅ [ID-VERIFICATION] 确认为标准UUID格式');
+        // 保存到localStorage供其他组件使用
+        localStorage.setItem('last_workspace_id', workspaceId);
+        return workspaceId;
+      } else if (workspaceId.length === 21 && !workspaceId.includes('-')) {
+        console.error('  🚨 [ID-ERROR] 检测到短ID格式，这应该不会发生！');
+        console.error('  🔍 短ID详情: length=', workspaceId.length, 'value=', workspaceId);
+        // 尝试从localStorage获取对应的长UUID
+        const storedLongId = localStorage.getItem('last_workspace_id');
+        if (storedLongId && storedLongId.length === 36 && storedLongId.includes('-')) {
+          console.warn('  ⚠️ [ID-FALLBACK] 使用localStorage中的长UUID:', storedLongId);
+          return storedLongId;
+        }
+      }
+      
+      return workspaceId;
     }
     
     // 从localStorage获取最后访问的workspace
     const lastWorkspaceId = localStorage.getItem('last_workspace_id');
+    console.log('  📋 localStorage last_workspace_id:', lastWorkspaceId);
+    
     if (lastWorkspaceId) {
+      console.log('  ⚠️ 使用localStorage作为workspaceId:', lastWorkspaceId);
+      console.log('  🔍 localStorage格式验证: 长度=', lastWorkspaceId.length, '包含连字符=', lastWorkspaceId.includes('-'));
       return lastWorkspaceId;
     }
     
+    console.log('  ❌ 无法确定当前workspace，返回null');
     // 如果都没有，返回null表示无法确定当前workspace
     return null;
   }, [params.workspaceId]);
@@ -269,12 +303,6 @@ export const CloudStorageProvider = ({
       setTimeout(connectToSocket, 100);
     }
   }, [currentWorkspaceId]);
-
-  // 转换Uint8Array到Base64
-  const uint8ArrayToBase64 = (array: Uint8Array): string => {
-    const binaryString = Array.from(array, byte => String.fromCharCode(byte)).join('');
-    return btoa(binaryString);
-  };
 
   // 推送文档更新 - 增强版本支持队列
   const pushDocUpdate = async (docId: string, update: Uint8Array): Promise<number> => {
@@ -358,52 +386,62 @@ export const CloudStorageProvider = ({
       });
     }
 
-    const updateBase64 = uint8ArrayToBase64(update);
-    
-    // 详细记录Base64编码过程
-    console.log(`  📊 编码前: ${update.length}字节`);
-    console.log(`  📊 编码后: ${updateBase64.length}字符`);
-    console.log(`  🔤 Base64前50字符: ${updateBase64.substring(0, 50)}...`);
-    console.log(`  🔍 Base64最后50字符: ...${updateBase64.substring(Math.max(0, updateBase64.length - 50))}`);
-    
-    // 验证Base64编码的可逆性
-    try {
-      const decoded = new Uint8Array(atob(updateBase64).split('').map(c => c.charCodeAt(0)));
-      const isIdentical = decoded.length === update.length && decoded.every((v, i) => v === update[i]);
-      console.log(`  ✅ Base64编码验证: 长度匹配=${decoded.length === update.length}, 内容匹配=${isIdentical}`);
-      if (!isIdentical) {
-        console.log(`  ⚠️ 编码前后数据不匹配! 原始前10字节: [${Array.from(update.slice(0, 10)).join(',')}]`);
-        console.log(`  ⚠️ 编码前后数据不匹配! 解码前10字节: [${Array.from(decoded.slice(0, 10)).join(',')}]`);
-      }
-    } catch (e) {
-      console.error(`  ❌ Base64编码验证失败: ${e.message}`);
-    }
-    
-    console.log(`  📦 数据详情: originalSize=${update.length}字节, base64Size=${updateBase64.length}字符`);
-    console.log(`  🔗 Socket状态: id=${socket.id}, connected=${socket.connected}`);
+    // 删除重复的Base64编码 - 已在上面的代码中处理
 
     try {
+      console.log('🎯🎯🎯 [云存储管理器-推送] CRITICAL: 开始发送Socket.IO事件!!!');
+      console.log('  🎯 事件名称: space:push-doc-update');
+      console.log('  🎯 Socket状态: connected=' + socket.connected + ', id=' + socket.id);
       console.log('  📤 发送space:push-doc-update事件...');
+      
+      // 检测空更新并跳过
+      if (isEmptyUpdate(update)) {
+        console.log('  🔄 检测到空更新，跳过发送');
+        return Date.now();
+      }
+      
+      // 按照AFFiNE标准格式编码数据
+      const updateBase64 = await uint8ArrayToBase64(update);
+      
+      // 验证编码结果
+      if (!isValidYjsUpdate(updateBase64)) {
+        throw new Error('生成的Base64数据无效');
+      }
+      
+      logYjsUpdateInfo('发送前', update, updateBase64);
+      
       const requestData = {
-        spaceType: 'userspace',
-        spaceId: currentWorkspaceId,
+        spaceType: 'workspace' as const,  // 按照AFFiNE标准：spaceType
+        spaceId: currentWorkspaceId,      // 按照AFFiNE标准：spaceId而不是workspaceId
         docId: docId,
-        update: updateBase64
+        update: updateBase64              // 按照AFFiNE标准：update单个Base64字符串
       };
       
+      console.log('🎯🎯🎯 [AFFiNE-Standard] Socket.IO请求数据:');
+      console.log('  🌟 spaceType:', requestData.spaceType);
+      console.log('  🆔 spaceId:', requestData.spaceId);
+      console.log('  🔍 spaceId格式: 长度=', requestData.spaceId?.length, '包含连字符=', requestData.spaceId?.includes('-'));
+      console.log('  📄 docId:', requestData.docId);
+      console.log('  📊 update类型:', typeof requestData.update);
+      
       // 详细记录请求数据
-      console.log('  📋 Socket.IO请求详情:');
-      console.log(`    🏢 spaceType: "${requestData.spaceType}"`);
+      console.log('  📋 AFFiNE标准请求详情:');
+      console.log(`    🌟 spaceType: "${requestData.spaceType}"`);
       console.log(`    🆔 spaceId: "${requestData.spaceId}"`);
       console.log(`    📄 docId: "${requestData.docId}"`);
-      console.log(`    📦 update数据长度: ${requestData.update.length}字符`);
-      console.log(`    📝 update数据样本: "${requestData.update.substring(0, 100)}..."`);
+      console.log(`    📝 update长度: ${requestData.update.length}字符`);
+      console.log(`    🔤 update前50字符: "${requestData.update.substring(0, 50)}..."`);
       
       // 记录发送时间
       const sendTime = performance.now();
       console.log(`  ⏰ 发送时间戳: ${sendTime}ms`);
       
+      console.log('🎯🎯🎯 [云存储管理器-推送] 即将调用socket.emitWithAck!!!');
+      console.log('  🎯 最终请求数据:', JSON.stringify(requestData, null, 2));
+      
       const result = await socket.emitWithAck('space:push-doc-update', requestData);
+      
+      console.log('🎯🎯🎯 [云存储管理器-推送] Socket.IO调用完成, 收到响应!!!', result);
       
       // 记录响应时间
       const responseTime = performance.now();
@@ -474,19 +512,27 @@ export const CloudStorageProvider = ({
         transports: ['websocket', 'polling'],
         timeout: 5000,
         reconnection: false, // 我们手动处理重连
+        auth: {
+          // 开发环境可以提供一个临时token
+          token: 'dev-token-' + Date.now()
+        }
       });
 
       // 连接成功
       newSocket.on('connect', () => {
+        console.log('🎯🎯🎯 [云存储管理器-连接] Socket.IO连接成功!!!');
+        console.log('  🎯 Socket ID:', newSocket.id);
+        console.log('  🎯 当前工作空间ID:', currentWorkspaceId);
+        
         setIsConnected(true);
         setSocket(newSocket);
         reconnectAttempts.current = 0;
         
-        // 加入工作空间
+        // 加入工作空间 - 严格按照AFFiNE标准格式
         newSocket.emit('space:join', {
-          spaceType: 'userspace',
+          spaceType: 'workspace',
           spaceId: currentWorkspaceId,
-          clientVersion: '0.21.0'
+          clientVersion: '1.0.0'  // 添加AFFiNE标准要求的clientVersion
         }, (response) => {
           if ('error' in response) {
             console.error('❌ [云存储管理器] 空间加入失败:', response.error);

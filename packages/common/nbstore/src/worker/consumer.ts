@@ -141,7 +141,39 @@ class StoreConsumer {
     >();
     let collectId = 0;
     consumer.registerAll({
-      'docStorage.getDoc': (docId: string) => this.docStorage.getDoc(docId),
+      'docStorage.getDoc': async (docId: string) => {
+        console.log('🛠️ [StoreConsumer] Web Worker处理docStorage.getDoc:', {
+          docId: docId,
+          timestamp: new Date().toISOString(),
+          hasDocStorage: !!this.docStorage,
+          storageType: this.docStorage?.constructor?.name,
+          storageIdentifier: (this.docStorage as any)?.constructor?.identifier
+        });
+
+        const result = await this.docStorage.getDoc(docId);
+        
+        console.log('🛠️ [StoreConsumer] Web Worker存储响应:', {
+          docId: docId,
+          hasResult: !!result,
+          resultBinSize: result?.bin?.length || 0,
+          resultTimestamp: result?.timestamp,
+          isNull: result === null,
+          storageType: this.docStorage?.constructor?.name,
+          resultHex: result?.bin ? 
+            Array.from(result.bin.slice(0, 20)).map(b => b.toString(16).padStart(2, '0')).join(' ') : 'null'
+        });
+
+        return result;
+      },
+      'docStorage.getStorageInfo': () => {
+        return {
+          storageType: this.docStorage?.constructor?.name,
+          storageIdentifier: (this.docStorage as any)?.constructor?.identifier,
+          spaceId: this.docStorage?.spaceId,
+          isReadonly: this.docStorage?.isReadonly,
+          hasConnection: !!this.docStorage?.connection
+        };
+      },
       'docStorage.getDocDiff': ({ docId, state }) =>
         this.docStorage.getDocDiff(docId, state),
       'docStorage.pushDocUpdate': ({ update, origin }) =>

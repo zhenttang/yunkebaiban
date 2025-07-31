@@ -45,6 +45,14 @@ export class StaticCloudDocStorage extends DocStorageBase<CloudDocStorageOptions
   protected override async getDocSnapshot(
     docId: string
   ): Promise<DocRecord | null> {
+    console.log('🏛️ [StaticCloudDocStorage] 开始获取文档快照 (HTTP):', {
+      docId: docId,
+      spaceId: this.spaceId,
+      baseUrl: this.options.serverBaseUrl,
+      url: `/api/workspaces/${this.spaceId}/docs/${docId}`,
+      timestamp: new Date().toISOString()
+    });
+
     try {
       const arrayBuffer = await this.connection.fetchArrayBuffer(
         `/api/workspaces/${this.spaceId}/docs/${docId}`,
@@ -55,16 +63,41 @@ export class StaticCloudDocStorage extends DocStorageBase<CloudDocStorageOptions
           },
         }
       );
+
+      console.log('🏛️ [StaticCloudDocStorage] HTTP响应结果:', {
+        docId: docId,
+        hasArrayBuffer: !!arrayBuffer,
+        bufferSize: arrayBuffer?.byteLength || 0,
+        bufferHex: arrayBuffer ? 
+          Array.from(new Uint8Array(arrayBuffer).slice(0, 20))
+            .map(b => b.toString(16).padStart(2, '0')).join(' ') : 'null'
+      });
+
       if (!arrayBuffer) {
+        console.warn('⚠️ [StaticCloudDocStorage] HTTP返回空数据:', { docId });
         return null;
       }
-      return {
+
+      const result = {
         docId: docId,
         bin: new Uint8Array(arrayBuffer),
         timestamp: new Date(),
       };
+
+      console.log('✅ [StaticCloudDocStorage] 文档快照获取成功:', {
+        docId: docId,
+        binSize: result.bin.length,
+        binHex: Array.from(result.bin.slice(0, 20)).map(b => b.toString(16).padStart(2, '0')).join(' '),
+        timestamp: result.timestamp
+      });
+
+      return result;
     } catch (error) {
-      console.error(error);
+      console.error('❌ [StaticCloudDocStorage] HTTP请求失败:', {
+        docId: docId,
+        error: error,
+        url: `/api/workspaces/${this.spaceId}/docs/${docId}`
+      });
       return null;
     }
   }
