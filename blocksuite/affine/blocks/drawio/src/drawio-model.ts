@@ -14,6 +14,7 @@ export type DrawioBlockProps = {
   align?: 'left' | 'center' | 'right';
   attachmentId?: string;
   caption?: string;
+  xml?: string; // 保存原始Draw.io XML数据
 } & BlockMeta;
 
 export const DrawioBlockSchema = defineBlockSchema({
@@ -27,6 +28,7 @@ export const DrawioBlockSchema = defineBlockSchema({
       align: 'center',
       attachmentId: '',
       caption: '',
+      xml: '', // 添加xml属性
       'meta:createdAt': undefined,
       'meta:createdBy': undefined,
       'meta:updatedAt': undefined,

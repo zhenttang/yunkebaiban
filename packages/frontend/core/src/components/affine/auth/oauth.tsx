@@ -160,19 +160,27 @@ function OAuthProvider({ onContinue, provider }: OauthProviderProps) {
   const { icon, label } = OAuthProviderMap[provider];
 
   const onClick = useCallback(() => {
-    onContinue(provider);
-  }, [onContinue, provider]);
+    // 测试阶段，暂时禁用功能
+    // onContinue(provider);
+  }, []);
 
   return (
     <Button
-      variant={provider === OAuthProviderType.Apple ? 'custom' : 'primary'}
+      variant="secondary"
       block
       size="extraLarge"
-      style={{ width: '100%' }}
+      style={{ 
+        width: '100%',
+        backgroundColor: '#f5f5f5',
+        color: '#999',
+        cursor: 'not-allowed',
+        opacity: 0.6
+      }}
       prefix={icon}
       onClick={onClick}
+      disabled={true}
     >
-      使用{label}登录
+      使用{label}登录（测试中）
     </Button>
   );
 }

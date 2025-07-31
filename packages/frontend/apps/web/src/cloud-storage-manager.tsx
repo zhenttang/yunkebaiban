@@ -2,8 +2,18 @@ import { useState, useEffect, useRef, createContext, useContext, useMemo } from 
 import { useParams } from 'react-router-dom';
 import type { Socket } from 'socket.io-client';
 
-// 临时内联配置，避免编译问题
+/**
+ * 获取Socket.IO连接URL
+ * 统一的配置获取逻辑
+ */
 function getSocketIOUrl(): string {
+  // 优先使用环境变量
+  const envSocketUrl = import.meta.env?.VITE_SOCKETIO_URL;
+  if (envSocketUrl) {
+    return envSocketUrl;
+  }
+
+  // 根据环境自动检测
   if (typeof window !== 'undefined') {
     const buildConfig = (window as any).BUILD_CONFIG;
     if (buildConfig?.isAndroid || buildConfig?.platform === 'android') {

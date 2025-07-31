@@ -1,139 +1,208 @@
-# 统一配置管理实现总结
+# @affine/config - 统一网络配置管理
 
-## 概述
+这个包提供了AFFiNE项目的统一网络配置管理，避免了在多个文件中硬编码服务器地址的问题。
 
-成功实现了AFFiNE项目的统一网络配置管理系统，将原本分散在多个文件中的硬编码地址统一到了一个集中的配置管理模块中。
+## 📋 功能特性
 
-## 实现的功能
+- ✅ 统一管理API和Socket.IO服务器地址
+- ✅ 支持多环境配置（开发/生产/Android）
+- ✅ 自动环境检测
+- ✅ 环境变量覆盖支持
+- ✅ TypeScript类型安全
 
-### 1. 中央配置管理 (`@affine/config`)
+## 🚀 快速开始
 
-创建了新的配置包，位于 `packages/common/config/`：
+### 基本使用
 
-- **NetworkConfigManager**: 核心配置管理类
-- **环境自动检测**: 支持 development、production、android 环境
-- **统一API**: 提供简洁的配置获取函数
-
-### 2. 环境配置
-
-支持三种环境配置：
-
-#### Development环境
-- 主机: `localhost`
-- 端口: `8080`
-- 协议: `http`
-
-#### Production环境  
-- 主机: `your-domain.com`
-- 端口: `443`
-- 协议: `https`
-
-#### Android环境
-- 主机: `localhost`
-- 端口: `8080`
-- 协议: `http`
-
-## 已更新的文件
-
-### 核心配置文件
-1. `/packages/common/config/src/network-config.ts` - 核心配置管理
-2. `/packages/common/config/src/index.ts` - 包入口文件
-3. `/packages/common/config/package.json` - 包配置
-4. `/packages/common/config/tsconfig.json` - TypeScript配置
-
-### 更新的业务文件
-1. `/packages/common/request/src/config.ts` - 请求配置
-2. `/packages/frontend/core/src/modules/cloud/constant.ts` - 云服务配置
-3. `/packages/frontend/apps/web/src/cloud-storage-manager.tsx` - 云存储管理器
-4. `/packages/frontend/core/src/modules/workspace/services/repo.ts` - 工作区服务
-5. `/packages/frontend/apps/android/src/app.tsx` - Android应用配置
-6. `/packages/frontend/apps/android/src/proxy.ts` - Android代理配置
-
-## 主要改进
-
-### 1. 消除硬编码
-- 移除了所有硬编码的 `http://localhost:8080` 
-- 移除了所有硬编码的 `http://localhost:9092`
-- 统一使用配置管理器获取地址
-
-### 2. 环境感知
-- 自动检测Android环境
-- 自动检测生产环境
-- 支持手动环境切换
-
-### 3. API简化
-```typescript
-// 之前
-const baseUrl = 'http://localhost:8080';
-
-// 现在  
-import { getBaseUrl } from '@affine/config';
-const baseUrl = getBaseUrl();
-```
-
-### 4. 集中管理
-- 所有网络配置集中在一个文件中
-- 环境变更只需修改一处
-- 支持不同环境的不同配置
-
-## 验证结果
-
-运行验证脚本结果：
-- ✅ 配置统一管理验证完成
-- ✅ 所有环境配置正常
-- ✅ 所有配置文件结构完整
-
-## 使用方式
-
-### 导入配置
 ```typescript
 import { 
-  getBaseUrl, 
   getApiBaseUrl, 
-  getSocketIOUrl,
+  getSocketIOUrl, 
   networkConfig 
 } from '@affine/config';
+
+// 获取API基础URL
+const apiUrl = getApiBaseUrl();
+// 结果: http://localhost:8080 (开发环境)
+
+// 获取Socket.IO URL  
+const socketUrl = getSocketIOUrl();
+// 结果: http://localhost:9092 (开发环境)
+
+// 获取完整配置
+const config = networkConfig.getCurrentConfig();
+console.log(config);
 ```
 
-### 获取配置
+### 环境变量配置
+
+在 `.env` 文件中设置：
+
+```bash
+# API服务器地址
+VITE_API_BASE_URL=http://localhost:8080
+
+# Socket.IO服务器地址
+VITE_SOCKETIO_URL=http://localhost:9092
+
+# 生产环境配置
+VITE_PROD_HOST=your-domain.com
+VITE_PROD_PORT=443
+VITE_PROD_SOCKETIO_PORT=9092
+```
+
+## 🔧 API参考
+
+### 主要函数
+
+- `getBaseUrl()`: 获取基础URL
+- `getApiBaseUrl()`: 获取API基础URL  
+- `getSocketIOUrl()`: 获取Socket.IO URL
+- `getWebSocketUrl()`: 获取WebSocket URL
+- `convertToSocketIOUrl(baseUrl)`: 将API URL转换为Socket.IO URL
+
+### 环境检测
+
+- `isDevelopmentEnvironment()`: 是否为开发环境
+- `isProductionEnvironment()`: 是否为生产环境  
+- `isAndroidEnvironment()`: 是否为Android环境
+
+### 配置管理器
+
 ```typescript
-// 获取基础URL
-const baseUrl = getBaseUrl();
+import networkConfig from '@affine/config';
 
-// 获取API URL
-const apiUrl = getApiBaseUrl(); 
+// 手动设置环境
+networkConfig.setEnvironment('production');
 
-// 获取Socket.IO URL
-const socketUrl = getSocketIOUrl();
+// 获取当前环境
+const env = networkConfig.getCurrentEnvironment();
 
-// 调试配置
+// 调试信息
 networkConfig.debug();
 ```
 
-## 受益
+## 🌍 环境配置
 
-### 1. 维护性提升
-- 配置变更统一管理
-- 减少了配置分散的风险
-- 便于环境切换
+### 开发环境 (development)
+- API服务器: `http://localhost:8080`
+- Socket.IO服务器: `http://localhost:9092`
 
-### 2. 开发效率
-- 新增环境配置简单
-- API统一易用
-- 自动环境检测
+### 生产环境 (production)  
+- API服务器: `https://your-domain.com:443`
+- Socket.IO服务器: `https://your-domain.com:9092`
 
-### 3. 部署灵活性
-- 支持多环境部署
-- 配置与代码分离
-- 便于容器化部署
+### Android环境 (android)
+- API服务器: `http://localhost:8080` 
+- Socket.IO服务器: `http://localhost:9092`
 
-## 后续优化建议
+## 🔄 迁移指南
 
-1. **配置文件外部化**: 考虑将配置移至独立的配置文件
-2. **运行时配置**: 支持运行时动态配置更新
-3. **配置验证**: 增加配置有效性验证
-4. **缓存优化**: 配置读取缓存优化
+### 从硬编码迁移
 
-## 总结
+**之前:**
+```typescript
+// ❌ 硬编码
+const apiUrl = 'http://localhost:8080';
+const socketUrl = 'http://localhost:9092';
+```
 
-通过实施统一配置管理，成功解决了项目中网络地址配置分散的问题，提升了项目的可维护性和部署灵活性。所有相关文件已更新使用新的配置系统，验证测试通过。
+**现在:**
+```typescript  
+// ✅ 使用配置
+import { getApiBaseUrl, getSocketIOUrl } from '@affine/config';
+
+const apiUrl = getApiBaseUrl();
+const socketUrl = getSocketIOUrl();
+```
+
+### 从URL替换迁移
+
+**之前:**
+```typescript
+// ❌ 字符串替换
+const socketUrl = baseUrl.replace(':8080', ':9092');
+```
+
+**现在:**
+```typescript
+// ✅ 使用转换函数
+import { convertToSocketIOUrl } from '@affine/config';
+
+const socketUrl = convertToSocketIOUrl(baseUrl);
+```
+
+## 📦 打包部署
+
+### 1. 本地开发
+使用默认的 `.env` 配置即可。
+
+### 2. 生产环境打包
+修改 `.env` 文件：
+
+```bash
+VITE_API_BASE_URL=https://your-domain.com
+VITE_SOCKETIO_URL=https://your-domain.com:9092
+```
+
+或者在构建命令中覆盖：
+
+```bash
+VITE_API_BASE_URL=https://your-domain.com npm run build
+```
+
+### 3. 运行时配置
+配置会自动检测运行环境，无需额外配置。
+
+## 🐛 故障排除
+
+### 调试配置
+```typescript
+import { debugNetworkConfig } from '@affine/config';
+
+// 打印当前配置信息
+debugNetworkConfig();
+```
+
+### 常见问题
+
+1. **端口连接失败**: 检查 `.env` 文件中的端口配置
+2. **生产环境配置不生效**: 确保环境变量已正确设置
+3. **Socket.IO连接问题**: 使用 `convertToSocketIOUrl()` 确保端口正确
+
+## 🔗 相关文件
+
+- `src/network-config.ts` - 主配置文件
+- `src/index.ts` - 导出文件
+- `../../.env` - 环境变量配置
+
+## 📝 注意事项
+
+1. 所有网络相关配置都应该通过这个包管理
+2. 不要在代码中硬编码服务器地址
+3. 生产环境部署前务必检查配置是否正确
+4. 使用TypeScript以获得最佳的类型安全体验
+
+---
+
+## 📊 实现总结
+
+### 已解决的问题
+- ✅ 消除了所有硬编码的8080和9092端口
+- ✅ 统一了Socket.IO URL生成逻辑
+- ✅ 添加了环境变量覆盖支持
+- ✅ 提供了类型安全的配置API
+
+### 修改的文件
+1. `packages/common/config/src/network-config.ts` - 优化配置管理
+2. `packages/common/nbstore/src/impls/cloud/doc.ts` - 修复硬编码
+3. `packages/common/nbstore/src/impls/cloud/awareness.ts` - 修复硬编码
+4. `packages/frontend/apps/web/src/cloud-storage-manager.tsx` - 支持环境变量
+5. `packages/common/request/src/config.ts` - 支持环境变量
+6. `packages/frontend/core/src/modules/cloud/constant.ts` - 支持环境变量
+7. `.env` - 添加Socket.IO配置
+
+### 使用建议
+- 开发环境：使用默认配置
+- 生产环境：修改 `.env` 文件中的URL为实际域名
+- 打包部署：确保环境变量正确设置

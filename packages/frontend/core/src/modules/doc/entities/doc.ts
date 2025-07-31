@@ -16,6 +16,11 @@ export class Doc extends Entity {
   ) {
     super();
 
+    // 防御性检查：确保blockSuiteDoc存在
+    if (!this.scope.props.blockSuiteDoc) {
+      throw new Error(`DocScope blockSuiteDoc is undefined for doc ${this.scope.props.docId}`);
+    }
+
     const handleTransactionThrottled = throttle(
       (trx: Transaction) => {
         if (trx.local) {

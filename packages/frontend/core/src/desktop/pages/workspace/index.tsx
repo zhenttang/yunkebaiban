@@ -36,6 +36,7 @@ import * as _Y from 'yjs';
 
 import { AffineErrorBoundary } from '../../../components/affine/affine-error-boundary';
 import { WorkbenchRoot } from '../../../modules/workbench';
+import { cleanupInvalidWorkspaceStorage, getRecommendedWorkspaceId } from '../../../utils/workspace-storage-cleanup';
 import { AppContainer } from '../../components/app-container';
 import { PageNotFound } from '../404';
 import { WorkspaceLayout } from './layouts/workspace-layout';
@@ -253,6 +254,56 @@ export const Component = (): ReactElement => {
     serverFromSearchParams,
   ]);
 
+  // 添加工作空间ID验证和自动纠正逻辑
+  useEffect(() => {
+    if (params.workspaceId && workspaces.length > 0 && !listLoading) {
+      const requestedWorkspaceId = params.workspaceId;
+      const isWorkspaceExists = workspaces.some(ws => ws.id === requestedWorkspaceId);
+      
+      // 1. 清理无效的存储数据
+      const validWorkspaceData = workspaces.map(ws => ({ id: ws.id, flavour: ws.flavour }));
+      cleanupInvalidWorkspaceStorage(validWorkspaceData);
+      
+      if (!isWorkspaceExists) {
+        console.warn(`🚫 工作空间ID不存在: ${requestedWorkspaceId}`);
+        console.log(`📋 可用的工作空间:`, workspaces.map(ws => ({ id: ws.id, flavour: ws.flavour })));
+        
+        // 2. 获取推荐的工作空间ID
+        const recommendedId = getRecommendedWorkspaceId(validWorkspaceData);
+        
+        if (recommendedId && recommendedId !== requestedWorkspaceId) {
+          console.log(`🔄 重定向到推荐工作空间: ${recommendedId}`);
+          
+          // 构建新的URL路径
+          const currentPath = location.pathname;
+          const newPath = currentPath.replace(
+            `/workspace/${requestedWorkspaceId}`,
+            `/workspace/${recommendedId}`
+          );
+          
+          // 使用replace避免在历史记录中留下无效的URL
+          window.location.replace(newPath + location.search + location.hash);
+          return;
+        } else {
+          console.error('🚫 没有可用的有效工作空间');
+        }
+      } else {
+        // 工作空间存在，更新localStorage
+        localStorage.setItem('last_workspace_id', requestedWorkspaceId);
+        console.log(`✅ 工作空间ID有效: ${requestedWorkspaceId}`);
+      }
+    }
+  }, [params.workspaceId, workspaces, listLoading, location]);
+
+  // 工作空间列表加载完成后执行清理
+  useEffect(() => {
+    if (!listLoading && workspaces.length > 0) {
+      const validWorkspaceData = workspaces.map(ws => ({ id: ws.id, flavour: ws.flavour }));
+      console.log('🧹 执行工作空间存储数据清理');
+      cleanupInvalidWorkspaceStorage(validWorkspaceData);
+    }
+  }, [listLoading, workspaces]);
+
   if (workspaceNotFound) {
     // Handle community routes first, even when workspace is not found
     if (communityRoute) {
@@ -314,29 +365,67 @@ const WorkspacePage = ({ meta }: { meta: WorkspaceMetadata }) => {
 
   const [workspace, setWorkspace] = useState<Workspace | null>(null);
 
+  console.log('🏗️ [WorkspacePage] 开始渲染，meta:', meta);
+
   useLayoutEffect(() => {
-    const ref = workspacesService.open({ metadata: meta });
-    setWorkspace(ref.workspace);
-    return () => {
-      ref.dispose();
-    };
+    console.log('🏗️ [WorkspacePage] useLayoutEffect 开始，打开工作空间:', meta.id);
+    
+    try {
+      const ref = workspacesService.open({ metadata: meta });
+      console.log('🏗️ [WorkspacePage] 工作空间引用创建成功:', ref);
+      
+      if (ref.workspace) {
+        console.log('✅ [WorkspacePage] 工作空间对象已就绪:', {
+          id: ref.workspace.id,
+          flavour: ref.workspace.flavour,
+          initialized: ref.workspace.meta?.initialized
+        });
+        setWorkspace(ref.workspace);
+      } else {
+        console.error('❌ [WorkspacePage] 工作空间对象为空');
+      }
+      
+      return () => {
+        console.log('🧹 [WorkspacePage] 清理工作空间引用');
+        ref.dispose();
+      };
+    } catch (error) {
+      console.error('💥 [WorkspacePage] 打开工作空间失败:', error);
+      setWorkspace(null);
+    }
   }, [meta, workspacesService]);
 
   const isRootDocReady =
     useLiveData(
       useMemo(
-        () =>
-          workspace
-            ? LiveData.from(
-                workspace.engine.doc
-                  .docState$(workspace.id)
-                  .pipe(map(v => v.ready)),
-                false
-              )
-            : null,
+        () => {
+          if (!workspace) {
+            console.warn('⚠️ [WorkspacePage] workspace为空，无法检查根文档状态');
+            return null;
+          }
+          
+          console.log('📄 [WorkspacePage] 检查根文档状态，工作空间ID:', workspace.id);
+          
+          return LiveData.from(
+            workspace.engine.doc
+              .docState$(workspace.id)
+              .pipe(map(v => {
+                console.log('📄 [WorkspacePage] 根文档状态更新:', { ready: v.ready, workspaceId: workspace.id });
+                return v.ready;
+              })),
+            false
+          );
+        },
         [workspace]
       )
     ) ?? false;
+
+  console.log('🏗️ [WorkspacePage] 渲染状态:', {
+    hasWorkspace: !!workspace,
+    workspaceId: workspace?.id,
+    isRootDocReady,
+    meta: meta
+  });
 
   useEffect(() => {
     if (workspace) {

@@ -15,6 +15,7 @@ export interface NetworkEndpoints {
 export interface NetworkConfig {
   host: string;
   port: number;
+  socketioPort: number; // 添加Socket.IO专用端口
   protocol: 'http' | 'https';
   endpoints: NetworkEndpoints;
 }
@@ -33,11 +34,12 @@ const environments: Record<string, Environment> = {
     config: {
       host: 'localhost',
       port: 8080,
+      socketioPort: 9092,
       protocol: 'http',
       endpoints: {
         api: '/api',
         websocket: '/ws',
-        socketio: ':9092',
+        socketio: '',
         auth: '/api/auth',
         uploads: '/api/uploads',
         static: '/static'
@@ -50,11 +52,12 @@ const environments: Record<string, Environment> = {
     config: {
       host: 'your-domain.com',
       port: 443,
+      socketioPort: 9092,
       protocol: 'https',
       endpoints: {
         api: '/api',
         websocket: '/ws', 
-        socketio: ':9092',
+        socketio: '',
         auth: '/api/auth',
         uploads: '/api/uploads',
         static: '/static'
@@ -67,11 +70,12 @@ const environments: Record<string, Environment> = {
     config: {
       host: 'localhost',
       port: 8080,
+      socketioPort: 9092,
       protocol: 'http',
       endpoints: {
         api: '/api',
         websocket: '/ws',
-        socketio: ':9092', 
+        socketio: '', 
         auth: '/api/auth',
         uploads: '/api/uploads',
         static: '/static'
@@ -164,7 +168,7 @@ class NetworkConfigManager {
    */
   getSocketIOUrl(): string {
     const config = this.getCurrentConfig();
-    return `${config.protocol}://${config.host}${config.endpoints.socketio}`;
+    return `${config.protocol}://${config.host}:${config.socketioPort}`;
   }
 
   /**
@@ -200,6 +204,24 @@ class NetworkConfigManager {
       return this.getSocketIOUrl();
     }
     return `${config.protocol}://${config.host}:${config.port}${config.endpoints[endpoint]}`;
+  }
+
+  /**
+   * 获取Socket.IO端口
+   */
+  getSocketIOPort(): number {
+    return this.getCurrentConfig().socketioPort;
+  }
+
+  /**
+   * 根据基础URL生成Socket.IO URL
+   * 用于兼容现有代码中的URL转换逻辑
+   */
+  convertToSocketIOUrl(baseUrl: string): string {
+    const config = this.getCurrentConfig();
+    const url = new URL(baseUrl);
+    url.port = config.socketioPort.toString();
+    return url.toString();
   }
 
   /**
@@ -245,6 +267,14 @@ export function getUploadUrl(): string {
 
 export function getStaticUrl(): string {
   return networkConfig.getStaticUrl();
+}
+
+export function getSocketIOPort(): number {
+  return networkConfig.getSocketIOPort();
+}
+
+export function convertToSocketIOUrl(baseUrl: string): string {
+  return networkConfig.convertToSocketIOUrl(baseUrl);
 }
 
 // 环境检测和配置工具

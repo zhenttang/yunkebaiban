@@ -154,7 +154,10 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
   private async fetchWithAuth(url: string, options: RequestInit = {}): Promise<Response> {
     if (this.fetchService) {
       // 使用FetchService发送请求，确保包含JWT token
-      return await this.fetchService.fetch(url, options);
+      // 如果URL是相对路径，需要添加API基础URL
+      const apiBaseUrl = import.meta.env?.VITE_API_BASE_URL || '';
+      const fullUrl = url.startsWith('http') ? url : `${apiBaseUrl}${url}`;
+      return await this.fetchService.fetch(fullUrl, options);
     } else {
       // 回退方案：手动添加JWT token
       const headers = {
@@ -168,7 +171,8 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
       }
       
       // 确保使用完整的URL，特别是在桌面端
-      const fullUrl = url.startsWith('http') ? url : `http://localhost:8080${url}`;
+      const apiBaseUrl = import.meta.env?.VITE_API_BASE_URL || 'http://localhost:8080';
+      const fullUrl = url.startsWith('http') ? url : `${apiBaseUrl}${url}`;
       
       return await fetch(fullUrl, {
         ...options,
@@ -287,9 +291,46 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
     console.log('当前认证状态:', this.authService.session.account$.value);
     console.log('当前服务器信息:', this.server.id, this.server.serverMetadata.baseUrl);
     
-    // 构造请求数据
+    // 创建临时工作空间来获取用户设置的名称
+    const tempWorkspaceId = `temp-${Date.now()}`;
+    const tempBlobStorage = new this.BlobStorageType({
+      id: tempWorkspaceId,
+      flavour: this.flavour,
+      type: 'workspace',
+    });
+    const tempDocStorage = new this.DocStorageType({
+      id: tempWorkspaceId,
+      flavour: this.flavour,
+      type: 'workspace',
+    });
+    
+    const tempDocCollection = new WorkspaceImpl({
+      id: tempWorkspaceId,
+      rootDoc: new YDoc({ guid: tempWorkspaceId }),
+      blobSource: {
+        get: async () => null,
+        delete: async () => {},
+        list: async () => [],
+        set: async () => '',
+        name: 'temp-blob',
+        readonly: false,
+      },
+      onLoadDoc: () => {},
+    });
+    
+    // 执行初始化回调以获取用户设置的工作空间名称
+    await initial(tempDocCollection, tempBlobStorage, tempDocStorage);
+    
+    // 从临时工作空间文档中获取用户设置的名称
+    const workspaceName = tempDocCollection.doc.getMap('meta').get('name') as string || 'New Workspace';
+    console.log('💡 [CloudWorkspaceFlavourProvider] 用户设置的工作空间名称:', workspaceName);
+    
+    // 清理临时对象
+    tempDocCollection.dispose();
+    
+    // 构造请求数据，使用用户设置的名称
     const requestData = {
-      name: 'New Workspace', // 默认名称
+      name: workspaceName, // 使用用户设置的名称
       isPublic: false, // 默认私有
       enableAi: true,
       enableUrlPreview: false,
@@ -301,7 +342,11 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
       
       if (this.fetchService) {
         // 使用FetchService发送请求，确保包含JWT token
-        response = await this.fetchService.fetch('/api/workspaces', {
+        // 获取API基础URL，生产环境使用环境变量，开发环境使用相对路径
+        const apiBaseUrl = import.meta.env?.VITE_API_BASE_URL || '';
+        const apiUrl = `${apiBaseUrl}/api/workspaces`;
+        
+        response = await this.fetchService.fetch(apiUrl, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -324,7 +369,11 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
           console.warn('未找到JWT token');
         }
         
-        response = await fetch('/api/workspaces', {
+        // 获取API基础URL，生产环境使用环境变量，开发环境使用相对路径
+        const apiBaseUrl = import.meta.env?.VITE_API_BASE_URL || '';
+        const apiUrl = `${apiBaseUrl}/api/workspaces`;
+        
+        response = await fetch(apiUrl, {
           method: 'POST',
           headers,
           body: JSON.stringify(requestData),
@@ -607,58 +656,139 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
     id: string,
     signal?: AbortSignal
   ): Promise<WorkspaceProfileInfo | undefined> {
+    logger.info(`🔍 [CloudWorkspaceFlavourProvider] 获取工作空间资料: ${id}`);
+    
     try {
       let workspaceId = id;
       
-      // 检查是否是UUID格式（可能是文档ID）
-      const isUUID = id.match(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i);
+      // 1. ID验证 - 检查是否是合理的工作空间ID
+      if (!workspaceId || workspaceId.trim().length === 0) {
+        logger.warn('🚫 [CloudWorkspaceFlavourProvider] 工作空间ID为空');
+        return this.getDefaultWorkspaceProfile();
+      }
+      
+      const trimmedId = workspaceId.trim();
+      
+      // 2. 格式验证 - 如果ID格式明显不正确，尝试从当前有效工作空间列表获取
+      if (trimmedId.length < 10 || trimmedId.length > 50) {
+        logger.warn(`🚫 [CloudWorkspaceFlavourProvider] 工作空间ID格式可能无效: ${trimmedId}, 长度: ${trimmedId.length}`);
+        
+        // 尝试从当前工作空间列表中找到有效的工作空间ID
+        const workspaces = this.workspaces$.value;
+        if (workspaces && workspaces.length > 0) {
+          const validWorkspace = workspaces[0];
+          logger.info(`🔄 [CloudWorkspaceFlavourProvider] 使用列表中的第一个有效工作空间: ${validWorkspace.id}`);
+          workspaceId = validWorkspace.id;
+        } else {
+          logger.warn('🚫 [CloudWorkspaceFlavourProvider] 没有有效的工作空间列表');
+          return this.getDefaultWorkspaceProfile();
+        }
+      }
+      
+      // 3. 清理错误的文档-工作空间映射缓存
+      const isUUID = workspaceId.match(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i);
       
       if (isUUID) {
-        // 先检查缓存
-        if (this.docWorkspaceMapping.has(id)) {
-          workspaceId = this.docWorkspaceMapping.get(id)!;
-        } else {
-          // 尝试从当前工作空间上下文获取工作空间ID
-          const currentWorkspaceId = this.getCurrentWorkspaceId();
-          if (currentWorkspaceId && currentWorkspaceId !== id) {
-            workspaceId = currentWorkspaceId;
-            // 保存到缓存，避免后续重复查询
-            this.docWorkspaceMapping.set(id, workspaceId);
+        // 检查缓存中的映射是否正确
+        if (this.docWorkspaceMapping.has(workspaceId)) {
+          const cachedWorkspaceId = this.docWorkspaceMapping.get(workspaceId)!;
+          logger.info(`📋 [CloudWorkspaceFlavourProvider] 缓存中的映射: ${workspaceId} -> ${cachedWorkspaceId}`);
+          
+          // 验证缓存的工作空间ID是否在有效列表中
+          const workspaces = this.workspaces$.value;
+          const isCachedIdValid = workspaces.some(ws => ws.id === cachedWorkspaceId);
+          
+          if (!isCachedIdValid) {
+            logger.warn(`🚫 [CloudWorkspaceFlavourProvider] 缓存的工作空间ID无效，清理缓存: ${cachedWorkspaceId}`);
+            this.docWorkspaceMapping.delete(workspaceId);
+            
+            // 使用原始ID作为工作空间ID
+            if (workspaces.some(ws => ws.id === workspaceId)) {
+              logger.info(`✅ [CloudWorkspaceFlavourProvider] 原始ID是有效的工作空间ID: ${workspaceId}`);
+              // workspaceId 保持不变
+            } else {
+              // 使用第一个有效的工作空间ID
+              if (workspaces.length > 0) {
+                workspaceId = workspaces[0].id;
+                logger.info(`🔄 [CloudWorkspaceFlavourProvider] 使用第一个有效工作空间: ${workspaceId}`);
+              }
+            }
           } else {
-            // 如果无法从上下文获取，或者上下文返回的也是同一个ID，尝试API查询
-            try {
-              workspaceId = await this.getWorkspaceIdFromDoc(id, signal);
-            } catch (apiError) {
-              return this.getDefaultWorkspaceProfile();
+            workspaceId = cachedWorkspaceId;
+          }
+        } else {
+          // 检查原始ID是否就是有效的工作空间ID
+          const workspaces = this.workspaces$.value;
+          if (workspaces.some(ws => ws.id === workspaceId)) {
+            logger.info(`✅ [CloudWorkspaceFlavourProvider] 原始ID就是有效的工作空间ID: ${workspaceId}`);
+          } else {
+            // 尝试从当前工作空间上下文获取工作空间ID
+            const currentWorkspaceId = this.getCurrentWorkspaceId();
+            if (currentWorkspaceId && currentWorkspaceId !== workspaceId) {
+              workspaceId = currentWorkspaceId;
+              // 保存到缓存
+              this.docWorkspaceMapping.set(id, workspaceId);
+              logger.info(`🔄 [CloudWorkspaceFlavourProvider] 从上下文获取工作空间ID: ${workspaceId}`);
+            } else {
+              // 使用第一个有效工作空间
+              if (workspaces.length > 0) {
+                workspaceId = workspaces[0].id;
+                this.docWorkspaceMapping.set(id, workspaceId);
+                logger.info(`🔄 [CloudWorkspaceFlavourProvider] 使用第一个有效工作空间: ${workspaceId}`);
+              } else {
+                logger.error('💥 [CloudWorkspaceFlavourProvider] 没有可用的工作空间');
+                return this.getDefaultWorkspaceProfile();
+              }
             }
           }
         }
       }
       
-      // 确保我们有有效的工作空间ID
-      if (!workspaceId || workspaceId === id && isUUID) {
-        return this.getDefaultWorkspaceProfile();
-      }
-      
-      // 使用确定的工作空间ID获取工作空间信息
+      // 4. 使用确定的工作空间ID获取工作空间信息
+      logger.info(`🌐 [CloudWorkspaceFlavourProvider] 获取工作空间信息: ${workspaceId}`);
       const workspace = await this.getWorkspaceInfo(workspaceId, signal);
       
       if (!workspace) {
+        logger.warn(`🚫 [CloudWorkspaceFlavourProvider] 无法获取工作空间信息: ${workspaceId}`);
+        
+        // 如果获取失败，尝试从工作空间列表中获取第一个有效工作空间
+        const workspaces = this.workspaces$.value;
+        if (workspaces && workspaces.length > 0) {
+          const validWorkspace = workspaces.find(ws => ws.id && ws.id !== workspaceId);
+          if (validWorkspace) {
+            logger.info(`🔄 [CloudWorkspaceFlavourProvider] 重试获取有效工作空间: ${validWorkspace.id}`);
+            const retryWorkspace = await this.getWorkspaceInfo(validWorkspace.id, signal);
+            if (retryWorkspace) {
+              const profile: WorkspaceProfileInfo = {
+                name: retryWorkspace.name || '未命名工作空间',
+                avatar: undefined,
+                isOwner: retryWorkspace.role === 'owner',
+                isAdmin: retryWorkspace.role === 'admin',
+                isTeam: Boolean(retryWorkspace.team),
+              };
+              
+              logger.info(`✅ [CloudWorkspaceFlavourProvider] 成功获取重试工作空间资料:`, profile);
+              return profile;
+            }
+          }
+        }
+        
         return this.getDefaultWorkspaceProfile();
       }
       
       const profile: WorkspaceProfileInfo = {
-        name: workspace.name || 'Untitled Workspace',
+        name: workspace.name || '未命名工作空间',
         avatar: undefined,
         isOwner: workspace.role === 'owner',
         isAdmin: workspace.role === 'admin',
         isTeam: Boolean(workspace.team),
       };
       
+      logger.info(`✅ [CloudWorkspaceFlavourProvider] 成功获取工作空间资料:`, profile);
       return profile;
       
     } catch (error) {
-      console.error('获取工作空间信息失败:', error);
+      logger.error('💥 [CloudWorkspaceFlavourProvider] 获取工作空间信息失败:', error);
       return this.getDefaultWorkspaceProfile();
     }
   }

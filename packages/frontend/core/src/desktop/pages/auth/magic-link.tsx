@@ -26,7 +26,7 @@ export const loader: LoaderFunction = ({ request }) => {
   const redirectUri = params.get('redirect_uri');
 
   if (!email || !token) {
-    return redirect('/sign-in?error=无效的魔法链接');
+    return redirect('/sign-in?error=无效的邀请码');
   }
 
   const payload: LoaderData = {

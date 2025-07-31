@@ -44,7 +44,7 @@ export const PageHeaderMenuButton = () => {
   const location = useLiveData(useService(ViewService).view.location$);
 
   const isInTrash = useLiveData(
-    editorService.editor.doc.meta$.map(meta => meta.trash)
+    editorService.editor.doc.meta$.map(meta => meta?.trash ?? false)
   );
   const primaryMode = useLiveData(editorService.editor.doc.primaryMode$);
   const title = useLiveData(editorService.editor.doc.title$);

@@ -23,11 +23,32 @@ export class DocsStore extends Store {
   }
 
   getBlockSuiteDoc(id: string) {
-    return (
-      this.workspaceService.workspace.docCollection
-        .getDoc(id)
-        ?.getStore({ id }) ?? null
-    );
+    const workspace = this.workspaceService.workspace;
+    
+    // 防御性检查：确保workspace和docCollection存在
+    if (!workspace) {
+      console.error('❌ [DocsStore.getBlockSuiteDoc] workspace 未初始化');
+      return null;
+    }
+    
+    if (!workspace.docCollection) {
+      console.error('❌ [DocsStore.getBlockSuiteDoc] docCollection 未初始化');
+      return null;
+    }
+    
+    const doc = workspace.docCollection.getDoc(id);
+    if (!doc) {
+      console.error('❌ [DocsStore.getBlockSuiteDoc] 文档未找到:', id);
+      return null;
+    }
+    
+    const store = doc.getStore({ id });
+    if (!store) {
+      console.error('❌ [DocsStore.getBlockSuiteDoc] 文档store未找到:', id);
+      return null;
+    }
+    
+    return store;
   }
 
   getBlocksuiteCollection() {

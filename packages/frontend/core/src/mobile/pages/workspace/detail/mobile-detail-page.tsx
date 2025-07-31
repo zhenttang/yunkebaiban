@@ -68,11 +68,20 @@ const DetailPageImpl = () => {
   const workspace = workspaceService.workspace;
   const docCollection = workspace.docCollection;
   const globalContext = globalContextService.globalContext;
-  const doc = docService.doc;
+  
+  // 防御性检查：确保doc存在
+  let doc;
+  try {
+    doc = docService.doc;
+  } catch (error) {
+    console.error('❌ [MobileDetailPage] 无法获取文档:', error);
+    // 如果无法获取doc，显示错误页面或加载状态
+    return <PageDetailLoading />;
+  }
 
   const mode = useLiveData(editor.mode$);
 
-  const isInTrash = useLiveData(doc.meta$.map(meta => meta.trash));
+  const isInTrash = useLiveData(doc.meta$.map(meta => meta?.trash ?? false));
   const { openPage, jumpToPageBlock } = useNavigateHelper();
   const scrollViewportRef = useRef<HTMLDivElement | null>(null);
 

@@ -23,6 +23,39 @@ import { WebpackS3Plugin } from './s3-plugin.js';
 const require = createRequire(import.meta.url);
 const cssnano = require('cssnano');
 
+// 手动读取.env文件
+import { readFileSync, existsSync } from 'node:fs';
+
+// 手动解析.env文件
+const envPath = ProjectRoot.join('.env').value;
+const envVars: Record<string, string> = {};
+
+if (existsSync(envPath)) {
+  try {
+    const envContent = readFileSync(envPath, 'utf-8');
+    const lines = envContent.split('\n');
+    
+    for (const line of lines) {
+      const trimmedLine = line.trim();
+      if (trimmedLine && !trimmedLine.startsWith('#')) {
+        const [key, ...valueParts] = trimmedLine.split('=');
+        if (key && valueParts.length > 0) {
+          const value = valueParts.join('=').trim();
+          // 移除引号
+          const cleanValue = value.replace(/^["']|["']$/g, '');
+          envVars[key.trim()] = cleanValue;
+          // 也设置到process.env中
+          if (!process.env[key.trim()]) {
+            process.env[key.trim()] = cleanValue;
+          }
+        }
+      }
+    }
+  } catch (error) {
+    // 静默处理.env文件读取失败
+  }
+}
+
 const IN_CI = !!process.env.CI;
 
 const availableChannels = ['canary', 'beta', 'stable', 'internal'];
@@ -248,6 +281,16 @@ export function createHTMLTargetConfig(
       ...createHTMLPlugins(buildConfig, htmlConfig),
       new webpack.DefinePlugin({
         'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+        // 注入VITE风格的环境变量以支持import.meta.env
+        'import.meta.env.VITE_API_BASE_URL': JSON.stringify(process.env.VITE_API_BASE_URL || envVars.VITE_API_BASE_URL || ''),
+        'import.meta.env.VITE_DRAWIO_URL': JSON.stringify(process.env.VITE_DRAWIO_URL || envVars.VITE_DRAWIO_URL || ''),
+        'import.meta.env.MODE': JSON.stringify(buildConfig.debug ? 'development' : 'production'),
+        // 创建完整的import.meta.env对象
+        'import.meta.env': JSON.stringify({
+          VITE_API_BASE_URL: process.env.VITE_API_BASE_URL || envVars.VITE_API_BASE_URL || '',
+          VITE_DRAWIO_URL: process.env.VITE_DRAWIO_URL || envVars.VITE_DRAWIO_URL || '',
+          MODE: buildConfig.debug ? 'development' : 'production'
+        }),
         ...Object.entries(buildConfig).reduce(
           (def, [k, v]) => {
             def[`BUILD_CONFIG.${k}`] = JSON.stringify(v);

@@ -9,6 +9,22 @@ import {
   uint8ArrayToBase64,
 } from './socket';
 
+/**
+ * 将API基础URL转换为Socket.IO URL
+ * 统一的端口转换逻辑，避免硬编码
+ */
+function convertToSocketIOUrl(baseUrl: string): string {
+  try {
+    const url = new URL(baseUrl);
+    // Socket.IO默认使用9092端口
+    url.port = '9092';
+    return url.toString();
+  } catch {
+    // 如果URL解析失败，使用简单的字符串替换作为后备
+    return baseUrl.replace(':8080', ':9092');
+  }
+}
+
 interface CloudAwarenessStorageOptions {
   isSelfHosted: boolean;
   serverBaseUrl: string;
@@ -24,8 +40,8 @@ export class CloudAwarenessStorage extends AwarenessStorageBase {
   }
 
   connection = new SocketConnection(
-    // 🔌 [Socket.IO修复] 为Socket.IO连接使用专用端口9092
-    this.options.serverBaseUrl.replace(':8080', ':9092'),
+    // 使用统一的端口转换逻辑
+    convertToSocketIOUrl(this.options.serverBaseUrl),
     this.options.isSelfHosted
   );
 
