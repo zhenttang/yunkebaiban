@@ -46,6 +46,10 @@ export const topLevelRoutes = [
         },
       },
       {
+        path: '/payment-test',
+        lazy: () => import('./pages/payment-test'),
+      },
+      {
         path: '/404',
         lazy: () => import('./pages/404'),
       },

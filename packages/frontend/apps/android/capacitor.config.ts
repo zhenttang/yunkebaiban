@@ -26,6 +26,10 @@ const config: CapacitorConfig & AppConfig = {
       releaseType: 'APK',
     },
     adjustMarginsForEdgeToEdge: 'force',
+    // 🔧 WebView存储配置 - 支持IndexedDB
+    webContentsDebuggingEnabled: true,  // 启用WebView调试
+    allowMixedContent: true,            // 允许混合内容
+    captureInput: true,                 // 捕获输入
   },
   server: {
     cleartext: true,

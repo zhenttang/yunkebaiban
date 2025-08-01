@@ -1,6 +1,5 @@
 import { style, keyframes } from '@vanilla-extract/css';
-import { communityTheme, baseButton, primaryButton, secondaryButton } from '../styles.css';
-import { cssVarV2 } from '@toeverything/theme/v2';
+import { cssVar } from '@toeverything/theme';
 
 const fadeIn = keyframes({
   '0%': { opacity: 0 },
@@ -24,80 +23,95 @@ export const modalOverlay = style({
   left: 0,
   right: 0,
   bottom: 0,
-  backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  backgroundColor: 'rgba(0, 0, 0, 0.6)',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
   zIndex: 1000,
-  padding: communityTheme.spacing.lg,
+  padding: '20px',
   animation: `${fadeIn} 0.2s ease-out`,
 });
 
 export const modalContent = style({
-  backgroundColor: cssVarV2('layer/background/primary'),
-  border: `1px solid ${cssVarV2('layer/border')}`,
-  borderRadius: communityTheme.borderRadius.lg,
-  padding: communityTheme.spacing.xxl,
-  maxWidth: '480px',
+  backgroundColor: cssVar('backgroundPrimaryColor'),
+  border: `1px solid ${cssVar('borderColor')}`,
+  borderRadius: '12px',
+  padding: 0,
+  maxWidth: '520px',
   width: '100%',
   maxHeight: '90vh',
   overflowY: 'auto',
   animation: `${slideUp} 0.2s ease-out`,
-  boxShadow: cssVarV2('shadow/modal'),
+  boxShadow: `0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)`,
 });
 
 export const modalHeader = style({
   display: 'flex',
   justifyContent: 'space-between',
   alignItems: 'center',
-  marginBottom: communityTheme.spacing.xl,
-  paddingBottom: communityTheme.spacing.lg,
-  borderBottom: `1px solid ${cssVarV2('layer/border')}`,
+  padding: '20px 24px',
+  borderBottom: `1px solid ${cssVar('borderColor')}`,
+  background: cssVar('backgroundOverlayPanelColor'),
+  borderTopLeftRadius: '12px',
+  borderTopRightRadius: '12px',
 });
 
 export const modalTitle = style({
-  fontSize: communityTheme.fontSize.xl,
+  fontSize: cssVar('fontH6'),
   fontWeight: '600',
-  color: cssVarV2('text/primary'),
+  color: cssVar('textPrimaryColor'),
   margin: 0,
+  lineHeight: '1.5',
 });
 
 export const closeButton = style({
   background: 'none',
   border: 'none',
-  fontSize: communityTheme.fontSize.xl,
-  color: cssVarV2('text/secondary'),
+  fontSize: '20px',
+  color: cssVar('iconSecondary'),
   cursor: 'pointer',
-  padding: communityTheme.spacing.sm,
-  borderRadius: communityTheme.borderRadius.sm,
+  padding: '4px',
+  borderRadius: '4px',
   transition: 'all 0.2s ease',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  width: '24px',
+  height: '24px',
   
   ':hover': {
-    backgroundColor: cssVarV2('layer/background/tertiary'),
-    color: cssVarV2('text/primary'),
+    backgroundColor: cssVar('hoverColor'),
+    color: cssVar('textPrimaryColor'),
   },
 });
 
+export const modalBody = style({
+  padding: '24px',
+});
+
 export const docInfo = style({
-  marginBottom: communityTheme.spacing.xl,
-  padding: communityTheme.spacing.lg,
-  backgroundColor: cssVarV2('layer/background/secondary'),
-  borderRadius: communityTheme.borderRadius.md,
+  marginBottom: '24px',
+  padding: '16px',
+  backgroundColor: cssVar('backgroundTertiaryColor'),
+  borderRadius: '8px',
+  border: `1px solid ${cssVar('borderColor')}`,
 });
 
 export const docTitle = style({
-  fontSize: communityTheme.fontSize.lg,
-  fontWeight: '500',
-  color: cssVarV2('text/primary'),
-  marginBottom: communityTheme.spacing.sm,
-  lineHeight: '1.4',
+  fontSize: cssVar('fontBase'),
+  fontWeight: '600',
+  color: cssVar('textPrimaryColor'),
+  marginBottom: '8px',
+  lineHeight: '1.5',
+  margin: '0 0 8px 0',
 });
 
 export const docDescription = style({
-  fontSize: communityTheme.fontSize.sm,
-  color: cssVarV2('text/secondary'),
+  fontSize: cssVar('fontSm'),
+  color: cssVar('textSecondaryColor'),
   lineHeight: '1.5',
-  marginBottom: communityTheme.spacing.md,
+  marginBottom: '12px',
+  margin: '0 0 12px 0',
 });
 
 export const priceInfo = style({
@@ -107,63 +121,72 @@ export const priceInfo = style({
 });
 
 export const priceLabel = style({
-  fontSize: communityTheme.fontSize.sm,
-  color: cssVarV2('text/secondary'),
+  fontSize: cssVar('fontSm'),
+  color: cssVar('textSecondaryColor'),
 });
 
 export const priceValue = style({
-  fontSize: communityTheme.fontSize.xl,
+  fontSize: cssVar('fontH5'),
   fontWeight: '600',
-  color: communityTheme.colors.error,
+  color: cssVar('brandColor'),
 });
 
 export const paymentMethods = style({
-  marginBottom: communityTheme.spacing.xl,
+  marginBottom: '24px',
 });
 
 export const paymentMethodsTitle = style({
-  fontSize: communityTheme.fontSize.md,
-  fontWeight: '500',
-  color: cssVarV2('text/primary'),
-  marginBottom: communityTheme.spacing.lg,
+  fontSize: cssVar('fontSm'),
+  fontWeight: '600',
+  color: cssVar('textPrimaryColor'),
+  marginBottom: '12px',
+  margin: '0 0 12px 0',
 });
 
 export const paymentMethodsList = style({
   display: 'flex',
   flexDirection: 'column',
-  gap: communityTheme.spacing.md,
+  gap: '8px',
 });
 
 export const paymentMethodOption = style({
   display: 'flex',
   alignItems: 'center',
-  padding: communityTheme.spacing.lg,
-  border: `1px solid ${cssVarV2('layer/border')}`,
-  borderRadius: communityTheme.borderRadius.md,
+  padding: '12px',
+  border: `1px solid ${cssVar('borderColor')}`,
+  borderRadius: '8px',
   cursor: 'pointer',
   transition: 'all 0.2s ease',
+  backgroundColor: cssVar('backgroundPrimaryColor'),
   
   ':hover': {
-    borderColor: communityTheme.colors.primary,
-    backgroundColor: cssVarV2('layer/background/tertiary'),
+    borderColor: cssVar('brandColor'),
+    backgroundColor: cssVar('backgroundTertiaryColor'),
   },
   
   selectors: {
     '&[data-selected="true"]': {
-      borderColor: communityTheme.colors.primary,
-      backgroundColor: `${communityTheme.colors.primary}10`,
+      borderColor: cssVar('brandColor'),
+      backgroundColor: cssVar('backgroundTertiaryColor'),
+      boxShadow: `0 0 0 1px ${cssVar('brandColor')}`,
     },
   },
 });
 
 export const paymentMethodRadio = style({
-  marginRight: communityTheme.spacing.md,
+  marginRight: '12px',
   cursor: 'pointer',
+  accentColor: cssVar('brandColor'),
 });
 
 export const paymentMethodIcon = style({
-  fontSize: communityTheme.fontSize.xl,
-  marginRight: communityTheme.spacing.md,
+  fontSize: '20px',
+  marginRight: '12px',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  width: '24px',
+  height: '24px',
 });
 
 export const paymentMethodInfo = style({
@@ -171,90 +194,153 @@ export const paymentMethodInfo = style({
 });
 
 export const paymentMethodName = style({
-  fontSize: communityTheme.fontSize.md,
+  fontSize: cssVar('fontSm'),
   fontWeight: '500',
-  color: cssVarV2('text/primary'),
+  color: cssVar('textPrimaryColor'),
   marginBottom: '2px',
+  lineHeight: '1.4',
 });
 
 export const paymentMethodDesc = style({
-  fontSize: communityTheme.fontSize.sm,
-  color: cssVarV2('text/secondary'),
+  fontSize: cssVar('fontXs'),
+  color: cssVar('textSecondaryColor'),
+  lineHeight: '1.4',
 });
 
 export const qrCodeContainer = style({
   textAlign: 'center',
-  padding: communityTheme.spacing.xl,
-  backgroundColor: cssVarV2('layer/background/secondary'),
-  borderRadius: communityTheme.borderRadius.md,
-  marginBottom: communityTheme.spacing.xl,
+  padding: '24px',
+  backgroundColor: cssVar('backgroundTertiaryColor'),
+  borderRadius: '8px',
+  marginBottom: '24px',
+  border: `1px solid ${cssVar('borderColor')}`,
 });
 
 export const qrCodeImage = style({
   width: '200px',
   height: '200px',
-  border: `1px solid ${cssVarV2('layer/border')}`,
-  borderRadius: communityTheme.borderRadius.sm,
-  marginBottom: communityTheme.spacing.md,
+  border: `1px solid ${cssVar('borderColor')}`,
+  borderRadius: '8px',
+  marginBottom: '12px',
+  backgroundColor: '#fff',
 });
 
 export const qrCodeText = style({
-  fontSize: communityTheme.fontSize.sm,
-  color: cssVarV2('text/secondary'),
+  fontSize: cssVar('fontSm'),
+  color: cssVar('textSecondaryColor'),
+  lineHeight: '1.5',
 });
 
 export const paymentStatus = style({
   textAlign: 'center',
-  padding: communityTheme.spacing.xl,
-  marginBottom: communityTheme.spacing.xl,
+  padding: '32px 24px',
+  marginBottom: '24px',
 });
 
 export const statusIcon = style({
   fontSize: '48px',
-  marginBottom: communityTheme.spacing.md,
+  marginBottom: '12px',
+  display: 'block',
 });
 
 export const statusText = style({
-  fontSize: communityTheme.fontSize.lg,
-  fontWeight: '500',
-  marginBottom: communityTheme.spacing.sm,
+  fontSize: cssVar('fontBase'),
+  fontWeight: '600',
+  marginBottom: '8px',
+  color: cssVar('textPrimaryColor'),
+  lineHeight: '1.5',
 });
 
 export const statusSubtext = style({
-  fontSize: communityTheme.fontSize.sm,
-  color: cssVarV2('text/secondary'),
+  fontSize: cssVar('fontSm'),
+  color: cssVar('textSecondaryColor'),
+  lineHeight: '1.5',
 });
 
 export const successStatus = style([paymentStatus, {
-  color: communityTheme.colors.success,
+  selectors: {
+    [`& ${statusIcon}`]: {
+      color: cssVar('successColor'),
+    },
+  },
 }]);
 
 export const errorStatus = style([paymentStatus, {
-  color: communityTheme.colors.error,
+  selectors: {
+    [`& ${statusIcon}`]: {
+      color: cssVar('errorColor'),
+    },
+  },
 }]);
 
 export const loadingStatus = style([paymentStatus, {
-  color: cssVarV2('text/secondary'),
+  selectors: {
+    [`& ${statusIcon}`]: {
+      color: cssVar('textSecondaryColor'),
+    },
+  },
 }]);
 
 export const modalActions = style({
   display: 'flex',
-  gap: communityTheme.spacing.md,
+  gap: '12px',
   justifyContent: 'flex-end',
-  paddingTop: communityTheme.spacing.lg,
-  borderTop: `1px solid ${cssVarV2('layer/border')}`,
+  padding: '16px 24px',
+  borderTop: `1px solid ${cssVar('borderColor')}`,
+  backgroundColor: cssVar('backgroundOverlayPanelColor'),
+  borderBottomLeftRadius: '12px',
+  borderBottomRightRadius: '12px',
 });
 
-export const cancelButton = style([secondaryButton]);
+export const cancelButton = style({
+  padding: '8px 16px',
+  border: `1px solid ${cssVar('borderColor')}`,
+  borderRadius: '6px',
+  backgroundColor: cssVar('backgroundPrimaryColor'),
+  color: cssVar('textPrimaryColor'),
+  fontSize: cssVar('fontSm'),
+  fontWeight: '500',
+  cursor: 'pointer',
+  transition: 'all 0.2s ease',
+  minWidth: '80px',
+  
+  ':hover': {
+    backgroundColor: cssVar('hoverColor'),
+    borderColor: cssVar('hoverColorFilled'),
+  },
 
-export const payButton = style([primaryButton, {
+  ':disabled': {
+    opacity: 0.5,
+    cursor: 'not-allowed',
+  },
+});
+
+export const payButton = style({
+  padding: '8px 16px',
+  border: 'none',
+  borderRadius: '6px',
+  backgroundColor: cssVar('brandColor'),
+  color: '#fff',
+  fontSize: cssVar('fontSm'),
+  fontWeight: '500',
+  cursor: 'pointer',
+  transition: 'all 0.2s ease',
   minWidth: '120px',
-}]);
+  
+  ':hover': {
+    backgroundColor: cssVar('primaryColor'),
+  },
+
+  ':disabled': {
+    opacity: 0.5,
+    cursor: 'not-allowed',
+  },
+});
 
 export const loadingDots = keyframes({
-  '0%, 20%': { transform: 'scale(1)' },
-  '50%': { transform: 'scale(1.2)' },
-  '80%, 100%': { transform: 'scale(1)' },
+  '0%, 20%': { transform: 'scale(1)', opacity: 1 },
+  '50%': { transform: 'scale(1.2)', opacity: 0.7 },
+  '80%, 100%': { transform: 'scale(1)', opacity: 1 },
 });
 
 export const loadingIndicator = style({
@@ -262,14 +348,15 @@ export const loadingIndicator = style({
   gap: '4px',
   justifyContent: 'center',
   alignItems: 'center',
+  margin: '16px 0',
 });
 
 export const loadingDot = style({
-  width: '6px',
-  height: '6px',
+  width: '8px',
+  height: '8px',
   borderRadius: '50%',
-  backgroundColor: 'currentColor',
-  animation: `${loadingDots} 1.4s ease-in-out infinite`,
+  backgroundColor: cssVar('brandColor'),
+  animation: `${loadingDots} 1.4s ease-in-out infinite both`,
   
   selectors: {
     '&:nth-child(1)': { animationDelay: '-0.32s' },

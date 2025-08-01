@@ -11,6 +11,7 @@ import { AboutGroup } from './about';
 import { AppearanceGroup } from './appearance';
 import { ExperimentalFeatureSetting } from './experimental';
 import { OthersGroup } from './others';
+import { PaymentGroup } from './payment';
 import * as styles from './style.css';
 import { SwipeDialog } from './swipe-dialog';
 import { UserProfile } from './user-profile';
@@ -36,6 +37,7 @@ const MobileSetting = () => {
     <div className={styles.root}>
       <UserProfile />
       <UserUsage />
+      <PaymentGroup />
       <AppearanceGroup />
       <AboutGroup />
       <ExperimentalFeatureSetting />

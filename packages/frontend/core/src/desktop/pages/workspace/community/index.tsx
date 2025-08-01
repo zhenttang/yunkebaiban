@@ -1,7 +1,9 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { Button } from '@affine/component';
 
 import { ViewBody } from '../../../../modules/workbench';
+import { PaymentTestPage } from '../../../../components/payment-test-page';
 import * as styles from './community.css';
 
 // 全局社区模拟数据
@@ -45,6 +47,7 @@ export const CommunityPage = () => {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const navigate = useNavigate();
   const [search, setSearch] = useState('');
+  const [showPaymentTest, setShowPaymentTest] = useState(false);
 
   useEffect(() => {
     console.log('🎯 社区页面已加载, workspaceId:', workspaceId || '全局模式');
@@ -101,11 +104,36 @@ export const CommunityPage = () => {
 
   return (
     <ViewBody>
-      <div className={styles.communityContent}>
-        <div className={styles.header}>
-          <h1 className={styles.title}>社区</h1>
-          <p className={styles.subtitle}>发现和分享优质内容</p>
+      {showPaymentTest ? (
+        <div>
+          <div style={{ padding: '20px', borderBottom: `1px solid ${styles.communityContent}` }}>
+            <Button 
+              onClick={() => setShowPaymentTest(false)}
+              variant="secondary"
+              size="default"
+            >
+              ← 返回社区
+            </Button>
+          </div>
+          <PaymentTestPage />
         </div>
+      ) : (
+        <div className={styles.communityContent}>
+          <div className={styles.header}>
+            <h1 className={styles.title}>社区</h1>
+            <p className={styles.subtitle}>发现和分享优质内容</p>
+            
+            {/* 支付测试按钮 */}
+            <div style={{ marginTop: '16px' }}>
+              <Button 
+                onClick={() => setShowPaymentTest(true)}
+                variant="primary"
+                size="default"
+              >
+                🧪 支付功能测试
+              </Button>
+            </div>
+          </div>
         
         <div className={styles.searchSection}>
           <input
@@ -156,7 +184,8 @@ export const CommunityPage = () => {
             <p>暂无匹配的社区内容</p>
           </div>
         )}
-      </div>
+        </div>
+      )}
     </ViewBody>
   );
 };

@@ -1,7 +1,10 @@
 import React, { useState, useCallback, useEffect } from 'react';
+import { Button, Loading } from '@affine/component';
+import { Modal } from '@affine/component/ui/modal';
 import type { CommunityDocument, PaymentOrderRequest, PaymentOrderResponse } from '../types';
 import { PAYMENT_METHODS } from '../types';
-import * as styles from './styles.css';
+import { paymentApi } from '../../../api/payment';
+import { useQRCode } from '../../../utils/qrcode';
 
 interface PaymentModalProps {
   document: CommunityDocument;
@@ -22,28 +25,29 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
   onCreateOrder,
   onCheckPaymentStatus,
 }) => {
-  const [paymentMethod, setPaymentMethod] = useState<'WECHAT' | 'ALIPAY'>('WECHAT');
+  const [paymentMethod, setPaymentMethod] = useState<'WECHAT' | 'ALIPAY'>('ALIPAY');
   const [status, setStatus] = useState<PaymentStatus>('selecting');
   const [orderInfo, setOrderInfo] = useState<PaymentOrderResponse | null>(null);
   const [error, setError] = useState<string>('');
+  const [qrCodeImageUrl, setQrCodeImageUrl] = useState<string>('');
+  const { generateImage } = useQRCode();
 
-  // 重置状态当模态框打开时
   useEffect(() => {
     if (isOpen) {
       setStatus('selecting');
       setOrderInfo(null);
       setError('');
+      setQrCodeImageUrl('');
     }
   }, [isOpen]);
 
-  // 支付状态轮询
   useEffect(() => {
     let timer: NodeJS.Timeout;
     
-    if (status === 'waiting' && orderInfo && onCheckPaymentStatus) {
+    if (status === 'waiting' && orderInfo) {
       timer = setInterval(async () => {
         try {
-          const isPaid = await onCheckPaymentStatus(orderInfo.orderId);
+          const isPaid = await paymentApi.checkPaymentStatus(orderInfo.orderId);
           if (isPaid) {
             setStatus('success');
             setTimeout(() => {
@@ -54,150 +58,400 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
         } catch (err) {
           console.error('检查支付状态失败:', err);
         }
-      }, 2000);
+      }, 3000);
     }
 
     return () => {
       if (timer) clearInterval(timer);
     };
-  }, [status, orderInfo, onCheckPaymentStatus, onPaymentSuccess, onClose]);
+  }, [status, orderInfo, onPaymentSuccess, onClose]);
 
   const handlePayment = useCallback(async () => {
-    if (!onCreateOrder) {
-      setError('支付功能暂不可用');
-      return;
-    }
-
     setStatus('processing');
     setError('');
+    setQrCodeImageUrl('');
 
     try {
-      const order = await onCreateOrder({
+      const order = await paymentApi.createPaymentOrder({
         documentId: document.id,
         paymentMethod,
       });
 
+      if (order.qrCode) {
+        const qrImageUrl = await generateImage(order.qrCode, { width: 200 });
+        setQrCodeImageUrl(qrImageUrl);
+      }
+
       setOrderInfo(order);
       setStatus('waiting');
     } catch (err: any) {
+      console.error('支付失败:', err);
       setError(err.message || '支付失败，请重试');
       setStatus('error');
     }
-  }, [document.id, paymentMethod, onCreateOrder]);
+  }, [document.id, paymentMethod, generateImage]);
 
   const handleRetry = useCallback(() => {
     setStatus('selecting');
     setError('');
     setOrderInfo(null);
+    setQrCodeImageUrl('');
   }, []);
-
-  const handleBackdropClick = useCallback((e: React.MouseEvent) => {
-    if (e.target === e.currentTarget) {
-      onClose();
-    }
-  }, [onClose]);
-
-  if (!isOpen) return null;
 
   const renderContent = () => {
     switch (status) {
       case 'selecting':
         return (
-          <>
-            <div className={styles.docInfo}>
-              <h4 className={styles.docTitle}>{document.title}</h4>
-              <p className={styles.docDescription}>{document.description}</p>
-              <div className={styles.priceInfo}>
-                <span className={styles.priceLabel}>价格:</span>
-                <span className={styles.priceValue}>¥{document.price}</span>
+          <div style={{ 
+            padding: '0 24px 24px 24px',
+            minHeight: '400px',
+            maxWidth: '100%',
+            overflow: 'hidden'
+          }}>
+            {/* Order Summary */}
+            <div style={{
+              marginBottom: '24px',
+              padding: '20px 24px',
+              border: `1px solid var(--affine-border-color)`,
+              borderRadius: '8px',
+              backgroundColor: 'var(--affine-background-secondary-color)',
+              width: '100%',
+              boxSizing: 'border-box'
+            }}>
+              <div style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'flex-start',
+                gap: '16px',
+                marginBottom: '8px'
+              }}>
+                <h3 style={{
+                  fontSize: '16px',
+                  fontWeight: '500',
+                  color: 'var(--affine-text-primary-color)',
+                  margin: 0,
+                  lineHeight: '1.5',
+                  flex: 1,
+                  minWidth: 0,
+                  wordBreak: 'break-word'
+                }}>{document.title}</h3>
+                <span style={{
+                  fontSize: '20px',
+                  fontWeight: '600',
+                  color: 'var(--affine-text-primary-color)',
+                  lineHeight: '1.5',
+                  whiteSpace: 'nowrap',
+                  flexShrink: 0
+                }}>¥{document.price}</span>
               </div>
+              <p style={{
+                fontSize: '14px',
+                color: 'var(--affine-text-secondary-color)',
+                margin: 0,
+                lineHeight: '1.5',
+                wordBreak: 'break-word'
+              }}>{document.description}</p>
             </div>
 
-            <div className={styles.paymentMethods}>
-              <h3 className={styles.paymentMethodsTitle}>选择支付方式</h3>
-              <div className={styles.paymentMethodsList}>
+            {/* Payment Methods */}
+            <div style={{ marginBottom: '20px' }}>
+              <h4 style={{
+                fontSize: '15px',
+                fontWeight: '500',
+                color: 'var(--affine-text-primary-color)',
+                margin: '0 0 12px 0',
+                lineHeight: '1.5'
+              }}>选择支付方式</h4>
+              
+              <div style={{ 
+                display: 'flex', 
+                flexDirection: 'column', 
+                gap: '12px',
+                width: '100%'
+              }}>
                 {PAYMENT_METHODS.map(method => (
                   <label
                     key={method.value}
-                    className={styles.paymentMethodOption}
-                    data-selected={paymentMethod === method.value}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      padding: '14px 16px',
+                      border: `2px solid ${paymentMethod === method.value ? 'var(--affine-brand-color)' : 'var(--affine-border-color)'}`,
+                      borderRadius: '6px',
+                      cursor: 'pointer',
+                      backgroundColor: paymentMethod === method.value ? 'var(--affine-background-secondary-color)' : 'var(--affine-background-primary-color)',
+                      transition: 'all 0.2s ease',
+                      width: '100%',
+                      boxSizing: 'border-box'
+                    }}
                   >
                     <input
                       type="radio"
-                      className={styles.paymentMethodRadio}
+                      name="paymentMethod"
                       value={method.value}
                       checked={paymentMethod === method.value}
                       onChange={(e) => setPaymentMethod(e.target.value as 'WECHAT' | 'ALIPAY')}
+                      style={{
+                        marginRight: '12px',
+                        accentColor: 'var(--affine-brand-color)'
+                      }}
                     />
-                    <span className={styles.paymentMethodIcon}>{method.icon}</span>
-                    <div className={styles.paymentMethodInfo}>
-                      <div className={styles.paymentMethodName}>{method.label}</div>
-                      <div className={styles.paymentMethodDesc}>
-                        {method.value === 'WECHAT' ? '使用微信扫码支付' : '使用支付宝扫码支付'}
-                      </div>
+                    <div style={{
+                      width: '20px',
+                      height: '20px',
+                      marginRight: '12px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      flexShrink: 0
+                    }}>
+                      {method.value === 'ALIPAY' ? (
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="#1677FF">
+                          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.94-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v-.07zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+                        </svg>
+                      ) : (
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="#07C160">
+                          <path d="M12 2.04c-5.5 0-9.96 4.46-9.96 9.96 0 1.68.41 3.26 1.15 4.65L2 22l5.5-1.18c1.33.69 2.84 1.08 4.5 1.08 5.5 0 9.96-4.46 9.96-9.96S17.5 2.04 12 2.04zm0 17.92c-1.43 0-2.76-.38-3.91-1.04L7.5 19.5l.54-.12c-1.15-1.15-1.85-2.74-1.85-4.5 0-4.39 3.57-7.96 7.96-7.96s7.96 3.57 7.96 7.96-3.57 7.96-7.96 7.96z"/>
+                        </svg>
+                      )}
                     </div>
+                    <span style={{
+                      fontSize: '15px',
+                      color: 'var(--affine-text-primary-color)',
+                      fontWeight: '400',
+                      lineHeight: '1.4'
+                    }}>{method.label}</span>
                   </label>
                 ))}
               </div>
             </div>
-          </>
+
+            {/* Security Notice */}
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              padding: '12px 16px',
+              backgroundColor: 'var(--affine-background-tertiary-color)',
+              borderRadius: '6px',
+              border: `1px solid var(--affine-border-color)`,
+              width: '100%',
+              boxSizing: 'border-box'
+            }}>
+              <span style={{ 
+                fontSize: '14px',
+                lineHeight: '1'
+              }}>🔒</span>
+              <span style={{
+                fontSize: '13px',
+                color: 'var(--affine-text-secondary-color)',
+                lineHeight: '1.4'
+              }}>安全支付由支付宝/微信官方保障</span>
+            </div>
+          </div>
         );
 
       case 'processing':
         return (
-          <div className={styles.loadingStatus}>
-            <div className={styles.statusIcon}>
-              <div className={styles.loadingIndicator}>
-                <div className={styles.loadingDot} />
-                <div className={styles.loadingDot} />
-                <div className={styles.loadingDot} />
-              </div>
-            </div>
-            <div className={styles.statusText}>正在创建订单...</div>
-            <div className={styles.statusSubtext}>请稍候</div>
+          <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            padding: '48px 24px',
+            textAlign: 'center'
+          }}>
+            <Loading size={24} style={{ marginBottom: '16px' }} />
+            <h3 style={{
+              fontSize: 'var(--affine-font-base)',
+              fontWeight: '500',
+              color: 'var(--affine-text-primary-color)',
+              margin: '0 0 8px 0'
+            }}>正在生成支付订单</h3>
+            <p style={{
+              fontSize: 'var(--affine-font-sm)',
+              color: 'var(--affine-text-secondary-color)',
+              margin: 0
+            }}>请稍候...</p>
           </div>
         );
 
       case 'waiting':
         return (
-          <>
-            {orderInfo?.qrCode && (
-              <div className={styles.qrCodeContainer}>
+          <div style={{ padding: '24px', textAlign: 'center' }}>
+            {/* QR Code */}
+            <div style={{
+              display: 'inline-block',
+              padding: '20px',
+              backgroundColor: '#fff',
+              border: `1px solid var(--affine-border-color)`,
+              borderRadius: '8px',
+              marginBottom: '20px'
+            }}>
+              {(qrCodeImageUrl || orderInfo?.qrCode) && (
                 <img 
-                  src={orderInfo.qrCode} 
+                  src={qrCodeImageUrl || orderInfo.qrCode} 
                   alt="支付二维码"
-                  className={styles.qrCodeImage}
+                  style={{
+                    width: '200px',
+                    height: '200px',
+                    display: 'block'
+                  }}
+                  onError={(e) => {
+                    if (orderInfo?.qrCode && e.currentTarget.src !== orderInfo.qrCode) {
+                      e.currentTarget.src = orderInfo.qrCode;
+                    }
+                  }}
                 />
-                <div className={styles.qrCodeText}>
-                  请使用{paymentMethod === 'WECHAT' ? '微信' : '支付宝'}扫描二维码完成支付
-                </div>
+              )}
+            </div>
+            
+            <h3 style={{
+              fontSize: 'var(--affine-font-base)',
+              fontWeight: '500',
+              color: 'var(--affine-text-primary-color)',
+              margin: '0 0 8px 0'
+            }}>使用{paymentMethod === 'WECHAT' ? '微信' : '支付宝'}扫码支付</h3>
+            
+            <p style={{
+              fontSize: 'var(--affine-font-sm)',
+              color: 'var(--affine-text-secondary-color)',
+              margin: '0 0 16px 0'
+            }}>打开{paymentMethod === 'WECHAT' ? '微信' : '支付宝'}App扫描二维码</p>
+            
+            <div style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
+              padding: '6px 12px',
+              backgroundColor: 'var(--affine-background-tertiary-color)',
+              borderRadius: '4px',
+              fontSize: 'var(--affine-font-xs)',
+              color: 'var(--affine-text-secondary-color)'
+            }}>
+              <span style={{
+                width: '6px',
+                height: '6px',
+                borderRadius: '50%',
+                backgroundColor: '#52c41a',
+                display: 'inline-block'
+              }}></span>
+              支付金额: ¥{orderInfo ? (orderInfo.amount / 100).toFixed(2) : document.price}
+            </div>
+            
+            <div style={{
+              marginTop: '24px',
+              padding: '16px',
+              backgroundColor: 'var(--affine-background-secondary-color)',
+              borderRadius: '6px',
+              textAlign: 'left'
+            }}>
+              <h4 style={{
+                fontSize: 'var(--affine-font-sm)',
+                fontWeight: '500',
+                color: 'var(--affine-text-primary-color)',
+                margin: '0 0 8px 0'
+              }}>订单信息</h4>
+              <div style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                fontSize: 'var(--affine-font-xs)',
+                color: 'var(--affine-text-secondary-color)',
+                marginBottom: '4px'
+              }}>
+                <span>商品</span>
+                <span>{document.title}</span>
               </div>
-            )}
-            <div className={styles.loadingStatus}>
-              <div className={styles.statusIcon}>⏳</div>
-              <div className={styles.statusText}>等待支付完成...</div>
-              <div className={styles.statusSubtext}>
-                支付金额: ¥{document.price}
+              <div style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                fontSize: 'var(--affine-font-xs)',
+                color: 'var(--affine-text-secondary-color)',
+                marginBottom: '4px'
+              }}>
+                <span>订单号</span>
+                <span>{orderInfo?.orderId?.slice(-8) || 'N/A'}</span>
+              </div>
+              <div style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                fontSize: 'var(--affine-font-xs)',
+                color: 'var(--affine-text-secondary-color)'
+              }}>
+                <span>支付方式</span>
+                <span>{paymentMethod === 'WECHAT' ? '微信支付' : '支付宝'}</span>
               </div>
             </div>
-          </>
+          </div>
         );
 
       case 'success':
         return (
-          <div className={styles.successStatus}>
-            <div className={styles.statusIcon}>✅</div>
-            <div className={styles.statusText}>支付成功！</div>
-            <div className={styles.statusSubtext}>正在为您解锁内容...</div>
+          <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            padding: '48px 24px',
+            textAlign: 'center'
+          }}>
+            <div style={{
+              width: '48px',
+              height: '48px',
+              borderRadius: '50%',
+              backgroundColor: '#52c41a',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginBottom: '16px'
+            }}>
+              <span style={{ fontSize: '24px', color: '#fff' }}>✓</span>
+            </div>
+            <h3 style={{
+              fontSize: 'var(--affine-font-h5)',
+              fontWeight: '600',
+              color: 'var(--affine-text-primary-color)',
+              margin: '0 0 8px 0'
+            }}>支付成功</h3>
+            <p style={{
+              fontSize: 'var(--affine-font-sm)',
+              color: 'var(--affine-text-secondary-color)',
+              margin: 0
+            }}>内容已解锁，感谢您的购买</p>
           </div>
         );
 
       case 'error':
         return (
-          <div className={styles.errorStatus}>
-            <div className={styles.statusIcon}>❌</div>
-            <div className={styles.statusText}>支付失败</div>
-            <div className={styles.statusSubtext}>{error}</div>
+          <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            padding: '48px 24px',
+            textAlign: 'center'
+          }}>
+            <div style={{
+              width: '48px',
+              height: '48px',
+              borderRadius: '50%',
+              backgroundColor: 'var(--affine-error-color)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginBottom: '16px'
+            }}>
+              <span style={{ fontSize: '24px', color: '#fff' }}>✕</span>
+            </div>
+            <h3 style={{
+              fontSize: 'var(--affine-font-base)',
+              fontWeight: '500',
+              color: 'var(--affine-text-primary-color)',
+              margin: '0 0 8px 0'
+            }}>支付失败</h3>
+            <p style={{
+              fontSize: 'var(--affine-font-sm)',
+              color: 'var(--affine-text-secondary-color)',
+              margin: 0,
+              maxWidth: '280px'
+            }}>{error || '支付过程中出现问题，请重试'}</p>
           </div>
         );
     }
@@ -208,78 +462,113 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
       case 'selecting':
         return (
           <>
-            <button className={styles.cancelButton} onClick={onClose}>
+            <Button variant="secondary" onClick={onClose}>
               取消
-            </button>
-            <button className={styles.payButton} onClick={handlePayment}>
+            </Button>
+            <Button variant="primary" onClick={handlePayment}>
               支付 ¥{document.price}
-            </button>
+            </Button>
           </>
         );
 
       case 'processing':
         return (
-          <button className={styles.cancelButton} onClick={onClose}>
+          <Button variant="secondary" onClick={onClose}>
             取消
-          </button>
+          </Button>
         );
 
       case 'waiting':
         return (
           <>
-            <button className={styles.cancelButton} onClick={onClose}>
+            <Button variant="secondary" onClick={onClose}>
               取消支付
-            </button>
-            <button className={styles.payButton} disabled>
-              等待支付...
-            </button>
+            </Button>
+            <div style={{
+              padding: '8px 16px',
+              fontSize: 'var(--affine-font-sm)',
+              color: 'var(--affine-text-secondary-color)',
+              backgroundColor: 'var(--affine-background-tertiary-color)',
+              borderRadius: '4px',
+              border: `1px solid var(--affine-border-color)`
+            }}>
+              等待支付中...
+            </div>
           </>
         );
 
       case 'error':
         return (
           <>
-            <button className={styles.cancelButton} onClick={onClose}>
+            <Button variant="secondary" onClick={onClose}>
               关闭
-            </button>
-            <button className={styles.payButton} onClick={handleRetry}>
-              重试支付
-            </button>
+            </Button>
+            <Button variant="primary" onClick={handleRetry}>
+              重试
+            </Button>
           </>
         );
 
       case 'success':
         return (
-          <button className={styles.payButton} onClick={onClose}>
-            确认
-          </button>
+          <Button variant="primary" onClick={onClose} style={{ minWidth: '100px' }}>
+            完成
+          </Button>
         );
     }
   };
 
   return (
-    <div className={styles.modalOverlay} onClick={handleBackdropClick}>
-      <div className={styles.modalContent}>
-        <div className={styles.modalHeader}>
-          <h2 className={styles.modalTitle}>
-            {status === 'success' ? '支付成功' : '解锁付费内容'}
-          </h2>
-          <button 
-            className={styles.closeButton} 
-            onClick={onClose}
-            aria-label="关闭"
-          >
-            ×
-          </button>
-        </div>
-
-        {renderContent()}
-
-        <div className={styles.modalActions}>
-          {renderActions()}
-        </div>
+    <>
+      <style>{`
+        .payment-modal-header {
+          padding: 20px 24px 12px 24px !important;
+          margin-bottom: 0 !important;
+          font-size: 18px !important;
+          font-weight: 600 !important;
+          line-height: 1.4 !important;
+          color: var(--affine-text-primary-color) !important;
+        }
+      `}</style>
+      <Modal
+      open={isOpen}
+      onOpenChange={onClose}
+      width={520}
+      height="auto"
+      title={status === 'success' ? '支付成功' : status === 'error' ? '支付失败' : '解锁付费内容'}
+      headerClassName="payment-modal-header"
+      contentOptions={{
+        style: { 
+          padding: '0',
+          minWidth: '480px',
+          maxWidth: '520px',
+          minHeight: '500px'
+        }
+      }}
+      closeButtonOptions={{
+        style: {
+          top: '20px',
+          right: '20px',
+          zIndex: 1000
+        }
+      }}
+    >
+      {renderContent()}
+      <div style={{
+        display: 'flex',
+        gap: '12px',
+        justifyContent: 'flex-end',
+        alignItems: 'center',
+        padding: '20px 28px',
+        borderTop: `1px solid var(--affine-border-color)`,
+        backgroundColor: 'var(--affine-background-secondary-color)',
+        minHeight: '72px',
+        boxSizing: 'border-box'
+      }}>
+        {renderActions()}
       </div>
-    </div>
+    </Modal>
+    </>
   );
 };
 

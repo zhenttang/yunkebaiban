@@ -89,6 +89,17 @@ class MainActivity : BridgeActivity(), AIButtonPlugin.Callback, AFFiNEThemePlugi
         android.util.Log.d("AffineApp", "系统版本: ${android.os.Build.VERSION.RELEASE}")
         android.util.Log.d("AffineApp", "设备型号: ${android.os.Build.MODEL}")
         
+        // 配置WebView存储设置 - 启用IndexedDB支持
+        bridge.webView.settings.apply {
+            domStorageEnabled = true           // 启用DOM存储 (localStorage, sessionStorage)
+            databaseEnabled = true            // 启用数据库 (WebSQL, IndexedDB)
+            javaScriptEnabled = true          // 启用JavaScript
+            allowFileAccess = true            // 允许文件访问
+            allowContentAccess = true         // 允许内容访问
+            cacheMode = WebSettings.LOAD_DEFAULT  // 默认缓存模式
+            android.util.Log.d("AffineApp", "✅ WebView存储配置已启用")
+        }
+        
         ViewCompat.setOnApplyWindowInsetsListener(window.decorView) { v, insets ->
             navHeight = px2dp(insets.getInsets(WindowInsetsCompat.Type.navigationBars()).bottom)
             android.util.Log.d("AffineApp", "导航栏高度: $navHeight dp")

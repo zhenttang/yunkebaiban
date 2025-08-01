@@ -185,6 +185,8 @@
   },
   "dependencies": {
     "@swc/core": "1.12.11",
+    "@types/qrcode": "^1.5.5",
+    "qrcode": "^1.5.4",
     "react-easy-crop": "^5.5.0"
   },
   "optionalDependencies": {
