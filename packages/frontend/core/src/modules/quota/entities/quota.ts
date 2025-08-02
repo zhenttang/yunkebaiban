@@ -18,7 +18,16 @@ import { tap } from 'rxjs';
 import type { WorkspaceService } from '../../workspace';
 import type { WorkspaceQuotaStore } from '../stores/quota';
 
-type QuotaType = WorkspaceQuotaQuery['workspace']['quota'];
+// 定义工作空间配额类型
+interface WorkspaceQuotaType {
+  storageQuota: number;
+  usedStorageQuota: number;
+  historyPeriod?: number;
+  memberLimit?: number;
+  copilotActionLimit?: number;
+}
+
+type QuotaType = WorkspaceQuotaType;
 
 const logger = new DebugLogger('affine:workspace-permission');
 

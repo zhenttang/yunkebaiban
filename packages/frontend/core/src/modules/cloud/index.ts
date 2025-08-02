@@ -148,7 +148,7 @@ export function configureCloudModule(framework: Framework) {
     .store(UserQuotaStore, [GraphQLService])
     .entity(UserQuota, [AuthService, UserQuotaStore])
     .service(UserCopilotQuotaService)
-    .store(UserCopilotQuotaStore, [GraphQLService])
+    .store(UserCopilotQuotaStore)
     .entity(UserCopilotQuota, [
       AuthService,
       UserCopilotQuotaStore,

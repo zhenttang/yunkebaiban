@@ -534,7 +534,11 @@ export const CloudStorageProvider = ({
           spaceId: currentWorkspaceId,
           clientVersion: '1.0.0'  // 添加AFFiNE标准要求的clientVersion
         }, (response) => {
-          if ('error' in response) {
+          // 修复：检查response是否存在
+          if (!response) {
+            console.error('❌ [云存储管理器] 空间加入失败: 服务器无响应');
+            setStorageMode('error');
+          } else if (response && 'error' in response) {
             console.error('❌ [云存储管理器] 空间加入失败:', response.error);
             setStorageMode('error');
           } else {
