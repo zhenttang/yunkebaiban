@@ -346,6 +346,237 @@ export class ImageBlockComponent extends CaptionedBlockComponent<ImageBlockModel
     selectionManager.setGroup('note', [blockSelection]);
   }
 
+  private _handleDoubleClick(event: MouseEvent) {
+    event.preventDefault();
+    event.stopPropagation();
+    
+    // 检查是否有deck数据，如果有则打开编辑器
+    const customData = this.model.props.customData;
+    if (customData && this._isDeckData(customData)) {
+      this._openDeckerEditor(customData);
+    }
+  }
+
+  private _isDeckData(data: string): boolean {
+    try {
+      const parsed = JSON.parse(data);
+      // 检查是否包含deck数据的特征字段
+      return parsed && typeof parsed === 'object' && 
+             (parsed.type === 'deck' || parsed.deckData || parsed.deck);
+    } catch {
+      return false;
+    }
+  }
+
+  private _openDeckerEditor(customData: string) {
+    try {
+      const data = JSON.parse(customData);
+      const deckData = data.deckData || data.deck;
+      
+      if (!deckData) {
+        console.warn('没有找到deck数据');
+        return;
+      }
+
+      // 创建Decker编辑器iframe
+      this._createDeckerModal(deckData);
+    } catch (error) {
+      console.error('打开Decker编辑器失败:', error);
+    }
+  }
+
+  private _createDeckerModal(deckData: string) {
+    // 移除可能存在的旧模态框
+    const existingModal = document.querySelector('#decker-edit-modal');
+    if (existingModal) {
+      existingModal.remove();
+    }
+
+    // 创建模态框容器
+    const overlay = document.createElement('div');
+    overlay.id = 'decker-edit-modal';
+    overlay.style.cssText = `
+      position: fixed !important;
+      top: 0 !important;
+      left: 0 !important;
+      right: 0 !important;
+      bottom: 0 !important;
+      background: rgba(0, 0, 0, 0.8) !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      z-index: 999999 !important;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+    `;
+
+    const modal = document.createElement('div');
+    modal.style.cssText = `
+      background: white !important;
+      border-radius: 12px !important;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3) !important;
+      width: 95vw !important;
+      max-width: 1200px !important;
+      height: 90vh !important;
+      max-height: 800px !important;
+      display: flex !important;
+      flex-direction: column !important;
+      overflow: hidden !important;
+    `;
+
+    // 头部
+    const header = document.createElement('div');
+    header.style.cssText = `
+      display: flex !important;
+      align-items: center !important;
+      justify-content: space-between !important;
+      padding: 16px 20px !important;
+      border-bottom: 1px solid #e0e0e0 !important;
+      background: #f5f5f5 !important;
+    `;
+
+    const title = document.createElement('h3');
+    title.textContent = 'Decker 编辑器';
+    title.style.cssText = `
+      margin: 0 !important;
+      font-size: 18px !important;
+      font-weight: 600 !important;
+      color: #333 !important;
+    `;
+
+    const buttonContainer = document.createElement('div');
+    buttonContainer.style.cssText = `
+      display: flex !important;
+      gap: 8px !important;
+    `;
+
+    const saveButton = document.createElement('button');
+    saveButton.textContent = '保存';
+    saveButton.style.cssText = `
+      padding: 8px 16px !important;
+      background: #007bff !important;
+      color: white !important;
+      border: none !important;
+      border-radius: 6px !important;
+      cursor: pointer !important;
+      font-size: 14px !important;
+    `;
+
+    const cancelButton = document.createElement('button');
+    cancelButton.textContent = '取消';
+    cancelButton.style.cssText = `
+      padding: 8px 16px !important;
+      background: #6c757d !important;
+      color: white !important;
+      border: none !important;
+      border-radius: 6px !important;
+      cursor: pointer !important;
+      font-size: 14px !important;
+    `;
+
+    // iframe容器
+    const iframeContainer = document.createElement('div');
+    iframeContainer.style.cssText = `
+      flex: 1 !important;
+      background: #000 !important;
+      position: relative !important;
+    `;
+
+    // 创建iframe
+    const iframe = document.createElement('iframe');
+    const deckerUrl = `file:///mnt/d/Documents/yunkebaiban/Decker-main/Decker-main/decker.html?whiteboard=true&origin=${encodeURIComponent(window.location.origin)}`;
+    iframe.src = deckerUrl;
+    iframe.style.cssText = `
+      width: 100% !important;
+      height: 100% !important;
+      border: none !important;
+      background: white !important;
+    `;
+
+    // 事件处理
+    const closeModal = () => {
+      overlay.remove();
+      window.removeEventListener('message', messageHandler);
+    };
+
+    const messageHandler = (event: MessageEvent) => {
+      if (event.origin !== window.location.origin) return;
+
+      const { type, gifData, deckData, metadata } = event.data;
+
+      if (type === 'DECK_EXPORT_COMPLETE') {
+        this._handleDeckerSave(gifData, deckData, metadata);
+        closeModal();
+      } else if (type === 'DECK_READY') {
+        // Decker准备就绪，发送deck数据进行加载
+        iframe.contentWindow?.postMessage({
+          type: 'LOAD_DECK_DATA',
+          payload: { deckData, metadata: { timestamp: Date.now() } }
+        }, '*');
+      }
+    };
+
+    const requestSave = () => {
+      // 请求Decker导出当前内容
+      iframe.contentWindow?.postMessage({
+        type: 'EXPORT_GIF_REQUEST'
+      }, '*');
+    };
+
+    // 绑定事件
+    window.addEventListener('message', messageHandler);
+    saveButton.addEventListener('click', requestSave);
+    cancelButton.addEventListener('click', closeModal);
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) closeModal();
+    });
+
+    // 组装DOM
+    buttonContainer.appendChild(saveButton);
+    buttonContainer.appendChild(cancelButton);
+    header.appendChild(title);
+    header.appendChild(buttonContainer);
+    iframeContainer.appendChild(iframe);
+    modal.appendChild(header);
+    modal.appendChild(iframeContainer);
+    overlay.appendChild(modal);
+
+    document.body.appendChild(overlay);
+    console.log('Decker编辑器模态框已创建');
+  }
+
+  private async _handleDeckerSave(gifData: number[], deckData: string, metadata: any) {
+    try {
+      // 将GIF数据转换为Blob
+      const gifBlob = new Blob([new Uint8Array(gifData)], { type: 'image/gif' });
+      
+      // 上传新的GIF
+      const blobSync = this.std.store.blobSync;
+      const sourceId = await blobSync.set(gifBlob);
+      
+      // 准备自定义数据
+      const customData = JSON.stringify({
+        type: 'deck',
+        deckData: deckData,
+        metadata: {
+          ...metadata,
+          editedAt: Date.now(),
+          editor: 'decker'
+        }
+      });
+      
+      // 更新模型
+      this.std.store.updateBlock(this.model, {
+        sourceId,
+        customData,
+        size: gifBlob.size
+      });
+      
+      console.log('Decker编辑内容已保存');
+    } catch (error) {
+      console.error('保存Decker编辑内容失败:', error);
+    }
+  }
+
   private _initHover() {
     const { setReference, setFloating, dispose } = whenHover(
       hovered => {
@@ -389,6 +620,7 @@ export class ImageBlockComponent extends CaptionedBlockComponent<ImageBlockModel
   override firstUpdated() {
     // lazy bindings
     this.disposables.addFromEvent(this, 'click', this._handleClick);
+    this.disposables.addFromEvent(this, 'dblclick', this._handleDoubleClick);
     this.disposables.addFromEvent(this, 'crop-save', this._handleCropSave);
     this.disposables.addFromEvent(this, 'crop-cancel', this._handleCropCancel);
     this.disposables.addFromEvent(this, 'crop-error', this._handleCropError);

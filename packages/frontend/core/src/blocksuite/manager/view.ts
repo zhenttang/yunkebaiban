@@ -20,6 +20,7 @@ import { MobileViewExtension } from '@affine/core/blocksuite/view-extensions/mob
 import { PdfViewExtension } from '@affine/core/blocksuite/view-extensions/pdf';
 import { AffineThemeViewExtension } from '@affine/core/blocksuite/view-extensions/theme';
 import { TurboRendererViewExtension } from '@affine/core/blocksuite/view-extensions/turbo-renderer';
+import { DeckViewExtension } from '@affine/core/components/deck-integration';
 import { PeekViewService } from '@affine/core/modules/peek-view';
 import { DebugLogger } from '@affine/debug';
 import { mixpanel } from '@affine/track';
@@ -90,6 +91,7 @@ class ViewProvider {
       ElectronViewExtension,
       AffineLinkPreviewExtension,
       AffineDatabaseViewExtension,
+      DeckViewExtension,
     ]);
   }
 

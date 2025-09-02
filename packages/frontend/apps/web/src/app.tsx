@@ -17,13 +17,14 @@ import { StoreManagerClient } from '@affine/nbstore/worker/client';
 import { CacheProvider } from '@emotion/react';
 import { Framework, FrameworkRoot, getCurrentStore } from '@toeverything/infra';
 import { OpClient } from '@toeverything/infra/op';
-import { Suspense } from 'react';
+import { Suspense, useEffect } from 'react';
 import { RouterProvider } from 'react-router-dom';
 
 import { CloudStorageProvider, useCloudStorage } from './cloud-storage-manager';
 import { DocumentEditTest } from './document-edit-test';
 import { WorkspaceCloudStatus } from './components/workspace-cloud-status';
 import { SaveStatusIndicator } from './components/save-status-indicator';
+import { deckerIntegrationManager } from '@affine/core/modules/decker-integration/decker-integration-manager';
 
 // 云存储状态指示器组件 - 简化版本，与左上角状态保持一致
 const CloudStorageIndicator = () => {

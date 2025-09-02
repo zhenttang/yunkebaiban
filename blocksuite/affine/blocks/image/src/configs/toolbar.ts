@@ -19,6 +19,7 @@ import type { ExtensionType } from '@blocksuite/store';
 import { ImageBlockComponent } from '../image-block';
 import { ImageEdgelessBlockComponent } from '../image-edgeless-block';
 import { duplicate } from '../utils';
+import { openDeckerEditor, openDeckerEditorWithData } from '@affine/core/modules/decker-integration/decker-integration-manager';
 
 const trackBaseProps = {
   category: 'image',
@@ -34,6 +35,43 @@ const builtinToolbarConfig = {
       run(ctx) {
         const block = ctx.getCurrentBlockByType(ImageBlockComponent);
         block?.download();
+      },
+    },
+    {
+      id: 'd.decker-edit',
+      tooltip: '用Decker编辑',
+      icon: EditIcon(),
+      when(ctx) {
+        const block = ctx.getCurrentBlockByType(ImageBlockComponent);
+        if (!block?.model?.customData) return false;
+        
+        try {
+          const customData = JSON.parse(block.model.customData);
+          return customData.type === 'deck' && customData.deckData;
+        } catch {
+          return false;
+        }
+      },
+      run(ctx) {
+        const block = ctx.getCurrentBlockByType(ImageBlockComponent);
+        if (!block?.model?.customData) return;
+        
+        try {
+          const customData = JSON.parse(block.model.customData);
+          if (customData.type === 'deck' && customData.deckData) {
+            openDeckerEditorWithData(customData.deckData);
+          }
+        } catch (error) {
+          console.error('解析deck数据失败:', error);
+        }
+      },
+    },
+    {
+      id: 'e.decker-new',
+      tooltip: '新建Decker绘画',
+      icon: '🎨',
+      run(ctx) {
+        openDeckerEditor();
       },
     },
     {
