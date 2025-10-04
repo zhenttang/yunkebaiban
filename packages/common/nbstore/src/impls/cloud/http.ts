@@ -1,13 +1,4 @@
 import { UserFriendlyError } from '@affine/error';
-// import { gqlFetcherFactory } from '@affine/graphql';
-
-// 临时占位符函数，因为GraphQL后端已被移除
-const gqlFetcherFactory = (endpoint: string, fetch: Function) => {
-  console.warn('gqlFetcherFactory temporarily disabled - GraphQL backend removed');
-  return async (options: any) => {
-    throw new Error('GraphQL operations temporarily disabled - backend changed to Java');
-  };
-};
 
 import { DummyConnection } from '../../connection';
 
@@ -84,11 +75,6 @@ export class HttpConnection extends DummyConnection {
       throw new Error('fetch download error: ' + err);
     }
   };
-
-  readonly gql = gqlFetcherFactory(
-    new URL('/graphql', this.serverBaseUrl).href,
-    this.fetch
-  );
 
   constructor(
     private readonly serverBaseUrl: string,

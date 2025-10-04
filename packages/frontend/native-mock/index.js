@@ -79,17 +79,22 @@ export class DocStoragePool {
   async pushUpdate(universalId, docId, update) {
     // console.log('[MOCK->JAVA] DocStoragePool.pushUpdate:', universalId, docId);
     try {
-      // 将更新发送到Java后端
-      const response = await fetchWithAuth(`/api/workspaces/${universalId}/docs/${docId}`, {
-        method: 'PUT',
+      // 将Uint8Array编码为Base64（AFFiNE标准）
+      const base64 = uint8ArrayToBase64(update);
+      // 发送到Java后端的AFFiNE兼容端点
+      const response = await fetchWithAuth(`/api/workspaces/${universalId}/docs/${docId}/updates`, {
+        method: 'POST',
         body: JSON.stringify({
-          content: Array.from(update), // 转换为可序列化的数组
-          timestamp: new Date().toISOString()
+          update: base64,
+          timestamp: Date.now()
         })
       });
       
       if (response.ok) {
-        return new Date();
+        const data = await response.json().catch(() => ({}));
+        // 后端返回 { success, timestamp }
+        const ts = data && data.timestamp ? data.timestamp : Date.now();
+        return ts;
       } else {
         console.error('[MOCK->JAVA] Failed to push update:', response.status);
         return null;
@@ -103,13 +108,13 @@ export class DocStoragePool {
   async getDocSnapshot(universalId, docId) {
     // console.log('[MOCK->JAVA] DocStoragePool.getDocSnapshot:', universalId, docId);
     try {
-      // 从Java后端获取文档快照
+      // 从Java后端获取文档快照（字节流）
       const response = await fetchWithAuth(`/api/workspaces/${universalId}/docs/${docId}`);
       
       if (response.ok) {
-        const data = await response.json();
-        // 返回文档内容，如果没有则返回null
-        return data.content ? new Uint8Array(data.content) : null;
+        const buf = await response.arrayBuffer();
+        if (!buf || buf.byteLength === 0) return null;
+        return new Uint8Array(buf);
       } else if (response.status === 404) {
         console.log('[MOCK->JAVA] Document not found, returning null');
         return null;
@@ -122,6 +127,16 @@ export class DocStoragePool {
       return null;
     }
   }
+
+// 将Uint8Array转换为Base64字符串
+function uint8ArrayToBase64(uint8array) {
+  let binary = '';
+  const len = uint8array.byteLength;
+  for (let i = 0; i < len; i++) {
+    binary += String.fromCharCode(uint8array[i]);
+  }
+  return btoa(binary);
+}
   
   async setDocSnapshot(universalId, snapshot) {
     // console.log('[MOCK->JAVA] DocStoragePool.setDocSnapshot:', universalId);

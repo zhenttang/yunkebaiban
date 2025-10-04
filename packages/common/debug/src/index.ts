@@ -12,14 +12,10 @@ if (typeof window !== 'undefined') {
     // 我们需要将调试标志存储在sessionStorage中
     sessionStorage.setItem(SESSION_KEY, 'true');
   }
+  // 仅当 URL 显式带有 ?debug 或本会话设置了开关时启用
   if (sessionStorage.getItem(SESSION_KEY) === 'true') {
-    // 默认启用所有调试日志
-    debug.enable('*');
-    console.warn('调试日志已启用');
-  }
-  if (BUILD_CONFIG.debug) {
     debug.enable('*,-micromark');
-    console.warn('调试日志已启用');
+    // console.warn('调试日志已启用');
   }
 }
 

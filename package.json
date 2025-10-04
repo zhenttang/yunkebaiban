@@ -71,6 +71,7 @@
     "@magic-works/i18n-codegen": "^0.6.1",
     "@playwright/test": "=1.52.0",
     "@smarttools/eslint-plugin-rxjs": "^1.0.8",
+    "@swc/core": "1.13.5",
     "@taplo/cli": "^0.7.0",
     "@toeverything/infra": "workspace:*",
     "@types/eslint": "^9.6.1",
@@ -184,7 +185,6 @@
     "yjs": "13.6.21"
   },
   "dependencies": {
-    "@swc/core": "1.12.11",
     "@types/qrcode": "^1.5.5",
     "qrcode": "^1.5.4",
     "react-easy-crop": "^5.5.0"

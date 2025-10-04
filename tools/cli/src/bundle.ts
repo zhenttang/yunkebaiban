@@ -128,9 +128,7 @@ const defaultDevServerConfig: DevServerConfiguration = {
   },
   headers: (req): Record<string, string | string[]> => {
     if (
-      [/^\/api/, /^\/socket\.io/, /^\/graphql/].some(path =>
-        path.test(req.path)
-      )
+      [/^\/api/, /^\/socket\.io/].some(path => path.test(req.path))
     ) {
       return {};
     }
@@ -154,11 +152,6 @@ const defaultDevServerConfig: DevServerConfiguration = {
       context: '/socket.io',
       target: 'http://localhost:8080',
       ws: true,
-      logLevel: httpProxyMiddlewareLogLevel,
-    },
-    {
-      context: '/graphql',
-      target: 'http://localhost:8080',
       logLevel: httpProxyMiddlewareLogLevel,
     },
   ],

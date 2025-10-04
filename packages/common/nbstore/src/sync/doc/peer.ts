@@ -1,7 +1,6 @@
 import { remove } from 'lodash-es';
 import { nanoid } from 'nanoid';
 import { Observable, ReplaySubject, share, Subject } from 'rxjs';
-import { diffUpdate, encodeStateVectorFromUpdate, mergeUpdates } from 'yjs';
 
 import type { DocStorage, DocSyncStorage } from '../../storage';
 import { AsyncPriorityQueue } from '../../utils/async-priority-queue';
@@ -114,12 +113,15 @@ function isEqualUint8Arrays(a: Uint8Array, b: Uint8Array) {
  * @param remoteSv - 远程文档状态向量
  * @returns 如果没有差异返回null，否则返回差异数据
  */
-function docDiffUpdate(
+async function docDiffUpdate(
   local: Uint8Array,
   localSv: Uint8Array,
   remoteDiff: Uint8Array,
   remoteSv: Uint8Array
 ) {
+  // 动态导入 yjs，避免 Worker 初始化时加载
+  const { diffUpdate } = await import('yjs');
+
   // 如果localSv不等于remoteSv，返回差异数据
   if (!isEqualUint8Arrays(localSv, remoteSv)) {
     return diffUpdate(local, remoteSv);
@@ -237,10 +239,23 @@ export class DocSyncPeer {
 
   private readonly jobs = createJobErrorCatcher({
     connect: async (docId: string, signal?: AbortSignal) => {
+      console.log('🔗 [DocSyncPeer.connect] 连接作业开始:', {
+        docId,
+        peerId: this.peerId,
+        timestamp: new Date().toISOString()
+      });
+
       const pushedClock =
         (await this.syncMetadata.getPeerPushedClock(this.peerId, docId))
           ?.timestamp ?? null;
       const clock = await this.local.getDocTimestamp(docId);
+
+      console.log('🔗 [DocSyncPeer.connect] 时钟状态:', {
+        docId,
+        localClock: clock?.timestamp,
+        pushedClock: pushedClock,
+        isRemoteReadonly: this.remote.isReadonly
+      });
 
       throwIfAborted(signal);
       if (
@@ -249,6 +264,7 @@ export class DocSyncPeer {
         (pushedClock === null ||
           pushedClock.getTime() < clock.timestamp.getTime())
       ) {
+        console.log('🔗 [DocSyncPeer.connect] 执行 pullAndPush:', { docId });
         await this.jobs.pullAndPush(docId, signal);
       } else {
         // 无需推送
@@ -256,15 +272,30 @@ export class DocSyncPeer {
           (await this.syncMetadata.getPeerPulledRemoteClock(this.peerId, docId))
             ?.timestamp ?? null;
         const remoteClock = this.status.remoteClocks.get(docId);
+
+        console.log('🔗 [DocSyncPeer.connect] 检查是否需要 pull:', {
+          docId,
+          pulledClock: pulled,
+          remoteClock: remoteClock,
+          needPull: remoteClock && (pulled === null || pulled.getTime() < remoteClock.getTime())
+        });
+
         if (
           remoteClock &&
           (pulled === null || pulled.getTime() < remoteClock.getTime())
         ) {
+          console.log('🔗 [DocSyncPeer.connect] 执行 pull:', { docId });
           await this.jobs.pull(docId, signal);
         }
       }
 
       this.status.connectedDocs.add(docId);
+      console.log('✅ [DocSyncPeer.connect] 连接成功，已添加到 connectedDocs:', {
+        docId,
+        connectedDocsSize: this.status.connectedDocs.size,
+        connectedDocsList: Array.from(this.status.connectedDocs),
+        peerId: this.peerId
+      });
       this.statusUpdatedSubject$.next(docId);
     },
     push: async (
@@ -272,6 +303,16 @@ export class DocSyncPeer {
       jobs: (Job & { type: 'push' })[],
       signal?: AbortSignal
     ) => {
+      console.log('🔄 [DocSyncPeer.push] 推送作业开始:', {
+        docId,
+        jobsCount: jobs.length,
+        isInConnectedDocs: this.status.connectedDocs.has(docId),
+        connectedDocsSize: this.status.connectedDocs.size,
+        connectedDocsList: Array.from(this.status.connectedDocs),
+        isRemoteReadonly: this.remote.isReadonly,
+        peerId: this.peerId
+      });
+
       if (this.status.connectedDocs.has(docId) && !this.remote.isReadonly) {
         const maxClock = jobs.reduce(
           (a, b) => (a.getTime() > b.clock.getTime() ? a : b.clock),
@@ -283,7 +324,20 @@ export class DocSyncPeer {
             .map(j => j.update ?? new Uint8Array())
             .filter(update => !isEmptyUpdate(update))
         );
+
+        console.log('🔄 [DocSyncPeer.push] 合并更新完成:', {
+          docId,
+          mergedSize: merged.length,
+          isEmpty: isEmptyUpdate(merged)
+        });
+
         if (!isEmptyUpdate(merged)) {
+          console.log('📤 [DocSyncPeer.push] 开始推送到远程存储:', {
+            docId,
+            dataSize: merged.length,
+            peerId: this.peerId
+          });
+
           const { timestamp } = await this.remote.pushDocUpdate(
             {
               docId,
@@ -291,6 +345,13 @@ export class DocSyncPeer {
             },
             this.uniqueId
           );
+
+          console.log('✅ [DocSyncPeer.push] 远程推送成功:', {
+            docId,
+            timestamp,
+            peerId: this.peerId
+          });
+
           this.schedule({
             type: 'save',
             docId,
@@ -302,9 +363,23 @@ export class DocSyncPeer {
           docId,
           timestamp: maxClock,
         });
+      } else {
+        console.warn('⚠️ [DocSyncPeer.push] 推送被跳过:', {
+          docId,
+          reason: !this.status.connectedDocs.has(docId) ?
+            'docId不在connectedDocs中' :
+            'remote存储为只读',
+          connectedDocsSize: this.status.connectedDocs.size,
+          connectedDocsList: Array.from(this.status.connectedDocs),
+          isRemoteReadonly: this.remote.isReadonly,
+          peerId: this.peerId
+        });
       }
     },
     pullAndPush: async (docId: string, signal?: AbortSignal) => {
+      // 动态导入 yjs，避免 Worker 初始化时加载
+      const { encodeStateVectorFromUpdate } = await import('yjs');
+
       const localDocRecord = await this.local.getDoc(docId);
 
       const stateVector =
@@ -334,7 +409,7 @@ export class DocSyncPeer {
         });
         const diff =
           localDocRecord && serverStateVector && serverStateVector.length > 0
-            ? docDiffUpdate(
+            ? await docDiffUpdate(
                 localDocRecord.bin,
                 stateVector,
                 newData,
@@ -403,6 +478,9 @@ export class DocSyncPeer {
       }
     },
     pull: async (docId: string, signal?: AbortSignal) => {
+      // 动态导入 yjs，避免 Worker 初始化时加载
+      const { encodeStateVectorFromUpdate } = await import('yjs');
+
       const docRecord = await this.local.getDoc(docId);
 
       const stateVector =
@@ -480,17 +558,33 @@ export class DocSyncPeer {
 
   private readonly actions = {
     updateRemoteClock: (docId: string, remoteClock: Date) => {
+      console.log('⏰ [DocSyncPeer.actions.updateRemoteClock] 更新远程时钟:', {
+        docId,
+        remoteClock,
+        peerId: this.peerId
+      });
       this.status.remoteClocks.setIfBigger(docId, remoteClock);
       this.statusUpdatedSubject$.next(docId);
     },
     addDoc: (docId: string) => {
+      console.log('📄 [DocSyncPeer.actions.addDoc] 尝试添加文档:', {
+        docId,
+        alreadyInDocs: this.status.docs.has(docId),
+        docsSize: this.status.docs.size,
+        peerId: this.peerId
+      });
+
       if (!this.status.docs.has(docId)) {
+        console.log('✅ [DocSyncPeer.actions.addDoc] 文档不在 docs 中，添加并创建 connect 作业');
         this.status.docs.add(docId);
         this.statusUpdatedSubject$.next(docId);
         this.schedule({
           type: 'connect',
           docId,
         });
+        console.log('✅ [DocSyncPeer.actions.addDoc] 文档已添加到 docs，connect 作业已调度');
+      } else {
+        console.log('⚠️ [DocSyncPeer.actions.addDoc] 文档已在 docs 中，跳过');
       }
     },
   };
@@ -505,16 +599,28 @@ export class DocSyncPeer {
       update: Uint8Array;
       clock: Date;
     }) => {
+      console.log('📤 [DocSyncPeer.events.localUpdated] 本地文档更新事件:', {
+        docId,
+        updateSize: update.length,
+        clock,
+        peerId: this.peerId,
+        timestamp: new Date().toISOString()
+      });
+
       // 尝试为新文档添加文档
+      console.log('🔍 [DocSyncPeer.events.localUpdated] 检查是否需要添加文档...');
       this.actions.addDoc(docId);
 
       // 安排推送作业
+      console.log('📋 [DocSyncPeer.events.localUpdated] 创建 push 作业');
       this.schedule({
         type: 'push',
         docId,
         clock,
         update,
       });
+
+      console.log('✅ [DocSyncPeer.events.localUpdated] 本地更新处理完成');
     },
     remoteUpdated: ({
       docId,
@@ -540,19 +646,39 @@ export class DocSyncPeer {
   };
 
   async mainLoop(signal?: AbortSignal) {
+    console.log('🚀 [DocSyncPeer.mainLoop] 主循环启动:', {
+      peerId: this.peerId,
+      timestamp: new Date().toISOString()
+    });
+
     while (true) {
       try {
         await this.retryLoop(signal);
       } catch (err) {
         if (signal?.aborted) {
+          console.log('🛑 [DocSyncPeer.mainLoop] 收到中止信号，退出主循环:', {
+            peerId: this.peerId,
+            reason: signal.reason
+          });
           return;
         }
-        console.warn('同步错误，5秒后重试', err);
+        console.error('❌ [DocSyncPeer.mainLoop] 同步错误，5秒后重试:', {
+          peerId: this.peerId,
+          error: err,
+          errorMessage: err instanceof Error ? err.message : `${err}`,
+          errorStack: err instanceof Error ? err.stack : undefined
+        });
         this.status.errorMessage =
           err instanceof Error ? err.message : `${err}`;
         this.statusUpdatedSubject$.next(true);
       } finally {
         // 重置所有状态
+        console.warn('🔄 [DocSyncPeer.mainLoop] 重置同步状态:', {
+          peerId: this.peerId,
+          previousConnectedDocs: Array.from(this.status.connectedDocs),
+          previousDocsCount: this.status.docs.size
+        });
+
         this.status = {
           docs: new Set(),
           connectedDocs: new Set(),
@@ -569,6 +695,9 @@ export class DocSyncPeer {
         this.statusUpdatedSubject$.next(true);
       }
       // 等待5秒后进行下一次重试
+      console.log('⏳ [DocSyncPeer.mainLoop] 等待5秒后重试...', {
+        peerId: this.peerId
+      });
       await Promise.race([
         new Promise<void>(resolve => {
           setTimeout(resolve, 5000);
@@ -610,6 +739,11 @@ export class DocSyncPeer {
     const disposes: (() => void)[] = [];
 
     try {
+      console.log('🔌 [DocSyncPeer.retryLoop] 开始等待连接:', {
+        peerId: this.peerId,
+        timestamp: new Date().toISOString()
+      });
+
       // 等待所有存储连接，30秒后超时
       await Promise.race([
         Promise.all([
@@ -619,6 +753,9 @@ export class DocSyncPeer {
         ]),
         new Promise<void>((_, reject) => {
           setTimeout(() => {
+            console.error('❌ [DocSyncPeer.retryLoop] 连接超时（30秒）:', {
+              peerId: this.peerId
+            });
             reject(new Error('连接远程超时'));
           }, 1000 * 30);
         }),
@@ -629,7 +766,9 @@ export class DocSyncPeer {
         }),
       ]);
 
-      console.info('远程同步开始');
+      console.info('✅ [DocSyncPeer.retryLoop] 所有存储连接成功，远程同步开始:', {
+        peerId: this.peerId
+      });
       this.status.syncing = true;
       this.statusUpdatedSubject$.next(true);
 
@@ -648,8 +787,18 @@ export class DocSyncPeer {
       this.statusUpdatedSubject$.next(true);
 
       // 订阅本地文档更新
+      console.log('👂 [DocSyncPeer.retryLoop] 订阅本地文档更新事件');
       disposes.push(
         this.local.subscribeDocUpdate((update, origin) => {
+          console.log('📨 [DocSyncPeer.retryLoop] 收到本地文档更新:', {
+            docId: update.docId,
+            binSize: update.bin.length,
+            origin: origin,
+            uniqueId: this.uniqueId,
+            peerId: this.peerId,
+            timestamp: new Date().toISOString()
+          });
+
           if (
             origin === this.uniqueId ||
             origin?.startsWith(
@@ -657,8 +806,15 @@ export class DocSyncPeer {
               // 如果peerId相同则跳过
             )
           ) {
+            console.log('⚠️ [DocSyncPeer.retryLoop] 本地更新来自自己，跳过:', {
+              docId: update.docId,
+              origin,
+              uniqueId: this.uniqueId
+            });
             return;
           }
+
+          console.log('✅ [DocSyncPeer.retryLoop] 触发 localUpdated 事件');
           this.events.localUpdated({
             docId: update.docId,
             clock: update.timestamp,
@@ -719,41 +875,75 @@ export class DocSyncPeer {
       }
 
       // 开始处理作业
+      console.log('🔄 [DocSyncPeer.retryLoop] 开始处理作业队列');
 
       while (true) {
         throwIfAborted(signal);
 
+        console.log('⏳ [DocSyncPeer.retryLoop] 等待下一个作业...');
+
         const docId = await this.status.jobDocQueue.asyncPop(signal);
+
+        console.log('📋 [DocSyncPeer.retryLoop] 从队列取出作业:', {
+          docId,
+          peerId: this.peerId
+        });
 
         while (true) {
           // 批量处理同一文档的作业
           const jobs = this.status.jobMap.get(docId);
           if (!jobs || jobs.length === 0) {
+            console.log('✅ [DocSyncPeer.retryLoop] 该文档的作业已全部处理完成:', {
+              docId
+            });
             this.status.jobMap.delete(docId);
             this.statusUpdatedSubject$.next(docId);
             break;
           }
 
+          console.log('🔄 [DocSyncPeer.retryLoop] 处理文档作业:', {
+            docId,
+            jobsCount: jobs.length,
+            jobTypes: jobs.map(j => j.type).join(', '),
+            peerId: this.peerId
+          });
+
           const connect = remove(jobs, j => j.type === 'connect');
           if (connect && connect.length > 0) {
+            console.log('🔗 [DocSyncPeer.retryLoop] 执行 connect 作业:', {
+              docId,
+              count: connect.length
+            });
             await this.jobs.connect(docId, signal);
             continue;
           }
 
           const pullAndPush = remove(jobs, j => j.type === 'pullAndPush');
           if (pullAndPush && pullAndPush.length > 0) {
+            console.log('🔄 [DocSyncPeer.retryLoop] 执行 pullAndPush 作业:', {
+              docId,
+              count: pullAndPush.length
+            });
             await this.jobs.pullAndPush(docId, signal);
             continue;
           }
 
           const pull = remove(jobs, j => j.type === 'pull');
           if (pull && pull.length > 0) {
+            console.log('📥 [DocSyncPeer.retryLoop] 执行 pull 作业:', {
+              docId,
+              count: pull.length
+            });
             await this.jobs.pull(docId, signal);
             continue;
           }
 
           const push = remove(jobs, j => j.type === 'push');
           if (push && push.length > 0) {
+            console.log('📤 [DocSyncPeer.retryLoop] 执行 push 作业:', {
+              docId,
+              count: push.length
+            });
             await this.jobs.push(
               docId,
               push as (Job & { type: 'push' })[],
@@ -764,6 +954,10 @@ export class DocSyncPeer {
 
           const save = remove(jobs, j => j.type === 'save');
           if (save && save.length > 0) {
+            console.log('💾 [DocSyncPeer.retryLoop] 执行 save 作业:', {
+              docId,
+              count: save.length
+            });
             await this.jobs.save(
               docId,
               save as (Job & { type: 'save' })[],
@@ -783,12 +977,28 @@ export class DocSyncPeer {
   }
 
   private schedule(job: Job) {
+    console.log('📋 [DocSyncPeer.schedule] 调度作业:', {
+      jobType: job.type,
+      docId: job.docId,
+      peerId: this.peerId,
+      timestamp: new Date().toISOString()
+    });
+
     const priority = this.prioritySettings.get(job.docId) ?? 0;
     this.status.jobDocQueue.push(job.docId, priority);
 
     const existingJobs = this.status.jobMap.get(job.docId) ?? [];
     existingJobs.push(job);
     this.status.jobMap.set(job.docId, existingJobs);
+
+    console.log('✅ [DocSyncPeer.schedule] 作业已加入队列:', {
+      jobType: job.type,
+      docId: job.docId,
+      queuedJobsCount: existingJobs.length,
+      priority: priority,
+      peerId: this.peerId
+    });
+
     this.statusUpdatedSubject$.next(job.docId);
   }
 
@@ -804,8 +1014,10 @@ export class DocSyncPeer {
     };
   }
 
-  protected mergeUpdates = (updates: Uint8Array[]) => {
-    const merge = this.options?.mergeUpdates ?? mergeUpdates;
+  protected mergeUpdates = async (updates: Uint8Array[]) => {
+    // 动态导入 yjs，避免 Worker 初始化时加载
+    const { mergeUpdates: yjsMergeUpdates } = await import('yjs');
+    const merge = this.options?.mergeUpdates ?? yjsMergeUpdates;
 
     return merge(updates.filter(bin => !isEmptyUpdate(bin)));
   };

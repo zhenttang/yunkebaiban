@@ -88,26 +88,27 @@ class StoreConsumer {
       ),
       remotes: Object.fromEntries(
         Object.entries(init.remotes).map(([peer, opts]) => {
+          const storageEntries = Object.entries(opts)
+            .map(([type, opt]) => {
+              if (opt === undefined) {
+                return [type, undefined];
+              }
+              const Storage = this.availableStorageImplementations.find(
+                impl => impl.identifier === opt.name
+              );
+              if (!Storage) {
+                console.warn(
+                  `⚠️ [Worker] 跳过远程存储 ${opt.name} - 该存储由主线程管理，Worker 只处理本地存储`
+                );
+                return null;
+              }
+              return [type, new Storage(opt.opts as any)];
+            })
+            .filter(entry => entry !== null);
+
           return [
             peer,
-            new SpaceStorage(
-              Object.fromEntries(
-                Object.entries(opts).map(([type, opt]) => {
-                  if (opt === undefined) {
-                    return [type, undefined];
-                  }
-                  const Storage = this.availableStorageImplementations.find(
-                    impl => impl.identifier === opt.name
-                  );
-                  if (!Storage) {
-                    throw new Error(
-                      `Storage implementation ${opt.name} not found`
-                    );
-                  }
-                  return [type, new Storage(opt.opts as any)];
-                })
-              )
-            ),
+            new SpaceStorage(Object.fromEntries(storageEntries)),
           ];
         })
       ),
@@ -247,6 +248,26 @@ class StoreConsumer {
       'docSync.waitForSynced': (docId, ctx) =>
         this.docSync.waitForSynced(docId ?? undefined, ctx.signal),
       'docSync.resetSync': () => this.docSync.resetSync(),
+      'docSyncStorage.getPeerRemoteClock': ({ peer, docId }) =>
+        this.docSyncStorage.getPeerRemoteClock(peer, docId),
+      'docSyncStorage.getPeerRemoteClocks': (peer) =>
+        this.docSyncStorage.getPeerRemoteClocks(peer),
+      'docSyncStorage.setPeerRemoteClock': ({ peer, clock }) =>
+        this.docSyncStorage.setPeerRemoteClock(peer, clock),
+      'docSyncStorage.getPeerPulledRemoteClock': ({ peer, docId }) =>
+        this.docSyncStorage.getPeerPulledRemoteClock(peer, docId),
+      'docSyncStorage.getPeerPulledRemoteClocks': (peer) =>
+        this.docSyncStorage.getPeerPulledRemoteClocks(peer),
+      'docSyncStorage.setPeerPulledRemoteClock': ({ peer, clock }) =>
+        this.docSyncStorage.setPeerPulledRemoteClock(peer, clock),
+      'docSyncStorage.getPeerPushedClock': ({ peer, docId }) =>
+        this.docSyncStorage.getPeerPushedClock(peer, docId),
+      'docSyncStorage.getPeerPushedClocks': (peer) =>
+        this.docSyncStorage.getPeerPushedClocks(peer),
+      'docSyncStorage.setPeerPushedClock': ({ peer, clock }) =>
+        this.docSyncStorage.setPeerPushedClock(peer, clock),
+      'docSyncStorage.clearClocks': () =>
+        this.docSyncStorage.clearClocks(),
       'blobSync.state': () => this.blobSync.state$,
       'blobSync.blobState': blobId => this.blobSync.blobState$(blobId),
       'blobSync.downloadBlob': key => this.blobSync.downloadBlob(key),

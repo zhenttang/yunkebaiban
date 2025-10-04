@@ -1,7 +1,8 @@
 import '@affine/core/bootstrap/browser';
 
 import { broadcastChannelStorages } from '@affine/nbstore/broadcast-channel';
-import { cloudStorages } from '@affine/nbstore/cloud';
+// ⚠️ 移除 cloudStorages - Worker 不应该直接处理云存储
+// import { cloudStorages } from '@affine/nbstore/cloud';
 import { idbStorages } from '@affine/nbstore/idb';
 import { idbV1Storages } from '@affine/nbstore/idb/v1';
 import {
@@ -14,7 +15,7 @@ const consumer = new StoreManagerConsumer([
   ...idbStorages,
   ...idbV1Storages,
   ...broadcastChannelStorages,
-  ...cloudStorages,
+  // ...cloudStorages, // ⚠️ 云存储由主线程管理，Worker 只处理本地存储
 ]);
 
 if ('onconnect' in globalThis) {

@@ -9,7 +9,7 @@ import {
   Subject,
   throttleTime,
 } from 'rxjs';
-import { applyUpdate, Doc as YDoc } from 'yjs';
+import type { Doc as YDoc } from 'yjs';
 
 import {
   type DocStorage,
@@ -176,6 +176,12 @@ export class IndexerSyncImpl implements IndexerSync {
   }
 
   private async retryLoop(signal?: AbortSignal) {
+    // 动态导入 yjs，避免 Worker 初始化时加载
+    const { applyUpdate, Doc: YDoc } = await import('yjs');
+    if (!this.status.rootDoc) {
+      this.status.rootDoc = new YDoc({ guid: this.rootDocId });
+    }
+
     await Promise.race([
       Promise.all([
         this.doc.connection.waitForConnected(signal),
@@ -445,7 +451,7 @@ class IndexerSyncStatus {
   isReadonly = false;
   prioritySettings = new Map<string, number>();
   jobs = new AsyncPriorityQueue();
-  rootDoc = new YDoc({ guid: this.rootDocId });
+  rootDoc!: YDoc; // 延迟初始化，避免 Worker 启动时加载 Yjs
   rootDocReady = false;
   docsInIndexer = new Map<string, { title: string | undefined }>();
   docsInRootDoc = new Map<string, { title: string | undefined }>();
@@ -556,9 +562,18 @@ class IndexerSyncStatus {
     this.jobs.clear();
     this.docsInRootDoc.clear();
     this.docsInIndexer.clear();
-    this.rootDoc = new YDoc();
+    // rootDoc 将在下次使用时重新创建
     this.rootDocReady = false;
     this.currentJob = null;
     this.statusUpdatedSubject$.next(true);
+  }
+
+  async ensureRootDoc() {
+    if (!this.rootDoc) {
+      // 动态导入 yjs，避免 Worker 初始化时加载
+      const { Doc: YDoc } = await import('yjs');
+      this.rootDoc = new YDoc({ guid: this.rootDocId });
+    }
+    return this.rootDoc;
   }
 }

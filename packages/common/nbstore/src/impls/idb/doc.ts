@@ -31,12 +31,24 @@ export class IndexedDBDocStorage extends DocStorageBase<IDBConnectionOptions> {
   override locker = new IndexedDBLocker(this.connection);
 
   override async pushDocUpdate(update: DocUpdate, origin?: string) {
-    let timestamp = new Date();
+    console.log('💾 [IndexedDBDocStorage.pushDocUpdate] 开始保存到 IndexedDB:', {
+      docId: update.docId,
+      binSize: update.bin.length,
+      origin: origin,
+      spaceId: this.spaceId,
+      timestamp: new Date().toISOString()
+    });
 
+    let timestamp = new Date();
     let retry = 0;
 
     while (true) {
       try {
+        console.log('🔄 [IndexedDBDocStorage.pushDocUpdate] 开始事务...', {
+          docId: update.docId,
+          retry: retry
+        });
+
         const trx = this.db.transaction(['updates', 'clocks'], 'readwrite');
 
         await trx.objectStore('updates').add({
@@ -47,18 +59,40 @@ export class IndexedDBDocStorage extends DocStorageBase<IDBConnectionOptions> {
         await trx.objectStore('clocks').put({ docId: update.docId, timestamp });
 
         trx.commit();
+
+        console.log('✅ [IndexedDBDocStorage.pushDocUpdate] IndexedDB 保存成功:', {
+          docId: update.docId,
+          timestamp
+        });
+        break;
+
       } catch (e) {
         if (e instanceof Error && e.name === 'ConstraintError') {
           retry++;
+          console.warn('⚠️ [IndexedDBDocStorage.pushDocUpdate] ConstraintError，重试:', {
+            docId: update.docId,
+            retry,
+            maxRetries: 10
+          });
           if (retry < 10) {
             timestamp = new Date(timestamp.getTime() + 1);
             continue;
           }
         }
+        console.error('❌ [IndexedDBDocStorage.pushDocUpdate] 保存失败:', {
+          docId: update.docId,
+          error: e,
+          errorMessage: e instanceof Error ? e.message : String(e)
+        });
         throw e;
       }
-      break;
     }
+
+    console.log('📢 [IndexedDBDocStorage.pushDocUpdate] 发出 update 事件:', {
+      docId: update.docId,
+      origin: origin,
+      timestamp
+    });
 
     this.emit(
       'update',
@@ -70,6 +104,8 @@ export class IndexedDBDocStorage extends DocStorageBase<IDBConnectionOptions> {
       },
       origin
     );
+
+    console.log('✅ [IndexedDBDocStorage.pushDocUpdate] 完成');
 
     this.channel.postMessage({
       type: 'update',

@@ -187,18 +187,47 @@ class SocketManager {
 
   connect() {
     let disconnected = false;
+    console.log('🔌 [SocketManager.connect] 开始连接:', {
+      endpoint: this.socketIOManager.uri,
+      currentRefCount: this.refCount,
+      isSocketConnected: this.socket.connected,
+      socketId: this.socket.id
+    });
+
     this.refCount++;
     this.socket.connect();
+
+    console.log('🔌 [SocketManager.connect] socket.connect() 已调用:', {
+      newRefCount: this.refCount,
+      endpoint: this.socketIOManager.uri
+    });
+
     return {
       socket: this.socket,
       disconnect: () => {
         if (disconnected) {
+          console.log('⚠️ [SocketManager.disconnect] 已经断开，忽略重复调用');
           return;
         }
+        console.log('🔌 [SocketManager.disconnect] 断开连接:', {
+          endpoint: this.socketIOManager.uri,
+          beforeRefCount: this.refCount,
+          socketId: this.socket.id
+        });
+
         disconnected = true;
         this.refCount--;
+
         if (this.refCount === 0) {
+          console.log('🔌 [SocketManager.disconnect] RefCount 归零，真正断开 Socket:', {
+            endpoint: this.socketIOManager.uri
+          });
           this.socket.disconnect();
+        } else {
+          console.log('🔌 [SocketManager.disconnect] RefCount 未归零，保持连接:', {
+            endpoint: this.socketIOManager.uri,
+            remainingRefCount: this.refCount
+          });
         }
       },
     };
@@ -229,34 +258,82 @@ export class SocketConnection extends AutoReconnectConnection<{
   }
 
   override async doConnect(signal?: AbortSignal) {
+    console.log('🔌 [SocketConnection.doConnect] 开始连接流程:', {
+      endpoint: this.endpoint,
+      isSelfHosted: this.isSelfHosted,
+      timestamp: new Date().toISOString()
+    });
+
     const { socket, disconnect } = this.manager.connect();
+
+    console.log('🔌 [SocketConnection.doConnect] Manager 返回 socket:', {
+      socketId: socket.id,
+      isConnected: socket.connected,
+      endpoint: this.endpoint
+    });
+
     try {
       throwIfAborted(signal);
+
+      console.log('🔌 [SocketConnection.doConnect] 等待 Socket 连接...');
+
       await Promise.race([
         new Promise<void>((resolve, reject) => {
           if (socket.connected) {
+            console.log('✅ [SocketConnection.doConnect] Socket 已经连接:', {
+              socketId: socket.id
+            });
             resolve();
             return;
           }
+
+          console.log('⏳ [SocketConnection.doConnect] 等待 connect 事件...');
+
           socket.once('connect', () => {
+            console.log('✅ [SocketConnection.doConnect] 收到 connect 事件:', {
+              socketId: socket.id,
+              endpoint: this.endpoint
+            });
             resolve();
           });
+
           socket.once('connect_error', err => {
+            console.error('❌ [SocketConnection.doConnect] 收到 connect_error 事件:', {
+              error: err,
+              errorMessage: err?.message,
+              errorStack: err?.stack,
+              endpoint: this.endpoint
+            });
             reject(err);
           });
         }),
         new Promise<void>((_resolve, reject) => {
           signal?.addEventListener('abort', () => {
+            console.warn('⚠️ [SocketConnection.doConnect] 收到中止信号:', {
+              reason: signal.reason,
+              endpoint: this.endpoint
+            });
             reject(signal.reason);
           });
         }),
       ]);
+
+      console.log('✅ [SocketConnection.doConnect] Socket 连接成功，注册 disconnect 监听器');
+
     } catch (err) {
+      console.error('❌ [SocketConnection.doConnect] 连接失败:', {
+        error: err,
+        errorMessage: err instanceof Error ? err.message : String(err),
+        errorStack: err instanceof Error ? err.stack : undefined,
+        endpoint: this.endpoint
+      });
       disconnect();
       throw err;
     }
 
     socket.on('disconnect', this.handleDisconnect);
+
+    console.log('✅ [SocketConnection.doConnect] doConnect 完成');
 
     return {
       socket,
@@ -265,11 +342,22 @@ export class SocketConnection extends AutoReconnectConnection<{
   }
 
   override doDisconnect(conn: { socket: Socket; disconnect: () => void }) {
+    console.log('🔌 [SocketConnection.doDisconnect] 执行断开连接:', {
+      socketId: conn.socket.id,
+      isConnected: conn.socket.connected,
+      endpoint: this.endpoint
+    });
     conn.socket.off('disconnect', this.handleDisconnect);
     conn.disconnect();
+    console.log('✅ [SocketConnection.doDisconnect] 断开连接完成');
   }
 
   handleDisconnect = (reason: SocketIO.DisconnectReason) => {
+    console.warn('⚠️ [SocketConnection.handleDisconnect] Socket 断开:', {
+      reason,
+      endpoint: this.endpoint,
+      timestamp: new Date().toISOString()
+    });
     this.error = new Error(reason);
   };
 }

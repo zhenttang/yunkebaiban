@@ -72,199 +72,175 @@ export class CloudDocStorage extends DocStorageBase<CloudDocStorageOptions> {
   );
 
   override async getDocSnapshot(docId: string) {
-    console.log('🌐 [CloudDocStorage] 开始获取文档快照:', {
-      docId: docId,
-      spaceType: this.spaceType,
-      spaceId: this.spaceId,
-      oldDocId: this.idConverter.newIdToOldId(docId),
-      timestamp: new Date().toISOString()
-    });
-
-    const response = await this.socket.emitWithAck('space:load-doc', {
+    const res = await this.socket.emitWithAck('space:load-doc', {
       spaceType: this.spaceType,
       spaceId: this.spaceId,
       docId: this.idConverter.newIdToOldId(docId),
     });
 
-    console.log('🌐 [CloudDocStorage] Socket.IO响应:', {
-      docId: docId,
-      hasError: 'error' in response,
-      errorType: 'error' in response ? response.error?.name : null,
-      hasData: 'data' in response,
-      dataSize: 'data' in response ? response.data?.missing?.length || 0 : 0,
-      timestamp: 'data' in response ? response.data?.timestamp : null
-    });
-
-    if ('error' in response) {
-      if (response.error.name === 'DOC_NOT_FOUND') {
-        console.warn('⚠️ [CloudDocStorage] 文档未找到:', { docId });
+    if ('error' in res) {
+      if (res.error.name === 'DOC_NOT_FOUND') {
+        console.warn('[CloudDocStorage] load-doc: not found', { docId });
         return null;
       }
-      console.error('❌ [CloudDocStorage] Socket.IO错误:', response.error);
-      // TODO: 使用 [用户友好错误]
-      throw new Error(response.error.message);
+      throw new Error(res.error.message);
     }
 
-    const binaryData = base64ToUint8Array(response.data.missing);
-    console.log('✅ [CloudDocStorage] 文档快照获取成功:', {
-      docId: docId,
-      base64Length: response.data.missing?.length || 0,
-      binaryLength: binaryData.length,
-      binaryHex: Array.from(binaryData.slice(0, 20)).map(b => b.toString(16).padStart(2, '0')).join(' '),
-      timestamp: response.data.timestamp
-    });
+    const missingBin = base64ToUint8Array(res.data.missing);
+    const stateB64Len = res.data.state?.length || 0;
+    console.log(`[CloudDocStorage] load-doc ack: ${docId} missing=${missingBin.length} stateB64=${stateB64Len} ts=${res.data.timestamp}`);
 
     return {
       docId,
-      bin: binaryData,
-      timestamp: new Date(response.data.timestamp),
+      bin: missingBin,
+      timestamp: new Date(res.data.timestamp),
     };
   }
 
   override async getDocDiff(docId: string, state?: Uint8Array) {
-    console.log('🌐 [CloudDocStorage] 调用getDocDiff:', {
-      docId: docId,
-      hasStateVector: !!state,
-      stateVectorLength: state?.length || 0,
-      timestamp: new Date().toISOString()
-    });
-
-    // 严格按照AFFiNE标准使用WebSocket
-    const response = await this.socket.emitWithAck('space:load-doc', {
+    const res = await this.socket.emitWithAck('space:load-doc', {
       spaceType: this.spaceType,
       spaceId: this.spaceId,
       docId: this.idConverter.newIdToOldId(docId),
-      stateVector: state ? await uint8ArrayToBase64(state) : undefined, // 支持状态向量
+      stateVector: state ? await uint8ArrayToBase64(state) : undefined,
     });
 
-    console.log('🌐 [CloudDocStorage] Socket.IO响应:', {
-      docId: docId,
-      hasError: 'error' in response,
-      errorType: 'error' in response ? response.error?.name : null,
-      hasData: 'data' in response,
-      dataSize: 'data' in response ? response.data?.missing?.length || 0 : 0,
-      timestamp: 'data' in response ? response.data?.timestamp : null
-    });
-
-    if ('error' in response) {
-      if (response.error.name === 'DOC_NOT_FOUND') {
-        console.warn('⚠️ [CloudDocStorage] 文档未找到:', { docId });
+    if ('error' in res) {
+      if (res.error.name === 'DOC_NOT_FOUND') {
+        console.warn('[CloudDocStorage] diff: not found', { docId });
         return null;
       }
-      console.error('❌ [CloudDocStorage] Socket.IO错误:', response.error);
-      throw new Error(response.error.message);
+      throw new Error(res.error.message);
     }
 
-    // 按照AFFiNE标准返回完整的diff数据
-    const missingData = base64ToUint8Array(response.data.missing);
-    const stateData = base64ToUint8Array(response.data.state);
-    
-    console.log('✅ [CloudDocStorage] 文档差异获取成功:', {
-      docId: docId,
-      missingLength: missingData.length,
-      stateLength: stateData.length,
-      timestamp: response.data.timestamp
-    });
+    const missing = base64ToUint8Array(res.data.missing);
+    const stateBin = base64ToUint8Array(res.data.state);
+    console.log(`[CloudDocStorage] diff ack: ${docId} missing=${missing.length} state=${stateBin.length} ts=${res.data.timestamp}`);
 
     return {
       docId,
-      missing: missingData,      // 缺失的更新数据
-      state: stateData,          // 当前状态向量
-      timestamp: new Date(response.data.timestamp),
+      missing,
+      state: stateBin,
+      timestamp: new Date(res.data.timestamp),
     };
   }
 
   override async pushDocUpdate(update: DocUpdate) {
+    console.log('🌐 [CloudDocStorage.pushDocUpdate] 开始推送:', {
+      docId: update.docId,
+      binSize: update.bin.length,
+      timestamp: new Date().toISOString(),
+      spaceId: this.spaceId,
+      spaceType: this.spaceType
+    });
+
     const updateBase64 = await uint8ArrayToBase64(update.bin);
     const docId = this.idConverter?.newIdToOldId(update.docId) || update.docId;
-    
-    console.log('🚀 [NBStore-CloudDocStorage] 开始处理文档更新推送');
-    console.log('  📊 文档信息:', {
+
+    console.log('🔄 [CloudDocStorage.pushDocUpdate] ID 转换完成:', {
       originalDocId: update.docId,
       convertedDocId: docId,
-      spaceId: this.spaceId,
-      spaceType: this.options.type
+      hasIdConverter: !!this.idConverter,
+      base64Length: updateBase64.length
     });
-    console.log('  📦 数据信息:', {
-      updateSize: update.bin.length,
-      base64Size: updateBase64.length,
-      timestamp: update.timestamp?.getTime() || Date.now(),
-      hasTimestamp: !!update.timestamp
-    });
-    
-    // 首先尝试使用全局云存储管理器
-    console.log('  🔍 检查全局云存储管理器...');
+
+    // 优先使用全局云存储管理器（若可用）
     try {
       const cloudStorageManager = (window as any).__CLOUD_STORAGE_MANAGER__;
-      console.log('  📋 云存储管理器状态:', {
-        exists: !!cloudStorageManager,
+      console.log('🔍 [CloudDocStorage.pushDocUpdate] 检查全局云存储管理器:', {
+        hasManager: !!cloudStorageManager,
         isConnected: cloudStorageManager?.isConnected,
-        hasPushMethod: !!cloudStorageManager?.pushDocUpdate
+        hasPushMethod: !!(cloudStorageManager?.pushDocUpdate)
       });
-      
+
       if (cloudStorageManager && cloudStorageManager.isConnected && cloudStorageManager.pushDocUpdate) {
-        console.log('  📡 使用云存储管理器进行推送...');
-        console.log('  🔍 [CRITICAL-FIX] 传递给云存储管理器的参数:');
-        console.log('    📄 docId:', docId);
-        console.log('    🔢 docId长度:', docId?.length);
-        console.log('    🆔 docId格式验证: 是否为标准UUID:', docId?.length === 36 && docId?.includes('-'));
-        console.log('    📦 update.bin类型:', update.bin.constructor.name);
-        console.log('    📊 update.bin长度:', update.bin.length);
-        
+        console.log('📤 [CloudDocStorage.pushDocUpdate] 使用全局管理器推送...');
         const timestamp = await cloudStorageManager.pushDocUpdate(docId, update.bin);
-        console.log('✅ [NBStore-CloudDocStorage] 云存储管理器推送成功');
-        console.log('  📊 结果: timestamp =', timestamp);
-        return;
+        console.log('✅ [CloudDocStorage.pushDocUpdate] 全局管理器推送成功:', {
+          docId,
+          timestamp
+        });
+        return { timestamp: new Date(timestamp) };
       } else {
-        console.log('  ⚠️ 云存储管理器不可用，准备降级到Socket.IO');
+        console.log('⚠️ [CloudDocStorage.pushDocUpdate] 全局管理器不可用，降级到 Socket.IO');
       }
     } catch (error) {
-      console.warn('⚠️ [NBStore-CloudDocStorage] 云存储管理器推送失败，降级到Socket.IO');
-      console.warn('  🔍 错误详情:', error);
+      console.warn('⚠️ [CloudDocStorage.pushDocUpdate] 全局管理器推送失败，降级到 Socket.IO:', {
+        error,
+        errorMessage: error instanceof Error ? error.message : String(error)
+      });
     }
-    
+
     // 降级到原始Socket.IO方法
-    
+    console.log('🔌 [CloudDocStorage.pushDocUpdate] 检查 Socket.IO 连接状态:', {
+      hasSocket: !!this.connection.inner.socket,
+      isConnected: this.connection.inner.socket?.connected,
+      socketId: this.connection.inner.socket?.id
+    });
+
     if (!this.connection.inner.socket?.connected) {
-      console.error('❌ [NBStore-CloudDocStorage] Socket未连接，无法保存文档');
-      console.error('  🔍 连接详情:', {
+      console.error('❌ [CloudDocStorage.pushDocUpdate] Socket未连接，无法保存文档:', {
+        docId,
         socket: !!this.connection.inner.socket,
         connected: this.connection.inner.socket?.connected,
         readyState: this.connection.inner.socket?.connected ? 'connected' : 'disconnected'
       });
       throw new Error('Socket.IO connection not established');
     }
-    
+
+    console.log('✅ [CloudDocStorage.pushDocUpdate] Socket 已连接，准备发送数据');
+
     try {
-      console.log('  📤 使用Socket.IO推送文档更新...');
       const requestData = {
         spaceType: this.options.type,
         spaceId: this.spaceId,
         docId: docId,
         update: updateBase64
       };
-      console.log('  📋 Socket.IO请求数据:', {
-        ...requestData,
-        update: `${updateBase64.substring(0, 50)}...(${updateBase64.length}字符)`
+
+      console.log('📤 [CloudDocStorage.pushDocUpdate] 发送 Socket.IO 请求:', {
+        event: 'space:push-doc-update',
+        spaceType: requestData.spaceType,
+        spaceId: requestData.spaceId,
+        docId: requestData.docId,
+        updateSize: updateBase64.length,
+        socketId: this.connection.inner.socket.id
       });
-      
+
       const result = await this.connection.inner.socket.emitWithAck('space:push-doc-update', requestData);
-      
-      console.log('  📥 收到Socket.IO服务器响应:', result);
-      
+
+      console.log('📨 [CloudDocStorage.pushDocUpdate] 收到服务器响应:', {
+        docId,
+        result,
+        hasError: 'error' in result,
+        hasTimestamp: 'timestamp' in result
+      });
+
       if ('error' in result) {
-        console.error('❌ [NBStore-CloudDocStorage] Socket.IO服务器返回错误:', result.error);
+        console.error('❌ [CloudDocStorage.pushDocUpdate] 服务器返回错误:', {
+          docId,
+          error: result.error,
+          errorName: result.error?.name,
+          errorMessage: result.error?.message
+        });
         throw new Error(`Socket.IO error: ${result.error.message}`);
       }
-      
-      console.log('✅ [NBStore-CloudDocStorage] Socket.IO文档更新推送成功');
-      console.log('  📊 推送结果: timestamp =', result.timestamp);
-      
+
+      console.log('✅ [CloudDocStorage.pushDocUpdate] 推送成功:', {
+        docId,
+        timestamp: result.timestamp
+      });
+
+      return { timestamp: new Date(result.timestamp) };
+
     } catch (error) {
-      console.error('💥 [NBStore-CloudDocStorage] Socket.IO推送失败');
-      console.error('  🔍 错误类型:', error?.constructor?.name);
-      console.error('  📋 错误消息:', error?.message);
-      console.error('  📚 完整错误:', error);
+      console.error('💥 [CloudDocStorage.pushDocUpdate] Socket.IO 推送失败:', {
+        docId,
+        errorType: error?.constructor?.name,
+        errorMessage: error?.message,
+        error: error,
+        errorStack: error instanceof Error ? error.stack : undefined
+      });
       throw error;
     }
   }
@@ -273,69 +249,31 @@ export class CloudDocStorage extends DocStorageBase<CloudDocStorageOptions> {
    * Just a rough implementation, cloud doc storage should not need this method.
    */
   override async getDocTimestamp(docId: string): Promise<DocClock | null> {
-    // 使用HTTP REST API获取文档时间戳
-    const oldDocId = this.idConverter.newIdToOldId(docId);
-    
-    const response = await fetch(`${this.options.serverBaseUrl}/api/workspaces/${this.spaceId}/docs/${oldDocId}/timestamp`, {
-      method: 'GET',
-      headers: {
-        'Accept': 'application/json',
-        'x-affine-version': '0.17.0',
-      },
-      credentials: 'include',
-    });
-
-    if (response.status === 404) {
-      return null;
-    }
-
-    if (!response.ok) {
-      throw new Error(`Failed to get doc timestamp: ${response.status} ${response.statusText}`);
-    }
-
-    const data = await response.json();
-    
-    if (!data.success) {
-      throw new Error(data.error?.message || 'Failed to get doc timestamp');
-    }
-
-    return {
-      docId,
-      timestamp: new Date(data.timestamp),
-    };
+    // 最小实现：通过加载文档获取时间戳（后端可扩展 space:load-doc-timestamps 事件）
+    const diff = await this.getDocSnapshot(docId);
+    if (!diff) return null;
+    return { docId, timestamp: diff.timestamp };
   }
 
   override async getDocTimestamps(after?: Date) {
-    // 使用HTTP REST API获取文档时间戳列表
-    const url = new URL(`${this.options.serverBaseUrl}/api/workspaces/${this.spaceId}/docs/timestamps`);
-    
-    if (after) {
-      url.searchParams.set('after', after.getTime().toString());
-    }
-
-    const response = await fetch(url.toString(), {
-      method: 'GET',
-      headers: {
-        'Accept': 'application/json',
-        'x-affine-version': '0.17.0',
-      },
-      credentials: 'include',
+    // 通过 Socket 批量获取时间戳
+    const response = await this.socket.emitWithAck('space:load-doc-timestamps', {
+      spaceType: this.spaceType,
+      spaceId: this.spaceId,
+      timestamp: after ? after.getTime() : undefined,
     });
 
-    if (!response.ok) {
-      throw new Error(`Failed to get doc timestamps: ${response.status} ${response.statusText}`);
+    if ('error' in response) {
+      console.error('❌ [CloudDocStorage] 获取时间戳失败:', response.error);
+      throw new Error(response.error.message);
     }
 
-    const data = await response.json();
-    
-    if (!data.success) {
-      throw new Error(data.error?.message || 'Failed to get doc timestamps');
+    const raw: Record<string, number> = response.data as any;
+    const ret: DocClocks = {};
+    for (const [oldId, ts] of Object.entries(raw || {})) {
+      ret[this.idConverter.oldIdToNewId(oldId)] = new Date(ts);
     }
-
-    return Object.entries(data.timestamps).reduce((ret, [docId, timestamp]) => {
-      ret[this.idConverter.oldIdToNewId(docId)] = new Date(timestamp as number);
-      return ret;
-    }, {} as DocClocks);
+    return ret;
   }
 
   override async deleteDoc(docId: string) {
@@ -385,27 +323,68 @@ class CloudDocStorageConnection extends SocketConnection {
   idConverter: IdConverter | null = null;
 
   override async doConnect(signal?: AbortSignal) {
+    console.log('🔌 [CloudDocStorageConnection.doConnect] 开始连接:', {
+      spaceType: this.options.type,
+      spaceId: this.options.id,
+      serverBaseUrl: this.options.serverBaseUrl,
+      timestamp: new Date().toISOString()
+    });
+
     const { socket, disconnect } = await super.doConnect(signal);
 
+    console.log('✅ [CloudDocStorageConnection.doConnect] Socket 连接成功，发送 space:join');
+
     try {
-      const res = await socket.emitWithAck('space:join', {
+      const joinData = {
         spaceType: this.options.type,
         spaceId: this.options.id,
         clientVersion: BUILD_CONFIG.appVersion,
+      };
+
+      console.log('📤 [CloudDocStorageConnection.doConnect] 发送 space:join:', joinData);
+
+      const res = await socket.emitWithAck('space:join', joinData);
+
+      console.log('📨 [CloudDocStorageConnection.doConnect] space:join 响应:', {
+        hasError: 'error' in res,
+        response: res
       });
 
       if ('error' in res) {
+        console.error('❌ [CloudDocStorageConnection.doConnect] space:join 失败:', {
+          error: res.error
+        });
         throw new Error(res.error.message);
       }
 
+      console.log('✅ [CloudDocStorageConnection.doConnect] space:join 成功');
+
       if (!this.idConverter) {
-        this.idConverter = await this.getIdConverter(socket);
+        console.log('🔄 [CloudDocStorageConnection.doConnect] 初始化 ID 转换器...');
+        try {
+          this.idConverter = await this.getIdConverter(socket);
+          console.log('✅ [CloudDocStorageConnection.doConnect] ID 转换器初始化完成');
+        } catch (error) {
+          console.error('❌ [CloudDocStorageConnection.doConnect] ID 转换器初始化失败，使用默认转换:', error);
+          // 使用默认的身份转换器作为后备
+          this.idConverter = {
+            newIdToOldId: (id: string) => id,
+            oldIdToNewId: (id: string) => id,
+          };
+        }
       }
 
+      console.log('👂 [CloudDocStorageConnection.doConnect] 注册 space:broadcast-doc-update 监听器');
       socket.on('space:broadcast-doc-update', this.onServerUpdate);
+
+      console.log('✅ [CloudDocStorageConnection.doConnect] 连接完成');
 
       return { socket, disconnect };
     } catch (e) {
+      console.error('❌ [CloudDocStorageConnection.doConnect] 连接失败:', {
+        error: e,
+        errorMessage: e instanceof Error ? e.message : String(e)
+      });
       disconnect();
       throw e;
     }
@@ -444,7 +423,17 @@ class CloudDocStorageConnection extends SocketConnection {
             throw new Error(response.error.message);
           }
 
-          return base64ToUint8Array(response.data.missing);
+          const missingData = response.data.missing;
+          if (!missingData || missingData === '') {
+            return null;
+          }
+
+          const buffer = base64ToUint8Array(missingData);
+          if (!buffer || buffer.length === 0) {
+            return null;
+          }
+
+          return buffer;
         },
       },
       this.options.id

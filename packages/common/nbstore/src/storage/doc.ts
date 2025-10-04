@@ -1,5 +1,4 @@
 import EventEmitter2 from 'eventemitter2';
-import { diffUpdate, encodeStateVectorFromUpdate, mergeUpdates } from 'yjs';
 
 import type { Connection } from '../connection';
 import { isEmptyUpdate } from '../utils/is-empty-update';
@@ -183,6 +182,31 @@ export abstract class DocStorageBase<Opts = {}> implements DocStorage {
       return null;
     }
 
+    // 防御: 当本地是空更新(如 00 00)时，yjs 对 encodeStateVectorFromUpdate 可能抛错
+    // 这里做安全兜底，避免阻断同步流程；远端会通过 space:load-doc 返回完整快照
+    const isEmpty = !doc.bin || doc.bin.length === 0 || isEmptyUpdate(doc.bin);
+    if (isEmpty) {
+      try {
+        // 返回空缺失/空状态向量，交由远端补全
+        return {
+          docId,
+          missing: new Uint8Array(),
+          state: new Uint8Array(),
+          timestamp: doc.timestamp,
+        };
+      } catch {
+        return {
+          docId,
+          missing: new Uint8Array(),
+          state: new Uint8Array(),
+          timestamp: doc.timestamp,
+        };
+      }
+    }
+
+    // 动态导入 yjs，避免 Worker 初始化时加载
+    const { diffUpdate, encodeStateVectorFromUpdate } = await import('yjs');
+
     return {
       docId,
       missing: state && state.length > 0 ? diffUpdate(doc.bin, state) : doc.bin,
@@ -304,8 +328,10 @@ export abstract class DocStorageBase<Opts = {}> implements DocStorage {
     };
   }
 
-  protected mergeUpdates(updates: Uint8Array[]) {
-    const merge = this.options?.mergeUpdates ?? mergeUpdates;
+  protected async mergeUpdates(updates: Uint8Array[]) {
+    // 动态导入 yjs，避免 Worker 初始化时加载
+    const { mergeUpdates: yjsMergeUpdates } = await import('yjs');
+    const merge = this.options?.mergeUpdates ?? yjsMergeUpdates;
 
     return merge(updates.filter(bin => !isEmptyUpdate(bin)));
   }

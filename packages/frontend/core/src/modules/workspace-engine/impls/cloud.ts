@@ -62,6 +62,7 @@ import {
   AuthService,
   GraphQLService,
   WorkspaceServerService,
+  FetchService,
 } from '../../cloud';
 import type { GlobalState } from '../../storage';
 import type {
@@ -106,9 +107,9 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
       console.warn('Unable to get FeatureFlagService, using defaults:', e);
     }
     
-    // 获取FetchService实例
+    // 获取FetchService实例（使用类作为标识符，而不是字符串）
     try {
-      this.fetchService = server.scope.get('FetchService');
+      this.fetchService = server.scope.get(FetchService);
     } catch (e) {
       // 如果无法获取FetchService，设置为null，后续使用原生fetch
       this.fetchService = null;
@@ -408,6 +409,7 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
       }
 
       const workspaceId = data.workspace.id;
+      console.log('🆔 [CreateWorkspace] 新建工作空间ID:', workspaceId);
 
       // 保存初始状态到本地存储，然后同步到云端
       const blobStorage = new this.BlobStorageType({
@@ -468,27 +470,53 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
 
       try {
         // apply initial state
+        console.log('🧩 [CreateWorkspace] 执行 initial 回调开始');
         await initial(docCollection, blobStorage, docStorage);
+        console.log('🧩 [CreateWorkspace] 执行 initial 回调完成');
 
         // save workspace to local storage, should be vary fast
-        console.log('💾 [CreateWorkspace] 保存初始数据到本地存储...');
-        for (const subdocs of docList) {
-          await docStorage.pushDocUpdate({
-            docId: subdocs.guid,
-            bin: encodeStateAsUpdate(subdocs),
+        console.log('💾 [CreateWorkspace] 保存初始数据到本地存储...', {
+          count: docList.size,
+        });
+        // 分批并发写入，降低长时间串行写入造成的“卡住”体验
+        const docsArray = Array.from(docList);
+        const concurrency = 8;
+        let idx = 0;
+        while (idx < docsArray.length) {
+          const batch = docsArray.slice(idx, idx + concurrency);
+          await Promise.all(
+            batch.map(subdoc =>
+              docStorage.pushDocUpdate({
+                docId: subdoc.guid,
+                bin: encodeStateAsUpdate(subdoc),
+              })
+            )
+          );
+          console.log('💾 [CreateWorkspace] 本地保存进度:', {
+            saved: Math.min(idx + concurrency, docsArray.length),
+            total: docsArray.length,
           });
+          idx += concurrency;
+          // 让出事件循环，避免页面无响应
+          await new Promise(r => setTimeout(r, 0));
         }
+        console.log('💾 [CreateWorkspace] 本地保存完成');
 
         // 🔥 新增：立即同步到云端
-        console.log('🌐 [CreateWorkspace] 开始同步初始数据到云端...');
-        await this.syncInitialDataToCloud(workspaceId, docList, blobStorage);
+        console.log('🌐 [CreateWorkspace] 开始同步初始数据到云端...', {
+          count: docList.size,
+        });
+        await this.syncInitialDataToCloud(workspaceId, docList, blobStorage, docStorage);
+        console.log('🌐 [CreateWorkspace] 云端同步完成');
 
         const accountId = this.authService.session.account$.value?.id;
+        console.log('🧾 [CreateWorkspace] 写入初始文档属性开始');
         await this.writeInitialDocProperties(
           workspaceId,
           docStorage,
           accountId ?? ''
         );
+        console.log('🧾 [CreateWorkspace] 写入初始文档属性完成');
 
         docStorage.connection.disconnect();
         blobStorage.connection.disconnect();
@@ -515,9 +543,10 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
    * 🔥 核心方法：同步初始数据到云端
    */
   private async syncInitialDataToCloud(
-    workspaceId: string, 
-    docList: Set<YDoc>, 
-    blobStorage: BlobStorage
+    workspaceId: string,
+    docList: Set<YDoc>,
+    blobStorage: BlobStorage,
+    localDocStorage?: DocStorage
   ): Promise<void> {
     console.log('🌐 [SyncToCloud] 开始同步，文档数量:', docList.size);
     
@@ -537,28 +566,71 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
       
       console.log('🔗 [SyncToCloud] 云端连接建立成功');
 
-      // 同步每个文档
+      // 并发同步每个文档
+      const docsArray = Array.from(docList);
+      const concurrency = 4;
       let syncedCount = 0;
-      for (const doc of docList) {
-        try {
-          console.log(`📄 [SyncToCloud] 同步文档: ${doc.guid}`);
-          
-          await cloudDocStorage.pushDocUpdate({
-            docId: doc.guid,
-            bin: encodeStateAsUpdate(doc),
-            timestamp: new Date(),
-          });
-          
-          syncedCount++;
-          console.log(`✅ [SyncToCloud] 文档同步成功: ${doc.guid}`);
-          
-        } catch (docError) {
-          console.error(`❌ [SyncToCloud] 文档同步失败: ${doc.guid}`, docError);
-          // 继续同步其他文档，不中断整个流程
-        }
+      for (let i = 0; i < docsArray.length; i += concurrency) {
+        const batch = docsArray.slice(i, i + concurrency);
+        await Promise.all(
+          batch.map(async doc => {
+            try {
+              console.log(`📄 [SyncToCloud] 同步文档: ${doc.guid}`);
+              await cloudDocStorage.pushDocUpdate({
+                docId: doc.guid,
+                bin: encodeStateAsUpdate(doc),
+                timestamp: new Date(),
+              });
+              syncedCount++;
+              console.log(`✅ [SyncToCloud] 文档同步成功: ${doc.guid}`);
+            } catch (docError) {
+              console.error(`❌ [SyncToCloud] 文档同步失败: ${doc.guid}`, docError);
+            }
+          })
+        );
+        await new Promise(r => setTimeout(r, 0));
       }
       
       console.log(`🎉 [SyncToCloud] 同步完成: ${syncedCount}/${docList.size} 个文档`);
+
+      // 继续同步 DB 元数据（db$* 与 userdata$*）
+      try {
+        if (localDocStorage) {
+          console.log('🗄️ [SyncToCloud] 开始同步 DB 元数据');
+          const clocks = await localDocStorage.getDocTimestamps();
+          const allKeys = Object.keys(clocks || {});
+          const dbKeys = allKeys.filter(
+            k => k.startsWith('db$') || k.startsWith('userdata$')
+          );
+
+          console.log('🗄️ [SyncToCloud] DB 文档数:', dbKeys.length);
+          const batchSize = 4;
+          for (let i = 0; i < dbKeys.length; i += batchSize) {
+            const batch = dbKeys.slice(i, i + batchSize);
+            await Promise.all(
+              batch.map(async key => {
+                try {
+                  const rec = await localDocStorage.getDoc(key);
+                  if (!rec) return;
+                  await cloudDocStorage.pushDocUpdate({
+                    docId: key,
+                    bin: rec.bin,
+                    timestamp: rec.timestamp,
+                  });
+                } catch (e) {
+                  console.warn('⚠️ [SyncToCloud] DB 文档同步失败:', key, e);
+                }
+              })
+            );
+            await new Promise(r => setTimeout(r, 0));
+          }
+          console.log('🗄️ [SyncToCloud] DB 元数据同步完成');
+        } else {
+          console.log('🗄️ [SyncToCloud] 跳过 DB 元数据同步：localDocStorage 未提供');
+        }
+      } catch (dbSyncError) {
+        console.error('❌ [SyncToCloud] DB 元数据同步阶段失败:', dbSyncError);
+      }
       
     } catch (error) {
       console.error('❌ [SyncToCloud] 云端同步失败:', error);

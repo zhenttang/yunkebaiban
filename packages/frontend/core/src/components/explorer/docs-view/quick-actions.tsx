@@ -67,137 +67,143 @@ export const QuickFavorite = memo(
   })
 );
 
-export const QuickTab = memo(function QuickTab({
-  doc,
-  onClick,
-  ...iconButtonProps
-}: QuickActionProps) {
-  const contextValue = useContext(DocExplorerContext);
-  const quickTab = useLiveData(contextValue.quickTab$);
-  const workbench = useService(WorkbenchService).workbench;
-  const onOpenInNewTab = useCallback(
-    (e: React.MouseEvent<HTMLButtonElement>) => {
-      onClick?.(e);
-      e.stopPropagation();
-      e.preventDefault();
-      track.allDocs.list.doc.openDoc();
-      track.allDocs.list.docMenu.openInNewTab();
-      workbench.openDoc(doc.id, { at: 'new-tab' });
-    },
-    [doc.id, onClick, workbench]
-  );
+export const QuickTab = memo(
+  forwardRef<HTMLButtonElement, QuickActionProps>(function QuickTab(
+    { doc, onClick, ...iconButtonProps },
+    ref
+  ) {
+    const contextValue = useContext(DocExplorerContext);
+    const quickTab = useLiveData(contextValue.quickTab$);
+    const workbench = useService(WorkbenchService).workbench;
+    const onOpenInNewTab = useCallback(
+      (e: React.MouseEvent<HTMLButtonElement>) => {
+        onClick?.(e);
+        e.stopPropagation();
+        e.preventDefault();
+        track.allDocs.list.doc.openDoc();
+        track.allDocs.list.docMenu.openInNewTab();
+        workbench.openDoc(doc.id, { at: 'new-tab' });
+      },
+      [doc.id, onClick, workbench]
+    );
 
-  if (!quickTab) {
-    return null;
-  }
+    if (!quickTab) {
+      return null;
+    }
 
-  return (
-    <IconButton
-      onClick={onOpenInNewTab}
-      icon={<OpenInNewIcon />}
-      {...iconButtonProps}
-    />
-  );
-});
+    return (
+      <IconButton
+        ref={ref}
+        onClick={onOpenInNewTab}
+        icon={<OpenInNewIcon />}
+        {...iconButtonProps}
+      />
+    );
+  })
+);
 
-export const QuickSplit = memo(function QuickSplit({
-  doc,
-  onClick,
-  ...iconButtonProps
-}: QuickActionProps) {
-  const contextValue = useContext(DocExplorerContext);
-  const quickSplit = useLiveData(contextValue.quickSplit$);
-  const workbench = useService(WorkbenchService).workbench;
+export const QuickSplit = memo(
+  forwardRef<HTMLButtonElement, QuickActionProps>(function QuickSplit(
+    { doc, onClick, ...iconButtonProps },
+    ref
+  ) {
+    const contextValue = useContext(DocExplorerContext);
+    const quickSplit = useLiveData(contextValue.quickSplit$);
+    const workbench = useService(WorkbenchService).workbench;
 
-  const onOpenInSplitView = useCallback(
-    (e: React.MouseEvent<HTMLButtonElement>) => {
-      onClick?.(e);
-      e.stopPropagation();
-      e.preventDefault();
-      track.allDocs.list.doc.openDoc();
-      track.allDocs.list.docMenu.openInSplitView();
-      workbench.openDoc(doc.id, { at: 'tail' });
-    },
-    [doc.id, onClick, workbench]
-  );
+    const onOpenInSplitView = useCallback(
+      (e: React.MouseEvent<HTMLButtonElement>) => {
+        onClick?.(e);
+        e.stopPropagation();
+        e.preventDefault();
+        track.allDocs.list.doc.openDoc();
+        track.allDocs.list.docMenu.openInSplitView();
+        workbench.openDoc(doc.id, { at: 'tail' });
+      },
+      [doc.id, onClick, workbench]
+    );
 
-  if (!quickSplit) {
-    return null;
-  }
+    if (!quickSplit) {
+      return null;
+    }
 
-  return (
-    <IconButton
-      onClick={onOpenInSplitView}
-      icon={<SplitViewIcon />}
-      {...iconButtonProps}
-    />
-  );
-});
+    return (
+      <IconButton
+        ref={ref}
+        onClick={onOpenInSplitView}
+        icon={<SplitViewIcon />}
+        {...iconButtonProps}
+      />
+    );
+  })
+);
 
-export const QuickDelete = memo(function QuickDelete({
-  doc,
-  onClick,
-  ...iconButtonProps
-}: QuickActionProps) {
-  const t = useI18n();
-  const { openConfirmModal } = useConfirmModal();
-  const contextValue = useContext(DocExplorerContext);
-  const guardService = useService(GuardService);
-  const quickTrash = useLiveData(contextValue.quickTrash$);
+export const QuickDelete = memo(
+  forwardRef<HTMLButtonElement, QuickActionProps>(function QuickDelete(
+    { doc, onClick, ...iconButtonProps },
+    ref
+  ) {
+    const t = useI18n();
+    const { openConfirmModal } = useConfirmModal();
+    const contextValue = useContext(DocExplorerContext);
+    const guardService = useService(GuardService);
+    const quickTrash = useLiveData(contextValue.quickTrash$);
 
-  const onMoveToTrash = useCallback(
-    (e: React.MouseEvent<HTMLButtonElement>) => {
-      onClick?.(e);
-      e.stopPropagation();
-      e.preventDefault();
-      if (!doc) {
-        return;
-      }
+    const onMoveToTrash = useCallback(
+      (e: React.MouseEvent<HTMLButtonElement>) => {
+        onClick?.(e);
+        e.stopPropagation();
+        e.preventDefault();
+        if (!doc) {
+          return;
+        }
 
-      track.allDocs.list.docMenu.deleteDoc();
-      openConfirmModal({
-        title: t['com.affine.moveToTrash.confirmModal.title'](),
-        description: t['com.affine.moveToTrash.confirmModal.description']({
-          title: doc.title$.value || t['Untitled'](),
-        }),
-        cancelText: t['com.affine.confirmModal.button.cancel'](),
-        confirmText: t.Delete(),
-        confirmButtonOptions: {
-          variant: 'error',
-        },
-        onConfirm: async () => {
-          try {
-            const canTrash = await guardService.can('Doc_Trash', doc.id);
-            if (!canTrash) {
-              toast(t['com.affine.no-permission']());
-              return;
+        track.allDocs.list.docMenu.deleteDoc();
+        openConfirmModal({
+          title: t['com.affine.moveToTrash.confirmModal.title'](),
+          description: t['com.affine.moveToTrash.confirmModal.description']({
+            title: doc.title$.value || t['Untitled'](),
+          }),
+          cancelText: t['com.affine.confirmModal.button.cancel'](),
+          confirmText: t.Delete(),
+          confirmButtonOptions: {
+            variant: 'error',
+          },
+          onConfirm: async () => {
+            try {
+              const canTrash = await guardService.can('Doc_Trash', doc.id);
+              if (!canTrash) {
+                toast(t['com.affine.no-permission']());
+                return;
+              }
+              doc.moveToTrash();
+            } catch (error) {
+              console.error(error);
+              const userFriendlyError = UserFriendlyError.fromAny(error);
+              toast(t[`error.${userFriendlyError.name}`](userFriendlyError.data));
             }
-            doc.moveToTrash();
-          } catch (error) {
-            console.error(error);
-            const userFriendlyError = UserFriendlyError.fromAny(error);
-            toast(t[`error.${userFriendlyError.name}`](userFriendlyError.data));
-          }
-        },
-      });
-    },
-    [doc, guardService, onClick, openConfirmModal, t]
-  );
+          },
+        });
+      },
+      [doc, guardService, onClick, openConfirmModal, t]
+    );
 
-  if (!quickTrash) {
-    return null;
-  }
+    if (!quickTrash) {
+      return null;
+    }
 
-  return (
-    <IconButton
-      onClick={onMoveToTrash}
-      icon={<DeleteIcon />}
-      variant="danger"
-      data-testid="doc-list-operation-trash"
-      {...iconButtonProps}
-    />
-  );
-});
+    return (
+      <IconButton
+        ref={ref}
+        onClick={onMoveToTrash}
+        icon={<DeleteIcon />}
+        variant="danger"
+        data-testid="doc-list-operation-trash"
+        {...iconButtonProps}
+      />
+    );
+  })
+);
 
 export const QuickSelect = memo(function QuickSelect({
   doc,

@@ -54,7 +54,6 @@ async function handleFileRequest(request: Request) {
   if (process.env.DEV_SERVER_URL && !isAbsolutePath) {
     // 检查是否是API请求，如果是则转发到Java后端
     if (urlObject.pathname.startsWith('/api') || 
-        urlObject.pathname.startsWith('/graphql') || 
         urlObject.pathname.startsWith('/socket.io')) {
       const backendUrl = new URL(
         urlObject.pathname + urlObject.search,
@@ -230,7 +229,6 @@ export function registerProtocol() {
         url.hostname === 'localhost' && 
         url.port === '8081' &&
         (url.pathname.startsWith('/api') || 
-         url.pathname.startsWith('/graphql') || 
          url.pathname.startsWith('/socket.io'))) {
       
       const backendUrl = `http://localhost:8080${url.pathname}${url.search}`;

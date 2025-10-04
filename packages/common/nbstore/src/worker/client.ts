@@ -15,8 +15,11 @@ import {
   type AwarenessRecord,
   type BlobRecord,
   type BlobStorage,
+  type DocClock,
+  type DocClocks,
   type DocRecord,
   type DocStorage,
+  type DocSyncStorage,
   type DocUpdate,
   type IndexerDocument,
   type IndexerSchema,
@@ -29,6 +32,7 @@ import {
 import type { AwarenessSync } from '../sync/awareness';
 import type { BlobSync } from '../sync/blob';
 import type { DocSync } from '../sync/doc';
+import { DocSyncImpl } from '../sync/doc';
 import type { IndexerSync } from '../sync/indexer';
 import type { StoreInitOptions, WorkerManagerOps, WorkerOps } from './ops';
 
@@ -68,13 +72,41 @@ export class StoreManagerClient {
         console.error('error opening', err);
       });
 
+    // 创建云端 DocStorage（延迟初始化，不阻塞）
+    let cloudDocStorage: any = undefined;
+    const cloudDocStoragePromise = (async () => {
+      try {
+        const remotes = options.remotes || {};
+        for (const [peerId, peerOptions] of Object.entries(remotes)) {
+          if (peerOptions.doc?.name === 'CloudDocStorage') {
+            console.log('🌐 [StoreManagerClient] 检测到云端存储配置，创建CloudDocStorage实例');
+            const { CloudDocStorage } = await import('@affine/nbstore/cloud');
+            cloudDocStorage = new CloudDocStorage(peerOptions.doc.opts as any);
+            await cloudDocStorage.connection.connect();
+            await cloudDocStorage.connection.waitForConnected();
+            console.log('✅ [StoreManagerClient] CloudDocStorage初始化成功');
+            break;
+          }
+        }
+      } catch (error) {
+        console.error('❌ [StoreManagerClient] 创建CloudDocStorage失败:', error);
+      }
+      return cloudDocStorage;
+    })();
+
     const connection = {
-      store: new StoreClient(client),
+      store: new StoreClient(client, cloudDocStoragePromise),
       dispose: () => {
         this.client.call('close', closeKey).catch(err => {
           console.error('error closing', err);
         });
         this.connections.delete(closeKey);
+        // 清理云端存储连接
+        cloudDocStoragePromise.then(storage => {
+          if (storage) {
+            storage.connection.disconnect();
+          }
+        });
       },
     };
 
@@ -91,10 +123,34 @@ export class StoreManagerClient {
 }
 
 export class StoreClient {
-  constructor(private readonly client: OpClient<WorkerOps>) {
-    this.docStorage = new WorkerDocStorage(this.client);
+  constructor(
+    private readonly client: OpClient<WorkerOps>,
+    private readonly cloudDocStoragePromise?: Promise<any>
+  ) {
+    this.docStorage = new WorkerDocStorage(this.client, cloudDocStoragePromise);
     this.blobStorage = new WorkerBlobStorage(this.client);
-    this.docSync = new WorkerDocSync(this.client);
+
+    console.log('🔧 [StoreClient] 初始化 DocSync');
+
+    if (cloudDocStoragePromise) {
+      console.log('🌐 [StoreClient] 检测到云端存储，创建主线程 DocSync');
+      const workerDocSyncStorage = new WorkerDocSyncStorage(this.client);
+      this.docSync = new DocSyncImpl(
+        {
+          local: this.docStorage,
+          remotes: {},
+        },
+        workerDocSyncStorage
+      );
+      this.isMainThreadSync = true;
+
+      this.initializeCloudSync(cloudDocStoragePromise, this.docSync as DocSyncImpl, workerDocSyncStorage);
+    } else {
+      console.log('📦 [StoreClient] 使用 Worker DocSync');
+      this.docSync = new WorkerDocSync(this.client);
+      this.isMainThreadSync = false;
+    }
+
     this.blobSync = new WorkerBlobSync(this.client);
     this.awarenessSync = new WorkerAwarenessSync(this.client);
     this.docFrontend = new DocFrontend(this.docStorage, this.docSync);
@@ -108,9 +164,37 @@ export class StoreClient {
     );
   }
 
+  private isMainThreadSync = false;
+
+  private async initializeCloudSync(
+    cloudDocStoragePromise: Promise<any>,
+    docSync: DocSyncImpl,
+    workerDocSyncStorage: WorkerDocSyncStorage
+  ): Promise<void> {
+    try {
+      const cloudDocStorage = await cloudDocStoragePromise;
+      if (cloudDocStorage) {
+        console.log('✅ [StoreClient] 云端存储已就绪，添加远程同步 Peer');
+        const { DocSyncPeer } = await import('../sync/doc/peer');
+        (docSync as any).peers.push(
+          new DocSyncPeer(
+            'cloud:main-thread',
+            this.docStorage,
+            workerDocSyncStorage,
+            cloudDocStorage
+          )
+        );
+        console.log('🚀 [StoreClient] 启动云端同步 Peer');
+        docSync.start();
+      }
+    } catch (error) {
+      console.error('❌ [StoreClient] 云端存储初始化失败:', error);
+    }
+  }
+
   private readonly docStorage: WorkerDocStorage;
   private readonly blobStorage: WorkerBlobStorage;
-  private readonly docSync: WorkerDocSync;
+  private readonly docSync: DocSync;
   private readonly blobSync: WorkerBlobSync;
   private readonly awarenessSync: WorkerAwarenessSync;
   private readonly indexerStorage: WorkerIndexerStorage;
@@ -123,7 +207,10 @@ export class StoreClient {
 }
 
 class WorkerDocStorage implements DocStorage {
-  constructor(private readonly client: OpClient<WorkerOps>) {}
+  constructor(
+    private readonly client: OpClient<WorkerOps>,
+    private cloudStoragePromise?: Promise<any>
+  ) {}
   spaceId = '';
 
   readonly storageType = 'doc';
@@ -141,14 +228,21 @@ class WorkerDocStorage implements DocStorage {
     // 尝试获取 Web Worker 中的存储类型信息
     try {
       console.log('🔧 [WorkerDocStorage] 尝试获取Web Worker存储信息...');
-      const storageInfo = await this.client.call('docStorage.getStorageInfo' as any);
+      const storageInfo = await this.client.call(
+        'docStorage.getStorageInfo' as any
+      );
       console.log('🔧 [WorkerDocStorage] Web Worker存储信息:', storageInfo);
+      // 同步 spaceId，确保后续 HTTP 回退使用正确的工作空间ID
+      if (storageInfo?.spaceId && !this.spaceId) {
+        this.spaceId = storageInfo.spaceId;
+        console.log('🔧 [WorkerDocStorage] 同步spaceId成功:', this.spaceId);
+      }
     } catch (e) {
       console.log('🔧 [WorkerDocStorage] 无法获取存储信息 (正常，方法不存在):', e.message);
     }
 
     const result = await this.client.call('docStorage.getDoc', docId);
-    
+
     console.log('🔧 [WorkerDocStorage] Web Worker响应结果:', {
       docId: docId,
       hasResult: !!result,
@@ -157,105 +251,41 @@ class WorkerDocStorage implements DocStorage {
       isNull: result === null,
       isUndefined: result === undefined,
       resultType: typeof result,
-      resultHex: result?.bin ? 
+      resultHex: result?.bin ?
         Array.from(result.bin.slice(0, 20)).map(b => b.toString(16).padStart(2, '0')).join(' ') : 'null'
     });
 
-    // 🚀 回退机制：如果Web Worker返回空，直接从后端HTTP API获取
-    if (!result) {
-      console.log('🚀 [WorkerDocStorage] Web Worker返回空，启动HTTP API回退机制:', {
-        docId: docId,
-        spaceId: this.spaceId
-      });
-
+    // 如果 Worker 返回 null 且配置了云端存储，尝试从云端拉取
+    if (result === null && this.cloudStoragePromise) {
+      console.log('🌐 [WorkerDocStorage] Worker返回null，等待云端存储初始化...');
       try {
-        const httpResult = await this.fetchFromBackend(docId);
-        if (httpResult) {
-          console.log('✅ [WorkerDocStorage] HTTP API回退成功:', {
-            docId: docId,
-            binSize: httpResult.bin.length,
-            binHex: Array.from(httpResult.bin.slice(0, 20)).map(b => b.toString(16).padStart(2, '0')).join(' ')
-          });
-          return httpResult;
-        } else {
-          console.warn('⚠️ [WorkerDocStorage] HTTP API回退也返回空:', { docId });
+        const cloudStorage = await this.cloudStoragePromise;
+        if (cloudStorage) {
+          console.log('🌐 [WorkerDocStorage] 云端存储已就绪，尝试拉取:', { docId });
+          const cloudResult = await cloudStorage.getDoc(docId);
+          if (cloudResult && cloudResult.bin && cloudResult.bin.length > 2) {
+            console.log('✅ [WorkerDocStorage] 从云端拉取成功:', {
+              docId,
+              binSize: cloudResult.bin.length
+            });
+            // 将云端数据保存到本地
+            await this.client.call('docStorage.pushDocUpdate', {
+              update: {
+                docId,
+                bin: cloudResult.bin,
+                timestamp: cloudResult.timestamp
+              },
+              origin: 'cloud-fallback'
+            });
+            return cloudResult;
+          }
         }
       } catch (error) {
-        console.error('❌ [WorkerDocStorage] HTTP API回退失败:', {
-          docId: docId,
-          error: error.message
-        });
+        console.error('❌ [WorkerDocStorage] 从云端拉取失败:', error);
       }
     }
 
     return result;
-  }
-
-  private async fetchFromBackend(docId: string): Promise<DocRecord | null> {
-    // 获取API基础URL - 使用与cloud.ts相同的方式
-    const apiBaseUrl = (import.meta.env?.VITE_API_BASE_URL || '').replace(/\/$/, '');
-    
-    // 尝试从多个可能的工作空间ID获取文档
-    const possibleWorkspaceIds = [
-      this.spaceId,
-      docId, // 根文档的情况下，docId == workspaceId
-      'd8da6c13-114e-4709-bb26-268bf8565f52', // 当前测试的工作空间ID
-    ].filter(Boolean);
-
-    for (const workspaceId of possibleWorkspaceIds) {
-      try {
-        const url = `${apiBaseUrl}/api/workspaces/${workspaceId}/docs/${docId}`;
-        console.log('🌐 [WorkerDocStorage] 尝试HTTP请求:', { 
-          url, 
-          workspaceId, 
-          docId,
-          apiBaseUrl
-        });
-
-        const response = await fetch(url, {
-          method: 'GET',
-          headers: {
-            'Accept': 'application/octet-stream',
-            'Authorization': `Bearer ${localStorage.getItem('affine-admin-token') || ''}`,
-          },
-          credentials: 'include',
-        });
-
-        if (response.ok) {
-          const arrayBuffer = await response.arrayBuffer();
-          if (arrayBuffer && arrayBuffer.byteLength > 0) {
-            const docRecord = {
-              docId: docId,
-              bin: new Uint8Array(arrayBuffer),
-              timestamp: new Date(),
-            };
-
-            console.log('✅ [WorkerDocStorage] HTTP请求成功:', {
-              url,
-              docId,
-              binSize: docRecord.bin.length,
-              binHex: Array.from(docRecord.bin.slice(0, 20)).map(b => b.toString(16).padStart(2, '0')).join(' ')
-            });
-
-            return docRecord;
-          }
-        } else {
-          console.log('⚠️ [WorkerDocStorage] HTTP请求失败:', {
-            url,
-            status: response.status,
-            statusText: response.statusText
-          });
-        }
-      } catch (error) {
-        console.log('⚠️ [WorkerDocStorage] HTTP请求异常:', {
-          workspaceId,
-          docId,
-          error: error.message
-        });
-      }
-    }
-
-    return null;
   }
 
   async getDocDiff(docId: string, state?: Uint8Array) {
@@ -382,6 +412,53 @@ class WorkerDocSync implements DocSync {
 
   resetSync(): Promise<void> {
     return this.client.call('docSync.resetSync');
+  }
+}
+
+class WorkerDocSyncStorage implements DocSyncStorage {
+  readonly storageType = 'docSync';
+  readonly connection = new DummyConnection();
+
+  constructor(private readonly client: OpClient<WorkerOps>) {}
+
+  async getPeerRemoteClock(peer: string, docId: string): Promise<DocClock | null> {
+    return this.client.call('docSyncStorage.getPeerRemoteClock', { peer, docId });
+  }
+
+  async getPeerRemoteClocks(peer: string): Promise<DocClocks> {
+    return this.client.call('docSyncStorage.getPeerRemoteClocks', peer);
+  }
+
+  async setPeerRemoteClock(peer: string, clock: DocClock): Promise<void> {
+    return this.client.call('docSyncStorage.setPeerRemoteClock', { peer, clock });
+  }
+
+  async getPeerPulledRemoteClock(peer: string, docId: string): Promise<DocClock | null> {
+    return this.client.call('docSyncStorage.getPeerPulledRemoteClock', { peer, docId });
+  }
+
+  async getPeerPulledRemoteClocks(peer: string): Promise<DocClocks> {
+    return this.client.call('docSyncStorage.getPeerPulledRemoteClocks', peer);
+  }
+
+  async setPeerPulledRemoteClock(peer: string, clock: DocClock): Promise<void> {
+    return this.client.call('docSyncStorage.setPeerPulledRemoteClock', { peer, clock });
+  }
+
+  async getPeerPushedClock(peer: string, docId: string): Promise<DocClock | null> {
+    return this.client.call('docSyncStorage.getPeerPushedClock', { peer, docId });
+  }
+
+  async getPeerPushedClocks(peer: string): Promise<DocClocks> {
+    return this.client.call('docSyncStorage.getPeerPushedClocks', peer);
+  }
+
+  async setPeerPushedClock(peer: string, clock: DocClock): Promise<void> {
+    return this.client.call('docSyncStorage.setPeerPushedClock', { peer, clock });
+  }
+
+  async clearClocks(): Promise<void> {
+    return this.client.call('docSyncStorage.clearClocks');
   }
 }
 

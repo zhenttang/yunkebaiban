@@ -1,9 +1,3 @@
-// import {
-//   type AggregateInput,
-//   indexerAggregateQuery,
-//   indexerSearchQuery,
-//   type SearchInput,
-// } from '@affine/graphql';
 import { Observable } from 'rxjs';
 
 import {
@@ -16,54 +10,36 @@ import {
   type SearchOptions,
   type SearchResult,
 } from '../../storage/indexer';
-import { HttpConnection } from './http';
 
 interface CloudIndexerStorageOptions {
   serverBaseUrl: string;
   id: string;
 }
 
+// GraphQL 已彻底移除：云索引功能禁用占位实现
 export class CloudIndexerStorage extends IndexerStorageBase {
   static readonly identifier = 'CloudIndexerStorage';
   readonly isReadonly = true;
-  readonly connection = new HttpConnection(this.options.serverBaseUrl);
 
-  constructor(private readonly options: CloudIndexerStorageOptions) {
+  constructor(private readonly _options: CloudIndexerStorageOptions) {
     super();
   }
 
   override async search<
     T extends keyof IndexerSchema,
     const O extends SearchOptions<T>,
-  >(table: T, query: Query<T>, options?: O): Promise<SearchResult<T, O>> {
-    const res = await this.connection.gql({
-      query: indexerSearchQuery,
-      variables: {
-        id: this.options.id,
-        input: {
-          table,
-          query,
-          options,
-        } as SearchInput,
-      },
-    });
-    const result = res.workspace.search as unknown as SearchResult<T, O>;
-    return result;
+  >(_table: T, _query: Query<T>, _options?: O): Promise<SearchResult<T, O>> {
+    throw new Error('CloudIndexerStorage is disabled: GraphQL backend removed');
   }
 
   override search$<
     T extends keyof IndexerSchema,
     const O extends SearchOptions<T>,
-  >(table: T, query: Query<T>, options?: O): Observable<SearchResult<T, O>> {
+  >(_table: T, _query: Query<T>, _options?: O): Observable<SearchResult<T, O>> {
     return new Observable(observer => {
-      this.search(table, query, options)
-        .then(data => {
-          observer.next(data);
-          observer.complete();
-        })
-        .catch(error => {
-          observer.error(error);
-        });
+      observer.error(
+        new Error('CloudIndexerStorage is disabled: GraphQL backend removed')
+      );
     });
   }
 
@@ -71,40 +47,27 @@ export class CloudIndexerStorage extends IndexerStorageBase {
     T extends keyof IndexerSchema,
     const O extends AggregateOptions<T>,
   >(
-    table: T,
-    query: Query<T>,
-    field: keyof IndexerSchema[T],
-    options?: O
+    _table: T,
+    _query: Query<T>,
+    _field: keyof IndexerSchema[T],
+    _options?: O
   ): Promise<AggregateResult<T, O>> {
-    const res = await this.connection.gql({
-      query: indexerAggregateQuery,
-      variables: {
-        id: this.options.id,
-        input: { table, query, field, options } as AggregateInput,
-      },
-    });
-    const result = res.workspace.aggregate as unknown as AggregateResult<T, O>;
-    return result;
+    throw new Error('CloudIndexerStorage is disabled: GraphQL backend removed');
   }
 
   override aggregate$<
     T extends keyof IndexerSchema,
     const O extends AggregateOptions<T>,
   >(
-    table: T,
-    query: Query<T>,
-    field: keyof IndexerSchema[T],
-    options?: O
+    _table: T,
+    _query: Query<T>,
+    _field: keyof IndexerSchema[T],
+    _options?: O
   ): Observable<AggregateResult<T, O>> {
     return new Observable(observer => {
-      this.aggregate(table, query, field, options)
-        .then(data => {
-          observer.next(data);
-          observer.complete();
-        })
-        .catch(error => {
-          observer.error(error);
-        });
+      observer.error(
+        new Error('CloudIndexerStorage is disabled: GraphQL backend removed')
+      );
     });
   }
 

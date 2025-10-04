@@ -107,6 +107,19 @@ interface GroupedWorkerOps {
     resetSync: [void, void];
   };
 
+  docSyncStorage: {
+    getPeerRemoteClock: [{ peer: string; docId: string }, DocClock | null];
+    getPeerRemoteClocks: [string, DocClocks];
+    setPeerRemoteClock: [{ peer: string; clock: DocClock }, void];
+    getPeerPulledRemoteClock: [{ peer: string; docId: string }, DocClock | null];
+    getPeerPulledRemoteClocks: [string, DocClocks];
+    setPeerPulledRemoteClock: [{ peer: string; clock: DocClock }, void];
+    getPeerPushedClock: [{ peer: string; docId: string }, DocClock | null];
+    getPeerPushedClocks: [string, DocClocks];
+    setPeerPushedClock: [{ peer: string; clock: DocClock }, void];
+    clearClocks: [void, void];
+  };
+
   blobSync: {
     state: [void, BlobSyncState];
     blobState: [string, BlobSyncBlobState];

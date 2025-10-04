@@ -194,28 +194,25 @@ export const CloudStorageProvider = ({
 
   // 动态获取当前workspaceId
   const currentWorkspaceId = useMemo(() => {
-    console.log('🔍 [currentWorkspaceId] 开始计算当前工作空间ID...');
-    console.log('  📋 URL params.workspaceId:', params.workspaceId);
+    // concise: remove noisy logs
     
     // 从URL路由参数获取
     if (params.workspaceId) {
-      console.log('  ✅ 使用URL参数作为workspaceId:', params.workspaceId);
-      console.log('  🔍 URL参数格式验证: 长度=', params.workspaceId.length, '包含连字符=', params.workspaceId.includes('-'));
+      // use URL workspaceId
       
       // 🔧 [CRITICAL-FIX] 确保workspaceId始终为长UUID格式
       const workspaceId = params.workspaceId;
       if (workspaceId.length === 36 && workspaceId.includes('-')) {
-        console.log('  ✅ [ID-VERIFICATION] 确认为标准UUID格式');
+        // verified uuid
         // 保存到localStorage供其他组件使用
         localStorage.setItem('last_workspace_id', workspaceId);
         return workspaceId;
       } else if (workspaceId.length === 21 && !workspaceId.includes('-')) {
-        console.error('  🚨 [ID-ERROR] 检测到短ID格式，这应该不会发生！');
-        console.error('  🔍 短ID详情: length=', workspaceId.length, 'value=', workspaceId);
+        // short id fallback
         // 尝试从localStorage获取对应的长UUID
         const storedLongId = localStorage.getItem('last_workspace_id');
         if (storedLongId && storedLongId.length === 36 && storedLongId.includes('-')) {
-          console.warn('  ⚠️ [ID-FALLBACK] 使用localStorage中的长UUID:', storedLongId);
+          // fallback to last id
           return storedLongId;
         }
       }
@@ -225,15 +222,13 @@ export const CloudStorageProvider = ({
     
     // 从localStorage获取最后访问的workspace
     const lastWorkspaceId = localStorage.getItem('last_workspace_id');
-    console.log('  📋 localStorage last_workspace_id:', lastWorkspaceId);
     
     if (lastWorkspaceId) {
-      console.log('  ⚠️ 使用localStorage作为workspaceId:', lastWorkspaceId);
-      console.log('  🔍 localStorage格式验证: 长度=', lastWorkspaceId.length, '包含连字符=', lastWorkspaceId.includes('-'));
+      // use last workspace id
       return lastWorkspaceId;
     }
     
-    console.log('  ❌ 无法确定当前workspace，返回null');
+    // no workspace id found
     // 如果都没有，返回null表示无法确定当前workspace
     return null;
   }, [params.workspaceId]);

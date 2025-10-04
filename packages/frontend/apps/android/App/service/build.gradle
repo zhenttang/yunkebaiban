@@ -1,20 +1,8 @@
 plugins {
     alias libs.plugins.jetbrains.kotlin.jvm
-    // alias libs.plugins.apollo.android  // 禁用Apollo - 已改用Java后端
 }
 
 dependencies {
-    // implementation libs.apollo.api  // 禁用Apollo依赖
-    // implementation libs.apollo.adapters.core
-    // implementation libs.apollo.adapters.kotlinx.datetime
     api libs.kotlinx.datetime
 }
 
-// apollo {  // 禁用Apollo配置
-//     service("affine") {
-//         srcDir("../../../../../common/graphql/src/graphql")
-//         schemaFiles.from("../../../../../backend/server/src/schema.gql")
-//         packageName.set("com.affine.pro.graphql")
-//         mapScalar("DateTime", "kotlinx.datetime.Instant", "com.apollographql.adapter.datetime.KotlinxInstantAdapter")
-//     }
-// }

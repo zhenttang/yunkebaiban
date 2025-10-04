@@ -1,9 +1,7 @@
 import { once } from 'lodash-es';
-import {
-  applyUpdate,
-  type Array as YArray,
-  Doc as YDoc,
-  type Map as YMap,
+import type {
+  Array as YArray,
+  Map as YMap,
 } from 'yjs';
 
 import { share } from '../../../connection';
@@ -91,6 +89,9 @@ export class IndexedDBV1DocStorage extends DocStorageBase {
 
     const rootDocBuffer = await this.rawGetDoc(this.spaceId);
     if (rootDocBuffer) {
+      // 动态导入 yjs，避免 Worker 初始化时加载
+      const { Doc: YDoc, applyUpdate } = await import('yjs');
+
       const ydoc = new YDoc({
         guid: this.spaceId,
       });
