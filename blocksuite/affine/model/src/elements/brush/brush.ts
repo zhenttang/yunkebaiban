@@ -38,18 +38,24 @@ export type BrushProps = BaseElementProps & {
 };
 
 export class BrushElementModel extends GfxPrimitiveElementModel<BrushProps> {
+  private _commandsCache: string | null = null;
+  private _cachedPointsLength: number = 0;
+
   /**
    * The SVG path commands for the brush.
    */
   get commands() {
-    if (!this._local.has('commands')) {
+    const currentLength = this.points?.length || 0;
+
+    if (!this._commandsCache || this._cachedPointsLength !== currentLength) {
       const stroke = getSolidStrokePoints(this.points ?? [], this.lineWidth);
       const commands = getSvgPathFromStroke(stroke);
 
-      this._local.set('commands', commands);
+      this._commandsCache = commands;
+      this._cachedPointsLength = currentLength;
     }
 
-    return this._local.get('commands') as string;
+    return this._commandsCache;
   }
 
   override get connectable() {
@@ -126,9 +132,6 @@ export class BrushElementModel extends GfxPrimitiveElementModel<BrushProps> {
   @field()
   accessor color: Color = DefaultTheme.black;
 
-  @watch((_, instance) => {
-    instance['_local'].delete('commands');
-  })
   @derive((lineWidth: number, instance: Instance) => {
     const oldBound = Bound.fromXYWH(instance.deserializedXYWH);
 
@@ -160,9 +163,6 @@ export class BrushElementModel extends GfxPrimitiveElementModel<BrushProps> {
   @field()
   accessor lineWidth: number = 4;
 
-  @watch((_, instance) => {
-    instance['_local'].delete('commands');
-  })
   @derive((points: IVec[], instance: Instance) => {
     const lineWidth = instance.lineWidth;
     const bound = getBoundFromPoints(points);

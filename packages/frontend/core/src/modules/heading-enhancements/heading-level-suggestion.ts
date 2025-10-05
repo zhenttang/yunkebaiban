@@ -145,7 +145,7 @@ export class HeadingLevelSuggestion extends WithDisposable(ShadowlessElement) {
   `;
 
   @property({ attribute: false })
-  accessor model!: ParagraphBlockModel;
+  model!: ParagraphBlockModel;
 
   @state()
   private _suggestion: LevelSuggestion | null = null;

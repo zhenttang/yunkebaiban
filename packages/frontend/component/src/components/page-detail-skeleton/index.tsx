@@ -4,9 +4,6 @@ import { useCallback } from 'react';
 
 import { Button } from '../../ui/button';
 import { Loading } from '../../ui/loading';
-import { ThemedImg } from '../../ui/themed-img';
-import imageUrlForDarkLoading from './assets/loading.dark.png';
-import imageUrlForLightLoading from './assets/loading.light.png';
 import * as styles from './index.css';
 
 export const EditorLoading = ({
@@ -20,13 +17,31 @@ export const EditorLoading = ({
   }, []);
   return (
     <div className={styles.blockSuiteEditorStyle}>
-      <ThemedImg
-        style={{ width: '300px' }}
-        draggable={false}
+      {/* 用CSS SVG替代PNG图片 - 从126KB减少到<1KB */}
+      <svg
         className={styles.illustration}
-        lightSrc={imageUrlForLightLoading}
-        darkSrc={imageUrlForDarkLoading}
-      />
+        width="300"
+        height="200"
+        viewBox="0 0 300 200"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        {/* 背景点点 */}
+        <pattern id="dots" x="0" y="0" width="30" height="30" patternUnits="userSpaceOnUse">
+          <circle cx="3" cy="3" r="2" fill="currentColor" opacity="0.1"/>
+        </pattern>
+        <rect width="300" height="200" fill="url(#dots)"/>
+
+        {/* 文档图标 */}
+        <g transform="translate(100, 40)">
+          <rect x="0" y="0" width="100" height="120" rx="8" fill="white"
+                filter="drop-shadow(0 4px 12px rgba(0,0,0,0.1))"/>
+          <rect x="15" y="20" width="40" height="8" rx="4" fill="currentColor" opacity="0.2"/>
+          <rect x="15" y="40" width="70" height="8" rx="4" fill="currentColor" opacity="0.2"/>
+          <rect x="15" y="60" width="60" height="8" rx="4" fill="currentColor" opacity="0.2"/>
+          <rect x="15" y="80" width="50" height="8" rx="4" fill="currentColor" opacity="0.2"/>
+        </g>
+      </svg>
       {longerLoading ? (
         <div className={styles.content} data-longer-loading={true}>
           <div>

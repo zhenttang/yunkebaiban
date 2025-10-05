@@ -5,73 +5,125 @@ import { Button } from '@affine/component';
 import { ViewBody } from '../../../../modules/workbench';
 import { PaymentTestPage } from '../../../../components/payment-test-page';
 import * as styles from './community.css';
-
-// 全局社区模拟数据
-const mockGlobalDocs = [
-  {
-    id: '1',
-    title: '开源项目协作指南',
-    description: '分享如何在开源项目中高效协作的经验',
-    authorId: 'user1',
-    authorName: '张三',
-    sharedAt: new Date().toISOString(),
-    viewCount: 156,
-    permission: 'PUBLIC' as const,
-    workspaceId: 'workspace1',
-  },
-  {
-    id: '2',
-    title: 'React最佳实践总结',
-    description: '从项目实战中总结的React开发最佳实践',
-    authorId: 'user2',
-    authorName: '李四',
-    sharedAt: new Date(Date.now() - 86400000).toISOString(),
-    viewCount: 89,
-    permission: 'PUBLIC' as const,
-    workspaceId: 'workspace2',
-  },
-  {
-    id: '3',
-    title: '设计系统构建经验',
-    description: '如何从零开始构建一个完整的设计系统',
-    authorId: 'user3',
-    authorName: '王五',
-    sharedAt: new Date(Date.now() - 172800000).toISOString(),
-    viewCount: 234,
-    permission: 'PUBLIC' as const,
-    workspaceId: 'workspace3',
-  },
-];
+import * as api from './api';
+import type { CommunityDocument, GetDocumentsParams } from './types';
 
 export const CommunityPage = () => {
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const navigate = useNavigate();
+
+  const [documents, setDocuments] = useState<CommunityDocument[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [search, setSearch] = useState('');
   const [showPaymentTest, setShowPaymentTest] = useState(false);
 
-  useEffect(() => {
-    console.log('🎯 社区页面已加载, workspaceId:', workspaceId || '全局模式');
-  }, [workspaceId]);
+  // 分页状态
+  const [currentPage, setCurrentPage] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+  const [totalElements, setTotalElements] = useState(0);
+  const pageSize = 20;
 
-  console.log('✅ 渲染社区页面, workspaceId:', workspaceId || '全局模式');
+  // 加载文档列表
+  const loadDocuments = async (params?: GetDocumentsParams) => {
+    setLoading(true);
+    setError(null);
 
-  const filteredDocs = mockGlobalDocs.filter(doc => 
-    doc.title.includes(search) || 
-    doc.description.includes(search) ||
-    doc.authorName.includes(search)
-  );
+    try {
+      const response = await api.getPublicDocuments({
+        page: currentPage,
+        size: pageSize,
+        ...params,
+      });
 
-  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearch(e.target.value);
+      setDocuments(response.content);
+      setTotalPages(response.totalPages);
+      setTotalElements(response.totalElements);
+    } catch (err) {
+      console.error('加载文档失败:', err);
+      setError(err instanceof Error ? err.message : '加载失败');
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleViewDoc = (doc: typeof mockGlobalDocs[0]) => {
+  // 搜索文档
+  const handleSearch = async (keyword: string) => {
+    if (!keyword.trim()) {
+      loadDocuments();
+      return;
+    }
+
+    setLoading(true);
+    setError(null);
+
+    try {
+      const response = await api.searchDocuments({
+        keyword,
+        page: currentPage,
+        size: pageSize,
+      });
+
+      setDocuments(response.content);
+      setTotalPages(response.totalPages);
+      setTotalElements(response.totalElements);
+    } catch (err) {
+      console.error('搜索失败:', err);
+      setError(err instanceof Error ? err.message : '搜索失败');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // 点赞文档
+  const handleLike = async (doc: CommunityDocument) => {
+    try {
+      if (doc.isLiked) {
+        await api.unlikeDocument(doc.id);
+      } else {
+        await api.likeDocument(doc.id);
+      }
+
+      // 重新加载文档列表
+      await loadDocuments();
+    } catch (err) {
+      console.error('点赞操作失败:', err);
+    }
+  };
+
+  // 收藏文档
+  const handleCollect = async (doc: CommunityDocument) => {
+    try {
+      if (doc.isCollected) {
+        await api.uncollectDocument(doc.id);
+      } else {
+        await api.collectDocument(doc.id);
+      }
+
+      // 重新加载文档列表
+      await loadDocuments();
+    } catch (err) {
+      console.error('收藏操作失败:', err);
+    }
+  };
+
+  // 查看文档详情
+  const handleViewDoc = async (doc: CommunityDocument) => {
     console.log('查看文档:', doc);
-    // 跳转到社区文档详情页
+
+    // 记录浏览
+    try {
+      await api.recordView(doc.id, {
+        userAgent: navigator.userAgent,
+      });
+    } catch (err) {
+      console.error('记录浏览失败:', err);
+    }
+
+    // 跳转到详情页
     if (workspaceId) {
       navigate(`/workspace/${workspaceId}/community/${doc.id}`);
     } else {
-      // 如果没有workspaceId，使用当前URL中的workspaceId
       const currentPath = window.location.pathname;
       const workspaceMatch = currentPath.match(/\/workspace\/([^\/]+)/);
       if (workspaceMatch) {
@@ -83,10 +135,11 @@ export const CommunityPage = () => {
     }
   };
 
-  const handleShareDoc = (doc: typeof mockGlobalDocs[0]) => {
+  // 分享文档
+  const handleShareDoc = (doc: CommunityDocument) => {
     console.log('分享文档:', doc);
-    // 这里可以打开分享弹窗或复制链接
-    const shareText = `推荐文档: ${doc.title}\n作者: ${doc.authorName}\n${doc.description}`;
+    const shareText = `推荐文档: ${doc.title}\n作者: ${doc.authorName}\n${doc.description || ''}`;
+
     if (navigator.share) {
       navigator.share({
         title: doc.title,
@@ -102,12 +155,31 @@ export const CommunityPage = () => {
     }
   };
 
+  // 初始加载
+  useEffect(() => {
+    console.log('🎯 社区页面已加载, workspaceId:', workspaceId || '全局模式');
+    loadDocuments();
+  }, [workspaceId, currentPage]);
+
+  // 处理搜索输入
+  const onSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSearch(value);
+
+    // 防抖搜索
+    const timer = setTimeout(() => {
+      handleSearch(value);
+    }, 500);
+
+    return () => clearTimeout(timer);
+  };
+
   return (
     <ViewBody>
       {showPaymentTest ? (
         <div>
           <div style={{ padding: '20px', borderBottom: `1px solid ${styles.communityContent}` }}>
-            <Button 
+            <Button
               onClick={() => setShowPaymentTest(false)}
               variant="secondary"
               size="default"
@@ -122,10 +194,9 @@ export const CommunityPage = () => {
           <div className={styles.header}>
             <h1 className={styles.title}>社区</h1>
             <p className={styles.subtitle}>发现和分享优质内容</p>
-            
-            {/* 支付测试按钮 */}
+
             <div style={{ marginTop: '16px' }}>
-              <Button 
+              <Button
                 onClick={() => setShowPaymentTest(true)}
                 variant="primary"
                 size="default"
@@ -134,56 +205,165 @@ export const CommunityPage = () => {
               </Button>
             </div>
           </div>
-        
-        <div className={styles.searchSection}>
-          <input
-            type="text"
-            placeholder="搜索社区内容..."
-            value={search}
-            onChange={handleSearch}
-            className={styles.searchInput}
-          />
-        </div>
-        
-        <div className={styles.docGrid}>
-          {filteredDocs.map(doc => (
-            <div key={doc.id} className={styles.docCard}>
-              <div className={styles.cardHeader}>
-                <h3 className={styles.docTitle}>{doc.title}</h3>
-                <span className={styles.viewCount}>{doc.viewCount} 次查看</span>
-              </div>
-              <p className={styles.docDescription}>{doc.description}</p>
-              <div className={styles.cardFooter}>
-                <div className={styles.authorInfo}>
-                  <span className={styles.authorName}>作者: {doc.authorName}</span>
-                  <span className={styles.sharedAt}>
-                    {new Date(doc.sharedAt).toLocaleDateString()}
-                  </span>
-                </div>
-                <div className={styles.actions}>
-                  <button 
-                    className={styles.viewButton}
-                    onClick={() => handleViewDoc(doc)}
-                  >
-                    查看
-                  </button>
-                  <button 
-                    className={styles.shareButton}
-                    onClick={() => handleShareDoc(doc)}
-                  >
-                    分享
-                  </button>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-        
-        {filteredDocs.length === 0 && (
-          <div className={styles.emptyState}>
-            <p>暂无匹配的社区内容</p>
+
+          <div className={styles.searchSection}>
+            <input
+              type="text"
+              placeholder="搜索社区内容..."
+              value={search}
+              onChange={onSearchChange}
+              className={styles.searchInput}
+            />
           </div>
-        )}
+
+          {loading && (
+            <div className={styles.loadingState}>
+              <p>加载中...</p>
+            </div>
+          )}
+
+          {error && (
+            <div className={styles.errorState}>
+              <p>错误: {error}</p>
+              <Button onClick={() => loadDocuments()}>重试</Button>
+            </div>
+          )}
+
+          {!loading && !error && (
+            <>
+              <div className={styles.statsBar}>
+                <span>共找到 {totalElements} 篇文档</span>
+              </div>
+
+              <div className={styles.docGrid}>
+                {documents.map(doc => (
+                  <div key={doc.id} className={styles.docCard}>
+                    {doc.coverImage && (
+                      <div
+                        className={styles.cardCover}
+                        style={{ backgroundImage: `url(${doc.coverImage})` }}
+                      />
+                    )}
+
+                    <div className={styles.cardHeader}>
+                      <h3 className={styles.docTitle}>{doc.title}</h3>
+                      {doc.isPaid && (
+                        <span className={styles.priceTag}>
+                          ¥{doc.discountPrice || doc.price}
+                        </span>
+                      )}
+                    </div>
+
+                    {doc.description && (
+                      <p className={styles.docDescription}>{doc.description}</p>
+                    )}
+
+                    {doc.tags && doc.tags.length > 0 && (
+                      <div className={styles.tagList}>
+                        {doc.tags.map(tag => (
+                          <span
+                            key={tag.id}
+                            className={styles.tag}
+                            style={{ backgroundColor: tag.color }}
+                          >
+                            {tag.name}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+
+                    <div className={styles.cardStats}>
+                      <span title="浏览数">👁️ {doc.viewCount}</span>
+                      <span title="点赞数">❤️ {doc.likeCount}</span>
+                      <span title="收藏数">⭐ {doc.collectCount}</span>
+                      <span title="评论数">💬 {doc.commentCount}</span>
+                    </div>
+
+                    <div className={styles.cardFooter}>
+                      <div className={styles.authorInfo}>
+                        <span className={styles.authorName}>
+                          作者: {doc.authorName}
+                        </span>
+                        <span className={styles.publishedAt}>
+                          {new Date(doc.publishedAt).toLocaleDateString()}
+                        </span>
+                      </div>
+
+                      <div className={styles.actions}>
+                        <button
+                          className={styles.likeButton}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleLike(doc);
+                          }}
+                          data-liked={doc.isLiked}
+                        >
+                          {doc.isLiked ? '❤️' : '🤍'}
+                        </button>
+
+                        <button
+                          className={styles.collectButton}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleCollect(doc);
+                          }}
+                          data-collected={doc.isCollected}
+                        >
+                          {doc.isCollected ? '⭐' : '☆'}
+                        </button>
+
+                        <button
+                          className={styles.viewButton}
+                          onClick={() => handleViewDoc(doc)}
+                        >
+                          查看
+                        </button>
+
+                        <button
+                          className={styles.shareButton}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleShareDoc(doc);
+                          }}
+                        >
+                          分享
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* 分页控制 */}
+              {totalPages > 1 && (
+                <div className={styles.pagination}>
+                  <Button
+                    disabled={currentPage === 0}
+                    onClick={() => setCurrentPage(p => Math.max(0, p - 1))}
+                  >
+                    上一页
+                  </Button>
+
+                  <span className={styles.pageInfo}>
+                    第 {currentPage + 1} / {totalPages} 页
+                  </span>
+
+                  <Button
+                    disabled={currentPage >= totalPages - 1}
+                    onClick={() => setCurrentPage(p => Math.min(totalPages - 1, p + 1))}
+                  >
+                    下一页
+                  </Button>
+                </div>
+              )}
+            </>
+          )}
+
+          {!loading && !error && documents.length === 0 && (
+            <div className={styles.emptyState}>
+              <p>暂无社区内容</p>
+            </div>
+          )}
         </div>
       )}
     </ViewBody>

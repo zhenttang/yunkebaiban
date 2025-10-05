@@ -97,6 +97,7 @@ export class EdgelessRootBlockComponent extends BlockComponent<
 
   private readonly _refreshLayerViewport = requestThrottledConnectedFrame(
     () => {
+      performance.mark('refreshLayerViewport-start');
       const { zoom, translateX, translateY } = this.gfx.viewport;
       const gap = getBgGridGap(zoom);
 
@@ -110,6 +111,8 @@ export class EdgelessRootBlockComponent extends BlockComponent<
           `${gap}px ${gap}px`
         );
       }
+      performance.mark('refreshLayerViewport-end');
+      performance.measure('refreshLayerViewport', 'refreshLayerViewport-start', 'refreshLayerViewport-end');
     },
     this
   );
@@ -145,7 +148,11 @@ export class EdgelessRootBlockComponent extends BlockComponent<
   }
 
   private _initLayerUpdateEffect() {
+    let layerUpdateCount = 0;
     const updateLayers = requestThrottledConnectedFrame(() => {
+      performance.mark('updateLayers-start');
+      layerUpdateCount++;
+
       const blocks = Array.from(
         this.gfxViewportElm.children as HTMLCollectionOf<GfxBlockComponent>
       );
@@ -153,10 +160,19 @@ export class EdgelessRootBlockComponent extends BlockComponent<
       blocks.forEach((block: GfxBlockComponent) => {
         block.updateZIndex?.();
       });
+
+      performance.mark('updateLayers-end');
+      performance.measure(`updateLayers-${layerUpdateCount}`, 'updateLayers-start', 'updateLayers-end');
+
+      if (layerUpdateCount > 10) {
+        console.warn(`⚠️ [Performance] updateLayers 调用过于频繁: ${layerUpdateCount} 次`);
+      }
     });
 
     this._disposables.add(
-      this.gfx.layer.slots.layerUpdated.subscribe(() => updateLayers())
+      this.gfx.layer.slots.layerUpdated.subscribe(() => {
+        updateLayers();
+      })
     );
   }
 
@@ -471,18 +487,21 @@ export class EdgelessRootBlockComponent extends BlockComponent<
   }
 
   override renderBlock() {
+    performance.mark('edgeless-renderBlock-start');
+
     const widgets = repeat(
       Object.entries(this.widgets),
       ([id]) => id,
       ([_, widget]) => widget
     );
 
-    return html`
+    const result = html`
       <div class="edgeless-background edgeless-container">
         <gfx-viewport
-          .maxConcurrentRenders=${6}
+          .maxConcurrentRenders=${8}
           .viewport=${this.gfx.viewport}
           .getModelsInViewport=${() => {
+            performance.mark('viewport-getModels-start');
             const blocks = this.gfx.grid.search(
               this.gfx.viewport.viewportBounds,
               {
@@ -490,6 +509,8 @@ export class EdgelessRootBlockComponent extends BlockComponent<
                 filter: ['block'],
               }
             );
+            performance.mark('viewport-getModels-end');
+            performance.measure('viewport-getModels', 'viewport-getModels-start', 'viewport-getModels-end');
 
             return blocks;
           }}
@@ -508,6 +529,11 @@ export class EdgelessRootBlockComponent extends BlockComponent<
 
       <div class="widgets-container">${widgets}</div>
     `;
+
+    performance.mark('edgeless-renderBlock-end');
+    performance.measure('edgeless-renderBlock', 'edgeless-renderBlock-start', 'edgeless-renderBlock-end');
+
+    return result;
   }
 
   @query('.edgeless-background')

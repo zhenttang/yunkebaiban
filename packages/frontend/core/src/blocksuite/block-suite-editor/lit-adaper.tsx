@@ -1,6 +1,8 @@
 // eslint-disable-next-line @typescript-eslint/no-restricted-imports
 import 'katex/dist/katex.min.css';
 
+import '@affine/core/blocksuite/utils/performance-monitor';
+import '@affine/core/blocksuite/utils/edgeless-performance-monitor';
 import { useConfirmModal, useLitPortalFactory } from '@affine/component';
 import {
   type EdgelessEditor,
@@ -35,6 +37,7 @@ import type React from 'react';
 import {
   forwardRef,
   Fragment,
+  memo,
   useCallback,
   useEffect,
   useMemo,
@@ -81,6 +84,7 @@ const usePatchSpecs = (mode: DocMode) => {
   );
 
   const patchedSpecs = useMemo(() => {
+    performance.mark('specs-start');
     const manager = getViewManager()
       .config.init()
       .foundation(framework)
@@ -110,11 +114,17 @@ const usePatchSpecs = (mode: DocMode) => {
 
     if (BUILD_CONFIG.isMobileEdition) {
       if (mode === 'page') {
+        performance.mark('specs-end');
+        performance.measure('usePatchSpecs-mobile-page', 'specs-start', 'specs-end');
         return manager.get('mobile-page');
       } else {
+        performance.mark('specs-end');
+        performance.measure('usePatchSpecs-mobile-edgeless', 'specs-start', 'specs-end');
         return manager.get('mobile-edgeless');
       }
     } else {
+      performance.mark('specs-end');
+      performance.measure(`usePatchSpecs-${mode}`, 'specs-start', 'specs-end');
       return manager.get(mode);
     }
   }, [
@@ -282,12 +292,20 @@ export const BlocksuiteDocEditor = forwardRef<
     </>
   );
 });
-export const BlocksuiteEdgelessEditor = forwardRef<
+const BlocksuiteEdgelessEditorComponent = forwardRef<
   EdgelessEditor,
   BlocksuiteEditorProps
 >(function BlocksuiteEdgelessEditor({ page }, ref) {
   const [specs, portals] = usePatchSpecs('edgeless');
   const editorRef = useRef<EdgelessEditor | null>(null);
+  const renderCountRef = useRef(0);
+
+  useEffect(() => {
+    renderCountRef.current++;
+    if (renderCountRef.current > 1) {
+      console.warn(`⚠️ [Performance] BlocksuiteEdgelessEditor 重新渲染次数: ${renderCountRef.current}`);
+    }
+  });
 
   const onDocRef = useCallback(
     (el: EdgelessEditor) => {
@@ -305,12 +323,15 @@ export const BlocksuiteEdgelessEditor = forwardRef<
 
   useEffect(() => {
     if (editorRef.current) {
+      performance.mark('edgeless-focus-start');
       editorRef.current.updateComplete
         .then(() => {
-          // make sure editor can get keyboard events on showing up
-          editorRef.current
-            ?.querySelector<HTMLElement>('affine-edgeless-root')
-            ?.click();
+          const root = editorRef.current?.querySelector<HTMLElement>('affine-edgeless-root');
+          if (root) {
+            root.focus();
+            performance.mark('edgeless-focus-end');
+            performance.measure('edgeless-focus-init', 'edgeless-focus-start', 'edgeless-focus-end');
+          }
         })
         .catch(console.error);
     }
@@ -323,3 +344,10 @@ export const BlocksuiteEdgelessEditor = forwardRef<
     </div>
   );
 });
+
+export const BlocksuiteEdgelessEditor = memo(
+  BlocksuiteEdgelessEditorComponent,
+  (prevProps, nextProps) => {
+    return prevProps.page === nextProps.page;
+  }
+);

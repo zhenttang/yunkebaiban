@@ -224,9 +224,144 @@ export const shareButton = style({
   borderRadius: '6px',
   cursor: 'pointer',
   transition: 'all 0.2s ease',
-  
+
   ':hover': {
     backgroundColor: cssVarV2('layer/background/secondary'),
     color: cssVarV2('text/primary'),
   },
+});
+
+export const loadingState = style({
+  textAlign: 'center',
+  padding: '40px',
+  color: cssVarV2('text/secondary'),
+});
+
+export const errorState = style({
+  textAlign: 'center',
+  padding: '40px',
+  color: cssVarV2('status/error'),
+});
+
+export const statsBar = style({
+  display: 'flex',
+  gap: '16px',
+  alignItems: 'center',
+  fontSize: '14px',
+  color: cssVarV2('text/secondary'),
+  marginBottom: '16px',
+});
+
+export const cardCover = style({
+  width: '100%',
+  height: '160px',
+  objectFit: 'cover',
+  borderRadius: '4px',
+  marginBottom: '12px',
+  backgroundColor: cssVarV2('layer/background/secondary'),
+});
+
+export const priceTag = style({
+  fontSize: '14px',
+  fontWeight: '600',
+  color: cssVarV2('status/warning'),
+  backgroundColor: cssVarV2('layer/background/warning'),
+  padding: '4px 8px',
+  borderRadius: '4px',
+});
+
+export const tagList = style({
+  display: 'flex',
+  gap: '8px',
+  flexWrap: 'wrap',
+  marginBottom: '12px',
+});
+
+export const tag = style({
+  fontSize: '12px',
+  padding: '4px 8px',
+  backgroundColor: cssVarV2('layer/background/secondary'),
+  color: cssVarV2('text/primary'),
+  borderRadius: '4px',
+  border: `1px solid ${cssVarV2('layer/border')}`,
+});
+
+export const cardStats = style({
+  display: 'flex',
+  gap: '12px',
+  alignItems: 'center',
+  fontSize: '12px',
+  color: cssVarV2('text/tertiary'),
+});
+
+export const publishedAt = style({
+  fontSize: '12px',
+  color: cssVarV2('text/tertiary'),
+});
+
+export const likeButton = style({
+  display: 'flex',
+  alignItems: 'center',
+  gap: '4px',
+  padding: '4px 8px',
+  fontSize: '12px',
+  backgroundColor: 'transparent',
+  color: cssVarV2('text/secondary'),
+  border: `1px solid ${cssVarV2('layer/border')}`,
+  borderRadius: '4px',
+  cursor: 'pointer',
+  transition: 'all 0.2s ease',
+
+  ':hover': {
+    backgroundColor: cssVarV2('layer/background/secondary'),
+    color: cssVarV2('text/primary'),
+  },
+
+  selectors: {
+    '&[data-liked="true"]': {
+      color: cssVarV2('status/error'),
+      borderColor: cssVarV2('status/error'),
+    },
+  },
+});
+
+export const collectButton = style({
+  display: 'flex',
+  alignItems: 'center',
+  gap: '4px',
+  padding: '4px 8px',
+  fontSize: '12px',
+  backgroundColor: 'transparent',
+  color: cssVarV2('text/secondary'),
+  border: `1px solid ${cssVarV2('layer/border')}`,
+  borderRadius: '4px',
+  cursor: 'pointer',
+  transition: 'all 0.2s ease',
+
+  ':hover': {
+    backgroundColor: cssVarV2('layer/background/secondary'),
+    color: cssVarV2('text/primary'),
+  },
+
+  selectors: {
+    '&[data-collected="true"]': {
+      color: cssVarV2('status/warning'),
+      borderColor: cssVarV2('status/warning'),
+    },
+  },
+});
+
+export const pagination = style({
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  gap: '8px',
+  padding: '16px',
+  marginTop: '16px',
+});
+
+export const pageInfo = style({
+  fontSize: '14px',
+  color: cssVarV2('text/secondary'),
+  margin: '0 16px',
 });

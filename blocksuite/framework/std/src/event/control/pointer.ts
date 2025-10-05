@@ -59,7 +59,6 @@ class PointerEventForward extends PointerControllerBase {
 
   private readonly _move = (event: PointerEvent) => {
     const { pointerId } = event;
-
     const start = this._startStates.get(pointerId) ?? null;
     const last = this._lastStates.get(pointerId) ?? null;
 

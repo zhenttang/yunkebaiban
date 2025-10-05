@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { createPortal } from 'react-dom';
 import { PermissionSelector } from './components/permission-selector';
 import { communityApi } from '../../../../api/community';
 import { CommunityPermission } from '../../../../types/community';
@@ -25,9 +26,7 @@ export const ShareToCommunityModal = ({
   const [loading, setLoading] = useState(false);
 
   const showToast = (message: string, type: 'success' | 'error' = 'success') => {
-    // 简单的toast实现，实际项目中应该使用现有的toast组件
     console.log(`${type.toUpperCase()}: ${message}`);
-    // 这里应该调用项目现有的toast组件
   };
 
   const handleShare = async () => {
@@ -38,21 +37,35 @@ export const ShareToCommunityModal = ({
 
     setLoading(true);
     try {
-      const response = await communityApi.shareDocToCommunity(workspaceId, docId, {
+      const document = await communityApi.shareDocToCommunity(workspaceId, docId, {
         title: title.trim(),
         description: description.trim(),
         permission
       });
 
-      if (response.success) {
+      if (document && document.id) {
         showToast('文档已成功分享到社区', 'success');
         onSuccess?.();
         onClose();
       } else {
-        showToast(response.error || '分享失败', 'error');
+        showToast('分享失败', 'error');
       }
     } catch (error) {
-      showToast('网络错误，请重试', 'error');
+      console.error('分享失败:', error);
+
+      let errorMessage = '网络错误，请重试';
+      if (error instanceof Error) {
+        if (error.message.includes('401') || error.message.includes('Unauthorized')) {
+          errorMessage = '请先登录后再分享文档到社区';
+        } else if (error.message.includes('403') || error.message.includes('Forbidden')) {
+          errorMessage = '您没有权限分享此文档';
+        } else {
+          errorMessage = error.message;
+        }
+      }
+
+      showToast(errorMessage, 'error');
+      alert(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -64,7 +77,7 @@ export const ShareToCommunityModal = ({
     }
   };
 
-  return (
+  return createPortal(
     <div className={styles.modalBackdrop} onClick={handleBackdropClick}>
       <div className={styles.modalContainer}>
         <div className={styles.modalHeader}>
@@ -129,6 +142,7 @@ export const ShareToCommunityModal = ({
           </div>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 };

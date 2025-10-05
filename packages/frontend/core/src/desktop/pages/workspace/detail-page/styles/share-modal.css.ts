@@ -1,3 +1,4 @@
+import { cssVar } from '@toeverything/theme';
 import { style } from '@vanilla-extract/css';
 
 export const modalBackdrop = style({
@@ -10,7 +11,7 @@ export const modalBackdrop = style({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  zIndex: 1000,
+  zIndex: 10000,
 });
 
 export const modalContainer = style({

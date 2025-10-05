@@ -36,15 +36,12 @@ export const CommunityShareButton = ({
 
     setLoading(true);
     try {
-      const response = await communityApi.unshareDocFromCommunity(workspaceId, docId);
-      if (response.success) {
-        setIsShared(false);
-        showToast('已取消分享到社区', 'success');
-      } else {
-        showToast(response.error || '取消分享失败', 'error');
-      }
+      await communityApi.unshareDocFromCommunity(workspaceId, docId);
+      setIsShared(false);
+      showToast('已取消分享到社区', 'success');
     } catch (error) {
-      showToast('网络错误，请重试', 'error');
+      console.error('取消分享失败:', error);
+      showToast(error instanceof Error ? error.message : '网络错误，请重试', 'error');
     } finally {
       setLoading(false);
     }

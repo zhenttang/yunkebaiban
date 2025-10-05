@@ -65,11 +65,23 @@ export class EdgelessEditor extends SignalWatcher(
 
     const std = this.std;
     const theme = std.get(ThemeProvider).edgeless$.value;
-    return html`
+
+    performance.mark('edgeless-render-start');
+    const result = html`
       <div class="affine-edgeless-viewport" data-theme=${theme}>
-        ${guard([std], () => std.render())}
+        ${guard([std], () => {
+          performance.mark('std-render-start');
+          const rendered = std.render();
+          performance.mark('std-render-end');
+          performance.measure('std-render', 'std-render-start', 'std-render-end');
+          return rendered;
+        })}
       </div>
     `;
+    performance.mark('edgeless-render-end');
+    performance.measure('edgeless-render', 'edgeless-render-start', 'edgeless-render-end');
+
+    return result;
   }
 
   override willUpdate(
@@ -77,13 +89,17 @@ export class EdgelessEditor extends SignalWatcher(
   ) {
     super.willUpdate(changedProperties);
     if (
-      this.hasUpdated && // skip the first update
+      this.hasUpdated &&
       changedProperties.has('doc')
     ) {
+      console.warn('⚠️ [Performance] EdgelessEditor.std 重建 - doc 变化');
+      performance.mark('std-rebuild-start');
       this.std = new BlockStdScope({
         store: this.doc,
         extensions: this.specs,
       });
+      performance.mark('std-rebuild-end');
+      performance.measure('std-rebuild', 'std-rebuild-start', 'std-rebuild-end');
     }
   }
 

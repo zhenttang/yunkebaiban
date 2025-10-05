@@ -21,7 +21,10 @@ export const blockSuiteEditorStyle = style({
 export const illustration = style({
   maxWidth: '100%',
   width: 300,
+  height: 200,
+  aspectRatio: '3/2',
   alignSelf: 'center',
+  color: cssVarV2('text/secondary'), // 自动适配主题色
 });
 export const content = style({
   width: '100%',
