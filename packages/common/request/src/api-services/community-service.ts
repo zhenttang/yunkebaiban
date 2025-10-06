@@ -3,21 +3,23 @@
  * 提供文档分享到社区相关的API调用功能
  */
 
-import { httpClient } from '../client';
+import { AxiosHttpClient } from '../client';
 import type {
   CommunityDoc,
   ShareToCommunityRequest,
   GetCommunityDocsParams,
   CommunityDocsResponse,
-  CommunityPermission,
   CommunityApiResponse,
   UpdateCommunityPermissionRequest
 } from '../types/community';
+import { CommunityPermission } from '../types/community';
 
 /**
  * 社区API调用类
  */
 export class CommunityService {
+
+  private readonly http = new AxiosHttpClient();
   
   /**
    * 分享文档到社区
@@ -31,7 +33,7 @@ export class CommunityService {
     docId: string, 
     data: ShareToCommunityRequest
   ): Promise<CommunityApiResponse> {
-    return httpClient.post(`/api/community/workspaces/${workspaceId}/docs/${docId}/share`, data);
+    return this.http.post(`/api/community/workspaces/${workspaceId}/docs/${docId}/share`, data);
   }
 
   /**
@@ -59,7 +61,7 @@ export class CommunityService {
     const queryString = searchParams.toString();
     const url = `/api/community/workspaces/${workspaceId}/docs${queryString ? `?${queryString}` : ''}`;
     
-    return httpClient.get(url);
+    return this.http.get(url);
   }
 
   /**
@@ -72,7 +74,7 @@ export class CommunityService {
     workspaceId: string, 
     docId: string
   ): Promise<CommunityApiResponse> {
-    return httpClient.delete(`/api/community/workspaces/${workspaceId}/docs/${docId}/share`);
+    return this.http.delete(`/api/community/workspaces/${workspaceId}/docs/${docId}/share`);
   }
 
   /**
@@ -87,7 +89,7 @@ export class CommunityService {
     docId: string, 
     permission: CommunityPermission
   ): Promise<CommunityApiResponse> {
-    return httpClient.put(`/api/community/workspaces/${workspaceId}/docs/${docId}/permission`, {
+    return this.http.put(`/api/community/workspaces/${workspaceId}/docs/${docId}/permission`, {
       permission
     });
   }
@@ -102,7 +104,7 @@ export class CommunityService {
     workspaceId: string, 
     docId: string
   ): Promise<CommunityApiResponse> {
-    return httpClient.post(`/api/community/workspaces/${workspaceId}/docs/${docId}/view`);
+    return this.http.post(`/api/community/workspaces/${workspaceId}/docs/${docId}/view`);
   }
 
   /**
@@ -115,7 +117,7 @@ export class CommunityService {
     workspaceId: string, 
     docId: string
   ): Promise<CommunityApiResponse<CommunityDoc>> {
-    return httpClient.get(`/api/community/workspaces/${workspaceId}/docs/${docId}`);
+    return this.http.get(`/api/community/workspaces/${workspaceId}/docs/${docId}`);
   }
 }
 

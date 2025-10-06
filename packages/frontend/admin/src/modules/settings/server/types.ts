@@ -23,28 +23,39 @@ export interface SystemInfoDto {
     version: string;
     buildTime: string;
     gitCommit?: string;
-    environment: string;
+    environment?: string;
+    buildProfile?: string; // 后端实际字段
+    javaVersion?: string;
+    springBootVersion?: string;
   };
   runtime: {
-    uptime: number;
+    uptime?: number; // 前端期望的字段
+    uptimeSeconds?: number; // 后端实际字段
     startTime: string;
-    javaVersion: string;
+    javaVersion?: string;
     maxMemory: number;
     totalMemory: number;
     freeMemory: number;
+    usedMemory?: number;
+    memoryUsagePercentage?: number;
+    activeThreads?: number;
   };
   system: {
     osName: string;
     osVersion: string;
     osArch: string;
-    availableProcessors: number;
-    memory: {
+    availableProcessors?: number; // 前端期望的字段
+    cpuCores?: number; // 后端实际字段
+    systemLoad?: number;
+    systemTimezone?: string;
+    systemEncoding?: string;
+    memory?: {
       total: number;
       used: number;
       free: number;
     };
   };
-  status: ServiceStatus;
+  status?: ServiceStatus;
 }
 
 export interface ServiceStatus {

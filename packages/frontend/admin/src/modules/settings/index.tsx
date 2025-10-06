@@ -15,9 +15,8 @@ import {
 import { type ConfigInputProps, ConfigRow } from './config-input-row';
 import { useAppConfig } from './use-app-config';
 
-// 懒加载特殊页面
-const ServerSettingsPage = lazy(() => import('./server'));
-const AuthSettingsPage = lazy(() => import('./auth'));
+const ServerSettingsPage = lazy(() => import('./server').then(m => ({ default: m.Component })));
+const AuthSettingsPage = lazy(() => import('./auth').then(m => ({ default: m.Component })));
 
 export function SettingsPage() {
   const { appConfig, update, save, patchedAppConfig, updates } = useAppConfig();
@@ -25,6 +24,13 @@ export function SettingsPage() {
   const { setCurrentModule } = useNav();
   const navigate = useNavigate();
   const disableSave = Object.keys(updates).length === 0;
+
+  const saveChanges = useCallback(() => {
+    if (disableSave) {
+      return;
+    }
+    save();
+  }, [save, disableSave]);
 
   // 同步URL参数到context
   useEffect(() => {
@@ -69,13 +75,6 @@ export function SettingsPage() {
       </Suspense>
     );
   }
-
-  const saveChanges = useCallback(() => {
-    if (disableSave) {
-      return;
-    }
-    save();
-  }, [save, disableSave]);
 
   return (
     <div className="h-screen flex-1 flex-col flex">

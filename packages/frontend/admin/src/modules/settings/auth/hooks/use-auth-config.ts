@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from 'react';
-import { httpClient } from '../../../../../../common/request/src';
+import { httpClient } from '@affine/request';
 import type { AuthConfigDto, PasswordPolicyDto } from '../types';
 
 export function useAuthConfig() {
@@ -12,7 +12,7 @@ export function useAuthConfig() {
     try {
       setLoading(true);
       setError(null);
-      const response = await httpClient.get('/api/admin/auth/config');
+      const response = await httpClient.get('/api/admin/security-config');
       setConfig(response);
     } catch (err: any) {
       console.error('Failed to fetch auth config:', err);
@@ -26,7 +26,7 @@ export function useAuthConfig() {
     try {
       setSaving(true);
       setError(null);
-      const response = await httpClient.put('/api/admin/auth/config', newConfig);
+      const response = await httpClient.put('/api/admin/security-config', newConfig);
       if (response.success) {
         setConfig(newConfig);
         return { success: true, message: response.message };
@@ -43,7 +43,7 @@ export function useAuthConfig() {
 
   const testLoginProtection = useCallback(async () => {
     try {
-      const response = await httpClient.post('/api/admin/auth/test-login-protection');
+      const response = await httpClient.post('/api/admin/security-config/test-login-protection');
       return response;
     } catch (err: any) {
       throw new Error(err.message || '登录保护测试失败');
@@ -52,7 +52,7 @@ export function useAuthConfig() {
 
   const resetFailedAttempts = useCallback(async (userId: string) => {
     try {
-      const response = await httpClient.post(`/api/admin/auth/reset-failed-attempts?userId=${userId}`);
+      const response = await httpClient.post(`/api/admin/security-config/reset-failed-attempts?userId=${userId}`);
       return response;
     } catch (err: any) {
       throw new Error(err.message || '重置失败计数失败');
@@ -85,7 +85,7 @@ export function usePasswordPolicy() {
     try {
       setLoading(true);
       setError(null);
-      const response = await httpClient.get('/api/admin/auth/password-policy');
+      const response = await httpClient.get('/api/admin/security-config/password-policy');
       setPolicy(response);
     } catch (err: any) {
       console.error('Failed to fetch password policy:', err);
@@ -99,7 +99,7 @@ export function usePasswordPolicy() {
     try {
       setSaving(true);
       setError(null);
-      const response = await httpClient.put('/api/admin/auth/password-policy', newPolicy);
+      const response = await httpClient.put('/api/admin/security-config/password-policy', newPolicy);
       if (response.success) {
         setPolicy(newPolicy);
         return { success: true, message: response.message };

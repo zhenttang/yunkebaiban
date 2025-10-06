@@ -15,14 +15,13 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@affine/admin/components/ui/dropdown-menu';
-import { 
+import {
   FileIcon,
   MoreHorizontalIcon,
   DownloadIcon,
-  TrashIcon,
-  RefreshIcon,
   SearchIcon
 } from '@blocksuite/icons/rc';
+import { Trash2 as TrashIcon, RefreshCw as RefreshIcon } from 'lucide-react';
 import { Input } from '@affine/admin/components/ui/input';
 import { useState } from 'react';
 import { formatBytes, formatDate } from '@affine/admin/utils';

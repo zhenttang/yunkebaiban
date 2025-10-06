@@ -2,13 +2,10 @@ import { Card, CardContent, CardHeader, CardTitle } from '@affine/admin/componen
 import { Button } from '@affine/admin/components/ui/button';
 import { Alert, AlertDescription } from '@affine/admin/components/ui/alert';
 import { Progress } from '@affine/admin/components/ui/progress';
-import { 
-  TrashIcon, 
-  RefreshIcon, 
-  ArchiveIcon,
-  InfoIcon,
-  CheckCircleIcon
+import {
+  InfoIcon
 } from '@blocksuite/icons/rc';
+import { Trash2 as TrashIcon, RefreshCw as RefreshIcon, Archive as ArchiveIcon, CheckCircle as CheckCircleIcon } from 'lucide-react';
 import { useState } from 'react';
 import { formatBytes } from '@affine/admin/utils';
 

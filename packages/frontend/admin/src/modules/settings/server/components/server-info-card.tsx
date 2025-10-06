@@ -2,18 +2,18 @@ import { Card, CardContent, CardHeader, CardTitle } from '@affine/admin/componen
 import { Badge } from '@affine/admin/components/ui/badge';
 import { Progress } from '@affine/admin/components/ui/progress';
 import { Separator } from '@affine/admin/components/ui/separator';
-import { 
-  Server, 
-  Activity, 
-  HardDrive, 
-  Clock, 
+import {
+  Server,
+  Activity,
+  HardDrive,
+  Clock,
   Cpu,
   Database,
   Mail,
-  Storage,
   CheckCircle,
   XCircle,
-  AlertTriangle
+  AlertTriangle,
+  HardDrive as Storage
 } from 'lucide-react';
 import type { SystemInfoDto, ServiceStatus } from '../types';
 
@@ -44,7 +44,16 @@ export function ServerInfoCard({ systemInfo, loading }: ServerInfoCardProps) {
   }
 
   const { version, runtime, system, status } = systemInfo;
-  
+
+  // 兼容后端返回的数据结构，添加默认值
+  const safeStatus = status || {
+    overall: 'DOWN',
+    database: { status: 'DOWN' },
+    redis: { status: 'DOWN' },
+    storage: { status: 'DOWN' },
+    email: { status: 'DOWN' }
+  };
+
   const formatBytes = (bytes: number) => {
     const sizes = ['B', 'KB', 'MB', 'GB'];
     if (bytes === 0) return '0 B';
@@ -67,7 +76,10 @@ export function ServerInfoCard({ systemInfo, loading }: ServerInfoCardProps) {
     }
   };
 
-  const getStatusIcon = (componentStatus: { status: string }) => {
+  const getStatusIcon = (componentStatus?: { status: string }) => {
+    if (!componentStatus) {
+      return <XCircle className="h-4 w-4 text-gray-400" />;
+    }
     switch (componentStatus.status) {
       case 'UP':
         return <CheckCircle className="h-4 w-4 text-green-500" />;
@@ -93,7 +105,7 @@ export function ServerInfoCard({ systemInfo, loading }: ServerInfoCardProps) {
     }
   };
 
-  const memoryUsagePercent = system.memory ? 
+  const memoryUsagePercent = system?.memory ?
     ((system.memory.used / system.memory.total) * 100) : 0;
 
   return (
@@ -110,17 +122,17 @@ export function ServerInfoCard({ systemInfo, loading }: ServerInfoCardProps) {
           <div className="grid grid-cols-2 gap-4 text-sm">
             <div>
               <span className="text-gray-600">版本号</span>
-              <p className="font-medium">{version.version}</p>
+              <p className="font-medium">{version?.version || 'Unknown'}</p>
             </div>
             <div>
               <span className="text-gray-600">环境</span>
-              <p className="font-medium">{version.environment}</p>
+              <p className="font-medium">{version?.environment || version?.buildProfile || 'Unknown'}</p>
             </div>
             <div>
               <span className="text-gray-600">构建时间</span>
-              <p className="font-medium">{new Date(version.buildTime).toLocaleString()}</p>
+              <p className="font-medium">{version?.buildTime ? new Date(version.buildTime).toLocaleString() : 'Unknown'}</p>
             </div>
-            {version.gitCommit && (
+            {version?.gitCommit && (
               <div>
                 <span className="text-gray-600">Git提交</span>
                 <p className="font-medium font-mono text-xs">{version.gitCommit.substring(0, 8)}</p>
@@ -142,34 +154,36 @@ export function ServerInfoCard({ systemInfo, loading }: ServerInfoCardProps) {
           <div className="grid grid-cols-2 gap-4 text-sm">
             <div>
               <span className="text-gray-600">运行时间</span>
-              <p className="font-medium">{formatUptime(runtime.uptime)}</p>
+              <p className="font-medium">{runtime?.uptime ? formatUptime(runtime.uptime) : runtime?.uptimeSeconds ? formatUptime(runtime.uptimeSeconds * 1000) : 'Unknown'}</p>
             </div>
             <div>
               <span className="text-gray-600">Java版本</span>
-              <p className="font-medium">{runtime.javaVersion}</p>
+              <p className="font-medium">{runtime?.javaVersion || 'Unknown'}</p>
             </div>
             <div>
               <span className="text-gray-600">启动时间</span>
-              <p className="font-medium">{new Date(runtime.startTime).toLocaleString()}</p>
+              <p className="font-medium">{runtime?.startTime ? new Date(runtime.startTime).toLocaleString() : 'Unknown'}</p>
             </div>
             <div>
               <span className="text-gray-600">最大内存</span>
-              <p className="font-medium">{formatBytes(runtime.maxMemory)}</p>
+              <p className="font-medium">{runtime?.maxMemory ? formatBytes(runtime.maxMemory) : 'Unknown'}</p>
             </div>
           </div>
-          
-          <div>
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-medium">JVM内存使用率</span>
-              <span className="text-sm text-gray-600">
-                {formatBytes(runtime.totalMemory - runtime.freeMemory)} / {formatBytes(runtime.totalMemory)}
-              </span>
+
+          {runtime && (
+            <div>
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-sm font-medium">JVM内存使用率</span>
+                <span className="text-sm text-gray-600">
+                  {formatBytes(runtime.totalMemory - runtime.freeMemory)} / {formatBytes(runtime.totalMemory)}
+                </span>
+              </div>
+              <Progress
+                value={((runtime.totalMemory - runtime.freeMemory) / runtime.totalMemory) * 100}
+                className="h-2"
+              />
             </div>
-            <Progress 
-              value={((runtime.totalMemory - runtime.freeMemory) / runtime.totalMemory) * 100} 
-              className="h-2" 
-            />
-          </div>
+          )}
         </CardContent>
       </Card>
 
@@ -185,23 +199,23 @@ export function ServerInfoCard({ systemInfo, loading }: ServerInfoCardProps) {
           <div className="grid grid-cols-2 gap-4 text-sm">
             <div>
               <span className="text-gray-600">操作系统</span>
-              <p className="font-medium">{system.osName}</p>
+              <p className="font-medium">{system?.osName || 'Unknown'}</p>
             </div>
             <div>
               <span className="text-gray-600">系统版本</span>
-              <p className="font-medium">{system.osVersion}</p>
+              <p className="font-medium">{system?.osVersion || 'Unknown'}</p>
             </div>
             <div>
               <span className="text-gray-600">系统架构</span>
-              <p className="font-medium">{system.osArch}</p>
+              <p className="font-medium">{system?.osArch || 'Unknown'}</p>
             </div>
             <div>
               <span className="text-gray-600">处理器核心</span>
-              <p className="font-medium">{system.availableProcessors} 核</p>
+              <p className="font-medium">{system?.availableProcessors || system?.cpuCores || 'Unknown'} 核</p>
             </div>
           </div>
 
-          {system.memory && (
+          {system?.memory && (
             <div>
               <div className="flex items-center justify-between mb-2">
                 <span className="text-sm font-medium">系统内存使用率</span>
@@ -221,8 +235,8 @@ export function ServerInfoCard({ systemInfo, loading }: ServerInfoCardProps) {
           <CardTitle className="flex items-center gap-2">
             <CheckCircle className="h-5 w-5" />
             健康状态
-            <Badge variant={getStatusColor(status.overall)} className="ml-auto">
-              {status.overall === 'UP' ? '健康' : status.overall === 'DOWN' ? '异常' : '警告'}
+            <Badge variant={getStatusColor(safeStatus.overall)} className="ml-auto">
+              {safeStatus.overall === 'UP' ? '健康' : safeStatus.overall === 'DOWN' ? '异常' : '警告'}
             </Badge>
           </CardTitle>
         </CardHeader>
@@ -233,9 +247,9 @@ export function ServerInfoCard({ systemInfo, loading }: ServerInfoCardProps) {
               <span className="text-sm font-medium">数据库</span>
             </div>
             <div className="flex items-center gap-2">
-              {getStatusIcon(status.database)}
-              <Badge variant={getStatusColor(status.database.status)}>
-                {status.database.status === 'UP' ? '正常' : '异常'}
+              {getStatusIcon(safeStatus.database)}
+              <Badge variant={getStatusColor(safeStatus.database?.status || 'DOWN')}>
+                {safeStatus.database?.status === 'UP' ? '正常' : '异常'}
               </Badge>
             </div>
           </div>
@@ -246,9 +260,9 @@ export function ServerInfoCard({ systemInfo, loading }: ServerInfoCardProps) {
               <span className="text-sm font-medium">Redis缓存</span>
             </div>
             <div className="flex items-center gap-2">
-              {getStatusIcon(status.redis)}
-              <Badge variant={getStatusColor(status.redis.status)}>
-                {status.redis.status === 'UP' ? '正常' : '异常'}
+              {getStatusIcon(safeStatus.redis)}
+              <Badge variant={getStatusColor(safeStatus.redis?.status || 'DOWN')}>
+                {safeStatus.redis?.status === 'UP' ? '正常' : '异常'}
               </Badge>
             </div>
           </div>
@@ -259,9 +273,9 @@ export function ServerInfoCard({ systemInfo, loading }: ServerInfoCardProps) {
               <span className="text-sm font-medium">存储服务</span>
             </div>
             <div className="flex items-center gap-2">
-              {getStatusIcon(status.storage)}
-              <Badge variant={getStatusColor(status.storage.status)}>
-                {status.storage.status === 'UP' ? '正常' : '异常'}
+              {getStatusIcon(safeStatus.storage)}
+              <Badge variant={getStatusColor(safeStatus.storage?.status || 'DOWN')}>
+                {safeStatus.storage?.status === 'UP' ? '正常' : '异常'}
               </Badge>
             </div>
           </div>
@@ -272,9 +286,9 @@ export function ServerInfoCard({ systemInfo, loading }: ServerInfoCardProps) {
               <span className="text-sm font-medium">邮件服务</span>
             </div>
             <div className="flex items-center gap-2">
-              {getStatusIcon(status.email)}
-              <Badge variant={getStatusColor(status.email.status)}>
-                {status.email.status === 'UP' ? '正常' : '异常'}
+              {getStatusIcon(safeStatus.email)}
+              <Badge variant={getStatusColor(safeStatus.email?.status || 'DOWN')}>
+                {safeStatus.email?.status === 'UP' ? '正常' : '异常'}
               </Badge>
             </div>
           </div>

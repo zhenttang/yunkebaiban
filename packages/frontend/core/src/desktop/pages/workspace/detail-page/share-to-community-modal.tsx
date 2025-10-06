@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import { createPortal } from 'react-dom';
 import { PermissionSelector } from './components/permission-selector';
-import { communityApi } from '../../../../api/community';
-import { CommunityPermission } from '../../../../types/community';
+import {
+  CommunityPermission,
+  ShareToCommunityRequest,
+} from '../community/types';
+import { shareDocToCommunity } from '../community/api';
 import * as styles from './styles/share-modal.css';
 
 interface ShareToCommunityModalProps {
@@ -18,7 +21,7 @@ export const ShareToCommunityModal = ({
   workspaceId,
   defaultTitle,
   onClose,
-  onSuccess
+  onSuccess,
 }: ShareToCommunityModalProps) => {
   const [title, setTitle] = useState(defaultTitle);
   const [description, setDescription] = useState('');
@@ -37,13 +40,15 @@ export const ShareToCommunityModal = ({
 
     setLoading(true);
     try {
-      const document = await communityApi.shareDocToCommunity(workspaceId, docId, {
+      const payload: ShareToCommunityRequest = {
         title: title.trim(),
         description: description.trim(),
-        permission
-      });
+        permission,
+      };
 
-      if (document && document.id) {
+      const sharedDoc = await shareDocToCommunity(workspaceId, docId, payload);
+
+      if (sharedDoc && sharedDoc.id) {
         showToast('文档已成功分享到社区', 'success');
         onSuccess?.();
         onClose();
@@ -71,8 +76,8 @@ export const ShareToCommunityModal = ({
     }
   };
 
-  const handleBackdropClick = (e: React.MouseEvent) => {
-    if (e.target === e.currentTarget) {
+  const handleBackdropClick = (event: React.MouseEvent) => {
+    if (event.target === event.currentTarget) {
       onClose();
     }
   };
@@ -82,8 +87,8 @@ export const ShareToCommunityModal = ({
       <div className={styles.modalContainer}>
         <div className={styles.modalHeader}>
           <h2 className={styles.modalTitle}>分享到社区</h2>
-          <button 
-            className={styles.closeButton} 
+          <button
+            className={styles.closeButton}
             onClick={onClose}
             aria-label="关闭"
           >
@@ -97,7 +102,7 @@ export const ShareToCommunityModal = ({
             <input
               className={styles.input}
               value={title}
-              onChange={(e) => setTitle(e.target.value)}
+              onChange={event => setTitle(event.target.value)}
               placeholder="请输入社区显示的标题"
               maxLength={200}
             />
@@ -108,28 +113,36 @@ export const ShareToCommunityModal = ({
             <textarea
               className={styles.textarea}
               value={description}
-              onChange={(e) => setDescription(e.target.value)}
+              onChange={event => setDescription(event.target.value)}
               placeholder="简单描述文档内容（可选）"
               rows={3}
               maxLength={500}
             />
           </div>
 
+          <div
+            style={{
+              padding: '12px',
+              backgroundColor: 'var(--affine-background-secondary-color)',
+              borderRadius: '8px',
+              marginBottom: '16px',
+              fontSize: '13px',
+              color: 'var(--affine-text-secondary-color)',
+              lineHeight: '1.5',
+            }}
+          >
+            <div style={{ marginBottom: '4px', fontWeight: 500 }}>ℹ️ 分享说明</div>
+            <div>• 分享后，文档将自动设为公开，其他用户可以访问</div>
+            <div>• 源文档更新后，社区中的内容会自动同步，无需重新分享</div>
+          </div>
+
           <div className={styles.formGroup}>
             <label className={styles.label}>访问权限</label>
-            <PermissionSelector
-              value={permission}
-              onChange={setPermission}
-              disabled={loading}
-            />
+            <PermissionSelector value={permission} onChange={setPermission} disabled={loading} />
           </div>
 
           <div className={styles.buttonGroup}>
-            <button 
-              className={styles.cancelButton} 
-              onClick={onClose}
-              disabled={loading}
-            >
+            <button className={styles.cancelButton} onClick={onClose} disabled={loading}>
               取消
             </button>
             <button

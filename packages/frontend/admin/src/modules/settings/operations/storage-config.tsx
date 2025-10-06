@@ -1,4 +1,4 @@
-import { StorageSettings } from '../storages';
+import { StorageSettings } from '../storages/storage-settings';
 import type { AppConfig } from '../config';
 
 /**

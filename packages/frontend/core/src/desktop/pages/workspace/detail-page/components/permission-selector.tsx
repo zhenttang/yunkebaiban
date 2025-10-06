@@ -1,6 +1,8 @@
 import React from 'react';
-import { CommunityPermission } from '../../../../../types/community';
-import { COMMUNITY_PERMISSION_OPTIONS } from '../../../../../api/community';
+import {
+  COMMUNITY_PERMISSION_OPTIONS,
+  CommunityPermission,
+} from '../../community/types';
 import * as styles from '../styles/permission-selector.css';
 
 interface PermissionSelectorProps {
@@ -22,9 +24,11 @@ export const PermissionSelector = ({ value, onChange, disabled = false }: Permis
             onClick={() => !disabled && onChange(option.value)}
           >
             <div className={styles.radioButton}>
-              <div className={`${styles.radioInner} ${
-                value === option.value ? styles.radioSelected : ''
-              }`} />
+              <div
+                className={`${styles.radioInner} ${
+                  value === option.value ? styles.radioSelected : ''
+                }`}
+              />
             </div>
             <div className={styles.optionContent}>
               <div className={styles.permissionLabel}>{option.label}</div>

@@ -1,6 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ShareToCommunityModal } from './share-to-community-modal';
-import { communityApi } from '../../../../api/community';
+import {
+  getCommunityDocStatus,
+  unshareDocFromCommunity,
+} from '../community/api';
 import * as styles from './styles/share-button.css';
 
 interface CommunityShareButtonProps {
@@ -9,34 +12,53 @@ interface CommunityShareButtonProps {
   docTitle: string;
 }
 
-export const CommunityShareButton = ({ 
-  docId, 
-  workspaceId, 
-  docTitle 
+export const CommunityShareButton = ({
+  docId,
+  workspaceId,
+  docTitle,
 }: CommunityShareButtonProps) => {
   const [showModal, setShowModal] = useState(false);
   const [isShared, setIsShared] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const showToast = (message: string, type: 'success' | 'error' = 'success') => {
-    // 简单的toast实现，实际项目中应该使用现有的toast组件
     console.log(`${type.toUpperCase()}: ${message}`);
   };
 
-  // 检查文档是否已分享到社区
   useEffect(() => {
-    // 这里可以调用API检查文档状态
-    // checkCommunityShareStatus();
-    // 暂时设置为未分享状态
-    setIsShared(false);
-  }, [docId]);
+    let cancelled = false;
+
+    const fetchStatus = async () => {
+      try {
+        const response = await getCommunityDocStatus(workspaceId, docId);
+        if (cancelled) {
+          return;
+        }
+        setIsShared(!!response?.data);
+      } catch (error) {
+        if (cancelled) {
+          return;
+        }
+        console.warn('获取社区分享状态失败', error);
+        setIsShared(false);
+      }
+    };
+
+    void fetchStatus();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [docId, workspaceId]);
 
   const handleUnshare = async () => {
-    if (!confirm('确定要取消分享到社区吗？')) return;
+    if (!confirm('确定要取消分享到社区吗？')) {
+      return;
+    }
 
     setLoading(true);
     try {
-      await communityApi.unshareDocFromCommunity(workspaceId, docId);
+      await unshareDocFromCommunity(workspaceId, docId);
       setIsShared(false);
       showToast('已取消分享到社区', 'success');
     } catch (error) {

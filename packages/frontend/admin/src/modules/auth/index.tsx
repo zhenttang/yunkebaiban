@@ -85,10 +85,10 @@ export function Auth() {
     [revalidate, currentUser]
   );
 
-  if (currentUser && isAdmin(currentUser)) {
-    console.log('已登录管理员，重定向到账户页面');
-    return <Navigate to="/admin/accounts" replace />;
-  }
+  // if (currentUser && isAdmin(currentUser)) {
+  //   console.log('已登录管理员，重定向到账户页面');
+  //   return <Navigate to="/admin/accounts" replace />;
+  // }
 
   console.log('渲染登录表单');
   return (

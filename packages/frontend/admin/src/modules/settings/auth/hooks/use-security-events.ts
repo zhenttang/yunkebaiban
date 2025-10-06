@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from 'react';
-import { httpClient } from '../../../../../../common/request/src';
+import { httpClient } from '@affine/request';
 import type { SecurityEventsResponse, SecurityEventDto, SessionDto, SessionStatsDto } from '../types';
 
 export function useSecurityEvents() {
@@ -24,7 +24,7 @@ export function useSecurityEvents() {
         sortDir: 'desc',
       });
 
-      const response: SecurityEventsResponse = await httpClient.get(`/api/admin/auth/security-events?${params.toString()}`);
+      const response: SecurityEventsResponse = await httpClient.get(`/api/admin/security-config/events?${params.toString()}`);
       
       setEvents(response.events);
       setTotalElements(response.totalElements);
@@ -39,7 +39,7 @@ export function useSecurityEvents() {
 
   const deleteEvent = useCallback(async (eventId: string) => {
     try {
-      await httpClient.delete(`/api/admin/auth/security-events/${eventId}`);
+      await httpClient.delete(`/api/admin/security-config/events/${eventId}`);
       await fetchEvents(); // 刷新列表
       return { success: true };
     } catch (err: any) {
@@ -49,7 +49,7 @@ export function useSecurityEvents() {
 
   const clearOldEvents = useCallback(async (daysOld: number) => {
     try {
-      await httpClient.post('/api/admin/auth/security-events/cleanup', { daysOld });
+      await httpClient.post('/api/admin/security-config/events/cleanup', { daysOld });
       await fetchEvents(); // 刷新列表
       return { success: true };
     } catch (err: any) {
@@ -86,8 +86,8 @@ export function useActiveSessions() {
       setError(null);
       
       const [sessionsResponse, statsResponse] = await Promise.all([
-        httpClient.get('/api/admin/auth/sessions'),
-        httpClient.get('/api/admin/auth/sessions/stats')
+        httpClient.get('/api/admin/security-config/sessions'),
+        httpClient.get('/api/admin/security-config/sessions/stats')
       ]);
       
       setSessions(sessionsResponse);
@@ -102,7 +102,7 @@ export function useActiveSessions() {
 
   const invalidateSession = useCallback(async (sessionId: string) => {
     try {
-      await httpClient.delete(`/api/admin/auth/sessions/${sessionId}`);
+      await httpClient.delete(`/api/admin/security-config/sessions/${sessionId}`);
       await fetchSessions(); // 刷新列表
       return { success: true };
     } catch (err: any) {
@@ -112,7 +112,7 @@ export function useActiveSessions() {
 
   const invalidateAllSessions = useCallback(async () => {
     try {
-      await httpClient.post('/api/admin/auth/sessions/invalidate-all');
+      await httpClient.post('/api/admin/security-config/sessions/invalidate-all');
       await fetchSessions(); // 刷新列表
       return { success: true };
     } catch (err: any) {

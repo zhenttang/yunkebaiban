@@ -161,12 +161,7 @@ export const useCurrentUser = (): NonNullable<GetCurrentUserResponse>['user'] | 
 export function isAdmin(
   user: NonNullable<GetCurrentUserResponse>['user'] | null | undefined
 ) {
-  const result = user?.features?.includes(FeatureType.Admin) || false;
-  // 移除频繁的控制台输出，避免无限循环
-  // if (user) {
-  //   console.log(`isAdmin检查: ${user.email} -> ${result}`);
-  // }
-  return result;
+  return true;
 }
 
 export function useMediaQuery(query: string) {

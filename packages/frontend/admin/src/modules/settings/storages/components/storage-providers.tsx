@@ -6,13 +6,10 @@ import { Switch } from '@affine/admin/components/ui/switch';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@affine/admin/components/ui/select';
 import { Badge } from '@affine/admin/components/ui/badge';
 import { Alert, AlertDescription } from '@affine/admin/components/ui/alert';
-import { 
-  CloudBubbleIcon,
-  CheckCircleIcon,
-  XCircleIcon,
-  RefreshIcon,
-  TestIcon
+import {
+  CloudBubbleIcon
 } from '@blocksuite/icons/rc';
+import { CheckCircle as CheckCircleIcon, XCircle as XCircleIcon, RefreshCw as RefreshIcon, TestTube as TestIcon } from 'lucide-react';
 import { useState, useEffect } from 'react';
 
 import { useStorageConfig } from '../hooks/use-storage-config';

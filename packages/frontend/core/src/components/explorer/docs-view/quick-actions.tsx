@@ -205,43 +205,45 @@ export const QuickDelete = memo(
   })
 );
 
-export const QuickSelect = memo(function QuickSelect({
-  doc,
-  onClick,
-  ...iconButtonProps
-}: QuickActionProps) {
-  const contextValue = useContext(DocExplorerContext);
-  const quickSelect = useLiveData(contextValue.quickSelect$);
-  const selectedDocIds = useLiveData(contextValue.selectedDocIds$);
+export const QuickSelect = memo(
+  forwardRef<HTMLButtonElement, QuickActionProps>(function QuickSelect(
+    { doc, onClick, ...iconButtonProps },
+    ref
+  ) {
+    const contextValue = useContext(DocExplorerContext);
+    const quickSelect = useLiveData(contextValue.quickSelect$);
+    const selectedDocIds = useLiveData(contextValue.selectedDocIds$);
 
-  const selected = selectedDocIds.includes(doc.id);
+    const selected = selectedDocIds.includes(doc.id);
 
-  const onChange = useCallback(
-    (e: React.MouseEvent<HTMLButtonElement>) => {
-      onClick?.(e);
-      e.stopPropagation();
-      e.preventDefault();
-      contextValue.selectedDocIds$?.next(
-        selected
-          ? selectedDocIds.filter(id => id !== doc.id)
-          : [...selectedDocIds, doc.id]
-      );
-    },
-    [contextValue, doc.id, onClick, selected, selectedDocIds]
-  );
+    const onChange = useCallback(
+      (e: React.MouseEvent<HTMLButtonElement>) => {
+        onClick?.(e);
+        e.stopPropagation();
+        e.preventDefault();
+        contextValue.selectedDocIds$?.next(
+          selected
+            ? selectedDocIds.filter(id => id !== doc.id)
+            : [...selectedDocIds, doc.id]
+        );
+      },
+      [contextValue, doc.id, onClick, selected, selectedDocIds]
+    );
 
-  if (!quickSelect) {
-    return null;
-  }
+    if (!quickSelect) {
+      return null;
+    }
 
-  return (
-    <IconButton
-      onClick={onChange}
-      icon={<Checkbox checked={selected} style={{ pointerEvents: 'none' }} />}
-      {...iconButtonProps}
-    />
-  );
-});
+    return (
+      <IconButton
+        ref={ref}
+        onClick={onChange}
+        icon={<Checkbox checked={selected} style={{ pointerEvents: 'none' }} />}
+        {...iconButtonProps}
+      />
+    );
+  })
+);
 
 export const QuickDeletePermanently = memo(function QuickDeletePermanently({
   doc,

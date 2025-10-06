@@ -14,7 +14,7 @@ export function useOAuthConfig() {
     try {
       setLoading(true);
       setError(null);
-      const response = await httpClient.get('/api/admin/oauth/providers');
+      const response = await httpClient.get('/api/admin/oauth-config/providers');
       setProviders(response.providers || []);
     } catch (err: any) {
       console.error('Failed to fetch OAuth providers:', err);
@@ -28,7 +28,7 @@ export function useOAuthConfig() {
   // 获取OAuth统计信息
   const fetchStatistics = useCallback(async () => {
     try {
-      const response = await httpClient.get('/api/admin/oauth/statistics');
+      const response = await httpClient.get('/api/admin/oauth-config/statistics');
       setStatistics(response);
     } catch (err: any) {
       console.error('Failed to fetch OAuth statistics:', err);
@@ -38,7 +38,7 @@ export function useOAuthConfig() {
   // 获取回调URL配置
   const fetchCallbackUrls = useCallback(async () => {
     try {
-      const response = await httpClient.get('/api/admin/oauth/callback-url');
+      const response = await httpClient.get('/api/admin/oauth-config/callback-url');
       setCallbackUrls(response);
     } catch (err: any) {
       console.error('Failed to fetch callback URLs:', err);
@@ -48,7 +48,7 @@ export function useOAuthConfig() {
   // 获取特定提供商配置
   const getProvider = useCallback(async (provider: string): Promise<OAuthProvider | null> => {
     try {
-      const response = await httpClient.get(`/api/admin/oauth/providers/${provider}`);
+      const response = await httpClient.get(`/api/admin/oauth-config/providers/${provider}`);
       return response;
     } catch (err: any) {
       console.error(`Failed to fetch ${provider} config:`, err);
@@ -59,7 +59,7 @@ export function useOAuthConfig() {
   // 更新提供商配置
   const updateProvider = useCallback(async (provider: string, config: Partial<OAuthProvider>) => {
     try {
-      const response = await httpClient.put(`/api/admin/oauth/providers/${provider}`, config);
+      const response = await httpClient.put(`/api/admin/oauth-config/providers/${provider}`, config);
       
       // 更新本地状态
       setProviders(prev => prev.map(p => 
@@ -76,7 +76,7 @@ export function useOAuthConfig() {
   // 测试提供商连接
   const testProvider = useCallback(async (provider: string): Promise<OAuthTestResult> => {
     try {
-      const response = await httpClient.post(`/api/admin/oauth/providers/${provider}/test`);
+      const response = await httpClient.post(`/api/admin/oauth-config/providers/${provider}/test`);
       return response;
     } catch (err: any) {
       console.error(`Failed to test ${provider} connection:`, err);
@@ -93,7 +93,7 @@ export function useOAuthConfig() {
   // 批量启用/禁用提供商
   const batchToggleProviders = useCallback(async (request: BatchToggleRequest): Promise<BatchToggleResult> => {
     try {
-      const response = await httpClient.post('/api/admin/oauth/providers/batch-toggle', request);
+      const response = await httpClient.post('/api/admin/oauth-config/providers/batch-toggle', request);
       
       // 更新本地状态
       setProviders(prev => prev.map(p => 

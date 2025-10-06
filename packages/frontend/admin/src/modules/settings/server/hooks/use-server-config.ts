@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { httpClient } from '../../../../../../common/request/src';
+import { httpClient } from '@affine/request';
 import type { ServerConfigDto, SystemInfoDto, ServerStatusDto } from '../types';
 
 export const useServerConfig = () => {
@@ -12,7 +12,7 @@ export const useServerConfig = () => {
     try {
       setLoading(true);
       setError(null);
-      const response = await httpClient.get('/api/admin/server/config');
+      const response = await httpClient.get('/api/admin/server-config/server-config');
       setConfig(response);
     } catch (err: any) {
       console.error('Failed to fetch server config:', err);
@@ -25,7 +25,7 @@ export const useServerConfig = () => {
   const updateConfig = useCallback(async (newConfig: ServerConfigDto) => {
     try {
       setSaving(true);
-      const response = await httpClient.put('/api/admin/server/config', newConfig);
+      const response = await httpClient.put('/api/admin/server-config/server-config', newConfig);
       
       if (response.success) {
         setConfig(response.data);
@@ -64,7 +64,7 @@ export const useSystemInfo = () => {
     try {
       setLoading(true);
       setError(null);
-      const response = await httpClient.get('/api/admin/server/info');
+      const response = await httpClient.get('/api/admin/server-config/server-info');
       setSystemInfo(response);
     } catch (err: any) {
       console.error('Failed to fetch system info:', err);
@@ -95,7 +95,7 @@ export const useServerStatus = () => {
     try {
       setLoading(true);
       setError(null);
-      const response = await httpClient.get('/api/admin/server/status');
+      const response = await httpClient.get('/api/admin/server-config/server-status');
       setStatus(response);
     } catch (err: any) {
       console.error('Failed to fetch server status:', err);

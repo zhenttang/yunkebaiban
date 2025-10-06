@@ -75,14 +75,6 @@ export abstract class AutoReconnectConnection<T = any>
   private setStatus(status: ConnectionStatus, error?: Error) {
     const shouldEmit = status !== this._status || error !== this._error;
 
-    console.log('🔄 [AutoReconnectConnection.setStatus] 状态变化:', {
-      connectionType: this.constructor.name,
-      oldStatus: this._status,
-      newStatus: status,
-      hasError: !!error,
-      errorMessage: error?.message,
-      willEmit: shouldEmit
-    });
 
     this._status = status;
     // 只有在状态为connected时才清除错误
@@ -98,11 +90,6 @@ export abstract class AutoReconnectConnection<T = any>
   protected abstract doDisconnect(conn: T): void;
 
   private innerConnect() {
-    console.log('🔌 [AutoReconnectConnection.innerConnect] 开始内部连接流程:', {
-      connectionType: this.constructor.name,
-      currentStatus: this.status,
-      refCount: this.refCount
-    });
 
     if (this.status !== 'connecting') {
       this.setStatus('connecting');
@@ -110,10 +97,6 @@ export abstract class AutoReconnectConnection<T = any>
       this.connectingAbort = connectingAbort;
       const signal = connectingAbort.signal;
 
-      console.log('⏱️ [AutoReconnectConnection.innerConnect] 设置连接超时:', {
-        timeout: this.connectingTimeout,
-        connectionType: this.constructor.name
-      });
 
       const timeout = setTimeout(() => {
         if (!signal.aborted) {
@@ -129,9 +112,6 @@ export abstract class AutoReconnectConnection<T = any>
         .then(value => {
           clearTimeout(timeout);
           if (!signal.aborted) {
-            console.log('✅ [AutoReconnectConnection.innerConnect] doConnect 成功:', {
-              connectionType: this.constructor.name
-            });
             this._inner = value;
             this.setStatus('connected');
           } else {
@@ -160,15 +140,8 @@ export abstract class AutoReconnectConnection<T = any>
             });
             this.handleError(error as any);
           } else {
-            console.log('⚠️ [AutoReconnectConnection.innerConnect] doConnect 失败但已中止，忽略:', {
-              connectionType: this.constructor.name
-            });
           }
         });
-    } else {
-      console.log('⚠️ [AutoReconnectConnection.innerConnect] 已在连接中，忽略:', {
-        connectionType: this.constructor.name
-      });
     }
   }
 
@@ -202,31 +175,18 @@ export abstract class AutoReconnectConnection<T = any>
 
     // 如果连接已关闭，不要重新连接
     if (this.status === 'closed') {
-      console.log('⚠️ [AutoReconnectConnection.handleError] 连接已关闭，不重新连接:', {
-        connectionType: this.constructor.name
-      });
       return;
     }
 
     this.setStatus('error', reason);
 
     // 重新连接
-    console.log(`⏳ [AutoReconnectConnection.handleError] 将在 ${this.retryDelay}ms 后重试连接...`, {
-      connectionType: this.constructor.name
-    });
 
     this.reconnectingAbort = new AbortController();
     const signal = this.reconnectingAbort.signal;
     const timeout = setTimeout(() => {
       if (!signal.aborted) {
-        console.log('🔄 [AutoReconnectConnection.handleError] 重试连接时间到，调用 innerConnect:', {
-          connectionType: this.constructor.name
-        });
         this.innerConnect();
-      } else {
-        console.log('⚠️ [AutoReconnectConnection.handleError] 重试已中止:', {
-          connectionType: this.constructor.name
-        });
       }
     }, this.retryDelay);
     signal.addEventListener('abort', () => {
@@ -235,33 +195,15 @@ export abstract class AutoReconnectConnection<T = any>
   }
 
   connect() {
-    console.log('🔌 [AutoReconnectConnection.connect] 调用 connect:', {
-      connectionType: this.constructor.name,
-      beforeRefCount: this.refCount,
-      currentStatus: this.status
-    });
 
     this.refCount++;
     if (this.refCount === 1) {
-      console.log('🔌 [AutoReconnectConnection.connect] RefCount 为 1，开始内部连接:', {
-        connectionType: this.constructor.name
-      });
       this.innerConnect();
     } else {
-      console.log('🔌 [AutoReconnectConnection.connect] RefCount > 1，跳过连接:', {
-        connectionType: this.constructor.name,
-        refCount: this.refCount
-      });
     }
   }
 
   disconnect(force?: boolean) {
-    console.log('🔌 [AutoReconnectConnection.disconnect] 调用 disconnect:', {
-      connectionType: this.constructor.name,
-      force,
-      beforeRefCount: this.refCount,
-      currentStatus: this.status
-    });
 
     if (force) {
       this.refCount = 0;
@@ -270,49 +212,24 @@ export abstract class AutoReconnectConnection<T = any>
     }
 
     if (this.refCount === 0) {
-      console.log('🔌 [AutoReconnectConnection.disconnect] RefCount 归零，执行内部断开:', {
-        connectionType: this.constructor.name
-      });
       this.innerDisconnect();
       this.setStatus('closed');
     } else {
-      console.log('🔌 [AutoReconnectConnection.disconnect] RefCount 未归零，保持连接:', {
-        connectionType: this.constructor.name,
-        remainingRefCount: this.refCount
-      });
     }
   }
 
   waitForConnected(signal?: AbortSignal) {
-    console.log('⏳ [AutoReconnectConnection.waitForConnected] 等待连接:', {
-      connectionType: this.constructor.name,
-      currentStatus: this.status,
-      hasSignal: !!signal
-    });
 
     return new Promise<void>((resolve, reject) => {
       if (this.status === 'connected') {
-        console.log('✅ [AutoReconnectConnection.waitForConnected] 已经连接，立即返回:', {
-          connectionType: this.constructor.name
-        });
         resolve();
         return;
       }
 
-      console.log('⏳ [AutoReconnectConnection.waitForConnected] 监听状态变化...', {
-        connectionType: this.constructor.name
-      });
 
       const off = this.onStatusChanged(status => {
-        console.log('🔔 [AutoReconnectConnection.waitForConnected] 收到状态变化通知:', {
-          connectionType: this.constructor.name,
-          newStatus: status
-        });
 
         if (status === 'connected') {
-          console.log('✅ [AutoReconnectConnection.waitForConnected] 连接成功，resolve:', {
-            connectionType: this.constructor.name
-          });
           resolve();
           off();
         }

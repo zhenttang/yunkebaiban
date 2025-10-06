@@ -2,12 +2,11 @@ import { Card, CardContent, CardHeader, CardTitle } from '@affine/admin/componen
 import { Badge } from '@affine/admin/components/ui/badge';
 import { Progress } from '@affine/admin/components/ui/progress';
 import { Button } from '@affine/admin/components/ui/button';
-import { 
-  DatabaseTableViewIcon, 
-  RefreshIcon, 
-  TrashIcon,
-  DownloadIcon 
+import {
+  DatabaseTableViewIcon,
+  DownloadIcon
 } from '@blocksuite/icons/rc';
+import { RefreshCw as RefreshIcon, Trash2 as TrashIcon } from 'lucide-react';
 import { formatBytes, formatNumber } from '@affine/admin/utils';
 
 import { useStorageStats } from '../hooks/use-storage-stats';

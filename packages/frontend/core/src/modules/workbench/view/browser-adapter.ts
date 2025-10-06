@@ -58,7 +58,14 @@ export function useBindWorkbenchToBrowserRouter(
       browserLocation,
       basename
     );
+
+    console.log('🔄 [browser-adapter] 浏览器位置变化');
+    console.log('   原始浏览器路径:', browserLocation.pathname);
+    console.log('   basename:', basename);
+    console.log('   转换后的view路径:', newLocation?.pathname);
+
     if (newLocation === null) {
+      console.log('   ⚠️ newLocation 为 null，跳过');
       return;
     }
     if (
@@ -66,7 +73,9 @@ export function useBindWorkbenchToBrowserRouter(
       newLocation.state.startsWith('fromView')
     ) {
       const fromViewKey = newLocation.state.substring('fromView,'.length);
+      console.log('   ℹ️ 来自 view 的更新，fromViewKey:', fromViewKey);
       if (fromViewKey === view.location$.value.key) {
+        console.log('   ✅ key 匹配，跳过');
         return;
       } else {
         const target = view.history.entries.findIndex(
@@ -75,11 +84,13 @@ export function useBindWorkbenchToBrowserRouter(
         if (target !== -1) {
           const now = view.history.index;
           const delta = target - now;
+          console.log('   🔙 执行 history.go:', delta);
           view.history.go(delta);
           return;
         }
       }
     }
+    console.log('   ➡️ 执行 view.history.push:', newLocation.pathname);
     view.history.push(newLocation, 'fromBrowser');
   }, [basename, browserLocation, view]);
 }

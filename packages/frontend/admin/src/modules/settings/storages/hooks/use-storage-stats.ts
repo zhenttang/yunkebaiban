@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from 'react';
-import { httpClient } from '../../../../../../common/request/src';
+import { httpClient } from '@affine/request';
 import type { StorageUsageDto, StorageStatsDto, StorageFileDto } from '../types';
 
 export const useStorageStats = () => {
