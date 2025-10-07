@@ -1,15 +1,13 @@
+import { useMemo, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@affine/admin/components/ui/card';
 import { Button } from '@affine/admin/components/ui/button';
 import { Alert, AlertDescription } from '@affine/admin/components/ui/alert';
 import { Progress } from '@affine/admin/components/ui/progress';
-import {
-  InfoIcon
-} from '@blocksuite/icons/rc';
-import { Trash2 as TrashIcon, RefreshCw as RefreshIcon, Archive as ArchiveIcon, CheckCircle as CheckCircleIcon } from 'lucide-react';
-import { useState } from 'react';
+import { InfoIcon } from '@blocksuite/icons/rc';
+import { Archive as ArchiveIcon, CheckCircle as CheckCircleIcon, RefreshCw as RefreshIcon, Trash2 as TrashIcon } from 'lucide-react';
 import { formatBytes } from '@affine/admin/utils';
 
-import { useStorageStats } from '../hooks/use-storage-stats';
+import { useStorageStatsContext } from '../hooks/storage-stats-context';
 
 interface CleanupResult {
   success: boolean;
@@ -19,14 +17,44 @@ interface CleanupResult {
 }
 
 export function StorageCleanup() {
-  const { usage, cleanupStorage } = useStorageStats();
+  const { usage, stats, files, cleanupStorage } = useStorageStatsContext();
   const [cleaning, setCleaning] = useState(false);
   const [cleanupResult, setCleanupResult] = useState<CleanupResult | null>(null);
+
+  const totalSpace = useMemo(() => {
+    if (!usage) return 0;
+    return usage.usedSpace + usage.availableSpace;
+  }, [usage]);
+
+  const usagePercent = totalSpace > 0 ? (usage?.usedSpace ?? 0) / totalSpace * 100 : 0;
+
+  const storageHealth = useMemo(() => {
+    if (!usage) {
+      return { status: 'unknown', message: '无法获取存储状态' } as const;
+    }
+    if (usagePercent < 70) {
+      return { status: 'good', message: '存储空间充足' } as const;
+    }
+    if (usagePercent < 90) {
+      return { status: 'warning', message: '存储空间偏高，建议清理' } as const;
+    }
+    return { status: 'critical', message: '存储空间不足，需要立即清理' } as const;
+  }, [usage, usagePercent]);
+
+  const largestFiles = useMemo(() => stats?.largestFiles?.slice(0, 3) ?? [], [stats]);
+  const ninetyDaysAgo = useMemo(() => Date.now() - 1000 * 60 * 60 * 24 * 90, []);
+  const inactiveFiles = useMemo(
+    () => files.filter(file => file.lastAccessed && new Date(file.lastAccessed).getTime() < ninetyDaysAgo),
+    [files, ninetyDaysAgo]
+  );
+  const estimatedReclaimBytes = useMemo(
+    () => largestFiles.reduce((sum, file) => sum + file.size, 0),
+    [largestFiles]
+  );
 
   const handleCleanup = async () => {
     setCleaning(true);
     setCleanupResult(null);
-    
     try {
       const result = await cleanupStorage();
       setCleanupResult(result);
@@ -35,29 +63,14 @@ export function StorageCleanup() {
         success: false,
         deletedFiles: 0,
         freedSpace: 0,
-        error: error.message || '清理失败'
+        error: error?.message ?? '清理失败',
       });
     } finally {
       setCleaning(false);
     }
   };
 
-  const getStorageHealth = () => {
-    if (!usage) return { status: 'unknown', color: 'gray', message: '无法获取存储状态' };
-    
-    const totalSpace = usage.usedSpace + usage.availableSpace;
-    const usagePercentage = totalSpace > 0 ? (usage.usedSpace / totalSpace) * 100 : 0;
-    
-    if (usagePercentage < 70) {
-      return { status: 'good', color: 'green', message: '存储空间充足' };
-    } else if (usagePercentage < 90) {
-      return { status: 'warning', color: 'yellow', message: '存储空间偏高，建议清理' };
-    } else {
-      return { status: 'critical', color: 'red', message: '存储空间不足，需要立即清理' };
-    }
-  };
-
-  const storageHealth = getStorageHealth();
+  const alertVariant = storageHealth.status === 'critical' ? 'destructive' : 'default';
 
   return (
     <Card>
@@ -68,80 +81,76 @@ export function StorageCleanup() {
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-6">
-        {/* 存储健康状态 */}
-        <Alert variant={storageHealth.status === 'critical' ? 'destructive' : 'default'}>
+        <Alert variant={alertVariant}>
           <InfoIcon className="h-4 w-4" />
           <AlertDescription className="flex items-center justify-between">
             <span>{storageHealth.message}</span>
-            {usage && (
+            {usage ? (
               <span className="text-sm font-mono">
-                {formatBytes(usage.usedSpace)} / {formatBytes(usage.usedSpace + usage.availableSpace)}
+                {formatBytes(usage.usedSpace)} / {formatBytes(totalSpace)}
               </span>
-            )}
+            ) : null}
           </AlertDescription>
         </Alert>
 
-        {usage && (
+        {usage ? (
           <div>
-            <div className="flex items-center justify-between mb-2">
+            <div className="mb-2 flex items-center justify-between">
               <span className="text-sm font-medium">存储使用率</span>
-              <span className="text-sm text-gray-600">
-                {((usage.usedSpace / (usage.usedSpace + usage.availableSpace)) * 100).toFixed(1)}%
-              </span>
+              <span className="text-sm text-gray-600">{usagePercent.toFixed(1)}%</span>
             </div>
-            <Progress 
-              value={(usage.usedSpace / (usage.usedSpace + usage.availableSpace)) * 100}
+            <Progress
+              value={usagePercent}
               className="h-2"
               indicatorClassName={
-                storageHealth.status === 'critical' ? 'bg-red-500' :
-                storageHealth.status === 'warning' ? 'bg-yellow-500' : 'bg-green-500'
+                storageHealth.status === 'critical'
+                  ? 'bg-red-500'
+                  : storageHealth.status === 'warning'
+                    ? 'bg-yellow-500'
+                    : 'bg-green-500'
               }
             />
           </div>
-        )}
+        ) : null}
 
-        {/* 清理选项 */}
         <div className="space-y-4">
-          <h4 className="font-medium">可清理的内容</h4>
-          
+          <h4 className="font-medium">清理建议</h4>
+
           <div className="space-y-3">
-            <div className="flex items-center justify-between p-3 border rounded-lg">
-              <div>
-                <div className="font-medium">临时文件</div>
-                <div className="text-sm text-gray-600">清理上传过程中产生的临时文件</div>
-              </div>
-              <div className="text-sm text-gray-500">~50MB</div>
-            </div>
-            
-            <div className="flex items-center justify-between p-3 border rounded-lg">
-              <div>
-                <div className="font-medium">孤立文件</div>
-                <div className="text-sm text-gray-600">删除数据库中不存在引用的文件</div>
-              </div>
-              <div className="text-sm text-gray-500">~120MB</div>
-            </div>
-            
-            <div className="flex items-center justify-between p-3 border rounded-lg">
-              <div>
-                <div className="font-medium">缓存文件</div>
-                <div className="text-sm text-gray-600">清理图片缩略图和预览缓存</div>
-              </div>
-              <div className="text-sm text-gray-500">~80MB</div>
-            </div>
-            
-            <div className="flex items-center justify-between p-3 border rounded-lg">
-              <div>
-                <div className="font-medium">过期文件</div>
-                <div className="text-sm text-gray-600">删除超过90天未访问的文件</div>
-              </div>
-              <div className="text-sm text-gray-500">~200MB</div>
-            </div>
+            <SuggestionRow
+              title="最大文件优先"
+              description="集中处理体积最大的文件，快速释放空间"
+              value={estimatedReclaimBytes ? formatBytes(estimatedReclaimBytes) : '等待统计'}
+            />
+            <SuggestionRow
+              title="长期未访问"
+              description={`超过 90 天未访问的文件 ${inactiveFiles.length} 个，可考虑迁移或删除`}
+              value="建议人工确认"
+            />
+            <SuggestionRow
+              title="缓存与临时文件"
+              description="系统自动识别并安全清理，适合定期执行"
+              value="推荐每周一次"
+            />
           </div>
+
+          {largestFiles.length > 0 ? (
+            <div className="space-y-3 rounded-lg bg-gray-50 p-4">
+              <div className="text-sm font-medium text-gray-700">体积最大的文件</div>
+              <ul className="space-y-2 text-sm text-gray-600">
+                {largestFiles.map(file => (
+                  <li key={file.id} className="flex items-center justify-between">
+                    <span className="truncate pr-4" title={file.filename}>{file.filename}</span>
+                    <span className="font-mono text-xs text-gray-500">{formatBytes(file.size)}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
         </div>
 
-        {/* 清理结果 */}
-        {cleanupResult && (
-          <Alert variant={cleanupResult.success ? "default" : "destructive"}>
+        {cleanupResult ? (
+          <Alert variant={cleanupResult.success ? 'default' : 'destructive'}>
             {cleanupResult.success ? (
               <CheckCircleIcon className="h-4 w-4" />
             ) : (
@@ -150,52 +159,63 @@ export function StorageCleanup() {
             <AlertDescription>
               {cleanupResult.success ? (
                 <div>
-                  清理完成！删除了 {cleanupResult.deletedFiles} 个文件，
-                  释放了 {formatBytes(cleanupResult.freedSpace)} 空间。
+                  清理完成，删除 {cleanupResult.deletedFiles} 个文件，共释放 {formatBytes(cleanupResult.freedSpace)}。
                 </div>
               ) : (
                 <div>清理失败: {cleanupResult.error}</div>
               )}
             </AlertDescription>
           </Alert>
-        )}
+        ) : null}
 
-        {/* 操作按钮 */}
-        <div className="flex items-center gap-3 pt-4 border-t">
+        <div className="flex items-center gap-3 border-t pt-4">
           <Button
             onClick={handleCleanup}
             disabled={cleaning}
             variant={storageHealth.status === 'critical' ? 'default' : 'outline'}
           >
             {cleaning ? (
-              <RefreshIcon className="h-4 w-4 mr-2 animate-spin" />
+              <RefreshIcon className="mr-2 h-4 w-4 animate-spin" />
             ) : (
-              <TrashIcon className="h-4 w-4 mr-2" />
+              <TrashIcon className="mr-2 h-4 w-4" />
             )}
-            {cleaning ? '清理中...' : '开始清理'}
+            {cleaning ? '清理中…' : '开始清理'}
           </Button>
-          
+
           <div className="text-sm text-gray-600">
-            预计可释放约 450MB 空间
+            预计可释放 {formatBytes(estimatedReclaimBytes || 0)}
           </div>
         </div>
 
-        {/* 自动清理设置 */}
-        <div className="p-4 bg-blue-50 rounded-lg">
-          <h5 className="font-medium text-blue-900 mb-2">自动清理</h5>
-          <p className="text-sm text-blue-700 mb-3">
-            系统将每周自动清理临时文件和缓存，保持存储空间整洁。
+        <div className="rounded-lg bg-blue-50 p-4">
+          <h5 className="mb-2 font-medium text-blue-900">自动清理</h5>
+          <p className="text-sm text-blue-700">
+            自动清理计划由后端策略控制。如需修改周期或范围，请在任务调度模块中调整。
           </p>
-          <div className="flex items-center gap-2">
-            <div className="flex items-center gap-1">
-              <CheckCircleIcon className="h-4 w-4 text-green-600" />
-              <span className="text-sm text-green-700">已启用</span>
-            </div>
-            <span className="text-sm text-gray-500">•</span>
-            <span className="text-sm text-gray-600">下次执行: 2025年1月26日</span>
+          <div className="mt-3 flex items-center gap-2 text-xs text-blue-600">
+            <CheckCircleIcon className="h-4 w-4" />
+            计划执行后，这里将显示最近一次执行时间。
           </div>
         </div>
       </CardContent>
     </Card>
   );
 }
+
+interface SuggestionRowProps {
+  readonly title: string;
+  readonly description: string;
+  readonly value: string;
+}
+
+const SuggestionRow = ({ title, description, value }: SuggestionRowProps) => {
+  return (
+    <div className="flex items-center justify-between rounded-lg border p-3">
+      <div>
+        <div className="font-medium">{title}</div>
+        <div className="text-sm text-gray-600">{description}</div>
+      </div>
+      <div className="text-sm text-gray-500">{value}</div>
+    </div>
+  );
+};

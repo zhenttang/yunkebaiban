@@ -1,32 +1,29 @@
-import { useState, useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@affine/admin/components/ui/card';
-import { Button } from '@affine/admin/components/ui/button';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@affine/admin/components/ui/select';
+import { useEffect, useMemo, useState } from 'react';
 import { Badge } from '@affine/admin/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@affine/admin/components/ui/tabs';
+import { Button } from '@affine/admin/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@affine/admin/components/ui/card';
 import { DatePickerWithRange } from '@affine/admin/components/ui/date-range-picker';
-import { 
-  Loader2, 
-  Mail, 
-  TrendingUp, 
-  TrendingDown, 
-  AlertCircle, 
-  CheckCircle, 
-  XCircle,
-  RefreshCw,
-  Download,
+import { Progress } from '@affine/admin/components/ui/progress';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@affine/admin/components/ui/select';
+import { Skeleton } from '@affine/admin/components/ui/skeleton';
+import { cn } from '@affine/admin/utils';
+import {
+  AlertCircle,
+  ArrowDownRight,
+  ArrowUpRight,
   BarChart3,
+  Download,
+  Loader2,
+  Mail,
   PieChart,
-  Clock,
-  Users
+  RefreshCw,
+  Send,
 } from 'lucide-react';
 import { toast } from 'sonner';
 
-import { useMailerConfig } from '../hooks/use-mailer-config';
 import { useEmailTemplates } from '../hooks/use-email-templates';
-import type { EmailStatisticsDto, EmailLogDto, TemplateUsageDto } from '../types';
+import type { MailTemplateDto } from '../types';
 
-// 模拟的统计数据接口（实际应该来自后端）
 interface StatisticsData {
   overview: {
     totalSent: number;
@@ -37,155 +34,68 @@ interface StatisticsData {
     weekSent: number;
     monthSent: number;
   };
-  trend: Array<{
-    date: string;
-    sent: number;
-    success: number;
-    failed: number;
-  }>;
-  templates: TemplateUsageDto[];
-  recentLogs: EmailLogDto[];
+  trend: Array<{ date: string; sent: number; success: number; failed: number }>;
+  templates: Array<{ name: string; type: string; usage: number; successRate: number; lastUsed: string }>;
+  recentLogs: Array<{ id: string; subject: string; toEmail: string; status: 'success' | 'failed'; sentAt: string; errorMessage?: string }>;
 }
 
 export function EmailStatistics() {
-  const { config } = useMailerConfig();
   const { templates } = useEmailTemplates();
   const [loading, setLoading] = useState(true);
   const [statistics, setStatistics] = useState<StatisticsData | null>(null);
-  const [dateRange, setDateRange] = useState({
-    from: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000), // 30天前
-    to: new Date()
-  });
-  const [selectedTemplate, setSelectedTemplate] = useState<string>('all');
+  const [dateRange, setDateRange] = useState<{ from: Date; to: Date }>(() => ({
+    from: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
+    to: new Date(),
+  }));
+  const [templateFilter, setTemplateFilter] = useState<string>('all');
 
-  // 获取统计数据
   const fetchStatistics = async () => {
     setLoading(true);
     try {
-      // 模拟API调用 - 实际应该调用后端API
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // 模拟数据
-      const mockData: StatisticsData = {
-        overview: {
-          totalSent: 15420,
-          successRate: 96.8,
-          failureRate: 3.2,
-          totalTemplates: templates.length,
-          todaySent: 245,
-          weekSent: 1680,
-          monthSent: 7240
-        },
-        trend: generateTrendData(),
-        templates: generateTemplateUsage(),
-        recentLogs: generateRecentLogs()
-      };
-      
-      setStatistics(mockData);
+      await new Promise(resolve => setTimeout(resolve, 600));
+      const data = generateMockStatistics(templates);
+      setStatistics(data);
     } catch (err) {
-      console.error('Failed to fetch statistics:', err);
-      toast.error('获取统计数据失败');
+      console.error(err);
+      toast.error('获取邮件统计失败');
+      setStatistics(null);
     } finally {
       setLoading(false);
     }
   };
 
-  // 生成趋势数据
-  const generateTrendData = () => {
-    const data = [];
-    for (let i = 29; i >= 0; i--) {
-      const date = new Date(Date.now() - i * 24 * 60 * 60 * 1000);
-      const sent = Math.floor(Math.random() * 300) + 50;
-      const success = Math.floor(sent * (0.95 + Math.random() * 0.05));
-      const failed = sent - success;
-      
-      data.push({
-        date: date.toISOString().split('T')[0],
-        sent,
-        success,
-        failed
-      });
-    }
-    return data;
-  };
-
-  // 生成模板使用统计
-  const generateTemplateUsage = (): TemplateUsageDto[] => {
-    return templates.map(template => ({
-      templateId: template.id,
-      templateName: template.name,
-      templateType: template.type,
-      usageCount: Math.floor(Math.random() * 1000) + 10,
-      successCount: Math.floor(Math.random() * 950) + 10,
-      failureCount: Math.floor(Math.random() * 50),
-      lastUsed: new Date(Date.now() - Math.random() * 7 * 24 * 60 * 60 * 1000).toISOString()
-    }));
-  };
-
-  // 生成最近日志
-  const generateRecentLogs = (): EmailLogDto[] => {
-    const logs = [];
-    for (let i = 0; i < 20; i++) {
-      logs.push({
-        id: `log-${i}`,
-        toEmail: `user${i}@example.com`,
-        subject: `测试邮件 ${i + 1}`,
-        templateId: templates[Math.floor(Math.random() * templates.length)]?.id || '',
-        status: Math.random() > 0.1 ? 'success' : 'failed',
-        sentAt: new Date(Date.now() - Math.random() * 24 * 60 * 60 * 1000).toISOString(),
-        errorMessage: Math.random() > 0.9 ? '网络连接超时' : undefined
-      });
-    }
-    return logs;
-  };
-
-  // 导出数据
-  const handleExportData = () => {
-    if (!statistics) return;
-    
-    const data = {
-      exportTime: new Date().toISOString(),
-      dateRange,
-      overview: statistics.overview,
-      trend: statistics.trend,
-      templates: statistics.templates
-    };
-    
-    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `email-statistics-${new Date().toISOString().split('T')[0]}.json`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-    
-    toast.success('数据导出成功');
-  };
-
-  // 格式化数字
-  const formatNumber = (num: number) => {
-    return num.toLocaleString();
-  };
-
-  // 格式化百分比
-  const formatPercentage = (num: number) => {
-    return `${num.toFixed(1)}%`;
-  };
-
   useEffect(() => {
     fetchStatistics();
-  }, [dateRange, selectedTemplate]);
+  }, [templateFilter, dateRange, templates.length]);
+
+  useEffect(() => {
+    const handler = () => fetchStatistics();
+    window.addEventListener('mailer:refresh', handler);
+    return () => window.removeEventListener('mailer:refresh', handler);
+  }, []);
+
+  const filteredLogs = useMemo(() => {
+    if (!statistics) return [];
+    if (templateFilter === 'all') return statistics.recentLogs;
+    const template = templates.find(t => t.id === templateFilter);
+    return statistics.recentLogs.filter(log => log.subject.includes(template?.name ?? ''));
+  }, [statistics, templateFilter, templates]);
 
   if (loading) {
     return (
-      <Card>
-        <CardContent className="flex items-center justify-center h-40">
-          <div className="flex items-center gap-2">
-            <Loader2 className="h-4 w-4 animate-spin" />
-            <span>加载统计数据中...</span>
+      <Card className="border border-slate-200/70 bg-white/90 backdrop-blur">
+        <CardContent className="space-y-4 p-6">
+          <Skeleton className="h-6 w-48" />
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+            {Array.from({ length: 4 }).map((_, index) => (
+              <div key={index} className="space-y-3 rounded-xl border border-slate-200 bg-white/80 p-5">
+                <Skeleton className="h-4 w-24" />
+                <Skeleton className="h-6 w-20" />
+                <Skeleton className="h-2 w-full" />
+              </div>
+            ))}
           </div>
+          <Skeleton className="h-64 w-full" />
         </CardContent>
       </Card>
     );
@@ -193,300 +103,317 @@ export function EmailStatistics() {
 
   if (!statistics) {
     return (
-      <Card>
-        <CardContent className="flex items-center justify-center h-40">
-          <div className="text-center">
-            <AlertCircle className="h-8 w-8 text-red-500 mx-auto mb-2" />
-            <div className="text-red-600">统计数据加载失败</div>
-            <Button variant="outline" onClick={fetchStatistics} className="mt-2">
-              重试
-            </Button>
-          </div>
+      <Card className="border border-rose-200/70 bg-rose-50/60">
+        <CardContent className="flex h-40 flex-col items-center justify-center gap-2 text-sm text-rose-600">
+          <AlertCircle className="h-5 w-5" /> 邮件统计数据暂不可用
+          <Button size="sm" variant="outline" onClick={fetchStatistics}>
+            重新获取
+          </Button>
         </CardContent>
       </Card>
     );
   }
 
+  const { overview, trend, templates: templateUsage } = statistics;
+  const totalSuccess = Math.round((overview.successRate / 100) * overview.totalSent);
+  const totalFailed = overview.totalSent - totalSuccess;
+
+  const handleExport = () => {
+    const data = {
+      exportedAt: new Date().toISOString(),
+      dateRange,
+      templateFilter,
+      overview,
+      trend,
+      templateUsage,
+      logs: filteredLogs,
+    };
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `mailer-statistics-${new Date().toISOString().split('T')[0]}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+    toast.success('统计数据已导出');
+  };
+
   return (
     <div className="space-y-6">
-      {/* 页面头部 */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h2 className="text-2xl font-bold tracking-tight">邮件统计</h2>
-          <p className="text-muted-foreground">
-            查看邮件发送统计、成功率分析和历史数据
-          </p>
-        </div>
-        <div className="flex items-center gap-2">
-          <Button variant="outline" onClick={fetchStatistics}>
-            <RefreshCw className="h-4 w-4 mr-2" />
-            刷新
-          </Button>
-          <Button variant="outline" onClick={handleExportData}>
-            <Download className="h-4 w-4 mr-2" />
-            导出数据
-          </Button>
-        </div>
-      </div>
+      <Card className="border border-slate-200/70 bg-white/90 backdrop-blur">
+        <CardContent className="grid gap-4 p-6 md:grid-cols-2 lg:grid-cols-4">
+          <OverviewCard
+            title="累计发送"
+            value={overview.totalSent.toLocaleString()}
+            icon={<Send className="h-4 w-4 text-blue-500" />}
+            description={`本月 ${overview.monthSent.toLocaleString()} 封`}
+          />
+          <OverviewCard
+            title="成功率"
+            value={`${overview.successRate.toFixed(1)}%`}
+            trendLabel={`今日成功 ${overview.todaySent.toLocaleString()} 封`}
+            positive
+          />
+          <OverviewCard
+            title="失败率"
+            value={`${overview.failureRate.toFixed(1)}%`}
+            trendLabel={`${totalFailed.toLocaleString()} 封累计失败`}
+            negative
+          />
+          <OverviewCard
+            title="模板数量"
+            value={overview.totalTemplates.toString()}
+            description={`正在使用 ${templateUsage.filter(t => t.successRate > 90).length} 个模板`}
+            icon={<Mail className="h-4 w-4 text-emerald-500" />}
+          />
+        </CardContent>
+      </Card>
 
-      {/* 筛选条件 */}
-      <Card>
-        <CardContent className="p-4">
-          <div className="flex items-center gap-4">
-            <div className="flex items-center gap-2">
-              <label className="text-sm font-medium">时间范围:</label>
-              <DatePickerWithRange
-                value={dateRange}
-                onChange={setDateRange}
-              />
-            </div>
-            <div className="flex items-center gap-2">
-              <label className="text-sm font-medium">模板:</label>
-              <Select value={selectedTemplate} onValueChange={setSelectedTemplate}>
-                <SelectTrigger className="w-48">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">所有模板</SelectItem>
-                  {templates.map(template => (
-                    <SelectItem key={template.id} value={template.id}>
-                      {template.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
+      <Card className="border border-slate-200/70 bg-white/90 backdrop-blur">
+        <CardHeader className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+          <div className="space-y-1">
+            <CardTitle className="text-base font-semibold text-slate-900">发送趋势</CardTitle>
+            <p className="text-xs text-slate-500">按日统计过去 30 天的发送量与成功率。</p>
+          </div>
+          <div className="flex flex-wrap items-center gap-3">
+            <DatePickerWithRange value={dateRange} onChange={setDateRange} />
+            <Button variant="outline" size="sm" onClick={fetchStatistics} className="flex items-center gap-2">
+              <RefreshCw className="h-4 w-4" /> 刷新
+            </Button>
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <TrendChart data={trend} />
+          <div className="flex flex-wrap items-center gap-4 text-xs text-slate-500">
+            <span className="flex items-center gap-2 text-slate-600"><span className="h-2 w-2 rounded-full bg-blue-500" />发送量</span>
+            <span className="flex items-center gap-2 text-emerald-600"><span className="h-2 w-2 rounded-full bg-emerald-500" />成功数</span>
+            <span className="flex items-center gap-2 text-rose-600"><span className="h-2 w-2 rounded-full bg-rose-500" />失败数</span>
           </div>
         </CardContent>
       </Card>
 
-      {/* 概览统计 */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">总发送量</CardTitle>
-            <Mail className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{formatNumber(statistics.overview.totalSent)}</div>
-            <p className="text-xs text-muted-foreground">
-              今日: {formatNumber(statistics.overview.todaySent)}
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">成功率</CardTitle>
-            <CheckCircle className="h-4 w-4 text-green-600" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-green-600">
-              {formatPercentage(statistics.overview.successRate)}
-            </div>
-            <div className="flex items-center text-xs text-muted-foreground">
-              <TrendingUp className="h-3 w-3 mr-1 text-green-500" />
-              本周: {formatNumber(statistics.overview.weekSent)}
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">失败率</CardTitle>
-            <XCircle className="h-4 w-4 text-red-600" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-red-600">
-              {formatPercentage(statistics.overview.failureRate)}
-            </div>
-            <div className="flex items-center text-xs text-muted-foreground">
-              <TrendingDown className="h-3 w-3 mr-1 text-red-500" />
-              本月: {formatNumber(statistics.overview.monthSent)}
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">活跃模板</CardTitle>
-            <Users className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{statistics.overview.totalTemplates}</div>
-            <p className="text-xs text-muted-foreground">
-              已启用模板数量
-            </p>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* 详细统计 */}
-      <Tabs defaultValue="trend" className="space-y-4">
-        <TabsList>
-          <TabsTrigger value="trend">发送趋势</TabsTrigger>
-          <TabsTrigger value="templates">模板使用</TabsTrigger>
-          <TabsTrigger value="logs">发送日志</TabsTrigger>
-        </TabsList>
-
-        {/* 发送趋势 */}
-        <TabsContent value="trend">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <BarChart3 className="h-5 w-5" />
-                发送趋势分析
-              </CardTitle>
-              <CardDescription>
-                过去30天的邮件发送量和成功率趋势
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {/* 趋势图表占位符 */}
-                <div className="h-80 bg-gray-50 rounded-lg flex items-center justify-center">
-                  <div className="text-center">
-                    <BarChart3 className="h-12 w-12 text-gray-400 mx-auto mb-2" />
-                    <p className="text-gray-500">趋势图表</p>
-                    <p className="text-sm text-gray-400">
-                      显示{statistics.trend.length}天的发送数据
-                    </p>
-                  </div>
-                </div>
-
-                {/* 趋势数据表格 */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div className="text-center p-4 bg-blue-50 rounded-lg">
-                    <div className="text-2xl font-bold text-blue-600">
-                      {formatNumber(statistics.trend.reduce((sum, day) => sum + day.sent, 0))}
-                    </div>
-                    <div className="text-sm text-blue-600">总发送量</div>
-                  </div>
-                  <div className="text-center p-4 bg-green-50 rounded-lg">
-                    <div className="text-2xl font-bold text-green-600">
-                      {formatNumber(statistics.trend.reduce((sum, day) => sum + day.success, 0))}
-                    </div>
-                    <div className="text-sm text-green-600">成功发送</div>
-                  </div>
-                  <div className="text-center p-4 bg-red-50 rounded-lg">
-                    <div className="text-2xl font-bold text-red-600">
-                      {formatNumber(statistics.trend.reduce((sum, day) => sum + day.failed, 0))}
-                    </div>
-                    <div className="text-sm text-red-600">发送失败</div>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        {/* 模板使用统计 */}
-        <TabsContent value="templates">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <PieChart className="h-5 w-5" />
-                模板使用统计
-              </CardTitle>
-              <CardDescription>
-                各个邮件模板的使用频率和成功率
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {statistics.templates.map((template) => {
-                  const successRate = template.usageCount > 0 
-                    ? (template.successCount / template.usageCount) * 100 
-                    : 0;
-                  
-                  return (
-                    <div key={template.templateId} className="flex items-center justify-between p-4 border rounded-lg">
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2">
-                          <h3 className="font-medium">{template.templateName}</h3>
-                          <Badge variant="outline">{template.templateType}</Badge>
-                        </div>
-                        <div className="text-sm text-muted-foreground mt-1">
-                          上次使用: {new Date(template.lastUsed).toLocaleString()}
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-6 text-sm">
-                        <div className="text-center">
-                          <div className="font-medium">{formatNumber(template.usageCount)}</div>
-                          <div className="text-muted-foreground">使用次数</div>
-                        </div>
-                        <div className="text-center">
-                          <div className="font-medium text-green-600">{formatNumber(template.successCount)}</div>
-                          <div className="text-muted-foreground">成功</div>
-                        </div>
-                        <div className="text-center">
-                          <div className="font-medium text-red-600">{formatNumber(template.failureCount)}</div>
-                          <div className="text-muted-foreground">失败</div>
-                        </div>
-                        <div className="text-center">
-                          <div className={`font-medium ${successRate >= 95 ? 'text-green-600' : successRate >= 90 ? 'text-yellow-600' : 'text-red-600'}`}>
-                            {formatPercentage(successRate)}
-                          </div>
-                          <div className="text-muted-foreground">成功率</div>
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        {/* 发送日志 */}
-        <TabsContent value="logs">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Clock className="h-5 w-5" />
-                最近发送日志
-              </CardTitle>
-              <CardDescription>
-                最近的邮件发送记录和状态
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-2">
-                {statistics.recentLogs.map((log) => (
-                  <div key={log.id} className="flex items-center justify-between p-3 border rounded-lg">
-                    <div className="flex items-center gap-3">
-                      {log.status === 'success' ? (
-                        <CheckCircle className="h-4 w-4 text-green-600" />
-                      ) : (
-                        <XCircle className="h-4 w-4 text-red-600" />
-                      )}
-                      <div>
-                        <div className="font-medium">{log.subject}</div>
-                        <div className="text-sm text-muted-foreground">
-                          发送至: {log.toEmail}
-                        </div>
-                        {log.errorMessage && (
-                          <div className="text-sm text-red-600">
-                            错误: {log.errorMessage}
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      <Badge variant={log.status === 'success' ? 'default' : 'destructive'}>
-                        {log.status === 'success' ? '成功' : '失败'}
-                      </Badge>
-                      <div className="text-sm text-muted-foreground mt-1">
-                        {new Date(log.sentAt).toLocaleString()}
-                      </div>
-                    </div>
-                  </div>
+      <Card className="border border-slate-200/70 bg-white/90 backdrop-blur">
+        <CardHeader className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+          <div className="space-y-1">
+            <CardTitle className="text-base font-semibold text-slate-900">模板使用情况</CardTitle>
+            <p className="text-xs text-slate-500">了解各模板的投递量与成功率，识别表现最优的模板。</p>
+          </div>
+          <div className="flex flex-wrap items-center gap-3">
+            <Select value={templateFilter} onValueChange={setTemplateFilter}>
+              <SelectTrigger className="h-9 w-48 rounded-full border-slate-200">
+                <SelectValue placeholder="选择模板" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">所有模板</SelectItem>
+                {templates.map(template => (
+                  <SelectItem key={template.id} value={template.id}>
+                    {template.name}
+                  </SelectItem>
                 ))}
+              </SelectContent>
+            </Select>
+            <Button variant="outline" size="sm" onClick={handleExport} className="flex items-center gap-2">
+              <Download className="h-4 w-4" /> 导出数据
+            </Button>
+          </div>
+        </CardHeader>
+        <CardContent className="grid gap-4 md:grid-cols-2">
+          {templateUsage.slice(0, 6).map(template => (
+            <div key={template.name} className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-slate-700">{template.name}</p>
+                  <span className="text-xs text-slate-400">{template.type}</span>
+                </div>
+                <Badge variant={template.successRate > 95 ? 'outline' : 'secondary'} className="rounded-full px-2 py-0.5 text-xs">
+                  成功率 {template.successRate}%
+                </Badge>
               </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-      </Tabs>
+              <div className="mt-4 space-y-2">
+                <div className="flex items-center justify-between text-xs text-slate-500">
+                  <span>发送次数</span>
+                  <span>{template.usage.toLocaleString()}</span>
+                </div>
+                <Progress value={template.successRate} className="h-2" />
+                <p className="text-xs text-slate-400">最近使用：{new Date(template.lastUsed).toLocaleString()}</p>
+              </div>
+            </div>
+          ))}
+        </CardContent>
+      </Card>
+
+      <Card className="border border-slate-200/70 bg-white/90 backdrop-blur">
+        <CardHeader>
+          <CardTitle className="text-base font-semibold text-slate-900">最近发送记录</CardTitle>
+          <p className="text-xs text-slate-500">展示最近 20 条邮件发送日志，便于追踪问题。</p>
+        </CardHeader>
+        <CardContent className="space-y-3">
+          {filteredLogs.slice(0, 10).map(log => (
+            <div
+              key={log.id}
+              className="flex flex-col gap-2 rounded-xl border border-slate-200 bg-white/80 p-4 text-sm text-slate-600 md:flex-row md:items-center md:justify-between"
+            >
+              <div className="flex-1">
+                <div className="flex flex-wrap items-center gap-2">
+                  <Badge
+                    variant={log.status === 'success' ? 'outline' : 'destructive'}
+                    className={cn('rounded-full px-2 py-0.5 text-xs', log.status === 'success' ? 'border-emerald-200 text-emerald-600' : '')}
+                  >
+                    {log.status === 'success' ? (
+                      <span className="flex items-center gap-1"><CheckCircle2 className="h-3 w-3" /> 成功</span>
+                    ) : (
+                      <span className="flex items-center gap-1"><AlertCircle className="h-3 w-3" /> 失败</span>
+                    )}
+                  </Badge>
+                  <span className="font-medium text-slate-800">{log.subject}</span>
+                </div>
+                <div className="mt-1 text-xs text-slate-400">
+                  {log.toEmail} · {new Date(log.sentAt).toLocaleString()}
+                </div>
+                {log.errorMessage && (
+                  <p className="mt-2 text-xs text-rose-500">错误：{log.errorMessage}</p>
+                )}
+              </div>
+              <Badge variant="outline" className="rounded-full px-2 py-0.5 text-xs text-slate-500">
+                {log.status === 'success' ? '投递完成' : '等待重试'}
+              </Badge>
+            </div>
+          ))}
+          {filteredLogs.length === 0 && (
+            <div className="rounded-xl border border-slate-200 bg-slate-50/70 p-6 text-center text-sm text-slate-500">
+              暂无发送记录。
+            </div>
+          )}
+        </CardContent>
+      </Card>
     </div>
   );
+}
+
+function OverviewCard({
+  title,
+  value,
+  description,
+  trendLabel,
+  icon,
+  positive,
+  negative,
+}: {
+  title: string;
+  value: string;
+  description?: string;
+  trendLabel?: string;
+  icon?: JSX.Element;
+  positive?: boolean;
+  negative?: boolean;
+}) {
+  return (
+    <div className="rounded-2xl border border-slate-200 bg-white/90 p-5 shadow-sm">
+      <div className="flex items-center gap-2 text-xs text-slate-500">
+        {icon ?? <BarChart3 className="h-4 w-4 text-slate-400" />} {title}
+      </div>
+      <div className="mt-3 text-2xl font-semibold text-slate-900">{value}</div>
+      {description && <p className="mt-1 text-xs text-slate-400">{description}</p>}
+      {trendLabel && (
+        <div
+          className={cn(
+            'mt-3 inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs',
+            positive && 'bg-emerald-100 text-emerald-700',
+            negative && 'bg-rose-100 text-rose-700',
+            !positive && !negative && 'bg-slate-100 text-slate-500',
+          )}
+        >
+          {positive ? <ArrowUpRight className="h-3 w-3" /> : negative ? <ArrowDownRight className="h-3 w-3" /> : <Mail className="h-3 w-3" />}
+          {trendLabel}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function TrendChart({ data }: { data: Array<{ date: string; sent: number; success: number; failed: number }> }) {
+  return (
+    <div className="relative h-56 overflow-hidden rounded-2xl border border-slate-200 bg-gradient-to-b from-white to-slate-50">
+      <div className="absolute inset-0 grid grid-cols-12 grid-rows-4 opacity-40">
+        {Array.from({ length: 48 }).map((_, index) => (
+          <div key={index} className="border border-slate-200/40" />
+        ))}
+      </div>
+      <div className="relative h-full w-full p-4 text-xs text-slate-400">
+        <div className="absolute bottom-4 left-4 right-4 flex justify-between text-[10px]">
+          {data.filter((_, index) => index % 5 === 0).map(item => (
+            <span key={item.date}>{item.date.slice(5)}</span>
+          ))}
+        </div>
+        <div className="absolute left-4 top-4 flex h-[calc(100%-48px)] w-[calc(100%-32px)] items-end gap-1">
+          {data.map(point => {
+            const total = Math.max(point.sent, 1);
+            const successPercent = (point.success / total) * 100;
+            const failedPercent = (point.failed / total) * 100;
+            const sentHeight = Math.min(point.sent / 4, 100);
+            return (
+              <div key={point.date} className="flex w-1.5 flex-col justify-end">
+                <div className="h-full rounded-full bg-slate-200/40">
+                  <div className="rounded-t-full bg-blue-400/60" style={{ height: `${sentHeight}%` }} />
+                  <div className="rounded-t-full bg-emerald-400" style={{ height: `${successPercent / 2}%` }} />
+                  <div className="rounded-t-full bg-rose-400" style={{ height: `${failedPercent / 2}%` }} />
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function generateMockStatistics(templates: MailTemplateDto[]): StatisticsData {
+  const overview = {
+    totalSent: 15420,
+    successRate: 96.8,
+    failureRate: 3.2,
+    totalTemplates: templates.length || 6,
+    todaySent: 245,
+    weekSent: 1680,
+    monthSent: 7240,
+  };
+
+  const trend = Array.from({ length: 30 }).map((_, index) => {
+    const date = new Date(Date.now() - (29 - index) * 24 * 60 * 60 * 1000);
+    const sent = Math.floor(Math.random() * 300) + 80;
+    const success = Math.floor(sent * (0.92 + Math.random() * 0.06));
+    return {
+      date: date.toISOString().split('T')[0],
+      sent,
+      success,
+      failed: sent - success,
+    };
+  });
+
+  const templateUsage = templates.length
+    ? templates.map(template => ({
+        name: template.name,
+        type: template.type,
+        usage: Math.floor(Math.random() * 1200) + 50,
+        successRate: Math.floor(90 + Math.random() * 10),
+        lastUsed: new Date(Date.now() - Math.random() * 5 * 24 * 60 * 60 * 1000).toISOString(),
+      }))
+    : Array.from({ length: 4 }).map((_, index) => ({
+        name: `系统模板 ${index + 1}`,
+        type: '自动通知',
+        usage: Math.floor(Math.random() * 1200) + 50,
+        successRate: Math.floor(90 + Math.random() * 10),
+        lastUsed: new Date(Date.now() - Math.random() * 5 * 24 * 60 * 60 * 1000).toISOString(),
+      }));
+
+  const recentLogs = Array.from({ length: 20 }).map((_, index) => ({
+    id: `log-${index}`,
+    subject: `邮件任务 #${index + 1}`,
+    toEmail: `user${index}@example.com`,
+    status: Math.random() > 0.1 ? 'success' : 'failed',
+    sentAt: new Date(Date.now() - Math.random() * 24 * 60 * 60 * 1000).toISOString(),
+    errorMessage: Math.random() > 0.9 ? 'SMTP 连接超时' : undefined,
+  }));
+
+  return { overview, trend, templates: templateUsage, recentLogs };
 }

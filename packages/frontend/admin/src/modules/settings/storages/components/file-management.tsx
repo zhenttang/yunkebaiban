@@ -1,7 +1,8 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@affine/admin/components/ui/card';
 import { Button } from '@affine/admin/components/ui/button';
 import { Badge } from '@affine/admin/components/ui/badge';
-import { 
+import { Checkbox } from '@affine/admin/components/ui/checkbox';
+import {
   Table,
   TableBody,
   TableCell,
@@ -9,7 +10,7 @@ import {
   TableHeader,
   TableRow,
 } from '@affine/admin/components/ui/table';
-import { 
+import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -21,18 +22,34 @@ import {
   DownloadIcon,
   SearchIcon
 } from '@blocksuite/icons/rc';
-import { Trash2 as TrashIcon, RefreshCw as RefreshIcon } from 'lucide-react';
+import { ArrowUpDown, ArrowUp, ArrowDown, Trash2 as TrashIcon, RefreshCw as RefreshIcon } from 'lucide-react';
 import { Input } from '@affine/admin/components/ui/input';
-import { useState } from 'react';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@affine/admin/components/ui/select';
+import { useEffect, useMemo, useState } from 'react';
+import { toast } from 'sonner';
 import { formatBytes, formatDate } from '@affine/admin/utils';
 
-import { useStorageStats } from '../hooks/use-storage-stats';
+import { useStorageStatsContext } from '../hooks/storage-stats-context';
 import type { StorageFileDto } from '../types';
 
 export function FileManagement() {
-  const { files, loading, error, fetchFiles, deleteFile, downloadFile } = useStorageStats();
+  const {
+    files,
+    filesLoading,
+    error,
+    fetchFiles,
+    deleteFile,
+    downloadFile,
+    filesPagination,
+  } = useStorageStatsContext();
   const [searchTerm, setSearchTerm] = useState('');
   const [deleting, setDeleting] = useState<string | null>(null);
+  const [selected, setSelected] = useState<string[]>([]);
+  const [pageSize, setPageSize] = useState(filesPagination.size);
+
+  useEffect(() => {
+    setPageSize(filesPagination.size);
+  }, [filesPagination.size]);
 
   const handleDeleteFile = async (fileId: string) => {
     setDeleting(fileId);
@@ -40,6 +57,9 @@ export function FileManagement() {
       const result = await deleteFile(fileId);
       if (!result.success) {
         console.error('Delete failed:', result.error);
+        toast.error(result.error ?? '删除文件失败');
+      } else {
+        toast.success('已删除文件');
       }
     } finally {
       setDeleting(null);
@@ -59,12 +79,86 @@ export function FileManagement() {
       document.body.removeChild(a);
     } catch (error) {
       console.error('Download failed:', error);
+      toast.error('下载失败');
     }
   };
 
-  const filteredFiles = files.filter(file =>
-    file.filename.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredFiles = useMemo(
+    () =>
+      files.filter(file =>
+        file.filename.toLowerCase().includes(searchTerm.toLowerCase()),
+      ),
+    [files, searchTerm]
   );
+
+  useEffect(() => {
+    setSelected(prev => prev.filter(id => filteredFiles.some(file => file.id === id)));
+  }, [filteredFiles]);
+
+  const toggleSelectAll = (checked: boolean) => {
+    if (checked) {
+      setSelected(filteredFiles.map(file => file.id));
+    } else {
+      setSelected([]);
+    }
+  };
+
+  const toggleSelectOne = (fileId: string, checked: boolean) => {
+    setSelected(prev =>
+      checked ? [...prev, fileId] : prev.filter(id => id !== fileId)
+    );
+  };
+
+  const allSelected = filteredFiles.length > 0 && filteredFiles.every(file => selected.includes(file.id));
+
+  const handleBatchDelete = async () => {
+    if (selected.length === 0) return;
+    const currentSelections = [...selected];
+    setSelected([]);
+    toast.info(`正在删除 ${currentSelections.length} 个文件…`);
+    let successCount = 0;
+    for (const id of currentSelections) {
+      // eslint-disable-next-line no-await-in-loop
+      const result = await deleteFile(id);
+      if (result.success) {
+        successCount += 1;
+      }
+    }
+    if (successCount > 0) {
+      toast.success(`已删除 ${successCount} 个文件`);
+    }
+  };
+
+  const { page, size, totalElements, sortBy, sortDir } = filesPagination;
+  const totalCount = totalElements || filteredFiles.length;
+  const totalPages = Math.max(1, Math.ceil((totalCount || 1) / size));
+
+  const handleChangePage = async (nextPage: number) => {
+    await fetchFiles({ page: nextPage, size: pageSize, sortBy, sortDir });
+  };
+
+  const handleChangePageSize = async (value: string) => {
+    const newSize = Number(value);
+    setPageSize(newSize);
+    await fetchFiles({ page: 0, size: newSize, sortBy, sortDir });
+  };
+
+  const handleSort = async (field: string) => {
+    const isSame = sortBy === field;
+    const nextDir: 'asc' | 'desc' = isSame && sortDir === 'asc' ? 'desc' : 'asc';
+    await fetchFiles({ page: 0, size: pageSize, sortBy: field, sortDir: nextDir });
+  };
+
+  const sortIndicator = (field: string) => {
+    if (sortBy !== field) {
+      return <ArrowUpDown className="ml-1 h-3 w-3 opacity-50" />;
+    }
+    return sortDir === 'asc' ? <ArrowUp className="ml-1 h-3 w-3" /> : <ArrowDown className="ml-1 h-3 w-3" />;
+  };
+
+  const handleRefreshFiles = async () => {
+    await fetchFiles({ page, size: pageSize, sortBy, sortDir });
+  };
 
   const getFileTypeIcon = (contentType: string) => {
     if (contentType.startsWith('image/')) return '🖼️';
@@ -76,7 +170,7 @@ export function FileManagement() {
     return '📁';
   };
 
-  if (loading) {
+  if (filesLoading) {
     return (
       <Card>
         <CardHeader>
@@ -100,16 +194,24 @@ export function FileManagement() {
             <FileIcon className="h-5 w-5" />
             文件管理
           </div>
-          <Button onClick={() => fetchFiles()} variant="ghost" size="sm">
-            <RefreshIcon className="h-4 w-4" />
-          </Button>
+          <div className="flex items-center gap-2">
+            {selected.length > 0 && (
+              <Button variant="destructive" size="sm" onClick={handleBatchDelete}>
+                <TrashIcon className="mr-2 h-4 w-4" />
+                删除所选
+              </Button>
+            )}
+            <Button onClick={handleRefreshFiles} variant="ghost" size="sm">
+              <RefreshIcon className="h-4 w-4" />
+            </Button>
+          </div>
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         {error && (
           <div className="text-center py-8">
             <p className="text-gray-500 mb-4">{error}</p>
-            <Button onClick={() => fetchFiles()} variant="outline" size="sm">
+            <Button onClick={handleRefreshFiles} variant="outline" size="sm">
               <RefreshIcon className="h-4 w-4 mr-2" />
               重试
             </Button>
@@ -119,14 +221,32 @@ export function FileManagement() {
         {!error && (
           <>
             {/* 搜索栏 */}
-            <div className="relative">
-              <SearchIcon className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-              <Input
-                placeholder="搜索文件名..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10"
-              />
+            <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+              <div className="relative md:w-80">
+                <SearchIcon className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                <Input
+                  placeholder="搜索文件名..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="pl-10"
+                />
+              </div>
+              <div className="flex items-center gap-3 text-sm text-gray-500">
+                <span>每页显示</span>
+                <Select value={pageSize.toString()} onValueChange={(value) => void handleChangePageSize(value)}>
+                  <SelectTrigger className="w-24">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {[10, 20, 50].map(option => (
+                      <SelectItem key={option} value={option.toString()}>{option}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <span>
+                  {totalCount} 个文件
+                </span>
+              </div>
             </div>
 
             {/* 文件列表 */}
@@ -142,13 +262,34 @@ export function FileManagement() {
                 <Table>
                   <TableHeader>
                     <TableRow>
-                      <TableHead className="w-12"></TableHead>
-                      <TableHead>文件名</TableHead>
-                      <TableHead>大小</TableHead>
-                      <TableHead>类型</TableHead>
-                      <TableHead>上传时间</TableHead>
-                      <TableHead>上传者</TableHead>
-                      <TableHead>状态</TableHead>
+                      <TableHead className="w-12">
+                        <Checkbox
+                          aria-label="选择全部"
+                          checked={allSelected}
+                          onCheckedChange={(checked) => toggleSelectAll(Boolean(checked))}
+                        />
+                      </TableHead>
+                      <TableHead className="min-w-[200px]">
+                        <button type="button" className="flex items-center" onClick={() => void handleSort('filename')}>
+                          文件名
+                          {sortIndicator('filename')}
+                        </button>
+                      </TableHead>
+                      <TableHead className="w-32">
+                        <button type="button" className="flex items-center" onClick={() => void handleSort('size')}>
+                          大小
+                          {sortIndicator('size')}
+                        </button>
+                      </TableHead>
+                      <TableHead className="w-24">类型</TableHead>
+                      <TableHead className="w-48">
+                        <button type="button" className="flex items-center" onClick={() => void handleSort('uploadedAt')}>
+                          上传时间
+                          {sortIndicator('uploadedAt')}
+                        </button>
+                      </TableHead>
+                      <TableHead className="w-36">上传者</TableHead>
+                      <TableHead className="w-24">状态</TableHead>
                       <TableHead className="w-12"></TableHead>
                     </TableRow>
                   </TableHeader>
@@ -156,17 +297,24 @@ export function FileManagement() {
                     {filteredFiles.map((file) => (
                       <TableRow key={file.id}>
                         <TableCell>
-                          <span className="text-lg">
-                            {getFileTypeIcon(file.contentType)}
-                          </span>
+                          <Checkbox
+                            aria-label={`选择 ${file.filename}`}
+                            checked={selected.includes(file.id)}
+                            onCheckedChange={(checked) => toggleSelectOne(file.id, Boolean(checked))}
+                          />
                         </TableCell>
                         <TableCell>
-                          <div className="font-medium">{file.filename}</div>
-                          {file.downloadCount > 0 && (
-                            <div className="text-xs text-gray-500">
-                              下载 {file.downloadCount} 次
+                          <div className="flex items-center gap-2">
+                            <span className="text-lg">{getFileTypeIcon(file.contentType)}</span>
+                            <div>
+                              <div className="font-medium">{file.filename}</div>
+                              {file.downloadCount > 0 && (
+                                <div className="text-xs text-gray-500">
+                                  下载 {file.downloadCount} 次
+                                </div>
+                              )}
                             </div>
-                          )}
+                          </div>
                         </TableCell>
                         <TableCell>{formatBytes(file.size)}</TableCell>
                         <TableCell>
@@ -228,12 +376,24 @@ export function FileManagement() {
             {/* 分页 - 简单版本 */}
             {filteredFiles.length > 0 && (
               <div className="flex items-center justify-between text-sm text-gray-600">
-                <span>显示 {filteredFiles.length} 个文件</span>
-                <div className="flex gap-2">
-                  <Button variant="outline" size="sm" disabled>
+                <span>
+                  第 {page + 1} / {totalPages} 页
+                </span>
+                <div className="flex items-center gap-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    disabled={page <= 0}
+                    onClick={() => void handleChangePage(page - 1)}
+                  >
                     上一页
                   </Button>
-                  <Button variant="outline" size="sm" disabled>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    disabled={page + 1 >= totalPages}
+                    onClick={() => void handleChangePage(page + 1)}
+                  >
                     下一页
                   </Button>
                 </div>

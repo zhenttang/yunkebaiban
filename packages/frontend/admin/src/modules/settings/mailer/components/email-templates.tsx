@@ -1,16 +1,8 @@
-import { useState } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@affine/admin/components/ui/card';
-import { Button } from '@affine/admin/components/ui/button';
+import { useEffect, useMemo, useState } from 'react';
 import { Badge } from '@affine/admin/components/ui/badge';
-import { Input } from '@affine/admin/components/ui/input';
-import { 
-  Dialog, 
-  DialogContent, 
-  DialogDescription, 
-  DialogHeader, 
-  DialogTitle, 
-  DialogTrigger 
-} from '@affine/admin/components/ui/dialog';
+import { Button } from '@affine/admin/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@affine/admin/components/ui/card';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@affine/admin/components/ui/dialog';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -19,7 +11,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@affine/admin/components/ui/dropdown-menu';
-import { 
+import { Input } from '@affine/admin/components/ui/input';
+import { Skeleton } from '@affine/admin/components/ui/skeleton';
+import { Label } from '@affine/admin/components/ui/label';
+import {
   AlertDialog,
   AlertDialogAction,
   AlertDialogCancel,
@@ -29,36 +24,45 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@affine/admin/components/ui/alert-dialog';
-import { 
-  Loader2, 
-  Plus, 
-  MoreHorizontal, 
-  Eye, 
-  Edit, 
-  Copy, 
-  Trash2, 
-  Mail, 
-  FileText,
+import {
+  Copy,
+  Edit,
+  Eye,
+  Filter,
+  Loader2,
+  Mail,
+  MoreHorizontal,
+  PenSquare,
+  Plus,
   Search,
-  Filter
+  Trash2,
 } from 'lucide-react';
 import { toast } from 'sonner';
 
 import { useEmailTemplates } from '../hooks/use-email-templates';
+import type { MailTemplateDto } from '../types';
 import { TemplateEditor } from './template-editor';
 import { TemplatePreview } from './template-preview';
-import type { MailTemplateDto } from '../types';
+
+const templateTypeLabels: Record<string, string> = {
+  welcome: '欢迎邮件',
+  reset_password: '重置密码',
+  invitation: '邀请邮件',
+  notification: '系统通知',
+  custom: '自定义模板',
+};
 
 export function EmailTemplates() {
-  const { 
-    templates, 
-    loading, 
-    error, 
-    deleteTemplate, 
+  const {
+    templates,
+    loading,
+    error,
+    refetch,
+    deleteTemplate,
     duplicateTemplate,
-    testTemplate 
+    testTemplate,
   } = useEmailTemplates();
-  
+
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedType, setSelectedType] = useState<string>('all');
   const [editingTemplate, setEditingTemplate] = useState<MailTemplateDto | null>(null);
@@ -66,74 +70,61 @@ export function EmailTemplates() {
   const [deletingTemplate, setDeletingTemplate] = useState<MailTemplateDto | null>(null);
   const [showCreateDialog, setShowCreateDialog] = useState(false);
 
-  // 过滤模板
-  const filteredTemplates = templates.filter(template => {
-    const matchesSearch = template.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         template.subject.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesType = selectedType === 'all' || template.type === selectedType;
-    return matchesSearch && matchesType;
-  });
+  useEffect(() => {
+    const handler = () => refetch();
+    window.addEventListener('mailer:refresh', handler);
+    return () => window.removeEventListener('mailer:refresh', handler);
+  }, [refetch]);
 
-  // 模板类型映射
-  const templateTypes = {
-    welcome: '欢迎邮件',
-    reset_password: '重置密码',
-    invitation: '邀请邮件',
-    notification: '通知邮件',
-    custom: '自定义'
-  };
+  const filteredTemplates = useMemo(() => {
+    const query = searchQuery.trim().toLowerCase();
+    return templates.filter(template => {
+      const matchesQuery =
+        !query ||
+        template.name.toLowerCase().includes(query) ||
+        template.subject.toLowerCase().includes(query);
+      const matchesType = selectedType === 'all' || template.type === selectedType;
+      return matchesQuery && matchesType;
+    });
+  }, [templates, searchQuery, selectedType]);
 
-  // 处理删除模板
+  const activeCount = useMemo(() => templates.filter(t => t.isActive).length, [templates]);
+
   const handleDeleteTemplate = async (template: MailTemplateDto) => {
     try {
       const result = await deleteTemplate(template.id);
       if (result.success) {
-        toast.success('模板删除成功');
+        toast.success('模板已删除');
         setDeletingTemplate(null);
       } else {
         toast.error(result.error || '删除模板失败');
       }
     } catch (err) {
-      toast.error('删除模板时发生错误');
+      toast.error('删除失败，请查看控制台');
     }
   };
 
-  // 处理复制模板
   const handleDuplicateTemplate = async (template: MailTemplateDto) => {
-    try {
-      const result = await duplicateTemplate(template.id);
-      if (result.success) {
-        toast.success('模板复制成功');
-      } else {
-        toast.error(result.error || '复制模板失败');
-      }
-    } catch (err) {
-      toast.error('复制模板时发生错误');
-    }
+    const result = await duplicateTemplate(template.id);
+    toast[result.success ? 'success' : 'error'](result.success ? '模板复制成功' : result.error || '复制失败');
   };
 
-  // 处理测试模板
   const handleTestTemplate = async (template: MailTemplateDto, email: string) => {
-    try {
-      const result = await testTemplate(template.id, email);
-      if (result.success) {
-        toast.success('测试邮件发送成功');
-      } else {
-        toast.error(result.error || '发送测试邮件失败');
-      }
-    } catch (err) {
-      toast.error('发送测试邮件时发生错误');
-    }
+    const result = await testTemplate(template.id, email);
+    toast[result.success ? 'success' : 'error'](result.success ? '测试邮件已发送' : result.error || '测试失败');
   };
 
   if (loading) {
     return (
-      <Card>
-        <CardContent className="flex items-center justify-center h-40">
-          <div className="flex items-center gap-2">
-            <Loader2 className="h-4 w-4 animate-spin" />
-            <span>加载邮件模板中...</span>
-          </div>
+      <Card className="border border-slate-200/70 bg-white/90 backdrop-blur">
+        <CardContent className="grid gap-4 p-6 md:grid-cols-3">
+          {Array.from({ length: 3 }).map((_, index) => (
+            <div key={index} className="space-y-3 rounded-2xl border border-slate-200 bg-white/80 p-5">
+              <Skeleton className="h-5 w-32" />
+              <Skeleton className="h-4 w-full" />
+              <Skeleton className="h-20 w-full" />
+            </div>
+          ))}
         </CardContent>
       </Card>
     );
@@ -141,12 +132,9 @@ export function EmailTemplates() {
 
   if (error) {
     return (
-      <Card>
-        <CardContent className="flex items-center justify-center h-40">
-          <div className="text-center">
-            <div className="text-red-500 mb-2">加载失败</div>
-            <div className="text-gray-500">{error}</div>
-          </div>
+      <Card className="border border-rose-200/60 bg-rose-50/60">
+        <CardContent className="flex h-40 items-center justify-center text-sm text-rose-600">
+          <AlertTriangle className="mr-2 h-4 w-4" /> {error}
         </CardContent>
       </Card>
     );
@@ -154,172 +142,141 @@ export function EmailTemplates() {
 
   return (
     <div className="space-y-6">
-      {/* 页面头部 */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h2 className="text-2xl font-bold tracking-tight">邮件模板</h2>
-          <p className="text-muted-foreground">
-            管理系统邮件模板，自定义邮件内容和样式
-          </p>
-        </div>
-        <Button onClick={() => setShowCreateDialog(true)}>
-          <Plus className="h-4 w-4 mr-2" />
-          创建模板
-        </Button>
-      </div>
-
-      {/* 搜索和筛选 */}
-      <Card>
-        <CardContent className="p-4">
-          <div className="flex items-center gap-4">
-            <div className="flex-1 relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+      <Card className="border border-slate-200/70 bg-white/90 backdrop-blur">
+        <CardContent className="flex flex-col gap-4 p-6 md:flex-row md:items-center md:justify-between">
+          <div className="space-y-2">
+            <Badge variant="outline" className="gap-2 rounded-full border-slate-200 bg-slate-50 text-slate-600">
+              <PenSquare className="h-3.5 w-3.5" /> 模板概览
+            </Badge>
+            <div className="flex flex-wrap items-center gap-4 text-sm text-slate-600">
+              <span>模板总数：<strong className="text-slate-900">{templates.length}</strong></span>
+              <span>启用模板：<strong className="text-emerald-600">{activeCount}</strong></span>
+              <span>覆盖场景：<strong className="text-blue-600">{new Set(templates.map(t => t.type)).size}</strong></span>
+            </div>
+          </div>
+          <div className="flex flex-wrap items-center gap-3">
+            <div className="relative">
+              <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
               <Input
-                placeholder="搜索模板名称或主题..."
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10"
+                onChange={event => setSearchQuery(event.target.value)}
+                placeholder="搜索模板名称或主题"
+                className="h-9 w-56 rounded-full border-slate-200 pl-9"
               />
             </div>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="outline">
-                  <Filter className="h-4 w-4 mr-2" />
-                  {selectedType === 'all' ? '所有类型' : templateTypes[selectedType as keyof typeof templateTypes]}
+                <Button variant="outline" className="rounded-full border-slate-200">
+                  <Filter className="mr-2 h-4 w-4" />
+                  {selectedType === 'all' ? '所有类型' : templateTypeLabels[selectedType]}
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent>
+              <DropdownMenuContent align="end">
                 <DropdownMenuLabel>模板类型</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={() => setSelectedType('all')}>
-                  所有类型
-                </DropdownMenuItem>
-                {Object.entries(templateTypes).map(([key, label]) => (
+                <DropdownMenuItem onClick={() => setSelectedType('all')}>所有类型</DropdownMenuItem>
+                {Object.entries(templateTypeLabels).map(([key, label]) => (
                   <DropdownMenuItem key={key} onClick={() => setSelectedType(key)}>
                     {label}
                   </DropdownMenuItem>
                 ))}
               </DropdownMenuContent>
             </DropdownMenu>
+            <Button className="rounded-full" onClick={() => setShowCreateDialog(true)}>
+              <Plus className="mr-2 h-4 w-4" />
+              创建模板
+            </Button>
           </div>
         </CardContent>
       </Card>
 
-      {/* 模板列表 */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredTemplates.map((template) => (
-          <Card key={template.id} className="hover:shadow-lg transition-shadow">
-            <CardHeader>
-              <div className="flex items-start justify-between">
-                <div className="flex-1 min-w-0">
-                  <CardTitle className="text-lg truncate">{template.name}</CardTitle>
-                  <CardDescription className="truncate mt-1">
-                    {template.subject}
-                  </CardDescription>
+      {filteredTemplates.length === 0 ? (
+        <Card className="border border-slate-200/70 bg-white/90 backdrop-blur">
+          <CardContent className="flex flex-col items-center justify-center gap-3 py-16 text-sm text-slate-500">
+            <PenSquare className="h-8 w-8 text-slate-300" />
+            {templates.length === 0
+              ? '还没有邮件模板，点击上方“创建模板”开始创建吧。'
+              : '没有符合筛选条件的模板，尝试调整搜索或类型筛选。'}
+          </CardContent>
+        </Card>
+      ) : (
+        <div className="grid gap-6 lg:grid-cols-2 xl:grid-cols-3">
+          {filteredTemplates.map(template => (
+            <Card key={template.id} className="group border border-slate-200/70 bg-white/90 backdrop-blur transition-all hover:shadow-lg">
+              <CardHeader className="flex flex-col gap-3">
+                <div className="flex items-start justify-between gap-3">
+                  <div className="min-w-0 space-y-1">
+                    <CardTitle className="truncate text-lg text-slate-900">
+                      {template.name}
+                    </CardTitle>
+                    <p className="truncate text-xs text-slate-500">{template.subject}</p>
+                  </div>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full">
+                        <MoreHorizontal className="h-4 w-4" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuItem onClick={() => setPreviewTemplate(template)}>
+                        <Eye className="mr-2 h-4 w-4" /> 预览
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => setEditingTemplate(template)}>
+                        <Edit className="mr-2 h-4 w-4" /> 编辑
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => handleDuplicateTemplate(template)}>
+                        <Copy className="mr-2 h-4 w-4" /> 复制
+                      </DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem onClick={() => setDeletingTemplate(template)} className="text-rose-600">
+                        <Trash2 className="mr-2 h-4 w-4" /> 删除
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
                 </div>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="sm">
-                      <MoreHorizontal className="h-4 w-4" />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">
-                    <DropdownMenuItem onClick={() => setPreviewTemplate(template)}>
-                      <Eye className="h-4 w-4 mr-2" />
-                      预览
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => setEditingTemplate(template)}>
-                      <Edit className="h-4 w-4 mr-2" />
-                      编辑
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => handleDuplicateTemplate(template)}>
-                      <Copy className="h-4 w-4 mr-2" />
-                      复制
-                    </DropdownMenuItem>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem 
-                      onClick={() => setDeletingTemplate(template)}
-                      className="text-red-600"
-                    >
-                      <Trash2 className="h-4 w-4 mr-2" />
-                      删除
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <div className="flex items-center gap-2">
-                  <Badge variant={template.isActive ? "default" : "secondary"}>
+                <div className="flex flex-wrap items-center gap-2 text-xs">
+                  <Badge variant={template.isActive ? 'default' : 'secondary'} className="rounded-full px-2 py-0.5">
                     {template.isActive ? '启用' : '禁用'}
                   </Badge>
-                  <Badge variant="outline">
-                    {templateTypes[template.type as keyof typeof templateTypes]}
+                  <Badge variant="outline" className="rounded-full px-2 py-0.5 text-slate-500">
+                    {templateTypeLabels[template.type] ?? template.type}
                   </Badge>
+                  <span className="text-slate-400">最近更新 {new Date(template.updatedAt).toLocaleDateString()}</span>
                 </div>
-                
-                <div className="text-sm text-muted-foreground">
-                  <div>变量: {template.variables.length > 0 ? template.variables.join(', ') : '无'}</div>
-                  <div>更新时间: {new Date(template.updatedAt).toLocaleDateString()}</div>
+              </CardHeader>
+              <CardContent className="space-y-4 text-sm text-slate-500">
+                <div>
+                  <p className="text-xs uppercase tracking-wide text-slate-400">变量</p>
+                  <p className="mt-1 text-slate-600">
+                    {template.variables.length > 0 ? template.variables.join(', ') : '不需要变量'}
+                  </p>
                 </div>
-
-                <div className="flex items-center gap-2">
-                  <Button 
-                    size="sm" 
-                    variant="outline" 
-                    onClick={() => setPreviewTemplate(template)}
-                    className="flex-1"
-                  >
-                    <Eye className="h-4 w-4 mr-2" />
-                    预览
+                <div className="flex flex-wrap gap-2">
+                  <Button variant="outline" size="sm" className="flex-1" onClick={() => setPreviewTemplate(template)}>
+                    <Eye className="mr-2 h-4 w-4" /> 预览
                   </Button>
                   <Dialog>
                     <DialogTrigger asChild>
-                      <Button size="sm" variant="outline">
-                        <Mail className="h-4 w-4" />
+                      <Button variant="outline" size="sm" className="flex-1">
+                        <Mail className="mr-2 h-4 w-4" /> 测试
                       </Button>
                     </DialogTrigger>
-                    <DialogContent>
+                    <DialogContent className="max-w-md">
                       <DialogHeader>
                         <DialogTitle>发送测试邮件</DialogTitle>
-                        <DialogDescription>
-                          使用此模板发送测试邮件
-                        </DialogDescription>
+                        <DialogDescription>输入收件人邮箱，立即发送该模板的测试邮件。</DialogDescription>
                       </DialogHeader>
-                      <TestEmailForm 
-                        template={template} 
-                        onSend={handleTestTemplate}
-                      />
+                      <TestEmailForm template={template} onSend={handleTestTemplate} />
                     </DialogContent>
                   </Dialog>
                 </div>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
-
-      {/* 空状态 */}
-      {filteredTemplates.length === 0 && (
-        <Card>
-          <CardContent className="flex flex-col items-center justify-center h-40">
-            <FileText className="h-8 w-8 text-muted-foreground mb-2" />
-            <div className="text-center">
-              <div className="font-medium">没有找到邮件模板</div>
-              <div className="text-sm text-muted-foreground">
-                {searchQuery || selectedType !== 'all' 
-                  ? '尝试调整搜索条件或筛选器' 
-                  : '点击上方按钮创建第一个模板'
-                }
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
       )}
 
-      {/* 创建/编辑模板对话框 */}
-      <Dialog open={showCreateDialog || !!editingTemplate} onOpenChange={(open) => {
+      <Dialog open={showCreateDialog || !!editingTemplate} onOpenChange={open => {
         if (!open) {
           setShowCreateDialog(false);
           setEditingTemplate(null);
@@ -327,11 +284,9 @@ export function EmailTemplates() {
       }}>
         <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle>
-              {editingTemplate ? '编辑邮件模板' : '创建邮件模板'}
-            </DialogTitle>
+            <DialogTitle>{editingTemplate ? '编辑邮件模板' : '创建邮件模板'}</DialogTitle>
             <DialogDescription>
-              {editingTemplate ? '修改现有的邮件模板' : '创建新的邮件模板'}
+              {editingTemplate ? '修改模板内容与元数据' : '为系统添加新的邮件模板'}
             </DialogDescription>
           </DialogHeader>
           <TemplateEditor
@@ -348,41 +303,28 @@ export function EmailTemplates() {
         </DialogContent>
       </Dialog>
 
-      {/* 预览对话框 */}
-      <Dialog open={!!previewTemplate} onOpenChange={(open) => {
-        if (!open) setPreviewTemplate(null);
-      }}>
+      <Dialog open={!!previewTemplate} onOpenChange={open => !open && setPreviewTemplate(null)}>
         <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>模板预览</DialogTitle>
-            <DialogDescription>
-              预览邮件模板的最终效果
-            </DialogDescription>
+            <DialogDescription>查看邮件内容在收件箱中的呈现效果。</DialogDescription>
           </DialogHeader>
-          {previewTemplate && (
-            <TemplatePreview template={previewTemplate} />
-          )}
+          {previewTemplate && <TemplatePreview template={previewTemplate} />}
         </DialogContent>
       </Dialog>
 
-      {/* 删除确认对话框 */}
-      <AlertDialog open={!!deletingTemplate} onOpenChange={(open) => {
-        if (!open) setDeletingTemplate(null);
-      }}>
+      <AlertDialog open={!!deletingTemplate} onOpenChange={open => !open && setDeletingTemplate(null)}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>确认删除</AlertDialogTitle>
+            <AlertDialogTitle>删除模板</AlertDialogTitle>
             <AlertDialogDescription>
-              确定要删除模板 "{deletingTemplate?.name}" 吗？此操作不可撤销。
+              确认删除模板 “{deletingTemplate?.name}”？该操作不可撤销，相关邮件将无法继续使用此模板。
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>取消</AlertDialogCancel>
-            <AlertDialogAction
-              onClick={() => deletingTemplate && handleDeleteTemplate(deletingTemplate)}
-              className="bg-red-600 hover:bg-red-700"
-            >
-              删除
+            <AlertDialogAction className="bg-rose-600 hover:bg-rose-700" onClick={() => deletingTemplate && handleDeleteTemplate(deletingTemplate)}>
+              确认删除
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
@@ -391,23 +333,15 @@ export function EmailTemplates() {
   );
 }
 
-// 测试邮件表单组件
-function TestEmailForm({ 
-  template, 
-  onSend 
-}: { 
-  template: MailTemplateDto;
-  onSend: (template: MailTemplateDto, email: string) => void;
-}) {
+function TestEmailForm({ template, onSend }: { template: MailTemplateDto; onSend: (template: MailTemplateDto, email: string) => Promise<void>; }) {
   const [email, setEmail] = useState('');
   const [sending, setSending] = useState(false);
 
   const handleSend = async () => {
     if (!email) {
-      toast.error('请输入邮箱地址');
+      toast.error('请输入收件人邮箱');
       return;
     }
-
     setSending(true);
     try {
       await onSend(template, email);
@@ -418,25 +352,19 @@ function TestEmailForm({
 
   return (
     <div className="space-y-4">
-      <div>
-        <label htmlFor="test-email" className="text-sm font-medium">
-          收件人邮箱
-        </label>
+      <div className="space-y-2">
+        <Label htmlFor="test-recipient">收件人邮箱</Label>
         <Input
-          id="test-email"
+          id="test-recipient"
           type="email"
           placeholder="test@example.com"
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          className="mt-1"
+          onChange={event => setEmail(event.target.value)}
         />
       </div>
-      <div className="flex justify-end gap-2">
-        <Button
-          onClick={handleSend}
-          disabled={!email || sending}
-        >
-          {sending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+      <div className="flex justify-end">
+        <Button onClick={handleSend} disabled={!email || sending} className="flex items-center gap-2">
+          {sending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Mail className="h-4 w-4" />}
           发送测试邮件
         </Button>
       </div>

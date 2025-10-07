@@ -8,6 +8,14 @@ export const useStorageStats = () => {
   const [files, setFiles] = useState<StorageFileDto[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [filesLoading, setFilesLoading] = useState(false);
+  const [filesPagination, setFilesPagination] = useState({
+    page: 0,
+    size: 20,
+    totalElements: 0,
+    sortBy: 'uploadedAt',
+    sortDir: 'desc' as 'asc' | 'desc',
+  });
 
   const fetchUsage = useCallback(async () => {
     try {
@@ -33,9 +41,19 @@ export const useStorageStats = () => {
     }
   }, []);
 
-  const fetchFiles = useCallback(async (page = 0, size = 20, sortBy = 'uploadedAt', sortDir = 'desc') => {
+  const fetchFiles = useCallback(async (options?: {
+    page?: number;
+    size?: number;
+    sortBy?: string;
+    sortDir?: 'asc' | 'desc';
+  }) => {
     try {
       setError(null);
+      setFilesLoading(true);
+      const page = options?.page ?? filesPagination.page;
+      const size = options?.size ?? filesPagination.size;
+      const sortBy = options?.sortBy ?? filesPagination.sortBy;
+      const sortDir = options?.sortDir ?? filesPagination.sortDir;
       const params = new URLSearchParams({
         page: page.toString(),
         size: size.toString(),
@@ -44,26 +62,35 @@ export const useStorageStats = () => {
       });
       const response = await httpClient.get(`/api/admin/storage/files?${params.toString()}`);
       setFiles(response.files || []);
+      setFilesPagination({
+        page,
+        size,
+        totalElements: response.totalElements ?? response.total ?? 0,
+        sortBy,
+        sortDir,
+      });
       return response;
     } catch (err: any) {
       console.error('Failed to fetch storage files:', err);
       setError('获取文件列表失败');
       setFiles([]);
       return { files: [], totalElements: 0 };
+    } finally {
+      setFilesLoading(false);
     }
-  }, []);
+  }, [filesPagination.page, filesPagination.size, filesPagination.sortBy, filesPagination.sortDir]);
 
   const deleteFile = useCallback(async (fileId: string) => {
     try {
       await httpClient.delete(`/api/admin/storage/files/${fileId}`);
       // 重新获取文件列表
-      await fetchFiles();
+      await fetchFiles({ page: filesPagination.page });
       return { success: true };
     } catch (err: any) {
       console.error('Failed to delete file:', err);
       return { success: false, error: err.message || '删除文件失败' };
     }
-  }, [fetchFiles]);
+  }, [fetchFiles, filesPagination.page]);
 
   const downloadFile = useCallback(async (fileId: string) => {
     try {
@@ -114,6 +141,8 @@ export const useStorageStats = () => {
     files,
     loading,
     error,
+    filesLoading,
+    filesPagination,
     refetch: fetchAll,
     fetchFiles,
     deleteFile,

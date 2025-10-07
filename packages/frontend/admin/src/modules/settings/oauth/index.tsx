@@ -1,12 +1,17 @@
+import { Button } from '@affine/admin/components/ui/button';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@affine/admin/components/ui/tabs';
 import { cn } from '@affine/admin/utils';
 import * as ScrollAreaPrimitive from '@radix-ui/react-scroll-area';
-import { useState } from 'react';
+import { Loader2, RefreshCcw } from 'lucide-react';
+import { useCallback, useMemo, useState } from 'react';
 
 import { Header } from '../../header';
 import { useOAuthConfig } from './hooks/use-oauth-config';
 import { OAuthProviders } from './components/oauth-providers';
 import { OAuthStatistics } from './components/oauth-statistics';
 import { OAuthSettings } from './components/oauth-settings';
+
+type TabValue = 'providers' | 'statistics' | 'settings';
 
 function OAuthSettingsPage() {
   const { 
@@ -21,7 +26,26 @@ function OAuthSettingsPage() {
     refreshAll
   } = useOAuthConfig();
 
-  const [activeTab, setActiveTab] = useState<'providers' | 'statistics' | 'settings'>('providers');
+  const [activeTab, setActiveTab] = useState<TabValue>('providers');
+  const [refreshing, setRefreshing] = useState(false);
+
+  const handleTabChange = useCallback((value: string) => {
+    setActiveTab(value as TabValue);
+  }, []);
+
+  const handleRefresh = useCallback(async () => {
+    if (refreshing) {
+      return;
+    }
+    setRefreshing(true);
+    try {
+      await refreshAll();
+    } finally {
+      setRefreshing(false);
+    }
+  }, [refreshAll, refreshing]);
+
+  const overallLoading = useMemo(() => loading || refreshing, [loading, refreshing]);
 
   if (error) {
     return (
@@ -44,94 +68,130 @@ function OAuthSettingsPage() {
   }
 
   return (
-    <div className="h-screen flex-1 flex-col flex">
+    <Tabs
+      value={activeTab}
+      onValueChange={handleTabChange}
+      className="flex h-screen flex-1 flex-col"
+    >
       <Header 
         title="第三方登录" 
         endFix={
-          <div className="flex items-center gap-2">
-            <div className="flex rounded-lg border border-gray-200 overflow-hidden">
-              <button
-                onClick={() => setActiveTab('providers')}
-                className={cn(
-                  "px-3 py-1.5 text-sm font-medium transition-colors",
-                  activeTab === 'providers'
-                    ? 'bg-blue-500 text-white'
-                    : 'text-gray-700 hover:bg-gray-50'
-                )}
-              >
+          <div className="flex items-center gap-3">
+            <TabsList className="hidden rounded-full bg-slate-100/80 p-1 text-slate-500 shadow-inner md:flex">
+              <TabsTrigger value="providers" className="rounded-full data-[state=active]:bg-white data-[state=active]:text-slate-900">
                 提供商配置
-              </button>
-              <button
-                onClick={() => setActiveTab('statistics')}
-                className={cn(
-                  "px-3 py-1.5 text-sm font-medium transition-colors",
-                  activeTab === 'statistics'
-                    ? 'bg-blue-500 text-white'
-                    : 'text-gray-700 hover:bg-gray-50'
-                )}
-              >
+              </TabsTrigger>
+              <TabsTrigger value="statistics" className="rounded-full data-[state=active]:bg-white data-[state=active]:text-slate-900">
                 使用统计
-              </button>
-              <button
-                onClick={() => setActiveTab('settings')}
-                className={cn(
-                  "px-3 py-1.5 text-sm font-medium transition-colors",
-                  activeTab === 'settings'
-                    ? 'bg-blue-500 text-white'
-                    : 'text-gray-700 hover:bg-gray-50'
-                )}
-              >
+              </TabsTrigger>
+              <TabsTrigger value="settings" className="rounded-full data-[state=active]:bg-white data-[state=active]:text-slate-900">
                 全局设置
-              </button>
-            </div>
-            {loading && (
-              <div className="w-4 h-4 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
-            )}
+              </TabsTrigger>
+            </TabsList>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="hidden items-center gap-2 rounded-full border border-slate-200 px-3 py-1.5 font-medium text-slate-600 hover:border-slate-300 hover:bg-white/80 md:inline-flex"
+              onClick={handleRefresh}
+              disabled={overallLoading}
+            >
+              {overallLoading ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : (
+                <RefreshCcw className="h-4 w-4" />
+              )}
+              刷新数据
+            </Button>
           </div>
         }
       />
-      
+
       <ScrollAreaPrimitive.Root
-        className={cn('relative overflow-hidden w-full flex-1')}
+        className={cn('relative flex-1 overflow-hidden')}
       >
         <ScrollAreaPrimitive.Viewport className="h-full w-full rounded-[inherit] [&>div]:!block">
-          <div className="p-6 max-w-6xl mx-auto space-y-6">
-            {activeTab === 'providers' && (
-              <>
-                <div className="text-[20px] mb-6">OAuth提供商配置</div>
+          <div className="relative min-h-full w-full">
+            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(59,130,246,0.08),transparent_55%),radial-gradient(circle_at_bottom,_rgba(99,102,241,0.08),transparent_60%)]" />
+            <div className="relative z-10 mx-auto w-full max-w-6xl space-y-8 px-4 pb-12 pt-8 md:px-8">
+              <div className="flex flex-col gap-4 md:hidden">
+                <TabsList className="flex rounded-xl bg-white/80 p-1 shadow-sm">
+                  <TabsTrigger value="providers" className="rounded-lg data-[state=active]:bg-blue-500/10 data-[state=active]:font-semibold data-[state=active]:text-blue-600">
+                    提供商配置
+                  </TabsTrigger>
+                  <TabsTrigger value="statistics" className="rounded-lg data-[state=active]:bg-blue-500/10 data-[state=active]:font-semibold data-[state=active]:text-blue-600">
+                    使用统计
+                  </TabsTrigger>
+                  <TabsTrigger value="settings" className="rounded-lg data-[state=active]:bg-blue-500/10 data-[state=active]:font-semibold data-[state=active]:text-blue-600">
+                    全局设置
+                  </TabsTrigger>
+                </TabsList>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="justify-center"
+                  onClick={handleRefresh}
+                  disabled={overallLoading}
+                >
+                  {overallLoading ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      正在刷新
+                    </>
+                  ) : (
+                    <>
+                      <RefreshCcw className="mr-2 h-4 w-4" />
+                      重新获取数据
+                    </>
+                  )}
+                </Button>
+              </div>
+
+              <TabsContent value="providers" className="space-y-6">
+                <div>
+                  <h2 className="text-2xl font-semibold text-slate-900">OAuth提供商配置</h2>
+                  <p className="mt-2 text-sm text-slate-500">
+                    管理各类第三方登录的连接状态与凭据，支持批量启用、测试连接与快速刷新。
+                  </p>
+                </div>
                 <OAuthProviders 
                   providers={providers}
-                  loading={loading}
+                  loading={overallLoading}
                   onUpdate={updateProvider}
                   onTest={testProvider}
                   onBatchToggle={batchToggleProviders}
-                  onRefresh={refreshAll}
+                  onRefresh={handleRefresh}
                 />
-              </>
-            )}
-            
-            {activeTab === 'statistics' && (
-              <>
-                <div className="text-[20px] mb-6">OAuth使用统计</div>
+              </TabsContent>
+
+              <TabsContent value="statistics" className="space-y-6">
+                <div>
+                  <h2 className="text-2xl font-semibold text-slate-900">OAuth使用统计</h2>
+                  <p className="mt-2 text-sm text-slate-500">
+                    快速洞察整体启用率、配置完成度与用户分布，掌握第三方登录的使用情况。
+                  </p>
+                </div>
                 <OAuthStatistics 
                   statistics={statistics}
                   providers={providers}
-                  loading={loading}
-                  onRefresh={refreshAll}
+                  loading={overallLoading}
+                  onRefresh={handleRefresh}
                 />
-              </>
-            )}
-            
-            {activeTab === 'settings' && (
-              <>
-                <div className="text-[20px] mb-6">OAuth全局设置</div>
+              </TabsContent>
+
+              <TabsContent value="settings" className="space-y-6">
+                <div>
+                  <h2 className="text-2xl font-semibold text-slate-900">OAuth全局设置</h2>
+                  <p className="mt-2 text-sm text-slate-500">
+                    统一查看回调地址、配置指南与安全建议，确保集成流程简单可靠。
+                  </p>
+                </div>
                 <OAuthSettings 
                   callbackUrls={callbackUrls}
-                  loading={loading}
-                  onRefresh={refreshAll}
+                  loading={overallLoading}
+                  onRefresh={handleRefresh}
                 />
-              </>
-            )}
+              </TabsContent>
+            </div>
           </div>
         </ScrollAreaPrimitive.Viewport>
         <ScrollAreaPrimitive.ScrollAreaScrollbar
@@ -144,7 +204,7 @@ function OAuthSettingsPage() {
         </ScrollAreaPrimitive.ScrollAreaScrollbar>
         <ScrollAreaPrimitive.Corner />
       </ScrollAreaPrimitive.Root>
-    </div>
+    </Tabs>
   );
 }
 

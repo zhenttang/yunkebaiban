@@ -1,14 +1,29 @@
-import React, { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@affine/admin/components/ui/card';
+import { Badge } from '@affine/admin/components/ui/badge';
 import { Button } from '@affine/admin/components/ui/button';
+import { Card, CardContent } from '@affine/admin/components/ui/card';
 import { Input } from '@affine/admin/components/ui/input';
 import { Label } from '@affine/admin/components/ui/label';
+import { Separator } from '@affine/admin/components/ui/separator';
 import { Switch } from '@affine/admin/components/ui/switch';
+import { Textarea } from '@affine/admin/components/ui/textarea';
+import { Progress } from '@affine/admin/components/ui/progress';
 import { toast } from 'sonner';
-import { Shield, Save, RotateCcw } from 'lucide-react';
+import {
+  CheckCircle2,
+  ClipboardCheck,
+  Hourglass,
+  RefreshCcw,
+  Save,
+  Shield,
+  ShieldAlert,
+  ShieldCheck,
+  ShieldMinus,
+} from 'lucide-react';
+
 import type { PasswordPolicyDto } from '../types';
 
 const passwordPolicySchema = z.object({
@@ -62,27 +77,28 @@ export function PasswordPolicy({ policy, onUpdate, loading }: PasswordPolicyProp
     },
   });
 
-  const { watch, handleSubmit, reset, formState: { errors } } = form;
-
+  const { watch, handleSubmit, reset, formState } = form;
+  const { errors, defaultValues } = formState;
   const watchedValues = watch();
-  
-  React.useEffect(() => {
-    const hasChanged = Object.keys(watchedValues).some(key => {
-      const currentValue = watchedValues[key as keyof PasswordPolicyForm];
-      const originalValue = form.formState.defaultValues?.[key as keyof PasswordPolicyForm];
-      return currentValue !== originalValue;
+
+  useEffect(() => {
+    const changed = Object.keys(watchedValues).some((key) => {
+      const field = key as keyof PasswordPolicyForm;
+      return watchedValues[field] !== defaultValues?.[field];
     });
-    setHasChanges(hasChanged);
-  }, [watchedValues, form.formState.defaultValues]);
+    setHasChanges(changed);
+  }, [watchedValues, defaultValues]);
+
+  const handleReset = () => {
+    reset();
+    setHasChanges(false);
+    toast.info('已恢复为原始策略');
+  };
 
   const onSubmit = async (data: PasswordPolicyForm) => {
     setSaving(true);
     try {
-      const result = await onUpdate({
-        ...policy,
-        ...data,
-      });
-
+      const result = await onUpdate({ ...policy, ...data });
       if (result.success) {
         toast.success(result.message || '密码策略保存成功');
         setHasChanges(false);
@@ -98,44 +114,79 @@ export function PasswordPolicy({ policy, onUpdate, loading }: PasswordPolicyProp
     }
   };
 
-  const handleReset = () => {
-    reset();
-    setHasChanges(false);
-    toast.info('已重置为原始策略');
-  };
+  const policyEnabled = watch('enablePasswordPolicy');
+
+  const complexityScore = useMemo(() => {
+    let score = 0;
+    if (watch('requireUppercase')) score += 25;
+    if (watch('requireLowercase')) score += 25;
+    if (watch('requireNumbers')) score += 25;
+    if (watch('requireSpecialChars')) score += 25;
+    return score;
+  }, [watch]);
+
+  const complexityLabel = useMemo(() => {
+    if (complexityScore >= 90) return '严格';
+    if (complexityScore >= 65) return '稳妥';
+    if (complexityScore >= 40) return '基础';
+    return '较弱';
+  }, [complexityScore]);
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <Shield className="h-5 w-5" />
-          密码策略
-        </CardTitle>
-        <CardDescription>
-          配置用户密码的复杂度要求和安全策略
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-          {/* 策略启用 */}
-          <div className="flex items-center justify-between">
-            <div className="space-y-0.5">
-              <Label>启用密码策略</Label>
-              <p className="text-sm text-gray-500">对用户密码进行复杂度验证</p>
-            </div>
-            <Switch
-              checked={form.watch('enablePasswordPolicy')}
-              onCheckedChange={(checked) => form.setValue('enablePasswordPolicy', checked)}
-              disabled={loading}
-            />
+    <Card className="overflow-hidden border border-slate-200/70 bg-white/90 backdrop-blur">
+      <CardContent className="space-y-10 p-6 md:p-8">
+        <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+          <div className="space-y-1">
+            <Badge variant="outline" className="gap-2 rounded-full border-slate-200 bg-slate-50 text-slate-600">
+              <Shield className="h-3.5 w-3.5" />
+              密码安全
+            </Badge>
+            <h3 className="text-xl font-semibold text-slate-900">密码复杂度与生命周期</h3>
+            <p className="text-sm text-slate-500">
+              设置密码长度、字符要求以及过期提醒，避免弱口令与重复使用。
+            </p>
           </div>
+          <div className="flex items-center gap-3 rounded-2xl border border-slate-200 bg-white px-3 py-2 text-xs text-slate-600">
+            <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" />
+            当前复杂度评估：<span className="font-semibold text-slate-800">{complexityLabel}</span>
+            <Progress value={complexityScore} className="h-1 w-20 bg-slate-200" />
+          </div>
+        </div>
 
-          {form.watch('enablePasswordPolicy') && (
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
+          <section className="space-y-4 rounded-2xl border border-purple-100 bg-purple-50/40 p-6 shadow-sm">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white text-purple-500 shadow-sm">
+                  <ShieldCheck className="h-5 w-5" />
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-purple-700">启用密码策略</p>
+                  <span className="text-xs text-purple-600/80">关闭后系统将仅校验密码长度，风险较高。</span>
+                </div>
+              </div>
+              <Switch
+                checked={policyEnabled}
+                onCheckedChange={(checked) => form.setValue('enablePasswordPolicy', checked)}
+                disabled={loading}
+              />
+            </div>
+          </section>
+
+          {policyEnabled ? (
             <>
-              {/* 长度要求 */}
-              <div className="space-y-4">
-                <h3 className="text-lg font-medium">长度要求</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <section className="space-y-6 rounded-2xl border border-slate-200/70 bg-white/80 p-6 shadow-sm">
+                <header className="flex items-center gap-3">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white text-slate-500 shadow-sm">
+                    <ClipboardCheck className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-slate-700">长度与复杂度</p>
+                    <span className="text-xs text-slate-500">设定密码长度范围，并要求包含多种字符类型。</span>
+                  </div>
+                </header>
+
+                <div className="grid gap-4 md:grid-cols-2">
                   <div className="space-y-2">
                     <Label htmlFor="minLength">最小长度</Label>
                     <Input
@@ -146,10 +197,9 @@ export function PasswordPolicy({ policy, onUpdate, loading }: PasswordPolicyProp
                       disabled={loading}
                     />
                     {errors.minLength && (
-                      <p className="text-sm text-red-500">{errors.minLength.message}</p>
+                      <p className="text-xs text-red-500">{errors.minLength.message}</p>
                     )}
                   </div>
-
                   <div className="space-y-2">
                     <Label htmlFor="maxLength">最大长度</Label>
                     <Input
@@ -160,193 +210,206 @@ export function PasswordPolicy({ policy, onUpdate, loading }: PasswordPolicyProp
                       disabled={loading}
                     />
                     {errors.maxLength && (
-                      <p className="text-sm text-red-500">{errors.maxLength.message}</p>
+                      <p className="text-xs text-red-500">{errors.maxLength.message}</p>
                     )}
                   </div>
                 </div>
-              </div>
 
-              {/* 复杂度要求 */}
-              <div className="space-y-4">
-                <h3 className="text-lg font-medium">复杂度要求</h3>
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <div className="space-y-0.5">
-                      <Label>要求大写字母</Label>
-                      <p className="text-sm text-gray-500">密码必须包含至少一个大写字母</p>
-                    </div>
-                    <Switch
-                      checked={form.watch('requireUppercase')}
-                      onCheckedChange={(checked) => form.setValue('requireUppercase', checked)}
-                      disabled={loading}
-                    />
-                  </div>
+                <Separator />
 
-                  <div className="flex items-center justify-between">
-                    <div className="space-y-0.5">
-                      <Label>要求小写字母</Label>
-                      <p className="text-sm text-gray-500">密码必须包含至少一个小写字母</p>
-                    </div>
-                    <Switch
-                      checked={form.watch('requireLowercase')}
-                      onCheckedChange={(checked) => form.setValue('requireLowercase', checked)}
-                      disabled={loading}
-                    />
-                  </div>
-
-                  <div className="flex items-center justify-between">
-                    <div className="space-y-0.5">
-                      <Label>要求数字</Label>
-                      <p className="text-sm text-gray-500">密码必须包含至少一个数字</p>
-                    </div>
-                    <Switch
-                      checked={form.watch('requireNumbers')}
-                      onCheckedChange={(checked) => form.setValue('requireNumbers', checked)}
-                      disabled={loading}
-                    />
-                  </div>
-
-                  <div className="flex items-center justify-between">
-                    <div className="space-y-0.5">
-                      <Label>要求特殊字符</Label>
-                      <p className="text-sm text-gray-500">密码必须包含至少一个特殊字符</p>
-                    </div>
-                    <Switch
-                      checked={form.watch('requireSpecialChars')}
-                      onCheckedChange={(checked) => form.setValue('requireSpecialChars', checked)}
-                      disabled={loading}
-                    />
-                  </div>
-
-                  {form.watch('requireSpecialChars') && (
-                    <div className="space-y-2">
-                      <Label htmlFor="allowedSpecialChars">允许的特殊字符</Label>
-                      <Input
-                        id="allowedSpecialChars"
-                        {...form.register('allowedSpecialChars')}
-                        placeholder="!@#$%^&*()_+-=[]{}|;:,.<>?"
+                <div className="grid gap-4 md:grid-cols-2">
+                  {[{
+                    key: 'requireUppercase' as const,
+                    title: '至少一个大写字母',
+                    desc: '防止全小写密码，提高复杂度',
+                  }, {
+                    key: 'requireLowercase' as const,
+                    title: '至少一个小写字母',
+                    desc: '避免密码被限定为纯数字或符号',
+                  }, {
+                    key: 'requireNumbers' as const,
+                    title: '至少一个数字',
+                    desc: '增加解密组合，提高破解成本',
+                  }, {
+                    key: 'requireSpecialChars' as const,
+                    title: '至少一个特殊字符',
+                    desc: '推荐开启，可有效抵御撞库',
+                  }].map(({ key, title, desc }) => (
+                    <div
+                      key={key}
+                      className="flex flex-col gap-3 rounded-xl border border-slate-200 bg-white p-4 md:flex-row md:items-center md:justify-between"
+                    >
+                      <div>
+                        <p className="text-sm font-medium text-slate-700">{title}</p>
+                        <p className="text-xs text-slate-500">{desc}</p>
+                      </div>
+                      <Switch
+                        checked={watch(key)}
+                        onCheckedChange={(checked) => form.setValue(key, checked)}
                         disabled={loading}
                       />
                     </div>
-                  )}
+                  ))}
                 </div>
-              </div>
 
-              {/* 安全策略 */}
-              <div className="space-y-4">
-                <h3 className="text-lg font-medium">安全策略</h3>
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <div className="space-y-0.5">
-                      <Label>禁止常用密码</Label>
-                      <p className="text-sm text-gray-500">禁止使用常见的弱密码</p>
+                {watch('requireSpecialChars') && (
+                  <div className="space-y-2">
+                    <Label htmlFor="allowedSpecialChars">允许使用的特殊字符集合</Label>
+                    <Textarea
+                      id="allowedSpecialChars"
+                      rows={2}
+                      {...form.register('allowedSpecialChars')}
+                      disabled={loading}
+                    />
+                  </div>
+                )}
+              </section>
+
+              <section className="space-y-6 rounded-2xl border border-amber-100 bg-amber-50/40 p-6 shadow-sm">
+                <header className="flex items-center gap-3">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white text-amber-500 shadow-sm">
+                    <ShieldAlert className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-amber-700">弱口令与历史</p>
+                    <span className="text-xs text-amber-600/80">限制常见密码，自定义历史回滚与首次登录要求。</span>
+                  </div>
+                </header>
+
+                <div className="grid gap-4 md:grid-cols-2">
+                  <div className="flex flex-col gap-3 rounded-xl border border-white/60 bg-white/80 p-4 md:flex-row md:items-center md:justify-between">
+                    <div>
+                      <p className="text-sm font-medium text-slate-700">禁止常见弱密码</p>
+                      <p className="text-xs text-slate-500">从字典库中校验常见弱口令，防止被轻易猜测。</p>
                     </div>
                     <Switch
-                      checked={form.watch('forbidCommonPasswords')}
+                      checked={watch('forbidCommonPasswords')}
                       onCheckedChange={(checked) => form.setValue('forbidCommonPasswords', checked)}
                       disabled={loading}
                     />
                   </div>
-
-                  <div className="flex items-center justify-between">
-                    <div className="space-y-0.5">
-                      <Label>禁止用户信息</Label>
-                      <p className="text-sm text-gray-500">禁止在密码中使用用户名、邮箱等信息</p>
+                  <div className="flex flex-col gap-3 rounded-xl border border-white/60 bg-white/80 p-4 md:flex-row md:items-center md:justify-between">
+                    <div>
+                      <p className="text-sm font-medium text-slate-700">禁止包含个人信息</p>
+                      <p className="text-xs text-slate-500">避免使用邮箱、手机号等可公开信息。</p>
                     </div>
                     <Switch
-                      checked={form.watch('forbidUserInfo')}
+                      checked={watch('forbidUserInfo')}
                       onCheckedChange={(checked) => form.setValue('forbidUserInfo', checked)}
                       disabled={loading}
                     />
                   </div>
+                </div>
 
-                  <div className="flex items-center justify-between">
-                    <div className="space-y-0.5">
-                      <Label>首次登录强制修改</Label>
-                      <p className="text-sm text-gray-500">用户首次登录时必须修改密码</p>
+                <div className="grid gap-4 md:grid-cols-3">
+                  <div className="space-y-2">
+                    <Label htmlFor="passwordHistory">记住历史次数</Label>
+                    <Input
+                      id="passwordHistory"
+                      type="number"
+                      {...form.register('passwordHistory', { valueAsNumber: true })}
+                      disabled={loading}
+                    />
+                    {errors.passwordHistory && (
+                      <p className="text-xs text-red-500">{errors.passwordHistory.message}</p>
+                    )}
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="passwordRetryDelay">失败后延迟 (秒)</Label>
+                    <Input
+                      id="passwordRetryDelay"
+                      type="number"
+                      {...form.register('passwordRetryDelay', { valueAsNumber: true })}
+                      disabled={loading}
+                    />
+                    {errors.passwordRetryDelay && (
+                      <p className="text-xs text-red-500">{errors.passwordRetryDelay.message}</p>
+                    )}
+                  </div>
+                  <div className="flex flex-col gap-3 rounded-xl border border-white/60 bg-white/80 p-4 md:flex-row md:items-center md:justify-between">
+                    <div>
+                      <p className="text-sm font-medium text-slate-700">首次登录强制修改</p>
+                      <p className="text-xs text-slate-500">确保初始密码不会长期使用。</p>
                     </div>
                     <Switch
-                      checked={form.watch('forceChangeOnFirstLogin')}
+                      checked={watch('forceChangeOnFirstLogin')}
                       onCheckedChange={(checked) => form.setValue('forceChangeOnFirstLogin', checked)}
                       disabled={loading}
                     />
                   </div>
                 </div>
+              </section>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="passwordHistory">密码历史记录</Label>
-                    <Input
-                      id="passwordHistory"
-                      type="number"
-                      {...form.register('passwordHistory', { valueAsNumber: true })}
-                      placeholder="5"
-                      disabled={loading}
-                    />
-                    <p className="text-xs text-gray-500">记住多少个历史密码以防重复使用</p>
+              <section className="space-y-6 rounded-2xl border border-emerald-100 bg-emerald-50/40 p-6 shadow-sm">
+                <header className="flex items-center gap-3">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white text-emerald-500 shadow-sm">
+                    <Hourglass className="h-5 w-5" />
                   </div>
+                  <div>
+                    <p className="text-sm font-medium text-emerald-700">密码过期与提醒</p>
+                    <span className="text-xs text-emerald-600/80">按周期强制更新密码，并在到期前进行通知。</span>
+                  </div>
+                </header>
 
+                <div className="grid gap-4 md:grid-cols-2">
                   <div className="space-y-2">
-                    <Label htmlFor="passwordExpireDays">密码过期时间 (天)</Label>
+                    <Label htmlFor="passwordExpireDays">密码过期天数 (0 代表永久有效)</Label>
                     <Input
                       id="passwordExpireDays"
                       type="number"
                       {...form.register('passwordExpireDays', { valueAsNumber: true })}
-                      placeholder="0"
                       disabled={loading}
                     />
-                    <p className="text-xs text-gray-500">0表示永不过期</p>
+                    {errors.passwordExpireDays && (
+                      <p className="text-xs text-red-500">{errors.passwordExpireDays.message}</p>
+                    )}
                   </div>
-
                   <div className="space-y-2">
-                    <Label htmlFor="passwordExpireWarningDays">过期提醒天数</Label>
+                    <Label htmlFor="passwordExpireWarningDays">到期提醒天数</Label>
                     <Input
                       id="passwordExpireWarningDays"
                       type="number"
                       {...form.register('passwordExpireWarningDays', { valueAsNumber: true })}
-                      placeholder="7"
-                      disabled={loading || form.watch('passwordExpireDays') === 0}
+                      disabled={loading}
                     />
-                    <p className="text-xs text-gray-500">密码过期前多少天开始提醒</p>
+                    {errors.passwordExpireWarningDays && (
+                      <p className="text-xs text-red-500">{errors.passwordExpireWarningDays.message}</p>
+                    )}
                   </div>
                 </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="passwordRetryDelay">密码重试延迟 (秒)</Label>
-                  <Input
-                    id="passwordRetryDelay"
-                    type="number"
-                    {...form.register('passwordRetryDelay', { valueAsNumber: true })}
-                    placeholder="0"
-                    disabled={loading}
-                  />
-                  <p className="text-xs text-gray-500">密码错误后的重试延迟时间，0表示无延迟</p>
-                </div>
-              </div>
+              </section>
             </>
+          ) : (
+            <div className="flex items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 p-4 text-sm text-slate-600">
+              <ShieldMinus className="h-4 w-4 text-slate-500" />
+              已禁用密码策略，系统仅会校验密码长度，请谨慎评估风险。
+            </div>
           )}
 
-          {/* 操作按钮 */}
-          <div className="flex items-center justify-end gap-4 pt-4 border-t">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={handleReset}
-              disabled={!hasChanges || loading || saving}
-              className="flex items-center gap-2"
-            >
-              <RotateCcw className="h-4 w-4" />
-              重置
-            </Button>
-            
-            <Button
-              type="submit"
-              disabled={!hasChanges || loading || saving}
-              className="flex items-center gap-2"
-            >
-              <Save className="h-4 w-4" />
-              {saving ? '保存中...' : '保存策略'}
-            </Button>
+          <div className="flex flex-col gap-4 border-t border-slate-200 pt-4 md:flex-row md:items-center md:justify-end">
+            <div className="flex-1 text-xs text-slate-400 md:text-right">
+              建议定期导出安全审计记录，并结合密码策略调整企业整体安全基线。
+            </div>
+            <div className="flex flex-wrap items-center gap-3">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={handleReset}
+                disabled={!hasChanges || loading || saving}
+                className="flex items-center gap-2"
+              >
+                <RefreshCcw className="h-4 w-4" />
+                重置
+              </Button>
+              <Button
+                type="submit"
+                disabled={!hasChanges || loading || saving}
+                className="flex items-center gap-2"
+              >
+                <Save className="h-4 w-4" />
+                {saving ? '保存中...' : '保存策略'}
+              </Button>
+            </div>
           </div>
         </form>
       </CardContent>

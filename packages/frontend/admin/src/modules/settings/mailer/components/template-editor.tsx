@@ -277,7 +277,7 @@ export function TemplateEditor({ template, onSave, onCancel }: TemplateEditorPro
                     </p>
                   )}
                   <p className="text-xs text-muted-foreground">
-                    支持HTML格式，可以使用变量如 {{`{username}`}} 等
+                    支持 HTML 格式，可使用变量（例如 <code>{"{{username}}"}</code>、<code>{"{{verificationCode}}"}</code>）。
                   </p>
                 </div>
               </CardContent>

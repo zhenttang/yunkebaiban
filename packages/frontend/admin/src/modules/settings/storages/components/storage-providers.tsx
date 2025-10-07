@@ -3,52 +3,154 @@ import { Button } from '@affine/admin/components/ui/button';
 import { Input } from '@affine/admin/components/ui/input';
 import { Label } from '@affine/admin/components/ui/label';
 import { Switch } from '@affine/admin/components/ui/switch';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@affine/admin/components/ui/select';
 import { Badge } from '@affine/admin/components/ui/badge';
 import { Alert, AlertDescription } from '@affine/admin/components/ui/alert';
 import {
   CloudBubbleIcon
 } from '@blocksuite/icons/rc';
-import { CheckCircle as CheckCircleIcon, XCircle as XCircleIcon, RefreshCw as RefreshIcon, TestTube as TestIcon } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { CheckCircle as CheckCircleIcon, XCircle as XCircleIcon, RefreshCw as RefreshIcon, TestTube as TestIcon, CloudIcon, HardDriveIcon, ServerIcon } from 'lucide-react';
+import { useState, useEffect, useMemo } from 'react';
+import { toast } from 'sonner';
 
 import { useStorageConfig } from '../hooks/use-storage-config';
 import type { StorageConfigDto, StorageProvider } from '../types';
 
-const STORAGE_PROVIDERS = [
+interface ProviderMeta {
+  readonly id: StorageProvider;
+  readonly name: string;
+  readonly description: string;
+  readonly icon: JSX.Element;
+  readonly features: string[];
+}
+
+interface ProviderField {
+  readonly id: keyof StorageConfigDto | 'endpoint';
+  readonly label: string;
+  readonly type?: 'text' | 'password' | 'number';
+  readonly placeholder?: string;
+  readonly helperText?: string;
+  readonly required?: boolean;
+}
+
+const STORAGE_PROVIDERS: ProviderMeta[] = [
   {
-    id: 'fs' as StorageProvider,
+    id: 'fs',
     name: '本地文件系统',
     description: '将文件存储在服务器本地磁盘',
-    icon: '📁',
+    icon: <HardDriveIcon className="h-5 w-5" />,
     features: ['简单配置', '无额外费用', '快速访问'],
-    requiresConfig: ['存储路径']
   },
   {
-    id: 'aws-s3' as StorageProvider,
+    id: 'aws-s3',
     name: 'Amazon S3',
     description: 'AWS云存储服务',
-    icon: '☁️',
+    icon: <CloudIcon className="h-5 w-5" />,
     features: ['高可用性', '全球CDN', '弹性扩展'],
-    requiresConfig: ['Access Key', 'Secret Key', 'Bucket', 'Region']
   },
   {
-    id: 'cloudflare-r2' as StorageProvider,
+    id: 'cloudflare-r2',
     name: 'Cloudflare R2',
     description: 'Cloudflare对象存储',
-    icon: '🔶',
+    icon: <ServerIcon className="h-5 w-5" />,
     features: ['零出站费用', '全球分布', 'S3兼容'],
-    requiresConfig: ['Access Key', 'Secret Key', 'Bucket', 'Endpoint']
   },
   {
-    id: 'tencent-cos' as StorageProvider,
+    id: 'tencent-cos',
     name: '腾讯云COS',
     description: '腾讯云对象存储',
-    icon: '🔵',
+    icon: <CloudIcon className="h-5 w-5" />,
     features: ['国内优化', '高性价比', '便捷集成'],
-    requiresConfig: ['SecretId', 'SecretKey', 'Bucket', 'Region']
   }
 ];
+
+const PROVIDER_FIELDS: Record<StorageProvider, ProviderField[]> = {
+  fs: [
+    {
+      id: 'bucket',
+      label: '存储路径',
+      placeholder: '/var/lib/affine/storage',
+      required: true,
+    },
+  ],
+  'aws-s3': [
+    {
+      id: 'accessKey',
+      label: 'Access Key',
+      type: 'password',
+      required: true,
+    },
+    {
+      id: 'secretKey',
+      label: 'Secret Key',
+      type: 'password',
+      required: true,
+    },
+    {
+      id: 'bucket',
+      label: 'Bucket',
+      placeholder: 'affine-storage',
+      required: true,
+    },
+    {
+      id: 'region',
+      label: '区域',
+      placeholder: 'us-east-1',
+      required: true,
+    },
+  ],
+  'cloudflare-r2': [
+    {
+      id: 'accessKey',
+      label: 'Access Key',
+      type: 'password',
+      required: true,
+    },
+    {
+      id: 'secretKey',
+      label: 'Secret Key',
+      type: 'password',
+      required: true,
+    },
+    {
+      id: 'bucket',
+      label: 'Bucket',
+      placeholder: 'affine-storage',
+      required: true,
+    },
+    {
+      id: 'endpoint',
+      label: 'Endpoint',
+      placeholder: 'https://your-account.r2.cloudflarestorage.com',
+      helperText: '可选，自定义兼容 S3 的访问域名',
+    },
+  ],
+  'tencent-cos': [
+    {
+      id: 'accessKey',
+      label: 'SecretId',
+      type: 'password',
+      required: true,
+    },
+    {
+      id: 'secretKey',
+      label: 'SecretKey',
+      type: 'password',
+      required: true,
+    },
+    {
+      id: 'bucket',
+      label: 'Bucket',
+      placeholder: 'affine-storage-1250000000',
+      required: true,
+    },
+    {
+      id: 'region',
+      label: '区域',
+      placeholder: 'ap-beijing',
+      required: true,
+    },
+  ],
+};
 
 export function StorageProviders() {
   const { config, loading, error, updateConfig, testConnection, testing } = useStorageConfig();
@@ -69,18 +171,48 @@ export function StorageProviders() {
     setTestResult(null);
   };
 
+  const missingRequiredFields = useMemo(() => {
+    if (!formData.provider) return [] as ProviderField[];
+    const fields = PROVIDER_FIELDS[formData.provider] ?? [];
+    return fields.filter(field => field.required && !formData[field.id as keyof StorageConfigDto]);
+  }, [formData]);
+
   const handleSave = async () => {
-    if (!formData.provider) return;
+    if (!formData.provider) {
+      toast.error('请选择存储提供商');
+      return;
+    }
+    if (missingRequiredFields.length > 0) {
+      toast.error(`请填写必填项：${missingRequiredFields.map(field => field.label).join('、')}`);
+      return;
+    }
     
     const result = await updateConfig(formData);
     if (result.success) {
       setHasUnsavedChanges(false);
+      toast.success('存储配置保存成功');
+    } else if (result.error) {
+      toast.error(result.error);
     }
   };
 
   const handleTest = async () => {
+    if (!formData.provider) {
+      toast.error('请先选择存储提供商');
+      return;
+    }
+    if (missingRequiredFields.length > 0) {
+      toast.error(`请先完善必填项：${missingRequiredFields.map(field => field.label).join('、')}`);
+      return;
+    }
+
     const result = await testConnection(formData);
     setTestResult(result);
+    if (result.success) {
+      toast.success('连接测试成功');
+    } else {
+      toast.error(result.message);
+    }
   };
 
   const selectedProvider = STORAGE_PROVIDERS.find(p => p.id === formData.provider);
@@ -120,7 +252,7 @@ export function StorageProviders() {
         {/* 提供商选择 */}
         <div>
           <Label className="text-base font-medium">选择存储提供商</Label>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-3">
+          <div className="mt-3 grid grid-cols-1 gap-4 md:grid-cols-2">
             {STORAGE_PROVIDERS.map((provider) => (
               <div
                 key={provider.id}
@@ -132,7 +264,9 @@ export function StorageProviders() {
                 onClick={() => handleInputChange('provider', provider.id)}
               >
                 <div className="flex items-start gap-3">
-                  <span className="text-2xl">{provider.icon}</span>
+                  <span className="rounded-full bg-blue-50 p-2 text-blue-600">
+                    {provider.icon}
+                  </span>
                   <div className="flex-1">
                     <div className="flex items-center gap-2">
                       <h4 className="font-medium">{provider.name}</h4>
@@ -160,81 +294,26 @@ export function StorageProviders() {
           <div className="space-y-4 p-4 bg-gray-50 rounded-lg">
             <h4 className="font-medium">{selectedProvider.name} 配置</h4>
             
-            {formData.provider === 'fs' && (
-              <div>
-                <Label htmlFor="bucket">存储路径</Label>
-                <Input
-                  id="bucket"
-                  value={formData.bucket || ''}
-                  onChange={(e) => handleInputChange('bucket', e.target.value)}
-                  placeholder="/var/lib/affine/storage"
-                />
-              </div>
-            )}
-
-            {(formData.provider === 'aws-s3' || formData.provider === 'cloudflare-r2' || formData.provider === 'tencent-cos') && (
-              <>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor="accessKey">
-                      {formData.provider === 'tencent-cos' ? 'SecretId' : 'Access Key'}
-                    </Label>
-                    <Input
-                      id="accessKey"
-                      type="password"
-                      value={formData.accessKey || ''}
-                      onChange={(e) => handleInputChange('accessKey', e.target.value)}
-                      placeholder="输入访问密钥"
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="secretKey">
-                      {formData.provider === 'tencent-cos' ? 'SecretKey' : 'Secret Key'}
-                    </Label>
-                    <Input
-                      id="secretKey"
-                      type="password"
-                      value={formData.secretKey || ''}
-                      onChange={(e) => handleInputChange('secretKey', e.target.value)}
-                      placeholder="输入密钥"
-                    />
-                  </div>
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+              {(PROVIDER_FIELDS[selectedProvider.id] ?? []).map(field => (
+                <div key={field.id as string} className="space-y-1">
+                  <Label htmlFor={`field-${field.id}`}>
+                    {field.label}
+                    {field.required && <span className="ml-1 text-red-500">*</span>}
+                  </Label>
+                  <Input
+                    id={`field-${field.id}`}
+                    type={field.type ?? 'text'}
+                    value={(formData[field.id as keyof StorageConfigDto] as string | number | undefined) ?? ''}
+                    onChange={(event) => handleInputChange(field.id as keyof StorageConfigDto, field.type === 'number' ? Number(event.target.value) : event.target.value)}
+                    placeholder={field.placeholder}
+                  />
+                  {field.helperText && (
+                    <p className="text-xs text-gray-500">{field.helperText}</p>
+                  )}
                 </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor="bucket">存储桶名称</Label>
-                    <Input
-                      id="bucket"
-                      value={formData.bucket || ''}
-                      onChange={(e) => handleInputChange('bucket', e.target.value)}
-                      placeholder="affine-storage"
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="region">区域</Label>
-                    <Input
-                      id="region"
-                      value={formData.region || ''}
-                      onChange={(e) => handleInputChange('region', e.target.value)}
-                      placeholder={formData.provider === 'aws-s3' ? 'us-east-1' : 'ap-beijing'}
-                    />
-                  </div>
-                </div>
-
-                {formData.provider === 'cloudflare-r2' && (
-                  <div>
-                    <Label htmlFor="endpoint">自定义端点</Label>
-                    <Input
-                      id="endpoint"
-                      value={formData.endpoint || ''}
-                      onChange={(e) => handleInputChange('endpoint', e.target.value)}
-                      placeholder="https://your-account.r2.cloudflarestorage.com"
-                    />
-                  </div>
-                )}
-              </>
-            )}
+              ))}
+            </div>
 
             {/* 通用配置 */}
             <div className="space-y-4 pt-4 border-t">
@@ -273,6 +352,23 @@ export function StorageProviders() {
                   max="1024"
                 />
               </div>
+
+              <div>
+                <Label htmlFor="allowedFileTypes">允许的文件类型</Label>
+                <Input
+                  id="allowedFileTypes"
+                  placeholder="例如: png,jpg,pdf"
+                  value={(formData.allowedFileTypes ?? []).join(',')}
+                  onChange={(event) => {
+                    const value = event.target.value
+                      .split(',')
+                      .map(token => token.trim())
+                      .filter(Boolean);
+                    handleInputChange('allowedFileTypes', value);
+                  }}
+                />
+                <p className="mt-1 text-xs text-gray-500">留空代表允许所有类型</p>
+              </div>
             </div>
           </div>
         )}
@@ -305,12 +401,17 @@ export function StorageProviders() {
           </Button>
           <Button
             onClick={handleSave}
-            disabled={!hasUnsavedChanges || !formData.provider}
+            disabled={!hasUnsavedChanges || !formData.provider || missingRequiredFields.length > 0}
           >
             保存配置
           </Button>
           {hasUnsavedChanges && (
             <Badge variant="secondary">有未保存的更改</Badge>
+          )}
+          {missingRequiredFields.length > 0 && (
+            <Badge variant="destructive" className="text-xs">
+              待完善：{missingRequiredFields.map(field => field.label).join('、')}
+            </Badge>
           )}
         </div>
       </CardContent>

@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from 'react';
-import { httpClient } from '../../../../../../common/request/src';
+import { httpClient } from '../../../../../../../common/request/src';
 import type { MailTemplateDto } from '../types';
 
 export function useEmailTemplates() {

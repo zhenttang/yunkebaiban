@@ -1,15 +1,33 @@
-import React, { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@affine/admin/components/ui/card';
+import { Badge } from '@affine/admin/components/ui/badge';
 import { Button } from '@affine/admin/components/ui/button';
+import { Card, CardContent } from '@affine/admin/components/ui/card';
 import { Input } from '@affine/admin/components/ui/input';
 import { Label } from '@affine/admin/components/ui/label';
+import { Separator } from '@affine/admin/components/ui/separator';
 import { Switch } from '@affine/admin/components/ui/switch';
 import { Textarea } from '@affine/admin/components/ui/textarea';
 import { toast } from 'sonner';
-import { Shield, Save, RotateCcw, TestTube } from 'lucide-react';
+import {
+  AlertTriangle,
+  Fingerprint,
+  Globe2,
+  KeyRound,
+  Loader2,
+  Lock,
+  Network,
+  RefreshCcw,
+  Save,
+  ShieldCheck,
+  ShieldQuestion,
+  Smartphone,
+  TestTube,
+  Users,
+} from 'lucide-react';
+
 import type { AuthConfigDto } from '../types';
 
 const authConfigSchema = z.object({
@@ -37,7 +55,7 @@ type AuthConfigForm = z.infer<typeof authConfigSchema>;
 interface LoginSettingsProps {
   config: AuthConfigDto;
   onSave: (config: AuthConfigDto) => Promise<{ success: boolean; error?: string; message?: string }>;
-  onTest?: () => Promise<any>;
+  onTest?: () => Promise<{ success: boolean; error?: string }>;
   saving: boolean;
 }
 
@@ -68,32 +86,27 @@ export function LoginSettings({ config, onSave, onTest, saving }: LoginSettingsP
     },
   });
 
-  const { watch, handleSubmit, reset, formState: { errors } } = form;
-
+  const { watch, handleSubmit, reset, formState } = form;
+  const { errors, defaultValues } = formState;
   const watchedValues = watch();
-  
-  React.useEffect(() => {
-    const hasChanged = Object.keys(watchedValues).some(key => {
-      const currentValue = watchedValues[key as keyof AuthConfigForm];
-      const originalValue = form.formState.defaultValues?.[key as keyof AuthConfigForm];
-      return currentValue !== originalValue;
+
+  useEffect(() => {
+    const changed = Object.keys(watchedValues).some((key) => {
+      const field = key as keyof AuthConfigForm;
+      return watchedValues[field] !== defaultValues?.[field];
     });
-    setHasChanges(hasChanged);
-  }, [watchedValues, form.formState.defaultValues]);
+    setHasChanges(changed);
+  }, [watchedValues, defaultValues]);
 
   const onSubmit = async (data: AuthConfigForm) => {
     try {
-      const result = await onSave({
-        ...config,
-        ...data,
-      });
-
+      const result = await onSave({ ...config, ...data });
       if (result.success) {
-        toast.success(result.message || '认证配置保存成功');
+        toast.success(result.message || '登录设置保存成功');
         setHasChanges(false);
         reset(data);
       } else {
-        toast.error(result.error || '认证配置保存失败');
+        toast.error(result.error || '登录设置保存失败');
       }
     } catch (error) {
       console.error('Save auth config error:', error);
@@ -104,12 +117,11 @@ export function LoginSettings({ config, onSave, onTest, saving }: LoginSettingsP
   const handleReset = () => {
     reset();
     setHasChanges(false);
-    toast.info('已重置为原始配置');
+    toast.info('已恢复为原始配置');
   };
 
   const handleTest = async () => {
     if (!onTest) return;
-    
     setTesting(true);
     try {
       const result = await onTest();
@@ -119,81 +131,128 @@ export function LoginSettings({ config, onSave, onTest, saving }: LoginSettingsP
         toast.error(result.error || '登录保护测试失败');
       }
     } catch (error) {
-      toast.error('测试失败: ' + (error as Error).message);
+      console.error('Test login protection error:', error);
+      toast.error('测试失败，请查看控制台日志');
     } finally {
       setTesting(false);
     }
   };
 
+  const loginLockingEnabled = watch('enableLoginLocking');
+  const captchaEnabled = watch('enableLoginCaptcha');
+  const twoFactorEnabled = watch('enableTwoFactor');
+  const rememberMeEnabled = watch('enableRememberMe');
+  const limitSessions = watch('limitConcurrentSessions');
+  const ipWhitelistEnabled = watch('enableIpWhitelist');
+  const rememberMeDays = watch('rememberMeDays');
+
+  const summaryBadges = useMemo(() => {
+    return [
+      loginLockingEnabled ? '连错锁定' : '无限尝试',
+      twoFactorEnabled ? '双因素开启' : '双因素关闭',
+      rememberMeEnabled ? `记住登录 ${rememberMeDays} 天` : '记住登录关闭',
+      ipWhitelistEnabled ? '启用白名单' : '开放访问',
+    ];
+  }, [loginLockingEnabled, twoFactorEnabled, rememberMeEnabled, ipWhitelistEnabled, watch]);
+
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <Shield className="h-5 w-5" />
-          登录设置
-        </CardTitle>
-        <CardDescription>
-          配置用户登录相关的安全策略和验证机制
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-          {/* 登录保护 */}
-          <div className="space-y-4">
-            <h3 className="text-lg font-medium">登录保护</h3>
-            
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <div className="space-y-0.5">
-                  <Label>启用登录锁定</Label>
-                  <p className="text-sm text-gray-500">连续登录失败后锁定账户</p>
+    <Card className="overflow-hidden border border-slate-200/70 bg-white/90 backdrop-blur">
+      <CardContent className="space-y-10 p-6 md:p-8">
+        <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+          <div className="space-y-1">
+            <Badge variant="outline" className="gap-2 rounded-full border-slate-200 bg-slate-50 text-slate-600">
+              <ShieldCheck className="h-3.5 w-3.5" />
+              登录策略
+            </Badge>
+            <h3 className="text-xl font-semibold text-slate-900">账户登录安全配置</h3>
+            <p className="text-sm text-slate-500">
+              通过登录锁定、验证码和双因素认证，为用户提供多层防护。
+            </p>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {summaryBadges.map((badge, index) => (
+              <Badge key={index} variant="outline" className="rounded-full border-slate-200 bg-white text-xs text-slate-500">
+                {badge}
+              </Badge>
+            ))}
+          </div>
+        </div>
+
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-10">
+          <section className="space-y-6 rounded-2xl border border-blue-100 bg-blue-50/40 p-6 shadow-sm">
+            <header className="flex flex-col gap-1 md:flex-row md:items-center md:justify-between">
+              <div className="flex items-center gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white text-blue-500 shadow-sm">
+                  <Lock className="h-5 w-5" />
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-blue-700">登录保护</p>
+                  <span className="text-xs text-blue-600/80">
+                    防止暴力破解，合理限制登录尝试与验证码触发阈值。
+                  </span>
+                </div>
+              </div>
+            </header>
+
+            <div className="grid gap-4">
+              <div className="flex flex-col gap-3 rounded-xl border border-white/60 bg-white/80 p-4 md:flex-row md:items-center md:justify-between">
+                <div className="flex items-start gap-3">
+                  <ShieldQuestion className="mt-1 h-4 w-4 text-blue-500" />
+                  <div>
+                    <p className="text-sm font-medium text-slate-700">启用登录锁定</p>
+                    <p className="text-xs text-slate-500">连续失败达到阈值后自动锁定账户，防止密码撞库。</p>
+                  </div>
                 </div>
                 <Switch
-                  checked={form.watch('enableLoginLocking')}
+                  checked={loginLockingEnabled}
                   onCheckedChange={(checked) => form.setValue('enableLoginLocking', checked)}
                 />
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="maxLoginAttempts">最大登录尝试次数</Label>
-                  <Input
-                    id="maxLoginAttempts"
-                    type="number"
-                    {...form.register('maxLoginAttempts', { valueAsNumber: true })}
-                    placeholder="5"
-                  />
-                  {errors.maxLoginAttempts && (
-                    <p className="text-sm text-red-500">{errors.maxLoginAttempts.message}</p>
-                  )}
+              {loginLockingEnabled && (
+                <div className="grid gap-4 md:grid-cols-2">
+                  <div className="space-y-2">
+                    <Label htmlFor="maxLoginAttempts">最大尝试次数</Label>
+                    <Input
+                      id="maxLoginAttempts"
+                      type="number"
+                      {...form.register('maxLoginAttempts', { valueAsNumber: true })}
+                      placeholder="5"
+                    />
+                    {errors.maxLoginAttempts && (
+                      <p className="text-xs text-red-500">{errors.maxLoginAttempts.message}</p>
+                    )}
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="lockoutDuration">锁定时间 (分钟)</Label>
+                    <Input
+                      id="lockoutDuration"
+                      type="number"
+                      {...form.register('lockoutDuration', { valueAsNumber: true })}
+                      placeholder="30"
+                    />
+                    {errors.lockoutDuration && (
+                      <p className="text-xs text-red-500">{errors.lockoutDuration.message}</p>
+                    )}
+                  </div>
                 </div>
+              )}
 
-                <div className="space-y-2">
-                  <Label htmlFor="lockoutDuration">锁定时间 (分钟)</Label>
-                  <Input
-                    id="lockoutDuration"
-                    type="number"
-                    {...form.register('lockoutDuration', { valueAsNumber: true })}
-                    placeholder="30"
-                  />
-                  {errors.lockoutDuration && (
-                    <p className="text-sm text-red-500">{errors.lockoutDuration.message}</p>
-                  )}
+              <div className="flex flex-col gap-3 rounded-xl border border-white/60 bg-white/80 p-4 md:flex-row md:items-center md:justify-between">
+                <div className="flex items-start gap-3">
+                  <AlertTriangle className="mt-1 h-4 w-4 text-amber-500" />
+                  <div>
+                    <p className="text-sm font-medium text-slate-700">启用登录验证码</p>
+                    <p className="text-xs text-slate-500">在多次失败后增加验证码验证，抑制批量尝试。</p>
+                  </div>
                 </div>
+                <Switch
+                  checked={captchaEnabled}
+                  onCheckedChange={(checked) => form.setValue('enableLoginCaptcha', checked)}
+                />
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="flex items-center justify-between">
-                  <div className="space-y-0.5">
-                    <Label>启用登录验证码</Label>
-                    <p className="text-sm text-gray-500">多次失败后要求验证码</p>
-                  </div>
-                  <Switch
-                    checked={form.watch('enableLoginCaptcha')}
-                    onCheckedChange={(checked) => form.setValue('enableLoginCaptcha', checked)}
-                  />
-                </div>
-
+              {captchaEnabled && (
                 <div className="space-y-2">
                   <Label htmlFor="captchaThreshold">验证码触发次数</Label>
                   <Input
@@ -203,177 +262,150 @@ export function LoginSettings({ config, onSave, onTest, saving }: LoginSettingsP
                     placeholder="3"
                   />
                   {errors.captchaThreshold && (
-                    <p className="text-sm text-red-500">{errors.captchaThreshold.message}</p>
+                    <p className="text-xs text-red-500">{errors.captchaThreshold.message}</p>
                   )}
                 </div>
-              </div>
+              )}
             </div>
-          </div>
+          </section>
 
-          {/* 双因素认证 */}
-          <div className="space-y-4">
-            <h3 className="text-lg font-medium">双因素认证</h3>
-            
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <div className="space-y-0.5">
-                  <Label>启用双因素认证</Label>
-                  <p className="text-sm text-gray-500">允许用户设置双因素认证</p>
+          <section className="space-y-6 rounded-2xl border border-purple-100 bg-purple-50/40 p-6 shadow-sm">
+            <header className="flex items-center gap-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white text-purple-500 shadow-sm">
+                <Fingerprint className="h-5 w-5" />
+              </div>
+              <div>
+                <p className="text-sm font-medium text-purple-700">双因素认证</p>
+                <span className="text-xs text-purple-600/80">通过 TOTP 或短信再验证，提升敏感操作安全性。</span>
+              </div>
+            </header>
+
+            <div className="grid gap-4">
+              <div className="flex flex-col gap-3 rounded-xl border border-white/60 bg-white/80 p-4 md:flex-row md:items-center md:justify-between">
+                <div className="flex items-start gap-3">
+                  <Smartphone className="mt-1 h-4 w-4 text-purple-500" />
+                  <div>
+                    <p className="text-sm font-medium text-slate-700">启用双因素认证</p>
+                    <p className="text-xs text-slate-500">允许用户绑定动态验证码，提高登录可信度。</p>
+                  </div>
                 </div>
                 <Switch
-                  checked={form.watch('enableTwoFactor')}
+                  checked={twoFactorEnabled}
                   onCheckedChange={(checked) => form.setValue('enableTwoFactor', checked)}
                 />
               </div>
 
-              <div className="flex items-center justify-between">
-                <div className="space-y-0.5">
-                  <Label>强制双因素认证</Label>
-                  <p className="text-sm text-gray-500">要求所有用户必须启用双因素认证</p>
-                </div>
-                <Switch
-                  checked={form.watch('forceTwoFactor')}
-                  onCheckedChange={(checked) => form.setValue('forceTwoFactor', checked)}
-                  disabled={!form.watch('enableTwoFactor')}
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="totpValidityMinutes">验证码有效期 (分钟)</Label>
-                <Input
-                  id="totpValidityMinutes"
-                  type="number"
-                  {...form.register('totpValidityMinutes', { valueAsNumber: true })}
-                  placeholder="5"
-                />
-                {errors.totpValidityMinutes && (
-                  <p className="text-sm text-red-500">{errors.totpValidityMinutes.message}</p>
-                )}
-              </div>
+              {twoFactorEnabled && (
+                <>
+                  <div className="flex flex-col gap-3 rounded-xl border border-white/60 bg-white/80 p-4 md:flex-row md:items-center md:justify-between">
+                    <div className="flex items-start gap-3">
+                      <Users className="mt-1 h-4 w-4 text-purple-500" />
+                      <div>
+                        <p className="text-sm font-medium text-slate-700">强制所有用户启用</p>
+                        <p className="text-xs text-slate-500">开启后新老用户都必须绑定双因素认证。</p>
+                      </div>
+                    </div>
+                    <Switch
+                      checked={form.watch('forceTwoFactor')}
+                      onCheckedChange={(checked) => form.setValue('forceTwoFactor', checked)}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="totpValidityMinutes">验证码有效期 (分钟)</Label>
+                    <Input
+                      id="totpValidityMinutes"
+                      type="number"
+                      {...form.register('totpValidityMinutes', { valueAsNumber: true })}
+                      placeholder="5"
+                    />
+                    {errors.totpValidityMinutes && (
+                      <p className="text-xs text-red-500">{errors.totpValidityMinutes.message}</p>
+                    )}
+                  </div>
+                </>
+              )}
             </div>
-          </div>
+          </section>
 
-          {/* 会话管理 */}
-          <div className="space-y-4">
-            <h3 className="text-lg font-medium">会话管理</h3>
-            
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <div className="space-y-0.5">
-                  <Label>记住登录状态</Label>
-                  <p className="text-sm text-gray-500">允许用户选择记住登录</p>
+          <section className="space-y-6 rounded-2xl border border-emerald-100 bg-emerald-50/40 p-6 shadow-sm">
+            <header className="flex items-center gap-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white text-emerald-500 shadow-sm">
+                <KeyRound className="h-5 w-5" />
+              </div>
+              <div>
+                <p className="text-sm font-medium text-emerald-700">会话与 SSO</p>
+                <span className="text-xs text-emerald-600/80">配置会话保持策略、并发限制与单点登录。</span>
+              </div>
+            </header>
+
+            <div className="grid gap-4">
+              <div className="flex flex-col gap-3 rounded-xl border border-white/60 bg-white/80 p-4 md:flex-row md:items-center md:justify-between">
+                <div className="flex items-start gap-3">
+                  <RefreshCcw className="mt-1 h-4 w-4 text-emerald-500" />
+                  <div>
+                    <p className="text-sm font-medium text-slate-700">记住登录</p>
+                    <p className="text-xs text-slate-500">允许用户在设备上保持登录状态。</p>
+                  </div>
                 </div>
                 <Switch
-                  checked={form.watch('enableRememberMe')}
+                  checked={rememberMeEnabled}
                   onCheckedChange={(checked) => form.setValue('enableRememberMe', checked)}
                 />
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="rememberMeDays">记住登录时长 (天)</Label>
-                <Input
-                  id="rememberMeDays"
-                  type="number"
-                  {...form.register('rememberMeDays', { valueAsNumber: true })}
-                  placeholder="30"
-                  disabled={!form.watch('enableRememberMe')}
-                />
-                {errors.rememberMeDays && (
-                  <p className="text-sm text-red-500">{errors.rememberMeDays.message}</p>
-                )}
-              </div>
+              {rememberMeEnabled && (
+                <div className="space-y-2">
+                  <Label htmlFor="rememberMeDays">记住登录天数</Label>
+                  <Input
+                    id="rememberMeDays"
+                    type="number"
+                    {...form.register('rememberMeDays', { valueAsNumber: true })}
+                    placeholder="30"
+                  />
+                  {errors.rememberMeDays && (
+                    <p className="text-xs text-red-500">{errors.rememberMeDays.message}</p>
+                  )}
+                </div>
+              )}
 
-              <div className="flex items-center justify-between">
-                <div className="space-y-0.5">
-                  <Label>限制并发会话</Label>
-                  <p className="text-sm text-gray-500">限制每个用户的同时登录数量</p>
+              <Separator className="my-2" />
+
+              <div className="flex flex-col gap-3 rounded-xl border border-white/60 bg-white/80 p-4 md:flex-row md:items-center md:justify-between">
+                <div className="flex items-start gap-3">
+                  <Network className="mt-1 h-4 w-4 text-emerald-500" />
+                  <div>
+                    <p className="text-sm font-medium text-slate-700">限制并发会话</p>
+                    <p className="text-xs text-slate-500">防止账号同时在多处登录，降低共享风险。</p>
+                  </div>
                 </div>
                 <Switch
-                  checked={form.watch('limitConcurrentSessions')}
+                  checked={limitSessions}
                   onCheckedChange={(checked) => form.setValue('limitConcurrentSessions', checked)}
                 />
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="maxConcurrentSessions">最大并发会话数</Label>
-                <Input
-                  id="maxConcurrentSessions"
-                  type="number"
-                  {...form.register('maxConcurrentSessions', { valueAsNumber: true })}
-                  placeholder="5"
-                  disabled={!form.watch('limitConcurrentSessions')}
-                />
-                {errors.maxConcurrentSessions && (
-                  <p className="text-sm text-red-500">{errors.maxConcurrentSessions.message}</p>
-                )}
-              </div>
-            </div>
-          </div>
-
-          {/* IP白名单 */}
-          <div className="space-y-4">
-            <h3 className="text-lg font-medium">IP白名单</h3>
-            
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <div className="space-y-0.5">
-                  <Label>启用IP白名单</Label>
-                  <p className="text-sm text-gray-500">只允许白名单内的IP地址登录</p>
-                </div>
-                <Switch
-                  checked={form.watch('enableIpWhitelist')}
-                  onCheckedChange={(checked) => form.setValue('enableIpWhitelist', checked)}
-                />
-              </div>
-
-              {form.watch('enableIpWhitelist') && (
+              {limitSessions && (
                 <div className="space-y-2">
-                  <Label htmlFor="ipWhitelist">IP白名单 (每行一个IP或CIDR)</Label>
-                  <Textarea
-                    id="ipWhitelist"
-                    {...form.register('ipWhitelist')}
-                    placeholder="192.168.1.0/24&#10;10.0.0.1&#10;203.0.113.5"
-                    rows={5}
+                  <Label htmlFor="maxConcurrentSessions">最大并发会话数</Label>
+                  <Input
+                    id="maxConcurrentSessions"
+                    type="number"
+                    {...form.register('maxConcurrentSessions', { valueAsNumber: true })}
+                    placeholder="5"
                   />
-                  <p className="text-xs text-gray-500">
-                    支持单个IP地址或CIDR表示法，例如: 192.168.1.100 或 192.168.1.0/24
-                  </p>
+                  {errors.maxConcurrentSessions && (
+                    <p className="text-xs text-red-500">{errors.maxConcurrentSessions.message}</p>
+                  )}
                 </div>
               )}
-            </div>
-          </div>
 
-          {/* 验证要求 */}
-          <div className="space-y-4">
-            <h3 className="text-lg font-medium">验证要求</h3>
-            
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <div className="space-y-0.5">
-                  <Label>要求邮箱验证</Label>
-                  <p className="text-sm text-gray-500">新用户注册后必须验证邮箱</p>
-                </div>
-                <Switch
-                  checked={form.watch('requireEmailVerification')}
-                  onCheckedChange={(checked) => form.setValue('requireEmailVerification', checked)}
-                />
-              </div>
-
-              <div className="flex items-center justify-between">
-                <div className="space-y-0.5">
-                  <Label>要求手机验证</Label>
-                  <p className="text-sm text-gray-500">新用户注册后必须验证手机号</p>
-                </div>
-                <Switch
-                  checked={form.watch('requirePhoneVerification')}
-                  onCheckedChange={(checked) => form.setValue('requirePhoneVerification', checked)}
-                />
-              </div>
-
-              <div className="flex items-center justify-between">
-                <div className="space-y-0.5">
-                  <Label>启用单点登录 (SSO)</Label>
-                  <p className="text-sm text-gray-500">允许通过第三方身份提供商登录</p>
+              <div className="flex flex-col gap-3 rounded-xl border border-white/60 bg-white/80 p-4 md:flex-row md:items-center md:justify-between">
+                <div className="flex items-start gap-3">
+                  <Globe2 className="mt-1 h-4 w-4 text-emerald-500" />
+                  <div>
+                    <p className="text-sm font-medium text-slate-700">启用单点登录 (SSO)</p>
+                    <p className="text-xs text-slate-500">允许外部身份提供商接入，统一认证入口。</p>
+                  </div>
                 </div>
                 <Switch
                   checked={form.watch('enableSso')}
@@ -381,26 +413,94 @@ export function LoginSettings({ config, onSave, onTest, saving }: LoginSettingsP
                 />
               </div>
             </div>
-          </div>
+          </section>
 
-          {/* 操作按钮 */}
-          <div className="flex items-center justify-between pt-4 border-t">
-            <div className="flex items-center gap-2">
+          <section className="space-y-6 rounded-2xl border border-slate-200/70 bg-white/80 p-6 shadow-sm">
+            <header className="flex items-center gap-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white text-slate-500 shadow-sm">
+                <Network className="h-5 w-5" />
+              </div>
+              <div>
+                <p className="text-sm font-medium text-slate-700">访问控制</p>
+                <span className="text-xs text-slate-500">根据 IP 白名单、邮箱或手机号验证增强访问限制。</span>
+              </div>
+            </header>
+
+            <div className="grid gap-4">
+              <div className="flex flex-col gap-3 rounded-xl border border-slate-200 bg-white p-4 md:flex-row md:items-center md:justify-between">
+                <div className="flex items-start gap-3">
+                  <Globe2 className="mt-1 h-4 w-4 text-slate-500" />
+                  <div>
+                    <p className="text-sm font-medium text-slate-700">启用 IP 白名单</p>
+                    <p className="text-xs text-slate-500">仅允许白名单中的 IP 段访问管理后台。</p>
+                  </div>
+                </div>
+                <Switch
+                  checked={ipWhitelistEnabled}
+                  onCheckedChange={(checked) => form.setValue('enableIpWhitelist', checked)}
+                />
+              </div>
+
+              {ipWhitelistEnabled && (
+                <div className="space-y-2">
+                  <Label htmlFor="ipWhitelist">允许的 IP 列表 (每行一个)</Label>
+                  <Textarea
+                    id="ipWhitelist"
+                    rows={4}
+                    {...form.register('ipWhitelist')}
+                    placeholder="127.0.0.1\n192.168.0.0/24"
+                  />
+                </div>
+              )}
+
+              <div className="grid gap-4 md:grid-cols-2">
+                <div className="flex flex-col gap-3 rounded-xl border border-slate-200 bg-white p-4 md:flex-row md:items-center md:justify-between">
+                  <div className="flex items-start gap-3">
+                    <Users className="mt-1 h-4 w-4 text-slate-500" />
+                    <div>
+                      <p className="text-sm font-medium text-slate-700">要求验证邮箱</p>
+                      <p className="text-xs text-slate-500">未验证邮箱的用户无法登录受限资源。</p>
+                    </div>
+                  </div>
+                  <Switch
+                    checked={form.watch('requireEmailVerification')}
+                    onCheckedChange={(checked) => form.setValue('requireEmailVerification', checked)}
+                  />
+                </div>
+                <div className="flex flex-col gap-3 rounded-xl border border-slate-200 bg-white p-4 md:flex-row md:items-center md:justify-between">
+                  <div className="flex items-start gap-3">
+                    <Smartphone className="mt-1 h-4 w-4 text-slate-500" />
+                    <div>
+                      <p className="text-sm font-medium text-slate-700">要求验证手机号</p>
+                      <p className="text-xs text-slate-500">根据业务需求可强制绑定手机号后才能登录。</p>
+                    </div>
+                  </div>
+                  <Switch
+                    checked={form.watch('requirePhoneVerification')}
+                    onCheckedChange={(checked) => form.setValue('requirePhoneVerification', checked)}
+                  />
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <div className="flex flex-col gap-4 border-t border-slate-200 pt-4 md:flex-row md:items-center md:justify-end">
+            <div className="flex-1 text-xs text-slate-400 md:text-right">
+              保存后将在几秒内同步到服务端，可配合上方“测试登录保护”快速验证配置效果。
+            </div>
+            <div className="flex flex-wrap items-center gap-3">
               {onTest && (
                 <Button
                   type="button"
-                  variant="outline"
+                  variant="secondary"
                   onClick={handleTest}
                   disabled={testing || saving}
                   className="flex items-center gap-2"
                 >
-                  <TestTube className="h-4 w-4" />
-                  {testing ? '测试中...' : '测试保护'}
+                  {testing ? <Loader2 className="h-4 w-4 animate-spin" /> : <TestTube className="h-4 w-4" />}
+                  测试登录保护
                 </Button>
               )}
-            </div>
-            
-            <div className="flex items-center gap-4">
               <Button
                 type="button"
                 variant="outline"
@@ -408,10 +508,9 @@ export function LoginSettings({ config, onSave, onTest, saving }: LoginSettingsP
                 disabled={!hasChanges || saving}
                 className="flex items-center gap-2"
               >
-                <RotateCcw className="h-4 w-4" />
+                <RefreshCcw className="h-4 w-4" />
                 重置
               </Button>
-              
               <Button
                 type="submit"
                 disabled={!hasChanges || saving}

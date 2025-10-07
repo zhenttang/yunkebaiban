@@ -3,16 +3,15 @@ import { Badge } from '@affine/admin/components/ui/badge';
 import { Progress } from '@affine/admin/components/ui/progress';
 import { Button } from '@affine/admin/components/ui/button';
 import {
-  DatabaseTableViewIcon,
-  DownloadIcon
+  DatabaseTableViewIcon
 } from '@blocksuite/icons/rc';
-import { RefreshCw as RefreshIcon, Trash2 as TrashIcon } from 'lucide-react';
+import { RefreshCw as RefreshIcon, TrendingUpIcon } from 'lucide-react';
 import { formatBytes, formatNumber } from '@affine/admin/utils';
 
-import { useStorageStats } from '../hooks/use-storage-stats';
+import { useStorageStatsContext } from '../hooks/storage-stats-context';
 
 export function StorageUsageCard() {
-  const { usage, loading, error, refetch } = useStorageStats();
+  const { usage, stats, loading, error, refetch } = useStorageStatsContext();
 
   if (loading) {
     return (
@@ -98,20 +97,16 @@ export function StorageUsageCard() {
           </div>
         </div>
 
-        {/* 文件统计 */}
-        <div className="grid grid-cols-2 gap-4">
-          <div className="text-center p-4 bg-blue-50 rounded-lg">
-            <div className="text-2xl font-bold text-blue-600">
-              {formatNumber(usage.totalFiles)}
-            </div>
-            <div className="text-sm text-blue-700">总文件数</div>
-          </div>
-          <div className="text-center p-4 bg-green-50 rounded-lg">
-            <div className="text-2xl font-bold text-green-600">
-              {formatBytes(usage.totalSize)}
-            </div>
-            <div className="text-sm text-green-700">总大小</div>
-          </div>
+        {/* 快速指标 */}
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+          <QuickStat label="总文件数" value={formatNumber(usage.totalFiles)} tone="blue" />
+          <QuickStat label="总容量" value={formatBytes(usage.totalSize)} tone="green" />
+          <QuickStat
+            label="本月上传"
+            value={formatNumber(stats?.uploadsThisMonth ?? usage.monthlyUploads)}
+            tone="purple"
+            icon={<TrendingUpIcon className="h-4 w-4" />}
+          />
         </div>
 
         {/* 文件类型分布 */}
@@ -143,17 +138,75 @@ export function StorageUsageCard() {
         </div>
 
         {/* 上传统计 */}
-        <div className="grid grid-cols-2 gap-4 pt-4 border-t">
-          <div>
-            <div className="text-lg font-semibold">{formatNumber(usage.dailyUploads)}</div>
-            <div className="text-xs text-gray-500">今日上传</div>
-          </div>
-          <div>
-            <div className="text-lg font-semibold">{formatNumber(usage.monthlyUploads)}</div>
-            <div className="text-xs text-gray-500">本月上传</div>
-          </div>
+        <div className="grid gap-4 rounded-lg border bg-gray-50 p-4 md:grid-cols-3">
+          <UploadSummary label="今日上传" value={usage.dailyUploads} hint="过去24小时新增文件" />
+          <UploadSummary label="本周上传" value={stats?.uploadsThisWeek ?? 0} hint="以周为粒度统计" />
+          <UploadSummary label="本月上传" value={usage.monthlyUploads} hint="自然月累计上传量" />
         </div>
+
+        {/* 热门文件 */}
+        {!!stats?.popularFiles?.length && (
+          <div className="space-y-3 border-t pt-4">
+            <h4 className="text-sm font-medium">热门文件</h4>
+            <div className="grid gap-3 md:grid-cols-2">
+              {stats.popularFiles.slice(0, 4).map(file => (
+                <div key={file.id} className="rounded-lg border p-3">
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="font-medium">{file.filename}</span>
+                    <Badge variant="secondary" className="text-xs">
+                      {formatBytes(file.size)}
+                    </Badge>
+                  </div>
+                  <div className="mt-2 text-xs text-gray-500">
+                    下载 {formatNumber(file.downloadCount)} 次 · 上传于 {new Date(file.uploadedAt).toLocaleDateString()}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </CardContent>
     </Card>
   );
 }
+
+interface QuickStatProps {
+  readonly label: string;
+  readonly value: string;
+  readonly tone: 'blue' | 'green' | 'purple';
+  readonly icon?: JSX.Element;
+}
+
+const toneToClass: Record<QuickStatProps['tone'], string> = {
+  blue: 'bg-blue-50 text-blue-700',
+  green: 'bg-green-50 text-green-700',
+  purple: 'bg-purple-50 text-purple-700',
+};
+
+const QuickStat = ({ label, value, tone, icon }: QuickStatProps) => {
+  return (
+    <div className={`rounded-lg p-4 ${toneToClass[tone]}`}>
+      <div className="flex items-center gap-2 text-xs font-medium uppercase tracking-wide">
+        {icon ? <span>{icon}</span> : null}
+        {label}
+      </div>
+      <div className="mt-2 text-2xl font-bold">{value}</div>
+    </div>
+  );
+};
+
+interface UploadSummaryProps {
+  readonly label: string;
+  readonly value: number;
+  readonly hint?: string;
+}
+
+const UploadSummary = ({ label, value, hint }: UploadSummaryProps) => {
+  return (
+    <div className="rounded-lg bg-white p-4 shadow-sm">
+      <div className="text-sm font-medium text-gray-600">{label}</div>
+      <div className="mt-2 text-xl font-semibold text-gray-900">{formatNumber(value)}</div>
+      {hint ? <div className="mt-1 text-xs text-gray-500">{hint}</div> : null}
+    </div>
+  );
+};
