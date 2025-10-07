@@ -49,15 +49,16 @@ export const PinnedCollectionItem = ({
   }
   return (
     <div
-      className={styles.item}
-      role="button"
+      className={styles.pill}
       data-active={isActive ? 'true' : undefined}
+      role="button"
       onClick={onClick}
     >
-      <span className={styles.itemContent}>{name ?? t['Untitled']()}</span>
+      <span className={styles.pillLabel}>{name ?? t['Untitled']()}</span>
+      <span className={styles.pillIndicator} />
       {isActive && (
         <IconButton
-          className={styles.closeButton}
+          className={styles.iconButton}
           size="16"
           onClick={e => {
             e.stopPropagation();
@@ -100,70 +101,74 @@ export const PinnedCollections = ({
 
   return (
     <div className={styles.container}>
-      <div
-        className={styles.item}
-        data-active={activeCollectionId === null ? 'true' : undefined}
-        onClick={() => {
-          // only fire onActiveAll if the collection is not already active
-          if (activeCollectionId !== null) {
-            track.allDocs.header.navigation.navigatePinedCollectionRouter({
-              control: 'all',
-            });
-            onActiveAll();
-          }
-        }}
-        role="button"
-      >
-        {t['com.affine.all-docs.pinned-collection.all']()}
-      </div>
-      {pinnedCollections.map((record, index) => (
-        <PinnedCollectionItem
-          key={record.collectionId}
-          record={record}
-          isActive={activeCollectionId === record.collectionId}
+      <div className={styles.track}>
+        <div
+          className={styles.pill}
+          data-active={activeCollectionId === null ? 'true' : undefined}
           onClick={() => {
-            // only fire onActiveCollection if the collection is not already active
-            if (activeCollectionId !== record.collectionId) {
+            if (activeCollectionId !== null) {
               track.allDocs.header.navigation.navigatePinedCollectionRouter({
-                control: 'user-custom-collection',
+                control: 'all',
               });
-              onActiveCollection(record.collectionId);
-            }
-          }}
-          onClickRemove={() => {
-            const nextCollectionId = pinnedCollections[index - 1]?.collectionId;
-            if (nextCollectionId) {
-              onActiveCollection(nextCollectionId);
-            } else {
               onActiveAll();
             }
-            pinnedCollectionService.removePinnedCollection(record.collectionId);
           }}
-        />
-      ))}
-      {!hiddenAdd && (
-        <AddPinnedCollection
-          onPinCollection={handleAddPinnedCollection}
-          onAddFilter={onAddFilter}
-        />
-      )}
-      <div style={{ flex: 1 }}></div>
-      {activeCollectionId && (
-        <Tooltip content={t['com.affine.all-docs.pinned-collection.edit']()}>
-          <IconButton
-            size="16"
-            className={styles.editIconButton}
+          role="button"
+        >
+          <span className={styles.pillLabel}>
+            {t['com.affine.all-docs.pinned-collection.all']()}
+          </span>
+          <span className={styles.pillIndicator} />
+        </div>
+        {pinnedCollections.map((record, index) => (
+          <PinnedCollectionItem
+            key={record.collectionId}
+            record={record}
+            isActive={activeCollectionId === record.collectionId}
             onClick={() => {
-              track.allDocs.header.collection.editCollection();
-              workspaceDialogService.open('collection-editor', {
-                collectionId: activeCollectionId,
-              });
+              if (activeCollectionId !== record.collectionId) {
+                track.allDocs.header.navigation.navigatePinedCollectionRouter({
+                  control: 'user-custom-collection',
+                });
+                onActiveCollection(record.collectionId);
+              }
             }}
-          >
-            <EditIcon />
-          </IconButton>
-        </Tooltip>
-      )}
+            onClickRemove={() => {
+              const nextCollectionId = pinnedCollections[index - 1]?.collectionId;
+              if (nextCollectionId) {
+                onActiveCollection(nextCollectionId);
+              } else {
+                onActiveAll();
+              }
+              pinnedCollectionService.removePinnedCollection(record.collectionId);
+            }}
+          />
+        ))}
+      </div>
+      <div className={styles.trailingActions}>
+        {!hiddenAdd && (
+          <AddPinnedCollection
+            onPinCollection={handleAddPinnedCollection}
+            onAddFilter={onAddFilter}
+          />
+        )}
+        {activeCollectionId && (
+          <Tooltip content={t['com.affine.all-docs.pinned-collection.edit']()}>
+            <IconButton
+              size="16"
+              className={styles.iconButton}
+              onClick={() => {
+                track.allDocs.header.collection.editCollection();
+                workspaceDialogService.open('collection-editor', {
+                  collectionId: activeCollectionId,
+                });
+              }}
+            >
+              <EditIcon />
+            </IconButton>
+          </Tooltip>
+        )}
+      </div>
     </div>
   );
 };
@@ -175,6 +180,7 @@ export const AddPinnedCollection = ({
   onPinCollection: (collectionId: string) => void;
   onAddFilter: (params: FilterParams) => void;
 }) => {
+  const t = useI18n();
   return (
     <Menu
       items={
@@ -184,9 +190,10 @@ export const AddPinnedCollection = ({
         />
       }
     >
-      <IconButton size="16">
+      <button type="button" className={styles.addButton}>
         <PlusIcon />
-      </IconButton>
+        {t['com.affine.filter.add-filter']()}
+      </button>
     </Menu>
   );
 };

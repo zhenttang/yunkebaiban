@@ -82,26 +82,35 @@ export const AllDocsHeader = ({
   }, [workspaceDialogService, handleOpenDocs]);
 
   return (
-    <div className={styles.header}>
-      <ExplorerNavigation active="docs" />
+    <div className={styles.headerContainer}>
+      <div className={styles.headerLeft}>
+        <ExplorerNavigation active="docs" />
+      </div>
 
-      <div className={styles.actions}>
-        <ViewToggle view={view} onViewChange={onViewChange} />
-        <ExplorerDisplayMenuButton
-          menuProps={menuProps}
-          displayPreference={displayPreference}
-          onDisplayPreferenceChange={onDisplayPreferenceChange}
-        />
-        <PageListNewPageButton
-          size="small"
-          onCreateEdgeless={e => createEdgeless({ at: inferOpenMode(e) })}
-          onCreatePage={e => createPage('page', { at: inferOpenMode(e) })}
-          onCreateDoc={e => createPage(undefined, { at: inferOpenMode(e) })}
-          onImportFile={onImportFile}
-          data-testid="new-page-button-trigger"
-        >
-          <span className={styles.newPageButtonLabel}>{t['New Page']()}</span>
-        </PageListNewPageButton>
+      <div className={styles.headerRight}>
+        <div className={styles.viewControls}>
+          <ViewToggle view={view} onViewChange={onViewChange} />
+          <div className={styles.divider} />
+          <ExplorerDisplayMenuButton
+            menuProps={menuProps}
+            displayPreference={displayPreference}
+            onDisplayPreferenceChange={onDisplayPreferenceChange}
+          />
+        </div>
+
+        <div className={styles.actionGroup}>
+          <PageListNewPageButton
+            size="small"
+            onCreateEdgeless={e => createEdgeless({ at: inferOpenMode(e) })}
+            onCreatePage={e => createPage('page', { at: inferOpenMode(e) })}
+            onCreateDoc={e => createPage(undefined, { at: inferOpenMode(e) })}
+            onImportFile={onImportFile}
+            data-testid="new-page-button-trigger"
+            className={styles.newPageButton}
+          >
+            <span className={styles.newPageButtonLabel}>{t['New Page']()}</span>
+          </PageListNewPageButton>
+        </div>
       </div>
     </div>
   );

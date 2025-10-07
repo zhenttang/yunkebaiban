@@ -2,7 +2,7 @@ import { cssVarV2 } from '@toeverything/theme/v2';
 import { style } from '@vanilla-extract/css';
 
 export const groupHeader = style({
-  background: cssVarV2.layer.background.primary,
+  background: 'transparent',
 });
 
 export const docItem = style({

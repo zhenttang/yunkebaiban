@@ -15,7 +15,7 @@ import type { FilterParams } from '@affine/core/modules/collection-rules/types';
 import { WorkspaceLocalState } from '@affine/core/modules/workspace';
 import { useI18n } from '@affine/i18n';
 import { useLiveData, useService } from '@toeverything/infra';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import {
   ViewBody,
@@ -351,6 +351,16 @@ export const AllPage = () => {
     [setDisplayPreference]
   );
 
+  const filterSummaryText = useMemo(() => {
+    const activeFilters =
+      tempFilters ?? (selectedCollectionInfo?.rules.filters ?? []);
+    const count = activeFilters.length;
+    if (count > 0) {
+      return `${count} ${t['com.affine.filter']()}`;
+    }
+    return t['com.affine.filterList.button.add']();
+  }, [selectedCollectionInfo, tempFilters, t]);
+
   return (
     <DocExplorerContext.Provider value={explorerContextValue}>
       <ViewTitle title={t['All pages']()} />
@@ -365,41 +375,72 @@ export const AllPage = () => {
       </ViewHeader>
       <ViewBody>
         <div className={styles.body}>
-          <MigrationAllDocsDataNotification />
-          <div className={styles.pinnedCollection}>
-            <PinnedCollections
-              activeCollectionId={selectedCollectionId}
-              onActiveAll={handleSelectAll}
-              onActiveCollection={handleSelectCollection}
-              onAddFilter={handleNewTempFilter}
-              hiddenAdd={tempFilters !== null}
-            />
-          </div>
-          <div className={styles.filterArea}>
-            {tempFilters !== null && (
-              <div className={styles.filterInnerArea}>
-                <Filters
-                  // When the selected collection changes, the filters internal state should be reset
-                  key={selectedCollectionId ?? 'all'}
-                  className={styles.filters}
-                  filters={tempFilters}
-                  onChange={handleFilterChange}
-                  defaultDraftFilter={tempFiltersInitial}
-                />
-                <Button
-                  variant="plain"
-                  onClick={() => {
-                    setTempFilters(null);
-                  }}
-                >
-                  {t['Cancel']()}
-                </Button>
-                <Button onClick={handleSaveFilters}>{t['save']()}</Button>
+          <div className={styles.mainContainer}>
+            <div className={styles.banner}>
+              <MigrationAllDocsDataNotification />
+            </div>
+
+            <section className={styles.pinnedCard}>
+              <PinnedCollections
+                activeCollectionId={selectedCollectionId}
+                onActiveAll={handleSelectAll}
+                onActiveCollection={handleSelectCollection}
+                onAddFilter={handleNewTempFilter}
+                hiddenAdd={tempFilters !== null}
+              />
+            </section>
+
+            <section className={styles.filterCard}>
+              <div className={styles.filterHeader}>
+                <div>
+                  <div className={styles.sectionTitle}>{t['com.affine.filter']()}</div>
+                  <div className={styles.filterSummary}>{filterSummaryText}</div>
+                </div>
+                {tempFilters === null ? (
+                  <Button
+                    variant="plain"
+                    size="small"
+                    onClick={() => {
+                      const baseFilters = selectedCollectionInfo?.rules.filters ?? [];
+                      setTempFilters([...baseFilters]);
+                      setTempFiltersInitial(null);
+                    }}
+                  >
+                    {t['com.affine.filterList.button.add']()}
+                  </Button>
+                ) : null}
               </div>
-            )}
-          </div>
-          <div className={styles.scrollArea}>
-            <DocsExplorer />
+              {tempFilters !== null ? (
+                <div className={styles.filterContent}>
+                  <Filters
+                    key={selectedCollectionId ?? 'all'}
+                    className={styles.filters}
+                    filters={tempFilters}
+                    onChange={handleFilterChange}
+                    defaultDraftFilter={tempFiltersInitial}
+                  />
+                  <div className={styles.filterControls}>
+                    <Button
+                      variant="plain"
+                      onClick={() => {
+                        setTempFilters(null);
+                        setTempFiltersInitial(null);
+                      }}
+                    >
+                      {t['Cancel']()}
+                    </Button>
+                    <div className={styles.filterActionsSpacer} />
+                    <Button onClick={handleSaveFilters}>{t['save']()}</Button>
+                  </div>
+                </div>
+              ) : null}
+            </section>
+
+            <section className={styles.documentsContainer}>
+              <div className={styles.documentsInner}>
+                <DocsExplorer />
+              </div>
+            </section>
           </div>
         </div>
       </ViewBody>

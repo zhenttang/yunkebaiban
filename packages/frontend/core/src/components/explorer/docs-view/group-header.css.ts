@@ -8,11 +8,7 @@ export const groupHeader = style({
   alignItems: 'center',
   justifyContent: 'space-between',
   position: 'relative',
-  padding: '0px 4px',
-  borderRadius: 4,
-  ':hover': {
-    background: cssVarV2.layer.background.hoverOverlay,
-  },
+  padding: '2px 4px',
 });
 export const space = style({
   width: 0,
@@ -85,6 +81,18 @@ export const content = style({
   fontSize: 15,
   lineHeight: '24px',
   color: cssVarV2.text.secondary,
+  display: 'inline-flex',
+  alignItems: 'center',
+  gap: 8,
+  padding: '4px 10px',
+  borderRadius: 8,
+  transition: 'background-color .15s ease, color .15s ease',
+  selectors: {
+    [`${groupHeader}:hover &`]: {
+      backgroundColor: 'rgba(59, 130, 246, 0.12)',
+      color: cssVarV2('brand/primary/strong'),
+    },
+  },
 });
 
 export const selectAllButton = style([
