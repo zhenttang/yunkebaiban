@@ -40,7 +40,7 @@ import {
   useNavigateHelper,
 } from '../../../components/hooks/use-navigate-helper';
 import { AuthService, SubscriptionService } from '../../../modules/cloud';
-import { container } from './subscribe.css';
+import * as styles from './subscribe.css';
 
 interface ProductTriple {
   plan: SubscriptionPlan;
@@ -126,7 +126,7 @@ export const Component = () => {
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
   const [retryKey, setRetryKey] = useState(0);
-  const { jumpToSignIn, jumpToIndex } = useNavigateHelper();
+  const { jumpToSignIn } = useNavigateHelper();
   const idempotencyKey = useMemo(() => nanoid(), []);
 
   const { plan, recurring, variant } = getProductTriple(searchParams);
@@ -138,21 +138,21 @@ export const Component = () => {
         return fromPromise(async signal => {
           retryKey;
           // TODO(@eyhn): i18n
-          setMessage('正在检查账户状态...');
+          setMessage('正在检查账户状态…');
           setError('');
           await authService.session.waitForRevalidation(signal);
           const loggedIn =
             authService.session.status$.value === 'authenticated';
 
           if (!loggedIn) {
-            setMessage('正在重定向到登录页面...');
+            setMessage('正在重定向到登录页面…');
             jumpToSignIn(
               location.pathname + location.search,
               RouteLogic.REPLACE
             );
             return;
           }
-          setMessage('Checkout...');
+          setMessage('正在创建结算会话…');
 
           try {
             const account = authService.session.account$.value;
@@ -177,11 +177,12 @@ export const Component = () => {
                 recurring
               ),
             });
-            setMessage('Redirecting...');
+            setMessage('即将跳转到支付页面…');
             urlService.openExternal(checkout);
           } catch (err) {
             const e = UserFriendlyError.fromAny(err);
-            setMessage(e.message);
+            setMessage('');
+            setError(e.message);
           }
         });
       })
@@ -198,7 +199,6 @@ export const Component = () => {
     jumpToSignIn,
     idempotencyKey,
     plan,
-    jumpToIndex,
     recurring,
     retryKey,
     variant,
@@ -206,23 +206,51 @@ export const Component = () => {
     urlService,
   ]);
 
+  const isError = Boolean(error);
+  const statusTitleText = isError ? '订阅流程遇到问题' : '正在准备订阅';
+  const statusDescription = isError
+    ? error
+    : message || 'AFFiNE 正在为你检查账户状态，请稍候…';
+
   return (
-    <div className={container}>
-      {!error ? (
-        <>
-          {message}
-          <br />
-          <Loading size={20} />
-        </>
-      ) : (
-        <>
-          {error}
-          <br />
-          <Button variant="primary" onClick={() => setRetryKey(i => i + 1)}>
-            Retry
-          </Button>
-        </>
-      )}
+    <div className={styles.page}>
+      <div className={styles.panel}>
+        <div className={styles.titleGroup}>
+          <h1 className={styles.title}>
+            {isError ? '订阅未完成' : '正在跳转至结算页面'}
+          </h1>
+          <p className={styles.description}>
+            {isError
+              ? '你可以点击下方按钮重试。如果问题持续，请稍后再试或联系支持团队。'
+              : '为了确保权益同步，我们正在核对账户信息并生成结算链接，请保持页面打开。'}
+          </p>
+        </div>
+
+        <div
+          className={styles.statusCard}
+          data-variant={isError ? 'error' : 'info'}
+        >
+          <div className={styles.statusContent}>
+            <span className={styles.statusTitle}>{statusTitleText}</span>
+            <span className={styles.statusText}>{statusDescription}</span>
+          </div>
+          {isError ? (
+            <Button
+              variant="primary"
+              size="small"
+              onClick={() => setRetryKey(i => i + 1)}
+            >
+              重新尝试
+            </Button>
+          ) : (
+            <Loading size={20} />
+          )}
+        </div>
+
+        <p className={styles.helper}>
+          页面完成跳转后如长时间无响应，可关闭此页并从邮件或帐户中心再次发起购买。
+        </p>
+      </div>
     </div>
   );
 };

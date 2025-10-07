@@ -6,6 +6,7 @@ import { wrapper, wrapperDisabled } from './share.css';
 interface SettingWrapperProps {
   id?: string;
   title?: ReactNode;
+  description?: ReactNode;
   disabled?: boolean;
   testId?: string;
 }
@@ -13,6 +14,7 @@ interface SettingWrapperProps {
 export const SettingWrapper = ({
   id,
   title,
+  description,
   children,
   disabled,
   testId,
@@ -25,6 +27,7 @@ export const SettingWrapper = ({
       aria-disabled={disabled}
     >
       {title ? <div className="title">{title}</div> : null}
+      {description ? <div className="description">{description}</div> : null}
       {children}
     </div>
   );

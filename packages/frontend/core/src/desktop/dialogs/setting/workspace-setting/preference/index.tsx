@@ -120,7 +120,7 @@ export const WorkspaceSettingDetail = ({
       <TemplateDocSetting />
       <SharingPanel />
       {/* 支付功能测试区域 - 使用 PlanCard 样式 */}
-      <SettingWrapper title="支付功能测试" desc="测试支付宝沙箱环境集成">
+      <SettingWrapper title="支付功能测试" description="测试支付宝沙箱环境集成">
         <div style={{ display: 'flex', gap: '16px', margin: '16px 0' }}>
           <div style={{
             backgroundColor: 'var(--affine-background-primary-color)',

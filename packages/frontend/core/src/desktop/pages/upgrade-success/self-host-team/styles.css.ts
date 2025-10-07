@@ -1,23 +1,30 @@
-import { cssVar } from '@toeverything/theme';
 import { cssVarV2 } from '@toeverything/theme/v2';
 import { style } from '@vanilla-extract/css';
-export const leftContentText = style({
-  fontSize: cssVar('fontBase'),
-  fontWeight: 400,
-  lineHeight: '1.6',
-  maxWidth: '548px',
+
+export const copy = style({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: 12,
+  fontSize: 15,
+  lineHeight: '24px',
+  maxWidth: 560,
+  color: cssVarV2('text/secondary'),
 });
-export const mail = style({
-  color: cssVar('linkColor'),
+
+export const highlightLink = style({
+  color: cssVarV2('button/primary'),
+  fontWeight: 600,
   textDecoration: 'none',
-  ':visited': {
-    color: cssVar('linkColor'),
+  transition: 'opacity 0.2s ease',
+  ':hover': {
+    opacity: 0.85,
   },
 });
+
 export const content = style({
   display: 'flex',
   flexDirection: 'column',
-  gap: '28px',
+  gap: 28,
 });
 
 export const licenseKeyContainer = style({
@@ -26,10 +33,11 @@ export const licenseKeyContainer = style({
   justifyContent: 'space-between',
   alignItems: 'center',
   backgroundColor: cssVarV2('layer/background/secondary'),
-  borderRadius: '4px',
-  border: `1px solid ${cssVarV2('layer/insideBorder/blackBorder')}`,
-  padding: '8px 10px',
-  gap: '8px',
+  borderRadius: 12,
+  border: `1px solid ${cssVarV2('layer/outline/floating')}`,
+  padding: '12px 16px',
+  gap: 12,
+  boxShadow: cssVarV2('shadow/popover'),
 });
 
 export const icon = style({

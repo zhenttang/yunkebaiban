@@ -10,6 +10,8 @@ import { useI18n } from '@affine/i18n';
 import { useLiveData, useService } from '@toeverything/infra';
 import { useCallback } from 'react';
 
+import * as style from './style.css';
+
 export interface PublishPanelProps {
   workspace: Workspace | null;
 }
@@ -46,17 +48,13 @@ export const EnableCloudPanel = ({
       })}
       desc={t['Enable cloud hint']()}
       spreadCol={false}
-      style={{
-        padding: '10px',
-        background: 'var(--affine-background-secondary-color)',
-        marginTop: '24px',
-      }}
+      className={style.enableCloudRow}
     >
       <Button
         data-testid="publish-enable-affine-cloud-button"
         variant="primary"
         onClick={confirmEnableCloudAndClose}
-        style={{ marginTop: '12px' }}
+        style={{ alignSelf: 'flex-start' }}
       >
         {t['Enable AFFiNE Cloud']()}
       </Button>

@@ -5,6 +5,7 @@ export const profileWrapper = style({
   display: 'flex',
   alignItems: 'flex-end',
   marginTop: '12px',
+  gap: '16px',
 });
 
 export const labelWrapper = style({
@@ -34,6 +35,13 @@ export const workspaceLabel = style({
   color: cssVarV2('text/primary'),
   lineHeight: '20px',
   whiteSpace: 'nowrap',
+});
+
+export const enableCloudRow = style({
+  backgroundColor: cssVarV2('layer/background/secondary'),
+  borderRadius: '12px',
+  border: `1px solid ${cssVarV2('layer/outline/border')}`,
+  gap: '12px',
 });
 
 export const storageProgressContainer = style({

@@ -118,7 +118,7 @@ export const WorkspaceSettingBilling = () => {
       </SettingWrapper>
 
       {/* 支付功能测试区域 */}
-      <SettingWrapper title="支付功能测试" desc="测试支付宝沙箱环境集成">
+      <SettingWrapper title="支付功能测试" description="测试支付宝沙箱环境集成">
         <SettingRow
           name="支付流程测试"
           desc="测试完整的支付流程，包括订单创建、二维码生成和状态查询"

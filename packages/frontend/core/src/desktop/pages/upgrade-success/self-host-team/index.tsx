@@ -79,22 +79,22 @@ const Success = ({ licenseKey }: { licenseKey: string | null }) => {
   }, [licenseKey, t]);
 
   const subtitle = (
-    <span className={styles.leftContentText}>
-      <span>{t['com.affine.payment.license-success.text-1']()}</span>
-      <span>
+    <div className={styles.copy}>
+      <p>{t['com.affine.payment.license-success.text-1']()}</p>
+      <p>
         <Trans
           i18nKey={'com.affine.payment.license-success.text-2'}
           components={{
             1: (
               <a
                 href="mailto:support@toeverything.info"
-                className={styles.mail}
+                className={styles.highlightLink}
               />
             ),
           }}
         />
-      </span>
-    </span>
+      </p>
+    </div>
   );
   return (
     <AuthPageContainer

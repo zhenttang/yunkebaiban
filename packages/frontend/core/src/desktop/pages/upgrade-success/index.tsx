@@ -26,21 +26,21 @@ export const Component = () => {
   }, [jumpToIndex, jumpToOpenInApp, params]);
 
   const subtitle = (
-    <div className={styles.leftContentText}>
-      {t['com.affine.payment.upgrade-success-page.text']()}
-      <div>
+    <div className={styles.copy}>
+      <p>{t['com.affine.payment.upgrade-success-page.text']()}</p>
+      <p>
         <Trans
           i18nKey={'com.affine.payment.upgrade-success-page.support'}
           components={{
             1: (
               <a
                 href="mailto:support@toeverything.info"
-                className={styles.mail}
+                className={styles.highlightLink}
               />
             ),
           }}
         />
-      </div>
+      </p>
     </div>
   );
 
