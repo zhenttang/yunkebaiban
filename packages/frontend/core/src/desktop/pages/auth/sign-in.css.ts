@@ -1,5 +1,20 @@
 import { cssVar } from '@toeverything/theme';
-import { style } from '@vanilla-extract/css';
+import { keyframes, style } from '@vanilla-extract/css';
+
+export const fadeInUp = keyframes({
+  '0%': { opacity: 0, transform: 'translateY(20px)' },
+  '100%': { opacity: 1, transform: 'translateY(0)' },
+});
+
+export const float = keyframes({
+  '0%, 100%': { transform: 'translateY(0)' },
+  '50%': { transform: 'translateY(-10px)' },
+});
+
+export const pulse = keyframes({
+  '0%, 100%': { opacity: 1, transform: 'scale(1)' },
+  '50%': { opacity: 0.8, transform: 'scale(1.1)' },
+});
 
 export const layout = style({
   width: '100%',
@@ -10,6 +25,7 @@ export const layout = style({
   gap: '56px',
   position: 'relative',
   zIndex: 2,
+  animation: `${fadeInUp} 0.6s ease-out`,
   '@media': {
     'screen and (max-width: 960px)': {
       flexDirection: 'column-reverse',
@@ -22,13 +38,28 @@ export const layout = style({
 export const panel = style({
   width: '100%',
   maxWidth: '420px',
-  backgroundColor: cssVar('backgroundPrimaryColor'),
+  position: 'relative',
+  overflow: 'hidden',
+  background:
+    'linear-gradient(135deg, rgba(255, 255, 255, 0.82), rgba(255, 255, 255, 0.68)) padding-box, linear-gradient(135deg, rgba(51, 102, 255, 0.35), rgba(139, 92, 246, 0.35)) border-box',
   borderRadius: '28px',
   padding: '40px 44px',
   boxSizing: 'border-box',
-  boxShadow: '0 30px 80px rgba(15, 23, 42, 0.1)',
-  border: '1px solid rgba(15, 23, 42, 0.08)',
-  backdropFilter: 'blur(14px)',
+  boxShadow:
+    '0 30px 80px rgba(15, 23, 42, 0.18), 0 12px 32px rgba(51, 102, 255, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.32)',
+  border: '1px solid transparent',
+  backgroundClip: ['padding-box', 'border-box'],
+  backdropFilter: 'blur(24px)',
+  animation: `${fadeInUp} 0.8s ease-out 0.3s backwards`,
+  selectors: {
+    '[data-theme="dark"] &': {
+      background:
+        'linear-gradient(135deg, rgba(17, 24, 39, 0.88), rgba(15, 23, 42, 0.72)) padding-box, linear-gradient(135deg, rgba(79, 70, 229, 0.45), rgba(16, 185, 129, 0.28)) border-box',
+      backgroundClip: ['padding-box', 'border-box'],
+      boxShadow:
+        '0 30px 80px rgba(2, 6, 23, 0.7), 0 12px 32px rgba(79, 70, 229, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.06)',
+    },
+  },
   '@media': {
     'screen and (max-width: 960px)': {
       maxWidth: '480px',
@@ -48,6 +79,7 @@ export const hero = style({
   justifyContent: 'center',
   gap: '18px',
   color: cssVar('textPrimaryColor'),
+  animation: `${fadeInUp} 0.8s ease-out 0.2s backwards`,
   '@media': {
     'screen and (max-width: 960px)': {
       alignItems: 'center',
@@ -63,6 +95,10 @@ export const heroTitle = style({
   fontWeight: 700,
   letterSpacing: '-0.02em',
   margin: 0,
+  background: 'linear-gradient(135deg, #3366ff 0%, #8b5cf6 100%)',
+  WebkitBackgroundClip: 'text',
+  WebkitTextFillColor: 'transparent',
+  backgroundClip: 'text',
 });
 
 export const heroBadge = style({
@@ -71,12 +107,20 @@ export const heroBadge = style({
   gap: '8px',
   padding: '6px 14px',
   borderRadius: '9999px',
-  background: 'rgba(51, 102, 255, 0.14)',
+  background: 'linear-gradient(135deg, rgba(51, 102, 255, 0.2), rgba(139, 92, 246, 0.3))',
   color: cssVar('blue'),
   fontSize: cssVar('fontXs'),
   fontWeight: 600,
   letterSpacing: '0.1em',
   textTransform: 'uppercase',
+  boxShadow: '0 10px 30px rgba(51, 102, 255, 0.25)',
+  selectors: {
+    '[data-theme="dark"] &': {
+      background:
+        'linear-gradient(135deg, rgba(79, 70, 229, 0.25), rgba(30, 64, 175, 0.28))',
+      boxShadow: '0 12px 32px rgba(79, 70, 229, 0.35)',
+    },
+  },
 });
 
 export const heroSubtitle = style({
@@ -117,6 +161,12 @@ export const heroDot = style({
   height: '10px',
   borderRadius: '9999px',
   background: cssVar('blue'),
-  boxShadow: '0 0 0 4px rgba(51, 102, 255, 0.15)',
+  boxShadow: '0 0 0 4px rgba(51, 102, 255, 0.18)',
   marginTop: '7px',
+  animation: `${pulse} 2s ease-in-out infinite`,
+  selectors: {
+    '[data-theme="dark"] &': {
+      boxShadow: '0 0 0 4px rgba(79, 70, 229, 0.25)',
+    },
+  },
 });

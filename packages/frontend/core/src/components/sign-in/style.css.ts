@@ -101,25 +101,47 @@ export const skipSection = style({
 
 export const authInput = style({
   backgroundColor: cssVarV2.button.signinbutton.background,
+  border: '1px solid transparent',
+  borderRadius: 16,
+  transition: 'all 0.3s ease',
+  selectors: {
+    '&.default:focus-within': {
+      boxShadow: '0 0 0 3px rgba(51, 102, 255, 0.2)',
+      borderColor: cssVar('blue'),
+      backgroundColor: 'rgba(255, 255, 255, 0.98)',
+    },
+    '[data-theme="dark"] &.default:focus-within': {
+      backgroundColor: 'rgba(15, 23, 42, 0.85)',
+      boxShadow: '0 0 0 3px rgba(99, 102, 241, 0.28)',
+      borderColor: 'rgba(99, 102, 241, 0.6)',
+    },
+  },
 });
 
 export const signInButton = style({
   width: '100%',
   backgroundColor: cssVarV2.button.signinbutton.background,
-  transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
   boxShadow: '0 14px 36px rgba(51, 102, 255, 0.18)',
   selectors: {
     '&:hover': {
       transform: 'translateY(-1px)',
+      boxShadow: '0 18px 44px rgba(51, 102, 255, 0.24)',
     },
     '&:active': {
       transform: 'translateY(0)',
-      boxShadow: '0 10px 20px rgba(51, 102, 255, 0.22)',
+      boxShadow: '0 12px 28px rgba(51, 102, 255, 0.22)',
     },
     '&:focus-visible': {
       outline: 'none',
       boxShadow:
         '0 0 0 3px rgba(51, 102, 255, 0.2), 0 14px 36px rgba(51, 102, 255, 0.18)',
+    },
+    '[data-theme="dark"] &:hover': {
+      boxShadow: '0 20px 46px rgba(99, 102, 241, 0.28)',
+    },
+    '[data-theme="dark"] &:active': {
+      boxShadow: '0 12px 28px rgba(99, 102, 241, 0.26)',
     },
   },
 });
