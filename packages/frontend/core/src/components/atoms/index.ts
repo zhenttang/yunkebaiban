@@ -7,3 +7,5 @@ export const openQuotaModalAtom = atom(false);
 
 export type AllPageFilterOption = 'docs' | 'collections' | 'tags';
 export const allPageFilterSelectAtom = atom<AllPageFilterOption>('docs');
+
+export * from './quick-menu';

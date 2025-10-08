@@ -313,7 +313,7 @@
   "com.affine.auth.sign.add-selfhosted.connect-button": "Подключиться",
   "com.affine.auth.sign.add-selfhosted.error": "Не удаётся подключиться к серверу.",
   "com.affine.auth.sign.add-selfhosted.description": "Самостоятельно размещённая инстанция не размещается и не развёртывается AFFiNE. Ваши данные будут храниться на этих экземплярах. <1>Узнать больше о деталях самостоятельно размещённых инстанций.</1>",
-  "com.affine.auth.sign.message": "Нажимая «Продолжить с Google / Email», вы подтверждаете, что согласны с <1>Условиями использования</1> и <3>Политикой конфиденциальности</3> AFFiNE.",
+  "com.affine.auth.sign.message": "Нажимая «Продолжить», вы подтверждаете, что согласны с <1>Условиями использования</1> и <3>Политикой конфиденциальности</3> AFFiNE.",
   "com.affine.auth.sign.policy": "Политика конфиденциальности",
   "com.affine.auth.sign.up": "Зарегистрироваться",
   "com.affine.auth.sign.up.sent.email.subtitle": "Создать аккаунт",

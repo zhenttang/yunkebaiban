@@ -12,6 +12,7 @@ import {
   RouteLogic,
   useNavigateHelper,
 } from '../../../components/hooks/use-navigate-helper';
+import * as pageStyle from './sign-in.css';
 
 export const SignIn = ({
   redirectUrl: redirectUrlFromProps,
@@ -62,15 +63,41 @@ export const SignIn = ({
 
   const initStep = server ? 'addSelfhosted' : 'signIn';
 
+  const highlightItems = [
+    t['com.affine.auth.sign.hero.point.email'](),
+    t['com.affine.auth.sign.hero.point.selfhost'](),
+    t['com.affine.auth.sign.hero.point.offline'](),
+  ];
+
   return (
     <SignInPageContainer>
-      <div style={{ maxWidth: '400px', width: '100%' }}>
-        <SignInPanel
-          onSkip={handleClose}
-          onAuthenticated={handleAuthenticated}
-          initStep={initStep}
-          server={server}
-        />
+      <SignInBackgroundArts />
+      <div className={pageStyle.layout}>
+        <section className={pageStyle.hero}>
+          <span className={pageStyle.heroBadge}>AFFiNE</span>
+          <h1 className={pageStyle.heroTitle}>
+            {t['com.affine.auth.sign.hero.title']()}
+          </h1>
+          <p className={pageStyle.heroSubtitle}>
+            {t['com.affine.auth.sign.hero.subtitle']()}
+          </p>
+          <div className={pageStyle.heroHighlights}>
+            {highlightItems.map((item, index) => (
+              <div key={index} className={pageStyle.heroHighlight}>
+                <span className={pageStyle.heroDot} />
+                <span>{item}</span>
+              </div>
+            ))}
+          </div>
+        </section>
+        <section className={pageStyle.panel}>
+          <SignInPanel
+            onSkip={handleClose}
+            onAuthenticated={handleAuthenticated}
+            initStep={initStep}
+            server={server}
+          />
+        </section>
       </div>
     </SignInPageContainer>
   );
@@ -79,7 +106,6 @@ export const SignIn = ({
 export const Component = () => {
   return (
     <AffineOtherPageLayout>
-      <SignInBackgroundArts />
       <SignIn />
     </AffineOtherPageLayout>
   );

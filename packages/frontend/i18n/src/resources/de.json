@@ -313,7 +313,7 @@
   "com.affine.auth.sign.add-selfhosted.connect-button": "Verbinden",
   "com.affine.auth.sign.add-selfhosted.error": "Verbindung zum Server nicht möglich.",
   "com.affine.auth.sign.add-selfhosted.description": "Die selbst gehostete Instanz wird nicht von AFFiNE gehostet oder bereitgestellt. Deine Daten werden auf diesen Instanzen gespeichert. <1>Erfahre mehr über die Details zum Selbst-Hosting.</1>",
-  "com.affine.auth.sign.message": "Indem du oben auf \"Weiter mit Google/E-Mail\" klickst, bestätigst du, dass du den <1>Allgemeinen Geschäftsbedingungen</1> von AFFiNE und der <3>Datenschutzrichtlinie</3> zustimmst.",
+  "com.affine.auth.sign.message": "Indem du oben auf \"Weiter\" klickst, bestätigst du, dass du den <1>Allgemeinen Geschäftsbedingungen</1> von AFFiNE und der <3>Datenschutzrichtlinie</3> zustimmst.",
   "com.affine.auth.sign.policy": "Datenschutzerklärung",
   "com.affine.auth.sign.up": "Registrieren",
   "com.affine.auth.sign.up.sent.email.subtitle": "Konto erstellen",

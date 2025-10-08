@@ -23,7 +23,13 @@ import {
   LockIcon,
 } from '@blocksuite/icons/rc';
 import { useLiveData, useService } from '@toeverything/infra';
-import { type ReactElement, type SVGAttributes, useCallback } from 'react';
+import {
+  cloneElement,
+  type ReactElement,
+  type SVGAttributes,
+  useCallback,
+} from 'react';
+import * as oauthStyle from './oauth.css';
 
 // 手机图标组件
 const PhoneIcon = () => (
@@ -140,15 +146,17 @@ export function OAuth({ redirectUrl }: { redirectUrl?: string }) {
   );
 
   // 总是显示自定义登录方式，而不依赖服务器配置
-  return customProviders.map(provider => {
-    return (
-      <OAuthProvider
-        key={provider}
-        provider={provider}
-        onContinue={onContinue}
-      />
-    );
-  });
+  return (
+    <div className={oauthStyle.wrapper}>
+      {customProviders.map(provider => (
+        <OAuthProvider
+          key={provider}
+          provider={provider}
+          onContinue={onContinue}
+        />
+      ))}
+    </div>
+  );
 }
 
 interface OauthProviderProps {
@@ -158,6 +166,9 @@ interface OauthProviderProps {
 
 function OAuthProvider({ onContinue, provider }: OauthProviderProps) {
   const { icon, label } = OAuthProviderMap[provider];
+  const decoratedIcon = cloneElement(icon, {
+    className: oauthStyle.placeholderIcon,
+  });
 
   const onClick = useCallback(() => {
     // 测试阶段，暂时禁用功能
@@ -169,16 +180,11 @@ function OAuthProvider({ onContinue, provider }: OauthProviderProps) {
       variant="secondary"
       block
       size="extraLarge"
-      style={{ 
-        width: '100%',
-        backgroundColor: '#f5f5f5',
-        color: '#999',
-        cursor: 'not-allowed',
-        opacity: 0.6
-      }}
-      prefix={icon}
+      className={oauthStyle.placeholderButton}
+      prefix={decoratedIcon}
       onClick={onClick}
       disabled={true}
+      data-disabled
     >
       使用{label}登录（测试中）
     </Button>

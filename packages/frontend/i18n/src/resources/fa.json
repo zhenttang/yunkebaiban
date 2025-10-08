@@ -313,7 +313,7 @@
   "com.affine.auth.sign.add-selfhosted.connect-button": "اتصال",
   "com.affine.auth.sign.add-selfhosted.error": "نمی‌توان به سرور متصل شد.",
   "com.affine.auth.sign.add-selfhosted.description": "نمونه خود میزبان توسط AFFiNE میزبانی یا مستقر نشده است. داده‌های شما در این نمونه‌ها ذخیره خواهد شد. <1>بیشتر درباره جزئیات خود میزبان بیاموزید.</1>",
-  "com.affine.auth.sign.message": "با کلیک بر روی «ادامه با Google/ایمیل» در بالا، تأیید می‌کنید که با <1>شرایط و ضوابط</1> و <3>سیاست حفظ حریم خصوصی</3> AFFiNE موافق هستید.",
+  "com.affine.auth.sign.message": "با کلیک بر روی «ادامه» در بالا، تأیید می‌کنید که با <1>شرایط و ضوابط</1> و <3>سیاست حفظ حریم خصوصی</3> AFFiNE موافق هستید.",
   "com.affine.auth.sign.policy": "سیاست حفظ حریم خصوصی",
   "com.affine.auth.sign.up": "ثبت نام",
   "com.affine.auth.sign.up.sent.email.subtitle": "حساب کاربری خود را ایجاد کنید",

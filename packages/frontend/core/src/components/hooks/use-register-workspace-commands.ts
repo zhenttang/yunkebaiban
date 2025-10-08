@@ -27,6 +27,7 @@ import {
   registerAffineLanguageCommands,
   registerAffineLayoutCommands,
   registerAffineNavigationCommands,
+  registerAffineQuickMenuCommands,
   registerAffineSettingsCommands,
   registerAffineUpdatesCommands,
 } from '../../commands';
@@ -186,4 +187,16 @@ export function useRegisterWorkspaceCommands() {
       unsub();
     };
   }, [t, globalDialogService, urlService, workspaceDialogService]);
+
+  // register AffineQuickMenuCommands
+  useEffect(() => {
+    const unsub = registerAffineQuickMenuCommands({
+      t,
+      store,
+    });
+
+    return () => {
+      unsub();
+    };
+  }, [t, store]);
 }

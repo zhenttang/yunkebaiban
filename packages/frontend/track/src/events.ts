@@ -421,6 +421,9 @@ interface PageEvents extends PageDivision {
     chatPanel: {
       chatPanelInput: ['addEmbeddingDoc'];
     };
+    quickMenu: {
+      $: ['navigate'];
+    };
     attachment: {
       $: [
         'openAttachmentInFullscreen',

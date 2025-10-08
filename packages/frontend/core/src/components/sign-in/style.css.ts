@@ -6,6 +6,14 @@ export const authMessage = style({
   color: cssVar('textSecondaryColor'),
   fontSize: cssVar('fontXs'),
   lineHeight: '20px',
+  maxWidth: '100%',
+  textAlign: 'left',
+  marginTop: '12px',
+  '@media': {
+    'screen and (max-width: 960px)': {
+      textAlign: 'center',
+    },
+  },
 });
 
 globalStyle(`${authMessage} a`, {
@@ -50,7 +58,8 @@ export const skipDivider = style({
   display: 'flex',
   gap: 12,
   alignItems: 'center',
-  height: 20,
+  height: 24,
+  margin: '24px 0',
 });
 
 export const skipDividerLine = style({
@@ -62,17 +71,21 @@ export const skipDividerLine = style({
 export const skipDividerText = style({
   color: cssVarV2('text/secondary'),
   fontSize: cssVar('fontXs'),
+  letterSpacing: '0.08em',
+  textTransform: 'uppercase',
 });
 
 export const skipText = style({
   color: cssVarV2('text/primary'),
   fontSize: cssVar('fontXs'),
   fontWeight: 500,
+  textAlign: 'center',
 });
 
 export const skipLink = style({
   color: cssVarV2('text/link'),
   fontSize: cssVar('fontXs'),
+  marginTop: '12px',
 });
 
 export const skipLinkIcon = style({
@@ -83,6 +96,7 @@ export const skipSection = style({
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
+  gap: 8,
 });
 
 export const authInput = style({
@@ -90,5 +104,22 @@ export const authInput = style({
 });
 
 export const signInButton = style({
+  width: '100%',
   backgroundColor: cssVarV2.button.signinbutton.background,
+  transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+  boxShadow: '0 14px 36px rgba(51, 102, 255, 0.18)',
+  selectors: {
+    '&:hover': {
+      transform: 'translateY(-1px)',
+    },
+    '&:active': {
+      transform: 'translateY(0)',
+      boxShadow: '0 10px 20px rgba(51, 102, 255, 0.22)',
+    },
+    '&:focus-visible': {
+      outline: 'none',
+      boxShadow:
+        '0 0 0 3px rgba(51, 102, 255, 0.2), 0 14px 36px rgba(51, 102, 255, 0.18)',
+    },
+  },
 });

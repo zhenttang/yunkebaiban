@@ -313,7 +313,7 @@
   "com.affine.auth.sign.add-selfhosted.connect-button": "اتصال",
   "com.affine.auth.sign.add-selfhosted.error": "غير قادر على الاتصال بالخادم.",
   "com.affine.auth.sign.add-selfhosted.description": "نسخة ذاتية الاستضافة غير مستضافة أو منتشرة من قبل AFFiNE. سيتم تخزين بياناتك على هذه النسخ. <1>تعرف على المزيد حول تفاصيل الاستضافة الذاتية.</1>",
-  "com.affine.auth.sign.message": "بالنقر على \"تابع باستخدام Google/البريد الإلكتروني\" أعلاه، فإنك تقر بأنك توافق على <1>شروط الاستخدام</1> و<3>سياسة الخصوصية</3> الخاصة بـ AFFiNE.",
+  "com.affine.auth.sign.message": "بالنقر على \"متابعة\" أعلاه، فإنك تقر بأنك توافق على <1>شروط الاستخدام</1> و<3>سياسة الخصوصية</3> الخاصة بـ AFFiNE.",
   "com.affine.auth.sign.policy": "سياسة الخصوصية",
   "com.affine.auth.sign.up": "التسجيل",
   "com.affine.auth.sign.up.sent.email.subtitle": "أنشئ حسابك",

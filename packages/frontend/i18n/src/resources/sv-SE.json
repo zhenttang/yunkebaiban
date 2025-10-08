@@ -313,7 +313,7 @@
   "com.affine.auth.sign.add-selfhosted.connect-button": "Anslut",
   "com.affine.auth.sign.add-selfhosted.error": "Kunde inte ansluta till servern.",
   "com.affine.auth.sign.add-selfhosted.description": "Den självhostade instansen är inte hostad eller distribuerad av AFFiNE. Dina data kommer att lagras på dessa instanser.  <1>Läs mer om detaljer för självhosting.</1>",
-  "com.affine.auth.sign.message": "Genom att klicka på \"Fortsätt med Google/E-post\" ovan bekräftar du att du godkänner AFFiNE:s <1>Villkor och bestämmelser</1> och <3>Integritetspolicy</3>.",
+  "com.affine.auth.sign.message": "Genom att klicka på \"Fortsätt\" ovan bekräftar du att du godkänner AFFiNE:s <1>Villkor och bestämmelser</1> och <3>Integritetspolicy</3>.",
   "com.affine.auth.sign.policy": "Integritetspolicy",
   "com.affine.auth.sign.up": "Registrera dig",
   "com.affine.auth.sign.up.sent.email.subtitle": "Skapa ditt konto",

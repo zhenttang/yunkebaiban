@@ -504,7 +504,7 @@
   "com.affine.auth.sign.email.placeholder": "이메일 주소 입력",
   "com.affine.auth.sign.in": "로그인",
   "com.affine.auth.sign.in.sent.email.subtitle": "이메일 확인",
-  "com.affine.auth.sign.message": "위의 \"Google/이메일로 계속하기\"를 클릭하면, AFFiNE의 <1>이용약관</1> 및 <3>개인정보처리방침</3>에 동의함을 인정하는 것입니다.",
+  "com.affine.auth.sign.message": "위의 \"계속\" 버튼을 클릭하면 AFFiNE의 <1>이용 약관</1>과 <3>개인정보 처리방침</3>에 동의하는 것으로 간주됩니다.",
   "com.affine.auth.sign.no.access.hint": "AFFiNE Cloud는 얼리 액세스 버전입니다. 이 링크를 통해 AFFiNE Cloud 얼리 서포터가 되면 받을 수 있는 혜택에 대해 자세히 알아보세요: ",
   "com.affine.auth.sign.no.access.link": "AFFiNE Cloud 얼리 액세스",
   "com.affine.auth.sign.no.access.wait": "공개 릴리스 대기",

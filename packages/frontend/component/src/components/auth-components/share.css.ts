@@ -151,14 +151,14 @@ export const signInPageContainer = style({
   alignItems: 'center',
   position: 'relative',
   zIndex: 1,
-  padding: '20px',
+  padding: '120px 40px 80px',
+  overflow: 'hidden',
   boxSizing: 'border-box',
   '@media': {
     'screen and (max-width: 768px)': {
       minHeight: '100vh',
       justifyContent: 'flex-start',
-      paddingTop: '40px',
-      paddingBottom: '40px',
+      padding: '80px 20px 48px',
     },
   },
 });

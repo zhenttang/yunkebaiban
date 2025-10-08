@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import type { ReactNode } from 'react';
+import { useId, type ReactNode } from 'react';
 
 import type { InputProps } from '../../ui/input';
 import { Input } from '../../ui/input';
@@ -18,18 +18,22 @@ export const AuthInput = ({
   className,
   ...inputProps
 }: AuthInputProps) => {
+  const generatedId = useId();
+  const inputId = inputProps.id ?? generatedId;
+
   return (
     <div
       className={clsx(styles.authInputWrapper, {
         'with-hint': !!errorHint,
       })}
     >
-      {label ? <label>{label}</label> : null}
+      {label ? <label htmlFor={inputId}>{label}</label> : null}
       <Input
         className={clsx(className)}
         size="extraLarge"
         status={error ? 'error' : 'default'}
         onEnter={onEnter}
+        id={inputId}
         {...inputProps}
       />
       {error && errorHint ? (

@@ -150,7 +150,6 @@ export const SignInStep = ({
 
         <Button
           className={style.signInButton}
-          style={{ width: '100%' }}
           size="extraLarge"
           data-testid="continue-login-button"
           block
@@ -166,8 +165,15 @@ export const SignInStep = ({
           <div className={style.authMessage}>
             {/*prettier-ignore*/}
             <Trans i18nKey="com.affine.auth.sign.message">
-              By clicking &quot;Continue with Google/Email&quot; above, you acknowledge that
-              您同意 AFFiNE 的 <a href="https://affine.pro/terms" target="_blank" rel="noreferrer">服务条款</a> 和 <a href="https://affine.pro/privacy" target="_blank" rel="noreferrer">隐私政策</a>。
+              By clicking &quot;Continue&quot; above, you acknowledge that you agree to AFFiNE's
+              <a href="https://affine.pro/terms" target="_blank" rel="noreferrer">
+                Terms of Conditions
+              </a>{' '}
+              and
+              <a href="https://affine.pro/privacy" target="_blank" rel="noreferrer">
+                Privacy Policy
+              </a>
+              .
           </Trans>
           </div>
           <div className={style.skipDivider}>

@@ -313,7 +313,7 @@
   "com.affine.auth.sign.add-selfhosted.connect-button": "Σύνδεση",
   "com.affine.auth.sign.add-selfhosted.error": "Αδυναμία σύνδεσης στον διακομιστή.",
   "com.affine.auth.sign.add-selfhosted.description": "Η Αυτοδιαχειριζόμενη Αίτηση δεν φιλοξενείται ή αναπτύσσεται από το AFFiNE. Τα δεδομένα σας θα αποθηκευτούν σε αυτές τις προτάσεις.  <1>Μάθετε περισσότερα για τις λεπτομέρειες αυτοδιαχειρίσεως.</1>",
-  "com.affine.auth.sign.message": "Κάνοντας κλικ στο “Συνέχεια με Google/Email” παραπάνω, αποδέχεστε τους <1>Όρους και προϋποθέσεις</1> και την <3>Πολιτική Απορρήτου</3> του AFFiNE.",
+  "com.affine.auth.sign.message": "Κάνοντας κλικ στο “Συνέχεια” παραπάνω, αποδέχεστε τους <1>Όρους και προϋποθέσεις</1> και την <3>Πολιτική Απορρήτου</3> του AFFiNE.",
   "com.affine.auth.sign.policy": "Πολιτική απορρήτου",
   "com.affine.auth.sign.up": "Εγγραφή",
   "com.affine.auth.sign.up.sent.email.subtitle": "Δημιουργήστε τον λογαριασμό σας",

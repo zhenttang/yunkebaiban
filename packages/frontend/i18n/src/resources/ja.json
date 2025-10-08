@@ -313,7 +313,7 @@
   "com.affine.auth.sign.add-selfhosted.connect-button": "接続",
   "com.affine.auth.sign.add-selfhosted.error": "サーバーに接続できませんでした。",
   "com.affine.auth.sign.add-selfhosted.description": "セルフホスティッド インスタンスは AFFiNEによってホストまたは展開されません。データはこれらのインスタンスに保存されます。<1>セルフホストの詳細を詳しく学ぶ。</1>",
-  "com.affine.auth.sign.message": "「Googleでログイン / メールで続行」をクリックすると、AFFiNEの<1>利用規約</1>および<3>プライバシーポリシー</3>に同意したことになります。",
+  "com.affine.auth.sign.message": "「続行」ボタンをクリックすると、AFFiNEの<1>利用規約</1>および<3>プライバシーポリシー</3>に同意したものとみなされます。",
   "com.affine.auth.sign.policy": "プライバシーポリシー",
   "com.affine.auth.sign.up": "サインアップ",
   "com.affine.auth.sign.up.sent.email.subtitle": "アカウントを作成してください",

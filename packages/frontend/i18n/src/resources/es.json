@@ -313,7 +313,7 @@
   "com.affine.auth.sign.add-selfhosted.connect-button": "Conectar",
   "com.affine.auth.sign.add-selfhosted.error": "No se puede conectar al servidor.",
   "com.affine.auth.sign.add-selfhosted.description": "La instancia autoalojada no está alojada ni desplegada por AFFiNE. Tus datos serán almacenados en estas instancias. <1>Más información sobre los detalles del autoalojamiento.</1>",
-  "com.affine.auth.sign.message": "Al hacer clic en \"Continuar con Google/Correo electrónico\" arriba, reconoces que aceptas los <1>Términos y condiciones</1> y la <3>Política de privacidad</3> de AFFiNE.",
+  "com.affine.auth.sign.message": "Al hacer clic en \"Continuar\" arriba, reconoces que aceptas los <1>Términos y condiciones</1> y la <3>Política de privacidad</3> de AFFiNE.",
   "com.affine.auth.sign.policy": "Política de privacidad",
   "com.affine.auth.sign.up": "Regístrate",
   "com.affine.auth.sign.up.sent.email.subtitle": "Crear tu cuenta",

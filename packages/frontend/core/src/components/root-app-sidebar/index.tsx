@@ -53,6 +53,7 @@ import { TrashButton } from './trash-button';
 import { UpdaterButton } from './updater-button';
 import UserInfo from './user-info';
 import { CommunityButton } from './community-button';
+import { QuickMenuButton } from './quick-menu-button';
 
 export type RootAppSidebarProps = {
   isPublicWorkspace: boolean;
@@ -179,6 +180,7 @@ export const RootAppSidebar = memo((): ReactElement => {
             data-event-props="$.navigationPanel.$.quickSearch"
             onClick={onOpenQuickSearchModal}
           />
+          <QuickMenuButton />
           <AddPageButton />
         </div>
         <AllDocsButton />
