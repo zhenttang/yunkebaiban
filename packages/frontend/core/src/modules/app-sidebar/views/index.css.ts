@@ -71,6 +71,21 @@ export const navHeaderStyle = style({
   display: 'flex',
   justifyContent: 'space-between',
   alignItems: 'center',
+  position: 'relative',
+  selectors: {
+    '&::after': {
+      content: '""',
+      position: 'absolute',
+      bottom: 0,
+      left: '12px',
+      right: '12px',
+      height: '1px',
+      background: 'rgba(0, 0, 0, 0.06)',
+    },
+    '[data-theme="dark"] &::after': {
+      background: 'rgba(255, 255, 255, 0.08)',
+    },
+  },
 });
 
 export const navBodyStyle = style({
@@ -78,7 +93,8 @@ export const navBodyStyle = style({
   height: 'calc(100% - 52px)',
   display: 'flex',
   flexDirection: 'column',
-  rowGap: '4px',
+  rowGap: '8px',
+  paddingTop: '8px',
 });
 export const sidebarFloatMaskStyle = style({
   transition: 'opacity .15s',

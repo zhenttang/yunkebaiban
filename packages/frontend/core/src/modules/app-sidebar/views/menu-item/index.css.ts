@@ -7,7 +7,7 @@ export const linkItemRoot = style({
 export const root = style({
   display: 'inline-flex',
   alignItems: 'center',
-  borderRadius: '8px',
+  borderRadius: '10px',
   textAlign: 'left',
   color: 'inherit',
   width: '100%',
@@ -17,8 +17,8 @@ export const root = style({
   padding: '8px 12px',
   fontSize: cssVar('fontSm'),
   fontWeight: '500',
-  marginTop: '2px',
-  marginBottom: '2px',
+  marginTop: '3px',
+  marginBottom: '3px',
   position: 'relative',
   transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
   selectors: {
@@ -32,6 +32,22 @@ export const root = style({
       fontWeight: '600',
       boxShadow: '0 2px 12px rgba(0, 0, 0, 0.08)',
       transform: 'translateX(1px)',
+    },
+    '&[data-active="true"]::before': {
+      content: '""',
+      position: 'absolute',
+      left: '0px',
+      top: '50%',
+      transform: 'translateY(-50%)',
+      width: '3px',
+      height: '60%',
+      borderRadius: '0 2px 2px 0',
+      background: cssVarV2('button/primary'),
+      transition: 'all 0.3s ease',
+    },
+    '[data-theme="dark"] &[data-active="true"]::before': {
+      background: 'rgba(99, 102, 241, 0.8)',
+      boxShadow: '0 0 8px rgba(99, 102, 241, 0.4)',
     },
     '&[data-active="true"]:hover': {
       transform: 'translateX(3px)',

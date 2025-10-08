@@ -11,28 +11,41 @@ export const authContainer = style({
 });
 
 export const authHeaderWrapper = style({
-  marginBottom: '20px',
+  marginBottom: '24px',
 });
 globalStyle(`${authHeaderWrapper} .logo`, {
   fontSize: cssVar('fontH3'),
   fontWeight: 600,
-  color: cssVar('black'),
-  marginRight: '6px',
+  color: cssVar('blue'),
+  marginRight: '8px',
   verticalAlign: 'middle',
+  filter: 'drop-shadow(0 0 4px rgba(51, 102, 255, 0.3))',
 });
 
 globalStyle(`${authHeaderWrapper} > p:first-of-type`, {
   fontSize: cssVar('fontH5'),
   fontWeight: 600,
-  marginBottom: '4px',
+  marginBottom: '6px',
   lineHeight: '28px',
   display: 'flex',
   alignItems: 'center',
+  background: 'linear-gradient(135deg, #1e293b 0%, #475569 100%)',
+  WebkitBackgroundClip: 'text',
+  WebkitTextFillColor: 'transparent',
+  backgroundClip: 'text',
+});
+globalStyle(`[data-theme="dark"] ${authHeaderWrapper} > p:first-of-type`, {
+  background: 'linear-gradient(135deg, #f1f5f9 0%, #cbd5e1 100%)',
+  WebkitBackgroundClip: 'text',
+  WebkitTextFillColor: 'transparent',
+  backgroundClip: 'text',
 });
 globalStyle(`${authHeaderWrapper} > p:last-of-type`, {
   fontSize: cssVar('fontH4'),
-  fontWeight: 600,
+  fontWeight: 500,
   lineHeight: '28px',
+  color: cssVar('textSecondaryColor'),
+  opacity: 0.85,
 });
 
 export const authContent = style({

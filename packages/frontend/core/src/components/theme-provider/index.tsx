@@ -19,7 +19,13 @@ function ThemeObserver() {
 
 export const ThemeProvider = ({ children }: PropsWithChildren) => {
   return (
-    <NextThemeProvider themes={themes} enableSystem={true}>
+    <NextThemeProvider
+      themes={themes}
+      enableSystem={true}
+      // Use data-theme on <html> so Blocksuite + CSS selectors work
+      attribute="data-theme"
+      defaultTheme="system"
+    >
       {children}
       <ThemeObserver />
     </NextThemeProvider>

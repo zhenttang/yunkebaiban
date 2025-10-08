@@ -16,6 +16,7 @@ export const inputWrapper = style({
   fontSize: cssVar('fontBase'),
   boxSizing: 'border-box',
   overflow: 'hidden',
+  transition: 'all 0.3s ease',
   selectors: {
     '&.no-border': {
       border: 'unset',
@@ -47,7 +48,13 @@ export const inputWrapper = style({
     '&.default:is(:focus-within, :focus, :focus-visible)': {
       borderColor: cssVarV2('button/primary'),
       outline: 'none',
-      boxShadow: '0px 0px 0px 2px rgba(30, 150, 235, 0.30);',
+      boxShadow:
+        '0 0 0 3px rgba(51, 102, 255, 0.15), 0 2px 8px rgba(51, 102, 255, 0.12)',
+    },
+    '[data-theme="dark"] &.default:is(:focus-within, :focus, :focus-visible)': {
+      borderColor: 'rgba(99, 102, 241, 0.6)',
+      boxShadow:
+        '0 0 0 3px rgba(99, 102, 241, 0.25), 0 2px 8px rgba(99, 102, 241, 0.18)',
     },
   },
 });

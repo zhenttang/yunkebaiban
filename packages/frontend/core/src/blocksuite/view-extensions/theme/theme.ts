@@ -54,33 +54,23 @@ export function getThemeExtension(
       return themeSignal;
     }
 
-    getEdgelessTheme(docId?: string) {
-      const doc =
-        (docId && framework.get(DocsService).list.doc$(docId).getValue()) ||
-        framework.get(DocService).doc;
-
-      const cache = this.themes.get(doc.id);
+    getEdgelessTheme(_docId?: string) {
+      // Force edgeless to follow global app theme, ignoring per-doc overrides
+      const keyName = 'edgeless-app-theme';
+      const cache = this.themes.get(keyName);
       if (cache) return cache;
 
-      const appTheme$ = framework.get(AppThemeService).appTheme.theme$;
-      const docTheme$ = doc.properties$.map(
-        props => props.edgelessColorTheme || 'system'
-      );
-      const theme$: Observable<ColorScheme> = combineLatest([
-        appTheme$,
-        docTheme$,
-      ]).pipe(
-        map(([appTheme, docTheme]) => {
-          const theme = docTheme === 'system' ? appTheme : docTheme;
+      const theme$: Observable<ColorScheme> = framework
+        .get(AppThemeService)
+        .appTheme.theme$.map(theme => {
           return theme === ColorScheme.Dark
             ? ColorScheme.Dark
             : ColorScheme.Light;
-        })
-      );
+        });
       const { signal: themeSignal, cleanup } =
         createSignalFromObservable<ColorScheme>(theme$, ColorScheme.Light);
       this.disposables.push(cleanup);
-      this.themes.set(doc.id, themeSignal);
+      this.themes.set(keyName, themeSignal);
       return themeSignal;
     }
 
