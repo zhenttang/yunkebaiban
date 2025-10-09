@@ -98,6 +98,70 @@ export const topLevelRoutes = [
         lazy: () => import('@affine/core/desktop/pages/theme-editor'),
       },
       {
+        path: '/forum',
+        lazy: () => import('@affine/core/desktop/pages/workspace/forum/forum-home'),
+      },
+      {
+        path: '/forum/notifications',
+        lazy: () => import('@affine/core/desktop/pages/workspace/forum/notifications'),
+      },
+      {
+        path: '/forum/search',
+        lazy: () => import('@affine/core/desktop/pages/workspace/forum/search-result'),
+      },
+      {
+        path: '/forum/drafts',
+        lazy: () => import('@affine/core/desktop/pages/workspace/forum/draft-list'),
+      },
+      {
+        path: '/forum/moderator',
+        lazy: () => import('@affine/core/desktop/pages/workspace/forum/moderator-panel'),
+      },
+      {
+        path: '/forum/user/:userId',
+        lazy: () => import('@affine/core/desktop/pages/workspace/forum/user-profile'),
+      },
+      {
+        path: '/forum/my-collections',
+        lazy: () => import('@affine/core/desktop/pages/workspace/forum/my-collections'),
+      },
+      {
+        path: '/forum/drafts',
+        lazy: () => import('@affine/core/desktop/pages/workspace/forum/draft-list'),
+      },
+      {
+        path: '/forum/posts/:postId/history',
+        lazy: () => import('@affine/core/desktop/pages/workspace/forum/edit-history'),
+      },
+      {
+        path: '/forum/notifications',
+        lazy: () => import('@affine/core/desktop/pages/workspace/forum/notifications'),
+      },
+      {
+        path: '/forum/tags/:tagId',
+        lazy: () => import('@affine/core/desktop/pages/workspace/forum/tag-posts'),
+      },
+      {
+        path: '/forum/:forumId/create-post',
+        lazy: () => import('@affine/core/desktop/pages/workspace/forum/create-post'),
+      },
+      {
+        path: '/forum/:forumId/post/:postId',
+        lazy: () => import('@affine/core/desktop/pages/workspace/forum/post-detail'),
+      },
+      {
+        path: '/forum/posts/:postId/history',
+        lazy: () => import('@affine/core/desktop/pages/workspace/forum/edit-history'),
+      },
+      {
+        path: '/forum/tags/:tagId',
+        lazy: () => import('@affine/core/desktop/pages/workspace/forum/tag-posts'),
+      },
+      {
+        path: '/forum/:forumId',
+        lazy: () => import('@affine/core/desktop/pages/workspace/forum/forum-detail'),
+      },
+      {
         path: '/clipper/import',
         lazy: () => import('@affine/core/desktop/pages/import-clipper'),
       },

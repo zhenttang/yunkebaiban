@@ -186,6 +186,7 @@
   },
   "dependencies": {
     "@types/qrcode": "^1.5.5",
+    "dompurify": "^3.2.7",
     "qrcode": "^1.5.4",
     "react-easy-crop": "^5.5.0"
   },
