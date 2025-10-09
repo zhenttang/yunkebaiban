@@ -62,21 +62,10 @@ export const ChangePasswordDialog = ({
   const onSendEmail = useAsyncCallback(async () => {
     setLoading(true);
     try {
-      if (hasPassword) {
-        await server.gql({
-          query: sendChangePasswordEmailMutation,
-          variables: {
-            callbackUrl: `/auth/changePassword`,
-          },
-        });
-      } else {
-        await server.gql({
-          query: sendSetPasswordEmailMutation,
-          variables: {
-            callbackUrl: `/auth/setPassword`,
-          },
-        });
-      }
+      const path = hasPassword
+        ? '/api/auth/change-password'
+        : '/api/auth/set-password';
+      await server.fetch(path, { method: 'POST' });
 
       notify.success({
         title: hasPassword

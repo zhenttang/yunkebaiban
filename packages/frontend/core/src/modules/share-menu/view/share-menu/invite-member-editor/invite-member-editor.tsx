@@ -16,6 +16,7 @@ import {
 } from '@affine/core/modules/permissions';
 import { UserFriendlyError } from '@affine/error';
 // import { DocRole, WorkspaceMemberStatus } from '@affine/graphql';
+import { DocRole } from '@affine/core/modules/share-doc/types';
 import { useI18n } from '@affine/i18n';
 import { track } from '@affine/track';
 import { ArrowLeftBigIcon } from '@blocksuite/icons/rc';

@@ -17,13 +17,11 @@ export class CloudDocMetaStore extends Store {
     if (!this.workspaceServerService.server) {
       throw new Error('服务器未找到');
     }
-    const serverConfigData = await this.workspaceServerService.server.gql({
-      query: getWorkspacePageMetaByIdQuery,
-      variables: { id: workspaceId, pageId: docId },
-      context: {
-        signal: abortSignal,
-      },
-    });
-    return serverConfigData.workspace.pageMeta;
+    const res = await this.workspaceServerService.server.fetch(
+      `/api/workspaces/${workspaceId}/docs/${docId}/meta`,
+      { method: 'GET', signal: abortSignal }
+    );
+    const data = await res.json();
+    return data.meta as CloudDocMetaType;
   }
 }

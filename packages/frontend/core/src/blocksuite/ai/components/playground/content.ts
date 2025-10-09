@@ -1,5 +1,5 @@
 import type { FeatureFlagService } from '@affine/core/modules/feature-flag';
-// import type { CopilotSessionType } from '@affine/graphql';
+type CopilotSessionType = any;
 import { SignalWatcher, WithDisposable } from '@blocksuite/affine/global/lit';
 import type { EditorHost } from '@blocksuite/affine/std';
 import { ShadowlessElement } from '@blocksuite/affine/std';

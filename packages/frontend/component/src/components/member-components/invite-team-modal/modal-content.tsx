@@ -1,7 +1,6 @@
-import type {
-  InviteLink,
-  WorkspaceInviteLinkExpireTime,
-} from '@affine/graphql';
+// 本地类型与枚举，替代 GraphQL
+type InviteLink = { link: string; expireTime?: string };
+type WorkspaceInviteLinkExpireTime = 'ONE_HOUR' | 'ONE_DAY' | 'ONE_WEEK' | 'ONE_MONTH' | 'NEVER';
 import { useI18n } from '@affine/i18n';
 import { EmailIcon, LinkIcon } from '@blocksuite/icons/rc';
 

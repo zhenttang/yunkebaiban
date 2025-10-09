@@ -1,5 +1,8 @@
 import { AuthPageContainer } from '@affine/component/auth-components';
-// import type { GetInviteInfoQuery } from '@affine/graphql';
+type InviteInfo = {
+  user: { avatarUrl?: string; name?: string };
+  workspace: { avatar?: string; name?: string };
+};
 import { useI18n } from '@affine/i18n';
 
 import { Avatar } from '../../ui/avatar';
@@ -10,7 +13,7 @@ export const AcceptInvitePage = ({
   inviteInfo,
 }: {
   onOpenWorkspace: () => void;
-  inviteInfo: GetInviteInfoQuery['getInviteInfo'];
+  inviteInfo: InviteInfo;
 }) => {
   const t = useI18n();
   return (

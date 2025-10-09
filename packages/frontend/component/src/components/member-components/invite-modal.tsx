@@ -1,4 +1,9 @@
-// import { Permission } from '@affine/graphql';
+// 本地权限枚举，替代 GraphQL
+export enum Permission {
+  Owner = 'Owner',
+  Admin = 'Admin',
+  Collaborator = 'Collaborator',
+}
 import { useI18n } from '@affine/i18n';
 import { useCallback, useEffect, useState } from 'react';
 

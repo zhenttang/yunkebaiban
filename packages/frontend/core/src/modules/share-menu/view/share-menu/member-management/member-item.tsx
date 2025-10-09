@@ -18,14 +18,7 @@ import {
 } from '@affine/core/modules/permissions';
 import { UserFriendlyError } from '@affine/error';
 // import { DocRole } from '@affine/graphql';
-
-// Temporary placeholder enum since GraphQL backend removed
-enum DocRole {
-  Owner = 'owner',
-  Manager = 'manager', 
-  Editor = 'editor',
-  Reader = 'reader',
-}
+import { DocRole } from '@affine/core/modules/share-doc/types';
 import { useI18n } from '@affine/i18n';
 import track from '@affine/track';
 import { useLiveData, useService } from '@toeverything/infra';

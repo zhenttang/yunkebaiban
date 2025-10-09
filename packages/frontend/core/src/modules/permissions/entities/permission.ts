@@ -1,4 +1,8 @@
-// import { Permission } from '@affine/graphql';
+// 本地权限枚举，替代 GraphQL
+enum Permission {
+  Owner = 'OWNER',
+  Admin = 'ADMIN',
+}
 import {
   backoffRetry,
   effect,
@@ -43,10 +47,11 @@ export class WorkspacePermission extends Entity {
             signal
           );
 
+          const role = String(info.workspace.role || '').toUpperCase();
           return {
-            isOwner: info.workspace.role === Permission.Owner,
-            isAdmin: info.workspace.role === Permission.Admin,
-            isTeam: info.workspace.team,
+            isOwner: role === Permission.Owner,
+            isAdmin: role === Permission.Admin,
+            isTeam: !!info.workspace.team,
           };
         } else {
           return { isOwner: true, isAdmin: false, isTeam: false };

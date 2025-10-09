@@ -1,4 +1,4 @@
-// import type { GetMembersByWorkspaceIdQuery } from '@affine/graphql';
+// 本地定义的 Member 类型，替代 GraphQL
 import {
   catchErrorInto,
   effect,
@@ -14,8 +14,13 @@ import { map, switchMap, tap } from 'rxjs';
 import type { WorkspaceService } from '../../workspace';
 import type { WorkspaceMembersStore } from '../stores/members';
 
-export type Member =
-  GetMembersByWorkspaceIdQuery['workspace']['members'][number];
+export type Member = {
+  id: string;
+  name: string;
+  email?: string;
+  avatarUrl?: string | null;
+  status?: string;
+};
 
 export class WorkspaceMembers extends Entity {
   constructor(

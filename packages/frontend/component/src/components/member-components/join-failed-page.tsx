@@ -1,6 +1,10 @@
 import { AuthPageContainer } from '@affine/component/auth-components';
 import { UserFriendlyError } from '@affine/error';
-// import { ErrorNames, type GetInviteInfoQuery } from '@affine/graphql';
+// 本地占位，替代 GraphQL
+const ErrorNames = { MEMBER_QUOTA_EXCEEDED: 'MEMBER_QUOTA_EXCEEDED' } as const;
+type InviteInfo = {
+  workspace: { avatar?: string; name?: string };
+};
 import { Trans, useI18n } from '@affine/i18n';
 
 import { Avatar } from '../../ui/avatar';
@@ -10,7 +14,7 @@ export const JoinFailedPage = ({
   inviteInfo,
   error,
 }: {
-  inviteInfo?: GetInviteInfoQuery['getInviteInfo'];
+  inviteInfo?: InviteInfo;
   error?: any;
 }) => {
   const userFriendlyError = UserFriendlyError.fromAny(error);

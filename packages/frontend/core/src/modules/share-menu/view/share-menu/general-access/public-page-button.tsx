@@ -2,7 +2,7 @@ import { Menu, MenuItem, MenuTrigger, notify } from '@affine/component';
 import { useAsyncCallback } from '@affine/core/components/hooks/affine-async-hooks';
 import { ShareInfoService } from '@affine/core/modules/share-doc';
 import { UserFriendlyError } from '@affine/error';
-// import { PublicDocMode } from '@affine/graphql';
+import type { PublicDocMode } from '@affine/core/modules/share-doc/types';
 import { useI18n } from '@affine/i18n';
 import track from '@affine/track';
 import {
@@ -60,11 +60,11 @@ export const PublicDoc = ({ disabled }: { disabled?: boolean }) => {
   }, [shareInfoService, t]);
 
   const onClickAnyoneReadOnlyShare = useAsyncCallback(async () => {
-    if (isSharedPage && sharedMode === PublicDocMode.Page) {
+    if (isSharedPage && sharedMode === 'page') {
       return;
     }
     try {
-      await shareInfoService.shareInfo.enableShare(PublicDocMode.Page);
+      await shareInfoService.shareInfo.enableShare('page');
       track.$.sharePanel.$.createShareLink();
       notify.success({
         title:
@@ -88,11 +88,11 @@ export const PublicDoc = ({ disabled }: { disabled?: boolean }) => {
   }, [isSharedPage, sharedMode, shareInfoService.shareInfo, t]);
 
   const onClickAppendOnlyShare = useAsyncCallback(async () => {
-    if (isSharedPage && sharedMode === PublicDocMode.AppendOnly) {
+    if (isSharedPage && sharedMode === 'append-only') {
       return;
     }
     try {
-      await shareInfoService.shareInfo.enableShare(PublicDocMode.AppendOnly);
+      await shareInfoService.shareInfo.enableShare('append-only');
       track.$.sharePanel.$.createShareLink();
       notify.success({
         title: t['com.affine.share-menu.create-append-only-link.notification.success.title'](),
@@ -114,9 +114,9 @@ export const PublicDoc = ({ disabled }: { disabled?: boolean }) => {
       return t['com.affine.share-menu.option.link.no-access']();
     }
     switch (sharedMode) {
-      case PublicDocMode.AppendOnly:
+      case 'append-only':
         return t['com.affine.share-menu.option.link.append-only']();
-      case PublicDocMode.Page:
+      case 'page':
       default:
         return t['com.affine.share-menu.option.link.readonly']();
     }
@@ -155,7 +155,7 @@ export const PublicDoc = ({ disabled }: { disabled?: boolean }) => {
                 prefixIcon={<ViewIcon />}
                 onSelect={onClickAnyoneReadOnlyShare}
                 data-testid="share-link-menu-enable-share"
-                selected={isSharedPage && sharedMode === PublicDocMode.Page}
+                selected={isSharedPage && sharedMode === 'page'}
               >
                 <div className={styles.publicItemRowStyle}>
                   <div>{t['com.affine.share-menu.option.link.readonly']()}</div>
@@ -165,7 +165,7 @@ export const PublicDoc = ({ disabled }: { disabled?: boolean }) => {
                 prefixIcon={<EditIcon />}
                 onSelect={onClickAppendOnlyShare}
                 data-testid="share-link-menu-enable-append-only"
-                selected={isSharedPage && sharedMode === PublicDocMode.AppendOnly}
+                selected={isSharedPage && sharedMode === 'append-only'}
               >
                 <div className={styles.publicItemRowStyle}>
                   <div>{t['com.affine.share-menu.option.link.append-only']()}</div>

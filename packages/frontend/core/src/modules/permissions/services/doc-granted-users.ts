@@ -14,9 +14,17 @@ import { EMPTY, exhaustMap, tap } from 'rxjs';
 import type { DocService } from '../../doc';
 import type { WorkspaceService } from '../../workspace';
 import type { DocGrantedUsersStore } from '../stores/doc-granted-users';
+import type { DocRole } from '../../share-doc/types';
 
-export type GrantedUser =
-  GetPageGrantedUsersListQuery['workspace']['doc']['grantedUsersList']['edges'][number]['node'];
+// 本地定义的GrantedUser类型，替代GraphQL类型
+export interface GrantedUser {
+  user: {
+    id: string;
+    name: string;
+    avatarUrl?: string | null;
+  };
+  role: DocRole;
+}
 
 export class DocGrantedUsersService extends Service {
   constructor(

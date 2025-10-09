@@ -1,7 +1,6 @@
-import type {
-  Permission,
-  WorkspaceInviteLinkExpireTime,
-} from '@affine/graphql';
+// 本地类型，替代 GraphQL
+type Permission = 'OWNER' | 'ADMIN' | 'COLLABORATOR' | 'Owner' | 'Admin' | 'Collaborator';
+type WorkspaceInviteLinkExpireTime = 'ONE_HOUR' | 'ONE_DAY' | 'ONE_WEEK' | 'ONE_MONTH' | 'NEVER';
 import { Service } from '@toeverything/infra';
 
 import type { WorkspaceService } from '../../workspace';

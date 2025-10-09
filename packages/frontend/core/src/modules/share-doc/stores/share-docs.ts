@@ -11,15 +11,12 @@ export class ShareDocsStore extends Store {
     if (!this.workspaceServerService.server) {
       throw new Error('无服务器');
     }
-    const data = await this.workspaceServerService.server.gql({
-      query: getWorkspacePublicPagesQuery,
-      variables: {
-        workspaceId: workspaceId,
-      },
-      context: {
-        signal,
-      },
-    });
-    return data.workspace.publicDocs;
+    const res = await this.workspaceServerService.server.fetch(
+      `/api/workspaces/${workspaceId}/docs?sortBy=updatedAt&sortDir=desc`,
+      { method: 'GET', signal }
+    );
+    const data = await res.json();
+    const docs = (data.docs ?? []).filter((d: any) => d.public === true);
+    return docs;
   }
 }

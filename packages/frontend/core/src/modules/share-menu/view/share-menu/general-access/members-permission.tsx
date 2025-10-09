@@ -10,6 +10,7 @@ import { DocGrantedUsersService } from '@affine/core/modules/permissions';
 import { ShareInfoService } from '@affine/core/modules/share-doc';
 import { UserFriendlyError } from '@affine/error';
 // import { DocRole } from '@affine/graphql';
+import { DocRole } from '@affine/core/modules/share-doc/types';
 import { useI18n } from '@affine/i18n';
 import { track } from '@affine/track';
 import { InformationIcon } from '@blocksuite/icons/rc';

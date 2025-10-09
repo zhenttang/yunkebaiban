@@ -22,16 +22,16 @@ export class EmbeddingStore extends Store {
     if (!this.workspaceServerService.server) {
       throw new Error('未找到服务器');
     }
-    const data = await this.workspaceServerService.server.gql({
-      query: getWorkspaceConfigQuery,
-      variables: {
-        id: workspaceId,
-      },
-      context: {
-        signal,
-      },
-    });
-    return data.workspace.enableDocEmbedding;
+    try {
+      const res = await this.workspaceServerService.server.fetch(
+        `/api/workspaces/${workspaceId}/embedding/config`,
+        { method: 'GET', signal }
+      );
+      const data = await res.json();
+      return !!data.enableDocEmbedding;
+    } catch {
+      return false;
+    }
   }
 
   async updateEnabled(
@@ -42,16 +42,15 @@ export class EmbeddingStore extends Store {
     if (!this.workspaceServerService.server) {
       throw new Error('未找到服务器');
     }
-    await this.workspaceServerService.server.gql({
-      query: setEnableDocEmbeddingMutation,
-      variables: {
-        id: workspaceId,
-        enableDocEmbedding: enabled,
-      },
-      context: {
+    await this.workspaceServerService.server.fetch(
+      `/api/workspaces/${workspaceId}/embedding/config`,
+      {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ enableDocEmbedding: enabled }),
         signal,
-      },
-    });
+      }
+    );
   }
 
   async getIgnoredDocs(workspaceId: string, signal?: AbortSignal) {
@@ -59,14 +58,16 @@ export class EmbeddingStore extends Store {
       throw new Error('未找到服务器');
     }
 
-    const data = await this.workspaceServerService.server.gql({
-      query: getAllWorkspaceEmbeddingIgnoredDocsQuery,
-      variables: {
-        workspaceId,
-      },
-      context: { signal },
-    });
-    return data.workspace.embedding.allIgnoredDocs;
+    try {
+      const res = await this.workspaceServerService.server.fetch(
+        `/api/workspaces/${workspaceId}/embedding/ignored-docs`,
+        { method: 'GET', signal }
+      );
+      const data = await res.json();
+      return data.ignoredDocs ?? [];
+    } catch {
+      return [] as string[];
+    }
   }
 
   async updateIgnoredDocs(
@@ -79,24 +80,15 @@ export class EmbeddingStore extends Store {
       throw new Error('未找到服务器');
     }
 
-    await Promise.all([
-      this.workspaceServerService.server.gql({
-        query: addWorkspaceEmbeddingIgnoredDocsMutation,
-        variables: {
-          workspaceId,
-          add,
-        },
-        context: { signal },
-      }),
-      this.workspaceServerService.server.gql({
-        query: removeWorkspaceEmbeddingIgnoredDocsMutation,
-        variables: {
-          workspaceId,
-          remove,
-        },
-        context: { signal },
-      }),
-    ]);
+    await this.workspaceServerService.server.fetch(
+      `/api/workspaces/${workspaceId}/embedding/ignored-docs`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ add, remove }),
+        signal,
+      }
+    );
   }
 
   async addEmbeddingFile(
@@ -108,14 +100,12 @@ export class EmbeddingStore extends Store {
       throw new Error('未找到服务器');
     }
 
-    await this.workspaceServerService.server.gql({
-      query: addWorkspaceEmbeddingFilesMutation,
-      variables: {
-        workspaceId,
-        blob,
-      },
-      context: { signal },
-    });
+    const form = new FormData();
+    form.append('file', blob);
+    await this.workspaceServerService.server.fetch(
+      `/api/workspaces/${workspaceId}/embedding/files`,
+      { method: 'POST', body: form, signal }
+    );
   }
 
   async addEmbeddingFiles(
@@ -137,14 +127,10 @@ export class EmbeddingStore extends Store {
       throw new Error('未找到服务器');
     }
 
-    await this.workspaceServerService.server.gql({
-      query: removeWorkspaceEmbeddingFilesMutation,
-      variables: {
-        workspaceId,
-        fileId,
-      },
-      context: { signal },
-    });
+    await this.workspaceServerService.server.fetch(
+      `/api/workspaces/${workspaceId}/embedding/files/${fileId}`,
+      { method: 'DELETE', signal }
+    );
   }
 
   async removeEmbeddingFiles(
@@ -159,22 +145,24 @@ export class EmbeddingStore extends Store {
 
   async getEmbeddingFiles(
     workspaceId: string,
-    pagination: PaginationInput,
+    pagination: { first: number; after?: string },
     signal?: AbortSignal
   ) {
     if (!this.workspaceServerService.server) {
               throw new Error('未找到服务器');
     }
 
-    const data = await this.workspaceServerService.server.gql({
-      query: getWorkspaceEmbeddingFilesQuery,
-      variables: {
-        workspaceId,
-        pagination,
-      },
-      context: { signal },
-    });
-    return data.workspace.embedding.files;
+    try {
+      const url = `/api/workspaces/${workspaceId}/embedding/files?first=${pagination.first}${pagination.after ? `&after=${encodeURIComponent(pagination.after)}` : ''}`;
+      const res = await this.workspaceServerService.server.fetch(url, {
+        method: 'GET',
+        signal,
+      });
+      const data = await res.json();
+      return data.files ?? [];
+    } catch {
+      return [] as any[];
+    }
   }
 
   async getEmbeddingProgress(workspaceId: string, signal?: AbortSignal) {
@@ -182,13 +170,15 @@ export class EmbeddingStore extends Store {
       throw new Error('无服务器');
     }
 
-    const data = await this.workspaceServerService.server.gql({
-      query: getWorkspaceEmbeddingStatusQuery,
-      variables: {
-        workspaceId,
-      },
-      context: { signal },
-    });
-    return data.queryWorkspaceEmbeddingStatus;
+    try {
+      const res = await this.workspaceServerService.server.fetch(
+        `/api/workspaces/${workspaceId}/embedding/status`,
+        { method: 'GET', signal }
+      );
+      const data = await res.json();
+      return data;
+    } catch {
+      return { status: 'idle' } as any;
+    }
   }
 }

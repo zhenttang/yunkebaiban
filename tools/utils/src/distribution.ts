@@ -24,7 +24,6 @@ export const AliasToPackage = new Map<string, PackageName>([
   ['ios', '@affine/ios'],
   ['android', '@affine/android'],
   ['server', '@affine/server'],
-  ['gql', '@affine/graphql'],
   ...PackageList.map(
     pkg => [pkg.name.split('/').pop()!, pkg.name] as [string, PackageName]
   ),

@@ -1,14 +1,13 @@
-import type {
-  ChatHistoryOrder,
-  ContextMatchedDocChunk,
-  ContextMatchedFileChunk,
-  CopilotContextCategory,
-  CopilotContextDoc,
-  CopilotContextFile,
-  CopilotSessionType,
-  getCopilotHistoriesQuery,
-  RequestOptions,
-} from '@affine/graphql';
+// 本地占位类型，替代 GraphQL
+type ChatHistoryOrder = any;
+type ContextMatchedDocChunk = any;
+type ContextMatchedFileChunk = any;
+type CopilotContextCategory = any;
+type CopilotContextDoc = any;
+type CopilotContextFile = any;
+type CopilotSessionType = any;
+type getCopilotHistoriesQuery = any;
+type RequestOptions = any;
 import type { EditorHost } from '@blocksuite/affine/std';
 import type { GfxModel } from '@blocksuite/affine/std/gfx';
 import type { BlockModel } from '@blocksuite/affine/store';

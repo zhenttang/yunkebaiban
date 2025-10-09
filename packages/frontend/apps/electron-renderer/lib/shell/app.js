@@ -1,0 +1,31 @@
+import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+import { useAppSettingHelper } from '@affine/core/components/hooks/affine/use-app-setting-helper';
+import { WindowsAppControls } from '@affine/core/components/pure/header/windows-app-controls';
+import { ThemeProvider } from '@affine/core/components/theme-provider';
+import { configureElectronStateStorageImpls } from '@affine/core/desktop/storage';
+import { configureAppSidebarModule } from '@affine/core/modules/app-sidebar';
+import { ShellAppSidebarFallback } from '@affine/core/modules/app-sidebar/views';
+import { AppTabsHeader, configureAppTabsHeaderModule, } from '@affine/core/modules/app-tabs-header';
+import { configureDesktopApiModule } from '@affine/core/modules/desktop-api';
+import { configureI18nModule, I18nProvider } from '@affine/core/modules/i18n';
+import { configureStorageModule } from '@affine/core/modules/storage';
+import { configureAppThemeModule } from '@affine/core/modules/theme';
+import { Framework, FrameworkRoot } from '@toeverything/infra';
+import * as styles from './app.css';
+const framework = new Framework();
+configureStorageModule(framework);
+configureElectronStateStorageImpls(framework);
+configureAppTabsHeaderModule(framework);
+configureAppSidebarModule(framework);
+configureI18nModule(framework);
+configureDesktopApiModule(framework);
+configureAppThemeModule(framework);
+const frameworkProvider = framework.provider();
+export function App() {
+    const { appSettings } = useAppSettingHelper();
+    const translucent = BUILD_CONFIG.isElectron &&
+        environment.isMacOs &&
+        appSettings.enableBlurBackground;
+    return (_jsx(FrameworkRoot, { framework: frameworkProvider, children: _jsx(ThemeProvider, { children: _jsx(I18nProvider, { children: _jsxs("div", { className: styles.root, "data-translucent": translucent, children: [_jsx(AppTabsHeader, { mode: "shell", className: styles.appTabsHeader }), _jsx("div", { className: styles.body, children: _jsx(ShellAppSidebarFallback, {}) }), environment.isWindows && (_jsx("div", { style: { position: 'fixed', right: 0, top: 0, zIndex: 5 }, children: _jsx(WindowsAppControls, {}) }))] }) }) }) }));
+}
+//# sourceMappingURL=app.js.map

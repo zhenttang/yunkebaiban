@@ -37,6 +37,7 @@
   "Enable": "启用",
   "Enable AFFiNE Cloud": "启用 AFFiNE Cloud 服务",
   "Enable AFFiNE Cloud Description": "如启用，此工作区中的数据将通过 AFFiNE Cloud 进行备份和同步。",
+  "com.affine.share-menu.tab.export": "导出",
   "Enable cloud hint": "以下功能依赖于 AFFiNE Cloud。 所有数据都存储在当前设备上。 您可以为此工作区启用 AFFiNE Cloud，以保持数据与云同步。",
   "Full Backup": "全量备份",
   "Full Backup Description": "导出完整的工作区备份",

@@ -60,21 +60,10 @@ export const VerifyEmailDialog = ({
   const onSendEmail = useAsyncCallback(async () => {
     setLoading(true);
     try {
-      if (changeEmail) {
-        await server.gql({
-          query: sendChangeEmailMutation,
-          variables: {
-            callbackUrl: `/auth/changeEmail`,
-          },
-        });
-      } else {
-        await server.gql({
-          query: sendVerifyEmailMutation,
-          variables: {
-            callbackUrl: `/auth/verify-email`,
-          },
-        });
-      }
+      const path = changeEmail
+        ? '/api/auth/change-email'
+        : '/api/auth/verify-email';
+      await server.fetch(path, { method: 'POST' });
 
       notify.success({
         title: t['com.affine.auth.send.verify.email.hint'](),

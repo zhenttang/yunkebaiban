@@ -18,19 +18,12 @@ export class MemberSearchStore extends Store {
     if (!this.workspaceServerService.server) {
       throw new Error('未找到服务器');
     }
-    const data = await this.workspaceServerService.server.gql({
-      query: getMembersByWorkspaceIdQuery,
-      variables: {
-        workspaceId,
-        skip,
-        take,
-        query,
-      },
-      context: {
-        signal,
-      },
-    });
-
-    return data.workspace;
+    const page = Math.floor((skip ?? 0) / (take || 20));
+    const size = take || 20;
+    const res = await this.workspaceServerService.server.fetch(
+      `/api/workspaces/${workspaceId}/members?page=${page}&size=${size}&q=${encodeURIComponent(query ?? '')}`,
+      { method: 'GET', signal }
+    );
+    return await res.json();
   }
 }

@@ -18,16 +18,15 @@ export class DocCreatedByUpdatedBySyncStore extends Store {
       throw new Error('服务器未找到');
     }
 
-    return await this.workspaceServerService.server.gql({
-      query: getDocCreatedByUpdatedByListQuery,
-      variables: {
-        workspaceId: this.workspaceService.workspace.id,
-        pagination: {
-          first: 100,
-          after: afterCursor,
-        },
-      },
-    });
+    try {
+      const url = `/api/workspaces/${this.workspaceService.workspace.id}/docs/created-updated?first=100${afterCursor ? `&after=${encodeURIComponent(afterCursor)}` : ''}`;
+      const res = await this.workspaceServerService.server.fetch(url, {
+        method: 'GET',
+      });
+      return await res.json();
+    } catch {
+      return { edges: [], pageInfo: { hasNextPage: false, endCursor: null } };
+    }
   }
 
   watchDocCreatedByUpdatedBySynced() {

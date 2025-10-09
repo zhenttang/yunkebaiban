@@ -1,6 +1,7 @@
 import { Avatar, Skeleton, Tooltip } from '@affine/component';
 import { DocGrantedUsersService } from '@affine/core/modules/permissions';
 // import { DocRole } from '@affine/graphql';
+import { DocRole } from '@affine/core/modules/share-doc/types';
 import { useI18n } from '@affine/i18n';
 import { ArrowRightSmallIcon } from '@blocksuite/icons/rc';
 import { useLiveData, useService } from '@toeverything/infra';

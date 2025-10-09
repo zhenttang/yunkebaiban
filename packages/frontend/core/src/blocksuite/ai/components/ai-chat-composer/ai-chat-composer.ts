@@ -1,12 +1,11 @@
 import './ai-chat-composer-tip';
 
-import type {
-  ContextEmbedStatus,
-  CopilotContextDoc,
-  CopilotContextFile,
-  CopilotDocType,
-  CopilotSessionType,
-} from '@affine/graphql';
+// 本地占位类型，替代 GraphQL
+type ContextEmbedStatus = 'PENDING' | 'EMBEDDED' | 'FAILED' | string;
+type CopilotContextDoc = any;
+type CopilotContextFile = any;
+type CopilotDocType = any;
+type CopilotSessionType = any;
 import { SignalWatcher, WithDisposable } from '@blocksuite/affine/global/lit';
 import type { EditorHost } from '@blocksuite/affine/std';
 import { ShadowlessElement } from '@blocksuite/affine/std';

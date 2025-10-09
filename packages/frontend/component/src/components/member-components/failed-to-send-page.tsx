@@ -2,7 +2,7 @@ import {
   AuthPageContainer,
   type User,
 } from '@affine/component/auth-components';
-// import type { GetInviteInfoQuery } from '@affine/graphql';
+type InviteInfo = { workspace: { avatar?: string; name?: string } };
 import { Trans, useI18n } from '@affine/i18n';
 
 import { Avatar } from '../../ui/avatar';
@@ -12,7 +12,7 @@ export const FailedToSendPage = ({
   inviteInfo,
 }: {
   user: User | null;
-  inviteInfo: GetInviteInfoQuery['getInviteInfo'];
+  inviteInfo: InviteInfo;
 }) => {
   const t = useI18n();
   return (

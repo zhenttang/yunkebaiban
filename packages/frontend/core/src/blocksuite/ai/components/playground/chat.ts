@@ -1,5 +1,6 @@
 import type { FeatureFlagService } from '@affine/core/modules/feature-flag';
-// import type { ContextEmbedStatus, CopilotSessionType } from '@affine/graphql';
+type ContextEmbedStatus = 'PENDING' | 'EMBEDDED' | 'FAILED' | string;
+type CopilotSessionType = any;
 import { SignalWatcher, WithDisposable } from '@blocksuite/affine/global/lit';
 import { unsafeCSSVarV2 } from '@blocksuite/affine/shared/theme';
 import type { EditorHost } from '@blocksuite/affine/std';

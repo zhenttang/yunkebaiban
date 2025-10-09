@@ -2,10 +2,19 @@ import {
   AuthPageContainer,
   type User,
 } from '@affine/component/auth-components';
-//import {
-//   type GetInviteInfoQuery,
-//   WorkspaceMemberStatus,
-//} from '@affine/graphql';
+// 本地占位类型与枚举，替代 GraphQL
+enum WorkspaceMemberStatus {
+  Pending = 'PENDING',
+  UnderReview = 'UNDER_REVIEW',
+  NeedMoreSeatAndReview = 'NEED_MORE_SEAT_AND_REVIEW',
+  NeedMoreSeat = 'NEED_MORE_SEAT',
+  Accepted = 'ACCEPTED',
+}
+type InviteInfo = {
+  user: { avatarUrl?: string; name?: string };
+  workspace: { avatar?: string; name?: string };
+  status?: WorkspaceMemberStatus;
+};
 import { useI18n } from '@affine/i18n';
 import { SignOutIcon } from '@blocksuite/icons/rc';
 
@@ -19,7 +28,7 @@ export const RequestToJoinPage = ({
   onSignOut,
 }: {
   user: User | null;
-  inviteInfo?: GetInviteInfoQuery['getInviteInfo'];
+  inviteInfo?: InviteInfo;
   requestToJoin: () => void;
   onSignOut: () => void;
 }) => {

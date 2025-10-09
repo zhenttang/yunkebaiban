@@ -22,6 +22,7 @@ import { copyTextToClipboard } from '@affine/core/utils/clipboard';
 import { emailRegex } from '@affine/core/utils/email-regex';
 import { UserFriendlyError } from '@affine/error';
 // import type { WorkspaceInviteLinkExpireTime } from '@affine/graphql';
+type WorkspaceInviteLinkExpireTime = 'ONE_HOUR' | 'ONE_DAY' | 'ONE_WEEK' | 'NEVER';
 // import { ServerDeploymentType, SubscriptionPlan } from '@affine/graphql';
 import { ServerDeploymentType } from '../../../../../modules/cloud/types';
 import { useI18n } from '@affine/i18n';

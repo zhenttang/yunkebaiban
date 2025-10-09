@@ -13,16 +13,14 @@ export class AcceptInviteStore extends Store {
     inviteId: string,
     signal?: AbortSignal
   ) {
-    const data = await this.gqlService.gql({
-      query: acceptInviteByInviteIdMutation,
-
-      variables: {
-        workspaceId,
-        inviteId,
-      },
-      context: { signal },
+    const res = await fetch(`/api/invites/${inviteId}/accept`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ workspaceId }),
+      signal,
     });
-
-    return data.acceptInviteById;
+    if (!res.ok) throw new Error('接受邀请失败');
+    const data = await res.json();
+    return data?.success ?? true;
   }
 }

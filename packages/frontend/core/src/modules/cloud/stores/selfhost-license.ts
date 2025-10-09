@@ -17,52 +17,42 @@ export class SelfhostLicenseStore extends Store {
     if (!this.workspaceServerService.server) {
       throw new Error('无服务器');
     }
-    const data = await this.workspaceServerService.server.gql({
-      query: getLicenseQuery,
-      variables: {
-        workspaceId: workspaceId,
-      },
-      context: {
-        signal,
-      },
-    });
-
-    return data.workspace.license;
+    try {
+      const res = await this.workspaceServerService.server.fetch(
+        `/api/workspaces/${workspaceId}/license`,
+        { method: 'GET', signal }
+      );
+      return await res.json();
+    } catch {
+      return null;
+    }
   }
 
   async activate(workspaceId: string, license: string, signal?: AbortSignal) {
     if (!this.workspaceServerService.server) {
       throw new Error('无服务器');
     }
-    const data = await this.workspaceServerService.server.gql({
-      query: activateLicenseMutation,
-      variables: {
-        workspaceId: workspaceId,
-        license: license,
-      },
-      context: {
+    const res = await this.workspaceServerService.server.fetch(
+      `/api/workspaces/${workspaceId}/license/activate`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ license }),
         signal,
-      },
-    });
-
-    return data.activateLicense;
+      }
+    );
+    return (await res.json()).success ?? true;
   }
 
   async deactivate(workspaceId: string, signal?: AbortSignal) {
     if (!this.workspaceServerService.server) {
       throw new Error('无服务器');
     }
-    const data = await this.workspaceServerService.server.gql({
-      query: deactivateLicenseMutation,
-      variables: {
-        workspaceId: workspaceId,
-      },
-      context: {
-        signal,
-      },
-    });
-
-    return data.deactivateLicense;
+    const res = await this.workspaceServerService.server.fetch(
+      `/api/workspaces/${workspaceId}/license/deactivate`,
+      { method: 'POST', signal }
+    );
+    return (await res.json()).success ?? true;
   }
 
   async installLicense(
@@ -73,17 +63,12 @@ export class SelfhostLicenseStore extends Store {
     if (!this.workspaceServerService.server) {
       throw new Error('无服务器');
     }
-    const data = await this.workspaceServerService.server.gql({
-      query: installLicenseMutation,
-      variables: {
-        workspaceId: workspaceId,
-        license: license,
-      },
-      context: {
-        signal,
-      },
-    });
-
-    return data.installLicense;
+    const form = new FormData();
+    form.append('license', license);
+    const res = await this.workspaceServerService.server.fetch(
+      `/api/workspaces/${workspaceId}/license`,
+      { method: 'PUT', body: form, signal }
+    );
+    return (await res.json()).success ?? true;
   }
 }

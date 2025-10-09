@@ -1,4 +1,4 @@
-// import type { CopilotSessionType } from '@affine/graphql';
+type CopilotSessionType = any;
 import { createLitPortal } from '@blocksuite/affine/components/portal';
 import { WithDisposable } from '@blocksuite/affine/global/lit';
 import { unsafeCSSVar, unsafeCSSVarV2 } from '@blocksuite/affine/shared/theme';

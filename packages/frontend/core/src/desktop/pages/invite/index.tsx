@@ -9,7 +9,14 @@ import {
 import { useAsyncCallback } from '@affine/core/components/hooks/affine-async-hooks';
 import { WorkspacesService } from '@affine/core/modules/workspace';
 import { UserFriendlyError } from '@affine/error';
-// import { WorkspaceMemberStatus } from '@affine/graphql';
+// 本地枚举，替代 GraphQL
+enum WorkspaceMemberStatus {
+  Pending = 'PENDING',
+  UnderReview = 'UNDER_REVIEW',
+  NeedMoreSeatAndReview = 'NEED_MORE_SEAT_AND_REVIEW',
+  NeedMoreSeat = 'NEED_MORE_SEAT',
+  Accepted = 'ACCEPTED',
+}
 import { useLiveData, useService } from '@toeverything/infra';
 import { useCallback, useEffect, useState } from 'react';
 import { Navigate, useParams } from 'react-router-dom';

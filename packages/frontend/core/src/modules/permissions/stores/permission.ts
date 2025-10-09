@@ -16,15 +16,18 @@ export class WorkspacePermissionStore extends Store {
     if (!this.workspaceServerService.server) {
       throw new Error('无服务器');
     }
-    const info = await this.workspaceServerService.server.gql({
-      query: getWorkspaceInfoQuery,
-      variables: {
-        workspaceId,
+    const res = await this.workspaceServerService.server.fetch(
+      `/api/workspaces/${workspaceId}/permissions`,
+      { method: 'GET', signal }
+    );
+    const data = await res.json();
+    // 规范化返回数据结构，兼容上层 WorkspacePermission 实体
+    return {
+      workspace: {
+        role: (data.role || '').toUpperCase(),
+        team: false,
       },
-      context: { signal },
-    });
-
-    return info;
+    } as any;
   }
 
   /**
@@ -34,12 +37,10 @@ export class WorkspacePermissionStore extends Store {
     if (!this.workspaceServerService.server) {
       throw new Error('无服务器');
     }
-    await this.workspaceServerService.server.gql({
-      query: leaveWorkspaceMutation,
-      variables: {
-        workspaceId,
-      },
-    });
+    await this.workspaceServerService.server.fetch(
+      `/api/workspaces/${workspaceId}/leave`,
+      { method: 'POST' }
+    );
   }
 
   watchWorkspacePermissionCache() {

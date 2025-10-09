@@ -1,6 +1,6 @@
 import { toast } from '@affine/component';
 import { stopPropagation } from '@affine/core/utils';
-// import type { CopilotSessionType } from '@affine/graphql';
+type CopilotSessionType = any;
 import { SignalWatcher, WithDisposable } from '@blocksuite/affine/global/lit';
 import { unsafeCSSVar, unsafeCSSVarV2 } from '@blocksuite/affine/shared/theme';
 import { openFilesWith } from '@blocksuite/affine/shared/utils';

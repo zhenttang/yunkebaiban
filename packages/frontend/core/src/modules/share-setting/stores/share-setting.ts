@@ -15,16 +15,11 @@ export class WorkspaceShareSettingStore extends Store {
     if (!this.workspaceServerService.server) {
       throw new Error('无服务器');
     }
-    const data = await this.workspaceServerService.server.gql({
-      query: getWorkspaceConfigQuery,
-      variables: {
-        id: workspaceId,
-      },
-      context: {
-        signal,
-      },
-    });
-    return data.workspace;
+    const res = await this.workspaceServerService.server.fetch(
+      `/api/workspaces/${workspaceId}`,
+      { method: 'GET', signal }
+    );
+    return await res.json();
   }
 
   async updateWorkspaceEnableAi(
@@ -35,16 +30,15 @@ export class WorkspaceShareSettingStore extends Store {
     if (!this.workspaceServerService.server) {
       throw new Error('无服务器');
     }
-    await this.workspaceServerService.server.gql({
-      query: setEnableAiMutation,
-      variables: {
-        id: workspaceId,
-        enableAi,
-      },
-      context: {
+    await this.workspaceServerService.server.fetch(
+      `/api/workspaces/${workspaceId}`,
+      {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ enableAi }),
         signal,
-      },
-    });
+      }
+    );
   }
 
   async updateWorkspaceEnableUrlPreview(
@@ -55,15 +49,14 @@ export class WorkspaceShareSettingStore extends Store {
     if (!this.workspaceServerService.server) {
       throw new Error('无服务器');
     }
-    await this.workspaceServerService.server.gql({
-      query: setEnableUrlPreviewMutation,
-      variables: {
-        id: workspaceId,
-        enableUrlPreview,
-      },
-      context: {
+    await this.workspaceServerService.server.fetch(
+      `/api/workspaces/${workspaceId}`,
+      {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ enableUrlPreview }),
         signal,
-      },
-    });
+      }
+    );
   }
 }

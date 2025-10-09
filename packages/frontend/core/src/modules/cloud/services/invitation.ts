@@ -1,4 +1,8 @@
-// import type { GetInviteInfoQuery } from '@affine/graphql';
+type InviteInfoType = {
+  workspace: { id: string; name?: string; avatar?: string };
+  user?: { name?: string; avatarUrl?: string };
+  status?: string;
+};
 import {
   catchErrorInto,
   effect,
@@ -14,7 +18,7 @@ import { EMPTY, switchMap, tap } from 'rxjs';
 import type { AcceptInviteStore } from '../stores/accept-invite';
 import type { InviteInfoStore } from '../stores/invite-info';
 
-export type InviteInfo = GetInviteInfoQuery['getInviteInfo'];
+export type InviteInfo = InviteInfoType;
 
 export class InvitationService extends Service {
   constructor(

@@ -6,6 +6,7 @@ import { UserFriendlyError } from '@affine/error';
 //   ErrorNames,
 //} from '@affine/graphql';
 import { I18n, i18nTime } from '@affine/i18n';
+import { DocRole } from '@affine/core/modules/share-doc/types';
 import track from '@affine/track';
 import type { DocMode } from '@blocksuite/affine/model';
 import { DocModeProvider } from '@blocksuite/affine/shared/services';
@@ -429,7 +430,7 @@ export class AtMenuConfigService extends Service {
               id: docId,
               title: this.docDisplayMetaService.title$(docId).value,
               blockId: block.blockId,
-              mode: mode as GraphqlDocMode,
+              mode: mode as any,
             })
             .then(notificationId => {
               const doc = inlineEditor.yText.doc;
@@ -468,7 +469,7 @@ export class AtMenuConfigService extends Service {
             .catch(error => {
               const err = UserFriendlyError.fromAny(error);
 
-              if (err.is(ErrorNames.MENTION_USER_DOC_ACCESS_DENIED)) {
+              if (err.is('MENTION_USER_DOC_ACCESS_DENIED')) {
                 track.doc.editor.atMenu.noAccessPrompted();
 
                 const canUserManage = this.guardService.can$(
@@ -509,7 +510,7 @@ export class AtMenuConfigService extends Service {
                                   this.docDisplayMetaService.title$(docId)
                                     .value,
                                 blockId: block.blockId,
-                                mode: mode as GraphqlDocMode,
+                                mode: mode as any,
                               }
                             );
 

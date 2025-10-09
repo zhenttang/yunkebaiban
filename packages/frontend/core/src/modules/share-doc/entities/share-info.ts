@@ -1,4 +1,3 @@
-// import type { GetWorkspacePageByIdQuery, PublicDocMode } from '@affine/graphql';
 import {
   catchErrorInto,
   effect,
@@ -15,13 +14,13 @@ import { switchMap } from 'rxjs';
 import type { DocService } from '../../doc';
 import type { WorkspaceService } from '../../workspace';
 import type { ShareStore } from '../stores/share';
-
-type ShareInfoType = GetWorkspacePageByIdQuery['workspace']['doc'];
+import type { PublicDocMode, ShareInfoType } from '../types';
 
 export class ShareInfo extends Entity {
   info$ = new LiveData<ShareInfoType | undefined | null>(null);
   isShared$ = this.info$.map(info => info?.public);
-  sharedMode$ = this.info$.map(info => (info !== null ? info?.mode : null));
+  // when info is null (loading) keep null; otherwise return mode string
+  sharedMode$ = this.info$.map(info => (info !== null ? (info?.mode ?? null) : null));
 
   error$ = new LiveData<any>(null);
   isRevalidating$ = new LiveData<boolean>(false);

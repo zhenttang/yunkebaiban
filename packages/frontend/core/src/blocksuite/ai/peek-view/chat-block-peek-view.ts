@@ -1,5 +1,5 @@
 import type { FeatureFlagService } from '@affine/core/modules/feature-flag';
-// import type { ContextEmbedStatus } from '@affine/graphql';
+type ContextEmbedStatus = 'PENDING' | 'EMBEDDED' | 'FAILED' | string;
 import {
   CanvasElementType,
   EdgelessCRUDIdentifier,

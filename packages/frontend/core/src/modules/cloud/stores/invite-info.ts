@@ -12,14 +12,16 @@ export class InviteInfoStore extends Store {
     if (!inviteId) {
       throw new Error('无邀请ID');
     }
-    const data = await this.gqlService.gql({
-      query: getInviteInfoQuery,
-      variables: {
-        inviteId,
-      },
-      context: { signal },
-    });
-
-    return data.getInviteInfo;
+    try {
+      const res = await fetch(`/api/invites/${inviteId}`, {
+        method: 'GET',
+        signal,
+      });
+      if (!res.ok) throw new Error('获取邀请信息失败');
+      return await res.json();
+    } catch (e) {
+      // 维持与原逻辑一致：失败返回 undefined
+      return undefined as any;
+    }
   }
 }
