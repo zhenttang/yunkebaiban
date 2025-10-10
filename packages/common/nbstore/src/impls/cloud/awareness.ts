@@ -16,7 +16,7 @@ import {
 function convertToSocketIOUrl(baseUrl: string): string {
   try {
     const url = new URL(baseUrl);
-    // Socket.IO默认使用9092端口
+    // Socket.IO使用9092端口（统一的WebSocket服务器，支持新旧协议）
     url.port = '9092';
     return url.toString();
   } catch {
