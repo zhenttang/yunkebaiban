@@ -772,17 +772,23 @@ export class DocSyncPeer {
       this.status.syncing = true;
       this.statusUpdatedSubject$.next(true);
 
+      console.log('🔍 [DocSyncPeer.retryLoop] 开始设置连接监听器');
       // 如果连接失败则抛出错误
       for (const storage of [this.remote, this.local, this.syncMetadata]) {
         // 如果断开连接则中止
         disposes.push(
           storage.connection.onStatusChanged((_status, error) => {
+            console.warn('⚠️ [DocSyncPeer.retryLoop] 存储状态变化，中止同步:', {
+              error,
+              peerId: this.peerId
+            });
             abort.abort('Storage disconnected:' + error);
           })
         );
       }
 
       // 连接服务器后重置重试标志
+      console.log('🔍 [DocSyncPeer.retryLoop] 重置重试标志');
       this.status.retrying = false;
       this.statusUpdatedSubject$.next(true);
 
@@ -856,7 +862,16 @@ export class DocSyncPeer {
 
       // 从服务器获取新时钟
       const maxClockValue = this.status.remoteClocks.max;
+      console.log('🕐 [DocSyncPeer.retryLoop] 准备获取文档时间戳:', {
+        maxClockValue,
+        peerId: this.peerId
+      });
       const newClocks = await this.remote.getDocTimestamps(maxClockValue);
+      console.log('✅ [DocSyncPeer.retryLoop] 获取文档时间戳成功:', {
+        newClocksCount: Object.keys(newClocks).length,
+        newClocks: Object.keys(newClocks),
+        peerId: this.peerId
+      });
       for (const [id, v] of Object.entries(newClocks)) {
         this.status.remoteClocks.set(id, v);
       }
@@ -870,12 +885,23 @@ export class DocSyncPeer {
       }
 
       // 从远程添加所有文档
+      console.log('📚 [DocSyncPeer.retryLoop] 从远程添加文档:', {
+        remoteDocsCount: this.status.remoteClocks.size,
+        remoteDocs: Array.from(this.status.remoteClocks.keys()),
+        peerId: this.peerId
+      });
       for (const docId of this.status.remoteClocks.keys()) {
         this.actions.addDoc(docId);
       }
 
       // 开始处理作业
-      console.log('🔄 [DocSyncPeer.retryLoop] 开始处理作业队列');
+      console.log('🔄 [DocSyncPeer.retryLoop] 开始处理作业队列', {
+        jobMapSize: this.status.jobMap.size,
+        jobQueueLength: this.status.jobDocQueue.length,
+        docs: Array.from(this.status.docs),
+        connectedDocs: Array.from(this.status.connectedDocs),
+        peerId: this.peerId
+      });
 
       while (true) {
         throwIfAborted(signal);

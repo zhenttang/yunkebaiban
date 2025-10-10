@@ -1,13 +1,32 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { getPost, getPostReplies, createReply, stickyPost, essencePost, lockPost, markBestAnswer, likeReply, unlikeReply, getPostAttachments, getPostTags } from '../forum-api';
+import {
+  getPost,
+  getPostReplies,
+  createReply,
+  stickyPost,
+  essencePost,
+  lockPost,
+  markBestAnswer,
+  likeReply,
+  unlikeReply,
+  getPostAttachments,
+  getPostTags,
+} from '../forum-api';
 import { PostActions } from '../components/PostActions';
 import { AttachmentList } from '../components/AttachmentList';
 import { ReplyList } from '../components/ReplyList';
 import { usePermission } from '../hooks/usePermission';
 import { useToast } from '../hooks/useToast';
 import { sanitizeText } from '../utils/sanitize';
-import type { PostDTO, ReplyDTO, PaginatedResponse, AttachmentDTO, TagDTO } from '../types';
+import * as styles from './post-detail.css';
+import type {
+  PostDTO,
+  ReplyDTO,
+  PaginatedResponse,
+  AttachmentDTO,
+  TagDTO,
+} from '../types';
 
 export function Component() {
   const { showError, ToastContainer } = useToast();
@@ -87,92 +106,131 @@ export function Component() {
     catch (error) { console.error(error); }
   };
 
-  if (loading) return <div>加载中...</div>;
-  if (!post) return <div>帖子不存在</div>;
+  if (loading) return <div className={styles.loading}>加载中...</div>;
+  if (!post) return <div className={styles.loading}>帖子不存在</div>;
 
   return (
-    <div style={{ maxWidth: 900, margin: '0 auto', padding: 20 }}>
-      <div style={{ padding: 20, background: '#f9f9f9', borderRadius: 4 }}>
-        <h1>{post.title}</h1>
-        <div style={{ marginTop: 10, color: '#999', fontSize: 14 }}>
-          {post.authorName} · {new Date(post.createdAt).toLocaleDateString()} · {post.viewCount} 浏览 · {post.replyCount} 回复
-        </div>
-        <div style={{ marginTop: 20 }} dangerouslySetInnerHTML={{ __html: sanitizeText(post.content) }} />
+    <div className={styles.page}>
+      <div className={styles.container}>
+        <div className={styles.main}>
+          <header className={styles.header}>
+            <h1 className={styles.title}>{post.title}</h1>
+            <div className={styles.meta}>
+              <span>{post.authorName}</span>
+              <span>· {new Date(post.createdAt).toLocaleString()}</span>
+              <span>· {post.viewCount} 浏览</span>
+              <span>· {post.replyCount} 回复</span>
+            </div>
+          </header>
+          <article
+            className={styles.content}
+            dangerouslySetInnerHTML={{ __html: sanitizeText(post.content) }}
+          />
 
-        {/* 标签列表 */}
-        {tags.length > 0 && (
-          <div style={{ marginTop: 15, display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-            {tags.map(t => (
-              <span
-                key={t.id}
-                onClick={() => navigate(`/forum/tags/${t.id}`)}
-                style={{
-                  display: 'inline-block',
-                  padding: '4px 10px',
-                  background: '#eef5ff',
-                  border: '1px solid #d6e4ff',
-                  color: '#1d39c4',
-                  borderRadius: 12,
-                  fontSize: 12,
-                  cursor: 'pointer',
-                }}
-              >
-                #{t.name}
-              </span>
-            ))}
+          {tags.length > 0 && (
+            <div className={styles.tags}>
+              {tags.map(t => (
+                <button
+                  key={t.id}
+                  onClick={() => navigate(`/forum/tags/${t.id}`)}
+                  className={styles.tag}
+                  title={t.name}
+                >
+                  #{t.name}
+                </button>
+              ))}
+            </div>
+          )}
+
+          <AttachmentList attachments={attachments} />
+
+          <div className={styles.actionsRow}>
+            <PostActions
+              post={post}
+              onLikeChange={refreshPost}
+              onCollectChange={refreshPost}
+            />
           </div>
-        )}
 
-        {/* 附件列表 */}
-        <AttachmentList attachments={attachments} />
-
-        {/* 帖子操作：点赞/收藏 */}
-        <div style={{ marginTop: 16 }}>
-          <PostActions post={post} onLikeChange={refreshPost} onCollectChange={refreshPost} />
+          <div className={styles.moderatorRow}>
+            {canSticky && (
+              <button
+                className={styles.ghostBtn}
+                onClick={() => handleModAction('sticky')}
+                disabled={post.isSticky}
+              >
+                {post.isSticky ? '已置顶' : '置顶'}
+              </button>
+            )}
+            {canEssence && (
+              <button
+                className={styles.ghostBtn}
+                onClick={() => handleModAction('essence')}
+                disabled={post.isEssence}
+              >
+                {post.isEssence ? '已加精' : '加精'}
+              </button>
+            )}
+            {canLock && (
+              <button
+                className={styles.ghostBtn}
+                onClick={() => handleModAction('lock')}
+                disabled={post.isLocked}
+              >
+                {post.isLocked ? '已锁定' : '锁定'}
+              </button>
+            )}
+            <button
+              className={styles.ghostBtn}
+              onClick={() => navigate(`/forum/posts/${post.id}/history`)}
+            >
+              编辑历史
+            </button>
+          </div>
         </div>
 
-        {/* 版主操作 */}
-        <div style={{ marginTop: 20, display: 'flex', gap: 10, alignItems: 'center' }}>
-          {canSticky && (
-            <button onClick={() => handleModAction('sticky')} disabled={post.isSticky}>
-              {post.isSticky ? '已置顶' : '置顶'}
-            </button>
-          )}
-          {canEssence && (
-            <button onClick={() => handleModAction('essence')} disabled={post.isEssence}>
-              {post.isEssence ? '已加精' : '加精'}
-            </button>
-          )}
-          {canLock && (
-            <button onClick={() => handleModAction('lock')} disabled={post.isLocked}>
-              {post.isLocked ? '已锁定' : '锁定'}
-            </button>
-          )}
-          <button onClick={() => navigate(`/forum/posts/${post.id}/history`)}>编辑历史</button>
-        </div>
+        <aside className={styles.sidebar}>
+          <div className={styles.timelineCard}>
+            <div className={styles.timelineHeader}>时间线</div>
+            <ul className={styles.timelineList}>
+              <li>
+                创建于 {new Date(post.createdAt).toLocaleString()}
+              </li>
+              {post.lastReplyAt && (
+                <li>最后回复于 {new Date(post.lastReplyAt).toLocaleString()}</li>
+              )}
+              <li>浏览 {post.viewCount}</li>
+              <li>回复 {post.replyCount}</li>
+            </ul>
+          </div>
+        </aside>
       </div>
 
-      <ReplyList
-        replies={replies}
-        page={page}
-        onPageChange={setPage}
-        onLike={handleToggleReplyLike}
-        onMarkBest={handleMarkBest}
-        replyLikeLoading={replyLikeLoading}
-      />
+      <div className={styles.container}>
+        <ReplyList
+          replies={replies}
+          page={page}
+          onPageChange={setPage}
+          onLike={handleToggleReplyLike}
+          onMarkBest={handleMarkBest}
+          replyLikeLoading={replyLikeLoading}
+        />
+      </div>
 
       {!post.isLocked && (
-        <div style={{ marginTop: 30, padding: 20, background: '#f9f9f9', borderRadius: 4 }}>
-          <h3>发表回复</h3>
-          <textarea
-            value={replyContent}
-            onChange={e => setReplyContent(e.target.value)}
-            placeholder="输入回复内容..."
-            style={{ width: '100%', minHeight: 120, padding: 10, fontSize: 14 }}
-          />
-          <button onClick={handleReply} style={{ marginTop: 10, padding: '8px 20px' }}>
-            提交回复
-          </button>
+        <div className={styles.container}>
+          <div className={styles.replyEditor}>
+            <h3 className={styles.sectionTitle}>发表回复</h3>
+            <textarea
+              value={replyContent}
+              onChange={e => setReplyContent(e.target.value)}
+              placeholder="输入回复内容..."
+              className={styles.textarea}
+            />
+            <button onClick={handleReply} className={styles.primaryBtn}>
+              提交回复
+            </button>
+          </div>
         </div>
       )}
       <ToastContainer />

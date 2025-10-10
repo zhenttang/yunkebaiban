@@ -83,6 +83,7 @@ export const Component = (): ReactElement => {
 
   // 首先检查我们是否在社区路由中，如果是，直接渲染社区页面
   const communityRoute = useMemo(() => {
+    
     const communityMatch = matchPath(
       '/workspace/:workspaceId/community/:docId',
       location.pathname
@@ -395,8 +396,6 @@ const WorkspacePage = ({ meta }: { meta: WorkspaceMetadata }) => {
             console.log('📄 [WorkspacePage] 根文档状态监听器:', {
               workspaceId: ref.workspace.id,
               ready: state.ready,
-              loading: state.loading,
-              error: state.error,
               syncing: state.syncing
             });
           });
@@ -415,6 +414,7 @@ const WorkspacePage = ({ meta }: { meta: WorkspaceMetadata }) => {
       console.error('💥 [WorkspacePage] 打开工作空间失败:', error);
       setWorkspace(null);
     }
+    return undefined;
   }, [meta, workspacesService]);
 
   const isRootDocReady =

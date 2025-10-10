@@ -30,6 +30,18 @@ export const workbenchRoutes = [
     lazy: () => import('./pages/workspace/community/doc-detail'),
   },
   {
+    path: '/forum',
+    lazy: () => import('./pages/workspace/forum/forum-home'),
+  },
+  {
+    path: '/forum/:forumId',
+    lazy: () => import('./pages/workspace/forum/forum-detail'),
+  },
+  {
+    path: '/forum/:forumId/post/:postId',
+    lazy: () => import('./pages/workspace/forum/post-detail'),
+  },
+  {
     path: '/trash',
     lazy: () => import('./pages/workspace/trash-page'),
   },

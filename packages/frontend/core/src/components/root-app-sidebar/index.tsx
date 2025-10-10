@@ -54,6 +54,7 @@ import { UpdaterButton } from './updater-button';
 import UserInfo from './user-info';
 import { CommunityButton } from './community-button';
 import { QuickMenuButton } from './quick-menu-button';
+import { ForumButton } from './forum-button';
 
 export type RootAppSidebarProps = {
   isPublicWorkspace: boolean;
@@ -185,6 +186,7 @@ export const RootAppSidebar = memo((): ReactElement => {
         </div>
         <AllDocsButton />
         <CommunityButton />
+        <ForumButton />
         <AppSidebarJournalButton />
         {sessionStatus === 'authenticated' && <NotificationButton />}
         <MenuItem
