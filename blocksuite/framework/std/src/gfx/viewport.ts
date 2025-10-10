@@ -16,8 +16,8 @@ function cutoff(value: number, ref: number, sign: number) {
   return value;
 }
 
-export const ZOOM_MAX = 6.0;
-export const ZOOM_MIN = 0.1;
+export const ZOOM_MAX = 15.0;
+export const ZOOM_MIN = 0.05;
 export const ZOOM_STEP = 0.25;
 export const ZOOM_INITIAL = 1.0;
 
