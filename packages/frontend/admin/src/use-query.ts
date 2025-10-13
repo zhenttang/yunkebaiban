@@ -1,4 +1,3 @@
-import type { GraphQLError } from 'graphql';
 import { useCallback, useMemo } from 'react';
 import type { SWRConfiguration, SWRResponse } from 'swr';
 import useSWR from 'swr';
@@ -47,14 +46,14 @@ type useQueryFn = <Query extends RestApiQuery>(
   config?: Omit<
     SWRConfiguration<
       QueryResponse<Query>,
-      GraphQLError,
+      any,
       (options: QueryOptions<Query>) => Promise<QueryResponse<Query>>
     >,
     'fetcher'
   >
 ) => SWRResponse<
   QueryResponse<Query>,
-  GraphQLError,
+  any,
   {
     suspense: true;
   }
@@ -92,7 +91,7 @@ export function useQueryInfinite<Query extends RestApiQuery>(
   config?: Omit<
     SWRConfiguration<
       QueryResponse<Query>,
-      GraphQLError | GraphQLError[],
+      any,
       (options: QueryOptions<Query>) => Promise<QueryResponse<Query>>
     >,
     'fetcher'

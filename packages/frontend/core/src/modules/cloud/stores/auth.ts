@@ -5,7 +5,6 @@ import type { GlobalState } from '../../storage';
 import type { AuthSessionInfo } from '../entities/session';
 import type { AuthProvider } from '../provider/auth';
 import type { FetchService } from '../services/fetch';
-import type { GraphQLService } from '../services/graphql';
 import type { ServerService } from '../services/server';
 
 export interface AccountProfile {
@@ -20,7 +19,6 @@ export interface AccountProfile {
 export class AuthStore extends Store {
   constructor(
     private readonly fetchService: FetchService,
-    private readonly gqlService: GraphQLService,
     private readonly globalState: GlobalState,
     private readonly serverService: ServerService,
     private readonly authProvider: AuthProvider

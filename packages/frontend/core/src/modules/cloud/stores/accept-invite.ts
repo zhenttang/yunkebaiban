@@ -1,10 +1,9 @@
 // import { acceptInviteByInviteIdMutation } from '@affine/graphql';
 import { Store } from '@toeverything/infra';
 
-import type { GraphQLService } from '../services/graphql';
 
 export class AcceptInviteStore extends Store {
-  constructor(private readonly gqlService: GraphQLService) {
+  constructor() {
     super();
   }
 

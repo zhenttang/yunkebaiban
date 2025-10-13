@@ -1,37 +1,5 @@
-import { GraphQLService } from '@affine/core/modules/cloud';
-// import type {
-//   GraphQLQuery,
-//   MutationOptions,
-//   QueryResponse,
-//   QueryVariables,
-//   RecursiveMaybeFields,
-// } from '@affine/graphql';
-
-// 临时占位符类型，因为GraphQL后端已被移除
-interface GraphQLQuery {
-  [key: string]: any;
-}
-
-interface MutationOptions<Query> {
-  mutation: Query;
-  variables?: any;
-  context?: any;
-}
-
-interface QueryResponse<Query> {
-  [key: string]: any;
-}
-
-interface QueryVariables {
-  [key: string]: any;
-}
-
-interface RecursiveMaybeFields<T> {
-  [key: string]: any;
-}
-
+import { FetchService } from '@affine/core/modules/cloud';
 import { useService } from '@toeverything/infra';
-import type { GraphQLError } from 'graphql';
 import { useMemo } from 'react';
 import type { Key } from 'swr';
 import { useSWRConfig } from 'swr';
@@ -41,26 +9,26 @@ import type {
 } from 'swr/mutation';
 import useSWRMutation from 'swr/mutation';
 
-/**
- * A useSWRMutation wrapper for sending graphql mutations
- *
- * @example
- *
- * ```ts
- * import { someMutation } from '@affine/graphql'
- *
- * const { trigger } = useMutation({
- *  mutation: someMutation,
- * })
- *
- * trigger({ name: 'John Doe' })
- */
-export function useMutation<Mutation extends GraphQLQuery, K extends Key = Key>(
+interface RestApiMutation {
+  id: string;
+  endpoint: string;
+  method?: 'GET' | 'POST' | 'PUT' | 'DELETE';
+}
+
+type MutationOptions<Mutation extends RestApiMutation> = {
+  mutation: Mutation;
+  variables?: any;
+};
+
+type QueryResponse<Mutation extends RestApiMutation> = any;
+type QueryVariables<Mutation extends RestApiMutation> = any;
+
+export function useMutation<Mutation extends RestApiMutation, K extends Key = Key>(
   options: Omit<MutationOptions<Mutation>, 'variables'>,
   config?: Omit<
     SWRMutationConfiguration<
       QueryResponse<Mutation>,
-      GraphQLError,
+      any,
       K,
       QueryVariables<Mutation>
     >,
@@ -68,42 +36,49 @@ export function useMutation<Mutation extends GraphQLQuery, K extends Key = Key>(
   >
 ): SWRMutationResponse<
   QueryResponse<Mutation>,
-  GraphQLError,
+  any,
   K,
   QueryVariables<Mutation>
 >;
 export function useMutation(
-  options: Omit<MutationOptions<GraphQLQuery>, 'variables'>,
+  options: Omit<MutationOptions<RestApiMutation>, 'variables'>,
   config?: any
 ) {
-  const graphqlService = useService(GraphQLService);
+  const fetchService = useService(FetchService);
   return useSWRMutation(
-    () => ['cloud', options.mutation.id],
-    (_: unknown[], { arg }: { arg: any }) =>
-      graphqlService.gql({
-        ...options,
-        query: options.mutation,
-        variables: arg,
-      }),
+    () => ['rest-api', options.mutation.id],
+    async (_: unknown[], { arg }: { arg: any }) => {
+      const { endpoint, method = 'POST' } = options.mutation;
+      if (method === 'GET') {
+        const qs = arg ? new URLSearchParams(arg).toString() : '';
+        const url = qs ? `${endpoint}?${qs}` : endpoint;
+        const res = await fetchService.fetch(url);
+        return await res.json();
+      } else {
+        const res = await fetchService.fetch(endpoint, {
+          method,
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(arg ?? {}),
+        });
+        return await res.json();
+      }
+    },
     config
   );
 }
 
-// use this to revalidate all queries that match the filter
 export const useMutateQueryResource = () => {
   const { mutate } = useSWRConfig();
   const revalidateResource = useMemo(
     () =>
-      <Q extends GraphQLQuery>(
+      <Q extends RestApiMutation>(
         query: Q,
-        varsFilter: (
-          vars: RecursiveMaybeFields<QueryVariables<Q>>
-        ) => boolean = _vars => true
+        varsFilter: (vars: QueryVariables<Q>) => boolean = _vars => true
       ) => {
         return mutate(key => {
           const res =
             Array.isArray(key) &&
-            key[0] === 'cloud' &&
+            key[0] === 'rest-api' &&
             key[1] === query.id &&
             varsFilter(key[2]);
           if (res) {
@@ -117,3 +92,4 @@ export const useMutateQueryResource = () => {
 
   return revalidateResource;
 };
+

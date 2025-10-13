@@ -216,14 +216,14 @@ export class ImportDoc extends WithDisposable(LitElement) {
           <icon-button height="28px" @click="${this._onCloseClick}">
             ${CloseIcon}
           </icon-button>
-          <div>Import</div>
+          <div>导入</div>
         </header>
         <div>
-          AFFiNE will gradually support more file formats for import.
+          AFFiNE 将逐步支持更多文件格式导入。
           <a
             href="https://community.affine.pro/c/feature-requests/import-export"
             target="_blank"
-            >Provide feedback.</a
+            >提供反馈。</a
           >
         </div>
         <div class="button-container">
@@ -256,11 +256,11 @@ export class ImportDoc extends WithDisposable(LitElement) {
             >
               ${HelpIcon}
               <affine-tooltip>
-                Learn how to Import your Notion pages into AFFiNE.
+                了解如何将您的 Notion 页面导入到 AFFiNE。
               </affine-tooltip>
             </div>
           </icon-button>
-          <icon-button class="button-item" text="Coming soon..." disabled>
+          <icon-button class="button-item" text="即将推出..." disabled>
             ${NewIcon}
           </icon-button>
         </div>

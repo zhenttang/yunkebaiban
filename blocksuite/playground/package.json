@@ -39,7 +39,6 @@
     "@tweakpane/core": "^2.0.4",
     "@types/micromatch": "^4.0.9",
     "@vanilla-extract/vite-plugin": "^5.0.0",
-    "graphql": "^16.9.0",
     "magic-string": "^0.30.11",
     "vite": "^6.0.3",
     "vite-plugin-istanbul": "^7.0.0",

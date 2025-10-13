@@ -95,7 +95,16 @@ export class IndexedDBV1DocStorage extends DocStorageBase {
       const ydoc = new YDoc({
         guid: this.spaceId,
       });
-      applyUpdate(ydoc, rootDocBuffer.bin);
+      try {
+        // 有些旧数据可能为空或损坏（例如 00 00），这里做保护
+        if (rootDocBuffer.bin?.byteLength && rootDocBuffer.bin.byteLength > 2) {
+          applyUpdate(ydoc, rootDocBuffer.bin);
+        } else {
+          console.warn('[IndexedDBV1DocStorage] rootDocBuffer is empty/corrupt, skip applyUpdate');
+        }
+      } catch (e) {
+        console.warn('[IndexedDBV1DocStorage] applyUpdate failed on root doc buffer, skip normalized id scan', e);
+      }
 
       // get all ids from rootDoc.meta.pages.[*].id, trust this id as normalized id
       const normalizedDocIds = (
@@ -156,18 +165,28 @@ export class IndexedDBV1DocStorage extends DocStorageBase {
       return null;
     }
 
-    if (record.updates.length === 1) {
+    // 过滤明显无效/空的更新（例如 2 字节 00 00）
+    const validUpdates = record.updates.filter(u => {
+      const len = u?.update?.byteLength ?? 0;
+      return len > 2; // 最小保护阈值，避免 yjs 解码异常
+    });
+
+    if (!validUpdates.length) {
+      return null;
+    }
+
+    if (validUpdates.length === 1) {
       return {
         docId: id,
-        bin: record.updates[0].update,
-        timestamp: new Date(record.updates[0].timestamp),
+        bin: validUpdates[0].update,
+        timestamp: new Date(validUpdates[0].timestamp),
       };
     }
 
     return {
       docId: id,
-      bin: await this.mergeUpdates(record.updates.map(update => update.update)),
-      timestamp: new Date(record.updates.at(-1)?.timestamp ?? Date.now()),
+      bin: await this.mergeUpdates(validUpdates.map(update => update.update)),
+      timestamp: new Date(validUpdates.at(-1)?.timestamp ?? Date.now()),
     };
   }
 
@@ -185,13 +204,21 @@ export class IndexedDBV1DocStorage extends DocStorageBase {
             return null;
           }
 
-          if (record.updates.length === 1) {
-            return record.updates[0].update;
+          const valid = record.updates
+            .map(u => u.update)
+            .filter(buf => (buf?.byteLength ?? 0) > 2);
+          if (!valid.length) {
+            return null;
           }
-
-          return await this.mergeUpdates(
-            record.updates.map(update => update.update)
-          );
+          if (valid.length === 1) {
+            return valid[0];
+          }
+          try {
+            return await this.mergeUpdates(valid);
+          } catch (e) {
+            console.warn('[IndexedDBV1DocStorage] mergeUpdates failed, return first valid update', e);
+            return valid[0];
+          }
         },
       },
       this.spaceId

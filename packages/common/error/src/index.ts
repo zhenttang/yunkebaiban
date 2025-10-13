@@ -1,5 +1,4 @@
 // import type { ErrorDataUnion, ErrorNames } from '@affine/graphql';
-import { GraphQLError as BaseGraphQLError } from 'graphql';
 
 export type ErrorName =
   // | keyof typeof ErrorNames
@@ -37,9 +36,15 @@ export type ErrorData = {
   >;
 };
 
-export class GraphQLError extends BaseGraphQLError {
+export class GraphQLError extends Error {
   // @ts-expect-error 最好是一个已知类型，无需任何类型转换
   override extensions!: UserFriendlyErrorResponse;
+  constructor(message: string, extensions?: UserFriendlyErrorResponse) {
+    super(message);
+    if (extensions) {
+      this.extensions = extensions;
+    }
+  }
 }
 
 export class UserFriendlyError

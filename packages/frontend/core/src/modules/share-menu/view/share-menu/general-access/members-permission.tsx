@@ -19,6 +19,8 @@ import clsx from 'clsx';
 import { useCallback, useMemo } from 'react';
 
 import { PlanTag } from '../plan-tag';
+import { DocPermission, RolePresetsMask } from '@affine/core/modules/share-doc/types';
+import { CustomPermissionPanel } from './custom-permission-panel';
 import * as styles from './styles.css';
 
 const getRoleName = (t: ReturnType<typeof useI18n>, role?: DocRole) => {
@@ -65,7 +67,23 @@ export const MembersPermission = ({
         track.$.sharePanel.$.modifyDocDefaultRole({
           role: docRole,
         });
+        // 同时写role与位掩码，后端兼容两者
         await docGrantedUsersService.updateDocDefaultRole(docRole);
+        const mask =
+          docRole === DocRole.Manager
+            ? RolePresetsMask.manager
+            : docRole === DocRole.Editor
+            ? RolePresetsMask.editor
+            : docRole === DocRole.Reader
+            ? RolePresetsMask.reader
+            : docRole === DocRole.None
+            ? 0
+            : RolePresetsMask.reader;
+        await docGrantedUsersService.updateDocDefaultPermissionMask({
+          workspaceId: shareInfoService.shareInfo.workspaceId,
+          docId: shareInfoService.shareInfo.docId,
+          permissionMask: mask,
+        });
         shareInfoService.shareInfo.revalidate();
       } catch (error) {
         const err = UserFriendlyError.fromAny(error);
@@ -106,6 +124,20 @@ export const MembersPermission = ({
     changePermission(DocRole.None);
   }, [changePermission, hittingPaywall, openPaywallModal]);
 
+  const roleToMask = useCallback((role?: DocRole) => {
+    switch (role) {
+      case DocRole.Manager:
+        return RolePresetsMask.manager;
+      case DocRole.Editor:
+        return RolePresetsMask.editor;
+      case DocRole.Reader:
+        return RolePresetsMask.reader;
+      case DocRole.None:
+      default:
+        return 0;
+    }
+  }, []);
+
   return (
     <div className={styles.rowContainerStyle}>
       <div className={styles.labelStyle}>
@@ -130,6 +162,21 @@ export const MembersPermission = ({
               >
                 <div className={styles.publicItemRowStyle}>
                   {t['com.affine.share-menu.option.permission.can-manage']()}
+                </div>
+              </MenuItem>
+              <MenuItem onSelect={() => {}} selected={false}>
+                <div className={styles.publicItemRowStyle}>
+                  <CustomPermissionPanel
+                    initialMask={roleToMask(docDefaultRole)}
+                    onConfirm={async mask => {
+                      await docGrantedUsersService.updateDocDefaultPermissionMask({
+                        workspaceId: shareInfoService.shareInfo.workspaceId,
+                        docId: shareInfoService.shareInfo.docId,
+                        permissionMask: mask,
+                      });
+                      shareInfoService.shareInfo.revalidate();
+                    }}
+                  />
                 </div>
               </MenuItem>
               <MenuItem

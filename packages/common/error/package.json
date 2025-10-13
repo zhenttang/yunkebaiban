@@ -6,9 +6,7 @@
   "exports": {
     ".": "./src/index.ts"
   },
-  "peerDependencies": {
-    "graphql": "^16.9.0"
-  },
+  "peerDependencies": {},
   "devDependencies": {
     "vitest": "3.1.3"
   }

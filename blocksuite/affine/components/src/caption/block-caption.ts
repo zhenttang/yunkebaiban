@@ -159,6 +159,7 @@ export class BlockCaptionEditor<
       @paste=${stopPropagation}
       @keydown=${this._onCaptionKeydown}
       @keyup=${stopPropagation}
+      data-range-sync-exclude="true"
     ></textarea>`;
   }
 

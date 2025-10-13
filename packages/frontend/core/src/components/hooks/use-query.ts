@@ -1,27 +1,5 @@
-import { GraphQLService } from '@affine/core/modules/cloud';
-// import type {
-//   GraphQLQuery,
-//   QueryOptions,
-//   QueryResponse,
-// } from '@affine/graphql';
-
-// 临时占位符类型，因为GraphQL后端已被移除
-interface GraphQLQuery {
-  [key: string]: any;
-}
-
-interface QueryOptions<Query> {
-  query: Query;
-  variables?: any;
-  context?: any;
-}
-
-interface QueryResponse<Query> {
-  [key: string]: any;
-}
-
+import { FetchService } from '@affine/core/modules/cloud';
 import { useService } from '@toeverything/infra';
-import type { GraphQLError } from 'graphql';
 import { useCallback, useMemo } from 'react';
 import type { SWRConfiguration, SWRResponse } from 'swr';
 import useSWR from 'swr';
@@ -46,19 +24,32 @@ import useSWRInfinite from 'swr/infinite';
  * })
  * ```
  */
-type useQueryFn = <Query extends GraphQLQuery>(
+interface RestApiQuery {
+  id: string;
+  endpoint: string;
+  method?: 'GET' | 'POST' | 'PUT' | 'DELETE';
+}
+
+type QueryOptions<Query extends RestApiQuery> = {
+  query: Query;
+  variables?: any;
+};
+
+type QueryResponse<Query extends RestApiQuery> = any;
+
+type useQueryFn = <Query extends RestApiQuery>(
   options?: QueryOptions<Query>,
   config?: Omit<
     SWRConfiguration<
       QueryResponse<Query>,
-      GraphQLError,
+      any,
       (options: QueryOptions<Query>) => Promise<QueryResponse<Query>>
     >,
     'fetcher'
   >
 ) => SWRResponse<
   QueryResponse<Query>,
-  GraphQLError,
+  any,
   {
     suspense: true;
   }
@@ -74,12 +65,31 @@ const createUseQuery =
       }),
       [config]
     );
-    const graphqlService = useService(GraphQLService);
+    const fetchService = useService(FetchService);
 
     const useSWRFn = immutable ? useSWRImmutable : useSWR;
     return useSWRFn(
-      options ? () => ['cloud', options.query.id, options.variables] : null,
-      options ? () => graphqlService.gql(options) : null,
+      options ? () => ['rest-api', options.query.id, options.variables] : null,
+      options
+        ? async () => {
+            const { endpoint, method = 'GET' } = options.query;
+            if (method === 'GET') {
+              const params = options.variables
+                ? new URLSearchParams(options.variables).toString()
+                : '';
+              const url = params ? `${endpoint}?${params}` : endpoint;
+              const res = await fetchService.fetch(url);
+              return await res.json();
+            } else {
+              const res = await fetchService.fetch(endpoint, {
+                method,
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(options.variables ?? {}),
+              });
+              return await res.json();
+            }
+          }
+        : null,
       configWithSuspense
     );
   };
@@ -87,7 +97,7 @@ const createUseQuery =
 export const useQuery = createUseQuery(false);
 export const useQueryImmutable = createUseQuery(true);
 
-export function useQueryInfinite<Query extends GraphQLQuery>(
+export function useQueryInfinite<Query extends RestApiQuery>(
   options: Omit<QueryOptions<Query>, 'variables'> & {
     getVariables: (
       pageIndex: number,
@@ -97,7 +107,7 @@ export function useQueryInfinite<Query extends GraphQLQuery>(
   config?: Omit<
     SWRConfiguration<
       QueryResponse<Query>,
-      GraphQLError | GraphQLError[],
+      any,
       (options: QueryOptions<Query>) => Promise<QueryResponse<Query>>
     >,
     'fetcher'
@@ -110,20 +120,33 @@ export function useQueryInfinite<Query extends GraphQLQuery>(
     }),
     [config]
   );
-  const graphqlService = useService(GraphQLService);
+  const fetchService = useService(FetchService);
 
   const { data, setSize, size, error } = useSWRInfinite<
     QueryResponse<Query>,
-    GraphQLError | GraphQLError[]
+    any
   >(
     (pageIndex: number, previousPageData: QueryResponse<Query>) => [
-      'cloud',
+      'rest-api',
       options.query.id,
       options.getVariables(pageIndex, previousPageData),
     ],
     async ([_, __, variables]) => {
       const params = { ...options, variables } as QueryOptions<Query>;
-      return graphqlService.gql(params);
+      const { endpoint, method = 'GET' } = params.query;
+      if (method === 'GET') {
+        const qs = new URLSearchParams(variables as any).toString();
+        const url = qs ? `${endpoint}?${qs}` : endpoint;
+        const res = await fetchService.fetch(url);
+        return await res.json();
+      } else {
+        const res = await fetchService.fetch(endpoint, {
+          method,
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(variables ?? {}),
+        });
+        return await res.json();
+      }
     },
     configWithSuspense
   );

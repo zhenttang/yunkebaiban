@@ -22,16 +22,16 @@ export const ServerSelector = ({
   contentOptions?: MenuProps['contentOptions'];
 }) => {
   const menuItems = useMemo(() => {
-    return servers.map(server => (
-      <Tooltip
-        key={server.id}
-        content={`${server.config$.value.serverName} (${server.baseUrl})`}
-      >
-        <MenuItem key={server.id} onSelect={() => onSelect(server)}>
-          {server.config$.value.serverName} ({server.baseUrl})
-        </MenuItem>
-      </Tooltip>
-    ));
+    return servers.map(server => {
+      const name = server.config$.value?.serverName ?? 'Server';
+      return (
+        <Tooltip key={server.id} content={`${name} (${server.baseUrl})`}>
+          <MenuItem key={server.id} onSelect={() => onSelect(server)}>
+            {name} ({server.baseUrl})
+          </MenuItem>
+        </Tooltip>
+      );
+    });
   }, [servers, onSelect]);
 
   return (

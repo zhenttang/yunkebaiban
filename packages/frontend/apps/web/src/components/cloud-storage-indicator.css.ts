@@ -89,3 +89,29 @@ export const actions = style({
 export const spacer = style({
   flex: 1,
 });
+
+export const closeButton = style({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  width: 20,
+  height: 20,
+  marginLeft: 8,
+  padding: 0,
+  border: 'none',
+  borderRadius: 4,
+  backgroundColor: 'transparent',
+  color: cssVarV2('text/tertiary'),
+  fontSize: 14,
+  lineHeight: 1,
+  cursor: 'pointer',
+  flexShrink: 0,
+  transition: 'all 0.2s ease',
+  ':hover': {
+    backgroundColor: cssVarV2('layer/background/hoverOverlay'),
+    color: cssVarV2('text/primary'),
+  },
+  ':active': {
+    transform: 'scale(0.95)',
+  },
+});

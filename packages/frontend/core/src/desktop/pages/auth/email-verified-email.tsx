@@ -1,7 +1,7 @@
 import { Button } from '@affine/component';
 import { AuthPageContainer } from '@affine/component/auth-components';
 import { useNavigateHelper } from '@affine/core/components/hooks/use-navigate-helper';
-import { GraphQLService } from '@affine/core/modules/cloud';
+import { FetchService } from '@affine/core/modules/cloud';
 import { UserFriendlyError } from '@affine/error';
 // import { verifyEmailMutation } from '@affine/graphql';
 import { useI18n } from '@affine/i18n';
@@ -15,7 +15,7 @@ export const ConfirmVerifiedEmail: FC<{
   onOpenAffine: () => void;
 }> = ({ onOpenAffine }) => {
   const t = useI18n();
-  const graphqlService = useService(GraphQLService);
+  const fetchService = useService(FetchService);
   const [isLoading, setIsLoading] = useState(false);
   const [searchParams] = useSearchParams();
   const navigateHelper = useNavigateHelper();
@@ -24,12 +24,11 @@ export const ConfirmVerifiedEmail: FC<{
     (async () => {
       const token = searchParams.get('token') ?? '';
       setIsLoading(true);
-      await graphqlService
-        .gql({
-          query: verifyEmailMutation,
-          variables: {
-            token: token,
-          },
+      await fetchService
+        .fetch('/api/auth/verify-email', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ token }),
         })
         .catch(error => {
           const userFriendlyError = UserFriendlyError.fromAny(error);
@@ -42,7 +41,7 @@ export const ConfirmVerifiedEmail: FC<{
       // TODO(@eyhn): Add error handling
       console.error(err);
     });
-  }, [graphqlService, navigateHelper, searchParams]);
+  }, [fetchService, navigateHelper, searchParams]);
 
   if (isLoading) {
     return <AppContainer fallback />;

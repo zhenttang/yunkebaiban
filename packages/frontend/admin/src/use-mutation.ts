@@ -17,7 +17,6 @@ type MutationOptions<Mutation extends RestApiMutation> = {
 
 type RecursiveMaybeFields<T> = T;
 
-import type { GraphQLError } from 'graphql';
 import { useMemo } from 'react';
 import type { Key } from 'swr';
 import { useSWRConfig } from 'swr';
@@ -57,7 +56,7 @@ export function useMutation<Mutation extends RestApiMutation, K extends Key = Ke
   config?: Omit<
     SWRMutationConfiguration<
       QueryResponse<Mutation>,
-      GraphQLError,
+      any,
       K,
       QueryVariables<Mutation>
     >,
@@ -65,7 +64,7 @@ export function useMutation<Mutation extends RestApiMutation, K extends Key = Ke
   >
 ): SWRMutationResponse<
   QueryResponse<Mutation>,
-  GraphQLError,
+  any,
   K,
   QueryVariables<Mutation>
 >;
@@ -112,3 +111,4 @@ export const useMutateQueryResource = () => {
 
   return revalidateResource;
 };
+

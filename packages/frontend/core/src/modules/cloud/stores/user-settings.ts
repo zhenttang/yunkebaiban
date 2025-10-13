@@ -1,37 +1,32 @@
-//import {
-//   type GetUserSettingsQuery,
-//   getUserSettingsQuery,
-//   type UpdateUserSettingsInput,
-//   updateUserSettingsMutation,
-//} from '@affine/graphql';
 import { Store } from '@toeverything/infra';
 
-import type { GraphQLService } from '../services/graphql';
+import type { FetchService } from '../services/fetch';
 
-export type UserSettings = NonNullable<
-  GetUserSettingsQuery['currentUser']
->['settings'];
-
-export type { UpdateUserSettingsInput };
+export type UserSettings = Record<string, any>;
+export type UpdateUserSettingsInput = Record<string, any>;
 
 export class UserSettingsStore extends Store {
-  constructor(private readonly gqlService: GraphQLService) {
+  constructor(private readonly fetchService: FetchService) {
     super();
   }
 
   async getUserSettings(): Promise<UserSettings | undefined> {
-    const result = await this.gqlService.gql({
-      query: getUserSettingsQuery,
+    const res = await this.fetchService.fetch('/api/users/me/settings', {
+      method: 'GET',
     });
-    return result.currentUser?.settings;
+    if (!res.ok) return undefined;
+    const data = await res.json();
+    return data?.settings ?? undefined;
   }
 
   async updateUserSettings(settings: UpdateUserSettingsInput) {
-    await this.gqlService.gql({
-      query: updateUserSettingsMutation,
-      variables: {
-        input: settings,
-      },
+    const res = await this.fetchService.fetch('/api/users/me/settings', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(settings),
     });
+    if (!res.ok) {
+      throw new Error('更新用户设置失败');
+    }
   }
 }

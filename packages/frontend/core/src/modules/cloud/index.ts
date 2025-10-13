@@ -12,7 +12,6 @@ export { DefaultServerService } from './services/default-server';
 export { DocCreatedByUpdatedBySyncService } from './services/doc-created-by-updated-by-sync';
 export { EventSourceService } from './services/eventsource';
 export { FetchService } from './services/fetch';
-export { GraphQLService } from './services/graphql';
 export { InvitationService } from './services/invitation';
 export { InvoicesService } from './services/invoices';
 export type { PublicUserInfo } from './services/public-user';
@@ -63,7 +62,6 @@ import { CloudDocMetaService } from './services/cloud-doc-meta';
 import { DefaultServerService } from './services/default-server';
 import { EventSourceService } from './services/eventsource';
 import { FetchService } from './services/fetch';
-import { GraphQLService } from './services/graphql';
 import { InvoicesService } from './services/invoices';
 import { PublicUserService } from './services/public-user';
 import { SelfhostGenerateLicenseService } from './services/selfhost-generate-license';
@@ -118,34 +116,22 @@ export function configureCloudModule(framework: Framework) {
     .service(ServerService, [ServerScope])
     .service(FetchService, [ServerService])
     .service(EventSourceService, [ServerService])
-    .service(GraphQLService, [FetchService])
     .service(AuthService, [
       FetchService,
       AuthStore,
       UrlService,
       GlobalDialogService,
     ])
-    .store(AuthStore, [
-      FetchService,
-      GraphQLService,
-      GlobalState,
-      ServerService,
-      AuthProvider,
-    ])
+    .store(AuthStore, [FetchService, GlobalState, ServerService, AuthProvider])
     .entity(AuthSession, [AuthStore])
     .service(PublicUserService, [PublicUserStore])
-    .store(PublicUserStore, [GraphQLService, FetchService])
+    .store(PublicUserStore, [FetchService])
     .service(SubscriptionService, [SubscriptionStore])
-    .store(SubscriptionStore, [
-      GraphQLService,
-      GlobalCache,
-      UrlService,
-      ServerService,
-    ])
+    .store(SubscriptionStore, [GlobalCache, UrlService, ServerService])
     .entity(Subscription, [AuthService, ServerService, SubscriptionStore])
     .entity(SubscriptionPrices, [ServerService, SubscriptionStore])
     .service(UserQuotaService)
-    .store(UserQuotaStore, [GraphQLService])
+    .store(UserQuotaStore, [FetchService])
     .entity(UserQuota, [AuthService, UserQuotaStore])
     .service(UserCopilotQuotaService)
     .store(UserCopilotQuotaStore)
@@ -156,17 +142,17 @@ export function configureCloudModule(framework: Framework) {
     ])
     .service(UserFeatureService)
     .entity(UserFeature, [AuthService, UserFeatureStore])
-    .store(UserFeatureStore, [GraphQLService])
+    .store(UserFeatureStore, [FetchService])
     .service(InvoicesService)
-    .store(InvoicesStore, [GraphQLService])
+    .store(InvoicesStore, [FetchService])
     .entity(Invoices, [InvoicesStore])
     .service(SelfhostGenerateLicenseService, [SelfhostGenerateLicenseStore])
-    .store(SelfhostGenerateLicenseStore, [GraphQLService])
-    .store(InviteInfoStore, [GraphQLService])
+    .store(SelfhostGenerateLicenseStore, [FetchService])
+    .store(InviteInfoStore, [])
     .service(InvitationService, [AcceptInviteStore, InviteInfoStore])
-    .store(AcceptInviteStore, [GraphQLService])
+    .store(AcceptInviteStore, [])
     .service(UserSettingsService, [UserSettingsStore])
-    .store(UserSettingsStore, [GraphQLService]);
+    .store(UserSettingsStore, [FetchService]);
 
   framework
     .scope(WorkspaceScope)

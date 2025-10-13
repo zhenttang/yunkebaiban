@@ -2,6 +2,10 @@
 import { nanoid } from 'nanoid';
 
 import { type AuthAccountInfo } from '../../../modules/cloud';
+import {
+  SubscriptionPlan,
+  SubscriptionRecurring,
+} from '../../../modules/cloud/types/subscription';
 
 const separator = '::';
 const recoverSeparator = nanoid();

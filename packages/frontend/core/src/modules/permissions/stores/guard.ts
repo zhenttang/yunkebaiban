@@ -8,6 +8,7 @@ import { Store } from '@toeverything/infra';
 
 import type { WorkspaceServerService } from '../../cloud';
 import type { WorkspaceService } from '../../workspace';
+import { maskToDocPermissionMap } from '../../share-doc/types';
 
 // 临时类型定义，替代GraphQL类型
 export interface WorkspacePermissions {
@@ -95,8 +96,15 @@ export class GuardStore extends Store {
         { method: 'GET' }
       );
       if (response.ok) {
-        const permissions = await response.json();
-        return permissions as Record<DocPermissionActions, boolean>;
+        const body = await response.json();
+        // Prefer new model: { effectiveMask: number, permissions?: map }
+        if (typeof body?.effectiveMask === 'number') {
+          const mapped = maskToDocPermissionMap(body.effectiveMask);
+          return mapped as Record<DocPermissionActions, boolean>;
+        }
+        // Backward compatibility: some endpoints return { permissions: {...} }
+        const maybeMap = body?.permissions || body;
+        return maybeMap as Record<DocPermissionActions, boolean>;
       }
     } catch {}
 

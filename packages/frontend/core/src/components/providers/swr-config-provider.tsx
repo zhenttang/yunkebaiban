@@ -17,11 +17,23 @@ const swrConfig: SWRConfiguration = {
           const d = fetcher(...args);
           if (d instanceof Promise) {
             return d.catch(e => {
-              const error = UserFriendlyError.fromAny(e);
+              let friendly: UserFriendlyError | undefined;
+              try {
+                friendly = UserFriendlyError.fromAny(e) as any;
+              } catch (_err) {
+                // 保底兜底，避免未预期异常导致崩溃
+                friendly = new UserFriendlyError({
+                  status: 500,
+                  code: 'INTERNAL_SERVER_ERROR',
+                  type: 'INTERNAL_SERVER_ERROR',
+                  name: 'INTERNAL_SERVER_ERROR',
+                  message: e?.message ?? 'Unknown error',
+                } as any);
+              }
 
               notify.error({
-                title: error.name,
-                message: error.message,
+                title: String((friendly as any)?.name ?? 'Error'),
+                message: String((friendly as any)?.message ?? 'Unknown error'),
               });
 
               throw e;

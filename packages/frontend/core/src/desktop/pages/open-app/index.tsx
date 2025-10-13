@@ -1,5 +1,5 @@
 import { useNavigateHelper } from '@affine/core/components/hooks/use-navigate-helper';
-import { GraphQLService } from '@affine/core/modules/cloud';
+import { FetchService } from '@affine/core/modules/cloud';
 import { OpenInAppPage } from '@affine/core/modules/open-in-app/views/open-in-app-page';
 import {
   appSchemaUrl,
@@ -50,11 +50,9 @@ const OpenUrl = () => {
  * @deprecated
  */
 const OpenOAuthJwt = () => {
-  const [currentUser, setCurrentUser] = useState<
-    GetCurrentUserQuery['currentUser'] | null
-  >(null);
+  const [currentUser, setCurrentUser] = useState<any>(null);
   const [params] = useSearchParams();
-  const graphqlService = useService(GraphQLService);
+  const fetchService = useService(FetchService);
 
   const maybeScheme = appSchemes.safeParse(params.get('scheme'));
   const scheme = maybeScheme.success
@@ -63,23 +61,22 @@ const OpenOAuthJwt = () => {
   const next = params.get('next') || '';
 
   useEffect(() => {
-    graphqlService
-      .gql({
-        query: getCurrentUserQuery,
-      })
-      .then(res => {
-        setCurrentUser(res?.currentUser || null);
-      })
-      .catch(console.error);
-  }, [graphqlService]);
+    (async () => {
+      try {
+        const res = await fetchService.fetch('/api/auth/session', { method: 'GET' });
+        const data = await res.json();
+        setCurrentUser(data?.user || null);
+      } catch (e) {
+        console.error(e);
+      }
+    })();
+  }, [fetchService]);
 
-  if (!currentUser || !currentUser?.token?.sessionToken) {
+  if (!currentUser || !(currentUser as any)?.token?.sessionToken) {
     return <AppContainer fallback />;
   }
 
-  const urlToOpen = `${scheme}://signin-redirect?token=${
-    currentUser.token.sessionToken
-  }&next=${next}`;
+  const urlToOpen = `${scheme}://signin-redirect?token=${(currentUser as any).token.sessionToken}&next=${next}`;
 
   return <OpenInAppPage urlToOpen={urlToOpen} />;
 };

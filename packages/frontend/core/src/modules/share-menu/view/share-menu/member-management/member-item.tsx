@@ -27,6 +27,8 @@ import { useCallback, useMemo } from 'react';
 
 import { PlanTag } from '../plan-tag';
 import * as styles from './member-item.css';
+import { CustomPermissionPanel } from '../general-access/custom-permission-panel';
+import { RolePresetsMask } from '@affine/core/modules/share-doc/types';
 
 export const MemberItem = ({
   openPaywallModal,
@@ -260,6 +262,28 @@ const Options = ({
           </div>
         </MenuItem>
       ))}
+      <MenuItem onSelect={() => {}} disabled={!canManageUsers}>
+        <CustomPermissionPanel
+          initialMask={
+            memberRole === DocRole.Manager
+              ? RolePresetsMask.manager
+              : memberRole === DocRole.Editor
+              ? RolePresetsMask.editor
+              : memberRole === DocRole.Reader
+              ? RolePresetsMask.reader
+              : 0
+          }
+          onConfirm={async mask => {
+            await docGrantedUsersService.updateDocUserRole(
+              docService.doc.workspaceId,
+              docService.doc.id,
+              userId,
+              memberRole,
+              mask
+            );
+          }}
+        />
+      </MenuItem>
       <MenuItem onSelect={openTransferOwnerModal} disabled={!canTransferOwner}>
         {t['com.affine.share-menu.member-management.set-as-owner']()}
       </MenuItem>

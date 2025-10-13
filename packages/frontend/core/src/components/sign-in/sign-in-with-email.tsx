@@ -88,10 +88,22 @@ export const SignInWithEmailStep = ({
       );
     } catch (err) {
       console.error(err);
-      const error = UserFriendlyError.fromAny(err);
+      let error: UserFriendlyError;
+      try {
+        error = UserFriendlyError.fromAny(err);
+      } catch (_e) {
+        error = new UserFriendlyError({
+          status: 500,
+          code: 'INTERNAL_SERVER_ERROR',
+          type: 'INTERNAL_SERVER_ERROR',
+          name: 'INTERNAL_SERVER_ERROR',
+          message: String((err as any)?.message ?? 'Unknown error'),
+        } as any);
+      }
+      const key = `error.${error?.name ?? 'INTERNAL_SERVER_ERROR'}` as any;
       notify.error({
         title: '登录失败',
-        message: t[`error.${error.name}`](error.data),
+        message: (t as any)[key]?.(error?.data) ?? error.message,
       });
     }
     setIsSending(false);

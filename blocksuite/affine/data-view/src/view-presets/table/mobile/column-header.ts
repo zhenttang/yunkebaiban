@@ -206,7 +206,7 @@ export class MobileTableColumnHeader extends SignalWatcher(
           menu.group({
             items: [
               menu.action({
-                name: 'Duplicate',
+                name: '复制',
                 prefix: DuplicateIcon(),
                 hide: () => !this.column.canDuplicate,
                 select: () => {
@@ -214,7 +214,7 @@ export class MobileTableColumnHeader extends SignalWatcher(
                 },
               }),
               menu.action({
-                name: 'Delete',
+                name: '删除',
                 prefix: DeleteIcon(),
                 hide: () => !this.column.canDelete,
                 select: () => {

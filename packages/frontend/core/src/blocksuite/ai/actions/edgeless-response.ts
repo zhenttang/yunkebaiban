@@ -83,7 +83,7 @@ export function discard(
   _: EdgelessCopilotWidget
 ): AIItemConfig {
   return {
-    name: 'Discard',
+    name: '放弃',
     icon: DeleteIcon(),
     testId: 'answer-discard',
     showWhen: () => !!panel.answer,
@@ -118,10 +118,10 @@ export function createInsertItems<T extends keyof BlockSuitePresets.AIActions>(
   >
 ): AIItemConfig[] {
   const extraCondition = extraConditions[id] || ((_: any) => true);
-  const buttonText = getButtonText[id]?.(variants) ?? 'Insert below';
+  const buttonText = getButtonText[id]?.(variants) ?? '在下方插入';
   return [
     {
-      name: `${buttonText} - Loading...`,
+      name: `${buttonText} - 加载中...`,
       icon: html`<div style=${styleMap({ height: '20px', width: '20px' })}>
         ${LoadingIcon()}
       </div>`,
@@ -559,7 +559,7 @@ const getButtonText: {
   ) => string | undefined;
 } = {
   brainstormMindmap: variants => {
-    return variants?.regenerate ? 'Replace' : undefined;
+    return variants?.regenerate ? '替换' : undefined;
   },
 };
 
@@ -575,11 +575,11 @@ export function actionToResponse<T extends keyof BlockSuitePresets.AIActions>(
   return {
     responses: [
       {
-        name: 'Response',
+        name: '响应',
         testId: 'answer-responses',
         items: [
           {
-            name: 'Continue in chat',
+            name: '在聊天中继续',
             testId: 'answer-continue-in-chat',
             icon: ChatWithAiIcon({}),
             handler: () => {
@@ -636,7 +636,7 @@ export function actionToErrorResponse<
     },
     responses: [
       {
-        name: 'Response',
+        name: '响应',
         items: createInsertItems(id, host, ctx, variants),
       },
       {

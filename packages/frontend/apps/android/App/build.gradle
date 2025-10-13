@@ -21,7 +21,6 @@ plugins {
     alias libs.plugins.version.catalog.update
     alias libs.plugins.android.application apply false
     alias libs.plugins.android.library apply false
-    // alias libs.plugins.apollo.android apply false  // 禁用Apollo
     alias libs.plugins.compose apply false
     // alias libs.plugins.firebase.crashlytics apply false  // 禁用Firebase
     // alias libs.plugins.google.service apply false  // 禁用Google Services

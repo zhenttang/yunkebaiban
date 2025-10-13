@@ -1,25 +1,20 @@
-// import { invoicesQuery, workspaceInvoicesQuery } from '@affine/graphql';
 import { Store } from '@toeverything/infra';
 
-import type { GraphQLService } from '../services/graphql';
+import type { FetchService } from '../services/fetch';
 
 export class InvoicesStore extends Store {
-  constructor(private readonly graphqlService: GraphQLService) {
+  constructor(private readonly fetchService: FetchService) {
     super();
   }
 
   async fetchInvoices(skip: number, take: number, signal?: AbortSignal) {
-    const data = await this.graphqlService.gql({
-      query: invoicesQuery,
-      variables: { skip, take },
-      context: { signal },
+    const params = new URLSearchParams({ skip: String(skip), take: String(take) });
+    const res = await this.fetchService.fetch(`/api/billing/invoices?${params}`, {
+      method: 'GET',
+      signal,
     });
-
-    if (!data.currentUser) {
-      throw new Error('未登录');
-    }
-
-    return data.currentUser;
+    if (!res.ok) throw new Error('获取发票失败');
+    return await res.json();
   }
 
   async fetchWorkspaceInvoices(
@@ -28,16 +23,12 @@ export class InvoicesStore extends Store {
     workspaceId: string,
     signal?: AbortSignal
   ) {
-    const data = await this.graphqlService.gql({
-      query: workspaceInvoicesQuery,
-      variables: { skip, take, workspaceId },
-      context: { signal },
-    });
-
-    if (!data.workspace) {
-      throw new Error('无工作区');
-    }
-
-    return data.workspace;
+    const params = new URLSearchParams({ skip: String(skip), take: String(take) });
+    const res = await this.fetchService.fetch(
+      `/api/workspaces/${workspaceId}/invoices?${params}`,
+      { method: 'GET', signal }
+    );
+    if (!res.ok) throw new Error('获取工作区发票失败');
+    return await res.json();
   }
 }

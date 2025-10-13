@@ -29,7 +29,7 @@ export const CustomServerEnableCloud = ({
       <div className={styles.serverSelector}>
         <ServerSelector
           servers={serverList}
-          selectedSeverName={`${selectedServer.config$.value.serverName} (${selectedServer.baseUrl})`}
+          selectedSeverName={`${selectedServer.config$.value?.serverName ?? 'Server'} (${selectedServer.baseUrl})`}
           onSelect={setSelectedServer}
         />
       </div>

@@ -87,14 +87,18 @@ export class Server extends Entity<{
           count: Infinity,
         }),
         tap(config => {
+          if (!config) {
+            console.warn('[Server.revalidateConfig] 空的服务器配置');
+            return;
+          }
           this.serverListStore.updateServerConfig(this.serverMetadata.id, {
-            credentialsRequirement: config.credentialsRequirement,
-            features: config.features,
-            oauthProviders: config.oauthProviders,
-            serverName: config.name,
-            type: config.type,
-            version: config.version,
-            initialized: config.initialized,
+            credentialsRequirement: (config as any)?.credentialsRequirement ?? {},
+            features: (config as any)?.features ?? [],
+            oauthProviders: (config as any)?.oauthProviders ?? [],
+            serverName: (config as any)?.name ?? 'Server',
+            type: (config as any)?.type ?? 'selfhosted',
+            version: (config as any)?.version ?? '0.0.0',
+            initialized: (config as any)?.initialized ?? true,
           });
         }),
         onStart(() => {

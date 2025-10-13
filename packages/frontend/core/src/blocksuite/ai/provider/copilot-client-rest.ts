@@ -2,11 +2,7 @@ import { showAILoginRequiredAtom } from '@affine/core/components/affine/auth/ai-
 import type { UserFriendlyError } from '@affine/error';
 import { getCurrentStore } from '@toeverything/infra';
 
-import {
-  GeneralNetworkError,
-  PaymentRequiredError,
-  UnauthorizedError,
-} from './error';
+import { GeneralNetworkError, PaymentRequiredError, UnauthorizedError } from './error';
 
 // REST API 响应类型定义
 interface ApiResponse<T = any> {
@@ -39,12 +35,7 @@ interface CopilotContext {
   createdAt: string;
 }
 
-// GraphQL 类型兼容性（保持接口不变）
-type GraphQLQuery = any;
-type OptionsField<T> = any;
-type RequestOptions<T> = any;
-type QueryOptions<T> = any;
-type QueryResponse<T> = any;
+// 已移除 GraphQL 相关类型与回退逻辑，仅保留 REST 实现
 
 function resolveError(src: any) {
   const err = codeToError(src);
@@ -71,9 +62,6 @@ function codeToError(error: UserFriendlyError) {
 
 export class CopilotClient {
   constructor(
-    readonly gql: <Query extends GraphQLQuery>(
-      options: QueryOptions<Query>
-    ) => Promise<QueryResponse<Query>>,
     readonly fetcher: (input: string, init?: RequestInit) => Promise<Response>,
     readonly eventSource: (
       url: string,
@@ -131,45 +119,17 @@ export class CopilotClient {
     }
   }
 
-  // GraphQL fallback方法（保持兼容性）
-  private async gqlFallback<T>(
-    gqlCall: () => Promise<T>,
-    fallbackResult?: T
-  ): Promise<T> {
-    try {
-      return await gqlCall();
-    } catch (gqlError) {
-      console.warn('GraphQL fallback failed:', gqlError);
-      if (fallbackResult !== undefined) {
-        return fallbackResult;
-      }
-      throw gqlError;
-    }
-  }
+  // 已移除 GraphQL 回退，统一使用 REST
 
   async createSession(options: {
     workspaceId: string;
     docId?: string;
     title?: string;
   }): Promise<CopilotSession> {
-    try {
-      // 优先使用REST API
-      return await this.restCall<CopilotSession>('/api/copilot/sessions', {
-        method: 'POST',
-        body: JSON.stringify(options),
-      });
-    } catch (restError) {
-      console.warn('REST API failed, trying GraphQL fallback:', restError);
-      
-      // GraphQL fallback (如果还可用)
-      return await this.gqlFallback(async () => {
-        const res = await this.gql({
-          query: 'createCopilotSessionMutation', // 占位符
-          variables: { options },
-        });
-        return res.createCopilotSession;
-      });
-    }
+    return await this.restCall<CopilotSession>('/api/copilot/sessions', {
+      method: 'POST',
+      body: JSON.stringify(options),
+    });
   }
 
   async updateSession(options: {
@@ -177,23 +137,11 @@ export class CopilotClient {
     title?: string;
     updatedAt?: string;
   }): Promise<CopilotSession> {
-    try {
-      const { sessionId, ...updateData } = options;
-      return await this.restCall<CopilotSession>(`/api/copilot/sessions/${sessionId}`, {
-        method: 'PUT',
-        body: JSON.stringify(updateData),
-      });
-    } catch (restError) {
-      console.warn('REST API failed, trying GraphQL fallback:', restError);
-      
-      return await this.gqlFallback(async () => {
-        const res = await this.gql({
-          query: 'updateCopilotSessionMutation',
-          variables: { options },
-        });
-        return res.updateCopilotSession;
-      });
-    }
+    const { sessionId, ...updateData } = options;
+    return await this.restCall<CopilotSession>(`/api/copilot/sessions/${sessionId}`, {
+      method: 'PUT',
+      body: JSON.stringify(updateData),
+    });
   }
 
   async forkSession(options: {
@@ -201,23 +149,11 @@ export class CopilotClient {
     workspaceId: string;
     title?: string;
   }): Promise<CopilotSession> {
-    try {
-      const { sessionId, ...forkData } = options;
-      return await this.restCall<CopilotSession>(`/api/copilot/sessions/${sessionId}/fork`, {
-        method: 'POST',
-        body: JSON.stringify(forkData),
-      });
-    } catch (restError) {
-      console.warn('REST API failed, trying GraphQL fallback:', restError);
-      
-      return await this.gqlFallback(async () => {
-        const res = await this.gql({
-          query: 'forkCopilotSessionMutation',
-          variables: { options },
-        });
-        return res.forkCopilotSession;
-      });
-    }
+    const { sessionId, ...forkData } = options;
+    return await this.restCall<CopilotSession>(`/api/copilot/sessions/${sessionId}/fork`, {
+      method: 'POST',
+      body: JSON.stringify(forkData),
+    });
   }
 
   async createMessage(options: {
@@ -225,39 +161,15 @@ export class CopilotClient {
     role: 'user' | 'assistant';
     content: string;
   }): Promise<CopilotMessage> {
-    try {
-      const { sessionId, ...messageData } = options;
-      return await this.restCall<CopilotMessage>(`/api/copilot/sessions/${sessionId}/messages`, {
-        method: 'POST',
-        body: JSON.stringify(messageData),
-      });
-    } catch (restError) {
-      console.warn('REST API failed, trying GraphQL fallback:', restError);
-      
-      return await this.gqlFallback(async () => {
-        const res = await this.gql({
-          query: 'createCopilotMessageMutation',
-          variables: { options },
-        });
-        return res.createCopilotMessage;
-      });
-    }
+    const { sessionId, ...messageData } = options;
+    return await this.restCall<CopilotMessage>(`/api/copilot/sessions/${sessionId}/messages`, {
+      method: 'POST',
+      body: JSON.stringify(messageData),
+    });
   }
 
   async getSession(workspaceId: string, sessionId: string): Promise<CopilotSession | null> {
-    try {
-      return await this.restCall<CopilotSession>(`/api/copilot/sessions/${sessionId}?workspaceId=${workspaceId}`);
-    } catch (restError) {
-      console.warn('REST API failed, trying GraphQL fallback:', restError);
-      
-      return await this.gqlFallback(async () => {
-        const res = await this.gql({
-          query: 'getCopilotSessionQuery',
-          variables: { sessionId, workspaceId },
-        });
-        return res.currentUser?.copilot?.session;
-      }, null);
-    }
+    return await this.restCall<CopilotSession>(`/api/copilot/sessions/${sessionId}?workspaceId=${workspaceId}`);
   }
 
   async getSessions(
@@ -268,26 +180,13 @@ export class CopilotClient {
       offset?: number;
     }
   ): Promise<CopilotSession[]> {
-    try {
-      const params = new URLSearchParams({
-        workspaceId,
-        ...(docId && { docId }),
-        ...(options?.limit && { limit: options.limit.toString() }),
-        ...(options?.offset && { offset: options.offset.toString() }),
-      });
-      
-      return await this.restCall<CopilotSession[]>(`/api/copilot/sessions?${params}`);
-    } catch (restError) {
-      console.warn('REST API failed, trying GraphQL fallback:', restError);
-      
-      return await this.gqlFallback(async () => {
-        const res = await this.gql({
-          query: 'getCopilotSessionsQuery',
-          variables: { workspaceId, docId, options },
-        });
-        return res.currentUser?.copilot?.sessions;
-      }, []);
-    }
+    const params = new URLSearchParams({
+      workspaceId,
+      ...(docId && { docId }),
+      ...(options?.limit && { limit: options.limit.toString() }),
+      ...(options?.offset && { offset: options.offset.toString() }),
+    });
+    return await this.restCall<CopilotSession[]>(`/api/copilot/sessions?${params}`);
   }
 
   async getHistories(
@@ -298,26 +197,13 @@ export class CopilotClient {
       offset?: number;
     }
   ): Promise<CopilotMessage[]> {
-    try {
-      const params = new URLSearchParams({
-        workspaceId,
-        ...(docId && { docId }),
-        ...(options?.limit && { limit: options.limit.toString() }),
-        ...(options?.offset && { offset: options.offset.toString() }),
-      });
-      
-      return await this.restCall<CopilotMessage[]>(`/api/copilot/histories?${params}`);
-    } catch (restError) {
-      console.warn('REST API failed, trying GraphQL fallback:', restError);
-      
-      return await this.gqlFallback(async () => {
-        const res = await this.gql({
-          query: 'getCopilotHistoriesQuery',
-          variables: { workspaceId, docId, options },
-        });
-        return res.currentUser?.copilot?.histories;
-      }, []);
-    }
+    const params = new URLSearchParams({
+      workspaceId,
+      ...(docId && { docId }),
+      ...(options?.limit && { limit: options.limit.toString() }),
+      ...(options?.offset && { offset: options.offset.toString() }),
+    });
+    return await this.restCall<CopilotMessage[]>(`/api/copilot/histories?${params}`);
   }
 
   async getHistoryIds(
@@ -328,27 +214,14 @@ export class CopilotClient {
       offset?: number;
     }
   ): Promise<string[]> {
-    try {
-      const params = new URLSearchParams({
-        workspaceId,
-        ...(docId && { docId }),
-        ...(options?.limit && { limit: options.limit.toString() }),
-        ...(options?.offset && { offset: options.offset.toString() }),
-      });
-      
-      const histories = await this.restCall<CopilotMessage[]>(`/api/copilot/histories?${params}&idsOnly=true`);
-      return histories.map(h => h.id);
-    } catch (restError) {
-      console.warn('REST API failed, trying GraphQL fallback:', restError);
-      
-      return await this.gqlFallback(async () => {
-        const res = await this.gql({
-          query: 'getCopilotHistoryIdsQuery',
-          variables: { workspaceId, docId, options },
-        });
-        return res.currentUser?.copilot?.histories;
-      }, []);
-    }
+    const params = new URLSearchParams({
+      workspaceId,
+      ...(docId && { docId }),
+      ...(options?.limit && { limit: options.limit.toString() }),
+      ...(options?.offset && { offset: options.offset.toString() }),
+    });
+    const histories = await this.restCall<CopilotMessage[]>(`/api/copilot/histories?${params}&idsOnly=true`);
+    return histories.map(h => h.id);
   }
 
   async cleanupSessions(input: {
@@ -356,61 +229,25 @@ export class CopilotClient {
     docId: string;
     sessionIds: string[];
   }): Promise<boolean> {
-    try {
-      await this.restCall('/api/copilot/sessions/cleanup', {
-        method: 'DELETE',
-        body: JSON.stringify(input),
-      });
-      return true;
-    } catch (restError) {
-      console.warn('REST API failed, trying GraphQL fallback:', restError);
-      
-      return await this.gqlFallback(async () => {
-        const res = await this.gql({
-          query: 'cleanupCopilotSessionMutation',
-          variables: { input },
-        });
-        return res.cleanupCopilotSession;
-      }, false);
-    }
+    await this.restCall('/api/copilot/sessions/cleanup', {
+      method: 'DELETE',
+      body: JSON.stringify(input),
+    });
+    return true;
   }
 
   async createContext(workspaceId: string, sessionId: string): Promise<CopilotContext> {
-    try {
-      return await this.restCall<CopilotContext>('/api/copilot/contexts', {
-        method: 'POST',
-        body: JSON.stringify({ workspaceId, sessionId }),
-      });
-    } catch (restError) {
-      console.warn('REST API failed, trying GraphQL fallback:', restError);
-      
-      return await this.gqlFallback(async () => {
-        const res = await this.gql({
-          query: 'createCopilotContextMutation',
-          variables: { workspaceId, sessionId },
-        });
-        return res.createCopilotContext;
-      });
-    }
+    return await this.restCall<CopilotContext>('/api/copilot/contexts', {
+      method: 'POST',
+      body: JSON.stringify({ workspaceId, sessionId }),
+    });
   }
 
   async getContextId(workspaceId: string, sessionId: string): Promise<string | undefined> {
-    try {
-      const contexts = await this.restCall<CopilotContext[]>(
-        `/api/copilot/contexts?workspaceId=${workspaceId}&sessionId=${sessionId}`
-      );
-      return contexts[0]?.id;
-    } catch (restError) {
-      console.warn('REST API failed, trying GraphQL fallback:', restError);
-      
-      return await this.gqlFallback(async () => {
-        const res = await this.gql({
-          query: 'listContextQuery',
-          variables: { workspaceId, sessionId },
-        });
-        return res.currentUser?.copilot?.contexts?.[0]?.id || undefined;
-      }, undefined);
-    }
+    const contexts = await this.restCall<CopilotContext[]>(
+      `/api/copilot/contexts?workspaceId=${workspaceId}&sessionId=${sessionId}`
+    );
+    return contexts[0]?.id;
   }
 
   // 保持现有的streaming方法不变（已经是REST API）

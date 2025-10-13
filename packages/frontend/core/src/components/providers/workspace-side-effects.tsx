@@ -15,7 +15,6 @@ import {
   AuthService,
   EventSourceService,
   FetchService,
-  GraphQLService,
 } from '@affine/core/modules/cloud';
 import {
   GlobalDialogService,
@@ -138,7 +137,6 @@ export const WorkspaceSideEffects = () => {
     };
   }, [workspaceDialogService]);
 
-  const graphqlService = useService(GraphQLService);
   const eventSourceService = useService(EventSourceService);
   const fetchService = useService(FetchService);
   const authService = useService(AuthService);
@@ -146,7 +144,6 @@ export const WorkspaceSideEffects = () => {
   useEffect(() => {
     const dispose = setupAIProvider(
       new CopilotClient(
-        graphqlService.gql,
         fetchService.fetch,
         eventSourceService.eventSource
       ),
@@ -160,7 +157,6 @@ export const WorkspaceSideEffects = () => {
     eventSourceService,
     fetchService,
     workspaceDialogService,
-    graphqlService,
     globalDialogService,
     authService,
   ]);

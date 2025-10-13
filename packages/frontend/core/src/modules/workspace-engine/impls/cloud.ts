@@ -60,7 +60,6 @@ import type { Server, ServersService } from '../../cloud';
 import {
   AccountChanged,
   AuthService,
-  GraphQLService,
   WorkspaceServerService,
   FetchService,
 } from '../../cloud';

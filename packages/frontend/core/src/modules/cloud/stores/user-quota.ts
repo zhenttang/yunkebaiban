@@ -1,29 +1,24 @@
-// import { quotaQuery } from '@affine/graphql';
 import { Store } from '@toeverything/infra';
 
-import type { GraphQLService } from '../services/graphql';
+import type { FetchService } from '../services/fetch';
 
 export class UserQuotaStore extends Store {
-  constructor(private readonly graphqlService: GraphQLService) {
+  constructor(private readonly fetchService: FetchService) {
     super();
   }
-
+  
   async fetchUserQuota(abortSignal?: AbortSignal) {
-    const data = await this.graphqlService.gql({
-      query: quotaQuery,
-      context: {
+    try {
+      const res = await this.fetchService.fetch('/api/users/me/quota', {
+        method: 'GET',
         signal: abortSignal,
-      },
-    });
-
-    if (!data.currentUser) {
-      throw new Error('未登录');
+      });
+      if (!res.ok) throw new Error('获取配额失败');
+      const data = await res.json();
+      return data;
+    } catch (e) {
+      console.warn('[UserQuotaStore] 获取配额失败，使用默认值:', e);
+      return { userId: undefined, quota: 0, used: 0 } as any;
     }
-
-    return {
-      userId: data.currentUser.id,
-      quota: data.currentUser.quota,
-      used: data.currentUser.quotaUsage.storageQuota,
-    };
   }
 }

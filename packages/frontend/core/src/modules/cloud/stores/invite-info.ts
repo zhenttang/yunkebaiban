@@ -1,10 +1,9 @@
 // import { getInviteInfoQuery } from '@affine/graphql';
 import { Store } from '@toeverything/infra';
 
-import type { GraphQLService } from '../services/graphql';
 
 export class InviteInfoStore extends Store {
-  constructor(private readonly gqlService: GraphQLService) {
+  constructor() {
     super();
   }
 

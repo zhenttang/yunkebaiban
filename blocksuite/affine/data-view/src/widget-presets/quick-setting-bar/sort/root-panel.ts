@@ -217,7 +217,7 @@ export const popSortRoot = (
           ></sort-root-view>`;
         },
         menu.action({
-          name: 'Add sort',
+          name: '添加排序',
           prefix: PlusIcon(),
           select: ele => {
             popCreateSort(popupTargetFromElement(ele), {
@@ -227,7 +227,7 @@ export const popSortRoot = (
           },
         }),
         menu.action({
-          name: 'Delete',
+          name: '删除',
           class: { 'delete-item': true },
           prefix: DeleteIcon(),
           select: () => {

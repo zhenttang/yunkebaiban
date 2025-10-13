@@ -1,6 +1,6 @@
 import { Button } from '@affine/component';
 import { cssVarV2 } from '@toeverything/theme/v2';
-import { useMemo, type CSSProperties } from 'react';
+import { useMemo, useState, useEffect, type CSSProperties } from 'react';
 
 import { useCloudStorage } from '../cloud-storage-manager';
 
@@ -60,6 +60,11 @@ export const CloudStorageIndicator = () => {
   const { isConnected, storageMode, lastSync, reconnect, pendingOperationsCount } =
     useCloudStorage();
 
+  // 手动关闭状态
+  const [isManuallyHidden, setIsManuallyHidden] = useState(false);
+  // 自动隐藏状态
+  const [isAutoHidden, setIsAutoHidden] = useState(false);
+
   const variant = useMemo<IndicatorVariant>(() => {
     if (pendingOperationsCount > 0) {
       return 'detecting';
@@ -84,13 +89,35 @@ export const CloudStorageIndicator = () => {
     return 'unknown';
   }, [pendingOperationsCount, storageMode]);
 
+  // 当状态变化时，重置自动隐藏和手动隐藏
+  useEffect(() => {
+    setIsAutoHidden(false);
+    setIsManuallyHidden(false);
+
+    // 如果是成功连接状态（cloud），5秒后自动隐藏
+    if (variant === 'cloud' && pendingOperationsCount === 0) {
+      const timer = setTimeout(() => {
+        setIsAutoHidden(true);
+      }, 5000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [variant, pendingOperationsCount]);
+
   const meta = VARIANT_MAP[variant];
   const secondaryText =
     pendingOperationsCount > 0
       ? `剩余 ${pendingOperationsCount} 项待同步`
       : formatRelativeTime(lastSync ?? null);
 
-  const shouldHide = variant === 'unknown' && !pendingOperationsCount;
+  const shouldHide = 
+    isManuallyHidden || 
+    isAutoHidden || 
+    (variant === 'unknown' && !pendingOperationsCount);
+
+  const handleClose = () => {
+    setIsManuallyHidden(true);
+  };
 
   return (
     <div
@@ -121,6 +148,14 @@ export const CloudStorageIndicator = () => {
           </Button>
         </div>
       ) : null}
+      <button
+        className={styles.closeButton}
+        onClick={handleClose}
+        title="关闭"
+        aria-label="关闭提示"
+      >
+        ✕
+      </button>
     </div>
   );
 };

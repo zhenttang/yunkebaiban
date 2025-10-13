@@ -111,7 +111,6 @@ dependencies {
     implementation libs.androidx.navigation.fragment
     implementation libs.androidx.navigation.ui.ktx
 
-    // implementation libs.apollo.runtime  // 禁用Apollo - 已改用Java后端
     implementation (libs.jna) {
         artifact {
             type = 'aar'

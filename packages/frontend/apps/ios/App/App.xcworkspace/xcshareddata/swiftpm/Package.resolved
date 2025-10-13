@@ -1,15 +1,6 @@
 {
   "pins" : [
     {
-      "identity" : "apollo-ios",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/apollographql/apollo-ios.git",
-      "state" : {
-        "revision" : "39fea7617346c0731be25f61afd537e7032fb562",
-        "version" : "1.22.0"
-      }
-    },
-    {
       "identity" : "chidorimenu",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Lakr233/ChidoriMenu",

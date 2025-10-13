@@ -80,7 +80,8 @@ export class DocGrantedUsersStore extends Store {
     workspaceId: string,
     docId: string,
     userId: string,
-    role: DocRole
+    role: DocRole,
+    permissionMask?: number
   ) {
     if (!this.workspaceServerService.server) {
       throw new Error('无服务器');
@@ -91,7 +92,9 @@ export class DocGrantedUsersStore extends Store {
         {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ role }),
+          body: JSON.stringify(
+            permissionMask != null ? { role, permissionMask } : { role }
+          ),
         }
       );
       const data = await res.json();
@@ -116,6 +119,30 @@ export class DocGrantedUsersStore extends Store {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ role: input.role }),
+        }
+      );
+      const data = await res.json();
+      return data.success ?? true;
+    } catch {
+      return false;
+    }
+  }
+
+  async updateDocDefaultPermissionMask(input: {
+    workspaceId: string;
+    docId: string;
+    permissionMask: number;
+  }) {
+    if (!this.workspaceServerService.server) {
+      throw new Error('无服务器');
+    }
+    try {
+      const res = await this.workspaceServerService.server.fetch(
+        `/api/workspaces/${input.workspaceId}/docs/${input.docId}/default-role`,
+        {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ permissionMask: input.permissionMask }),
         }
       );
       const data = await res.json();
