@@ -1,4 +1,5 @@
 export * from './app-tabs';
+export * from './app-tabs/curved';
 export * from './doc-card';
 export * from './doc-info';
 export * from './navigation-back';

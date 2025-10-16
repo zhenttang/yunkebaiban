@@ -1,6 +1,5 @@
 import { SafeArea, useThemeColorV2 } from '@affine/component';
 
-import { AppTabs } from '../../components';
 import {
   NavigationPanelCollections,
   NavigationPanelFavorites,
@@ -31,7 +30,7 @@ export const Component = () => {
           <NavigationPanelTags />
         </div>
       </SafeArea>
-      <AppTabs />
+      {/* Tabs moved to workspace layout to avoid remount flicker */}
     </>
   );
 };

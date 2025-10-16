@@ -33,13 +33,11 @@ import {
   useService,
   useServices,
 } from '@toeverything/infra';
-import { cssVarV2 } from '@toeverything/theme/v2';
 import clsx from 'clsx';
 import dayjs from 'dayjs';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { AppTabs } from '../../../components';
 import { JournalConflictBlock } from './journal-conflict-block';
 import { JournalDatePicker } from './journal-date-picker';
 import * as styles from './mobile-detail-page.css';
@@ -313,7 +311,7 @@ const MobileDetailPage = ({
         </PageHeader>
         <JournalConflictBlock date={date} />
         <DetailPageImpl />
-        <AppTabs background={cssVarV2('layer/background/primary')} />
+        {/* Tabs moved to workspace layout to avoid remount flicker */}
       </DetailPageWrapper>
     </div>
   );

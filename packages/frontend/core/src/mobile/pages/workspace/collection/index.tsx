@@ -1,6 +1,5 @@
 import { useThemeColorV2 } from '@affine/component';
 
-import { AppTabs } from '../../../components';
 import { AllDocsHeader, CollectionList } from '../../../views';
 
 export const Component = () => {
@@ -8,7 +7,7 @@ export const Component = () => {
   return (
     <>
       <AllDocsHeader />
-      <AppTabs />
+      {/* Tabs moved to workspace layout to avoid remount flicker */}
       <CollectionList />
     </>
   );

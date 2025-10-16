@@ -30,6 +30,7 @@ import {
 import { map } from 'rxjs';
 
 import { AppFallback } from '../../components/app-fallback';
+import { CurvedAppTabs } from '../../components';
 import { WorkspaceDialogs } from '../../dialogs';
 
 // TODO(@forehalo): reuse the global context with [core/electron]
@@ -146,6 +147,7 @@ export const WorkspaceLayout = ({
             <uniReactRoot.Root />
             <WorkspaceSideEffects />
             {children}
+            <CurvedAppTabs background={`linear-gradient(135deg, #d4fc79 0%, #96e6a1 100%)`} />
           </SWRConfigProvider>
         </AffineErrorBoundary>
       </FrameworkScope>

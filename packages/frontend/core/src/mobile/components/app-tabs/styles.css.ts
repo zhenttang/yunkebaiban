@@ -9,7 +9,7 @@ export const appTabs = style({
   vars: {
     [appTabsBackground]: cssVarV2.layer.background.mobile.primary,
   },
-  backgroundColor: appTabsBackground,
+  background: appTabsBackground,
   borderTop: `0.5px solid ${cssVarV2.layer.insideBorder.border}`,
 
   width: '100dvw',
