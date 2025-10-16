@@ -12,7 +12,7 @@ export class DevCommand extends PackageSelectorCommand {
     '@affine/electron-renderer',
     '@affine/mobile',
     '@affine/ios',
-    '@affine/android',
+    '@yunke/android',
     '@affine/admin',
   ];
 

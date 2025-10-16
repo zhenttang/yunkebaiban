@@ -67,7 +67,69 @@ const fetchHistoryList = async (
     throw new Error('Failed to fetch history list');
   }
   
-  return response.json();
+  const data = await response.json();
+  
+  logger.info('📥 收到历史记录响应:', { 
+    dataType: typeof data, 
+    isArray: Array.isArray(data),
+    keys: data && typeof data === 'object' ? Object.keys(data) : [],
+    sampleData: data 
+  });
+  
+  // 验证并规范化返回数据
+  // 后端可能返回多种格式：
+  // 1. 直接返回数组
+  // 2. { histories: [...] } 
+  // 3. { data: [...] }
+  // 4. { content: [...] }
+  
+  if (Array.isArray(data)) {
+    // 如果后端直接返回数组
+    logger.info('✅ 解析为数组格式, 记录数:', data.length);
+    return {
+      histories: data,
+      total: data.length,
+      hasMore: data.length >= take,
+    };
+  } else if (data && typeof data === 'object') {
+    // 提取数组数据，支持多种字段名
+    const historiesArray = 
+      data.histories || 
+      data.data || 
+      data.content || 
+      [];
+    
+    const total = 
+      typeof data.total === 'number' ? data.total :
+      typeof data.totalElements === 'number' ? data.totalElements :
+      historiesArray.length;
+    
+    const hasMore = 
+      typeof data.hasMore === 'boolean' ? data.hasMore :
+      typeof data.hasNext === 'boolean' ? data.hasNext :
+      false;
+    
+    logger.info('✅ 解析为对象格式', { 
+      historiesCount: historiesArray.length, 
+      total, 
+      hasMore,
+      usedField: data.histories ? 'histories' : data.data ? 'data' : 'content'
+    });
+    
+    return {
+      histories: Array.isArray(historiesArray) ? historiesArray : [],
+      total,
+      hasMore,
+    };
+  } else {
+    // 返回空结果
+    logger.error('❌ 无效的历史记录响应:', data);
+    return {
+      histories: [],
+      total: 0,
+      hasMore: false,
+    };
+  }
 };
 
 const recoverDocumentVersion = async (
@@ -101,9 +163,18 @@ export const useDocSnapshotList = (workspaceId: string, pageDocId: string) => {
   const loadHistories = useCallback(async (before?: string) => {
     if (loading) return;
     
+    logger.info('📋 加载历史记录:', { workspaceId, pageDocId, before, pageSize });
+    
     setLoading(true);
     try {
       const response = await fetchHistoryList(fetchService, workspaceId, pageDocId, before, pageSize);
+      
+      logger.info('✅ 历史记录加载成功:', { 
+        count: response.histories.length, 
+        total: response.total, 
+        hasMore: response.hasMore,
+        before 
+      });
       
       if (before) {
         // 加载更多
@@ -115,6 +186,12 @@ export const useDocSnapshotList = (workspaceId: string, pageDocId: string) => {
       
       setHasMore(response.hasMore);
     } catch (error) {
+      logger.error('❌ 加载历史记录失败:', { 
+        workspaceId, 
+        pageDocId, 
+        error: error instanceof Error ? error.message : String(error),
+        stack: error instanceof Error ? error.stack : undefined 
+      });
       console.error('Failed to load histories:', error);
       setHistories([]);
       setHasMore(false);
@@ -279,6 +356,12 @@ export const useSnapshotPage = (
 };
 
 export const historyListGroupByDay = (histories: DocHistory[]) => {
+  // 防御性检查：确保 histories 是数组
+  if (!Array.isArray(histories)) {
+    logger.error('historyListGroupByDay received non-array:', histories);
+    return [];
+  }
+  
   const map = new Map<string, DocHistory[]>();
   for (const history of histories) {
     const day = i18nTime(history.timestamp, {

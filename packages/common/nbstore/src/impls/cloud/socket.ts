@@ -123,22 +123,39 @@ export type Socket = SocketIO<ServerEventsMap, ClientEventsMap>;
 
 export function uint8ArrayToBase64(array: Uint8Array): Promise<string> {
   return new Promise<string>(resolve => {
-    // Create a blob from the Uint8Array
-    const blob = new Blob([array]);
-
-    const reader = new FileReader();
-    reader.onload = function () {
-      const dataUrl = reader.result as string | null;
-      if (!dataUrl) {
-        resolve('');
-        return;
+    // 🔧 Android兼容性修复：使用btoa而不是FileReader
+    // FileReader.readAsDataURL在Android WebView中可能产生错误的Base64编码
+    try {
+      // 方法1：直接使用btoa（适用于所有环境，包括Android）
+      let binary = '';
+      const len = array.byteLength;
+      for (let i = 0; i < len; i++) {
+        binary += String.fromCharCode(array[i]);
       }
-      // The result includes the `data:` URL prefix and the MIME type. We only want the Base64 data
-      const base64 = dataUrl.split(',')[1];
+      const base64 = btoa(binary);
       resolve(base64);
-    };
-
-    reader.readAsDataURL(blob);
+    } catch (error) {
+      console.error('❌ [uint8ArrayToBase64] btoa编码失败，回退到FileReader:', error);
+      
+      // 方法2：回退到FileReader（原始方法）
+      const blob = new Blob([array]);
+      const reader = new FileReader();
+      reader.onload = function () {
+        const dataUrl = reader.result as string | null;
+        if (!dataUrl) {
+          resolve('');
+          return;
+        }
+        // The result includes the `data:` URL prefix and the MIME type. We only want the Base64 data
+        const base64 = dataUrl.split(',')[1];
+        resolve(base64);
+      };
+      reader.onerror = function() {
+        console.error('❌ [uint8ArrayToBase64] FileReader也失败了');
+        resolve('');
+      };
+      reader.readAsDataURL(blob);
+    }
   });
 }
 

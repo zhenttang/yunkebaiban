@@ -472,6 +472,10 @@ export class WebContentViewsManager {
   };
 
   loadTab = async (id: string): Promise<WebContentsView | undefined> => {
+    // 🔍 调试：打印调用栈
+    const stack = new Error().stack;
+    logger.info(`[DEBUG] loadTab called for ${id}, call stack:\n${stack}`);
+    
     if (!this.tabViewsMeta.workbenches.some(w => w.id === id)) {
       return;
     }
@@ -489,7 +493,7 @@ export class WebContentViewsManager {
       );
       url.hash = viewMeta.path?.hash ?? '';
       url.search = viewMeta.path?.search ?? '';
-      logger.info(`loading tab ${id} at ${url.href}`);
+      logger.info(`⏩ loading tab ${id} at ${url.href}`);
       view.webContents.loadURL(url.href).catch(err => logger.error(err));
     }
     return view;
@@ -725,12 +729,31 @@ export class WebContentViewsManager {
         // add shell view
         this.createAndAddView('shell').catch(err => logger.error(err));
         (async () => {
+          const IS_DEV = process.env.NODE_ENV === 'development';
+          
           if (this.tabViewsMeta.workbenches.length === 0) {
-            // create a default view (e.g., on first launch)
+            // 首次启动：创建默认标签
             await this.addTab();
           } else {
-            const defaultTabId = this.activeWorkbenchId;
-            if (defaultTabId) await this.showTab(defaultTabId);
+            // 有旧标签：只加载第一个标签
+            const defaultTabId = this.activeWorkbenchId ?? this.tabViewsMeta.workbenches[0].id;
+            if (defaultTabId) {
+              await this.showTab(defaultTabId);
+              
+              // 🔧 开发模式：加载第一个标签后，清理掉其他旧标签（减少启动时的请求数）
+              if (IS_DEV && this.tabViewsMeta.workbenches.length > 1) {
+                logger.info(`[DEV MODE] Keeping only the active tab, removing ${this.tabViewsMeta.workbenches.length - 1} inactive tabs`);
+                setTimeout(() => {
+                  const activeTab = this.tabViewsMeta.workbenches.find(w => w.id === defaultTabId);
+                  if (activeTab) {
+                    this.patchTabViewsMeta({
+                      workbenches: [activeTab], // 只保留当前活动标签
+                      activeWorkbenchId: defaultTabId,
+                    });
+                  }
+                }, 1000); // 延迟1秒，确保第一个标签已经加载完成
+              }
+            }
           }
         })().catch(err => logger.error(err));
       })

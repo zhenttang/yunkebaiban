@@ -22,11 +22,23 @@ function getConfiguredBaseUrl(): string {
   if (typeof window !== 'undefined') {
     const buildConfig = (window as any).BUILD_CONFIG;
     if (buildConfig?.isAndroid || buildConfig?.platform === 'android') {
-      return 'http://localhost:8080';
+      return 'http://192.168.2.4:8080';
     }
     
-    if (window.location.hostname !== 'localhost' && 
-        window.location.hostname !== '127.0.0.1') {
+    const hostname = window.location.hostname;
+    // 检测局域网IP（Android开发环境）
+    if (hostname.match(/^192\.168\.\d+\.\d+$/) || 
+        hostname.match(/^10\.\d+\.\d+\.\d+$/) ||
+        hostname.match(/^172\.(1[6-9]|2[0-9]|3[01])\.\d+\.\d+$/)) {
+      return 'http://192.168.2.4:8080';
+    }
+    
+    // 生产环境
+    if (hostname !== 'localhost' && 
+        hostname !== '127.0.0.1' &&
+        !hostname.includes('192.168.') &&
+        !hostname.includes('10.0.') &&
+        !hostname.includes('172.')) {
       return 'https://your-domain.com:443';
     }
   }
@@ -124,8 +136,20 @@ export const getCurrentEnvironment = (): EnvironmentType => {
       return EnvironmentType.DEV;
     }
     
-    if (window.location.hostname !== 'localhost' && 
-        window.location.hostname !== '127.0.0.1') {
+    const hostname = window.location.hostname;
+    // 检测局域网IP（Android开发环境）
+    if (hostname.match(/^192\.168\.\d+\.\d+$/) || 
+        hostname.match(/^10\.\d+\.\d+\.\d+$/) ||
+        hostname.match(/^172\.(1[6-9]|2[0-9]|3[01])\.\d+\.\d+$/)) {
+      return EnvironmentType.DEV;
+    }
+    
+    // 生产环境
+    if (hostname !== 'localhost' && 
+        hostname !== '127.0.0.1' &&
+        !hostname.includes('192.168.') &&
+        !hostname.includes('10.0.') &&
+        !hostname.includes('172.')) {
       return EnvironmentType.PROD;
     }
   }

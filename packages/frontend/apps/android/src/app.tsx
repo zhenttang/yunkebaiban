@@ -7,7 +7,7 @@ if (typeof window !== 'undefined') {
   }
   
   // 保持Android标识，但使用Web存储
-  (window as any).BUILD_CONFIG = {
+  const androidConfig = {
     ...(window as any).BUILD_CONFIG,
     isAndroid: true,           // 保持Android标识
     isWeb: false,              // 不是纯Web环境
@@ -20,7 +20,13 @@ if (typeof window !== 'undefined') {
     platform: 'android'        // 平台标识
   };
   
-  console.log('🔧 Android BUILD_CONFIG配置:', (window as any).BUILD_CONFIG);
+  // 同时设置到 window 和 globalThis
+  (window as any).BUILD_CONFIG = androidConfig;
+  (globalThis as any).BUILD_CONFIG = androidConfig;
+  
+  console.log('🔧 Android BUILD_CONFIG配置:', androidConfig);
+  console.log('🔧 验证 window.BUILD_CONFIG:', (window as any).BUILD_CONFIG);
+  console.log('🔧 验证 globalThis.BUILD_CONFIG:', (globalThis as any).BUILD_CONFIG);
   
   // 设置全局错误处理器
   window.addEventListener('error', (event) => {
@@ -157,6 +163,9 @@ import {
 } from '@affine/core/modules/cloud';
 import { FeatureFlagService } from '@affine/core/modules/feature-flag';
 import { getBaseUrl } from '@affine/config';
+import { WorkspaceFlavoursProvider } from '@affine/core/modules/workspace';
+import { CloudWorkspaceFlavoursProvider } from '@affine/core/modules/workspace-engine/impls/cloud';
+import { GlobalState } from '@affine/core/modules/storage';
 
 // 不需要再次定义BUILD_CONFIG，已经在文件开头处理了
 import { DocsService } from '@affine/core/modules/doc';
@@ -171,7 +180,6 @@ import { PopupWindowProvider } from '@affine/core/modules/url';
 import { ClientSchemeProvider } from '@affine/core/modules/url/providers/client-schema';
 import { configureBrowserWorkbenchModule } from '@affine/core/modules/workbench';
 import { WorkspacesService } from '@affine/core/modules/workspace';
-import { configureBrowserWorkspaceFlavours } from '@affine/core/modules/workspace-engine'; // 恢复使用原始配置
 import { getWorkerUrl } from '@affine/env/worker';
 import { I18n } from '@affine/i18n';
 import { StoreManagerClient } from '@affine/nbstore/worker/client';
@@ -258,8 +266,12 @@ try {
   configureLocalStorageStateStorageImpls(framework);
   console.log('✅ LocalStorageStateStorage 配置成功');
   
-  configureBrowserWorkspaceFlavours(framework);
-  console.log('✅ BrowserWorkspaceFlavours 配置成功');
+  // Android专用：只配置CLOUD工作区，不使用LOCAL本地存储
+  framework.impl(WorkspaceFlavoursProvider('CLOUD'), CloudWorkspaceFlavoursProvider, [
+    GlobalState,
+    ServersService,
+  ]);
+  console.log('✅ Android CloudWorkspaceFlavours 配置成功（仅云端存储）');
   
   configureMobileModules(framework);
   console.log('✅ MobileModules 配置成功');
@@ -302,19 +314,74 @@ try {
   frameworkProvider = framework.provider();
   console.log('✅ Framework provider 创建成功');
   
+  // 🔧 Android专用：强制修改服务器配置为开发服务器地址
+  if ((window as any).BUILD_CONFIG?.isAndroid) {
+    try {
+      const serversService = frameworkProvider.get(ServersService);
+      const server = serversService.server$('affine-cloud').value;
+      
+      if (server) {
+        const newBaseUrl = 'http://192.168.2.4:8080';
+        console.log('🔧 [Android配置] 强制修改服务器baseUrl');
+        console.log('  原始baseUrl:', server.baseUrl);
+        console.log('  新baseUrl:', newBaseUrl);
+        
+        // 直接修改服务器的baseUrl
+        Object.defineProperty(server, 'baseUrl', {
+          value: newBaseUrl,
+          writable: true,
+          configurable: true,
+          enumerable: true
+        });
+        
+        // 同时修改serverMetadata中的baseUrl（如果存在）
+        if (server.serverMetadata) {
+          Object.defineProperty(server.serverMetadata, 'baseUrl', {
+            value: newBaseUrl,
+            writable: true,
+            configurable: true,
+            enumerable: true
+          });
+        }
+        
+        console.log('✅ [Android配置] 服务器配置已强制修改');
+        console.log('  验证baseUrl:', server.baseUrl);
+        console.log('  验证serverMetadata.baseUrl:', server.serverMetadata?.baseUrl);
+      } else {
+        console.error('❌ [Android配置] 未找到affine-cloud服务器');
+      }
+    } catch (error) {
+      console.error('❌ [Android配置] 修改服务器配置失败:', error);
+    }
+  }
+  
   // 为Android环境添加服务获取包装器 - 强化版本
   if ((window as any).BUILD_CONFIG?.isAndroid) {
     const originalGet = frameworkProvider.get.bind(frameworkProvider);
     let serviceCache = new Map();
     
+    // 🔧 暴露清除缓存的方法（用于调试）
+    (window as any).__clearServiceCache = () => {
+      console.log('🧹 清除服务缓存');
+      serviceCache.clear();
+    };
+    
     frameworkProvider.get = function(serviceIdentifier: any) {
       const serviceName = serviceIdentifier?.name || serviceIdentifier?.toString() || 'unknown';
       console.log(`🔧 [Android服务获取] 请求服务: ${serviceName}`);
       
-      // 先检查缓存
-      if (serviceCache.has(serviceIdentifier)) {
+      // ⚠️ 对于服务器相关的服务，不使用缓存，确保获取最新配置
+      const serverRelatedServices = ['DefaultServerService', 'ServersService', 'ServerService'];
+      const shouldSkipCache = serverRelatedServices.some(name => serviceName.includes(name));
+      
+      // 先检查缓存（但跳过服务器相关服务）
+      if (!shouldSkipCache && serviceCache.has(serviceIdentifier)) {
         console.log(`📋 [Android服务获取] 从缓存返回: ${serviceName}`);
         return serviceCache.get(serviceIdentifier);
+      }
+      
+      if (shouldSkipCache) {
+        console.log(`🔄 [Android服务获取] ${serviceName} 跳过缓存，获取最新实例`);
       }
       
       try {
@@ -693,7 +760,7 @@ window.addEventListener('affine-auth-initialized', (event: any) => {
 });
 
 // Android专用：全局替换localhost为实际服务器地址
-const ANDROID_SERVER_HOST = 'localhost:8080';
+const ANDROID_SERVER_HOST = '192.168.2.4:8082';
 
 // 最关键：拦截所有网络请求，查看是否到达服务器
 const originalFetch = window.fetch;
@@ -704,9 +771,18 @@ window.fetch = function(...args) {
   const request = new Request(input, init);
   let url = request.url;
   
-  // Android专用：将localhost替换为实际服务器地址
-  url = url.replace(/localhost:8080/g, ANDROID_SERVER_HOST);
-  url = url.replace(/localhost\/api/g, `${ANDROID_SERVER_HOST}/api`);
+  // Android专用：将所有localhost请求替换为实际服务器地址
+  // 处理所有可能的localhost变体
+  url = url.replace(/localhost:8080/g, ANDROID_SERVER_HOST);  // 替换8080端口
+  url = url.replace(/localhost:8082/g, ANDROID_SERVER_HOST);  // 替换8082端口
+  url = url.replace(/localhost\/api/g, `${ANDROID_SERVER_HOST}/api`);  // 替换无端口的API路径
+  url = url.replace(/127\.0\.0\.1:8080/g, ANDROID_SERVER_HOST);  // 替换127.0.0.1:8080
+  url = url.replace(/127\.0\.0\.1:8082/g, ANDROID_SERVER_HOST);  // 替换127.0.0.1:8082
+  
+  // 兜底：替换剩余的localhost（带http://）
+  if (url.includes('localhost')) {
+    url = url.replace(/http:\/\/localhost/g, `http://${ANDROID_SERVER_HOST.split(':')[0]}`);
+  }
   
   // 🔧 创建新的Request对象，并强制使用HTTP/1.1
   const originalHeaders = {};
@@ -814,11 +890,17 @@ setTimeout(() => {
     const actualBaseUrl = currentServer?.serverMetadata?.baseUrl || currentServer?.baseUrl;
     console.log('🎯 实际使用的BaseURL:', actualBaseUrl);
     
-    if (actualBaseUrl && !actualBaseUrl.includes('localhost:8080')) {
-      console.error('❌ BaseURL配置错误! 期望包含localhost:8080，实际:', actualBaseUrl);
+    if (actualBaseUrl && !actualBaseUrl.includes('192.168.2.4:8080')) {
+      console.error('❌ BaseURL配置错误! 期望包含192.168.2.4:8080，实际:', actualBaseUrl);
     } else {
       console.log('✅ BaseURL配置正确');
     }
+    
+    // 检查Android存储策略
+    console.log('=== 📦 Android存储策略检查 ===');
+    console.log('BUILD_CONFIG.storageStrategy:', (window as any).BUILD_CONFIG?.storageStrategy);
+    console.log('BUILD_CONFIG.isAndroid:', (window as any).BUILD_CONFIG?.isAndroid);
+    console.log('✅ Android使用: IndexedDB本地缓存 + Cloud云端同步')
     
     // 检查工作区服务
     console.log('=== 🔍 工作区服务检查 ===');
@@ -829,13 +911,51 @@ setTimeout(() => {
       // 检查工作区列表
       setTimeout(() => {
         const workspaceList = workspacesService.list;
+        const workspaces = workspaceList.workspaces$.value;
         console.log('📦 工作区列表状态:', {
           isRevalidating: workspaceList.isRevalidating$.value,
-          workspacesCount: workspaceList.workspaces$.value.length
+          workspacesCount: workspaces.length
         });
         
+        // 显示工作区详情
+        workspaces.forEach((ws, index) => {
+          console.log(`📁 工作区 ${index + 1}:`, {
+            id: ws.id,
+            flavour: ws.flavour,
+            initialized: ws.initialized
+          });
+        });
+        
+        // 如果有工作区，检查是否能打开
+        if (workspaces.length > 0) {
+          console.log('🔄 测试打开第一个工作区...');
+          try {
+            const firstWorkspace = workspaces[0];
+            const { workspace, dispose } = workspacesService.open({ metadata: firstWorkspace });
+            console.log('✅ 工作区打开成功:', workspace.id);
+            
+            // 检查存储配置
+            setTimeout(() => {
+              try {
+                const docsService = workspace.scope.get(DocsService);
+                console.log('✅ DocsService 可用');
+                console.log('📚 当前工作区文档数:', docsService.list.docs$.value.length);
+              } catch (e) {
+                console.error('❌ 获取DocsService失败:', e);
+              }
+            }, 500);
+            
+            // 1秒后清理
+            setTimeout(() => dispose(), 1000);
+          } catch (e) {
+            console.error('❌ 打开工作区失败:', e);
+          }
+        } else {
+          console.warn('⚠️ 没有可用的工作区！');
+        }
+        
         // 尝试刷新工作区列表
-        console.log('🔄 尝试刷新工作区列表...');
+        console.log('🔄 刷新工作区列表...');
         workspaceList.revalidate();
       }, 1000);
       

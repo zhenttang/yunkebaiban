@@ -40,13 +40,16 @@ export class WorkspaceQuotaStore extends Store {
       const data = await response.json();
 
       // 适配后端返回的数据结构
-      // 期望后端返回: { storageQuota, usedStorageQuota, ... }
+      // 期望后端返回: { storageQuota, usedStorageQuota, memberLimit, memberCount, ... }
       return {
-        storageQuota: data.storageQuota,
+        storageQuota: data.storageQuota || 0,
         usedStorageQuota: data.usedStorageQuota || 0,
         historyPeriod: data.historyPeriod,
-        memberLimit: data.memberLimit,
+        memberLimit: data.memberLimit || 10,
+        memberCount: data.memberCount || 0,
         copilotActionLimit: data.copilotActionLimit,
+        // 兼容旧的 GraphQL humanReadable 格式
+        humanReadable: data.humanReadable,
       };
     } catch (error) {
       console.error('获取工作区配额失败:', error);

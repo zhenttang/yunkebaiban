@@ -145,6 +145,13 @@ export class DocSyncPeer {
    */
   private readonly uniqueId = `sync:${this.peerId}:${nanoid()}`;
   private readonly prioritySettings = new Map<string, number>();
+  
+  /**
+   * 🔧 防重复调度：记录最近调度的作业时间戳
+   * key: `${docId}:${jobType}`, value: timestamp
+   */
+  private readonly recentSchedules = new Map<string, number>();
+  private readonly SCHEDULE_DEBOUNCE_MS = 100; // 100ms内不重复调度相同作业
 
   constructor(
     readonly peerId: string,
@@ -338,25 +345,45 @@ export class DocSyncPeer {
             peerId: this.peerId
           });
 
-          const { timestamp } = await this.remote.pushDocUpdate(
-            {
+          try {
+            // 添加超时控制：30秒超时
+            const pushPromise = this.remote.pushDocUpdate(
+              {
+                docId,
+                bin: merged,
+              },
+              this.uniqueId
+            );
+            
+            const timeoutPromise = new Promise<never>((_, reject) => {
+              setTimeout(() => reject(new Error('Push timeout after 30s')), 30000);
+            });
+            
+            const { timestamp } = await Promise.race([pushPromise, timeoutPromise]);
+
+            console.log('✅ [DocSyncPeer.push] 远程推送成功:', {
               docId,
-              bin: merged,
-            },
-            this.uniqueId
-          );
+              timestamp,
+              peerId: this.peerId
+            });
 
-          console.log('✅ [DocSyncPeer.push] 远程推送成功:', {
-            docId,
-            timestamp,
-            peerId: this.peerId
-          });
-
-          this.schedule({
-            type: 'save',
-            docId,
-            remoteClock: timestamp,
-          });
+            this.schedule({
+              type: 'save',
+              docId,
+              remoteClock: timestamp,
+            });
+          } catch (error) {
+            // 推送失败，记录错误但不中断整个同步流程
+            console.error('❌ [DocSyncPeer.push] 推送失败，跳过此文档:', {
+              docId,
+              error: error instanceof Error ? error.message : String(error),
+              peerId: this.peerId
+            });
+            
+            // 不抛出错误，让同步继续其他文档
+            // 但记录到状态中
+            this.status.errorMessage = `Push failed for ${docId}: ${error instanceof Error ? error.message : String(error)}`;
+          }
         }
         throwIfAborted(signal);
         await this.syncMetadata.setPeerPushedClock(this.peerId, {
@@ -611,6 +638,15 @@ export class DocSyncPeer {
       console.log('🔍 [DocSyncPeer.events.localUpdated] 检查是否需要添加文档...');
       this.actions.addDoc(docId);
 
+      // 🔧 过滤空更新，避免无限循环
+      if (isEmptyUpdate(update)) {
+        console.log('⚠️ [DocSyncPeer.events.localUpdated] 检测到空更新，跳过创建push作业:', {
+          docId,
+          updateSize: update.length
+        });
+        return;
+      }
+
       // 安排推送作业
       console.log('📋 [DocSyncPeer.events.localUpdated] 创建 push 作业');
       this.schedule({
@@ -634,6 +670,15 @@ export class DocSyncPeer {
       // 尝试为新文档添加文档
       this.actions.addDoc(docId);
       this.actions.updateRemoteClock(docId, remoteClock);
+
+      // 🔧 过滤空更新，避免无限循环
+      if (isEmptyUpdate(update)) {
+        console.log('⚠️ [DocSyncPeer.events.remoteUpdated] 检测到空更新，跳过创建save作业:', {
+          docId,
+          updateSize: update.length
+        });
+        return;
+      }
 
       // 安排推送作业
       this.schedule({
@@ -1009,6 +1054,31 @@ export class DocSyncPeer {
       peerId: this.peerId,
       timestamp: new Date().toISOString()
     });
+
+    // 🔧 防重复调度：检查最近是否已调度过相同作业
+    const scheduleKey = `${job.docId}:${job.type}`;
+    const lastScheduleTime = this.recentSchedules.get(scheduleKey) || 0;
+    const now = Date.now();
+    
+    if (now - lastScheduleTime < this.SCHEDULE_DEBOUNCE_MS) {
+      console.log('⚠️ [DocSyncPeer.schedule] 检测到重复调度，跳过（防抖）:', {
+        jobType: job.type,
+        docId: job.docId,
+        timeSinceLastSchedule: now - lastScheduleTime,
+        debounceMs: this.SCHEDULE_DEBOUNCE_MS
+      });
+      return;
+    }
+    
+    // 记录本次调度时间
+    this.recentSchedules.set(scheduleKey, now);
+    
+    // 清理旧的记录（超过1秒的）
+    for (const [key, time] of this.recentSchedules.entries()) {
+      if (now - time > 1000) {
+        this.recentSchedules.delete(key);
+      }
+    }
 
     const priority = this.prioritySettings.get(job.docId) ?? 0;
     this.status.jobDocQueue.push(job.docId, priority);

@@ -143,7 +143,7 @@ export const CloudStorageIndicator = () => {
       ) : null}
       {(!isConnected || meta.showReconnect) && storageMode !== 'detecting' ? (
         <div className={styles.actions}>
-          <Button size="small" variant="primary" onClick={reconnect}>
+          <Button size="default" variant="primary" onClick={reconnect}>
             重新连接
           </Button>
         </div>

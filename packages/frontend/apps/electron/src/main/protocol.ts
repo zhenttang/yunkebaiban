@@ -180,8 +180,12 @@ export function registerProtocol() {
             }
           }
 
-          // 处理来自8080后端的响应CORS头
-          if (responseDetails.url.includes('localhost:8080')) {
+          // 处理来自后端的响应CORS头
+          // 允许列表：8080 (主后端), 9092 (Socket.IO)
+          const isBackendRequest = responseDetails.url.includes('localhost:8080') || 
+                                   responseDetails.url.includes('localhost:9092');
+          
+          if (isBackendRequest) {
             // 检查后端是否已经设置了CORS头
             const hasOriginHeader = responseHeaders['access-control-allow-origin'] || 
                                   responseHeaders['Access-Control-Allow-Origin'];
@@ -197,11 +201,12 @@ export function registerProtocol() {
               logger.info(`[WebRequest] Backend already has CORS headers, skipping`);
             }
           } else {
+            // 非后端请求，移除CORS头（安全考虑）
             delete responseHeaders['access-control-allow-origin'];
             delete responseHeaders['access-control-allow-headers'];
             delete responseHeaders['Access-Control-Allow-Origin'];
             delete responseHeaders['Access-Control-Allow-Headers'];
-            logger.info(`[WebRequest] Removed CORS headers`);
+            logger.info(`[WebRequest] Removed CORS headers for non-backend request`);
           }
         }
       })()

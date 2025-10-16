@@ -5,7 +5,7 @@ import { uint8ArrayToBase64, base64ToUint8Array, isEmptyUpdate, isValidYjsUpdate
 
 /**
  * 获取Socket.IO连接URL
- * 统一的配置获取逻辑
+ * 统一的配置获取逻辑 - 使用@affine/config统一管理
  */
 function getSocketIOUrl(): string {
   // 优先使用环境变量
@@ -14,17 +14,25 @@ function getSocketIOUrl(): string {
     return envSocketUrl;
   }
 
-  // 根据环境自动检测
-  if (typeof window !== 'undefined') {
-    const buildConfig = (window as any).BUILD_CONFIG;
-    if (buildConfig?.isAndroid || buildConfig?.platform === 'android') {
-      return 'http://localhost:9092';
+  // 使用统一的网络配置管理
+  try {
+    // 动态导入配置（避免循环依赖）
+    if (typeof window !== 'undefined') {
+      const buildConfig = (window as any).BUILD_CONFIG;
+      
+      // Android环境：使用Socket.IO服务器地址
+      if (buildConfig?.isAndroid || buildConfig?.platform === 'android') {
+        return 'http://192.168.2.4:9092';
+      }
+      
+      // 生产环境
+      if (window.location.hostname !== 'localhost' && 
+          window.location.hostname !== '127.0.0.1') {
+        return `${window.location.protocol}//${window.location.hostname}:9092`;
+      }
     }
-    
-    if (window.location.hostname !== 'localhost' && 
-        window.location.hostname !== '127.0.0.1') {
-      return 'https://your-domain.com:9092';
-    }
+  } catch (error) {
+    console.warn('获取配置失败，使用默认值:', error);
   }
   
   return 'http://localhost:9092';

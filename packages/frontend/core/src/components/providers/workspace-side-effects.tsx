@@ -144,8 +144,9 @@ export const WorkspaceSideEffects = () => {
   useEffect(() => {
     const dispose = setupAIProvider(
       new CopilotClient(
-        fetchService.fetch,
-        eventSourceService.eventSource
+        null, // gql 参数（代码注释说不使用，传 null）
+        fetchService.fetch, // fetcher 参数
+        eventSourceService.eventSource // eventSource 参数
       ),
       globalDialogService,
       authService

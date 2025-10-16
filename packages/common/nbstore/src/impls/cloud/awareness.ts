@@ -16,12 +16,12 @@ import {
 function convertToSocketIOUrl(baseUrl: string): string {
   try {
     const url = new URL(baseUrl);
-    // Socket.IO使用9092端口（统一的WebSocket服务器，支持新旧协议）
+    // 所有环境：Socket.IO统一使用9092端口
     url.port = '9092';
     return url.toString();
   } catch {
     // 如果URL解析失败，使用简单的字符串替换作为后备
-    return baseUrl.replace(':8080', ':9092');
+    return baseUrl.replace(':8080', ':9092').replace(':8082', ':9092');
   }
 }
 

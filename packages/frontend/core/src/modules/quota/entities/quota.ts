@@ -24,7 +24,16 @@ interface WorkspaceQuotaType {
   usedStorageQuota: number;
   historyPeriod?: number;
   memberLimit?: number;
+  memberCount?: number;
   copilotActionLimit?: number;
+  // 兼容旧的 GraphQL 格式
+  humanReadable?: {
+    name?: string;
+    blobLimit?: string;
+    historyPeriod?: string;
+    memberLimit?: string;
+    storageQuota?: string;
+  };
 }
 
 type QuotaType = WorkspaceQuotaType;

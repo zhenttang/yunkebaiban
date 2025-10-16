@@ -52,6 +52,16 @@ export class DocStorage {
   }
 }
 
+// 将Uint8Array转换为Base64字符串（辅助函数）
+function uint8ArrayToBase64(uint8array) {
+  let binary = '';
+  const len = uint8array.byteLength;
+  for (let i = 0; i < len; i++) {
+    binary += String.fromCharCode(uint8array[i]);
+  }
+  return btoa(binary);
+}
+
 export class DocStoragePool {
   constructor() {
     this.connections = new Map();
@@ -127,16 +137,6 @@ export class DocStoragePool {
       return null;
     }
   }
-
-// 将Uint8Array转换为Base64字符串
-function uint8ArrayToBase64(uint8array) {
-  let binary = '';
-  const len = uint8array.byteLength;
-  for (let i = 0; i < len; i++) {
-    binary += String.fromCharCode(uint8array[i]);
-  }
-  return btoa(binary);
-}
   
   async setDocSnapshot(universalId, snapshot) {
     // console.log('[MOCK->JAVA] DocStoragePool.setDocSnapshot:', universalId);

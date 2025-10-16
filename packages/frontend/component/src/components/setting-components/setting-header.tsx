@@ -1,3 +1,4 @@
+import { forwardRef } from 'react';
 import type { HTMLAttributes, ReactNode } from 'react';
 
 import { settingHeader, settingHeaderBeta } from './share.css';
@@ -9,19 +10,18 @@ interface SettingHeaderProps
   beta?: boolean;
 }
 
-export const SettingHeader = ({
-  title,
-  subtitle,
-  beta,
-  ...otherProps
-}: SettingHeaderProps) => {
-  return (
-    <div className={settingHeader} {...otherProps}>
-      <div className="title">
-        {title}
-        {beta ? <div className={settingHeaderBeta}>测试版</div> : null}
+export const SettingHeader = forwardRef<HTMLDivElement, SettingHeaderProps>(
+  ({ title, subtitle, beta, ...otherProps }, ref) => {
+    return (
+      <div ref={ref} className={settingHeader} {...otherProps}>
+        <div className="title">
+          {title}
+          {beta ? <div className={settingHeaderBeta}>测试版</div> : null}
+        </div>
+        {subtitle ? <div className="subtitle">{subtitle}</div> : null}
       </div>
-      {subtitle ? <div className="subtitle">{subtitle}</div> : null}
-    </div>
-  );
-};
+    );
+  }
+);
+
+SettingHeader.displayName = 'SettingHeader';

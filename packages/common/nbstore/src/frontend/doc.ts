@@ -515,11 +515,59 @@ export class DocFrontend {
   applyUpdate(docId: string, update: Uint8Array) {
     const doc = this.status.docs.get(docId);
     if (doc && !isEmptyUpdate(update)) {
+      // 数据验证和详细日志
+      const firstBytes = Array.from(update.slice(0, 10))
+        .map(b => b.toString(16).padStart(2, '0'))
+        .join(' ');
+      
+      const isEmpty = update.byteLength === 0 || 
+        (update.byteLength === 2 && update[0] === 0 && update[1] === 0);
+      
+      // Y.js 更新数据通常以 0x00 或 0x01 开始
+      const looksLikeYjsUpdate = update[0] === 0x00 || update[0] === 0x01;
+      
+      console.log('[isEmptyUpdate] Y.js二进制数据检查:', {
+        byteLength: update.byteLength,
+        isEmpty,
+        firstBytes,
+        isEmptyPattern: isEmpty,
+        looksLikeYjsUpdate
+      });
+      
+      // 如果数据看起来不像 Y.js 更新，记录警告
+      if (!looksLikeYjsUpdate) {
+        console.warn('⚠️ [applyUpdate] 数据格式可能不正确，不是标准的 Y.js 更新格式', {
+          docId,
+          firstByte: update[0],
+          expectedFirstByte: '0x00 或 0x01',
+          dataPreview: firstBytes
+        });
+      }
+      
       try {
         this.isApplyingUpdate = true;
         applyUpdate(doc, update, NBSTORE_ORIGIN);
-      } catch (err) {
+      } catch (err: any) {
         console.error('failed to apply update yjs doc', err);
+        console.error('❌ [applyUpdate] 详细错误信息:', {
+          docId,
+          errorMessage: err?.message || String(err),
+          errorName: err?.name || 'Unknown',
+          updateSize: update.byteLength,
+          firstBytes,
+          updatePreview: Array.from(update.slice(0, 50))
+        });
+        
+        // 如果是 "Integer out of Range" 错误，提供更多帮助信息
+        const errorMessage = err?.message || String(err);
+        if (errorMessage.includes('Integer out of Range')) {
+          console.error('💡 可能的原因:');
+          console.error('  1. 后端返回的数据不是有效的 Y.js 二进制格式');
+          console.error('  2. 数据在传输过程中被损坏');
+          console.error('  3. 前后端 Y.js 版本不一致');
+          console.error('  4. 数据库中存储的数据格式错误');
+          console.error('建议: 检查后端返回的数据格式，确保是 Y.js encodeStateAsUpdate 生成的二进制数据');
+        }
       } finally {
         this.isApplyingUpdate = false;
       }
@@ -530,13 +578,17 @@ export class DocFrontend {
     update: Uint8Array,
     origin: any,
     doc: YDoc,
-    transaction: YTransaction
+    _transaction: YTransaction
   ) => {
     if (origin === NBSTORE_ORIGIN) {
       return;
     }
 
     if (this.isApplyingUpdate && BUILD_CONFIG.debug) {
+      // 获取变更的路径列表（用于调试）
+      const changedKeys = Array.from(doc.share.keys());
+      const changedList = changedKeys.join(', ') || '(empty)';
+      
       console.warn(`⚠️ When nbstore applies a remote update, some code triggers a local change to the doc.
 This will causes the document's 'edited by' to become the current user, even if the user has not actually modified the document.
 This is usually caused by a coding error and needs to be fixed by the developer.

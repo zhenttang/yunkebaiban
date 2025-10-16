@@ -100,10 +100,15 @@ export const SelfHostTeamCard = () => {
         </div>
       );
     }
+    // 安全地访问 memberLimit，兼容新旧格式
+    const memberLimit = 
+      workspaceQuota?.humanReadable?.memberLimit || 
+      (workspaceQuota?.memberLimit ? String(workspaceQuota.memberLimit) : '10');
+    
     return t[
       'com.affine.settings.workspace.license.self-host-team.free.description'
     ]({
-      memberCount: workspaceQuota?.humanReadable.memberLimit || '10',
+      memberCount: memberLimit,
     });
   }, [isOneTimePurchase, isTeam, license, t, workspaceQuota]);
   const handleClick = useCallback(() => {
@@ -210,7 +215,7 @@ export const SelfHostTeamCard = () => {
             <span>
               {isTeam && !isOneTimePurchase
                 ? license?.quantity || ''
-                : `${workspaceQuota?.memberCount}/${workspaceQuota?.memberLimit}`}
+                : `${workspaceQuota?.memberCount ?? 0}/${workspaceQuota?.memberLimit ?? 10}`}
             </span>
           </div>
         </div>

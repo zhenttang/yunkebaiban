@@ -16,6 +16,12 @@ export function onSurfaceAdded(
       return;
     }
 
+    // Check if doc.blocks exists and has value property
+    if (!doc.blocks || !doc.blocks.value) {
+      callback(null);
+      return;
+    }
+
     for (const block of Object.values(doc.blocks.value)) {
       if (block.model instanceof SurfaceBlockModel) {
         callback(block.model);

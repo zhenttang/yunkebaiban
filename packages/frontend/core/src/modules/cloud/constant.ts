@@ -21,7 +21,8 @@ function getConfiguredBaseUrl(): string {
   if (typeof window !== 'undefined') {
     const buildConfig = (window as any).BUILD_CONFIG;
     if (buildConfig?.isAndroid || buildConfig?.platform === 'android') {
-      return 'http://localhost:8080';
+      // Android环境：使用实际开发服务器地址
+      return 'http://192.168.2.4:8082';
     }
     
     if (window.location.hostname !== 'localhost' && 
@@ -82,29 +83,64 @@ import type {
   ServerMetadata
 } from './types';
 
-export const BUILD_IN_SERVERS: (ServerMetadata & { config: ServerConfig })[] = [
-  // 使用统一配置管理的服务器地址
-  {
-    id: 'affine-cloud',
-    baseUrl: getConfiguredBaseUrl(),
-    config: {
-      serverName: '云科 Local Java Backend',
-      features: [
-        ServerFeature.Captcha,
-        ServerFeature.Copilot,
-        ServerFeature.OAuth,
-        ServerFeature.Payment,
-      ],
-      oauthProviders: [OAuthProviderType.Google],
-      type: ServerDeploymentType.Affine,
-      credentialsRequirement: {
-        password: {
-          minLength: 8,
-          maxLength: 32,
+// 🔧 延迟初始化：第一次访问时才获取baseUrl
+let _cachedServers: (ServerMetadata & { config: ServerConfig })[] | null = null;
+
+function getBuildInServers(): (ServerMetadata & { config: ServerConfig })[] {
+  if (_cachedServers) {
+    return _cachedServers;
+  }
+  
+  const baseUrl = getConfiguredBaseUrl();
+  console.log('📍 [BUILD_IN_SERVERS] 首次动态获取baseUrl:', baseUrl);
+  console.log('📍 [BUILD_IN_SERVERS] BUILD_CONFIG:', (globalThis as any).BUILD_CONFIG);
+  console.log('📍 [BUILD_IN_SERVERS] window.BUILD_CONFIG:', typeof window !== 'undefined' ? (window as any).BUILD_CONFIG : 'window未定义');
+  
+  _cachedServers = [
+    {
+      id: 'affine-cloud',
+      baseUrl: baseUrl,  // ← 运行时动态获取
+      config: {
+        serverName: '云科 Local Java Backend',
+        features: [
+          ServerFeature.Captcha,
+          ServerFeature.Copilot,
+          ServerFeature.OAuth,
+          ServerFeature.Payment,
+        ],
+        oauthProviders: [OAuthProviderType.Google],
+        type: ServerDeploymentType.Affine,
+        credentialsRequirement: {
+          password: {
+            minLength: 8,
+            maxLength: 32,
+          },
         },
       },
     },
+  ];
+  
+  return _cachedServers;
+}
+
+// 使用Proxy来延迟初始化
+export const BUILD_IN_SERVERS = new Proxy([] as (ServerMetadata & { config: ServerConfig })[], {
+  get(target, prop) {
+    const servers = getBuildInServers();
+    return Reflect.get(servers, prop);
   },
-];
+  has(target, prop) {
+    const servers = getBuildInServers();
+    return Reflect.has(servers, prop);
+  },
+  ownKeys(target) {
+    const servers = getBuildInServers();
+    return Reflect.ownKeys(servers);
+  },
+  getOwnPropertyDescriptor(target, prop) {
+    const servers = getBuildInServers();
+    return Reflect.getOwnPropertyDescriptor(servers, prop);
+  }
+});
 
 // 原始的复杂配置逻辑已简化，现在使用统一配置管理

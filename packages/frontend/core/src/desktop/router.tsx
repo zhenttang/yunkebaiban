@@ -33,6 +33,11 @@ export const topLevelRoutes = [
     element: <RootRouter />,
     errorElement: <AffineErrorComponent />,
     children: [
+      // ✅ Clipper 路由优先，避免被 workspace 通配符拦截
+      {
+        path: '/clipper/import',
+        lazy: () => import('./pages/import-clipper'),
+      },
       {
         path: '/',
         lazy: () => import('./pages/index'),
@@ -102,10 +107,6 @@ export const topLevelRoutes = [
       {
         path: '/theme-editor',
         lazy: () => import('./pages/theme-editor'),
-      },
-      {
-        path: '/clipper/import',
-        lazy: () => import('./pages/import-clipper'),
       },
       {
         path: '/template/import',

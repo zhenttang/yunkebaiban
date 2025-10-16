@@ -202,7 +202,7 @@ export const CloudWorkspaceMembersPanel = ({
         !isTeam &&
         workspaceQuota &&
         uniqueEmails.length >
-          workspaceQuota.memberLimit - workspaceQuota.memberCount
+          (workspaceQuota.memberLimit ?? 10) - (workspaceQuota.memberCount ?? 0)
       ) {
         setOpenMemberLimit(true);
         setIsMutating(false);
@@ -286,9 +286,9 @@ export const CloudWorkspaceMembersPanel = ({
 
   const title = useMemo(() => {
     if (isTeam) {
-      return `${t['com.affine.settings.member.members']()} (${workspaceQuota?.memberCount})`;
+      return `${t['com.affine.settings.member.members']()} (${workspaceQuota?.memberCount ?? 0})`;
     }
-    return `${t['com.affine.settings.member.members']()} (${workspaceQuota?.memberCount}/${workspaceQuota?.memberLimit})`;
+    return `${t['com.affine.settings.member.members']()} (${workspaceQuota?.memberCount ?? 0}/${workspaceQuota?.memberLimit ?? 10})`;
   }, [isTeam, t, workspaceQuota?.memberCount, workspaceQuota?.memberLimit]);
 
   if (workspaceQuota === null) {
@@ -315,8 +315,11 @@ export const CloudWorkspaceMembersPanel = ({
               <MemberLimitModal
                 isFreePlan={!plan}
                 open={openMemberLimit}
-                plan={workspaceQuota.humanReadable.name ?? ''}
-                quota={workspaceQuota.humanReadable.memberLimit ?? ''}
+                plan={workspaceQuota.humanReadable?.name ?? 'Free'}
+                quota={
+                  workspaceQuota.humanReadable?.memberLimit ?? 
+                  (workspaceQuota.memberLimit ? String(workspaceQuota.memberLimit) : '10')
+                }
                 setOpen={setOpenMemberLimit}
                 onConfirm={handleUpgradeConfirm}
               />

@@ -50,3 +50,19 @@ declare type Environment = {
    */
   var SENTRY_RELEASE: { id: string } | undefined;
 }
+
+// 为使用 webpack 的项目提供 import.meta.env 的类型补全
+// 以便在 TS 环境下安全访问 VITE_* 风格的环境变量
+declare global {
+  interface ImportMetaEnv {
+    VITE_API_BASE_URL?: string;
+    VITE_DRAWIO_URL?: string;
+    VITE_SOCKETIO_URL?: string;
+    MODE?: string;
+    [key: string]: string | undefined;
+  }
+
+  interface ImportMeta {
+    env: ImportMetaEnv;
+  }
+}

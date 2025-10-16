@@ -68,14 +68,14 @@ const environments: Record<string, Environment> = {
     name: 'android',
     description: 'Android应用环境',
     config: {
-      host: 'localhost',
-      port: 8080,
-      socketioPort: 9092,
+      host: '192.168.2.4',  // 使用实际开发服务器IP
+      port: 8080,            // 后端API端口
+      socketioPort: 9092,    // Socket.IO服务端口
       protocol: 'http',
       endpoints: {
         api: '/api',
         websocket: '/ws',
-        socketio: '', 
+        socketio: '/socket.io', 
         auth: '/api/auth',
         uploads: '/api/uploads',
         static: '/static'
@@ -98,18 +98,35 @@ class NetworkConfigManager {
       const buildConfig = (window as any).BUILD_CONFIG;
       if (buildConfig?.isAndroid || buildConfig?.platform === 'android') {
         this.currentEnvironment = 'android';
+        console.log('🔧 [NetworkConfig] 检测到Android环境');
+        return;
+      }
+      
+      // 检测局域网IP（开发服务器）
+      const hostname = window.location.hostname;
+      if (hostname.match(/^192\.168\.\d+\.\d+$/) || 
+          hostname.match(/^10\.\d+\.\d+\.\d+$/) ||
+          hostname.match(/^172\.(1[6-9]|2[0-9]|3[01])\.\d+\.\d+$/)) {
+        // 局域网IP，可能是Android开发环境
+        console.log('🔧 [NetworkConfig] 检测到局域网IP，判定为Android环境');
+        this.currentEnvironment = 'android';
         return;
       }
       
       // 检测生产环境
-      if (window.location.hostname !== 'localhost' && 
-          window.location.hostname !== '127.0.0.1') {
+      if (hostname !== 'localhost' && 
+          hostname !== '127.0.0.1' &&
+          !hostname.includes('192.168.') &&
+          !hostname.includes('10.0.') &&
+          !hostname.includes('172.')) {
         this.currentEnvironment = 'production';
+        console.log('🔧 [NetworkConfig] 检测到生产环境');
         return;
       }
     }
     
     // 默认开发环境
+    console.log('🔧 [NetworkConfig] 使用默认开发环境');
     this.currentEnvironment = 'development';
   }
 
@@ -143,7 +160,9 @@ class NetworkConfigManager {
    */
   getBaseUrl(): string {
     const config = this.getCurrentConfig();
-    return `${config.protocol}://${config.host}:${config.port}`;
+    const baseUrl = `${config.protocol}://${config.host}:${config.port}`;
+    console.log(`📍 [NetworkConfig] getBaseUrl返回: ${baseUrl}, 环境: ${this.currentEnvironment}`);
+    return baseUrl;
   }
 
   /**

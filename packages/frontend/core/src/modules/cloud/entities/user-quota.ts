@@ -17,10 +17,23 @@ import { map, tap } from 'rxjs';
 import type { AuthService } from '../services/auth';
 import type { UserQuotaStore } from '../stores/user-quota';
 
+// 定义配额数据类型
+// 兼容旧的 GraphQL 格式和新的 REST API 格式
+type QuotaData = 
+  | number  // 新格式：纯数字（单位：字节）
+  | {       // 旧格式：包含详细信息的对象
+      storageQuota: number;
+      humanReadable?: {
+        name?: string;
+        blobLimit?: string;
+        historyPeriod?: string;
+        memberLimit?: string;
+        storageQuota?: string;
+      };
+    };
+
 export class UserQuota extends Entity {
-  quota$ = new LiveData<NonNullable<QuotaQuery['currentUser']>['quota'] | null>(
-    null
-  );
+  quota$ = new LiveData<QuotaData | null>(null);
   /** Used storage in bytes */
   used$ = new LiveData<number | null>(null);
   /** Formatted used storage */
@@ -28,7 +41,16 @@ export class UserQuota extends Entity {
     used !== null ? bytes.format(used) : null
   );
   /** Maximum storage limit in bytes */
-  max$ = this.quota$.map(quota => (quota ? quota.storageQuota : null));
+  max$ = this.quota$.map(quota => {
+    if (!quota) return null;
+    // 如果是数字，直接返回（新格式）
+    if (typeof quota === 'number') return quota;
+    // 如果是对象，提取 storageQuota（旧格式）
+    if (typeof quota === 'object' && 'storageQuota' in quota) {
+      return quota.storageQuota;
+    }
+    return null;
+  });
   /** Maximum storage limit formatted */
   maxFormatted$ = this.max$.map(max => (max ? bytes.format(max) : null));
 

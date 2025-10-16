@@ -39,27 +39,36 @@ export class UnusedBlobs extends Entity {
   readonly revalidate = effect(
     switchMap(() =>
       fromPromise(async () => {
+        // 清除之前的错误
+        this.error$.setValue(null);
         try {
-          // 清除之前的错误
-          this.error$.setValue(null);
-        return await this.getUnusedBlobs();
+          return await this.getUnusedBlobs();
         } catch (err) {
           console.error('获取未使用的blobs失败:', err);
-          this.error$.setValue(err instanceof Error ? err : new Error(String(err)));
+          const error = err instanceof Error ? err : new Error(String(err));
+          this.error$.setValue(error);
           return [];
         }
       }).pipe(
         timeout(this.TIMEOUT_MS), // 添加超时处理
         tap(data => {
-          this.unusedBlobs$.setValue(data);
+          // 只有在没有错误的情况下才更新数据
+          if (this.error$.value === null) {
+            this.unusedBlobs$.setValue(data);
+          }
         }),
         catchError(err => {
           console.error('加载未使用的blobs时出错:', err);
-          this.error$.setValue(err instanceof Error ? err : new Error(String(err)));
+          const error = err instanceof Error ? err : new Error('加载失败，请稍后重试');
+          this.error$.setValue(error);
           this.unusedBlobs$.setValue([]);
           return [];
         }),
-        onStart(() => this.isLoading$.setValue(true)),
+        onStart(() => {
+          this.isLoading$.setValue(true);
+          // 开始新的加载时清除错误
+          this.error$.setValue(null);
+        }),
         onComplete(() => this.isLoading$.setValue(false))
       )
     )
@@ -73,10 +82,15 @@ export class UnusedBlobs extends Entity {
 
   async listBlobs() {
     try {
-    const blobs = await this.flavourProvider?.listBlobs(
-      this.workspaceService.workspace.id
-    );
-    return blobs;
+      const provider = this.flavourProvider;
+      if (!provider) {
+        console.warn('Flavour provider 未找到，跳过 blob 列举');
+        return [];
+      }
+      const blobs = await provider.listBlobs(
+        this.workspaceService.workspace.id
+      );
+      return blobs ?? [];
     } catch (err) {
       console.error('列举blobs失败:', err);
       throw err;
@@ -85,11 +99,16 @@ export class UnusedBlobs extends Entity {
 
   async getBlob(blobKey: string) {
     try {
-    const blob = await this.flavourProvider?.getWorkspaceBlob(
-      this.workspaceService.workspace.id,
-      blobKey
-    );
-    return blob;
+      const provider = this.flavourProvider;
+      if (!provider) {
+        console.warn(`Flavour provider 未找到，无法获取 blob ${blobKey}`);
+        return null;
+      }
+      const blob = await provider.getWorkspaceBlob(
+        this.workspaceService.workspace.id,
+        blobKey
+      );
+      return blob ?? null;
     } catch (err) {
       console.error(`获取blob ${blobKey}失败:`, err);
       throw err;
@@ -98,11 +117,15 @@ export class UnusedBlobs extends Entity {
 
   async deleteBlob(blob: string, permanent: boolean) {
     try {
-    await this.flavourProvider?.deleteBlob(
-      this.workspaceService.workspace.id,
-      blob,
-      permanent
-    );
+      const provider = this.flavourProvider;
+      if (!provider) {
+        throw new Error('Flavour provider 未找到，无法删除 blob');
+      }
+      await provider.deleteBlob(
+        this.workspaceService.workspace.id,
+        blob,
+        permanent
+      );
     } catch (err) {
       console.error(`删除blob ${blob}失败:`, err);
       throw err;
@@ -128,37 +151,46 @@ export class UnusedBlobs extends Entity {
 
     try {
       // Wait for both sync and indexing to complete with timeout
-      const syncPromise = this.workspaceService.workspace.engine.doc.waitForSynced();
-
-      // 使用Promise.race给同步过程添加超时控制
-      await Promise.race([
-        syncPromise,
-        new Promise((_, reject) => {
-          setTimeout(() => reject(new Error('同步超时')), 10000);
-        })
-      ]);
+      try {
+        const syncPromise = this.workspaceService.workspace.engine.doc.waitForSynced();
+        // 使用Promise.race给同步过程添加超时控制
+        await Promise.race([
+          syncPromise,
+          new Promise((_, reject) => {
+            setTimeout(() => reject(new Error('同步超时')), 10000);
+          })
+        ]);
+      } catch (syncErr) {
+        console.warn('同步过程失败或超时，继续执行:', syncErr);
+        // 同步失败不应该阻止整个流程，继续执行
+      }
 
       // 索引过程添加超时
-      await Promise.race([
-        this.docsSearchService.indexer.waitForCompleted(mergedSignal.signal),
-        new Promise((_, reject) => {
-          setTimeout(() => reject(new Error('索引超时')), 10000);
-        })
+      try {
+        await Promise.race([
+          this.docsSearchService.indexer.waitForCompleted(mergedSignal.signal),
+          new Promise((_, reject) => {
+            setTimeout(() => reject(new Error('索引超时')), 10000);
+          })
+        ]);
+      } catch (indexErr) {
+        console.warn('索引过程失败或超时，继续执行:', indexErr);
+        // 索引失败不应该阻止整个流程，继续执行
+      }
+
+      const [blobs, usedBlobs] = await Promise.all([
+        this.listBlobs(),
+        this.getUsedBlobs(),
       ]);
 
-    const [blobs, usedBlobs] = await Promise.all([
-      this.listBlobs(),
-      this.getUsedBlobs(),
-    ]);
+      // ignore the workspace avatar
+      const workspaceAvatar = this.workspaceService.workspace.avatar$.value;
 
-    // ignore the workspace avatar
-    const workspaceAvatar = this.workspaceService.workspace.avatar$.value;
-
-    return (
-      blobs?.filter(
-        blob => !usedBlobs.includes(blob.key) && blob.key !== workspaceAvatar
-      ) ?? []
-    );
+      return (
+        blobs?.filter(
+          blob => !usedBlobs.includes(blob.key) && blob.key !== workspaceAvatar
+        ) ?? []
+      );
     } catch (err) {
       console.error('getUnusedBlobs方法出错:', err);
       throw err;

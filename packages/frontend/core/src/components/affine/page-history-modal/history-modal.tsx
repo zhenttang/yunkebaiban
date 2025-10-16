@@ -177,7 +177,7 @@ const PlanPrompt = () => {
   }, [workspaceQuotaService]);
   const workspaceQuota = useLiveData(workspaceQuotaService.quota.quota$);
   const isProWorkspace = useMemo(() => {
-    return workspaceQuota
+    return workspaceQuota && workspaceQuota.humanReadable && workspaceQuota.humanReadable.name
       ? workspaceQuota.humanReadable.name.toLowerCase() !== 'free'
       : null;
   }, [workspaceQuota]);

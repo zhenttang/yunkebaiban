@@ -9,7 +9,7 @@ import {
 } from '@toeverything/infra';
 import dayjs from 'dayjs';
 import ICAL from 'ical.js';
-import { EMPTY, mergeMap, switchMap, throttleTime } from 'rxjs';
+import { EMPTY, map, mergeMap, switchMap, throttleTime } from 'rxjs';
 
 import type {
   CalendarStore,
@@ -25,7 +25,9 @@ export class CalendarSubscription extends Entity<{ url: string }> {
   }
 
   config$ = LiveData.from(
-    this.store.watchSubscription(this.props.url),
+    this.store.watchSubscription(this.props.url).pipe(
+      map(config => config ?? ({} as CalendarSubscriptionConfig))
+    ),
     {} as CalendarSubscriptionConfig
   );
   content$ = LiveData.from(
@@ -34,7 +36,11 @@ export class CalendarSubscription extends Entity<{ url: string }> {
   );
   name$ = LiveData.computed(get => {
     const config = get(this.config$);
-    if (config?.name !== undefined) {
+    // 安全检查：确保 config 存在且不为 null
+    if (!config) {
+      return '';
+    }
+    if (config.name !== undefined) {
       return config.name;
     }
     const content = get(this.content$);
@@ -54,7 +60,8 @@ export class CalendarSubscription extends Entity<{ url: string }> {
 
     const map: EventsByDateMap = new Map();
 
-    if (!content || !config?.showEvents) return map;
+    // 安全检查：确保 config 和 content 都存在
+    if (!content || !config || !config.showEvents) return map;
 
     const jCal = ICAL.parse(content);
     const vCalendar = new ICAL.Component(jCal);

@@ -24,24 +24,67 @@ import * as styles from './style.css';
 const clipperInput$ = new LiveData<ClipperInput | null>(null);
 const port$ = new LiveData<MessagePort | null>(null);
 
+console.log('🟢 设置 message 监听器');
+
 window.addEventListener('message', event => {
+  console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+  console.log('🔵 收到 message 事件:', event);
+  console.log('🔵 - origin:', event.origin);
+  console.log('🔵 - source:', event.source);
+  console.log('🔵 - data 类型:', typeof event.data);
+  console.log('🔵 - data 值:', event.data);
+  
+  // 详细显示 data 的内容
+  if (event.data === null) {
+    console.log('⚠️ data 是 null');
+  } else if (event.data === undefined) {
+    console.log('⚠️ data 是 undefined');
+  } else if (typeof event.data === 'string') {
+    console.log('⚠️ data 是字符串:', event.data);
+  } else if (typeof event.data === 'object') {
+    console.log('🔵 - data.type:', event.data.type);
+    console.log('🔵 - data.payload:', event.data.payload);
+    console.log('🔵 - data 所有键:', Object.keys(event.data));
+    console.log('🔵 - data 完整内容:', JSON.stringify(event.data, null, 2));
+  }
+  
+  console.log('🔵 - ports 数量:', event.ports?.length);
+  console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+  
   if (
     typeof event.data === 'object' &&
+    event.data !== null &&
     event.data.type === 'affine-clipper:import'
   ) {
+    console.log('✅✅✅ 匹配到 affine-clipper:import 类型！');
+    console.log('🔵 payload:', event.data.payload);
+    
     clipperInput$.value = event.data.payload;
 
     if (event.ports.length > 0) {
+      console.log('🔵 设置 MessagePort');
       port$.value = event.ports[0];
     }
+  } else {
+    console.log('❌ 消息类型不匹配或格式错误');
+    console.log('❌ - 判断条件:');
+    console.log('  - typeof event.data === "object"?', typeof event.data === 'object');
+    console.log('  - event.data !== null?', event.data !== null);
+    console.log('  - event.data.type === "affine-clipper:import"?', event.data?.type === 'affine-clipper:import');
   }
 });
 
 export const Component = () => {
+  console.log('🟢🟢🟢 ImportClipper 组件开始加载');
+  
   const importClipperService = useService(ImportClipperService);
   const t = useI18n();
   const session = useService(AuthService).session;
-  const notLogin = useLiveData(session.status$) === 'unauthenticated';
+  const sessionStatus = useLiveData(session.status$);
+  const notLogin = sessionStatus === 'unauthenticated';
+  
+  console.log('🔵 Session 状态:', sessionStatus);
+  console.log('🔵 notLogin:', notLogin);
 
   const [importing, setImporting] = useState(false);
   const [importingError, setImportingError] = useState<any>(null);
@@ -67,6 +110,10 @@ export const Component = () => {
   const selectedWorkspaceName = useWorkspaceName(selectedWorkspace);
 
   const noWorkspace = workspaces.length === 0;
+  
+  console.log('🔵 Workspaces 数量:', workspaces.length);
+  console.log('🔵 clipperInput:', clipperInput);
+  console.log('🔵 isMissingInput:', isMissingInput);
 
   useEffect(() => {
     workspacesService.list.revalidate();
@@ -172,10 +219,11 @@ export const Component = () => {
     }
     autoImportTriggered.current = true;
 
+    // 本地部署允许自动导入
     // if not login, we don't auto import
-    if (notLogin) {
-      return;
-    }
+    // if (notLogin) {
+    //   return;
+    // }
 
     // if the workspace strategy is last-open-workspace, we automatically click the import button
     if (
@@ -193,28 +241,38 @@ export const Component = () => {
     notLogin,
   ]);
 
-  const disabled = isMissingInput || importing || notLogin;
+  const disabled = isMissingInput || importing; // 移除 notLogin 检查
+  
+  console.log('🔵 disabled:', disabled);
+  console.log('🔵 准备渲染，检查条件...');
+  console.log('🔵 - notLogin:', notLogin, '(已被注释，不会阻止渲染)');
+  console.log('🔵 - noWorkspace:', noWorkspace);
+  console.log('🔵 - selectedWorkspace:', selectedWorkspace);
 
-  if (notLogin) {
-    // not login
-    return (
-      <div className={styles.container}>
-        <AuthHeader
-          className={styles.authHeader}
-          title={t['com.affine.auth.sign.in']()}
-          subTitle={serverConfig.serverName}
-        />
-        <Button
-          className={styles.mainButton}
-          variant="primary"
-          onClick={handleClickSignIn}
-        >
-          {t['com.affine.auth.sign.in']()}
-        </Button>
-      </div>
-    );
-  }
+  // 注释掉登录验证，允许本地使用
+  // if (notLogin) {
+  //   console.log('❌ 被 notLogin 拦截（但这段代码已注释）');
+  //   // not login
+  //   return (
+  //     <div className={styles.container}>
+  //       <AuthHeader
+  //         className={styles.authHeader}
+  //         title={t['com.affine.auth.sign.in']()}
+  //         subTitle={serverConfig.serverName}
+  //       />
+  //       <Button
+  //         className={styles.mainButton}
+  //         variant="primary"
+  //         onClick={handleClickSignIn}
+  //       >
+  //         {t['com.affine.auth.sign.in']()}
+  //       </Button>
+  //     </div>
+  //   );
+  // }
 
+  console.log('✅ 渲染主界面');
+  
   return (
     <div className={styles.container}>
       <AllDocsIcon className={styles.mainIcon} />
