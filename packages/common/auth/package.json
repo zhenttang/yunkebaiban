@@ -1,5 +1,5 @@
 {
-  "name": "@affine/auth",
+  "name": "@yunke/auth",
   "version": "1.0.0",
   "description": "统一的JWT认证系统 - 整合Axios和Fetch的认证解决方案",
   "main": "dist/index.js",
@@ -20,7 +20,7 @@
     "fetch",
     "typescript"
   ],
-  "author": "Affine Team",
+  "author": "Yunke Team",
   "license": "MIT",
   "peerDependencies": {
     "axios": ">=1.0.0",
@@ -46,10 +46,10 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/your-org/affine-auth.git"
+    "url": "https://github.com/your-org/yunke-auth.git"
   },
   "bugs": {
-    "url": "https://github.com/your-org/affine-auth/issues"
+    "url": "https://github.com/your-org/yunke-auth/issues"
   },
-  "homepage": "https://github.com/your-org/affine-auth#readme"
+  "homepage": "https://github.com/your-org/yunke-auth#readme"
 }
