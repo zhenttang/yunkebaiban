@@ -1,5 +1,5 @@
-import { Button, RowInput } from '@affine/component';
-import { useI18n } from '@affine/i18n';
+import { Button, RowInput } from '@yunke/component';
+import { useI18n } from '@yunke/i18n';
 import { type PropsWithChildren, type ReactNode, useCallback } from 'react';
 
 import * as styles from './selector-layout.css';

@@ -1,14 +1,14 @@
 import { useCallback, useMemo, useState } from 'react';
-import { Badge } from '@affine/admin/components/ui/badge';
-import { Button } from '@affine/admin/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@affine/admin/components/ui/card';
-import { Checkbox } from '@affine/admin/components/ui/checkbox';
-import { Input } from '@affine/admin/components/ui/input';
-import { Label } from '@affine/admin/components/ui/label';
-import { Skeleton } from '@affine/admin/components/ui/skeleton';
-import { Switch } from '@affine/admin/components/ui/switch';
-import { Textarea } from '@affine/admin/components/ui/textarea';
-import { cn } from '@affine/admin/utils';
+import { Badge } from '@yunke/admin/components/ui/badge';
+import { Button } from '@yunke/admin/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@yunke/admin/components/ui/card';
+import { Checkbox } from '@yunke/admin/components/ui/checkbox';
+import { Input } from '@yunke/admin/components/ui/input';
+import { Label } from '@yunke/admin/components/ui/label';
+import { Skeleton } from '@yunke/admin/components/ui/skeleton';
+import { Switch } from '@yunke/admin/components/ui/switch';
+import { Textarea } from '@yunke/admin/components/ui/textarea';
+import { cn } from '@yunke/admin/utils';
 import {
   AlertCircle,
   CheckCircle2,

@@ -1,4 +1,4 @@
-// import { getMembersByWorkspaceIdQuery } from '@affine/graphql';
+// import { getMembersByWorkspaceIdQuery } from '@yunke/graphql';
 import { Store } from '@toeverything/infra';
 
 import type { WorkspaceServerService } from '../../cloud';

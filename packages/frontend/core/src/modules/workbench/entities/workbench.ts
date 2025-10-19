@@ -1,6 +1,6 @@
-import { toDocSearchParams } from '@affine/core/modules/navigation/utils';
-import { Unreachable } from '@affine/env/constant';
-import type { ReferenceParams } from '@blocksuite/affine/model';
+import { toDocSearchParams } from '@yunke/core/modules/navigation/utils';
+import { Unreachable } from '@yunke/env/constant';
+import type { ReferenceParams } from '@blocksuite/yunke/model';
 import { Entity, LiveData } from '@toeverything/infra';
 import { type To } from 'history';
 import { omit } from 'lodash-es';

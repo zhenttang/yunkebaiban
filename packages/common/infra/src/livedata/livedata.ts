@@ -1,4 +1,4 @@
-import { DebugLogger } from '@affine/debug';
+import { DebugLogger } from '@yunke/debug';
 import { type ReadonlySignal, type Signal, signal } from '@preact/signals-core';
 import type {
   InteropObservable,

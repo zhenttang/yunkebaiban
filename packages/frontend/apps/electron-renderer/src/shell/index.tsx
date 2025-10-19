@@ -1,6 +1,6 @@
 import './setup';
 
-import { events } from '@affine/electron-api';
+import { events } from '@yunke/electron-api';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 

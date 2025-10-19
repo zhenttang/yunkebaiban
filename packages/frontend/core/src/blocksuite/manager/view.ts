@@ -1,40 +1,40 @@
-import type { ReactToLit } from '@affine/component';
-import { AIViewExtension } from '@affine/core/blocksuite/view-extensions/ai';
-import { CloudViewExtension } from '@affine/core/blocksuite/view-extensions/cloud';
-import { CodeBlockPreviewViewExtension } from '@affine/core/blocksuite/view-extensions/code-block-preview';
-import { AffineDatabaseViewExtension } from '@affine/core/blocksuite/view-extensions/database';
+import type { ReactToLit } from '@yunke/component';
+import { AIViewExtension } from '@yunke/core/blocksuite/view-extensions/ai';
+import { CloudViewExtension } from '@yunke/core/blocksuite/view-extensions/cloud';
+import { CodeBlockPreviewViewExtension } from '@yunke/core/blocksuite/view-extensions/code-block-preview';
+import { AffineDatabaseViewExtension } from '@yunke/core/blocksuite/view-extensions/database';
 import {
   EdgelessBlockHeaderConfigViewExtension,
   type EdgelessBlockHeaderViewOptions,
-} from '@affine/core/blocksuite/view-extensions/edgeless-block-header';
-import { AffineEditorConfigViewExtension } from '@affine/core/blocksuite/view-extensions/editor-config';
-import { createDatabaseOptionsConfig } from '@affine/core/blocksuite/view-extensions/editor-config/database';
-import { createLinkedWidgetConfig } from '@affine/core/blocksuite/view-extensions/editor-config/linked';
+} from '@yunke/core/blocksuite/view-extensions/edgeless-block-header';
+import { AffineEditorConfigViewExtension } from '@yunke/core/blocksuite/view-extensions/editor-config';
+import { createDatabaseOptionsConfig } from '@yunke/core/blocksuite/view-extensions/editor-config/database';
+import { createLinkedWidgetConfig } from '@yunke/core/blocksuite/view-extensions/editor-config/linked';
 import {
   AffineEditorViewExtension,
   type AffineEditorViewOptions,
-} from '@affine/core/blocksuite/view-extensions/editor-view/editor-view';
-import { ElectronViewExtension } from '@affine/core/blocksuite/view-extensions/electron';
-import { AffineLinkPreviewExtension } from '@affine/core/blocksuite/view-extensions/link-preview-service';
-import { MobileViewExtension } from '@affine/core/blocksuite/view-extensions/mobile';
-import { PdfViewExtension } from '@affine/core/blocksuite/view-extensions/pdf';
-import { AffineThemeViewExtension } from '@affine/core/blocksuite/view-extensions/theme';
-import { TurboRendererViewExtension } from '@affine/core/blocksuite/view-extensions/turbo-renderer';
-import { DeckViewExtension } from '@affine/core/components/deck-integration';
-import { PeekViewService } from '@affine/core/modules/peek-view';
-import { DebugLogger } from '@affine/debug';
-import { mixpanel } from '@affine/track';
-import { DatabaseViewExtension } from '@blocksuite/affine/blocks/database/view';
-import { ParagraphViewExtension } from '@blocksuite/affine/blocks/paragraph/view';
+} from '@yunke/core/blocksuite/view-extensions/editor-view/editor-view';
+import { ElectronViewExtension } from '@yunke/core/blocksuite/view-extensions/electron';
+import { AffineLinkPreviewExtension } from '@yunke/core/blocksuite/view-extensions/link-preview-service';
+import { MobileViewExtension } from '@yunke/core/blocksuite/view-extensions/mobile';
+import { PdfViewExtension } from '@yunke/core/blocksuite/view-extensions/pdf';
+import { AffineThemeViewExtension } from '@yunke/core/blocksuite/view-extensions/theme';
+import { TurboRendererViewExtension } from '@yunke/core/blocksuite/view-extensions/turbo-renderer';
+import { DeckViewExtension } from '@yunke/core/components/deck-integration';
+import { PeekViewService } from '@yunke/core/modules/peek-view';
+import { DebugLogger } from '@yunke/debug';
+import { mixpanel } from '@yunke/track';
+import { DatabaseViewExtension } from '@blocksuite/yunke/blocks/database/view';
+import { ParagraphViewExtension } from '@blocksuite/yunke/blocks/paragraph/view';
 import type {
   PeekOptions,
   PeekViewService as BSPeekViewService,
-} from '@blocksuite/affine/components/peek';
-import { ViewExtensionManager } from '@blocksuite/affine/ext-loader';
-import { getInternalViewExtensions } from '@blocksuite/affine/extensions/view';
-import { FoundationViewExtension } from '@blocksuite/affine/foundation/view';
-import { AffineCanvasTextFonts } from '@blocksuite/affine/shared/services';
-import { LinkedDocViewExtension } from '@blocksuite/affine/widgets/linked-doc/view';
+} from '@blocksuite/yunke/components/peek';
+import { ViewExtensionManager } from '@blocksuite/yunke/ext-loader';
+import { getInternalViewExtensions } from '@blocksuite/yunke/extensions/view';
+import { FoundationViewExtension } from '@blocksuite/yunke/foundation/view';
+import { AffineCanvasTextFonts } from '@blocksuite/yunke/shared/services';
+import { LinkedDocViewExtension } from '@blocksuite/yunke/widgets/linked-doc/view';
 import type { FrameworkProvider } from '@toeverything/infra';
 import type { TemplateResult } from 'lit';
 

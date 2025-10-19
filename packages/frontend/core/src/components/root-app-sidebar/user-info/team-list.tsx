@@ -1,10 +1,10 @@
-import { Divider, Tooltip } from '@affine/component';
-import { WorkbenchService } from '@affine/core/modules/workbench';
+import { Divider, Tooltip } from '@yunke/component';
+import { WorkbenchService } from '@yunke/core/modules/workbench';
 import {
   type WorkspaceMetadata,
   WorkspacesService,
-} from '@affine/core/modules/workspace';
-import { useI18n } from '@affine/i18n';
+} from '@yunke/core/modules/workspace';
+import { useI18n } from '@yunke/i18n';
 import {
   useLiveData,
   useService,

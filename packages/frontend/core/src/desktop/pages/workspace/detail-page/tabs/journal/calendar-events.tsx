@@ -1,16 +1,16 @@
-import { Loading, toast, Tooltip } from '@affine/component';
-import { usePageHelper } from '@affine/core/blocksuite/block-suite-page-list/utils';
-import { useAsyncCallback } from '@affine/core/components/hooks/affine-async-hooks';
-import { DocsService } from '@affine/core/modules/doc';
+import { Loading, toast, Tooltip } from '@yunke/component';
+import { usePageHelper } from '@yunke/core/blocksuite/block-suite-page-list/utils';
+import { useAsyncCallback } from '@yunke/core/components/hooks/affine-async-hooks';
+import { DocsService } from '@yunke/core/modules/doc';
 import {
   type CalendarEvent,
   IntegrationService,
-} from '@affine/core/modules/integration';
-import { JournalService } from '@affine/core/modules/journal';
-import { GuardService } from '@affine/core/modules/permissions';
-import { WorkspaceService } from '@affine/core/modules/workspace';
-import { useI18n } from '@affine/i18n';
-import track from '@affine/track';
+} from '@yunke/core/modules/integration';
+import { JournalService } from '@yunke/core/modules/journal';
+import { GuardService } from '@yunke/core/modules/permissions';
+import { WorkspaceService } from '@yunke/core/modules/workspace';
+import { useI18n } from '@yunke/i18n';
+import track from '@yunke/track';
 import { FullDayIcon, PeriodIcon, PlusIcon } from '@blocksuite/icons/rc';
 import { useLiveData, useService } from '@toeverything/infra';
 import { cssVarV2 } from '@toeverything/theme/v2';

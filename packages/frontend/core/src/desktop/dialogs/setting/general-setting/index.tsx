@@ -1,8 +1,8 @@
-import { UserFeatureService } from '@affine/core/modules/cloud/services/user-feature';
-import type { SettingTab } from '@affine/core/modules/dialogs/constant';
-import { FeatureFlagService } from '@affine/core/modules/feature-flag';
-import { MeetingSettingsService } from '@affine/core/modules/media/services/meeting-settings';
-import { useI18n } from '@affine/i18n';
+import { UserFeatureService } from '@yunke/core/modules/cloud/services/user-feature';
+import type { SettingTab } from '@yunke/core/modules/dialogs/constant';
+import { FeatureFlagService } from '@yunke/core/modules/feature-flag';
+import { MeetingSettingsService } from '@yunke/core/modules/media/services/meeting-settings';
+import { useI18n } from '@yunke/i18n';
 import {
   AppearanceIcon,
   ExperimentIcon,

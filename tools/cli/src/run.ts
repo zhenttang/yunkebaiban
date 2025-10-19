@@ -1,6 +1,6 @@
-import { Path } from '@affine-tools/utils/path';
-import { execAsync } from '@affine-tools/utils/process';
-import type { Package, PackageName } from '@affine-tools/utils/workspace';
+import { Path } from '@yunke-tools/utils/path';
+import { execAsync } from '@yunke-tools/utils/process';
+import type { Package, PackageName } from '@yunke-tools/utils/workspace';
 
 import { Option, PackageCommand } from './command';
 
@@ -28,33 +28,33 @@ export class RunCommand extends PackageCommand {
   static override paths = [[], ['run'], ['r']];
 
   static override usage = PackageCommand.Usage({
-    description: 'AFFiNE单仓脚本',
+    description: 'Yunke单仓脚本',
     details: `
-      \`affine web <script>\`    Run any script defined in package's package.json
+      \`yunke web <script>\`    Run any script defined in package's package.json
 
-      \`affine init\`            Generate the required files if there are any package added or removed
+      \`yunke init\`            Generate the required files if there are any package added or removed
 
-      \`affine clean\`           Clean the output files of ts, cargo, webpack, etc.
+      \`yunke clean\`           Clean the output files of ts, cargo, webpack, etc.
 
-      \`affine bundle\`          Bundle the packages
+      \`yunke bundle\`          Bundle the packages
 
-      \`affine build\`           A proxy for <-p package>'s \`build\` script
+      \`yunke build\`           A proxy for <-p package>'s \`build\` script
 
-      \`affine dev\`             A proxy for <-p package>'s \`dev\` script
+      \`yunke dev\`             A proxy for <-p package>'s \`dev\` script
     `,
     examples: [
       [`See detail of each command`, '$0 -h'],
       [
-        `Run custom 'xxx' script defined in @affine/web's package.json`,
+        `Run custom 'xxx' script defined in @yunke/web's package.json`,
         '$0 web xxx',
       ],
       [`Run 'init' for workspace`, '$0 init'],
       [`Clean dist of each package`, '$0 clean --dist'],
       [`Clean node_modules under each package`, '$0 clean --node-modules'],
       [`Clean everything`, '$0 clean --all'],
-      [`为 @affine/web 运行 'build' 脚本`, '$0 build -p web'],
-      [`为 @affine/electron 运行 'dev' 脚本`, '$0 dev -p electron'],
-      `为 @affine/web 运行 'build' 脚本，并预先构建所有依赖`,
+      [`为 @yunke/web 运行 'build' 脚本`, '$0 build -p web'],
+      [`为 @yunke/electron 运行 'dev' 脚本`, '$0 dev -p electron'],
+      `为 @yunke/web 运行 'build' 脚本，并预先构建所有依赖`,
     ],
   });
 
@@ -138,9 +138,9 @@ export class RunCommand extends PackageCommand {
       }
     }
 
-    const isAFFiNECommand = args[0] === 'affine';
-    if (isAFFiNECommand) {
-      // 从 'affine xxx' 命令中移除 'affine'
+    const isYunkeCommand = args[0] === 'yunke';
+    if (isYunkeCommand) {
+      // 从 'yunke xxx' 命令中移除 'yunke'
       args.shift();
       args.push('-p', pkg.name);
 

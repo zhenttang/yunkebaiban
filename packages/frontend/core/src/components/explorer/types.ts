@@ -1,9 +1,9 @@
 import type {
   GroupByParams,
   OrderByParams,
-} from '@affine/core/modules/collection-rules/types';
-import type { DocCustomPropertyInfo } from '@affine/core/modules/db';
-import type { DocRecord } from '@affine/core/modules/doc';
+} from '@yunke/core/modules/collection-rules/types';
+import type { DocCustomPropertyInfo } from '@yunke/core/modules/db';
+import type { DocRecord } from '@yunke/core/modules/doc';
 
 import type { DocListItemView } from './docs-view/doc-list-item';
 

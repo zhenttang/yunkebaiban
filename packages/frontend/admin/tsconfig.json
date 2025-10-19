@@ -8,10 +8,10 @@
     "tsBuildInfoFile": "./dist/tsconfig.tsbuildinfo"
   },
   "references": [
+    { "path": "../../common/infra" },
     { "path": "../component" },
     { "path": "../core" },
     { "path": "../../common/error" },
-    { "path": "../routes" },
-    { "path": "../../common/infra" }
+    { "path": "../routes" }
   ]
 }

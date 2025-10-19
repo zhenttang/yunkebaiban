@@ -1,6 +1,6 @@
-import type { FeatureFlagService } from '@affine/core/modules/feature-flag';
-import { IntegrationTypeIcon } from '@affine/core/modules/integration';
-import type { I18nString } from '@affine/i18n';
+import type { FeatureFlagService } from '@yunke/core/modules/feature-flag';
+import { IntegrationTypeIcon } from '@yunke/core/modules/integration';
+import type { I18nString } from '@yunke/i18n';
 import { Logo1Icon, TodayIcon } from '@blocksuite/icons/rc';
 import { LiveData } from '@toeverything/infra';
 import type { ReactNode } from 'react';

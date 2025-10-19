@@ -1,6 +1,6 @@
-import { Button, Scrollable } from '@affine/component';
-import { FeatureFlagService } from '@affine/core/modules/feature-flag';
-import { type Island } from '@affine/core/utils/island';
+import { Button, Scrollable } from '@yunke/component';
+import { FeatureFlagService } from '@yunke/core/modules/feature-flag';
+import { type Island } from '@yunke/core/utils/island';
 import { ArrowLeftBigIcon } from '@blocksuite/icons/rc';
 import { useLiveData, useService } from '@toeverything/infra';
 import { eases, waapi } from 'animejs';

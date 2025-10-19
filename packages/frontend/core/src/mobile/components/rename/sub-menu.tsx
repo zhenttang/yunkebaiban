@@ -1,5 +1,5 @@
-import { MobileMenuSub, useMobileMenuController } from '@affine/component';
-import { useI18n } from '@affine/i18n';
+import { MobileMenuSub, useMobileMenuController } from '@yunke/component';
+import { useI18n } from '@yunke/i18n';
 import { EditIcon } from '@blocksuite/icons/rc';
 import { useCallback } from 'react';
 

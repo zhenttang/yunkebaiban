@@ -1,17 +1,17 @@
 import '@toeverything/theme/style.css';
 import '@toeverything/theme/fonts.css';
 
-import type { DocMode } from '@blocksuite/affine/model';
-import { AffineSchemas } from '@blocksuite/affine/schemas';
+import type { DocMode } from '@blocksuite/yunke/model';
+import { AffineSchemas } from '@blocksuite/yunke/schemas';
 import {
   CommunityCanvasTextFonts,
   FeatureFlagService,
   FontConfigExtension,
-} from '@blocksuite/affine/shared/services';
+} from '@blocksuite/yunke/shared/services';
 import {
   type ViewportTurboRendererExtension,
   ViewportTurboRendererIdentifier,
-} from '@blocksuite/affine-gfx-turbo-renderer';
+} from '@blocksuite/yunke-gfx-turbo-renderer';
 import type { ExtensionType, Store, Transformer } from '@blocksuite/store';
 import { Schema, Text } from '@blocksuite/store';
 import {

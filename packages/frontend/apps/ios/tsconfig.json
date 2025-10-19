@@ -7,13 +7,13 @@
   },
   "include": ["./src"],
   "references": [
+    { "path": "../../../../blocksuite/yunke/all" },
+    { "path": "../../../common/infra" },
     { "path": "../../component" },
     { "path": "../../core" },
     { "path": "../../../common/env" },
     { "path": "../../i18n" },
     { "path": "../../../common/nbstore" },
-    { "path": "../../../../blocksuite/affine/all" },
-    { "path": "../../../common/infra" },
     { "path": "../../../../tools/cli" },
     { "path": "../../../../tools/utils" }
   ]

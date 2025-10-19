@@ -1,7 +1,7 @@
-import { Badge } from '@affine/admin/components/ui/badge';
-import { Button } from '@affine/admin/components/ui/button';
-import { ScrollArea } from '@affine/admin/components/ui/scroll-area';
-import { Separator } from '@affine/admin/components/ui/separator';
+import { Badge } from '@yunke/admin/components/ui/badge';
+import { Button } from '@yunke/admin/components/ui/button';
+import { ScrollArea } from '@yunke/admin/components/ui/scroll-area';
+import { Separator } from '@yunke/admin/components/ui/separator';
 import { get } from 'lodash-es';
 import { useCallback, useEffect, useMemo, lazy, Suspense } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';

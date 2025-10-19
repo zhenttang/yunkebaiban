@@ -50,13 +50,13 @@ var __disposeResources = (this && this.__disposeResources) || (function (Suppres
     var e = new Error(message);
     return e.name = "SuppressedError", e.error = error, e.suppressed = suppressed, e;
 });
-import { DesktopApiService } from '@affine/core/modules/desktop-api';
-import { WorkspaceDialogService } from '@affine/core/modules/dialogs';
-import { DocsService } from '@affine/core/modules/doc';
-import { JournalService } from '@affine/core/modules/journal';
-import { LifecycleService } from '@affine/core/modules/lifecycle';
-import { WorkbenchService } from '@affine/core/modules/workbench';
-import { apis, events } from '@affine/electron-api';
+import { DesktopApiService } from '@yunke/core/modules/desktop-api';
+import { WorkspaceDialogService } from '@yunke/core/modules/dialogs';
+import { DocsService } from '@yunke/core/modules/doc';
+import { JournalService } from '@yunke/core/modules/journal';
+import { LifecycleService } from '@yunke/core/modules/lifecycle';
+import { WorkbenchService } from '@yunke/core/modules/workbench';
+import { apis, events } from '@yunke/electron-api';
 import { setupRecordingEvents } from './recording';
 import { getCurrentWorkspace } from './utils';
 export function setupEvents(frameworkProvider) {

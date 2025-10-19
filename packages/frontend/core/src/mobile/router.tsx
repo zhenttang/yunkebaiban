@@ -1,4 +1,4 @@
-import { NavigateContext } from '@affine/core/components/hooks/use-navigate-helper';
+import { NavigateContext } from '@yunke/core/components/hooks/use-navigate-helper';
 import { wrapCreateBrowserRouterV6 } from '@sentry/react';
 import { useEffect, useState } from 'react';
 import type { RouteObject } from 'react-router-dom';
@@ -65,30 +65,30 @@ export const topLevelRoutes = [
         path: '/magic-link',
         lazy: () =>
           import(
-            /* webpackChunkName: "auth" */ '@affine/core/desktop/pages/auth/magic-link'
+            /* webpackChunkName: "auth" */ '@yunke/core/desktop/pages/auth/magic-link'
           ),
       },
       {
         path: '/oauth/login',
         lazy: () =>
           import(
-            /* webpackChunkName: "auth" */ '@affine/core/desktop/pages/auth/oauth-login'
+            /* webpackChunkName: "auth" */ '@yunke/core/desktop/pages/auth/oauth-login'
           ),
       },
       {
         path: '/oauth/callback',
         lazy: () =>
           import(
-            /* webpackChunkName: "auth" */ '@affine/core/desktop/pages/auth/oauth-callback'
+            /* webpackChunkName: "auth" */ '@yunke/core/desktop/pages/auth/oauth-callback'
           ),
       },
       {
         path: '/redirect-proxy',
-        lazy: () => import('@affine/core/desktop/pages/redirect'),
+        lazy: () => import('@yunke/core/desktop/pages/redirect'),
       },
       {
         path: '/open-app/:action',
-        lazy: () => import('@affine/core/desktop/pages/open-app'),
+        lazy: () => import('@yunke/core/desktop/pages/open-app'),
       },
       {
         path: '*',

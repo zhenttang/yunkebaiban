@@ -1,24 +1,24 @@
-import { ColorScheme } from '@blocksuite/affine/model';
+import { ColorScheme } from '@blocksuite/yunke/model';
 import {
   DocModeProvider,
   NotificationProvider,
   ThemeProvider,
   ToolbarFlag,
   ToolbarRegistryIdentifier,
-} from '@blocksuite/affine/shared/services';
-import { unsafeCSSVar } from '@blocksuite/affine/shared/theme';
+} from '@blocksuite/yunke/shared/services';
+import { unsafeCSSVar } from '@blocksuite/yunke/shared/theme';
 import {
   getPageRootByElement,
   stopPropagation,
-} from '@blocksuite/affine/shared/utils';
-import { WidgetComponent, WidgetViewExtension } from '@blocksuite/affine/std';
-import { GfxControllerIdentifier } from '@blocksuite/affine/std/gfx';
-import { RANGE_SYNC_EXCLUDE_ATTR } from '@blocksuite/affine/std/inline';
-import type { BaseSelection } from '@blocksuite/affine/store';
+} from '@blocksuite/yunke/shared/utils';
+import { WidgetComponent, WidgetViewExtension } from '@blocksuite/yunke/std';
+import { GfxControllerIdentifier } from '@blocksuite/yunke/std/gfx';
+import { RANGE_SYNC_EXCLUDE_ATTR } from '@blocksuite/yunke/std/inline';
+import type { BaseSelection } from '@blocksuite/yunke/store';
 import {
   AFFINE_VIEWPORT_OVERLAY_WIDGET,
   type AffineViewportOverlayWidget,
-} from '@blocksuite/affine/widgets/viewport-overlay';
+} from '@blocksuite/yunke/widgets/viewport-overlay';
 import {
   autoPlacement,
   autoUpdate,

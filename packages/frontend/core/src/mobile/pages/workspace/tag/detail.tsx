@@ -1,7 +1,7 @@
-import { useThemeColorV2 } from '@affine/component';
-import { PageNotFound } from '@affine/core/desktop/pages/404';
-import { GlobalContextService } from '@affine/core/modules/global-context';
-import { TagService } from '@affine/core/modules/tag';
+import { useThemeColorV2 } from '@yunke/component';
+import { PageNotFound } from '@yunke/core/desktop/pages/404';
+import { GlobalContextService } from '@yunke/core/modules/global-context';
+import { TagService } from '@yunke/core/modules/tag';
 import { useLiveData, useService } from '@toeverything/infra';
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';

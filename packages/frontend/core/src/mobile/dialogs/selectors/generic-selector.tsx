@@ -4,9 +4,9 @@ import {
   SafeArea,
   Scrollable,
   useThemeColorMeta,
-} from '@affine/component';
-import { PageHeader } from '@affine/core/mobile/components';
-import { useI18n } from '@affine/i18n';
+} from '@yunke/component';
+import { PageHeader } from '@yunke/core/mobile/components';
+import { useI18n } from '@yunke/i18n';
 import { ArrowRightSmallIcon } from '@blocksuite/icons/rc';
 import { cssVarV2 } from '@toeverything/theme/v2';
 import {

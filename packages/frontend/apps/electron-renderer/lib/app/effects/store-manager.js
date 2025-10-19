@@ -1,6 +1,6 @@
-import { NbstoreProvider } from '@affine/core/modules/storage';
-import { apis } from '@affine/electron-api';
-import { StoreManagerClient } from '@affine/nbstore/worker/client';
+import { NbstoreProvider } from '@yunke/core/modules/storage';
+import { apis } from '@yunke/electron-api';
+import { StoreManagerClient } from '@yunke/nbstore/worker/client';
 import { OpClient } from '@toeverything/infra/op';
 import { v4 as uuid } from 'uuid';
 function createStoreManagerClient() {

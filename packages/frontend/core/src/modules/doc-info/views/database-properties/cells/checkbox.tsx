@@ -1,4 +1,4 @@
-import { CheckboxValue } from '@affine/core/components/workspace-property-types/checkbox';
+import { CheckboxValue } from '@yunke/core/components/workspace-property-types/checkbox';
 import type { LiveData } from '@toeverything/infra';
 import { useLiveData } from '@toeverything/infra';
 

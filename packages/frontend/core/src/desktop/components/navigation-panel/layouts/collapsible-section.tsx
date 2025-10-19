@@ -1,8 +1,8 @@
-import { CategoryDivider } from '@affine/core/modules/app-sidebar/views';
+import { CategoryDivider } from '@yunke/core/modules/app-sidebar/views';
 import {
   type CollapsibleSectionName,
   NavigationPanelService,
-} from '@affine/core/modules/navigation-panel';
+} from '@yunke/core/modules/navigation-panel';
 import * as Collapsible from '@radix-ui/react-collapsible';
 import { useLiveData, useService } from '@toeverything/infra';
 import clsx from 'clsx';

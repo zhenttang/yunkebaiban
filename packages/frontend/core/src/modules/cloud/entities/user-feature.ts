@@ -1,4 +1,4 @@
-// import { FeatureType } from '@affine/graphql';
+// import { FeatureType } from '@yunke/graphql';
 import {
   catchErrorInto,
   effect,

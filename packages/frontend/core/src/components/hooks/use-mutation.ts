@@ -1,4 +1,4 @@
-import { FetchService } from '@affine/core/modules/cloud';
+import { FetchService } from '@yunke/core/modules/cloud';
 import { useService } from '@toeverything/infra';
 import { useMemo } from 'react';
 import type { Key } from 'swr';

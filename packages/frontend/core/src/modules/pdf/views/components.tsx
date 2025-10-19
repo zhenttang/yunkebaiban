@@ -1,4 +1,4 @@
-import { Scrollable } from '@affine/component';
+import { Scrollable } from '@yunke/component';
 import clsx from 'clsx';
 import { type CSSProperties, forwardRef, memo } from 'react';
 import type { ScrollSeekPlaceholderProps, VirtuosoProps } from 'react-virtuoso';

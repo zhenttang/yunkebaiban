@@ -1,9 +1,9 @@
-import { AuthService } from '@affine/core/modules/cloud';
+import { AuthService } from '@yunke/core/modules/cloud';
 import type {
   DialogComponentProps,
   WORKSPACE_DIALOG_SCHEMA,
-} from '@affine/core/modules/dialogs';
-import { useI18n } from '@affine/i18n';
+} from '@yunke/core/modules/dialogs';
+import { useI18n } from '@yunke/i18n';
 import { useService } from '@toeverything/infra';
 import { useEffect, useRef } from 'react';
 

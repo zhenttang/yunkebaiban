@@ -1,9 +1,9 @@
-import { Loading } from '@affine/component';
-import { SettingRow } from '@affine/component/setting-components';
-import { Button } from '@affine/component/ui/button';
-import { useAsyncCallback } from '@affine/core/components/hooks/affine-async-hooks';
-import { useAppUpdater } from '@affine/core/components/hooks/use-app-updater';
-import { useI18n } from '@affine/i18n';
+import { Loading } from '@yunke/component';
+import { SettingRow } from '@yunke/component/setting-components';
+import { Button } from '@yunke/component/ui/button';
+import { useAsyncCallback } from '@yunke/core/components/hooks/affine-async-hooks';
+import { useAppUpdater } from '@yunke/core/components/hooks/use-app-updater';
+import { useI18n } from '@yunke/i18n';
 import clsx from 'clsx';
 import { useCallback, useMemo, useState } from 'react';
 

@@ -1,6 +1,6 @@
-import { MenuItem } from '@affine/component/ui/menu';
-import { FeatureFlagService } from '@affine/core/modules/feature-flag';
-import { useI18n } from '@affine/i18n';
+import { MenuItem } from '@yunke/component/ui/menu';
+import { FeatureFlagService } from '@yunke/core/modules/feature-flag';
+import { useI18n } from '@yunke/i18n';
 import { ImportIcon, PlusIcon } from '@blocksuite/icons/rc';
 import { useLiveData, useService } from '@toeverything/infra';
 

@@ -1,4 +1,4 @@
-import { useI18n } from '@affine/i18n';
+import { useI18n } from '@yunke/i18n';
 import { ViewLayersIcon } from '@blocksuite/icons/rc';
 
 import { NavigationPanelEmptySection } from '../../layouts/empty-section';

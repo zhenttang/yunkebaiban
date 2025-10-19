@@ -1,6 +1,6 @@
-import { Peekable } from '@blocksuite/affine/components/peek';
-import { ViewExtensionManagerIdentifier } from '@blocksuite/affine/ext-loader';
-import { BlockComponent } from '@blocksuite/affine/std';
+import { Peekable } from '@blocksuite/yunke/components/peek';
+import { ViewExtensionManagerIdentifier } from '@blocksuite/yunke/ext-loader';
+import { BlockComponent } from '@blocksuite/yunke/std';
 import { computed } from '@preact/signals-core';
 import { html } from 'lit';
 

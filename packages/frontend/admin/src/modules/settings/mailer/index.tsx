@@ -1,9 +1,9 @@
 import { useCallback, useState } from 'react';
-import { cn } from '@affine/admin/utils';
+import { cn } from '@yunke/admin/utils';
 import * as ScrollAreaPrimitive from '@radix-ui/react-scroll-area';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@affine/admin/components/ui/tabs';
-import { Badge } from '@affine/admin/components/ui/badge';
-import { Button } from '@affine/admin/components/ui/button';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@yunke/admin/components/ui/tabs';
+import { Badge } from '@yunke/admin/components/ui/badge';
+import { Button } from '@yunke/admin/components/ui/button';
 import { Loader2, Mail, PenTool, PieChart, RefreshCw, Send } from 'lucide-react';
 
 import { Header } from '../../header';

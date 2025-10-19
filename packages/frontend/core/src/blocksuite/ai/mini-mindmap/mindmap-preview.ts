@@ -1,20 +1,20 @@
-import { WorkspaceImpl } from '@affine/core/modules/workspace/impls/workspace.js';
-import type { SurfaceBlockModel } from '@blocksuite/affine/blocks/surface';
+import { WorkspaceImpl } from '@yunke/core/modules/workspace/impls/workspace.js';
+import type { SurfaceBlockModel } from '@blocksuite/yunke/blocks/surface';
 import {
   MindmapStyleFour,
   MindmapStyleOne,
   MindmapStyleThree,
   MindmapStyleTwo,
-} from '@blocksuite/affine/gfx/mindmap';
-import type { ServiceProvider } from '@blocksuite/affine/global/di';
-import { WithDisposable } from '@blocksuite/affine/global/lit';
+} from '@blocksuite/yunke/gfx/mindmap';
+import type { ServiceProvider } from '@blocksuite/yunke/global/di';
+import { WithDisposable } from '@blocksuite/yunke/global/lit';
 import {
   type MindmapElementModel,
   MindmapStyle,
-} from '@blocksuite/affine/model';
-import { MarkdownAdapter } from '@blocksuite/affine/shared/adapters';
-import { BlockStdScope, type EditorHost } from '@blocksuite/affine/std';
-import { Schema, type Store } from '@blocksuite/affine/store';
+} from '@blocksuite/yunke/model';
+import { MarkdownAdapter } from '@blocksuite/yunke/shared/adapters';
+import { BlockStdScope, type EditorHost } from '@blocksuite/yunke/std';
+import { Schema, type Store } from '@blocksuite/yunke/store';
 import { css, html, LitElement, nothing } from 'lit';
 import { property, query } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';

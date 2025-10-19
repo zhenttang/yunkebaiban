@@ -1,7 +1,7 @@
 import {
   type ViewExtensionContext,
   ViewExtensionProvider,
-} from '@blocksuite/affine/ext-loader';
+} from '@blocksuite/yunke/ext-loader';
 import { z } from 'zod';
 
 import { turboRendererExtension } from './turbo-renderer';

@@ -3,10 +3,10 @@ import {
   type MasonryGroup,
   type MasonryItem,
   useConfirmModal,
-} from '@affine/component';
-import { DocsService } from '@affine/core/modules/doc';
-import { WorkspacePropertyService } from '@affine/core/modules/workspace-property';
-import { Trans, useI18n } from '@affine/i18n';
+} from '@yunke/component';
+import { DocsService } from '@yunke/core/modules/doc';
+import { WorkspacePropertyService } from '@yunke/core/modules/workspace-property';
+import { Trans, useI18n } from '@yunke/i18n';
 import { useLiveData, useService } from '@toeverything/infra';
 import { cssVarV2 } from '@toeverything/theme/v2';
 import { memo, useCallback, useContext, useEffect, useMemo } from 'react';

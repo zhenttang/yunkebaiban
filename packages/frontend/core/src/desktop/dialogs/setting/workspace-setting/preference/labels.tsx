@@ -1,6 +1,6 @@
-import { WorkspacePermissionService } from '@affine/core/modules/permissions';
-import { WorkspaceService } from '@affine/core/modules/workspace';
-import { useI18n } from '@affine/i18n';
+import { WorkspacePermissionService } from '@yunke/core/modules/permissions';
+import { WorkspaceService } from '@yunke/core/modules/workspace';
+import { useI18n } from '@yunke/i18n';
 import { useLiveData, useService } from '@toeverything/infra';
 import { cssVarV2 } from '@toeverything/theme/v2';
 import { useEffect, useMemo } from 'react';

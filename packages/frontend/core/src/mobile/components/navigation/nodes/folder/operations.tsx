@@ -1,7 +1,7 @@
-import { MenuItem } from '@affine/component';
-import { IsFavoriteIcon } from '@affine/core/components/pure/icons';
-import { CompatibleFavoriteItemsAdapter } from '@affine/core/modules/favorite';
-import { useI18n } from '@affine/i18n';
+import { MenuItem } from '@yunke/component';
+import { IsFavoriteIcon } from '@yunke/core/components/pure/icons';
+import { CompatibleFavoriteItemsAdapter } from '@yunke/core/modules/favorite';
+import { useI18n } from '@yunke/i18n';
 import { useLiveData, useService } from '@toeverything/infra';
 import { useMemo } from 'react';
 

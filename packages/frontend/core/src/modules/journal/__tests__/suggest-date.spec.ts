@@ -2,8 +2,8 @@
  * @vitest-environment happy-dom
  */
 
-import { JOURNAL_DATE_FORMAT } from '@affine/core/modules/journal';
-import { I18n } from '@affine/i18n';
+import { JOURNAL_DATE_FORMAT } from '@yunke/core/modules/journal';
+import { I18n } from '@yunke/i18n';
 import dayjs from 'dayjs';
 import { describe, expect, test, vi } from 'vitest';
 

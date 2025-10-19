@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { httpClient } from '@affine/request';
+import { httpClient } from '@yunke/request';
 import type { ServerConfigDto, SystemInfoDto, ServerStatusDto } from '../types';
 
 export const useServerConfig = () => {

@@ -1,4 +1,4 @@
-// import type { ErrorDataUnion, ErrorNames } from '@affine/graphql';
+// import type { ErrorDataUnion, ErrorNames } from '@yunke/graphql';
 
 export type ErrorName =
   // | keyof typeof ErrorNames

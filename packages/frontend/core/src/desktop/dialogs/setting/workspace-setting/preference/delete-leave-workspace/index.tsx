@@ -1,14 +1,14 @@
-import { notify } from '@affine/component';
-import { SettingRow } from '@affine/component/setting-components';
-import { ConfirmModal } from '@affine/component/ui/modal';
-import { useAsyncCallback } from '@affine/core/components/hooks/affine-async-hooks';
-import { GlobalContextService } from '@affine/core/modules/global-context';
-import { WorkspacePermissionService } from '@affine/core/modules/permissions';
+import { notify } from '@yunke/component';
+import { SettingRow } from '@yunke/component/setting-components';
+import { ConfirmModal } from '@yunke/component/ui/modal';
+import { useAsyncCallback } from '@yunke/core/components/hooks/affine-async-hooks';
+import { GlobalContextService } from '@yunke/core/modules/global-context';
+import { WorkspacePermissionService } from '@yunke/core/modules/permissions';
 import {
   WorkspaceService,
   WorkspacesService,
-} from '@affine/core/modules/workspace';
-import { useI18n } from '@affine/i18n';
+} from '@yunke/core/modules/workspace';
+import { useI18n } from '@yunke/i18n';
 import { ArrowRightSmallIcon } from '@blocksuite/icons/rc';
 import { useLiveData, useServices } from '@toeverything/infra';
 import { cssVarV2 } from '@toeverything/theme/v2';

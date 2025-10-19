@@ -1,6 +1,6 @@
 import type { WriteStream } from 'node:fs';
 
-import type { AudioCaptureSession, TappableApplication } from '@affine/native';
+import type { AudioCaptureSession, TappableApplication } from '@yunke/native';
 
 export interface TappableAppInfo {
   rawInstance: TappableApplication;

@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import type { ReactNode } from 'react';
-import { Badge } from '@affine/admin/components/ui/badge';
-import { Button } from '@affine/admin/components/ui/button';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@affine/admin/components/ui/tabs';
-import { cn } from '@affine/admin/utils';
+import { Badge } from '@yunke/admin/components/ui/badge';
+import { Button } from '@yunke/admin/components/ui/button';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@yunke/admin/components/ui/tabs';
+import { cn } from '@yunke/admin/utils';
 import * as ScrollAreaPrimitive from '@radix-ui/react-scroll-area';
 import { Brain, Link2, PieChart, RefreshCw, Settings, Sparkles, Wand2, Loader2 } from 'lucide-react';
 

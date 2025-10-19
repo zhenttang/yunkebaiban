@@ -1,5 +1,5 @@
-import { IconButton } from '@affine/component';
-import { useI18n } from '@affine/i18n';
+import { IconButton } from '@yunke/component';
+import { useI18n } from '@yunke/i18n';
 import { ArrowLeftSmallIcon, ArrowRightSmallIcon } from '@blocksuite/icons/rc';
 import { useLiveData, useService } from '@toeverything/infra';
 import { useCallback, useEffect } from 'react';

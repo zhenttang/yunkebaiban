@@ -1,4 +1,4 @@
-import { type MenuRef } from '@affine/component';
+import { type MenuRef } from '@yunke/component';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 type FilterOptionsGroupChildren =

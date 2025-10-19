@@ -40,7 +40,7 @@ export default defineConfig({
     alias: {
       // 防止测试使用两个不同来源的yjs
       yjs: resolve(rootDir, 'node_modules/yjs'),
-      '@affine/core': fileURLToPath(
+      '@yunke/core': fileURLToPath(
         new URL('./packages/frontend/core/src', import.meta.url)
       ),
     },

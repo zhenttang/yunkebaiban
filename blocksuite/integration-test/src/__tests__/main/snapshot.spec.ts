@@ -1,6 +1,6 @@
-import type { SurfaceBlockModel } from '@blocksuite/affine/blocks/surface';
-import { AffineSchemas } from '@blocksuite/affine/schemas';
-import { ZipTransformer } from '@blocksuite/affine/widgets/linked-doc';
+import type { SurfaceBlockModel } from '@blocksuite/yunke/blocks/surface';
+import { AffineSchemas } from '@blocksuite/yunke/schemas';
+import { ZipTransformer } from '@blocksuite/yunke/widgets/linked-doc';
 import type { PointLocation } from '@blocksuite/global/gfx';
 import { Schema } from '@blocksuite/store';
 import { beforeEach, expect, test } from 'vitest';

@@ -1,5 +1,5 @@
-import { getStoreManager } from '@affine/core/blocksuite/manager/store';
-import { MarkdownTransformer } from '@blocksuite/affine/widgets/linked-doc';
+import { getStoreManager } from '@yunke/core/blocksuite/manager/store';
+import { MarkdownTransformer } from '@blocksuite/yunke/widgets/linked-doc';
 import { Entity } from '@toeverything/infra';
 
 import type { TagService } from '../../tag';

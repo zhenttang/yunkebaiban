@@ -1,4 +1,4 @@
-import { Modal, toast } from '@affine/component';
+import { Modal, toast } from '@yunke/component';
 import {
   collectionHeaderColsDef,
   CollectionListItemRenderer,
@@ -6,17 +6,17 @@ import {
   type ListItem,
   ListTableHeader,
   VirtualizedList,
-} from '@affine/core/components/page-list';
-import { SelectorLayout } from '@affine/core/components/page-list/selector/selector-layout';
+} from '@yunke/core/components/page-list';
+import { SelectorLayout } from '@yunke/core/components/page-list/selector/selector-layout';
 import {
   type CollectionMeta,
   CollectionService,
-} from '@affine/core/modules/collection';
-import type { DialogComponentProps } from '@affine/core/modules/dialogs';
-import type { WORKSPACE_DIALOG_SCHEMA } from '@affine/core/modules/dialogs/constant';
-import { CompatibleFavoriteItemsAdapter } from '@affine/core/modules/favorite';
-import { WorkspaceService } from '@affine/core/modules/workspace';
-import { useI18n } from '@affine/i18n';
+} from '@yunke/core/modules/collection';
+import type { DialogComponentProps } from '@yunke/core/modules/dialogs';
+import type { WORKSPACE_DIALOG_SCHEMA } from '@yunke/core/modules/dialogs/constant';
+import { CompatibleFavoriteItemsAdapter } from '@yunke/core/modules/favorite';
+import { WorkspaceService } from '@yunke/core/modules/workspace';
+import { useI18n } from '@yunke/i18n';
 import { useLiveData, useService } from '@toeverything/infra';
 import { cssVar } from '@toeverything/theme';
 import { useCallback, useMemo, useState } from 'react';

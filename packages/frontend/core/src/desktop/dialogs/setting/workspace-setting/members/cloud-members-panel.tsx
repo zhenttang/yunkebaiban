@@ -1,32 +1,32 @@
-import { Button, Loading, notify, useConfirmModal } from '@affine/component';
+import { Button, Loading, notify, useConfirmModal } from '@yunke/component';
 import {
   InviteTeamMemberModal,
   type InviteTeamMemberModalProps,
   MemberLimitModal,
-} from '@affine/component/member-components';
-import { SettingRow } from '@affine/component/setting-components';
-import { useAsyncCallback } from '@affine/core/components/hooks/affine-async-hooks';
-import { Upload } from '@affine/core/components/pure/file-upload';
+} from '@yunke/component/member-components';
+import { SettingRow } from '@yunke/component/setting-components';
+import { useAsyncCallback } from '@yunke/core/components/hooks/affine-async-hooks';
+import { Upload } from '@yunke/core/components/pure/file-upload';
 import {
   ServerService,
   SubscriptionService,
   WorkspaceSubscriptionService,
-} from '@affine/core/modules/cloud';
+} from '@yunke/core/modules/cloud';
 import {
   WorkspaceMembersService,
   WorkspacePermissionService,
-} from '@affine/core/modules/permissions';
-import { WorkspaceQuotaService } from '@affine/core/modules/quota';
-import { WorkspaceShareSettingService } from '@affine/core/modules/share-setting';
-import { copyTextToClipboard } from '@affine/core/utils/clipboard';
-import { emailRegex } from '@affine/core/utils/email-regex';
-import { UserFriendlyError } from '@affine/error';
-// import type { WorkspaceInviteLinkExpireTime } from '@affine/graphql';
+} from '@yunke/core/modules/permissions';
+import { WorkspaceQuotaService } from '@yunke/core/modules/quota';
+import { WorkspaceShareSettingService } from '@yunke/core/modules/share-setting';
+import { copyTextToClipboard } from '@yunke/core/utils/clipboard';
+import { emailRegex } from '@yunke/core/utils/email-regex';
+import { UserFriendlyError } from '@yunke/error';
+// import type { WorkspaceInviteLinkExpireTime } from '@yunke/graphql';
 type WorkspaceInviteLinkExpireTime = 'ONE_HOUR' | 'ONE_DAY' | 'ONE_WEEK' | 'NEVER';
-// import { ServerDeploymentType, SubscriptionPlan } from '@affine/graphql';
+// import { ServerDeploymentType, SubscriptionPlan } from '@yunke/graphql';
 import { ServerDeploymentType } from '../../../../../modules/cloud/types';
-import { useI18n } from '@affine/i18n';
-import { track } from '@affine/track';
+import { useI18n } from '@yunke/i18n';
+import { track } from '@yunke/track';
 import { ExportIcon } from '@blocksuite/icons/rc';
 import { useLiveData, useService } from '@toeverything/infra';
 import { nanoid } from 'nanoid';

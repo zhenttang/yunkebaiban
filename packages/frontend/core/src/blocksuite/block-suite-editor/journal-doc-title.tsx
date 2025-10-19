@@ -1,6 +1,6 @@
-import { JournalService } from '@affine/core/modules/journal';
-import { i18nTime, useI18n } from '@affine/i18n';
-import type { Store } from '@blocksuite/affine/store';
+import { JournalService } from '@yunke/core/modules/journal';
+import { i18nTime, useI18n } from '@yunke/i18n';
+import type { Store } from '@blocksuite/yunke/store';
 import { useLiveData, useService } from '@toeverything/infra';
 import dayjs from 'dayjs';
 

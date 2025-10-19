@@ -1,8 +1,8 @@
-import { FavoriteTag } from '@affine/core/components/page-list';
-import { CompatibleFavoriteItemsAdapter } from '@affine/core/modules/favorite';
-import { toast } from '@affine/core/utils';
-import { useI18n } from '@affine/i18n';
-import { track } from '@affine/track';
+import { FavoriteTag } from '@yunke/core/components/page-list';
+import { CompatibleFavoriteItemsAdapter } from '@yunke/core/modules/favorite';
+import { toast } from '@yunke/core/utils';
+import { useI18n } from '@yunke/i18n';
+import { track } from '@yunke/track';
 import { useLiveData, useService } from '@toeverything/infra';
 import { useCallback } from 'react';
 

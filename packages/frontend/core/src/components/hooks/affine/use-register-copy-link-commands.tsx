@@ -1,11 +1,11 @@
 import {
   PreconditionStrategy,
   registerAffineCommand,
-} from '@affine/core/commands';
-import { useSharingUrl } from '@affine/core/components/hooks/affine/use-share-url';
-import { useIsActiveView } from '@affine/core/modules/workbench';
-import type { WorkspaceMetadata } from '@affine/core/modules/workspace';
-import { track } from '@affine/track';
+} from '@yunke/core/commands';
+import { useSharingUrl } from '@yunke/core/components/hooks/affine/use-share-url';
+import { useIsActiveView } from '@yunke/core/modules/workbench';
+import type { WorkspaceMetadata } from '@yunke/core/modules/workspace';
+import { track } from '@yunke/track';
 import { useEffect } from 'react';
 
 export function useRegisterCopyLinkCommands({

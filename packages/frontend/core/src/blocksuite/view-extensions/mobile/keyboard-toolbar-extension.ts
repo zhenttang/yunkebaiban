@@ -1,12 +1,12 @@
-import { VirtualKeyboardProvider } from '@affine/core/mobile/modules/virtual-keyboard';
-import type { Container } from '@blocksuite/affine/global/di';
-import { DisposableGroup } from '@blocksuite/affine/global/disposable';
+import { VirtualKeyboardProvider } from '@yunke/core/mobile/modules/virtual-keyboard';
+import type { Container } from '@blocksuite/yunke/global/di';
+import { DisposableGroup } from '@blocksuite/yunke/global/disposable';
 import {
   VirtualKeyboardProvider as BSVirtualKeyboardProvider,
   type VirtualKeyboardProviderWithAction,
-} from '@blocksuite/affine/shared/services';
-import { LifeCycleWatcher } from '@blocksuite/affine/std';
-import type { ExtensionType } from '@blocksuite/affine/store';
+} from '@blocksuite/yunke/shared/services';
+import { LifeCycleWatcher } from '@blocksuite/yunke/std';
+import type { ExtensionType } from '@blocksuite/yunke/store';
 import { batch, signal } from '@preact/signals-core';
 import type { FrameworkProvider } from '@toeverything/infra';
 

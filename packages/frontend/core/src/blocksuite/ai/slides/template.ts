@@ -1,5 +1,5 @@
-import { Bound } from '@blocksuite/affine/global/gfx';
-import { nanoid } from '@blocksuite/affine/store';
+import { Bound } from '@blocksuite/yunke/global/gfx';
+import { nanoid } from '@blocksuite/yunke/store';
 
 import { AIProvider } from '../provider';
 

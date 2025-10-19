@@ -1,6 +1,6 @@
-import { Button } from '@affine/admin/components/ui/button';
-import { Separator } from '@affine/admin/components/ui/separator';
-// import type { CopilotPromptMessageRole } from '@affine/graphql';
+import { Button } from '@yunke/admin/components/ui/button';
+import { Separator } from '@yunke/admin/components/ui/separator';
+// import type { CopilotPromptMessageRole } from '@yunke/graphql';
 import { useCallback, useState } from 'react';
 
 import { useRightPanel } from '../panel/context';

@@ -1,16 +1,16 @@
-import { Button, Modal, notify, useConfirmModal } from '@affine/component';
-import { useAsyncCallback } from '@affine/core/components/hooks/affine-async-hooks';
-import { Upload } from '@affine/core/components/pure/file-upload';
+import { Button, Modal, notify, useConfirmModal } from '@yunke/component';
+import { useAsyncCallback } from '@yunke/core/components/hooks/affine-async-hooks';
+import { Upload } from '@yunke/core/components/pure/file-upload';
 import {
   SelfhostLicenseService,
   WorkspaceSubscriptionService,
-} from '@affine/core/modules/cloud';
-import { WorkspacePermissionService } from '@affine/core/modules/permissions';
-import { WorkspaceQuotaService } from '@affine/core/modules/quota';
-import { WorkspaceService } from '@affine/core/modules/workspace';
-import { copyTextToClipboard } from '@affine/core/utils/clipboard';
-import { UserFriendlyError } from '@affine/error';
-import { Trans, useI18n } from '@affine/i18n';
+} from '@yunke/core/modules/cloud';
+import { WorkspacePermissionService } from '@yunke/core/modules/permissions';
+import { WorkspaceQuotaService } from '@yunke/core/modules/quota';
+import { WorkspaceService } from '@yunke/core/modules/workspace';
+import { copyTextToClipboard } from '@yunke/core/utils/clipboard';
+import { UserFriendlyError } from '@yunke/error';
+import { Trans, useI18n } from '@yunke/i18n';
 import { CopyIcon, FileIcon } from '@blocksuite/icons/rc';
 import { useService } from '@toeverything/infra';
 import { useCallback, useEffect, useState } from 'react';

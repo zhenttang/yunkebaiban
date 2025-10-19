@@ -1,16 +1,16 @@
-import { AINetworkSearchService } from '@affine/core/modules/ai-button/services/network-search';
-import { Bound } from '@blocksuite/affine/global/gfx';
+import { AINetworkSearchService } from '@yunke/core/modules/ai-button/services/network-search';
+import { Bound } from '@blocksuite/yunke/global/gfx';
 import {
   ImageBlockModel,
   NoteBlockModel,
   NoteDisplayMode,
-} from '@blocksuite/affine/model';
+} from '@blocksuite/yunke/model';
 import {
   isInsideEdgelessEditor,
   matchModels,
-} from '@blocksuite/affine/shared/utils';
-import type { EditorHost } from '@blocksuite/affine/std';
-import { GfxControllerIdentifier } from '@blocksuite/affine/std/gfx';
+} from '@blocksuite/yunke/shared/utils';
+import type { EditorHost } from '@blocksuite/yunke/std';
+import { GfxControllerIdentifier } from '@blocksuite/yunke/std/gfx';
 import {
   ChatWithAiIcon,
   DeleteIcon,

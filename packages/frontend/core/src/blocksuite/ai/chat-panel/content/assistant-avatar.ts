@@ -1,5 +1,5 @@
-import { AIStarIconWithAnimation } from '@blocksuite/affine/components/icons';
-import { ShadowlessElement } from '@blocksuite/affine/std';
+import { AIStarIconWithAnimation } from '@blocksuite/yunke/components/icons';
+import { ShadowlessElement } from '@blocksuite/yunke/std';
 import { AiIcon } from '@blocksuite/icons/lit';
 import { css, html } from 'lit';
 import { property } from 'lit/decorators.js';

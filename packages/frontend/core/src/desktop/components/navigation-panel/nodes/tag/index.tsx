@@ -2,13 +2,13 @@ import {
   type DropTargetDropEvent,
   type DropTargetOptions,
   toast,
-} from '@affine/component';
-import { GlobalContextService } from '@affine/core/modules/global-context';
-import type { Tag } from '@affine/core/modules/tag';
-import { TagService } from '@affine/core/modules/tag';
-import type { AffineDNDData } from '@affine/core/types/dnd';
-import { useI18n } from '@affine/i18n';
-import { track } from '@affine/track';
+} from '@yunke/component';
+import { GlobalContextService } from '@yunke/core/modules/global-context';
+import type { Tag } from '@yunke/core/modules/tag';
+import { TagService } from '@yunke/core/modules/tag';
+import type { AffineDNDData } from '@yunke/core/types/dnd';
+import { useI18n } from '@yunke/i18n';
+import { track } from '@yunke/track';
 import { useLiveData, useServices } from '@toeverything/infra';
 import clsx from 'clsx';
 import { useCallback, useMemo, useState } from 'react';

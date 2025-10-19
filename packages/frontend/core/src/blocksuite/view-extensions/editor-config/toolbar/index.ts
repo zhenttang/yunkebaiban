@@ -1,15 +1,15 @@
-import { notify } from '@affine/component';
+import { notify } from '@yunke/component';
 import {
   generateUrl,
   type UseSharingUrl,
-} from '@affine/core/components/hooks/affine/use-share-url';
-import { WorkspaceServerService } from '@affine/core/modules/cloud';
-import { EditorService } from '@affine/core/modules/editor';
-import type { EditorSettingExt } from '@affine/core/modules/editor-setting/entities/editor-setting';
-import { copyLinkToBlockStdScopeClipboard } from '@affine/core/utils/clipboard';
-import { I18n, i18nTime } from '@affine/i18n';
-import { track } from '@affine/track';
-import { BookmarkBlockComponent } from '@blocksuite/affine/blocks/bookmark';
+} from '@yunke/core/components/hooks/affine/use-share-url';
+import { WorkspaceServerService } from '@yunke/core/modules/cloud';
+import { EditorService } from '@yunke/core/modules/editor';
+import type { EditorSettingExt } from '@yunke/core/modules/editor-setting/entities/editor-setting';
+import { copyLinkToBlockStdScopeClipboard } from '@yunke/core/utils/clipboard';
+import { I18n, i18nTime } from '@yunke/i18n';
+import { track } from '@yunke/track';
+import { BookmarkBlockComponent } from '@blocksuite/yunke/blocks/bookmark';
 import {
   EmbedFigmaBlockComponent,
   EmbedGithubBlockComponent,
@@ -17,38 +17,38 @@ import {
   EmbedLoomBlockComponent,
   EmbedYoutubeBlockComponent,
   getDocContentWithMaxLength,
-} from '@blocksuite/affine/blocks/embed';
+} from '@blocksuite/yunke/blocks/embed';
 import {
   EmbedLinkedDocBlockComponent,
   EmbedSyncedDocBlockComponent,
-} from '@blocksuite/affine/blocks/embed-doc';
-import { SurfaceRefBlockComponent } from '@blocksuite/affine/blocks/surface-ref';
-import { toggleEmbedCardEditModal } from '@blocksuite/affine/components/embed-card-modal';
+} from '@blocksuite/yunke/blocks/embed-doc';
+import { SurfaceRefBlockComponent } from '@blocksuite/yunke/blocks/surface-ref';
+import { toggleEmbedCardEditModal } from '@blocksuite/yunke/components/embed-card-modal';
 import {
   notifyLinkedDocClearedAliases,
   notifyLinkedDocSwitchedToCard,
-} from '@blocksuite/affine/components/notification';
-import { isPeekable, peek } from '@blocksuite/affine/components/peek';
-import { toast } from '@blocksuite/affine/components/toast';
+} from '@blocksuite/yunke/components/notification';
+import { isPeekable, peek } from '@blocksuite/yunke/components/peek';
+import { toast } from '@blocksuite/yunke/components/toast';
 import {
   EditorChevronDown,
   type MenuContext,
   type MenuItemGroup,
-} from '@blocksuite/affine/components/toolbar';
-import { watch } from '@blocksuite/affine/global/lit';
+} from '@blocksuite/yunke/components/toolbar';
+import { watch } from '@blocksuite/yunke/global/lit';
 import {
   AffineReference,
   toggleReferencePopup,
-} from '@blocksuite/affine/inlines/reference';
+} from '@blocksuite/yunke/inlines/reference';
 import {
   BookmarkBlockModel,
   EmbedIframeBlockModel,
   EmbedLinkedDocModel,
   EmbedSyncedDocModel,
   SurfaceRefBlockSchema,
-} from '@blocksuite/affine/model';
-import { getSelectedModelsCommand } from '@blocksuite/affine/shared/commands';
-import { ImageSelection } from '@blocksuite/affine/shared/selection';
+} from '@blocksuite/yunke/model';
+import { getSelectedModelsCommand } from '@blocksuite/yunke/shared/commands';
+import { ImageSelection } from '@blocksuite/yunke/shared/selection';
 import {
   ActionPlacement,
   GenerateDocUrlProvider,
@@ -62,18 +62,18 @@ import {
   type ToolbarModuleConfig,
   ToolbarModuleExtension,
   UserProvider,
-} from '@blocksuite/affine/shared/services';
-import { matchModels } from '@blocksuite/affine/shared/utils';
+} from '@blocksuite/yunke/shared/services';
+import { matchModels } from '@blocksuite/yunke/shared/utils';
 import {
   BlockFlavourIdentifier,
   BlockSelection,
   TextSelection,
-} from '@blocksuite/affine/std';
+} from '@blocksuite/yunke/std';
 import {
   GfxBlockElementModel,
   GfxPrimitiveElementModel,
-} from '@blocksuite/affine/std/gfx';
-import type { ExtensionType } from '@blocksuite/affine/store';
+} from '@blocksuite/yunke/std/gfx';
+import type { ExtensionType } from '@blocksuite/yunke/store';
 import {
   CopyAsImgaeIcon,
   CopyIcon,

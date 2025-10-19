@@ -1,9 +1,9 @@
-import { toReactNode } from '@affine/component';
-import { AIChatBlockPeekViewTemplate } from '@affine/core/blocksuite/ai';
-import type { AIChatBlockModel } from '@affine/core/blocksuite/ai/blocks/ai-chat-block/model/ai-chat-model';
-import { useAIChatConfig } from '@affine/core/components/hooks/affine/use-ai-chat-config';
-import { FeatureFlagService } from '@affine/core/modules/feature-flag';
-import type { EditorHost } from '@blocksuite/affine/std';
+import { toReactNode } from '@yunke/component';
+import { AIChatBlockPeekViewTemplate } from '@yunke/core/blocksuite/ai';
+import type { AIChatBlockModel } from '@yunke/core/blocksuite/ai/blocks/ai-chat-block/model/ai-chat-model';
+import { useAIChatConfig } from '@yunke/core/components/hooks/affine/use-ai-chat-config';
+import { FeatureFlagService } from '@yunke/core/modules/feature-flag';
+import type { EditorHost } from '@blocksuite/yunke/std';
 import { useFramework } from '@toeverything/infra';
 import { useMemo } from 'react';
 

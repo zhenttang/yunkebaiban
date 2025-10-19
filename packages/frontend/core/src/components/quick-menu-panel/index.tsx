@@ -1,5 +1,5 @@
-import { useI18n } from '@affine/i18n';
-import { track } from '@affine/track';
+import { useI18n } from '@yunke/i18n';
+import { track } from '@yunke/track';
 import {
   AllDocsIcon,
   DeleteIcon,

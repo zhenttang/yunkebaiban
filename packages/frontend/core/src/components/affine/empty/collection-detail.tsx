@@ -1,6 +1,6 @@
-import type { Collection } from '@affine/core/modules/collection';
-import { WorkspaceDialogService } from '@affine/core/modules/dialogs';
-import { useI18n } from '@affine/i18n';
+import type { Collection } from '@yunke/core/modules/collection';
+import { WorkspaceDialogService } from '@yunke/core/modules/dialogs';
+import { useI18n } from '@yunke/i18n';
 import { AllDocsIcon, FilterIcon } from '@blocksuite/icons/rc';
 import { useService } from '@toeverything/infra';
 import { useCallback } from 'react';

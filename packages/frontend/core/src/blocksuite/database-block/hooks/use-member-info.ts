@@ -1,4 +1,4 @@
-import type { UserService } from '@blocksuite/affine-shared/services';
+import type { UserService } from '@blocksuite/yunke-shared/services';
 import { useEffect } from 'react';
 
 import { useSignalValue } from '../../../modules/doc-info/utils';

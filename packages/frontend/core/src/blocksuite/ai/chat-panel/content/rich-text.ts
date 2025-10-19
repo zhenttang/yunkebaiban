@@ -1,8 +1,8 @@
-import type { FeatureFlagService } from '@affine/core/modules/feature-flag';
-import { WithDisposable } from '@blocksuite/affine/global/lit';
-import type { EditorHost } from '@blocksuite/affine/std';
-import { ShadowlessElement } from '@blocksuite/affine/std';
-import type { ExtensionType } from '@blocksuite/affine/store';
+import type { FeatureFlagService } from '@yunke/core/modules/feature-flag';
+import { WithDisposable } from '@blocksuite/yunke/global/lit';
+import type { EditorHost } from '@blocksuite/yunke/std';
+import { ShadowlessElement } from '@blocksuite/yunke/std';
+import type { ExtensionType } from '@blocksuite/yunke/store';
 import { html } from 'lit';
 import { property } from 'lit/decorators.js';
 

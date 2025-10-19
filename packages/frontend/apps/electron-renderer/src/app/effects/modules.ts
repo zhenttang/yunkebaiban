@@ -1,23 +1,23 @@
-import { configureElectronStateStorageImpls } from '@affine/core/desktop/storage';
-import { configureCommonModules } from '@affine/core/modules';
-import { configureAppTabsHeaderModule } from '@affine/core/modules/app-tabs-header';
-import { configureDesktopBackupModule } from '@affine/core/modules/backup';
-import { ValidatorProvider } from '@affine/core/modules/cloud';
+import { configureElectronStateStorageImpls } from '@yunke/core/desktop/storage';
+import { configureCommonModules } from '@yunke/core/modules';
+import { configureAppTabsHeaderModule } from '@yunke/core/modules/app-tabs-header';
+import { configureDesktopBackupModule } from '@yunke/core/modules/backup';
+import { ValidatorProvider } from '@yunke/core/modules/cloud';
 import {
   configureDesktopApiModule,
   DesktopApiService,
-} from '@affine/core/modules/desktop-api';
+} from '@yunke/core/modules/desktop-api';
 import {
   configureSpellCheckSettingModule,
   configureTraySettingModule,
-} from '@affine/core/modules/editor-setting';
-import { configureFindInPageModule } from '@affine/core/modules/find-in-page';
+} from '@yunke/core/modules/editor-setting';
+import { configureFindInPageModule } from '@yunke/core/modules/find-in-page';
 import {
   ClientSchemeProvider,
   PopupWindowProvider,
-} from '@affine/core/modules/url';
-import { configureDesktopWorkbenchModule } from '@affine/core/modules/workbench';
-import { configureBrowserWorkspaceFlavours } from '@affine/core/modules/workspace-engine';
+} from '@yunke/core/modules/url';
+import { configureDesktopWorkbenchModule } from '@yunke/core/modules/workbench';
+import { configureBrowserWorkspaceFlavours } from '@yunke/core/modules/workspace-engine';
 import { Framework } from '@toeverything/infra';
 
 export function setupModules() {

@@ -1,0 +1,40 @@
+{
+  "name": "@blocksuite/yunke-layout-testing",
+  "version": "1.0.0",
+  "description": "BlockSuite layout testing utilities and mocks",
+  "type": "module",
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "test": "vitest",
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@blocksuite/yunke-layout-core": "workspace:*",
+    "@preact/signals-core": "^1.5.1",
+    "rxjs": "^7.8.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.3.0",
+    "tsup": "^8.0.0",
+    "vitest": "^1.0.0"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./mocks": {
+      "import": "./dist/mocks/index.js",
+      "types": "./dist/mocks/index.d.ts"
+    },
+    "./fixtures": {
+      "import": "./dist/fixtures/index.js",
+      "types": "./dist/fixtures/index.d.ts"
+    }
+  }
+}

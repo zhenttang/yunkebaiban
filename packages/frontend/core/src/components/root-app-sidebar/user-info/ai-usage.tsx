@@ -1,9 +1,9 @@
 import {
   SubscriptionService,
   UserCopilotQuotaService,
-} from '@affine/core/modules/cloud';
-import { WorkspaceDialogService } from '@affine/core/modules/dialogs';
-import { useI18n } from '@affine/i18n';
+} from '@yunke/core/modules/cloud';
+import { WorkspaceDialogService } from '@yunke/core/modules/dialogs';
+import { useI18n } from '@yunke/i18n';
 import { useLiveData, useService } from '@toeverything/infra';
 import { cssVar } from '@toeverything/theme';
 import { assignInlineVars } from '@vanilla-extract/dynamic';

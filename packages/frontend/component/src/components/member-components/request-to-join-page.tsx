@@ -1,7 +1,7 @@
 import {
   AuthPageContainer,
   type User,
-} from '@affine/component/auth-components';
+} from '@yunke/component/auth-components';
 // 本地占位类型与枚举，替代 GraphQL
 enum WorkspaceMemberStatus {
   Pending = 'PENDING',
@@ -15,7 +15,7 @@ type InviteInfo = {
   workspace: { avatar?: string; name?: string };
   status?: WorkspaceMemberStatus;
 };
-import { useI18n } from '@affine/i18n';
+import { useI18n } from '@yunke/i18n';
 import { SignOutIcon } from '@blocksuite/icons/rc';
 
 import { Avatar } from '../../ui/avatar';

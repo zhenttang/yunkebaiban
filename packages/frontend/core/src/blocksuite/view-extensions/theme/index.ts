@@ -1,9 +1,9 @@
-import { getPreviewThemeExtension } from '@affine/core/blocksuite/view-extensions/theme/preview-theme';
-import { getThemeExtension } from '@affine/core/blocksuite/view-extensions/theme/theme';
+import { getPreviewThemeExtension } from '@yunke/core/blocksuite/view-extensions/theme/preview-theme';
+import { getThemeExtension } from '@yunke/core/blocksuite/view-extensions/theme/theme';
 import {
   type ViewExtensionContext,
   ViewExtensionProvider,
-} from '@blocksuite/affine/ext-loader';
+} from '@blocksuite/yunke/ext-loader';
 import { FrameworkProvider } from '@toeverything/infra';
 import { z } from 'zod';
 

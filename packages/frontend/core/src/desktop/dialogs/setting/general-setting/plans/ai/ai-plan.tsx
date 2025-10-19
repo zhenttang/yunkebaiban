@@ -1,6 +1,6 @@
-import { Button } from '@affine/component';
-import { AuthService, SubscriptionService } from '@affine/core/modules/cloud';
-import { i18nTime, useI18n } from '@affine/i18n';
+import { Button } from '@yunke/component';
+import { AuthService, SubscriptionService } from '@yunke/core/modules/cloud';
+import { i18nTime, useI18n } from '@yunke/i18n';
 import { useLiveData, useService } from '@toeverything/infra';
 import { useEffect } from 'react';
 

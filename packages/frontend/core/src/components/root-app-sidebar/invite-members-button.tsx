@@ -1,7 +1,7 @@
-import { MenuItem } from '@affine/core/modules/app-sidebar/views';
-import { WorkspaceDialogService } from '@affine/core/modules/dialogs';
-import { WorkspaceService } from '@affine/core/modules/workspace';
-import { useI18n } from '@affine/i18n';
+import { MenuItem } from '@yunke/core/modules/app-sidebar/views';
+import { WorkspaceDialogService } from '@yunke/core/modules/dialogs';
+import { WorkspaceService } from '@yunke/core/modules/workspace';
+import { useI18n } from '@yunke/i18n';
 import { CollaborationIcon } from '@blocksuite/icons/rc';
 import { useService } from '@toeverything/infra';
 import { useCallback, forwardRef } from 'react';

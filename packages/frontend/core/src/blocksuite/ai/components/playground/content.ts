@@ -1,9 +1,9 @@
-import type { FeatureFlagService } from '@affine/core/modules/feature-flag';
+import type { FeatureFlagService } from '@yunke/core/modules/feature-flag';
 type CopilotSessionType = any;
-import { SignalWatcher, WithDisposable } from '@blocksuite/affine/global/lit';
-import type { EditorHost } from '@blocksuite/affine/std';
-import { ShadowlessElement } from '@blocksuite/affine/std';
-import type { ExtensionType, Store } from '@blocksuite/affine/store';
+import { SignalWatcher, WithDisposable } from '@blocksuite/yunke/global/lit';
+import type { EditorHost } from '@blocksuite/yunke/std';
+import { ShadowlessElement } from '@blocksuite/yunke/std';
+import type { ExtensionType, Store } from '@blocksuite/yunke/store';
 import { css, html } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';

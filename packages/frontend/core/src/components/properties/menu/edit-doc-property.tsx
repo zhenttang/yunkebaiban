@@ -3,10 +3,10 @@ import {
   MenuItem,
   MenuSeparator,
   useConfirmModal,
-} from '@affine/component';
-import type { DocCustomPropertyInfo } from '@affine/core/modules/db';
-import { WorkspacePropertyService } from '@affine/core/modules/workspace-property';
-import { Trans, useI18n } from '@affine/i18n';
+} from '@yunke/component';
+import type { DocCustomPropertyInfo } from '@yunke/core/modules/db';
+import { WorkspacePropertyService } from '@yunke/core/modules/workspace-property';
+import { Trans, useI18n } from '@yunke/i18n';
 import { DeleteIcon, InvisibleIcon, ViewIcon } from '@blocksuite/icons/rc';
 import { useLiveData, useService } from '@toeverything/infra';
 import {

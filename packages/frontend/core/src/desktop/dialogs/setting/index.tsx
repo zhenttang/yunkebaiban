@@ -1,22 +1,22 @@
-import { Loading, Scrollable } from '@affine/component';
-import { WorkspaceDetailSkeleton } from '@affine/component/setting-components';
-import type { ModalProps } from '@affine/component/ui/modal';
-import { Modal } from '@affine/component/ui/modal';
+import { Loading, Scrollable } from '@yunke/component';
+import { WorkspaceDetailSkeleton } from '@yunke/component/setting-components';
+import type { ModalProps } from '@yunke/component/ui/modal';
+import { Modal } from '@yunke/component/ui/modal';
 import {
   AuthService,
   DefaultServerService,
   ServersService,
-} from '@affine/core/modules/cloud';
-import type { DialogComponentProps } from '@affine/core/modules/dialogs';
+} from '@yunke/core/modules/cloud';
+import type { DialogComponentProps } from '@yunke/core/modules/dialogs';
 import type {
   SettingTab,
   WORKSPACE_DIALOG_SCHEMA,
-} from '@affine/core/modules/dialogs/constant';
-import { GlobalContextService } from '@affine/core/modules/global-context';
-import { createIsland, type Island } from '@affine/core/utils/island';
-// import { ServerDeploymentType } from '@affine/graphql';
+} from '@yunke/core/modules/dialogs/constant';
+import { GlobalContextService } from '@yunke/core/modules/global-context';
+import { createIsland, type Island } from '@yunke/core/utils/island';
+// import { ServerDeploymentType } from '@yunke/graphql';
 import { ServerDeploymentType } from '../../../modules/cloud/types';
-import { Trans } from '@affine/i18n';
+import { Trans } from '@yunke/i18n';
 import { ContactWithUsIcon } from '@blocksuite/icons/rc';
 import { FrameworkScope, useLiveData, useService } from '@toeverything/infra';
 import { debounce } from 'lodash-es';

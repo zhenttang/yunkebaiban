@@ -1,12 +1,12 @@
-import { Button } from '@affine/admin/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@affine/admin/components/ui/card';
-import { Input } from '@affine/admin/components/ui/input';
-import { Label } from '@affine/admin/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@affine/admin/components/ui/select';
-import { Badge } from '@affine/admin/components/ui/badge';
-import { Alert, AlertDescription } from '@affine/admin/components/ui/alert';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@affine/admin/components/ui/tabs';
-import { Progress } from '@affine/admin/components/ui/progress';
+import { Button } from '@yunke/admin/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@yunke/admin/components/ui/card';
+import { Input } from '@yunke/admin/components/ui/input';
+import { Label } from '@yunke/admin/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@yunke/admin/components/ui/select';
+import { Badge } from '@yunke/admin/components/ui/badge';
+import { Alert, AlertDescription } from '@yunke/admin/components/ui/alert';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@yunke/admin/components/ui/tabs';
+import { Progress } from '@yunke/admin/components/ui/progress';
 import { 
   CheckCircleIcon, 
   XCircleIcon, 

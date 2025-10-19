@@ -1,12 +1,12 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Badge } from '@affine/admin/components/ui/badge';
-import { Button } from '@affine/admin/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@affine/admin/components/ui/card';
-import { DatePickerWithRange } from '@affine/admin/components/ui/date-range-picker';
-import { Progress } from '@affine/admin/components/ui/progress';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@affine/admin/components/ui/select';
-import { Skeleton } from '@affine/admin/components/ui/skeleton';
-import { cn } from '@affine/admin/utils';
+import { Badge } from '@yunke/admin/components/ui/badge';
+import { Button } from '@yunke/admin/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@yunke/admin/components/ui/card';
+import { DatePickerWithRange } from '@yunke/admin/components/ui/date-range-picker';
+import { Progress } from '@yunke/admin/components/ui/progress';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@yunke/admin/components/ui/select';
+import { Skeleton } from '@yunke/admin/components/ui/skeleton';
+import { cn } from '@yunke/admin/utils';
 import {
   AlertCircle,
   ArrowDownRight,

@@ -1,0 +1,46 @@
+{
+  "name": "@blocksuite/yunke-block-drawio",
+  "version": "0.0.1",
+  "description": "Draw.io diagram block for BlockSuite",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./view": "./src/view.ts",
+    "./store": "./src/store.ts"
+  },
+  "files": [
+    "dist",
+    "!dist/**/*.test.*"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@blocksuite/global": "workspace:*",
+    "@blocksuite/icons": "^2.2.12",
+    "@blocksuite/std": "workspace:*",
+    "@blocksuite/store": "workspace:*",
+    "@blocksuite/yunke-components": "workspace:*",
+    "@blocksuite/yunke-ext-loader": "workspace:*",
+    "@blocksuite/yunke-model": "workspace:*",
+    "@blocksuite/yunke-shared": "workspace:*",
+    "@blocksuite/yunke-widget-slash-menu": "workspace:*",
+    "lit": "^3.0.0",
+    "react-drawio": "^1.0.1",
+    "uuid": "^9.0.0",
+    "zod": "^3.22.0"
+  },
+  "devDependencies": {
+    "@types/uuid": "^9.0.0",
+    "typescript": "^5.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/toeverything/blocksuite.git",
+    "directory": "blocksuite/yunke/blocks/drawio"
+  }
+}

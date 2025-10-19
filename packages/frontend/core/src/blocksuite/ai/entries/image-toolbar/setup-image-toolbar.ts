@@ -1,11 +1,11 @@
 import '../../components/ask-ai-button';
 
-import { ImageBlockComponent } from '@blocksuite/affine/blocks/image';
+import { ImageBlockComponent } from '@blocksuite/yunke/blocks/image';
 import {
   ActionPlacement,
   type ToolbarModuleConfig,
-} from '@blocksuite/affine/shared/services';
-import { BlockSelection } from '@blocksuite/affine/std';
+} from '@blocksuite/yunke/shared/services';
+import { BlockSelection } from '@blocksuite/yunke/std';
 import { ScissorsIcon, DownloadIcon, CopyIcon, EditIcon, LockIcon, MoreHorizontalIcon } from '@blocksuite/icons/lit';
 import { html } from 'lit';
 

@@ -1,11 +1,11 @@
-import { useWorkspaceInfo } from '@affine/core/components/hooks/use-workspace-info';
-import { ServerService } from '@affine/core/modules/cloud';
-import type { SettingTab } from '@affine/core/modules/dialogs/constant';
-import { WorkspaceService } from '@affine/core/modules/workspace';
-import { EmbeddingSettings } from '@affine/core/modules/workspace-indexer-embedding';
-// import { ServerDeploymentType } from '@affine/graphql';
+import { useWorkspaceInfo } from '@yunke/core/components/hooks/use-workspace-info';
+import { ServerService } from '@yunke/core/modules/cloud';
+import type { SettingTab } from '@yunke/core/modules/dialogs/constant';
+import { WorkspaceService } from '@yunke/core/modules/workspace';
+import { EmbeddingSettings } from '@yunke/core/modules/workspace-indexer-embedding';
+// import { ServerDeploymentType } from '@yunke/graphql';
 import { ServerDeploymentType } from '../../../../modules/cloud/types';
-import { useI18n } from '@affine/i18n';
+import { useI18n } from '@yunke/i18n';
 import {
   AiEmbeddingIcon,
   CollaborationIcon,

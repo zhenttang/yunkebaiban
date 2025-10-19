@@ -1,7 +1,7 @@
-import { Button, Input, Modal, notify } from '@affine/component';
-import { IntegrationService } from '@affine/core/modules/integration';
-import { useI18n } from '@affine/i18n';
-import track from '@affine/track';
+import { Button, Input, Modal, notify } from '@yunke/component';
+import { IntegrationService } from '@yunke/core/modules/integration';
+import { useI18n } from '@yunke/i18n';
+import track from '@yunke/track';
 import { PlusIcon, TodayIcon } from '@blocksuite/icons/rc';
 import { useLiveData, useService } from '@toeverything/infra';
 import { useCallback, useState } from 'react';

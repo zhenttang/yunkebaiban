@@ -4,6 +4,6 @@ export type {
   CommunityDocsResponse,
   GetCommunityDocsParams,
   ShareToCommunityRequest,
-} from '@affine/request';
+} from '@yunke/request';
 
-export { CommunityPermission } from '@affine/request';
+export { CommunityPermission } from '@yunke/request';

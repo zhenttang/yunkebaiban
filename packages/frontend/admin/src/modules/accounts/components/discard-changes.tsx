@@ -1,4 +1,4 @@
-import { Button } from '@affine/admin/components/ui/button';
+import { Button } from '@yunke/admin/components/ui/button';
 import {
   Dialog,
   DialogContent,
@@ -6,7 +6,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@affine/admin/components/ui/dialog';
+} from '@yunke/admin/components/ui/dialog';
 
 export const DiscardChanges = ({
   open,

@@ -1,13 +1,13 @@
 import {
   EdgelessClipboardController,
   splitElements,
-} from '@blocksuite/affine/blocks/root';
-import { AIStarIconWithAnimation } from '@blocksuite/affine/components/icons';
+} from '@blocksuite/yunke/blocks/root';
+import { AIStarIconWithAnimation } from '@blocksuite/yunke/components/icons';
 import {
   MindmapElementModel,
   ShapeElementModel,
   TextElementModel,
-} from '@blocksuite/affine/model';
+} from '@blocksuite/yunke/model';
 import {
   CommentIcon,
   ExplainIcon,

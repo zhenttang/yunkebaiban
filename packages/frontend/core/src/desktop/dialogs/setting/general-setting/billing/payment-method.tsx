@@ -1,16 +1,16 @@
-import { notify } from '@affine/component';
-import { SettingRow } from '@affine/component/setting-components';
+import { notify } from '@yunke/component';
+import { SettingRow } from '@yunke/component/setting-components';
 import {
   Button,
   type ButtonProps,
   IconButton,
-} from '@affine/component/ui/button';
-import { useAsyncCallback } from '@affine/core/components/hooks/affine-async-hooks';
-import { SubscriptionService } from '@affine/core/modules/cloud';
-import { UrlService } from '@affine/core/modules/url';
-import { UserFriendlyError } from '@affine/error';
-// import { createCustomerPortalMutation } from '@affine/graphql';
-import { useI18n } from '@affine/i18n';
+} from '@yunke/component/ui/button';
+import { useAsyncCallback } from '@yunke/core/components/hooks/affine-async-hooks';
+import { SubscriptionService } from '@yunke/core/modules/cloud';
+import { UrlService } from '@yunke/core/modules/url';
+import { UserFriendlyError } from '@yunke/error';
+// import { createCustomerPortalMutation } from '@yunke/graphql';
+import { useI18n } from '@yunke/i18n';
 import { ArrowRightSmallIcon } from '@blocksuite/icons/rc';
 import { useLiveData, useService } from '@toeverything/infra';
 import { useCallback, useEffect, useState } from 'react';

@@ -1,5 +1,5 @@
 {
-  "name": "@affine/track",
+  "name": "@yunke/track",
   "type": "module",
   "private": true,
   "version": "0.21.0",
@@ -7,8 +7,8 @@
     ".": "./src/index.ts"
   },
   "dependencies": {
-    "@affine/debug": "workspace:*",
     "@sentry/react": "^9.2.0",
+    "@yunke/debug": "workspace:*",
     "mixpanel-browser": "^2.56.0",
     "react-router-dom": "6.30.0"
   },

@@ -7,9 +7,9 @@
     "tsBuildInfoFile": "./dist/tsconfig.tsbuildinfo"
   },
   "references": [
-    { "path": "../reader" },
     { "path": "../infra" },
-    { "path": "../error" },
-    { "path": "../../../blocksuite/affine/all" }
+    { "path": "../reader" },
+    { "path": "../../../blocksuite/yunke/all" },
+    { "path": "../error" }
   ]
 }

@@ -1,5 +1,5 @@
-import { I18nService } from '@affine/core/modules/i18n';
-import { useI18n } from '@affine/i18n';
+import { I18nService } from '@yunke/core/modules/i18n';
+import { useI18n } from '@yunke/i18n';
 import { useLiveData, useService } from '@toeverything/infra';
 import { useMemo } from 'react';
 

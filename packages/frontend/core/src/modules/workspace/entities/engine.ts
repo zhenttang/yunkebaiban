@@ -1,7 +1,7 @@
 import type {
   StoreClient,
   WorkerInitOptions,
-} from '@affine/nbstore/worker/client';
+} from '@yunke/nbstore/worker/client';
 import { Entity } from '@toeverything/infra';
 
 import type { NbstoreService } from '../../storage';

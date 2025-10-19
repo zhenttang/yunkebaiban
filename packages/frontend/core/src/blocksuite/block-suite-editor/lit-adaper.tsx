@@ -1,32 +1,32 @@
 // eslint-disable-next-line @typescript-eslint/no-restricted-imports
 import 'katex/dist/katex.min.css';
 
-import '@affine/core/blocksuite/utils/performance-monitor';
-import '@affine/core/blocksuite/utils/edgeless-performance-monitor';
-import { useConfirmModal, useLitPortalFactory } from '@affine/component';
+import '@yunke/core/blocksuite/utils/performance-monitor';
+import '@yunke/core/blocksuite/utils/edgeless-performance-monitor';
+import { useConfirmModal, useLitPortalFactory } from '@yunke/component';
 import {
   type EdgelessEditor,
   LitDocEditor,
   LitDocTitle,
   LitEdgelessEditor,
   type PageEditor,
-} from '@affine/core/blocksuite/editors';
-import { getViewManager } from '@affine/core/blocksuite/manager/view';
-import { useEnableAI } from '@affine/core/components/hooks/affine/use-enable-ai';
-import type { DocCustomPropertyInfo } from '@affine/core/modules/db';
+} from '@yunke/core/blocksuite/editors';
+import { getViewManager } from '@yunke/core/blocksuite/manager/view';
+import { useEnableAI } from '@yunke/core/components/hooks/affine/use-enable-ai';
+import type { DocCustomPropertyInfo } from '@yunke/core/modules/db';
 import type {
   DatabaseRow,
   DatabaseValueCell,
-} from '@affine/core/modules/doc-info/types';
-import { EditorSettingService } from '@affine/core/modules/editor-setting';
-import { FeatureFlagService } from '@affine/core/modules/feature-flag';
-import { JournalService } from '@affine/core/modules/journal';
-import { useInsidePeekView } from '@affine/core/modules/peek-view';
-import { WorkspaceService } from '@affine/core/modules/workspace';
-import track from '@affine/track';
-import type { DocTitle } from '@blocksuite/affine/fragments/doc-title';
-import type { DocMode } from '@blocksuite/affine/model';
-import type { Store } from '@blocksuite/affine/store';
+} from '@yunke/core/modules/doc-info/types';
+import { EditorSettingService } from '@yunke/core/modules/editor-setting';
+import { FeatureFlagService } from '@yunke/core/modules/feature-flag';
+import { JournalService } from '@yunke/core/modules/journal';
+import { useInsidePeekView } from '@yunke/core/modules/peek-view';
+import { WorkspaceService } from '@yunke/core/modules/workspace';
+import track from '@yunke/track';
+import type { DocTitle } from '@blocksuite/yunke/fragments/doc-title';
+import type { DocMode } from '@blocksuite/yunke/model';
+import type { Store } from '@blocksuite/yunke/store';
 import {
   useFramework,
   useLiveData,

@@ -4,17 +4,17 @@ import {
   Menu,
   MenuItem,
   Tooltip,
-} from '@affine/component';
-import { AddFilterMenu } from '@affine/core/components/filter/add-filter';
+} from '@yunke/component';
+import { AddFilterMenu } from '@yunke/core/components/filter/add-filter';
 import {
   CollectionService,
   type PinnedCollectionRecord,
   PinnedCollectionService,
-} from '@affine/core/modules/collection';
-import type { FilterParams } from '@affine/core/modules/collection-rules';
-import { WorkspaceDialogService } from '@affine/core/modules/dialogs';
-import { useI18n } from '@affine/i18n';
-import track from '@affine/track';
+} from '@yunke/core/modules/collection';
+import type { FilterParams } from '@yunke/core/modules/collection-rules';
+import { WorkspaceDialogService } from '@yunke/core/modules/dialogs';
+import { useI18n } from '@yunke/i18n';
+import track from '@yunke/track';
 import {
   CloseIcon,
   CollectionsIcon,

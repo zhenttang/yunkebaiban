@@ -1,7 +1,7 @@
-import { ErrorMessage, Skeleton } from '@affine/component';
-import { SettingRow } from '@affine/component/setting-components';
-import { WorkspaceQuotaService } from '@affine/core/modules/quota';
-import { useI18n } from '@affine/i18n';
+import { ErrorMessage, Skeleton } from '@yunke/component';
+import { SettingRow } from '@yunke/component/setting-components';
+import { WorkspaceQuotaService } from '@yunke/core/modules/quota';
+import { useI18n } from '@yunke/i18n';
 import { useLiveData, useService } from '@toeverything/infra';
 import { cssVarV2 } from '@toeverything/theme/v2';
 import { useEffect } from 'react';

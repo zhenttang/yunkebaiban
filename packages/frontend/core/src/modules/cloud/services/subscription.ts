@@ -1,5 +1,5 @@
-// import { type CreateCheckoutSessionInput } from '@affine/graphql';
-import { mixpanel } from '@affine/track';
+// import { type CreateCheckoutSessionInput } from '@yunke/graphql';
+import { mixpanel } from '@yunke/track';
 import { OnEvent, Service } from '@toeverything/infra';
 
 import { Subscription } from '../entities/subscription';

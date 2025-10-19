@@ -1,5 +1,5 @@
 import type { PropsWithChildren } from 'react';
-import { SocketIOTestButton } from '@affine/core/components/socket-io-test-button';
+import { SocketIOTestButton } from '@yunke/core/components/socket-io-test-button';
 
 interface AppContainerProps {
   fallback?: boolean;

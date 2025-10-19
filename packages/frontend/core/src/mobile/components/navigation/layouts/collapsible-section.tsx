@@ -1,7 +1,7 @@
 import {
   type CollapsibleSectionName,
   NavigationPanelService,
-} from '@affine/core/modules/navigation-panel';
+} from '@yunke/core/modules/navigation-panel';
 import { ToggleRightIcon } from '@blocksuite/icons/rc';
 import * as Collapsible from '@radix-ui/react-collapsible';
 import { useLiveData, useService } from '@toeverything/infra';

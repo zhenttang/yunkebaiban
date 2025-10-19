@@ -1,10 +1,10 @@
-import { notify } from '@affine/component';
-import { AffineOtherPageLayout } from '@affine/component/affine-other-page-layout';
-import { SignInPageContainer } from '@affine/component/auth-components';
-import { SignInPanel } from '@affine/core/components/sign-in';
-import { SignInBackgroundArts } from '@affine/core/components/sign-in/background-arts';
-import type { AuthSessionStatus } from '@affine/core/modules/cloud/entities/session';
-import { useI18n } from '@affine/i18n';
+import { notify } from '@yunke/component';
+import { AffineOtherPageLayout } from '@yunke/component/affine-other-page-layout';
+import { SignInPageContainer } from '@yunke/component/auth-components';
+import { SignInPanel } from '@yunke/core/components/sign-in';
+import { SignInBackgroundArts } from '@yunke/core/components/sign-in/background-arts';
+import type { AuthSessionStatus } from '@yunke/core/modules/cloud/entities/session';
+import { useI18n } from '@yunke/i18n';
 import { useCallback, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 

@@ -1,4 +1,4 @@
-import { FetchService } from '@affine/core/modules/cloud';
+import { FetchService } from '@yunke/core/modules/cloud';
 import { useService } from '@toeverything/infra';
 import { useCallback, useMemo } from 'react';
 import type { SWRConfiguration, SWRResponse } from 'swr';
@@ -12,7 +12,7 @@ import useSWRInfinite from 'swr/infinite';
  * @example
  *
  * ```ts
- * import { someQuery, someQueryWithNoVars } from '@affine/graphql'
+ * import { someQuery, someQueryWithNoVars } from '@yunke/graphql'
  *
  * const swrResponse1 = useQuery({
  *   query: workspaceByIdQuery,

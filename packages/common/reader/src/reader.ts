@@ -1,14 +1,14 @@
-import { Container } from '@blocksuite/affine/global/di';
+import { Container } from '@blocksuite/yunke/global/di';
 import type {
   AttachmentBlockModel,
   BookmarkBlockModel,
   EmbedBlockModel,
   ImageBlockModel,
   TableBlockModel,
-} from '@blocksuite/affine/model';
-import { AffineSchemas } from '@blocksuite/affine/schemas';
-import { MarkdownAdapter } from '@blocksuite/affine/shared/adapters';
-import type { AffineTextAttributes } from '@blocksuite/affine/shared/types';
+} from '@blocksuite/yunke/model';
+import { AffineSchemas } from '@blocksuite/yunke/schemas';
+import { MarkdownAdapter } from '@blocksuite/yunke/shared/adapters';
+import type { AffineTextAttributes } from '@blocksuite/yunke/shared/types';
 import {
   createYProxy,
   type DeltaInsert,
@@ -17,7 +17,7 @@ import {
   Transformer,
   type TransformerMiddleware,
   type YBlock,
-} from '@blocksuite/affine/store';
+} from '@blocksuite/yunke/store';
 import { uniq } from 'lodash-es';
 import {
   Array as YArray,

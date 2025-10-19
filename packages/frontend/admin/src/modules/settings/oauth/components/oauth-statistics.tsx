@@ -1,9 +1,9 @@
 import { useMemo } from 'react';
-import { Badge } from '@affine/admin/components/ui/badge';
-import { Button } from '@affine/admin/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@affine/admin/components/ui/card';
-import { Progress } from '@affine/admin/components/ui/progress';
-import { Skeleton } from '@affine/admin/components/ui/skeleton';
+import { Badge } from '@yunke/admin/components/ui/badge';
+import { Button } from '@yunke/admin/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@yunke/admin/components/ui/card';
+import { Progress } from '@yunke/admin/components/ui/progress';
+import { Skeleton } from '@yunke/admin/components/ui/skeleton';
 import {
   Activity,
   BarChart3,

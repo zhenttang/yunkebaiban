@@ -1,9 +1,9 @@
 import {
   NoPermissionOrNotFound,
   NotFoundPage,
-} from '@affine/component/not-found-page';
-import { useSignOut } from '@affine/core/components/hooks/affine/use-sign-out';
-import { DesktopApiService } from '@affine/core/modules/desktop-api';
+} from '@yunke/component/not-found-page';
+import { useSignOut } from '@yunke/core/components/hooks/affine/use-sign-out';
+import { DesktopApiService } from '@yunke/core/modules/desktop-api';
 import {
   useLiveData,
   useService,

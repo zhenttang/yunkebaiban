@@ -1,4 +1,4 @@
-import type { DocsService } from '@affine/core/modules/doc';
+import type { DocsService } from '@yunke/core/modules/doc';
 import { Service } from '@toeverything/infra';
 import { combineLatest, map, type Observable } from 'rxjs';
 

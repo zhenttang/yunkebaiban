@@ -2,7 +2,7 @@
 import type {
   ToastActionElement,
   ToastProps,
-} from '@affine/admin/components/ui/toast';
+} from '@yunke/admin/components/ui/toast';
 import * as React from 'react';
 
 const TOAST_LIMIT = 1;

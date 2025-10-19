@@ -1,5 +1,5 @@
 {
-  "name": "@affine/routes",
+  "name": "@yunke/routes",
   "version": "0.0.1",
   "private": true,
   "type": "module",
@@ -10,8 +10,8 @@
     "build": "r build.ts"
   },
   "devDependencies": {
-    "@affine-tools/cli": "workspace:*",
-    "@affine-tools/utils": "workspace:*",
+    "@yunke-tools/cli": "workspace:*",
+    "@yunke-tools/utils": "workspace:*",
     "path-to-regexp": "^8.2.0",
     "query-string": "^9.1.1",
     "vitest": "^3.0.6"

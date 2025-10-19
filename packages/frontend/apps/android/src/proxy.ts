@@ -1,5 +1,5 @@
 import { openDB } from 'idb';
-import { getSocketIOUrl } from '@affine/config';
+import { getSocketIOUrl } from '@yunke/config';
 
 /**
  * the below code includes the custom fetch and xmlhttprequest implementation for ios webview.

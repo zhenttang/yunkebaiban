@@ -1,4 +1,4 @@
-// import type { ServerFeature } from '@affine/graphql';
+// import type { ServerFeature } from '@yunke/graphql';
 
 // Temporary placeholder enum since GraphQL backend removed
 enum ServerFeature {

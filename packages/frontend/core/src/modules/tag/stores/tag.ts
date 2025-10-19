@@ -1,4 +1,4 @@
-import type { DocsPropertiesMeta } from '@blocksuite/affine/store';
+import type { DocsPropertiesMeta } from '@blocksuite/yunke/store';
 import {
   LiveData,
   Store,

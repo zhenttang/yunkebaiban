@@ -1,17 +1,17 @@
-import { Scrollable } from '@affine/component';
-import { PageDetailLoading } from '@affine/component/page-detail-skeleton';
-import { AIProvider } from '@affine/core/blocksuite/ai';
-import type { AffineEditorContainer } from '@affine/core/blocksuite/block-suite-editor';
-import { EditorOutlineViewer } from '@affine/core/blocksuite/outline-viewer';
-import { AffineErrorBoundary } from '@affine/core/components/affine/affine-error-boundary';
-import { useGuard } from '@affine/core/components/guard';
-import { PageNotFound } from '@affine/core/desktop/pages/404';
-import { EditorService } from '@affine/core/modules/editor';
-import { DebugLogger } from '@affine/debug';
-import { DisposableGroup } from '@blocksuite/affine/global/disposable';
-import { Bound } from '@blocksuite/affine/global/gfx';
-import { RefNodeSlotsProvider } from '@blocksuite/affine/inlines/reference';
-import { GfxControllerIdentifier } from '@blocksuite/affine/std/gfx';
+import { Scrollable } from '@yunke/component';
+import { PageDetailLoading } from '@yunke/component/page-detail-skeleton';
+import { AIProvider } from '@yunke/core/blocksuite/ai';
+import type { AffineEditorContainer } from '@yunke/core/blocksuite/block-suite-editor';
+import { EditorOutlineViewer } from '@yunke/core/blocksuite/outline-viewer';
+import { AffineErrorBoundary } from '@yunke/core/components/affine/affine-error-boundary';
+import { useGuard } from '@yunke/core/components/guard';
+import { PageNotFound } from '@yunke/core/desktop/pages/404';
+import { EditorService } from '@yunke/core/modules/editor';
+import { DebugLogger } from '@yunke/debug';
+import { DisposableGroup } from '@blocksuite/yunke/global/disposable';
+import { Bound } from '@blocksuite/yunke/global/gfx';
+import { RefNodeSlotsProvider } from '@blocksuite/yunke/inlines/reference';
+import { GfxControllerIdentifier } from '@blocksuite/yunke/std/gfx';
 import {
   FrameworkScope,
   useLiveData,
@@ -32,7 +32,7 @@ const logger = new DebugLogger('doc-peek-view');
 
 // Lazy load BlockSuiteEditor to break circular dependency
 const BlockSuiteEditor = lazy(() =>
-  import('@affine/core/blocksuite/block-suite-editor').then(module => ({
+  import('@yunke/core/blocksuite/block-suite-editor').then(module => ({
     default: module.BlockSuiteEditor,
   }))
 );

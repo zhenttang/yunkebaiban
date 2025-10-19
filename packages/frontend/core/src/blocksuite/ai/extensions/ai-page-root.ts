@@ -1,4 +1,4 @@
-import { LifeCycleWatcher } from '@blocksuite/affine/std';
+import { LifeCycleWatcher } from '@blocksuite/yunke/std';
 import type { FrameworkProvider } from '@toeverything/infra';
 
 import { buildAIPanelConfig } from '../ai-panel';

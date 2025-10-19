@@ -2,10 +2,10 @@ import {
   type ConfirmModalProps,
   notify,
   useConfirmModal,
-} from '@affine/component';
-import { AuthService } from '@affine/core/modules/cloud';
-import { UserFriendlyError } from '@affine/error';
-import { useI18n } from '@affine/i18n';
+} from '@yunke/component';
+import { AuthService } from '@yunke/core/modules/cloud';
+import { UserFriendlyError } from '@yunke/error';
+import { useI18n } from '@yunke/i18n';
 import { useService } from '@toeverything/infra';
 import { useCallback } from 'react';
 

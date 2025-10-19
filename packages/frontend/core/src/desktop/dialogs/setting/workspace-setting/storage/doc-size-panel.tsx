@@ -1,9 +1,9 @@
 import {
   ErrorMessage,
   Loading,
-} from '@affine/component';
-import { Pagination } from '@affine/component/setting-components';
-import { useI18n } from '@affine/i18n';
+} from '@yunke/component';
+import { Pagination } from '@yunke/component/setting-components';
+import { useI18n } from '@yunke/i18n';
 import { InfoIcon } from '@blocksuite/icons/rc';
 import { useLiveData, useService } from '@toeverything/infra';
 import { useCallback, useEffect, useMemo, useState } from 'react';

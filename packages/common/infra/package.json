@@ -12,11 +12,11 @@
     ".": "./src/index.ts"
   },
   "dependencies": {
-    "@affine/debug": "workspace:*",
-    "@affine/env": "workspace:*",
-    "@affine/error": "workspace:*",
-    "@affine/templates": "workspace:*",
     "@preact/signals-core": "^1.8.0",
+    "@yunke/debug": "workspace:*",
+    "@yunke/env": "workspace:*",
+    "@yunke/error": "workspace:*",
+    "@yunke/templates": "workspace:*",
     "eventemitter2": "^6.4.9",
     "foxact": "^0.2.43",
     "fractional-indexing": "^3.2.0",
@@ -32,11 +32,11 @@
     "zod": "^3.24.1"
   },
   "devDependencies": {
-    "@affine/templates": "workspace:*",
     "@emotion/react": "^11.14.0",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/react": "^16.1.0",
     "@types/react": "^19.0.1",
+    "@yunke/templates": "workspace:*",
     "fake-indexeddb": "^6.0.0",
     "rxjs": "^7.8.1",
     "vitest": "3.1.3"

@@ -7,20 +7,20 @@ import {
   notify,
   Tooltip,
   useConfirmModal,
-} from '@affine/component';
-import { useGuard } from '@affine/core/components/guard';
-import { useAsyncCallback } from '@affine/core/components/hooks/affine-async-hooks';
-import { DocService } from '@affine/core/modules/doc';
+} from '@yunke/component';
+import { useGuard } from '@yunke/core/components/guard';
+import { useAsyncCallback } from '@yunke/core/components/hooks/affine-async-hooks';
+import { DocService } from '@yunke/core/modules/doc';
 import {
   DocGrantedUsersService,
   type GrantedUser,
   WorkspacePermissionService,
-} from '@affine/core/modules/permissions';
-import { UserFriendlyError } from '@affine/error';
-// import { DocRole } from '@affine/graphql';
-import { DocRole } from '@affine/core/modules/share-doc/types';
-import { useI18n } from '@affine/i18n';
-import track from '@affine/track';
+} from '@yunke/core/modules/permissions';
+import { UserFriendlyError } from '@yunke/error';
+// import { DocRole } from '@yunke/graphql';
+import { DocRole } from '@yunke/core/modules/share-doc/types';
+import { useI18n } from '@yunke/i18n';
+import track from '@yunke/track';
 import { useLiveData, useService } from '@toeverything/infra';
 import clsx from 'clsx';
 import { useCallback, useMemo } from 'react';
@@ -28,7 +28,7 @@ import { useCallback, useMemo } from 'react';
 import { PlanTag } from '../plan-tag';
 import * as styles from './member-item.css';
 import { CustomPermissionPanel } from '../general-access/custom-permission-panel';
-import { RolePresetsMask } from '@affine/core/modules/share-doc/types';
+import { RolePresetsMask } from '@yunke/core/modules/share-doc/types';
 
 export const MemberItem = ({
   openPaywallModal,

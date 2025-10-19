@@ -2,8 +2,8 @@ import {
   Avatar,
   AvatarFallback,
   AvatarImage,
-} from '@affine/admin/components/ui/avatar';
-import { Button } from '@affine/admin/components/ui/button';
+} from '@yunke/admin/components/ui/avatar';
+import { Button } from '@yunke/admin/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,7 +11,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@affine/admin/components/ui/dropdown-menu';
+} from '@yunke/admin/components/ui/dropdown-menu';
 import { MoreVerticalIcon } from '@blocksuite/icons/rc';
 import { cssVarV2 } from '@toeverything/theme/v2';
 import { CircleUser } from 'lucide-react';

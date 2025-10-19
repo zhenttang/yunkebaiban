@@ -1,6 +1,6 @@
-import { Tooltip } from '@affine/component/ui/tooltip';
-// import { SubscriptionPlan } from '@affine/graphql';
-import { useI18n } from '@affine/i18n';
+import { Tooltip } from '@yunke/component/ui/tooltip';
+// import { SubscriptionPlan } from '@yunke/graphql';
+import { useI18n } from '@yunke/i18n';
 import { useLiveData, useService } from '@toeverything/infra';
 import { type SyntheticEvent, useEffect } from 'react';
 

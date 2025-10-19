@@ -1,9 +1,9 @@
-import { Button } from '@affine/component';
+import { Button } from '@yunke/component';
 import {
   SettingRow,
   SettingWrapper,
-} from '@affine/component/setting-components';
-import { useI18n } from '@affine/i18n';
+} from '@yunke/component/setting-components';
+import { useI18n } from '@yunke/i18n';
 
 export const Preferences = () => {
   const t = useI18n();

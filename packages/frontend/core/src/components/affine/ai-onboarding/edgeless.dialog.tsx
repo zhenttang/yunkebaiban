@@ -1,10 +1,10 @@
-import { notify } from '@affine/component';
-import { type Notification } from '@affine/component/ui/notification';
-import { SubscriptionService } from '@affine/core/modules/cloud';
-import { WorkspaceDialogService } from '@affine/core/modules/dialogs';
-import { EditorService } from '@affine/core/modules/editor';
-import { useI18n } from '@affine/i18n';
-import { track } from '@affine/track';
+import { notify } from '@yunke/component';
+import { type Notification } from '@yunke/component/ui/notification';
+import { SubscriptionService } from '@yunke/core/modules/cloud';
+import { WorkspaceDialogService } from '@yunke/core/modules/dialogs';
+import { EditorService } from '@yunke/core/modules/editor';
+import { useI18n } from '@yunke/i18n';
+import { track } from '@yunke/track';
 import { AiIcon } from '@blocksuite/icons/rc';
 import { useLiveData, useService, useServices } from '@toeverything/infra';
 import { cssVar } from '@toeverything/theme';

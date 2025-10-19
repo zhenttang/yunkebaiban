@@ -1,6 +1,6 @@
-import type { MenuProps } from '@affine/component';
-import { Menu, Tooltip } from '@affine/component';
-import { useI18n } from '@affine/i18n';
+import type { MenuProps } from '@yunke/component';
+import { Menu, Tooltip } from '@yunke/component';
+import { useI18n } from '@yunke/i18n';
 import clsx from 'clsx';
 import type { HTMLAttributes, MouseEventHandler } from 'react';
 import { forwardRef, memo, useCallback, useMemo, useState } from 'react';

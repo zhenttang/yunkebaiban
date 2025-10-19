@@ -1,12 +1,12 @@
-import { Button, Checkbox, Loading, Switch, Tooltip } from '@affine/component';
-import { SettingHeader } from '@affine/component/setting-components';
-import { useAsyncCallback } from '@affine/core/components/hooks/affine-async-hooks';
+import { Button, Checkbox, Loading, Switch, Tooltip } from '@yunke/component';
+import { SettingHeader } from '@yunke/component/setting-components';
+import { useAsyncCallback } from '@yunke/core/components/hooks/affine-async-hooks';
 import {
   AFFINE_FLAGS,
   FeatureFlagService,
   type Flag,
-} from '@affine/core/modules/feature-flag';
-import { useI18n } from '@affine/i18n';
+} from '@yunke/core/modules/feature-flag';
+import { useI18n } from '@yunke/i18n';
 import {
   ArrowRightSmallIcon,
   DiscordIcon,

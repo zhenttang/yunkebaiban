@@ -1,6 +1,6 @@
-import { IconButton, Menu, observeResize } from '@affine/component';
-import type { PDF, PDFMeta, PDFRendererState } from '@affine/core/modules/pdf';
-import { PDFService, PDFStatus } from '@affine/core/modules/pdf';
+import { IconButton, Menu, observeResize } from '@yunke/component';
+import type { PDF, PDFMeta, PDFRendererState } from '@yunke/core/modules/pdf';
+import { PDFService, PDFStatus } from '@yunke/core/modules/pdf';
 import {
   Item,
   List,
@@ -12,8 +12,8 @@ import {
   type PDFVirtuosoProps,
   Scroller,
   ScrollSeekPlaceholder,
-} from '@affine/core/modules/pdf/views';
-import track from '@affine/track';
+} from '@yunke/core/modules/pdf/views';
+import track from '@yunke/track';
 import {
   CollapseIcon,
   ExpandIcon,

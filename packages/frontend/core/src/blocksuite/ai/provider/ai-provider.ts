@@ -1,4 +1,4 @@
-import type { EditorHost } from '@blocksuite/affine/std';
+import type { EditorHost } from '@blocksuite/yunke/std';
 import { captureException } from '@sentry/react';
 import { Subject } from 'rxjs';
 

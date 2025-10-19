@@ -1,12 +1,12 @@
-import type { DocCreateOptions } from '@affine/core/modules/doc/types';
+import type { DocCreateOptions } from '@yunke/core/modules/doc/types';
 import {
   NoteDisplayMode,
   type NoteProps,
   type ParagraphProps,
   type RootBlockProps,
-} from '@blocksuite/affine/model';
-import type { SurfaceBlockProps } from '@blocksuite/affine/std/gfx';
-import { type Store, Text } from '@blocksuite/affine/store';
+} from '@blocksuite/yunke/model';
+import type { SurfaceBlockProps } from '@blocksuite/yunke/std/gfx';
+import { type Store, Text } from '@blocksuite/yunke/store';
 
 export interface DocProps {
   page?: Partial<RootBlockProps>;

@@ -1,10 +1,10 @@
-import { Button } from '@affine/component/ui/button';
-import { notify } from '@affine/component/ui/notification';
-import { useAsyncCallback } from '@affine/core/components/hooks/affine-async-hooks';
-import { AuthService, ServerService } from '@affine/core/modules/cloud';
-import { UrlService } from '@affine/core/modules/url';
-import { UserFriendlyError } from '@affine/error';
-// import { OAuthProviderType } from '@affine/graphql';
+import { Button } from '@yunke/component/ui/button';
+import { notify } from '@yunke/component/ui/notification';
+import { useAsyncCallback } from '@yunke/core/components/hooks/affine-async-hooks';
+import { AuthService, ServerService } from '@yunke/core/modules/cloud';
+import { UrlService } from '@yunke/core/modules/url';
+import { UserFriendlyError } from '@yunke/error';
+// import { OAuthProviderType } from '@yunke/graphql';
 
 // GraphQL后端移除后的临时占位符枚举
 enum OAuthProviderType {
@@ -16,7 +16,7 @@ enum OAuthProviderType {
   Apple = 'apple',
 }
 
-import track from '@affine/track';
+import track from '@yunke/track';
 import {
   AppleIcon,
   GithubIcon,

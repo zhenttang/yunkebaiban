@@ -1,5 +1,5 @@
-import { channelToScheme } from '@affine/core/utils';
-import { DebugLogger } from '@affine/debug';
+import { channelToScheme } from '@yunke/core/utils';
+import { DebugLogger } from '@yunke/debug';
 
 const logger = new DebugLogger('open-in-app');
 

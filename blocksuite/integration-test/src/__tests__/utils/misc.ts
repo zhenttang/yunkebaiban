@@ -1,5 +1,5 @@
-import { AffineSchemas } from '@blocksuite/affine/schemas';
-import { replaceIdMiddleware } from '@blocksuite/affine/shared/adapters';
+import { AffineSchemas } from '@blocksuite/yunke/schemas';
+import { replaceIdMiddleware } from '@blocksuite/yunke/shared/adapters';
 import {
   type DocSnapshot,
   Schema,

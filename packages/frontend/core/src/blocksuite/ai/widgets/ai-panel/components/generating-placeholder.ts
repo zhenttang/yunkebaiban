@@ -1,6 +1,6 @@
-import { LoadingIcon } from '@blocksuite/affine/components/icons';
-import { WithDisposable } from '@blocksuite/affine/global/lit';
-import { unsafeCSSVar } from '@blocksuite/affine/shared/theme';
+import { LoadingIcon } from '@blocksuite/yunke/components/icons';
+import { WithDisposable } from '@blocksuite/yunke/global/lit';
+import { unsafeCSSVar } from '@blocksuite/yunke/shared/theme';
 import { baseTheme } from '@toeverything/theme';
 import {
   css,

@@ -1,6 +1,6 @@
-import type { ConfirmModalProps } from '@affine/component/ui/modal';
-import { ConfirmModal } from '@affine/component/ui/modal';
-import { useI18n } from '@affine/i18n';
+import type { ConfirmModalProps } from '@yunke/component/ui/modal';
+import { ConfirmModal } from '@yunke/component/ui/modal';
+import { useI18n } from '@yunke/i18n';
 import { useMemo } from 'react';
 
 type SignOutConfirmModalI18NKeys =

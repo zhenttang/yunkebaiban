@@ -1,5 +1,5 @@
-import { FeatureFlagService } from '@affine/core/modules/feature-flag';
-import { ThemeEditorService } from '@affine/core/modules/theme-editor';
+import { FeatureFlagService } from '@yunke/core/modules/feature-flag';
+import { ThemeEditorService } from '@yunke/core/modules/theme-editor';
 import { useLiveData, useServices } from '@toeverything/infra';
 import { useTheme } from 'next-themes';
 import { useEffect } from 'react';

@@ -1,13 +1,13 @@
-import { Switch } from '@affine/component';
+import { Switch } from '@yunke/component';
 import {
   SettingHeader,
   SettingRow,
   SettingWrapper,
-} from '@affine/component/setting-components';
-import { useAppUpdater } from '@affine/core/components/hooks/use-app-updater';
-import { UrlService } from '@affine/core/modules/url';
-import { appIconMap, appNames } from '@affine/core/utils/channel';
-import { useI18n } from '@affine/i18n';
+} from '@yunke/component/setting-components';
+import { useAppUpdater } from '@yunke/core/components/hooks/use-app-updater';
+import { UrlService } from '@yunke/core/modules/url';
+import { appIconMap, appNames } from '@yunke/core/utils/channel';
+import { useI18n } from '@yunke/i18n';
 import { ArrowRightSmallIcon, OpenInNewIcon } from '@blocksuite/icons/rc';
 import { useServices } from '@toeverything/infra';
 import { useCallback } from 'react';

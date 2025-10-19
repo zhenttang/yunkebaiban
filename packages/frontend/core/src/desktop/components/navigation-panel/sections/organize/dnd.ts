@@ -1,6 +1,6 @@
-import type { DropTargetOptions } from '@affine/component';
-import { isOrganizeSupportType } from '@affine/core/modules/organize/constants';
-import type { AffineDNDData } from '@affine/core/types/dnd';
+import type { DropTargetOptions } from '@yunke/component';
+import { isOrganizeSupportType } from '@yunke/core/modules/organize/constants';
+import type { AffineDNDData } from '@yunke/core/types/dnd';
 
 import type { NavigationPanelTreeNodeDropEffect } from '../../tree';
 

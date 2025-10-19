@@ -1,10 +1,10 @@
-import { Button, InlineEdit, Menu, useConfirmModal } from '@affine/component';
+import { Button, InlineEdit, Menu, useConfirmModal } from '@yunke/component';
 import {
   type CalendarSubscription,
   IntegrationService,
-} from '@affine/core/modules/integration';
-import { useI18n } from '@affine/i18n';
-import track from '@affine/track';
+} from '@yunke/core/modules/integration';
+import { useI18n } from '@yunke/i18n';
+import track from '@yunke/track';
 import { useLiveData, useService } from '@toeverything/infra';
 import { useCallback, useMemo, useState } from 'react';
 

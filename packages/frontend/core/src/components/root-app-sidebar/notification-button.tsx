@@ -1,8 +1,8 @@
-import { Menu } from '@affine/component';
-import { MenuItem } from '@affine/core/modules/app-sidebar/views';
-import { NotificationCountService } from '@affine/core/modules/notification';
-import { useI18n } from '@affine/i18n';
-import { track } from '@affine/track';
+import { Menu } from '@yunke/component';
+import { MenuItem } from '@yunke/core/modules/app-sidebar/views';
+import { NotificationCountService } from '@yunke/core/modules/notification';
+import { useI18n } from '@yunke/i18n';
+import { track } from '@yunke/track';
 import { NotificationIcon } from '@blocksuite/icons/rc';
 import { useLiveData, useService } from '@toeverything/infra';
 import { useCallback, useState } from 'react';

@@ -1,8 +1,8 @@
 type CopilotSessionType = any;
-import { createLitPortal } from '@blocksuite/affine/components/portal';
-import { WithDisposable } from '@blocksuite/affine/global/lit';
-import { unsafeCSSVar, unsafeCSSVarV2 } from '@blocksuite/affine/shared/theme';
-import { ShadowlessElement } from '@blocksuite/affine/std';
+import { createLitPortal } from '@blocksuite/yunke/components/portal';
+import { WithDisposable } from '@blocksuite/yunke/global/lit';
+import { unsafeCSSVar, unsafeCSSVarV2 } from '@blocksuite/yunke/shared/theme';
+import { ShadowlessElement } from '@blocksuite/yunke/std';
 import { flip, offset } from '@floating-ui/dom';
 import { css, html, nothing } from 'lit';
 import { property, query } from 'lit/decorators.js';

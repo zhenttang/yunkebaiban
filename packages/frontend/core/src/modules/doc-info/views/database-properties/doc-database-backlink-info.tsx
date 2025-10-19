@@ -3,12 +3,12 @@ import {
   PropertyCollapsibleContent,
   PropertyCollapsibleSection,
   PropertyName,
-} from '@affine/component';
-import { AffinePageReference } from '@affine/core/components/affine/reference-link';
-import { DocService } from '@affine/core/modules/doc';
-import { TemplateDocService } from '@affine/core/modules/template-doc';
-import { useI18n } from '@affine/i18n';
-import type { DatabaseBlockDataSource } from '@blocksuite/affine/blocks/database';
+} from '@yunke/component';
+import { AffinePageReference } from '@yunke/core/components/affine/reference-link';
+import { DocService } from '@yunke/core/modules/doc';
+import { TemplateDocService } from '@yunke/core/modules/template-doc';
+import { useI18n } from '@yunke/i18n';
+import type { DatabaseBlockDataSource } from '@blocksuite/yunke/blocks/database';
 import { DatabaseTableViewIcon, PageIcon } from '@blocksuite/icons/rc';
 import { LiveData, useLiveData, useService } from '@toeverything/infra';
 import { useMemo } from 'react';

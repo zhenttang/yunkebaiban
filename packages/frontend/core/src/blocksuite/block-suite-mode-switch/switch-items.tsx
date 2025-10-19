@@ -1,9 +1,9 @@
-import { Tooltip } from '@affine/component';
+import { Tooltip } from '@yunke/component';
 import {
   type CustomLottieProps,
   InternalLottie,
-} from '@affine/component/internal-lottie';
-import { useI18n } from '@affine/i18n';
+} from '@yunke/component/internal-lottie';
+import { useI18n } from '@yunke/i18n';
 import type { HTMLAttributes } from 'react';
 import type React from 'react';
 import { cloneElement, forwardRef, useState } from 'react';

@@ -1,14 +1,14 @@
-import { AppSidebarService } from '@affine/core/modules/app-sidebar';
-import { DesktopApiService } from '@affine/core/modules/desktop-api';
+import { AppSidebarService } from '@yunke/core/modules/app-sidebar';
+import { DesktopApiService } from '@yunke/core/modules/desktop-api';
 import {
   GlobalDialogService,
   WorkspaceDialogService,
-} from '@affine/core/modules/dialogs';
-import { I18nService } from '@affine/core/modules/i18n';
-import { UrlService } from '@affine/core/modules/url';
-import { WorkbenchService } from '@affine/core/modules/workbench';
-import { WorkspaceService } from '@affine/core/modules/workspace';
-import { useI18n } from '@affine/i18n';
+} from '@yunke/core/modules/dialogs';
+import { I18nService } from '@yunke/core/modules/i18n';
+import { UrlService } from '@yunke/core/modules/url';
+import { WorkbenchService } from '@yunke/core/modules/workbench';
+import { WorkspaceService } from '@yunke/core/modules/workspace';
+import { useI18n } from '@yunke/i18n';
 import {
   useService,
   useServiceOptional,

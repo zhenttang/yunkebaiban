@@ -2,8 +2,8 @@ import {
   Avatar,
   AvatarFallback,
   AvatarImage,
-} from '@affine/admin/components/ui/avatar';
-// import { FeatureType } from '@affine/graphql';
+} from '@yunke/admin/components/ui/avatar';
+// import { FeatureType } from '@yunke/graphql';
 import { FeatureType } from '../schema';
 import {
   AccountIcon,

@@ -1,0 +1,55 @@
+{
+  "name": "@blocksuite/yunke-block-excalidraw",
+  "version": "0.17.26",
+  "description": "Excalidraw block for BlockSuite",
+  "type": "module",
+  "repository": "toeverything/blocksuite",
+  "scripts": {
+    "build": "tsc",
+    "test:unit": "nx vite:test --run --reporter=verbose",
+    "test:unit:coverage": "nx vite:test --run --coverage"
+  },
+  "keywords": [],
+  "author": "toeverything",
+  "license": "MPL-2.0",
+  "dependencies": {
+    "@blocksuite/global": "workspace:*",
+    "@blocksuite/icons": "^2.2.12",
+    "@blocksuite/std": "workspace:*",
+    "@blocksuite/store": "workspace:*",
+    "@blocksuite/yunke-components": "workspace:*",
+    "@blocksuite/yunke-ext-loader": "workspace:*",
+    "@blocksuite/yunke-model": "workspace:*",
+    "@blocksuite/yunke-shared": "workspace:*",
+    "@blocksuite/yunke-widget-slash-menu": "workspace:*",
+    "@excalidraw/excalidraw": "^0.17.6",
+    "lit": "^3.1.0",
+    "nanoid": "^5.0.4",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.7.9"
+  },
+  "exports": {
+    ".": "./src/index.ts",
+    "./view": "./src/view.ts",
+    "./store": "./src/store.ts"
+  },
+  "publishConfig": {
+    "access": "public",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "exports": {
+      ".": {
+        "types": "./dist/index.d.ts",
+        "import": "./dist/index.js"
+      }
+    }
+  },
+  "files": [
+    "src",
+    "dist",
+    "!src/__tests__"
+  ]
+}

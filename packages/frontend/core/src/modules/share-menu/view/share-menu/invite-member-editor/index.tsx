@@ -1,5 +1,5 @@
-import { Input } from '@affine/component';
-import { useI18n } from '@affine/i18n';
+import { Input } from '@yunke/component';
+import { useI18n } from '@yunke/i18n';
 import { SearchIcon } from '@blocksuite/icons/rc';
 import { cssVar } from '@toeverything/theme';
 

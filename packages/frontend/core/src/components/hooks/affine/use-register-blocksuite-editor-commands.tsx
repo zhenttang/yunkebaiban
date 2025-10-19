@@ -1,19 +1,19 @@
-import { toast, useConfirmModal } from '@affine/component';
+import { toast, useConfirmModal } from '@yunke/component';
 import {
   PreconditionStrategy,
   registerAffineCommand,
-} from '@affine/core/commands';
-import { WorkspaceDialogService } from '@affine/core/modules/dialogs';
-import { DocService } from '@affine/core/modules/doc';
-import type { Editor } from '@affine/core/modules/editor';
-import { EditorSettingService } from '@affine/core/modules/editor-setting';
-import { CompatibleFavoriteItemsAdapter } from '@affine/core/modules/favorite';
-import { OpenInAppService } from '@affine/core/modules/open-in-app';
-import { GuardService } from '@affine/core/modules/permissions';
-import { WorkspaceService } from '@affine/core/modules/workspace';
-import { UserFriendlyError } from '@affine/error';
-import { useI18n } from '@affine/i18n';
-import { track } from '@affine/track';
+} from '@yunke/core/commands';
+import { WorkspaceDialogService } from '@yunke/core/modules/dialogs';
+import { DocService } from '@yunke/core/modules/doc';
+import type { Editor } from '@yunke/core/modules/editor';
+import { EditorSettingService } from '@yunke/core/modules/editor-setting';
+import { CompatibleFavoriteItemsAdapter } from '@yunke/core/modules/favorite';
+import { OpenInAppService } from '@yunke/core/modules/open-in-app';
+import { GuardService } from '@yunke/core/modules/permissions';
+import { WorkspaceService } from '@yunke/core/modules/workspace';
+import { UserFriendlyError } from '@yunke/error';
+import { useI18n } from '@yunke/i18n';
+import { track } from '@yunke/track';
 import {
   EdgelessIcon,
   HistoryIcon,

@@ -1,4 +1,4 @@
-import { UserFriendlyError } from '@affine/error';
+import { UserFriendlyError } from '@yunke/error';
 import {
   LiveData,
 } from '@toeverything/infra';

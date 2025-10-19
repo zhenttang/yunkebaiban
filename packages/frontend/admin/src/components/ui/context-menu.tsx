@@ -1,4 +1,4 @@
-import { cn } from '@affine/admin/utils';
+import { cn } from '@yunke/admin/utils';
 import * as ContextMenuPrimitive from '@radix-ui/react-context-menu';
 import { Check, ChevronRight, Circle } from 'lucide-react';
 import * as React from 'react';

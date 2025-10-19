@@ -1,30 +1,30 @@
-import { CodeBlockPreviewIdentifier } from '@blocksuite/affine/blocks/code';
-import { addImages } from '@blocksuite/affine/blocks/image';
-import { getSurfaceBlock } from '@blocksuite/affine/blocks/surface';
-import { LoadingIcon } from '@blocksuite/affine/components/icons';
-import { addTree } from '@blocksuite/affine/gfx/mindmap';
-import { fitContent } from '@blocksuite/affine/gfx/shape';
-import { createTemplateJob } from '@blocksuite/affine/gfx/template';
-import { Bound } from '@blocksuite/affine/global/gfx';
+import { CodeBlockPreviewIdentifier } from '@blocksuite/yunke/blocks/code';
+import { addImages } from '@blocksuite/yunke/blocks/image';
+import { getSurfaceBlock } from '@blocksuite/yunke/blocks/surface';
+import { LoadingIcon } from '@blocksuite/yunke/components/icons';
+import { addTree } from '@blocksuite/yunke/gfx/mindmap';
+import { fitContent } from '@blocksuite/yunke/gfx/shape';
+import { createTemplateJob } from '@blocksuite/yunke/gfx/template';
+import { Bound } from '@blocksuite/yunke/global/gfx';
 import type {
   MindmapElementModel,
   ShapeElementModel,
-} from '@blocksuite/affine/model';
+} from '@blocksuite/yunke/model';
 import {
   EDGELESS_TEXT_BLOCK_MIN_HEIGHT,
   EDGELESS_TEXT_BLOCK_MIN_WIDTH,
   EdgelessTextBlockModel,
   ImageBlockModel,
   NoteDisplayMode,
-} from '@blocksuite/affine/model';
-import { TelemetryProvider } from '@blocksuite/affine/shared/services';
-import type { EditorHost } from '@blocksuite/affine/std';
-import { GfxControllerIdentifier } from '@blocksuite/affine/std/gfx';
-import { Text } from '@blocksuite/affine/store';
+} from '@blocksuite/yunke/model';
+import { TelemetryProvider } from '@blocksuite/yunke/shared/services';
+import type { EditorHost } from '@blocksuite/yunke/std';
+import { GfxControllerIdentifier } from '@blocksuite/yunke/std/gfx';
+import { Text } from '@blocksuite/yunke/store';
 import {
   AFFINE_TOOLBAR_WIDGET,
   type AffineToolbarWidget,
-} from '@blocksuite/affine/widgets/toolbar';
+} from '@blocksuite/yunke/widgets/toolbar';
 import {
   ChatWithAiIcon,
   DeleteIcon,

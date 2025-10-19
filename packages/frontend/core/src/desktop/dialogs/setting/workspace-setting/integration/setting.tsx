@@ -1,4 +1,4 @@
-import { Switch } from '@affine/component';
+import { Switch } from '@yunke/component';
 import { DoneIcon } from '@blocksuite/icons/rc';
 import clsx from 'clsx';
 import type { HTMLAttributes, ReactNode } from 'react';

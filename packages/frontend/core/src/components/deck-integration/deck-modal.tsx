@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState, useCallback } from 'react';
-import { Modal } from '@affine/component';
-import { toast } from '@affine/component';
+import { Modal } from '@yunke/component';
+import { toast } from '@yunke/component';
 
 export interface DeckModalProps {
   open: boolean;

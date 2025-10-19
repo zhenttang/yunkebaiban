@@ -16,7 +16,7 @@
     { "path": "../electron-api" },
     { "path": "../../common/error" },
     { "path": "../i18n" },
-    { "path": "../../../tools/utils" },
-    { "path": "../../../blocksuite/affine/all" }
+    { "path": "../../../blocksuite/yunke/all" },
+    { "path": "../../../tools/utils" }
   ]
 }

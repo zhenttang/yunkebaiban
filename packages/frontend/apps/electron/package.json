@@ -1,5 +1,5 @@
 {
-  "name": "@affine/electron",
+  "name": "@yunke/electron",
   "private": true,
   "version": "0.21.0",
   "main": "./dist/main.js",
@@ -32,8 +32,6 @@
     "make-nsis": "node ./scripts/make-nsis.ts"
   },
   "devDependencies": {
-    "@affine-tools/utils": "workspace:*",
-    "@affine/nbstore": "workspace:*",
     "@electron-forge/cli": "^7.6.0",
     "@electron-forge/core": "^7.6.0",
     "@electron-forge/core-utils": "^7.6.0",
@@ -52,6 +50,8 @@
     "@types/set-cookie-parser": "^2.4.10",
     "@types/uuid": "^10.0.0",
     "@vitejs/plugin-react-swc": "^3.7.2",
+    "@yunke-tools/utils": "workspace:*",
+    "@yunke/nbstore": "workspace:*",
     "app-builder-lib": "^26.0.0",
     "builder-util-runtime": "^9.2.10",
     "cross-env": "^7.0.3",
@@ -75,7 +75,7 @@
     "zod": "^3.24.1"
   },
   "dependencies": {
-    "@affine/native": "workspace:*",
+    "@yunke/native": "workspace:*",
     "async-call-rpc": "^6.4.2",
     "electron-updater": "^6.3.9",
     "link-preview-js": "^3.0.12",

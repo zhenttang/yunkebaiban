@@ -1,5 +1,5 @@
-import type { WorkspaceServerService } from '@affine/core/modules/cloud';
-// import { getWorkspacePublicPagesQuery } from '@affine/graphql';
+import type { WorkspaceServerService } from '@yunke/core/modules/cloud';
+// import { getWorkspacePublicPagesQuery } from '@yunke/graphql';
 import { Store } from '@toeverything/infra';
 
 export class ShareDocsStore extends Store {

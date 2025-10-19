@@ -1,5 +1,5 @@
-import { isInsidePageEditor } from '@blocksuite/affine/shared/utils';
-import type { EditorHost } from '@blocksuite/affine/std';
+import { isInsidePageEditor } from '@blocksuite/yunke/shared/utils';
+import type { EditorHost } from '@blocksuite/yunke/std';
 
 import type { AIItemGroupConfig } from '../../components/ai-item/types';
 

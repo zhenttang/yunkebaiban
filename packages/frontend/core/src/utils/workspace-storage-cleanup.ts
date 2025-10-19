@@ -5,7 +5,7 @@
  * 确保前端使用正确的工作空间ID
  */
 
-import { DebugLogger } from '@affine/debug';
+import { DebugLogger } from '@yunke/debug';
 
 const logger = new DebugLogger('affine:workspace-storage-cleanup');
 

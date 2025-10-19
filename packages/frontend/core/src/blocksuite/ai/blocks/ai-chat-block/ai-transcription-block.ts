@@ -1,6 +1,6 @@
-import type { TranscriptionBlockModel } from '@affine/core/blocksuite/ai/blocks/transcription-block/model';
-import { BlockComponent, BlockViewExtension } from '@blocksuite/affine/std';
-import type { ExtensionType } from '@blocksuite/affine/store';
+import type { TranscriptionBlockModel } from '@yunke/core/blocksuite/ai/blocks/transcription-block/model';
+import { BlockComponent, BlockViewExtension } from '@blocksuite/yunke/std';
+import type { ExtensionType } from '@blocksuite/yunke/store';
 import { css, type PropertyValues } from 'lit';
 import { property } from 'lit/decorators.js';
 import { literal } from 'lit/static-html.js';

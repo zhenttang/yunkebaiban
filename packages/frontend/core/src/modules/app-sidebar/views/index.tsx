@@ -1,10 +1,10 @@
-import { type DropTargetGetFeedback, Skeleton } from '@affine/component';
-import { ResizePanel } from '@affine/component/resize-panel';
-import { useAppSettingHelper } from '@affine/core/components/hooks/affine/use-app-setting-helper';
-import { NavigateContext } from '@affine/core/components/hooks/use-navigate-helper';
-import { WorkspaceNavigator } from '@affine/core/components/workspace-selector';
-import type { AffineDNDData } from '@affine/core/types/dnd';
-import { useI18n } from '@affine/i18n';
+import { type DropTargetGetFeedback, Skeleton } from '@yunke/component';
+import { ResizePanel } from '@yunke/component/resize-panel';
+import { useAppSettingHelper } from '@yunke/core/components/hooks/affine/use-app-setting-helper';
+import { NavigateContext } from '@yunke/core/components/hooks/use-navigate-helper';
+import { WorkspaceNavigator } from '@yunke/core/components/workspace-selector';
+import type { AffineDNDData } from '@yunke/core/types/dnd';
+import { useI18n } from '@yunke/i18n';
 import {
   useLiveData,
   useService,

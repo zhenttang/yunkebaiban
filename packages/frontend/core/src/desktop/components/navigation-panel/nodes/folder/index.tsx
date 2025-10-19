@@ -8,20 +8,20 @@ import {
   MenuSeparator,
   MenuSub,
   notify,
-} from '@affine/component';
-import { usePageHelper } from '@affine/core/blocksuite/block-suite-page-list/utils';
-import { WorkspaceDialogService } from '@affine/core/modules/dialogs';
-import { CompatibleFavoriteItemsAdapter } from '@affine/core/modules/favorite';
-import { FeatureFlagService } from '@affine/core/modules/feature-flag';
+} from '@yunke/component';
+import { usePageHelper } from '@yunke/core/blocksuite/block-suite-page-list/utils';
+import { WorkspaceDialogService } from '@yunke/core/modules/dialogs';
+import { CompatibleFavoriteItemsAdapter } from '@yunke/core/modules/favorite';
+import { FeatureFlagService } from '@yunke/core/modules/feature-flag';
 import {
   type FolderNode,
   OrganizeService,
-} from '@affine/core/modules/organize';
-import { WorkspaceService } from '@affine/core/modules/workspace';
-import type { AffineDNDData } from '@affine/core/types/dnd';
-import { Unreachable } from '@affine/env/constant';
-import { useI18n } from '@affine/i18n';
-import { track } from '@affine/track';
+} from '@yunke/core/modules/organize';
+import { WorkspaceService } from '@yunke/core/modules/workspace';
+import type { AffineDNDData } from '@yunke/core/types/dnd';
+import { Unreachable } from '@yunke/env/constant';
+import { useI18n } from '@yunke/i18n';
+import { track } from '@yunke/track';
 import {
   DeleteIcon,
   FolderIcon,

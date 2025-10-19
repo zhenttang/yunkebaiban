@@ -1,9 +1,9 @@
-import { notify } from '@affine/component';
-import { WorkspaceDialogService } from '@affine/core/modules/dialogs';
-import { WorkspacePermissionService } from '@affine/core/modules/permissions';
-import { WorkspaceService } from '@affine/core/modules/workspace';
-import { useI18n } from '@affine/i18n';
-import type { BlobSyncState } from '@affine/nbstore';
+import { notify } from '@yunke/component';
+import { WorkspaceDialogService } from '@yunke/core/modules/dialogs';
+import { WorkspacePermissionService } from '@yunke/core/modules/permissions';
+import { WorkspaceService } from '@yunke/core/modules/workspace';
+import { useI18n } from '@yunke/i18n';
+import type { BlobSyncState } from '@yunke/nbstore';
 import { useLiveData, useService } from '@toeverything/infra';
 import { debounce } from 'lodash-es';
 import { useCallback, useEffect } from 'react';

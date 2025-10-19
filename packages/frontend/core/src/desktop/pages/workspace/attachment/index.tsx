@@ -1,7 +1,7 @@
-import { Skeleton } from '@affine/component';
-import { AttachmentViewerView } from '@affine/core/blocksuite/attachment-viewer';
-import { type Doc, DocsService } from '@affine/core/modules/doc';
-import { type AttachmentBlockModel } from '@blocksuite/affine/model';
+import { Skeleton } from '@yunke/component';
+import { AttachmentViewerView } from '@yunke/core/blocksuite/attachment-viewer';
+import { type Doc, DocsService } from '@yunke/core/modules/doc';
+import { type AttachmentBlockModel } from '@blocksuite/yunke/model';
 import { FrameworkScope, useLiveData, useService } from '@toeverything/infra';
 import { type ReactElement, useLayoutEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';

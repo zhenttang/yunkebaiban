@@ -1,11 +1,11 @@
-import { MenuItem, notify, useConfirmModal } from '@affine/component';
+import { MenuItem, notify, useConfirmModal } from '@yunke/component';
 import {
   type Member,
   WorkspaceMembersService,
   WorkspacePermissionService,
-} from '@affine/core/modules/permissions';
-// import { Permission, WorkspaceMemberStatus } from '@affine/graphql';
-import { useI18n } from '@affine/i18n';
+} from '@yunke/core/modules/permissions';
+// import { Permission, WorkspaceMemberStatus } from '@yunke/graphql';
+import { useI18n } from '@yunke/i18n';
 // 本地枚举，替代 GraphQL 类型
 enum Permission {
   Owner = 'Owner',

@@ -1,5 +1,5 @@
-import { SwipeHelper } from '@affine/core/mobile/utils';
-import { useI18n } from '@affine/i18n';
+import { SwipeHelper } from '@yunke/core/mobile/utils';
+import { useI18n } from '@yunke/i18n';
 import { animate, eases } from 'animejs';
 import clsx from 'clsx';
 import dayjs from 'dayjs';

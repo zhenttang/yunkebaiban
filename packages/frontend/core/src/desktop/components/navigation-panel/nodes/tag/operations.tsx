@@ -1,13 +1,13 @@
-import { IconButton, MenuItem, MenuSeparator, toast } from '@affine/component';
-import { usePageHelper } from '@affine/core/blocksuite/block-suite-page-list/utils';
-import { IsFavoriteIcon } from '@affine/core/components/pure/icons';
-import { DocsService } from '@affine/core/modules/doc';
-import { FavoriteService } from '@affine/core/modules/favorite';
-import { TagService } from '@affine/core/modules/tag';
-import { WorkbenchService } from '@affine/core/modules/workbench';
-import { WorkspaceService } from '@affine/core/modules/workspace';
-import { useI18n } from '@affine/i18n';
-import { track } from '@affine/track';
+import { IconButton, MenuItem, MenuSeparator, toast } from '@yunke/component';
+import { usePageHelper } from '@yunke/core/blocksuite/block-suite-page-list/utils';
+import { IsFavoriteIcon } from '@yunke/core/components/pure/icons';
+import { DocsService } from '@yunke/core/modules/doc';
+import { FavoriteService } from '@yunke/core/modules/favorite';
+import { TagService } from '@yunke/core/modules/tag';
+import { WorkbenchService } from '@yunke/core/modules/workbench';
+import { WorkspaceService } from '@yunke/core/modules/workspace';
+import { useI18n } from '@yunke/i18n';
+import { track } from '@yunke/track';
 import {
   DeleteIcon,
   OpenInNewIcon,

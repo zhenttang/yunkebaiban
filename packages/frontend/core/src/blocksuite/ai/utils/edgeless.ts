@@ -1,13 +1,13 @@
-import { SurfaceBlockModel } from '@blocksuite/affine/blocks/surface';
+import { SurfaceBlockModel } from '@blocksuite/yunke/blocks/surface';
 import {
   MindmapElementModel,
   NoteBlockModel,
   RootBlockModel,
   type ShapeElementModel,
-} from '@blocksuite/affine/model';
-import { matchModels } from '@blocksuite/affine/shared/utils';
-import type { BlockComponent } from '@blocksuite/affine/std';
-import type { GfxModel } from '@blocksuite/affine/std/gfx';
+} from '@blocksuite/yunke/model';
+import { matchModels } from '@blocksuite/yunke/shared/utils';
+import type { BlockComponent } from '@blocksuite/yunke/std';
+import type { GfxModel } from '@blocksuite/yunke/std/gfx';
 
 export function mindMapToMarkdown(mindmap: MindmapElementModel) {
   let markdownStr = '';

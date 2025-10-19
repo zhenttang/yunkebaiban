@@ -1,20 +1,20 @@
-import { FlexWrapper } from '@affine/component';
-import { EmptyCollectionDetail } from '@affine/core/components/affine/empty/collection-detail';
+import { FlexWrapper } from '@yunke/component';
+import { EmptyCollectionDetail } from '@yunke/core/components/affine/empty/collection-detail';
 import {
   createDocExplorerContext,
   DocExplorerContext,
-} from '@affine/core/components/explorer/context';
-import { DocsExplorer } from '@affine/core/components/explorer/docs-view/docs-list';
-import type { ExplorerDisplayPreference } from '@affine/core/components/explorer/types';
+} from '@yunke/core/components/explorer/context';
+import { DocsExplorer } from '@yunke/core/components/explorer/docs-view/docs-list';
+import type { ExplorerDisplayPreference } from '@yunke/core/components/explorer/types';
 import {
   type Collection,
   CollectionService,
-} from '@affine/core/modules/collection';
-import { CollectionRulesService } from '@affine/core/modules/collection-rules';
-import { GlobalContextService } from '@affine/core/modules/global-context';
-import { WorkspacePermissionService } from '@affine/core/modules/permissions';
-import { WorkspaceService } from '@affine/core/modules/workspace';
-import { useI18n } from '@affine/i18n';
+} from '@yunke/core/modules/collection';
+import { CollectionRulesService } from '@yunke/core/modules/collection-rules';
+import { GlobalContextService } from '@yunke/core/modules/global-context';
+import { WorkspacePermissionService } from '@yunke/core/modules/permissions';
+import { WorkspaceService } from '@yunke/core/modules/workspace';
+import { useI18n } from '@yunke/i18n';
 import { ViewLayersIcon } from '@blocksuite/icons/rc';
 import { useLiveData, useService, useServices } from '@toeverything/infra';
 import { useCallback, useEffect, useState } from 'react';

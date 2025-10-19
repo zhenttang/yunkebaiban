@@ -11,7 +11,7 @@
     "prefix": ""
   },
   "aliases": {
-    "components": "@affine/admin/components",
-    "utils": "@affine/admin/utils"
+    "components": "@yunke/admin/components",
+    "utils": "@yunke/admin/utils"
   }
 }

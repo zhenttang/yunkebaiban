@@ -1,5 +1,5 @@
-import { DocModeProvider } from '@blocksuite/affine/shared/services';
-import type { Workspace } from '@blocksuite/affine/store';
+import { DocModeProvider } from '@blocksuite/yunke/shared/services';
+import type { Workspace } from '@blocksuite/yunke/store';
 import { TestAffineEditorContainer } from '@blocksuite/integration-test';
 
 import {

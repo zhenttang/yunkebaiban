@@ -1,6 +1,6 @@
-import type { DocCustomPropertyInfo } from '@affine/core/modules/db';
-import { type DocRecord, DocsService } from '@affine/core/modules/doc';
-import { WorkspacePropertyService } from '@affine/core/modules/workspace-property';
+import type { DocCustomPropertyInfo } from '@yunke/core/modules/db';
+import { type DocRecord, DocsService } from '@yunke/core/modules/doc';
+import { WorkspacePropertyService } from '@yunke/core/modules/workspace-property';
 import { useLiveData, useService } from '@toeverything/infra';
 import clsx from 'clsx';
 import { useContext, useMemo } from 'react';

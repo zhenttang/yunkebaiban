@@ -1,8 +1,8 @@
-import type { WeekDatePickerHandle } from '@affine/component';
-import { WeekDatePicker } from '@affine/component';
-import { useJournalRouteHelper } from '@affine/core/components/hooks/use-journal';
-import { JournalService } from '@affine/core/modules/journal';
-import type { Store } from '@blocksuite/affine/store';
+import type { WeekDatePickerHandle } from '@yunke/component';
+import { WeekDatePicker } from '@yunke/component';
+import { useJournalRouteHelper } from '@yunke/core/components/hooks/use-journal';
+import { JournalService } from '@yunke/core/modules/journal';
+import type { Store } from '@blocksuite/yunke/store';
 import { useLiveData, useService } from '@toeverything/infra';
 import dayjs from 'dayjs';
 import { useEffect, useRef, useState } from 'react';

@@ -2,19 +2,19 @@ import {
   type DropTargetDropEvent,
   IconButton,
   useDropTarget,
-} from '@affine/component';
-import { usePageHelper } from '@affine/core/blocksuite/block-suite-page-list/utils';
-import type { FavoriteSupportTypeUnion } from '@affine/core/modules/favorite';
+} from '@yunke/component';
+import { usePageHelper } from '@yunke/core/blocksuite/block-suite-page-list/utils';
+import type { FavoriteSupportTypeUnion } from '@yunke/core/modules/favorite';
 import {
   FavoriteService,
   isFavoriteSupportType,
-} from '@affine/core/modules/favorite';
-import { NavigationPanelService } from '@affine/core/modules/navigation-panel';
-import { WorkspaceService } from '@affine/core/modules/workspace';
-import type { AffineDNDData } from '@affine/core/types/dnd';
-import { inferOpenMode } from '@affine/core/utils';
-import { useI18n } from '@affine/i18n';
-import { track } from '@affine/track';
+} from '@yunke/core/modules/favorite';
+import { NavigationPanelService } from '@yunke/core/modules/navigation-panel';
+import { WorkspaceService } from '@yunke/core/modules/workspace';
+import type { AffineDNDData } from '@yunke/core/types/dnd';
+import { inferOpenMode } from '@yunke/core/utils';
+import { useI18n } from '@yunke/i18n';
+import { track } from '@yunke/track';
 import { PlusIcon } from '@blocksuite/icons/rc';
 import { useLiveData, useServices } from '@toeverything/infra';
 import { type MouseEventHandler, useCallback } from 'react';

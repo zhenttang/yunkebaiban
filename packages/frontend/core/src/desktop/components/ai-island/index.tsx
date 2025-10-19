@@ -1,4 +1,4 @@
-import { WorkbenchService } from '@affine/core/modules/workbench';
+import { WorkbenchService } from '@yunke/core/modules/workbench';
 import { useLiveData, useService } from '@toeverything/infra';
 import clsx from 'clsx';
 import { useEffect, useState } from 'react';

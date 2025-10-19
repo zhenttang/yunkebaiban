@@ -1,19 +1,19 @@
-import { AffineContext } from '@affine/core/components/context';
-import { AppContainer } from '@affine/core/desktop/components/app-container';
-import { router } from '@affine/core/desktop/router';
-import { configureCommonModules } from '@affine/core/modules';
-import { I18nProvider } from '@affine/core/modules/i18n';
-import { LifecycleService } from '@affine/core/modules/lifecycle';
+import { AffineContext } from '@yunke/core/components/context';
+import { AppContainer } from '@yunke/core/desktop/components/app-container';
+import { router } from '@yunke/core/desktop/router';
+import { configureCommonModules } from '@yunke/core/modules';
+import { I18nProvider } from '@yunke/core/modules/i18n';
+import { LifecycleService } from '@yunke/core/modules/lifecycle';
 import {
   configureLocalStorageStateStorageImpls,
   NbstoreProvider,
-} from '@affine/core/modules/storage';
-import { PopupWindowProvider } from '@affine/core/modules/url';
-import { configureBrowserWorkbenchModule } from '@affine/core/modules/workbench';
-import { configureBrowserWorkspaceFlavours } from '@affine/core/modules/workspace-engine';
-import createEmotionCache from '@affine/core/utils/create-emotion-cache';
-import { getWorkerUrl } from '@affine/env/worker';
-import { StoreManagerClient } from '@affine/nbstore/worker/client';
+} from '@yunke/core/modules/storage';
+import { PopupWindowProvider } from '@yunke/core/modules/url';
+import { configureBrowserWorkbenchModule } from '@yunke/core/modules/workbench';
+import { configureBrowserWorkspaceFlavours } from '@yunke/core/modules/workspace-engine';
+import createEmotionCache from '@yunke/core/utils/create-emotion-cache';
+import { getWorkerUrl } from '@yunke/env/worker';
+import { StoreManagerClient } from '@yunke/nbstore/worker/client';
 import { CacheProvider } from '@emotion/react';
 import { Framework, FrameworkRoot, getCurrentStore } from '@toeverything/infra';
 import { OpClient } from '@toeverything/infra/op';
@@ -22,7 +22,7 @@ import { RouterProvider } from 'react-router-dom';
 
 import { CloudStorageProvider } from './cloud-storage-manager';
 import { CloudStorageIndicator } from './components/cloud-storage-indicator';
-import { deckerIntegrationManager } from '@affine/core/modules/decker-integration/decker-integration-manager';
+import { deckerIntegrationManager } from '@yunke/core/modules/decker-integration/decker-integration-manager';
 
 const cache = createEmotionCache();
 

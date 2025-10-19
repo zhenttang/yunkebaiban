@@ -2,14 +2,14 @@ import { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { Badge } from '@affine/admin/components/ui/badge';
-import { Button } from '@affine/admin/components/ui/button';
-import { Card, CardContent } from '@affine/admin/components/ui/card';
-import { Input } from '@affine/admin/components/ui/input';
-import { Label } from '@affine/admin/components/ui/label';
-import { Separator } from '@affine/admin/components/ui/separator';
-import { Switch } from '@affine/admin/components/ui/switch';
-import { Textarea } from '@affine/admin/components/ui/textarea';
+import { Badge } from '@yunke/admin/components/ui/badge';
+import { Button } from '@yunke/admin/components/ui/button';
+import { Card, CardContent } from '@yunke/admin/components/ui/card';
+import { Input } from '@yunke/admin/components/ui/input';
+import { Label } from '@yunke/admin/components/ui/label';
+import { Separator } from '@yunke/admin/components/ui/separator';
+import { Switch } from '@yunke/admin/components/ui/switch';
+import { Textarea } from '@yunke/admin/components/ui/textarea';
 import { toast } from 'sonner';
 import {
   AlertTriangle,

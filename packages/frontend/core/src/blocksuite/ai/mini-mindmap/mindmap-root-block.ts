@@ -1,5 +1,5 @@
-import type { RootBlockModel } from '@blocksuite/affine/model';
-import { BlockComponent } from '@blocksuite/affine/std';
+import type { RootBlockModel } from '@blocksuite/yunke/model';
+import { BlockComponent } from '@blocksuite/yunke/std';
 import { html } from 'lit';
 
 export class MindmapRootBlock extends BlockComponent<RootBlockModel> {

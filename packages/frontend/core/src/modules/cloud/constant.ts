@@ -2,9 +2,9 @@
 //   OAuthProviderType,
 //   ServerDeploymentType,
 //   ServerFeature,
-//} from '@affine/graphql';
+//} from '@yunke/graphql';
 
-// import { environment } from '@affine/env/constant';
+// import { environment } from '@yunke/env/constant';
 
 /**
  * 获取配置的基础URL

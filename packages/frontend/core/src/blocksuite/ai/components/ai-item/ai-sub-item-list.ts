@@ -1,11 +1,11 @@
-import { EnterIcon } from '@blocksuite/affine/components/icons';
-import { WithDisposable } from '@blocksuite/affine/global/lit';
-import { stopPropagation } from '@blocksuite/affine/shared/utils';
+import { EnterIcon } from '@blocksuite/yunke/components/icons';
+import { WithDisposable } from '@blocksuite/yunke/global/lit';
+import { stopPropagation } from '@blocksuite/yunke/shared/utils';
 import {
   EditorHost,
   PropTypes,
   requiredProperties,
-} from '@blocksuite/affine/std';
+} from '@blocksuite/yunke/std';
 import { baseTheme } from '@toeverything/theme';
 import { css, html, LitElement, nothing, unsafeCSS } from 'lit';
 import { property } from 'lit/decorators.js';

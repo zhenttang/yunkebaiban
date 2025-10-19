@@ -1,4 +1,4 @@
-import { RadioGroup, type RadioItem, type RadioProps } from '@affine/component';
+import { RadioGroup, type RadioItem, type RadioProps } from '@yunke/component';
 import clsx from 'clsx';
 import { useMemo } from 'react';
 

@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Badge } from '@affine/admin/components/ui/badge';
-import { Button } from '@affine/admin/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@affine/admin/components/ui/card';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@affine/admin/components/ui/dialog';
+import { Badge } from '@yunke/admin/components/ui/badge';
+import { Button } from '@yunke/admin/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@yunke/admin/components/ui/card';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@yunke/admin/components/ui/dialog';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,10 +10,10 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@affine/admin/components/ui/dropdown-menu';
-import { Input } from '@affine/admin/components/ui/input';
-import { Skeleton } from '@affine/admin/components/ui/skeleton';
-import { Label } from '@affine/admin/components/ui/label';
+} from '@yunke/admin/components/ui/dropdown-menu';
+import { Input } from '@yunke/admin/components/ui/input';
+import { Skeleton } from '@yunke/admin/components/ui/skeleton';
+import { Label } from '@yunke/admin/components/ui/label';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -23,7 +23,7 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from '@affine/admin/components/ui/alert-dialog';
+} from '@yunke/admin/components/ui/alert-dialog';
 import {
   Copy,
   Edit,

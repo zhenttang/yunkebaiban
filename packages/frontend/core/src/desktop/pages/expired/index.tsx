@@ -1,4 +1,4 @@
-import { ExpiredPage } from '@affine/component/member-components';
+import { ExpiredPage } from '@yunke/component/member-components';
 import { useCallback } from 'react';
 
 import {

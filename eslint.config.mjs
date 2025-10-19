@@ -265,7 +265,7 @@ export default tseslint.config(
     rules: {
       'import-x/no-extraneous-dependencies': [
         'error',
-        { includeInternal: true, whitelist: ['@affine/admin'] },
+        { includeInternal: true, whitelist: ['@yunke/admin'] },
       ],
     },
   },
@@ -274,7 +274,7 @@ export default tseslint.config(
     rules: {
       'import-x/no-extraneous-dependencies': [
         'error',
-        { includeInternal: true, whitelist: ['@affine/core'] },
+        { includeInternal: true, whitelist: ['@yunke/core'] },
       ],
     },
   },
@@ -283,7 +283,7 @@ export default tseslint.config(
     rules: {
       'import-x/no-extraneous-dependencies': [
         'error',
-        { includeInternal: true, whitelist: ['@affine/component'] },
+        { includeInternal: true, whitelist: ['@yunke/component'] },
       ],
     },
   },

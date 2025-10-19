@@ -1,13 +1,13 @@
 import './chat-panel-messages';
 
-import type { FeatureFlagService } from '@affine/core/modules/feature-flag';
+import type { FeatureFlagService } from '@yunke/core/modules/feature-flag';
 type ContextEmbedStatus = 'PENDING' | 'EMBEDDED' | 'FAILED' | string;
 type CopilotSessionType = any;
-import { SignalWatcher, WithDisposable } from '@blocksuite/affine/global/lit';
-import { unsafeCSSVarV2 } from '@blocksuite/affine/shared/theme';
-import type { EditorHost } from '@blocksuite/affine/std';
-import { ShadowlessElement } from '@blocksuite/affine/std';
-import type { ExtensionType, Store } from '@blocksuite/affine/store';
+import { SignalWatcher, WithDisposable } from '@blocksuite/yunke/global/lit';
+import { unsafeCSSVarV2 } from '@blocksuite/yunke/shared/theme';
+import type { EditorHost } from '@blocksuite/yunke/std';
+import { ShadowlessElement } from '@blocksuite/yunke/std';
+import type { ExtensionType, Store } from '@blocksuite/yunke/store';
 import { CenterPeekIcon } from '@blocksuite/icons/lit';
 import { type Signal, signal } from '@preact/signals-core';
 import { css, html, nothing, type PropertyValues } from 'lit';

@@ -1,15 +1,15 @@
-import { DocDisplayMetaService } from '@affine/core/modules/doc-display-meta';
-import type { Container } from '@blocksuite/affine/global/di';
+import { DocDisplayMetaService } from '@yunke/core/modules/doc-display-meta';
+import type { Container } from '@blocksuite/yunke/global/di';
 import type {
   DocDisplayMetaExtension,
   DocDisplayMetaParams,
-} from '@blocksuite/affine/shared/services';
-import { DocDisplayMetaProvider } from '@blocksuite/affine/shared/services';
+} from '@blocksuite/yunke/shared/services';
+import { DocDisplayMetaProvider } from '@blocksuite/yunke/shared/services';
 import {
   createSignalFromObservable,
   referenceToNode,
-} from '@blocksuite/affine/shared/utils';
-import { LifeCycleWatcher, StdIdentifier } from '@blocksuite/affine/std';
+} from '@blocksuite/yunke/shared/utils';
+import { LifeCycleWatcher, StdIdentifier } from '@blocksuite/yunke/std';
 import { LinkedPageIcon, PageIcon } from '@blocksuite/icons/lit';
 import { computed, type ReadonlySignal } from '@preact/signals-core';
 import { type FrameworkProvider } from '@toeverything/infra';

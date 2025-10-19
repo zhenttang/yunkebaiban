@@ -1,11 +1,11 @@
-import { Switch } from '@affine/component';
-import { AuthService, SubscriptionService } from '@affine/core/modules/cloud';
-// import { SubscriptionPlan, SubscriptionRecurring } from '@affine/graphql';
+import { Switch } from '@yunke/component';
+import { AuthService, SubscriptionService } from '@yunke/core/modules/cloud';
+// import { SubscriptionPlan, SubscriptionRecurring } from '@yunke/graphql';
 import {
   SubscriptionPlan,
   SubscriptionRecurring,
-} from '@affine/core/modules/cloud/types/subscription';
-import { Trans, useI18n } from '@affine/i18n';
+} from '@yunke/core/modules/cloud/types/subscription';
+import { Trans, useI18n } from '@yunke/i18n';
 import { AfFiNeIcon } from '@blocksuite/icons/rc';
 import { useLiveData, useServices } from '@toeverything/infra';
 import {

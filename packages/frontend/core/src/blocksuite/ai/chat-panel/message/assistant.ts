@@ -1,12 +1,12 @@
 import '../content/assistant-avatar';
 import '../content/rich-text';
 
-import type { FeatureFlagService } from '@affine/core/modules/feature-flag';
-import { WithDisposable } from '@blocksuite/affine/global/lit';
-import { isInsidePageEditor } from '@blocksuite/affine/shared/utils';
-import type { EditorHost } from '@blocksuite/affine/std';
-import { ShadowlessElement } from '@blocksuite/affine/std';
-import type { ExtensionType } from '@blocksuite/affine/store';
+import type { FeatureFlagService } from '@yunke/core/modules/feature-flag';
+import { WithDisposable } from '@blocksuite/yunke/global/lit';
+import { isInsidePageEditor } from '@blocksuite/yunke/shared/utils';
+import type { EditorHost } from '@blocksuite/yunke/std';
+import { ShadowlessElement } from '@blocksuite/yunke/std';
+import type { ExtensionType } from '@blocksuite/yunke/store';
 import { css, html, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
 

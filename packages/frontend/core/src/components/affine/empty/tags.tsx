@@ -1,4 +1,4 @@
-import { useI18n } from '@affine/i18n';
+import { useI18n } from '@yunke/i18n';
 
 import tagsDark from './assets/tag-list.dark.png';
 import tagsLight from './assets/tag-list.light.png';

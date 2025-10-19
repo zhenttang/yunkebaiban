@@ -1,5 +1,5 @@
 {
-  "name": "@affine/config",
+  "name": "@yunke/config",
   "version": "0.1.0",
   "description": "Unified configuration management for AFFiNE",
   "main": "dist/index.js",

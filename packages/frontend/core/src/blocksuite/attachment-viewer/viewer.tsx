@@ -1,5 +1,5 @@
-import { IconButton, Menu, MenuItem } from '@affine/component';
-import type { AttachmentBlockModel } from '@blocksuite/affine/model';
+import { IconButton, Menu, MenuItem } from '@yunke/component';
+import type { AttachmentBlockModel } from '@blocksuite/yunke/model';
 import {
   //EditIcon,
   LocalDataIcon,

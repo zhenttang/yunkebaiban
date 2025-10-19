@@ -1,9 +1,9 @@
-import { PublicUserService } from '@affine/core/modules/cloud';
-import { MemberSearchService } from '@affine/core/modules/permissions';
+import { PublicUserService } from '@yunke/core/modules/cloud';
+import { MemberSearchService } from '@yunke/core/modules/permissions';
 import {
   type ViewExtensionContext,
   ViewExtensionProvider,
-} from '@blocksuite/affine/ext-loader';
+} from '@blocksuite/yunke/ext-loader';
 import { FrameworkProvider } from '@toeverything/infra';
 import { z } from 'zod';
 

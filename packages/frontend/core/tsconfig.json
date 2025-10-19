@@ -7,6 +7,9 @@
   },
   "include": ["./src", "src/**/*.json"],
   "references": [
+    { "path": "../../../blocksuite/framework/std" },
+    { "path": "../../../blocksuite/yunke/all" },
+    { "path": "../../common/infra" },
     { "path": "../component" },
     { "path": "../../common/debug" },
     { "path": "../electron-api" },
@@ -14,9 +17,6 @@
     { "path": "../../common/error" },
     { "path": "../i18n" },
     { "path": "../../common/nbstore" },
-    { "path": "../track" },
-    { "path": "../../../blocksuite/affine/all" },
-    { "path": "../../../blocksuite/framework/std" },
-    { "path": "../../common/infra" }
+    { "path": "../track" }
   ]
 }

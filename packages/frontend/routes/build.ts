@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import { join } from 'node:path/posix';
 
-import { Path, prettier } from '@affine-tools/utils';
+import { Path, prettier } from '@yunke-tools/utils';
 import { parse } from 'path-to-regexp';
 
 const curdir = Path.dir(import.meta.url);

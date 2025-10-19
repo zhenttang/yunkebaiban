@@ -1,5 +1,5 @@
-import { DocsService } from '@affine/core/modules/doc';
-import type { DocMeta, Workspace } from '@blocksuite/affine/store';
+import { DocsService } from '@yunke/core/modules/doc';
+import type { DocMeta, Workspace } from '@blocksuite/yunke/store';
 import { useService } from '@toeverything/infra';
 import { useCallback, useMemo } from 'react';
 

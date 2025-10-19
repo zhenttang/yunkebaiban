@@ -1,4 +1,4 @@
-import { Button } from '@affine/admin/components/ui/button';
+import { Button } from '@yunke/admin/components/ui/button';
 import {
   Dialog,
   DialogContent,
@@ -6,7 +6,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@affine/admin/components/ui/dialog';
+} from '@yunke/admin/components/ui/dialog';
 import {
   Form,
   FormControl,
@@ -14,9 +14,9 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@affine/admin/components/ui/form';
-import { Input } from '@affine/admin/components/ui/input';
-import { Switch } from '@affine/admin/components/ui/switch';
+} from '@yunke/admin/components/ui/form';
+import { Input } from '@yunke/admin/components/ui/input';
+import { Switch } from '@yunke/admin/components/ui/switch';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';

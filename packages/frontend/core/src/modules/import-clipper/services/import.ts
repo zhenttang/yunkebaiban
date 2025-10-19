@@ -1,5 +1,5 @@
-import { getStoreManager } from '@affine/core/blocksuite/manager/store';
-import { MarkdownTransformer } from '@blocksuite/affine/widgets/linked-doc';
+import { getStoreManager } from '@yunke/core/blocksuite/manager/store';
+import { MarkdownTransformer } from '@blocksuite/yunke/widgets/linked-doc';
 import { Service } from '@toeverything/infra';
 
 import { DocsService } from '../../doc';

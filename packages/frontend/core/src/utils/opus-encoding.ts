@@ -1,5 +1,5 @@
-import { DebugLogger } from '@affine/debug';
-import { apis } from '@affine/electron-api';
+import { DebugLogger } from '@yunke/debug';
+import { apis } from '@yunke/electron-api';
 import { ArrayBufferTarget, Muxer } from 'mp4-muxer';
 
 interface AudioEncodingConfig {

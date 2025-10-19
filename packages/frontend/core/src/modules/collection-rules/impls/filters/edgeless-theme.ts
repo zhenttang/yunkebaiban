@@ -1,5 +1,5 @@
-import type { DocsService } from '@affine/core/modules/doc';
-import type { WorkspacePropertyFilter } from '@affine/core/modules/workspace-property';
+import type { DocsService } from '@yunke/core/modules/doc';
+import type { WorkspacePropertyFilter } from '@yunke/core/modules/workspace-property';
 import { Service } from '@toeverything/infra';
 import { map, type Observable } from 'rxjs';
 

@@ -1,4 +1,4 @@
-import { FeatureFlagService } from '@affine/core/modules/feature-flag';
+import { FeatureFlagService } from '@yunke/core/modules/feature-flag';
 
 export type { WorkspaceProfileInfo } from './entities/profile';
 export { Workspace } from './entities/workspace';

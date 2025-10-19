@@ -1,4 +1,4 @@
-import type { AudioMediaPlaybackState } from '@affine/core/modules/media/entities/audio-media';
+import type { AudioMediaPlaybackState } from '@yunke/core/modules/media/entities/audio-media';
 import { clamp } from 'lodash-es';
 import { useEffect, useState } from 'react';
 

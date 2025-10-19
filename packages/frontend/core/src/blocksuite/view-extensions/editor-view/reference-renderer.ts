@@ -1,7 +1,7 @@
-import type { ReactToLit } from '@affine/component';
-import type { AffineReference } from '@blocksuite/affine/inlines/reference';
-import { ReferenceNodeConfigExtension } from '@blocksuite/affine/inlines/reference';
-import type { ExtensionType } from '@blocksuite/affine/store';
+import type { ReactToLit } from '@yunke/component';
+import type { AffineReference } from '@blocksuite/yunke/inlines/reference';
+import { ReferenceNodeConfigExtension } from '@blocksuite/yunke/inlines/reference';
+import type { ExtensionType } from '@blocksuite/yunke/store';
 
 export type ReferenceReactRenderer = (
   reference: AffineReference

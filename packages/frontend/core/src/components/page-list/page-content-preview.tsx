@@ -1,5 +1,5 @@
-import { DocsSearchService } from '@affine/core/modules/docs-search';
-import { WorkspaceService } from '@affine/core/modules/workspace';
+import { DocsSearchService } from '@yunke/core/modules/docs-search';
+import { WorkspaceService } from '@yunke/core/modules/workspace';
 import { LiveData, useLiveData, useService } from '@toeverything/infra';
 import { type ReactNode, useEffect, useMemo } from 'react';
 

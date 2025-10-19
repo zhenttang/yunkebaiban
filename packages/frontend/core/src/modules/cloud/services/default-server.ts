@@ -1,4 +1,4 @@
-// import { ServerDeploymentType } from '@affine/graphql';
+// import { ServerDeploymentType } from '@yunke/graphql';
 import { ServerDeploymentType } from '../types';
 import { Service } from '@toeverything/infra';
 

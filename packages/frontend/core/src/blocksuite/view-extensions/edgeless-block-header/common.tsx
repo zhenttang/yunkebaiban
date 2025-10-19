@@ -1,9 +1,9 @@
-import { IconButton } from '@affine/component';
-import { useSharingUrl } from '@affine/core/components/hooks/affine/use-share-url';
-import { WorkspaceDialogService } from '@affine/core/modules/dialogs';
-import { WorkspaceService } from '@affine/core/modules/workspace';
-import { useI18n } from '@affine/i18n';
-import { type DocMode } from '@blocksuite/affine/model';
+import { IconButton } from '@yunke/component';
+import { useSharingUrl } from '@yunke/core/components/hooks/affine/use-share-url';
+import { WorkspaceDialogService } from '@yunke/core/modules/dialogs';
+import { WorkspaceService } from '@yunke/core/modules/workspace';
+import { useI18n } from '@yunke/i18n';
+import { type DocMode } from '@blocksuite/yunke/model';
 import { InformationIcon, LinkIcon } from '@blocksuite/icons/rc';
 import { useService } from '@toeverything/infra';
 import { useCallback } from 'react';

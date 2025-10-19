@@ -1,7 +1,7 @@
-import { TagService } from '@affine/core/modules/tag';
-import { WorkspaceService } from '@affine/core/modules/workspace';
-import { inferOpenMode } from '@affine/core/utils';
-import { useI18n } from '@affine/i18n';
+import { TagService } from '@yunke/core/modules/tag';
+import { WorkspaceService } from '@yunke/core/modules/workspace';
+import { inferOpenMode } from '@yunke/core/utils';
+import { useI18n } from '@yunke/i18n';
 import { AllDocsIcon } from '@blocksuite/icons/rc';
 import { useLiveData, useService } from '@toeverything/infra';
 import { type MouseEvent, useCallback } from 'react';

@@ -7,20 +7,20 @@ import {
   PropertyRoot,
   useDraggable,
   useDropTarget,
-} from '@affine/component';
-import type { DocCustomPropertyInfo } from '@affine/core/modules/db';
-import { DocService } from '@affine/core/modules/doc';
-import { DocDatabaseBacklinkInfo } from '@affine/core/modules/doc-info';
+} from '@yunke/component';
+import type { DocCustomPropertyInfo } from '@yunke/core/modules/db';
+import { DocService } from '@yunke/core/modules/doc';
+import { DocDatabaseBacklinkInfo } from '@yunke/core/modules/doc-info';
 import type {
   DatabaseRow,
   DatabaseValueCell,
-} from '@affine/core/modules/doc-info/types';
-import { DocIntegrationPropertiesTable } from '@affine/core/modules/integration';
-import { ViewService, WorkbenchService } from '@affine/core/modules/workbench';
-import { WorkspacePropertyService } from '@affine/core/modules/workspace-property';
-import type { AffineDNDData } from '@affine/core/types/dnd';
-import { useI18n } from '@affine/i18n';
-import { track } from '@affine/track';
+} from '@yunke/core/modules/doc-info/types';
+import { DocIntegrationPropertiesTable } from '@yunke/core/modules/integration';
+import { ViewService, WorkbenchService } from '@yunke/core/modules/workbench';
+import { WorkspacePropertyService } from '@yunke/core/modules/workspace-property';
+import type { AffineDNDData } from '@yunke/core/types/dnd';
+import { useI18n } from '@yunke/i18n';
+import { track } from '@yunke/track';
 import { PlusIcon, PropertyIcon, ToggleDownIcon } from '@blocksuite/icons/rc';
 import * as Collapsible from '@radix-ui/react-collapsible';
 import {

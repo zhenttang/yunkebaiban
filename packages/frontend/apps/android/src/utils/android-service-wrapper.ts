@@ -1,5 +1,5 @@
-import type { EditorsService } from '@affine/core/modules/editor';
-import type { DocScope } from '@affine/core/modules/doc';
+import type { EditorsService } from '@yunke/core/modules/editor';
+import type { DocScope } from '@yunke/core/modules/doc';
 
 /**
  * Android WebView 环境下的服务包装器

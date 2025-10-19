@@ -1,7 +1,7 @@
-import { Button } from '@affine/component/ui/button';
-import type { ConfirmModalProps } from '@affine/component/ui/modal';
-import { ConfirmModal, Modal } from '@affine/component/ui/modal';
-import { useI18n } from '@affine/i18n';
+import { Button } from '@yunke/component/ui/button';
+import type { ConfirmModalProps } from '@yunke/component/ui/modal';
+import { ConfirmModal, Modal } from '@yunke/component/ui/modal';
+import { useI18n } from '@yunke/i18n';
 import { DialogTrigger } from '@radix-ui/react-dialog';
 import type { ReactNode } from 'react';
 import { useEffect, useRef } from 'react';

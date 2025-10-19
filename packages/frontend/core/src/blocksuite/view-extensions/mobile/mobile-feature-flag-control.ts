@@ -1,5 +1,5 @@
-import { FeatureFlagService } from '@blocksuite/affine/shared/services';
-import { type BlockStdScope, LifeCycleWatcher } from '@blocksuite/affine/std';
+import { FeatureFlagService } from '@blocksuite/yunke/shared/services';
+import { type BlockStdScope, LifeCycleWatcher } from '@blocksuite/yunke/std';
 
 export class MobileFeatureFlagControl extends LifeCycleWatcher {
   static override key = 'mobile-patches';

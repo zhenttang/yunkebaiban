@@ -1,12 +1,12 @@
-import { Button, Menu } from '@affine/component';
-import { SettingHeader } from '@affine/component/setting-components';
-import { useWorkspaceInfo } from '@affine/core/components/hooks/use-workspace-info';
-import { WorkspacePropertyManager } from '@affine/core/components/properties/manager';
-import { CreatePropertyMenuItems } from '@affine/core/components/properties/menu/create-doc-property';
-import type { DocCustomPropertyInfo } from '@affine/core/modules/db';
-import { WorkspaceService } from '@affine/core/modules/workspace';
-import { Trans, useI18n } from '@affine/i18n';
-import track from '@affine/track';
+import { Button, Menu } from '@yunke/component';
+import { SettingHeader } from '@yunke/component/setting-components';
+import { useWorkspaceInfo } from '@yunke/core/components/hooks/use-workspace-info';
+import { WorkspacePropertyManager } from '@yunke/core/components/properties/manager';
+import { CreatePropertyMenuItems } from '@yunke/core/components/properties/menu/create-doc-property';
+import type { DocCustomPropertyInfo } from '@yunke/core/modules/db';
+import { WorkspaceService } from '@yunke/core/modules/workspace';
+import { Trans, useI18n } from '@yunke/i18n';
+import track from '@yunke/track';
 import { FrameworkScope, useService } from '@toeverything/infra';
 import { useCallback } from 'react';
 

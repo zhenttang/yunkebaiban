@@ -1,7 +1,7 @@
-import { emailRegex } from '@affine/component/auth-components';
+import { emailRegex } from '@yunke/component/auth-components';
 type InviteLink = { link: string; expireTime?: string };
 type WorkspaceInviteLinkExpireTime = 'ONE_HOUR' | 'ONE_DAY' | 'ONE_WEEK' | 'ONE_MONTH' | 'NEVER';
-import { useI18n } from '@affine/i18n';
+import { useI18n } from '@yunke/i18n';
 import { useCallback, useEffect, useState } from 'react';
 
 import { ConfirmModal } from '../../../ui/modal';

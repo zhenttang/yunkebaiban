@@ -1,5 +1,5 @@
 {
-  "name": "@affine/i18n",
+  "name": "@yunke/i18n",
   "version": "0.21.0",
   "description": "",
   "type": "module",
@@ -18,8 +18,8 @@
     "url": "git+https://gitcode.com/xiaoleixiaolei.git"
   },
   "dependencies": {
-    "@affine/debug": "workspace:*",
     "@magic-works/i18n-codegen": "^0.6.1",
+    "@yunke/debug": "workspace:*",
     "dayjs": "^1.11.13",
     "i18next": "^25.0.0",
     "react": "^19.0.0",
@@ -27,8 +27,8 @@
     "undici": "^7.1.0"
   },
   "devDependencies": {
-    "@affine-tools/cli": "workspace:*",
-    "@affine-tools/utils": "workspace:*",
+    "@yunke-tools/cli": "workspace:*",
+    "@yunke-tools/utils": "workspace:*",
     "glob": "^11.0.0",
     "vitest": "3.1.3"
   }

@@ -1,4 +1,4 @@
-import { type UserFriendlyError } from '@affine/error';
+import { type UserFriendlyError } from '@yunke/error';
 import {
   catchErrorInto,
   effect,

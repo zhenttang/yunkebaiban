@@ -1,6 +1,6 @@
 import { existsSync } from 'node:fs';
 
-import type { SpaceType } from '@affine/nbstore';
+import type { SpaceType } from '@yunke/nbstore';
 
 import { logger } from '../../logger';
 import { getWorkspaceMeta } from '../../workspace/meta';

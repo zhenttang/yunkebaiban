@@ -1,5 +1,5 @@
 {
-  "name": "@affine/changelog",
+  "name": "@yunke/changelog",
   "version": "0.21.0",
   "type": "module",
   "main": "index.js",

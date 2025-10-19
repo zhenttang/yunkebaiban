@@ -1,5 +1,5 @@
-import type { QuickSearchItem } from '@affine/core/modules/quicksearch';
-import { WorkbenchLink } from '@affine/core/modules/workbench';
+import type { QuickSearchItem } from '@yunke/core/modules/quicksearch';
+import { WorkbenchLink } from '@yunke/core/modules/workbench';
 import { ArrowRightSmallIcon } from '@blocksuite/icons/rc';
 
 import { SearchResLabel } from './search-res-label';

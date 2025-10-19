@@ -1,4 +1,4 @@
-import { NavigateContext } from '@affine/core/components/hooks/use-navigate-helper';
+import { NavigateContext } from '@yunke/core/components/hooks/use-navigate-helper';
 import { useContext } from 'react';
 import { SettingGroup } from '../group';
 import { RowLayout } from '../row.layout';

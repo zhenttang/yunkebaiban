@@ -1,0 +1,48 @@
+{
+  "name": "@blocksuite/yunke-block-callout",
+  "description": "Callout block for BlockSuite.",
+  "type": "module",
+  "scripts": {
+    "build": "tsc"
+  },
+  "sideEffects": false,
+  "keywords": [],
+  "author": "toeverything",
+  "license": "MIT",
+  "dependencies": {
+    "@blocksuite/global": "workspace:*",
+    "@blocksuite/icons": "^2.2.12",
+    "@blocksuite/std": "workspace:*",
+    "@blocksuite/store": "workspace:*",
+    "@blocksuite/yunke-components": "workspace:*",
+    "@blocksuite/yunke-ext-loader": "workspace:*",
+    "@blocksuite/yunke-inline-preset": "workspace:*",
+    "@blocksuite/yunke-model": "workspace:*",
+    "@blocksuite/yunke-rich-text": "workspace:*",
+    "@blocksuite/yunke-shared": "workspace:*",
+    "@blocksuite/yunke-widget-slash-menu": "workspace:*",
+    "@emoji-mart/data": "^1.2.1",
+    "@floating-ui/dom": "^1.6.10",
+    "@lit/context": "^1.1.2",
+    "@preact/signals-core": "^1.8.0",
+    "@toeverything/theme": "^1.1.15",
+    "@types/mdast": "^4.0.4",
+    "emoji-mart": "^5.6.0",
+    "lit": "^3.2.0",
+    "minimatch": "^10.0.1",
+    "rxjs": "^7.8.1",
+    "zod": "^3.23.8"
+  },
+  "exports": {
+    ".": "./src/index.ts",
+    "./view": "./src/view.ts",
+    "./store": "./src/store.ts"
+  },
+  "files": [
+    "src",
+    "dist",
+    "!src/__tests__",
+    "!dist/__tests__"
+  ],
+  "version": "0.21.0"
+}

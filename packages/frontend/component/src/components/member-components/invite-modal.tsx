@@ -4,7 +4,7 @@ export enum Permission {
   Admin = 'Admin',
   Collaborator = 'Collaborator',
 }
-import { useI18n } from '@affine/i18n';
+import { useI18n } from '@yunke/i18n';
 import { useCallback, useEffect, useState } from 'react';
 
 import { ConfirmModal } from '../../ui/modal';

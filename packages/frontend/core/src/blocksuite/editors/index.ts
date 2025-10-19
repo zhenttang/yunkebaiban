@@ -1,5 +1,5 @@
-import { createReactComponentFromLit } from '@affine/component';
-import { DocTitle } from '@blocksuite/affine/fragments/doc-title';
+import { createReactComponentFromLit } from '@yunke/component';
+import { DocTitle } from '@blocksuite/yunke/fragments/doc-title';
 import React from 'react';
 
 import { EdgelessEditor } from './edgeless-editor';

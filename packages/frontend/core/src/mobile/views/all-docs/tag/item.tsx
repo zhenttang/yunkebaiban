@@ -1,8 +1,8 @@
-import { IconButton } from '@affine/component';
-import { IsFavoriteIcon } from '@affine/core/components/pure/icons';
-import { CompatibleFavoriteItemsAdapter } from '@affine/core/modules/favorite';
-import type { Tag } from '@affine/core/modules/tag';
-import { WorkbenchLink } from '@affine/core/modules/workbench';
+import { IconButton } from '@yunke/component';
+import { IsFavoriteIcon } from '@yunke/core/components/pure/icons';
+import { CompatibleFavoriteItemsAdapter } from '@yunke/core/modules/favorite';
+import type { Tag } from '@yunke/core/modules/tag';
+import { WorkbenchLink } from '@yunke/core/modules/workbench';
 import { useLiveData, useService } from '@toeverything/infra';
 import { type MouseEvent, useCallback } from 'react';
 

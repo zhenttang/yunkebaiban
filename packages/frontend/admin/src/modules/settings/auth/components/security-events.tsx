@@ -1,7 +1,7 @@
-import { Badge } from '@affine/admin/components/ui/badge';
-import { Button } from '@affine/admin/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@affine/admin/components/ui/card';
-import { Skeleton } from '@affine/admin/components/ui/skeleton';
+import { Badge } from '@yunke/admin/components/ui/badge';
+import { Button } from '@yunke/admin/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@yunke/admin/components/ui/card';
+import { Skeleton } from '@yunke/admin/components/ui/skeleton';
 import {
   AlertTriangle,
   Clock,

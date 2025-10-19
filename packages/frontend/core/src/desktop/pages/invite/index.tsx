@@ -1,14 +1,14 @@
-import { notify } from '@affine/component';
+import { notify } from '@yunke/component';
 import {
   AcceptInvitePage,
   ExpiredPage,
   JoinFailedPage,
   RequestToJoinPage,
   SentRequestPage,
-} from '@affine/component/member-components';
-import { useAsyncCallback } from '@affine/core/components/hooks/affine-async-hooks';
-import { WorkspacesService } from '@affine/core/modules/workspace';
-import { UserFriendlyError } from '@affine/error';
+} from '@yunke/component/member-components';
+import { useAsyncCallback } from '@yunke/core/components/hooks/affine-async-hooks';
+import { WorkspacesService } from '@yunke/core/modules/workspace';
+import { UserFriendlyError } from '@yunke/error';
 // 本地枚举，替代 GraphQL
 enum WorkspaceMemberStatus {
   Pending = 'PENDING',

@@ -1,14 +1,14 @@
-import { Button, notify, Switch, Tooltip } from '@affine/component';
+import { Button, notify, Switch, Tooltip } from '@yunke/component';
 import {
   SettingHeader,
   SettingRow,
   SettingWrapper,
-} from '@affine/component/setting-components';
-import { Upload } from '@affine/core/components/pure/file-upload';
-import { EnableCloudPanel } from '@affine/core/desktop/dialogs/setting/workspace-setting/preference/enable-cloud';
-import { WorkspaceDialogService } from '@affine/core/modules/dialogs';
-import { UserFriendlyError } from '@affine/error';
-// import { ServerFeature } from '@affine/graphql';
+} from '@yunke/component/setting-components';
+import { Upload } from '@yunke/core/components/pure/file-upload';
+import { EnableCloudPanel } from '@yunke/core/desktop/dialogs/setting/workspace-setting/preference/enable-cloud';
+import { WorkspaceDialogService } from '@yunke/core/modules/dialogs';
+import { UserFriendlyError } from '@yunke/error';
+// import { ServerFeature } from '@yunke/graphql';
 
 // Temporary placeholder enum since GraphQL backend removed
 enum ServerFeature {
@@ -19,8 +19,8 @@ enum ServerFeature {
   CopilotEmbedding = 'copilot-embedding',
 }
 
-import { useI18n } from '@affine/i18n';
-import track from '@affine/track';
+import { useI18n } from '@yunke/i18n';
+import track from '@yunke/track';
 import { useLiveData, useService } from '@toeverything/infra';
 import type React from 'react';
 import { useCallback, useEffect } from 'react';

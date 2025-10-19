@@ -1,11 +1,11 @@
-import { toast } from '@affine/component';
-import { getStoreManager } from '@affine/core/blocksuite/manager/store';
-import { AppSidebarService } from '@affine/core/modules/app-sidebar';
-import { DocsService } from '@affine/core/modules/doc';
-import { WorkbenchService } from '@affine/core/modules/workbench';
-import { getAFFiNEWorkspaceSchema } from '@affine/core/modules/workspace';
-import { type DocMode } from '@blocksuite/affine/model';
-import type { Workspace } from '@blocksuite/affine/store';
+import { toast } from '@yunke/component';
+import { getStoreManager } from '@yunke/core/blocksuite/manager/store';
+import { AppSidebarService } from '@yunke/core/modules/app-sidebar';
+import { DocsService } from '@yunke/core/modules/doc';
+import { WorkbenchService } from '@yunke/core/modules/workbench';
+import { getAFFiNEWorkspaceSchema } from '@yunke/core/modules/workspace';
+import { type DocMode } from '@blocksuite/yunke/model';
+import type { Workspace } from '@blocksuite/yunke/store';
 import { useServices } from '@toeverything/infra';
 import { useCallback, useMemo } from 'react';
 
@@ -66,7 +66,7 @@ export const usePageHelper = (docCollection: Workspace) => {
   const importFileAndOpen = useMemo(
     () => async () => {
       const { showImportModal } = await import(
-        '@blocksuite/affine/widgets/linked-doc'
+        '@blocksuite/yunke/widgets/linked-doc'
       );
       const { promise, resolve, reject } =
         Promise.withResolvers<

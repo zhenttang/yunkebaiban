@@ -1,8 +1,8 @@
-import { Divider, MenuItem } from '@affine/component';
-import type { GroupByParams } from '@affine/core/modules/collection-rules/types';
-import { WorkspacePropertyService } from '@affine/core/modules/workspace-property';
-import { useI18n } from '@affine/i18n';
-import track from '@affine/track';
+import { Divider, MenuItem } from '@yunke/component';
+import type { GroupByParams } from '@yunke/core/modules/collection-rules/types';
+import { WorkspacePropertyService } from '@yunke/core/modules/workspace-property';
+import { useI18n } from '@yunke/i18n';
+import track from '@yunke/track';
 import { DoneIcon } from '@blocksuite/icons/rc';
 import { useLiveData, useService } from '@toeverything/infra';
 import { cssVarV2 } from '@toeverything/theme/v2';

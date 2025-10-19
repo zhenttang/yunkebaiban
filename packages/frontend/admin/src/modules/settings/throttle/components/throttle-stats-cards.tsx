@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { Card, CardContent } from '@affine/admin/components/ui/card';
-import { Badge } from '@affine/admin/components/ui/badge';
+import { Card, CardContent } from '@yunke/admin/components/ui/card';
+import { Badge } from '@yunke/admin/components/ui/badge';
 import {
   Activity,
   AlertTriangle,

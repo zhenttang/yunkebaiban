@@ -4,19 +4,19 @@ import {
   Masonry,
   type MasonryGroup,
   Tooltip,
-} from '@affine/component';
+} from '@yunke/component';
 import {
   createDocExplorerContext,
   DocExplorerContext,
-} from '@affine/core/components/explorer/context';
-import { DocListItemComponent } from '@affine/core/components/explorer/docs-view/docs-list';
-import { Filters } from '@affine/core/components/filter';
-import { AffineShapeIcon } from '@affine/core/components/page-list';
-import type { CollectionInfo } from '@affine/core/modules/collection';
-import { CollectionRulesService } from '@affine/core/modules/collection-rules';
-import { DocsService } from '@affine/core/modules/doc';
-import { DocDisplayMetaService } from '@affine/core/modules/doc-display-meta';
-import { Trans, useI18n } from '@affine/i18n';
+} from '@yunke/core/components/explorer/context';
+import { DocListItemComponent } from '@yunke/core/components/explorer/docs-view/docs-list';
+import { Filters } from '@yunke/core/components/filter';
+import { AffineShapeIcon } from '@yunke/core/components/page-list';
+import type { CollectionInfo } from '@yunke/core/modules/collection';
+import { CollectionRulesService } from '@yunke/core/modules/collection-rules';
+import { DocsService } from '@yunke/core/modules/doc';
+import { DocDisplayMetaService } from '@yunke/core/modules/doc-display-meta';
+import { Trans, useI18n } from '@yunke/i18n';
 import {
   CloseIcon,
   EdgelessIcon,

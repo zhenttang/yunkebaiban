@@ -1,14 +1,14 @@
-import { Button } from '@affine/component';
+import { Button } from '@yunke/component';
 import {
   AuthContainer,
   AuthContent,
   AuthFooter,
   AuthHeader,
   AuthInput,
-} from '@affine/component/auth-components';
-import { useAsyncCallback } from '@affine/core/components/hooks/affine-async-hooks';
-import { ServersService } from '@affine/core/modules/cloud';
-import { Trans, useI18n } from '@affine/i18n';
+} from '@yunke/component/auth-components';
+import { useAsyncCallback } from '@yunke/core/components/hooks/affine-async-hooks';
+import { ServersService } from '@yunke/core/modules/cloud';
+import { Trans, useI18n } from '@yunke/i18n';
 import { useService } from '@toeverything/infra';
 import {
   type Dispatch,

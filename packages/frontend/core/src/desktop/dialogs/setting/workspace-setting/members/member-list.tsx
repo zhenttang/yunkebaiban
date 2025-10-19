@@ -1,14 +1,14 @@
-import { Avatar, IconButton, Loading, Menu, notify } from '@affine/component';
-import { Pagination } from '@affine/component/setting-components';
-import { type AuthAccountInfo, AuthService } from '@affine/core/modules/cloud';
+import { Avatar, IconButton, Loading, Menu, notify } from '@yunke/component';
+import { Pagination } from '@yunke/component/setting-components';
+import { type AuthAccountInfo, AuthService } from '@yunke/core/modules/cloud';
 import {
   type Member,
   WorkspaceMembersService,
-} from '@affine/core/modules/permissions';
-import { WorkspaceService } from '@affine/core/modules/workspace';
-import { UserFriendlyError } from '@affine/error';
-// import { Permission, WorkspaceMemberStatus } from '@affine/graphql';
-import { type I18nString, useI18n } from '@affine/i18n';
+} from '@yunke/core/modules/permissions';
+import { WorkspaceService } from '@yunke/core/modules/workspace';
+import { UserFriendlyError } from '@yunke/error';
+// import { Permission, WorkspaceMemberStatus } from '@yunke/graphql';
+import { type I18nString, useI18n } from '@yunke/i18n';
 // 本地枚举，替代 GraphQL 类型
 enum Permission {
   Owner = 'Owner',

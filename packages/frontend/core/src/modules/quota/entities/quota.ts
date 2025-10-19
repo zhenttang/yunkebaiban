@@ -1,5 +1,5 @@
-import { DebugLogger } from '@affine/debug';
-// import type { WorkspaceQuotaQuery } from '@affine/graphql';
+import { DebugLogger } from '@yunke/debug';
+// import type { WorkspaceQuotaQuery } from '@yunke/graphql';
 import {
   catchErrorInto,
   effect,

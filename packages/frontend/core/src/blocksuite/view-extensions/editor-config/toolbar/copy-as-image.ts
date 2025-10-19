@@ -1,18 +1,18 @@
-import { notify } from '@affine/component';
-import { isMindmapChild, isMindMapRoot } from '@affine/core/blocksuite/ai';
-import { EditorService } from '@affine/core/modules/editor';
-import { apis } from '@affine/electron-api';
-import { I18n } from '@affine/i18n';
-import type { MenuContext } from '@blocksuite/affine/components/toolbar';
-import { Bound, getCommonBound } from '@blocksuite/affine/global/gfx';
-import type { BlockStdScope } from '@blocksuite/affine/std';
+import { notify } from '@yunke/component';
+import { isMindmapChild, isMindMapRoot } from '@yunke/core/blocksuite/ai';
+import { EditorService } from '@yunke/core/modules/editor';
+import { apis } from '@yunke/electron-api';
+import { I18n } from '@yunke/i18n';
+import type { MenuContext } from '@blocksuite/yunke/components/toolbar';
+import { Bound, getCommonBound } from '@blocksuite/yunke/global/gfx';
+import type { BlockStdScope } from '@blocksuite/yunke/std';
 import {
   type GfxBlockElementModel,
   GfxControllerIdentifier,
   type GfxModel,
   GfxPrimitiveElementModel,
   isGfxGroupCompatibleModel,
-} from '@blocksuite/affine/std/gfx';
+} from '@blocksuite/yunke/std/gfx';
 import { CopyAsImgaeIcon } from '@blocksuite/icons/lit';
 import type { FrameworkProvider } from '@toeverything/infra';
 

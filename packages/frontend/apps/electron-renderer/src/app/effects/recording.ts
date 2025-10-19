@@ -1,13 +1,13 @@
-import type { DocProps } from '@affine/core/blocksuite/initialization';
-import { DocsService } from '@affine/core/modules/doc';
-import { AudioAttachmentService } from '@affine/core/modules/media/services/audio-attachment';
-import { WorkbenchService } from '@affine/core/modules/workbench';
-import { DebugLogger } from '@affine/debug';
-import { apis, events } from '@affine/electron-api';
-import { i18nTime } from '@affine/i18n';
-import track from '@affine/track';
-import type { AttachmentBlockModel } from '@blocksuite/affine/model';
-import type { BlobEngine } from '@blocksuite/affine/sync';
+import type { DocProps } from '@yunke/core/blocksuite/initialization';
+import { DocsService } from '@yunke/core/modules/doc';
+import { AudioAttachmentService } from '@yunke/core/modules/media/services/audio-attachment';
+import { WorkbenchService } from '@yunke/core/modules/workbench';
+import { DebugLogger } from '@yunke/debug';
+import { apis, events } from '@yunke/electron-api';
+import { i18nTime } from '@yunke/i18n';
+import track from '@yunke/track';
+import type { AttachmentBlockModel } from '@blocksuite/yunke/model';
+import type { BlobEngine } from '@blocksuite/yunke/sync';
 import type { FrameworkProvider } from '@toeverything/infra';
 
 import { getCurrentWorkspace, isAiEnabled } from './utils';

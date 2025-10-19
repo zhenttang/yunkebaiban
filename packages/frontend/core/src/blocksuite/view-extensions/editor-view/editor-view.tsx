@@ -1,16 +1,16 @@
-import type { ConfirmModalProps, ElementOrFactory } from '@affine/component';
+import type { ConfirmModalProps, ElementOrFactory } from '@yunke/component';
 import {
   AffinePageReference,
   AffineSharedPageReference,
-} from '@affine/core/components/affine/reference-link';
-import { DocService, DocsService } from '@affine/core/modules/doc';
-import { EditorService } from '@affine/core/modules/editor';
-import { toDocSearchParams } from '@affine/core/modules/navigation';
-import { WorkspaceService } from '@affine/core/modules/workspace';
+} from '@yunke/core/components/affine/reference-link';
+import { DocService, DocsService } from '@yunke/core/modules/doc';
+import { EditorService } from '@yunke/core/modules/editor';
+import { toDocSearchParams } from '@yunke/core/modules/navigation';
+import { WorkspaceService } from '@yunke/core/modules/workspace';
 import {
   type ViewExtensionContext,
   ViewExtensionProvider,
-} from '@blocksuite/affine/ext-loader';
+} from '@blocksuite/yunke/ext-loader';
 import { FrameworkProvider } from '@toeverything/infra';
 import type { TemplateResult } from 'lit';
 import { z } from 'zod';

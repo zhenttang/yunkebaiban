@@ -1,26 +1,26 @@
-import { Button, IconButton, Modal } from '@affine/component';
-import { getStoreManager } from '@affine/core/blocksuite/manager/store';
-import { useAsyncCallback } from '@affine/core/components/hooks/affine-async-hooks';
+import { Button, IconButton, Modal } from '@yunke/component';
+import { getStoreManager } from '@yunke/core/blocksuite/manager/store';
+import { useAsyncCallback } from '@yunke/core/components/hooks/affine-async-hooks';
 import type {
   DialogComponentProps,
   WORKSPACE_DIALOG_SCHEMA,
-} from '@affine/core/modules/dialogs';
-import { UrlService } from '@affine/core/modules/url';
+} from '@yunke/core/modules/dialogs';
+import { UrlService } from '@yunke/core/modules/url';
 import {
   getAFFiNEWorkspaceSchema,
   WorkspaceService,
-} from '@affine/core/modules/workspace';
-import { DebugLogger } from '@affine/debug';
-import { useI18n } from '@affine/i18n';
-import track from '@affine/track';
-import { openFilesWith } from '@blocksuite/affine/shared/utils';
-import type { Workspace } from '@blocksuite/affine/store';
+} from '@yunke/core/modules/workspace';
+import { DebugLogger } from '@yunke/debug';
+import { useI18n } from '@yunke/i18n';
+import track from '@yunke/track';
+import { openFilesWith } from '@blocksuite/yunke/shared/utils';
+import type { Workspace } from '@blocksuite/yunke/store';
 import {
   HtmlTransformer,
   MarkdownTransformer,
   NotionHtmlTransformer,
   ZipTransformer,
-} from '@blocksuite/affine/widgets/linked-doc';
+} from '@blocksuite/yunke/widgets/linked-doc';
 import {
   ExportToHtmlIcon,
   ExportToMarkdownIcon,

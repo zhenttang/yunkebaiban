@@ -1,14 +1,14 @@
-import '@affine/core/bootstrap/browser';
+import '@yunke/core/bootstrap/browser';
 
-import { broadcastChannelStorages } from '@affine/nbstore/broadcast-channel';
+import { broadcastChannelStorages } from '@yunke/nbstore/broadcast-channel';
 // ⚠️ 移除 cloudStorages - Worker 不应该直接处理云存储
-// import { cloudStorages } from '@affine/nbstore/cloud';
-import { idbStorages } from '@affine/nbstore/idb';
-import { idbV1Storages } from '@affine/nbstore/idb/v1';
+// import { cloudStorages } from '@yunke/nbstore/cloud';
+import { idbStorages } from '@yunke/nbstore/idb';
+import { idbV1Storages } from '@yunke/nbstore/idb/v1';
 import {
   StoreManagerConsumer,
   type WorkerManagerOps,
-} from '@affine/nbstore/worker/consumer';
+} from '@yunke/nbstore/worker/consumer';
 import { type MessageCommunicapable, OpConsumer } from '@toeverything/infra/op';
 
 const consumer = new StoreManagerConsumer([

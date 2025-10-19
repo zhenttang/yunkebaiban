@@ -1,10 +1,10 @@
-import { ThemeProvider } from '@affine/core/components/theme-provider';
-import { configureElectronStateStorageImpls } from '@affine/core/desktop/storage';
-import { configureDesktopApiModule } from '@affine/core/modules/desktop-api';
-import { configureI18nModule, I18nProvider } from '@affine/core/modules/i18n';
-import { configureStorageModule } from '@affine/core/modules/storage';
-import { configureEssentialThemeModule } from '@affine/core/modules/theme';
-import { appInfo } from '@affine/electron-api';
+import { ThemeProvider } from '@yunke/core/components/theme-provider';
+import { configureElectronStateStorageImpls } from '@yunke/core/desktop/storage';
+import { configureDesktopApiModule } from '@yunke/core/modules/desktop-api';
+import { configureI18nModule, I18nProvider } from '@yunke/core/modules/i18n';
+import { configureStorageModule } from '@yunke/core/modules/storage';
+import { configureEssentialThemeModule } from '@yunke/core/modules/theme';
+import { appInfo } from '@yunke/electron-api';
 import { Framework, FrameworkRoot } from '@toeverything/infra';
 
 import * as styles from './app.css';

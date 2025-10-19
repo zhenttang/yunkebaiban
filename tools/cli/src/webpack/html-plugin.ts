@@ -1,7 +1,7 @@
 import { execSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 
-import { Path, ProjectRoot } from '@affine-tools/utils/path';
+import { Path, ProjectRoot } from '@yunke-tools/utils/path';
 // 移除simple-git导入
 // import { Repository } from '@napi-rs/simple-git';
 import HTMLPlugin from 'html-webpack-plugin';

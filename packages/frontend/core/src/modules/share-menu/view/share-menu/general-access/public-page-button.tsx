@@ -1,10 +1,10 @@
-import { Menu, MenuItem, MenuTrigger, notify } from '@affine/component';
-import { useAsyncCallback } from '@affine/core/components/hooks/affine-async-hooks';
-import { ShareInfoService } from '@affine/core/modules/share-doc';
-import { UserFriendlyError } from '@affine/error';
-import type { PublicDocMode } from '@affine/core/modules/share-doc/types';
-import { useI18n } from '@affine/i18n';
-import track from '@affine/track';
+import { Menu, MenuItem, MenuTrigger, notify } from '@yunke/component';
+import { useAsyncCallback } from '@yunke/core/components/hooks/affine-async-hooks';
+import { ShareInfoService } from '@yunke/core/modules/share-doc';
+import { UserFriendlyError } from '@yunke/error';
+import type { PublicDocMode } from '@yunke/core/modules/share-doc/types';
+import { useI18n } from '@yunke/i18n';
+import track from '@yunke/track';
 import {
   LockIcon,
   SingleSelectCheckSolidIcon,

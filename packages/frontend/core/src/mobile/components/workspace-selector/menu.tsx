@@ -1,21 +1,21 @@
-import { Divider, IconButton, Menu, MenuItem } from '@affine/component';
-import { useAsyncCallback } from '@affine/core/components/hooks/affine-async-hooks';
-import { useNavigateHelper } from '@affine/core/components/hooks/use-navigate-helper';
-import { useWorkspaceInfo } from '@affine/core/components/hooks/use-workspace-info';
-import { WorkspaceAvatar } from '@affine/core/components/workspace-avatar';
+import { Divider, IconButton, Menu, MenuItem } from '@yunke/component';
+import { useAsyncCallback } from '@yunke/core/components/hooks/affine-async-hooks';
+import { useNavigateHelper } from '@yunke/core/components/hooks/use-navigate-helper';
+import { useWorkspaceInfo } from '@yunke/core/components/hooks/use-workspace-info';
+import { WorkspaceAvatar } from '@yunke/core/components/workspace-avatar';
 import {
   type AuthAccountInfo,
   AuthService,
   type Server,
   ServersService,
-} from '@affine/core/modules/cloud';
-import { GlobalDialogService } from '@affine/core/modules/dialogs';
-import { GlobalContextService } from '@affine/core/modules/global-context';
+} from '@yunke/core/modules/cloud';
+import { GlobalDialogService } from '@yunke/core/modules/dialogs';
+import { GlobalContextService } from '@yunke/core/modules/global-context';
 import {
   type WorkspaceMetadata,
   WorkspacesService,
-} from '@affine/core/modules/workspace';
-import { useI18n } from '@affine/i18n';
+} from '@yunke/core/modules/workspace';
+import { useI18n } from '@yunke/i18n';
 import {
   AccountIcon,
   CloseIcon,

@@ -1,10 +1,10 @@
 // Edgeless docs functionality - reimplemented without GraphQL dependency
-import { AffineSchemas } from '@blocksuite/affine/schemas';
-import { nanoid, Schema } from '@blocksuite/affine/store';
-import { type DocCollectionOptions, TestWorkspace } from '@blocksuite/affine/store/test';
-import { MemoryBlobSource } from '@blocksuite/affine/sync';
-import { getInternalStoreExtensions } from '@blocksuite/affine/extensions/store';
-import { StoreExtensionManager } from '@blocksuite/affine/ext-loader';
+import { AffineSchemas } from '@blocksuite/yunke/schemas';
+import { nanoid, Schema } from '@blocksuite/yunke/store';
+import { type DocCollectionOptions, TestWorkspace } from '@blocksuite/yunke/store/test';
+import { MemoryBlobSource } from '@blocksuite/yunke/sync';
+import { getInternalStoreExtensions } from '@blocksuite/yunke/extensions/store';
+import { StoreExtensionManager } from '@blocksuite/yunke/ext-loader';
 
 export type DocName = 
   | 'note'

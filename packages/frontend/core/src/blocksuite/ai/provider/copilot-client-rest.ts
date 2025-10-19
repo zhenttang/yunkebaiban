@@ -1,5 +1,5 @@
-import { showAILoginRequiredAtom } from '@affine/core/components/affine/auth/ai-login-required';
-import type { UserFriendlyError } from '@affine/error';
+import { showAILoginRequiredAtom } from '@yunke/core/components/affine/auth/ai-login-required';
+import type { UserFriendlyError } from '@yunke/error';
 import { getCurrentStore } from '@toeverything/infra';
 
 import { GeneralNetworkError, PaymentRequiredError, UnauthorizedError } from './error';

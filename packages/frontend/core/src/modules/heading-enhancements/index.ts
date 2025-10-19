@@ -52,7 +52,7 @@ import './document-structure-visualization';
 // 功能集成类
 import { SmartHeadingLevelDetector } from './smart-level-detector';
 import { WordCountBlockModel } from './word-count-model';
-import type { ParagraphBlockModel } from '@blocksuite/affine-model';
+import type { ParagraphBlockModel } from '@blocksuite/yunke-model';
 import type { BlockModel } from '@blocksuite/store';
 
 export interface HeadingEnhancementSettings {

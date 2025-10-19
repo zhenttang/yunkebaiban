@@ -3,9 +3,9 @@ import {
   Menu,
   type MenuRef,
   PropertyValue,
-} from '@affine/component';
-import type { FilterParams } from '@affine/core/modules/collection-rules';
-import { i18nTime, useI18n } from '@affine/i18n';
+} from '@yunke/component';
+import type { FilterParams } from '@yunke/core/modules/collection-rules';
+import { i18nTime, useI18n } from '@yunke/i18n';
 import { DateTimeIcon } from '@blocksuite/icons/rc';
 import { cssVarV2 } from '@toeverything/theme/v2';
 import {

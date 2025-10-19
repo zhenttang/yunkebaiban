@@ -3,15 +3,15 @@ import {
   SafeArea,
   startScopedViewTransition,
   useThemeColorV2,
-} from '@affine/component';
-import { CollectionService } from '@affine/core/modules/collection';
+} from '@yunke/component';
+import { CollectionService } from '@yunke/core/modules/collection';
 import {
   type QuickSearchItem,
   QuickSearchTagIcon,
-} from '@affine/core/modules/quicksearch';
-import { TagService } from '@affine/core/modules/tag';
-import { useI18n } from '@affine/i18n';
-import { sleep } from '@blocksuite/affine/global/utils';
+} from '@yunke/core/modules/quicksearch';
+import { TagService } from '@yunke/core/modules/tag';
+import { useI18n } from '@yunke/i18n';
+import { sleep } from '@blocksuite/yunke/global/utils';
 import { ViewLayersIcon } from '@blocksuite/icons/rc';
 import {
   LiveData,

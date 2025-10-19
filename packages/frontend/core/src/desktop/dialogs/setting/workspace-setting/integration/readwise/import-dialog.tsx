@@ -6,10 +6,10 @@ import {
   Modal,
   notify,
   Scrollable,
-} from '@affine/component';
-import { IntegrationService } from '@affine/core/modules/integration';
-import type { ReadwiseHighlight } from '@affine/core/modules/integration/type';
-import { i18nTime, Trans, useI18n } from '@affine/i18n';
+} from '@yunke/component';
+import { IntegrationService } from '@yunke/core/modules/integration';
+import type { ReadwiseHighlight } from '@yunke/core/modules/integration/type';
+import { i18nTime, Trans, useI18n } from '@yunke/i18n';
 import { InformationFillDuotoneIcon } from '@blocksuite/icons/rc';
 import { useLiveData, useService } from '@toeverything/infra';
 import clsx from 'clsx';

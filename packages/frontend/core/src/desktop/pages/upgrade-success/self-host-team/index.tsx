@@ -1,9 +1,9 @@
-import { Button, IconButton, Loading, notify } from '@affine/component';
-import { AuthPageContainer } from '@affine/component/auth-components';
-import { SelfhostGenerateLicenseService } from '@affine/core/modules/cloud';
-import { OpenInAppService } from '@affine/core/modules/open-in-app';
-import { copyTextToClipboard } from '@affine/core/utils/clipboard';
-import { Trans, useI18n } from '@affine/i18n';
+import { Button, IconButton, Loading, notify } from '@yunke/component';
+import { AuthPageContainer } from '@yunke/component/auth-components';
+import { SelfhostGenerateLicenseService } from '@yunke/core/modules/cloud';
+import { OpenInAppService } from '@yunke/core/modules/open-in-app';
+import { copyTextToClipboard } from '@yunke/core/utils/clipboard';
+import { Trans, useI18n } from '@yunke/i18n';
 import { CopyIcon } from '@blocksuite/icons/rc';
 import { useLiveData, useService } from '@toeverything/infra';
 import { useCallback, useEffect } from 'react';

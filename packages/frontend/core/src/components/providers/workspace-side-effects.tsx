@@ -1,38 +1,38 @@
-import { toast } from '@affine/component';
+import { toast } from '@yunke/component';
 import {
   pushGlobalLoadingEventAtom,
   resolveGlobalLoadingEventAtom,
-} from '@affine/component/global-loading';
+} from '@yunke/component/global-loading';
 import {
   AIProvider,
   CopilotClient,
   setupAIProvider,
-} from '@affine/core/blocksuite/ai';
-import { useRegisterFindInPageCommands } from '@affine/core/components/hooks/affine/use-register-find-in-page-commands';
-import { useRegisterWorkspaceCommands } from '@affine/core/components/hooks/use-register-workspace-commands';
-import { OverCapacityNotification } from '@affine/core/components/over-capacity';
+} from '@yunke/core/blocksuite/ai';
+import { useRegisterFindInPageCommands } from '@yunke/core/components/hooks/affine/use-register-find-in-page-commands';
+import { useRegisterWorkspaceCommands } from '@yunke/core/components/hooks/use-register-workspace-commands';
+import { OverCapacityNotification } from '@yunke/core/components/over-capacity';
 import {
   AuthService,
   EventSourceService,
   FetchService,
-} from '@affine/core/modules/cloud';
+} from '@yunke/core/modules/cloud';
 import {
   GlobalDialogService,
   WorkspaceDialogService,
-} from '@affine/core/modules/dialogs';
-import { DocsService } from '@affine/core/modules/doc';
-import { EditorSettingService } from '@affine/core/modules/editor-setting';
-import { useRegisterNavigationCommands } from '@affine/core/modules/navigation/view/use-register-navigation-commands';
-import { QuickSearchContainer } from '@affine/core/modules/quicksearch';
-import { WorkbenchService } from '@affine/core/modules/workbench';
+} from '@yunke/core/modules/dialogs';
+import { DocsService } from '@yunke/core/modules/doc';
+import { EditorSettingService } from '@yunke/core/modules/editor-setting';
+import { useRegisterNavigationCommands } from '@yunke/core/modules/navigation/view/use-register-navigation-commands';
+import { QuickSearchContainer } from '@yunke/core/modules/quicksearch';
+import { WorkbenchService } from '@yunke/core/modules/workbench';
 import {
   getAFFiNEWorkspaceSchema,
   WorkspaceService,
-} from '@affine/core/modules/workspace';
-import { useI18n } from '@affine/i18n';
-import track from '@affine/track';
-import type { DocMode } from '@blocksuite/affine/model';
-import { ZipTransformer } from '@blocksuite/affine/widgets/linked-doc';
+} from '@yunke/core/modules/workspace';
+import { useI18n } from '@yunke/i18n';
+import track from '@yunke/track';
+import type { DocMode } from '@blocksuite/yunke/model';
+import { ZipTransformer } from '@blocksuite/yunke/widgets/linked-doc';
 import {
   effect,
   fromPromise,

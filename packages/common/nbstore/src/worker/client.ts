@@ -80,7 +80,7 @@ export class StoreManagerClient {
         for (const [peerId, peerOptions] of Object.entries(remotes)) {
           if (peerOptions.doc?.name === 'CloudDocStorage') {
             console.log('🌐 [StoreManagerClient] 检测到云端存储配置，创建CloudDocStorage实例');
-            const { CloudDocStorage } = await import('@affine/nbstore/cloud');
+            const { CloudDocStorage } = await import('@yunke/nbstore/cloud');
             cloudDocStorage = new CloudDocStorage(peerOptions.doc.opts as any);
             await cloudDocStorage.connection.connect();
             await cloudDocStorage.connection.waitForConnected();

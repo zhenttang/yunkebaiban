@@ -1,4 +1,4 @@
-// import { type CreateCheckoutSessionInput } from '@affine/graphql';
+// import { type CreateCheckoutSessionInput } from '@yunke/graphql';
 import { Service } from '@toeverything/infra';
 
 import { WorkspaceSubscription } from '../entities/workspace-subscription';

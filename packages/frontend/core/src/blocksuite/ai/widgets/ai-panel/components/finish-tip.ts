@@ -2,10 +2,10 @@ import {
   AIDoneIcon,
   CopyIcon,
   WarningIcon,
-} from '@blocksuite/affine/components/icons';
-import { WithDisposable } from '@blocksuite/affine/global/lit';
-import { NotificationProvider } from '@blocksuite/affine/shared/services';
-import type { EditorHost } from '@blocksuite/affine/std';
+} from '@blocksuite/yunke/components/icons';
+import { WithDisposable } from '@blocksuite/yunke/global/lit';
+import { NotificationProvider } from '@blocksuite/yunke/shared/services';
+import type { EditorHost } from '@blocksuite/yunke/std';
 import { baseTheme } from '@toeverything/theme';
 import { css, html, LitElement, nothing, unsafeCSS } from 'lit';
 import { property, state } from 'lit/decorators.js';

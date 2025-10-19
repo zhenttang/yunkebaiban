@@ -1,11 +1,11 @@
-import { Button, type ButtonProps } from '@affine/component';
-import { generateSubscriptionCallbackLink } from '@affine/core/components/hooks/affine/use-subscription-notify';
-import { AuthService } from '@affine/core/modules/cloud';
+import { Button, type ButtonProps } from '@yunke/component';
+import { generateSubscriptionCallbackLink } from '@yunke/core/components/hooks/affine/use-subscription-notify';
+import { AuthService } from '@yunke/core/modules/cloud';
 //import {
 //   SubscriptionPlan,
 //   SubscriptionRecurring,
 //   SubscriptionVariant,
-//} from '@affine/graphql';
+//} from '@yunke/graphql';
 
 // Temporary placeholder enums to fix TypeScript errors
 enum SubscriptionPlan {
@@ -27,8 +27,8 @@ enum SubscriptionVariant {
   Recurring = 'recurring',
   EA = 'earlyaccess'
 }
-import { useI18n } from '@affine/i18n';
-import track from '@affine/track';
+import { useI18n } from '@yunke/i18n';
+import track from '@yunke/track';
 import { useService } from '@toeverything/infra';
 import { useCallback, useMemo } from 'react';
 

@@ -1,12 +1,12 @@
-import { ChatPanel } from '@affine/core/blocksuite/ai';
-import type { AffineEditorContainer } from '@affine/core/blocksuite/block-suite-editor';
-import { useAIChatConfig } from '@affine/core/components/hooks/affine/use-ai-chat-config';
-import { FeatureFlagService } from '@affine/core/modules/feature-flag';
-import { WorkbenchService } from '@affine/core/modules/workbench';
-import { ViewExtensionManagerIdentifier } from '@blocksuite/affine/ext-loader';
-import { RefNodeSlotsProvider } from '@blocksuite/affine/inlines/reference';
-import { DocModeProvider } from '@blocksuite/affine/shared/services';
-import { createSignalFromObservable } from '@blocksuite/affine/shared/utils';
+import { ChatPanel } from '@yunke/core/blocksuite/ai';
+import type { AffineEditorContainer } from '@yunke/core/blocksuite/block-suite-editor';
+import { useAIChatConfig } from '@yunke/core/components/hooks/affine/use-ai-chat-config';
+import { FeatureFlagService } from '@yunke/core/modules/feature-flag';
+import { WorkbenchService } from '@yunke/core/modules/workbench';
+import { ViewExtensionManagerIdentifier } from '@blocksuite/yunke/ext-loader';
+import { RefNodeSlotsProvider } from '@blocksuite/yunke/inlines/reference';
+import { DocModeProvider } from '@blocksuite/yunke/shared/services';
+import { createSignalFromObservable } from '@blocksuite/yunke/shared/utils';
 import { useFramework } from '@toeverything/infra';
 import { forwardRef, useEffect, useRef } from 'react';
 

@@ -1,11 +1,11 @@
-import { UserFriendlyError } from '@affine/error';
+import { UserFriendlyError } from '@yunke/error';
 // import {
 //   deleteBlobMutation,
 //   listBlobsQuery,
 //   releaseDeletedBlobsMutation,
 //   setBlobMutation,
 //   workspaceBlobQuotaQuery,
-// } from '@affine/graphql';
+// } from '@yunke/graphql';
 
 // Temporary placeholder functions for GraphQL queries
 const setBlobMutation = null;

@@ -4,19 +4,19 @@ import {
   Loading,
   toast,
   Tooltip,
-} from '@affine/component';
-import { Guard } from '@affine/core/components/guard';
-import { useAsyncCallback } from '@affine/core/components/hooks/affine-async-hooks';
-import { WorkspaceDialogService } from '@affine/core/modules/dialogs';
-import { DocsService } from '@affine/core/modules/doc';
-import { DocDisplayMetaService } from '@affine/core/modules/doc-display-meta';
-import { DocsSearchService } from '@affine/core/modules/docs-search';
-import { FeatureFlagService } from '@affine/core/modules/feature-flag';
-import { GlobalContextService } from '@affine/core/modules/global-context';
-import { GuardService } from '@affine/core/modules/permissions';
-import type { AffineDNDData } from '@affine/core/types/dnd';
-import { useI18n } from '@affine/i18n';
-import { track } from '@affine/track';
+} from '@yunke/component';
+import { Guard } from '@yunke/core/components/guard';
+import { useAsyncCallback } from '@yunke/core/components/hooks/affine-async-hooks';
+import { WorkspaceDialogService } from '@yunke/core/modules/dialogs';
+import { DocsService } from '@yunke/core/modules/doc';
+import { DocDisplayMetaService } from '@yunke/core/modules/doc-display-meta';
+import { DocsSearchService } from '@yunke/core/modules/docs-search';
+import { FeatureFlagService } from '@yunke/core/modules/feature-flag';
+import { GlobalContextService } from '@yunke/core/modules/global-context';
+import { GuardService } from '@yunke/core/modules/permissions';
+import type { AffineDNDData } from '@yunke/core/types/dnd';
+import { useI18n } from '@yunke/i18n';
+import { track } from '@yunke/track';
 import {
   LiveData,
   MANUALLY_STOP,

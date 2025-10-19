@@ -1,11 +1,11 @@
-import { Button, notify } from '@affine/component';
-import { SettingRow } from '@affine/component/setting-components';
-import { useAsyncCallback } from '@affine/core/components/hooks/affine-async-hooks';
-import { useMutation } from '@affine/core/components/hooks/use-mutation';
-import { UrlService } from '@affine/core/modules/url';
-import { UserFriendlyError } from '@affine/error';
-// import { createCustomerPortalMutation } from '@affine/graphql';
-import { useI18n } from '@affine/i18n';
+import { Button, notify } from '@yunke/component';
+import { SettingRow } from '@yunke/component/setting-components';
+import { useAsyncCallback } from '@yunke/core/components/hooks/affine-async-hooks';
+import { useMutation } from '@yunke/core/components/hooks/use-mutation';
+import { UrlService } from '@yunke/core/modules/url';
+import { UserFriendlyError } from '@yunke/error';
+// import { createCustomerPortalMutation } from '@yunke/graphql';
+import { useI18n } from '@yunke/i18n';
 import { useService } from '@toeverything/infra';
 
 import * as styles from './styles.css';

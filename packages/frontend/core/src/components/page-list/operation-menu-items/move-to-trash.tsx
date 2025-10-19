@@ -1,6 +1,6 @@
-import type { ConfirmModalProps, MenuItemProps } from '@affine/component';
-import { ConfirmModal, MenuItem } from '@affine/component';
-import { useI18n } from '@affine/i18n';
+import type { ConfirmModalProps, MenuItemProps } from '@yunke/component';
+import { ConfirmModal, MenuItem } from '@yunke/component';
+import { useI18n } from '@yunke/i18n';
 import { DeleteIcon } from '@blocksuite/icons/rc';
 
 export const MoveToTrash = (props: MenuItemProps) => {

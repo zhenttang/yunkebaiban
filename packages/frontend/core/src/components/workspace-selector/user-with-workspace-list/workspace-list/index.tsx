@@ -1,18 +1,18 @@
-import { IconButton, Menu, MenuItem } from '@affine/component';
-import { Divider } from '@affine/component/ui/divider';
-import { useEnableCloud } from '@affine/core/components/hooks/affine/use-enable-cloud';
-import { useAsyncCallback } from '@affine/core/components/hooks/affine-async-hooks';
-import { useNavigateHelper } from '@affine/core/components/hooks/use-navigate-helper';
-import type { AuthAccountInfo, Server } from '@affine/core/modules/cloud';
-import { AuthService, ServersService } from '@affine/core/modules/cloud';
-import { GlobalDialogService } from '@affine/core/modules/dialogs';
-import { GlobalContextService } from '@affine/core/modules/global-context';
+import { IconButton, Menu, MenuItem } from '@yunke/component';
+import { Divider } from '@yunke/component/ui/divider';
+import { useEnableCloud } from '@yunke/core/components/hooks/affine/use-enable-cloud';
+import { useAsyncCallback } from '@yunke/core/components/hooks/affine-async-hooks';
+import { useNavigateHelper } from '@yunke/core/components/hooks/use-navigate-helper';
+import type { AuthAccountInfo, Server } from '@yunke/core/modules/cloud';
+import { AuthService, ServersService } from '@yunke/core/modules/cloud';
+import { GlobalDialogService } from '@yunke/core/modules/dialogs';
+import { GlobalContextService } from '@yunke/core/modules/global-context';
 import {
   type WorkspaceMetadata,
   WorkspaceService,
   WorkspacesService,
-} from '@affine/core/modules/workspace';
-import { useI18n } from '@affine/i18n';
+} from '@yunke/core/modules/workspace';
+import { useI18n } from '@yunke/i18n';
 import {
   AccountIcon,
   CloudWorkspaceIcon,

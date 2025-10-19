@@ -1,6 +1,6 @@
-import { Button, Input, Modal } from '@affine/component';
-import { useCatchEventCallback } from '@affine/core/components/hooks/use-catch-event-hook';
-import { useI18n } from '@affine/i18n';
+import { Button, Input, Modal } from '@yunke/component';
+import { useCatchEventCallback } from '@yunke/core/components/hooks/use-catch-event-hook';
+import { useI18n } from '@yunke/i18n';
 import type { KeyboardEvent } from 'react';
 import { useCallback, useMemo, useState } from 'react';
 

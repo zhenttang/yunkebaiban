@@ -33,7 +33,7 @@
 
 #### 1. 数据视图系统扩展
 ```
-packages/frontend/core/src/blocksuite/affine/data-view/
+packages/frontend/core/src/blocksuite/yunke/data-view/
 ├── view-presets/
 │   ├── table/          # 现有表格视图
 │   ├── kanban/         # 现有看板视图
@@ -243,7 +243,7 @@ export type TaskDependencyData = {
 #### 1.1 创建甘特图视图类型
 
 ```typescript
-// packages/frontend/core/src/blocksuite/affine/data-view/view-presets/gantt/define.ts
+// packages/frontend/core/src/blocksuite/yunke/data-view/view-presets/gantt/define.ts
 export const ganttViewModel = ganttViewType.createModel<GanttViewData>({
   defaultName: '甘特图',
   dataViewManager: GanttSingleView,

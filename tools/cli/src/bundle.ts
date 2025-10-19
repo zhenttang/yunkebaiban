@@ -1,8 +1,8 @@
 import { rmSync } from 'node:fs';
 import { cpus } from 'node:os';
 
-import { Logger } from '@affine-tools/utils/logger';
-import { Package } from '@affine-tools/utils/workspace';
+import { Logger } from '@yunke-tools/utils/logger';
+import { Package } from '@yunke-tools/utils/workspace';
 import { merge } from 'lodash-es';
 import webpack from 'webpack';
 import WebpackDevServer, {
@@ -17,7 +17,7 @@ import {
 } from './webpack';
 
 function getBaseWorkerConfigs(pkg: Package) {
-  const core = new Package('@affine/core');
+  const core = new Package('@yunke/core');
 
   return [
     createWorkerTargetConfig(
@@ -41,13 +41,13 @@ function getBaseWorkerConfigs(pkg: Package) {
 
 function getBundleConfigs(pkg: Package) {
   switch (pkg.name) {
-    case '@affine/admin': {
+    case '@yunke/admin': {
       return [createHTMLTargetConfig(pkg, pkg.srcPath.join('index.tsx').value)];
     }
-    case '@affine/web':
-    case '@affine/mobile':
-    case '@affine/ios':
-    case '@affine/android':
+    case '@yunke/web':
+    case '@yunke/mobile':
+    case '@yunke/ios':
+    case '@yunke/android':
     case '@yunke/android': {
       const workerConfigs = getBaseWorkerConfigs(pkg);
       workerConfigs.push(
@@ -67,7 +67,7 @@ function getBundleConfigs(pkg: Package) {
         ...workerConfigs,
       ];
     }
-    case '@affine/electron-renderer': {
+    case '@yunke/electron-renderer': {
       const workerConfigs = getBaseWorkerConfigs(pkg);
 
       return [
@@ -90,7 +90,7 @@ function getBundleConfigs(pkg: Package) {
         ...workerConfigs,
       ];
     }
-    case '@affine/server': {
+    case '@yunke/server': {
       return [createNodeTargetConfig(pkg, pkg.srcPath.join('index.ts').value)];
     }
   }

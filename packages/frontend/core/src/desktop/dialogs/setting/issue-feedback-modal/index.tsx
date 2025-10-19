@@ -1,5 +1,5 @@
-import { OverlayModal } from '@affine/component';
-import { useI18n } from '@affine/i18n';
+import { OverlayModal } from '@yunke/component';
+import { useI18n } from '@yunke/i18n';
 
 export const IssueFeedbackModal = ({
   open,

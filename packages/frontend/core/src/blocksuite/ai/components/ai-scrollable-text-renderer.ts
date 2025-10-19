@@ -1,6 +1,6 @@
-import { WithDisposable } from '@blocksuite/affine/global/lit';
-import { scrollbarStyle } from '@blocksuite/affine/shared/styles';
-import { type EditorHost, ShadowlessElement } from '@blocksuite/affine/std';
+import { WithDisposable } from '@blocksuite/yunke/global/lit';
+import { scrollbarStyle } from '@blocksuite/yunke/shared/styles';
+import { type EditorHost, ShadowlessElement } from '@blocksuite/yunke/std';
 import type { PropertyValues } from 'lit';
 import { css, html } from 'lit';
 import { property, query } from 'lit/decorators.js';

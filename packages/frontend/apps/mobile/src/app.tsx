@@ -1,21 +1,21 @@
-import { AffineContext } from '@affine/core/components/context';
-import { AppFallback } from '@affine/core/mobile/components/app-fallback';
-import { configureMobileModules } from '@affine/core/mobile/modules';
-import { HapticProvider } from '@affine/core/mobile/modules/haptics';
-import { VirtualKeyboardProvider } from '@affine/core/mobile/modules/virtual-keyboard';
-import { router } from '@affine/core/mobile/router';
-import { configureCommonModules } from '@affine/core/modules';
-import { I18nProvider } from '@affine/core/modules/i18n';
-import { LifecycleService } from '@affine/core/modules/lifecycle';
+import { AffineContext } from '@yunke/core/components/context';
+import { AppFallback } from '@yunke/core/mobile/components/app-fallback';
+import { configureMobileModules } from '@yunke/core/mobile/modules';
+import { HapticProvider } from '@yunke/core/mobile/modules/haptics';
+import { VirtualKeyboardProvider } from '@yunke/core/mobile/modules/virtual-keyboard';
+import { router } from '@yunke/core/mobile/router';
+import { configureCommonModules } from '@yunke/core/modules';
+import { I18nProvider } from '@yunke/core/modules/i18n';
+import { LifecycleService } from '@yunke/core/modules/lifecycle';
 import {
   configureLocalStorageStateStorageImpls,
   NbstoreProvider,
-} from '@affine/core/modules/storage';
-import { PopupWindowProvider } from '@affine/core/modules/url';
-import { configureBrowserWorkbenchModule } from '@affine/core/modules/workbench';
-import { configureBrowserWorkspaceFlavours } from '@affine/core/modules/workspace-engine';
-import { getWorkerUrl } from '@affine/env/worker';
-import { StoreManagerClient } from '@affine/nbstore/worker/client';
+} from '@yunke/core/modules/storage';
+import { PopupWindowProvider } from '@yunke/core/modules/url';
+import { configureBrowserWorkbenchModule } from '@yunke/core/modules/workbench';
+import { configureBrowserWorkspaceFlavours } from '@yunke/core/modules/workspace-engine';
+import { getWorkerUrl } from '@yunke/env/worker';
+import { StoreManagerClient } from '@yunke/nbstore/worker/client';
 import { Framework, FrameworkRoot, getCurrentStore } from '@toeverything/infra';
 import { OpClient } from '@toeverything/infra/op';
 import { Suspense } from 'react';

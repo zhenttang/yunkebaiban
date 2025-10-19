@@ -1,5 +1,5 @@
-import { Progress } from '@affine/component';
-import { useI18n } from '@affine/i18n';
+import { Progress } from '@yunke/component';
+import { useI18n } from '@yunke/i18n';
 import { cssVarV2 } from '@toeverything/theme/v2';
 
 import { embeddingProgress, embeddingProgressTitle } from './styles-css';

@@ -1,8 +1,8 @@
 import type {
   SpellCheckStateKey,
   SpellCheckStateSchema,
-} from '@affine/electron/main/shared-state-schema';
-import type { Language } from '@affine/i18n';
+} from '@yunke/electron/main/shared-state-schema';
+import type { Language } from '@yunke/i18n';
 import { LiveData, Service } from '@toeverything/infra';
 
 import type { DesktopApiService } from '../../desktop-api';

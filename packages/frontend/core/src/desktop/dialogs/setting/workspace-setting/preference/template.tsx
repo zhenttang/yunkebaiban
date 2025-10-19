@@ -3,16 +3,16 @@ import {
   MenuSeparator,
   MenuTrigger,
   Switch,
-} from '@affine/component';
+} from '@yunke/component';
 import {
   SettingRow,
   SettingWrapper,
-} from '@affine/component/setting-components';
-import { DocsService } from '@affine/core/modules/doc';
-import { DocDisplayMetaService } from '@affine/core/modules/doc-display-meta';
-import { TemplateDocService } from '@affine/core/modules/template-doc';
-import { TemplateListMenu } from '@affine/core/modules/template-doc/view/template-list-menu';
-import { useI18n } from '@affine/i18n';
+} from '@yunke/component/setting-components';
+import { DocsService } from '@yunke/core/modules/doc';
+import { DocDisplayMetaService } from '@yunke/core/modules/doc-display-meta';
+import { TemplateDocService } from '@yunke/core/modules/template-doc';
+import { TemplateListMenu } from '@yunke/core/modules/template-doc/view/template-list-menu';
+import { useI18n } from '@yunke/i18n';
 import { DeleteIcon } from '@blocksuite/icons/rc';
 import { useLiveData, useService } from '@toeverything/infra';
 import { useCallback } from 'react';

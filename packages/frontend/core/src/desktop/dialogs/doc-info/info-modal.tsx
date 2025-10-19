@@ -4,21 +4,21 @@ import {
   Menu,
   PropertyCollapsibleContent,
   PropertyCollapsibleSection,
-} from '@affine/component';
-import { BacklinkGroups } from '@affine/core/blocksuite/block-suite-editor/bi-directional-link-panel';
-import { CreatePropertyMenuItems } from '@affine/core/components/properties/menu/create-doc-property';
-import { WorkspacePropertyRow } from '@affine/core/components/properties/table';
-import type { DocCustomPropertyInfo } from '@affine/core/modules/db';
-import { DocDatabaseBacklinkInfo } from '@affine/core/modules/doc-info';
+} from '@yunke/component';
+import { BacklinkGroups } from '@yunke/core/blocksuite/block-suite-editor/bi-directional-link-panel';
+import { CreatePropertyMenuItems } from '@yunke/core/components/properties/menu/create-doc-property';
+import { WorkspacePropertyRow } from '@yunke/core/components/properties/table';
+import type { DocCustomPropertyInfo } from '@yunke/core/modules/db';
+import { DocDatabaseBacklinkInfo } from '@yunke/core/modules/doc-info';
 import type {
   DatabaseRow,
   DatabaseValueCell,
-} from '@affine/core/modules/doc-info/types';
-import { DocsSearchService } from '@affine/core/modules/docs-search';
-import { GuardService } from '@affine/core/modules/permissions';
-import { WorkspacePropertyService } from '@affine/core/modules/workspace-property';
-import { useI18n } from '@affine/i18n';
-import track from '@affine/track';
+} from '@yunke/core/modules/doc-info/types';
+import { DocsSearchService } from '@yunke/core/modules/docs-search';
+import { GuardService } from '@yunke/core/modules/permissions';
+import { WorkspacePropertyService } from '@yunke/core/modules/workspace-property';
+import { useI18n } from '@yunke/i18n';
+import track from '@yunke/track';
 import { PlusIcon } from '@blocksuite/icons/rc';
 import { LiveData, useLiveData, useServices } from '@toeverything/infra';
 import { useCallback, useMemo, useState } from 'react';

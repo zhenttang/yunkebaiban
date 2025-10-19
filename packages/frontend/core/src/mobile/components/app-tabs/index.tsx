@@ -1,5 +1,5 @@
-import { SafeArea } from '@affine/component';
-import { WorkbenchLink } from '@affine/core/modules/workbench';
+import { SafeArea } from '@yunke/component';
+import { WorkbenchLink } from '@yunke/core/modules/workbench';
 import { useLiveData, useService } from '@toeverything/infra';
 import { assignInlineVars } from '@vanilla-extract/dynamic';
 import React from 'react';

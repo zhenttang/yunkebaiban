@@ -10,7 +10,7 @@ import {
   TomorrowIcon,
   YesterdayIcon,
 } from '@blocksuite/icons/rc';
-import { updateBlockType } from '@blocksuite/affine/blocks/note';
+import { updateBlockType } from '@blocksuite/yunke/blocks/note';
 import { BlockSelection, TextSelection } from '@blocksuite/std';
 import { useLiveData, useService } from '@toeverything/infra';
 import clsx from 'clsx';

@@ -1,9 +1,9 @@
-import { Button, type ButtonProps, Skeleton } from '@affine/component';
-import { generateSubscriptionCallbackLink } from '@affine/core/components/hooks/affine/use-subscription-notify';
-import { AuthService, SubscriptionService } from '@affine/core/modules/cloud';
-// import { SubscriptionPlan, SubscriptionRecurring } from '@affine/graphql';
-import { useI18n } from '@affine/i18n';
-import { track } from '@affine/track';
+import { Button, type ButtonProps, Skeleton } from '@yunke/component';
+import { generateSubscriptionCallbackLink } from '@yunke/core/components/hooks/affine/use-subscription-notify';
+import { AuthService, SubscriptionService } from '@yunke/core/modules/cloud';
+// import { SubscriptionPlan, SubscriptionRecurring } from '@yunke/graphql';
+import { useI18n } from '@yunke/i18n';
+import { track } from '@yunke/track';
 import { useLiveData, useService } from '@toeverything/infra';
 import { useCallback, useMemo } from 'react';
 

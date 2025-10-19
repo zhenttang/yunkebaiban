@@ -1,11 +1,11 @@
-import { WorkspaceDialogService } from '@affine/core/modules/dialogs';
-import track from '@affine/track';
-import type { Container } from '@blocksuite/affine/global/di';
+import { WorkspaceDialogService } from '@yunke/core/modules/dialogs';
+import track from '@yunke/track';
+import type { Container } from '@blocksuite/yunke/global/di';
 import {
   FileSizeLimitProvider,
   type IFileSizeLimitService,
-} from '@blocksuite/affine/shared/services';
-import { Extension } from '@blocksuite/affine/store';
+} from '@blocksuite/yunke/shared/services';
+import { Extension } from '@blocksuite/yunke/store';
 import type { FrameworkProvider } from '@toeverything/infra';
 
 export function patchFileSizeLimitExtension(framework: FrameworkProvider) {

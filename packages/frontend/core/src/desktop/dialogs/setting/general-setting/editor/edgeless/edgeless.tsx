@@ -1,5 +1,5 @@
-import { SettingWrapper } from '@affine/component/setting-components';
-import { useI18n } from '@affine/i18n';
+import { SettingWrapper } from '@yunke/component/setting-components';
+import { useI18n } from '@yunke/i18n';
 
 import { ConnectorSettings } from './connector';
 import { FrameSettings } from './frame';

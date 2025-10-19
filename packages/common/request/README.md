@@ -18,7 +18,7 @@
 ### 1. 基本用法
 
 ```typescript
-import request from '@affine/request';
+import request from '@yunke/request';
 
 // 简单GET请求
 const getData = async () => {
@@ -44,7 +44,7 @@ const createItem = async (data: any) => {
 ### 2. 使用封装好的服务类
 
 ```typescript
-import { WorkspaceService } from '@affine/request';
+import { WorkspaceService } from '@yunke/request';
 
 // 获取工作区列表
 const getWorkspaces = async () => {
@@ -70,7 +70,7 @@ const createWorkspace = async (workspace: any) => {
 ### 3. 高级用法
 
 ```typescript
-import { httpClient, RequestMethod } from '@affine/request';
+import { httpClient, RequestMethod } from '@yunke/request';
 
 // 自定义配置的请求
 const customRequest = async () => {
@@ -106,7 +106,7 @@ const customRequest = async () => {
 模块提供了统一的错误处理机制：
 
 ```typescript
-import { ErrorHandler } from '@affine/request';
+import { ErrorHandler } from '@yunke/request';
 
 // 添加全局错误监听
 ErrorHandler.addErrorListener((error) => {
@@ -120,7 +120,7 @@ ErrorHandler.addErrorListener((error) => {
 如需自定义配置，可以使用：
 
 ```typescript
-import { configureHttpClient } from '@affine/request';
+import { configureHttpClient } from '@yunke/request';
 
 // 配置客户端
 const client = configureHttpClient({

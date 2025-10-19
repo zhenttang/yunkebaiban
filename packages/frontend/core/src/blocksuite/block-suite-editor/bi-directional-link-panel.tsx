@@ -1,30 +1,30 @@
-import { Button, Divider, useLitPortalFactory } from '@affine/component';
-import { getViewManager } from '@affine/core/blocksuite/manager/view';
+import { Button, Divider, useLitPortalFactory } from '@yunke/component';
+import { getViewManager } from '@yunke/core/blocksuite/manager/view';
 import {
   patchReferenceRenderer,
   type ReferenceReactRenderer,
-} from '@affine/core/blocksuite/view-extensions/editor-view/reference-renderer';
-import { useGuard } from '@affine/core/components/guard';
-import { useEnableAI } from '@affine/core/components/hooks/affine/use-enable-ai';
-import { DocService } from '@affine/core/modules/doc';
+} from '@yunke/core/blocksuite/view-extensions/editor-view/reference-renderer';
+import { useGuard } from '@yunke/core/components/guard';
+import { useEnableAI } from '@yunke/core/components/hooks/affine/use-enable-ai';
+import { DocService } from '@yunke/core/modules/doc';
 import {
   type Backlink,
   DocLinksService,
   type Link,
-} from '@affine/core/modules/doc-link';
-import { toDocSearchParams } from '@affine/core/modules/navigation/utils';
-import { GlobalSessionStateService } from '@affine/core/modules/storage';
-import { WorkbenchLink } from '@affine/core/modules/workbench';
+} from '@yunke/core/modules/doc-link';
+import { toDocSearchParams } from '@yunke/core/modules/navigation/utils';
+import { GlobalSessionStateService } from '@yunke/core/modules/storage';
+import { WorkbenchLink } from '@yunke/core/modules/workbench';
 import {
   getAFFiNEWorkspaceSchema,
   WorkspaceService,
-} from '@affine/core/modules/workspace';
-import { useI18n } from '@affine/i18n';
-import track from '@affine/track';
+} from '@yunke/core/modules/workspace';
+import { useI18n } from '@yunke/i18n';
+import track from '@yunke/track';
 import type {
   ExtensionType,
   TransformerMiddleware,
-} from '@blocksuite/affine/store';
+} from '@blocksuite/yunke/store';
 import { ToggleDownIcon } from '@blocksuite/icons/rc';
 import * as Collapsible from '@radix-ui/react-collapsible';
 import {

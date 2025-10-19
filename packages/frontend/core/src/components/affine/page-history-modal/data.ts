@@ -1,15 +1,15 @@
-import { useDocMetaHelper } from '@affine/core/components/hooks/use-block-suite-page-meta';
-import { useDocCollectionPage } from '@affine/core/components/hooks/use-block-suite-workspace-page';
-import { FetchService } from '@affine/core/modules/cloud';
+import { useDocMetaHelper } from '@yunke/core/components/hooks/use-block-suite-page-meta';
+import { useDocCollectionPage } from '@yunke/core/components/hooks/use-block-suite-workspace-page';
+import { FetchService } from '@yunke/core/modules/cloud';
 import {
   type WorkspaceFlavourProvider,
   WorkspaceService,
   WorkspacesService,
-} from '@affine/core/modules/workspace';
-import { WorkspaceImpl } from '@affine/core/modules/workspace/impls/workspace';
-import { DebugLogger } from '@affine/debug';
-import { i18nTime } from '@affine/i18n';
-import type { Workspace } from '@blocksuite/affine/store';
+} from '@yunke/core/modules/workspace';
+import { WorkspaceImpl } from '@yunke/core/modules/workspace/impls/workspace';
+import { DebugLogger } from '@yunke/debug';
+import { i18nTime } from '@yunke/i18n';
+import type { Workspace } from '@blocksuite/yunke/store';
 import { useService } from '@toeverything/infra';
 import { useEffect, useMemo, useState, useCallback } from 'react';
 import useSWRImmutable from 'swr/immutable';

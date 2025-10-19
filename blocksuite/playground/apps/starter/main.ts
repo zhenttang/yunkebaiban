@@ -1,12 +1,12 @@
 import '../../style.css';
 
-import * as databaseBlocks from '@blocksuite/affine/blocks/database';
-import * as noteBlocks from '@blocksuite/affine/blocks/note';
-import * as globalUtils from '@blocksuite/affine/global/utils';
-import * as services from '@blocksuite/affine/shared/services';
-import * as blockStd from '@blocksuite/affine/std';
-import * as store from '@blocksuite/affine/store';
-import * as affineModel from '@blocksuite/affine-model';
+import * as databaseBlocks from '@blocksuite/yunke/blocks/database';
+import * as noteBlocks from '@blocksuite/yunke/blocks/note';
+import * as globalUtils from '@blocksuite/yunke/global/utils';
+import * as services from '@blocksuite/yunke/shared/services';
+import * as blockStd from '@blocksuite/yunke/std';
+import * as store from '@blocksuite/yunke/store';
+import * as affineModel from '@blocksuite/yunke-model';
 import * as editor from '@blocksuite/integration-test';
 import { effects as itEffects } from '@blocksuite/integration-test/effects';
 import { getTestStoreManager } from '@blocksuite/integration-test/store';

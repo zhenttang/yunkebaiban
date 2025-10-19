@@ -5,14 +5,14 @@ import {
   MenuItem,
   type MenuProps,
   useConfirmModal,
-} from '@affine/component';
-import { WorkspaceDialogService } from '@affine/core/modules/dialogs';
-import { DocsService } from '@affine/core/modules/doc';
-import { CompatibleFavoriteItemsAdapter } from '@affine/core/modules/favorite';
-import { GuardService } from '@affine/core/modules/permissions';
-import { WorkbenchService } from '@affine/core/modules/workbench';
-import { useI18n } from '@affine/i18n';
-import track from '@affine/track';
+} from '@yunke/component';
+import { WorkspaceDialogService } from '@yunke/core/modules/dialogs';
+import { DocsService } from '@yunke/core/modules/doc';
+import { CompatibleFavoriteItemsAdapter } from '@yunke/core/modules/favorite';
+import { GuardService } from '@yunke/core/modules/permissions';
+import { WorkbenchService } from '@yunke/core/modules/workbench';
+import { useI18n } from '@yunke/i18n';
+import track from '@yunke/track';
 import {
   DeleteIcon,
   DuplicateIcon,

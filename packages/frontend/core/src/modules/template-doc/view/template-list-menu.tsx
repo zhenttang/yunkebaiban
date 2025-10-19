@@ -4,10 +4,10 @@ import {
   MenuItem,
   type MenuProps,
   Scrollable,
-} from '@affine/component';
-import { useAsyncCallback } from '@affine/core/components/hooks/affine-async-hooks';
-import { inferOpenMode } from '@affine/core/utils';
-import { useI18n } from '@affine/i18n';
+} from '@yunke/component';
+import { useAsyncCallback } from '@yunke/core/components/hooks/affine-async-hooks';
+import { inferOpenMode } from '@yunke/core/utils';
+import { useI18n } from '@yunke/i18n';
 import {
   DualLinkIcon,
   InformationIcon,

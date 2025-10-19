@@ -4,14 +4,14 @@ import {
   type IconButtonProps,
   toast,
   useConfirmModal,
-} from '@affine/component';
-import type { DocRecord } from '@affine/core/modules/doc';
-import { CompatibleFavoriteItemsAdapter } from '@affine/core/modules/favorite';
-import { GuardService } from '@affine/core/modules/permissions';
-import { WorkbenchService } from '@affine/core/modules/workbench';
-import { UserFriendlyError } from '@affine/error';
-import { useI18n } from '@affine/i18n';
-import track from '@affine/track';
+} from '@yunke/component';
+import type { DocRecord } from '@yunke/core/modules/doc';
+import { CompatibleFavoriteItemsAdapter } from '@yunke/core/modules/favorite';
+import { GuardService } from '@yunke/core/modules/permissions';
+import { WorkbenchService } from '@yunke/core/modules/workbench';
+import { UserFriendlyError } from '@yunke/error';
+import { useI18n } from '@yunke/i18n';
+import track from '@yunke/track';
 import {
   DeleteIcon,
   OpenInNewIcon,

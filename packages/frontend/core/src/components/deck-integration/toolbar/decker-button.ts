@@ -1,4 +1,4 @@
-import { EdgelessToolbarToolMixin } from '@blocksuite/affine-widget-edgeless-toolbar';
+import { EdgelessToolbarToolMixin } from '@blocksuite/yunke-widget-edgeless-toolbar';
 import { css, html, LitElement } from 'lit';
 
 export class EdgelessDeckerButton extends EdgelessToolbarToolMixin(LitElement) {

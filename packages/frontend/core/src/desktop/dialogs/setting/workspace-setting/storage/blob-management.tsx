@@ -6,13 +6,13 @@ import {
   templateToString,
   useConfirmModal,
   useDisposable,
-} from '@affine/component';
-import { Pagination } from '@affine/component/setting-components';
-import { BlobManagementService } from '@affine/core/modules/blob-management/services';
-import { useI18n } from '@affine/i18n';
-import type { ListedBlobRecord } from '@affine/nbstore';
-import track from '@affine/track';
-import { getAttachmentFileIcon } from '@blocksuite/affine/components/icons';
+} from '@yunke/component';
+import { Pagination } from '@yunke/component/setting-components';
+import { BlobManagementService } from '@yunke/core/modules/blob-management/services';
+import { useI18n } from '@yunke/i18n';
+import type { ListedBlobRecord } from '@yunke/nbstore';
+import track from '@yunke/track';
+import { getAttachmentFileIcon } from '@blocksuite/yunke/components/icons';
 import { DeleteIcon, RedoIcon } from '@blocksuite/icons/rc';
 import { useLiveData, useService } from '@toeverything/infra';
 import bytes from 'bytes';

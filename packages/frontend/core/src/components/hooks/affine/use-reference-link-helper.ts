@@ -1,9 +1,9 @@
-import type { AffineTextAttributes } from '@blocksuite/affine/shared/types';
+import type { AffineTextAttributes } from '@blocksuite/yunke/shared/types';
 import {
   type DeltaInsert,
   Text,
   type Workspace,
-} from '@blocksuite/affine/store';
+} from '@blocksuite/yunke/store';
 import { useCallback } from 'react';
 
 export function useReferenceLinkHelper(docCollection: Workspace) {

@@ -1,6 +1,6 @@
-import { getAttachmentFileIcon } from '@blocksuite/affine/components/icons';
-import { SignalWatcher, WithDisposable } from '@blocksuite/affine/global/lit';
-import { ShadowlessElement } from '@blocksuite/affine/std';
+import { getAttachmentFileIcon } from '@blocksuite/yunke/components/icons';
+import { SignalWatcher, WithDisposable } from '@blocksuite/yunke/global/lit';
+import { ShadowlessElement } from '@blocksuite/yunke/std';
 import { html } from 'lit';
 import { property } from 'lit/decorators.js';
 

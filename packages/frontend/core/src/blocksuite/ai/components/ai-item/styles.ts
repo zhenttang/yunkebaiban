@@ -1,4 +1,4 @@
-import { unsafeCSSVar, unsafeCSSVarV2 } from '@blocksuite/affine/shared/theme';
+import { unsafeCSSVar, unsafeCSSVarV2 } from '@blocksuite/yunke/shared/theme';
 import { darkCssVariables, lightCssVariables } from '@toeverything/theme';
 import {
   darkCssVariablesV2,

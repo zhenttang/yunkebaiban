@@ -1,7 +1,7 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@affine/admin/components/ui/card';
-import { Button } from '@affine/admin/components/ui/button';
-import { Badge } from '@affine/admin/components/ui/badge';
-import { Checkbox } from '@affine/admin/components/ui/checkbox';
+import { Card, CardContent, CardHeader, CardTitle } from '@yunke/admin/components/ui/card';
+import { Button } from '@yunke/admin/components/ui/button';
+import { Badge } from '@yunke/admin/components/ui/badge';
+import { Checkbox } from '@yunke/admin/components/ui/checkbox';
 import {
   Table,
   TableBody,
@@ -9,13 +9,13 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@affine/admin/components/ui/table';
+} from '@yunke/admin/components/ui/table';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@affine/admin/components/ui/dropdown-menu';
+} from '@yunke/admin/components/ui/dropdown-menu';
 import {
   FileIcon,
   MoreHorizontalIcon,
@@ -23,11 +23,11 @@ import {
   SearchIcon
 } from '@blocksuite/icons/rc';
 import { ArrowUpDown, ArrowUp, ArrowDown, Trash2 as TrashIcon, RefreshCw as RefreshIcon } from 'lucide-react';
-import { Input } from '@affine/admin/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@affine/admin/components/ui/select';
+import { Input } from '@yunke/admin/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@yunke/admin/components/ui/select';
 import { useEffect, useMemo, useState } from 'react';
 import { toast } from 'sonner';
-import { formatBytes, formatDate } from '@affine/admin/utils';
+import { formatBytes, formatDate } from '@yunke/admin/utils';
 
 import { useStorageStatsContext } from '../hooks/storage-stats-context';
 import type { StorageFileDto } from '../types';

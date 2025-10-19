@@ -1,4 +1,4 @@
-import { useQuery } from '@affine/admin/use-query';
+import { useQuery } from '@yunke/admin/use-query';
 import { useState, useCallback, useEffect } from 'react';
 
 // REST API查询定义

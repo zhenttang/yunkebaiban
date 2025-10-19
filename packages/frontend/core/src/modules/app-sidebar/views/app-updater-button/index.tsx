@@ -1,8 +1,8 @@
-import { Tooltip } from '@affine/component';
-import { useCatchEventCallback } from '@affine/core/components/hooks/use-catch-event-hook';
-import { UrlService } from '@affine/core/modules/url';
-import { Unreachable } from '@affine/env/constant';
-import { useI18n } from '@affine/i18n';
+import { Tooltip } from '@yunke/component';
+import { useCatchEventCallback } from '@yunke/core/components/hooks/use-catch-event-hook';
+import { UrlService } from '@yunke/core/modules/url';
+import { Unreachable } from '@yunke/env/constant';
+import { useI18n } from '@yunke/i18n';
 import {
   CloseIcon,
   DownloadIcon,

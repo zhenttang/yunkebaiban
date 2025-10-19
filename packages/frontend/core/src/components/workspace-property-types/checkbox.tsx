@@ -4,9 +4,9 @@ import {
   MenuItem,
   type MenuRef,
   PropertyValue,
-} from '@affine/component';
-import type { FilterParams } from '@affine/core/modules/collection-rules';
-import { useI18n } from '@affine/i18n';
+} from '@yunke/component';
+import type { FilterParams } from '@yunke/core/modules/collection-rules';
+import { useI18n } from '@yunke/i18n';
 import { CheckBoxCheckLinearIcon } from '@blocksuite/icons/rc';
 import { useCallback, useEffect, useRef } from 'react';
 

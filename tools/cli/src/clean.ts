@@ -1,6 +1,6 @@
 import { rmSync } from 'node:fs';
 
-import { exec } from '@affine-tools/utils/process';
+import { exec } from '@yunke-tools/utils/process';
 
 import { Command, Option } from './command';
 

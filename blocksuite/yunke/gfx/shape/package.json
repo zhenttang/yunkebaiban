@@ -1,0 +1,48 @@
+{
+  "name": "@blocksuite/yunke-gfx-shape",
+  "description": "Gfx shape for BlockSuite.",
+  "type": "module",
+  "scripts": {
+    "build": "tsc"
+  },
+  "sideEffects": false,
+  "keywords": [],
+  "author": "toeverything",
+  "license": "MIT",
+  "dependencies": {
+    "@blocksuite/global": "workspace:*",
+    "@blocksuite/icons": "^2.2.12",
+    "@blocksuite/std": "workspace:*",
+    "@blocksuite/store": "workspace:*",
+    "@blocksuite/yunke-block-surface": "workspace:*",
+    "@blocksuite/yunke-components": "workspace:*",
+    "@blocksuite/yunke-ext-loader": "workspace:*",
+    "@blocksuite/yunke-gfx-text": "workspace:*",
+    "@blocksuite/yunke-model": "workspace:*",
+    "@blocksuite/yunke-rich-text": "workspace:*",
+    "@blocksuite/yunke-shared": "workspace:*",
+    "@blocksuite/yunke-widget-edgeless-toolbar": "workspace:*",
+    "@lit/context": "^1.1.2",
+    "@preact/signals-core": "^1.8.0",
+    "@toeverything/theme": "^1.1.15",
+    "@types/lodash-es": "^4.17.12",
+    "lit": "^3.2.0",
+    "lodash-es": "^4.17.21",
+    "minimatch": "^10.0.1",
+    "rxjs": "^7.8.1",
+    "yjs": "^13.6.21",
+    "zod": "^3.23.8"
+  },
+  "exports": {
+    ".": "./src/index.ts",
+    "./store": "./src/store.ts",
+    "./view": "./src/view.ts"
+  },
+  "files": [
+    "src",
+    "dist",
+    "!src/__tests__",
+    "!dist/__tests__"
+  ],
+  "version": "0.21.0"
+}

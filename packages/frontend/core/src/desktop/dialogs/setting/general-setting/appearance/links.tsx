@@ -1,9 +1,9 @@
-import { Menu, MenuItem, MenuTrigger } from '@affine/component';
+import { Menu, MenuItem, MenuTrigger } from '@yunke/component';
 import {
   OpenInAppService,
   OpenLinkMode,
-} from '@affine/core/modules/open-in-app';
-import { useI18n } from '@affine/i18n';
+} from '@yunke/core/modules/open-in-app';
+import { useI18n } from '@yunke/i18n';
 import { useLiveData, useService } from '@toeverything/infra';
 import { useMemo } from 'react';
 

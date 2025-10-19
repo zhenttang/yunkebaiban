@@ -1,32 +1,32 @@
-import { Scrollable, uniReactRoot } from '@affine/component';
-import type { AffineEditorContainer } from '@affine/core/blocksuite/block-suite-editor';
-import { EditorOutlineViewer } from '@affine/core/blocksuite/outline-viewer';
-import { useActiveBlocksuiteEditor } from '@affine/core/components/hooks/use-block-suite-editor';
-import { useNavigateHelper } from '@affine/core/components/hooks/use-navigate-helper';
-import { PageDetailEditor } from '@affine/core/components/page-detail-editor';
-import { AppContainer } from '@affine/core/desktop/components/app-container';
-import { AuthService, ServerService } from '@affine/core/modules/cloud';
-import { type Doc, DocsService } from '@affine/core/modules/doc';
-import { GlobalDialogService } from '@affine/core/modules/dialogs';
+import { Scrollable, uniReactRoot } from '@yunke/component';
+import type { AffineEditorContainer } from '@yunke/core/blocksuite/block-suite-editor';
+import { EditorOutlineViewer } from '@yunke/core/blocksuite/outline-viewer';
+import { useActiveBlocksuiteEditor } from '@yunke/core/components/hooks/use-block-suite-editor';
+import { useNavigateHelper } from '@yunke/core/components/hooks/use-navigate-helper';
+import { PageDetailEditor } from '@yunke/core/components/page-detail-editor';
+import { AppContainer } from '@yunke/core/desktop/components/app-container';
+import { AuthService, ServerService } from '@yunke/core/modules/cloud';
+import { type Doc, DocsService } from '@yunke/core/modules/doc';
+import { GlobalDialogService } from '@yunke/core/modules/dialogs';
 import {
   type Editor,
   type EditorSelector,
   EditorService,
   EditorsService,
-} from '@affine/core/modules/editor';
-import { PeekViewManagerModal } from '@affine/core/modules/peek-view';
-import { ShareInfoService } from '@affine/core/modules/share-doc';
-import { AnonymousUserIdentity } from '@affine/core/modules/temporary-user';
-import { ViewIcon, ViewTitle } from '@affine/core/modules/workbench';
+} from '@yunke/core/modules/editor';
+import { PeekViewManagerModal } from '@yunke/core/modules/peek-view';
+import { ShareInfoService } from '@yunke/core/modules/share-doc';
+import { AnonymousUserIdentity } from '@yunke/core/modules/temporary-user';
+import { ViewIcon, ViewTitle } from '@yunke/core/modules/workbench';
 import {
   type Workspace,
   WorkspacesService,
-} from '@affine/core/modules/workspace';
-// import { PublicDocMode } from '@affine/graphql';
-import { useI18n } from '@affine/i18n';
-import { DisposableGroup } from '@blocksuite/affine/global/disposable';
-import { RefNodeSlotsProvider } from '@blocksuite/affine/inlines/reference';
-import { type DocMode, DocModes } from '@blocksuite/affine/model';
+} from '@yunke/core/modules/workspace';
+// import { PublicDocMode } from '@yunke/graphql';
+import { useI18n } from '@yunke/i18n';
+import { DisposableGroup } from '@blocksuite/yunke/global/disposable';
+import { RefNodeSlotsProvider } from '@blocksuite/yunke/inlines/reference';
+import { type DocMode, DocModes } from '@blocksuite/yunke/model';
 import { Logo1Icon } from '@blocksuite/icons/rc';
 import { FrameworkScope, useLiveData, useService } from '@toeverything/infra';
 import clsx from 'clsx';

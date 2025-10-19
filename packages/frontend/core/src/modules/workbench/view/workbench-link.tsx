@@ -1,7 +1,7 @@
-import { useDraggable } from '@affine/component';
-import { useAsyncCallback } from '@affine/core/components/hooks/affine-async-hooks';
-import type { AffineDNDData, AffineDNDEntity } from '@affine/core/types/dnd';
-import { inferOpenMode as inferOpenAt } from '@affine/core/utils';
+import { useDraggable } from '@yunke/component';
+import { useAsyncCallback } from '@yunke/core/components/hooks/affine-async-hooks';
+import type { AffineDNDData, AffineDNDEntity } from '@yunke/core/types/dnd';
+import { inferOpenMode as inferOpenAt } from '@yunke/core/utils';
 import { useLiveData, useServices } from '@toeverything/infra';
 import { type To } from 'history';
 import { forwardRef, type MouseEvent } from 'react';

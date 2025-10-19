@@ -1,9 +1,9 @@
-import { Button } from '@affine/component/ui/button';
-import { Checkbox } from '@affine/component/ui/checkbox';
-import { useI18n } from '@affine/i18n';
+import { Button } from '@yunke/component/ui/button';
+import { Checkbox } from '@yunke/component/ui/checkbox';
+import { useI18n } from '@yunke/i18n';
 import { useState, useMemo, useCallback } from 'react';
 
-import { DocPermission, PermissionMask, hasPermission } from '@affine/core/modules/share-doc/types';
+import { DocPermission, PermissionMask, hasPermission } from '@yunke/core/modules/share-doc/types';
 
 export interface CustomPermissionPanelProps {
   initialMask: PermissionMask;

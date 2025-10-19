@@ -1,5 +1,5 @@
-import { RadioGroup, Scrollable } from '@affine/component';
-import { ThemeEditorService } from '@affine/core/modules/theme-editor';
+import { RadioGroup, Scrollable } from '@yunke/component';
+import { ThemeEditorService } from '@yunke/core/modules/theme-editor';
 import { useService } from '@toeverything/infra';
 import { useCallback, useEffect, useState } from 'react';
 

@@ -1,5 +1,5 @@
-import type { SurfaceRefBlockComponent } from '@blocksuite/affine/blocks/surface-ref';
-import { AffineReference } from '@blocksuite/affine/inlines/reference';
+import type { SurfaceRefBlockComponent } from '@blocksuite/yunke/blocks/surface-ref';
+import { AffineReference } from '@blocksuite/yunke/inlines/reference';
 import type {
   AttachmentBlockModel,
   DocMode,
@@ -7,9 +7,9 @@ import type {
   EmbedSyncedDocModel,
   ImageBlockModel,
   SurfaceRefBlockModel,
-} from '@blocksuite/affine/model';
-import type { BlockComponent, EditorHost } from '@blocksuite/affine/std';
-import type { Block, BlockModel } from '@blocksuite/affine/store';
+} from '@blocksuite/yunke/model';
+import type { BlockComponent, EditorHost } from '@blocksuite/yunke/std';
+import type { Block, BlockModel } from '@blocksuite/yunke/store';
 import { Entity, LiveData } from '@toeverything/infra';
 import type { TemplateResult } from 'lit';
 import { firstValueFrom, map, race } from 'rxjs';

@@ -1,13 +1,13 @@
-import { Button, ErrorMessage, Skeleton } from '@affine/component';
-import { SettingRow } from '@affine/component/setting-components';
+import { Button, ErrorMessage, Skeleton } from '@yunke/component';
+import { SettingRow } from '@yunke/component/setting-components';
 import {
   ServerService,
   SubscriptionService,
   UserCopilotQuotaService,
-} from '@affine/core/modules/cloud';
-// import { SubscriptionPlan } from '@affine/graphql';
-import { useI18n } from '@affine/i18n';
-import { track } from '@affine/track';
+} from '@yunke/core/modules/cloud';
+// import { SubscriptionPlan } from '@yunke/graphql';
+import { useI18n } from '@yunke/i18n';
+import { track } from '@yunke/track';
 import { useLiveData, useService } from '@toeverything/infra';
 import { cssVar } from '@toeverything/theme';
 import { useCallback, useEffect } from 'react';

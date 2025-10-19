@@ -1,5 +1,5 @@
-import type { MemberSearchService } from '@affine/core/modules/permissions';
-import { UserListServiceExtension } from '@blocksuite/affine/shared/services';
+import type { MemberSearchService } from '@yunke/core/modules/permissions';
+import { UserListServiceExtension } from '@blocksuite/yunke/shared/services';
 
 export function patchUserListExtensions(memberSearch: MemberSearchService) {
   return UserListServiceExtension({

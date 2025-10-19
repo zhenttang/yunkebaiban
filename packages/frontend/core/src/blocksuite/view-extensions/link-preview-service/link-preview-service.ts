@@ -1,11 +1,11 @@
-import { DEFAULT_LINK_PREVIEW_ENDPOINT } from '@blocksuite/affine/shared/consts';
+import { DEFAULT_LINK_PREVIEW_ENDPOINT } from '@blocksuite/yunke/shared/consts';
 import {
   LinkPreviewCacheIdentifier,
   type LinkPreviewCacheProvider,
   LinkPreviewService,
   LinkPreviewServiceIdentifier,
-} from '@blocksuite/affine/shared/services';
-import { type ExtensionType } from '@blocksuite/affine/store';
+} from '@blocksuite/yunke/shared/services';
+import { type ExtensionType } from '@blocksuite/yunke/store';
 import type { Container } from '@blocksuite/global/di';
 import type { FrameworkProvider } from '@toeverything/infra';
 

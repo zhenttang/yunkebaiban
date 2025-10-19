@@ -1,6 +1,6 @@
 import path from 'node:path';
 
-import { type SpaceType } from '@affine/nbstore';
+import { type SpaceType } from '@yunke/nbstore';
 
 import { isWindows } from '../../shared/utils';
 import { mainRPC } from '../main-rpc';

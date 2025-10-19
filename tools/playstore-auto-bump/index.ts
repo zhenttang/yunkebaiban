@@ -1,7 +1,7 @@
 import { execSync } from 'node:child_process';
 import fs from 'node:fs';
 
-import { Package } from '@affine-tools/utils/workspace';
+import { Package } from '@yunke-tools/utils/workspace';
 import {
   androidpublisher_v3,
   auth as google_auth,
@@ -55,7 +55,7 @@ export async function fetchVersionCode(applicationId: string): Promise<number> {
 
 const versionCodeRegexPattern = /(versionCode(?:\s|=)*)(.*)/;
 
-const gradlePath = new Package('@affine/android').join(
+const gradlePath = new Package('@yunke/android').join(
   'App/app/build.gradle'
 ).value;
 

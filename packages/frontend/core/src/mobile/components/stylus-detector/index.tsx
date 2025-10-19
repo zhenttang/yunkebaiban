@@ -1,4 +1,4 @@
-import { Modal } from '@affine/component';
+import { Modal } from '@yunke/component';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import * as styles from './styles.css.js';

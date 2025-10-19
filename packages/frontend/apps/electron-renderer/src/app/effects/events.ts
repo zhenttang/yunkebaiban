@@ -1,11 +1,11 @@
-import { DesktopApiService } from '@affine/core/modules/desktop-api';
-import { WorkspaceDialogService } from '@affine/core/modules/dialogs';
-import type { SettingTab } from '@affine/core/modules/dialogs/constant';
-import { DocsService } from '@affine/core/modules/doc';
-import { JournalService } from '@affine/core/modules/journal';
-import { LifecycleService } from '@affine/core/modules/lifecycle';
-import { WorkbenchService } from '@affine/core/modules/workbench';
-import { apis, events } from '@affine/electron-api';
+import { DesktopApiService } from '@yunke/core/modules/desktop-api';
+import { WorkspaceDialogService } from '@yunke/core/modules/dialogs';
+import type { SettingTab } from '@yunke/core/modules/dialogs/constant';
+import { DocsService } from '@yunke/core/modules/doc';
+import { JournalService } from '@yunke/core/modules/journal';
+import { LifecycleService } from '@yunke/core/modules/lifecycle';
+import { WorkbenchService } from '@yunke/core/modules/workbench';
+import { apis, events } from '@yunke/electron-api';
 import type { FrameworkProvider } from '@toeverything/infra';
 
 import { setupRecordingEvents } from './recording';

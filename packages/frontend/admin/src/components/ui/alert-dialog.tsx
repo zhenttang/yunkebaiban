@@ -1,5 +1,5 @@
-import { buttonVariants } from '@affine/admin/components/ui/button';
-import { cn } from '@affine/admin/utils';
+import { buttonVariants } from '@yunke/admin/components/ui/button';
+import { cn } from '@yunke/admin/utils';
 import * as AlertDialogPrimitive from '@radix-ui/react-alert-dialog';
 import * as React from 'react';
 

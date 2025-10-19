@@ -1,9 +1,9 @@
-import { IconButton, Menu } from '@affine/component';
-import { type DocRecord, DocsService } from '@affine/core/modules/doc';
-import { DocDisplayMetaService } from '@affine/core/modules/doc-display-meta';
-import { JournalService } from '@affine/core/modules/journal';
-import { WorkbenchLink } from '@affine/core/modules/workbench';
-import { useI18n } from '@affine/i18n';
+import { IconButton, Menu } from '@yunke/component';
+import { type DocRecord, DocsService } from '@yunke/core/modules/doc';
+import { DocDisplayMetaService } from '@yunke/core/modules/doc-display-meta';
+import { JournalService } from '@yunke/core/modules/journal';
+import { WorkbenchLink } from '@yunke/core/modules/workbench';
+import { useI18n } from '@yunke/i18n';
 import { EditIcon, TodayIcon } from '@blocksuite/icons/rc';
 import { useLiveData, useService } from '@toeverything/infra';
 import { useMemo } from 'react';

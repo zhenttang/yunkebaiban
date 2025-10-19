@@ -1,5 +1,5 @@
 {
-  "name": "@affine/component",
+  "name": "@yunke/component",
   "private": true,
   "type": "module",
   "main": "./src/index.ts",
@@ -14,16 +14,12 @@
     "build:storybook": "storybook build"
   },
   "peerDependencies": {
-    "@blocksuite/affine": "*",
+    "@blocksuite/yunke": "*",
     "@swc/core": "^1.0.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },
   "dependencies": {
-    "@affine/debug": "workspace:*",
-    "@affine/electron-api": "workspace:*",
-    "@affine/error": "workspace:*",
-    "@affine/i18n": "workspace:*",
     "@atlaskit/pragmatic-drag-and-drop": "^1.4.0",
     "@atlaskit/pragmatic-drag-and-drop-hitbox": "^1.0.3",
     "@blocksuite/icons": "^2.2.12",
@@ -45,6 +41,10 @@
     "@radix-ui/react-visually-hidden": "^1.1.1",
     "@toeverything/theme": "^1.1.15",
     "@vanilla-extract/dynamic": "^2.1.2",
+    "@yunke/debug": "workspace:*",
+    "@yunke/electron-api": "workspace:*",
+    "@yunke/error": "workspace:*",
+    "@yunke/i18n": "workspace:*",
     "bytes": "^3.1.2",
     "check-password-strength": "^3.0.0",
     "clsx": "^2.1.1",
@@ -67,8 +67,7 @@
     "zod": "^3.24.1"
   },
   "devDependencies": {
-    "@affine-tools/utils": "workspace:*",
-    "@blocksuite/affine": "workspace:*",
+    "@blocksuite/yunke": "workspace:*",
     "@chromatic-com/storybook": "^4.0.0",
     "@storybook/addon-essentials": "^8.4.7",
     "@storybook/addon-interactions": "^8.4.7",
@@ -82,6 +81,7 @@
     "@types/react": "^19.0.1",
     "@types/react-dom": "^19.0.2",
     "@vanilla-extract/css": "^1.17.0",
+    "@yunke-tools/utils": "workspace:*",
     "storybook": "^9.0.0",
     "typescript": "^5.7.2",
     "unplugin-swc": "^1.5.1",

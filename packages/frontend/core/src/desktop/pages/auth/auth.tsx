@@ -1,4 +1,4 @@
-import { notify } from '@affine/component';
+import { notify } from '@yunke/component';
 import {
   ChangeEmailPage,
   ChangePasswordPage,
@@ -6,12 +6,12 @@ import {
   SetPasswordPage,
   SignInSuccessPage,
   SignUpPage,
-} from '@affine/component/auth-components';
+} from '@yunke/component/auth-components';
 //import {
 //   changePasswordMutation,
 //   sendVerifyChangeEmailMutation,
-//} from '@affine/graphql';
-import { useI18n } from '@affine/i18n';
+//} from '@yunke/graphql';
+import { useI18n } from '@yunke/i18n';
 import { useLiveData, useService } from '@toeverything/infra';
 import { useCallback } from 'react';
 import type { LoaderFunction } from 'react-router-dom';

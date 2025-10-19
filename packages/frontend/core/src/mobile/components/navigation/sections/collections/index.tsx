@@ -1,10 +1,10 @@
-import { usePromptModal } from '@affine/component';
-import { NavigationPanelTreeRoot } from '@affine/core/desktop/components/navigation-panel';
-import { CollectionService } from '@affine/core/modules/collection';
-import { NavigationPanelService } from '@affine/core/modules/navigation-panel';
-import { WorkbenchService } from '@affine/core/modules/workbench';
-import { useI18n } from '@affine/i18n';
-import { track } from '@affine/track';
+import { usePromptModal } from '@yunke/component';
+import { NavigationPanelTreeRoot } from '@yunke/core/desktop/components/navigation-panel';
+import { CollectionService } from '@yunke/core/modules/collection';
+import { NavigationPanelService } from '@yunke/core/modules/navigation-panel';
+import { WorkbenchService } from '@yunke/core/modules/workbench';
+import { useI18n } from '@yunke/i18n';
+import { track } from '@yunke/track';
 import { AddCollectionIcon } from '@blocksuite/icons/rc';
 import { useLiveData, useServices } from '@toeverything/infra';
 import { useCallback } from 'react';

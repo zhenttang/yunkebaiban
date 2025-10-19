@@ -1,4 +1,4 @@
-import { WithDisposable } from '@blocksuite/affine/global/lit';
+import { WithDisposable } from '@blocksuite/yunke/global/lit';
 import { css, html, LitElement } from 'lit';
 import { property } from 'lit/decorators.js';
 

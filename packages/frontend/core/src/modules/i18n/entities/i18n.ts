@@ -1,11 +1,11 @@
-import { notify } from '@affine/component';
-import { DebugLogger } from '@affine/debug';
+import { notify } from '@yunke/component';
+import { DebugLogger } from '@yunke/debug';
 import {
   getOrCreateI18n,
   i18nCompletenesses,
   type Language,
   SUPPORTED_LANGUAGES,
-} from '@affine/i18n';
+} from '@yunke/i18n';
 import { effect, Entity, fromPromise, LiveData } from '@toeverything/infra';
 import { catchError, EMPTY, exhaustMap } from 'rxjs';
 

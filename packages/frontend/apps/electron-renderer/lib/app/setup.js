@@ -1,10 +1,10 @@
-import '@affine/core/bootstrap/electron';
-import '@affine/core/bootstrap/cleanup';
-import '@affine/component/theme';
+import '@yunke/core/bootstrap/electron';
+import '@yunke/core/bootstrap/cleanup';
+import '@yunke/component/theme';
 import './global.css';
-import { apis } from '@affine/electron-api';
-import { bindNativeDBApis } from '@affine/nbstore/sqlite';
-import { bindNativeDBV1Apis } from '@affine/nbstore/sqlite/v1';
+import { apis } from '@yunke/electron-api';
+import { bindNativeDBApis } from '@yunke/nbstore/sqlite';
+import { bindNativeDBV1Apis } from '@yunke/nbstore/sqlite/v1';
 // 检查APIs是否存在以及是否包含必要的属性
 if (apis && apis.nbstore) {
     bindNativeDBApis(apis.nbstore);

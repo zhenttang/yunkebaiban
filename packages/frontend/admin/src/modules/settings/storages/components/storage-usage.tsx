@@ -1,12 +1,12 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@affine/admin/components/ui/card';
-import { Badge } from '@affine/admin/components/ui/badge';
-import { Progress } from '@affine/admin/components/ui/progress';
-import { Button } from '@affine/admin/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@yunke/admin/components/ui/card';
+import { Badge } from '@yunke/admin/components/ui/badge';
+import { Progress } from '@yunke/admin/components/ui/progress';
+import { Button } from '@yunke/admin/components/ui/button';
 import {
   DatabaseTableViewIcon
 } from '@blocksuite/icons/rc';
 import { RefreshCw as RefreshIcon, TrendingUpIcon } from 'lucide-react';
-import { formatBytes, formatNumber } from '@affine/admin/utils';
+import { formatBytes, formatNumber } from '@yunke/admin/utils';
 
 import { useStorageStatsContext } from '../hooks/storage-stats-context';
 

@@ -1,7 +1,7 @@
 import React from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@affine/admin/components/ui/card';
-import { Button } from '@affine/admin/components/ui/button';
-import { Badge } from '@affine/admin/components/ui/badge';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@yunke/admin/components/ui/card';
+import { Button } from '@yunke/admin/components/ui/button';
+import { Badge } from '@yunke/admin/components/ui/badge';
 import { Trash2, Users, Clock, Activity, RefreshCw } from 'lucide-react';
 import { useActiveSessions } from '../hooks/use-security-events';
 

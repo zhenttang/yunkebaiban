@@ -2,12 +2,12 @@ import { readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { parse } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { Package } from '@affine-tools/utils/workspace';
+import { Package } from '@yunke-tools/utils/workspace';
 import { runCli } from '@magic-works/i18n-codegen';
 
 const isDev = process.argv.includes('--dev');
 
-const i18nPkg = new Package('@affine/i18n');
+const i18nPkg = new Package('@yunke/i18n');
 const resourcesDir = i18nPkg.join('src', 'resources').toString();
 
 function readResource(lang: string): Record<string, string> {
@@ -72,7 +72,7 @@ function i18nnext() {
 }
 
 async function appendErrorI18n() {
-  const server = new Package('@affine/server');
+  const server = new Package('@yunke/server');
   const defFilePath = server.srcPath.join('base/error/def.ts');
 
   if (!defFilePath.exists()) {

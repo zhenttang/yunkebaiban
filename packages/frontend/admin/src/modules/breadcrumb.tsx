@@ -1,6 +1,6 @@
 import { ChevronRightIcon } from 'lucide-react';
 import { useLocation, Link } from 'react-router-dom';
-import { cn } from '@affine/admin/utils';
+import { cn } from '@yunke/admin/utils';
 import { useMediaQuery } from './common';
 
 const breadcrumbNameMap: Record<string, string> = {

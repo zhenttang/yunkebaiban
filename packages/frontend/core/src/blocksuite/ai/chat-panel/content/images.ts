@@ -1,6 +1,6 @@
-import { WithDisposable } from '@blocksuite/affine/global/lit';
-import { unsafeCSSVar } from '@blocksuite/affine/shared/theme';
-import { ShadowlessElement } from '@blocksuite/affine/std';
+import { WithDisposable } from '@blocksuite/yunke/global/lit';
+import { unsafeCSSVar } from '@blocksuite/yunke/shared/theme';
+import { ShadowlessElement } from '@blocksuite/yunke/std';
 import { css, html, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';

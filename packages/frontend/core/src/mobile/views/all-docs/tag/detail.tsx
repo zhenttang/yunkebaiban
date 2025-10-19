@@ -1,13 +1,13 @@
-import { Wrapper } from '@affine/component';
-import { EmptyDocs } from '@affine/core/components/affine/empty';
+import { Wrapper } from '@yunke/component';
+import { EmptyDocs } from '@yunke/core/components/affine/empty';
 import {
   createDocExplorerContext,
   DocExplorerContext,
-} from '@affine/core/components/explorer/context';
-import { DocsExplorer } from '@affine/core/components/explorer/docs-view/docs-list';
-import { Page } from '@affine/core/mobile/components/page';
-import { CollectionRulesService } from '@affine/core/modules/collection-rules';
-import type { Tag } from '@affine/core/modules/tag';
+} from '@yunke/core/components/explorer/context';
+import { DocsExplorer } from '@yunke/core/components/explorer/docs-view/docs-list';
+import { Page } from '@yunke/core/mobile/components/page';
+import { CollectionRulesService } from '@yunke/core/modules/collection-rules';
+import type { Tag } from '@yunke/core/modules/tag';
 import { useLiveData, useService } from '@toeverything/infra';
 import { useEffect, useState } from 'react';
 

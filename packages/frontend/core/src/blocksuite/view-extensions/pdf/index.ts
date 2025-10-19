@@ -1,8 +1,8 @@
-import type { ElementOrFactory } from '@affine/component';
+import type { ElementOrFactory } from '@yunke/component';
 import {
   type ViewExtensionContext,
   ViewExtensionProvider,
-} from '@blocksuite/affine/ext-loader';
+} from '@blocksuite/yunke/ext-loader';
 import type { TemplateResult } from 'lit';
 import { z } from 'zod';
 

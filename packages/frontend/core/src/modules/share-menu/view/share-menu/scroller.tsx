@@ -1,4 +1,4 @@
-import { Scrollable } from '@affine/component';
+import { Scrollable } from '@yunke/component';
 import { forwardRef, type HTMLAttributes, type PropsWithChildren } from 'react';
 
 import * as styles from './scroller.css';

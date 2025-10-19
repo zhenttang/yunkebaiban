@@ -1,9 +1,9 @@
-import { Button } from '@affine/admin/components/ui/button';
-import { Input } from '@affine/admin/components/ui/input';
-import { Label } from '@affine/admin/components/ui/label';
-import { Separator } from '@affine/admin/components/ui/separator';
-import { Switch } from '@affine/admin/components/ui/switch';
-// import type { FeatureType } from '@affine/graphql';
+import { Button } from '@yunke/admin/components/ui/button';
+import { Input } from '@yunke/admin/components/ui/input';
+import { Label } from '@yunke/admin/components/ui/label';
+import { Separator } from '@yunke/admin/components/ui/separator';
+import { Switch } from '@yunke/admin/components/ui/switch';
+// import type { FeatureType } from '@yunke/graphql';
 import { FeatureType } from '../schema';
 import { cssVarV2 } from '@toeverything/theme/v2';
 import { ChevronRightIcon } from 'lucide-react';

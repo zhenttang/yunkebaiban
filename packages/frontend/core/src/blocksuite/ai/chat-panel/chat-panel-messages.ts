@@ -1,11 +1,11 @@
-import { WithDisposable } from '@blocksuite/affine/global/lit';
+import { WithDisposable } from '@blocksuite/yunke/global/lit';
 import {
   DocModeProvider,
   FeatureFlagService,
-} from '@blocksuite/affine/shared/services';
-import type { EditorHost } from '@blocksuite/affine/std';
-import { ShadowlessElement } from '@blocksuite/affine/std';
-import type { BaseSelection, ExtensionType } from '@blocksuite/affine/store';
+} from '@blocksuite/yunke/shared/services';
+import type { EditorHost } from '@blocksuite/yunke/std';
+import { ShadowlessElement } from '@blocksuite/yunke/std';
+import type { BaseSelection, ExtensionType } from '@blocksuite/yunke/store';
 import { ArrowDownBigIcon as ArrowDownIcon } from '@blocksuite/icons/lit';
 import { css, html, nothing, type PropertyValues } from 'lit';
 import { property, query, state } from 'lit/decorators.js';

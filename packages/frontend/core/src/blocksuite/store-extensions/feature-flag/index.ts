@@ -1,9 +1,9 @@
-import { getFeatureFlagSyncer } from '@affine/core/blocksuite/store-extensions/feature-flag/feature-flag-syncer';
-import { FeatureFlagService } from '@affine/core/modules/feature-flag';
+import { getFeatureFlagSyncer } from '@yunke/core/blocksuite/store-extensions/feature-flag/feature-flag-syncer';
+import { FeatureFlagService } from '@yunke/core/modules/feature-flag';
 import {
   type StoreExtensionContext,
   StoreExtensionProvider,
-} from '@blocksuite/affine/ext-loader';
+} from '@blocksuite/yunke/ext-loader';
 import { z } from 'zod';
 
 const optionsSchema = z.object({

@@ -1,18 +1,18 @@
-import { AppThemeService } from '@affine/core/modules/theme';
-import { ColorScheme } from '@blocksuite/affine/model';
+import { AppThemeService } from '@yunke/core/modules/theme';
+import { ColorScheme } from '@blocksuite/yunke/model';
 import {
   type ThemeExtension,
   ThemeExtensionIdentifier,
-} from '@blocksuite/affine/shared/services';
+} from '@blocksuite/yunke/shared/services';
 import {
   createSignalFromObservable,
   type Signal,
-} from '@blocksuite/affine/shared/utils';
+} from '@blocksuite/yunke/shared/utils';
 import {
   type BlockStdScope,
   LifeCycleWatcher,
   StdIdentifier,
-} from '@blocksuite/affine/std';
+} from '@blocksuite/yunke/std';
 import type { Container } from '@blocksuite/global/di';
 import type { FrameworkProvider } from '@toeverything/infra';
 import type { Observable } from 'rxjs';

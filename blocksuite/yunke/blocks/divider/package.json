@@ -1,0 +1,42 @@
+{
+  "name": "@blocksuite/yunke-block-divider",
+  "description": "Divider block for BlockSuite.",
+  "type": "module",
+  "scripts": {
+    "build": "tsc"
+  },
+  "sideEffects": false,
+  "keywords": [],
+  "author": "toeverything",
+  "license": "MIT",
+  "dependencies": {
+    "@blocksuite/global": "workspace:*",
+    "@blocksuite/std": "workspace:*",
+    "@blocksuite/store": "workspace:*",
+    "@blocksuite/yunke-components": "workspace:*",
+    "@blocksuite/yunke-ext-loader": "workspace:*",
+    "@blocksuite/yunke-model": "workspace:*",
+    "@blocksuite/yunke-shared": "workspace:*",
+    "@floating-ui/dom": "^1.6.13",
+    "@lit/context": "^1.1.2",
+    "@preact/signals-core": "^1.8.0",
+    "@toeverything/theme": "^1.1.15",
+    "@types/mdast": "^4.0.4",
+    "lit": "^3.2.0",
+    "minimatch": "^10.0.1",
+    "rxjs": "^7.8.1",
+    "zod": "^3.23.8"
+  },
+  "exports": {
+    ".": "./src/index.ts",
+    "./view": "./src/view.ts",
+    "./store": "./src/store.ts"
+  },
+  "files": [
+    "src",
+    "dist",
+    "!src/__tests__",
+    "!dist/__tests__"
+  ],
+  "version": "0.21.0"
+}

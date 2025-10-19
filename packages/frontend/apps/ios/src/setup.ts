@@ -1,3 +1,3 @@
-import '@affine/core/bootstrap/browser';
-import '@affine/core/bootstrap/cleanup';
+import '@yunke/core/bootstrap/browser';
+import '@yunke/core/bootstrap/cleanup';
 import './proxy';

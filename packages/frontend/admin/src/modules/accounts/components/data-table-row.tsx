@@ -5,7 +5,7 @@ import { flexRender } from '@tanstack/react-table';
 import {
   TableRow,
   TableCell
-} from '@affine/admin/components/ui/table';
+} from '@yunke/admin/components/ui/table';
 import { cn } from '../../../utils';
 
 interface DataTableRowProps<TData> {

@@ -1,7 +1,7 @@
-import { AliasToPackage } from '@affine-tools/utils/distribution';
-import { Logger } from '@affine-tools/utils/logger';
-import { exec, execAsync, spawn } from '@affine-tools/utils/process';
-import { type PackageName, Workspace } from '@affine-tools/utils/workspace';
+import { AliasToPackage } from '@yunke-tools/utils/distribution';
+import { Logger } from '@yunke-tools/utils/logger';
+import { exec, execAsync, spawn } from '@yunke-tools/utils/process';
+import { type PackageName, Workspace } from '@yunke-tools/utils/workspace';
 import { Command as BaseCommand, Option } from 'clipanion';
 import inquirer from 'inquirer';
 import * as t from 'typanion';
@@ -123,7 +123,7 @@ export abstract class PackageSelectorCommand extends Command {
             value: name,
           })),
           pageSize: 10,
-          default: '@affine/web',
+          default: '@yunke/web',
         },
       ]);
 

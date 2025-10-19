@@ -1,4 +1,4 @@
-import type { PackageName } from '@affine-tools/utils/workspace';
+import type { PackageName } from '@yunke-tools/utils/workspace';
 
 import { Option, PackageSelectorCommand } from './command';
 
@@ -6,14 +6,14 @@ export class DevCommand extends PackageSelectorCommand {
   static override paths = [['dev'], ['d']];
 
   protected override availablePackages: PackageName[] = [
-    '@affine/web',
-    '@affine/server',
-    '@affine/electron',
-    '@affine/electron-renderer',
-    '@affine/mobile',
-    '@affine/ios',
+    '@yunke/web',
+    '@yunke/server',
+    '@yunke/electron',
+    '@yunke/electron-renderer',
+    '@yunke/mobile',
+    '@yunke/ios',
     '@yunke/android',
-    '@affine/admin',
+    '@yunke/admin',
   ];
 
   protected deps = Option.Boolean('--deps', {

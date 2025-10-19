@@ -1,21 +1,21 @@
-import { IconButton, notify } from '@affine/component';
+import { IconButton, notify } from '@yunke/component';
 import {
   MenuSeparator,
   MenuSub,
   MobileMenu,
   MobileMenuItem,
-} from '@affine/component/ui/menu';
-import { useFavorite } from '@affine/core/blocksuite/block-suite-header/favorite';
-import { useGuard } from '@affine/core/components/guard';
-import { IsFavoriteIcon } from '@affine/core/components/pure/icons';
-import { DocInfoSheet } from '@affine/core/mobile/components';
-import { MobileTocMenu } from '@affine/core/mobile/components/toc-menu';
-import { DocService } from '@affine/core/modules/doc';
-import { EditorService } from '@affine/core/modules/editor';
-import { ViewService } from '@affine/core/modules/workbench/services/view';
-import { preventDefault } from '@affine/core/utils';
-import { useI18n } from '@affine/i18n';
-import { track } from '@affine/track';
+} from '@yunke/component/ui/menu';
+import { useFavorite } from '@yunke/core/blocksuite/block-suite-header/favorite';
+import { useGuard } from '@yunke/core/components/guard';
+import { IsFavoriteIcon } from '@yunke/core/components/pure/icons';
+import { DocInfoSheet } from '@yunke/core/mobile/components';
+import { MobileTocMenu } from '@yunke/core/mobile/components/toc-menu';
+import { DocService } from '@yunke/core/modules/doc';
+import { EditorService } from '@yunke/core/modules/editor';
+import { ViewService } from '@yunke/core/modules/workbench/services/view';
+import { preventDefault } from '@yunke/core/utils';
+import { useI18n } from '@yunke/i18n';
+import { track } from '@yunke/track';
 import {
   EdgelessIcon,
   InformationIcon,

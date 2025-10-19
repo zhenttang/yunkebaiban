@@ -1,4 +1,4 @@
-import type { DocMode } from '@blocksuite/affine/model';
+import type { DocMode } from '@blocksuite/yunke/model';
 import { NewXxxEdgelessIcon, NewXxxPageIcon } from '@blocksuite/icons/rc';
 import { Entity, LiveData } from '@toeverything/infra';
 

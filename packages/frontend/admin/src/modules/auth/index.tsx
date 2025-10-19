@@ -1,6 +1,6 @@
-import { Button } from '@affine/admin/components/ui/button';
-import { Input } from '@affine/admin/components/ui/input';
-import { Label } from '@affine/admin/components/ui/label';
+import { Button } from '@yunke/admin/components/ui/button';
+import { Input } from '@yunke/admin/components/ui/input';
+import { Label } from '@yunke/admin/components/ui/label';
 
 import { useCallback, useRef } from 'react';
 import { Navigate } from 'react-router-dom';

@@ -3,7 +3,7 @@
 //   OAuthProviderType,
 //   ServerDeploymentType,
 //   ServerFeature,
-// } from '@affine/graphql';
+// } from '@yunke/graphql';
 
 // Temporary placeholder types since GraphQL backend removed
 export interface CredentialsRequirementType {

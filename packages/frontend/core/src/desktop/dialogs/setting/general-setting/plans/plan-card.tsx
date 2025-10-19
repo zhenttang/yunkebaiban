@@ -1,21 +1,21 @@
-import { Button, type ButtonProps } from '@affine/component/ui/button';
-import { Tooltip } from '@affine/component/ui/tooltip';
-import { generateSubscriptionCallbackLink } from '@affine/core/components/hooks/affine/use-subscription-notify';
-import { useAsyncCallback } from '@affine/core/components/hooks/affine-async-hooks';
+import { Button, type ButtonProps } from '@yunke/component/ui/button';
+import { Tooltip } from '@yunke/component/ui/tooltip';
+import { generateSubscriptionCallbackLink } from '@yunke/core/components/hooks/affine/use-subscription-notify';
+import { useAsyncCallback } from '@yunke/core/components/hooks/affine-async-hooks';
 import {
   AuthService,
   ServerService,
   SubscriptionService,
-} from '@affine/core/modules/cloud';
-import { GlobalDialogService } from '@affine/core/modules/dialogs';
-import { UrlService } from '@affine/core/modules/url';
+} from '@yunke/core/modules/cloud';
+import { GlobalDialogService } from '@yunke/core/modules/dialogs';
+import { UrlService } from '@yunke/core/modules/url';
 //import {
 //   type CreateCheckoutSessionInput,
 //   SubscriptionPlan,
 //   SubscriptionRecurring,
 //   SubscriptionStatus,
 //   SubscriptionVariant,
-//} from '@affine/graphql';
+//} from '@yunke/graphql';
 
 import {
   type CreateCheckoutSessionInput,
@@ -23,10 +23,10 @@ import {
   SubscriptionRecurring,
   SubscriptionStatus,
   SubscriptionVariant,
-} from '@affine/core/modules/cloud/types/subscription';
+} from '@yunke/core/modules/cloud/types/subscription';
 
-import { Trans, useI18n } from '@affine/i18n';
-import { track } from '@affine/track';
+import { Trans, useI18n } from '@yunke/i18n';
+import { track } from '@yunke/track';
 import { DoneIcon } from '@blocksuite/icons/rc';
 import { useLiveData, useService } from '@toeverything/infra';
 import clsx from 'clsx';

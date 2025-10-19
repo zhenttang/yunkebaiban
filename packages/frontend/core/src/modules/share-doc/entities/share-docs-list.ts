@@ -1,5 +1,5 @@
-import { DebugLogger } from '@affine/debug';
-// import type { GetWorkspacePublicPagesQuery } from '@affine/graphql';
+import { DebugLogger } from '@yunke/debug';
+// import type { GetWorkspacePublicPagesQuery } from '@yunke/graphql';
 import {
   catchErrorInto,
   effect,

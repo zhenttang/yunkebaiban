@@ -1,13 +1,13 @@
-import { ConfirmModal, Input, notify } from '@affine/component';
+import { ConfirmModal, Input, notify } from '@yunke/component';
 import {
   SettingRow,
   SettingWrapper,
-} from '@affine/component/setting-components';
-import { AuthService } from '@affine/core/modules/cloud';
-import { WorkspacesService } from '@affine/core/modules/workspace';
-import { UserFriendlyError } from '@affine/error';
-import { Trans, useI18n } from '@affine/i18n';
-import { track } from '@affine/track';
+} from '@yunke/component/setting-components';
+import { AuthService } from '@yunke/core/modules/cloud';
+import { WorkspacesService } from '@yunke/core/modules/workspace';
+import { UserFriendlyError } from '@yunke/error';
+import { Trans, useI18n } from '@yunke/i18n';
+import { track } from '@yunke/track';
 import { ArrowRightSmallIcon } from '@blocksuite/icons/rc';
 import { useLiveData, useService } from '@toeverything/infra';
 import { cssVarV2 } from '@toeverything/theme/v2';

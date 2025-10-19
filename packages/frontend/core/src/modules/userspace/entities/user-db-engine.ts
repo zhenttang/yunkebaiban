@@ -1,11 +1,11 @@
-// import { ServerDeploymentType } from '@affine/graphql';
+// import { ServerDeploymentType } from '@yunke/graphql';
 import { ServerDeploymentType } from '../../cloud/types';
 import {
   IndexedDBDocStorage,
   IndexedDBDocSyncStorage,
-} from '@affine/nbstore/idb';
-import { SqliteDocStorage, SqliteDocSyncStorage } from '@affine/nbstore/sqlite';
-import type { StoreClient } from '@affine/nbstore/worker/client';
+} from '@yunke/nbstore/idb';
+import { SqliteDocStorage, SqliteDocSyncStorage } from '@yunke/nbstore/sqlite';
+import type { StoreClient } from '@yunke/nbstore/worker/client';
 import { Entity } from '@toeverything/infra';
 
 import type { ServerService } from '../../cloud';

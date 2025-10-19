@@ -1,12 +1,12 @@
-import { AIStarIcon } from '@blocksuite/affine/components/icons';
-import { DocModeProvider } from '@blocksuite/affine/shared/services';
+import { AIStarIcon } from '@blocksuite/yunke/components/icons';
+import { DocModeProvider } from '@blocksuite/yunke/shared/services';
 import {
   type SlashMenuActionItem,
   SlashMenuConfigExtension,
   type SlashMenuContext,
   type SlashMenuItem,
   type SlashMenuSubMenu,
-} from '@blocksuite/affine/widgets/slash-menu';
+} from '@blocksuite/yunke/widgets/slash-menu';
 import { MoreHorizontalIcon } from '@blocksuite/icons/lit';
 import { html } from 'lit';
 

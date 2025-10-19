@@ -1,17 +1,17 @@
-import { Avatar, Popover, uniReactRoot } from '@affine/component';
+import { Avatar, Popover, uniReactRoot } from '@yunke/component';
 import {
   type Cell,
   type CellRenderProps,
   createIcon,
   type DataViewCellLifeCycle,
   EditorHostKey,
-} from '@blocksuite/affine/blocks/database';
+} from '@blocksuite/yunke/blocks/database';
 import {
   UserListProvider,
   type UserListService,
   UserProvider,
   type UserService,
-} from '@blocksuite/affine/shared/services';
+} from '@blocksuite/yunke/shared/services';
 import { computed, type ReadonlySignal } from '@preact/signals-core';
 import {
   forwardRef,

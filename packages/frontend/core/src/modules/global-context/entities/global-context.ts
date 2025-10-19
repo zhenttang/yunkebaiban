@@ -1,4 +1,4 @@
-import type { DocMode } from '@blocksuite/affine/model';
+import type { DocMode } from '@blocksuite/yunke/model';
 import { Entity, LiveData, MemoryMemento } from '@toeverything/infra';
 
 export class GlobalContext extends Entity {

@@ -1,7 +1,7 @@
-import { ExplorerDisplayMenuButton } from '@affine/core/components/explorer/display-menu';
-import { ExplorerNavigation } from '@affine/core/components/explorer/header/navigation';
-import type { ExplorerDisplayPreference } from '@affine/core/components/explorer/types';
-import { Header } from '@affine/core/components/pure/header';
+import { ExplorerDisplayMenuButton } from '@yunke/core/components/explorer/display-menu';
+import { ExplorerNavigation } from '@yunke/core/components/explorer/header/navigation';
+import type { ExplorerDisplayPreference } from '@yunke/core/components/explorer/types';
+import { Header } from '@yunke/core/components/pure/header';
 
 export const TagDetailHeader = ({
   displayPreference,

@@ -43,7 +43,7 @@ document.addEventListener('pointerdown', (e: PointerEvent) => {
 ### 方式1: 直接使用组件
 
 ```tsx
-import { StylusDetector } from '@affine/core/mobile/components';
+import { StylusDetector } from '@yunke/core/mobile/components';
 
 function App() {
   return <StylusDetector />;

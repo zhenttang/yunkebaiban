@@ -1,9 +1,9 @@
 import { createRequire } from 'node:module';
 import path from 'node:path';
 
-import { getBuildConfig } from '@affine-tools/utils/build-config';
-import { Path, ProjectRoot } from '@affine-tools/utils/path';
-import { Package } from '@affine-tools/utils/workspace';
+import { getBuildConfig } from '@yunke-tools/utils/build-config';
+import { Path, ProjectRoot } from '@yunke-tools/utils/path';
+import { Package } from '@yunke-tools/utils/workspace';
 import { PerfseePlugin } from '@perfsee/webpack';
 import { sentryWebpackPlugin } from '@sentry/webpack-plugin';
 import { VanillaExtractPlugin } from '@vanilla-extract/webpack-plugin';
@@ -311,7 +311,7 @@ export function createHTMLTargetConfig(
           patterns: [
             {
               // 将共享的公共资源复制到dist目录
-              from: new Package('@affine/core').join('public').value,
+              from: new Package('@yunke/core').join('public').value,
             },
           ],
         }),

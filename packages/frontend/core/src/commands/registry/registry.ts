@@ -1,4 +1,4 @@
-import { DebugLogger } from '@affine/debug';
+import { DebugLogger } from '@yunke/debug';
 // @ts-expect-error upstream type is wrong
 import { createKeybindingsHandler } from 'tinykeys';
 

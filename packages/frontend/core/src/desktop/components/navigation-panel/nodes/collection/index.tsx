@@ -4,16 +4,16 @@ import {
   type DropTargetOptions,
   MenuItem,
   toast,
-} from '@affine/component';
+} from '@yunke/component';
 import {
   type Collection,
   CollectionService,
-} from '@affine/core/modules/collection';
-import { WorkspaceDialogService } from '@affine/core/modules/dialogs';
-import { GlobalContextService } from '@affine/core/modules/global-context';
-import type { AffineDNDData } from '@affine/core/types/dnd';
-import { useI18n } from '@affine/i18n';
-import { track } from '@affine/track';
+} from '@yunke/core/modules/collection';
+import { WorkspaceDialogService } from '@yunke/core/modules/dialogs';
+import { GlobalContextService } from '@yunke/core/modules/global-context';
+import type { AffineDNDData } from '@yunke/core/types/dnd';
+import { useI18n } from '@yunke/i18n';
+import { track } from '@yunke/track';
 import { FilterMinusIcon } from '@blocksuite/icons/rc';
 import { useLiveData, useService, useServices } from '@toeverything/infra';
 import { useCallback, useEffect, useMemo, useState } from 'react';

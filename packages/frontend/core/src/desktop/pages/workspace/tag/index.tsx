@@ -1,20 +1,20 @@
 import {
   createDocExplorerContext,
   DocExplorerContext,
-} from '@affine/core/components/explorer/context';
-import { DocsExplorer } from '@affine/core/components/explorer/docs-view/docs-list';
-import type { ExplorerDisplayPreference } from '@affine/core/components/explorer/types';
-import { CollectionRulesService } from '@affine/core/modules/collection-rules';
-import { GlobalContextService } from '@affine/core/modules/global-context';
-import { WorkspacePermissionService } from '@affine/core/modules/permissions';
-import { TagService } from '@affine/core/modules/tag';
+} from '@yunke/core/components/explorer/context';
+import { DocsExplorer } from '@yunke/core/components/explorer/docs-view/docs-list';
+import type { ExplorerDisplayPreference } from '@yunke/core/components/explorer/types';
+import { CollectionRulesService } from '@yunke/core/modules/collection-rules';
+import { GlobalContextService } from '@yunke/core/modules/global-context';
+import { WorkspacePermissionService } from '@yunke/core/modules/permissions';
+import { TagService } from '@yunke/core/modules/tag';
 import {
   useIsActiveView,
   ViewBody,
   ViewHeader,
   ViewIcon,
   ViewTitle,
-} from '@affine/core/modules/workbench';
+} from '@yunke/core/modules/workbench';
 import { useLiveData, useService } from '@toeverything/infra';
 import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';

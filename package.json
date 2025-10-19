@@ -6,12 +6,12 @@
   "license": "MIT",
   "workspaces": [
     ".",
-    "blocksuite/affine/*",
-    "blocksuite/affine/blocks/*",
-    "blocksuite/affine/fragments/*",
-    "blocksuite/affine/gfx/*",
-    "blocksuite/affine/inlines/*",
-    "blocksuite/affine/widgets/*",
+    "blocksuite/yunke/*",
+    "blocksuite/yunke/blocks/*",
+    "blocksuite/yunke/fragments/*",
+    "blocksuite/yunke/gfx/*",
+    "blocksuite/yunke/inlines/*",
+    "blocksuite/yunke/widgets/*",
     "blocksuite/framework/*",
     "blocksuite/integration-test",
     "blocksuite/playground",
@@ -30,10 +30,8 @@
     "node": "<23.0.0"
   },
   "scripts": {
-    "affine": "r affine.ts",
-    "af": "r affine.ts",
-    "dev": "yarn affine dev",
-    "build": "yarn affine build",
+    "dev": "yarn yunke dev",
+    "build": "yarn yunke build",
     "build:standalone": "./scripts/build-simple.sh",
     "build:full": "node scripts/build-standalone.js",
     "package": "yarn build:standalone",
@@ -48,7 +46,9 @@
     "test:ui": "vitest --ui",
     "test:coverage": "vitest run --coverage",
     "typecheck": "tsc -b tsconfig.json --verbose",
-    "postinstall": "yarn affine init && yarn husky"
+    "postinstall": "yarn yunke init && yarn husky",
+    "yunke": "r yunke.ts",
+    "yk": "r yunke.ts"
   },
   "lint-staged": {
     "*": "prettier --write --ignore-unknown --cache",
@@ -64,7 +64,6 @@
     ]
   },
   "devDependencies": {
-    "@affine-tools/cli": "workspace:*",
     "@eslint/js": "^9.16.0",
     "@faker-js/faker": "^9.3.0",
     "@istanbuljs/schema": "^0.1.3",
@@ -81,6 +80,7 @@
     "@vitest/browser": "3.1.3",
     "@vitest/coverage-istanbul": "3.1.3",
     "@vitest/ui": "3.1.3",
+    "@yunke-tools/cli": "workspace:*",
     "cos-nodejs-sdk-v5": "^2.16.0-beta.3",
     "cross-env": "^7.0.3",
     "eslint": "^9.16.0",
@@ -112,7 +112,7 @@
   "resolutions": {
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "@affine/native": "workspace:packages/frontend/native-mock",
+    "@yunke/native": "workspace:packages/frontend/native-mock",
     "array-buffer-byte-length": "npm:@nolyfill/array-buffer-byte-length@^1",
     "array-includes": "npm:@nolyfill/array-includes@^1",
     "array.prototype.flat": "npm:@nolyfill/array.prototype.flat@^1",

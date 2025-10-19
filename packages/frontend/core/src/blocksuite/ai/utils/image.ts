@@ -1,4 +1,4 @@
-import { FetchUtils } from '@blocksuite/affine/shared/adapters';
+import { FetchUtils } from '@blocksuite/yunke/shared/adapters';
 
 export async function fetchImageToFile(
   url: string,

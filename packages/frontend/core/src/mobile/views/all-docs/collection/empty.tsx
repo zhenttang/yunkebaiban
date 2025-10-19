@@ -1,4 +1,4 @@
-import type { Collection } from '@affine/core/modules/collection';
+import type { Collection } from '@yunke/core/modules/collection';
 
 import { DetailHeader } from './detail';
 

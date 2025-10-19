@@ -1,4 +1,4 @@
-import type { DocMode } from '@blocksuite/affine/model';
+import type { DocMode } from '@blocksuite/yunke/model';
 
 import type { WorkspaceMetadata } from '../workspace';
 

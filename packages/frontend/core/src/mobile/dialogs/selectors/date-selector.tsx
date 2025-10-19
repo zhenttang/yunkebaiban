@@ -1,7 +1,7 @@
-import { DatePicker, Menu } from '@affine/component';
-import type { DialogComponentProps } from '@affine/core/modules/dialogs';
-import type { WORKSPACE_DIALOG_SCHEMA } from '@affine/core/modules/dialogs/constant';
-import { useI18n } from '@affine/i18n';
+import { DatePicker, Menu } from '@yunke/component';
+import type { DialogComponentProps } from '@yunke/core/modules/dialogs';
+import type { WORKSPACE_DIALOG_SCHEMA } from '@yunke/core/modules/dialogs/constant';
+import { useI18n } from '@yunke/i18n';
 import { useLiveData, useService } from '@toeverything/infra';
 import { useCallback, useState } from 'react';
 

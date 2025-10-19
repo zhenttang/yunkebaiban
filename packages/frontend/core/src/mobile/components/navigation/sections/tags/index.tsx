@@ -1,8 +1,8 @@
-import { NavigationPanelTreeRoot } from '@affine/core/desktop/components/navigation-panel';
-import { NavigationPanelService } from '@affine/core/modules/navigation-panel';
-import { TagService } from '@affine/core/modules/tag';
-import { useI18n } from '@affine/i18n';
-import { track } from '@affine/track';
+import { NavigationPanelTreeRoot } from '@yunke/core/desktop/components/navigation-panel';
+import { NavigationPanelService } from '@yunke/core/modules/navigation-panel';
+import { TagService } from '@yunke/core/modules/tag';
+import { useI18n } from '@yunke/i18n';
+import { track } from '@yunke/track';
 import { AddTagIcon } from '@blocksuite/icons/rc';
 import { useLiveData, useServices } from '@toeverything/infra';
 import { useCallback, useState } from 'react';

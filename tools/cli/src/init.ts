@@ -1,11 +1,11 @@
 import { readFileSync, writeFileSync } from 'node:fs';
 
-import type { Path } from '@affine-tools/utils/path';
+import type { Path } from '@yunke-tools/utils/path';
 import {
   type Package,
   Workspace,
   yarnList,
-} from '@affine-tools/utils/workspace';
+} from '@yunke-tools/utils/workspace';
 import { applyEdits, modify } from 'jsonc-parser';
 import { type BuiltInParserName, format } from 'prettier';
 
@@ -30,7 +30,7 @@ export class InitCommand extends Command {
       [this.workspace.join('tsconfig.json'), this.genProjectTsConfig, 'json'],
       [
         this.workspace
-          .getPackage('@affine-tools/utils')
+          .getPackage('@yunke-tools/utils')
           .join('src/workspace.gen.ts'),
         this.genWorkspaceInfo,
         'typescript',
@@ -118,7 +118,7 @@ export class InitCommand extends Command {
     //   目前 electron-api => electron => nbstore => electron-api
     //   这是一个循环依赖，我们需要修复它
     //   基本上，electron应用不需要使用nbstore来暴露js桥接API
-    if (pkg.name === '@affine/electron-api') {
+    if (pkg.name === '@yunke/electron-api') {
       return prev;
     }
 

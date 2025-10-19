@@ -1,6 +1,6 @@
-import { toDocSearchParams } from '@affine/core/modules/navigation';
-import type { IndexerSyncState } from '@affine/nbstore';
-import type { ReferenceParams } from '@blocksuite/affine/model';
+import { toDocSearchParams } from '@yunke/core/modules/navigation';
+import type { IndexerSyncState } from '@yunke/nbstore';
+import type { ReferenceParams } from '@blocksuite/yunke/model';
 import { fromPromise, LiveData, Service } from '@toeverything/infra';
 import { isEmpty, omit } from 'lodash-es';
 import { map, type Observable, of, switchMap } from 'rxjs';

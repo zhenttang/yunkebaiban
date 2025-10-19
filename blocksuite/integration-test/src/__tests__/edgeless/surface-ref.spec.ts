@@ -1,7 +1,7 @@
 import {
   type EdgelessRootBlockComponent,
   EdgelessRootService,
-} from '@blocksuite/affine/blocks/root';
+} from '@blocksuite/yunke/blocks/root';
 import type { DocSnapshot } from '@blocksuite/store';
 import { beforeEach, describe, expect, test } from 'vitest';
 
@@ -263,8 +263,8 @@ describe('basic', () => {
   });
 });
 
-import type { FrameBlockComponent } from '@blocksuite/affine/blocks/frame';
-import type { SurfaceRefBlockComponent } from '@blocksuite/affine/blocks/surface-ref';
+import type { FrameBlockComponent } from '@blocksuite/yunke/blocks/frame';
+import type { SurfaceRefBlockComponent } from '@blocksuite/yunke/blocks/surface-ref';
 
 import snapshot from '../snapshots/edgeless/surface-ref.spec.ts/surface-ref.json' assert { type: 'json' };
 

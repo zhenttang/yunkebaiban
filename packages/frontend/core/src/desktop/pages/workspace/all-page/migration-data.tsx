@@ -1,7 +1,7 @@
-import { Button } from '@affine/component';
-import { DocCreatedByUpdatedBySyncService } from '@affine/core/modules/cloud';
-import { UserFriendlyError } from '@affine/error';
-import { useI18n } from '@affine/i18n';
+import { Button } from '@yunke/component';
+import { DocCreatedByUpdatedBySyncService } from '@yunke/core/modules/cloud';
+import { UserFriendlyError } from '@yunke/error';
+import { useI18n } from '@yunke/i18n';
 import { useLiveData, useService } from '@toeverything/infra';
 import { useTheme } from 'next-themes';
 import { useCallback, useMemo } from 'react';

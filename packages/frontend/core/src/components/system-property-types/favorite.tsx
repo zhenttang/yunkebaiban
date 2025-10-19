@@ -1,5 +1,5 @@
-import { Menu, MenuItem, type MenuRef } from '@affine/component';
-import type { FilterParams } from '@affine/core/modules/collection-rules';
+import { Menu, MenuItem, type MenuRef } from '@yunke/component';
+import type { FilterParams } from '@yunke/core/modules/collection-rules';
 import { useEffect, useRef } from 'react';
 
 export const FavoriteFilterValue = ({

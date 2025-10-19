@@ -1,6 +1,6 @@
-import { useWorkspace } from '@affine/core/components/hooks/use-workspace';
-import { GlobalContextService } from '@affine/core/modules/global-context';
-import { WorkspacesService } from '@affine/core/modules/workspace';
+import { useWorkspace } from '@yunke/core/components/hooks/use-workspace';
+import { GlobalContextService } from '@yunke/core/modules/global-context';
+import { WorkspacesService } from '@yunke/core/modules/workspace';
 import { FrameworkScope, useLiveData, useService } from '@toeverything/infra';
 
 export const CurrentWorkspaceScopeProvider = ({

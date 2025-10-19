@@ -1,9 +1,9 @@
-import { FlexWrapper } from '@affine/component';
-import { ExplorerDisplayMenuButton } from '@affine/core/components/explorer/display-menu';
-import { ViewToggle } from '@affine/core/components/explorer/display-menu/view-toggle';
-import { ExplorerNavigation } from '@affine/core/components/explorer/header/navigation';
-import type { ExplorerDisplayPreference } from '@affine/core/components/explorer/types';
-import { Header } from '@affine/core/components/pure/header';
+import { FlexWrapper } from '@yunke/component';
+import { ExplorerDisplayMenuButton } from '@yunke/core/components/explorer/display-menu';
+import { ViewToggle } from '@yunke/core/components/explorer/display-menu/view-toggle';
+import { ExplorerNavigation } from '@yunke/core/components/explorer/header/navigation';
+import type { ExplorerDisplayPreference } from '@yunke/core/components/explorer/types';
+import { Header } from '@yunke/core/components/pure/header';
 
 export const CollectionDetailHeader = ({
   displayPreference,

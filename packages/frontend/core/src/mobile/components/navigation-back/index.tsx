@@ -2,7 +2,7 @@ import {
   IconButton,
   type IconButtonProps,
   useIsInsideModal,
-} from '@affine/component';
+} from '@yunke/component';
 import { ArrowLeftSmallIcon, CloseIcon } from '@blocksuite/icons/rc';
 import { useService } from '@toeverything/infra';
 import { useCallback, useEffect, useMemo } from 'react';

@@ -1,13 +1,13 @@
-import { Switch } from '@affine/component';
+import { Switch } from '@yunke/component';
 import {
   SettingRow,
   SettingWrapper,
-} from '@affine/component/setting-components';
-import { useAsyncCallback } from '@affine/core/components/hooks/affine-async-hooks';
-import { ServerService } from '@affine/core/modules/cloud';
-import { WorkspacePermissionService } from '@affine/core/modules/permissions';
-import { WorkspaceShareSettingService } from '@affine/core/modules/share-setting';
-import { useI18n } from '@affine/i18n';
+} from '@yunke/component/setting-components';
+import { useAsyncCallback } from '@yunke/core/components/hooks/affine-async-hooks';
+import { ServerService } from '@yunke/core/modules/cloud';
+import { WorkspacePermissionService } from '@yunke/core/modules/permissions';
+import { WorkspaceShareSettingService } from '@yunke/core/modules/share-setting';
+import { useI18n } from '@yunke/i18n';
 import { useLiveData, useService } from '@toeverything/infra';
 
 export const AiSetting = () => {

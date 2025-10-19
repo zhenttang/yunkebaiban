@@ -1,4 +1,4 @@
-import { useThemeColorV2 } from '@affine/component';
+import { useThemeColorV2 } from '@yunke/component';
 
 import { AllDocsHeader, TagList } from '../../../views';
 

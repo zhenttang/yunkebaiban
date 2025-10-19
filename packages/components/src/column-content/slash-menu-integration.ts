@@ -1,6 +1,6 @@
 // 文件: packages/components/src/column-content/slash-menu-integration.ts
 import type { BlockComponent } from '@blocksuite/block-std';
-import type { SlashMenuActionItem } from '@blocksuite/affine-shared/config';
+import type { SlashMenuActionItem } from '@blocksuite/yunke-shared/config';
 
 /**
  * SlashMenu集成管理器

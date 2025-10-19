@@ -1,12 +1,12 @@
-import { Button } from '@affine/component';
-import { WorkspaceTagsInlineEditor } from '@affine/core/components/tags';
+import { Button } from '@yunke/component';
+import { WorkspaceTagsInlineEditor } from '@yunke/core/components/tags';
 import {
   IntegrationService,
   IntegrationTypeIcon,
-} from '@affine/core/modules/integration';
-import type { ReadwiseConfig } from '@affine/core/modules/integration/type';
-import { TagService } from '@affine/core/modules/tag';
-import { useI18n } from '@affine/i18n';
+} from '@yunke/core/modules/integration';
+import type { ReadwiseConfig } from '@yunke/core/modules/integration/type';
+import { TagService } from '@yunke/core/modules/tag';
+import { useI18n } from '@yunke/i18n';
 import { PlusIcon } from '@blocksuite/icons/rc';
 import { useLiveData, useService } from '@toeverything/infra';
 import { type ReactNode, useCallback, useMemo, useState } from 'react';

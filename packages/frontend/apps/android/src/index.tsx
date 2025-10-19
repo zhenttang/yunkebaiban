@@ -1,8 +1,8 @@
 import './setup';
 
-import { Telemetry } from '@affine/core/components/telemetry';
+import { Telemetry } from '@yunke/core/components/telemetry';
 // 移除SQLite原生API绑定
-// import { bindNativeDBApis } from '@affine/nbstore/sqlite';
+// import { bindNativeDBApis } from '@yunke/nbstore/sqlite';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 

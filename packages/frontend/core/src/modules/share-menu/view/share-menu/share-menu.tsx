@@ -1,13 +1,13 @@
-import { Tabs, Tooltip, useConfirmModal } from '@affine/component';
-import { Button } from '@affine/component/ui/button';
-import { Menu } from '@affine/component/ui/menu';
-import { ServerService } from '@affine/core/modules/cloud';
-import { WorkspaceDialogService } from '@affine/core/modules/dialogs';
-import { WorkspacePermissionService } from '@affine/core/modules/permissions';
-import { WorkspaceQuotaService } from '@affine/core/modules/quota';
-import { ShareInfoService } from '@affine/core/modules/share-doc';
-import type { WorkspaceMetadata } from '@affine/core/modules/workspace';
-// import { ServerDeploymentType, SubscriptionPlan } from '@affine/graphql';
+import { Tabs, Tooltip, useConfirmModal } from '@yunke/component';
+import { Button } from '@yunke/component/ui/button';
+import { Menu } from '@yunke/component/ui/menu';
+import { ServerService } from '@yunke/core/modules/cloud';
+import { WorkspaceDialogService } from '@yunke/core/modules/dialogs';
+import { WorkspacePermissionService } from '@yunke/core/modules/permissions';
+import { WorkspaceQuotaService } from '@yunke/core/modules/quota';
+import { ShareInfoService } from '@yunke/core/modules/share-doc';
+import type { WorkspaceMetadata } from '@yunke/core/modules/workspace';
+// import { ServerDeploymentType, SubscriptionPlan } from '@yunke/graphql';
 import { ServerDeploymentType } from '../../../cloud/types';
 
 // Temporary placeholder enum since GraphQL backend removed
@@ -16,8 +16,8 @@ enum SubscriptionPlan {
   Pro = 'pro',
   Team = 'team',
 }
-import { useI18n } from '@affine/i18n';
-import type { Store } from '@blocksuite/affine/store';
+import { useI18n } from '@yunke/i18n';
+import type { Store } from '@blocksuite/yunke/store';
 import { LockIcon, PublishIcon } from '@blocksuite/icons/rc';
 import { useLiveData, useService } from '@toeverything/infra';
 import {

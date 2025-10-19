@@ -1,4 +1,4 @@
-import { WriterInfoServiceExtension } from '@blocksuite/affine/shared/services';
+import { WriterInfoServiceExtension } from '@blocksuite/yunke/shared/services';
 import { OnEvent, Service } from '@toeverything/infra';
 
 import { type Workspace, WorkspaceInitialized } from '../../workspace';

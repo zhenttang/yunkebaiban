@@ -1,6 +1,6 @@
-import { AffineErrorComponent } from '@affine/core/components/affine/affine-error-boundary/affine-error-fallback';
-import { NavigateContext } from '@affine/core/components/hooks/use-navigate-helper';
-import { RootWrapper } from '@affine/core/desktop/pages/root';
+import { AffineErrorComponent } from '@yunke/core/components/affine/affine-error-boundary/affine-error-fallback';
+import { NavigateContext } from '@yunke/core/components/hooks/use-navigate-helper';
+import { RootWrapper } from '@yunke/core/desktop/pages/root';
 
 import { wrapCreateBrowserRouterV6 } from '@sentry/react';
 import type { RouteObject } from 'react-router-dom';
@@ -29,11 +29,11 @@ export const topLevelRoutes = [
     children: [
       {
         path: '/',
-        lazy: () => import('@affine/core/desktop/pages/index'),
+        lazy: () => import('@yunke/core/desktop/pages/index'),
       },
       {
         path: '/workspace/:workspaceId/*',
-        lazy: () => import('@affine/core/desktop/pages/workspace/index'),
+        lazy: () => import('@yunke/core/desktop/pages/workspace/index'),
       },
       {
         path: '/share/:workspaceId/:pageId',
@@ -43,47 +43,47 @@ export const topLevelRoutes = [
       },
       {
         path: '/404',
-        lazy: () => import('@affine/core/desktop/pages/404'),
+        lazy: () => import('@yunke/core/desktop/pages/404'),
       },
       {
         path: '/expired',
-        lazy: () => import('@affine/core/desktop/pages/expired'),
+        lazy: () => import('@yunke/core/desktop/pages/expired'),
       },
       {
         path: '/invite/:inviteId',
-        lazy: () => import('@affine/core/desktop/pages/invite'),
+        lazy: () => import('@yunke/core/desktop/pages/invite'),
       },
       {
         path: '/upgrade-success',
-        lazy: () => import('@affine/core/desktop/pages/upgrade-success'),
+        lazy: () => import('@yunke/core/desktop/pages/upgrade-success'),
       },
       {
         path: '/upgrade-success/team',
-        lazy: () => import('@affine/core/desktop/pages/upgrade-success/team'),
+        lazy: () => import('@yunke/core/desktop/pages/upgrade-success/team'),
       },
       {
         path: '/upgrade-success/self-hosted-team',
-        lazy: () => import('@affine/core/desktop/pages/upgrade-success/self-host-team'),
+        lazy: () => import('@yunke/core/desktop/pages/upgrade-success/self-host-team'),
       },
       {
         path: '/ai-upgrade-success',
-        lazy: () => import('@affine/core/desktop/pages/ai-upgrade-success'),
+        lazy: () => import('@yunke/core/desktop/pages/ai-upgrade-success'),
       },
       {
         path: '/onboarding',
-        lazy: () => import('@affine/core/desktop/pages/onboarding'),
+        lazy: () => import('@yunke/core/desktop/pages/onboarding'),
       },
       {
         path: '/redirect-proxy',
-        lazy: () => import('@affine/core/desktop/pages/redirect'),
+        lazy: () => import('@yunke/core/desktop/pages/redirect'),
       },
       {
         path: '/subscribe',
-        lazy: () => import('@affine/core/desktop/pages/subscribe'),
+        lazy: () => import('@yunke/core/desktop/pages/subscribe'),
       },
       {
         path: '/upgrade-to-team',
-        lazy: () => import('@affine/core/desktop/pages/upgrade-to-team'),
+        lazy: () => import('@yunke/core/desktop/pages/upgrade-to-team'),
       },
       {
         path: '/try-cloud',
@@ -95,79 +95,79 @@ export const topLevelRoutes = [
       },
       {
         path: '/theme-editor',
-        lazy: () => import('@affine/core/desktop/pages/theme-editor'),
+        lazy: () => import('@yunke/core/desktop/pages/theme-editor'),
       },
       {
         path: '/forum',
-        lazy: () => import('@affine/core/desktop/pages/workspace/forum/forum-home'),
+        lazy: () => import('@yunke/core/desktop/pages/workspace/forum/forum-home'),
       },
       {
         path: '/forum/notifications',
-        lazy: () => import('@affine/core/desktop/pages/workspace/forum/notifications'),
+        lazy: () => import('@yunke/core/desktop/pages/workspace/forum/notifications'),
       },
       {
         path: '/forum/search',
-        lazy: () => import('@affine/core/desktop/pages/workspace/forum/search-result'),
+        lazy: () => import('@yunke/core/desktop/pages/workspace/forum/search-result'),
       },
       {
         path: '/forum/drafts',
-        lazy: () => import('@affine/core/desktop/pages/workspace/forum/draft-list'),
+        lazy: () => import('@yunke/core/desktop/pages/workspace/forum/draft-list'),
       },
       {
         path: '/forum/moderator',
-        lazy: () => import('@affine/core/desktop/pages/workspace/forum/moderator-panel'),
+        lazy: () => import('@yunke/core/desktop/pages/workspace/forum/moderator-panel'),
       },
       {
         path: '/forum/user/:userId',
-        lazy: () => import('@affine/core/desktop/pages/workspace/forum/user-profile'),
+        lazy: () => import('@yunke/core/desktop/pages/workspace/forum/user-profile'),
       },
       {
         path: '/forum/my-collections',
-        lazy: () => import('@affine/core/desktop/pages/workspace/forum/my-collections'),
+        lazy: () => import('@yunke/core/desktop/pages/workspace/forum/my-collections'),
       },
       {
         path: '/forum/drafts',
-        lazy: () => import('@affine/core/desktop/pages/workspace/forum/draft-list'),
+        lazy: () => import('@yunke/core/desktop/pages/workspace/forum/draft-list'),
       },
       {
         path: '/forum/posts/:postId/history',
-        lazy: () => import('@affine/core/desktop/pages/workspace/forum/edit-history'),
+        lazy: () => import('@yunke/core/desktop/pages/workspace/forum/edit-history'),
       },
       {
         path: '/forum/notifications',
-        lazy: () => import('@affine/core/desktop/pages/workspace/forum/notifications'),
+        lazy: () => import('@yunke/core/desktop/pages/workspace/forum/notifications'),
       },
       {
         path: '/forum/tags/:tagId',
-        lazy: () => import('@affine/core/desktop/pages/workspace/forum/tag-posts'),
+        lazy: () => import('@yunke/core/desktop/pages/workspace/forum/tag-posts'),
       },
       {
         path: '/forum/:forumId/create-post',
-        lazy: () => import('@affine/core/desktop/pages/workspace/forum/create-post'),
+        lazy: () => import('@yunke/core/desktop/pages/workspace/forum/create-post'),
       },
       {
         path: '/forum/:forumId/post/:postId',
-        lazy: () => import('@affine/core/desktop/pages/workspace/forum/post-detail'),
+        lazy: () => import('@yunke/core/desktop/pages/workspace/forum/post-detail'),
       },
       {
         path: '/forum/posts/:postId/history',
-        lazy: () => import('@affine/core/desktop/pages/workspace/forum/edit-history'),
+        lazy: () => import('@yunke/core/desktop/pages/workspace/forum/edit-history'),
       },
       {
         path: '/forum/tags/:tagId',
-        lazy: () => import('@affine/core/desktop/pages/workspace/forum/tag-posts'),
+        lazy: () => import('@yunke/core/desktop/pages/workspace/forum/tag-posts'),
       },
       {
         path: '/forum/:forumId',
-        lazy: () => import('@affine/core/desktop/pages/workspace/forum/forum-detail'),
+        lazy: () => import('@yunke/core/desktop/pages/workspace/forum/forum-detail'),
       },
       {
         path: '/clipper/import',
-        lazy: () => import('@affine/core/desktop/pages/import-clipper'),
+        lazy: () => import('@yunke/core/desktop/pages/import-clipper'),
       },
       {
         path: '/template/import',
-        lazy: () => import('@affine/core/desktop/pages/import-template'),
+        lazy: () => import('@yunke/core/desktop/pages/import-template'),
       },
       {
         path: '/template/preview',
@@ -191,39 +191,39 @@ export const topLevelRoutes = [
       },
       {
         path: '/auth/:authType',
-        lazy: () => import('@affine/core/desktop/pages/auth/auth'),
+        lazy: () => import('@yunke/core/desktop/pages/auth/auth'),
       },
       {
         path: '/sign-In',
-        lazy: () => import('@affine/core/desktop/pages/auth/sign-in'),
+        lazy: () => import('@yunke/core/desktop/pages/auth/sign-in'),
       },
       {
         path: '/magic-link',
-        lazy: () => import('@affine/core/desktop/pages/auth/magic-link'),
+        lazy: () => import('@yunke/core/desktop/pages/auth/magic-link'),
       },
       {
         path: '/oauth/login',
-        lazy: () => import('@affine/core/desktop/pages/auth/oauth-login'),
+        lazy: () => import('@yunke/core/desktop/pages/auth/oauth-login'),
       },
       {
         path: '/oauth/callback',
-        lazy: () => import('@affine/core/desktop/pages/auth/oauth-callback'),
+        lazy: () => import('@yunke/core/desktop/pages/auth/oauth-callback'),
       },
       {
         path: '/desktop-signin',
-        lazy: () => import('@affine/core/desktop/pages/auth/oauth-login'),
+        lazy: () => import('@yunke/core/desktop/pages/auth/oauth-login'),
       },
       {
         path: '/signIn',
-        lazy: () => import('@affine/core/desktop/pages/auth/sign-in'),
+        lazy: () => import('@yunke/core/desktop/pages/auth/sign-in'),
       },
       {
         path: '/open-app/:action',
-        lazy: () => import('@affine/core/desktop/pages/open-app'),
+        lazy: () => import('@yunke/core/desktop/pages/open-app'),
       },
       {
         path: '*',
-        lazy: () => import('@affine/core/desktop/pages/404'),
+        lazy: () => import('@yunke/core/desktop/pages/404'),
       },
     ],
   },

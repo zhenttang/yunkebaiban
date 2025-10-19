@@ -1,28 +1,28 @@
-import { Scrollable } from '@affine/component';
-import { PageDetailLoading } from '@affine/component/page-detail-skeleton';
-import type { ChatPanel } from '@affine/core/blocksuite/ai';
-import { AIProvider } from '@affine/core/blocksuite/ai';
-import type { AffineEditorContainer } from '@affine/core/blocksuite/block-suite-editor';
-import { EditorOutlineViewer } from '@affine/core/blocksuite/outline-viewer';
-import { AffineErrorBoundary } from '@affine/core/components/affine/affine-error-boundary';
-// import { PageAIOnboarding } from '@affine/core/components/affine/ai-onboarding';
-import { BlockCommandsSidebar } from '@affine/core/components/block-commands-sidebar';
-import { GlobalPageHistoryModal } from '@affine/core/components/affine/page-history-modal';
-import { useGuard } from '@affine/core/components/guard';
-import { useAppSettingHelper } from '@affine/core/components/hooks/affine/use-app-setting-helper';
-import { useEnableAI } from '@affine/core/components/hooks/affine/use-enable-ai';
-import { useRegisterBlocksuiteEditorCommands } from '@affine/core/components/hooks/affine/use-register-blocksuite-editor-commands';
-import { useActiveBlocksuiteEditor } from '@affine/core/components/hooks/use-block-suite-editor';
-import { PageDetailEditor } from '@affine/core/components/page-detail-editor';
-import { WorkspacePropertySidebar } from '@affine/core/components/properties/sidebar';
-import { TrashPageFooter } from '@affine/core/components/pure/trash-page-footer';
-import { TopTip } from '@affine/core/components/top-tip';
-import { DocService } from '@affine/core/modules/doc';
-import { EditorService } from '@affine/core/modules/editor';
-import { FeatureFlagService } from '@affine/core/modules/feature-flag';
-import { GlobalContextService } from '@affine/core/modules/global-context';
-import { PeekViewService } from '@affine/core/modules/peek-view';
-import { RecentDocsService } from '@affine/core/modules/quicksearch';
+import { Scrollable } from '@yunke/component';
+import { PageDetailLoading } from '@yunke/component/page-detail-skeleton';
+import type { ChatPanel } from '@yunke/core/blocksuite/ai';
+import { AIProvider } from '@yunke/core/blocksuite/ai';
+import type { AffineEditorContainer } from '@yunke/core/blocksuite/block-suite-editor';
+import { EditorOutlineViewer } from '@yunke/core/blocksuite/outline-viewer';
+import { AffineErrorBoundary } from '@yunke/core/components/affine/affine-error-boundary';
+// import { PageAIOnboarding } from '@yunke/core/components/affine/ai-onboarding';
+import { BlockCommandsSidebar } from '@yunke/core/components/block-commands-sidebar';
+import { GlobalPageHistoryModal } from '@yunke/core/components/affine/page-history-modal';
+import { useGuard } from '@yunke/core/components/guard';
+import { useAppSettingHelper } from '@yunke/core/components/hooks/affine/use-app-setting-helper';
+import { useEnableAI } from '@yunke/core/components/hooks/affine/use-enable-ai';
+import { useRegisterBlocksuiteEditorCommands } from '@yunke/core/components/hooks/affine/use-register-blocksuite-editor-commands';
+import { useActiveBlocksuiteEditor } from '@yunke/core/components/hooks/use-block-suite-editor';
+import { PageDetailEditor } from '@yunke/core/components/page-detail-editor';
+import { WorkspacePropertySidebar } from '@yunke/core/components/properties/sidebar';
+import { TrashPageFooter } from '@yunke/core/components/pure/trash-page-footer';
+import { TopTip } from '@yunke/core/components/top-tip';
+import { DocService } from '@yunke/core/modules/doc';
+import { EditorService } from '@yunke/core/modules/editor';
+import { FeatureFlagService } from '@yunke/core/modules/feature-flag';
+import { GlobalContextService } from '@yunke/core/modules/global-context';
+import { PeekViewService } from '@yunke/core/modules/peek-view';
+import { RecentDocsService } from '@yunke/core/modules/quicksearch';
 import {
   useIsActiveView,
   ViewBody,
@@ -30,12 +30,12 @@ import {
   ViewService,
   ViewSidebarTab,
   WorkbenchService,
-} from '@affine/core/modules/workbench';
-import { WorkspaceService } from '@affine/core/modules/workspace';
-import { isNewTabTrigger } from '@affine/core/utils';
-import track from '@affine/track';
-import { DisposableGroup } from '@blocksuite/affine/global/disposable';
-import { RefNodeSlotsProvider } from '@blocksuite/affine/inlines/reference';
+} from '@yunke/core/modules/workbench';
+import { WorkspaceService } from '@yunke/core/modules/workspace';
+import { isNewTabTrigger } from '@yunke/core/utils';
+import track from '@yunke/track';
+import { DisposableGroup } from '@blocksuite/yunke/global/disposable';
+import { RefNodeSlotsProvider } from '@blocksuite/yunke/inlines/reference';
 import {
   AiIcon,
   ExportIcon,

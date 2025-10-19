@@ -1,7 +1,7 @@
-import { shallowEqual } from '@affine/component';
-// import { ServerDeploymentType } from '@affine/graphql';
+import { shallowEqual } from '@yunke/component';
+// import { ServerDeploymentType } from '@yunke/graphql';
 import { ServerDeploymentType } from '../../cloud/types';
-import { mixpanel } from '@affine/track';
+import { mixpanel } from '@yunke/track';
 import { LiveData, OnEvent, Service } from '@toeverything/infra';
 
 import type { AuthAccountInfo, Server, ServersService } from '../../cloud';

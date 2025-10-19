@@ -3,19 +3,19 @@ import {
   Button,
   Tooltip,
   useConfirmModal,
-} from '@affine/component';
-import { AudioPlayer } from '@affine/component/ui/audio-player';
-import { useEnableAI } from '@affine/core/components/hooks/affine/use-enable-ai';
-import { useAsyncCallback } from '@affine/core/components/hooks/affine-async-hooks';
-import { useSeekTime } from '@affine/core/components/hooks/use-seek-time';
-import { CurrentServerScopeProvider } from '@affine/core/components/providers/current-server-scope';
-import { PublicUserLabel } from '@affine/core/modules/cloud/views/public-user';
-import { GlobalDialogService } from '@affine/core/modules/dialogs';
-import type { AudioAttachmentBlock } from '@affine/core/modules/media/entities/audio-attachment-block';
-import { AudioAttachmentService } from '@affine/core/modules/media/services/audio-attachment';
-import { Trans, useI18n } from '@affine/i18n';
-import track from '@affine/track';
-import type { AttachmentBlockModel } from '@blocksuite/affine/model';
+} from '@yunke/component';
+import { AudioPlayer } from '@yunke/component/ui/audio-player';
+import { useEnableAI } from '@yunke/core/components/hooks/affine/use-enable-ai';
+import { useAsyncCallback } from '@yunke/core/components/hooks/affine-async-hooks';
+import { useSeekTime } from '@yunke/core/components/hooks/use-seek-time';
+import { CurrentServerScopeProvider } from '@yunke/core/components/providers/current-server-scope';
+import { PublicUserLabel } from '@yunke/core/modules/cloud/views/public-user';
+import { GlobalDialogService } from '@yunke/core/modules/dialogs';
+import type { AudioAttachmentBlock } from '@yunke/core/modules/media/entities/audio-attachment-block';
+import { AudioAttachmentService } from '@yunke/core/modules/media/services/audio-attachment';
+import { Trans, useI18n } from '@yunke/i18n';
+import track from '@yunke/track';
+import type { AttachmentBlockModel } from '@blocksuite/yunke/model';
 import { ResetIcon } from '@blocksuite/icons/rc';
 import { useLiveData, useService } from '@toeverything/infra';
 import bytes from 'bytes';

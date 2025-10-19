@@ -1,10 +1,10 @@
 // 以下导入用于确保块组件编辑器效果被执行
 import '../blocksuite/block-suite-editor';
 
-import { DebugLogger } from '@affine/debug';
-import { DEFAULT_WORKSPACE_NAME } from '@affine/env/constant';
-import onboardingUrl from '@affine/templates/onboarding.zip';
-import { ZipTransformer } from '@blocksuite/affine/widgets/linked-doc';
+import { DebugLogger } from '@yunke/debug';
+import { DEFAULT_WORKSPACE_NAME } from '@yunke/env/constant';
+import onboardingUrl from '@yunke/templates/onboarding.zip';
+import { ZipTransformer } from '@blocksuite/yunke/widgets/linked-doc';
 
 import { DocsService } from '../modules/doc';
 import { OrganizeService } from '../modules/organize';

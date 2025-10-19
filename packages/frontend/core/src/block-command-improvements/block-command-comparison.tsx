@@ -353,7 +353,7 @@ const ImplementationSuggestions: React.FC = () => {
         <h4>1. 修改 slash-menu 样式文件</h4>
         <div className="code-block">
           <pre>{`
-// 文件位置: /blocksuite/affine/widgets/slash-menu/src/styles.ts
+// 文件位置: /blocksuite/yunke/widgets/slash-menu/src/styles.ts
 
 // 原来的样式
 .slash-menu {

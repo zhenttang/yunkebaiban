@@ -1,4 +1,4 @@
-// import { getInviteInfoQuery } from '@affine/graphql';
+// import { getInviteInfoQuery } from '@yunke/graphql';
 import { Store } from '@toeverything/infra';
 
 

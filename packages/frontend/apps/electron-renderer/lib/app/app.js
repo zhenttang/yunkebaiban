@@ -1,10 +1,10 @@
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
-import { AffineContext } from '@affine/core/components/context';
-import { WindowsAppControls } from '@affine/core/components/pure/header/windows-app-controls';
-import { AppContainer } from '@affine/core/desktop/components/app-container';
-import { router } from '@affine/core/desktop/router';
-import { I18nProvider } from '@affine/core/modules/i18n';
-import createEmotionCache from '@affine/core/utils/create-emotion-cache';
+import { AffineContext } from '@yunke/core/components/context';
+import { WindowsAppControls } from '@yunke/core/components/pure/header/windows-app-controls';
+import { AppContainer } from '@yunke/core/desktop/components/app-container';
+import { router } from '@yunke/core/desktop/router';
+import { I18nProvider } from '@yunke/core/modules/i18n';
+import createEmotionCache from '@yunke/core/utils/create-emotion-cache';
 import { CacheProvider } from '@emotion/react';
 import { FrameworkRoot, getCurrentStore } from '@toeverything/infra';
 import { Suspense } from 'react';

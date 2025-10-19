@@ -1,8 +1,8 @@
-import { CompatibleFavoriteItemsAdapter } from '@affine/core/modules/favorite';
-import type { Tag } from '@affine/core/modules/tag';
-import { TagService } from '@affine/core/modules/tag';
-import { useI18n } from '@affine/i18n';
-import type { DocMeta } from '@blocksuite/affine/store';
+import { CompatibleFavoriteItemsAdapter } from '@yunke/core/modules/favorite';
+import type { Tag } from '@yunke/core/modules/tag';
+import { TagService } from '@yunke/core/modules/tag';
+import { useI18n } from '@yunke/i18n';
+import type { DocMeta } from '@blocksuite/yunke/store';
 import { FavoritedIcon, FavoriteIcon } from '@blocksuite/icons/rc';
 import { LiveData, useLiveData, useService } from '@toeverything/infra';
 import { type ReactNode, useMemo } from 'react';

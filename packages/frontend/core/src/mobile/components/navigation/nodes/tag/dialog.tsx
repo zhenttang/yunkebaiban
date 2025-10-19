@@ -1,6 +1,6 @@
-import { type MenuSubProps, useMobileMenuController } from '@affine/component';
-import { TagService } from '@affine/core/modules/tag';
-import { useI18n } from '@affine/i18n';
+import { type MenuSubProps, useMobileMenuController } from '@yunke/component';
+import { TagService } from '@yunke/core/modules/tag';
+import { useI18n } from '@yunke/i18n';
 import { useLiveData, useService } from '@toeverything/infra';
 import {
   createContext,

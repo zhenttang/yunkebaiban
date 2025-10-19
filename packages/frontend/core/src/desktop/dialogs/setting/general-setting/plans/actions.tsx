@@ -1,10 +1,10 @@
-import { notify } from '@affine/component';
-import { useDowngradeNotify } from '@affine/core/components/affine/subscription-landing/notify';
-import { getDowngradeQuestionnaireLink } from '@affine/core/components/hooks/affine/use-subscription-notify';
-import { useAsyncCallback } from '@affine/core/components/hooks/affine-async-hooks';
-// import { SubscriptionPlan } from '@affine/graphql';
-import { useI18n } from '@affine/i18n';
-import { track } from '@affine/track';
+import { notify } from '@yunke/component';
+import { useDowngradeNotify } from '@yunke/core/components/affine/subscription-landing/notify';
+import { getDowngradeQuestionnaireLink } from '@yunke/core/components/hooks/affine/use-subscription-notify';
+import { useAsyncCallback } from '@yunke/core/components/hooks/affine-async-hooks';
+// import { SubscriptionPlan } from '@yunke/graphql';
+import { useI18n } from '@yunke/i18n';
+import { track } from '@yunke/track';
 import { useLiveData, useService } from '@toeverything/infra';
 import { nanoid } from 'nanoid';
 import type { PropsWithChildren } from 'react';

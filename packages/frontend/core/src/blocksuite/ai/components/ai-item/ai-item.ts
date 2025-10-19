@@ -1,11 +1,11 @@
-import { ArrowRightIcon, EnterIcon } from '@blocksuite/affine/components/icons';
-import { WithDisposable } from '@blocksuite/affine/global/lit';
-import { ColorScheme } from '@blocksuite/affine/model';
+import { ArrowRightIcon, EnterIcon } from '@blocksuite/yunke/components/icons';
+import { WithDisposable } from '@blocksuite/yunke/global/lit';
+import { ColorScheme } from '@blocksuite/yunke/model';
 import {
   EditorHost,
   PropTypes,
   requiredProperties,
-} from '@blocksuite/affine/std';
+} from '@blocksuite/yunke/std';
 import { css, html, LitElement, nothing } from 'lit';
 import { property, query } from 'lit/decorators.js';
 

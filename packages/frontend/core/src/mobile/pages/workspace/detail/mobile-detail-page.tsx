@@ -1,33 +1,33 @@
-import { useThemeColorV2 } from '@affine/component';
-import { PageDetailLoading } from '@affine/component/page-detail-skeleton';
-import type { AffineEditorContainer } from '@affine/core/blocksuite/block-suite-editor';
-import { AffineErrorBoundary } from '@affine/core/components/affine/affine-error-boundary';
-import { useGuard } from '@affine/core/components/guard';
-import { useActiveBlocksuiteEditor } from '@affine/core/components/hooks/use-block-suite-editor';
-import { useNavigateHelper } from '@affine/core/components/hooks/use-navigate-helper';
-import { PageDetailEditor } from '@affine/core/components/page-detail-editor';
-import { DetailPageWrapper } from '@affine/core/desktop/pages/workspace/detail-page/detail-page-wrapper';
-import { PageHeader, StylusIndicator } from '@affine/core/mobile/components';
-import { useGlobalEvent } from '@affine/core/mobile/hooks/use-global-events';
-import { useStylusPalmRejection } from '@affine/core/mobile/hooks/use-stylus-palm-rejection';
-import { AIButtonService } from '@affine/core/modules/ai-button';
-import { ServerService } from '@affine/core/modules/cloud';
-import { DocService } from '@affine/core/modules/doc';
-import { DocDisplayMetaService } from '@affine/core/modules/doc-display-meta';
-import { EditorService } from '@affine/core/modules/editor';
-import { FeatureFlagService } from '@affine/core/modules/feature-flag';
-import { GlobalContextService } from '@affine/core/modules/global-context';
-import { JournalService } from '@affine/core/modules/journal';
-import { WorkbenchService } from '@affine/core/modules/workbench';
-import { ViewService } from '@affine/core/modules/workbench/services/view';
-import { WorkspaceService } from '@affine/core/modules/workspace';
-import { i18nTime } from '@affine/i18n';
-import { DisposableGroup } from '@blocksuite/affine/global/disposable';
-import { RefNodeSlotsProvider } from '@blocksuite/affine/inlines/reference';
+import { useThemeColorV2 } from '@yunke/component';
+import { PageDetailLoading } from '@yunke/component/page-detail-skeleton';
+import type { AffineEditorContainer } from '@yunke/core/blocksuite/block-suite-editor';
+import { AffineErrorBoundary } from '@yunke/core/components/affine/affine-error-boundary';
+import { useGuard } from '@yunke/core/components/guard';
+import { useActiveBlocksuiteEditor } from '@yunke/core/components/hooks/use-block-suite-editor';
+import { useNavigateHelper } from '@yunke/core/components/hooks/use-navigate-helper';
+import { PageDetailEditor } from '@yunke/core/components/page-detail-editor';
+import { DetailPageWrapper } from '@yunke/core/desktop/pages/workspace/detail-page/detail-page-wrapper';
+import { PageHeader, StylusIndicator } from '@yunke/core/mobile/components';
+import { useGlobalEvent } from '@yunke/core/mobile/hooks/use-global-events';
+import { useStylusPalmRejection } from '@yunke/core/mobile/hooks/use-stylus-palm-rejection';
+import { AIButtonService } from '@yunke/core/modules/ai-button';
+import { ServerService } from '@yunke/core/modules/cloud';
+import { DocService } from '@yunke/core/modules/doc';
+import { DocDisplayMetaService } from '@yunke/core/modules/doc-display-meta';
+import { EditorService } from '@yunke/core/modules/editor';
+import { FeatureFlagService } from '@yunke/core/modules/feature-flag';
+import { GlobalContextService } from '@yunke/core/modules/global-context';
+import { JournalService } from '@yunke/core/modules/journal';
+import { WorkbenchService } from '@yunke/core/modules/workbench';
+import { ViewService } from '@yunke/core/modules/workbench/services/view';
+import { WorkspaceService } from '@yunke/core/modules/workspace';
+import { i18nTime } from '@yunke/i18n';
+import { DisposableGroup } from '@blocksuite/yunke/global/disposable';
+import { RefNodeSlotsProvider } from '@blocksuite/yunke/inlines/reference';
 import {
   customImageProxyMiddleware,
   ImageProxyService,
-} from '@blocksuite/affine/shared/adapters';
+} from '@blocksuite/yunke/shared/adapters';
 import {
   FrameworkScope,
   useLiveData,

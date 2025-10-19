@@ -1,5 +1,5 @@
 {
-  "name": "@affine/playstore-auto-bump",
+  "name": "@yunke/playstore-auto-bump",
   "version": "0.21.0",
   "private": true,
   "type": "module",
@@ -9,9 +9,9 @@
     "bump": "r ./index.ts"
   },
   "dependencies": {
-    "@affine-tools/cli": "workspace:*",
-    "@affine-tools/utils": "workspace:*",
     "@googleapis/androidpublisher": "^27.0.0",
+    "@yunke-tools/cli": "workspace:*",
+    "@yunke-tools/utils": "workspace:*",
     "typescript": "^5.7.2"
   },
   "devDependencies": {

@@ -1,7 +1,7 @@
-import { Button } from '@affine/component';
-import { AuthService, SubscriptionService } from '@affine/core/modules/cloud';
-// import { SubscriptionPlan, SubscriptionRecurring } from '@affine/graphql';
-import { Trans, useI18n } from '@affine/i18n';
+import { Button } from '@yunke/component';
+import { AuthService, SubscriptionService } from '@yunke/core/modules/cloud';
+// import { SubscriptionPlan, SubscriptionRecurring } from '@yunke/graphql';
+import { Trans, useI18n } from '@yunke/i18n';
 import { useLiveData, useService } from '@toeverything/infra';
 
 import { SignUpAction, Upgrade } from '../plan-card';

@@ -5,11 +5,11 @@ import {
   notify,
   PropertyValue,
   type RadioItem,
-} from '@affine/component';
-import type { FilterParams } from '@affine/core/modules/collection-rules';
-import { DocService } from '@affine/core/modules/doc';
-import { useI18n } from '@affine/i18n';
-import type { DocMode } from '@blocksuite/affine/model';
+} from '@yunke/component';
+import type { FilterParams } from '@yunke/core/modules/collection-rules';
+import { DocService } from '@yunke/core/modules/doc';
+import { useI18n } from '@yunke/i18n';
+import type { DocMode } from '@blocksuite/yunke/model';
 import { EdgelessIcon, PageIcon } from '@blocksuite/icons/rc';
 import { useLiveData, useService } from '@toeverything/infra';
 import { useCallback, useEffect, useMemo, useRef } from 'react';

@@ -1,12 +1,8 @@
 {
-  "name": "@affine/admin",
+  "name": "@yunke/admin",
   "version": "0.21.0",
   "private": true,
   "dependencies": {
-    "@affine/component": "workspace:*",
-    "@affine/core": "workspace:*",
-    "@affine/error": "workspace:*",
-    "@affine/routes": "workspace:*",
     "@blocksuite/icons": "^2.2.12",
     "@hookform/resolvers": "^3.10.0",
     "@radix-ui/react-accordion": "^1.2.2",
@@ -40,6 +36,10 @@
     "@tanstack/react-table": "^8.20.5",
     "@toeverything/infra": "workspace:*",
     "@toeverything/theme": "^1.1.15",
+    "@yunke/component": "workspace:*",
+    "@yunke/core": "workspace:*",
+    "@yunke/error": "workspace:*",
+    "@yunke/routes": "workspace:*",
     "cmdk": "^1.0.4",
     "embla-carousel-react": "^8.5.1",
     "input-otp": "^1.4.1",
@@ -68,8 +68,8 @@
     "tailwindcss-animate": "^1.0.7"
   },
   "scripts": {
-    "build": "affine bundle",
-    "dev": "affine bundle --dev",
+    "build": "yunke bundle",
+    "dev": "yunke bundle --dev",
     "update-shadcn": "shadcn-ui add -p src/components/ui"
   },
   "exports": {

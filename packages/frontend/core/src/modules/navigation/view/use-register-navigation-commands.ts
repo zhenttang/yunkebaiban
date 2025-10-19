@@ -1,8 +1,8 @@
 import {
   PreconditionStrategy,
   registerAffineCommand,
-} from '@affine/core/commands';
-import { track } from '@affine/track';
+} from '@yunke/core/commands';
+import { track } from '@yunke/track';
 import { useService } from '@toeverything/infra';
 import { useEffect } from 'react';
 

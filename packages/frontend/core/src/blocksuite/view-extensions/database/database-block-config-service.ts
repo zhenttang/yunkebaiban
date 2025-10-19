@@ -1,8 +1,8 @@
 import {
   DatabaseBlockDataSource,
   ExternalGroupByConfigProvider,
-} from '@blocksuite/affine/blocks/database';
-import type { ExtensionType } from '@blocksuite/affine/store';
+} from '@blocksuite/yunke/blocks/database';
+import type { ExtensionType } from '@blocksuite/yunke/store';
 
 import { groupByConfigList } from '../../database-block/group-by';
 import { propertiesPresets } from '../../database-block/properties';

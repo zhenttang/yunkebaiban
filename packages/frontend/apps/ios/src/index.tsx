@@ -1,9 +1,9 @@
 import './setup';
-import '@affine/component/theme';
-import '@affine/core/mobile/styles/mobile.css';
+import '@yunke/component/theme';
+import '@yunke/core/mobile/styles/mobile.css';
 
-import { Telemetry } from '@affine/core/components/telemetry';
-import { bindNativeDBApis } from '@affine/nbstore/sqlite';
+import { Telemetry } from '@yunke/core/components/telemetry';
+import { bindNativeDBApis } from '@yunke/nbstore/sqlite';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 

@@ -1,40 +1,40 @@
-import { FeatureFlagService } from '@affine/core/modules/feature-flag';
-import { DebugLogger } from '@affine/debug';
+import { FeatureFlagService } from '@yunke/core/modules/feature-flag';
+import { DebugLogger } from '@yunke/debug';
 //import {
 //   createWorkspaceMutation,
 //   deleteWorkspaceMutation,
 //   getWorkspaceInfoQuery,
 //   getWorkspacesQuery,
 //   Permission,
-//} from '@affine/graphql';
+//} from '@yunke/graphql';
 import { ServerDeploymentType } from '../../cloud/types';
 import type {
   BlobStorage,
   DocStorage,
   ListedBlobRecord,
-} from '@affine/nbstore';
-import { CloudBlobStorage, StaticCloudDocStorage } from '@affine/nbstore/cloud';
+} from '@yunke/nbstore';
+import { CloudBlobStorage, StaticCloudDocStorage } from '@yunke/nbstore/cloud';
 import {
   IndexedDBBlobStorage,
   IndexedDBBlobSyncStorage,
   IndexedDBDocStorage,
   IndexedDBDocSyncStorage,
-} from '@affine/nbstore/idb';
+} from '@yunke/nbstore/idb';
 import {
   IndexedDBV1BlobStorage,
   IndexedDBV1DocStorage,
-} from '@affine/nbstore/idb/v1';
+} from '@yunke/nbstore/idb/v1';
 import {
   SqliteBlobStorage,
   SqliteBlobSyncStorage,
   SqliteDocStorage,
   SqliteDocSyncStorage,
-} from '@affine/nbstore/sqlite';
+} from '@yunke/nbstore/sqlite';
 import {
   SqliteV1BlobStorage,
   SqliteV1DocStorage,
-} from '@affine/nbstore/sqlite/v1';
-import type { WorkerInitOptions } from '@affine/nbstore/worker/client';
+} from '@yunke/nbstore/sqlite/v1';
+import type { WorkerInitOptions } from '@yunke/nbstore/worker/client';
 import {
   catchErrorInto,
   effect,
@@ -550,7 +550,7 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
     console.log('🌐 [SyncToCloud] 开始同步，文档数量:', docList.size);
     
     // 创建云端存储实例
-    const cloudDocStorage = new (await import('@affine/nbstore/cloud')).CloudDocStorage({
+    const cloudDocStorage = new (await import('@yunke/nbstore/cloud')).CloudDocStorage({
       id: workspaceId,
       flavour: this.flavour,
       type: 'workspace' as any,

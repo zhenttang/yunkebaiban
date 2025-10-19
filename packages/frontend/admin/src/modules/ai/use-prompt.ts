@@ -1,12 +1,12 @@
 import {
   useMutateQueryResource,
   useMutation,
-} from '@affine/admin/use-mutation';
-import { useQuery } from '@affine/admin/use-query';
-import { useAsyncCallback } from '@affine/core/components/hooks/affine-async-hooks';
-// import { getPromptsQuery, updatePromptMutation } from '@affine/graphql';
+} from '@yunke/admin/use-mutation';
+import { useQuery } from '@yunke/admin/use-query';
+import { useAsyncCallback } from '@yunke/core/components/hooks/affine-async-hooks';
+// import { getPromptsQuery, updatePromptMutation } from '@yunke/graphql';
 
-// Temporary placeholders to replace @affine/graphql imports
+// Temporary placeholders to replace @yunke/graphql imports
 const getPromptsQuery = {
   id: 'getPrompts',
   query: 'query GetPrompts { listCopilotPrompts { name messages } }',

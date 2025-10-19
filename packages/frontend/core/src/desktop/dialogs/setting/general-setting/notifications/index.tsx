@@ -1,15 +1,15 @@
-import { notify, Switch } from '@affine/component';
+import { notify, Switch } from '@yunke/component';
 import {
   SettingHeader,
   SettingRow,
   SettingWrapper,
-} from '@affine/component/setting-components';
+} from '@yunke/component/setting-components';
 import {
   type UserSettings,
   UserSettingsService,
-} from '@affine/core/modules/cloud';
-import { UserFriendlyError } from '@affine/error';
-import { useI18n } from '@affine/i18n';
+} from '@yunke/core/modules/cloud';
+import { UserFriendlyError } from '@yunke/error';
+import { useI18n } from '@yunke/i18n';
 import { useLiveData, useService } from '@toeverything/infra';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 

@@ -1,8 +1,8 @@
-import { getEditorConfigExtension } from '@affine/core/blocksuite/view-extensions/editor-config/get-config';
+import { getEditorConfigExtension } from '@yunke/core/blocksuite/view-extensions/editor-config/get-config';
 import {
   type ViewExtensionContext,
   ViewExtensionProvider,
-} from '@blocksuite/affine/ext-loader';
+} from '@blocksuite/yunke/ext-loader';
 import { FrameworkProvider } from '@toeverything/infra';
 import { z } from 'zod';
 

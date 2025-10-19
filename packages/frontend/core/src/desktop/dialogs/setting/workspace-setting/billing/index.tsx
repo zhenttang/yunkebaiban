@@ -1,14 +1,14 @@
-import { Button, Loading } from '@affine/component';
+import { Button, Loading } from '@yunke/component';
 import {
   SettingHeader,
   SettingRow,
   SettingWrapper,
-} from '@affine/component/setting-components';
-import { WorkspaceSubscriptionService } from '@affine/core/modules/cloud';
-import { WorkspaceService } from '@affine/core/modules/workspace';
-import { PaymentModal } from '@affine/core/components/community-ui/payment-modal';
-import type { CommunityDocument } from '@affine/core/components/community-ui/types';
-import { useI18n } from '@affine/i18n';
+} from '@yunke/component/setting-components';
+import { WorkspaceSubscriptionService } from '@yunke/core/modules/cloud';
+import { WorkspaceService } from '@yunke/core/modules/workspace';
+import { PaymentModal } from '@yunke/core/components/community-ui/payment-modal';
+import type { CommunityDocument } from '@yunke/core/components/community-ui/types';
+import { useI18n } from '@yunke/i18n';
 import { useLiveData, useService } from '@toeverything/infra';
 import { useCallback, useEffect, useState } from 'react';
 

@@ -1,21 +1,21 @@
-import { DNDContext } from '@affine/component';
-import { AffineOtherPageLayout } from '@affine/component/affine-other-page-layout';
-import { workbenchRoutes } from '@affine/core/desktop/workbench-router';
+import { DNDContext } from '@yunke/component';
+import { AffineOtherPageLayout } from '@yunke/component/affine-other-page-layout';
+import { workbenchRoutes } from '@yunke/core/desktop/workbench-router';
 import {
   DefaultServerService,
   ServersService,
-} from '@affine/core/modules/cloud';
-import { GlobalDialogService } from '@affine/core/modules/dialogs';
-import { DndService } from '@affine/core/modules/dnd/services';
-import { GlobalContextService } from '@affine/core/modules/global-context';
-import { OpenInAppGuard } from '@affine/core/modules/open-in-app';
+} from '@yunke/core/modules/cloud';
+import { GlobalDialogService } from '@yunke/core/modules/dialogs';
+import { DndService } from '@yunke/core/modules/dnd/services';
+import { GlobalContextService } from '@yunke/core/modules/global-context';
+import { OpenInAppGuard } from '@yunke/core/modules/open-in-app';
 import {
   getAFFiNEWorkspaceSchema,
   type Workspace,
   type WorkspaceMetadata,
   WorkspacesService,
-} from '@affine/core/modules/workspace';
-import { ZipTransformer } from '@blocksuite/affine/widgets/linked-doc';
+} from '@yunke/core/modules/workspace';
+import { ZipTransformer } from '@blocksuite/yunke/widgets/linked-doc';
 import {
   FrameworkScope,
   LiveData,

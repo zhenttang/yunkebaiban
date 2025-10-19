@@ -1,4 +1,4 @@
-import type { WorkspaceServerService } from '@affine/core/modules/cloud';
+import type { WorkspaceServerService } from '@yunke/core/modules/cloud';
 //import {
 //   addWorkspaceEmbeddingFilesMutation,
 //   addWorkspaceEmbeddingIgnoredDocsMutation,
@@ -10,7 +10,7 @@ import type { WorkspaceServerService } from '@affine/core/modules/cloud';
 //   removeWorkspaceEmbeddingFilesMutation,
 //   removeWorkspaceEmbeddingIgnoredDocsMutation,
 //   setEnableDocEmbeddingMutation,
-//} from '@affine/graphql';
+//} from '@yunke/graphql';
 import { Store } from '@toeverything/infra';
 
 export class EmbeddingStore extends Store {

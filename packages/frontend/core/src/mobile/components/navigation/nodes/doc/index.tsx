@@ -1,13 +1,13 @@
-import { Loading } from '@affine/component';
-import { Guard } from '@affine/core/components/guard';
-import type { NodeOperation } from '@affine/core/desktop/components/navigation-panel';
-import { WorkspaceDialogService } from '@affine/core/modules/dialogs';
-import { DocsService } from '@affine/core/modules/doc';
-import { DocDisplayMetaService } from '@affine/core/modules/doc-display-meta';
-import { DocsSearchService } from '@affine/core/modules/docs-search';
-import { FeatureFlagService } from '@affine/core/modules/feature-flag';
-import { GlobalContextService } from '@affine/core/modules/global-context';
-import { useI18n } from '@affine/i18n';
+import { Loading } from '@yunke/component';
+import { Guard } from '@yunke/core/components/guard';
+import type { NodeOperation } from '@yunke/core/desktop/components/navigation-panel';
+import { WorkspaceDialogService } from '@yunke/core/modules/dialogs';
+import { DocsService } from '@yunke/core/modules/doc';
+import { DocDisplayMetaService } from '@yunke/core/modules/doc-display-meta';
+import { DocsSearchService } from '@yunke/core/modules/docs-search';
+import { FeatureFlagService } from '@yunke/core/modules/feature-flag';
+import { GlobalContextService } from '@yunke/core/modules/global-context';
+import { useI18n } from '@yunke/i18n';
 import {
   LiveData,
   MANUALLY_STOP,

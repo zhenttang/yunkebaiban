@@ -1,5 +1,5 @@
-import { WorkspaceService } from '@affine/core/modules/workspace';
-import { Trans } from '@affine/i18n';
+import { WorkspaceService } from '@yunke/core/modules/workspace';
+import { Trans } from '@yunke/i18n';
 import { useLiveData, useService } from '@toeverything/infra';
 import { useCallback, useMemo, useRef, useState } from 'react';
 

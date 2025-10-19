@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
-import { Button } from '@affine/admin/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@affine/admin/components/ui/card';
-import { Input } from '@affine/admin/components/ui/input';
-import { Label } from '@affine/admin/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@affine/admin/components/ui/select';
-import { Textarea } from '@affine/admin/components/ui/textarea';
+import { Button } from '@yunke/admin/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@yunke/admin/components/ui/card';
+import { Input } from '@yunke/admin/components/ui/input';
+import { Label } from '@yunke/admin/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@yunke/admin/components/ui/select';
+import { Textarea } from '@yunke/admin/components/ui/textarea';
 import { Loader2, Save } from 'lucide-react';
 
 import type { CopilotConfig } from '../hooks/use-copilot-config';

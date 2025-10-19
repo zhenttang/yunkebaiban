@@ -1,4 +1,4 @@
-import { WithDisposable } from '@blocksuite/affine/global/lit';
+import { WithDisposable } from '@blocksuite/yunke/global/lit';
 import { css, html, LitElement } from 'lit';
 
 export class AIPanelDivider extends WithDisposable(LitElement) {

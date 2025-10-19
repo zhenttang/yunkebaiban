@@ -1,10 +1,10 @@
-import { Button } from '@affine/admin/components/ui/button';
-import { useMutation } from '@affine/admin/use-mutation';
-import { notify } from '@affine/component';
-import type { UserFriendlyError } from '@affine/error';
-// import { sendTestEmailMutation } from '@affine/graphql';
+import { Button } from '@yunke/admin/components/ui/button';
+import { useMutation } from '@yunke/admin/use-mutation';
+import { notify } from '@yunke/component';
+import type { UserFriendlyError } from '@yunke/error';
+// import { sendTestEmailMutation } from '@yunke/graphql';
 
-// 临时占位符，用于替代 @affine/graphql 导入
+// 临时占位符，用于替代 @yunke/graphql 导入
 const sendTestEmailMutation = {
   id: 'sendTestEmail',
   query: 'mutation SendTestEmail($smtpConfig: SMTPConfigInput!) { sendTestEmail(smtpConfig: $smtpConfig) { success } }',

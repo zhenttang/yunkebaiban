@@ -2,9 +2,9 @@ import {
   type DropTargetDropEvent,
   type DropTargetOptions,
   useDropTarget,
-} from '@affine/component';
-import type { AffineDNDData } from '@affine/core/types/dnd';
-import { useI18n } from '@affine/i18n';
+} from '@yunke/component';
+import type { AffineDNDData } from '@yunke/core/types/dnd';
+import { useI18n } from '@yunke/i18n';
 
 import { EmptyNodeChildren } from '../../layouts/empty-node-children';
 import { draggedOverHighlight } from './empty.css';

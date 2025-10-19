@@ -1,9 +1,9 @@
-import { noop } from '@blocksuite/affine/global/utils';
-import type { DocMode } from '@blocksuite/affine/model';
+import { noop } from '@blocksuite/yunke/global/utils';
+import type { DocMode } from '@blocksuite/yunke/model';
 import {
   ActionPlacement,
   type ToolbarModuleConfig,
-} from '@blocksuite/affine/shared/services';
+} from '@blocksuite/yunke/shared/services';
 import { html } from 'lit';
 
 import type { AIItemGroupConfig } from '../../components/ai-item/types';

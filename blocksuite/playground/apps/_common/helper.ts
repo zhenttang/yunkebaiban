@@ -1,4 +1,4 @@
-import { TestWorkspace } from '@blocksuite/affine/store/test';
+import { TestWorkspace } from '@blocksuite/yunke/store/test';
 import { getTestStoreManager } from '@blocksuite/integration-test/store';
 
 export function createEmptyDoc() {

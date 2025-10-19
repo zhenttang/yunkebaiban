@@ -1,19 +1,19 @@
-import { Button, usePromptModal } from '@affine/component';
+import { Button, usePromptModal } from '@yunke/component';
 import {
   createDocExplorerContext,
   DocExplorerContext,
-} from '@affine/core/components/explorer/context';
-import { DocsExplorer } from '@affine/core/components/explorer/docs-view/docs-list';
-import type { ExplorerDisplayPreference } from '@affine/core/components/explorer/types';
-import { Filters } from '@affine/core/components/filter';
+} from '@yunke/core/components/explorer/context';
+import { DocsExplorer } from '@yunke/core/components/explorer/docs-view/docs-list';
+import type { ExplorerDisplayPreference } from '@yunke/core/components/explorer/types';
+import { Filters } from '@yunke/core/components/filter';
 import {
   CollectionService,
   PinnedCollectionService,
-} from '@affine/core/modules/collection';
-import { CollectionRulesService } from '@affine/core/modules/collection-rules';
-import type { FilterParams } from '@affine/core/modules/collection-rules/types';
-import { WorkspaceLocalState } from '@affine/core/modules/workspace';
-import { useI18n } from '@affine/i18n';
+} from '@yunke/core/modules/collection';
+import { CollectionRulesService } from '@yunke/core/modules/collection-rules';
+import type { FilterParams } from '@yunke/core/modules/collection-rules/types';
+import { WorkspaceLocalState } from '@yunke/core/modules/workspace';
+import { useI18n } from '@yunke/i18n';
 import { useLiveData, useService } from '@toeverything/infra';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 

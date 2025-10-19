@@ -3,15 +3,15 @@ import {
   MenuItem,
   MenuSeparator,
   useConfirmModal,
-} from '@affine/component';
-import { usePageHelper } from '@affine/core/blocksuite/block-suite-page-list/utils';
-import { IsFavoriteIcon } from '@affine/core/components/pure/icons';
-import { CollectionService } from '@affine/core/modules/collection';
-import { CompatibleFavoriteItemsAdapter } from '@affine/core/modules/favorite';
-import { WorkbenchService } from '@affine/core/modules/workbench';
-import { WorkspaceService } from '@affine/core/modules/workspace';
-import { useI18n } from '@affine/i18n';
-import { track } from '@affine/track';
+} from '@yunke/component';
+import { usePageHelper } from '@yunke/core/blocksuite/block-suite-page-list/utils';
+import { IsFavoriteIcon } from '@yunke/core/components/pure/icons';
+import { CollectionService } from '@yunke/core/modules/collection';
+import { CompatibleFavoriteItemsAdapter } from '@yunke/core/modules/favorite';
+import { WorkbenchService } from '@yunke/core/modules/workbench';
+import { WorkspaceService } from '@yunke/core/modules/workspace';
+import { useI18n } from '@yunke/i18n';
+import { track } from '@yunke/track';
 import {
   DeleteIcon,
   FilterIcon,

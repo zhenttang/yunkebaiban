@@ -1,10 +1,10 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Button } from '@affine/component';
+import { Button } from '@yunke/component';
 
 import { ViewBody } from '../../../../modules/workbench';
-import { DocumentCard } from '@affine/core/components/community-ui';
-import type { CommunityDocument as CommunityUiDocument } from '@affine/core/components/community-ui/types';
+import { DocumentCard } from '@yunke/core/components/community-ui';
+import type { CommunityDocument as CommunityUiDocument } from '@yunke/core/components/community-ui/types';
 
 import * as styles from './community.css';
 import { useCommunityDocuments } from './hooks/use-community-documents';

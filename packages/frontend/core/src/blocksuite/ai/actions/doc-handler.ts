@@ -1,6 +1,6 @@
-import { AIStarIconWithAnimation } from '@blocksuite/affine/components/icons';
-import { createLitPortal } from '@blocksuite/affine/components/portal';
-import { type EditorHost, TextSelection } from '@blocksuite/affine/std';
+import { AIStarIconWithAnimation } from '@blocksuite/yunke/components/icons';
+import { createLitPortal } from '@blocksuite/yunke/components/portal';
+import { type EditorHost, TextSelection } from '@blocksuite/yunke/std';
 import { flip, offset } from '@floating-ui/dom';
 import { html, type TemplateResult } from 'lit';
 

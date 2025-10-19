@@ -1,4 +1,4 @@
-import { cn } from '@affine/admin/utils';
+import { cn } from '@yunke/admin/utils';
 import * as SwitchPrimitives from '@radix-ui/react-switch';
 import * as React from 'react';
 

@@ -1,0 +1,20 @@
+{
+  "extends": "../../../../tsconfig.json",
+  "compilerOptions": {
+    "composite": true,
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "jsx": "preserve"
+  },
+  "include": ["src/**/*"],
+  "references": [
+    { "path": "../../../framework/global" },
+    { "path": "../../../framework/std" },
+    { "path": "../../../framework/store" },
+    { "path": "../../components" },
+    { "path": "../../ext-loader" },
+    { "path": "../../model" },
+    { "path": "../../shared" },
+    { "path": "../../widgets/slash-menu" }
+  ]
+}

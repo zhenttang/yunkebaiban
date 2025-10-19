@@ -1,0 +1,16 @@
+{
+  "extends": "../../../tsconfig.json",
+  "compilerOptions": {
+    "rootDir": "./src",
+    "outDir": "./dist",
+    "tsBuildInfoFile": "./dist/tsconfig.tsbuildinfo"
+  },
+  "include": ["./src"],
+  "references": [
+    { "path": "../../../framework/global" },
+    { "path": "../../../framework/std" },
+    { "path": "../../ext-loader" },
+    { "path": "../../model" },
+    { "path": "../../shared" }
+  ]
+}

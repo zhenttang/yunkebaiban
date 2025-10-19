@@ -1,6 +1,6 @@
 import { useEffect, useState, useMemo, useCallback, memo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Button } from '@affine/component';
+import { Button } from '@yunke/component';
 import { ViewBody } from '../../../../../modules/workbench';
 import { listForums } from '../forum-api';
 import type { ForumDTO } from '../types';

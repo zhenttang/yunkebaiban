@@ -1,5 +1,5 @@
-import { toggleVariants } from '@affine/admin/components/ui/toggle';
-import { cn } from '@affine/admin/utils';
+import { toggleVariants } from '@yunke/admin/components/ui/toggle';
+import { cn } from '@yunke/admin/utils';
 import * as ToggleGroupPrimitive from '@radix-ui/react-toggle-group';
 import type { VariantProps } from 'class-variance-authority';
 import * as React from 'react';

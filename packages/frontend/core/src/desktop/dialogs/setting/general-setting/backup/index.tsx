@@ -6,17 +6,17 @@ import {
   notify,
   Skeleton,
   useConfirmModal,
-} from '@affine/component';
+} from '@yunke/component';
 import {
   Pagination,
   SettingHeader,
-} from '@affine/component/setting-components';
-import { Avatar } from '@affine/component/ui/avatar';
-import { useAsyncCallback } from '@affine/core/components/hooks/affine-async-hooks';
-import { useNavigateHelper } from '@affine/core/components/hooks/use-navigate-helper';
-import { BackupService } from '@affine/core/modules/backup/services';
-import { i18nTime, useI18n } from '@affine/i18n';
-import track from '@affine/track';
+} from '@yunke/component/setting-components';
+import { Avatar } from '@yunke/component/ui/avatar';
+import { useAsyncCallback } from '@yunke/core/components/hooks/affine-async-hooks';
+import { useNavigateHelper } from '@yunke/core/components/hooks/use-navigate-helper';
+import { BackupService } from '@yunke/core/modules/backup/services';
+import { i18nTime, useI18n } from '@yunke/i18n';
+import track from '@yunke/track';
 import {
   DeleteIcon,
   LocalWorkspaceIcon,

@@ -1,11 +1,11 @@
-import { Button, IconButton, Menu, MenuItem } from '@affine/component';
-import { DocDisplayMetaService } from '@affine/core/modules/doc-display-meta';
-import { WorkbenchService } from '@affine/core/modules/workbench';
-import { stopPropagation } from '@affine/core/utils';
-import { useI18n } from '@affine/i18n';
-import { EmbedSyncedDocBlockComponent } from '@blocksuite/affine/blocks/embed-doc';
-import { isPeekable, peek } from '@blocksuite/affine/components/peek';
-import type { EmbedSyncedDocModel } from '@blocksuite/affine-model';
+import { Button, IconButton, Menu, MenuItem } from '@yunke/component';
+import { DocDisplayMetaService } from '@yunke/core/modules/doc-display-meta';
+import { WorkbenchService } from '@yunke/core/modules/workbench';
+import { stopPropagation } from '@yunke/core/utils';
+import { useI18n } from '@yunke/i18n';
+import { EmbedSyncedDocBlockComponent } from '@blocksuite/yunke/blocks/embed-doc';
+import { isPeekable, peek } from '@blocksuite/yunke/components/peek';
+import type { EmbedSyncedDocModel } from '@blocksuite/yunke-model';
 import {
   ArrowDownSmallIcon,
   CenterPeekIcon,

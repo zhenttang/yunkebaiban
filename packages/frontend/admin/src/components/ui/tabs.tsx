@@ -1,4 +1,4 @@
-import { cn } from '@affine/admin/utils';
+import { cn } from '@yunke/admin/utils';
 import * as TabsPrimitive from '@radix-ui/react-tabs';
 import * as React from 'react';
 

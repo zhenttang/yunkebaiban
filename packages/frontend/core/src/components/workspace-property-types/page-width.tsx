@@ -4,11 +4,11 @@ import {
   type MenuRef,
   PropertyValue,
   type RadioItem,
-} from '@affine/component';
-import type { FilterParams } from '@affine/core/modules/collection-rules';
-import { type DocRecord, DocService } from '@affine/core/modules/doc';
-import { EditorSettingService } from '@affine/core/modules/editor-setting';
-import { useI18n } from '@affine/i18n';
+} from '@yunke/component';
+import type { FilterParams } from '@yunke/core/modules/collection-rules';
+import { type DocRecord, DocService } from '@yunke/core/modules/doc';
+import { EditorSettingService } from '@yunke/core/modules/editor-setting';
+import { useI18n } from '@yunke/i18n';
 import { LongerIcon } from '@blocksuite/icons/rc';
 import { useLiveData, useService } from '@toeverything/infra';
 import { useCallback, useEffect, useMemo, useRef } from 'react';

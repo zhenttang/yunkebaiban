@@ -1,4 +1,4 @@
-import type { WorkspaceServerService } from '@affine/core/modules/cloud';
+import type { WorkspaceServerService } from '@yunke/core/modules/cloud';
 import { Store } from '@toeverything/infra';
 import type { DocRole } from '../../share-doc/types';
 

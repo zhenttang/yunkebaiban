@@ -1,8 +1,8 @@
-import { MenuLinkItem } from '@affine/core/modules/app-sidebar/views';
-import { DocDisplayMetaService } from '@affine/core/modules/doc-display-meta';
-import { JournalService } from '@affine/core/modules/journal';
-import { WorkbenchService } from '@affine/core/modules/workbench';
-import { useI18n } from '@affine/i18n';
+import { MenuLinkItem } from '@yunke/core/modules/app-sidebar/views';
+import { DocDisplayMetaService } from '@yunke/core/modules/doc-display-meta';
+import { JournalService } from '@yunke/core/modules/journal';
+import { WorkbenchService } from '@yunke/core/modules/workbench';
+import { useI18n } from '@yunke/i18n';
 import { TodayIcon } from '@blocksuite/icons/rc';
 import { useLiveData, useService } from '@toeverything/infra';
 

@@ -1,12 +1,12 @@
-import { Button } from '@affine/component';
-import { SettingRow } from '@affine/component/setting-components';
-import { SubscriptionService } from '@affine/core/modules/cloud';
+import { Button } from '@yunke/component';
+import { SettingRow } from '@yunke/component/setting-components';
+import { SubscriptionService } from '@yunke/core/modules/cloud';
 //import {
 //   SubscriptionPlan,
 //   SubscriptionRecurring,
 //   SubscriptionStatus,
-//} from '@affine/graphql';
-import { type I18nString, i18nTime, Trans, useI18n } from '@affine/i18n';
+//} from '@yunke/graphql';
+import { type I18nString, i18nTime, Trans, useI18n } from '@yunke/i18n';
 import { useLiveData, useService } from '@toeverything/infra';
 import { useEffect } from 'react';
 

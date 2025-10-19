@@ -1,4 +1,4 @@
-import { type MenuProps, MobileMenu, MobileMenuItem } from '@affine/component';
+import { type MenuProps, MobileMenu, MobileMenuItem } from '@yunke/component';
 import { ArrowDownSmallIcon } from '@blocksuite/icons/rc';
 import clsx from 'clsx';
 import {

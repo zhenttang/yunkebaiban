@@ -1,12 +1,12 @@
-import { SignalWatcher, WithDisposable } from '@blocksuite/affine/global/lit';
-import { noop } from '@blocksuite/affine/global/utils';
-import { ThemeProvider } from '@blocksuite/affine/shared/services';
+import { SignalWatcher, WithDisposable } from '@blocksuite/yunke/global/lit';
+import { noop } from '@blocksuite/yunke/global/utils';
+import { ThemeProvider } from '@blocksuite/yunke/shared/services';
 import {
   BlockStdScope,
   EditorHost,
   ShadowlessElement,
-} from '@blocksuite/affine/std';
-import type { ExtensionType, Store } from '@blocksuite/affine/store';
+} from '@blocksuite/yunke/std';
+import type { ExtensionType, Store } from '@blocksuite/yunke/store';
 import { css, html, nothing } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { guard } from 'lit/directives/guard.js';

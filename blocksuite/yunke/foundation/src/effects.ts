@@ -1,0 +1,70 @@
+import { BlockSelection } from '@blocksuite/yunke-components/block-selection';
+import { BlockZeroWidth } from '@blocksuite/yunke-components/block-zero-width';
+import { effects as componentCaptionEffects } from '@blocksuite/yunke-components/caption';
+import { effects as componentCardStyleDropdownMenuEffects } from '@blocksuite/yunke-components/card-style-dropdown-menu';
+import { effects as componentCitationEffects } from '@blocksuite/yunke-components/citation';
+import { effects as componentColorPickerEffects } from '@blocksuite/yunke-components/color-picker';
+import { effects as componentContextMenuEffects } from '@blocksuite/yunke-components/context-menu';
+import { effects as componentDatePickerEffects } from '@blocksuite/yunke-components/date-picker';
+import { effects as componentDropIndicatorEffects } from '@blocksuite/yunke-components/drop-indicator';
+import { effects as componentEdgelessLineStylesEffects } from '@blocksuite/yunke-components/edgeless-line-styles-panel';
+import { effects as componentEdgelessLineWidthEffects } from '@blocksuite/yunke-components/edgeless-line-width-panel';
+import { effects as componentEdgelessShapeColorPickerEffects } from '@blocksuite/yunke-components/edgeless-shape-color-picker';
+import { effects as componentEmbedCardModalEffects } from '@blocksuite/yunke-components/embed-card-modal';
+import { FilterableListComponent } from '@blocksuite/yunke-components/filterable-list';
+import { effects as componentHighlightDropdownMenuEffects } from '@blocksuite/yunke-components/highlight-dropdown-menu';
+import { IconButton } from '@blocksuite/yunke-components/icon-button';
+import { effects as componentLinkPreviewEffects } from '@blocksuite/yunke-components/link-preview';
+import { effects as componentLinkedDocTitleEffects } from '@blocksuite/yunke-components/linked-doc-title';
+import { effects as componentOpenDocDropdownMenuEffects } from '@blocksuite/yunke-components/open-doc-dropdown-menu';
+import { effects as componentPortalEffects } from '@blocksuite/yunke-components/portal';
+import { effects as componentResourceEffects } from '@blocksuite/yunke-components/resource';
+import { effects as componentSizeDropdownMenuEffects } from '@blocksuite/yunke-components/size-dropdown-menu';
+import { effects as componentSliderEffects } from '@blocksuite/yunke-components/slider';
+import { SmoothCorner } from '@blocksuite/yunke-components/smooth-corner';
+import { effects as componentToggleButtonEffects } from '@blocksuite/yunke-components/toggle-button';
+import { ToggleSwitch } from '@blocksuite/yunke-components/toggle-switch';
+import { effects as componentToolbarEffects } from '@blocksuite/yunke-components/toolbar';
+import { effects as componentTooltipContentWithShortcutEffects } from '@blocksuite/yunke-components/tooltip-content-with-shortcut';
+import { effects as componentViewDropdownMenuEffects } from '@blocksuite/yunke-components/view-dropdown-menu';
+import { effects as richTextEffects } from '@blocksuite/yunke-rich-text/effects';
+import { effects as dataViewEffects } from '@blocksuite/data-view/effects';
+import { effects as stdEffects } from '@blocksuite/std/effects';
+
+export function effects() {
+  stdEffects();
+
+  dataViewEffects();
+  richTextEffects();
+
+  componentCaptionEffects();
+  componentContextMenuEffects();
+  componentDatePickerEffects();
+  componentPortalEffects();
+  componentToolbarEffects();
+  componentDropIndicatorEffects();
+  componentToggleButtonEffects();
+  componentColorPickerEffects();
+  componentEmbedCardModalEffects();
+  componentLinkPreviewEffects();
+  componentLinkedDocTitleEffects();
+  componentCardStyleDropdownMenuEffects();
+  componentCitationEffects();
+  componentHighlightDropdownMenuEffects();
+  componentViewDropdownMenuEffects();
+  componentTooltipContentWithShortcutEffects();
+  componentSizeDropdownMenuEffects();
+  componentSliderEffects();
+  componentEdgelessLineWidthEffects();
+  componentEdgelessLineStylesEffects();
+  componentEdgelessShapeColorPickerEffects();
+  componentOpenDocDropdownMenuEffects();
+  componentResourceEffects();
+
+  customElements.define('icon-button', IconButton);
+  customElements.define('smooth-corner', SmoothCorner);
+  customElements.define('toggle-switch', ToggleSwitch);
+  customElements.define('affine-filterable-list', FilterableListComponent);
+  customElements.define('block-zero-width', BlockZeroWidth);
+  customElements.define('affine-block-selection', BlockSelection);
+}

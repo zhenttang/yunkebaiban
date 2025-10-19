@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from 'react';
-import { httpClient } from '@affine/request';
+import { httpClient } from '@yunke/request';
 import type { StorageConfigDto, StorageTestResult } from '../types';
 
 export const useStorageConfig = () => {

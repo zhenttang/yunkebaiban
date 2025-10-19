@@ -1,9 +1,9 @@
 import {
   EdgelessCRUDIdentifier,
   getSurfaceBlock,
-} from '@blocksuite/affine/blocks/surface';
-import { Bound } from '@blocksuite/affine/global/gfx';
-import type { BlockStdScope } from '@blocksuite/affine/std';
+} from '@blocksuite/yunke/blocks/surface';
+import { Bound } from '@blocksuite/yunke/global/gfx';
+import type { BlockStdScope } from '@blocksuite/yunke/std';
 
 import {
   type AIChatBlockModel,

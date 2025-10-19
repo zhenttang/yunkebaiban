@@ -1,7 +1,7 @@
-import { ServersService } from '@affine/core/modules/cloud';
-import { FeatureFlagService } from '@affine/core/modules/feature-flag';
-import { GlobalContextService } from '@affine/core/modules/global-context';
-import { WorkspacesService } from '@affine/core/modules/workspace';
+import { ServersService } from '@yunke/core/modules/cloud';
+import { FeatureFlagService } from '@yunke/core/modules/feature-flag';
+import { GlobalContextService } from '@yunke/core/modules/global-context';
+import { WorkspacesService } from '@yunke/core/modules/workspace';
 export function getCurrentWorkspace(frameworkProvider) {
     const currentWorkspaceId = frameworkProvider
         .get(GlobalContextService)

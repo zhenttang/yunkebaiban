@@ -1,14 +1,14 @@
-import type { ReactToLit } from '@affine/component';
-import { JournalService } from '@affine/core/modules/journal';
-import { EmbedSyncedDocConfigExtension } from '@blocksuite/affine/blocks/embed-doc';
-import { NoteConfigExtension } from '@blocksuite/affine/blocks/note';
-import { EDGELESS_BLOCK_CHILD_PADDING } from '@blocksuite/affine/blocks/root';
-import { Bound, Vec } from '@blocksuite/affine/global/gfx';
+import type { ReactToLit } from '@yunke/component';
+import { JournalService } from '@yunke/core/modules/journal';
+import { EmbedSyncedDocConfigExtension } from '@blocksuite/yunke/blocks/embed-doc';
+import { NoteConfigExtension } from '@blocksuite/yunke/blocks/note';
+import { EDGELESS_BLOCK_CHILD_PADDING } from '@blocksuite/yunke/blocks/root';
+import { Bound, Vec } from '@blocksuite/yunke/global/gfx';
 import {
   DocModeProvider,
   EditPropsStore,
-} from '@blocksuite/affine/shared/services';
-import { GfxControllerIdentifier } from '@blocksuite/affine/std/gfx';
+} from '@blocksuite/yunke/shared/services';
+import { GfxControllerIdentifier } from '@blocksuite/yunke/std/gfx';
 import type { FrameworkProvider } from '@toeverything/infra';
 import { html } from 'lit';
 

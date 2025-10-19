@@ -1,21 +1,21 @@
-import { Button, ConfirmModal, Input, Modal, notify } from '@affine/component';
-import { SettingRow } from '@affine/component/setting-components';
-import { useEnableCloud } from '@affine/core/components/hooks/affine/use-enable-cloud';
-import { useAsyncCallback } from '@affine/core/components/hooks/affine-async-hooks';
-import { useMutation } from '@affine/core/components/hooks/use-mutation';
+import { Button, ConfirmModal, Input, Modal, notify } from '@yunke/component';
+import { SettingRow } from '@yunke/component/setting-components';
+import { useEnableCloud } from '@yunke/core/components/hooks/affine/use-enable-cloud';
+import { useAsyncCallback } from '@yunke/core/components/hooks/affine-async-hooks';
+import { useMutation } from '@yunke/core/components/hooks/use-mutation';
 import {
   SelfhostLicenseService,
   WorkspaceSubscriptionService,
-} from '@affine/core/modules/cloud';
-import { WorkspacePermissionService } from '@affine/core/modules/permissions';
-import { WorkspaceQuotaService } from '@affine/core/modules/quota';
-import { UrlService } from '@affine/core/modules/url';
-import { WorkspaceService } from '@affine/core/modules/workspace';
-import { UserFriendlyError } from '@affine/error';
+} from '@yunke/core/modules/cloud';
+import { WorkspacePermissionService } from '@yunke/core/modules/permissions';
+import { WorkspaceQuotaService } from '@yunke/core/modules/quota';
+import { UrlService } from '@yunke/core/modules/url';
+import { WorkspaceService } from '@yunke/core/modules/workspace';
+import { UserFriendlyError } from '@yunke/error';
 //import {
 //   createSelfhostCustomerPortalMutation,
 //   SubscriptionVariant,
-//} from '@affine/graphql';
+//} from '@yunke/graphql';
 
 // Temporary placeholder enums to fix TypeScript errors
 enum SubscriptionVariant {
@@ -27,7 +27,7 @@ enum SubscriptionVariant {
 const createSelfhostCustomerPortalMutation = {
   // Placeholder for mutation
 };
-import { Trans, useI18n } from '@affine/i18n';
+import { Trans, useI18n } from '@yunke/i18n';
 import { useLiveData, useService } from '@toeverything/infra';
 import { cssVarV2 } from '@toeverything/theme/v2';
 import clsx from 'clsx';

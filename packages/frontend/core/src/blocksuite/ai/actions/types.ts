@@ -8,9 +8,9 @@ type CopilotContextFile = any;
 type CopilotSessionType = any;
 type getCopilotHistoriesQuery = any;
 type RequestOptions = any;
-import type { EditorHost } from '@blocksuite/affine/std';
-import type { GfxModel } from '@blocksuite/affine/std/gfx';
-import type { BlockModel } from '@blocksuite/affine/store';
+import type { EditorHost } from '@blocksuite/yunke/std';
+import type { GfxModel } from '@blocksuite/yunke/std/gfx';
+import type { BlockModel } from '@blocksuite/yunke/store';
 
 import type { AIEmbeddingStatus } from '../provider';
 import type { PromptKey } from '../provider/prompt';

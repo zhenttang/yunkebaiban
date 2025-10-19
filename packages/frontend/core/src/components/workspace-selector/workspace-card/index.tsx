@@ -1,14 +1,14 @@
-import { Button, Skeleton, Tooltip } from '@affine/component';
-import { Loading } from '@affine/component/ui/loading';
-import { useSystemOnline } from '@affine/core/components/hooks/use-system-online';
-import { useWorkspace } from '@affine/core/components/hooks/use-workspace';
-import { useWorkspaceInfo } from '@affine/core/components/hooks/use-workspace-info';
+import { Button, Skeleton, Tooltip } from '@yunke/component';
+import { Loading } from '@yunke/component/ui/loading';
+import { useSystemOnline } from '@yunke/core/components/hooks/use-system-online';
+import { useWorkspace } from '@yunke/core/components/hooks/use-workspace';
+import { useWorkspaceInfo } from '@yunke/core/components/hooks/use-workspace-info';
 import type {
   WorkspaceMetadata,
   WorkspaceProfileInfo,
-} from '@affine/core/modules/workspace';
-import { UNTITLED_WORKSPACE_NAME } from '@affine/env/constant';
-import { useI18n } from '@affine/i18n';
+} from '@yunke/core/modules/workspace';
+import { UNTITLED_WORKSPACE_NAME } from '@yunke/env/constant';
+import { useI18n } from '@yunke/i18n';
 import {
   ArrowDownSmallIcon,
   CloudWorkspaceIcon,

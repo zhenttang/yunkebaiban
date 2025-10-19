@@ -1,5 +1,5 @@
-import { EmptyCollections } from '@affine/core/components/affine/empty';
-import { CollectionService } from '@affine/core/modules/collection';
+import { EmptyCollections } from '@yunke/core/components/affine/empty';
+import { CollectionService } from '@yunke/core/modules/collection';
 import { useLiveData, useService } from '@toeverything/infra';
 
 import { CollectionListItem } from './item';

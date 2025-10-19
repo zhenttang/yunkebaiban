@@ -15,5 +15,5 @@ if (typeof globalThis !== 'undefined') {
   console.log('🔧 Android Worker BUILD_CONFIG统一配置:', (globalThis as any).BUILD_CONFIG);
 }
 
-import '@affine/core/bootstrap/browser';
+import '@yunke/core/bootstrap/browser';
 import './proxy';

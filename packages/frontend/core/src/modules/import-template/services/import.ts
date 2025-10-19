@@ -1,5 +1,5 @@
-import type { DocMode } from '@blocksuite/affine/model';
-import { ZipTransformer } from '@blocksuite/affine/widgets/linked-doc';
+import type { DocMode } from '@blocksuite/yunke/model';
+import { ZipTransformer } from '@blocksuite/yunke/widgets/linked-doc';
 import { Service } from '@toeverything/infra';
 
 import { DocsService } from '../../doc';

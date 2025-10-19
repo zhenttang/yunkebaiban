@@ -1,5 +1,5 @@
-import { Button, usePromptModal } from '@affine/component';
-import { useI18n } from '@affine/i18n';
+import { Button, usePromptModal } from '@yunke/component';
+import { useI18n } from '@yunke/i18n';
 import { SaveIcon } from '@blocksuite/icons/rc';
 import { useCallback } from 'react';
 

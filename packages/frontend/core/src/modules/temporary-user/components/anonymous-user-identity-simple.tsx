@@ -1,5 +1,5 @@
-import { useI18n } from '@affine/i18n';
-import { Button, Loading, toast } from '@affine/component';
+import { useI18n } from '@yunke/i18n';
+import { Button, Loading, toast } from '@yunke/component';
 import { useService, useLiveData } from '@toeverything/infra';
 import { useCallback, useEffect, useState } from 'react';
 

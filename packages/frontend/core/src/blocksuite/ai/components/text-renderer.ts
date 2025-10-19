@@ -1,31 +1,31 @@
-import { createReactComponentFromLit } from '@affine/component';
-import { getStoreManager } from '@affine/core/blocksuite/manager/store';
-import { getViewManager } from '@affine/core/blocksuite/manager/view';
-import type { FeatureFlagService } from '@affine/core/modules/feature-flag';
-import { PeekViewProvider } from '@blocksuite/affine/components/peek';
-import { Container, type ServiceProvider } from '@blocksuite/affine/global/di';
-import { WithDisposable } from '@blocksuite/affine/global/lit';
-import { RefNodeSlotsProvider } from '@blocksuite/affine/inlines/reference';
+import { createReactComponentFromLit } from '@yunke/component';
+import { getStoreManager } from '@yunke/core/blocksuite/manager/store';
+import { getViewManager } from '@yunke/core/blocksuite/manager/view';
+import type { FeatureFlagService } from '@yunke/core/modules/feature-flag';
+import { PeekViewProvider } from '@blocksuite/yunke/components/peek';
+import { Container, type ServiceProvider } from '@blocksuite/yunke/global/di';
+import { WithDisposable } from '@blocksuite/yunke/global/lit';
+import { RefNodeSlotsProvider } from '@blocksuite/yunke/inlines/reference';
 import {
   codeBlockWrapMiddleware,
   defaultImageProxyMiddleware,
   ImageProxyService,
-} from '@blocksuite/affine/shared/adapters';
-import { ThemeProvider } from '@blocksuite/affine/shared/services';
-import { unsafeCSSVarV2 } from '@blocksuite/affine/shared/theme';
+} from '@blocksuite/yunke/shared/adapters';
+import { ThemeProvider } from '@blocksuite/yunke/shared/services';
+import { unsafeCSSVarV2 } from '@blocksuite/yunke/shared/theme';
 import {
   BlockStdScope,
   BlockViewIdentifier,
   type EditorHost,
   ShadowlessElement,
-} from '@blocksuite/affine/std';
+} from '@blocksuite/yunke/std';
 import type {
   ExtensionType,
   Query,
   Schema,
   Store,
   TransformerMiddleware,
-} from '@blocksuite/affine/store';
+} from '@blocksuite/yunke/store';
 import {
   darkCssVariablesV2,
   lightCssVariablesV2,

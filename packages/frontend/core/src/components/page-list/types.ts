@@ -1,5 +1,5 @@
-import type { CollectionMeta } from '@affine/core/modules/collection';
-import type { DocMeta, Workspace } from '@blocksuite/affine/store';
+import type { CollectionMeta } from '@yunke/core/modules/collection';
+import type { DocMeta, Workspace } from '@blocksuite/yunke/store';
 import type { JSX, PropsWithChildren, ReactNode } from 'react';
 import type { To } from 'react-router-dom';
 

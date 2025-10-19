@@ -1,10 +1,10 @@
-import { RadioGroup, type RadioItem } from '@affine/component';
-import { registerAffineCommand } from '@affine/core/commands';
-import { EditorService } from '@affine/core/modules/editor';
-import { ViewService, WorkbenchService } from '@affine/core/modules/workbench';
-import { useI18n } from '@affine/i18n';
-import { track } from '@affine/track';
-import type { DocMode } from '@blocksuite/affine/model';
+import { RadioGroup, type RadioItem } from '@yunke/component';
+import { registerAffineCommand } from '@yunke/core/commands';
+import { EditorService } from '@yunke/core/modules/editor';
+import { ViewService, WorkbenchService } from '@yunke/core/modules/workbench';
+import { useI18n } from '@yunke/i18n';
+import { track } from '@yunke/track';
+import type { DocMode } from '@blocksuite/yunke/model';
 import { EdgelessIcon, PageIcon } from '@blocksuite/icons/rc';
 import {
   useLiveData,

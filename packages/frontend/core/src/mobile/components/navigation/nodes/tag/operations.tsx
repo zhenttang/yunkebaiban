@@ -4,19 +4,19 @@ import {
   MenuSeparator,
   toast,
   useConfirmModal,
-} from '@affine/component';
-import { usePageHelper } from '@affine/core/blocksuite/block-suite-page-list/utils';
-import { IsFavoriteIcon } from '@affine/core/components/pure/icons';
-import type { NodeOperation } from '@affine/core/desktop/components/navigation-panel';
-import { WorkspaceDialogService } from '@affine/core/modules/dialogs';
-import { DocsService } from '@affine/core/modules/doc';
-import { FavoriteService } from '@affine/core/modules/favorite';
-import { GlobalCacheService } from '@affine/core/modules/storage';
-import { TagService } from '@affine/core/modules/tag';
-import { WorkbenchService } from '@affine/core/modules/workbench';
-import { WorkspaceService } from '@affine/core/modules/workspace';
-import { useI18n } from '@affine/i18n';
-import { track } from '@affine/track';
+} from '@yunke/component';
+import { usePageHelper } from '@yunke/core/blocksuite/block-suite-page-list/utils';
+import { IsFavoriteIcon } from '@yunke/core/components/pure/icons';
+import type { NodeOperation } from '@yunke/core/desktop/components/navigation-panel';
+import { WorkspaceDialogService } from '@yunke/core/modules/dialogs';
+import { DocsService } from '@yunke/core/modules/doc';
+import { FavoriteService } from '@yunke/core/modules/favorite';
+import { GlobalCacheService } from '@yunke/core/modules/storage';
+import { TagService } from '@yunke/core/modules/tag';
+import { WorkbenchService } from '@yunke/core/modules/workbench';
+import { WorkspaceService } from '@yunke/core/modules/workspace';
+import { useI18n } from '@yunke/i18n';
+import { track } from '@yunke/track';
 import {
   DeleteIcon,
   FolderIcon,

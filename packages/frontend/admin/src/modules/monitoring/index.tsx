@@ -1,8 +1,8 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@affine/admin/components/ui/card';
-import { Badge } from '@affine/admin/components/ui/badge';
-import { Progress } from '@affine/admin/components/ui/progress';
-import { Separator } from '@affine/admin/components/ui/separator';
-import { ScrollArea } from '@affine/admin/components/ui/scroll-area';
+import { Card, CardContent, CardHeader, CardTitle } from '@yunke/admin/components/ui/card';
+import { Badge } from '@yunke/admin/components/ui/badge';
+import { Progress } from '@yunke/admin/components/ui/progress';
+import { Separator } from '@yunke/admin/components/ui/separator';
+import { ScrollArea } from '@yunke/admin/components/ui/scroll-area';
 import { 
   Activity, 
   Cpu, 

@@ -1,10 +1,10 @@
 import { useCallback, useMemo, useState } from 'react';
-import { cn } from '@affine/admin/utils';
+import { cn } from '@yunke/admin/utils';
 import * as ScrollAreaPrimitive from '@radix-ui/react-scroll-area';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@affine/admin/components/ui/tabs';
-import { Alert, AlertDescription } from '@affine/admin/components/ui/alert';
-import { Badge } from '@affine/admin/components/ui/badge';
-import { Button } from '@affine/admin/components/ui/button';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@yunke/admin/components/ui/tabs';
+import { Alert, AlertDescription } from '@yunke/admin/components/ui/alert';
+import { Badge } from '@yunke/admin/components/ui/badge';
+import { Button } from '@yunke/admin/components/ui/button';
 import { Activity, History, Loader2, Lock, RefreshCw, Shield } from 'lucide-react';
 
 import { Header } from '../../header';

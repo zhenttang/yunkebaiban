@@ -165,7 +165,7 @@ const pkgJsonPath = 'packages/frontend/core/package.json';
 
 const content = await readFile(join(rootDir, pkgJsonPath), 'utf8');
 const { dependencies } = JSON.parse(content);
-const blocksuiteVersion = dependencies['@blocksuite/affine'];
+const blocksuiteVersion = dependencies['@blocksuite/yunke'];
 
 const prevCommit = repo.findCommit(PREV_VERSION);
 
@@ -185,7 +185,7 @@ const previousPkgJson = JSON.parse(
   Buffer.from(previousPkgJsonBlob.content()).toString('utf8')
 );
 const previousBlocksuiteVersion =
-  previousPkgJson.dependencies['@blocksuite/affine'];
+  previousPkgJson.dependencies['@blocksuite/yunke'];
 
 if (blocksuiteVersion !== previousBlocksuiteVersion) {
   const blockSuiteRepo = new SimpleGitRepository(

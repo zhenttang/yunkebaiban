@@ -1,4 +1,4 @@
-// import { acceptInviteByInviteIdMutation } from '@affine/graphql';
+// import { acceptInviteByInviteIdMutation } from '@yunke/graphql';
 import { Store } from '@toeverything/infra';
 
 

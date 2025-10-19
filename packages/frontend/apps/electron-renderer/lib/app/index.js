@@ -1,7 +1,7 @@
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import './setup';
-import { appConfigProxy } from '@affine/core/components/hooks/use-app-config-storage';
-import { Telemetry } from '@affine/core/components/telemetry';
+import { appConfigProxy } from '@yunke/core/components/hooks/use-app-config-storage';
+import { Telemetry } from '@yunke/core/components/telemetry';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { App } from './app';

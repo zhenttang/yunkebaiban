@@ -1,18 +1,18 @@
-import type { StoreExtensionManager } from '@blocksuite/affine/ext-loader';
-import { AffineSchemas } from '@blocksuite/affine/schemas';
-import { nanoid, Schema, Transformer } from '@blocksuite/affine/store';
+import type { StoreExtensionManager } from '@blocksuite/yunke/ext-loader';
+import { AffineSchemas } from '@blocksuite/yunke/schemas';
+import { nanoid, Schema, Transformer } from '@blocksuite/yunke/store';
 import {
   createAutoIncrementIdGenerator,
   type DocCollectionOptions,
   TestWorkspace,
-} from '@blocksuite/affine/store/test';
+} from '@blocksuite/yunke/store/test';
 import {
   type BlobSource,
   BroadcastChannelAwarenessSource,
   BroadcastChannelDocSource,
   IndexedDBBlobSource,
   MemoryBlobSource,
-} from '@blocksuite/affine/sync';
+} from '@blocksuite/yunke/sync';
 import * as Y from 'yjs';
 
 import { MockServerBlobSource } from '../../_common/sync/blob/mock-server.js';

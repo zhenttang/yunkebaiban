@@ -1,20 +1,20 @@
-import { MenuSeparator } from '@affine/component';
+import { MenuSeparator } from '@yunke/component';
 import {
   handleInlineAskAIAction,
   pageAIGroups,
-} from '@affine/core/blocksuite/ai';
-import { useEnableAI } from '@affine/core/components/hooks/affine/use-enable-ai';
-import { DocsService } from '@affine/core/modules/doc';
-import { EditorService } from '@affine/core/modules/editor';
-import { TemplateDocService } from '@affine/core/modules/template-doc';
+} from '@yunke/core/blocksuite/ai';
+import { useEnableAI } from '@yunke/core/components/hooks/affine/use-enable-ai';
+import { DocsService } from '@yunke/core/modules/doc';
+import { EditorService } from '@yunke/core/modules/editor';
+import { TemplateDocService } from '@yunke/core/modules/template-doc';
 import {
   TemplateListMenu,
   TemplateListMenuAdd,
-} from '@affine/core/modules/template-doc/view/template-list-menu';
-import { useI18n } from '@affine/i18n';
-import track from '@affine/track';
-import { PageRootBlockComponent } from '@blocksuite/affine/blocks/root';
-import type { Store } from '@blocksuite/affine/store';
+} from '@yunke/core/modules/template-doc/view/template-list-menu';
+import { useI18n } from '@yunke/i18n';
+import track from '@yunke/track';
+import { PageRootBlockComponent } from '@blocksuite/yunke/blocks/root';
+import type { Store } from '@blocksuite/yunke/store';
 import {
   AiIcon,
   EdgelessIcon,

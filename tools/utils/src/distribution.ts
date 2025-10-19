@@ -4,26 +4,26 @@ export const PackageToDistribution = new Map<
   PackageName,
   BUILD_CONFIG_TYPE['distribution']
 >([
-  ['@affine/admin', 'admin'],
-  ['@affine/web', 'web'],
-  ['@affine/electron-renderer', 'desktop'],
-  ['@affine/electron', 'desktop'],
-  ['@affine/mobile', 'mobile'],
-  ['@affine/ios', 'ios'],
-  ['@affine/android', 'android'],
+  ['@yunke/admin', 'admin'],
+  ['@yunke/web', 'web'],
+  ['@yunke/electron-renderer', 'desktop'],
+  ['@yunke/electron', 'desktop'],
+  ['@yunke/mobile', 'mobile'],
+  ['@yunke/ios', 'ios'],
+  ['@yunke/android', 'android'],
   ['@yunke/android', 'android'],
 ]);
 
 export const AliasToPackage = new Map<string, PackageName>([
-  ['admin', '@affine/admin'],
-  ['web', '@affine/web'],
-  ['electron', '@affine/electron'],
-  ['desktop', '@affine/electron-renderer'],
-  ['renderer', '@affine/electron-renderer'],
-  ['mobile', '@affine/mobile'],
-  ['ios', '@affine/ios'],
-  ['android', '@affine/android'],
-  ['server', '@affine/server'],
+  ['admin', '@yunke/admin'],
+  ['web', '@yunke/web'],
+  ['electron', '@yunke/electron'],
+  ['desktop', '@yunke/electron-renderer'],
+  ['renderer', '@yunke/electron-renderer'],
+  ['mobile', '@yunke/mobile'],
+  ['ios', '@yunke/ios'],
+  ['android', '@yunke/android'],
+  ['server', '@yunke/server'],
   ...PackageList.map(
     pkg => [pkg.name.split('/').pop()!, pkg.name] as [string, PackageName]
   ),

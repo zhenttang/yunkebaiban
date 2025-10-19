@@ -1,4 +1,4 @@
-import type { DocFrontendDocState } from '@affine/nbstore';
+import type { DocFrontendDocState } from '@yunke/nbstore';
 import type {
   Table as OrmTable,
   TableSchemaBuilder,

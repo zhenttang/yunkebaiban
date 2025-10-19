@@ -1,6 +1,6 @@
-import { IconButton } from '@affine/component';
-import { NotificationCountService } from '@affine/core/modules/notification';
-import { track } from '@affine/track';
+import { IconButton } from '@yunke/component';
+import { NotificationCountService } from '@yunke/core/modules/notification';
+import { track } from '@yunke/track';
 import { SidebarIcon } from '@blocksuite/icons/rc';
 import { useLiveData, useService } from '@toeverything/infra';
 import clsx from 'clsx';

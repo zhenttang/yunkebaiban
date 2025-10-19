@@ -1,6 +1,6 @@
-import { MenuLinkItem } from '@affine/core/modules/app-sidebar/views';
-import { WorkbenchService } from '@affine/core/modules/workbench';
-import { useI18n } from '@affine/i18n';
+import { MenuLinkItem } from '@yunke/core/modules/app-sidebar/views';
+import { WorkbenchService } from '@yunke/core/modules/workbench';
+import { useI18n } from '@yunke/i18n';
 import { SettingsIcon } from '@blocksuite/icons/rc'; // 临时使用SettingsIcon，后续可替换为专门的社区图标
 import { useLiveData, useService } from '@toeverything/infra';
 

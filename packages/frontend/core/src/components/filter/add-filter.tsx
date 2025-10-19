@@ -4,10 +4,10 @@ import {
   Menu,
   MenuItem,
   MenuSeparator,
-} from '@affine/component';
-import type { FilterParams } from '@affine/core/modules/collection-rules';
-import { WorkspacePropertyService } from '@affine/core/modules/workspace-property';
-import { useI18n } from '@affine/i18n';
+} from '@yunke/component';
+import type { FilterParams } from '@yunke/core/modules/collection-rules';
+import { WorkspacePropertyService } from '@yunke/core/modules/workspace-property';
+import { useI18n } from '@yunke/i18n';
 import {
   ArrowLeftBigIcon,
   CloudWorkspaceIcon,

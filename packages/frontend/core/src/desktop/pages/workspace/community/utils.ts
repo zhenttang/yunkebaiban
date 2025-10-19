@@ -1,5 +1,5 @@
 import type { CommunityDocument } from './types';
-import type { CommunityDocument as CommunityUiDocument } from '@affine/core/components/community-ui/types';
+import type { CommunityDocument as CommunityUiDocument } from '@yunke/core/components/community-ui/types';
 
 const fallbackCategory = {
   id: 0,

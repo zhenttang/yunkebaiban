@@ -1,14 +1,14 @@
-import { IconButton, Skeleton } from '@affine/component';
-import { useCatchEventCallback } from '@affine/core/components/hooks/use-catch-event-hook';
-import { PagePreview } from '@affine/core/components/page-list/page-content-preview';
-import { IsFavoriteIcon } from '@affine/core/components/pure/icons';
-import { DocDisplayMetaService } from '@affine/core/modules/doc-display-meta';
-import { CompatibleFavoriteItemsAdapter } from '@affine/core/modules/favorite';
+import { IconButton, Skeleton } from '@yunke/component';
+import { useCatchEventCallback } from '@yunke/core/components/hooks/use-catch-event-hook';
+import { PagePreview } from '@yunke/core/components/page-list/page-content-preview';
+import { IsFavoriteIcon } from '@yunke/core/components/pure/icons';
+import { DocDisplayMetaService } from '@yunke/core/modules/doc-display-meta';
+import { CompatibleFavoriteItemsAdapter } from '@yunke/core/modules/favorite';
 import {
   WorkbenchLink,
   type WorkbenchLinkProps,
-} from '@affine/core/modules/workbench';
-import type { DocMeta } from '@blocksuite/affine/store';
+} from '@yunke/core/modules/workbench';
+import type { DocMeta } from '@blocksuite/yunke/store';
 import { useLiveData, useService } from '@toeverything/infra';
 import clsx from 'clsx';
 import { forwardRef, type ReactNode, useMemo, useRef } from 'react';

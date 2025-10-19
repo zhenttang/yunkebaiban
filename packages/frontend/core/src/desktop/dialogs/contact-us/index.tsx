@@ -1,9 +1,9 @@
-import { Button, Modal } from '@affine/component';
+import { Button, Modal } from '@yunke/component';
 import type {
   DialogComponentProps,
   GLOBAL_DIALOG_SCHEMA,
-} from '@affine/core/modules/dialogs';
-import { useI18n } from '@affine/i18n';
+} from '@yunke/core/modules/dialogs';
+import { useI18n } from '@yunke/i18n';
 import { EmailIcon, TelegramIcon } from '@blocksuite/icons/rc';
 import { useCallback } from 'react';
 

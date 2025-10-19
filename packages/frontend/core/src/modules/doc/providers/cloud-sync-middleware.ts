@@ -1,4 +1,4 @@
-import { DebugLogger } from '@affine/debug';
+import { DebugLogger } from '@yunke/debug';
 import { Service } from '@toeverything/infra';
 
 import type { WorkspaceService } from '../../workspace';

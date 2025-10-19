@@ -1,5 +1,5 @@
-import { Input } from '@affine/admin/components/ui/input';
-import { Label } from '@affine/admin/components/ui/label';
+import { Input } from '@yunke/admin/components/ui/input';
+import { Label } from '@yunke/admin/components/ui/label';
 import { useCallback } from 'react';
 
 type CreateAdminProps = {

@@ -1,5 +1,5 @@
-import { buttonVariants } from '@affine/admin/components/ui/button';
-import { cn } from '@affine/admin/utils';
+import { buttonVariants } from '@yunke/admin/components/ui/button';
+import { cn } from '@yunke/admin/utils';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import type * as React from 'react';
 import { Chevron, DayPicker } from 'react-day-picker';

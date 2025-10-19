@@ -1,9 +1,9 @@
-import { DebugLogger } from '@affine/debug';
-import { Unreachable } from '@affine/env/constant';
-import { replaceIdMiddleware } from '@blocksuite/affine/shared/adapters';
-import type { AffineTextAttributes } from '@blocksuite/affine/shared/types';
-import type { DeltaInsert } from '@blocksuite/affine/store';
-import { Slice, Text, Transformer } from '@blocksuite/affine/store';
+import { DebugLogger } from '@yunke/debug';
+import { Unreachable } from '@yunke/env/constant';
+import { replaceIdMiddleware } from '@blocksuite/yunke/shared/adapters';
+import type { AffineTextAttributes } from '@blocksuite/yunke/shared/types';
+import type { DeltaInsert } from '@blocksuite/yunke/store';
+import { Slice, Text, Transformer } from '@blocksuite/yunke/store';
 import { ObjectPool, Service } from '@toeverything/infra';
 import { combineLatest, map } from 'rxjs';
 

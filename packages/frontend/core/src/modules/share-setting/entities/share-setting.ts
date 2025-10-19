@@ -1,5 +1,5 @@
-import { DebugLogger } from '@affine/debug';
-// import type { GetWorkspaceConfigQuery, InviteLink } from '@affine/graphql';
+import { DebugLogger } from '@yunke/debug';
+// import type { GetWorkspaceConfigQuery, InviteLink } from '@yunke/graphql';
 import {
   catchErrorInto,
   effect,

@@ -1,16 +1,16 @@
-import { DocService, DocsService } from '@affine/core/modules/doc';
-import { AppThemeService } from '@affine/core/modules/theme';
-import type { Container } from '@blocksuite/affine/global/di';
-import { ColorScheme } from '@blocksuite/affine/model';
+import { DocService, DocsService } from '@yunke/core/modules/doc';
+import { AppThemeService } from '@yunke/core/modules/theme';
+import type { Container } from '@blocksuite/yunke/global/di';
+import { ColorScheme } from '@blocksuite/yunke/model';
 import {
   type ThemeExtension,
   ThemeExtensionIdentifier,
-} from '@blocksuite/affine/shared/services';
+} from '@blocksuite/yunke/shared/services';
 import {
   createSignalFromObservable,
   type Signal,
-} from '@blocksuite/affine/shared/utils';
-import { LifeCycleWatcher, StdIdentifier } from '@blocksuite/affine/std';
+} from '@blocksuite/yunke/shared/utils';
+import { LifeCycleWatcher, StdIdentifier } from '@blocksuite/yunke/std';
 import { type FrameworkProvider } from '@toeverything/infra';
 import type { Observable } from 'rxjs';
 import { combineLatest, map } from 'rxjs';

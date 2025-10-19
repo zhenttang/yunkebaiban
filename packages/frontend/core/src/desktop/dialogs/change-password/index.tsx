@@ -1,25 +1,25 @@
-import { Button, Modal, notify } from '@affine/component';
+import { Button, Modal, notify } from '@yunke/component';
 import {
   AuthContent,
   AuthHeader,
   AuthInput,
-} from '@affine/component/auth-components';
-import { useAsyncCallback } from '@affine/core/components/hooks/affine-async-hooks';
+} from '@yunke/component/auth-components';
+import { useAsyncCallback } from '@yunke/core/components/hooks/affine-async-hooks';
 import {
   AuthService,
   DefaultServerService,
   ServersService,
-} from '@affine/core/modules/cloud';
+} from '@yunke/core/modules/cloud';
 import type {
   DialogComponentProps,
   GLOBAL_DIALOG_SCHEMA,
-} from '@affine/core/modules/dialogs';
-import { Unreachable } from '@affine/env/constant';
+} from '@yunke/core/modules/dialogs';
+import { Unreachable } from '@yunke/env/constant';
 //import {
 //   sendChangePasswordEmailMutation,
 //   sendSetPasswordEmailMutation,
-//} from '@affine/graphql';
-import { useI18n } from '@affine/i18n';
+//} from '@yunke/graphql';
+import { useI18n } from '@yunke/i18n';
 import { useLiveData, useService } from '@toeverything/infra';
 import { useEffect, useState } from 'react';
 

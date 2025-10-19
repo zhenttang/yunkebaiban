@@ -1,4 +1,4 @@
-import type { DocMode, RootBlockModel } from '@blocksuite/affine/model';
+import type { DocMode, RootBlockModel } from '@blocksuite/yunke/model';
 import { Entity } from '@toeverything/infra';
 import { throttle } from 'lodash-es';
 import type { Transaction } from 'yjs';

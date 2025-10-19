@@ -1,8 +1,8 @@
 import type {
   EdgelessRootBlockComponent,
   PageRootBlockComponent,
-} from '@blocksuite/affine/blocks/root';
-import type { SurfaceBlockComponent } from '@blocksuite/affine/blocks/surface';
+} from '@blocksuite/yunke/blocks/root';
+import type { SurfaceBlockComponent } from '@blocksuite/yunke/blocks/surface';
 import type { Store } from '@blocksuite/store';
 
 import type { TestAffineEditorContainer } from '../../index.js';

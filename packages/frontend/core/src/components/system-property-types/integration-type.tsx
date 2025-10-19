@@ -1,7 +1,7 @@
-import { Menu, MenuItem, type MenuRef } from '@affine/component';
-import type { FilterParams } from '@affine/core/modules/collection-rules';
-import type { DocRecord } from '@affine/core/modules/doc';
-import { useI18n } from '@affine/i18n';
+import { Menu, MenuItem, type MenuRef } from '@yunke/component';
+import type { FilterParams } from '@yunke/core/modules/collection-rules';
+import type { DocRecord } from '@yunke/core/modules/doc';
+import { useI18n } from '@yunke/i18n';
 import { IntegrationsIcon, ReadwiseIcon } from '@blocksuite/icons/rc';
 import { useLiveData } from '@toeverything/infra';
 import { useEffect, useRef } from 'react';

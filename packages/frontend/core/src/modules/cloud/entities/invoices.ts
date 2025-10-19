@@ -1,4 +1,4 @@
-// import type { InvoicesQuery } from '@affine/graphql';
+// import type { InvoicesQuery } from '@yunke/graphql';
 import {
   catchErrorInto,
   effect,

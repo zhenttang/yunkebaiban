@@ -1,19 +1,19 @@
-import { WorkspaceImpl } from '@affine/core/modules/workspace/impls/workspace';
-import { defaultImageProxyMiddleware } from '@blocksuite/affine/shared/adapters';
-import { replaceSelectedTextWithBlocksCommand } from '@blocksuite/affine/shared/commands';
-import { isInsideEdgelessEditor } from '@blocksuite/affine/shared/utils';
+import { WorkspaceImpl } from '@yunke/core/modules/workspace/impls/workspace';
+import { defaultImageProxyMiddleware } from '@blocksuite/yunke/shared/adapters';
+import { replaceSelectedTextWithBlocksCommand } from '@blocksuite/yunke/shared/commands';
+import { isInsideEdgelessEditor } from '@blocksuite/yunke/shared/utils';
 import {
   type BlockComponent,
   BlockSelection,
   type EditorHost,
   SurfaceSelection,
   type TextSelection,
-} from '@blocksuite/affine/std';
+} from '@blocksuite/yunke/std';
 import {
   type BlockModel,
   type BlockSnapshot,
   Slice,
-} from '@blocksuite/affine/store';
+} from '@blocksuite/yunke/store';
 import { Doc as YDoc } from 'yjs';
 
 import {

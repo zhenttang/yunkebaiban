@@ -1,5 +1,5 @@
-import { Button, IconButton } from '@affine/component/ui/button';
-import { useI18n } from '@affine/i18n';
+import { Button, IconButton } from '@yunke/component/ui/button';
+import { useI18n } from '@yunke/i18n';
 import { CloseIcon } from '@blocksuite/icons/rc';
 import { cssVar } from '@toeverything/theme';
 import { useCallback } from 'react';

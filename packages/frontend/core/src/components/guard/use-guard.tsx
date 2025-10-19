@@ -2,7 +2,7 @@ import {
   type DocPermissionActions,
   GuardService,
   type WorkspacePermissionActions,
-} from '@affine/core/modules/permissions';
+} from '@yunke/core/modules/permissions';
 import { useLiveData, useService } from '@toeverything/infra';
 import { useEffect, useMemo } from 'react';
 

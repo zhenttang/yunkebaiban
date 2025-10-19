@@ -1,20 +1,20 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { cn } from '@affine/admin/utils';
-import { Button } from '@affine/admin/components/ui/button';
-import { Badge } from '@affine/admin/components/ui/badge';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@affine/admin/components/ui/card';
-import { Input } from '@affine/admin/components/ui/input';
-import { ScrollArea } from '@affine/admin/components/ui/scroll-area';
-import { Separator } from '@affine/admin/components/ui/separator';
-import { Switch } from '@affine/admin/components/ui/switch';
-import { Textarea } from '@affine/admin/components/ui/textarea';
+import { cn } from '@yunke/admin/utils';
+import { Button } from '@yunke/admin/components/ui/button';
+import { Badge } from '@yunke/admin/components/ui/badge';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@yunke/admin/components/ui/card';
+import { Input } from '@yunke/admin/components/ui/input';
+import { ScrollArea } from '@yunke/admin/components/ui/scroll-area';
+import { Separator } from '@yunke/admin/components/ui/separator';
+import { Switch } from '@yunke/admin/components/ui/switch';
+import { Textarea } from '@yunke/admin/components/ui/textarea';
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from '@affine/admin/components/ui/tooltip';
-import { notify } from '@affine/component';
+} from '@yunke/admin/components/ui/tooltip';
+import { notify } from '@yunke/component';
 import {
   Activity,
   ArrowRight,

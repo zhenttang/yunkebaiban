@@ -1,14 +1,14 @@
-import type { EdgelessRootBlockComponent } from '@blocksuite/affine/blocks/root';
+import type { EdgelessRootBlockComponent } from '@blocksuite/yunke/blocks/root';
 import type {
   CanvasRenderer,
   SurfaceElementModel,
-} from '@blocksuite/affine/blocks/surface';
-import { ungroupCommand } from '@blocksuite/affine/gfx/group';
+} from '@blocksuite/yunke/blocks/surface';
+import { ungroupCommand } from '@blocksuite/yunke/gfx/group';
 import type {
   GroupElementModel,
   NoteBlockModel,
-} from '@blocksuite/affine/model';
-import { generateKeyBetween } from '@blocksuite/affine/std/gfx';
+} from '@blocksuite/yunke/model';
+import { generateKeyBetween } from '@blocksuite/yunke/std/gfx';
 import type { BlockComponent } from '@blocksuite/std';
 import type { BlockModel, Store } from '@blocksuite/store';
 import { beforeEach, describe, expect, test } from 'vitest';

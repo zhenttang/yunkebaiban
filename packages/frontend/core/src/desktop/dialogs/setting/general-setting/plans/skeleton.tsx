@@ -1,4 +1,4 @@
-import { Skeleton } from '@affine/component';
+import { Skeleton } from '@yunke/component';
 
 import { AIPlanLayout } from './ai/layout';
 import { CloudPlanLayout, PlanLayout } from './layout';

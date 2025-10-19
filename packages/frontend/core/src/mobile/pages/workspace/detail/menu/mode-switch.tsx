@@ -2,10 +2,10 @@ import {
   RadioGroup,
   type RadioItem,
   useMobileMenuController,
-} from '@affine/component';
-import { EditorService } from '@affine/core/modules/editor';
-import track from '@affine/track';
-import type { DocMode } from '@blocksuite/affine/model';
+} from '@yunke/component';
+import { EditorService } from '@yunke/core/modules/editor';
+import track from '@yunke/track';
+import type { DocMode } from '@blocksuite/yunke/model';
 import { useLiveData, useService } from '@toeverything/infra';
 import { useCallback } from 'react';
 

@@ -1,5 +1,5 @@
-import { WorkspaceService } from '@affine/core/modules/workspace';
-import { useI18n } from '@affine/i18n';
+import { WorkspaceService } from '@yunke/core/modules/workspace';
+import { useI18n } from '@yunke/i18n';
 import { MoreHorizontalIcon } from '@blocksuite/icons/rc';
 import { useServiceOptional } from '@toeverything/infra';
 import { useAtom } from 'jotai';

@@ -1,8 +1,8 @@
-import type { TagMeta } from '@affine/core/components/page-list';
-import { createLitPortal } from '@blocksuite/affine/components/portal';
-import { SignalWatcher, WithDisposable } from '@blocksuite/affine/global/lit';
-import { unsafeCSSVarV2 } from '@blocksuite/affine/shared/theme';
-import { type EditorHost, ShadowlessElement } from '@blocksuite/affine/std';
+import type { TagMeta } from '@yunke/core/components/page-list';
+import { createLitPortal } from '@blocksuite/yunke/components/portal';
+import { SignalWatcher, WithDisposable } from '@blocksuite/yunke/global/lit';
+import { unsafeCSSVarV2 } from '@blocksuite/yunke/shared/theme';
+import { type EditorHost, ShadowlessElement } from '@blocksuite/yunke/std';
 import { MoreVerticalIcon, PlusIcon } from '@blocksuite/icons/lit';
 import { flip, offset } from '@floating-ui/dom';
 import { computed, type Signal, signal } from '@preact/signals-core';

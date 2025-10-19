@@ -1,43 +1,43 @@
-// import { ChatHistoryOrder } from '@affine/graphql';
+// import { ChatHistoryOrder } from '@yunke/graphql';
 
 // Temporary placeholder enum since GraphQL backend removed
 enum ChatHistoryOrder {
   asc = 'asc',
   desc = 'desc',
 }
-import { EdgelessCRUDIdentifier } from '@blocksuite/affine/blocks/surface';
+import { EdgelessCRUDIdentifier } from '@blocksuite/yunke/blocks/surface';
 import {
   Bound,
   getCommonBoundWithRotation,
   type SerializedXYWH,
-} from '@blocksuite/affine/global/gfx';
-import { RefNodeSlotsProvider } from '@blocksuite/affine/inlines/reference';
+} from '@blocksuite/yunke/global/gfx';
+import { RefNodeSlotsProvider } from '@blocksuite/yunke/inlines/reference';
 import {
   type DocMode,
   NoteBlockModel,
   NoteDisplayMode,
-} from '@blocksuite/affine/model';
+} from '@blocksuite/yunke/model';
 import {
   getFirstBlockCommand,
   getLastBlockCommand,
   getSelectedBlocksCommand,
-} from '@blocksuite/affine/shared/commands';
-import type { ImageSelection } from '@blocksuite/affine/shared/selection';
+} from '@blocksuite/yunke/shared/commands';
+import type { ImageSelection } from '@blocksuite/yunke/shared/selection';
 import {
   DocModeProvider,
   EditPropsStore,
   NotificationProvider,
   TelemetryProvider,
-} from '@blocksuite/affine/shared/services';
+} from '@blocksuite/yunke/shared/services';
 import {
   type BlockComponent,
   type BlockSelection,
   type BlockStdScope,
   type EditorHost,
   type TextSelection,
-} from '@blocksuite/affine/std';
-import { GfxControllerIdentifier } from '@blocksuite/affine/std/gfx';
-import type { Store } from '@blocksuite/affine/store';
+} from '@blocksuite/yunke/std';
+import { GfxControllerIdentifier } from '@blocksuite/yunke/std/gfx';
+import type { Store } from '@blocksuite/yunke/store';
 import {
   BlockIcon,
   EdgelessIcon,

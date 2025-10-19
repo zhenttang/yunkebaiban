@@ -5,12 +5,12 @@ import {
   Tooltip,
   useDraggable,
   useDropTarget,
-} from '@affine/component';
-import type { DocCustomPropertyInfo } from '@affine/core/modules/db';
-import { WorkspaceService } from '@affine/core/modules/workspace';
-import { WorkspacePropertyService } from '@affine/core/modules/workspace-property';
-import type { AffineDNDData } from '@affine/core/types/dnd';
-import { useI18n } from '@affine/i18n';
+} from '@yunke/component';
+import type { DocCustomPropertyInfo } from '@yunke/core/modules/db';
+import { WorkspaceService } from '@yunke/core/modules/workspace';
+import { WorkspacePropertyService } from '@yunke/core/modules/workspace-property';
+import type { AffineDNDData } from '@yunke/core/types/dnd';
+import { useI18n } from '@yunke/i18n';
 import { MoreHorizontalIcon } from '@blocksuite/icons/rc';
 import { useLiveData, useService } from '@toeverything/infra';
 import clsx from 'clsx';

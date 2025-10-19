@@ -5,20 +5,20 @@ import {
   PropertyCollapsibleContent,
   PropertyCollapsibleSection,
   Scrollable,
-} from '@affine/component';
-import { useGuard } from '@affine/core/components/guard';
+} from '@yunke/component';
+import { useGuard } from '@yunke/core/components/guard';
 import {
   type DefaultOpenProperty,
   WorkspacePropertyRow,
-} from '@affine/core/components/properties';
-import { CreatePropertyMenuItems } from '@affine/core/components/properties/menu/create-doc-property';
-import { LinksRow } from '@affine/core/desktop/dialogs/doc-info/links-row';
-import { TimeRow } from '@affine/core/desktop/dialogs/doc-info/time-row';
-import type { DocCustomPropertyInfo } from '@affine/core/modules/db';
-import { DocDatabaseBacklinkInfo } from '@affine/core/modules/doc-info';
-import { DocsSearchService } from '@affine/core/modules/docs-search';
-import { WorkspacePropertyService } from '@affine/core/modules/workspace-property';
-import { useI18n } from '@affine/i18n';
+} from '@yunke/core/components/properties';
+import { CreatePropertyMenuItems } from '@yunke/core/components/properties/menu/create-doc-property';
+import { LinksRow } from '@yunke/core/desktop/dialogs/doc-info/links-row';
+import { TimeRow } from '@yunke/core/desktop/dialogs/doc-info/time-row';
+import type { DocCustomPropertyInfo } from '@yunke/core/modules/db';
+import { DocDatabaseBacklinkInfo } from '@yunke/core/modules/doc-info';
+import { DocsSearchService } from '@yunke/core/modules/docs-search';
+import { WorkspacePropertyService } from '@yunke/core/modules/workspace-property';
+import { useI18n } from '@yunke/i18n';
 import { PlusIcon } from '@blocksuite/icons/rc';
 import { LiveData, useLiveData, useServices } from '@toeverything/infra';
 import { Suspense, useCallback, useMemo, useState } from 'react';

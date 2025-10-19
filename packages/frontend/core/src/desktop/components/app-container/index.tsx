@@ -1,14 +1,14 @@
-import { useAppSettingHelper } from '@affine/core/components/hooks/affine/use-app-setting-helper';
-import { RootAppSidebar } from '@affine/core/components/root-app-sidebar';
-import { AppSidebarService } from '@affine/core/modules/app-sidebar';
+import { useAppSettingHelper } from '@yunke/core/components/hooks/affine/use-app-setting-helper';
+import { RootAppSidebar } from '@yunke/core/components/root-app-sidebar';
+import { AppSidebarService } from '@yunke/core/modules/app-sidebar';
 import {
   AppSidebarFallback,
   OpenInAppCard,
   SidebarSwitch,
-} from '@affine/core/modules/app-sidebar/views';
-import { AppTabsHeader } from '@affine/core/modules/app-tabs-header';
-import { NavigationButtons } from '@affine/core/modules/navigation';
-import { WorkspaceService } from '@affine/core/modules/workspace';
+} from '@yunke/core/modules/app-sidebar/views';
+import { AppTabsHeader } from '@yunke/core/modules/app-tabs-header';
+import { NavigationButtons } from '@yunke/core/modules/navigation';
+import { WorkspaceService } from '@yunke/core/modules/workspace';
 import {
   useLiveData,
   useService,

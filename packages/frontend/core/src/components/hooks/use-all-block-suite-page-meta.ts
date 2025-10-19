@@ -1,4 +1,4 @@
-import type { DocMeta, Workspace } from '@blocksuite/affine/store';
+import type { DocMeta, Workspace } from '@blocksuite/yunke/store';
 import type { Atom } from 'jotai';
 import { atom, useAtomValue } from 'jotai';
 

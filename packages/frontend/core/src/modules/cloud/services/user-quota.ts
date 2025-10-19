@@ -1,4 +1,4 @@
-import { mixpanel } from '@affine/track';
+import { mixpanel } from '@yunke/track';
 import { OnEvent, Service } from '@toeverything/infra';
 
 import { UserQuota } from '../entities/user-quota';

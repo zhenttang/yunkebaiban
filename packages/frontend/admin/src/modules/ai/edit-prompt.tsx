@@ -1,6 +1,6 @@
-import { ScrollArea } from '@affine/admin/components/ui/scroll-area';
-import { Separator } from '@affine/admin/components/ui/separator';
-import { Textarea } from '@affine/admin/components/ui/textarea';
+import { ScrollArea } from '@yunke/admin/components/ui/scroll-area';
+import { Separator } from '@yunke/admin/components/ui/separator';
+import { Textarea } from '@yunke/admin/components/ui/textarea';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { RightPanelHeader } from '../header';

@@ -8,15 +8,15 @@ import {
   MenuItem,
   useDraggable,
   useDropTarget,
-} from '@affine/component';
-import { RenameModal } from '@affine/component/rename-modal';
-import { Guard } from '@affine/core/components/guard';
-import { AppSidebarService } from '@affine/core/modules/app-sidebar';
-import type { DocPermissionActions } from '@affine/core/modules/permissions';
-import { WorkbenchLink } from '@affine/core/modules/workbench';
-import type { AffineDNDData } from '@affine/core/types/dnd';
-import { extractEmojiIcon } from '@affine/core/utils';
-import { useI18n } from '@affine/i18n';
+} from '@yunke/component';
+import { RenameModal } from '@yunke/component/rename-modal';
+import { Guard } from '@yunke/core/components/guard';
+import { AppSidebarService } from '@yunke/core/modules/app-sidebar';
+import type { DocPermissionActions } from '@yunke/core/modules/permissions';
+import { WorkbenchLink } from '@yunke/core/modules/workbench';
+import type { AffineDNDData } from '@yunke/core/types/dnd';
+import { extractEmojiIcon } from '@yunke/core/utils';
+import { useI18n } from '@yunke/i18n';
 import {
   ArrowDownSmallIcon,
   EditIcon,

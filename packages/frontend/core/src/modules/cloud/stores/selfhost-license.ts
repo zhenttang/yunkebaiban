@@ -3,7 +3,7 @@
 //   deactivateLicenseMutation,
 //   getLicenseQuery,
 //   installLicenseMutation,
-//} from '@affine/graphql';
+//} from '@yunke/graphql';
 import { Store } from '@toeverything/infra';
 
 import type { WorkspaceServerService } from '../services/workspace-server';

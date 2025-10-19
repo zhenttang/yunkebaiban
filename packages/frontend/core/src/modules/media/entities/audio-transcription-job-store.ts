@@ -3,7 +3,7 @@
 //   getAudioTranscriptionQuery,
 //   retryAudioTranscriptionMutation,
 //   submitAudioTranscriptionMutation,
-//} from '@affine/graphql';
+//} from '@yunke/graphql';
 import { Entity } from '@toeverything/infra';
 
 import type { DefaultServerService, WorkspaceServerService } from '../../cloud';

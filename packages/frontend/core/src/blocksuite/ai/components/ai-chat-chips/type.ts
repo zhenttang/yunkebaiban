@@ -1,11 +1,11 @@
-import type { TagMeta } from '@affine/core/components/page-list';
+import type { TagMeta } from '@yunke/core/components/page-list';
 import type {
   SearchCollectionMenuAction,
   SearchDocMenuAction,
   SearchTagMenuAction,
-} from '@affine/core/modules/search-menu/services';
-import type { DocMeta, Store } from '@blocksuite/affine/store';
-import type { LinkedMenuGroup } from '@blocksuite/affine/widgets/linked-doc';
+} from '@yunke/core/modules/search-menu/services';
+import type { DocMeta, Store } from '@blocksuite/yunke/store';
+import type { LinkedMenuGroup } from '@blocksuite/yunke/widgets/linked-doc';
 import type { Signal } from '@preact/signals-core';
 
 export type ChipState = 'candidate' | 'processing' | 'finished' | 'failed';

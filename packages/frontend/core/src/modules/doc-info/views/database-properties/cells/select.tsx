@@ -1,13 +1,13 @@
 /* eslint-disable rxjs/finnish */
 
-import { PropertyValue } from '@affine/component';
-import { type TagLike, TagsInlineEditor } from '@affine/core/components/tags';
-import { TagService } from '@affine/core/modules/tag';
+import { PropertyValue } from '@yunke/component';
+import { type TagLike, TagsInlineEditor } from '@yunke/core/components/tags';
+import { TagService } from '@yunke/core/modules/tag';
 import {
   affineLabelToDatabaseTagColor,
   databaseTagColorToV2,
-} from '@affine/core/modules/tag/entities/utils';
-import type { DatabaseBlockDataSource } from '@blocksuite/affine/blocks/database';
+} from '@yunke/core/modules/tag/entities/utils';
+import type { DatabaseBlockDataSource } from '@blocksuite/yunke/blocks/database';
 import type { SelectTag } from '@blocksuite/data-view';
 import { MultiSelectIcon, SingleSelectIcon } from '@blocksuite/icons/rc';
 import { LiveData, useLiveData, useService } from '@toeverything/infra';

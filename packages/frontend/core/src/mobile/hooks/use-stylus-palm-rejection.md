@@ -27,7 +27,7 @@
 ### 基础用法
 
 ```tsx
-import { useStylusPalmRejection } from '@affine/core/mobile/hooks/use-stylus-palm-rejection';
+import { useStylusPalmRejection } from '@yunke/core/mobile/hooks/use-stylus-palm-rejection';
 
 function WhiteboardComponent() {
   const {

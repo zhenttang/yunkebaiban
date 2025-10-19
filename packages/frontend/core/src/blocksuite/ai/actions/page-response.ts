@@ -1,28 +1,28 @@
-import { CodeBlockPreviewIdentifier } from '@blocksuite/affine/blocks/code';
-import { addSiblingImageBlocks } from '@blocksuite/affine/blocks/image';
+import { CodeBlockPreviewIdentifier } from '@blocksuite/yunke/blocks/code';
+import { addSiblingImageBlocks } from '@blocksuite/yunke/blocks/image';
 import {
   getSurfaceBlock,
   SurfaceBlockModel,
-} from '@blocksuite/affine/blocks/surface';
-import { fitContent } from '@blocksuite/affine/gfx/shape';
-import { createTemplateJob } from '@blocksuite/affine/gfx/template';
+} from '@blocksuite/yunke/blocks/surface';
+import { fitContent } from '@blocksuite/yunke/gfx/shape';
+import { createTemplateJob } from '@blocksuite/yunke/gfx/template';
 import {
   Bound,
   getCommonBound,
   type XYWH,
-} from '@blocksuite/affine/global/gfx';
+} from '@blocksuite/yunke/global/gfx';
 import type {
   MindmapElementModel,
   ShapeElementModel,
-} from '@blocksuite/affine/model';
-import { TelemetryProvider } from '@blocksuite/affine/shared/services';
-import { type EditorHost, TextSelection } from '@blocksuite/affine/std';
+} from '@blocksuite/yunke/model';
+import { TelemetryProvider } from '@blocksuite/yunke/shared/services';
+import { type EditorHost, TextSelection } from '@blocksuite/yunke/std';
 import {
   GfxBlockElementModel,
   type GfxModel,
   LayerManager,
-} from '@blocksuite/affine/std/gfx';
-import { type BlockProps, Text } from '@blocksuite/affine/store';
+} from '@blocksuite/yunke/std/gfx';
+import { type BlockProps, Text } from '@blocksuite/yunke/store';
 import * as Y from 'yjs';
 
 import { getAIPanelWidget } from '../utils/ai-widgets';

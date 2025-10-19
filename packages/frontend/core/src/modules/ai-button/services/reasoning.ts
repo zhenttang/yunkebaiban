@@ -1,7 +1,7 @@
 import {
   createSignalFromObservable,
   type Signal,
-} from '@blocksuite/affine/shared/utils';
+} from '@blocksuite/yunke/shared/utils';
 import { LiveData, Service } from '@toeverything/infra';
 
 import type { GlobalStateService } from '../../storage';

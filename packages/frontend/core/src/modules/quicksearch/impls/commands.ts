@@ -3,8 +3,8 @@ import {
   AffineCommandRegistry,
   type CommandCategory,
   PreconditionStrategy,
-} from '@affine/core/commands';
-import type { DocMode } from '@blocksuite/affine/model';
+} from '@yunke/core/commands';
+import type { DocMode } from '@blocksuite/yunke/model';
 import { Entity, LiveData } from '@toeverything/infra';
 import Fuse from 'fuse.js';
 

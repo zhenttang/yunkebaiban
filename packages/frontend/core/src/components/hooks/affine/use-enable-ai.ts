@@ -1,5 +1,5 @@
-import { ServerService } from '@affine/core/modules/cloud';
-import { FeatureFlagService } from '@affine/core/modules/feature-flag';
+import { ServerService } from '@yunke/core/modules/cloud';
+import { FeatureFlagService } from '@yunke/core/modules/feature-flag';
 import { useLiveData, useService } from '@toeverything/infra';
 
 export const useEnableAI = () => {

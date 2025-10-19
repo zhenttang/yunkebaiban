@@ -1,8 +1,8 @@
-import { shallowEqual } from '@affine/component';
-import type { TranscriptionBlockProps } from '@affine/core/blocksuite/ai/blocks/transcription-block/model';
-import { DebugLogger } from '@affine/debug';
-import { UserFriendlyError } from '@affine/error';
-// import { AiJobStatus } from '@affine/graphql';
+import { shallowEqual } from '@yunke/component';
+import type { TranscriptionBlockProps } from '@yunke/core/blocksuite/ai/blocks/transcription-block/model';
+import { DebugLogger } from '@yunke/debug';
+import { UserFriendlyError } from '@yunke/error';
+// import { AiJobStatus } from '@yunke/graphql';
 import { Entity, LiveData } from '@toeverything/infra';
 
 import type { DefaultServerService, WorkspaceServerService } from '../../cloud';

@@ -1,10 +1,10 @@
 import { useMemo, useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { AffineOtherPageLayout } from '@affine/component/affine-other-page-layout';
-import { Button } from '@affine/component';
+import { AffineOtherPageLayout } from '@yunke/component/affine-other-page-layout';
+import { Button } from '@yunke/component';
 import { ArrowLeftSmallIcon } from '@blocksuite/icons/rc';
-import { DocumentCard } from '@affine/core/components/community-ui';
-import type { CommunityDocument } from '@affine/core/components/community-ui/types';
+import { DocumentCard } from '@yunke/core/components/community-ui';
+import type { CommunityDocument } from '@yunke/core/components/community-ui/types';
 
 import { useCommunityDocuments } from './community/hooks/use-community-documents';
 import { useCommunityDocument } from './community/hooks/use-community-document';

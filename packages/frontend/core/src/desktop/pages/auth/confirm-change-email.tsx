@@ -1,10 +1,10 @@
-import { Button } from '@affine/component';
-import { AuthPageContainer } from '@affine/component/auth-components';
-import { useNavigateHelper } from '@affine/core/components/hooks/use-navigate-helper';
-import { FetchService } from '@affine/core/modules/cloud';
-import { UserFriendlyError } from '@affine/error';
-// import { changeEmailMutation } from '@affine/graphql';
-import { useI18n } from '@affine/i18n';
+import { Button } from '@yunke/component';
+import { AuthPageContainer } from '@yunke/component/auth-components';
+import { useNavigateHelper } from '@yunke/core/components/hooks/use-navigate-helper';
+import { FetchService } from '@yunke/core/modules/cloud';
+import { UserFriendlyError } from '@yunke/error';
+// import { changeEmailMutation } from '@yunke/graphql';
+import { useI18n } from '@yunke/i18n';
 import { useService } from '@toeverything/infra';
 import { type FC, useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';

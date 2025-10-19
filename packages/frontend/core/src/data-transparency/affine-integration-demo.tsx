@@ -471,7 +471,7 @@ import {
   DocumentDataTab,
   EditorStatusBar,
   DataTransparencySettings,
-} from '@affine/core/data-transparency/affine-integration';
+} from '@yunke/core/data-transparency/affine-integration';
       `}</code></pre>
     </div>
 
@@ -541,7 +541,7 @@ import {
       <h3>步骤6：导入样式文件</h3>
       <p>在主样式文件中导入：</p>
       <pre><code>{`
-@import "@affine/core/data-transparency/affine-integration.css";
+@import "@yunke/core/data-transparency/affine-integration.css";
       `}</code></pre>
     </div>
   </div>

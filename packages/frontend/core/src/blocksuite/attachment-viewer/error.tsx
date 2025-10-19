@@ -1,6 +1,6 @@
-import { Button } from '@affine/component';
-import { useI18n } from '@affine/i18n';
-import type { AttachmentBlockModel } from '@blocksuite/affine/model';
+import { Button } from '@yunke/component';
+import { useI18n } from '@yunke/i18n';
+import type { AttachmentBlockModel } from '@blocksuite/yunke/model';
 import { ArrowDownBigIcon } from '@blocksuite/icons/rc';
 import clsx from 'clsx';
 import type { PropsWithChildren, ReactElement } from 'react';

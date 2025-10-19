@@ -1,10 +1,10 @@
-import { usePageHelper } from '@affine/core/blocksuite/block-suite-page-list/utils';
-import { NavigationPanelTreeRoot } from '@affine/core/desktop/components/navigation-panel';
-import type { FavoriteSupportTypeUnion } from '@affine/core/modules/favorite';
-import { FavoriteService } from '@affine/core/modules/favorite';
-import { NavigationPanelService } from '@affine/core/modules/navigation-panel';
-import { WorkspaceService } from '@affine/core/modules/workspace';
-import { useI18n } from '@affine/i18n';
+import { usePageHelper } from '@yunke/core/blocksuite/block-suite-page-list/utils';
+import { NavigationPanelTreeRoot } from '@yunke/core/desktop/components/navigation-panel';
+import type { FavoriteSupportTypeUnion } from '@yunke/core/modules/favorite';
+import { FavoriteService } from '@yunke/core/modules/favorite';
+import { NavigationPanelService } from '@yunke/core/modules/navigation-panel';
+import { WorkspaceService } from '@yunke/core/modules/workspace';
+import { useI18n } from '@yunke/i18n';
 import { useLiveData, useServices } from '@toeverything/infra';
 import { useCallback } from 'react';
 

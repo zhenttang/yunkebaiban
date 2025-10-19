@@ -6,7 +6,7 @@ enum WorkspaceInviteLinkExpireTime {
   OneWeek = 'ONE_WEEK',
   OneMonth = 'ONE_MONTH',
 }
-import { useI18n } from '@affine/i18n';
+import { useI18n } from '@yunke/i18n';
 import { CloseIcon } from '@blocksuite/icons/rc';
 import { cssVar } from '@toeverything/theme';
 import { cssVarV2 } from '@toeverything/theme/v2';

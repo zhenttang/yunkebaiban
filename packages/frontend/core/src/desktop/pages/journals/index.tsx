@@ -1,4 +1,4 @@
-import { useJournalRouteHelper } from '@affine/core/components/hooks/use-journal';
+import { useJournalRouteHelper } from '@yunke/core/components/hooks/use-journal';
 import { useEffect } from 'react';
 
 // this route page acts as a redirector to today's journal

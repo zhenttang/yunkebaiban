@@ -1,4 +1,4 @@
-import { I18n, i18nTime } from '@affine/i18n';
+import { I18n, i18nTime } from '@yunke/i18n';
 import { DateTimeIcon } from '@blocksuite/icons/rc';
 import { Entity, LiveData } from '@toeverything/infra';
 

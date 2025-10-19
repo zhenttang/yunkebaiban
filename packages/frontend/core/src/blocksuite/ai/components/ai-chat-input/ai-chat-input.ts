@@ -1,11 +1,11 @@
-import { toast } from '@affine/component';
-import { stopPropagation } from '@affine/core/utils';
+import { toast } from '@yunke/component';
+import { stopPropagation } from '@yunke/core/utils';
 type CopilotSessionType = any;
-import { SignalWatcher, WithDisposable } from '@blocksuite/affine/global/lit';
-import { unsafeCSSVar, unsafeCSSVarV2 } from '@blocksuite/affine/shared/theme';
-import { openFilesWith } from '@blocksuite/affine/shared/utils';
-import type { EditorHost } from '@blocksuite/affine/std';
-import { ShadowlessElement } from '@blocksuite/affine/std';
+import { SignalWatcher, WithDisposable } from '@blocksuite/yunke/global/lit';
+import { unsafeCSSVar, unsafeCSSVarV2 } from '@blocksuite/yunke/shared/theme';
+import { openFilesWith } from '@blocksuite/yunke/shared/utils';
+import type { EditorHost } from '@blocksuite/yunke/std';
+import { ShadowlessElement } from '@blocksuite/yunke/std';
 import {
   CloseIcon,
   ImageIcon,

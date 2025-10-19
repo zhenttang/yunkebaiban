@@ -1,9 +1,9 @@
-import { FeatureFlagService } from '@affine/core/modules/feature-flag';
-import track from '@affine/track';
+import { FeatureFlagService } from '@yunke/core/modules/feature-flag';
+import track from '@yunke/track';
 import {
   type ViewExtensionContext,
   ViewExtensionProvider,
-} from '@blocksuite/affine/ext-loader';
+} from '@blocksuite/yunke/ext-loader';
 import { FrameworkProvider } from '@toeverything/infra';
 import { z } from 'zod';
 

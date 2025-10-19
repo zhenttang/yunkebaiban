@@ -1,18 +1,18 @@
-import { Button, notify } from '@affine/component';
+import { Button, notify } from '@yunke/component';
 import {
   AuthContainer,
   AuthContent,
   AuthFooter,
   AuthHeader,
   AuthInput,
-} from '@affine/component/auth-components';
-import { OAuth } from '@affine/core/components/affine/auth/oauth';
-import { useAsyncCallback } from '@affine/core/components/hooks/affine-async-hooks';
-import { AuthService, ServerService } from '@affine/core/modules/cloud';
-import type { AuthSessionStatus } from '@affine/core/modules/cloud/entities/session';
-// import { ServerDeploymentType } from '@affine/graphql';
+} from '@yunke/component/auth-components';
+import { OAuth } from '@yunke/core/components/affine/auth/oauth';
+import { useAsyncCallback } from '@yunke/core/components/hooks/affine-async-hooks';
+import { AuthService, ServerService } from '@yunke/core/modules/cloud';
+import type { AuthSessionStatus } from '@yunke/core/modules/cloud/entities/session';
+// import { ServerDeploymentType } from '@yunke/graphql';
 import { ServerDeploymentType } from '../../modules/cloud/types';
-import { Trans, useI18n } from '@affine/i18n';
+import { Trans, useI18n } from '@yunke/i18n';
 import {
   ArrowRightBigIcon,
   LocalWorkspaceIcon,

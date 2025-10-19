@@ -1,7 +1,7 @@
-import { ErrorMessage, Skeleton } from '@affine/component';
-import { UserQuotaService } from '@affine/core/modules/cloud';
-import { WorkspaceDialogService } from '@affine/core/modules/dialogs';
-import { useI18n } from '@affine/i18n';
+import { ErrorMessage, Skeleton } from '@yunke/component';
+import { UserQuotaService } from '@yunke/core/modules/cloud';
+import { WorkspaceDialogService } from '@yunke/core/modules/dialogs';
+import { useI18n } from '@yunke/i18n';
 import { useLiveData, useService } from '@toeverything/infra';
 import { assignInlineVars } from '@vanilla-extract/dynamic';
 import clsx from 'clsx';

@@ -1,11 +1,11 @@
-import { MenuItem, MenuSeparator } from '@affine/component';
-import type { DocCustomPropertyInfo } from '@affine/core/modules/db';
+import { MenuItem, MenuSeparator } from '@yunke/component';
+import type { DocCustomPropertyInfo } from '@yunke/core/modules/db';
 import {
   WorkspacePropertyService,
   type WorkspacePropertyType,
-} from '@affine/core/modules/workspace-property';
-import { generateUniqueNameInSequence } from '@affine/core/utils/unique-name';
-import { useI18n } from '@affine/i18n';
+} from '@yunke/core/modules/workspace-property';
+import { generateUniqueNameInSequence } from '@yunke/core/utils/unique-name';
+import { useI18n } from '@yunke/i18n';
 import { useLiveData, useService } from '@toeverything/infra';
 import { useCallback } from 'react';
 

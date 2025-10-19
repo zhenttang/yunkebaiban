@@ -4,30 +4,30 @@ import {
   type InlineEditHandle,
   observeResize,
   useDraggable,
-} from '@affine/component';
-import { FavoriteButton } from '@affine/core/blocksuite/block-suite-header/favorite';
-import { InfoButton } from '@affine/core/blocksuite/block-suite-header/info';
-import { JournalWeekDatePicker } from '@affine/core/blocksuite/block-suite-header/journal/date-picker';
-import { JournalTodayButton } from '@affine/core/blocksuite/block-suite-header/journal/today-button';
-import { PageHeaderMenuButton } from '@affine/core/blocksuite/block-suite-header/menu';
-import { DetailPageHeaderPresentButton } from '@affine/core/blocksuite/block-suite-header/present/detail-header-present-button';
-import { BlocksuiteHeaderTitle } from '@affine/core/blocksuite/block-suite-header/title';
-import { EditorModeSwitch } from '@affine/core/blocksuite/block-suite-mode-switch';
-import { useRegisterCopyLinkCommands } from '@affine/core/components/hooks/affine/use-register-copy-link-commands';
-import { HeaderDivider } from '@affine/core/components/pure/header';
-import { DocService } from '@affine/core/modules/doc';
-import { DocDisplayMetaService } from '@affine/core/modules/doc-display-meta';
-import { EditorService } from '@affine/core/modules/editor';
-import { JournalService } from '@affine/core/modules/journal';
-import { SharePageButton } from '@affine/core/modules/share-menu';
+} from '@yunke/component';
+import { FavoriteButton } from '@yunke/core/blocksuite/block-suite-header/favorite';
+import { InfoButton } from '@yunke/core/blocksuite/block-suite-header/info';
+import { JournalWeekDatePicker } from '@yunke/core/blocksuite/block-suite-header/journal/date-picker';
+import { JournalTodayButton } from '@yunke/core/blocksuite/block-suite-header/journal/today-button';
+import { PageHeaderMenuButton } from '@yunke/core/blocksuite/block-suite-header/menu';
+import { DetailPageHeaderPresentButton } from '@yunke/core/blocksuite/block-suite-header/present/detail-header-present-button';
+import { BlocksuiteHeaderTitle } from '@yunke/core/blocksuite/block-suite-header/title';
+import { EditorModeSwitch } from '@yunke/core/blocksuite/block-suite-mode-switch';
+import { useRegisterCopyLinkCommands } from '@yunke/core/components/hooks/affine/use-register-copy-link-commands';
+import { HeaderDivider } from '@yunke/core/components/pure/header';
+import { DocService } from '@yunke/core/modules/doc';
+import { DocDisplayMetaService } from '@yunke/core/modules/doc-display-meta';
+import { EditorService } from '@yunke/core/modules/editor';
+import { JournalService } from '@yunke/core/modules/journal';
+import { SharePageButton } from '@yunke/core/modules/share-menu';
 import { CommunityShareButton } from './community-share-button';
-import { TemplateDocService } from '@affine/core/modules/template-doc';
-import { ViewIcon, ViewTitle } from '@affine/core/modules/workbench';
-import type { Workspace } from '@affine/core/modules/workspace';
-import type { AffineDNDData } from '@affine/core/types/dnd';
-import { useI18n } from '@affine/i18n';
-import { track } from '@affine/track';
-import type { Store } from '@blocksuite/affine/store';
+import { TemplateDocService } from '@yunke/core/modules/template-doc';
+import { ViewIcon, ViewTitle } from '@yunke/core/modules/workbench';
+import type { Workspace } from '@yunke/core/modules/workspace';
+import type { AffineDNDData } from '@yunke/core/types/dnd';
+import { useI18n } from '@yunke/i18n';
+import { track } from '@yunke/track';
+import type { Store } from '@blocksuite/yunke/store';
 import { useLiveData, useService } from '@toeverything/infra';
 import clsx from 'clsx';
 import {

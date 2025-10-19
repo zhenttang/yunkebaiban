@@ -1,4 +1,4 @@
-import { Button } from '@affine/component';
+import { Button } from '@yunke/component';
 import { cssVarV2 } from '@toeverything/theme/v2';
 import { useMemo, useState, useEffect, type CSSProperties } from 'react';
 

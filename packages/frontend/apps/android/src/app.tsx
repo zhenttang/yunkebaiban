@@ -144,14 +144,14 @@ if (typeof window !== 'undefined') {
   });
 }
 
-import { getStoreManager } from '@affine/core/blocksuite/manager/store';
-import { AffineContext } from '@affine/core/components/context';
-import { AppFallback } from '@affine/core/mobile/components/app-fallback';
-import { configureMobileModules } from '@affine/core/mobile/modules';
-import { VirtualKeyboardProvider } from '@affine/core/mobile/modules/virtual-keyboard';
-import { router } from '@affine/core/mobile/router';
-import { configureCommonModules } from '@affine/core/modules';
-import { AIButtonProvider } from '@affine/core/modules/ai-button';
+import { getStoreManager } from '@yunke/core/blocksuite/manager/store';
+import { AffineContext } from '@yunke/core/components/context';
+import { AppFallback } from '@yunke/core/mobile/components/app-fallback';
+import { configureMobileModules } from '@yunke/core/mobile/modules';
+import { VirtualKeyboardProvider } from '@yunke/core/mobile/modules/virtual-keyboard';
+import { router } from '@yunke/core/mobile/router';
+import { configureCommonModules } from '@yunke/core/modules';
+import { AIButtonProvider } from '@yunke/core/modules/ai-button';
 import {
   AuthProvider,
   AuthService,
@@ -160,35 +160,35 @@ import {
   ServerService,
   ServersService,
   ValidatorProvider,
-} from '@affine/core/modules/cloud';
-import { FeatureFlagService } from '@affine/core/modules/feature-flag';
-import { getBaseUrl } from '@affine/config';
-import { WorkspaceFlavoursProvider } from '@affine/core/modules/workspace';
-import { CloudWorkspaceFlavoursProvider } from '@affine/core/modules/workspace-engine/impls/cloud';
-import { GlobalState } from '@affine/core/modules/storage';
+} from '@yunke/core/modules/cloud';
+import { FeatureFlagService } from '@yunke/core/modules/feature-flag';
+import { getBaseUrl } from '@yunke/config';
+import { WorkspaceFlavoursProvider } from '@yunke/core/modules/workspace';
+import { CloudWorkspaceFlavoursProvider } from '@yunke/core/modules/workspace-engine/impls/cloud';
+import { GlobalState } from '@yunke/core/modules/storage';
 
 // 不需要再次定义BUILD_CONFIG，已经在文件开头处理了
-import { DocsService } from '@affine/core/modules/doc';
-import { GlobalContextService } from '@affine/core/modules/global-context';
-import { I18nProvider } from '@affine/core/modules/i18n';
-import { LifecycleService } from '@affine/core/modules/lifecycle';
+import { DocsService } from '@yunke/core/modules/doc';
+import { GlobalContextService } from '@yunke/core/modules/global-context';
+import { I18nProvider } from '@yunke/core/modules/i18n';
+import { LifecycleService } from '@yunke/core/modules/lifecycle';
 import {
   configureLocalStorageStateStorageImpls,
   NbstoreProvider,
-} from '@affine/core/modules/storage';
-import { PopupWindowProvider } from '@affine/core/modules/url';
-import { ClientSchemeProvider } from '@affine/core/modules/url/providers/client-schema';
-import { configureBrowserWorkbenchModule } from '@affine/core/modules/workbench';
-import { WorkspacesService } from '@affine/core/modules/workspace';
-import { getWorkerUrl } from '@affine/env/worker';
-import { I18n } from '@affine/i18n';
-import { StoreManagerClient } from '@affine/nbstore/worker/client';
-import { Container } from '@blocksuite/affine/global/di';
+} from '@yunke/core/modules/storage';
+import { PopupWindowProvider } from '@yunke/core/modules/url';
+import { ClientSchemeProvider } from '@yunke/core/modules/url/providers/client-schema';
+import { configureBrowserWorkbenchModule } from '@yunke/core/modules/workbench';
+import { WorkspacesService } from '@yunke/core/modules/workspace';
+import { getWorkerUrl } from '@yunke/env/worker';
+import { I18n } from '@yunke/i18n';
+import { StoreManagerClient } from '@yunke/nbstore/worker/client';
+import { Container } from '@blocksuite/yunke/global/di';
 import {
   docLinkBaseURLMiddleware,
   MarkdownAdapter,
   titleMiddleware,
-} from '@blocksuite/affine/shared/adapters';
+} from '@blocksuite/yunke/shared/adapters';
 import { App as CapacitorApp } from '@capacitor/app';
 import { Capacitor } from '@capacitor/core';
 import { Keyboard } from '@capacitor/keyboard';

@@ -1,10 +1,10 @@
-import { EditorSettingSchema } from '@affine/core/modules/editor-setting';
-import { I18n } from '@affine/i18n';
+import { EditorSettingSchema } from '@yunke/core/modules/editor-setting';
+import { I18n } from '@yunke/i18n';
 import {
   type OpenDocConfig,
   type OpenDocConfigItem,
   OpenDocExtension,
-} from '@blocksuite/affine/shared/services';
+} from '@blocksuite/yunke/shared/services';
 import {
   CenterPeekIcon,
   ExpandFullIcon,

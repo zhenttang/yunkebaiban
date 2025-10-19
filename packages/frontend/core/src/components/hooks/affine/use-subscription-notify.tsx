@@ -1,4 +1,4 @@
-// import { SubscriptionPlan, SubscriptionRecurring } from '@affine/graphql';
+// import { SubscriptionPlan, SubscriptionRecurring } from '@yunke/graphql';
 import { nanoid } from 'nanoid';
 
 import { type AuthAccountInfo } from '../../../modules/cloud';

@@ -1,12 +1,12 @@
-import type { ReactToLit } from '@affine/component';
-import { AttachmentEmbedPreview } from '@affine/core/blocksuite/attachment-viewer/attachment-embed-preview';
-import { AttachmentEmbedConfigIdentifier } from '@blocksuite/affine/blocks/attachment';
-import { Bound } from '@blocksuite/affine/global/gfx';
+import type { ReactToLit } from '@yunke/component';
+import { AttachmentEmbedPreview } from '@yunke/core/blocksuite/attachment-viewer/attachment-embed-preview';
+import { AttachmentEmbedConfigIdentifier } from '@blocksuite/yunke/blocks/attachment';
+import { Bound } from '@blocksuite/yunke/global/gfx';
 import {
   EMBED_CARD_HEIGHT,
   EMBED_CARD_WIDTH,
-} from '@blocksuite/affine/shared/consts';
-import type { ExtensionType } from '@blocksuite/affine/store';
+} from '@blocksuite/yunke/shared/consts';
+import type { ExtensionType } from '@blocksuite/yunke/store';
 
 export function patchForPDFEmbedView(reactToLit: ReactToLit): ExtensionType {
   return {

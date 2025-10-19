@@ -1,5 +1,5 @@
-// import type { SubscriptionQuery, SubscriptionRecurring } from '@affine/graphql';
-// import { SubscriptionPlan } from '@affine/graphql';
+// import type { SubscriptionQuery, SubscriptionRecurring } from '@yunke/graphql';
+// import { SubscriptionPlan } from '@yunke/graphql';
 import {
   catchErrorInto,
   effect,

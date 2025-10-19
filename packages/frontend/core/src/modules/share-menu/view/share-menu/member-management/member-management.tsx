@@ -1,11 +1,11 @@
-import { Skeleton } from '@affine/component';
-import { useGuard } from '@affine/core/components/guard';
-import { DocService } from '@affine/core/modules/doc';
+import { Skeleton } from '@yunke/component';
+import { useGuard } from '@yunke/core/components/guard';
+import { DocService } from '@yunke/core/modules/doc';
 import {
   DocGrantedUsersService,
   type GrantedUser,
-} from '@affine/core/modules/permissions';
-import { useI18n } from '@affine/i18n';
+} from '@yunke/core/modules/permissions';
+import { useI18n } from '@yunke/i18n';
 import { ArrowLeftBigIcon } from '@blocksuite/icons/rc';
 import { useLiveData, useService } from '@toeverything/infra';
 import { useCallback, useEffect } from 'react';

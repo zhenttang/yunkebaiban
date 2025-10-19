@@ -1,5 +1,5 @@
-// import { type PasswordLimitsFragment } from '@affine/graphql';
-import { useI18n } from '@affine/i18n';
+// import { type PasswordLimitsFragment } from '@yunke/graphql';
+import { useI18n } from '@yunke/i18n';
 import { type Options, passwordStrength } from 'check-password-strength';
 import { type FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { z, type ZodCustomIssue, ZodIssueCode } from 'zod';

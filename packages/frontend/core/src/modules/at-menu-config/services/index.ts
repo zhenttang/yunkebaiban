@@ -1,28 +1,28 @@
-import { notify } from '@affine/component';
-import { UserFriendlyError } from '@affine/error';
+import { notify } from '@yunke/component';
+import { UserFriendlyError } from '@yunke/error';
 //import {
 //   type DocMode as GraphqlDocMode,
 //   DocRole,
 //   ErrorNames,
-//} from '@affine/graphql';
-import { I18n, i18nTime } from '@affine/i18n';
-import { DocRole } from '@affine/core/modules/share-doc/types';
-import track from '@affine/track';
-import type { DocMode } from '@blocksuite/affine/model';
-import { DocModeProvider } from '@blocksuite/affine/shared/services';
-import type { AffineInlineEditor } from '@blocksuite/affine/shared/types';
+//} from '@yunke/graphql';
+import { I18n, i18nTime } from '@yunke/i18n';
+import { DocRole } from '@yunke/core/modules/share-doc/types';
+import track from '@yunke/track';
+import type { DocMode } from '@blocksuite/yunke/model';
+import { DocModeProvider } from '@blocksuite/yunke/shared/services';
+import type { AffineInlineEditor } from '@blocksuite/yunke/shared/types';
 import {
   BLOCK_ID_ATTR,
   type BlockComponent,
   type EditorHost,
-} from '@blocksuite/affine/std';
-import type { DocMeta } from '@blocksuite/affine/store';
+} from '@blocksuite/yunke/std';
+import type { DocMeta } from '@blocksuite/yunke/store';
 import {
   type LinkedMenuGroup,
   type LinkedMenuItem,
   type LinkedWidgetConfig,
   LinkedWidgetUtils,
-} from '@blocksuite/affine/widgets/linked-doc';
+} from '@blocksuite/yunke/widgets/linked-doc';
 import {
   DateTimeIcon,
   NewXxxEdgelessIcon,

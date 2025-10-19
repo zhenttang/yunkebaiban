@@ -1,6 +1,6 @@
-import { MobileMenu } from '@affine/component';
-import { WorkspacesService } from '@affine/core/modules/workspace';
-import { track } from '@affine/track';
+import { MobileMenu } from '@yunke/component';
+import { WorkspacesService } from '@yunke/core/modules/workspace';
+import { track } from '@yunke/track';
 import { useServiceOptional } from '@toeverything/infra';
 import {
   forwardRef,

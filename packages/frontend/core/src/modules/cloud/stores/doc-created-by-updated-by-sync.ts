@@ -1,4 +1,4 @@
-// import { getDocCreatedByUpdatedByListQuery } from '@affine/graphql';
+// import { getDocCreatedByUpdatedByListQuery } from '@yunke/graphql';
 import { Store, yjsGetPath } from '@toeverything/infra';
 import type { Observable } from 'rxjs';
 

@@ -1,7 +1,7 @@
-import '@affine/env/constant';
-import '@blocksuite/affine/global/types'
+import '@yunke/env/constant';
+import '@blocksuite/yunke/global/types'
 
-declare module '@blocksuite/affine/store' {
+declare module '@blocksuite/yunke/store' {
   interface DocMeta {
     /**
      * @deprecated

@@ -1,4 +1,4 @@
-import { readAllDocsFromRootDoc } from '@affine/reader';
+import { readAllDocsFromRootDoc } from '@yunke/reader';
 import {
   filter,
   first,

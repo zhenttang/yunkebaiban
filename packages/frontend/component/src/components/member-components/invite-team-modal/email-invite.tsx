@@ -1,4 +1,4 @@
-import { useI18n } from '@affine/i18n';
+import { useI18n } from '@yunke/i18n';
 import { cssVar } from '@toeverything/theme';
 
 import Input from '../../../ui/input';

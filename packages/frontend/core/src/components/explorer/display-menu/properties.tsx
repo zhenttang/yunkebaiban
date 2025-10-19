@@ -1,7 +1,7 @@
-import { Button, Divider } from '@affine/component';
-import { WorkspacePropertyService } from '@affine/core/modules/workspace-property';
-import { useI18n } from '@affine/i18n';
-import track from '@affine/track';
+import { Button, Divider } from '@yunke/component';
+import { WorkspacePropertyService } from '@yunke/core/modules/workspace-property';
+import { useI18n } from '@yunke/i18n';
+import track from '@yunke/track';
 import { useLiveData, useService } from '@toeverything/infra';
 import { useCallback, useMemo } from 'react';
 

@@ -1,6 +1,6 @@
-import { Button } from '@affine/component';
-import { useJournalRouteHelper } from '@affine/core/components/hooks/use-journal';
-import { useI18n } from '@affine/i18n';
+import { Button } from '@yunke/component';
+import { useJournalRouteHelper } from '@yunke/core/components/hooks/use-journal';
+import { useI18n } from '@yunke/i18n';
 import { useCallback } from 'react';
 
 export const JournalTodayButton = () => {

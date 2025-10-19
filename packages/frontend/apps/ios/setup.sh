@@ -30,8 +30,8 @@ CURRENT_VERSION=$(grep "objectVersion = " "$XCPROJ_PATH" | awk -F ' = ' '{print 
 echo "[*] current object version: $CURRENT_VERSION"
 sed -i '' "s/objectVersion = $CURRENT_VERSION/objectVersion = 56/" "$XCPROJ_PATH"
 
-yarn affine @affine/ios build
-yarn affine @affine/ios sync
+yarn yunke @yunke/ios build
+yarn yunke @yunke/ios sync
 
 echo "[*] interacting with rust..."
 rustup target add aarch64-apple-ios
@@ -39,8 +39,8 @@ rustup target add aarch64-apple-ios-sim
 rustup target add aarch64-apple-darwin
 
 echo "[*] codegen..."
-yarn affine @affine/ios codegen
+yarn yunke @yunke/ios codegen
 
 echo "[+] setup complete"
 
-yarn affine @affine/ios xcode
+yarn yunke @yunke/ios xcode

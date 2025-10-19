@@ -1,7 +1,7 @@
-import { SignalWatcher, WithDisposable } from '@blocksuite/affine/global/lit';
-import { scrollbarStyle } from '@blocksuite/affine/shared/styles';
-import { unsafeCSSVarV2 } from '@blocksuite/affine/shared/theme';
-import { type EditorHost } from '@blocksuite/affine/std';
+import { SignalWatcher, WithDisposable } from '@blocksuite/yunke/global/lit';
+import { scrollbarStyle } from '@blocksuite/yunke/shared/styles';
+import { unsafeCSSVarV2 } from '@blocksuite/yunke/shared/theme';
+import { type EditorHost } from '@blocksuite/yunke/std';
 import { InformationIcon, ToggleDownIcon } from '@blocksuite/icons/lit';
 import { signal } from '@preact/signals-core';
 import { baseTheme } from '@toeverything/theme';

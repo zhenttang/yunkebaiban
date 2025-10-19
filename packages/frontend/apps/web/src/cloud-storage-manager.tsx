@@ -5,7 +5,7 @@ import { uint8ArrayToBase64, base64ToUint8Array, isEmptyUpdate, isValidYjsUpdate
 
 /**
  * 获取Socket.IO连接URL
- * 统一的配置获取逻辑 - 使用@affine/config统一管理
+ * 统一的配置获取逻辑 - 使用@yunke/config统一管理
  */
 function getSocketIOUrl(): string {
   // 优先使用环境变量

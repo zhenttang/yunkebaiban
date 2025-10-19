@@ -1,5 +1,5 @@
-import { Bound, clamp } from '@blocksuite/affine/global/gfx';
-import { toGfxBlockComponent } from '@blocksuite/affine/std';
+import { Bound, clamp } from '@blocksuite/yunke/global/gfx';
+import { toGfxBlockComponent } from '@blocksuite/yunke/std';
 import { GfxViewInteractionExtension } from '@blocksuite/std/gfx';
 import { html } from 'lit';
 import { styleMap } from 'lit/directives/style-map.js';

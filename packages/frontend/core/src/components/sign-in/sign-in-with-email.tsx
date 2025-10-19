@@ -1,18 +1,18 @@
-import { notify } from '@affine/component';
+import { notify } from '@yunke/component';
 import {
   AuthContainer,
   AuthContent,
   AuthFooter,
   AuthHeader,
   AuthInput,
-} from '@affine/component/auth-components';
-import { Button } from '@affine/component/ui/button';
-import { useAsyncCallback } from '@affine/core/components/hooks/affine-async-hooks';
-import { AuthService } from '@affine/core/modules/cloud';
-import type { AuthSessionStatus } from '@affine/core/modules/cloud/entities/session';
-import { Unreachable } from '@affine/env/constant';
-import { UserFriendlyError } from '@affine/error';
-import { Trans, useI18n } from '@affine/i18n';
+} from '@yunke/component/auth-components';
+import { Button } from '@yunke/component/ui/button';
+import { useAsyncCallback } from '@yunke/core/components/hooks/affine-async-hooks';
+import { AuthService } from '@yunke/core/modules/cloud';
+import type { AuthSessionStatus } from '@yunke/core/modules/cloud/entities/session';
+import { Unreachable } from '@yunke/env/constant';
+import { UserFriendlyError } from '@yunke/error';
+import { Trans, useI18n } from '@yunke/i18n';
 import { useLiveData, useService } from '@toeverything/infra';
 import {
   type Dispatch,

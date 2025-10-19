@@ -1,11 +1,11 @@
 {
-  "name": "@types/affine__env",
+  "name": "@types/yunke__env",
   "private": true,
   "types": "./__all.d.ts",
   "type": "module",
   "dependencies": {
-    "@affine/env": "workspace:*",
-    "@blocksuite/affine": "workspace:*"
+    "@blocksuite/yunke": "workspace:*",
+    "@yunke/env": "workspace:*"
   },
   "version": "0.21.0"
 }

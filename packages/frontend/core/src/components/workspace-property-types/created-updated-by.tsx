@@ -1,9 +1,9 @@
-import { type MenuRef, PropertyValue } from '@affine/component';
-import { PublicUserLabel } from '@affine/core/modules/cloud/views/public-user';
-import type { FilterParams } from '@affine/core/modules/collection-rules';
-import { type DocRecord, DocService } from '@affine/core/modules/doc';
-import { WorkspaceService } from '@affine/core/modules/workspace';
-import { useI18n } from '@affine/i18n';
+import { type MenuRef, PropertyValue } from '@yunke/component';
+import { PublicUserLabel } from '@yunke/core/modules/cloud/views/public-user';
+import type { FilterParams } from '@yunke/core/modules/collection-rules';
+import { type DocRecord, DocService } from '@yunke/core/modules/doc';
+import { WorkspaceService } from '@yunke/core/modules/workspace';
+import { useI18n } from '@yunke/i18n';
 import { useLiveData, useService } from '@toeverything/infra';
 import { cssVarV2 } from '@toeverything/theme/v2';
 import { type ReactNode, useCallback, useEffect, useMemo, useRef } from 'react';

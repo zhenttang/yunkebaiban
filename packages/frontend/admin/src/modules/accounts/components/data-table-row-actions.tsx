@@ -1,11 +1,11 @@
-import { Button } from '@affine/admin/components/ui/button';
+import { Button } from '@yunke/admin/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@affine/admin/components/ui/dropdown-menu';
+} from '@yunke/admin/components/ui/dropdown-menu';
 import {
   AccountBanIcon,
   DeleteIcon,

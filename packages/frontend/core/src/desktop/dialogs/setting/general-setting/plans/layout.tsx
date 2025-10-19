@@ -1,6 +1,6 @@
-import { Divider, IconButton } from '@affine/component';
-import { SettingHeader } from '@affine/component/setting-components';
-import { useI18n } from '@affine/i18n';
+import { Divider, IconButton } from '@yunke/component';
+import { SettingHeader } from '@yunke/component/setting-components';
+import { useI18n } from '@yunke/i18n';
 import { ArrowRightBigIcon, ArrowUpSmallIcon } from '@blocksuite/icons/rc';
 import * as Collapsible from '@radix-ui/react-collapsible';
 import * as ScrollArea from '@radix-ui/react-scroll-area';

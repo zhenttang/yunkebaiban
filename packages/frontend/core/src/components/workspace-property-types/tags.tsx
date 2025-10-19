@@ -1,9 +1,9 @@
-import { type MenuRef, PropertyValue } from '@affine/component';
-import type { FilterParams } from '@affine/core/modules/collection-rules';
-import { type DocRecord, DocService } from '@affine/core/modules/doc';
-import { type Tag, TagService } from '@affine/core/modules/tag';
-import { WorkspaceService } from '@affine/core/modules/workspace';
-import { useI18n } from '@affine/i18n';
+import { type MenuRef, PropertyValue } from '@yunke/component';
+import type { FilterParams } from '@yunke/core/modules/collection-rules';
+import { type DocRecord, DocService } from '@yunke/core/modules/doc';
+import { type Tag, TagService } from '@yunke/core/modules/tag';
+import { WorkspaceService } from '@yunke/core/modules/workspace';
+import { useI18n } from '@yunke/i18n';
 import { TagsIcon } from '@blocksuite/icons/rc';
 import { useLiveData, useService } from '@toeverything/infra';
 import { cssVarV2 } from '@toeverything/theme/v2';

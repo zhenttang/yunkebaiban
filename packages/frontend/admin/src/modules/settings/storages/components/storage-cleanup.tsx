@@ -1,11 +1,11 @@
 import { useMemo, useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@affine/admin/components/ui/card';
-import { Button } from '@affine/admin/components/ui/button';
-import { Alert, AlertDescription } from '@affine/admin/components/ui/alert';
-import { Progress } from '@affine/admin/components/ui/progress';
+import { Card, CardContent, CardHeader, CardTitle } from '@yunke/admin/components/ui/card';
+import { Button } from '@yunke/admin/components/ui/button';
+import { Alert, AlertDescription } from '@yunke/admin/components/ui/alert';
+import { Progress } from '@yunke/admin/components/ui/progress';
 import { InfoIcon } from '@blocksuite/icons/rc';
 import { Archive as ArchiveIcon, CheckCircle as CheckCircleIcon, RefreshCw as RefreshIcon, Trash2 as TrashIcon } from 'lucide-react';
-import { formatBytes } from '@affine/admin/utils';
+import { formatBytes } from '@yunke/admin/utils';
 
 import { useStorageStatsContext } from '../hooks/storage-stats-context';
 

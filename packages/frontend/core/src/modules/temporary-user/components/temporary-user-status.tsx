@@ -1,11 +1,11 @@
-import { useI18n } from '@affine/i18n';
+import { useI18n } from '@yunke/i18n';
 import {
   Avatar,
   IconButton,
   toast,
   Button,
   Tooltip,
-} from '@affine/component';
+} from '@yunke/component';
 import { 
   MoreHorizontalIcon, 
   InformationIcon, 

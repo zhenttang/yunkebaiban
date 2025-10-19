@@ -1,6 +1,6 @@
-import { SettingHeader } from '@affine/component/setting-components';
-import { FeatureFlagService } from '@affine/core/modules/feature-flag';
-import { useI18n } from '@affine/i18n';
+import { SettingHeader } from '@yunke/component/setting-components';
+import { FeatureFlagService } from '@yunke/core/modules/feature-flag';
+import { useI18n } from '@yunke/i18n';
 import { useLiveData, useService } from '@toeverything/infra';
 import { type ReactNode, useCallback, useMemo, useState } from 'react';
 

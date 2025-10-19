@@ -1,4 +1,4 @@
-import { WorkspaceScope } from '@affine/core/modules/workspace';
+import { WorkspaceScope } from '@yunke/core/modules/workspace';
 import { type Framework } from '@toeverything/infra';
 
 import { MobileSearchService } from './service/search';

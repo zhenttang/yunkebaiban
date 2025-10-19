@@ -1,5 +1,5 @@
-import { useI18n } from '@affine/i18n';
-import type { Workspace } from '@blocksuite/affine/store';
+import { useI18n } from '@yunke/i18n';
+import type { Workspace } from '@blocksuite/yunke/store';
 import { useCallback } from 'react';
 
 import {

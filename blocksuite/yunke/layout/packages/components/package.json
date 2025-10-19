@@ -1,0 +1,78 @@
+{
+  "name": "@blocksuite/yunke-layout-components",
+  "version": "1.0.0",
+  "description": "UI components for BlockSuite layout system with Notion-like column layouts",
+  "type": "module",
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.esm.js",
+      "require": "./dist/index.js"
+    },
+    "./styles": {
+      "types": "./dist/shared/index.d.ts",
+      "import": "./dist/shared/index.esm.js"
+    },
+    "./layout-switcher": {
+      "types": "./dist/layout-switcher/styles.d.ts",
+      "import": "./dist/layout-switcher/styles.esm.js"
+    },
+    "./column-content": {
+      "types": "./dist/column-content/styles.d.ts",
+      "import": "./dist/column-content/styles.esm.js"
+    }
+  },
+  "files": [
+    "dist",
+    "src",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "type-check": "tsc --noEmit",
+    "lint": "eslint src/**/*.ts",
+    "lint:fix": "eslint src/**/*.ts --fix",
+    "test": "vitest",
+    "test:coverage": "vitest --coverage"
+  },
+  "keywords": [
+    "blocksuite",
+    "layout",
+    "columns",
+    "notion",
+    "ui-components",
+    "lit-element",
+    "typescript"
+  ],
+  "author": "BlockSuite Team",
+  "license": "MIT",
+  "dependencies": {
+    "lit": "^3.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.3.0",
+    "tsup": "^8.0.0",
+    "vitest": "^1.0.0",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "eslint": "^8.0.0"
+  },
+  "peerDependencies": {
+    "@blocksuite/yunke-shared": "^2.2.12",
+    "@blocksuite/global": "^2.2.12"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/toeverything/blocksuite.git",
+    "directory": "packages/affine/layout/packages/components"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  }
+}

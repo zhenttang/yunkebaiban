@@ -1,4 +1,4 @@
-import type { ParagraphBlockModel } from '@blocksuite/affine-model';
+import type { ParagraphBlockModel } from '@blocksuite/yunke-model';
 import type { BlockModel } from '@blocksuite/store';
 
 export interface LevelIssue {

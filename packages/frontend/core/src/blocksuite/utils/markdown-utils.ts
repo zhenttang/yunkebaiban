@@ -1,6 +1,6 @@
-import type { FeatureFlagService } from '@affine/core/modules/feature-flag';
-import { WorkspaceImpl } from '@affine/core/modules/workspace/impls/workspace';
-import type { ServiceProvider } from '@blocksuite/affine/global/di';
+import type { FeatureFlagService } from '@yunke/core/modules/feature-flag';
+import { WorkspaceImpl } from '@yunke/core/modules/workspace/impls/workspace';
+import type { ServiceProvider } from '@blocksuite/yunke/global/di';
 import {
   defaultImageProxyMiddleware,
   embedSyncedDocMiddleware,
@@ -9,12 +9,12 @@ import {
   pasteMiddleware,
   PlainTextAdapter,
   titleMiddleware,
-} from '@blocksuite/affine/shared/adapters';
+} from '@blocksuite/yunke/shared/adapters';
 import {
   type EditorHost,
   type TextRangePoint,
   TextSelection,
-} from '@blocksuite/affine/std';
+} from '@blocksuite/yunke/std';
 import type {
   BlockModel,
   BlockSnapshot,
@@ -24,8 +24,8 @@ import type {
   SliceSnapshot,
   Store,
   TransformerMiddleware,
-} from '@blocksuite/affine/store';
-import { toDraftModel, Transformer } from '@blocksuite/affine/store';
+} from '@blocksuite/yunke/store';
+import { toDraftModel, Transformer } from '@blocksuite/yunke/store';
 import { Doc as YDoc } from 'yjs';
 const updateSnapshotText = (
   point: TextRangePoint,

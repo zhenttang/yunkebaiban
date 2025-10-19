@@ -1,5 +1,5 @@
-import { generateUrl } from '@affine/core/components/hooks/affine/use-share-url';
-import { AttachmentBlockModel } from '@blocksuite/affine/model';
+import { generateUrl } from '@yunke/core/components/hooks/affine/use-share-url';
+import { AttachmentBlockModel } from '@blocksuite/yunke/model';
 import {
   attachmentBlockAudioMediaKey,
   type AudioMediaDescriptor,

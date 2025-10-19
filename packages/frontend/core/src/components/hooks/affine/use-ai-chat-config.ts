@@ -1,20 +1,20 @@
 // packages/frontend/core/src/blocksuite/ai/hooks/useChatPanelConfig.ts
-import { AIModelSwitchService } from '@affine/core/modules/ai-button/services/model-switch';
-import { AINetworkSearchService } from '@affine/core/modules/ai-button/services/network-search';
-import { AIReasoningService } from '@affine/core/modules/ai-button/services/reasoning';
-import { CollectionService } from '@affine/core/modules/collection';
-import { DocsService } from '@affine/core/modules/doc';
-import { DocDisplayMetaService } from '@affine/core/modules/doc-display-meta';
-import { DocsSearchService } from '@affine/core/modules/docs-search';
+import { AIModelSwitchService } from '@yunke/core/modules/ai-button/services/model-switch';
+import { AINetworkSearchService } from '@yunke/core/modules/ai-button/services/network-search';
+import { AIReasoningService } from '@yunke/core/modules/ai-button/services/reasoning';
+import { CollectionService } from '@yunke/core/modules/collection';
+import { DocsService } from '@yunke/core/modules/doc';
+import { DocDisplayMetaService } from '@yunke/core/modules/doc-display-meta';
+import { DocsSearchService } from '@yunke/core/modules/docs-search';
 import {
   type SearchCollectionMenuAction,
   type SearchDocMenuAction,
   SearchMenuService,
   type SearchTagMenuAction,
-} from '@affine/core/modules/search-menu/services';
-import { TagService } from '@affine/core/modules/tag';
-import { WorkspaceService } from '@affine/core/modules/workspace';
-import { createSignalFromObservable } from '@blocksuite/affine/shared/utils';
+} from '@yunke/core/modules/search-menu/services';
+import { TagService } from '@yunke/core/modules/tag';
+import { WorkspaceService } from '@yunke/core/modules/workspace';
+import { createSignalFromObservable } from '@blocksuite/yunke/shared/utils';
 import { useFramework } from '@toeverything/infra';
 
 export function useAIChatConfig() {

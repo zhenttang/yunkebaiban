@@ -1,19 +1,19 @@
-import { FlexWrapper, Input, notify } from '@affine/component';
+import { FlexWrapper, Input, notify } from '@yunke/component';
 import {
   SettingHeader,
   SettingRow,
   SettingWrapper,
-} from '@affine/component/setting-components';
-import { Avatar } from '@affine/component/ui/avatar';
-import { Button } from '@affine/component/ui/button';
-import { useSignOut } from '@affine/core/components/hooks/affine/use-sign-out';
-import { useAsyncCallback } from '@affine/core/components/hooks/affine-async-hooks';
-import { useCatchEventCallback } from '@affine/core/components/hooks/use-catch-event-hook';
-import { Upload } from '@affine/core/components/pure/file-upload';
-import { GlobalDialogService } from '@affine/core/modules/dialogs';
-// import { SubscriptionPlan } from '@affine/graphql';
-import { useI18n } from '@affine/i18n';
-import { track } from '@affine/track';
+} from '@yunke/component/setting-components';
+import { Avatar } from '@yunke/component/ui/avatar';
+import { Button } from '@yunke/component/ui/button';
+import { useSignOut } from '@yunke/core/components/hooks/affine/use-sign-out';
+import { useAsyncCallback } from '@yunke/core/components/hooks/affine-async-hooks';
+import { useCatchEventCallback } from '@yunke/core/components/hooks/use-catch-event-hook';
+import { Upload } from '@yunke/core/components/pure/file-upload';
+import { GlobalDialogService } from '@yunke/core/modules/dialogs';
+// import { SubscriptionPlan } from '@yunke/graphql';
+import { useI18n } from '@yunke/i18n';
+import { track } from '@yunke/track';
 import { ArrowRightSmallIcon, CameraIcon } from '@blocksuite/icons/rc';
 import { useLiveData, useService, useServices } from '@toeverything/infra';
 import { useCallback, useEffect, useState } from 'react';

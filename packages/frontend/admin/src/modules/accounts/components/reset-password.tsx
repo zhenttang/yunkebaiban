@@ -1,4 +1,4 @@
-import { Button } from '@affine/admin/components/ui/button';
+import { Button } from '@yunke/admin/components/ui/button';
 import {
   Dialog,
   DialogContent,
@@ -6,8 +6,8 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@affine/admin/components/ui/dialog';
-import { Input } from '@affine/admin/components/ui/input';
+} from '@yunke/admin/components/ui/dialog';
+import { Input } from '@yunke/admin/components/ui/input';
 import { CopyIcon } from 'lucide-react';
 
 export const ResetPasswordDialog = ({

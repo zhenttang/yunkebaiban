@@ -1,14 +1,14 @@
-import { MenuItem, notify } from '@affine/component';
-import type { NodeOperation } from '@affine/core/desktop/components/navigation-panel';
+import { MenuItem, notify } from '@yunke/component';
+import type { NodeOperation } from '@yunke/core/desktop/components/navigation-panel';
 import {
   type Collection,
   CollectionService,
-} from '@affine/core/modules/collection';
-import { WorkspaceDialogService } from '@affine/core/modules/dialogs';
-import { GlobalContextService } from '@affine/core/modules/global-context';
-import { ShareDocsListService } from '@affine/core/modules/share-doc';
-import { useI18n } from '@affine/i18n';
-import track from '@affine/track';
+} from '@yunke/core/modules/collection';
+import { WorkspaceDialogService } from '@yunke/core/modules/dialogs';
+import { GlobalContextService } from '@yunke/core/modules/global-context';
+import { ShareDocsListService } from '@yunke/core/modules/share-doc';
+import { useI18n } from '@yunke/i18n';
+import track from '@yunke/track';
 import { FilterMinusIcon, ViewLayersIcon } from '@blocksuite/icons/rc';
 import { useLiveData, useServices } from '@toeverything/infra';
 import { useCallback, useEffect, useMemo, useState } from 'react';

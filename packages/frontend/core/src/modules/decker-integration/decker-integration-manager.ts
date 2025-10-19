@@ -2,7 +2,7 @@
 // 负责处理Decker编辑器与白板系统的通信
 
 import type { BlockSuiteStore } from '@blocksuite/store';
-import type { ImageBlockModel } from '@blocksuite/affine-model';
+import type { ImageBlockModel } from '@blocksuite/yunke-model';
 
 export interface DeckerExportData {
   type: 'DECK_EXPORT_COMPLETE';

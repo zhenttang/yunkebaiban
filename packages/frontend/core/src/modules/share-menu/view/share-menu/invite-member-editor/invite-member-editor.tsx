@@ -6,19 +6,19 @@ import {
   MenuTrigger,
   notify,
   RowInput,
-} from '@affine/component';
-import { useAsyncCallback } from '@affine/core/components/hooks/affine-async-hooks';
-import { WorkspaceDialogService } from '@affine/core/modules/dialogs';
+} from '@yunke/component';
+import { useAsyncCallback } from '@yunke/core/components/hooks/affine-async-hooks';
+import { WorkspaceDialogService } from '@yunke/core/modules/dialogs';
 import {
   DocGrantedUsersService,
   type Member,
   MemberSearchService,
-} from '@affine/core/modules/permissions';
-import { UserFriendlyError } from '@affine/error';
-// import { DocRole, WorkspaceMemberStatus } from '@affine/graphql';
-import { DocRole } from '@affine/core/modules/share-doc/types';
-import { useI18n } from '@affine/i18n';
-import { track } from '@affine/track';
+} from '@yunke/core/modules/permissions';
+import { UserFriendlyError } from '@yunke/error';
+// import { DocRole, WorkspaceMemberStatus } from '@yunke/graphql';
+import { DocRole } from '@yunke/core/modules/share-doc/types';
+import { useI18n } from '@yunke/i18n';
+import { track } from '@yunke/track';
 import { ArrowLeftBigIcon } from '@blocksuite/icons/rc';
 import { useLiveData, useService } from '@toeverything/infra';
 import clsx from 'clsx';

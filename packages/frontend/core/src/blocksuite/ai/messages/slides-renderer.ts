@@ -1,8 +1,8 @@
-import { WorkspaceImpl } from '@affine/core/modules/workspace/impls/workspace';
-import { ViewExtensionManagerIdentifier } from '@blocksuite/affine/ext-loader';
-import { WithDisposable } from '@blocksuite/affine/global/lit';
-import { BlockStdScope, type EditorHost } from '@blocksuite/affine/std';
-import type { Store } from '@blocksuite/affine/store';
+import { WorkspaceImpl } from '@yunke/core/modules/workspace/impls/workspace';
+import { ViewExtensionManagerIdentifier } from '@blocksuite/yunke/ext-loader';
+import { WithDisposable } from '@blocksuite/yunke/global/lit';
+import { BlockStdScope, type EditorHost } from '@blocksuite/yunke/std';
+import type { Store } from '@blocksuite/yunke/store';
 import { css, html, LitElement, nothing } from 'lit';
 import { property, query } from 'lit/decorators.js';
 import { createRef, type Ref, ref } from 'lit/directives/ref.js';

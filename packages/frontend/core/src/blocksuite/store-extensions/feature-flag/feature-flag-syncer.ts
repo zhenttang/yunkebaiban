@@ -1,9 +1,9 @@
 import {
   AFFINE_FLAGS,
   type FeatureFlagService,
-} from '@affine/core/modules/feature-flag';
-import { FeatureFlagService as BSFeatureFlagService } from '@blocksuite/affine/shared/services';
-import { type ExtensionType, StoreExtension } from '@blocksuite/affine/store';
+} from '@yunke/core/modules/feature-flag';
+import { FeatureFlagService as BSFeatureFlagService } from '@blocksuite/yunke/shared/services';
+import { type ExtensionType, StoreExtension } from '@blocksuite/yunke/store';
 
 export function getFeatureFlagSyncer(
   featureFlagService: FeatureFlagService

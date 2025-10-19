@@ -3,7 +3,7 @@ import {
   DocsQuickSearchSession,
   RecentDocsQuickSearchSession,
   TagsQuickSearchSession,
-} from '@affine/core/modules/quicksearch';
+} from '@yunke/core/modules/quicksearch';
 import { Service } from '@toeverything/infra';
 
 export class MobileSearchService extends Service {

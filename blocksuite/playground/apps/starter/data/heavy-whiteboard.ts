@@ -1,12 +1,12 @@
-import type { SerializedXYWH } from '@blocksuite/affine/global/gfx';
+import type { SerializedXYWH } from '@blocksuite/yunke/global/gfx';
 import {
   Boxed,
   nanoid,
   native2Y,
   Text,
   type Workspace,
-} from '@blocksuite/affine/store';
-import { DEFAULT_ROUGHNESS } from '@blocksuite/affine-model';
+} from '@blocksuite/yunke/store';
+import { DEFAULT_ROUGHNESS } from '@blocksuite/yunke-model';
 import type * as Y from 'yjs';
 
 import type { InitFn } from './utils.js';

@@ -12,7 +12,7 @@ import {
   PaymentModal,
   TagSelector,
   CategoryFilter,
-} from '@affine/core/components/community-ui';
+} from '@yunke/core/components/community-ui';
 ```
 
 ## 📦 组件清单
@@ -144,7 +144,7 @@ import {
 组件库使用 Vanilla Extract 构建，支持主题定制：
 
 ```typescript
-import { communityTheme } from '@affine/core/components/community-ui';
+import { communityTheme } from '@yunke/core/components/community-ui';
 
 // 自定义主题变量
 const customTheme = {

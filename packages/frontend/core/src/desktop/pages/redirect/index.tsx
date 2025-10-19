@@ -1,4 +1,4 @@
-import { DebugLogger } from '@affine/debug';
+import { DebugLogger } from '@yunke/debug';
 import { type LoaderFunction, Navigate, useLoaderData } from 'react-router-dom';
 
 const trustedDomain = [

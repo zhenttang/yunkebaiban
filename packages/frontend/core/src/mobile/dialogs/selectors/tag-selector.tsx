@@ -1,10 +1,10 @@
-import { Modal } from '@affine/component';
+import { Modal } from '@yunke/component';
 import type {
   DialogComponentProps,
   WORKSPACE_DIALOG_SCHEMA,
-} from '@affine/core/modules/dialogs';
-import { TagService } from '@affine/core/modules/tag';
-import { useI18n } from '@affine/i18n';
+} from '@yunke/core/modules/dialogs';
+import { TagService } from '@yunke/core/modules/tag';
+import { useI18n } from '@yunke/i18n';
 import { useLiveData, useService } from '@toeverything/infra';
 import { cssVarV2 } from '@toeverything/theme/v2';
 import { useMemo } from 'react';

@@ -1,4 +1,4 @@
-import { DebugLogger } from '@affine/debug';
+import { DebugLogger } from '@yunke/debug';
 import type { Dict, OverridedMixpanel } from 'mixpanel-browser';
 import mixpanelBrowser from 'mixpanel-browser';
 

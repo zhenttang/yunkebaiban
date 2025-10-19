@@ -1,7 +1,7 @@
-import { Button } from '@affine/component';
-import { AuthPageContainer } from '@affine/component/auth-components';
-import { useNavigateHelper } from '@affine/core/components/hooks/use-navigate-helper';
-import { Trans, useI18n } from '@affine/i18n';
+import { Button } from '@yunke/component';
+import { AuthPageContainer } from '@yunke/component/auth-components';
+import { useNavigateHelper } from '@yunke/core/components/hooks/use-navigate-helper';
+import { Trans, useI18n } from '@yunke/i18n';
 import { useCallback } from 'react';
 
 import * as styles from './styles.css';

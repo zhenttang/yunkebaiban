@@ -1,4 +1,4 @@
-import { Modal, toast } from '@affine/component';
+import { Modal, toast } from '@yunke/component';
 import {
   FavoriteTag,
   type ListItem,
@@ -7,16 +7,16 @@ import {
   TagListItemRenderer,
   type TagMeta,
   VirtualizedList,
-} from '@affine/core/components/page-list';
-import { SelectorLayout } from '@affine/core/components/page-list/selector/selector-layout';
+} from '@yunke/core/components/page-list';
+import { SelectorLayout } from '@yunke/core/components/page-list/selector/selector-layout';
 import type {
   DialogComponentProps,
   WORKSPACE_DIALOG_SCHEMA,
-} from '@affine/core/modules/dialogs';
-import { FavoriteService } from '@affine/core/modules/favorite';
-import { TagService } from '@affine/core/modules/tag';
-import { WorkspaceService } from '@affine/core/modules/workspace';
-import { useI18n } from '@affine/i18n';
+} from '@yunke/core/modules/dialogs';
+import { FavoriteService } from '@yunke/core/modules/favorite';
+import { TagService } from '@yunke/core/modules/tag';
+import { WorkspaceService } from '@yunke/core/modules/workspace';
+import { useI18n } from '@yunke/i18n';
 import { useLiveData, useService } from '@toeverything/infra';
 import { cssVar } from '@toeverything/theme';
 import { useCallback, useMemo, useState } from 'react';

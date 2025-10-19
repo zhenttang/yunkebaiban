@@ -1,5 +1,5 @@
-import { splitElements } from '@blocksuite/affine/blocks/root';
-import { DefaultTool } from '@blocksuite/affine/blocks/surface';
+import { splitElements } from '@blocksuite/yunke/blocks/root';
+import { DefaultTool } from '@blocksuite/yunke/blocks/surface';
 import {
   CodeBlockModel,
   EdgelessTextBlockModel,
@@ -9,14 +9,14 @@ import {
   NoteBlockModel,
   ShapeElementModel,
   TextElementModel,
-} from '@blocksuite/affine/model';
-import { matchModels } from '@blocksuite/affine/shared/utils';
-import type { EditorHost } from '@blocksuite/affine/std';
+} from '@blocksuite/yunke/model';
+import { matchModels } from '@blocksuite/yunke/shared/utils';
+import type { EditorHost } from '@blocksuite/yunke/std';
 import {
   GfxControllerIdentifier,
   type GfxModel,
-} from '@blocksuite/affine/std/gfx';
-import { type BlockModel, Slice } from '@blocksuite/affine/store';
+} from '@blocksuite/yunke/std/gfx';
+import { type BlockModel, Slice } from '@blocksuite/yunke/store';
 import type { TemplateResult } from 'lit';
 
 import { getContentFromSlice } from '../../utils';

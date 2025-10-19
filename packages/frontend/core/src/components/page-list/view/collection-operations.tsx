@@ -1,10 +1,10 @@
-import type { MenuItemProps } from '@affine/component';
-import { Menu, MenuItem, usePromptModal } from '@affine/component';
-import { WorkspaceDialogService } from '@affine/core/modules/dialogs';
-import { CompatibleFavoriteItemsAdapter } from '@affine/core/modules/favorite';
-import { WorkbenchService } from '@affine/core/modules/workbench';
-import { useI18n } from '@affine/i18n';
-import track from '@affine/track';
+import type { MenuItemProps } from '@yunke/component';
+import { Menu, MenuItem, usePromptModal } from '@yunke/component';
+import { WorkspaceDialogService } from '@yunke/core/modules/dialogs';
+import { CompatibleFavoriteItemsAdapter } from '@yunke/core/modules/favorite';
+import { WorkbenchService } from '@yunke/core/modules/workbench';
+import { useI18n } from '@yunke/i18n';
+import track from '@yunke/track';
 import {
   DeleteIcon,
   EditIcon,

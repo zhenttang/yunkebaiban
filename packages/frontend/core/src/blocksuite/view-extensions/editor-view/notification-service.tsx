@@ -6,8 +6,8 @@ import {
   type ToastOptions,
   toReactNode,
   type useConfirmModal,
-} from '@affine/component';
-import { NotificationExtension } from '@blocksuite/affine/shared/services';
+} from '@yunke/component';
+import { NotificationExtension } from '@blocksuite/yunke/shared/services';
 
 export function patchNotificationService({
   closeConfirmModal,

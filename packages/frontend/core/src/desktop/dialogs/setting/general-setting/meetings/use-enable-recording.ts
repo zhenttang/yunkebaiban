@@ -1,8 +1,8 @@
-import { useConfirmModal } from '@affine/component';
-import { useAsyncCallback } from '@affine/core/components/hooks/affine-async-hooks';
-import { MeetingSettingsService } from '@affine/core/modules/media/services/meeting-settings';
-import { useI18n } from '@affine/i18n';
-import track from '@affine/track';
+import { useConfirmModal } from '@yunke/component';
+import { useAsyncCallback } from '@yunke/core/components/hooks/affine-async-hooks';
+import { MeetingSettingsService } from '@yunke/core/modules/media/services/meeting-settings';
+import { useI18n } from '@yunke/i18n';
+import track from '@yunke/track';
 import { useService } from '@toeverything/infra';
 
 export const useEnableRecording = () => {

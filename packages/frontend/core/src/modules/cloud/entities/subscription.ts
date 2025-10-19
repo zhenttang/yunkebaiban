@@ -3,7 +3,7 @@
 //   type SubscriptionQuery,
 //   SubscriptionRecurring,
 //   SubscriptionVariant,
-//} from '@affine/graphql';
+//} from '@yunke/graphql';
 
 import {
   catchErrorInto,

@@ -1,9 +1,9 @@
 import { execSync } from 'node:child_process';
 
-import { ProjectRoot } from '@affine-tools/utils/path';
-import { Package } from '@affine-tools/utils/workspace';
+import { ProjectRoot } from '@yunke-tools/utils/path';
+import { Package } from '@yunke-tools/utils/workspace';
 
-const iosPackage = new Package('@affine/ios');
+const iosPackage = new Package('@yunke/ios');
 
 const PackageRoot = iosPackage.path;
 

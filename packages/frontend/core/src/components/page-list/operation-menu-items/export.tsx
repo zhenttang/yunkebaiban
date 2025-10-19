@@ -1,6 +1,6 @@
-import { MenuItem, MenuSeparator, MenuSub } from '@affine/component';
-import { useI18n } from '@affine/i18n';
-import { track } from '@affine/track';
+import { MenuItem, MenuSeparator, MenuSub } from '@yunke/component';
+import { useI18n } from '@yunke/i18n';
+import { track } from '@yunke/track';
 import {
   ExportIcon,
   ExportToHtmlIcon,

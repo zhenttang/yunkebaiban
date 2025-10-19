@@ -1,8 +1,8 @@
-import { Loading, Tooltip, useConfirmModal } from '@affine/component';
-import { Pagination } from '@affine/component/setting-components';
-import { useI18n } from '@affine/i18n';
-import { getAttachmentFileIconRC } from '@blocksuite/affine/components/icons';
-import { cssVarV2 } from '@blocksuite/affine/shared/theme';
+import { Loading, Tooltip, useConfirmModal } from '@yunke/component';
+import { Pagination } from '@yunke/component/setting-components';
+import { useI18n } from '@yunke/i18n';
+import { getAttachmentFileIconRC } from '@blocksuite/yunke/components/icons';
+import { cssVarV2 } from '@blocksuite/yunke/shared/theme';
 import { CloseIcon, WarningIcon } from '@blocksuite/icons/rc';
 import clsx from 'clsx';
 import { useCallback } from 'react';

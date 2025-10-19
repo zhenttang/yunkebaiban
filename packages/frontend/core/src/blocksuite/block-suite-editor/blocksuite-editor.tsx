@@ -1,28 +1,28 @@
-import { EditorLoading } from '@affine/component/page-detail-skeleton';
+import { EditorLoading } from '@yunke/component/page-detail-skeleton';
 import type {
   EdgelessEditor,
   PageEditor,
-} from '@affine/core/blocksuite/editors';
-import { ServerService } from '@affine/core/modules/cloud';
+} from '@yunke/core/blocksuite/editors';
+import { ServerService } from '@yunke/core/modules/cloud';
 import {
   EditorSettingService,
   fontStyleOptions,
-} from '@affine/core/modules/editor-setting';
-import { FeatureFlagService } from '@affine/core/modules/feature-flag';
-import { WorkspaceService } from '@affine/core/modules/workspace';
-import track from '@affine/track';
-import { appendParagraphCommand } from '@blocksuite/affine/blocks/paragraph';
-import type { DocTitle } from '@blocksuite/affine/fragments/doc-title';
-import { DisposableGroup } from '@blocksuite/affine/global/disposable';
-import type { DocMode, RootBlockModel } from '@blocksuite/affine/model';
+} from '@yunke/core/modules/editor-setting';
+import { FeatureFlagService } from '@yunke/core/modules/feature-flag';
+import { WorkspaceService } from '@yunke/core/modules/workspace';
+import track from '@yunke/track';
+import { appendParagraphCommand } from '@blocksuite/yunke/blocks/paragraph';
+import type { DocTitle } from '@blocksuite/yunke/fragments/doc-title';
+import { DisposableGroup } from '@blocksuite/yunke/global/disposable';
+import type { DocMode, RootBlockModel } from '@blocksuite/yunke/model';
 import {
   customImageProxyMiddleware,
   ImageProxyService,
-} from '@blocksuite/affine/shared/adapters';
-import { focusBlockEnd } from '@blocksuite/affine/shared/commands';
-import { getLastNoteBlock } from '@blocksuite/affine/shared/utils';
-import type { BlockStdScope, EditorHost } from '@blocksuite/affine/std';
-import type { Store } from '@blocksuite/affine/store';
+} from '@blocksuite/yunke/shared/adapters';
+import { focusBlockEnd } from '@blocksuite/yunke/shared/commands';
+import { getLastNoteBlock } from '@blocksuite/yunke/shared/utils';
+import type { BlockStdScope, EditorHost } from '@blocksuite/yunke/std';
+import type { Store } from '@blocksuite/yunke/store';
 import { Slot } from '@radix-ui/react-slot';
 import { useLiveData, useService } from '@toeverything/infra';
 import { cssVar } from '@toeverything/theme';

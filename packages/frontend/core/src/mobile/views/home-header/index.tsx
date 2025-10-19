@@ -2,10 +2,10 @@ import {
   IconButton,
   SafeArea,
   startScopedViewTransition,
-} from '@affine/component';
-import { WorkspaceDialogService } from '@affine/core/modules/dialogs';
-import { WorkbenchService } from '@affine/core/modules/workbench';
-import { useI18n } from '@affine/i18n';
+} from '@yunke/component';
+import { WorkspaceDialogService } from '@yunke/core/modules/dialogs';
+import { WorkbenchService } from '@yunke/core/modules/workbench';
+import { useI18n } from '@yunke/i18n';
 import { SettingsIcon } from '@blocksuite/icons/rc';
 import { useService } from '@toeverything/infra';
 import clsx from 'clsx';

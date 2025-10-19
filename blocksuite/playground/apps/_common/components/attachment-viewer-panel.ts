@@ -1,7 +1,7 @@
-import { getAttachmentFileIcon } from '@blocksuite/affine/components/icons';
-import { SignalWatcher, WithDisposable } from '@blocksuite/affine/global/lit';
-import type { AttachmentBlockModel } from '@blocksuite/affine-model';
-import { formatSize } from '@blocksuite/affine-shared/utils';
+import { getAttachmentFileIcon } from '@blocksuite/yunke/components/icons';
+import { SignalWatcher, WithDisposable } from '@blocksuite/yunke/global/lit';
+import type { AttachmentBlockModel } from '@blocksuite/yunke-model';
+import { formatSize } from '@blocksuite/yunke-shared/utils';
 import {
   ArrowDownBigIcon,
   ArrowUpBigIcon,

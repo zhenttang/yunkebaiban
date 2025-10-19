@@ -3,15 +3,15 @@ import {
   type DropTargetOptions,
   IconButton,
   toast,
-} from '@affine/component';
-import { NavigationPanelService } from '@affine/core/modules/navigation-panel';
+} from '@yunke/component';
+import { NavigationPanelService } from '@yunke/core/modules/navigation-panel';
 import {
   type FolderNode,
   OrganizeService,
-} from '@affine/core/modules/organize';
-import type { AffineDNDData } from '@affine/core/types/dnd';
-import { useI18n } from '@affine/i18n';
-import { track } from '@affine/track';
+} from '@yunke/core/modules/organize';
+import type { AffineDNDData } from '@yunke/core/types/dnd';
+import { useI18n } from '@yunke/i18n';
+import { track } from '@yunke/track';
 import { AddOrganizeIcon } from '@blocksuite/icons/rc';
 import { useLiveData, useServices } from '@toeverything/infra';
 import { useCallback, useEffect, useMemo, useState } from 'react';

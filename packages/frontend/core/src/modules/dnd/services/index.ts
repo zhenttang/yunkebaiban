@@ -5,15 +5,15 @@ import {
   monitorForElements,
   type MonitorGetFeedback,
   type toExternalData,
-} from '@affine/component';
-import type { AffineDNDData } from '@affine/core/types/dnd';
+} from '@yunke/component';
+import type { AffineDNDData } from '@yunke/core/types/dnd';
 import {
   DNDAPIExtension,
   DndApiExtensionIdentifier,
-} from '@blocksuite/affine/shared/services';
-import { BlockStdScope } from '@blocksuite/affine/std';
-import type { SliceSnapshot } from '@blocksuite/affine/store';
-import type { DragBlockPayload } from '@blocksuite/affine/widgets/drag-handle';
+} from '@blocksuite/yunke/shared/services';
+import { BlockStdScope } from '@blocksuite/yunke/std';
+import type { SliceSnapshot } from '@blocksuite/yunke/store';
+import type { DragBlockPayload } from '@blocksuite/yunke/widgets/drag-handle';
 import { Service } from '@toeverything/infra';
 
 import type { DocsService } from '../../doc';

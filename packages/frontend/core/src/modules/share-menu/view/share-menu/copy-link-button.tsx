@@ -1,11 +1,11 @@
-import { Button, Menu, MenuItem, MenuTrigger } from '@affine/component';
+import { Button, Menu, MenuItem, MenuTrigger } from '@yunke/component';
 import {
   getSelectedNodes,
   useSharingUrl,
-} from '@affine/core/components/hooks/affine/use-share-url';
-import { EditorService } from '@affine/core/modules/editor';
-import { useI18n } from '@affine/i18n';
-import type { DocMode } from '@blocksuite/affine/model';
+} from '@yunke/core/components/hooks/affine/use-share-url';
+import { EditorService } from '@yunke/core/modules/editor';
+import { useI18n } from '@yunke/i18n';
+import type { DocMode } from '@blocksuite/yunke/model';
 import { BlockIcon, EdgelessIcon, PageIcon } from '@blocksuite/icons/rc';
 import { useLiveData, useService } from '@toeverything/infra';
 import clsx from 'clsx';

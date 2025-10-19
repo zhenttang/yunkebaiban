@@ -1,9 +1,9 @@
-import { WithDisposable } from '@blocksuite/affine/global/lit';
-import { NotificationProvider } from '@blocksuite/affine/shared/services';
-import { unsafeCSSVarV2 } from '@blocksuite/affine/shared/theme';
-import type { EditorHost } from '@blocksuite/affine/std';
-import { ShadowlessElement } from '@blocksuite/affine/std';
-import type { Store } from '@blocksuite/affine/store';
+import { WithDisposable } from '@blocksuite/yunke/global/lit';
+import { NotificationProvider } from '@blocksuite/yunke/shared/services';
+import { unsafeCSSVarV2 } from '@blocksuite/yunke/shared/theme';
+import type { EditorHost } from '@blocksuite/yunke/std';
+import { ShadowlessElement } from '@blocksuite/yunke/std';
+import type { Store } from '@blocksuite/yunke/store';
 import { css, html } from 'lit';
 import { property } from 'lit/decorators.js';
 

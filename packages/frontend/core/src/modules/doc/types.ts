@@ -1,5 +1,5 @@
-import type { DocProps } from '@affine/core/blocksuite/initialization';
-import type { DocMode } from '@blocksuite/affine/model';
+import type { DocProps } from '@yunke/core/blocksuite/initialization';
+import type { DocMode } from '@blocksuite/yunke/model';
 
 export interface DocCreateOptions {
   id?: string;

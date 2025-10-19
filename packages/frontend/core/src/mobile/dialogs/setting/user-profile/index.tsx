@@ -1,7 +1,7 @@
-import { Avatar } from '@affine/component';
-import { useSignOut } from '@affine/core/components/hooks/affine/use-sign-out';
-import { AuthService } from '@affine/core/modules/cloud';
-import { GlobalDialogService } from '@affine/core/modules/dialogs';
+import { Avatar } from '@yunke/component';
+import { useSignOut } from '@yunke/core/components/hooks/affine/use-sign-out';
+import { AuthService } from '@yunke/core/modules/cloud';
+import { GlobalDialogService } from '@yunke/core/modules/dialogs';
 import { ArrowRightSmallIcon } from '@blocksuite/icons/rc';
 import { useLiveData, useService } from '@toeverything/infra';
 import { type ReactNode } from 'react';

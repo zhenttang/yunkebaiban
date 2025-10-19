@@ -3,14 +3,14 @@ import {
   toast,
   useConfirmModal,
   useDropTarget,
-} from '@affine/component';
-import { MenuLinkItem } from '@affine/core/modules/app-sidebar/views';
-import { DocsService } from '@affine/core/modules/doc';
-import { GlobalContextService } from '@affine/core/modules/global-context';
-import { GuardService } from '@affine/core/modules/permissions';
-import type { AffineDNDData } from '@affine/core/types/dnd';
-import { UserFriendlyError } from '@affine/error';
-import { useI18n } from '@affine/i18n';
+} from '@yunke/component';
+import { MenuLinkItem } from '@yunke/core/modules/app-sidebar/views';
+import { DocsService } from '@yunke/core/modules/doc';
+import { GlobalContextService } from '@yunke/core/modules/global-context';
+import { GuardService } from '@yunke/core/modules/permissions';
+import type { AffineDNDData } from '@yunke/core/types/dnd';
+import { UserFriendlyError } from '@yunke/error';
+import { useI18n } from '@yunke/i18n';
 import { useLiveData, useService } from '@toeverything/infra';
 
 export const TrashButton = () => {

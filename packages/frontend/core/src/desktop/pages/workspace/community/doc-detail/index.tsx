@@ -1,10 +1,10 @@
 import { useEffect, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Button } from '@affine/component';
+import { Button } from '@yunke/component';
 import { ArrowLeftSmallIcon } from '@blocksuite/icons/rc';
 
 import { ViewBody, ViewHeader, ViewTitle } from '../../../../../modules/workbench';
-import { DocumentCard } from '@affine/core/components/community-ui';
+import { DocumentCard } from '@yunke/core/components/community-ui';
 
 import * as styles from '../community.css';
 import { useCommunityDocument } from '../hooks/use-community-document';

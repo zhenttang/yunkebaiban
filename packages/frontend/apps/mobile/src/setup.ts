@@ -1,4 +1,4 @@
-import '@affine/core/bootstrap/browser';
-import '@affine/core/bootstrap/cleanup';
-import '@affine/component/theme';
-import '@affine/core/mobile/styles/mobile.css';
+import '@yunke/core/bootstrap/browser';
+import '@yunke/core/bootstrap/cleanup';
+import '@yunke/component/theme';
+import '@yunke/core/mobile/styles/mobile.css';

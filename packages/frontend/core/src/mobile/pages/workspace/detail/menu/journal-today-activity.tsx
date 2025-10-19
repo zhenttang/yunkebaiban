@@ -1,14 +1,14 @@
-import { MenuItem, MenuSeparator, MobileMenuSub } from '@affine/component';
-import { sortPagesByDate } from '@affine/core/desktop/pages/workspace/detail-page/tabs/journal';
+import { MenuItem, MenuSeparator, MobileMenuSub } from '@yunke/component';
+import { sortPagesByDate } from '@yunke/core/desktop/pages/workspace/detail-page/tabs/journal';
 import {
   type DocRecord,
   DocService,
   DocsService,
-} from '@affine/core/modules/doc';
-import { DocDisplayMetaService } from '@affine/core/modules/doc-display-meta';
-import { JournalService } from '@affine/core/modules/journal';
-import { WorkbenchLink } from '@affine/core/modules/workbench';
-import { useI18n } from '@affine/i18n';
+} from '@yunke/core/modules/doc';
+import { DocDisplayMetaService } from '@yunke/core/modules/doc-display-meta';
+import { JournalService } from '@yunke/core/modules/journal';
+import { WorkbenchLink } from '@yunke/core/modules/workbench';
+import { useI18n } from '@yunke/i18n';
 import { HistoryIcon } from '@blocksuite/icons/rc';
 import { useLiveData, useService } from '@toeverything/infra';
 import dayjs from 'dayjs';

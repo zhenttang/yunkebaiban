@@ -1,19 +1,19 @@
-import { Button } from '@affine/admin/components/ui/button';
-import { Input } from '@affine/admin/components/ui/input';
+import { Button } from '@yunke/admin/components/ui/button';
+import { Input } from '@yunke/admin/components/ui/input';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@affine/admin/components/ui/select';
+} from '@yunke/admin/components/ui/select';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@affine/admin/components/ui/dropdown-menu';
+} from '@yunke/admin/components/ui/dropdown-menu';
 import { 
   PlusIcon, 
   SearchIcon, 

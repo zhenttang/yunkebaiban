@@ -1,8 +1,8 @@
-import { Button, IconButton, Menu } from '@affine/component';
-import { GlobalStateService } from '@affine/core/modules/storage';
-import { TemplateDocService } from '@affine/core/modules/template-doc';
-import { TemplateListMenuContentScrollable } from '@affine/core/modules/template-doc/view/template-list-menu';
-import { useI18n } from '@affine/i18n';
+import { Button, IconButton, Menu } from '@yunke/component';
+import { GlobalStateService } from '@yunke/core/modules/storage';
+import { TemplateDocService } from '@yunke/core/modules/template-doc';
+import { TemplateListMenuContentScrollable } from '@yunke/core/modules/template-doc/view/template-list-menu';
+import { useI18n } from '@yunke/i18n';
 import { CloseIcon, TemplateIcon } from '@blocksuite/icons/rc';
 import { LiveData, useLiveData, useService } from '@toeverything/infra';
 import { useTheme } from 'next-themes';

@@ -1,11 +1,11 @@
-import { Modal } from '@affine/component';
+import { Modal } from '@yunke/component';
 import {
   type CollectionInfo,
   CollectionService,
-} from '@affine/core/modules/collection';
-import type { DialogComponentProps } from '@affine/core/modules/dialogs';
-import type { WORKSPACE_DIALOG_SCHEMA } from '@affine/core/modules/dialogs/constant';
-import { useI18n } from '@affine/i18n';
+} from '@yunke/core/modules/collection';
+import type { DialogComponentProps } from '@yunke/core/modules/dialogs';
+import type { WORKSPACE_DIALOG_SCHEMA } from '@yunke/core/modules/dialogs/constant';
+import { useI18n } from '@yunke/i18n';
 import { useLiveData, useService } from '@toeverything/infra';
 import { useCallback } from 'react';
 

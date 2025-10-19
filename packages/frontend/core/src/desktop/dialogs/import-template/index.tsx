@@ -1,23 +1,23 @@
-import { Button, Modal } from '@affine/component';
-import { useAsyncCallback } from '@affine/core/components/hooks/affine-async-hooks';
-import { useNavigateHelper } from '@affine/core/components/hooks/use-navigate-helper';
-import { useWorkspaceName } from '@affine/core/components/hooks/use-workspace-info';
-import { WorkspaceSelector } from '@affine/core/components/workspace-selector';
-import { AuthService } from '@affine/core/modules/cloud';
+import { Button, Modal } from '@yunke/component';
+import { useAsyncCallback } from '@yunke/core/components/hooks/affine-async-hooks';
+import { useNavigateHelper } from '@yunke/core/components/hooks/use-navigate-helper';
+import { useWorkspaceName } from '@yunke/core/components/hooks/use-workspace-info';
+import { WorkspaceSelector } from '@yunke/core/components/workspace-selector';
+import { AuthService } from '@yunke/core/modules/cloud';
 import {
   type DialogComponentProps,
   type GLOBAL_DIALOG_SCHEMA,
-} from '@affine/core/modules/dialogs';
+} from '@yunke/core/modules/dialogs';
 import {
   ImportTemplateService,
   TemplateDownloaderService,
-} from '@affine/core/modules/import-template';
+} from '@yunke/core/modules/import-template';
 import {
   type WorkspaceMetadata,
   WorkspacesService,
-} from '@affine/core/modules/workspace';
-import { useI18n } from '@affine/i18n';
-import type { DocMode } from '@blocksuite/affine/model';
+} from '@yunke/core/modules/workspace';
+import { useI18n } from '@yunke/i18n';
+import type { DocMode } from '@blocksuite/yunke/model';
 import { AllDocsIcon } from '@blocksuite/icons/rc';
 import { useLiveData, useService } from '@toeverything/infra';
 import { cssVar } from '@toeverything/theme';

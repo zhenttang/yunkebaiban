@@ -1,6 +1,6 @@
-import { Button } from '@affine/component/ui/button';
-import { EditorService } from '@affine/core/modules/editor';
-import { useI18n } from '@affine/i18n';
+import { Button } from '@yunke/component/ui/button';
+import { EditorService } from '@yunke/core/modules/editor';
+import { useI18n } from '@yunke/i18n';
 import { PresentationIcon } from '@blocksuite/icons/rc';
 import { useLiveData, useService } from '@toeverything/infra';
 

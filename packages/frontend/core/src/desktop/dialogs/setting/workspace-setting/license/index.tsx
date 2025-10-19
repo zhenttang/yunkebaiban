@@ -1,26 +1,26 @@
-import { Button, notify } from '@affine/component';
+import { Button, notify } from '@yunke/component';
 import {
   SettingHeader,
   SettingRow,
-} from '@affine/component/setting-components';
-import { getUpgradeQuestionnaireLink } from '@affine/core/components/hooks/affine/use-subscription-notify';
-import { useAsyncCallback } from '@affine/core/components/hooks/affine-async-hooks';
-import { useMutation } from '@affine/core/components/hooks/use-mutation';
+} from '@yunke/component/setting-components';
+import { getUpgradeQuestionnaireLink } from '@yunke/core/components/hooks/affine/use-subscription-notify';
+import { useAsyncCallback } from '@yunke/core/components/hooks/affine-async-hooks';
+import { useMutation } from '@yunke/core/components/hooks/use-mutation';
 import {
   AuthService,
   SelfhostLicenseService,
   WorkspaceSubscriptionService,
-} from '@affine/core/modules/cloud';
-import { WorkspacePermissionService } from '@affine/core/modules/permissions';
-import { UrlService } from '@affine/core/modules/url';
-import { WorkspaceService } from '@affine/core/modules/workspace';
-import { UserFriendlyError } from '@affine/error';
+} from '@yunke/core/modules/cloud';
+import { WorkspacePermissionService } from '@yunke/core/modules/permissions';
+import { UrlService } from '@yunke/core/modules/url';
+import { WorkspaceService } from '@yunke/core/modules/workspace';
+import { UserFriendlyError } from '@yunke/error';
 //import {
 //   createSelfhostCustomerPortalMutation,
 //   SubscriptionPlan,
 //   SubscriptionRecurring,
 //   SubscriptionVariant,
-//} from '@affine/graphql';
+//} from '@yunke/graphql';
 
 // Temporary placeholder enums to fix TypeScript errors
 enum SubscriptionPlan {
@@ -46,7 +46,7 @@ enum SubscriptionVariant {
 const createSelfhostCustomerPortalMutation = {
   // Placeholder for mutation
 };
-import { useI18n } from '@affine/i18n';
+import { useI18n } from '@yunke/i18n';
 import { FrameworkScope, useLiveData, useService } from '@toeverything/infra';
 import { useCallback, useEffect, useState } from 'react';
 

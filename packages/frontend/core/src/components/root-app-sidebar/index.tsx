@@ -8,15 +8,15 @@ import {
   QuickSearchInput,
   SidebarContainer,
   SidebarScrollableContainer,
-} from '@affine/core/modules/app-sidebar/views';
-import { ExternalMenuLinkItem } from '@affine/core/modules/app-sidebar/views/menu-item/external-menu-link-item';
-import { AuthService } from '@affine/core/modules/cloud';
-import { WorkspaceDialogService } from '@affine/core/modules/dialogs';
-import { CMDKQuickSearchService } from '@affine/core/modules/quicksearch/services/cmdk';
-import type { Workspace } from '@affine/core/modules/workspace';
-import { useI18n } from '@affine/i18n';
-import { track } from '@affine/track';
-import type { Store } from '@blocksuite/affine/store';
+} from '@yunke/core/modules/app-sidebar/views';
+import { ExternalMenuLinkItem } from '@yunke/core/modules/app-sidebar/views/menu-item/external-menu-link-item';
+import { AuthService } from '@yunke/core/modules/cloud';
+import { WorkspaceDialogService } from '@yunke/core/modules/dialogs';
+import { CMDKQuickSearchService } from '@yunke/core/modules/quicksearch/services/cmdk';
+import type { Workspace } from '@yunke/core/modules/workspace';
+import { useI18n } from '@yunke/i18n';
+import { track } from '@yunke/track';
+import type { Store } from '@blocksuite/yunke/store';
 import {
   AllDocsIcon,
   ImportIcon,
@@ -91,7 +91,7 @@ const AllDocsButton = () => {
 
 /**
  * This is for the whole affine app sidebar.
- * This component wraps the app sidebar in `@affine/component` with logic and data.
+ * This component wraps the app sidebar in `@yunke/component` with logic and data.
  *
  */
 export const RootAppSidebar = memo((): ReactElement => {

@@ -4,7 +4,7 @@ import { css, html, nothing } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 
-import type { ParagraphBlockModel } from '@blocksuite/affine-model';
+import type { ParagraphBlockModel } from '@blocksuite/yunke-model';
 import type { LevelSuggestion, LevelIssue } from './smart-level-detector';
 import { SmartHeadingLevelDetector } from './smart-level-detector';
 

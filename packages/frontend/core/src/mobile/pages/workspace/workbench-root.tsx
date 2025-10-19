@@ -1,8 +1,8 @@
 import {
   useBindWorkbenchToBrowserRouter,
   WorkbenchService,
-} from '@affine/core/modules/workbench';
-import { ViewRoot } from '@affine/core/modules/workbench/view/view-root';
+} from '@yunke/core/modules/workbench';
+import { ViewRoot } from '@yunke/core/modules/workbench/view/view-root';
 import { useLiveData, useService } from '@toeverything/infra';
 import { useEffect } from 'react';
 import { type RouteObject, useLocation } from 'react-router-dom';

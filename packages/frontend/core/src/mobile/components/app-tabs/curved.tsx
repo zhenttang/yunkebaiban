@@ -1,11 +1,11 @@
-import { SafeArea } from '@affine/component';
-import { WorkbenchLink, WorkbenchService } from '@affine/core/modules/workbench';
-import { GlobalCacheService } from '@affine/core/modules/storage';
-import { DocDisplayMetaService } from '@affine/core/modules/doc-display-meta';
-import { JournalService } from '@affine/core/modules/journal';
-import { WorkspaceService } from '@affine/core/modules/workspace';
+import { SafeArea } from '@yunke/component';
+import { WorkbenchLink, WorkbenchService } from '@yunke/core/modules/workbench';
+import { GlobalCacheService } from '@yunke/core/modules/storage';
+import { DocDisplayMetaService } from '@yunke/core/modules/doc-display-meta';
+import { JournalService } from '@yunke/core/modules/journal';
+import { WorkspaceService } from '@yunke/core/modules/workspace';
 // no-op
-import { usePageHelper } from '@affine/core/blocksuite/block-suite-page-list/utils';
+import { usePageHelper } from '@yunke/core/blocksuite/block-suite-page-list/utils';
 import { EditIcon, TodayIcon } from '@blocksuite/icons/rc';
 import { LiveData, useLiveData, useService } from '@toeverything/infra';
 import { assignInlineVars } from '@vanilla-extract/dynamic';

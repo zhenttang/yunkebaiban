@@ -1,22 +1,22 @@
-import { notify } from '@affine/component';
-import { ServerService } from '@affine/core/modules/cloud';
-import { toDocSearchParams } from '@affine/core/modules/navigation';
-import { copyTextToClipboard } from '@affine/core/utils/clipboard';
-import { useI18n } from '@affine/i18n';
-import { track } from '@affine/track';
-import type { SerializedXYWH } from '@blocksuite/affine/global/gfx';
-import { type DocMode } from '@blocksuite/affine/model';
+import { notify } from '@yunke/component';
+import { ServerService } from '@yunke/core/modules/cloud';
+import { toDocSearchParams } from '@yunke/core/modules/navigation';
+import { copyTextToClipboard } from '@yunke/core/utils/clipboard';
+import { useI18n } from '@yunke/i18n';
+import { track } from '@yunke/track';
+import type { SerializedXYWH } from '@blocksuite/yunke/global/gfx';
+import { type DocMode } from '@blocksuite/yunke/model';
 import {
   getBlockSelectionsCommand,
   getImageSelectionsCommand,
   getSelectedModelsCommand,
   getTextSelectionCommand,
-} from '@blocksuite/affine/shared/commands';
-import { type EditorHost } from '@blocksuite/affine/std';
+} from '@blocksuite/yunke/shared/commands';
+import { type EditorHost } from '@blocksuite/yunke/std';
 import {
   GfxBlockElementModel,
   GfxControllerIdentifier,
-} from '@blocksuite/affine/std/gfx';
+} from '@blocksuite/yunke/std/gfx';
 import { useService } from '@toeverything/infra';
 import { useCallback } from 'react';
 

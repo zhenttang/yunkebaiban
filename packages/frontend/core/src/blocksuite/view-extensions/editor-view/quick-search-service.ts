@@ -1,29 +1,29 @@
-import { DocsService } from '@affine/core/modules/doc';
+import { DocsService } from '@yunke/core/modules/doc';
 import {
   CreationQuickSearchSession,
   DocsQuickSearchSession,
   LinksQuickSearchSession,
   QuickSearchService,
   RecentDocsQuickSearchSession,
-} from '@affine/core/modules/quicksearch';
-import { ExternalLinksQuickSearchSession } from '@affine/core/modules/quicksearch/impls/external-links';
-import { JournalsQuickSearchSession } from '@affine/core/modules/quicksearch/impls/journals';
-import { track } from '@affine/track';
+} from '@yunke/core/modules/quicksearch';
+import { ExternalLinksQuickSearchSession } from '@yunke/core/modules/quicksearch/impls/external-links';
+import { JournalsQuickSearchSession } from '@yunke/core/modules/quicksearch/impls/journals';
+import { track } from '@yunke/track';
 import {
   BookmarkSlashMenuConfigIdentifier,
   insertLinkByQuickSearchCommand,
-} from '@blocksuite/affine/blocks/bookmark';
-import { LinkedDocSlashMenuConfigIdentifier } from '@blocksuite/affine/blocks/embed-doc';
-import type { ServiceIdentifier } from '@blocksuite/affine/global/di';
+} from '@blocksuite/yunke/blocks/bookmark';
+import { LinkedDocSlashMenuConfigIdentifier } from '@blocksuite/yunke/blocks/embed-doc';
+import type { ServiceIdentifier } from '@blocksuite/yunke/global/di';
 import {
   QuickSearchExtension,
   type QuickSearchResult,
-} from '@blocksuite/affine/shared/services';
-import { type ExtensionType } from '@blocksuite/affine/store';
+} from '@blocksuite/yunke/shared/services';
+import { type ExtensionType } from '@blocksuite/yunke/store';
 import type {
   SlashMenuConfig,
   SlashMenuItem,
-} from '@blocksuite/affine/widgets/slash-menu';
+} from '@blocksuite/yunke/widgets/slash-menu';
 import type { FrameworkProvider } from '@toeverything/infra';
 import { pick } from 'lodash-es';
 

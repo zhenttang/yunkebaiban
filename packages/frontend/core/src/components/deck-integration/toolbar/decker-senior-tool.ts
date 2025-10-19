@@ -1,4 +1,4 @@
-import { SeniorToolExtension } from '@blocksuite/affine-widget-edgeless-toolbar';
+import { SeniorToolExtension } from '@blocksuite/yunke-widget-edgeless-toolbar';
 import { html } from 'lit';
 
 export const deckerSeniorTool = SeniorToolExtension(

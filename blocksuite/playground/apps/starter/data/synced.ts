@@ -1,5 +1,5 @@
-import { Text, type Workspace } from '@blocksuite/affine/store';
-import { MarkdownTransformer } from '@blocksuite/affine/widgets/linked-doc';
+import { Text, type Workspace } from '@blocksuite/yunke/store';
+import { MarkdownTransformer } from '@blocksuite/yunke/widgets/linked-doc';
 import { getTestStoreManager } from '@blocksuite/integration-test/store';
 
 import type { InitFn } from './utils';

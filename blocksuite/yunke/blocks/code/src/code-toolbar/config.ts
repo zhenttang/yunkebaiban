@@ -1,0 +1,265 @@
+import {
+  CancelWrapIcon,
+  CaptionIcon,
+  CopyIcon,
+  DeleteIcon,
+  DuplicateIcon,
+  WrapIcon,
+} from '@blocksuite/yunke-components/icons';
+import type { MenuItemGroup } from '@blocksuite/yunke-components/toolbar';
+import { isInsidePageEditor } from '@blocksuite/yunke-shared/utils';
+import { noop, sleep } from '@blocksuite/global/utils';
+import { NumberedListIcon } from '@blocksuite/icons/lit';
+import { BlockSelection } from '@blocksuite/std';
+import { html } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
+
+import { CodeBlockConfigExtension } from '../code-block-config.js';
+import type { CodeBlockToolbarContext } from './context.js';
+import { CollapseButton } from './components/collapse-button.js';
+import { duplicateCodeBlock } from './utils.js';
+
+// 注册自定义元素
+if (!customElements.get('collapse-button')) {
+  customElements.define('collapse-button', CollapseButton);
+}
+
+export const PRIMARY_GROUPS: MenuItemGroup<CodeBlockToolbarContext>[] = [
+  {
+    type: 'primary',
+    items: [
+      {
+        type: 'change-lang',
+        generate: ({ blockComponent, setActive }) => {
+          const state = { active: false };
+          return {
+            action: noop,
+            render: () =>
+              html`<language-list-button
+                .blockComponent=${blockComponent}
+                .onActiveStatusChange=${async (active: boolean) => {
+                  state.active = active;
+                  if (!active) {
+                    await sleep(1000);
+                    if (state.active) return;
+                  }
+                  setActive(active);
+                }}
+              >
+              </language-list-button>`,
+          };
+        },
+      },
+      {
+        type: 'preview',
+        generate: ({ blockComponent }) => {
+          return {
+            action: noop,
+            render: () => html`
+              <preview-button .blockComponent=${blockComponent}>
+              </preview-button>
+            `,
+          };
+        },
+      },
+      {
+        type: 'collapse',
+        when: ({ blockComponent }) => {
+          const text = blockComponent.model.props.text.toString();
+          const lineCount = text.split('\n').length;
+          return lineCount > 10; // 只在超过10行时显示
+        },
+        generate: ({ blockComponent }) => {
+          return {
+            action: noop,
+            render: () => html`
+              <collapse-button .blockComponent=${blockComponent}>
+              </collapse-button>
+            `,
+          };
+        },
+      },
+      {
+        type: 'copy-code',
+        label: '复制代码',
+        icon: CopyIcon,
+        generate: ({ blockComponent }) => {
+          return {
+            action: () => {
+              blockComponent.copyCode();
+            },
+            render: item => html`
+              <editor-icon-button
+                class="code-toolbar-button copy-code"
+                aria-label=${ifDefined(item.label)}
+                .tooltip=${item.label}
+                .tooltipOffset=${4}
+                .iconSize=${'16px'}
+                .iconContainerPadding=${4}
+                @click=${(e: MouseEvent) => {
+                  e.stopPropagation();
+                  item.action();
+                }}
+              >
+                ${item.icon}
+              </editor-icon-button>
+            `,
+          };
+        },
+      },
+      {
+        type: 'caption',
+        label: '标题',
+        icon: CaptionIcon,
+        when: ({ doc }) => !doc.readonly,
+        generate: ({ blockComponent }) => {
+          return {
+            action: () => {
+              blockComponent.captionEditor?.show();
+            },
+            render: item => html`
+              <editor-icon-button
+                class="code-toolbar-button caption"
+                aria-label=${ifDefined(item.label)}
+                .tooltip=${item.label}
+                .tooltipOffset=${4}
+                .iconSize=${'16px'}
+                .iconContainerPadding=${4}
+                @click=${(e: MouseEvent) => {
+                  e.stopPropagation();
+                  item.action();
+                }}
+              >
+                ${item.icon}
+              </editor-icon-button>
+            `,
+          };
+        },
+      },
+    ],
+  },
+];
+
+export const toggleGroup: MenuItemGroup<CodeBlockToolbarContext> = {
+  type: 'toggle',
+  items: [
+    {
+      type: 'wrap',
+      generate: ({ blockComponent }) => {
+        return {
+          action: () => {},
+          render: () => {
+            const wrapped = blockComponent.model.props.wrap;
+            const label = wrapped ? '取消换行' : '换行';
+            const icon = wrapped ? CancelWrapIcon : WrapIcon;
+            return html`
+              <editor-menu-action
+                @click=${() => {
+                  blockComponent.setWrap(!wrapped);
+                }}
+                aria-label=${label}
+              >
+                ${icon}
+                <span class="label">${label}</span>
+                <toggle-switch
+                  style="margin-left: auto;"
+                  .on="${wrapped}"
+                ></toggle-switch>
+              </editor-menu-action>
+            `;
+          },
+        };
+      },
+    },
+    {
+      type: 'line-number',
+      when: ({ std }) =>
+        std.getOptional(CodeBlockConfigExtension.identifier)?.showLineNumbers ??
+        true,
+      generate: ({ blockComponent }) => {
+        return {
+          action: () => {},
+          render: () => {
+            const lineNumber = blockComponent.model.props.lineNumber ?? true;
+            const label = lineNumber ? '取消行号' : '行号';
+            return html`
+              <editor-menu-action
+                @click=${() => {
+                  blockComponent.store.updateBlock(blockComponent.model, {
+                    lineNumber: !lineNumber,
+                  });
+                }}
+                aria-label=${label}
+              >
+                ${NumberedListIcon()}
+                <span class="label">${label}</span>
+                <toggle-switch
+                  style="margin-left: auto;"
+                  .on="${lineNumber}"
+                ></toggle-switch>
+              </editor-menu-action>
+            `;
+          },
+        };
+      },
+    },
+  ],
+};
+
+// Clipboard Group
+export const clipboardGroup: MenuItemGroup<CodeBlockToolbarContext> = {
+  type: 'clipboard',
+  items: [
+    {
+      type: 'duplicate',
+      label: '创建副本',
+      icon: DuplicateIcon,
+      when: ({ doc }) => !doc.readonly,
+      action: ({ host, blockComponent, close }) => {
+        const codeId = duplicateCodeBlock(blockComponent.model);
+
+        host.updateComplete
+          .then(() => {
+            host.selection.setGroup('note', [
+              host.selection.create(BlockSelection, {
+                blockId: codeId,
+              }),
+            ]);
+
+            if (isInsidePageEditor(host)) {
+              const duplicateElement = host.view.getBlock(codeId);
+              if (duplicateElement) {
+                duplicateElement.scrollIntoView({ block: 'nearest' });
+              }
+            }
+          })
+          .catch(console.error);
+
+        close();
+      },
+    },
+  ],
+};
+
+// Delete Group
+export const deleteGroup: MenuItemGroup<CodeBlockToolbarContext> = {
+  type: 'delete',
+  items: [
+    {
+      type: 'delete',
+      label: '删除',
+      icon: DeleteIcon,
+      when: ({ doc }) => !doc.readonly,
+      action: ({ doc, blockComponent, close }) => {
+        doc.deleteBlock(blockComponent.model);
+        close();
+      },
+    },
+  ],
+};
+
+export const MORE_GROUPS: MenuItemGroup<CodeBlockToolbarContext>[] = [
+  toggleGroup,
+  clipboardGroup,
+  deleteGroup,
+];

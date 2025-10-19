@@ -1,4 +1,4 @@
-import type { EditorHost } from '@blocksuite/affine/std';
+import type { EditorHost } from '@blocksuite/yunke/std';
 
 import {
   AFFINE_AI_PANEL_WIDGET,

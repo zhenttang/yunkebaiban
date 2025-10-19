@@ -1,9 +1,9 @@
 import { useMemo } from 'react';
-import { Card, CardContent } from '@affine/admin/components/ui/card';
-import { Badge } from '@affine/admin/components/ui/badge';
-import { Button } from '@affine/admin/components/ui/button';
-import { Progress } from '@affine/admin/components/ui/progress';
-import { Separator } from '@affine/admin/components/ui/separator';
+import { Card, CardContent } from '@yunke/admin/components/ui/card';
+import { Badge } from '@yunke/admin/components/ui/badge';
+import { Button } from '@yunke/admin/components/ui/button';
+import { Progress } from '@yunke/admin/components/ui/progress';
+import { Separator } from '@yunke/admin/components/ui/separator';
 import {
   CloudIcon,
   DatabaseIcon,
@@ -12,7 +12,7 @@ import {
   TrendingUpIcon,
   UploadIcon,
 } from 'lucide-react';
-import { formatBytes, formatNumber } from '@affine/admin/utils';
+import { formatBytes, formatNumber } from '@yunke/admin/utils';
 
 import { useStorageStatsContext } from '../hooks/storage-stats-context';
 import { useStorageConfig } from '../hooks/use-storage-config';

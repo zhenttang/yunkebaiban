@@ -1,11 +1,11 @@
-import { Menu, MenuSeparator } from '@affine/component';
-import { MenuItem as SidebarMenuItem } from '@affine/core/modules/app-sidebar/views';
+import { Menu, MenuSeparator } from '@yunke/component';
+import { MenuItem as SidebarMenuItem } from '@yunke/core/modules/app-sidebar/views';
 import {
   TemplateListMenuAdd,
   TemplateListMenuContentScrollable,
-} from '@affine/core/modules/template-doc/view/template-list-menu';
-import { useI18n } from '@affine/i18n';
-import track from '@affine/track';
+} from '@yunke/core/modules/template-doc/view/template-list-menu';
+import { useI18n } from '@yunke/i18n';
+import track from '@yunke/track';
 import { TemplateIcon } from '@blocksuite/icons/rc';
 import { useCallback, useState } from 'react';
 

@@ -1,8 +1,8 @@
-import { IconButton, MobileMenu } from '@affine/component';
-import { useEnableCloud } from '@affine/core/components/hooks/affine/use-enable-cloud';
-import { DocService } from '@affine/core/modules/doc';
-import { ShareMenuContent } from '@affine/core/modules/share-menu';
-import { WorkspaceService } from '@affine/core/modules/workspace';
+import { IconButton, MobileMenu } from '@yunke/component';
+import { useEnableCloud } from '@yunke/core/components/hooks/affine/use-enable-cloud';
+import { DocService } from '@yunke/core/modules/doc';
+import { ShareMenuContent } from '@yunke/core/modules/share-menu';
+import { WorkspaceService } from '@yunke/core/modules/workspace';
 import { ShareiOsIcon } from '@blocksuite/icons/rc';
 import { useServices } from '@toeverything/infra';
 

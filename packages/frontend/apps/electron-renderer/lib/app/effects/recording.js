@@ -50,13 +50,13 @@ var __disposeResources = (this && this.__disposeResources) || (function (Suppres
     var e = new Error(message);
     return e.name = "SuppressedError", e.error = error, e.suppressed = suppressed, e;
 });
-import { DocsService } from '@affine/core/modules/doc';
-import { AudioAttachmentService } from '@affine/core/modules/media/services/audio-attachment';
-import { WorkbenchService } from '@affine/core/modules/workbench';
-import { DebugLogger } from '@affine/debug';
-import { apis, events } from '@affine/electron-api';
-import { i18nTime } from '@affine/i18n';
-import track from '@affine/track';
+import { DocsService } from '@yunke/core/modules/doc';
+import { AudioAttachmentService } from '@yunke/core/modules/media/services/audio-attachment';
+import { WorkbenchService } from '@yunke/core/modules/workbench';
+import { DebugLogger } from '@yunke/debug';
+import { apis, events } from '@yunke/electron-api';
+import { i18nTime } from '@yunke/i18n';
+import track from '@yunke/track';
 import { getCurrentWorkspace, isAiEnabled } from './utils';
 const logger = new DebugLogger('electron-renderer:recording');
 async function saveRecordingBlob(blobEngine, filepath) {

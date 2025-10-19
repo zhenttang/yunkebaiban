@@ -1,4 +1,4 @@
-import { UserFriendlyError } from '@affine/error';
+import { UserFriendlyError } from '@yunke/error';
 
 import { DummyConnection } from '../../connection';
 

@@ -1,6 +1,6 @@
-import { Button, Input, Menu, toast } from '@affine/component';
-import { TagService } from '@affine/core/modules/tag';
-import { useI18n } from '@affine/i18n';
+import { Button, Input, Menu, toast } from '@yunke/component';
+import { TagService } from '@yunke/core/modules/tag';
+import { useI18n } from '@yunke/i18n';
 import { useLiveData, useService } from '@toeverything/infra';
 import clsx from 'clsx';
 import type { MouseEvent } from 'react';

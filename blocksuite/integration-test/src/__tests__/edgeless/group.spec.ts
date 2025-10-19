@@ -1,10 +1,10 @@
-import type { EdgelessRootBlockComponent } from '@blocksuite/affine/blocks/root';
+import type { EdgelessRootBlockComponent } from '@blocksuite/yunke/blocks/root';
 import {
   type GroupElementModel,
   LayoutType,
   NoteDisplayMode,
-} from '@blocksuite/affine/model';
-import type { MindmapElementModel } from '@blocksuite/affine-model';
+} from '@blocksuite/yunke/model';
+import type { MindmapElementModel } from '@blocksuite/yunke-model';
 import { beforeEach, describe, expect, test } from 'vitest';
 import * as Y from 'yjs';
 

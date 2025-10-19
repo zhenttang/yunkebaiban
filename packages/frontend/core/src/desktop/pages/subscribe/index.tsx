@@ -1,11 +1,11 @@
-import { Button, Loading } from '@affine/component';
-import { UrlService } from '@affine/core/modules/url';
-import { UserFriendlyError } from '@affine/error';
+import { Button, Loading } from '@yunke/component';
+import { UrlService } from '@yunke/core/modules/url';
+import { UserFriendlyError } from '@yunke/error';
 //import {
 //   SubscriptionPlan,
 //   SubscriptionRecurring,
 //   SubscriptionVariant,
-//} from '@affine/graphql';
+//} from '@yunke/graphql';
 
 // Temporary placeholder enums to fix TypeScript errors
 enum SubscriptionPlan {
@@ -27,7 +27,7 @@ enum SubscriptionVariant {
   Recurring = 'recurring',
   EA = 'earlyaccess'
 }
-import { track } from '@affine/track';
+import { track } from '@yunke/track';
 import { effect, fromPromise, useServices } from '@toeverything/infra';
 import { nanoid } from 'nanoid';
 import { useEffect, useMemo, useState } from 'react';

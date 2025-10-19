@@ -1,9 +1,9 @@
-import { DesktopApiService } from '@affine/core/modules/desktop-api';
-import { WorkspacesService } from '@affine/core/modules/workspace';
+import { DesktopApiService } from '@yunke/core/modules/desktop-api';
+import { WorkspacesService } from '@yunke/core/modules/workspace';
 import {
   buildShowcaseWorkspace,
   createFirstAppData,
-} from '@affine/core/utils/first-app-data';
+} from '@yunke/core/utils/first-app-data';
 import {
   useLiveData,
   useService,

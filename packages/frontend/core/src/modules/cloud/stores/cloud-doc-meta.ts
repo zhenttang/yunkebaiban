@@ -1,4 +1,4 @@
-// import { getWorkspacePageMetaByIdQuery } from '@affine/graphql';
+// import { getWorkspacePageMetaByIdQuery } from '@yunke/graphql';
 import { Store } from '@toeverything/infra';
 
 import { type CloudDocMetaType } from '../entities/cloud-doc-meta';

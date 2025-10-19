@@ -1,16 +1,16 @@
-import { CopilotTool } from '@affine/core/blocksuite/ai/tool/copilot-tool';
-import { EdgelessLegacySlotIdentifier } from '@blocksuite/affine/blocks/surface';
+import { CopilotTool } from '@yunke/core/blocksuite/ai/tool/copilot-tool';
+import { EdgelessLegacySlotIdentifier } from '@blocksuite/yunke/blocks/surface';
 import {
   Bound,
   getCommonBoundWithRotation,
-} from '@blocksuite/affine/global/gfx';
-import type { RootBlockModel } from '@blocksuite/affine/model';
+} from '@blocksuite/yunke/global/gfx';
+import type { RootBlockModel } from '@blocksuite/yunke/model';
 import {
   MOUSE_BUTTON,
   requestConnectedFrame,
-} from '@blocksuite/affine/shared/utils';
-import { WidgetComponent, WidgetViewExtension } from '@blocksuite/affine/std';
-import { GfxControllerIdentifier } from '@blocksuite/affine/std/gfx';
+} from '@blocksuite/yunke/shared/utils';
+import { WidgetComponent, WidgetViewExtension } from '@blocksuite/yunke/std';
+import { GfxControllerIdentifier } from '@blocksuite/yunke/std/gfx';
 import {
   autoPlacement,
   autoUpdate,

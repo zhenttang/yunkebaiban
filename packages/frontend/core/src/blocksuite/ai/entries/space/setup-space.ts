@@ -1,5 +1,5 @@
-import type { RichText } from '@blocksuite/affine/rich-text';
-import { type EditorHost, TextSelection } from '@blocksuite/affine/std';
+import type { RichText } from '@blocksuite/yunke/rich-text';
+import { type EditorHost, TextSelection } from '@blocksuite/yunke/std';
 
 import { handleInlineAskAIAction } from '../../actions/doc-handler';
 import { AIProvider } from '../../provider';

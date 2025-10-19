@@ -4,8 +4,8 @@ import {
   type MenuProps,
   MenuTrigger,
   Tooltip,
-} from '@affine/component';
-import type { Server } from '@affine/core/modules/cloud';
+} from '@yunke/component';
+import type { Server } from '@yunke/core/modules/cloud';
 import { useMemo } from 'react';
 
 import { triggerStyle } from './style.css';

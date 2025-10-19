@@ -1,8 +1,8 @@
-import { Button } from '@affine/component/ui/button';
-import { ConfirmModal } from '@affine/component/ui/modal';
-import { DocService } from '@affine/core/modules/doc';
-import { WorkspaceService } from '@affine/core/modules/workspace';
-import { useI18n } from '@affine/i18n';
+import { Button } from '@yunke/component/ui/button';
+import { ConfirmModal } from '@yunke/component/ui/modal';
+import { DocService } from '@yunke/core/modules/doc';
+import { WorkspaceService } from '@yunke/core/modules/workspace';
+import { useI18n } from '@yunke/i18n';
 import { DeleteIcon, ResetIcon } from '@blocksuite/icons/rc';
 import { useService } from '@toeverything/infra';
 import { useCallback, useState } from 'react';

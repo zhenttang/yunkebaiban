@@ -1,29 +1,29 @@
-import { notify, toast, useConfirmModal } from '@affine/component';
+import { notify, toast, useConfirmModal } from '@yunke/component';
 import {
   Menu,
   MenuItem,
   MenuSeparator,
   MenuSub,
-} from '@affine/component/ui/menu';
-import { PageHistoryModal } from '@affine/core/components/affine/page-history-modal';
-import { useGuard } from '@affine/core/components/guard';
-import { useBlockSuiteMetaHelper } from '@affine/core/components/hooks/affine/use-block-suite-meta-helper';
-import { useEnableCloud } from '@affine/core/components/hooks/affine/use-enable-cloud';
-import { useExportPage } from '@affine/core/components/hooks/affine/use-export-page';
-import { Export, MoveToTrash } from '@affine/core/components/page-list';
-import { IsFavoriteIcon } from '@affine/core/components/pure/icons';
-import { useDetailPageHeaderResponsive } from '@affine/core/desktop/pages/workspace/detail-page/use-header-responsive';
-import { WorkspaceDialogService } from '@affine/core/modules/dialogs';
-import { EditorService } from '@affine/core/modules/editor';
-import { OpenInAppService } from '@affine/core/modules/open-in-app/services';
-import { GuardService } from '@affine/core/modules/permissions';
-import { ShareMenuContent } from '@affine/core/modules/share-menu';
-import { WorkbenchService } from '@affine/core/modules/workbench';
-import { ViewService } from '@affine/core/modules/workbench/services/view';
-import { WorkspaceService } from '@affine/core/modules/workspace';
-import { useI18n } from '@affine/i18n';
-import { track } from '@affine/track';
-import type { Store } from '@blocksuite/affine/store';
+} from '@yunke/component/ui/menu';
+import { PageHistoryModal } from '@yunke/core/components/affine/page-history-modal';
+import { useGuard } from '@yunke/core/components/guard';
+import { useBlockSuiteMetaHelper } from '@yunke/core/components/hooks/affine/use-block-suite-meta-helper';
+import { useEnableCloud } from '@yunke/core/components/hooks/affine/use-enable-cloud';
+import { useExportPage } from '@yunke/core/components/hooks/affine/use-export-page';
+import { Export, MoveToTrash } from '@yunke/core/components/page-list';
+import { IsFavoriteIcon } from '@yunke/core/components/pure/icons';
+import { useDetailPageHeaderResponsive } from '@yunke/core/desktop/pages/workspace/detail-page/use-header-responsive';
+import { WorkspaceDialogService } from '@yunke/core/modules/dialogs';
+import { EditorService } from '@yunke/core/modules/editor';
+import { OpenInAppService } from '@yunke/core/modules/open-in-app/services';
+import { GuardService } from '@yunke/core/modules/permissions';
+import { ShareMenuContent } from '@yunke/core/modules/share-menu';
+import { WorkbenchService } from '@yunke/core/modules/workbench';
+import { ViewService } from '@yunke/core/modules/workbench/services/view';
+import { WorkspaceService } from '@yunke/core/modules/workspace';
+import { useI18n } from '@yunke/i18n';
+import { track } from '@yunke/track';
+import type { Store } from '@blocksuite/yunke/store';
 import {
   DuplicateIcon,
   EdgelessIcon,

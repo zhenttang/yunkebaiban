@@ -1,5 +1,5 @@
-// import { SubscriptionStatus } from '@affine/graphql';
-import { useI18n } from '@affine/i18n';
+// import { SubscriptionStatus } from '@yunke/graphql';
+import { useI18n } from '@yunke/i18n';
 import {
   InformationFillDuotoneIcon,
   SingleSelectCheckSolidIcon,

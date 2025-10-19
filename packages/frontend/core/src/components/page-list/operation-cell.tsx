@@ -5,20 +5,20 @@ import {
   toast,
   useConfirmModal,
   usePromptModal,
-} from '@affine/component';
-import { useBlockSuiteMetaHelper } from '@affine/core/components/hooks/affine/use-block-suite-meta-helper';
-import { useCatchEventCallback } from '@affine/core/components/hooks/use-catch-event-hook';
-import { WorkspaceDialogService } from '@affine/core/modules/dialogs';
-import { DocsService } from '@affine/core/modules/doc';
+} from '@yunke/component';
+import { useBlockSuiteMetaHelper } from '@yunke/core/components/hooks/affine/use-block-suite-meta-helper';
+import { useCatchEventCallback } from '@yunke/core/components/hooks/use-catch-event-hook';
+import { WorkspaceDialogService } from '@yunke/core/modules/dialogs';
+import { DocsService } from '@yunke/core/modules/doc';
 import {
   CompatibleFavoriteItemsAdapter,
   FavoriteService,
-} from '@affine/core/modules/favorite';
-import { WorkbenchService } from '@affine/core/modules/workbench';
-import { WorkspaceService } from '@affine/core/modules/workspace';
-import { useI18n } from '@affine/i18n';
-import { track } from '@affine/track';
-import type { DocMeta } from '@blocksuite/affine/store';
+} from '@yunke/core/modules/favorite';
+import { WorkbenchService } from '@yunke/core/modules/workbench';
+import { WorkspaceService } from '@yunke/core/modules/workspace';
+import { useI18n } from '@yunke/i18n';
+import { track } from '@yunke/track';
+import type { DocMeta } from '@blocksuite/yunke/store';
 import {
   DeleteIcon,
   DeletePermanentlyIcon,

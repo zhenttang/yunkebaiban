@@ -1,6 +1,6 @@
-import { Button } from '@affine/component/ui/button';
-import { GlobalDialogService } from '@affine/core/modules/dialogs';
-import { useI18n } from '@affine/i18n';
+import { Button } from '@yunke/component/ui/button';
+import { GlobalDialogService } from '@yunke/core/modules/dialogs';
+import { useI18n } from '@yunke/i18n';
 import { useService } from '@toeverything/infra';
 import { useCallback } from 'react';
 

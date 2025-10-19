@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@affine/admin/components/ui/card';
-import { Button } from '@affine/admin/components/ui/button';
-import { Input } from '@affine/admin/components/ui/input';
-import { Label } from '@affine/admin/components/ui/label';
-import { Badge } from '@affine/admin/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@affine/admin/components/ui/tabs';
-import { Separator } from '@affine/admin/components/ui/separator';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@yunke/admin/components/ui/card';
+import { Button } from '@yunke/admin/components/ui/button';
+import { Input } from '@yunke/admin/components/ui/input';
+import { Label } from '@yunke/admin/components/ui/label';
+import { Badge } from '@yunke/admin/components/ui/badge';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@yunke/admin/components/ui/tabs';
+import { Separator } from '@yunke/admin/components/ui/separator';
 import { Loader2, RefreshCw, Mail } from 'lucide-react';
 import { toast } from 'sonner';
 

@@ -1,7 +1,7 @@
 import type { Framework } from '@toeverything/infra';
 import { Capacitor } from '@capacitor/core';
 
-import { AuthProvider, ServerScope, ServerService } from '@affine/core/modules/cloud';
+import { AuthProvider, ServerScope, ServerService } from '@yunke/core/modules/cloud';
 import { Auth } from './plugins/auth';
 
 export function configureAndroidAuthProvider(framework: Framework) {

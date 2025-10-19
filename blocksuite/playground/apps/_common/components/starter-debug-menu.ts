@@ -16,16 +16,16 @@ import '@shoelace-style/shoelace/dist/themes/light.css';
 import '@shoelace-style/shoelace/dist/themes/dark.css';
 import './left-side-panel.js';
 
-import { PresentTool } from '@blocksuite/affine/blocks/frame';
-import { ExportManager } from '@blocksuite/affine/blocks/surface';
-import { toast } from '@blocksuite/affine/components/toast';
-import { StoreExtensionManagerIdentifier } from '@blocksuite/affine/ext-loader';
+import { PresentTool } from '@blocksuite/yunke/blocks/frame';
+import { ExportManager } from '@blocksuite/yunke/blocks/surface';
+import { toast } from '@blocksuite/yunke/components/toast';
+import { StoreExtensionManagerIdentifier } from '@blocksuite/yunke/ext-loader';
 import {
   BlockSuiteError,
   ErrorCode,
-} from '@blocksuite/affine/global/exceptions';
-import type { SerializedXYWH } from '@blocksuite/affine/global/gfx';
-import { ColorScheme, type DocMode } from '@blocksuite/affine/model';
+} from '@blocksuite/yunke/global/exceptions';
+import type { SerializedXYWH } from '@blocksuite/yunke/global/gfx';
+import { ColorScheme, type DocMode } from '@blocksuite/yunke/model';
 import {
   defaultImageProxyMiddleware,
   docLinkBaseURLMiddleware,
@@ -33,26 +33,26 @@ import {
   MarkdownAdapterFactoryIdentifier,
   PlainTextAdapterFactoryIdentifier,
   titleMiddleware,
-} from '@blocksuite/affine/shared/adapters';
-import { DocModeProvider } from '@blocksuite/affine/shared/services';
+} from '@blocksuite/yunke/shared/adapters';
+import { DocModeProvider } from '@blocksuite/yunke/shared/services';
 import {
   ColorVariables,
   FontFamilyVariables,
   SizeVariables,
   StyleVariables,
-} from '@blocksuite/affine/shared/theme';
+} from '@blocksuite/yunke/shared/theme';
 import {
   openFilesWith,
   openSingleFileWith,
   printToPdf,
-} from '@blocksuite/affine/shared/utils';
-import { ShadowlessElement } from '@blocksuite/affine/std';
-import { GfxControllerIdentifier } from '@blocksuite/affine/std/gfx';
+} from '@blocksuite/yunke/shared/utils';
+import { ShadowlessElement } from '@blocksuite/yunke/std';
+import { GfxControllerIdentifier } from '@blocksuite/yunke/std/gfx';
 import {
   type DeltaInsert,
   Text,
   type Workspace,
-} from '@blocksuite/affine/store';
+} from '@blocksuite/yunke/store';
 import {
   createAssetsArchive,
   download,
@@ -60,9 +60,9 @@ import {
   MarkdownTransformer,
   NotionHtmlTransformer,
   ZipTransformer,
-} from '@blocksuite/affine/widgets/linked-doc';
-import { NotionHtmlAdapter } from '@blocksuite/affine-shared/adapters';
-import type { AffineTextAttributes } from '@blocksuite/affine-shared/types';
+} from '@blocksuite/yunke/widgets/linked-doc';
+import { NotionHtmlAdapter } from '@blocksuite/yunke-shared/adapters';
+import type { AffineTextAttributes } from '@blocksuite/yunke-shared/types';
 import { TestAffineEditorContainer } from '@blocksuite/integration-test';
 import type { SlDropdown } from '@shoelace-style/shoelace';
 import { setBasePath } from '@shoelace-style/shoelace/dist/utilities/base-path.js';

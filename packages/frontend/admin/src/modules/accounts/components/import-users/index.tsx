@@ -3,7 +3,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-} from '@affine/admin/components/ui/dialog';
+} from '@yunke/admin/components/ui/dialog';
 import { useEffect, useRef } from 'react';
 
 import { useServerConfig } from '../../../common';

@@ -1,4 +1,4 @@
-import { ShadowlessElement } from '@blocksuite/affine/std';
+import { ShadowlessElement } from '@blocksuite/yunke/std';
 import { css, html } from 'lit';
 import { customElement } from 'lit/decorators.js';
 

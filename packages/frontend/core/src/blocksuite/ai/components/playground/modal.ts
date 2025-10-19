@@ -1,4 +1,4 @@
-import { ShadowlessElement } from '@blocksuite/affine/std';
+import { ShadowlessElement } from '@blocksuite/yunke/std';
 import { CloseIcon } from '@blocksuite/icons/lit';
 import { css, html, type TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';

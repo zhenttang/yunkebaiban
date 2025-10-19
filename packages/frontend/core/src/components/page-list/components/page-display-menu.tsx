@@ -4,8 +4,8 @@ import {
   MenuItem,
   MenuSeparator,
   MenuSub,
-} from '@affine/component';
-import { useI18n } from '@affine/i18n';
+} from '@yunke/component';
+import { useI18n } from '@yunke/i18n';
 import { ArrowDownSmallIcon, DoneIcon } from '@blocksuite/icons/rc';
 import { useCallback, useMemo } from 'react';
 

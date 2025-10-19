@@ -1,10 +1,10 @@
 import {
   SettingHeader,
   SettingWrapper,
-} from '@affine/component/setting-components';
-import { WorkspacePermissionService } from '@affine/core/modules/permissions';
-import { WorkspaceService } from '@affine/core/modules/workspace';
-import { useI18n } from '@affine/i18n';
+} from '@yunke/component/setting-components';
+import { WorkspacePermissionService } from '@yunke/core/modules/permissions';
+import { WorkspaceService } from '@yunke/core/modules/workspace';
+import { useI18n } from '@yunke/i18n';
 import { useLiveData, useService } from '@toeverything/infra';
 
 import { EnableCloudPanel } from '../preference/enable-cloud';

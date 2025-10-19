@@ -1,7 +1,7 @@
-import { mixpanel, track } from '@affine/track';
-import type { EditorHost } from '@blocksuite/affine/std';
-import type { GfxPrimitiveElementModel } from '@blocksuite/affine/std/gfx';
-import type { BlockModel } from '@blocksuite/affine/store';
+import { mixpanel, track } from '@yunke/track';
+import type { EditorHost } from '@blocksuite/yunke/std';
+import type { GfxPrimitiveElementModel } from '@blocksuite/yunke/std/gfx';
+import type { BlockModel } from '@blocksuite/yunke/store';
 import { lowerCase, omit } from 'lodash-es';
 import type { Subject } from 'rxjs';
 

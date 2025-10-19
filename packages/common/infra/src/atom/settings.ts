@@ -1,5 +1,5 @@
-import { DebugLogger } from '@affine/debug';
-import { setupGlobal } from '@affine/env/global';
+import { DebugLogger } from '@yunke/debug';
+import { setupGlobal } from '@yunke/env/global';
 import { atom } from 'jotai';
 import { atomWithStorage } from 'jotai/utils';
 import { atomEffect } from 'jotai-effect';
@@ -48,7 +48,7 @@ const appSettingEffect = atomEffect(get => {
   // settings中的一些值应该同步到electron端
   if (BUILD_CONFIG.isElectron) {
     logger.debug('同步设置到electron', settings);
-    // 这个api类型在@affine/electron-api中，但它与这个包是循环依赖，这里使用any
+    // 这个api类型在@yunke/electron-api中，但它与这个包是循环依赖，这里使用any
     (window as any).__apis?.updater
       .setConfig({
         autoCheckUpdate: settings.autoCheckUpdate,

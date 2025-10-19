@@ -1,12 +1,12 @@
-import { Divider, IconButton, Tooltip } from '@affine/component';
-import type { DocCustomPropertyInfo } from '@affine/core/modules/db';
+import { Divider, IconButton, Tooltip } from '@yunke/component';
+import type { DocCustomPropertyInfo } from '@yunke/core/modules/db';
 import {
   WorkspacePropertyService,
   type WorkspacePropertyType,
-} from '@affine/core/modules/workspace-property';
-import { generateUniqueNameInSequence } from '@affine/core/utils/unique-name';
-import { useI18n } from '@affine/i18n';
-import track from '@affine/track';
+} from '@yunke/core/modules/workspace-property';
+import { generateUniqueNameInSequence } from '@yunke/core/utils/unique-name';
+import { useI18n } from '@yunke/i18n';
+import track from '@yunke/track';
 import { PlusIcon } from '@blocksuite/icons/rc';
 import {
   Content as CollapsibleContent,

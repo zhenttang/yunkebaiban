@@ -1,9 +1,9 @@
-import { Tooltip } from '@affine/component/ui/tooltip';
-import { WorkspaceDialogService } from '@affine/core/modules/dialogs';
-import type { SettingTab } from '@affine/core/modules/dialogs/constant';
-import { GlobalContextService } from '@affine/core/modules/global-context';
-import { UrlService } from '@affine/core/modules/url';
-import { useI18n } from '@affine/i18n';
+import { Tooltip } from '@yunke/component/ui/tooltip';
+import { WorkspaceDialogService } from '@yunke/core/modules/dialogs';
+import type { SettingTab } from '@yunke/core/modules/dialogs/constant';
+import { GlobalContextService } from '@yunke/core/modules/global-context';
+import { UrlService } from '@yunke/core/modules/url';
+import { useI18n } from '@yunke/i18n';
 import { CloseIcon, NewIcon } from '@blocksuite/icons/rc';
 import { useLiveData, useService, useServices } from '@toeverything/infra';
 import { useCallback, useState } from 'react';

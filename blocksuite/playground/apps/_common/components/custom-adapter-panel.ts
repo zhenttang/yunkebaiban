@@ -1,6 +1,6 @@
-import { SignalWatcher, WithDisposable } from '@blocksuite/affine/global/lit';
-import { ShadowlessElement } from '@blocksuite/affine/std';
-import type { TransformerMiddleware } from '@blocksuite/affine/store';
+import { SignalWatcher, WithDisposable } from '@blocksuite/yunke/global/lit';
+import { ShadowlessElement } from '@blocksuite/yunke/std';
+import type { TransformerMiddleware } from '@blocksuite/yunke/store';
 import type { TestAffineEditorContainer } from '@blocksuite/integration-test';
 import { css, html, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';

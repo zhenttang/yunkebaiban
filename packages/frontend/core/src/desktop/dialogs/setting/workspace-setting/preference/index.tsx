@@ -1,16 +1,16 @@
-import { Button } from '@affine/component';
+import { Button } from '@yunke/component';
 import {
   SettingHeader,
   SettingRow,
   SettingWrapper,
-} from '@affine/component/setting-components';
-import { useWorkspaceInfo } from '@affine/core/components/hooks/use-workspace-info';
-import { WorkspaceServerService } from '@affine/core/modules/cloud';
-import { WorkspaceService } from '@affine/core/modules/workspace';
-import { PaymentModal } from '@affine/core/components/community-ui/payment-modal';
-import type { CommunityDocument } from '@affine/core/components/community-ui/types';
-import { UNTITLED_WORKSPACE_NAME } from '@affine/env/constant';
-import { useI18n } from '@affine/i18n';
+} from '@yunke/component/setting-components';
+import { useWorkspaceInfo } from '@yunke/core/components/hooks/use-workspace-info';
+import { WorkspaceServerService } from '@yunke/core/modules/cloud';
+import { WorkspaceService } from '@yunke/core/modules/workspace';
+import { PaymentModal } from '@yunke/core/components/community-ui/payment-modal';
+import type { CommunityDocument } from '@yunke/core/components/community-ui/types';
+import { UNTITLED_WORKSPACE_NAME } from '@yunke/env/constant';
+import { useI18n } from '@yunke/i18n';
 import { ArrowRightSmallIcon } from '@blocksuite/icons/rc';
 import { FrameworkScope, useService } from '@toeverything/infra';
 import { useCallback, useState } from 'react';

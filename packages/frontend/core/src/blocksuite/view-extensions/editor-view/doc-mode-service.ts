@@ -1,11 +1,11 @@
-import type { DocService, DocsService } from '@affine/core/modules/doc';
-import type { EditorService } from '@affine/core/modules/editor';
-import type { DocMode } from '@blocksuite/affine/model';
+import type { DocService, DocsService } from '@yunke/core/modules/doc';
+import type { EditorService } from '@yunke/core/modules/editor';
+import type { DocMode } from '@blocksuite/yunke/model';
 import {
   DocModeExtension,
   type DocModeProvider,
-} from '@blocksuite/affine/shared/services';
-import type { ExtensionType } from '@blocksuite/affine/store';
+} from '@blocksuite/yunke/shared/services';
+import type { ExtensionType } from '@blocksuite/yunke/store';
 
 export function patchDocModeService(
   docService: DocService,

@@ -1,7 +1,7 @@
-import { IconButton } from '@affine/component';
-import { WorkspaceDialogService } from '@affine/core/modules/dialogs';
-import { useI18n } from '@affine/i18n';
-import { track } from '@affine/track';
+import { IconButton } from '@yunke/component';
+import { WorkspaceDialogService } from '@yunke/core/modules/dialogs';
+import { useI18n } from '@yunke/i18n';
+import { track } from '@yunke/track';
 import { InformationIcon } from '@blocksuite/icons/rc';
 import { useService } from '@toeverything/infra';
 import { useCallback } from 'react';

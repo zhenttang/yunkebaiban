@@ -1,26 +1,21 @@
 {
-  "name": "@affine/ios",
+  "name": "@yunke/ios",
   "version": "0.21.0",
   "description": "AFFiNE Desktop Web application",
   "type": "module",
   "private": true,
   "browser": "src/index.tsx",
   "scripts": {
-    "build": "affine bundle",
-    "dev": "affine bundle --dev",
+    "build": "yunke bundle",
+    "dev": "yunke bundle --dev",
     "sync": "cap sync",
     "sync:dev": "CAP_SERVER_URL=http://localhost:8080 cap sync",
     "xcode": "cap open ios",
     "codegen": "r ./codegen.ts"
   },
   "dependencies": {
-    "@affine/component": "workspace:*",
-    "@affine/core": "workspace:*",
-    "@affine/env": "workspace:*",
-    "@affine/i18n": "workspace:*",
-    "@affine/nbstore": "workspace:*",
-    "@blocksuite/affine": "workspace:*",
     "@blocksuite/icons": "^2.2.12",
+    "@blocksuite/yunke": "workspace:*",
     "@capacitor/app": "^7.0.0",
     "@capacitor/browser": "^7.0.0",
     "@capacitor/core": "^7.0.0",
@@ -29,6 +24,11 @@
     "@capacitor/keyboard": "^7.0.0",
     "@sentry/react": "^9.2.0",
     "@toeverything/infra": "workspace:^",
+    "@yunke/component": "workspace:*",
+    "@yunke/core": "workspace:*",
+    "@yunke/env": "workspace:*",
+    "@yunke/i18n": "workspace:*",
+    "@yunke/nbstore": "workspace:*",
     "async-call-rpc": "^6.4.2",
     "capacitor-plugin-app-tracking-transparency": "^2.0.5",
     "idb": "^8.0.0",
@@ -39,11 +39,11 @@
     "yjs": "^13.6.21"
   },
   "devDependencies": {
-    "@affine-tools/cli": "workspace:*",
-    "@affine-tools/utils": "workspace:*",
     "@capacitor/cli": "^7.0.0",
     "@types/react": "^19.0.1",
     "@types/react-dom": "^19.0.2",
+    "@yunke-tools/cli": "workspace:*",
+    "@yunke-tools/utils": "workspace:*",
     "cross-env": "^7.0.3",
     "typescript": "^5.7.2"
   }

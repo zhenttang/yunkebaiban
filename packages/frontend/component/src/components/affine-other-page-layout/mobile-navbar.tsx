@@ -1,5 +1,5 @@
-import { IconButton } from '@affine/component/ui/button';
-import { Menu, MenuItem } from '@affine/component/ui/menu';
+import { IconButton } from '@yunke/component/ui/button';
+import { Menu, MenuItem } from '@yunke/component/ui/menu';
 import { CloseIcon, PropertyIcon } from '@blocksuite/icons/rc';
 import { useState } from 'react';
 

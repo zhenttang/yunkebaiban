@@ -1,13 +1,13 @@
-import { getStoreManager } from '@affine/core/blocksuite/manager/store';
-import { AffineContext } from '@affine/core/components/context';
-import { AppFallback } from '@affine/core/mobile/components/app-fallback';
-import { configureMobileModules } from '@affine/core/mobile/modules';
-import { HapticProvider } from '@affine/core/mobile/modules/haptics';
-import { NavigationGestureProvider } from '@affine/core/mobile/modules/navigation-gesture';
-import { VirtualKeyboardProvider } from '@affine/core/mobile/modules/virtual-keyboard';
-import { router } from '@affine/core/mobile/router';
-import { configureCommonModules } from '@affine/core/modules';
-import { AIButtonProvider } from '@affine/core/modules/ai-button';
+import { getStoreManager } from '@yunke/core/blocksuite/manager/store';
+import { AffineContext } from '@yunke/core/components/context';
+import { AppFallback } from '@yunke/core/mobile/components/app-fallback';
+import { configureMobileModules } from '@yunke/core/mobile/modules';
+import { HapticProvider } from '@yunke/core/mobile/modules/haptics';
+import { NavigationGestureProvider } from '@yunke/core/mobile/modules/navigation-gesture';
+import { VirtualKeyboardProvider } from '@yunke/core/mobile/modules/virtual-keyboard';
+import { router } from '@yunke/core/mobile/router';
+import { configureCommonModules } from '@yunke/core/modules';
+import { AIButtonProvider } from '@yunke/core/modules/ai-button';
 import {
   AuthProvider,
   AuthService,
@@ -16,36 +16,36 @@ import {
   ServerService,
   ServersService,
   ValidatorProvider,
-} from '@affine/core/modules/cloud';
-import { DocsService } from '@affine/core/modules/doc';
-import { GlobalContextService } from '@affine/core/modules/global-context';
-import { I18nProvider } from '@affine/core/modules/i18n';
-import { LifecycleService } from '@affine/core/modules/lifecycle';
+} from '@yunke/core/modules/cloud';
+import { DocsService } from '@yunke/core/modules/doc';
+import { GlobalContextService } from '@yunke/core/modules/global-context';
+import { I18nProvider } from '@yunke/core/modules/i18n';
+import { LifecycleService } from '@yunke/core/modules/lifecycle';
 import {
   configureLocalStorageStateStorageImpls,
   NbstoreProvider,
-} from '@affine/core/modules/storage';
-import { PopupWindowProvider } from '@affine/core/modules/url';
-import { ClientSchemeProvider } from '@affine/core/modules/url/providers/client-schema';
+} from '@yunke/core/modules/storage';
+import { PopupWindowProvider } from '@yunke/core/modules/url';
+import { ClientSchemeProvider } from '@yunke/core/modules/url/providers/client-schema';
 import {
   configureBrowserWorkbenchModule,
   WorkbenchService,
-} from '@affine/core/modules/workbench';
+} from '@yunke/core/modules/workbench';
 import {
   getAFFiNEWorkspaceSchema,
   WorkspacesService,
-} from '@affine/core/modules/workspace';
-import { configureBrowserWorkspaceFlavours } from '@affine/core/modules/workspace-engine';
-import { getWorkerUrl } from '@affine/env/worker';
-import { I18n } from '@affine/i18n';
-import { StoreManagerClient } from '@affine/nbstore/worker/client';
-import { Container } from '@blocksuite/affine/global/di';
+} from '@yunke/core/modules/workspace';
+import { configureBrowserWorkspaceFlavours } from '@yunke/core/modules/workspace-engine';
+import { getWorkerUrl } from '@yunke/env/worker';
+import { I18n } from '@yunke/i18n';
+import { StoreManagerClient } from '@yunke/nbstore/worker/client';
+import { Container } from '@blocksuite/yunke/global/di';
 import {
   docLinkBaseURLMiddleware,
   MarkdownAdapter,
   titleMiddleware,
-} from '@blocksuite/affine/shared/adapters';
-import { MarkdownTransformer } from '@blocksuite/affine/widgets/linked-doc';
+} from '@blocksuite/yunke/shared/adapters';
+import { MarkdownTransformer } from '@blocksuite/yunke/widgets/linked-doc';
 import { App as CapacitorApp } from '@capacitor/app';
 import { Browser } from '@capacitor/browser';
 import { Haptics } from '@capacitor/haptics';

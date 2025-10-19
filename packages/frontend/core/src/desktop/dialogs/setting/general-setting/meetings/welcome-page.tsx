@@ -1,6 +1,6 @@
-import { Button } from '@affine/component';
-import { MeetingSettingsService } from '@affine/core/modules/media/services/meeting-settings';
-import { Trans, useI18n } from '@affine/i18n';
+import { Button } from '@yunke/component';
+import { MeetingSettingsService } from '@yunke/core/modules/media/services/meeting-settings';
+import { Trans, useI18n } from '@yunke/i18n';
 import { DualLinkIcon } from '@blocksuite/icons/rc';
 import { useService } from '@toeverything/infra';
 import { useTheme } from 'next-themes';

@@ -1,10 +1,10 @@
-import { AffineErrorBoundary } from '@affine/core/components/affine/affine-error-boundary';
-import { AffineErrorComponent } from '@affine/core/components/affine/affine-error-boundary/affine-error-fallback';
-import { PageNotFound } from '@affine/core/desktop/pages/404';
-import { SharePage } from '@affine/core/desktop/pages/workspace/share/share-page';
-import { workbenchRoutes } from '@affine/core/mobile/workbench-router';
-import { ServersService } from '@affine/core/modules/cloud';
-import { WorkspacesService } from '@affine/core/modules/workspace';
+import { AffineErrorBoundary } from '@yunke/core/components/affine/affine-error-boundary';
+import { AffineErrorComponent } from '@yunke/core/components/affine/affine-error-boundary/affine-error-fallback';
+import { PageNotFound } from '@yunke/core/desktop/pages/404';
+import { SharePage } from '@yunke/core/desktop/pages/workspace/share/share-page';
+import { workbenchRoutes } from '@yunke/core/mobile/workbench-router';
+import { ServersService } from '@yunke/core/modules/cloud';
+import { WorkspacesService } from '@yunke/core/modules/workspace';
 import { FrameworkScope, useLiveData, useServices } from '@toeverything/infra';
 import {
   lazy as reactLazy,

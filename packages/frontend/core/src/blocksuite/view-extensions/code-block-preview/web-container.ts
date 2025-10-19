@@ -1,4 +1,4 @@
-import type { CodeBlockModel } from '@blocksuite/affine-model';
+import type { CodeBlockModel } from '@blocksuite/yunke-model';
 import { WebContainer } from '@webcontainer/api';
 
 // cross-browser replacement for `Promise.withResolvers`

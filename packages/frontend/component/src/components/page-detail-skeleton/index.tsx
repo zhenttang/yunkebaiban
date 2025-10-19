@@ -1,4 +1,4 @@
-import { Trans, useI18n } from '@affine/i18n';
+import { Trans, useI18n } from '@yunke/i18n';
 import clsx from 'clsx';
 import { useCallback } from 'react';
 

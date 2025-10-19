@@ -1,6 +1,6 @@
-import type { PublicUserService } from '@affine/core/modules/cloud';
-import { UserFriendlyError } from '@affine/error';
-import { UserServiceExtension } from '@blocksuite/affine/shared/services';
+import type { PublicUserService } from '@yunke/core/modules/cloud';
+import { UserFriendlyError } from '@yunke/error';
+import { UserServiceExtension } from '@blocksuite/yunke/shared/services';
 
 export function patchUserExtensions(publicUserService: PublicUserService) {
   return UserServiceExtension({

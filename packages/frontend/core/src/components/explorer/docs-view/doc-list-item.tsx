@@ -4,13 +4,13 @@ import {
   Tooltip,
   useDraggable,
   Wrapper,
-} from '@affine/component';
-import { DocsService } from '@affine/core/modules/doc';
-import { DocDisplayMetaService } from '@affine/core/modules/doc-display-meta';
-import { WorkbenchLink } from '@affine/core/modules/workbench';
-import type { AffineDNDData } from '@affine/core/types/dnd';
-import { useI18n } from '@affine/i18n';
-import track from '@affine/track';
+} from '@yunke/component';
+import { DocsService } from '@yunke/core/modules/doc';
+import { DocDisplayMetaService } from '@yunke/core/modules/doc-display-meta';
+import { WorkbenchLink } from '@yunke/core/modules/workbench';
+import type { AffineDNDData } from '@yunke/core/types/dnd';
+import { useI18n } from '@yunke/i18n';
+import track from '@yunke/track';
 import {
   AutoTidyUpIcon,
   PropertyIcon,

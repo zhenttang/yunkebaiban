@@ -1,12 +1,12 @@
-import { type Doc, DocsService } from '@affine/core/modules/doc';
-import type { Editor } from '@affine/core/modules/editor';
-import { EditorsService } from '@affine/core/modules/editor';
-import { preprocessParams, paramsParseOptions } from '@affine/core/modules/navigation/utils';
-import { ViewService } from '@affine/core/modules/workbench/services/view';
-import { WorkspaceService } from '@affine/core/modules/workspace';
-import { Bound } from '@blocksuite/affine/global/gfx';
-import { GfxControllerIdentifier } from '@blocksuite/affine/std/gfx';
-import { HighlightSelection } from '@blocksuite/affine/shared/selection';
+import { type Doc, DocsService } from '@yunke/core/modules/doc';
+import type { Editor } from '@yunke/core/modules/editor';
+import { EditorsService } from '@yunke/core/modules/editor';
+import { preprocessParams, paramsParseOptions } from '@yunke/core/modules/navigation/utils';
+import { ViewService } from '@yunke/core/modules/workbench/services/view';
+import { WorkspaceService } from '@yunke/core/modules/workspace';
+import { Bound } from '@blocksuite/yunke/global/gfx';
+import { GfxControllerIdentifier } from '@blocksuite/yunke/std/gfx';
+import { HighlightSelection } from '@blocksuite/yunke/shared/selection';
 import { FrameworkScope, useLiveData, useService } from '@toeverything/infra';
 import {
   type PropsWithChildren,

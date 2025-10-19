@@ -1,8 +1,8 @@
-import { AIStarIcon } from '@blocksuite/affine/components/icons';
-import { SignalWatcher, WithDisposable } from '@blocksuite/affine/global/lit';
-import { ColorScheme } from '@blocksuite/affine/model';
-import { unsafeCSSVarV2 } from '@blocksuite/affine/shared/theme';
-import { stopPropagation } from '@blocksuite/affine/shared/utils';
+import { AIStarIcon } from '@blocksuite/yunke/components/icons';
+import { SignalWatcher, WithDisposable } from '@blocksuite/yunke/global/lit';
+import { ColorScheme } from '@blocksuite/yunke/model';
+import { unsafeCSSVarV2 } from '@blocksuite/yunke/shared/theme';
+import { stopPropagation } from '@blocksuite/yunke/shared/utils';
 import { PublishIcon, SendIcon } from '@blocksuite/icons/lit';
 import {
   darkCssVariablesV2,

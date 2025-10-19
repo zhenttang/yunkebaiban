@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { Button, Loading } from '@affine/component';
-import { Modal } from '@affine/component/ui/modal';
+import { Button, Loading } from '@yunke/component';
+import { Modal } from '@yunke/component/ui/modal';
 import type { CommunityDocument, PaymentOrderRequest, PaymentOrderResponse } from '../types';
 import { PAYMENT_METHODS } from '../types';
 import { paymentApi } from '../../../api/payment';

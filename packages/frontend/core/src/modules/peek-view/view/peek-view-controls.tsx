@@ -1,8 +1,8 @@
-import { IconButton, notify } from '@affine/component';
-import { copyTextToClipboard } from '@affine/core/utils/clipboard';
-import { useI18n } from '@affine/i18n';
-import track from '@affine/track';
-import type { DocMode } from '@blocksuite/affine/model';
+import { IconButton, notify } from '@yunke/component';
+import { copyTextToClipboard } from '@yunke/core/utils/clipboard';
+import { useI18n } from '@yunke/i18n';
+import track from '@yunke/track';
+import type { DocMode } from '@blocksuite/yunke/model';
 import {
   CloseIcon,
   ExpandFullIcon,

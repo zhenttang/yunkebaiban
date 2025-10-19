@@ -1,5 +1,5 @@
-import { DatabaseBlockDataSource } from '@blocksuite/affine/blocks/database';
-import type { DatabaseBlockModel } from '@blocksuite/affine/model';
+import { DatabaseBlockDataSource } from '@blocksuite/yunke/blocks/database';
+import type { DatabaseBlockModel } from '@blocksuite/yunke/model';
 import { LiveData, Service } from '@toeverything/infra';
 import { isEqual } from 'lodash-es';
 import { combineLatest, distinctUntilChanged, map, Observable } from 'rxjs';

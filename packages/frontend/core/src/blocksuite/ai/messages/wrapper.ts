@@ -1,4 +1,4 @@
-import type { EditorHost } from '@blocksuite/affine/std';
+import type { EditorHost } from '@blocksuite/yunke/std';
 import { css, html, LitElement, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
 

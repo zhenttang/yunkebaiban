@@ -1,4 +1,4 @@
-import { useStylusPalmRejection } from '@affine/core/mobile/hooks/use-stylus-palm-rejection';
+import { useStylusPalmRejection } from '@yunke/core/mobile/hooks/use-stylus-palm-rejection';
 import clsx from 'clsx';
 
 import * as styles from './styles.css';

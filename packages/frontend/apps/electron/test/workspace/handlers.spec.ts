@@ -1,6 +1,6 @@
 import path from 'node:path';
 
-import { universalId } from '@affine/nbstore';
+import { universalId } from '@yunke/nbstore';
 import fs from 'fs-extra';
 import { v4 } from 'uuid';
 import { afterAll, afterEach, describe, expect, test, vi } from 'vitest';
@@ -8,13 +8,13 @@ import { afterAll, afterEach, describe, expect, test, vi } from 'vitest';
 const tmpDir = path.join(__dirname, 'tmp');
 const appDataPath = path.join(tmpDir, 'app-data');
 
-vi.doMock('@affine/electron/helper/db/ensure-db', () => ({
+vi.doMock('@yunke/electron/helper/db/ensure-db', () => ({
   ensureSQLiteDB: async () => ({
     destroy: () => {},
   }),
 }));
 
-vi.doMock('@affine/electron/helper/main-rpc', () => ({
+vi.doMock('@yunke/electron/helper/main-rpc', () => ({
   mainRPC: {
     getPath: async () => appDataPath,
   },
@@ -29,13 +29,13 @@ afterEach(async () => {
 });
 
 afterAll(() => {
-  vi.doUnmock('@affine/electron/helper/main-rpc');
+  vi.doUnmock('@yunke/electron/helper/main-rpc');
 });
 
 describe('workspace db management', () => {
   test('trash workspace', async () => {
     const { trashWorkspace } = await import(
-      '@affine/electron/helper/workspace/handlers'
+      '@yunke/electron/helper/workspace/handlers'
     );
     const workspaceId = v4();
     const workspacePath = path.join(
@@ -59,7 +59,7 @@ describe('workspace db management', () => {
 
   test('delete workspace', async () => {
     const { deleteWorkspace } = await import(
-      '@affine/electron/helper/workspace/handlers'
+      '@yunke/electron/helper/workspace/handlers'
     );
     const workspaceId = v4();
     const workspacePath = path.join(

@@ -1,5 +1,5 @@
-import { AuthService } from '@affine/core/modules/cloud';
-import type { DocMode } from '@blocksuite/affine/model';
+import { AuthService } from '@yunke/core/modules/cloud';
+import type { DocMode } from '@blocksuite/yunke/model';
 import { useLiveData, useService } from '@toeverything/infra';
 
 import { ImportTemplateButton } from './import-template';

@@ -1,31 +1,31 @@
-import { DebugLogger } from '@affine/debug';
+import { DebugLogger } from '@yunke/debug';
 import {
   type BlobStorage,
   type DocStorage,
   type ListedBlobRecord,
   universalId,
-} from '@affine/nbstore';
+} from '@yunke/nbstore';
 import {
   IndexedDBBlobStorage,
   IndexedDBBlobSyncStorage,
   IndexedDBDocStorage,
   IndexedDBDocSyncStorage,
-} from '@affine/nbstore/idb';
+} from '@yunke/nbstore/idb';
 import {
   IndexedDBV1BlobStorage,
   IndexedDBV1DocStorage,
-} from '@affine/nbstore/idb/v1';
+} from '@yunke/nbstore/idb/v1';
 import {
   SqliteBlobStorage,
   SqliteBlobSyncStorage,
   SqliteDocStorage,
   SqliteDocSyncStorage,
-} from '@affine/nbstore/sqlite';
+} from '@yunke/nbstore/sqlite';
 import {
   SqliteV1BlobStorage,
   SqliteV1DocStorage,
-} from '@affine/nbstore/sqlite/v1';
-import type { WorkerInitOptions } from '@affine/nbstore/worker/client';
+} from '@yunke/nbstore/sqlite/v1';
+import type { WorkerInitOptions } from '@yunke/nbstore/worker/client';
 import type { FrameworkProvider } from '@toeverything/infra';
 import { LiveData, Service } from '@toeverything/infra';
 import { isEqual } from 'lodash-es';

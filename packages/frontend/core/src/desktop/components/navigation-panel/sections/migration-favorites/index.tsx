@@ -1,8 +1,8 @@
-import { IconButton, useConfirmModal } from '@affine/component';
-import { DocsService } from '@affine/core/modules/doc';
-import { MigrationFavoriteItemsAdapter } from '@affine/core/modules/favorite';
-import { Trans, useI18n } from '@affine/i18n';
-import { track } from '@affine/track';
+import { IconButton, useConfirmModal } from '@yunke/component';
+import { DocsService } from '@yunke/core/modules/doc';
+import { MigrationFavoriteItemsAdapter } from '@yunke/core/modules/favorite';
+import { Trans, useI18n } from '@yunke/i18n';
+import { track } from '@yunke/track';
 import { BroomIcon, HelpIcon } from '@blocksuite/icons/rc';
 import { useLiveData, useServices } from '@toeverything/infra';
 import { useCallback } from 'react';

@@ -4,7 +4,7 @@ import {
   FontWeight,
   type Palette,
   resolveColor,
-} from '@blocksuite/affine/model';
+} from '@blocksuite/yunke/model';
 import { isEqual } from 'lodash-es';
 import { useTheme } from 'next-themes';
 

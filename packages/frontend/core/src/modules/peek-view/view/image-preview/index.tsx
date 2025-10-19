@@ -1,8 +1,8 @@
-import { Divider, Loading, toast } from '@affine/component';
-import { Button, IconButton } from '@affine/component/ui/button';
-import { useAsyncCallback } from '@affine/core/components/hooks/affine-async-hooks';
-import type { ImageBlockModel } from '@blocksuite/affine/model';
-import type { BlockModel, Workspace } from '@blocksuite/affine/store';
+import { Divider, Loading, toast } from '@yunke/component';
+import { Button, IconButton } from '@yunke/component/ui/button';
+import { useAsyncCallback } from '@yunke/core/components/hooks/affine-async-hooks';
+import type { ImageBlockModel } from '@blocksuite/yunke/model';
+import type { BlockModel, Workspace } from '@blocksuite/yunke/store';
 import {
   ArrowLeftSmallIcon,
   ArrowRightSmallIcon,

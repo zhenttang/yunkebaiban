@@ -1,9 +1,9 @@
-import { notify, useConfirmModal } from '@affine/component';
-import { AuthService, ServersService } from '@affine/core/modules/cloud';
-import { GlobalDialogService } from '@affine/core/modules/dialogs';
-import type { Workspace } from '@affine/core/modules/workspace';
-import { WorkspacesService } from '@affine/core/modules/workspace';
-import { useI18n } from '@affine/i18n';
+import { notify, useConfirmModal } from '@yunke/component';
+import { AuthService, ServersService } from '@yunke/core/modules/cloud';
+import { GlobalDialogService } from '@yunke/core/modules/dialogs';
+import type { Workspace } from '@yunke/core/modules/workspace';
+import { WorkspacesService } from '@yunke/core/modules/workspace';
+import { useI18n } from '@yunke/i18n';
 import { useLiveData, useService } from '@toeverything/infra';
 import { useCallback } from 'react';
 

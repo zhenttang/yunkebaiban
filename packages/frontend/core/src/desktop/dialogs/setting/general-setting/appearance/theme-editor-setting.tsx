@@ -1,9 +1,9 @@
-import { Button } from '@affine/component';
-import { SettingRow } from '@affine/component/setting-components';
-import { DesktopApiService } from '@affine/core/modules/desktop-api';
-import { ThemeEditorService } from '@affine/core/modules/theme-editor';
-import { UrlService } from '@affine/core/modules/url';
-import { useI18n } from '@affine/i18n';
+import { Button } from '@yunke/component';
+import { SettingRow } from '@yunke/component/setting-components';
+import { DesktopApiService } from '@yunke/core/modules/desktop-api';
+import { ThemeEditorService } from '@yunke/core/modules/theme-editor';
+import { UrlService } from '@yunke/core/modules/url';
+import { useI18n } from '@yunke/i18n';
 import { DeleteIcon } from '@blocksuite/icons/rc';
 import {
   useLiveData,

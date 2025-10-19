@@ -1,4 +1,4 @@
-import type { DocCustomPropertyInfo } from '@affine/core/modules/db';
+import type { DocCustomPropertyInfo } from '@yunke/core/modules/db';
 
 import { SystemPropertyTypes } from '../system-property-types';
 

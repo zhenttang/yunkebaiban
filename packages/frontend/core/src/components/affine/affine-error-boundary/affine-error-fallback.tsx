@@ -1,4 +1,4 @@
-import { useI18n } from '@affine/i18n';
+import { useI18n } from '@yunke/i18n';
 import { getCurrentStore } from '@toeverything/infra';
 import clsx from 'clsx';
 import { Provider } from 'jotai/react';

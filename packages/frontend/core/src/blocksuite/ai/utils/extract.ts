@@ -1,27 +1,27 @@
-import type { ServiceProvider } from '@blocksuite/affine/global/di';
+import type { ServiceProvider } from '@blocksuite/yunke/global/di';
 import {
   DatabaseBlockModel,
   ImageBlockModel,
   type NoteBlockModel,
   NoteDisplayMode,
-} from '@blocksuite/affine/model';
+} from '@blocksuite/yunke/model';
 import {
   embedSyncedDocMiddleware,
   MarkdownAdapter,
   titleMiddleware,
-} from '@blocksuite/affine/shared/adapters';
+} from '@blocksuite/yunke/shared/adapters';
 import {
   getImageSelectionsCommand,
   getSelectedBlocksCommand,
-} from '@blocksuite/affine/shared/commands';
-import { DocModeProvider } from '@blocksuite/affine/shared/services';
+} from '@blocksuite/yunke/shared/commands';
+import { DocModeProvider } from '@blocksuite/yunke/shared/services';
 import {
   isInsideEdgelessEditor,
   matchModels,
-} from '@blocksuite/affine/shared/utils';
-import type { EditorHost } from '@blocksuite/affine/std';
-import type { BlockModel, Store } from '@blocksuite/affine/store';
-import { Slice, toDraftModel } from '@blocksuite/affine/store';
+} from '@blocksuite/yunke/shared/utils';
+import type { EditorHost } from '@blocksuite/yunke/std';
+import type { BlockModel, Store } from '@blocksuite/yunke/store';
+import { Slice, toDraftModel } from '@blocksuite/yunke/store';
 
 import type { ChatContextValue } from '../chat-panel/chat-context';
 import {

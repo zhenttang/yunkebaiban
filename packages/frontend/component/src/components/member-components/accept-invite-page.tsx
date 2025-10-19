@@ -1,9 +1,9 @@
-import { AuthPageContainer } from '@affine/component/auth-components';
+import { AuthPageContainer } from '@yunke/component/auth-components';
 type InviteInfo = {
   user: { avatarUrl?: string; name?: string };
   workspace: { avatar?: string; name?: string };
 };
-import { useI18n } from '@affine/i18n';
+import { useI18n } from '@yunke/i18n';
 
 import { Avatar } from '../../ui/avatar';
 import { Button } from '../../ui/button';

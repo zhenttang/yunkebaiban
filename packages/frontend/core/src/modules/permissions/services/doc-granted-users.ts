@@ -1,4 +1,4 @@
-// import { DocRole, type GetPageGrantedUsersListQuery } from '@affine/graphql';
+// import { DocRole, type GetPageGrantedUsersListQuery } from '@yunke/graphql';
 import {
   catchErrorInto,
   effect,

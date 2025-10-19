@@ -1,5 +1,5 @@
-import type { MindmapElementModel } from '@blocksuite/affine/model';
-import type { EditorHost } from '@blocksuite/affine/std';
+import type { MindmapElementModel } from '@blocksuite/yunke/model';
+import type { EditorHost } from '@blocksuite/yunke/std';
 
 import { createAIScrollableTextRenderer } from '../components/ai-scrollable-text-renderer';
 import {

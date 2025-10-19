@@ -1,4 +1,4 @@
-import { Component as IndexComponent } from '@affine/core/desktop/pages/index';
+import { Component as IndexComponent } from '@yunke/core/desktop/pages/index';
 
 import { AppFallback } from '../components/app-fallback';
 

@@ -1,12 +1,12 @@
-import { toggleGeneralAIOnboarding } from '@affine/core/components/affine/ai-onboarding/apis';
-import type { AuthAccountInfo, AuthService } from '@affine/core/modules/cloud';
-import type { GlobalDialogService } from '@affine/core/modules/dialogs';
+import { toggleGeneralAIOnboarding } from '@yunke/core/components/affine/ai-onboarding/apis';
+import type { AuthAccountInfo, AuthService } from '@yunke/core/modules/cloud';
+import type { GlobalDialogService } from '@yunke/core/modules/dialogs';
 //import {
 //   type ChatHistoryOrder,
 //   ContextCategories,
 //   type getCopilotHistoriesQuery,
 //   type RequestOptions,
-//} from '@affine/graphql';
+//} from '@yunke/graphql';
 import { z } from 'zod';
 
 import { AIProvider } from './ai-provider';

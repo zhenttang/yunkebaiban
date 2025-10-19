@@ -1,13 +1,13 @@
-import '@affine/core/bootstrap/browser';
+import '@yunke/core/bootstrap/browser';
 
-import { broadcastChannelStorages } from '@affine/nbstore/broadcast-channel';
-import { cloudStorages } from '@affine/nbstore/cloud';
-import { idbStorages } from '@affine/nbstore/idb';
-import { idbV1Storages } from '@affine/nbstore/idb/v1';
+import { broadcastChannelStorages } from '@yunke/nbstore/broadcast-channel';
+import { cloudStorages } from '@yunke/nbstore/cloud';
+import { idbStorages } from '@yunke/nbstore/idb';
+import { idbV1Storages } from '@yunke/nbstore/idb/v1';
 import {
   StoreManagerConsumer,
   type WorkerManagerOps,
-} from '@affine/nbstore/worker/consumer';
+} from '@yunke/nbstore/worker/consumer';
 import { type MessageCommunicapable, OpConsumer } from '@toeverything/infra/op';
 
 const consumer = new StoreManagerConsumer([

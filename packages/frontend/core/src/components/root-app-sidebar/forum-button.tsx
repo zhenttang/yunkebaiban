@@ -1,6 +1,6 @@
-import { MenuLinkItem } from '@affine/core/modules/app-sidebar/views';
-import { WorkbenchService } from '@affine/core/modules/workbench';
-import { useI18n } from '@affine/i18n';
+import { MenuLinkItem } from '@yunke/core/modules/app-sidebar/views';
+import { WorkbenchService } from '@yunke/core/modules/workbench';
+import { useI18n } from '@yunke/i18n';
 import { PenIcon } from '@blocksuite/icons/rc';
 import { useLiveData, useService } from '@toeverything/infra';
 

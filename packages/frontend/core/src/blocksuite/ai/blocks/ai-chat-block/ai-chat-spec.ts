@@ -1,5 +1,5 @@
-import { BlockViewExtension } from '@blocksuite/affine/std';
-import type { ExtensionType } from '@blocksuite/affine/store';
+import { BlockViewExtension } from '@blocksuite/yunke/std';
+import type { ExtensionType } from '@blocksuite/yunke/store';
 import { literal } from 'lit/static-html.js';
 
 export const AIChatBlockSpec: ExtensionType[] = [

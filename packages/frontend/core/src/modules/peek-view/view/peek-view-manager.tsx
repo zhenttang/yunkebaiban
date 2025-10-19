@@ -1,5 +1,5 @@
-import { toReactNode } from '@affine/component';
-import { BlockComponent } from '@blocksuite/affine/std';
+import { toReactNode } from '@yunke/component';
+import { BlockComponent } from '@blocksuite/yunke/std';
 import { useLiveData, useService } from '@toeverything/infra';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 

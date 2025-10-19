@@ -1,31 +1,31 @@
 import {
   EdgelessClipboardController,
   splitElements,
-} from '@blocksuite/affine/blocks/root';
+} from '@blocksuite/yunke/blocks/root';
 import {
   getSurfaceBlock,
   type SurfaceBlockComponent,
-} from '@blocksuite/affine/blocks/surface';
-import { DatabaseBlockModel, ImageBlockModel } from '@blocksuite/affine/model';
+} from '@blocksuite/yunke/blocks/surface';
+import { DatabaseBlockModel, ImageBlockModel } from '@blocksuite/yunke/model';
 import {
   getBlockSelectionsCommand,
   getImageSelectionsCommand,
   getSelectedBlocksCommand,
   getSelectedModelsCommand,
   getTextSelectionCommand,
-} from '@blocksuite/affine/shared/commands';
-import { matchModels } from '@blocksuite/affine/shared/utils';
-import { type EditorHost, TextSelection } from '@blocksuite/affine/std';
+} from '@blocksuite/yunke/shared/commands';
+import { matchModels } from '@blocksuite/yunke/shared/utils';
+import { type EditorHost, TextSelection } from '@blocksuite/yunke/std';
 import {
   GfxControllerIdentifier,
   type GfxModel,
-} from '@blocksuite/affine/std/gfx';
+} from '@blocksuite/yunke/std/gfx';
 import {
   type BlockModel,
   type DraftModel,
   Slice,
   toDraftModel,
-} from '@blocksuite/affine/store';
+} from '@blocksuite/yunke/store';
 
 import { getContentFromSlice } from '../../utils';
 import type { CopilotTool } from '../tool/copilot-tool';

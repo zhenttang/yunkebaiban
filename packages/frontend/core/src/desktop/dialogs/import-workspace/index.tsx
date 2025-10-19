@@ -1,13 +1,13 @@
-import { toast } from '@affine/component';
+import { toast } from '@yunke/component';
 import {
   type DialogComponentProps,
   type GLOBAL_DIALOG_SCHEMA,
-} from '@affine/core/modules/dialogs';
-import { WorkspacesService } from '@affine/core/modules/workspace';
-import { _addLocalWorkspace } from '@affine/core/modules/workspace-engine';
-import { DebugLogger } from '@affine/debug';
-import { apis } from '@affine/electron-api';
-import { useI18n } from '@affine/i18n';
+} from '@yunke/core/modules/dialogs';
+import { WorkspacesService } from '@yunke/core/modules/workspace';
+import { _addLocalWorkspace } from '@yunke/core/modules/workspace-engine';
+import { DebugLogger } from '@yunke/debug';
+import { apis } from '@yunke/electron-api';
+import { useI18n } from '@yunke/i18n';
 import { useService } from '@toeverything/infra';
 import { useLayoutEffect, useRef } from 'react';
 

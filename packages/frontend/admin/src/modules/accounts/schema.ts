@@ -1,6 +1,6 @@
-// import type { FeatureType, ListUsersQuery } from '@affine/graphql';
+// import type { FeatureType, ListUsersQuery } from '@yunke/graphql';
 
-// 临时占位符，用于替代 @affine/graphql 导入
+// 临时占位符，用于替代 @yunke/graphql 导入
 export enum FeatureType {
   Admin = 'admin',
   Pro = 'pro',

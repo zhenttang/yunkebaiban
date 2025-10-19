@@ -1,8 +1,8 @@
-import { Skeleton } from '@affine/component';
-import { SettingRow } from '@affine/component/setting-components';
-import { SubscriptionService } from '@affine/core/modules/cloud';
-// import { SubscriptionStatus } from '@affine/graphql';
-import { i18nTime, Trans, useI18n } from '@affine/i18n';
+import { Skeleton } from '@yunke/component';
+import { SettingRow } from '@yunke/component/setting-components';
+import { SubscriptionService } from '@yunke/core/modules/cloud';
+// import { SubscriptionStatus } from '@yunke/graphql';
+import { i18nTime, Trans, useI18n } from '@yunke/i18n';
 import { useLiveData, useService } from '@toeverything/infra';
 import { useEffect, useMemo } from 'react';
 

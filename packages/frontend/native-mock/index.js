@@ -1,4 +1,4 @@
-// Mock implementation of @affine/native that delegates to Java backend APIs
+// Mock implementation of @yunke/native that delegates to Java backend APIs
 
 const BASE_URL = 'http://localhost:8080';
 
@@ -277,4 +277,4 @@ export const TappableApplication = class {
   // 模拟实现
 };
 
-console.warn('🚧 [MOCK] @affine/native loaded - Rust functionality disabled, using JavaScript mocks');
+console.warn('🚧 [MOCK] @yunke/native loaded - Rust functionality disabled, using JavaScript mocks');

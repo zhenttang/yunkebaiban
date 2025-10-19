@@ -1,4 +1,4 @@
-import type { Package } from '@affine-tools/utils/workspace';
+import type { Package } from '@yunke-tools/utils/workspace';
 
 import { PackageToDistribution } from './distribution';
 
@@ -41,7 +41,7 @@ export function getBuildConfig(
 
         appBuildType: 'stable' as const,
         appVersion: pkg.version,
-        // editorVersion: pkg.dependencies['@blocksuite/affine'],
+        // editorVersion: pkg.dependencies['@blocksuite/yunke'],
         editorVersion: pkg.version,
         githubUrl: 'https://gitcode.com/xiaoleixiaolei',
         changelogUrl: 'https://affine.pro/what-is-new',

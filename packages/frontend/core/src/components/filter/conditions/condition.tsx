@@ -1,5 +1,5 @@
-import { Menu, MenuItem } from '@affine/component';
-import type { FilterParams } from '@affine/core/modules/collection-rules';
+import { Menu, MenuItem } from '@yunke/component';
+import type { FilterParams } from '@yunke/core/modules/collection-rules';
 import clsx from 'clsx';
 import type React from 'react';
 

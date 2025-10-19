@@ -1,8 +1,8 @@
-import track from '@affine/track';
-import { CodeBlockPreviewExtension } from '@blocksuite/affine/blocks/code';
-import { SignalWatcher, WithDisposable } from '@blocksuite/affine/global/lit';
-import type { CodeBlockModel } from '@blocksuite/affine/model';
-import { unsafeCSSVarV2 } from '@blocksuite/affine/shared/theme';
+import track from '@yunke/track';
+import { CodeBlockPreviewExtension } from '@blocksuite/yunke/blocks/code';
+import { SignalWatcher, WithDisposable } from '@blocksuite/yunke/global/lit';
+import type { CodeBlockModel } from '@blocksuite/yunke/model';
+import { unsafeCSSVarV2 } from '@blocksuite/yunke/shared/theme';
 import { css, html, LitElement, type PropertyValues } from 'lit';
 import { property, query, state } from 'lit/decorators.js';
 import { choose } from 'lit/directives/choose.js';

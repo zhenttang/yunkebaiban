@@ -1,4 +1,4 @@
-import { type Path, ProjectRoot } from '@affine-tools/utils/path';
+import { type Path, ProjectRoot } from '@yunke-tools/utils/path';
 
 import { Command, Option } from './command';
 
@@ -6,11 +6,11 @@ const CERT_DIR = ProjectRoot.join('.docker/dev/certs');
 const CA_DIR = CERT_DIR.join('ca');
 const TEMPLATES_DIR = ProjectRoot.join('.docker/dev/templates');
 const NGINX_CONF_DIR = ProjectRoot.join('.docker/dev/nginx/conf.d');
-const CA_PEM_PATH = CA_DIR.join('affine-self-signed.pem');
-const CA_KEY_PATH = CA_DIR.join('affine-self-signed.key');
+const CA_PEM_PATH = CA_DIR.join('yunke-self-signed.pem');
+const CA_KEY_PATH = CA_DIR.join('yunke-self-signed.key');
 
-const CA_ORG = 'AFFiNE Dev CA Self Signed Org';
-const CA_NAME = 'AFFiNE Dev CA Self Signed CN';
+const CA_ORG = 'Yunke Dev CA Self Signed Org';
+const CA_NAME = 'Yunke Dev CA Self Signed CN';
 
 export class CertCommand extends Command {
   static override paths = [['cert']];
@@ -21,7 +21,7 @@ export class CertCommand extends Command {
 
   domain = Option.String('--domain', {
     description:
-      '为指定域名生成证书。例如："dev.affine.fail"',
+      '为指定域名生成证书。例如："dev.yunke.fail"',
   });
 
   uninstall = Option.Boolean('--uninstall', {
@@ -41,7 +41,7 @@ export class CertCommand extends Command {
   private createCert(domain: string) {
     if (!this.checkInstalled(CA_PEM_PATH)) {
       this.logger.error(
-        'CA未安装。请先运行 `yarn affine cert --install`。'
+        'CA未安装。请先运行 `yarn yunke cert --install`。'
       );
       process.exit(1);
     }
@@ -65,7 +65,7 @@ export class CertCommand extends Command {
     confPath.writeFile(config);
     this.exec(`openssl genrsa -out ${keyPath} 2048`);
     this.exec(
-      `openssl req -new -key ${keyPath} -out ${csrPath} -config ${confPath} -subj "/C=/ST=/O=/localityName=/commonName=${domain}/organizationalUnitName=/emailAddress=${domain}@affine.pro/"`
+      `openssl req -new -key ${keyPath} -out ${csrPath} -config ${confPath} -subj "/C=/ST=/O=/localityName=/commonName=${domain}/organizationalUnitName=/emailAddress=${domain}@yunke.pro/"`
     );
     this.exec(
       `openssl x509 -req -days 1024 -in ${csrPath} -CA ${CA_PEM_PATH} -CAkey ${CA_KEY_PATH} -CAcreateserial -out ${crtPath} -extensions v3_req -extfile ${confPath}`
@@ -89,13 +89,13 @@ export class CertCommand extends Command {
     CA_DIR.mkdir();
 
     this.exec(
-      `openssl req -new -newkey rsa:2048 -days 1024 -nodes -x509 -subj "/C=/ST=/O=${CA_ORG}/localityName=/commonName=${CA_NAME}/organizationalUnitName=Developers/emailAddress=dev@affine.pro/" -keyout ${CA_KEY_PATH} -out ${CA_PEM_PATH}`
+      `openssl req -new -newkey rsa:2048 -days 1024 -nodes -x509 -subj "/C=/ST=/O=${CA_ORG}/localityName=/commonName=${CA_NAME}/organizationalUnitName=Developers/emailAddress=dev@yunke.pro/" -keyout ${CA_KEY_PATH} -out ${CA_PEM_PATH}`
     );
     this.trustCa(CA_PEM_PATH);
   }
 
   private trustCa(pem: Path) {
-    this.logger.info(`信任AFFiNE开发自签名CA`);
+    this.logger.info(`信任Yunke开发自签名CA`);
     this.exec(
       `sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain ${pem}`
     );

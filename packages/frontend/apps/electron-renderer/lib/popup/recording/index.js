@@ -1,11 +1,11 @@
 import { jsx as _jsx, Fragment as _Fragment, jsxs as _jsxs } from "react/jsx-runtime";
-import { Button } from '@affine/component';
-import { useAsyncCallback } from '@affine/core/components/hooks/affine-async-hooks';
-import { appIconMap } from '@affine/core/utils';
-import { createStreamEncoder, encodeRawBufferToOpus, } from '@affine/core/utils/opus-encoding';
-import { apis, events } from '@affine/electron-api';
-import { useI18n } from '@affine/i18n';
-import track from '@affine/track';
+import { Button } from '@yunke/component';
+import { useAsyncCallback } from '@yunke/core/components/hooks/affine-async-hooks';
+import { appIconMap } from '@yunke/core/utils';
+import { createStreamEncoder, encodeRawBufferToOpus, } from '@yunke/core/utils/opus-encoding';
+import { apis, events } from '@yunke/electron-api';
+import { useI18n } from '@yunke/i18n';
+import track from '@yunke/track';
 import { useEffect, useMemo, useState } from 'react';
 import * as styles from './styles.css';
 export const useRecordingStatus = () => {

@@ -1,17 +1,17 @@
-import { Skeleton } from '@affine/component';
-import { getViewManager } from '@affine/core/blocksuite/manager/view';
-import type { EditorSettingSchema } from '@affine/core/modules/editor-setting';
-import { EditorSettingService } from '@affine/core/modules/editor-setting';
-import { EdgelessCRUDIdentifier } from '@blocksuite/affine/blocks/surface';
-import { Bound } from '@blocksuite/affine/global/gfx';
-import { ViewportElementExtension } from '@blocksuite/affine/shared/services';
-import type { EditorHost } from '@blocksuite/affine/std';
-import { BlockStdScope } from '@blocksuite/affine/std';
+import { Skeleton } from '@yunke/component';
+import { getViewManager } from '@yunke/core/blocksuite/manager/view';
+import type { EditorSettingSchema } from '@yunke/core/modules/editor-setting';
+import { EditorSettingService } from '@yunke/core/modules/editor-setting';
+import { EdgelessCRUDIdentifier } from '@blocksuite/yunke/blocks/surface';
+import { Bound } from '@blocksuite/yunke/global/gfx';
+import { ViewportElementExtension } from '@blocksuite/yunke/shared/services';
+import type { EditorHost } from '@blocksuite/yunke/std';
+import { BlockStdScope } from '@blocksuite/yunke/std';
 import {
   GfxControllerIdentifier,
   type GfxPrimitiveElementModel,
-} from '@blocksuite/affine/std/gfx';
-import type { Block, Store } from '@blocksuite/affine/store';
+} from '@blocksuite/yunke/std/gfx';
+import type { Block, Store } from '@blocksuite/yunke/store';
 import { useFramework } from '@toeverything/infra';
 import { isEqual } from 'lodash-es';
 import { useCallback, useEffect, useMemo, useRef } from 'react';

@@ -1,12 +1,12 @@
-import { Button } from '@affine/component';
-import { SettingRow } from '@affine/component/setting-components';
-import { getUpgradeQuestionnaireLink } from '@affine/core/components/hooks/affine/use-subscription-notify';
+import { Button } from '@yunke/component';
+import { SettingRow } from '@yunke/component/setting-components';
+import { getUpgradeQuestionnaireLink } from '@yunke/core/components/hooks/affine/use-subscription-notify';
 import {
   AuthService,
   WorkspaceSubscriptionService,
-} from '@affine/core/modules/cloud';
-// import { SubscriptionPlan, SubscriptionRecurring } from '@affine/graphql';
-import { useI18n } from '@affine/i18n';
+} from '@yunke/core/modules/cloud';
+// import { SubscriptionPlan, SubscriptionRecurring } from '@yunke/graphql';
+import { useI18n } from '@yunke/i18n';
 import { useLiveData, useService } from '@toeverything/infra';
 
 import * as styles from './styles.css';

@@ -1,16 +1,16 @@
 /* oxlint-disable @typescript-eslint/no-non-null-assertion */
-import { DefaultTool } from '@blocksuite/affine/blocks/surface';
-import { IS_MAC } from '@blocksuite/affine/global/env';
+import { DefaultTool } from '@blocksuite/yunke/blocks/surface';
+import { IS_MAC } from '@blocksuite/yunke/global/env';
 import {
   Bound,
   getCommonBoundWithRotation,
-} from '@blocksuite/affine/global/gfx';
-import type { PointerEventState } from '@blocksuite/affine/std';
+} from '@blocksuite/yunke/global/gfx';
+import type { PointerEventState } from '@blocksuite/yunke/std';
 import {
   BaseTool,
   type GfxModel,
   MouseButton,
-} from '@blocksuite/affine/std/gfx';
+} from '@blocksuite/yunke/std/gfx';
 import { Subject } from 'rxjs';
 
 import {

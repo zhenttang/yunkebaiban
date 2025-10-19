@@ -5,17 +5,17 @@ import {
   MenuItem,
   MenuTrigger,
   Switch,
-} from '@affine/component';
+} from '@yunke/component';
 import {
   SettingHeader,
   SettingRow,
   SettingWrapper,
-} from '@affine/component/setting-components';
-import { useAsyncCallback } from '@affine/core/components/hooks/affine-async-hooks';
-import { DesktopApiService } from '@affine/core/modules/desktop-api';
-import { MeetingSettingsService } from '@affine/core/modules/media/services/meeting-settings';
-import type { MeetingSettingsSchema } from '@affine/electron/main/shared-state-schema';
-import { Trans, useI18n } from '@affine/i18n';
+} from '@yunke/component/setting-components';
+import { useAsyncCallback } from '@yunke/core/components/hooks/affine-async-hooks';
+import { DesktopApiService } from '@yunke/core/modules/desktop-api';
+import { MeetingSettingsService } from '@yunke/core/modules/media/services/meeting-settings';
+import type { MeetingSettingsSchema } from '@yunke/electron/main/shared-state-schema';
+import { Trans, useI18n } from '@yunke/i18n';
 import {
   ArrowRightSmallIcon,
   DoneIcon,

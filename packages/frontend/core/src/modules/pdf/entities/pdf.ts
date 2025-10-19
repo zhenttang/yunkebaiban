@@ -1,4 +1,4 @@
-import type { AttachmentBlockModel } from '@blocksuite/affine/model';
+import type { AttachmentBlockModel } from '@blocksuite/yunke/model';
 import { Entity, LiveData, ObjectPool } from '@toeverything/infra';
 import { catchError, from, map, of, startWith, switchMap } from 'rxjs';
 

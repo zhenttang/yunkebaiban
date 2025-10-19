@@ -1,6 +1,6 @@
-import { SignalWatcher } from '@blocksuite/affine/global/lit';
-import { unsafeCSSVar } from '@blocksuite/affine/shared/theme';
-import type { EditorHost } from '@blocksuite/affine/std';
+import { SignalWatcher } from '@blocksuite/yunke/global/lit';
+import { unsafeCSSVar } from '@blocksuite/yunke/shared/theme';
+import type { EditorHost } from '@blocksuite/yunke/std';
 import { css, html, LitElement } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { debounce, noop } from 'lodash-es';

@@ -1,12 +1,12 @@
-import { generateUrl } from '@affine/core/components/hooks/affine/use-share-url';
-import { WorkspaceServerService } from '@affine/core/modules/cloud';
-import { resolveLinkToDoc } from '@affine/core/modules/navigation/utils';
-import { WorkspaceService } from '@affine/core/modules/workspace';
-import { type ReferenceParams } from '@blocksuite/affine/model';
+import { generateUrl } from '@yunke/core/components/hooks/affine/use-share-url';
+import { WorkspaceServerService } from '@yunke/core/modules/cloud';
+import { resolveLinkToDoc } from '@yunke/core/modules/navigation/utils';
+import { WorkspaceService } from '@yunke/core/modules/workspace';
+import { type ReferenceParams } from '@blocksuite/yunke/model';
 import {
   GenerateDocUrlExtension,
   ParseDocUrlExtension,
-} from '@blocksuite/affine/shared/services';
+} from '@blocksuite/yunke/shared/services';
 import type { FrameworkProvider } from '@toeverything/infra';
 
 function patchParseDocUrlExtension(framework: FrameworkProvider) {

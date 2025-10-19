@@ -1,8 +1,8 @@
 import {
   useMutateQueryResource,
   useMutation,
-} from '@affine/admin/use-mutation';
-import { useAsyncCallback } from '@affine/core/components/hooks/affine-async-hooks';
+} from '@yunke/admin/use-mutation';
+import { useAsyncCallback } from '@yunke/core/components/hooks/affine-async-hooks';
 // import {
 //   createChangePasswordUrlMutation,
 //   createUserMutation,
@@ -15,9 +15,9 @@ import { useAsyncCallback } from '@affine/core/components/hooks/affine-async-hoo
 //   listUsersQuery,
 //   updateAccountFeaturesMutation,
 //   updateAccountMutation,
-// } from '@affine/graphql';
+// } from '@yunke/graphql';
 
-// 临时占位符，用于替代 @affine/graphql 导入
+// 临时占位符，用于替代 @yunke/graphql 导入
 type ImportUsersInput = {
   users: {
     name: string;

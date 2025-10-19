@@ -1,4 +1,4 @@
-# @affine/config - 统一网络配置管理
+# @yunke/config - 统一网络配置管理
 
 这个包提供了AFFiNE项目的统一网络配置管理，避免了在多个文件中硬编码服务器地址的问题。
 
@@ -19,7 +19,7 @@ import {
   getApiBaseUrl, 
   getSocketIOUrl, 
   networkConfig 
-} from '@affine/config';
+} from '@yunke/config';
 
 // 获取API基础URL
 const apiUrl = getApiBaseUrl();
@@ -70,7 +70,7 @@ VITE_PROD_SOCKETIO_PORT=9092
 ### 配置管理器
 
 ```typescript
-import networkConfig from '@affine/config';
+import networkConfig from '@yunke/config';
 
 // 手动设置环境
 networkConfig.setEnvironment('production');
@@ -110,7 +110,7 @@ const socketUrl = 'http://localhost:9092';
 **现在:**
 ```typescript  
 // ✅ 使用配置
-import { getApiBaseUrl, getSocketIOUrl } from '@affine/config';
+import { getApiBaseUrl, getSocketIOUrl } from '@yunke/config';
 
 const apiUrl = getApiBaseUrl();
 const socketUrl = getSocketIOUrl();
@@ -127,7 +127,7 @@ const socketUrl = baseUrl.replace(':8080', ':9092');
 **现在:**
 ```typescript
 // ✅ 使用转换函数
-import { convertToSocketIOUrl } from '@affine/config';
+import { convertToSocketIOUrl } from '@yunke/config';
 
 const socketUrl = convertToSocketIOUrl(baseUrl);
 ```
@@ -158,7 +158,7 @@ VITE_API_BASE_URL=https://your-domain.com npm run build
 
 ### 调试配置
 ```typescript
-import { debugNetworkConfig } from '@affine/config';
+import { debugNetworkConfig } from '@yunke/config';
 
 // 打印当前配置信息
 debugNetworkConfig();

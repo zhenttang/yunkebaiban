@@ -4,22 +4,22 @@ import {
   MenuTrigger,
   notify,
   Tooltip,
-} from '@affine/component';
-import { useAsyncCallback } from '@affine/core/components/hooks/affine-async-hooks';
-import { DocGrantedUsersService } from '@affine/core/modules/permissions';
-import { ShareInfoService } from '@affine/core/modules/share-doc';
-import { UserFriendlyError } from '@affine/error';
-// import { DocRole } from '@affine/graphql';
-import { DocRole } from '@affine/core/modules/share-doc/types';
-import { useI18n } from '@affine/i18n';
-import { track } from '@affine/track';
+} from '@yunke/component';
+import { useAsyncCallback } from '@yunke/core/components/hooks/affine-async-hooks';
+import { DocGrantedUsersService } from '@yunke/core/modules/permissions';
+import { ShareInfoService } from '@yunke/core/modules/share-doc';
+import { UserFriendlyError } from '@yunke/error';
+// import { DocRole } from '@yunke/graphql';
+import { DocRole } from '@yunke/core/modules/share-doc/types';
+import { useI18n } from '@yunke/i18n';
+import { track } from '@yunke/track';
 import { InformationIcon } from '@blocksuite/icons/rc';
 import { useLiveData, useService } from '@toeverything/infra';
 import clsx from 'clsx';
 import { useCallback, useMemo } from 'react';
 
 import { PlanTag } from '../plan-tag';
-import { DocPermission, RolePresetsMask } from '@affine/core/modules/share-doc/types';
+import { DocPermission, RolePresetsMask } from '@yunke/core/modules/share-doc/types';
 import { CustomPermissionPanel } from './custom-permission-panel';
 import * as styles from './styles.css';
 

@@ -5,14 +5,14 @@ import {
   MenuItem,
   type MenuRef,
   PropertyValue,
-} from '@affine/component';
-import { MobileJournalConflictList } from '@affine/core/mobile/pages/workspace/detail/menu/journal-conflicts';
-import type { FilterParams } from '@affine/core/modules/collection-rules';
-import { DocService } from '@affine/core/modules/doc';
-import { JournalService } from '@affine/core/modules/journal';
-import { WorkbenchService } from '@affine/core/modules/workbench';
-import { ViewService } from '@affine/core/modules/workbench/services/view';
-import { i18nTime, useI18n } from '@affine/i18n';
+} from '@yunke/component';
+import { MobileJournalConflictList } from '@yunke/core/mobile/pages/workspace/detail/menu/journal-conflicts';
+import type { FilterParams } from '@yunke/core/modules/collection-rules';
+import { DocService } from '@yunke/core/modules/doc';
+import { JournalService } from '@yunke/core/modules/journal';
+import { WorkbenchService } from '@yunke/core/modules/workbench';
+import { ViewService } from '@yunke/core/modules/workbench/services/view';
+import { i18nTime, useI18n } from '@yunke/i18n';
 import { TodayIcon } from '@blocksuite/icons/rc';
 import {
   useLiveData,

@@ -1,14 +1,14 @@
-import type { RadioItem } from '@affine/component';
-import { RadioGroup, Switch } from '@affine/component';
+import type { RadioItem } from '@yunke/component';
+import { RadioGroup, Switch } from '@yunke/component';
 import {
   SettingHeader,
   SettingRow,
   SettingWrapper,
-} from '@affine/component/setting-components';
-import { LanguageMenu } from '@affine/core/components/affine/language-menu';
-import { TraySettingService } from '@affine/core/modules/editor-setting/services/tray-settings';
-import { FeatureFlagService } from '@affine/core/modules/feature-flag';
-import { useI18n } from '@affine/i18n';
+} from '@yunke/component/setting-components';
+import { LanguageMenu } from '@yunke/core/components/affine/language-menu';
+import { TraySettingService } from '@yunke/core/modules/editor-setting/services/tray-settings';
+import { FeatureFlagService } from '@yunke/core/modules/feature-flag';
+import { useI18n } from '@yunke/i18n';
 import { useLiveData, useService } from '@toeverything/infra';
 import { useTheme } from 'next-themes';
 import { useCallback, useMemo } from 'react';

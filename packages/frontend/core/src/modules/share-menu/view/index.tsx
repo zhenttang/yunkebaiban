@@ -1,7 +1,7 @@
-import { useEnableCloud } from '@affine/core/components/hooks/affine/use-enable-cloud';
-import type { Workspace } from '@affine/core/modules/workspace';
-import { track } from '@affine/track';
-import type { Store } from '@blocksuite/affine/store';
+import { useEnableCloud } from '@yunke/core/components/hooks/affine/use-enable-cloud';
+import type { Workspace } from '@yunke/core/modules/workspace';
+import { track } from '@yunke/track';
+import type { Store } from '@blocksuite/yunke/store';
 import { useCallback } from 'react';
 
 import { ShareMenu } from './share-menu';

@@ -1,5 +1,5 @@
-import type { FeatureFlagService } from '@affine/core/modules/feature-flag';
-import type { Workspace as WorkspaceInterface } from '@blocksuite/affine/store';
+import type { FeatureFlagService } from '@yunke/core/modules/feature-flag';
+import type { Workspace as WorkspaceInterface } from '@blocksuite/yunke/store';
 import { Entity, LiveData, yjsGetPath } from '@toeverything/infra';
 import type { Observable } from 'rxjs';
 import { Doc as YDoc, transact } from 'yjs';

@@ -1,18 +1,18 @@
-import type { FeatureFlagService } from '@affine/core/modules/feature-flag';
+import type { FeatureFlagService } from '@yunke/core/modules/feature-flag';
 type ContextEmbedStatus = 'PENDING' | 'EMBEDDED' | 'FAILED' | string;
 import {
   CanvasElementType,
   EdgelessCRUDIdentifier,
   getSurfaceBlock,
-} from '@blocksuite/affine/blocks/surface';
-import { ViewExtensionManagerIdentifier } from '@blocksuite/affine/ext-loader';
-import { ConnectorMode } from '@blocksuite/affine/model';
+} from '@blocksuite/yunke/blocks/surface';
+import { ViewExtensionManagerIdentifier } from '@blocksuite/yunke/ext-loader';
+import { ConnectorMode } from '@blocksuite/yunke/model';
 import {
   DocModeProvider,
   TelemetryProvider,
-} from '@blocksuite/affine/shared/services';
-import type { Signal } from '@blocksuite/affine/shared/utils';
-import type { EditorHost } from '@blocksuite/affine/std';
+} from '@blocksuite/yunke/shared/services';
+import type { Signal } from '@blocksuite/yunke/shared/utils';
+import type { EditorHost } from '@blocksuite/yunke/std';
 import { signal } from '@preact/signals-core';
 import { html, LitElement, nothing } from 'lit';
 import { property, query, state } from 'lit/decorators.js';

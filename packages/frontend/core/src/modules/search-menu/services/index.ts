@@ -1,11 +1,11 @@
-import type { TagMeta } from '@affine/core/components/page-list';
-import { I18n } from '@affine/i18n';
-import { createSignalFromObservable } from '@blocksuite/affine/shared/utils';
-import type { DocMeta } from '@blocksuite/affine/store';
+import type { TagMeta } from '@yunke/core/components/page-list';
+import { I18n } from '@yunke/i18n';
+import { createSignalFromObservable } from '@blocksuite/yunke/shared/utils';
+import type { DocMeta } from '@blocksuite/yunke/store';
 import type {
   LinkedMenuGroup,
   LinkedMenuItem,
-} from '@blocksuite/affine/widgets/linked-doc';
+} from '@blocksuite/yunke/widgets/linked-doc';
 import { CollectionsIcon } from '@blocksuite/icons/lit';
 import { computed } from '@preact/signals-core';
 import { Service } from '@toeverything/infra';

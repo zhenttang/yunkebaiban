@@ -1,8 +1,8 @@
-import { Checkbox, useDraggable } from '@affine/component';
-import { WorkbenchLink } from '@affine/core/modules/workbench';
-import type { AffineDNDData } from '@affine/core/types/dnd';
-import { stopPropagation } from '@affine/core/utils';
-import { useI18n } from '@affine/i18n';
+import { Checkbox, useDraggable } from '@yunke/component';
+import { WorkbenchLink } from '@yunke/core/modules/workbench';
+import type { AffineDNDData } from '@yunke/core/types/dnd';
+import { stopPropagation } from '@yunke/core/utils';
+import { useI18n } from '@yunke/i18n';
 import type { ForwardedRef, PropsWithChildren } from 'react';
 import { forwardRef, useCallback, useMemo } from 'react';
 

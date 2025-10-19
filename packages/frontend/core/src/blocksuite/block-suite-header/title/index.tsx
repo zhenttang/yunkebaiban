@@ -1,10 +1,10 @@
-import type { InlineEditProps } from '@affine/component';
-import { InlineEdit } from '@affine/component';
-import { useGuard } from '@affine/core/components/guard';
-import { useAsyncCallback } from '@affine/core/components/hooks/affine-async-hooks';
-import { DocService, DocsService } from '@affine/core/modules/doc';
-import { WorkspaceService } from '@affine/core/modules/workspace';
-import { track } from '@affine/track';
+import type { InlineEditProps } from '@yunke/component';
+import { InlineEdit } from '@yunke/component';
+import { useGuard } from '@yunke/core/components/guard';
+import { useAsyncCallback } from '@yunke/core/components/hooks/affine-async-hooks';
+import { DocService, DocsService } from '@yunke/core/modules/doc';
+import { WorkspaceService } from '@yunke/core/modules/workspace';
+import { track } from '@yunke/track';
 import { useLiveData, useService } from '@toeverything/infra';
 import clsx from 'clsx';
 import type { HTMLAttributes } from 'react';

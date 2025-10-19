@@ -1,4 +1,4 @@
-import type { EditorHost } from '@blocksuite/affine/std';
+import type { EditorHost } from '@blocksuite/yunke/std';
 
 import type { EdgelessCopilotWidget } from '../widgets/edgeless-copilot';
 import { AFFINE_EDGELESS_COPILOT_WIDGET } from '../widgets/edgeless-copilot/constant';

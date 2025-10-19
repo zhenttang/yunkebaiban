@@ -1,8 +1,8 @@
-import { PropertyValue } from '@affine/component';
-import { AffinePageReference } from '@affine/core/components/affine/reference-link';
-import { ConfigModal } from '@affine/core/components/mobile';
-import { resolveLinkToDoc } from '@affine/core/modules/navigation';
-import { useI18n } from '@affine/i18n';
+import { PropertyValue } from '@yunke/component';
+import { AffinePageReference } from '@yunke/core/components/affine/reference-link';
+import { ConfigModal } from '@yunke/core/components/mobile';
+import { resolveLinkToDoc } from '@yunke/core/modules/navigation';
+import { useI18n } from '@yunke/i18n';
 import { LinkIcon } from '@blocksuite/icons/rc';
 import type { LiveData } from '@toeverything/infra';
 import { useLiveData } from '@toeverything/infra';

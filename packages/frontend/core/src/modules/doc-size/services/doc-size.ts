@@ -1,6 +1,6 @@
-import { DocsService } from '@affine/core/modules/doc';
-import { WorkspaceService } from '@affine/core/modules/workspace';
-import type { DocMeta } from '@blocksuite/affine/store';
+import { DocsService } from '@yunke/core/modules/doc';
+import { WorkspaceService } from '@yunke/core/modules/workspace';
+import type { DocMeta } from '@blocksuite/yunke/store';
 import { Service } from '@toeverything/infra';
 
 export interface DocSizeInfo {

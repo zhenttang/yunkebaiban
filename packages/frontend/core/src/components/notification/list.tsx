@@ -6,16 +6,16 @@ import {
   observeIntersection,
   Scrollable,
   Skeleton,
-} from '@affine/component';
-import { InvitationService } from '@affine/core/modules/cloud';
+} from '@yunke/component';
+import { InvitationService } from '@yunke/core/modules/cloud';
 import {
   type Notification,
   NotificationListService,
   NotificationType,
-} from '@affine/core/modules/notification';
-import { WorkspacesService } from '@affine/core/modules/workspace';
-import { extractEmojiIcon } from '@affine/core/utils';
-import { UserFriendlyError } from '@affine/error';
+} from '@yunke/core/modules/notification';
+import { WorkspacesService } from '@yunke/core/modules/workspace';
+import { extractEmojiIcon } from '@yunke/core/utils';
+import { UserFriendlyError } from '@yunke/error';
 import type {
   InvitationAcceptedNotificationBodyType,
   InvitationBlockedNotificationBodyType,
@@ -24,9 +24,9 @@ import type {
   InvitationReviewDeclinedNotificationBodyType,
   InvitationReviewRequestNotificationBodyType,
   MentionNotificationBodyType,
-} from '@affine/graphql';
-import { i18nTime, Trans, useI18n } from '@affine/i18n';
-import track from '@affine/track';
+} from '@yunke/graphql';
+import { i18nTime, Trans, useI18n } from '@yunke/i18n';
+import track from '@yunke/track';
 import {
   CollaborationIcon,
   DeleteIcon,

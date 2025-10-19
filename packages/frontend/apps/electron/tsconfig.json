@@ -7,8 +7,8 @@
   },
   "include": ["./src"],
   "references": [
+    { "path": "../../../common/infra" },
     { "path": "../../../../tools/utils" },
-    { "path": "../../../common/nbstore" },
-    { "path": "../../../common/infra" }
+    { "path": "../../../common/nbstore" }
   ]
 }

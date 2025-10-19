@@ -1,15 +1,15 @@
 import {
   TranscriptionBlockFlavour,
   type TranscriptionBlockModel,
-} from '@affine/core/blocksuite/ai/blocks/transcription-block/model';
-import { insertFromMarkdown } from '@affine/core/blocksuite/utils';
-import { encodeAudioBlobToOpusSlices } from '@affine/core/utils/opus-encoding';
-import { DebugLogger } from '@affine/debug';
-// import { AiJobStatus } from '@affine/graphql';
-import track from '@affine/track';
-import type { AttachmentBlockModel } from '@blocksuite/affine/model';
-import type { AffineTextAttributes } from '@blocksuite/affine/shared/types';
-import { type DeltaInsert, Text } from '@blocksuite/affine/store';
+} from '@yunke/core/blocksuite/ai/blocks/transcription-block/model';
+import { insertFromMarkdown } from '@yunke/core/blocksuite/utils';
+import { encodeAudioBlobToOpusSlices } from '@yunke/core/utils/opus-encoding';
+import { DebugLogger } from '@yunke/debug';
+// import { AiJobStatus } from '@yunke/graphql';
+import track from '@yunke/track';
+import type { AttachmentBlockModel } from '@blocksuite/yunke/model';
+import type { AffineTextAttributes } from '@blocksuite/yunke/shared/types';
+import { type DeltaInsert, Text } from '@blocksuite/yunke/store';
 import { computed } from '@preact/signals-core';
 import { Entity, LiveData } from '@toeverything/infra';
 import { cssVarV2 } from '@toeverything/theme/v2';

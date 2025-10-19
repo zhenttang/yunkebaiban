@@ -11,27 +11,27 @@ import {
   Scrollable,
   Switch,
   useConfirmModal,
-} from '@affine/component';
+} from '@yunke/component';
 import {
   SettingRow,
   SettingWrapper,
-} from '@affine/component/setting-components';
-import { useAsyncCallback } from '@affine/core/components/hooks/affine-async-hooks';
-import { ServerService } from '@affine/core/modules/cloud';
-import { DesktopApiService } from '@affine/core/modules/desktop-api';
+} from '@yunke/component/setting-components';
+import { useAsyncCallback } from '@yunke/core/components/hooks/affine-async-hooks';
+import { ServerService } from '@yunke/core/modules/cloud';
+import { DesktopApiService } from '@yunke/core/modules/desktop-api';
 import {
   type EditorSettingSchema,
   EditorSettingService,
   type FontFamily,
   fontStyleOptions,
-} from '@affine/core/modules/editor-setting';
-import { SpellCheckSettingService } from '@affine/core/modules/editor-setting/services/spell-check-setting';
-import { FeatureFlagService } from '@affine/core/modules/feature-flag';
+} from '@yunke/core/modules/editor-setting';
+import { SpellCheckSettingService } from '@yunke/core/modules/editor-setting/services/spell-check-setting';
+import { FeatureFlagService } from '@yunke/core/modules/feature-flag';
 import {
   type FontData,
   SystemFontFamilyService,
-} from '@affine/core/modules/system-font-family';
-import { Trans, useI18n } from '@affine/i18n';
+} from '@yunke/core/modules/system-font-family';
+import { Trans, useI18n } from '@yunke/i18n';
 import { DoneIcon, SearchIcon } from '@blocksuite/icons/rc';
 import { useLiveData, useService, useServices } from '@toeverything/infra';
 import clsx from 'clsx';

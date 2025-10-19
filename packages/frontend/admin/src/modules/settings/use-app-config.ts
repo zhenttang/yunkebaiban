@@ -1,15 +1,15 @@
-import { useMutation } from '@affine/admin/use-mutation';
-import { useQuery } from '@affine/admin/use-query';
-import { notify } from '@affine/component';
-import { useAsyncCallback } from '@affine/core/components/hooks/affine-async-hooks';
-import { UserFriendlyError } from '@affine/error';
+import { useMutation } from '@yunke/admin/use-mutation';
+import { useQuery } from '@yunke/admin/use-query';
+import { notify } from '@yunke/component';
+import { useAsyncCallback } from '@yunke/core/components/hooks/affine-async-hooks';
+import { UserFriendlyError } from '@yunke/error';
 // import {
 //   appConfigQuery,
 //   type UpdateAppConfigInput,
 //   updateAppConfigMutation,
-// } from '@affine/graphql';
+// } from '@yunke/graphql';
 
-// 临时占位符，用于替代 @affine/graphql 导入
+// 临时占位符，用于替代 @yunke/graphql 导入
 type UpdateAppConfigInput = {
   module: string;
   key: string;

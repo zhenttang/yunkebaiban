@@ -1,5 +1,5 @@
-import { Avatar } from '@affine/component';
-import { AuthService } from '@affine/core/modules/cloud';
+import { Avatar } from '@yunke/component';
+import { AuthService } from '@yunke/core/modules/cloud';
 import { useLiveData, useService } from '@toeverything/infra';
 
 import * as styles from './index.css';

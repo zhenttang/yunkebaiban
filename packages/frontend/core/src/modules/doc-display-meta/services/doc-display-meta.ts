@@ -1,5 +1,5 @@
-import { extractEmojiIcon } from '@affine/core/utils';
-import { i18nTime } from '@affine/i18n';
+import { extractEmojiIcon } from '@yunke/core/utils';
+import { i18nTime } from '@yunke/i18n';
 import {
   AliasIcon as LitAliasIcon,
   BlockLinkIcon as LitBlockLinkIcon,

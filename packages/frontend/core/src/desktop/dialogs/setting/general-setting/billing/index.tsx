@@ -1,12 +1,12 @@
-import { Skeleton } from '@affine/component';
+import { Skeleton } from '@yunke/component';
 import {
   SettingHeader,
   SettingWrapper,
-} from '@affine/component/setting-components';
-import { SubscriptionService } from '@affine/core/modules/cloud';
-// import { SubscriptionStatus } from '@affine/graphql';
-import { useI18n } from '@affine/i18n';
-import { track } from '@affine/track';
+} from '@yunke/component/setting-components';
+import { SubscriptionService } from '@yunke/core/modules/cloud';
+// import { SubscriptionStatus } from '@yunke/graphql';
+import { useI18n } from '@yunke/i18n';
+import { track } from '@yunke/track';
 import { useLiveData, useService } from '@toeverything/infra';
 import { useCallback, useEffect } from 'react';
 

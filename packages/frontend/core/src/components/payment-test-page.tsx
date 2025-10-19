@@ -1,6 +1,6 @@
 // 支付功能测试页面 - 使用AFFiNE设计系统
 import React, { useState } from 'react';
-import { Button } from '@affine/component';
+import { Button } from '@yunke/component';
 import { PaymentModal } from '../components/community-ui/payment-modal';
 import type { CommunityDocument } from '../components/community-ui/types';
 import * as styles from './payment-test-page.css';

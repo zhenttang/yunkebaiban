@@ -1,5 +1,5 @@
-import { toast, useConfirmModal } from '@affine/component';
-import { Trans, useI18n } from '@affine/i18n';
+import { toast, useConfirmModal } from '@yunke/component';
+import { Trans, useI18n } from '@yunke/i18n';
 import { useLiveData, useService } from '@toeverything/infra';
 import { useCallback } from 'react';
 

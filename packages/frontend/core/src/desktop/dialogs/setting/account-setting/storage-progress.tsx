@@ -1,5 +1,5 @@
-import { Button, ErrorMessage, Skeleton, Tooltip } from '@affine/component';
-import { useI18n } from '@affine/i18n';
+import { Button, ErrorMessage, Skeleton, Tooltip } from '@yunke/component';
+import { useI18n } from '@yunke/i18n';
 import { useLiveData, useService } from '@toeverything/infra';
 import { cssVar } from '@toeverything/theme';
 import { useEffect, useMemo } from 'react';

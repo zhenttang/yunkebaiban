@@ -1,7 +1,7 @@
 //import type {
 //   CreateCheckoutSessionInput,
 //   SubscriptionRecurring,
-//} from '@affine/graphql';
+//} from '@yunke/graphql';
 //import {
 //   cancelSubscriptionMutation,
 //   createCheckoutSessionMutation,
@@ -11,7 +11,7 @@
 //   SubscriptionPlan,
 //   subscriptionQuery,
 //   updateSubscriptionMutation,
-//} from '@affine/graphql';
+//} from '@yunke/graphql';
 import { Store } from '@toeverything/infra';
 
 import {

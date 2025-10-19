@@ -1,15 +1,15 @@
-import { toast } from '@affine/component';
+import { toast } from '@yunke/component';
 import {
   createDocExplorerContext,
   DocExplorerContext,
-} from '@affine/core/components/explorer/context';
-import { DocsExplorer } from '@affine/core/components/explorer/docs-view/docs-list';
-import { useBlockSuiteMetaHelper } from '@affine/core/components/hooks/affine/use-block-suite-meta-helper';
-import { Header } from '@affine/core/components/pure/header';
-import { CollectionRulesService } from '@affine/core/modules/collection-rules';
-import { GlobalContextService } from '@affine/core/modules/global-context';
-import { WorkspacePermissionService } from '@affine/core/modules/permissions';
-import { useI18n } from '@affine/i18n';
+} from '@yunke/core/components/explorer/context';
+import { DocsExplorer } from '@yunke/core/components/explorer/docs-view/docs-list';
+import { useBlockSuiteMetaHelper } from '@yunke/core/components/hooks/affine/use-block-suite-meta-helper';
+import { Header } from '@yunke/core/components/pure/header';
+import { CollectionRulesService } from '@yunke/core/modules/collection-rules';
+import { GlobalContextService } from '@yunke/core/modules/global-context';
+import { WorkspacePermissionService } from '@yunke/core/modules/permissions';
+import { useI18n } from '@yunke/i18n';
 import { DeleteIcon } from '@blocksuite/icons/rc';
 import { useLiveData, useService } from '@toeverything/infra';
 import { useCallback, useEffect, useState } from 'react';

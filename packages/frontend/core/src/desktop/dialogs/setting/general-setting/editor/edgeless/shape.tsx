@@ -4,15 +4,15 @@ import {
   RadioGroup,
   type RadioItem,
   Slider,
-} from '@affine/component';
-import { SettingRow } from '@affine/component/setting-components';
-import { EditorSettingService } from '@affine/core/modules/editor-setting';
-import { useI18n } from '@affine/i18n';
+} from '@yunke/component';
+import { SettingRow } from '@yunke/component/setting-components';
+import { EditorSettingService } from '@yunke/core/modules/editor-setting';
+import { useI18n } from '@yunke/i18n';
 import {
   EdgelessCRUDIdentifier,
   getSurfaceBlock,
-} from '@blocksuite/affine/blocks/surface';
-import type { ShapeElementModel, ShapeName } from '@blocksuite/affine/model';
+} from '@blocksuite/yunke/blocks/surface';
+import type { ShapeElementModel, ShapeName } from '@blocksuite/yunke/model';
 import {
   DefaultTheme,
   FontFamily,
@@ -24,9 +24,9 @@ import {
   ShapeType,
   StrokeStyle,
   TextAlign,
-} from '@blocksuite/affine/model';
-import type { EditorHost } from '@blocksuite/affine/std';
-import type { Store } from '@blocksuite/affine/store';
+} from '@blocksuite/yunke/model';
+import type { EditorHost } from '@blocksuite/yunke/std';
+import type { Store } from '@blocksuite/yunke/store';
 import { useFramework, useLiveData } from '@toeverything/infra';
 import { isEqual } from 'lodash-es';
 import { useCallback, useMemo, useState } from 'react';

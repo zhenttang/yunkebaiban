@@ -23,7 +23,7 @@
 
 **1. 甘特图数据视图扩展**
 ```
-packages/frontend/core/src/blocksuite/affine/data-view/view-presets/gantt/
+packages/frontend/core/src/blocksuite/yunke/data-view/view-presets/gantt/
 ├── define.ts                    # 甘特图视图类型定义
 ├── gantt-single-view.ts        # 甘特图视图管理器
 ├── gantt-view.ts               # 甘特图UI逻辑
@@ -42,7 +42,7 @@ packages/frontend/core/src/blocksuite/affine/data-view/view-presets/gantt/
 
 **2. 日期范围属性扩展**
 ```
-packages/frontend/core/src/blocksuite/affine/data-view/property-presets/date-range/
+packages/frontend/core/src/blocksuite/yunke/data-view/property-presets/date-range/
 ├── define.ts                   # 日期范围属性定义
 ├── cell-renderer.ts           # 单元格渲染器
 ├── editor.ts                  # 日期范围编辑器
@@ -51,7 +51,7 @@ packages/frontend/core/src/blocksuite/affine/data-view/property-presets/date-ran
 
 **3. BlockSuite 编辑器集成**
 ```
-blocksuite/affine/blocks/gantt-block/
+blocksuite/yunke/blocks/gantt-block/
 ├── gantt-block.ts             # 甘特图块定义
 ├── gantt-model.ts             # 数据模型
 └── gantt-spec.ts              # 块规格定义

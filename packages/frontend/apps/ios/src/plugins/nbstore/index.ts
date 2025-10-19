@@ -1,15 +1,15 @@
 import {
   base64ToUint8Array,
   uint8ArrayToBase64,
-} from '@affine/core/modules/workspace-engine';
+} from '@yunke/core/modules/workspace-engine';
 import {
   type BlobRecord,
   type DocClock,
   type DocRecord,
   type ListedBlobRecord,
   parseUniversalId,
-} from '@affine/nbstore';
-import { type NativeDBApis } from '@affine/nbstore/sqlite';
+} from '@yunke/nbstore';
+import { type NativeDBApis } from '@yunke/nbstore/sqlite';
 import { registerPlugin } from '@capacitor/core';
 
 import type { NbStorePlugin } from './definitions';

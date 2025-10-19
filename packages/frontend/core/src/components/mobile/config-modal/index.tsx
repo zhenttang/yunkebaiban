@@ -1,6 +1,6 @@
-import { Button, Modal } from '@affine/component';
-import { PageHeader } from '@affine/core/mobile/components/page-header';
-import { useI18n } from '@affine/i18n';
+import { Button, Modal } from '@yunke/component';
+import { PageHeader } from '@yunke/core/mobile/components/page-header';
+import { useI18n } from '@yunke/i18n';
 import clsx from 'clsx';
 import {
   type CSSProperties,

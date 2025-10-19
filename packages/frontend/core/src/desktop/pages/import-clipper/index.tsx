@@ -1,19 +1,19 @@
-import { Button } from '@affine/component';
-import { AuthHeader } from '@affine/component/auth-components';
-import { useAsyncCallback } from '@affine/core/components/hooks/affine-async-hooks';
-import { useWorkspaceName } from '@affine/core/components/hooks/use-workspace-info';
-import { WorkspaceSelector } from '@affine/core/components/workspace-selector';
-import { AuthService, ServerService } from '@affine/core/modules/cloud';
+import { Button } from '@yunke/component';
+import { AuthHeader } from '@yunke/component/auth-components';
+import { useAsyncCallback } from '@yunke/core/components/hooks/affine-async-hooks';
+import { useWorkspaceName } from '@yunke/core/components/hooks/use-workspace-info';
+import { WorkspaceSelector } from '@yunke/core/components/workspace-selector';
+import { AuthService, ServerService } from '@yunke/core/modules/cloud';
 import {
   type ClipperInput,
   ImportClipperService,
-} from '@affine/core/modules/import-clipper';
+} from '@yunke/core/modules/import-clipper';
 import {
   type WorkspaceMetadata,
   WorkspacesService,
-} from '@affine/core/modules/workspace';
-import { useI18n } from '@affine/i18n';
-import track from '@affine/track';
+} from '@yunke/core/modules/workspace';
+import { useI18n } from '@yunke/i18n';
+import track from '@yunke/track';
 import { AllDocsIcon } from '@blocksuite/icons/rc';
 import { LiveData, useLiveData, useService } from '@toeverything/infra';
 import { cssVar } from '@toeverything/theme';

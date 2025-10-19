@@ -6,7 +6,7 @@ import { classMap } from 'lit/directives/class-map.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
 import type { BlockModel } from '@blocksuite/store';
-import type { ParagraphBlockModel } from '@blocksuite/affine-model';
+import type { ParagraphBlockModel } from '@blocksuite/yunke-model';
 
 export interface DocumentNode {
   id: string;

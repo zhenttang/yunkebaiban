@@ -4,19 +4,19 @@ import {
   MenuSeparator,
   toast,
   useConfirmModal,
-} from '@affine/component';
-import { usePageHelper } from '@affine/core/blocksuite/block-suite-page-list/utils';
-import { Guard } from '@affine/core/components/guard';
-import { useBlockSuiteMetaHelper } from '@affine/core/components/hooks/affine/use-block-suite-meta-helper';
-import { useAsyncCallback } from '@affine/core/components/hooks/affine-async-hooks';
-import { IsFavoriteIcon } from '@affine/core/components/pure/icons';
-import { DocsService } from '@affine/core/modules/doc';
-import { CompatibleFavoriteItemsAdapter } from '@affine/core/modules/favorite';
-import { GuardService } from '@affine/core/modules/permissions';
-import { WorkbenchService } from '@affine/core/modules/workbench';
-import { WorkspaceService } from '@affine/core/modules/workspace';
-import { useI18n } from '@affine/i18n';
-import { track } from '@affine/track';
+} from '@yunke/component';
+import { usePageHelper } from '@yunke/core/blocksuite/block-suite-page-list/utils';
+import { Guard } from '@yunke/core/components/guard';
+import { useBlockSuiteMetaHelper } from '@yunke/core/components/hooks/affine/use-block-suite-meta-helper';
+import { useAsyncCallback } from '@yunke/core/components/hooks/affine-async-hooks';
+import { IsFavoriteIcon } from '@yunke/core/components/pure/icons';
+import { DocsService } from '@yunke/core/modules/doc';
+import { CompatibleFavoriteItemsAdapter } from '@yunke/core/modules/favorite';
+import { GuardService } from '@yunke/core/modules/permissions';
+import { WorkbenchService } from '@yunke/core/modules/workbench';
+import { WorkspaceService } from '@yunke/core/modules/workspace';
+import { useI18n } from '@yunke/i18n';
+import { track } from '@yunke/track';
 import {
   DeleteIcon,
   DuplicateIcon,

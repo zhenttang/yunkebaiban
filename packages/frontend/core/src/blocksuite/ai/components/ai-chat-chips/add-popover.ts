@@ -1,13 +1,13 @@
-import { toast } from '@affine/component';
-import type { TagMeta } from '@affine/core/components/page-list';
-import type { CollectionMeta } from '@affine/core/modules/collection';
-import track from '@affine/track';
-import { SignalWatcher, WithDisposable } from '@blocksuite/affine/global/lit';
-import { scrollbarStyle } from '@blocksuite/affine/shared/styles';
-import { unsafeCSSVar, unsafeCSSVarV2 } from '@blocksuite/affine/shared/theme';
-import { openFilesWith } from '@blocksuite/affine/shared/utils';
-import { ShadowlessElement } from '@blocksuite/affine/std';
-import type { DocMeta } from '@blocksuite/affine/store';
+import { toast } from '@yunke/component';
+import type { TagMeta } from '@yunke/core/components/page-list';
+import type { CollectionMeta } from '@yunke/core/modules/collection';
+import track from '@yunke/track';
+import { SignalWatcher, WithDisposable } from '@blocksuite/yunke/global/lit';
+import { scrollbarStyle } from '@blocksuite/yunke/shared/styles';
+import { unsafeCSSVar, unsafeCSSVarV2 } from '@blocksuite/yunke/shared/theme';
+import { openFilesWith } from '@blocksuite/yunke/shared/utils';
+import { ShadowlessElement } from '@blocksuite/yunke/std';
+import type { DocMeta } from '@blocksuite/yunke/store';
 import {
   CollectionsIcon,
   MoreHorizontalIcon,

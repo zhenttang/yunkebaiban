@@ -1,10 +1,10 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@affine/admin/components/ui/card';
-import { Button } from '@affine/admin/components/ui/button';
-import { Input } from '@affine/admin/components/ui/input';
-import { Label } from '@affine/admin/components/ui/label';
-import { Switch } from '@affine/admin/components/ui/switch';
-import { Badge } from '@affine/admin/components/ui/badge';
-import { Alert, AlertDescription } from '@affine/admin/components/ui/alert';
+import { Card, CardContent, CardHeader, CardTitle } from '@yunke/admin/components/ui/card';
+import { Button } from '@yunke/admin/components/ui/button';
+import { Input } from '@yunke/admin/components/ui/input';
+import { Label } from '@yunke/admin/components/ui/label';
+import { Switch } from '@yunke/admin/components/ui/switch';
+import { Badge } from '@yunke/admin/components/ui/badge';
+import { Alert, AlertDescription } from '@yunke/admin/components/ui/alert';
 import {
   CloudBubbleIcon
 } from '@blocksuite/icons/rc';
