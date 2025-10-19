@@ -7,8 +7,9 @@ import { useActiveBlocksuiteEditor } from '@affine/core/components/hooks/use-blo
 import { useNavigateHelper } from '@affine/core/components/hooks/use-navigate-helper';
 import { PageDetailEditor } from '@affine/core/components/page-detail-editor';
 import { DetailPageWrapper } from '@affine/core/desktop/pages/workspace/detail-page/detail-page-wrapper';
-import { PageHeader } from '@affine/core/mobile/components';
+import { PageHeader, StylusIndicator } from '@affine/core/mobile/components';
 import { useGlobalEvent } from '@affine/core/mobile/hooks/use-global-events';
+import { useStylusPalmRejection } from '@affine/core/mobile/hooks/use-stylus-palm-rejection';
 import { AIButtonService } from '@affine/core/modules/ai-button';
 import { ServerService } from '@affine/core/modules/cloud';
 import { DocService } from '@affine/core/modules/doc';
@@ -82,6 +83,25 @@ const DetailPageImpl = () => {
   const isInTrash = useLiveData(doc.meta$.map(meta => meta?.trash ?? false));
   const { openPage, jumpToPageBlock } = useNavigateHelper();
   const scrollViewportRef = useRef<HTMLDivElement | null>(null);
+
+  // 启用触控笔防误触（只在白板模式下）
+  const isEdgelessMode = mode === 'edgeless';
+  const palmRejectionState = useStylusPalmRejection({
+    enabled: isEdgelessMode && !isInTrash,
+    timeout: 2000, // 2秒超时（更快响应）
+    forceExitTouchCount: 3, // 连续3次手指触摸强制退出
+    debug: BUILD_CONFIG.debug, // 生产环境关闭调试
+    onStylusDetected: (isStylus) => {
+      if (BUILD_CONFIG.debug) {
+        console.log('✍️ [Whiteboard] 触控笔检测:', isStylus);
+      }
+    },
+    onTouchRejected: () => {
+      if (BUILD_CONFIG.debug) {
+        console.log('🚫 [Whiteboard] 拦截手指误触');
+      }
+    },
+  });
 
   const editorContainer = useLiveData(editor.editorContainer$);
 
@@ -213,6 +233,15 @@ const DetailPageImpl = () => {
             <PageDetailEditor onLoad={onLoad} readonly={readonly} />
           </AffineErrorBoundary>
         </div>
+        
+        {/* 触控笔状态指示器 - 仅在白板模式下显示 */}
+        {isEdgelessMode && !isInTrash && (
+          <StylusIndicator 
+            enabled={true}
+            position="bottom-right"
+            showDetails={false}
+          />
+        )}
       </div>
     </FrameworkScope>
   );

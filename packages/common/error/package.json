@@ -6,7 +6,6 @@
   "exports": {
     ".": "./src/index.ts"
   },
-  "peerDependencies": {},
   "devDependencies": {
     "vitest": "3.1.3"
   }
