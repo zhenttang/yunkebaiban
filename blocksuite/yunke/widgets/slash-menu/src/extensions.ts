@@ -8,7 +8,7 @@ import { Extension, type ExtensionType } from '@blocksuite/store';
 import { literal, unsafeStatic } from 'lit/static-html.js';
 
 import { defaultSlashMenuConfig } from './config';
-import { AFFINE_SLASH_MENU_WIDGET } from './consts';
+import { YUNKE_SLASH_MENU_WIDGET } from './consts';
 import { headingEnhancementSlashMenuConfig } from './heading-enhancement-config';
 import type { SlashMenuConfig } from './types';
 import { mergeSlashMenuConfigs } from './utils';
@@ -19,8 +19,8 @@ export class SlashMenuExtension extends Extension {
   static override setup(di: Container) {
     WidgetViewExtension(
       'yunke:page',
-      AFFINE_SLASH_MENU_WIDGET,
-      literal`${unsafeStatic(AFFINE_SLASH_MENU_WIDGET)}`
+      YUNKE_SLASH_MENU_WIDGET,
+      literal`${unsafeStatic(YUNKE_SLASH_MENU_WIDGET)}`
     ).setup(di);
 
     di.add(this, [StdIdentifier]);
@@ -38,7 +38,7 @@ export class SlashMenuExtension extends Extension {
 }
 
 export const SlashMenuConfigIdentifier = createIdentifier<SlashMenuConfig>(
-  `${AFFINE_SLASH_MENU_WIDGET}-config`
+  `${YUNKE_SLASH_MENU_WIDGET}-config`
 );
 
 export function SlashMenuConfigExtension(

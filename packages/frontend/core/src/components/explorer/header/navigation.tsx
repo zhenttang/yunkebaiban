@@ -7,13 +7,13 @@ import * as styles from './navigation.css';
 const items = [
   {
     value: 'docs',
-    label: 'com.affine.docs.header',
+    label: 'com.yunke.docs.header',
     testId: 'workspace-docs-button',
     to: '/all',
   },
   {
     value: 'collections',
-    label: 'com.affine.collections.header',
+    label: 'com.yunke.collections.header',
     testId: 'workspace-collections-button',
     to: '/collection',
   },

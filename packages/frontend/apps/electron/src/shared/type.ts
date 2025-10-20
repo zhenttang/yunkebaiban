@@ -28,5 +28,5 @@ export type MainToHelper = Pick<
   | 'getPath'
 >;
 
-export const AFFINE_API_CHANNEL_NAME = 'affine-ipc-api';
-export const AFFINE_EVENT_CHANNEL_NAME = 'affine-ipc-event';
+export const YUNKE_API_CHANNEL_NAME = 'yunke-ipc-api';
+export const YUNKE_EVENT_CHANNEL_NAME = 'yunke-ipc-event';

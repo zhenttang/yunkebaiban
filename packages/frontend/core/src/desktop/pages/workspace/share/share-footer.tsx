@@ -9,15 +9,15 @@ export const ShareFooter = () => {
     <div className={styles.footerContainer}>
       <div className={styles.footer}>
         <div className={styles.description}>
-          {t['com.affine.share-page.footer.description']()}
+          {t['com.yunke.share-page.footer.description']()}
         </div>
         <a
           className={styles.getStartLink}
-          href="https://affine.pro/"
+          href="https://yunke.pro/"
           target="_blank"
           rel="noreferrer"
         >
-          {t['com.affine.share-page.footer.get-started']()}
+          {t['com.yunke.share-page.footer.get-started']()}
           <ArrowRightBigIcon fontSize={16} />
         </a>
       </div>

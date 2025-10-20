@@ -12,8 +12,8 @@ const flavour = EmbedLinkedDocBlockSchema.model.flavour;
 export const EmbedLinkedDocViewExtensions: ExtensionType[] = [
   BlockViewExtension(flavour, model => {
     return model.parent?.flavour === 'yunke:surface'
-      ? literal`affine-embed-edgeless-linked-doc-block`
-      : literal`affine-embed-linked-doc-block`;
+      ? literal`yunke-embed-edgeless-linked-doc-block`
+      : literal`yunke-embed-linked-doc-block`;
   }),
   createBuiltinToolbarConfigExtension(flavour),
   EmbedLinkedDocInteraction,

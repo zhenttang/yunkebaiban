@@ -133,7 +133,7 @@ export class Doc extends Entity {
   }
 
   changeDocTitle(newTitle: string) {
-    const pageBlock = this.blockSuiteDoc.getBlocksByFlavour('affine:page').at(0)
+    const pageBlock = this.blockSuiteDoc.getBlocksByFlavour('yunke:page').at(0)
       ?.model as RootBlockModel | undefined;
     if (pageBlock) {
       this.blockSuiteDoc.transact(() => {

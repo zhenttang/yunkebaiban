@@ -6,11 +6,11 @@ import { Provider } from 'jotai';
 import type { PropsWithChildren } from 'react';
 import { useMemo } from 'react';
 
-export type AffineContextProps = PropsWithChildren<{
+export type YunkeContextProps = PropsWithChildren<{
   store?: ReturnType<typeof createStore>;
 }>;
 
-export function AffineContext(props: AffineContextProps) {
+export function YunkeContext(props: YunkeContextProps) {
   return (
     <ProviderComposer
       contexts={useMemo(

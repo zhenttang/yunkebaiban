@@ -48,7 +48,7 @@ export class EdgelessShapeMenu extends SignalWatcher(
     }
     .shape-type-container svg,
     .shape-style-container svg {
-      fill: var(--affine-icon-color);
+      fill: var(--yunke-icon-color);
       stroke: none;
     }
     menu-divider {

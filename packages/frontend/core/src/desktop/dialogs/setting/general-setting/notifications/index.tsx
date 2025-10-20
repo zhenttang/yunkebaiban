@@ -59,11 +59,11 @@ export const NotificationSettings = () => {
   return (
     <>
       <SettingHeader
-        title={t['com.affine.setting.notifications.header.title']()}
-        subtitle={t['com.affine.setting.notifications.header.description']()}
+        title={t['com.yunke.setting.notifications.header.title']()}
+        subtitle={t['com.yunke.setting.notifications.header.description']()}
       />
       <SettingWrapper
-        title={t['com.affine.setting.notifications.email.title']()}
+        title={t['com.yunke.setting.notifications.email.title']()}
       >
         {!userSettings && errorMessage && (
           <>
@@ -72,8 +72,8 @@ export const NotificationSettings = () => {
           </>
         )}
         <SettingRow
-          name={t['com.affine.setting.notifications.email.mention.title']()}
-          desc={t['com.affine.setting.notifications.email.mention.subtitle']()}
+          name={t['com.yunke.setting.notifications.email.mention.title']()}
+          desc={t['com.yunke.setting.notifications.email.mention.subtitle']()}
         >
           <Switch
             data-testid="notification-email-mention-trigger"
@@ -83,8 +83,8 @@ export const NotificationSettings = () => {
           />
         </SettingRow>
         <SettingRow
-          name={t['com.affine.setting.notifications.email.invites.title']()}
-          desc={t['com.affine.setting.notifications.email.invites.subtitle']()}
+          name={t['com.yunke.setting.notifications.email.invites.title']()}
+          desc={t['com.yunke.setting.notifications.email.invites.subtitle']()}
         >
           <Switch
             data-testid="notification-email-invites-trigger"

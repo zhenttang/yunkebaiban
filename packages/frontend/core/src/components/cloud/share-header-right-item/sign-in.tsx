@@ -21,7 +21,7 @@ export const SignIn = () => {
       onClick={onClickSignIn}
       data-testid="share-page-sign-in-button"
     >
-      {t['com.affine.share-page.header.login']()}
+      {t['com.yunke.share-page.header.login']()}
     </Button>
   );
 };

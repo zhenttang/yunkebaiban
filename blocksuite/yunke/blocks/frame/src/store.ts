@@ -5,7 +5,7 @@ import {
 import { FrameBlockSchemaExtension } from '@blocksuite/yunke-model';
 
 export class FrameStoreExtension extends StoreExtensionProvider {
-  override name = 'affine-frame-block';
+  override name = 'yunke-frame-block';
 
   override setup(context: StoreExtensionContext) {
     super.setup(context);

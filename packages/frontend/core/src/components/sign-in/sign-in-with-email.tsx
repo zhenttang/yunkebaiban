@@ -7,7 +7,7 @@ import {
   AuthInput,
 } from '@yunke/component/auth-components';
 import { Button } from '@yunke/component/ui/button';
-import { useAsyncCallback } from '@yunke/core/components/hooks/affine-async-hooks';
+import { useAsyncCallback } from '@yunke/core/components/hooks/yunke-async-hooks';
 import { AuthService } from '@yunke/core/modules/cloud';
 import type { AuthSessionStatus } from '@yunke/core/modules/cloud/entities/session';
 import { Unreachable } from '@yunke/env/constant';
@@ -68,8 +68,8 @@ export const SignInWithEmailStep = ({
   useEffect(() => {
     if (loginStatus === 'authenticated') {
       notify.success({
-        title: t['com.affine.auth.toast.title.signed-in'](),
-        message: t['com.affine.auth.toast.message.signed-in'](),
+        title: t['com.yunke.auth.toast.title.signed-in'](),
+        message: t['com.yunke.auth.toast.message.signed-in'](),
       });
     }
     onAuthenticated?.(loginStatus);
@@ -135,7 +135,7 @@ export const SignInWithEmailStep = ({
     if (isVerifying) return;
 
     if (otp.length !== 6 || !/[0-9]{6}/.test(otp)) {
-      setOtpError(t['com.affine.auth.sign.auth.code.invalid']());
+      setOtpError(t['com.yunke.auth.sign.auth.code.invalid']());
       return;
     }
 
@@ -147,7 +147,7 @@ export const SignInWithEmailStep = ({
       notify.error({
         title: (e as UserFriendlyError).message,
       });
-      setOtpError(t['com.affine.auth.sign.auth.code.invalid']());
+      setOtpError(t['com.yunke.auth.sign.auth.code.invalid']());
     } finally {
       setIsVerifying(false);
     }
@@ -156,20 +156,20 @@ export const SignInWithEmailStep = ({
   return (
     <AuthContainer>
       <AuthHeader
-        title={t['com.affine.auth.sign.in']()}
-        subTitle={t['com.affine.auth.sign.in.sent.email.subtitle']()}
+        title={t['com.yunke.auth.sign.in']()}
+        subTitle={t['com.yunke.auth.sign.in.sent.email.subtitle']()}
       />
       <AuthContent>
         <p>
           <Trans
-            i18nKey="com.affine.auth.sign.auth.code.hint"
+            i18nKey="com.yunke.auth.sign.auth.code.hint"
             values={{ email }}
             components={{ a: <a href={`mailto:${email}`} /> }}
           />
         </p>
 
         <AuthInput
-          placeholder={t['com.affine.auth.sign.auth.code']()}
+          placeholder={t['com.yunke.auth.sign.auth.code']()}
           onChange={onOtpChanged}
           error={!!otpError}
           errorHint={otpError}
@@ -188,7 +188,7 @@ export const SignInWithEmailStep = ({
           disabled={!!otpError || isVerifying}
           loading={isVerifying}
         >
-          {t['com.affine.auth.sign.auth.code.continue']()}
+          {t['com.yunke.auth.sign.auth.code.continue']()}
         </Button>
 
         <Button
@@ -198,10 +198,10 @@ export const SignInWithEmailStep = ({
           style={{ padding: '4px' }}
         >
           {resendCountDown <= 0 ? (
-            t['com.affine.auth.sign.auth.code.resend']()
+            t['com.yunke.auth.sign.auth.code.resend']()
           ) : (
             <Trans
-              i18nKey="com.affine.auth.sign.auth.code.resend.hint"
+              i18nKey="com.yunke.auth.sign.auth.code.resend.hint"
               values={{ second: resendCountDown }}
             />
           )}
@@ -210,11 +210,11 @@ export const SignInWithEmailStep = ({
 
       <AuthFooter>
         <div className={style.authMessage} style={{ marginTop: 20 }}>
-          {t['com.affine.auth.sign.auth.code.message']()}
+          {t['com.yunke.auth.sign.auth.code.message']()}
           &nbsp;
           {state.hasPassword && (
             <Trans
-              i18nKey="com.affine.auth.sign.auth.code.message.password"
+              i18nKey="com.yunke.auth.sign.auth.code.message.password"
               components={{
                 1: (
                   <span

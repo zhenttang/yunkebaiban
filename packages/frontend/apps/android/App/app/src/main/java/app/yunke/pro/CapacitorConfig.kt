@@ -1,4 +1,4 @@
-package app.affine.pro
+package app.yunke.pro
 
 import android.content.Context
 import kotlinx.serialization.Serializable
@@ -7,7 +7,7 @@ import kotlinx.serialization.json.Json
 object CapacitorConfig {
 
     @Serializable
-    private data class Config(val affineVersion: String)
+    private data class Config(val yunkeVersion: String)
     private val json = Json { ignoreUnknownKeys = true }
     private lateinit var config: Config
 
@@ -21,5 +21,5 @@ object CapacitorConfig {
         config = json.decodeFromString(configJson)
     }
 
-    fun getAffineVersion() = config.affineVersion
+    fun getYunkeVersion() = config.yunkeVersion
 }

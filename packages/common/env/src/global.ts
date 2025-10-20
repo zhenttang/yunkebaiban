@@ -18,11 +18,11 @@ interface Environment {
 
 declare global {
   var environment: Environment;
-  var $AFFINE_SETUP: boolean;
+  var $YUNKE_SETUP: boolean;
 }
 
 export function setupGlobal() {
-  if (globalThis.$AFFINE_SETUP) {
+  if (globalThis.$YUNKE_SETUP) {
     return;
   }
 
@@ -39,7 +39,7 @@ export function setupGlobal() {
     isSelfHosted: false,
     // publicPath 是资源文件的根路径
     publicPath: '/',
-    // subPath 是访问 affine 服务的路径
+    // subPath 是访问 yunke 服务的路径
     subPath: ''
   };
 
@@ -73,7 +73,7 @@ export function setupGlobal() {
   applyEnvironmentOverrides(environment);
 
   globalThis.environment = environment;
-  globalThis.$AFFINE_SETUP = true;
+  globalThis.$YUNKE_SETUP = true;
 }
 
 function applyEnvironmentOverrides(environment: Environment) {

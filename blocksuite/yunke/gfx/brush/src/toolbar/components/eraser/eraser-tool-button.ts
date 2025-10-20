@@ -60,10 +60,10 @@ export class EdgelessEraserToolButton extends EdgelessToolbarToolMixin(
     return html`
       <edgeless-toolbar-button
         class="edgeless-eraser-button"
-        .tooltip=${html`<affine-tooltip-content-with-shortcut
+        .tooltip=${html`<yunke-tooltip-content-with-shortcut
           data-tip="${'橡皮擦'}"
           data-shortcut="${'E'}"
-        ></affine-tooltip-content-with-shortcut>`}
+        ></yunke-tooltip-content-with-shortcut>`}
         .tooltipOffset=${4}
         .active=${type === EraserTool}
         @click=${() => this.setEdgelessTool(EraserTool)}

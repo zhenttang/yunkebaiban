@@ -1,6 +1,6 @@
 import { clearMarksOnDiscontinuousInput } from '@blocksuite/yunke-rich-text';
 import { getSelectedBlocksCommand } from '@blocksuite/yunke-shared/commands';
-import type { AffineTextAttributes } from '@blocksuite/yunke-shared/types';
+import type { YunkeTextAttributes } from '@blocksuite/yunke-shared/types';
 import type { Command, TextSelection } from '@blocksuite/std';
 import {
   INLINE_ROOT_ATTR,
@@ -13,7 +13,7 @@ import { FORMAT_TEXT_SUPPORT_FLAVOURS } from './consts.js';
 export const formatTextCommand: Command<{
   currentTextSelection?: TextSelection;
   textSelection?: TextSelection;
-  styles: AffineTextAttributes;
+  styles: YunkeTextAttributes;
   mode?: 'replace' | 'merge';
 }> = (ctx, next) => {
   const { styles, mode = 'merge' } = ctx;
@@ -34,7 +34,7 @@ export const formatTextCommand: Command<{
 
       const selectedInlineEditors = selectedBlocks.flatMap(el => {
         const inlineRoot = el.querySelector<
-          InlineRootElement<AffineTextAttributes>
+          InlineRootElement<YunkeTextAttributes>
         >(`[${INLINE_ROOT_ATTR}]`);
         if (inlineRoot && inlineRoot.inlineEditor.getInlineRange()) {
           return inlineRoot.inlineEditor;
@@ -57,10 +57,10 @@ export const formatTextCommand: Command<{
                   return [
                     key,
                     (inlineEditor.marks &&
-                      inlineEditor.marks[key as keyof AffineTextAttributes]) ||
+                      inlineEditor.marks[key as keyof YunkeTextAttributes]) ||
                     (delta &&
                       delta.attributes &&
-                      delta.attributes[key as keyof AffineTextAttributes])
+                      delta.attributes[key as keyof YunkeTextAttributes])
                       ? null
                       : value,
                   ];

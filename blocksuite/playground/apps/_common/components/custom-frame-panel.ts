@@ -1,6 +1,6 @@
 import { WithDisposable } from '@blocksuite/yunke/global/lit';
 import { ShadowlessElement } from '@blocksuite/yunke/std';
-import type { TestAffineEditorContainer } from '@blocksuite/integration-test';
+import type { TestYunkeEditorContainer } from '@blocksuite/integration-test';
 import { effect } from '@preact/signals-core';
 import { css, html, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
@@ -12,8 +12,8 @@ export class CustomFramePanel extends WithDisposable(ShadowlessElement) {
       position: absolute;
       top: 0;
       right: 0;
-      border: 1px solid var(--affine-border-color, #e3e2e4);
-      background-color: var(--affine-background-primary-color);
+      border: 1px solid var(--yunke-border-color, #e3e2e4);
+      background-color: var(--yunke-background-primary-color);
       height: 100vh;
       width: 320px;
       box-sizing: border-box;
@@ -23,9 +23,9 @@ export class CustomFramePanel extends WithDisposable(ShadowlessElement) {
   `;
 
   private _renderPanel() {
-    return html`<affine-frame-panel
+    return html`<yunke-frame-panel
       .host=${this.editor.std.host}
-    ></affine-frame-panel>`;
+    ></yunke-frame-panel>`;
   }
 
   override connectedCallback(): void {
@@ -59,7 +59,7 @@ export class CustomFramePanel extends WithDisposable(ShadowlessElement) {
   private accessor _show = false;
 
   @property({ attribute: false })
-  accessor editor!: TestAffineEditorContainer;
+  accessor editor!: TestYunkeEditorContainer;
 }
 
 declare global {

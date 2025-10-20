@@ -13,7 +13,7 @@ export const LoomTooltip = html`<svg width="170" height="106" viewBox="0 0 170 1
 <path d="M18 37C18 35.8954 18.8954 35 20 35H170V106H18V37Z" fill="#050505"/>
 <rect x="46" y="35" width="124" height="83" fill="url(#pattern0_5797_116775)"/>
 <rect x="26" y="43" width="100" height="24" rx="2" fill="#313131" fill-opacity="0.65"/>
-<text fill="white" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="14" font-weight="500" letter-spacing="0px"><tspan x="33" y="60.1818">AFFiNE Team</tspan></text>
+<text fill="white" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="14" font-weight="500" letter-spacing="0px"><tspan x="33" y="60.1818">YUNKE Team</tspan></text>
 <rect x="26" y="73" width="42" height="24" rx="2" fill="#313131" fill-opacity="0.65"/>
 <text fill="white" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" font-weight="500" letter-spacing="0px"><tspan x="33" y="88.7273">1 min</tspan></text>
 </g>

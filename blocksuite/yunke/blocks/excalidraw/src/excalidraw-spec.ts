@@ -11,7 +11,7 @@ const flavour = ExcalidrawBlockSchema.model.flavour;
 export const ExcalidrawBlockSpec: ExtensionType[] = [
   FlavourExtension(flavour),
   BlockViewExtension(flavour, model => {
-    return literal`affine-excalidraw`;
+    return literal`yunke-excalidraw`;
   }),
   SlashMenuConfigExtension(flavour, excalidrawSlashMenuConfig),
 ].flat();

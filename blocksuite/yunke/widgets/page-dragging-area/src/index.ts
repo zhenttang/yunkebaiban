@@ -23,10 +23,10 @@ import {
   type Rect,
 } from './utils';
 
-export const AFFINE_PAGE_DRAGGING_AREA_WIDGET =
-  'affine-page-dragging-area-widget';
+export const YUNKE_PAGE_DRAGGING_AREA_WIDGET =
+  'yunke-page-dragging-area-widget';
 
-export class AffinePageDraggingAreaWidget extends WidgetComponent<RootBlockModel> {
+export class YunkePageDraggingAreaWidget extends WidgetComponent<RootBlockModel> {
   static excludeFlavours: string[] = ['yunke:note', 'yunke:surface'];
 
   private _dragging = false;
@@ -130,7 +130,7 @@ export class AffinePageDraggingAreaWidget extends WidgetComponent<RootBlockModel
         }
         if (
           view.model.role !== 'root' &&
-          !AffinePageDraggingAreaWidget.excludeFlavours.includes(
+          !YunkePageDraggingAreaWidget.excludeFlavours.includes(
             view.model.flavour
           )
         ) {
@@ -303,14 +303,14 @@ export class AffinePageDraggingAreaWidget extends WidgetComponent<RootBlockModel
     };
     return html`
       <style>
-        .affine-page-dragging-area {
+        .yunke-page-dragging-area {
           position: absolute;
-          background: var(--affine-hover-color);
+          background: var(--yunke-hover-color);
           z-index: 1;
           pointer-events: none;
         }
       </style>
-      <div class="affine-page-dragging-area" style=${styleMap(style)}></div>
+      <div class="yunke-page-dragging-area" style=${styleMap(style)}></div>
     `;
   }
 
@@ -320,12 +320,12 @@ export class AffinePageDraggingAreaWidget extends WidgetComponent<RootBlockModel
 
 export const pageDraggingAreaWidget = WidgetViewExtension(
   'yunke:page',
-  AFFINE_PAGE_DRAGGING_AREA_WIDGET,
-  literal`${unsafeStatic(AFFINE_PAGE_DRAGGING_AREA_WIDGET)}`
+  YUNKE_PAGE_DRAGGING_AREA_WIDGET,
+  literal`${unsafeStatic(YUNKE_PAGE_DRAGGING_AREA_WIDGET)}`
 );
 
 declare global {
   interface HTMLElementTagNameMap {
-    [AFFINE_PAGE_DRAGGING_AREA_WIDGET]: AffinePageDraggingAreaWidget;
+    [YUNKE_PAGE_DRAGGING_AREA_WIDGET]: YunkePageDraggingAreaWidget;
   }
 }

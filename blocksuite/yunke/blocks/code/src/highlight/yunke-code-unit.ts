@@ -1,5 +1,5 @@
-import { affineTextStyles } from '@blocksuite/yunke-shared/styles';
-import type { AffineTextAttributes } from '@blocksuite/yunke-shared/types';
+import { yunkeTextStyles } from '@blocksuite/yunke-shared/styles';
+import type { YunkeTextAttributes } from '@blocksuite/yunke-shared/types';
 import { ShadowlessElement } from '@blocksuite/std';
 import { ZERO_WIDTH_FOR_EMPTY_LINE } from '@blocksuite/std/inline';
 import type { DeltaInsert } from '@blocksuite/store';
@@ -8,9 +8,9 @@ import { property } from 'lit/decorators.js';
 import { styleMap } from 'lit/directives/style-map.js';
 import type { ThemedToken } from 'shiki';
 
-export class AffineCodeUnit extends ShadowlessElement {
+export class YunkeCodeUnit extends ShadowlessElement {
   get codeBlock() {
-    return this.closest('affine-code');
+    return this.closest('yunke-code');
   }
 
   get vElement() {
@@ -19,19 +19,19 @@ export class AffineCodeUnit extends ShadowlessElement {
 
   override render() {
     if (this.delta.attributes?.link && this.codeBlock) {
-      return html`<affine-link
+      return html`<yunke-link
         .std=${this.codeBlock.std}
         .delta=${this.delta}
-      ></affine-link>`;
+      ></yunke-link>`;
     }
 
     let style = this.delta.attributes
-      ? affineTextStyles(this.delta.attributes)
+      ? yunkeTextStyles(this.delta.attributes)
       : {};
     if (this.delta.attributes?.code) {
       style = {
         ...style,
-        'font-size': 'calc(var(--affine-font-base) - 3px)',
+        'font-size': 'calc(var(--yunke-font-base) - 3px)',
         padding: '0px 4px 2px',
       };
     }
@@ -110,13 +110,13 @@ export class AffineCodeUnit extends ShadowlessElement {
   }
 
   @property({ type: Object })
-  accessor delta: DeltaInsert<AffineTextAttributes> = {
+  accessor delta: DeltaInsert<YunkeTextAttributes> = {
     insert: ZERO_WIDTH_FOR_EMPTY_LINE,
   };
 }
 
 declare global {
   interface HTMLElementTagNameMap {
-    'affine-code-unit': AffineCodeUnit;
+    'yunke-code-unit': YunkeCodeUnit;
   }
 }

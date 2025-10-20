@@ -17,11 +17,11 @@ export const FailedToSendPage = ({
   const t = useI18n();
   return (
     <AuthPageContainer
-      title={t['com.affine.failed-to-send-request.title']()}
+      title={t['com.yunke.failed-to-send-request.title']()}
       subtitle={
         <div className={styles.lineHeight}>
           <Trans
-            i18nKey="com.affine.failed-to-send-request.description"
+            i18nKey="com.yunke.failed-to-send-request.description"
             components={{
               1: (
                 <div className={styles.avatarWrapper}>

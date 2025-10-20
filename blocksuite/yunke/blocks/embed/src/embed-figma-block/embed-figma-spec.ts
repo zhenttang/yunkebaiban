@@ -16,8 +16,8 @@ export const EmbedFigmaViewExtensions: ExtensionType[] = [
   FlavourExtension(flavour),
   BlockViewExtension(flavour, model => {
     return model.parent?.flavour === 'yunke:surface'
-      ? literal`affine-embed-edgeless-figma-block`
-      : literal`affine-embed-figma-block`;
+      ? literal`yunke-embed-edgeless-figma-block`
+      : literal`yunke-embed-figma-block`;
   }),
   EmbedFigmaBlockOptionConfig,
   createBuiltinToolbarConfigExtension(flavour, EmbedFigmaBlockComponent),

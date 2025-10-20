@@ -13,7 +13,7 @@ import type { KanbanViewUILogic } from '../../../../view-presets/kanban/pc/kanba
 import type { VirtualTableViewUILogic } from '../../../../view-presets/table/pc-virtual/table-view-ui-logic.js';
 
 const styles = css`
-  .affine-database-search-container {
+  .yunke-database-search-container {
     position: relative;
     display: flex;
     align-items: center;
@@ -28,7 +28,7 @@ const styles = css`
   .search-container-expand {
     overflow: visible;
     width: 138px;
-    background-color: var(--affine-hover-color);
+    background-color: var(--yunke-hover-color);
   }
 
   .search-input-container {
@@ -44,7 +44,7 @@ const styles = css`
     cursor: pointer;
   }
 
-  .affine-database-search-input-icon {
+  .yunke-database-search-input-icon {
     position: absolute;
     left: 0;
     font-size: 20px;
@@ -58,31 +58,31 @@ const styles = css`
     color: ${unsafeCSSVarV2('icon/primary')};
   }
 
-  .affine-database-search-input-icon:hover {
-    background: var(--affine-hover-color);
+  .yunke-database-search-input-icon:hover {
+    background: var(--yunke-hover-color);
   }
 
-  .search-container-expand .affine-database-search-input-icon {
+  .search-container-expand .yunke-database-search-input-icon {
     left: 4px;
     pointer-events: none;
   }
 
-  .affine-database-search-input {
+  .yunke-database-search-input {
     flex: 1;
     width: 100%;
     padding: 0 2px 0 30px;
     border: none;
     font-family: ${unsafeCSS(baseTheme.fontSansFamily)};
-    font-size: var(--affine-font-sm);
+    font-size: var(--yunke-font-sm);
     box-sizing: border-box;
     color: inherit;
     background: transparent;
     outline: none;
   }
 
-  .affine-database-search-input::placeholder {
-    color: var(--affine-placeholder-color);
-    font-size: var(--affine-font-sm);
+  .yunke-database-search-input::placeholder {
+    color: var(--yunke-placeholder-color);
+    font-size: var(--yunke-font-sm);
   }
 `;
 
@@ -138,16 +138,16 @@ export class DataViewHeaderToolsSearch extends WidgetBase<
 
   override render() {
     const searchToolClassMap = classMap({
-      'affine-database-search-container': true,
+      'yunke-database-search-container': true,
       'search-container-expand': this.showSearch,
       active: this.showSearch,
     });
     return html`
       <label class="${searchToolClassMap}" @click="${this._clickSearch}">
-        <div class="affine-database-search-input-icon">${SearchIcon()}</div>
+        <div class="yunke-database-search-input-icon">${SearchIcon()}</div>
         <input
           placeholder="搜索..."
-          class="affine-database-search-input"
+          class="yunke-database-search-input"
           @input="${this._onSearch}"
           @click="${(event: MouseEvent) => event.stopPropagation()}"
           @keydown="${this._onSearchKeydown}"
@@ -156,7 +156,7 @@ export class DataViewHeaderToolsSearch extends WidgetBase<
         />
         <div class="close-icon" @mousedown="${this._clearSearch}">
           ${CloseIcon()}
-          <affine-tooltip>
+          <yunke-tooltip>
             <span
               style=${styleMap({
                 display: 'flex',
@@ -164,18 +164,18 @@ export class DataViewHeaderToolsSearch extends WidgetBase<
                 boxSizing: 'border-box',
                 padding: '2px 6px',
                 borderRadius: '4px',
-                background: 'var(--affine-white-10)',
+                background: 'var(--yunke-white-10)',
               })}
               >Esc</span
             >
             清除全部
-          </affine-tooltip>
+          </yunke-tooltip>
         </div>
       </label>
     `;
   }
 
-  @query('.affine-database-search-input')
+  @query('.yunke-database-search-input')
   private accessor _searchInput!: HTMLInputElement;
 
   @state()

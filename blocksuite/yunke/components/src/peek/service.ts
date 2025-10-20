@@ -4,7 +4,7 @@ import type { ExtensionType } from '@blocksuite/store';
 import type { PeekViewService } from './type.js';
 
 export const PeekViewProvider = createIdentifier<PeekViewService>(
-  'AffinePeekViewProvider'
+  'YunkePeekViewProvider'
 );
 
 export function PeekViewExtension(service: PeekViewService): ExtensionType {

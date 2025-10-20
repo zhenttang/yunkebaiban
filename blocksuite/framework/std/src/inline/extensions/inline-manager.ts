@@ -89,7 +89,7 @@ export type InlineManagerExtensionConfig<
 };
 
 const InlineManagerIdentifier = createIdentifier<unknown>(
-  'AffineInlineManager'
+  'YunkeInlineManager'
 );
 
 export function InlineManagerExtension<

@@ -1,5 +1,5 @@
 import { Button } from '@yunke/component';
-import { useAsyncCallback } from '@yunke/core/components/hooks/affine-async-hooks';
+import { useAsyncCallback } from '@yunke/core/components/hooks/yunke-async-hooks';
 import { appIconMap } from '@yunke/core/utils';
 import {
   createStreamEncoder,
@@ -65,22 +65,22 @@ export function Recording() {
       return null;
     }
     if (status.status === 'new') {
-      return t['com.affine.recording.new']();
+      return t['com.yunke.recording.new']();
     } else if (status.status === 'create-block-success') {
-      return t['com.affine.recording.success.prompt']();
+      return t['com.yunke.recording.success.prompt']();
     } else if (status.status === 'create-block-failed') {
-      return t['com.affine.recording.failed.prompt']();
+      return t['com.yunke.recording.failed.prompt']();
     } else if (
       status.status === 'recording' ||
       status.status === 'ready' ||
       status.status === 'stopped'
     ) {
       if (status.appName) {
-        return t['com.affine.recording.recording']({
+        return t['com.yunke.recording.recording']({
           appName: status.appName,
         });
       } else {
-        return t['com.affine.recording.recording.unnamed']();
+        return t['com.yunke.recording.recording.unnamed']();
       }
     }
     return null;
@@ -232,21 +232,21 @@ export function Recording() {
       return (
         <>
           <Button variant="plain" onClick={handleDismiss}>
-            {t['com.affine.recording.dismiss']()}
+            {t['com.yunke.recording.dismiss']()}
           </Button>
           <Button
             onClick={handleStartRecording}
             variant="primary"
             prefix={<div className={styles.recordingIcon} />}
           >
-            {t['com.affine.recording.start']()}
+            {t['com.yunke.recording.start']()}
           </Button>
         </>
       );
     } else if (status.status === 'recording') {
       return (
         <Button variant="error" onClick={handleStopRecording}>
-          {t['com.affine.recording.stop']()}
+          {t['com.yunke.recording.stop']()}
         </Button>
       );
     } else if (status.status === 'stopped' || status.status === 'ready') {
@@ -261,17 +261,17 @@ export function Recording() {
     } else if (status.status === 'create-block-success') {
       return (
         <Button variant="primary" onClick={handleDismiss}>
-          {t['com.affine.recording.success.button']()}
+          {t['com.yunke.recording.success.button']()}
         </Button>
       );
     } else if (status.status === 'create-block-failed') {
       return (
         <>
           <Button variant="plain" onClick={handleDismiss}>
-            {t['com.affine.recording.dismiss']()}
+            {t['com.yunke.recording.dismiss']()}
           </Button>
           <Button variant="error" onClick={handleOpenFile}>
-            {t['com.affine.recording.failed.button']()}
+            {t['com.yunke.recording.failed.button']()}
           </Button>
         </>
       );
@@ -292,7 +292,7 @@ export function Recording() {
 
   return (
     <div className={styles.root}>
-      <img className={styles.affineIcon} src={appIcon} alt="AFFiNE图标" />
+      <img className={styles.yunkeIcon} src={appIcon} alt="YUNKE图标" />
       <div className={styles.text}>{textElement}</div>
       <div className={styles.controls}>{controlsElement}</div>
     </div>

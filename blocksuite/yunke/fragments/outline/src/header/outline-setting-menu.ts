@@ -6,8 +6,8 @@ import { html } from 'lit';
 import { type TocContext, tocContext } from '../config';
 import * as styles from './outline-setting-menu.css';
 
-export const AFFINE_OUTLINE_NOTE_PREVIEW_SETTING_MENU =
-  'affine-outline-note-preview-setting-menu';
+export const YUNKE_OUTLINE_NOTE_PREVIEW_SETTING_MENU =
+  'yunke-outline-note-preview-setting-menu';
 
 export class OutlineNotePreviewSettingMenu extends SignalWatcher(
   WithDisposable(ShadowlessElement)
@@ -42,6 +42,6 @@ export class OutlineNotePreviewSettingMenu extends SignalWatcher(
 
 declare global {
   interface HTMLElementTagNameMap {
-    [AFFINE_OUTLINE_NOTE_PREVIEW_SETTING_MENU]: OutlineNotePreviewSettingMenu;
+    [YUNKE_OUTLINE_NOTE_PREVIEW_SETTING_MENU]: OutlineNotePreviewSettingMenu;
   }
 }

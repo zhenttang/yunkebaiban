@@ -35,7 +35,7 @@ import { AccountSetting } from './account-setting';
 import { GeneralSetting } from './general-setting';
 import { IssueFeedbackModal } from './issue-feedback-modal';
 import { SettingSidebar } from './setting-sidebar';
-import { StarAFFiNEModal } from './star-affine-modal';
+import { StarYUNKEModal } from './star-yunke-modal';
 import * as style from './style.css';
 import {
   SubPageContext,
@@ -142,15 +142,15 @@ const SettingModalInner = ({
     [setSettingState]
   );
   const [openIssueFeedbackModal, setOpenIssueFeedbackModal] = useState(false);
-  const [openStarAFFiNEModal, setOpenStarAFFiNEModal] = useState(false);
+  const [openStarYUNKEModal, setOpenStarYUNKEModal] = useState(false);
 
   const handleOpenIssueFeedbackModal = useCallback(() => {
     setOpenIssueFeedbackModal(true);
   }, [setOpenIssueFeedbackModal]);
 
-  const handleOpenStarAFFiNEModal = useCallback(() => {
-    setOpenStarAFFiNEModal(true);
-  }, [setOpenStarAFFiNEModal]);
+  const handleOpenStarYUNKEModal = useCallback(() => {
+    setOpenStarYUNKEModal(true);
+  }, [setOpenStarYUNKEModal]);
 
   const addSubPageIsland = useCallback(() => {
     const island = createIsland();
@@ -233,12 +233,12 @@ const SettingModalInner = ({
               <div className={style.footer}>
                 <ContactWithUsIcon fontSize={16} />
                 <Trans
-                  i18nKey={'com.affine.settings.suggestion-2'}
+                  i18nKey={'com.yunke.settings.suggestion-2'}
                   components={{
                     1: (
                       <span
                         className={style.link}
-                        onClick={handleOpenStarAFFiNEModal}
+                        onClick={handleOpenStarYUNKEModal}
                       />
                     ),
                     2: (
@@ -250,9 +250,9 @@ const SettingModalInner = ({
                   }}
                 />
               </div>
-              <StarAFFiNEModal
-                open={openStarAFFiNEModal}
-                setOpen={setOpenStarAFFiNEModal}
+              <StarYUNKEModal
+                open={openStarYUNKEModal}
+                setOpen={setOpenStarYUNKEModal}
               />
               <IssueFeedbackModal
                 open={openIssueFeedbackModal}

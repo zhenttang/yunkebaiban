@@ -6,20 +6,20 @@ import { classMap } from 'lit/directives/class-map.js';
 import { styleMap } from 'lit/directives/style-map.js';
 import { literal, unsafeStatic } from 'lit/static-html.js';
 
-export const AFFINE_VIEWPORT_OVERLAY_WIDGET = 'affine-viewport-overlay-widget';
+export const YUNKE_VIEWPORT_OVERLAY_WIDGET = 'yunke-viewport-overlay-widget';
 
-export class AffineViewportOverlayWidget extends WidgetComponent<RootBlockModel> {
+export class YunkeViewportOverlayWidget extends WidgetComponent<RootBlockModel> {
   static override styles = css`
-    .affine-viewport-overlay-widget {
+    .yunke-viewport-overlay-widget {
       position: absolute;
       top: 0;
       left: 0;
       background: transparent;
       pointer-events: none;
-      z-index: calc(var(--affine-z-index-popover) - 1);
+      z-index: calc(var(--yunke-z-index-popover) - 1);
     }
 
-    .affine-viewport-overlay-widget.lock {
+    .yunke-viewport-overlay-widget.lock {
       pointer-events: auto;
     }
   `;
@@ -55,7 +55,7 @@ export class AffineViewportOverlayWidget extends WidgetComponent<RootBlockModel>
 
   override render() {
     const classes = classMap({
-      'affine-viewport-overlay-widget': true,
+      'yunke-viewport-overlay-widget': true,
       lock: this._lockViewport,
     });
     const style = styleMap({
@@ -79,12 +79,12 @@ export class AffineViewportOverlayWidget extends WidgetComponent<RootBlockModel>
 
 export const viewportOverlayWidget = WidgetViewExtension(
   'yunke:page',
-  AFFINE_VIEWPORT_OVERLAY_WIDGET,
-  literal`${unsafeStatic(AFFINE_VIEWPORT_OVERLAY_WIDGET)}`
+  YUNKE_VIEWPORT_OVERLAY_WIDGET,
+  literal`${unsafeStatic(YUNKE_VIEWPORT_OVERLAY_WIDGET)}`
 );
 
 declare global {
   interface HTMLElementTagNameMap {
-    [AFFINE_VIEWPORT_OVERLAY_WIDGET]: AffineViewportOverlayWidget;
+    [YUNKE_VIEWPORT_OVERLAY_WIDGET]: YunkeViewportOverlayWidget;
   }
 }

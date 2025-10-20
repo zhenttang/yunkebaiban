@@ -37,7 +37,7 @@ export type DocDisplayMetaParams = {
  * Supports the following blocks:
  *
  * * Inline View:
- *      `AffineReference`
+ *      `YunkeReference`
  * * Card View:
  *      `EmbedLinkedDocBlockComponent`
  *      `EmbedEdgelessLinkedDocBlockComponent`

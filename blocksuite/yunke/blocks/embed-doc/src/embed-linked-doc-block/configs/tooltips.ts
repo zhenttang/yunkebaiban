@@ -25,7 +25,7 @@ export const LinkDocTooltip = html`<svg width="170" height="68" viewBox="0 0 170
 <path d="M24 35H98V49H24V35Z"/>
 </mask>
 <path d="M98 48.5H24V49.5H98V48.5Z" fill="#E3E2E4" mask="url(#path-5-inside-1_16460_998)"/>
-<text fill="#121212" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="10" letter-spacing="0px"><tspan x="24" y="45.6364">What&#x2019;s AFFiNE?</tspan></text>
+<text fill="#121212" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="10" letter-spacing="0px"><tspan x="24" y="45.6364">What&#x2019;s YUNKE?</tspan></text>
 </g>
 </svg>
 `;

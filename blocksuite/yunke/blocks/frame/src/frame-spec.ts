@@ -9,7 +9,7 @@ import { EdgelessFrameManager, FrameOverlay } from './frame-manager';
 const flavour = FrameBlockSchema.model.flavour;
 
 export const FrameBlockSpec: ExtensionType[] = [
-  BlockViewExtension(flavour, literal`affine-frame`),
+  BlockViewExtension(flavour, literal`yunke-frame`),
   FrameOverlay,
   EdgelessFrameManager,
   FrameBlockInteraction,

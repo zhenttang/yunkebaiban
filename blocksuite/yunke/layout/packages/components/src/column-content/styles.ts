@@ -408,16 +408,16 @@ export const columnContentStyles = css`
   /* === 深色模式适配 === */
   ${StyleUtils.darkMode(`
     .column-content {
-      background: var(--affine-background-primary-color);
-      border-color: var(--affine-border-color);
+      background: var(--yunke-background-primary-color);
+      border-color: var(--yunke-border-color);
     }
     
     .column-header {
-      background: var(--affine-background-secondary-color);
+      background: var(--yunke-background-secondary-color);
     }
     
     .add-content-button:hover {
-      background: var(--affine-primary-color-alpha);
+      background: var(--yunke-primary-color-alpha);
     }
   `)}
 
@@ -451,12 +451,12 @@ export const columnContentStyles = css`
   /* === 特殊交互状态 === */
   .column-content.drag-over.drop-valid {
     border-color: ${DesignTokens.colors.success};
-    background: var(--affine-success-color-alpha, rgba(34, 197, 94, 0.1));
+    background: var(--yunke-success-color-alpha, rgba(34, 197, 94, 0.1));
   }
 
   .column-content.drag-over.drop-invalid {
     border-color: ${DesignTokens.colors.error};
-    background: var(--affine-error-color-alpha, rgba(239, 68, 68, 0.1));
+    background: var(--yunke-error-color-alpha, rgba(239, 68, 68, 0.1));
   }
 
   /* === 触摸设备优化 === */

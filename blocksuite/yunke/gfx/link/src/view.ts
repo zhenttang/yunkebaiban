@@ -7,7 +7,7 @@ import { effects } from './effects';
 import { linkQuickTool } from './link-tool';
 
 export class LinkViewExtension extends ViewExtensionProvider {
-  override name = 'affine-link-gfx';
+  override name = 'yunke-link-gfx';
 
   override effect() {
     super.effect();

@@ -2,7 +2,7 @@ import {
   useMutateQueryResource,
   useMutation,
 } from '@yunke/admin/use-mutation';
-import { useAsyncCallback } from '@yunke/core/components/hooks/affine-async-hooks';
+import { useAsyncCallback } from '@yunke/core/components/hooks/yunke-async-hooks';
 // import {
 //   createChangePasswordUrlMutation,
 //   createUserMutation,

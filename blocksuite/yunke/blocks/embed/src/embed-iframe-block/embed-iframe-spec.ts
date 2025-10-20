@@ -14,8 +14,8 @@ export const EmbedIframeViewExtensions: ExtensionType[] = [
   FlavourExtension(flavour),
   BlockViewExtension(flavour, model => {
     return model.parent?.flavour === 'yunke:surface'
-      ? literal`affine-embed-edgeless-iframe-block`
-      : literal`affine-embed-iframe-block`;
+      ? literal`yunke-embed-edgeless-iframe-block`
+      : literal`yunke-embed-iframe-block`;
   }),
   createBuiltinToolbarConfigExtension(flavour),
   SlashMenuConfigExtension(flavour, embedIframeSlashMenuConfig),

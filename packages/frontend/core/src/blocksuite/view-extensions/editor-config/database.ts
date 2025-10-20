@@ -2,7 +2,7 @@ import { notify } from '@yunke/component';
 import {
   generateUrl,
   type UseSharingUrl,
-} from '@yunke/core/components/hooks/affine/use-share-url';
+} from '@yunke/core/components/hooks/yunke/use-share-url';
 import { ServerService } from '@yunke/core/modules/cloud';
 import { EditorService } from '@yunke/core/modules/editor';
 import { copyLinkToBlockStdScopeClipboard } from '@yunke/core/utils/clipboard';

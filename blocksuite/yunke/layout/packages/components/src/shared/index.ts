@@ -34,7 +34,7 @@ export const globalReset = css`
 
   /* 基础字体设置 */
   body {
-    font-family: var(--affine-font-family, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
+    font-family: var(--yunke-font-family, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -47,7 +47,7 @@ export const globalReset = css`
 
   /* 为键盘用户提供可见的焦点指示器 */
   :focus-visible {
-    outline: 2px solid var(--affine-primary-color);
+    outline: 2px solid var(--yunke-primary-color);
     outline-offset: 2px;
   }
 `;

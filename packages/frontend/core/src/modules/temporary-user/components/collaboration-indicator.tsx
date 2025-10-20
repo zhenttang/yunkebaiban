@@ -50,8 +50,8 @@ export const CollaborationIndicator = ({
         flexDirection: 'column',
         gap: '8px',
         padding: '12px',
-        backgroundColor: 'var(--affine-background-primary-color)',
-        border: '1px solid var(--affine-border-color)',
+        backgroundColor: 'var(--yunke-background-primary-color)',
+        border: '1px solid var(--yunke-border-color)',
         borderRadius: '8px',
         boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
         maxWidth: '280px',
@@ -98,7 +98,7 @@ export const CollaborationIndicator = ({
             style={{
               fontSize: '13px',
               fontWeight: 500,
-              color: 'var(--affine-text-primary-color)',
+              color: 'var(--yunke-text-primary-color)',
               lineHeight: '16px',
             }}
           >
@@ -107,7 +107,7 @@ export const CollaborationIndicator = ({
           <span 
             style={{
               fontSize: '11px',
-              color: 'var(--affine-text-secondary-color)',
+              color: 'var(--yunke-text-secondary-color)',
               lineHeight: '14px',
             }}
           >
@@ -123,9 +123,9 @@ export const CollaborationIndicator = ({
           alignItems: 'center',
           gap: '6px',
           padding: '4px 8px',
-          backgroundColor: 'var(--affine-background-success-color)',
+          backgroundColor: 'var(--yunke-background-success-color)',
           borderRadius: '4px',
-          border: '1px solid var(--affine-success-color)',
+          border: '1px solid var(--yunke-success-color)',
         }}
       >
         <div 
@@ -133,14 +133,14 @@ export const CollaborationIndicator = ({
             width: '6px',
             height: '6px',
             borderRadius: '50%',
-            backgroundColor: 'var(--affine-success-color)',
+            backgroundColor: 'var(--yunke-success-color)',
             animation: 'pulse 2s infinite',
           }}
         />
         <span 
           style={{
             fontSize: '11px',
-            color: 'var(--affine-success-color)',
+            color: 'var(--yunke-success-color)',
             fontWeight: 500,
           }}
         >
@@ -155,9 +155,9 @@ export const CollaborationIndicator = ({
           alignItems: 'center',
           gap: '6px',
           padding: '6px 8px',
-          backgroundColor: 'var(--affine-background-secondary-color)',
+          backgroundColor: 'var(--yunke-background-secondary-color)',
           borderRadius: '4px',
-          border: '1px dashed var(--affine-border-color)',
+          border: '1px dashed var(--yunke-border-color)',
         }}
       >
         <span 
@@ -171,7 +171,7 @@ export const CollaborationIndicator = ({
         <span 
           style={{
             fontSize: '11px',
-            color: 'var(--affine-text-secondary-color)',
+            color: 'var(--yunke-text-secondary-color)',
             lineHeight: '14px',
           }}
         >

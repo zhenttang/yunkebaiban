@@ -22,7 +22,7 @@ import { launchStage } from './windows-manager/stage';
 
 app.enableSandbox();
 
-logger.info(`[Main] Starting AFFiNE Desktop (${buildType})`);
+logger.info(`[Main] Starting YUNKE Desktop (${buildType})`);
 logger.info(`[Main] DEV_SERVER_URL: ${process.env.DEV_SERVER_URL}`);
 logger.info(`[Main] NODE_ENV: ${process.env.NODE_ENV}`);
 logger.info(`[Main] isDev: ${isDev}`);
@@ -39,7 +39,7 @@ app.commandLine.appendSwitch('disable-features', 'PlzDedicatedWorker');
 
 // use the same data for internal & beta for testing
 if (overrideSession) {
-  const appName = buildType === 'stable' ? 'AFFiNE' : `AFFiNE-${buildType}`;
+  const appName = buildType === 'stable' ? 'YUNKE' : `YUNKE-${buildType}`;
   const userDataPath = path.join(app.getPath('appData'), appName);
   app.setPath('userData', userDataPath);
   app.setPath('sessionData', userDataPath);

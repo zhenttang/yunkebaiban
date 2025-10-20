@@ -91,7 +91,7 @@ function highlightBlock(host: EditorHost, blockId: string) {
 
   const rootComponent = host.querySelector<
     HTMLElement & { viewport: Viewport }
-  >('affine-page-root');
+  >('yunke-page-root');
   if (!rootComponent) return emptyClear;
 
   if (!rootComponent.viewport) {
@@ -123,7 +123,7 @@ function highlightBlock(host: EditorHost, blockId: string) {
     left: `${left - offsetX + scrollLeft}px`,
     width: `${width}px`,
     height: `${height}px`,
-    background: 'var(--affine-hover-color)',
+    background: 'var(--yunke-hover-color)',
     borderRadius: '4px',
     display: 'block',
   });

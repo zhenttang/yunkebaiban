@@ -2,7 +2,7 @@ import { unsafeCSSVarV2 } from '@blocksuite/yunke-shared/theme';
 import { css, html } from 'lit';
 
 export const styles = css`
-  .affine-embed-figma-block {
+  .yunke-embed-figma-block {
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -11,39 +11,39 @@ export const styles = css`
     height: 100%;
 
     border-radius: 8px;
-    border: 1px solid var(--affine-background-tertiary-color);
+    border: 1px solid var(--yunke-background-tertiary-color);
 
-    background: var(--affine-background-primary-color);
+    background: var(--yunke-background-primary-color);
     user-select: none;
   }
 
-  .affine-embed-figma {
+  .yunke-embed-figma {
     flex-grow: 1;
     width: 100%;
   }
 
-  .affine-embed-figma img,
-  .affine-embed-figma object,
-  .affine-embed-figma svg {
+  .yunke-embed-figma img,
+  .yunke-embed-figma object,
+  .yunke-embed-figma svg {
     width: 100%;
     height: 100%;
     object-fit: cover;
     border-radius: 4px;
   }
 
-  .affine-embed-figma-iframe-container {
+  .yunke-embed-figma-iframe-container {
     height: 100%;
     position: relative;
   }
 
-  .affine-embed-figma-iframe-container > iframe {
+  .yunke-embed-figma-iframe-container > iframe {
     width: 100%;
     height: 100%;
     border-radius: 4px;
     border: none;
   }
 
-  .affine-embed-figma-iframe-overlay {
+  .yunke-embed-figma-iframe-overlay {
     position: absolute;
     top: 0;
     left: 0;
@@ -51,18 +51,18 @@ export const styles = css`
     height: 100%;
   }
 
-  .affine-embed-figma-iframe-overlay.hide {
+  .yunke-embed-figma-iframe-overlay.hide {
     display: none;
   }
 
-  .affine-embed-figma-content {
+  .yunke-embed-figma-content {
     display: block;
     flex-direction: column;
     width: 100%;
     height: fit-content;
   }
 
-  .affine-embed-figma-content-header {
+  .yunke-embed-figma-content-header {
     display: flex;
     flex-direction: row;
     gap: 8px;
@@ -71,7 +71,7 @@ export const styles = css`
     align-self: stretch;
   }
 
-  .affine-embed-figma-content-title-icon {
+  .yunke-embed-figma-content-title-icon {
     display: flex;
     width: 20px;
     height: 20px;
@@ -79,15 +79,15 @@ export const styles = css`
     align-items: center;
   }
 
-  .affine-embed-figma-content-title-icon img,
-  .affine-embed-figma-content-title-icon object,
-  .affine-embed-figma-content-title-icon svg {
+  .yunke-embed-figma-content-title-icon img,
+  .yunke-embed-figma-content-title-icon object,
+  .yunke-embed-figma-content-title-icon svg {
     width: 20px;
     height: 20px;
-    fill: var(--affine-background-primary-color);
+    fill: var(--yunke-background-primary-color);
   }
 
-  .affine-embed-figma-content-title-text {
+  .yunke-embed-figma-content-title-text {
     flex: 1 0 0;
 
     display: -webkit-box;
@@ -97,16 +97,16 @@ export const styles = css`
     word-break: break-word;
     overflow: hidden;
     text-overflow: ellipsis;
-    color: var(--affine-text-primary-color);
+    color: var(--yunke-text-primary-color);
 
-    font-family: var(--affine-font-family);
-    font-size: var(--affine-font-sm);
+    font-family: var(--yunke-font-family);
+    font-size: var(--yunke-font-sm);
     font-style: normal;
     font-weight: 600;
     line-height: 22px;
   }
 
-  .affine-embed-figma-content-description {
+  .yunke-embed-figma-content-description {
     height: 40px;
 
     position: relative;
@@ -115,24 +115,24 @@ export const styles = css`
     white-space: normal;
     overflow: hidden;
     text-overflow: ellipsis;
-    color: var(--affine-text-primary-color);
+    color: var(--yunke-text-primary-color);
 
-    font-family: var(--affine-font-family);
-    font-size: var(--affine-font-xs);
+    font-family: var(--yunke-font-family);
+    font-size: var(--yunke-font-xs);
     font-style: normal;
     font-weight: 400;
     line-height: 20px;
   }
 
-  .affine-embed-figma-content-description::after {
+  .yunke-embed-figma-content-description::after {
     content: '...';
     position: absolute;
     right: 0;
     bottom: 0;
-    background-color: var(--affine-background-primary-color);
+    background-color: var(--yunke-background-primary-color);
   }
 
-  .affine-embed-figma-content-url {
+  .yunke-embed-figma-content-url {
     display: flex;
     align-items: center;
     justify-content: flex-start;
@@ -141,7 +141,7 @@ export const styles = css`
     max-width: 100%;
     cursor: pointer;
   }
-  .affine-embed-figma-content-url > span {
+  .yunke-embed-figma-content-url > span {
     display: -webkit-box;
     -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
@@ -152,38 +152,38 @@ export const styles = css`
     text-overflow: ellipsis;
     color: ${unsafeCSSVarV2('icon/primary')};
 
-    font-family: var(--affine-font-family);
-    font-size: var(--affine-font-xs);
+    font-family: var(--yunke-font-family);
+    font-size: var(--yunke-font-xs);
     font-style: normal;
     font-weight: 400;
     line-height: 20px;
   }
-  .affine-embed-figma-content-url:hover > span {
-    color: var(--affine-link-color);
+  .yunke-embed-figma-content-url:hover > span {
+    color: var(--yunke-link-color);
   }
-  .affine-embed-figma-content-url:hover .open-icon {
-    fill: var(--affine-link-color);
+  .yunke-embed-figma-content-url:hover .open-icon {
+    fill: var(--yunke-link-color);
   }
 
-  .affine-embed-figma-content-url-icon {
+  .yunke-embed-figma-content-url-icon {
     display: flex;
     align-items: center;
     justify-content: center;
     width: 12px;
     height: 12px;
   }
-  .affine-embed-figma-content-url-icon svg {
+  .yunke-embed-figma-content-url-icon svg {
     height: 12px;
     width: 12px;
     fill: ${unsafeCSSVarV2('icon/primary')};
   }
 
-  .affine-embed-figma-block.selected {
-    .affine-embed-figma-content-url > span {
-      color: var(--affine-link-color);
+  .yunke-embed-figma-block.selected {
+    .yunke-embed-figma-content-url > span {
+      color: var(--yunke-link-color);
     }
-    .affine-embed-figma-content-url .open-icon {
-      fill: var(--affine-link-color);
+    .yunke-embed-figma-content-url .open-icon {
+      fill: var(--yunke-link-color);
     }
   }
 `;

@@ -33,7 +33,7 @@ import {
   type ParseDocUrlService,
   TelemetryProvider,
 } from '../../services';
-import type { AffineTextAttributes } from '../../types';
+import type { YunkeTextAttributes } from '../../types';
 import { matchModels, referenceToNode } from '../../utils';
 
 function findLastMatchingNode(
@@ -457,7 +457,7 @@ class PasteTr {
         return { ...op };
       }
 
-      const reference: AffineTextAttributes['reference'] = {
+      const reference: YunkeTextAttributes['reference'] = {
         pageId,
         type: 'LinkedPage',
       };

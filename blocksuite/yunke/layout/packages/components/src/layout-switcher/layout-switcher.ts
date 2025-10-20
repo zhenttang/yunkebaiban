@@ -558,8 +558,8 @@ export class LayoutSwitcher extends LitElement implements ILayoutSwitcher {
       top: 20px;
       left: 50%;
       transform: translateX(-50%);
-      background: var(--affine-background-overlay-panel-color);
-      color: var(--affine-text-primary-color);
+      background: var(--yunke-background-overlay-panel-color);
+      color: var(--yunke-text-primary-color);
       padding: 8px 16px;
       border-radius: 6px;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);

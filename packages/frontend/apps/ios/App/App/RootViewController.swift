@@ -28,7 +28,7 @@ class RootViewController: UINavigationController {
 
   func commitInit() {
     assert(viewControllers.isEmpty)
-    viewControllers = [AFFiNEViewController()]
+    viewControllers = [YUNKEViewController()]
   }
 
   override func viewDidLoad() {

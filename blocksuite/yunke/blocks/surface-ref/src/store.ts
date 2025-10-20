@@ -5,7 +5,7 @@ import {
 import { SurfaceRefBlockSchemaExtension } from '@blocksuite/yunke-model';
 
 export class SurfaceRefStoreExtension extends StoreExtensionProvider {
-  override name = 'affine-surface-ref-block';
+  override name = 'yunke-surface-ref-block';
 
   override setup(context: StoreExtensionContext) {
     super.setup(context);

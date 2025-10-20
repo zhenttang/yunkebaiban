@@ -38,7 +38,7 @@ export const AddServer = () => {
         className={ItemContainer}
       >
         <div className={ItemText}>
-          {t['com.affine.workspaceList.addServer']()}
+          {t['com.yunke.workspaceList.addServer']()}
         </div>
       </MenuItem>
     </>

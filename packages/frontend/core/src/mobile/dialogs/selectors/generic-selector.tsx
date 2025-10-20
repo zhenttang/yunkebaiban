@@ -48,10 +48,10 @@ const ChangedRenderer = ({
   const t = useI18n();
 
   const addedText = added
-    ? t['com.affine.m.selector.info-added']({ count: `${added}`, type })
+    ? t['com.yunke.m.selector.info-added']({ count: `${added}`, type })
     : '';
   const removedText = removed
-    ? t['com.affine.m.selector.info-removed']({
+    ? t['com.yunke.m.selector.info-removed']({
         count: `${removed}`,
         type,
       })
@@ -193,7 +193,7 @@ export const GenericSelector = ({
     <div className={styles.root}>
       <PageHeader back backAction={onBack}>
         <span className={styles.headerTitle}>
-          {title ?? t['com.affine.m.selector.title']({ type: typeText })}
+          {title ?? t['com.yunke.m.selector.title']({ type: typeText })}
         </span>
       </PageHeader>
       <Scrollable.Root className={styles.scrollArea}>
@@ -238,7 +238,7 @@ export const GenericSelector = ({
           ) : null}
 
           <div className={styles.totalInfo}>
-            {t['com.affine.m.selector.info-total']({
+            {t['com.yunke.m.selector.info-total']({
               total: initial.length + '',
             })}
           </div>
@@ -250,7 +250,7 @@ export const GenericSelector = ({
             className={styles.actionButton}
             onClick={handleConfirm}
           >
-            {confirmText ?? t['com.affine.m.selector.confirm-default']()}
+            {confirmText ?? t['com.yunke.m.selector.confirm-default']()}
           </Button>
         </div>
       </SafeArea>

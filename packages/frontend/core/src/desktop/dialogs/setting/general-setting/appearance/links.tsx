@@ -18,8 +18,8 @@ export const OpenInAppLinksMenu = () => {
     () =>
       Object.values(OpenLinkMode).map(mode => ({
         label:
-          t.t(`com.affine.setting.appearance.open-in-app.${mode}`) ||
-          `com.affine.setting.appearance.open-in-app.${mode}`,
+          t.t(`com.yunke.setting.appearance.open-in-app.${mode}`) ||
+          `com.yunke.setting.appearance.open-in-app.${mode}`,
         value: mode,
       })),
     [t]

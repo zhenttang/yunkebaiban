@@ -41,7 +41,7 @@ export const CreateCollectionModal = ({
       {init != null ? (
         <CreateCollection
           showTips={showTips}
-          onConfirmText={t['com.affine.editCollection.save']()}
+          onConfirmText={t['com.yunke.editCollection.save']()}
           init={init}
           onConfirm={onConfirmTitle}
           onCancel={onCancel}
@@ -91,26 +91,26 @@ export const CreateCollection = ({
     <div data-testid="edit-collection-modal">
       <div className={styles.content}>
         <div className={styles.label}>
-          {t['com.affine.editCollectionName.name']()}
+          {t['com.yunke.editCollectionName.name']()}
         </div>
         <Input
           autoFocus
           value={value}
           data-testid="input-collection-title"
-          placeholder={t['com.affine.editCollectionName.name.placeholder']()}
+          placeholder={t['com.yunke.editCollectionName.name.placeholder']()}
           onChange={useCallback((value: string) => onChange(value), [onChange])}
           onEnter={save}
           onKeyDown={onKeyDown}
         ></Input>
         {showTips ? (
           <div className={styles.createTips}>
-            {t['com.affine.editCollectionName.createTips']()}
+            {t['com.yunke.editCollectionName.createTips']()}
           </div>
         ) : null}
       </div>
       <div className={styles.footer}>
         <Button size="large" onClick={onCancel}>
-          {t['com.affine.editCollection.button.cancel']()}
+          {t['com.yunke.editCollection.button.cancel']()}
         </Button>
         <Button
           size="large"
@@ -119,7 +119,7 @@ export const CreateCollection = ({
           disabled={isNameEmpty}
           onClick={save}
         >
-          {onConfirmText ?? t['com.affine.editCollection.button.create']()}
+          {onConfirmText ?? t['com.yunke.editCollection.button.create']()}
         </Button>
       </div>
     </div>

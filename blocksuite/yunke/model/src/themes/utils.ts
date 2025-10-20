@@ -1,5 +1,5 @@
 import {
-  type AffineThemeKeyV2,
+  type YunkeThemeKeyV2,
   darkThemeV2,
   lightThemeV2,
 } from '@toeverything/theme/v2';
@@ -18,7 +18,7 @@ export function buildPalettes(
   }));
 }
 
-export function getColorByKey(key: AffineThemeKeyV2): Color {
+export function getColorByKey(key: YunkeThemeKeyV2): Color {
   const dark = darkThemeV2[key];
   const light = lightThemeV2[key];
   if (dark === light) return dark;

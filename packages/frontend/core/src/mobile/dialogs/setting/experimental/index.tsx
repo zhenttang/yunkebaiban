@@ -1,6 +1,6 @@
 import { Switch } from '@yunke/component';
 import {
-  AFFINE_FLAGS,
+  YUNKE_FLAGS,
   FeatureFlagService,
   type Flag,
 } from '@yunke/core/modules/feature-flag';
@@ -43,11 +43,11 @@ const ExperimentalFeatureList = () => {
 
   return (
     <ul className={styles.content}>
-      {Object.keys(AFFINE_FLAGS).map(key => (
+      {Object.keys(YUNKE_FLAGS).map(key => (
         <ExperimentalFeaturesItem
           key={key}
           flagKey={key}
-          flag={featureFlagService.flags[key as keyof AFFINE_FLAGS]}
+          flag={featureFlagService.flags[key as keyof YUNKE_FLAGS]}
         />
       ))}
     </ul>

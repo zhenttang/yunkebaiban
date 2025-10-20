@@ -1,4 +1,4 @@
-import { AffineCodeToolbarWidget } from '@blocksuite/yunke/blocks/code';
+import { YunkeCodeToolbarWidget } from '@blocksuite/yunke/blocks/code';
 import { LifeCycleWatcher } from '@blocksuite/yunke/std';
 
 import { setupCodeToolbarAIEntry } from '../entries/code-toolbar/setup-code-toolbar';
@@ -14,7 +14,7 @@ export class AICodeBlockWatcher extends LifeCycleWatcher {
         return;
       }
       const component = payload.view;
-      if (component instanceof AffineCodeToolbarWidget) {
+      if (component instanceof YunkeCodeToolbarWidget) {
         setupCodeToolbarAIEntry(component);
       }
     });

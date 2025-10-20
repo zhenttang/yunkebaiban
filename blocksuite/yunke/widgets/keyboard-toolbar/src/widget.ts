@@ -17,9 +17,9 @@ import {
   KeyboardToolbarConfigExtension,
 } from './config.js';
 
-export const AFFINE_KEYBOARD_TOOLBAR_WIDGET = 'affine-keyboard-toolbar-widget';
+export const YUNKE_KEYBOARD_TOOLBAR_WIDGET = 'yunke-keyboard-toolbar-widget';
 
-export class AffineKeyboardToolbarWidget extends WidgetComponent<RootBlockModel> {
+export class YunkeKeyboardToolbarWidget extends WidgetComponent<RootBlockModel> {
   private readonly _close = (blur: boolean) => {
     if (blur) {
       if (document.activeElement === this._docTitle?.inlineEditorContainer) {
@@ -124,24 +124,24 @@ export class AffineKeyboardToolbarWidget extends WidgetComponent<RootBlockModel>
 
     return html`<blocksuite-portal
       .shadowDom=${false}
-      .template=${html`<affine-keyboard-toolbar
+      .template=${html`<yunke-keyboard-toolbar
         .keyboard=${this.keyboard}
         .config=${this.config}
         .rootComponent=${this.block.rootComponent}
         .close=${this._close}
-      ></affine-keyboard-toolbar>`}
+      ></yunke-keyboard-toolbar>`}
     ></blocksuite-portal>`;
   }
 }
 
 export const keyboardToolbarWidget = WidgetViewExtension(
   'yunke:page',
-  AFFINE_KEYBOARD_TOOLBAR_WIDGET,
-  literal`${unsafeStatic(AFFINE_KEYBOARD_TOOLBAR_WIDGET)}`
+  YUNKE_KEYBOARD_TOOLBAR_WIDGET,
+  literal`${unsafeStatic(YUNKE_KEYBOARD_TOOLBAR_WIDGET)}`
 );
 
 declare global {
   interface HTMLElementTagNameMap {
-    [AFFINE_KEYBOARD_TOOLBAR_WIDGET]: AffineKeyboardToolbarWidget;
+    [YUNKE_KEYBOARD_TOOLBAR_WIDGET]: YunkeKeyboardToolbarWidget;
   }
 }

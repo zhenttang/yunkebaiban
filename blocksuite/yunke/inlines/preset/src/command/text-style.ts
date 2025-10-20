@@ -2,7 +2,7 @@ import {
   getBlockSelectionsCommand,
   getTextSelectionCommand,
 } from '@blocksuite/yunke-shared/commands';
-import type { AffineTextAttributes } from '@blocksuite/yunke-shared/types';
+import type { YunkeTextAttributes } from '@blocksuite/yunke-shared/types';
 import type { Command } from '@blocksuite/std';
 
 import { formatBlockCommand } from './format-block.js';
@@ -12,7 +12,7 @@ import { getCombinedTextStyle } from './utils.js';
 
 export const toggleTextStyleCommand: Command<{
   key: Extract<
-    keyof AffineTextAttributes,
+    keyof YunkeTextAttributes,
     'bold' | 'italic' | 'underline' | 'strike' | 'code'
   >;
 }> = (ctx, next) => {
@@ -20,7 +20,7 @@ export const toggleTextStyleCommand: Command<{
   const [active] = std.command.chain().pipe(isTextStyleActive, { key }).run();
 
   const payload: {
-    styles: AffineTextAttributes;
+    styles: YunkeTextAttributes;
     mode?: 'replace' | 'merge';
   } = {
     styles: {
@@ -46,7 +46,7 @@ export const toggleTextStyleCommand: Command<{
 
 const toggleTextStyleCommandWrapper = (
   key: Extract<
-    keyof AffineTextAttributes,
+    keyof YunkeTextAttributes,
     'bold' | 'italic' | 'underline' | 'strike' | 'code'
   >
 ): Command => {
@@ -66,7 +66,7 @@ export const toggleUnderline = toggleTextStyleCommandWrapper('underline');
 export const toggleStrike = toggleTextStyleCommandWrapper('strike');
 export const toggleCode = toggleTextStyleCommandWrapper('code');
 
-export const getTextStyle: Command<{}, { textStyle: AffineTextAttributes }> = (
+export const getTextStyle: Command<{}, { textStyle: YunkeTextAttributes }> = (
   ctx,
   next
 ) => {
@@ -80,7 +80,7 @@ export const getTextStyle: Command<{}, { textStyle: AffineTextAttributes }> = (
   return next({ textStyle: innerCtx.textStyle });
 };
 
-export const isTextStyleActive: Command<{ key: keyof AffineTextAttributes }> = (
+export const isTextStyleActive: Command<{ key: keyof YunkeTextAttributes }> = (
   ctx,
   next
 ) => {

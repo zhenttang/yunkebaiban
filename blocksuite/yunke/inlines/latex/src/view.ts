@@ -11,7 +11,7 @@ import {
 import { LatexEditorInlineManagerExtension } from './latex-node/latex-editor-menu';
 
 export class LatexViewExtension extends ViewExtensionProvider {
-  override name = 'affine-latex-inline';
+  override name = 'yunke-latex-inline';
 
   override effect(): void {
     super.effect();

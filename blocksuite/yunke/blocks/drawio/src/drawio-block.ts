@@ -336,23 +336,23 @@ export class DrawioBlockComponent extends CaptionedBlockComponent<DrawioBlockMod
 
   private _renderPlaceholder(): TemplateResult {
     return html`
-      <div class="affine-drawio-placeholder" @click=${this._handleClick}>
-        <div class="affine-drawio-placeholder-icon">
+      <div class="yunke-drawio-placeholder" @click=${this._handleClick}>
+        <div class="yunke-drawio-placeholder-icon">
           <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z" fill="#F08705"/>
           </svg>
         </div>
-        <div class="affine-drawio-placeholder-text">双击创建 Draw.io 图表</div>
-        <div class="affine-drawio-placeholder-desc">使用专业的流程图和图表工具</div>
+        <div class="yunke-drawio-placeholder-text">双击创建 Draw.io 图表</div>
+        <div class="yunke-drawio-placeholder-desc">使用专业的流程图和图表工具</div>
       </div>
     `;
   }
 
   private _renderImage(): TemplateResult {
     return html`
-      <div class="affine-drawio-image-container">
+      <div class="yunke-drawio-image-container">
         <img
-          class="affine-drawio-image"
+          class="yunke-drawio-image"
           src=${this.model.props.src}
           alt=${this.model.props.title || 'Draw.io图表'}
           @dblclick=${this._handleDoubleClick}
@@ -366,7 +366,7 @@ export class DrawioBlockComponent extends CaptionedBlockComponent<DrawioBlockMod
     if (this.readonly) return nothing;
 
     return html`
-      <div class="affine-drawio-edit-button" @click=${this._openEditor}>
+      <div class="yunke-drawio-edit-button" @click=${this._openEditor}>
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" fill="currentColor"/>
         </svg>
@@ -379,18 +379,18 @@ export class DrawioBlockComponent extends CaptionedBlockComponent<DrawioBlockMod
     if (!this._modalOpen) return nothing;
 
     return html`
-      <div class="affine-drawio-modal" ${ref(this._modalRef)}>
-        <div class="affine-drawio-modal-overlay" @click=${this._closeEditor}></div>
-        <div class="affine-drawio-modal-content">
-          <div class="affine-drawio-modal-header">
-            <div class="affine-drawio-modal-title">
+      <div class="yunke-drawio-modal" ${ref(this._modalRef)}>
+        <div class="yunke-drawio-modal-overlay" @click=${this._closeEditor}></div>
+        <div class="yunke-drawio-modal-content">
+          <div class="yunke-drawio-modal-header">
+            <div class="yunke-drawio-modal-title">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z" fill="#F08705"/>
               </svg>
               编辑 Draw.io 图表
             </div>
             <button
-              class="affine-drawio-modal-close"
+              class="yunke-drawio-modal-close"
               @click=${this._closeEditor}
               title="关闭"
             >
@@ -399,19 +399,19 @@ export class DrawioBlockComponent extends CaptionedBlockComponent<DrawioBlockMod
               </svg>
             </button>
           </div>
-          <div class="affine-drawio-modal-body">
+          <div class="yunke-drawio-modal-body">
             ${this._loading ? html`
-              <div class="affine-drawio-loading">
-                <div class="affine-drawio-spinner"></div>
+              <div class="yunke-drawio-loading">
+                <div class="yunke-drawio-spinner"></div>
                 <div>正在加载 Draw.io 编辑器...</div>
-                <div style="margin-top: 8px; font-size: 12px; color: var(--affine-text-secondary-color);">
+                <div style="margin-top: 8px; font-size: 12px; color: var(--yunke-text-secondary-color);">
                   首次加载可能需要较长时间，请耐心等待
                 </div>
               </div>
             ` : nothing}
             <iframe
               ${ref(this._frameRef)}
-              class="affine-drawio-editor-frame"
+              class="yunke-drawio-editor-frame"
               @load=${() => console.log('Draw.io iframe DOM loaded')}
               @error=${() => {
                 this._loading = false;
@@ -431,7 +431,7 @@ export class DrawioBlockComponent extends CaptionedBlockComponent<DrawioBlockMod
 
   override renderBlock(): TemplateResult {
     const classes = classMap({
-      'affine-drawio-container': true,
+      'yunke-drawio-container': true,
       'selected': this.selected,
       'readonly': this.readonly,
     });

@@ -14,7 +14,7 @@ import { property } from 'lit/decorators.js';
 import { outlineSettingsKey, type TocContext, tocContext } from './config.js';
 import * as styles from './outline-panel.css';
 
-export const AFFINE_OUTLINE_PANEL = 'affine-outline-panel';
+export const YUNKE_OUTLINE_PANEL = 'yunke-outline-panel';
 
 @requiredProperties({
   editor: PropTypes.object,
@@ -95,9 +95,9 @@ export class OutlinePanel extends SignalWatcher(
     if (!this.editor) return;
 
     return html`
-      <affine-outline-panel-header></affine-outline-panel-header>
-      <affine-outline-panel-body> </affine-outline-panel-body>
-      <affine-outline-notice></affine-outline-notice>
+      <yunke-outline-panel-header></yunke-outline-panel-header>
+      <yunke-outline-panel-body> </yunke-outline-panel-body>
+      <yunke-outline-notice></yunke-outline-notice>
     `;
   }
 
@@ -113,6 +113,6 @@ export class OutlinePanel extends SignalWatcher(
 
 declare global {
   interface HTMLElementTagNameMap {
-    [AFFINE_OUTLINE_PANEL]: OutlinePanel;
+    [YUNKE_OUTLINE_PANEL]: OutlinePanel;
   }
 }

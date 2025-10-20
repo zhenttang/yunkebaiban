@@ -6,9 +6,9 @@ import type { createStore } from 'jotai';
 import type { useTheme } from 'next-themes';
 
 import type { EditorSettingService } from '../modules/editor-setting';
-import { registerAffineCommand } from './registry';
+import { registerYunkeCommand } from './registry';
 
-export function registerAffineSettingsCommands({
+export function registerYunkeSettingsCommands({
   t,
   store,
   theme,
@@ -27,12 +27,12 @@ export function registerAffineSettingsCommands({
 
   // color modes
   unsubs.push(
-    registerAffineCommand({
-      id: 'affine:change-color-mode-to-auto',
-      label: `${t['com.affine.cmdk.affine.color-mode.to']()} ${t[
-        'com.affine.themeSettings.system'
+    registerYunkeCommand({
+      id: 'yunke:change-color-mode-to-auto',
+      label: `${t['com.yunke.cmdk.yunke.color-mode.to']()} ${t[
+        'com.yunke.themeSettings.system'
       ]()}`,
-      category: 'affine:settings',
+      category: 'yunke:settings',
       icon: <SettingsIcon />,
       preconditionStrategy: () => theme.theme !== 'system',
       run() {
@@ -45,12 +45,12 @@ export function registerAffineSettingsCommands({
     })
   );
   unsubs.push(
-    registerAffineCommand({
-      id: 'affine:change-color-mode-to-dark',
-      label: `${t['com.affine.cmdk.affine.color-mode.to']()} ${t[
-        'com.affine.themeSettings.dark'
+    registerYunkeCommand({
+      id: 'yunke:change-color-mode-to-dark',
+      label: `${t['com.yunke.cmdk.yunke.color-mode.to']()} ${t[
+        'com.yunke.themeSettings.dark'
       ]()}`,
-      category: 'affine:settings',
+      category: 'yunke:settings',
       icon: <SettingsIcon />,
       preconditionStrategy: () => theme.theme !== 'dark',
       run() {
@@ -64,12 +64,12 @@ export function registerAffineSettingsCommands({
   );
 
   unsubs.push(
-    registerAffineCommand({
-      id: 'affine:change-color-mode-to-light',
-      label: `${t['com.affine.cmdk.affine.color-mode.to']()} ${t[
-        'com.affine.themeSettings.light'
+    registerYunkeCommand({
+      id: 'yunke:change-color-mode-to-light',
+      label: `${t['com.yunke.cmdk.yunke.color-mode.to']()} ${t[
+        'com.yunke.themeSettings.light'
       ]()}`,
-      category: 'affine:settings',
+      category: 'yunke:settings',
       icon: <SettingsIcon />,
       preconditionStrategy: () => theme.theme !== 'light',
       run() {
@@ -85,12 +85,12 @@ export function registerAffineSettingsCommands({
 
   // Font styles
   unsubs.push(
-    registerAffineCommand({
-      id: 'affine:change-font-style-to-sans',
-      label: `${t['com.affine.cmdk.affine.font-style.to']()} ${t[
-        'com.affine.appearanceSettings.fontStyle.sans'
+    registerYunkeCommand({
+      id: 'yunke:change-font-style-to-sans',
+      label: `${t['com.yunke.cmdk.yunke.font-style.to']()} ${t[
+        'com.yunke.appearanceSettings.fontStyle.sans'
       ]()}`,
-      category: 'affine:settings',
+      category: 'yunke:settings',
       icon: <SettingsIcon />,
       preconditionStrategy: () => settings$.value.fontFamily !== 'Sans',
       run() {
@@ -105,12 +105,12 @@ export function registerAffineSettingsCommands({
   );
 
   unsubs.push(
-    registerAffineCommand({
-      id: 'affine:change-font-style-to-serif',
-      label: `${t['com.affine.cmdk.affine.font-style.to']()} ${t[
-        'com.affine.appearanceSettings.fontStyle.serif'
+    registerYunkeCommand({
+      id: 'yunke:change-font-style-to-serif',
+      label: `${t['com.yunke.cmdk.yunke.font-style.to']()} ${t[
+        'com.yunke.appearanceSettings.fontStyle.serif'
       ]()}`,
-      category: 'affine:settings',
+      category: 'yunke:settings',
       icon: <SettingsIcon />,
       preconditionStrategy: () => settings$.value.fontFamily !== 'Serif',
       run() {
@@ -125,12 +125,12 @@ export function registerAffineSettingsCommands({
   );
 
   unsubs.push(
-    registerAffineCommand({
-      id: 'affine:change-font-style-to-mono',
-      label: `${t['com.affine.cmdk.affine.font-style.to']()} ${t[
-        'com.affine.appearanceSettings.fontStyle.mono'
+    registerYunkeCommand({
+      id: 'yunke:change-font-style-to-mono',
+      label: `${t['com.yunke.cmdk.yunke.font-style.to']()} ${t[
+        'com.yunke.appearanceSettings.fontStyle.mono'
       ]()}`,
-      category: 'affine:settings',
+      category: 'yunke:settings',
       icon: <SettingsIcon />,
       preconditionStrategy: () => settings$.value.fontFamily !== 'Mono',
       run() {
@@ -146,15 +146,15 @@ export function registerAffineSettingsCommands({
 
   // Layout Style
   unsubs.push(
-    registerAffineCommand({
-      id: `affine:change-client-border-style`,
-      label: () => `${t['com.affine.cmdk.affine.client-border-style.to']()} ${t[
+    registerYunkeCommand({
+      id: `yunke:change-client-border-style`,
+      label: () => `${t['com.yunke.cmdk.yunke.client-border-style.to']()} ${t[
         store.get(appSettingAtom).clientBorder
-          ? 'com.affine.cmdk.affine.switch-state.off'
-          : 'com.affine.cmdk.affine.switch-state.on'
+          ? 'com.yunke.cmdk.yunke.switch-state.off'
+          : 'com.yunke.cmdk.yunke.switch-state.on'
       ]()}
         `,
-      category: 'affine:settings',
+      category: 'yunke:settings',
       icon: <SettingsIcon />,
       preconditionStrategy: () => BUILD_CONFIG.isElectron,
       run() {
@@ -171,15 +171,15 @@ export function registerAffineSettingsCommands({
   );
 
   unsubs.push(
-    registerAffineCommand({
-      id: `affine:change-full-width-layout`,
+    registerYunkeCommand({
+      id: `yunke:change-full-width-layout`,
       label: () =>
         `${t[
           settings$.value.fullWidthLayout
-            ? 'com.affine.cmdk.affine.default-page-width-layout.standard'
-            : 'com.affine.cmdk.affine.default-page-width-layout.full-width'
+            ? 'com.yunke.cmdk.yunke.default-page-width-layout.standard'
+            : 'com.yunke.cmdk.yunke.default-page-width-layout.full-width'
         ]()}`,
-      category: 'affine:settings',
+      category: 'yunke:settings',
       icon: <SettingsIcon />,
       run() {
         track.$.cmdk.settings.changeAppSetting({
@@ -192,17 +192,17 @@ export function registerAffineSettingsCommands({
   );
 
   unsubs.push(
-    registerAffineCommand({
-      id: `affine:change-noise-background-on-the-sidebar`,
+    registerYunkeCommand({
+      id: `yunke:change-noise-background-on-the-sidebar`,
       label: () =>
         `${t[
-          'com.affine.cmdk.affine.noise-background-on-the-sidebar.to'
+          'com.yunke.cmdk.yunke.noise-background-on-the-sidebar.to'
         ]()} ${t[
           store.get(appSettingAtom).enableNoisyBackground
-            ? 'com.affine.cmdk.affine.switch-state.off'
-            : 'com.affine.cmdk.affine.switch-state.on'
+            ? 'com.yunke.cmdk.yunke.switch-state.off'
+            : 'com.yunke.cmdk.yunke.switch-state.on'
         ]()}`,
-      category: 'affine:settings',
+      category: 'yunke:settings',
       icon: <SettingsIcon />,
       preconditionStrategy: () => BUILD_CONFIG.isElectron,
       run() {
@@ -220,15 +220,15 @@ export function registerAffineSettingsCommands({
   );
 
   unsubs.push(
-    registerAffineCommand({
-      id: `affine:change-translucent-ui-on-the-sidebar`,
+    registerYunkeCommand({
+      id: `yunke:change-translucent-ui-on-the-sidebar`,
       label: () =>
-        `${t['com.affine.cmdk.affine.translucent-ui-on-the-sidebar.to']()} ${t[
+        `${t['com.yunke.cmdk.yunke.translucent-ui-on-the-sidebar.to']()} ${t[
           store.get(appSettingAtom).enableBlurBackground
-            ? 'com.affine.cmdk.affine.switch-state.off'
-            : 'com.affine.cmdk.affine.switch-state.on'
+            ? 'com.yunke.cmdk.yunke.switch-state.off'
+            : 'com.yunke.cmdk.yunke.switch-state.on'
         ]()}`,
-      category: 'affine:settings',
+      category: 'yunke:settings',
       icon: <SettingsIcon />,
       preconditionStrategy: () =>
         BUILD_CONFIG.isElectron && environment.isMacOs,

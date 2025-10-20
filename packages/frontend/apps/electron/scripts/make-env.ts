@@ -5,7 +5,7 @@ import { parseArgs } from 'node:util';
 import debug from 'debug';
 import { z } from 'zod';
 
-const log = debug('affine:make-env');
+const log = debug('yunke:make-env');
 
 const ReleaseTypeSchema = z.enum(['stable', 'beta', 'canary', 'internal']);
 
@@ -17,7 +17,7 @@ const ROOT = path.resolve(__dirname, '..');
 const envBuildType = (process.env.BUILD_TYPE || 'canary').trim().toLowerCase();
 const buildType = ReleaseTypeSchema.parse(envBuildType);
 const stableBuild = buildType === 'stable';
-const productName = !stableBuild ? `AFFiNE-${buildType}` : 'AFFiNE';
+const productName = !stableBuild ? `YUNKE-${buildType}` : 'YUNKE';
 const icoPath = path.join(
   ROOT,
   !stableBuild
@@ -44,7 +44,7 @@ const icnsPath = path.join(
 
 const iconPngPath = path.join(ROOT, './resources/icons/icon.png');
 
-const iconUrl = `https://cdn.affine.pro/app-icons/icon_${buildType}.ico`;
+const iconUrl = `https://cdn.yunke.pro/app-icons/icon_${buildType}.ico`;
 
 log(`buildType=${buildType}, productName=${productName}, icoPath=${icoPath}`);
 
@@ -68,10 +68,10 @@ const {
 log(`parsed args: arch=${arch}, platform=${platform}`);
 
 const appIdMap = {
-  internal: 'pro.affine.internal',
-  canary: 'pro.affine.canary',
-  beta: 'pro.affine.beta',
-  stable: 'pro.affine.app',
+  internal: 'pro.yunke.internal',
+  canary: 'pro.yunke.canary',
+  beta: 'pro.yunke.beta',
+  stable: 'pro.yunke.app',
 };
 
 export {

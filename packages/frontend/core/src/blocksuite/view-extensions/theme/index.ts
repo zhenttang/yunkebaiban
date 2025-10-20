@@ -11,16 +11,16 @@ const optionsSchema = z.object({
   framework: z.instanceof(FrameworkProvider).optional(),
 });
 
-type AffineThemeViewOptions = z.infer<typeof optionsSchema>;
+type YunkeThemeViewOptions = z.infer<typeof optionsSchema>;
 
-export class AffineThemeViewExtension extends ViewExtensionProvider<AffineThemeViewOptions> {
-  override name = 'affine-view-theme';
+export class YunkeThemeViewExtension extends ViewExtensionProvider<YunkeThemeViewOptions> {
+  override name = 'yunke-view-theme';
 
   override schema = optionsSchema;
 
   override setup(
     context: ViewExtensionContext,
-    options?: AffineThemeViewOptions
+    options?: YunkeThemeViewOptions
   ) {
     super.setup(context, options);
     const framework = options?.framework;

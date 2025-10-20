@@ -11,8 +11,8 @@ export const EditorSettings = () => {
   return (
     <>
       <SettingHeader
-        title={t['com.affine.settings.editorSettings.title']()}
-        subtitle={t['com.affine.settings.editorSettings.subtitle']()}
+        title={t['com.yunke.settings.editorSettings.title']()}
+        subtitle={t['com.yunke.settings.editorSettings.subtitle']()}
       />
       <General />
       <Page />

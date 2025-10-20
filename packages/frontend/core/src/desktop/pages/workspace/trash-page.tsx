@@ -4,7 +4,7 @@ import {
   DocExplorerContext,
 } from '@yunke/core/components/explorer/context';
 import { DocsExplorer } from '@yunke/core/components/explorer/docs-view/docs-list';
-import { useBlockSuiteMetaHelper } from '@yunke/core/components/hooks/affine/use-block-suite-meta-helper';
+import { useBlockSuiteMetaHelper } from '@yunke/core/components/hooks/yunke/use-block-suite-meta-helper';
 import { Header } from '@yunke/core/components/pure/header';
 import { CollectionRulesService } from '@yunke/core/modules/collection-rules';
 import { GlobalContextService } from '@yunke/core/modules/global-context';
@@ -31,7 +31,7 @@ const TrashHeader = () => {
       left={
         <div className={styles.trashTitle}>
           <DeleteIcon className={styles.trashIcon} />
-          {t['com.affine.workspaceSubPath.trash']()}
+          {t['com.yunke.workspaceSubPath.trash']()}
         </div>
       }
     />
@@ -78,7 +78,7 @@ export const TrashPage = () => {
         restoreFromTrash(id);
       });
       toast(
-        t['com.affine.toastMessage.restored']({
+        t['com.yunke.toastMessage.restored']({
           title: ids.length > 1 ? 'docs' : 'doc',
         })
       );

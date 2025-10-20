@@ -13,7 +13,7 @@ import type { FrameworkProvider } from '@toeverything/infra';
 export function KeyboardToolbarExtension(
   framework: FrameworkProvider
 ): ExtensionType {
-  const affineVirtualKeyboardProvider = framework.get(VirtualKeyboardProvider);
+  const yunkeVirtualKeyboardProvider = framework.get(VirtualKeyboardProvider);
 
   class BSVirtualKeyboardService
     extends LifeCycleWatcher
@@ -38,7 +38,7 @@ export function KeyboardToolbarExtension(
 
     override mounted() {
       this._disposables.add(
-        affineVirtualKeyboardProvider.onChange(({ visible, height }) => {
+        yunkeVirtualKeyboardProvider.onChange(({ visible, height }) => {
           batch(() => {
             this.visible$.value = visible;
             this.height$.value = height;
@@ -52,8 +52,8 @@ export function KeyboardToolbarExtension(
     }
   }
 
-  if ('show' in affineVirtualKeyboardProvider) {
-    const providerWithAction = affineVirtualKeyboardProvider;
+  if ('show' in yunkeVirtualKeyboardProvider) {
+    const providerWithAction = yunkeVirtualKeyboardProvider;
 
     class BSVirtualKeyboardServiceWithShowAndHide
       extends BSVirtualKeyboardService

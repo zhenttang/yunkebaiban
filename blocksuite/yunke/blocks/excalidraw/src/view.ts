@@ -7,7 +7,7 @@ import { effects } from './effects.js';
 import { ExcalidrawBlockSpec } from './excalidraw-spec.js';
 
 export class ExcalidrawViewExtension extends ViewExtensionProvider {
-  override name = 'affine-excalidraw-block';
+  override name = 'yunke-excalidraw-block';
 
   override effect() {
     super.effect();

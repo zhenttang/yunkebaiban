@@ -27,7 +27,7 @@ export class ToggleButton extends WithDisposable(ShadowlessElement) {
     }
 
     .toggle-icon:hover {
-      background: var(--affine-hover-color);
+      background: var(--yunke-hover-color);
     }
 
     .toggle-icon[data-collapsed='true'] {
@@ -41,7 +41,7 @@ export class ToggleButton extends WithDisposable(ShadowlessElement) {
     .with-drag-handle .toggle-icon {
       opacity: 1;
     }
-    .with-drag-handle .affine-block-children-container .toggle-icon {
+    .with-drag-handle .yunke-block-children-container .toggle-icon {
       opacity: 0;
     }
 

@@ -1,22 +1,22 @@
 import { css, html } from 'lit';
 
 export const styles = css`
-  .affine-embed-github-block {
-    container: affine-embed-github-block / inline-size;
+  .yunke-embed-github-block {
+    container: yunke-embed-github-block / inline-size;
     box-sizing: border-box;
     display: flex;
     width: 100%;
     height: 100%;
 
     border-radius: 8px;
-    border: 1px solid var(--affine-background-tertiary-color);
+    border: 1px solid var(--yunke-background-tertiary-color);
 
-    background: var(--affine-background-primary-color);
+    background: var(--yunke-background-primary-color);
     user-select: none;
     overflow: hidden;
   }
 
-  .affine-embed-github-content {
+  .yunke-embed-github-content {
     display: flex;
     flex-grow: 1;
     flex-direction: column;
@@ -26,7 +26,7 @@ export const styles = css`
     overflow: hidden;
   }
 
-  .affine-embed-github-content-title {
+  .yunke-embed-github-content-title {
     display: flex;
     min-height: 22px;
     flex-direction: row;
@@ -36,22 +36,22 @@ export const styles = css`
     align-self: stretch;
   }
 
-  .affine-embed-github-content-title-icons {
+  .yunke-embed-github-content-title-icons {
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 8px;
   }
 
-  .affine-embed-github-content-title-icons img,
-  .affine-embed-github-content-title-icons object,
-  .affine-embed-github-content-title-icons svg {
+  .yunke-embed-github-content-title-icons img,
+  .yunke-embed-github-content-title-icons object,
+  .yunke-embed-github-content-title-icons svg {
     width: 16px;
     height: 16px;
-    color: var(--affine-pure-white);
+    color: var(--yunke-pure-white);
   }
 
-  .affine-embed-github-content-title-site-icon {
+  .yunke-embed-github-content-title-site-icon {
     display: flex;
     width: 16px;
     height: 16px;
@@ -59,19 +59,19 @@ export const styles = css`
     align-items: center;
 
     .github-icon {
-      fill: var(--affine-black);
-      color: var(--affine-black);
+      fill: var(--yunke-black);
+      color: var(--yunke-black);
     }
   }
 
-  .affine-embed-github-content-title-status-icon {
+  .yunke-embed-github-content-title-status-icon {
     display: flex;
     align-items: center;
     gap: 4px;
     padding: 3px 6px;
     border-radius: 20px;
 
-    color: var(--affine-pure-white);
+    color: var(--yunke-pure-white);
     leading-trim: both;
 
     text-edge: cap;
@@ -79,45 +79,45 @@ export const styles = css`
       'clig' off,
       'liga' off;
     text-transform: capitalize;
-    font-family: var(--affine-font-family);
+    font-family: var(--yunke-font-family);
     font-size: 12px;
     font-style: normal;
     font-weight: 500;
     line-height: 16px;
   }
-  .affine-embed-github-content-title-status-icon.issue.open {
+  .yunke-embed-github-content-title-status-icon.issue.open {
     background: #238636;
   }
-  .affine-embed-github-content-title-status-icon.issue.closed.success {
+  .yunke-embed-github-content-title-status-icon.issue.closed.success {
     background: #8957e5;
   }
-  .affine-embed-github-content-title-status-icon.issue.closed.failure {
+  .yunke-embed-github-content-title-status-icon.issue.closed.failure {
     background: #6e7681;
   }
-  .affine-embed-github-content-title-status-icon.pr.open {
+  .yunke-embed-github-content-title-status-icon.pr.open {
     background: #238636;
   }
-  .affine-embed-github-content-title-status-icon.pr.draft {
+  .yunke-embed-github-content-title-status-icon.pr.draft {
     background: #6e7681;
   }
-  .affine-embed-github-content-title-status-icon.pr.merged {
+  .yunke-embed-github-content-title-status-icon.pr.merged {
     background: #8957e5;
   }
-  .affine-embed-github-content-title-status-icon.pr.closed {
+  .yunke-embed-github-content-title-status-icon.pr.closed {
     background: #c03737;
   }
 
-  .affine-embed-github-content-title-status-icon > svg {
+  .yunke-embed-github-content-title-status-icon > svg {
     height: 16px;
     width: 16px;
     padding: 2px;
   }
 
-  .affine-embed-github-content-title-status-icon > span {
+  .yunke-embed-github-content-title-status-icon > span {
     padding: 0px 1.5px;
   }
 
-  .affine-embed-github-content-title-text {
+  .yunke-embed-github-content-title-text {
     display: -webkit-box;
     -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
@@ -125,16 +125,16 @@ export const styles = css`
     word-break: break-word;
     overflow: hidden;
     text-overflow: ellipsis;
-    color: var(--affine-text-primary-color);
+    color: var(--yunke-text-primary-color);
 
-    font-family: var(--affine-font-family);
-    font-size: var(--affine-font-sm);
+    font-family: var(--yunke-font-family);
+    font-size: var(--yunke-font-sm);
     font-style: normal;
     font-weight: 600;
     line-height: 22px;
   }
 
-  .affine-embed-github-content-description {
+  .yunke-embed-github-content-description {
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
@@ -145,20 +145,20 @@ export const styles = css`
     white-space: normal;
     overflow: hidden;
     text-overflow: ellipsis;
-    color: var(--affine-text-primary-color);
+    color: var(--yunke-text-primary-color);
 
-    font-family: var(--affine-font-family);
-    font-size: var(--affine-font-xs);
+    font-family: var(--yunke-font-family);
+    font-size: var(--yunke-font-xs);
     font-style: normal;
     font-weight: 400;
     line-height: 20px;
   }
 
-  .affine-embed-github-content-assignees {
+  .yunke-embed-github-content-assignees {
     display: none;
   }
 
-  .affine-embed-github-content-url {
+  .yunke-embed-github-content-url {
     display: flex;
     align-items: center;
     justify-content: flex-start;
@@ -167,7 +167,7 @@ export const styles = css`
     max-width: 100%;
     cursor: pointer;
   }
-  .affine-embed-github-content-url > span {
+  .yunke-embed-github-content-url > span {
     display: -webkit-box;
     -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
@@ -176,110 +176,110 @@ export const styles = css`
     white-space: normal;
     overflow: hidden;
     text-overflow: ellipsis;
-    color: var(--affine-text-secondary-color);
+    color: var(--yunke-text-secondary-color);
 
-    font-family: var(--affine-font-family);
-    font-size: var(--affine-font-xs);
+    font-family: var(--yunke-font-family);
+    font-size: var(--yunke-font-xs);
     font-style: normal;
     font-weight: 400;
     line-height: 20px;
   }
-  .affine-embed-github-content-url:hover > span {
-    color: var(--affine-link-color);
+  .yunke-embed-github-content-url:hover > span {
+    color: var(--yunke-link-color);
   }
-  .affine-embed-github-content-url:hover .open-icon {
-    fill: var(--affine-link-color);
+  .yunke-embed-github-content-url:hover .open-icon {
+    fill: var(--yunke-link-color);
   }
 
-  .affine-embed-github-content-url-icon {
+  .yunke-embed-github-content-url-icon {
     display: flex;
     align-items: center;
     justify-content: center;
     width: 12px;
     height: 12px;
   }
-  .affine-embed-github-content-url-icon .open-icon {
+  .yunke-embed-github-content-url-icon .open-icon {
     height: 12px;
     width: 12px;
-    fill: var(--affine-text-secondary-color);
+    fill: var(--yunke-text-secondary-color);
   }
 
-  .affine-embed-github-banner {
+  .yunke-embed-github-banner {
     margin: 12px 0px 0px 12px;
     width: 204px;
     height: 102px;
   }
 
-  .affine-embed-github-banner img,
-  .affine-embed-github-banner object,
-  .affine-embed-github-banner svg {
+  .yunke-embed-github-banner img,
+  .yunke-embed-github-banner object,
+  .yunke-embed-github-banner svg {
     width: 204px;
     height: 102px;
     object-fit: cover;
     border-radius: 4px;
   }
 
-  .affine-embed-github-block.loading {
-    .affine-embed-github-content-title-text {
-      color: var(--affine-placeholder-color);
+  .yunke-embed-github-block.loading {
+    .yunke-embed-github-content-title-text {
+      color: var(--yunke-placeholder-color);
     }
   }
 
-  .affine-embed-github-block.selected {
-    .affine-embed-github-content-url > span {
-      color: var(--affine-link-color);
+  .yunke-embed-github-block.selected {
+    .yunke-embed-github-content-url > span {
+      color: var(--yunke-link-color);
     }
-    .affine-embed-github-content-url .open-icon {
-      fill: var(--affine-link-color);
+    .yunke-embed-github-content-url .open-icon {
+      fill: var(--yunke-link-color);
     }
   }
 
-  .affine-embed-github-block.list {
-    .affine-embed-github-content {
+  .yunke-embed-github-block.list {
+    .yunke-embed-github-content {
       width: 100%;
       flex-direction: row;
       align-items: center;
       justify-content: space-between;
     }
 
-    .affine-embed-github-content-title {
+    .yunke-embed-github-content-title {
       width: 660px;
     }
 
-    .affine-embed-github-content-repo {
+    .yunke-embed-github-content-repo {
       display: none;
     }
 
-    .affine-embed-github-content-date {
+    .yunke-embed-github-content-date {
       display: none;
     }
 
-    .affine-embed-github-content-url {
+    .yunke-embed-github-content-url {
       width: 90px;
       justify-content: flex-end;
     }
 
-    .affine-embed-github-content-description {
+    .yunke-embed-github-content-description {
       display: none;
     }
 
-    .affine-embed-github-banner {
+    .yunke-embed-github-banner {
       display: none;
     }
   }
 
-  .affine-embed-github-block.vertical {
+  .yunke-embed-github-block.vertical {
     flex-direction: column-reverse;
 
-    .affine-embed-github-content {
+    .yunke-embed-github-content {
       width: 100%;
     }
 
-    .affine-embed-github-content-description {
+    .yunke-embed-github-content-description {
       -webkit-line-clamp: 6;
     }
 
-    .affine-embed-github-content-assignees {
+    .yunke-embed-github-content-assignees {
       display: flex;
       align-items: center;
       justify-content: flex-start;
@@ -287,25 +287,25 @@ export const styles = css`
       align-self: stretch;
     }
 
-    .affine-embed-github-content-assignees-text {
+    .yunke-embed-github-content-assignees-text {
       display: -webkit-box;
       -webkit-line-clamp: 1;
       -webkit-box-orient: vertical;
 
-      font-family: var(--affine-font-family);
-      font-size: var(--affine-font-xs);
+      font-family: var(--yunke-font-family);
+      font-size: var(--yunke-font-xs);
       font-style: normal;
       font-weight: 600;
       line-height: 20px;
     }
 
-    .affine-embed-github-content-assignees-text.label {
+    .yunke-embed-github-content-assignees-text.label {
       width: 72px;
-      color: var(--affine-text-primary-color);
+      color: var(--yunke-text-primary-color);
       font-weight: 600;
     }
 
-    .affine-embed-github-content-assignees-text.users {
+    .yunke-embed-github-content-assignees-text.users {
       width: calc(100% - 72px);
       word-break: break-all;
       white-space: normal;
@@ -314,70 +314,70 @@ export const styles = css`
       font-weight: 400;
     }
 
-    .affine-embed-github-content-assignees-text-users.user {
-      color: var(--affine-link-color);
+    .yunke-embed-github-content-assignees-text-users.user {
+      color: var(--yunke-link-color);
       cursor: pointer;
     }
 
-    .affine-embed-github-content-assignees-text-users.placeholder {
-      color: var(--affine-placeholder-color);
+    .yunke-embed-github-content-assignees-text-users.placeholder {
+      color: var(--yunke-placeholder-color);
     }
 
-    .affine-embed-github-banner {
+    .yunke-embed-github-banner {
       width: 340px;
       height: 170px;
       margin-left: 12px;
     }
 
-    .affine-embed-github-banner img,
-    .affine-embed-github-banner object,
-    .affine-embed-github-banner svg {
+    .yunke-embed-github-banner img,
+    .yunke-embed-github-banner object,
+    .yunke-embed-github-banner svg {
       width: 340px;
       height: 170px;
     }
   }
 
-  .affine-embed-github-block.cube {
-    .affine-embed-github-content {
+  .yunke-embed-github-block.cube {
+    .yunke-embed-github-content {
       width: 100%;
       flex-direction: column;
       align-items: flex-start;
       justify-content: space-between;
     }
 
-    .affine-embed-github-content-title {
+    .yunke-embed-github-content-title {
       flex-direction: column;
       gap: 4px;
       align-items: flex-start;
     }
 
-    .affine-embed-github-content-title-text {
+    .yunke-embed-github-content-title-text {
       -webkit-line-clamp: 2;
     }
 
-    .affine-embed-github-content-description {
+    .yunke-embed-github-content-description {
       display: none;
     }
 
-    .affine-embed-github-banner {
+    .yunke-embed-github-banner {
       display: none;
     }
 
-    .affine-embed-github-content-repo {
+    .yunke-embed-github-content-repo {
       display: none;
     }
 
-    .affine-embed-github-content-date {
+    .yunke-embed-github-content-date {
       display: none;
     }
   }
 
-  @container affine-embed-github-block (width < 375px) {
-    .affine-embed-github-content {
+  @container yunke-embed-github-block (width < 375px) {
+    .yunke-embed-github-content {
       width: 100%;
     }
 
-    .affine-embed-github-block:not(.edgeless) .affine-embed-github-banner {
+    .yunke-embed-github-block:not(.edgeless) .yunke-embed-github-banner {
       display: none;
     }
   }

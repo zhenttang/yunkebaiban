@@ -4,7 +4,7 @@ import { PropertyValue } from '@yunke/component';
 import { type TagLike, TagsInlineEditor } from '@yunke/core/components/tags';
 import { TagService } from '@yunke/core/modules/tag';
 import {
-  affineLabelToDatabaseTagColor,
+  yunkeLabelToDatabaseTagColor,
   databaseTagColorToV2,
 } from '@yunke/core/modules/tag/entities/utils';
 import type { DatabaseBlockDataSource } from '@blocksuite/yunke/blocks/database';
@@ -166,7 +166,7 @@ const BlocksuiteDatabaseSelector = ({
 
   const onCreateTag = useCallback(
     (name: string, color: string) => {
-      // bs database uses --affine-tag-xxx colors
+      // bs database uses --yunke-tag-xxx colors
       const newTag = {
         id: nanoid(),
         name: name,
@@ -203,7 +203,7 @@ const BlocksuiteDatabaseSelector = ({
   const tagColors = useMemo(() => {
     return tagService.tagColors.map(([name, color]) => ({
       id: name,
-      value: affineLabelToDatabaseTagColor(color),
+      value: yunkeLabelToDatabaseTagColor(color),
       name,
     }));
   }, [tagService.tagColors]);
@@ -212,7 +212,7 @@ const BlocksuiteDatabaseSelector = ({
     (tagId: string, property: string, value: string) => {
       adapter.updateTag(selectCell, dataSource, tagId, old => {
         if (property === 'color') {
-          value = affineLabelToDatabaseTagColor(value);
+          value = yunkeLabelToDatabaseTagColor(value);
         }
         return {
           ...old,

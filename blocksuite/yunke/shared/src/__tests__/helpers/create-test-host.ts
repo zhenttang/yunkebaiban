@@ -208,7 +208,7 @@ class MockViewStore {
  *
  * Usage:
  * ```typescript
- * const doc = affine`<affine-page></affine-page>`;
+ * const doc = yunke`<yunke-page></yunke-page>`;
  * const host = createTestHost(doc);
  *
  * // Use host.command.exec to execute commands

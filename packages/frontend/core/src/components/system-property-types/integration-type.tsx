@@ -47,13 +47,13 @@ export const IntegrationTypeFilterValue = ({
           prefixIcon={<ReadwiseIcon />}
           selected={filter.value === 'readwise'}
         >
-          {t['com.affine.integration.readwise.name']()}
+          {t['com.yunke.integration.readwise.name']()}
         </MenuItem>
       }
     >
       <span>
         {filter.value === 'readwise'
-          ? t['com.affine.integration.readwise.name']()
+          ? t['com.yunke.integration.readwise.name']()
           : filter.value}
       </span>
     </Menu>
@@ -85,7 +85,7 @@ export const IntegrationTypeGroupHeader = ({
   const t = useI18n();
   const text =
     groupId === 'readwise'
-      ? t['com.affine.integration.readwise.name']()
+      ? t['com.yunke.integration.readwise.name']()
       : groupId
         ? groupId
         : '无集成';

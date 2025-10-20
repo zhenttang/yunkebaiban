@@ -9,7 +9,7 @@ import UIKit
 
 extension UIColor {
   static var accent: UIColor {
-    Constant.affineTintColor
+    Constant.yunkeTintColor
   }
 
   convenience init(light: UIColor, dark: UIColor) {

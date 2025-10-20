@@ -133,7 +133,7 @@ export const indentParagraphCommand: Command<{
     }
   }
 
-  // update collapsed state of affine list
+  // update collapsed state of yunke list
   if (
     matchModels(previousSibling, [ListBlockModel]) &&
     previousSibling.props.collapsed

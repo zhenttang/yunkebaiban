@@ -125,10 +125,10 @@ const useSyncEngineSyncProgress = (meta: WorkspaceMetadata) => {
           content = '由于意外问题同步连接断开，正在重新连接。';
   } else if (syncing) {
           content =
-        `正在与 AFFiNE 云端同步` +
+        `正在与 YUNKE 云端同步` +
         (progress ? ` (${Math.floor(progress * 100)}%)` : '');
   } else {
-          content = '已与 AFFiNE 云端同步';
+          content = '已与 YUNKE 云端同步';
   }
 
   const CloudWorkspaceSyncStatus = () => {
@@ -354,13 +354,13 @@ export const WorkspaceCard = forwardRef<
         <div className={styles.suffixIcons}>
           {hideCollaborationIcon || information?.isOwner ? null : (
             <Tooltip
-              content={t['com.affine.settings.workspace.state.joined']()}
+              content={t['com.yunke.settings.workspace.state.joined']()}
             >
               <CollaborationIconWithRef className={styles.collaborationIcon} />
             </Tooltip>
           )}
           {hideTeamWorkspaceIcon || !information?.isTeam ? null : (
-            <Tooltip content={t['com.affine.settings.workspace.state.team']()}>
+            <Tooltip content={t['com.yunke.settings.workspace.state.team']()}>
               <TeamWorkspaceIcon className={styles.collaborationIcon} />
             </Tooltip>
           )}

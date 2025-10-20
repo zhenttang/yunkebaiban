@@ -11,6 +11,6 @@ export class SurfaceBlockVoidComponent extends BlockComponent<SurfaceBlockModel>
 
 declare global {
   interface HTMLElementTagNameMap {
-    'affine-surface-void': SurfaceBlockVoidComponent;
+    'yunke-surface-void': SurfaceBlockVoidComponent;
   }
 }

@@ -307,14 +307,14 @@ export class EmbedLinkedDocBlockComponent extends EmbedBlockComponent<EmbedLinke
         ...this.embedContainerStyle,
       })}
     >
-      <affine-citation-card
+      <yunke-citation-card
         .icon=${this.icon$.value}
         .citationTitle=${this.title$.value}
         .citationIdentifier=${footnoteIdentifier}
         .active=${this.selected$.value}
         .onClickCallback=${this._handleClick}
         .onDoubleClickCallback=${this._handleDoubleClick}
-      ></affine-citation-card>
+      ></yunke-citation-card>
     </div> `;
   };
 
@@ -383,17 +383,17 @@ export class EmbedLinkedDocBlockComponent extends EmbedBlockComponent<EmbedLinke
     return this.renderEmbed(
       () => html`
         <div
-          class="affine-embed-linked-doc-block ${cardClassMap}"
+          class="yunke-embed-linked-doc-block ${cardClassMap}"
           @click=${this._handleClick}
           @dblclick=${this._handleDoubleClick}
         >
-          <div class="affine-embed-linked-doc-content">
-            <div class="affine-embed-linked-doc-content-title">
-              <div class="affine-embed-linked-doc-content-title-icon">
+          <div class="yunke-embed-linked-doc-content">
+            <div class="yunke-embed-linked-doc-content-title">
+              <div class="yunke-embed-linked-doc-content-title-icon">
                 ${icon}
               </div>
 
-              <div class="affine-embed-linked-doc-content-title-text">
+              <div class="yunke-embed-linked-doc-content-title-text">
                 ${title}
               </div>
             </div>
@@ -401,7 +401,7 @@ export class EmbedLinkedDocBlockComponent extends EmbedBlockComponent<EmbedLinke
             ${when(
               hasDescriptionAlias,
               () =>
-                html`<div class="affine-embed-linked-doc-content-note alias">
+                html`<div class="yunke-embed-linked-doc-content-note alias">
                   ${repeat(
                     (description.value ?? '').split('\n'),
                     text => html`<p>${text}</p>`
@@ -411,22 +411,22 @@ export class EmbedLinkedDocBlockComponent extends EmbedBlockComponent<EmbedLinke
                 when(
                   showDefaultNoteContent,
                   () => html`
-                    <div class="affine-embed-linked-doc-content-note default">
+                    <div class="yunke-embed-linked-doc-content-note default">
                       ${defaultNoteContent}
                     </div>
                   `,
                   () => html`
                     <div
-                      class="affine-embed-linked-doc-content-note render"
+                      class="yunke-embed-linked-doc-content-note render"
                     ></div>
                   `
                 )
             )}
             ${isError
               ? html`
-                  <div class="affine-embed-linked-doc-card-content-reload">
+                  <div class="yunke-embed-linked-doc-card-content-reload">
                     <div
-                      class="affine-embed-linked-doc-card-content-reload-button"
+                      class="yunke-embed-linked-doc-card-content-reload-button"
                       @click=${this.refreshData}
                     >
                       ${ResetIcon()} <span>重新加载</span>
@@ -434,7 +434,7 @@ export class EmbedLinkedDocBlockComponent extends EmbedBlockComponent<EmbedLinke
                   </div>
                 `
               : html`
-                  <div class="affine-embed-linked-doc-content-date">
+                  <div class="yunke-embed-linked-doc-content-date">
                     <span>已更新</span>
 
                     <span>${dateText}</span>
@@ -444,7 +444,7 @@ export class EmbedLinkedDocBlockComponent extends EmbedBlockComponent<EmbedLinke
 
           ${showDefaultBanner
             ? html`
-                <div class="affine-embed-linked-doc-banner default">
+                <div class="yunke-embed-linked-doc-banner default">
                   ${defaultBanner}
                 </div>
               `
@@ -600,6 +600,6 @@ export class EmbedLinkedDocBlockComponent extends EmbedBlockComponent<EmbedLinke
   @property({ attribute: false })
   accessor isNoteContentEmpty = false;
 
-  @queryAsync('.affine-embed-linked-doc-content-note.render')
+  @queryAsync('.yunke-embed-linked-doc-content-note.render')
   accessor noteContainer!: Promise<HTMLDivElement | null>;
 }

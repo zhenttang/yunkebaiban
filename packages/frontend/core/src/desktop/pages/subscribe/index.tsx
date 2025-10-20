@@ -34,7 +34,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { switchMap } from 'rxjs';
 
-import { generateSubscriptionCallbackLink } from '../../../components/hooks/affine/use-subscription-notify';
+import { generateSubscriptionCallbackLink } from '../../../components/hooks/yunke/use-subscription-notify';
 import {
   RouteLogic,
   useNavigateHelper,
@@ -210,7 +210,7 @@ export const Component = () => {
   const statusTitleText = isError ? '订阅流程遇到问题' : '正在准备订阅';
   const statusDescription = isError
     ? error
-    : message || 'AFFiNE 正在为你检查账户状态，请稍候…';
+    : message || 'YUNKE 正在为你检查账户状态，请稍候…';
 
   return (
     <div className={styles.page}>

@@ -67,7 +67,7 @@ export function createSimplePortal({
   updatePortal(updateId);
   container.append(portalRoot);
 
-  // affine's modal will set pointer-events: none to body
+  // yunke's modal will set pointer-events: none to body
   // in order to avoid the issue that the floating element in blocksuite cannot be clicked
   // we add pointer-events: auto here
   portalRoot.style.pointerEvents = 'auto';

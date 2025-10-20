@@ -21,10 +21,10 @@ export const Component = () => {
 
   const subtitle = (
     <div className={styles.copy}>
-      <p>{t['com.affine.payment.upgrade-success-page.team.text-1']()}</p>
+      <p>{t['com.yunke.payment.upgrade-success-page.team.text-1']()}</p>
       <p>
         <Trans
-          i18nKey={'com.affine.payment.upgrade-success-page.team.text-2'}
+          i18nKey={'com.yunke.payment.upgrade-success-page.team.text-2'}
           components={{
             1: (
               <a
@@ -40,7 +40,7 @@ export const Component = () => {
 
   return (
     <AuthPageContainer
-      title={t['com.affine.payment.upgrade-success-page.title']()}
+      title={t['com.yunke.payment.upgrade-success-page.title']()}
       subtitle={subtitle}
     >
       <Button variant="primary" size="extraLarge" onClick={openWorkspace}>

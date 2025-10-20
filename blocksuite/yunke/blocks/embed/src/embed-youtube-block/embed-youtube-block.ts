@@ -130,7 +130,7 @@ export class EmbedYoutubeBlockComponent extends EmbedBlockComponent<
       () => html`
         <div
           class=${classMap({
-            'affine-embed-youtube-block': true,
+            'yunke-embed-youtube-block': true,
             loading,
             selected: this.selected$.value,
           })}
@@ -140,10 +140,10 @@ export class EmbedYoutubeBlockComponent extends EmbedBlockComponent<
           @click=${this._handleClick}
           @dblclick=${this._handleDoubleClick}
         >
-          <div class="affine-embed-youtube-video">
+          <div class="yunke-embed-youtube-video">
             ${videoId
               ? html`
-                  <div class="affine-embed-youtube-video-iframe-container">
+                  <div class="yunke-embed-youtube-video-iframe-container">
                     <iframe
                       id="ytplayer"
                       type="text/html"
@@ -158,13 +158,13 @@ export class EmbedYoutubeBlockComponent extends EmbedBlockComponent<
                     <!-- overlay to prevent the iframe from capturing pointer events -->
                     <div
                       class=${classMap({
-                        'affine-embed-youtube-video-iframe-overlay': true,
+                        'yunke-embed-youtube-video-iframe-overlay': true,
                         hide: !this.showOverlay$.value,
                       })}
                     ></div>
                     <img
                       class=${classMap({
-                        'affine-embed-youtube-video-iframe-overlay': true,
+                        'yunke-embed-youtube-video-iframe-overlay': true,
                         'media-print': true,
                         hide: !this._showImage,
                       })}
@@ -177,39 +177,39 @@ export class EmbedYoutubeBlockComponent extends EmbedBlockComponent<
                 `
               : bannerImage}
           </div>
-          <div class="affine-embed-youtube-content">
-            <div class="affine-embed-youtube-content-header">
-              <div class="affine-embed-youtube-content-title-icon">
+          <div class="yunke-embed-youtube-content">
+            <div class="yunke-embed-youtube-content-header">
+              <div class="yunke-embed-youtube-content-title-icon">
                 ${titleIcon}
               </div>
 
-              <div class="affine-embed-youtube-content-title-text">
+              <div class="yunke-embed-youtube-content-title-text">
                 ${titleText}
               </div>
 
-              <div class="affine-embed-youtube-content-creator-image">
+              <div class="yunke-embed-youtube-content-creator-image">
                 ${creatorImageEl}
               </div>
 
-              <div class="affine-embed-youtube-content-creator-text">
+              <div class="yunke-embed-youtube-content-creator-text">
                 ${creator}
               </div>
             </div>
 
             ${loading
               ? html`<div
-                  class="affine-embed-youtube-content-description"
+                  class="yunke-embed-youtube-content-description"
                 ></div>`
               : descriptionText
-                ? html`<div class="affine-embed-youtube-content-description">
+                ? html`<div class="yunke-embed-youtube-content-description">
                     ${descriptionText}
                   </div>`
                 : nothing}
 
-            <div class="affine-embed-youtube-content-url" @click=${this.open}>
+            <div class="yunke-embed-youtube-content-url" @click=${this.open}>
               <span>www.youtube.com</span>
 
-              <div class="affine-embed-youtube-content-url-icon">
+              <div class="yunke-embed-youtube-content-url-icon">
                 ${OpenIcon}
               </div>
             </div>

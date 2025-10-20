@@ -433,10 +433,10 @@ export class GanttTaskBar extends WidgetElement {
 export const ganttStyles = css`
   /* 1. 使用 CSS 自定义属性实现主题化 */
   :host {
-    --gantt-primary-color: var(--affine-primary-color, #6366f1);
-    --gantt-background-color: var(--affine-background-primary-color, #ffffff);
-    --gantt-text-color: var(--affine-text-primary-color, #1f2937);
-    --gantt-border-color: var(--affine-border-color, #e5e7eb);
+    --gantt-primary-color: var(--yunke-primary-color, #6366f1);
+    --gantt-background-color: var(--yunke-background-primary-color, #ffffff);
+    --gantt-text-color: var(--yunke-text-primary-color, #1f2937);
+    --gantt-border-color: var(--yunke-border-color, #e5e7eb);
     
     /* 甘特图专用变量 */
     --gantt-task-bar-height: 24px;
@@ -450,7 +450,7 @@ export const ganttStyles = css`
     display: flex;
     flex-direction: column;
     height: 100%;
-    font-family: var(--affine-font-family);
+    font-family: var(--yunke-font-family);
     font-size: 14px;
     color: var(--gantt-text-color);
     background: var(--gantt-background-color);
@@ -571,8 +571,8 @@ export const ganttStyles = css`
   }
   
   .timeline-unit--weekend {
-    background: var(--affine-background-secondary-color);
-    color: var(--affine-text-secondary-color);
+    background: var(--yunke-background-secondary-color);
+    color: var(--yunke-text-secondary-color);
   }
   
   /* 7. 响应式设计 */

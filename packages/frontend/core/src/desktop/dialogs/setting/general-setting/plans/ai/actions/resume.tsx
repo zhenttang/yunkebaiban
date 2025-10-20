@@ -4,7 +4,7 @@ import {
   notify,
   useConfirmModal,
 } from '@yunke/component';
-import { useAsyncCallback } from '@yunke/core/components/hooks/affine-async-hooks';
+import { useAsyncCallback } from '@yunke/core/components/hooks/yunke-async-hooks';
 import { SubscriptionService } from '@yunke/core/modules/cloud';
 // import { SubscriptionPlan } from '@yunke/graphql';
 import { useI18n } from '@yunke/i18n';
@@ -34,16 +34,16 @@ export const AIResume = (btnProps: ButtonProps) => {
     }
 
     openConfirmModal({
-      title: t['com.affine.payment.ai.action.resume.confirm.title'](),
+      title: t['com.yunke.payment.ai.action.resume.confirm.title'](),
       description:
-        t['com.affine.payment.ai.action.resume.confirm.description'](),
+        t['com.yunke.payment.ai.action.resume.confirm.description'](),
       confirmText:
-        t['com.affine.payment.ai.action.resume.confirm.confirm-text'](),
+        t['com.yunke.payment.ai.action.resume.confirm.confirm-text'](),
       confirmButtonOptions: {
         variant: 'primary',
       },
       cancelText:
-        t['com.affine.payment.ai.action.resume.confirm.cancel-text'](),
+        t['com.yunke.payment.ai.action.resume.confirm.cancel-text'](),
       onConfirm: async () => {
         setIsMutating(true);
         await subscription.resumeSubscription(
@@ -60,9 +60,9 @@ export const AIResume = (btnProps: ButtonProps) => {
           icon: <SingleSelectCheckSolidIcon />,
           iconColor: cssVar('processingColor'),
           title:
-            t['com.affine.payment.ai.action.resume.confirm.notify.title'](),
+            t['com.yunke.payment.ai.action.resume.confirm.notify.title'](),
           message:
-            t['com.affine.payment.ai.action.resume.confirm.notify.msg'](),
+            t['com.yunke.payment.ai.action.resume.confirm.notify.msg'](),
         });
         setIdempotencyKey(nanoid());
       },
@@ -76,7 +76,7 @@ export const AIResume = (btnProps: ButtonProps) => {
       variant="primary"
       {...btnProps}
     >
-      {t['com.affine.payment.ai.action.resume.button-label']()}
+      {t['com.yunke.payment.ai.action.resume.button-label']()}
     </Button>
   );
 };

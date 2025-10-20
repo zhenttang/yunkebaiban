@@ -405,7 +405,7 @@ export class InteractionAnimations {
       left: 50%;
       width: ${size}px;
       height: ${size}px;
-      background: var(--affine-primary-color-alpha);
+      background: var(--yunke-primary-color-alpha);
       border-radius: 50%;
       transform: translate(-50%, -50%) scale(0);
       pointer-events: none;
@@ -545,8 +545,8 @@ export class InteractionAnimations {
       bottom: 80px;
       left: 50%;
       transform: translateX(-50%);
-      background: var(--affine-background-overlay-panel-color);
-      color: var(--affine-text-primary-color);
+      background: var(--yunke-background-overlay-panel-color);
+      color: var(--yunke-text-primary-color);
       padding: 12px 20px;
       border-radius: 25px;
       box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
@@ -556,7 +556,7 @@ export class InteractionAnimations {
       gap: 8px;
       font-size: 14px;
       font-weight: 500;
-      border: 1px solid var(--affine-border-color);
+      border: 1px solid var(--yunke-border-color);
       opacity: 0;
       transform: translateX(-50%) translateY(20px);
     `;

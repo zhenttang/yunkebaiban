@@ -2,11 +2,11 @@ import { ErrorBoundary, type FallbackRender } from '@sentry/react';
 import type { FC, PropsWithChildren } from 'react';
 import { useCallback } from 'react';
 
-import { AffineErrorFallback } from './affine-error-fallback';
+import { YunkeErrorFallback } from './yunke-error-fallback';
 
 export { type FallbackProps } from './error-basic/fallback-creator';
 
-export interface AffineErrorBoundaryProps extends PropsWithChildren {
+export interface YunkeErrorBoundaryProps extends PropsWithChildren {
   height?: number | string;
   className?: string;
 }
@@ -14,11 +14,11 @@ export interface AffineErrorBoundaryProps extends PropsWithChildren {
 /**
  * TODO(@eyhn): Unify with SWRErrorBoundary
  */
-export const AffineErrorBoundary: FC<AffineErrorBoundaryProps> = props => {
+export const YunkeErrorBoundary: FC<YunkeErrorBoundaryProps> = props => {
   const fallbackRender: FallbackRender = useCallback(
     fallbackProps => {
       return (
-        <AffineErrorFallback
+        <YunkeErrorFallback
           {...fallbackProps}
           height={props.height}
           className={props.className}

@@ -10,7 +10,7 @@ import type { DomRenderer } from '../dom-renderer.js';
  */
 export const DomElementRendererIdentifier = (type: string) =>
   createIdentifier<DomElementRenderer>(
-    `affine.surface.dom-element-renderer.${type}`
+    `yunke.surface.dom-element-renderer.${type}`
   );
 
 /**

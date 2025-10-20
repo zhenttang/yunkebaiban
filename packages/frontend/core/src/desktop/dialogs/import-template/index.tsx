@@ -1,5 +1,5 @@
 import { Button, Modal } from '@yunke/component';
-import { useAsyncCallback } from '@yunke/core/components/hooks/affine-async-hooks';
+import { useAsyncCallback } from '@yunke/core/components/hooks/yunke-async-hooks';
 import { useNavigateHelper } from '@yunke/core/components/hooks/use-navigate-helper';
 import { useWorkspaceName } from '@yunke/core/components/hooks/use-workspace-info';
 import { WorkspaceSelector } from '@yunke/core/components/workspace-selector';
@@ -145,7 +145,7 @@ const Dialog = ({
       const { workspaceId, docId } =
         await importTemplateService.importToNewWorkspace(
           // TODO: support selfhosted
-          'affine-cloud',
+          'yunke-cloud',
           'Workspace',
           templateDownloader.data$.value
         );
@@ -170,7 +170,7 @@ const Dialog = ({
       <div className={styles.dialogContainer}>
         <AllDocsIcon className={styles.mainIcon} />
         <h6 className={styles.mainTitle}>
-          {t['com.affine.import-template.dialog.createDocWithTemplate']({
+          {t['com.yunke.import-template.dialog.createDocWithTemplate']({
             templateName,
           })}
         </h6>
@@ -200,12 +200,12 @@ const Dialog = ({
       </div>
       {importingError && (
         <span style={{ color: cssVar('warningColor') }}>
-          {t['com.affine.import-template.dialog.errorImport']()}
+          {t['com.yunke.import-template.dialog.errorImport']()}
         </span>
       )}
       {downloadError ? (
         <span style={{ color: cssVar('warningColor') }}>
-          {t['com.affine.import-template.dialog.errorLoad']()}
+          {t['com.yunke.import-template.dialog.errorLoad']()}
         </span>
       ) : selectedWorkspace ? (
         <Button
@@ -217,7 +217,7 @@ const Dialog = ({
           data-testid="import-template-to-workspace-btn"
         >
           {selectedWorkspaceName &&
-            t['com.affine.import-template.dialog.createDocToWorkspace']({
+            t['com.yunke.import-template.dialog.createDocToWorkspace']({
               workspace: selectedWorkspaceName,
             })}
         </Button>
@@ -229,7 +229,7 @@ const Dialog = ({
           disabled={disabled}
           onClick={handleImportToNewWorkspace}
         >
-          {t['com.affine.import-template.dialog.createDocToNewWorkspace']()}
+          {t['com.yunke.import-template.dialog.createDocToNewWorkspace']()}
         </Button>
       )}
     </>

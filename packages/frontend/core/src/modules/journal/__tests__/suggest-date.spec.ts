@@ -19,21 +19,21 @@ describe('suggestJournalDate', () => {
   test('today', () => {
     expect(suggestJournalDate('t')).toEqual({
       dateString: dayjs().format(JOURNAL_DATE_FORMAT),
-      alias: I18n.t('com.affine.today'),
+      alias: I18n.t('com.yunke.today'),
     });
   });
 
   test('yesterday', () => {
     expect(suggestJournalDate('y')).toEqual({
       dateString: dayjs().subtract(1, 'day').format(JOURNAL_DATE_FORMAT),
-      alias: I18n.t('com.affine.yesterday'),
+      alias: I18n.t('com.yunke.yesterday'),
     });
   });
 
   test('tomorrow', () => {
     expect(suggestJournalDate('tm')).toEqual({
       dateString: dayjs().add(1, 'day').format(JOURNAL_DATE_FORMAT),
-      alias: I18n.t('com.affine.tomorrow'),
+      alias: I18n.t('com.yunke.tomorrow'),
     });
   });
 

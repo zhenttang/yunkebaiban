@@ -1,13 +1,13 @@
-import { AffineReference, ReferencePopup } from './reference-node';
+import { YunkeReference, ReferencePopup } from './reference-node';
 
 export function effects() {
   customElements.define('reference-popup', ReferencePopup);
-  customElements.define('affine-reference', AffineReference);
+  customElements.define('yunke-reference', YunkeReference);
 }
 
 declare global {
   interface HTMLElementTagNameMap {
-    'affine-reference': AffineReference;
+    'yunke-reference': YunkeReference;
     'reference-popup': ReferencePopup;
   }
 }

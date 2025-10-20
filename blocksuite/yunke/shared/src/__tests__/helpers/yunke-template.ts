@@ -27,13 +27,13 @@ const extensions = [
 
 // Mapping from tag names to flavours
 const tagToFlavour: Record<string, string> = {
-  'affine-page': 'yunke:page',
-  'affine-note': 'yunke:note',
-  'affine-paragraph': 'yunke:paragraph',
-  'affine-list': 'yunke:list',
-  'affine-image': 'yunke:image',
-  'affine-database': 'yunke:database',
-  'affine-code': 'yunke:code',
+  'yunke-page': 'yunke:page',
+  'yunke-note': 'yunke:note',
+  'yunke-paragraph': 'yunke:paragraph',
+  'yunke-list': 'yunke:list',
+  'yunke-image': 'yunke:image',
+  'yunke-database': 'yunke:database',
+  'yunke-code': 'yunke:code',
 };
 
 interface SelectionInfo {
@@ -51,17 +51,17 @@ interface SelectionInfo {
  *
  * Example:
  * ```
- * const host = affine`
- *   <affine-page id="page">
- *     <affine-note id="note">
- *       <affine-paragraph id="paragraph-1">Hello, world<anchor /></affine-paragraph>
- *       <affine-paragraph id="paragraph-2">Hello, world<focus /></affine-paragraph>
- *     </affine-note>
- *   </affine-page>
+ * const host = yunke`
+ *   <yunke-page id="page">
+ *     <yunke-note id="note">
+ *       <yunke-paragraph id="paragraph-1">Hello, world<anchor /></yunke-paragraph>
+ *       <yunke-paragraph id="paragraph-2">Hello, world<focus /></yunke-paragraph>
+ *     </yunke-note>
+ *   </yunke-page>
  * `;
  * ```
  */
-export function affine(strings: TemplateStringsArray, ...values: any[]) {
+export function yunke(strings: TemplateStringsArray, ...values: any[]) {
   // Merge template strings and values
   let htmlString = '';
   strings.forEach((str, i) => {
@@ -147,7 +147,7 @@ export function affine(strings: TemplateStringsArray, ...values: any[]) {
  *
  * Example:
  * ```
- * const block = block`<affine-note />`
+ * const block = block`<yunke-note />`
  * ```
  */
 export function block(

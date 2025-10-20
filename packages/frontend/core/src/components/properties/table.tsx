@@ -18,7 +18,7 @@ import type {
 import { DocIntegrationPropertiesTable } from '@yunke/core/modules/integration';
 import { ViewService, WorkbenchService } from '@yunke/core/modules/workbench';
 import { WorkspacePropertyService } from '@yunke/core/modules/workspace-property';
-import type { AffineDNDData } from '@yunke/core/types/dnd';
+import type { YunkeDNDData } from '@yunke/core/types/dnd';
 import { useI18n } from '@yunke/i18n';
 import { track } from '@yunke/track';
 import { PlusIcon, PropertyIcon, ToggleDownIcon } from '@blocksuite/icons/rc';
@@ -95,7 +95,7 @@ export const WorkspacePropertiesTableHeader = ({
     <Collapsible.Trigger style={style} role="button" onClick={handleCollapse}>
       <div className={clsx(styles.tableHeader, className)}>
         <div className={clsx(!open ? styles.pageInfoDimmed : null)}>
-          {t['com.affine.page-properties.page-info']()}
+          {t['com.yunke.page-properties.page-info']()}
         </div>
         <div
           className={styles.tableHeaderCollapseButtonWrapper}
@@ -164,7 +164,7 @@ export const WorkspacePropertyRow = ({
   );
 
   const docId = docService.doc.id;
-  const { dragRef } = useDraggable<AffineDNDData>(
+  const { dragRef } = useDraggable<YunkeDNDData>(
     () => ({
       canDrag: !propertyInfoReadonly,
       data: {
@@ -180,7 +180,7 @@ export const WorkspacePropertyRow = ({
     }),
     [docId, propertyInfo.id, propertyInfoReadonly]
   );
-  const { dropTargetRef, closestEdge } = useDropTarget<AffineDNDData>(
+  const { dropTargetRef, closestEdge } = useDropTarget<YunkeDNDData>(
     () => ({
       closestEdge: {
         allowedEdges: ['bottom', 'top'],
@@ -316,7 +316,7 @@ const WorkspaceWorkspacePropertiesTableBody = forwardRef<
         ref={ref}
         className={clsx(styles.tableBodyRoot, className)}
         style={style}
-        title={t.t('com.affine.workspace.properties')}
+        title={t.t('com.yunke.workspace.properties')}
         defaultCollapsed={!defaultOpen}
         onCollapseChange={handleCollapseChange}
         {...props}
@@ -329,17 +329,17 @@ const WorkspaceWorkspacePropertiesTableBody = forwardRef<
           collapseButtonText={({ hide, isCollapsed }) =>
             isCollapsed
               ? hide === 1
-                ? t['com.affine.page-properties.more-property.one']({
+                ? t['com.yunke.page-properties.more-property.one']({
                     count: hide.toString(),
                   })
-                : t['com.affine.page-properties.more-property.more']({
+                : t['com.yunke.page-properties.more-property.more']({
                     count: hide.toString(),
                   })
               : hide === 1
-                ? t['com.affine.page-properties.hide-property.one']({
+                ? t['com.yunke.page-properties.hide-property.one']({
                     count: hide.toString(),
                   })
-                : t['com.affine.page-properties.hide-property.more']({
+                : t['com.yunke.page-properties.hide-property.more']({
                     count: hide.toString(),
                   })
           }
@@ -366,7 +366,7 @@ const WorkspaceWorkspacePropertiesTableBody = forwardRef<
                 data-testid="add-property-button"
                 disabled={!canEditPropertyInfo}
               >
-                {t['com.affine.page-properties.add-property']()}
+                {t['com.yunke.page-properties.add-property']()}
               </Button>
             ) : (
               <Menu
@@ -388,7 +388,7 @@ const WorkspaceWorkspacePropertiesTableBody = forwardRef<
                   className={styles.propertyActionButton}
                   data-testid="add-property-button"
                 >
-                  {t['com.affine.page-properties.add-property']()}
+                  {t['com.yunke.page-properties.add-property']()}
                 </Button>
               </Menu>
             )}
@@ -405,7 +405,7 @@ const WorkspaceWorkspacePropertiesTableBody = forwardRef<
                   workbenchService.workbench.openSidebar();
                 }}
               >
-                {t['com.affine.page-properties.config-properties']()}
+                {t['com.yunke.page-properties.config-properties']()}
               </Button>
             ) : null}
           </div>

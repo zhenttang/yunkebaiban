@@ -56,7 +56,7 @@ export class MobileGanttViewUILogic extends DataViewUILogicBase<GanttSingleView,
 export class MobileGanttViewUI extends DataViewUIBase<MobileGanttViewUILogic> {
   override connectedCallback(): void {
     super.connectedCallback();
-    this.classList.add('affine-database-gantt-mobile');
+    this.classList.add('yunke-database-gantt-mobile');
     this.dataset['testid'] = 'dv-gantt-view-mobile';
   }
 

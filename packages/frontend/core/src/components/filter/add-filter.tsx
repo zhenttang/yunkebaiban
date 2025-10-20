@@ -48,7 +48,7 @@ export const AddFilterMenu = ({
           </IconButton>
         )}
         <div className={styles.variableSelectTitleStyle}>
-          {t['com.affine.filter']()}
+          {t['com.yunke.filter']()}
         </div>
       </div>
 
@@ -82,7 +82,7 @@ export const AddFilterMenu = ({
         }}
       >
         <span className={styles.filterTypeItemName}>
-          {t['com.affine.filter.is-public']()}
+          {t['com.yunke.filter.is-public']()}
         </span>
       </MenuItem>
       {explorerPropertyList.map(({ systemProperty, workspaceProperty }) => {
@@ -167,7 +167,7 @@ export const AddFilter = ({
         </IconButton>
       ) : (
         <Button prefix={<PlusIcon />} className={styles.addFilterButton}>
-          {t['com.affine.filter.add-filter']()}
+          {t['com.yunke.filter.add-filter']()}
         </Button>
       )}
     </Menu>

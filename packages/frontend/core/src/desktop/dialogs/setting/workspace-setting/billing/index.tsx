@@ -21,7 +21,7 @@ import { TypeformLink } from './typeform-link';
 // 模拟测试文档数据
 const mockTestDocument: CommunityDocument = {
   id: 'test-payment-' + Date.now(),
-  title: 'AFFiNE支付功能测试',
+  title: 'YUNKE支付功能测试',
   description: '测试支付宝沙箱环境集成功能',
   author: {
     id: 'system',
@@ -99,11 +99,11 @@ export const WorkspaceSettingBilling = () => {
   return (
     <>
       <SettingHeader
-        title={t['com.affine.payment.billing-setting.title']()}
-        subtitle={t['com.affine.payment.billing-setting.subtitle']()}
+        title={t['com.yunke.payment.billing-setting.title']()}
+        subtitle={t['com.yunke.payment.billing-setting.subtitle']()}
       />
       <SettingWrapper
-        title={t['com.affine.payment.billing-setting.information']()}
+        title={t['com.yunke.payment.billing-setting.information']()}
       >
         <TeamCard />
         <TypeformLink />
@@ -113,7 +113,7 @@ export const WorkspaceSettingBilling = () => {
         ) : null}
       </SettingWrapper>
 
-      <SettingWrapper title={t['com.affine.payment.billing-setting.history']()}>
+      <SettingWrapper title={t['com.yunke.payment.billing-setting.history']()}>
         <BillingHistory />
       </SettingWrapper>
 
@@ -156,8 +156,8 @@ const ResumeSubscription = ({ expirationDate }: { expirationDate: string }) => {
 
   return (
     <SettingRow
-      name={t['com.affine.payment.billing-setting.expiration-date']()}
-      desc={t['com.affine.payment.billing-setting.expiration-date.description'](
+      name={t['com.yunke.payment.billing-setting.expiration-date']()}
+      desc={t['com.yunke.payment.billing-setting.expiration-date.description'](
         {
           expirationDate: new Date(expirationDate).toLocaleDateString(),
         }
@@ -165,7 +165,7 @@ const ResumeSubscription = ({ expirationDate }: { expirationDate: string }) => {
     >
       <TeamResumeAction open={open} onOpenChange={setOpen}>
         <Button onClick={handleClick} variant="primary">
-          {t['com.affine.payment.billing-setting.resume-subscription']()}
+          {t['com.yunke.payment.billing-setting.resume-subscription']()}
         </Button>
       </TeamResumeAction>
     </SettingRow>

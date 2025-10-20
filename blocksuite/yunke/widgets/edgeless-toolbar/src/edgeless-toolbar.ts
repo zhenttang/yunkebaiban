@@ -143,7 +143,7 @@ export class EdgelessToolbarWidget extends WidgetComponent<RootBlockModel> {
       display: block;
       width: 1px;
       height: 100%;
-      background-color: var(--affine-border-color);
+      background-color: var(--yunke-border-color);
     }
     .pen-and-eraser {
       display: flex;
@@ -528,9 +528,9 @@ export class EdgelessToolbarWidget extends WidgetComponent<RootBlockModel> {
             .some(tool => tool.type === this.edgelessTool)}
         >
           ${MoreHorizontalIcon({ width: '20px', height: '20px' })}
-          <affine-tooltip tip-position="top" .offset=${25}>
+          <yunke-tooltip tip-position="top" .offset=${25}>
             更多工具
-          </affine-tooltip>
+          </yunke-tooltip>
         </icon-button>
       </div>
       <div class="full-divider"></div>
@@ -544,9 +544,9 @@ export class EdgelessToolbarWidget extends WidgetComponent<RootBlockModel> {
           ${ArrowLeftSmallIcon({ width: '20px', height: '20px' })}
           ${cache(
             this._seniorPrevTooltip
-              ? html` <affine-tooltip tip-position="top" .offset=${4}>
+              ? html` <yunke-tooltip tip-position="top" .offset=${4}>
                   ${this._seniorPrevTooltip}
-                </affine-tooltip>`
+                </yunke-tooltip>`
               : nothing
           )}
         </icon-button>
@@ -571,9 +571,9 @@ export class EdgelessToolbarWidget extends WidgetComponent<RootBlockModel> {
           ${ArrowRightSmallIcon({ width: '20px', height: '20px' })}
           ${cache(
             this._seniorNextTooltip
-              ? html` <affine-tooltip tip-position="top" .offset=${4}>
+              ? html` <yunke-tooltip tip-position="top" .offset=${4}>
                   ${this._seniorNextTooltip}
-                </affine-tooltip>`
+                </yunke-tooltip>`
               : nothing
           )}
         </icon-button>
@@ -678,8 +678,8 @@ export class EdgelessToolbarWidget extends WidgetComponent<RootBlockModel> {
             .borderRadius=${16}
             .smooth=${0.7}
             .borderWidth=${1}
-            .bgColor=${'var(--affine-background-overlay-panel-color)'}
-            .borderColor=${'var(--affine-border-color)'}
+            .bgColor=${'var(--yunke-background-overlay-panel-color)'}
+            .borderColor=${'var(--yunke-border-color)'}
             style="filter: drop-shadow(${cssVar('toolbarShadow')})"
           >
             <div

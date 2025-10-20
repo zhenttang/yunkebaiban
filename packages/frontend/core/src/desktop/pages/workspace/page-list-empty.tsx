@@ -1,5 +1,5 @@
-import { EmptyDocs, EmptyTags } from '@yunke/core/components/affine/empty';
-import { EmptyCollections } from '@yunke/core/components/affine/empty/collections';
+import { EmptyDocs, EmptyTags } from '@yunke/core/components/yunke/empty';
+import { EmptyCollections } from '@yunke/core/components/yunke/empty/collections';
 import type { ReactNode } from 'react';
 
 import * as styles from './page-list-empty.css';

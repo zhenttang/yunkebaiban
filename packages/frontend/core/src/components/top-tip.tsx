@@ -1,9 +1,9 @@
-import { BrowserWarning, LocalDemoTips } from '@yunke/component/affine-banner';
+import { BrowserWarning, LocalDemoTips } from '@yunke/component/yunke-banner';
 import { Trans, useI18n } from '@yunke/i18n';
 import { useLiveData, useService } from '@toeverything/infra';
 import { useCallback, useState } from 'react';
 
-import { useEnableCloud } from '../components/hooks/affine/use-enable-cloud';
+import { useEnableCloud } from '../components/hooks/yunke/use-enable-cloud';
 import { AuthService } from '../modules/cloud';
 import { GlobalDialogService } from '../modules/dialogs';
 import type { Workspace } from '../modules/workspace';
@@ -35,7 +35,7 @@ const OSWarningMessage = () => {
 
   // TODO(@L-Sun): Remove this message when mobile version can edit.
   if (environment.isMobile) {
-    return <span>{t['com.affine.top-tip.mobile']()}</span>;
+    return <span>{t['com.yunke.top-tip.mobile']()}</span>;
   }
 
   if (notChrome) {

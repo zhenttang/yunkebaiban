@@ -7,7 +7,7 @@ import { assignInlineVars } from '@vanilla-extract/dynamic';
 import clsx from 'clsx';
 import { useEffect } from 'react';
 
-import { UserPlanButton } from '../../affine/auth/user-plan-button';
+import { UserPlanButton } from '../../yunke/auth/user-plan-button';
 import { useCatchEventCallback } from '../../hooks/use-catch-event-hook';
 import * as styles from './index.css';
 
@@ -55,7 +55,7 @@ export const CloudUsage = () => {
       <div className={styles.usageLabel}>
         <div>
           <span className={styles.usageLabelTitle}>
-            {t['com.affine.user-info.usage.cloud']()}
+            {t['com.yunke.user-info.usage.cloud']()}
           </span>
           <span>{usedFormatted}</span>
           <span>&nbsp;/&nbsp;</span>

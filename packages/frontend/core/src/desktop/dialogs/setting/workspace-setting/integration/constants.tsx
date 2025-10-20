@@ -25,24 +25,24 @@ type IntegrationCard = {
 const INTEGRATION_LIST = [
   {
     id: 'readwise' as const,
-    name: 'com.affine.integration.readwise.name',
-    desc: 'com.affine.integration.readwise.desc',
+    name: 'com.yunke.integration.readwise.name',
+    desc: 'com.yunke.integration.readwise.desc',
     icon: <IntegrationTypeIcon type="readwise" />,
     setting: <ReadwiseSettingPanel />,
   },
   BUILD_CONFIG.isElectron && {
     id: 'calendar' as const,
-    name: 'com.affine.integration.calendar.name',
-    desc: 'com.affine.integration.calendar.desc',
+    name: 'com.yunke.integration.calendar.name',
+    desc: 'com.yunke.integration.calendar.desc',
     icon: <TodayIcon />,
     setting: <CalendarSettingPanel />,
   },
   {
     id: 'web-clipper' as const,
-    name: 'com.affine.integration.web-clipper.name',
-    desc: 'com.affine.integration.web-clipper.desc',
+    name: 'com.yunke.integration.web-clipper.name',
+    desc: 'com.yunke.integration.web-clipper.desc',
     icon: <Logo1Icon />,
-    link: 'https://chromewebstore.google.com/detail/affine-web-clipper/mpbbkmbdpleomiogkbkkpfoljjpahmoi',
+    link: 'https://chromewebstore.google.com/detail/yunke-web-clipper/mpbbkmbdpleomiogkbkkpfoljjpahmoi',
   },
 ] satisfies (IntegrationCard | false)[];
 

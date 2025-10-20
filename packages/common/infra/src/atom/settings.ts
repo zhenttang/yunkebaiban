@@ -6,7 +6,7 @@ import { atomEffect } from 'jotai-effect';
 
 setupGlobal();
 
-const logger = new DebugLogger('affine:settings');
+const logger = new DebugLogger('yunke:settings');
 
 export type AppSetting = {
   clientBorder: boolean;
@@ -22,7 +22,7 @@ export const windowFrameStyleOptions: AppSetting['windowFrameStyle'][] = [
   'NativeTitleBar',
 ];
 
-export const APP_SETTINGS_STORAGE_KEY = 'affine-settings';
+export const APP_SETTINGS_STORAGE_KEY = 'yunke-settings';
 const appSettingBaseAtom = atomWithStorage<AppSetting>(
   APP_SETTINGS_STORAGE_KEY,
   {

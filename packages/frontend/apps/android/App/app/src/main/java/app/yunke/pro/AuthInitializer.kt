@@ -1,11 +1,11 @@
-package app.affine.pro
+package app.yunke.pro
 
 import android.webkit.WebView
-import app.affine.pro.utils.dataStore
-import app.affine.pro.utils.get
-import app.affine.pro.utils.set
-import app.affine.pro.utils.getCurrentServerBaseUrl
-// import app.affine.pro.utils.logger.FileTree  // 禁用Firebase相关功能
+import app.yunke.pro.utils.dataStore
+import app.yunke.pro.utils.get
+import app.yunke.pro.utils.set
+import app.yunke.pro.utils.getCurrentServerBaseUrl
+// import app.yunke.pro.utils.logger.FileTree  // 禁用Firebase相关功能
 import com.getcapacitor.Bridge
 import com.getcapacitor.WebViewListener
 import kotlinx.coroutines.Dispatchers
@@ -21,9 +21,9 @@ import timber.log.Timber
 object AuthInitializer {
 
     // 常量定义直接放在object中
-    const val JWT_TOKEN_KEY = "affine_jwt_token"
-    const val JWT_REFRESH_TOKEN_KEY = "affine_jwt_refresh_token"
-    const val USER_INFO_KEY = "affine_user_info"
+    const val JWT_TOKEN_KEY = "yunke_jwt_token"
+    const val JWT_REFRESH_TOKEN_KEY = "yunke_jwt_refresh_token"
+    const val USER_INFO_KEY = "yunke_user_info"
 
     fun initialize(bridge: Bridge) {
         bridge.addWebViewListener(object : WebViewListener() {
@@ -37,11 +37,11 @@ object AuthInitializer {
                         Timber.i("[JWT Init] 检查JWT认证状态，服务器: $serverHost")
                         
                         // 从DataStore读取JWT Token
-                        val jwtToken = AFFiNEApp.context().dataStore
+                        val jwtToken = YUNKEApp.context().dataStore
                             .get("$serverHost:$JWT_TOKEN_KEY")
-                        val refreshToken = AFFiNEApp.context().dataStore
+                        val refreshToken = YUNKEApp.context().dataStore
                             .get("$serverHost:$JWT_REFRESH_TOKEN_KEY") 
-                        val userInfo = AFFiNEApp.context().dataStore
+                        val userInfo = YUNKEApp.context().dataStore
                             .get("$serverHost:$USER_INFO_KEY")
                         
                         if (jwtToken.isEmpty()) {
@@ -58,17 +58,17 @@ object AuthInitializer {
                             val jsCode = """
                                 (function() {
                                     console.log('[JWT Init] 注入JWT Token到localStorage');
-                                    localStorage.setItem('affine-admin-token', '$jwtToken');
+                                    localStorage.setItem('yunke-admin-token', '$jwtToken');
                                     if ('$refreshToken' !== '') {
-                                        localStorage.setItem('affine-refresh-token', '$refreshToken');
+                                        localStorage.setItem('yunke-refresh-token', '$refreshToken');
                                     }
                                     if ('$userInfo' !== '') {
-                                        localStorage.setItem('affine-user-info', '$userInfo');
+                                        localStorage.setItem('yunke-user-info', '$userInfo');
                                     }
                                     console.log('[JWT Init] JWT Token注入完成');
                                     
                                     // 触发认证状态更新事件
-                                    window.dispatchEvent(new CustomEvent('affine-auth-initialized', {
+                                    window.dispatchEvent(new CustomEvent('yunke-auth-initialized', {
                                         detail: { token: '$jwtToken', server: '$serverHost' }
                                     }));
                                 })();
@@ -93,7 +93,7 @@ object AuthInitializer {
      */
     suspend fun saveJwtAuth(serverHost: String, jwtToken: String, refreshToken: String? = null, userInfo: String? = null) {
         try {
-            val dataStore = AFFiNEApp.context().dataStore
+            val dataStore = YUNKEApp.context().dataStore
             
             // 保存JWT Token
             dataStore.set("$serverHost:$JWT_TOKEN_KEY", jwtToken)
@@ -120,7 +120,7 @@ object AuthInitializer {
      */
     suspend fun clearJwtAuth(serverHost: String) {
         try {
-            val dataStore = AFFiNEApp.context().dataStore
+            val dataStore = YUNKEApp.context().dataStore
             dataStore.set("$serverHost:$JWT_TOKEN_KEY", "")
             dataStore.set("$serverHost:$JWT_REFRESH_TOKEN_KEY", "")
             dataStore.set("$serverHost:$USER_INFO_KEY", "")

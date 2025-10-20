@@ -1,4 +1,4 @@
-import type { AffineTextAttributes } from '@blocksuite/yunke-shared/types';
+import type { YunkeTextAttributes } from '@blocksuite/yunke-shared/types';
 import {
   type InlineRootElement,
   InlineSpecExtension,
@@ -7,89 +7,89 @@ import type { ExtensionType } from '@blocksuite/store';
 import { html } from 'lit';
 import { z } from 'zod';
 
-export type AffineInlineRootElement = InlineRootElement<AffineTextAttributes>;
+export type YunkeInlineRootElement = InlineRootElement<YunkeTextAttributes>;
 
 export const BoldInlineSpecExtension =
-  InlineSpecExtension<AffineTextAttributes>({
+  InlineSpecExtension<YunkeTextAttributes>({
     name: 'bold',
     schema: z.literal(true).optional().nullable().catch(undefined),
     match: delta => {
       return !!delta.attributes?.bold;
     },
     renderer: ({ delta }) => {
-      return html`<affine-text .delta=${delta}></affine-text>`;
+      return html`<yunke-text .delta=${delta}></yunke-text>`;
     },
   });
 
 export const ItalicInlineSpecExtension =
-  InlineSpecExtension<AffineTextAttributes>({
+  InlineSpecExtension<YunkeTextAttributes>({
     name: 'italic',
     schema: z.literal(true).optional().nullable().catch(undefined),
     match: delta => {
       return !!delta.attributes?.italic;
     },
     renderer: ({ delta }) => {
-      return html`<affine-text .delta=${delta}></affine-text>`;
+      return html`<yunke-text .delta=${delta}></yunke-text>`;
     },
   });
 
 export const UnderlineInlineSpecExtension =
-  InlineSpecExtension<AffineTextAttributes>({
+  InlineSpecExtension<YunkeTextAttributes>({
     name: 'underline',
     schema: z.literal(true).optional().nullable().catch(undefined),
     match: delta => {
       return !!delta.attributes?.underline;
     },
     renderer: ({ delta }) => {
-      return html`<affine-text .delta=${delta}></affine-text>`;
+      return html`<yunke-text .delta=${delta}></yunke-text>`;
     },
   });
 
 export const StrikeInlineSpecExtension =
-  InlineSpecExtension<AffineTextAttributes>({
+  InlineSpecExtension<YunkeTextAttributes>({
     name: 'strike',
     schema: z.literal(true).optional().nullable().catch(undefined),
     match: delta => {
       return !!delta.attributes?.strike;
     },
     renderer: ({ delta }) => {
-      return html`<affine-text .delta=${delta}></affine-text>`;
+      return html`<yunke-text .delta=${delta}></yunke-text>`;
     },
   });
 
 export const CodeInlineSpecExtension =
-  InlineSpecExtension<AffineTextAttributes>({
+  InlineSpecExtension<YunkeTextAttributes>({
     name: 'code',
     schema: z.literal(true).optional().nullable().catch(undefined),
     match: delta => {
       return !!delta.attributes?.code;
     },
     renderer: ({ delta }) => {
-      return html`<affine-text .delta=${delta}></affine-text>`;
+      return html`<yunke-text .delta=${delta}></yunke-text>`;
     },
   });
 
 export const BackgroundInlineSpecExtension =
-  InlineSpecExtension<AffineTextAttributes>({
+  InlineSpecExtension<YunkeTextAttributes>({
     name: 'background',
     schema: z.string().optional().nullable().catch(undefined),
     match: delta => {
       return !!delta.attributes?.background;
     },
     renderer: ({ delta }) => {
-      return html`<affine-text .delta=${delta}></affine-text>`;
+      return html`<yunke-text .delta=${delta}></yunke-text>`;
     },
   });
 
 export const ColorInlineSpecExtension =
-  InlineSpecExtension<AffineTextAttributes>({
+  InlineSpecExtension<YunkeTextAttributes>({
     name: 'color',
     schema: z.string().optional().nullable().catch(undefined),
     match: delta => {
       return !!delta.attributes?.color;
     },
     renderer: ({ delta }) => {
-      return html`<affine-text .delta=${delta}></affine-text>`;
+      return html`<yunke-text .delta=${delta}></yunke-text>`;
     },
   });
 

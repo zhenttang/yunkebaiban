@@ -96,12 +96,12 @@ const builtinToolbarConfig = {
 
         return html`${keyed(
           model,
-          html`<affine-card-style-dropdown-menu
+          html`<yunke-card-style-dropdown-menu
             @toggle=${onToggle}
             .actions=${actions}
             .context=${ctx}
             .style=${model.props.style$}
-          ></affine-card-style-dropdown-menu>`
+          ></yunke-card-style-dropdown-menu>`
         )}`;
       },
     } satisfies ToolbarActionGroup<ToolbarAction>,

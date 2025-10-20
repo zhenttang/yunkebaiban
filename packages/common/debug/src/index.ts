@@ -1,7 +1,7 @@
 import debug from 'debug';
 type LogLevel = 'debug' | 'info' | 'warn' | 'error';
 
-const SESSION_KEY = 'affine:debug';
+const SESSION_KEY = 'yunke:debug';
 
 if (typeof window !== 'undefined') {
   // 如果URL搜索字符串包含`debug`，则启用调试日志

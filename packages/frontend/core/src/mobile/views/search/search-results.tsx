@@ -17,7 +17,7 @@ export interface SearchResultsProps {
 const Empty = () => {
   const t = useI18n();
   return (
-    <div className={styles.empty}>{t['com.affine.mobile.search.empty']()}</div>
+    <div className={styles.empty}>{t['com.yunke.mobile.search.empty']()}</div>
   );
 };
 

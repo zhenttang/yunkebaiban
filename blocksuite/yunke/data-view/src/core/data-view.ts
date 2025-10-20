@@ -143,10 +143,10 @@ export class DataViewRootUILogic {
   }
 
   render() {
-    return html` <affine-data-view-renderer
+    return html` <yunke-data-view-renderer
       ${ref(this._uiRef)}
       .logic="${this}"
-    ></affine-data-view-renderer>`;
+    ></yunke-data-view-renderer>`;
   }
 }
 
@@ -154,9 +154,9 @@ export class DataViewRootUI extends SignalWatcher(
   WithDisposable(ShadowlessElement)
 ) {
   static override styles = css`
-    ${unsafeCSS(dataViewCommonStyle('affine-data-view-renderer'))}
-    affine-data-view-renderer {
-      background-color: var(--affine-background-primary-color);
+    ${unsafeCSS(dataViewCommonStyle('yunke-data-view-renderer'))}
+    yunke-data-view-renderer {
+      background-color: var(--yunke-background-primary-color);
       display: contents;
     }
   `;
@@ -206,6 +206,6 @@ export class DataViewRootUI extends SignalWatcher(
 
 declare global {
   interface HTMLElementTagNameMap {
-    'affine-data-view-renderer': DataViewRootUI;
+    'yunke-data-view-renderer': DataViewRootUI;
   }
 }

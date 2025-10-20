@@ -50,49 +50,49 @@ function testClickOnBlankArea(
 
 export class PageRootBlockComponent extends BlockComponent<RootBlockModel> {
   static override styles = css`
-    editor-host:has(> affine-page-root, * > affine-page-root) {
+    editor-host:has(> yunke-page-root, * > yunke-page-root) {
       display: block;
       height: 100%;
     }
 
-    affine-page-root {
+    yunke-page-root {
       display: block;
       height: 100%;
       cursor: default;
     }
 
-    .affine-page-root-block-container {
+    .yunke-page-root-block-container {
       display: flex;
       flex-direction: column;
       width: 100%;
       height: 100%;
-      font-family: var(--affine-font-family);
-      font-size: var(--affine-font-base);
-      line-height: var(--affine-line-height);
-      color: var(--affine-text-primary-color);
+      font-family: var(--yunke-font-family);
+      font-size: var(--yunke-font-base);
+      line-height: var(--yunke-line-height);
+      color: var(--yunke-text-primary-color);
       font-weight: 400;
-      max-width: var(--affine-editor-width);
+      max-width: var(--yunke-editor-width);
       margin: 0 auto;
 
       /* Leave a place for drag-handle */
       /* Do not use prettier format this style, or it will be broken */
       /* prettier-ignore */
-      padding-left: var(--affine-editor-side-padding, ${DOC_BLOCK_CHILD_PADDING}px);
+      padding-left: var(--yunke-editor-side-padding, ${DOC_BLOCK_CHILD_PADDING}px);
       /* prettier-ignore */
-      padding-right: var(--affine-editor-side-padding, ${DOC_BLOCK_CHILD_PADDING}px);
+      padding-right: var(--yunke-editor-side-padding, ${DOC_BLOCK_CHILD_PADDING}px);
       /* prettier-ignore */
-      padding-bottom: var(--affine-editor-bottom-padding, ${DOC_BOTTOM_PADDING}px);
+      padding-bottom: var(--yunke-editor-bottom-padding, ${DOC_BOTTOM_PADDING}px);
     }
 
     /* Extra small devices (phones, 640px and down) */
     @container viewport (width <= 640px) {
-      .affine-page-root-block-container {
+      .yunke-page-root-block-container {
         padding-left: ${DOC_BLOCK_CHILD_PADDING}px;
         padding-right: ${DOC_BLOCK_CHILD_PADDING}px;
       }
     }
 
-    .affine-block-element {
+    .yunke-block-element {
       display: block;
     }
 
@@ -413,10 +413,10 @@ export class PageRootBlockComponent extends BlockComponent<RootBlockModel> {
     this.contentEditable = String(!this.store.readonly$.value);
 
     return html`
-      <div class="affine-page-root-block-container">${children} ${widgets}</div>
+      <div class="yunke-page-root-block-container">${children} ${widgets}</div>
     `;
   }
 
-  @query('.affine-page-root-block-container')
+  @query('.yunke-page-root-block-container')
   accessor rootElementContainer!: HTMLDivElement;
 }

@@ -224,12 +224,12 @@ export type TaskDependencyData = {
   --gantt-bar-margin: 2px;
   
   /* 工作日样式 */
-  --gantt-working-day: var(--affine-primary-color);
-  --gantt-non-working-day: var(--affine-border-color);
-  --gantt-weekend-bg: var(--affine-background-secondary-color);
+  --gantt-working-day: var(--yunke-primary-color);
+  --gantt-non-working-day: var(--yunke-border-color);
+  --gantt-weekend-bg: var(--yunke-background-secondary-color);
   
   /* 依赖关系 */
-  --gantt-dependency-color: var(--affine-text-secondary-color);
+  --gantt-dependency-color: var(--yunke-text-secondary-color);
   --gantt-dependency-width: 2px;
 }
 ```
@@ -325,15 +325,15 @@ export class TimelineHeader extends WidgetElement {
   static override styles = css`
     .timeline-header {
       display: flex;
-      border-bottom: 1px solid var(--affine-border-color);
-      background: var(--affine-background-primary-color);
+      border-bottom: 1px solid var(--yunke-border-color);
+      background: var(--yunke-background-primary-color);
     }
     
     .time-unit {
       min-width: 60px;
       padding: 8px 4px;
       text-align: center;
-      border-right: 1px solid var(--affine-border-color);
+      border-right: 1px solid var(--yunke-border-color);
       font-size: 12px;
     }
     
@@ -445,7 +445,7 @@ export class TaskBar extends WidgetElement {
     }
     
     .task-segment.selected {
-      box-shadow: 0 0 0 2px var(--affine-primary-color);
+      box-shadow: 0 0 0 2px var(--yunke-primary-color);
     }
   `;
   
@@ -599,9 +599,9 @@ export class WorkingDaysEditor extends WidgetElement {
     .day-toggle {
       width: 32px;
       height: 24px;
-      border: 1px solid var(--affine-border-color);
+      border: 1px solid var(--yunke-border-color);
       border-radius: 4px;
-      background: var(--affine-background-primary-color);
+      background: var(--yunke-background-primary-color);
       font-size: 12px;
       cursor: pointer;
       display: flex;
@@ -610,13 +610,13 @@ export class WorkingDaysEditor extends WidgetElement {
     }
     
     .day-toggle.active {
-      background: var(--affine-primary-color);
+      background: var(--yunke-primary-color);
       color: white;
-      border-color: var(--affine-primary-color);
+      border-color: var(--yunke-primary-color);
     }
     
     .day-toggle:hover {
-      border-color: var(--affine-primary-color);
+      border-color: var(--yunke-primary-color);
     }
   `;
   

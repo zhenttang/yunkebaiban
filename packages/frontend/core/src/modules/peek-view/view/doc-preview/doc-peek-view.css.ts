@@ -7,19 +7,19 @@ export const root = style({
 
 export const editor = style({
   vars: {
-    '--affine-editor-side-padding': '96px',
+    '--yunke-editor-side-padding': '96px',
   },
   minHeight: '100%',
 });
 
 globalStyle(`[data-full-width-layout="true"] ${editor}`, {
   vars: {
-    '--affine-editor-width': '100%',
-    '--affine-editor-side-padding': '72px',
+    '--yunke-editor-width': '100%',
+    '--yunke-editor-side-padding': '72px',
   },
 });
 
-export const affineDocViewport = style({
+export const yunkeDocViewport = style({
   display: 'flex',
   flexDirection: 'column',
   userSelect: 'none',

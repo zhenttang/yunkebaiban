@@ -6,7 +6,7 @@ import {
 } from '@blocksuite/yunke/ext-loader';
 
 export class AIStoreExtension extends StoreExtensionProvider {
-  override name = 'affine-store-extensions';
+  override name = 'yunke-store-extensions';
 
   override setup(context: StoreExtensionContext) {
     super.setup(context);

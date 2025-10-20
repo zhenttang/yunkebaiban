@@ -11,7 +11,7 @@ import { EdgelessNavigatorSettingButton } from './present/navigator-setting-butt
 import { EdgelessPresentButton } from './present/present-button';
 
 export function effects() {
-  customElements.define('affine-frame', FrameBlockComponent);
+  customElements.define('yunke-frame', FrameBlockComponent);
   customElements.define('edgeless-frame-tool-button', EdgelessFrameToolButton);
   customElements.define('edgeless-frame-menu', EdgelessFrameMenu);
   customElements.define(
@@ -34,7 +34,7 @@ export function effects() {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'affine-frame': FrameBlockComponent;
+    'yunke-frame': FrameBlockComponent;
     'edgeless-frame-tool-button': EdgelessFrameToolButton;
     'edgeless-frame-menu': EdgelessFrameMenu;
     'edgeless-frame-order-button': EdgelessFrameOrderButton;

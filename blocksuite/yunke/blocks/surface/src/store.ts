@@ -7,7 +7,7 @@ import { EdgelessSurfaceBlockAdapterExtensions } from './adapters';
 import { SurfaceBlockSchemaExtension } from './surface-model';
 
 export class SurfaceStoreExtension extends StoreExtensionProvider {
-  override name = 'affine-surface-block';
+  override name = 'yunke-surface-block';
 
   override setup(context: StoreExtensionContext) {
     super.setup(context);

@@ -3,11 +3,11 @@ import { ParagraphBlockComponent } from './paragraph-block.js';
 
 export function effects() {
   ParagraphHeadingIconEffects();
-  customElements.define('affine-paragraph', ParagraphBlockComponent);
+  customElements.define('yunke-paragraph', ParagraphBlockComponent);
 }
 
 declare global {
   interface HTMLElementTagNameMap {
-    'affine-paragraph': ParagraphBlockComponent;
+    'yunke-paragraph': ParagraphBlockComponent;
   }
 }

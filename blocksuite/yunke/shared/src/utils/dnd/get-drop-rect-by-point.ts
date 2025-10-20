@@ -71,7 +71,7 @@ export function getDropRectByPoint(
     for (; i < len; i++) {
       e = elements[i];
 
-      if (e.classList.contains('affine-database-block-row-cell-content')) {
+      if (e.classList.contains('yunke-database-block-row-cell-content')) {
         const cellRect = getCellRect(e, bounds);
         if (!cellRect) {
           return null;
@@ -80,7 +80,7 @@ export function getDropRectByPoint(
         return result;
       }
 
-      if (e.classList.contains('affine-database-block-row')) {
+      if (e.classList.contains('yunke-database-block-row')) {
         e = e.querySelector(ATTR_SELECTOR);
         if (!e) {
           return null;
@@ -98,7 +98,7 @@ export function getDropRectByPoint(
   }
 
   const parent = element.parentElement;
-  if (parent?.classList.contains('affine-database-block-row-cell-content')) {
+  if (parent?.classList.contains('yunke-database-block-row-cell-content')) {
     result.flag = DropFlags.Database;
     const cellRect = getCellRect(parent);
     if (!cellRect) {
@@ -115,37 +115,37 @@ export function getDropRectByPoint(
  * Gets the table of the database.
  */
 function getDatabaseBlockTableElement(element: Element) {
-  return element.querySelector('.affine-database-block-table');
+  return element.querySelector('.yunke-database-block-table');
 }
 
 /**
  * Gets the column header of the database.
  */
 function getDatabaseBlockColumnHeaderElement(element: Element) {
-  return element.querySelector('.affine-database-column-header');
+  return element.querySelector('.yunke-database-column-header');
 }
 
 /**
  * Gets the rows of the database.
  */
 function getDatabaseBlockRowsElement(element: Element) {
-  return element.querySelector('.affine-database-block-rows');
+  return element.querySelector('.yunke-database-block-rows');
 }
 
 function getCellRect(element: Element, bounds?: DOMRect) {
   if (!bounds) {
-    const table = element.closest('.affine-database-block-table');
+    const table = element.closest('.yunke-database-block-table');
     if (!table) {
       return null;
     }
     bounds = table.getBoundingClientRect();
   }
-  // affine-database-block-row-cell
+  // yunke-database-block-row-cell
   const col = element.parentElement;
   if (!col) {
     return null;
   }
-  // affine-database-block-row
+  // yunke-database-block-row
   const row = col.parentElement;
   if (!row) {
     return null;

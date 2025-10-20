@@ -271,7 +271,7 @@ export class ChatPanelChips extends SignalWatcher(
         ></chat-panel-add-popover>
       `,
       portalStyles: {
-        zIndex: 'var(--affine-z-index-popover)',
+        zIndex: 'var(--yunke-z-index-popover)',
       },
       container: this.portalContainer ?? document.body,
       computePosition: {
@@ -310,7 +310,7 @@ export class ChatPanelChips extends SignalWatcher(
         ></chat-panel-candidates-popover>
       `,
       portalStyles: {
-        zIndex: 'var(--affine-z-index-popover)',
+        zIndex: 'var(--yunke-z-index-popover)',
       },
       container: this.portalContainer ?? document.body,
       computePosition: {

@@ -12,22 +12,22 @@ import { AuthService } from '../../cloud/services/auth';
 import type { WorkspaceService } from '../../workspace';
 import { WorkspaceDB, type WorkspaceDBWithTables } from '../entities/db';
 import {
-  AFFiNE_WORKSPACE_DB_SCHEMA,
-  AFFiNE_WORKSPACE_USERDATA_DB_SCHEMA,
-  type AFFiNEWorkspaceDbSchema,
-  type AFFiNEWorkspaceUserdataDbSchema,
+  YUNKE_WORKSPACE_DB_SCHEMA,
+  YUNKE_WORKSPACE_USERDATA_DB_SCHEMA,
+  type YUNKEWorkspaceDbSchema,
+  type YUNKEWorkspaceUserdataDbSchema,
 } from '../schema';
 
-const WorkspaceDBClient = createORMClient(AFFiNE_WORKSPACE_DB_SCHEMA);
+const WorkspaceDBClient = createORMClient(YUNKE_WORKSPACE_DB_SCHEMA);
 const WorkspaceUserdataDBClient = createORMClient(
-  AFFiNE_WORKSPACE_USERDATA_DB_SCHEMA
+  YUNKE_WORKSPACE_USERDATA_DB_SCHEMA
 );
 
 export class WorkspaceDBService extends Service {
-  db: WorkspaceDBWithTables<AFFiNEWorkspaceDbSchema>;
+  db: WorkspaceDBWithTables<YUNKEWorkspaceDbSchema>;
   userdataDBPool = new ObjectPool<
     string,
-    WorkspaceDB<AFFiNEWorkspaceUserdataDbSchema>
+    WorkspaceDB<YUNKEWorkspaceUserdataDbSchema>
   >({
     onDangling() {
       return false; // never release
@@ -40,10 +40,10 @@ export class WorkspaceDBService extends Service {
   ) {
     super();
     this.db = this.framework.createEntity(
-      WorkspaceDB<AFFiNEWorkspaceDbSchema>,
+      WorkspaceDB<YUNKEWorkspaceDbSchema>,
       {
         db: new WorkspaceDBClient(
-          new YjsDBAdapter(AFFiNE_WORKSPACE_DB_SCHEMA, {
+          new YjsDBAdapter(YUNKE_WORKSPACE_DB_SCHEMA, {
             getDoc: guid => {
               const ydoc = new YDoc({
                 // guid format: db${guid}
@@ -58,24 +58,24 @@ export class WorkspaceDBService extends Service {
             },
           })
         ),
-        schema: AFFiNE_WORKSPACE_DB_SCHEMA,
+        schema: YUNKE_WORKSPACE_DB_SCHEMA,
         storageDocId: tableName => `db$${tableName}`,
       }
-    ) as WorkspaceDBWithTables<AFFiNEWorkspaceDbSchema>;
+    ) as WorkspaceDBWithTables<YUNKEWorkspaceDbSchema>;
   }
 
   userdataDB(userId: (string & {}) | '__local__') {
     // __local__ for local workspace
     const userdataDb = this.userdataDBPool.get(userId);
     if (userdataDb) {
-      return userdataDb.obj as WorkspaceDBWithTables<AFFiNEWorkspaceUserdataDbSchema>;
+      return userdataDb.obj as WorkspaceDBWithTables<YUNKEWorkspaceUserdataDbSchema>;
     }
 
     const newDB = this.framework.createEntity(
-      WorkspaceDB<AFFiNEWorkspaceUserdataDbSchema>,
+      WorkspaceDB<YUNKEWorkspaceUserdataDbSchema>,
       {
         db: new WorkspaceUserdataDBClient(
-          new YjsDBAdapter(AFFiNE_WORKSPACE_USERDATA_DB_SCHEMA, {
+          new YjsDBAdapter(YUNKE_WORKSPACE_USERDATA_DB_SCHEMA, {
             getDoc: guid => {
               const ydoc = new YDoc({
                 // guid format: userdata${userId}${guid}
@@ -90,13 +90,13 @@ export class WorkspaceDBService extends Service {
             },
           })
         ),
-        schema: AFFiNE_WORKSPACE_USERDATA_DB_SCHEMA,
+        schema: YUNKE_WORKSPACE_USERDATA_DB_SCHEMA,
         storageDocId: tableName => `userdata$${userId}$${tableName}`,
       }
     );
 
     this.userdataDBPool.put(userId, newDB);
-    return newDB as WorkspaceDBWithTables<AFFiNEWorkspaceUserdataDbSchema>;
+    return newDB as WorkspaceDBWithTables<YUNKEWorkspaceUserdataDbSchema>;
   }
 
   authService = this.workspaceServerService.server?.scope.get(AuthService);

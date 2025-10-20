@@ -2,7 +2,7 @@ import {
   type ViewExtensionContext,
   ViewExtensionProvider,
 } from '@blocksuite/yunke-ext-loader';
-import type { AffineInlineEditor } from '@blocksuite/yunke-shared/types';
+import type { YunkeInlineEditor } from '@blocksuite/yunke-shared/types';
 import type { EditorHost } from '@blocksuite/std';
 import { z } from 'zod';
 
@@ -22,7 +22,7 @@ const optionsSchema = z.object({
         z.string(),
         z.function().returns(z.void()),
         z.custom<EditorHost>(),
-        z.custom<AffineInlineEditor>(),
+        z.custom<YunkeInlineEditor>(),
         z.instanceof(AbortSignal)
       )
       .returns(
@@ -41,7 +41,7 @@ const optionsSchema = z.object({
         z.string(),
         z.string().nullable(),
         z.custom<EditorHost>(),
-        z.custom<AffineInlineEditor>()
+        z.custom<YunkeInlineEditor>()
       )
       .returns(z.string().nullable())
   ),
@@ -61,7 +61,7 @@ const optionsSchema = z.object({
 export type LinkedDocViewExtensionOptions = z.infer<typeof optionsSchema>;
 
 export class LinkedDocViewExtension extends ViewExtensionProvider<LinkedDocViewExtensionOptions> {
-  override name = 'affine-linked-doc-widget';
+  override name = 'yunke-linked-doc-widget';
 
   override schema = optionsSchema;
 

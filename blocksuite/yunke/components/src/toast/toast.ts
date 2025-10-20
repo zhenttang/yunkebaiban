@@ -26,12 +26,12 @@ export const toast = (
     max-width: 480px;
     text-align: center;
     font-family: ${baseTheme.fontSansFamily};
-    font-size: var(--affine-font-sm);
+    font-size: var(--yunke-font-sm);
     padding: 6px 12px;
     margin: 10px 0 0 0;
-    color: var(--affine-white);
-    background: var(--affine-tooltip);
-    box-shadow: var(--affine-float-button-shadow);
+    color: var(--yunke-white);
+    background: var(--yunke-tooltip);
+    box-shadow: var(--yunke-float-button-shadow);
     border-radius: 10px;
     transition: all 230ms cubic-bezier(0.21, 1.02, 0.73, 1);
     opacity: 0;

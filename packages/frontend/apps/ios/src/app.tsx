@@ -1,5 +1,5 @@
 import { getStoreManager } from '@yunke/core/blocksuite/manager/store';
-import { AffineContext } from '@yunke/core/components/context';
+import { YunkeContext } from '@yunke/core/components/context';
 import { AppFallback } from '@yunke/core/mobile/components/app-fallback';
 import { configureMobileModules } from '@yunke/core/mobile/modules';
 import { HapticProvider } from '@yunke/core/mobile/modules/haptics';
@@ -32,7 +32,7 @@ import {
   WorkbenchService,
 } from '@yunke/core/modules/workbench';
 import {
-  getAFFiNEWorkspaceSchema,
+  getYUNKEWorkspaceSchema,
   WorkspacesService,
 } from '@yunke/core/modules/workspace';
 import { configureBrowserWorkspaceFlavours } from '@yunke/core/modules/workspace-engine';
@@ -103,7 +103,7 @@ framework.impl(PopupWindowProvider, {
 });
 framework.impl(ClientSchemeProvider, {
   getClientScheme() {
-    return 'affine';
+    return 'yunke';
   },
 });
 framework.impl(ValidatorProvider, {
@@ -308,7 +308,7 @@ const frameworkProvider = framework.provider();
     await workspace.engine.doc.waitForDocReady(workspace.id); // 等待根文档准备就绪
     const docId = await MarkdownTransformer.importMarkdownToDoc({
       collection: workspace.docCollection,
-      schema: getAFFiNEWorkspaceSchema(),
+      schema: getYUNKEWorkspaceSchema(),
       markdown,
       extensions: getStoreManager().config.init().value.get('store'),
     });
@@ -407,7 +407,7 @@ export function App() {
     <Suspense>
       <FrameworkRoot framework={frameworkProvider}>
         <I18nProvider>
-          <AffineContext store={getCurrentStore()}>
+          <YunkeContext store={getCurrentStore()}>
             <KeyboardThemeProvider />
             <ModalConfigProvider>
               <BlocksuiteMenuConfigProvider>
@@ -418,7 +418,7 @@ export function App() {
                 />
               </BlocksuiteMenuConfigProvider>
             </ModalConfigProvider>
-          </AffineContext>
+          </YunkeContext>
         </I18nProvider>
       </FrameworkRoot>
     </Suspense>

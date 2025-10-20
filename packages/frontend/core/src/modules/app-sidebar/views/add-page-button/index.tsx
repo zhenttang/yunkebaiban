@@ -1,6 +1,6 @@
 import { Button, IconButton, Menu, MenuItem, MenuSub } from '@yunke/component';
 import { usePageHelper } from '@yunke/core/blocksuite/block-suite-page-list/utils';
-import { useAsyncCallback } from '@yunke/core/components/hooks/affine-async-hooks';
+import { useAsyncCallback } from '@yunke/core/components/hooks/yunke-async-hooks';
 import { DocsService } from '@yunke/core/modules/doc';
 import { EditorSettingService } from '@yunke/core/modules/editor-setting';
 import { TemplateDocService } from '@yunke/core/modules/template-doc';

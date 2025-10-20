@@ -31,7 +31,7 @@ export const WorkspaceSettingStorage = ({
     <>
       <SettingHeader
         title={t['Storage']()}
-        subtitle={t['com.affine.settings.workspace.storage.subtitle']()}
+        subtitle={t['com.yunke.settings.workspace.storage.subtitle']()}
       />
       {workspace.flavour === 'local' ? (
         <>

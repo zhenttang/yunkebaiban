@@ -1,6 +1,6 @@
 {
   "name": "@blocksuite/yunke-widget-note-slicer",
-  "description": "Affine note slicer widget.",
+  "description": "Yunke note slicer widget.",
   "type": "module",
   "scripts": {
     "build": "tsc"

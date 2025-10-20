@@ -140,7 +140,7 @@ export class ViewportTurboRendererExtension extends GfxExtension {
   }
 
   override mounted() {
-    const mountPoint = document.querySelector('.affine-edgeless-viewport');
+    const mountPoint = document.querySelector('.yunke-edgeless-viewport');
     if (mountPoint) {
       mountPoint.append(this.canvas);
     }

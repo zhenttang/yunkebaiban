@@ -14,7 +14,7 @@ import { ShapeTool } from './shape-tool';
 import { shapeSeniorTool, shapeToolbarExtension } from './toolbar';
 
 export class ShapeViewExtension extends ViewExtensionProvider {
-  override name = 'affine-shape-gfx';
+  override name = 'yunke-shape-gfx';
 
   override effect(): void {
     super.effect();

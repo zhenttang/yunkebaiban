@@ -125,7 +125,7 @@ const NavigationPanelCollectionNodeChildren = ({
       track.$.navigationPanel.collections.removeOrganizeItem({ type: 'doc' });
       collectionService.removeDocFromCollection(collection.id, id);
       notify.success({
-        message: t['com.affine.collection.removePage.success'](),
+        message: t['com.yunke.collection.removePage.success'](),
       });
     },
     [collection.id, collectionService, t]

@@ -73,7 +73,7 @@ import {
 import groupBy from 'lodash-es/groupBy';
 import last from 'lodash-es/last';
 
-import type { AffineDragHandleWidget } from '../drag-handle.js';
+import type { YunkeDragHandleWidget } from '../drag-handle.js';
 import { PreviewHelper } from '../helpers/preview-helper.js';
 import { gfxBlocksFilter } from '../middleware/blocks-filter.js';
 import { cardStyleUpdater } from '../middleware/card-style-updater.js';
@@ -1398,7 +1398,7 @@ export class DragEventWatcher {
     this.resetOpacityCallbacks = resetCallbacks;
   };
 
-  constructor(readonly widget: AffineDragHandleWidget) {}
+  constructor(readonly widget: YunkeDragHandleWidget) {}
 
   private async _dropToModel(
     snapshot: SliceSnapshot,

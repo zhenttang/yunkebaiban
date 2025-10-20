@@ -1,4 +1,4 @@
-import type { AffineTextAttributes } from '@blocksuite/yunke-shared/types';
+import type { YunkeTextAttributes } from '@blocksuite/yunke-shared/types';
 import type { Command } from '@blocksuite/std';
 import {
   INLINE_ROOT_ATTR,
@@ -14,7 +14,7 @@ export const toggleLink: Command = (ctx, next) => {
   const range = selection.getRangeAt(0);
   if (range.collapsed) return false;
   const inlineRoot = range.startContainer.parentElement?.closest<
-    InlineRootElement<AffineTextAttributes>
+    InlineRootElement<YunkeTextAttributes>
   >(`[${INLINE_ROOT_ATTR}]`);
   if (!inlineRoot) return false;
 

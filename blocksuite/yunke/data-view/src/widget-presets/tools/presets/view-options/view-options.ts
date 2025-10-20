@@ -42,7 +42,7 @@ import { popFilterRoot } from '../../../quick-setting-bar/filter/root-panel-view
 import { popSortRoot } from '../../../quick-setting-bar/sort/root-panel.js';
 
 const styles = css`
-  .affine-database-toolbar-item.more-action {
+  .yunke-database-toolbar-item.more-action {
     padding: 2px;
     border-radius: 4px;
     display: flex;
@@ -50,17 +50,17 @@ const styles = css`
     cursor: pointer;
   }
 
-  .affine-database-toolbar-item.more-action:hover {
-    background: var(--affine-hover-color);
+  .yunke-database-toolbar-item.more-action:hover {
+    background: var(--yunke-hover-color);
   }
 
-  .affine-database-toolbar-item.more-action {
+  .yunke-database-toolbar-item.more-action {
     font-size: 20px;
     color: ${unsafeCSSVarV2('icon/primary')};
   }
 
   .more-action.active {
-    background: var(--affine-hover-color);
+    background: var(--yunke-hover-color);
   }
 `;
 
@@ -81,7 +81,7 @@ export class DataViewHeaderToolsViewOptions extends WidgetBase {
       return;
     }
     return html` <div
-      class="affine-database-toolbar-item more-action"
+      class="yunke-database-toolbar-item more-action"
       @click="${this.clickMoreAction}"
     >
       ${MoreHorizontalIcon()}
@@ -267,20 +267,20 @@ export const popViewOptions = (
                 const iconStyle = styleMap({
                   fontSize: '24px',
                   color: isSelected
-                    ? 'var(--affine-text-emphasis-color)'
-                    : 'var(--affine-icon-secondary)',
+                    ? 'var(--yunke-text-emphasis-color)'
+                    : 'var(--yunke-icon-secondary)',
                 });
                 const textStyle = styleMap({
                   fontSize: '14px',
                   lineHeight: '22px',
                   color: isSelected
-                    ? 'var(--affine-text-emphasis-color)'
-                    : 'var(--affine-text-secondary-color)',
+                    ? 'var(--yunke-text-emphasis-color)'
+                    : 'var(--yunke-text-secondary-color)',
                 });
                 const data: MenuButtonData = {
                   content: () => html`
                     <div
-                      style="color:var(--affine-text-emphasis-color);width:100%;display: flex;flex-direction: column;align-items: center;justify-content: center;padding: 6px 16px;white-space: nowrap"
+                      style="color:var(--yunke-text-emphasis-color);width:100%;display: flex;flex-direction: column;align-items: center;justify-content: center;padding: 6px 16px;white-space: nowrap"
                     >
                       <div style="${iconStyle}">
                         ${renderUniLit(meta.renderer.icon)}
@@ -301,11 +301,11 @@ export const popViewOptions = (
                 const containerStyle = styleMap({
                   flex: '1',
                 });
-                return html` <affine-menu-button
+                return html` <yunke-menu-button
                   style="${containerStyle}"
                   .data="${data}"
                   .menu="${menu}"
-                ></affine-menu-button>`;
+                ></yunke-menu-button>`;
               };
             });
             popMenu(target, {

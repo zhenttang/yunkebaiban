@@ -1,4 +1,4 @@
-import { AffineContext } from '@yunke/core/components/context';
+import { YunkeContext } from '@yunke/core/components/context';
 import { AppContainer } from '@yunke/core/desktop/components/app-container';
 import { router } from '@yunke/core/desktop/router';
 import { configureCommonModules } from '@yunke/core/modules';
@@ -35,7 +35,7 @@ if (
   localStorage.getItem('disableSharedWorker') !== 'true'
 ) {
   const worker = new SharedWorker(workerUrl, {
-    name: 'affine-shared-worker',
+    name: 'yunke-shared-worker',
   });
   storeManagerClient = new StoreManagerClient(new OpClient(worker.port));
 } else {
@@ -93,7 +93,7 @@ export function App() {
       <FrameworkRoot framework={frameworkProvider}>
         <CacheProvider value={cache}>
           <I18nProvider>
-            <AffineContext store={getCurrentStore()}>
+            <YunkeContext store={getCurrentStore()}>
               <CloudStorageProvider>
                 <RouterProvider
                   fallbackElement={<AppContainer fallback />}
@@ -102,7 +102,7 @@ export function App() {
                 />
                 <CloudStorageIndicator />
               </CloudStorageProvider>
-            </AffineContext>
+            </YunkeContext>
           </I18nProvider>
         </CacheProvider>
       </FrameworkRoot>

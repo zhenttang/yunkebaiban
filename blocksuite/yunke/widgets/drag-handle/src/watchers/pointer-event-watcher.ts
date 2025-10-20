@@ -17,8 +17,8 @@ import {
   DRAG_HANDLE_GRABBER_HEIGHT,
   DRAG_HANDLE_GRABBER_WIDTH,
 } from '../config.js';
-import { AFFINE_DRAG_HANDLE_WIDGET } from '../consts.js';
-import type { AffineDragHandleWidget } from '../drag-handle.js';
+import { YUNKE_DRAG_HANDLE_WIDGET } from '../consts.js';
+import type { YunkeDragHandleWidget } from '../drag-handle.js';
 import {
   getClosestBlockByPoint,
   getClosestNoteBlock,
@@ -62,7 +62,7 @@ export class PointerEventWatcher {
     const state = ctx.get('pointerState');
     const { target } = state.raw;
     const element = captureEventTarget(target);
-    const insideDragHandle = !!element?.closest(AFFINE_DRAG_HANDLE_WIDGET);
+    const insideDragHandle = !!element?.closest(YUNKE_DRAG_HANDLE_WIDGET);
     if (!insideDragHandle) return;
 
     const anchorBlockId = this.widget.anchorBlockId.peek();
@@ -212,11 +212,11 @@ export class PointerEventWatcher {
     // Need to be optimized
     const relatedElement = captureEventTarget(relatedTarget);
     const outOfPageViewPort = element.classList.contains(
-      'affine-page-viewport'
+      'yunke-page-viewport'
     );
-    const inPage = !!relatedElement?.closest('.affine-page-viewport');
+    const inPage = !!relatedElement?.closest('.yunke-page-viewport');
 
-    const inDragHandle = !!relatedElement?.closest(AFFINE_DRAG_HANDLE_WIDGET);
+    const inDragHandle = !!relatedElement?.closest(YUNKE_DRAG_HANDLE_WIDGET);
     if (outOfPageViewPort && !inDragHandle && !inPage) {
       this.widget.hide();
     }
@@ -246,7 +246,7 @@ export class PointerEventWatcher {
       if (!element) return;
 
       // When pointer on drag handle, should do nothing
-      if (element.closest('.affine-drag-handle-container')) return;
+      if (element.closest('.yunke-drag-handle-container')) return;
 
       if (!this.widget.rootComponent) return;
 
@@ -349,7 +349,7 @@ export class PointerEventWatcher {
     this._isPointerDown = false;
   };
 
-  constructor(readonly widget: AffineDragHandleWidget) {}
+  constructor(readonly widget: YunkeDragHandleWidget) {}
 
   reset() {
     this._lastHoveredBlockId = null;

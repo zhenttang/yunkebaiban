@@ -1,12 +1,12 @@
 import { WidgetViewExtension } from '@blocksuite/std';
 import { literal, unsafeStatic } from 'lit/static-html.js';
 
-import { AFFINE_TOOLBAR_WIDGET } from './toolbar';
+import { YUNKE_TOOLBAR_WIDGET } from './toolbar';
 
 export * from './toolbar';
 
 export const toolbarWidget = WidgetViewExtension(
   'yunke:page',
-  AFFINE_TOOLBAR_WIDGET,
-  literal`${unsafeStatic(AFFINE_TOOLBAR_WIDGET)}`
+  YUNKE_TOOLBAR_WIDGET,
+  literal`${unsafeStatic(YUNKE_TOOLBAR_WIDGET)}`
 );

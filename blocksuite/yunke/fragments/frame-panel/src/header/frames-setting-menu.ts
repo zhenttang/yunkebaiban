@@ -36,7 +36,7 @@ const styles = css`
     font-size: 12px;
     font-weight: 500;
     line-height: 20px;
-    color: var(--affine-text-secondary-color);
+    color: var(--yunke-text-secondary-color);
     padding: 0 4px;
   }
 
@@ -44,7 +44,7 @@ const styles = css`
     width: 100%;
     height: 1px;
     box-sizing: border-box;
-    background: var(--affine-border-color);
+    background: var(--yunke-border-color);
     margin: 8px 0;
   }
 
@@ -59,7 +59,7 @@ const styles = css`
     font-size: 12px;
     font-weight: 500;
     line-height: 20px;
-    color: var(--affine-text-primary-color);
+    color: var(--yunke-text-primary-color);
   }
 
   .frames-setting-menu-item .toggle-button {
@@ -71,7 +71,7 @@ const styles = css`
   }
 `;
 
-export const AFFINE_FRAMES_SETTING_MENU = 'affine-frames-setting-menu';
+export const YUNKE_FRAMES_SETTING_MENU = 'yunke-frames-setting-menu';
 
 export class FramesSettingMenu extends WithDisposable(LitElement) {
   static override styles = styles;
@@ -214,6 +214,6 @@ export class FramesSettingMenu extends WithDisposable(LitElement) {
 
 declare global {
   interface HTMLElementTagNameMap {
-    [AFFINE_FRAMES_SETTING_MENU]: FramesSettingMenu;
+    [YUNKE_FRAMES_SETTING_MENU]: FramesSettingMenu;
   }
 }

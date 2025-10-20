@@ -65,7 +65,7 @@ function buildStickerTemplate(data) {
           blocks: {
             type: 'block',
             id: 'block:1VxnfD_8xb',
-            flavour: 'affine:page',
+            flavour: 'yunke:page',
             props: {
               title: {
                 '$blocksuite:internal:text$': true,
@@ -80,7 +80,7 @@ function buildStickerTemplate(data) {
               {
                 type: 'block',
                 id: 'block:pcmYJQ63hX',
-                flavour: 'affine:surface',
+                flavour: 'yunke:surface',
                 props: {
                   elements: {},
                 },
@@ -88,7 +88,7 @@ function buildStickerTemplate(data) {
                   {
                     type: 'block',
                     id: 'block:N24al1Qgl7',
-                    flavour: 'affine:image',
+                    flavour: 'yunke:image',
                     props: {
                       caption: '',
                       sourceId: data.hash,
@@ -1544,9 +1544,9 @@ const templates = {
         hash: "JqWfcP9Q0kGE4wDuVZCi4lW2U7O15trpL--fdNrRJvQ=",
       }),],
 "Contorted Stickers": [     buildStickerTemplate({
-        name: "AFFiNE",
-        coverUrl: "https://yckeji0316-1312042802.cos.ap-beijing.myqcloud.com/localFile/stickers/stickers/Contorted%20Stickers/Cover/AFFiNE.svg",
-        contentUrl: "https://yckeji0316-1312042802.cos.ap-beijing.myqcloud.com/localFile/stickers/stickers/Contorted%20Stickers/Content/AFFiNE.svg",
+        name: "YUNKE",
+        coverUrl: "https://yckeji0316-1312042802.cos.ap-beijing.myqcloud.com/localFile/stickers/stickers/Contorted%20Stickers/Cover/YUNKE.svg",
+        contentUrl: "https://yckeji0316-1312042802.cos.ap-beijing.myqcloud.com/localFile/stickers/stickers/Contorted%20Stickers/Content/YUNKE.svg",
         hash: "i3piAMnoD4STQnEjTrAe_ZRdwHcD34n-sJZY8IN1blg=",
       }),
      buildStickerTemplate({
@@ -2402,9 +2402,9 @@ const templates = {
         hash: "yKPa7vqOxC6rh-e0SVdlp0RwMWQ9mzDKTtE5g2UnHGk=",
       }),
      buildStickerTemplate({
-        name: "AFFiNE AI",
-        coverUrl: "https://yckeji0316-1312042802.cos.ap-beijing.myqcloud.com/localFile/stickers/stickers/Paper/Cover/AFFiNE AI.svg",
-        contentUrl: "https://yckeji0316-1312042802.cos.ap-beijing.myqcloud.com/localFile/stickers/stickers/Paper/Content/AFFiNE AI.svg",
+        name: "YUNKE AI",
+        coverUrl: "https://yckeji0316-1312042802.cos.ap-beijing.myqcloud.com/localFile/stickers/stickers/Paper/Cover/YUNKE AI.svg",
+        contentUrl: "https://yckeji0316-1312042802.cos.ap-beijing.myqcloud.com/localFile/stickers/stickers/Paper/Content/YUNKE AI.svg",
         hash: "FwBs2WApEGkiFmu1XR4fHZ_7fOlSsSBdYEyGs2lDeLk=",
       }),
      buildStickerTemplate({

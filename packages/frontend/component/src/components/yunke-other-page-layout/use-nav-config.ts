@@ -6,16 +6,16 @@ export const useNavConfig = () => {
   return useMemo(
     () => [
       {
-        title: t['com.affine.other-page.nav.official-website'](),
-        path: 'https://affine.pro',
+        title: t['com.yunke.other-page.nav.official-website'](),
+        path: 'https://yunke.pro',
       },
       {
-        title: t['com.affine.other-page.nav.blog'](),
-        path: 'https://affine.pro/blog',
+        title: t['com.yunke.other-page.nav.blog'](),
+        path: 'https://yunke.pro/blog',
       },
       {
-        title: t['com.affine.other-page.nav.contact-us'](),
-        path: 'https://affine.pro/about-us',
+        title: t['com.yunke.other-page.nav.contact-us'](),
+        path: 'https://yunke.pro/about-us',
       },
     ],
     [t]

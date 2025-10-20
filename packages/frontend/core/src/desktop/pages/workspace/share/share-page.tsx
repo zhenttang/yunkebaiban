@@ -1,5 +1,5 @@
 import { Scrollable, uniReactRoot } from '@yunke/component';
-import type { AffineEditorContainer } from '@yunke/core/blocksuite/block-suite-editor';
+import type { YunkeEditorContainer } from '@yunke/core/blocksuite/block-suite-editor';
 import { EditorOutlineViewer } from '@yunke/core/blocksuite/outline-viewer';
 import { useActiveBlocksuiteEditor } from '@yunke/core/components/hooks/use-block-suite-editor';
 import { useNavigateHelper } from '@yunke/core/components/hooks/use-navigate-helper';
@@ -127,7 +127,7 @@ const SharePageInner = ({
       {
         metadata: {
           id: workspaceId,
-          flavour: 'affine-cloud',
+          flavour: 'yunke-cloud',
         },
         isSharedMode: true,
       },
@@ -150,12 +150,12 @@ const SharePageInner = ({
           awareness: {
             name: 'BroadcastChannelAwarenessStorage',
             opts: {
-              id: `affine-cloud:${workspaceId}`,
+              id: `yunke-cloud:${workspaceId}`,
             },
           },
         },
         remotes: {
-          'cloud:affine-cloud': {
+          'cloud:yunke-cloud': {
             doc: {
               name: 'CloudDocStorage',
               opts: {
@@ -296,7 +296,7 @@ const SharePageInner = ({
   }, []);
 
   const onEditorLoad = useCallback(
-    (editorContainer: AffineEditorContainer) => {
+    (editorContainer: YunkeEditorContainer) => {
       setActiveBlocksuiteEditor(editorContainer);
       if (!editor) {
         return;
@@ -368,7 +368,7 @@ const SharePageInner = ({
               <Scrollable.Root>
                 <Scrollable.Viewport
                   className={clsx(
-                    'affine-page-viewport',
+                    'yunke-page-viewport',
                     styles.editorContainer
                   )}
                 >

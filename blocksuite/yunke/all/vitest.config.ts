@@ -13,7 +13,7 @@ export default defineConfig({
     coverage: {
       provider: 'istanbul', // or 'c8'
       reporter: ['lcov'],
-      reportsDirectory: '../../../.coverage/blocksuite-affine',
+      reportsDirectory: '../../../.coverage/blocksuite-yunke',
     },
     /**
      * Custom handler for console.log in tests.

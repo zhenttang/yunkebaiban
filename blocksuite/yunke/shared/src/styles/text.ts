@@ -1,9 +1,9 @@
 import type { StyleInfo } from 'lit/directives/style-map.js';
 
-import type { AffineTextAttributes } from '../types';
+import type { YunkeTextAttributes } from '../types';
 
-export function affineTextStyles(
-  props: AffineTextAttributes,
+export function yunkeTextStyles(
+  props: YunkeTextAttributes,
   override?: Readonly<StyleInfo>
 ): StyleInfo {
   let textDecorations = '';
@@ -17,11 +17,11 @@ export function affineTextStyles(
   let inlineCodeStyle = {};
   if (props.code) {
     inlineCodeStyle = {
-      'font-family': 'var(--affine-font-code-family)',
-      background: 'var(--affine-background-code-block)',
-      border: '1px solid var(--affine-border-color)',
+      'font-family': 'var(--yunke-font-code-family)',
+      background: 'var(--yunke-background-code-block)',
+      border: '1px solid var(--yunke-border-color)',
       'border-radius': '4px',
-      color: 'var(--affine-text-primary-color)',
+      color: 'var(--yunke-text-primary-color)',
       'font-variant-ligatures': 'none',
       'vertical-align': 'bottom',
       'line-height': 'inherit',

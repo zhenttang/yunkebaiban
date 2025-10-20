@@ -45,13 +45,13 @@ import {
   getTextSelectionCommand,
 } from '@blocksuite/yunke-shared/commands';
 import { REFERENCE_NODE } from '@blocksuite/yunke-shared/consts';
-import type { AffineTextAttributes } from '@blocksuite/yunke-shared/types';
+import type { YunkeTextAttributes } from '@blocksuite/yunke-shared/types';
 import {
   createDefaultDoc,
   openSingleFileWith,
   type Signal,
 } from '@blocksuite/yunke-shared/utils';
-import type { AffineLinkedDocWidget } from '@blocksuite/yunke-widget-linked-doc';
+import type { YunkeLinkedDocWidget } from '@blocksuite/yunke-widget-linked-doc';
 import { viewPresets } from '@blocksuite/data-view/view-presets';
 import { assertType } from '@blocksuite/global/utils';
 import {
@@ -332,7 +332,7 @@ const pageToolGroup: KeyboardToolPanelGroup = {
       icon: LinkedPageIcon(),
       showWhen: ({ std, rootComponent }) => {
         const linkedDocWidget = std.view.getWidget(
-          'affine-linked-doc-widget',
+          'yunke-linked-doc-widget',
           rootComponent.model.id
         );
         if (!linkedDocWidget) return false;
@@ -343,11 +343,11 @@ const pageToolGroup: KeyboardToolPanelGroup = {
         const { std } = rootComponent;
 
         const linkedDocWidget = std.view.getWidget(
-          'affine-linked-doc-widget',
+          'yunke-linked-doc-widget',
           rootComponent.model.id
         );
         if (!linkedDocWidget) return;
-        assertType<AffineLinkedDocWidget>(linkedDocWidget);
+        assertType<YunkeLinkedDocWidget>(linkedDocWidget);
         linkedDocWidget.show({
           mode: 'mobile',
           addTriggerKey: true,
@@ -923,7 +923,7 @@ const highlightToolPanel: KeyboardToolPanelConfig = {
             const payload = {
               styles: {
                 color: cssVarV2(`text/highlight/fg/${color}`),
-              } satisfies AffineTextAttributes,
+              } satisfies YunkeTextAttributes,
             };
             std.command
               .chain()
@@ -975,7 +975,7 @@ const highlightToolPanel: KeyboardToolPanelConfig = {
             const payload = {
               styles: {
                 background: cssVarV2(`text/highlight/bg/${color}`),
-              } satisfies AffineTextAttributes,
+              } satisfies YunkeTextAttributes,
             };
             std.command
               .chain()
@@ -1027,7 +1027,7 @@ const textSubToolbarConfig: KeyboardSubToolbarConfig = {
 export const defaultKeyboardToolbarConfig: KeyboardToolbarConfig = {
   items: [
     moreToolPanel,
-    // TODO(@L-Sun): add ai function in AFFiNE side
+    // TODO(@L-Sun): add ai function in YUNKE side
     // { icon: AiIcon(iconStyle) },
     textSubToolbarConfig,
     {

@@ -69,7 +69,7 @@ curl -H "Authorization: Bearer {token}" \
 curl -X PUT \
      -H "Authorization: Bearer {token}" \
      -H "Content-Type: application/json" \
-     -d '{"serverName":"My AFFiNE Server","enableSignup":true}' \
+     -d '{"serverName":"My YUNKE Server","enableSignup":true}' \
      http://localhost:8080/api/admin/server/config
 
 # 获取系统信息
@@ -121,5 +121,5 @@ curl -H "Authorization: Bearer {token}" \
 
 ## 🎉 T3任务完成
 
-服务器设置模块开发完成，已完全集成到AFFiNE Admin系统中。
+服务器设置模块开发完成，已完全集成到YUNKE Admin系统中。
 用户可以通过直观的界面管理服务器配置，监控系统状态，确保系统稳定运行。

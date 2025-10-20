@@ -1,5 +1,5 @@
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
-import { AffineContext } from '@yunke/core/components/context';
+import { YunkeContext } from '@yunke/core/components/context';
 import { WindowsAppControls } from '@yunke/core/components/pure/header/windows-app-controls';
 import { AppContainer } from '@yunke/core/desktop/components/app-container';
 import { router } from '@yunke/core/desktop/router';
@@ -44,6 +44,6 @@ const future = {
     v7_startTransition: true,
 };
 export function App() {
-    return (_jsx(Suspense, { children: _jsx(FrameworkRoot, { framework: frameworkProvider, children: _jsx(CacheProvider, { value: cache, children: _jsx(I18nProvider, { children: _jsxs(AffineContext, { store: getCurrentStore(), children: [_jsx(DesktopThemeSync, {}), _jsx(RouterProvider, { fallbackElement: _jsx(AppContainer, { fallback: true }), router: router, future: future }), environment.isWindows && (_jsx("div", { style: { position: 'fixed', right: 0, top: 0, zIndex: 5 }, children: _jsx(WindowsAppControls, {}) }))] }) }) }) }) }));
+    return (_jsx(Suspense, { children: _jsx(FrameworkRoot, { framework: frameworkProvider, children: _jsx(CacheProvider, { value: cache, children: _jsx(I18nProvider, { children: _jsxs(YunkeContext, { store: getCurrentStore(), children: [_jsx(DesktopThemeSync, {}), _jsx(RouterProvider, { fallbackElement: _jsx(AppContainer, { fallback: true }), router: router, future: future }), environment.isWindows && (_jsx("div", { style: { position: 'fixed', right: 0, top: 0, zIndex: 5 }, children: _jsx(WindowsAppControls, {}) }))] }) }) }) }) }));
 }
 //# sourceMappingURL=app.js.map

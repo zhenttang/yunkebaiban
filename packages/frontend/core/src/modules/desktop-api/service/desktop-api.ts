@@ -131,7 +131,7 @@ export class DesktopApiService extends Service {
           targetServer = defaultServerService.server;
         }
         if (!targetServer) {
-          throw new Error('AFFiNE Cloud 服务器未找到');
+          throw new Error('YUNKE Cloud 服务器未找到');
         }
         const authService = targetServer.scope.get(AuthService);
 
@@ -149,7 +149,7 @@ export class DesktopApiService extends Service {
         }
       })().catch(e => {
         notify.error({
-          title: I18n['com.affine.auth.toast.title.failed'](),
+          title: I18n['com.yunke.auth.toast.title.failed'](),
           message: (e as any).message,
         });
       });

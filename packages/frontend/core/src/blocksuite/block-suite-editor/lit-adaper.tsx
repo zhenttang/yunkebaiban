@@ -12,7 +12,7 @@ import {
   type PageEditor,
 } from '@yunke/core/blocksuite/editors';
 import { getViewManager } from '@yunke/core/blocksuite/manager/view';
-import { useEnableAI } from '@yunke/core/components/hooks/affine/use-enable-ai';
+import { useEnableAI } from '@yunke/core/components/hooks/yunke/use-enable-ai';
 import type { DocCustomPropertyInfo } from '@yunke/core/modules/db';
 import type {
   DatabaseRow,
@@ -252,7 +252,7 @@ export const BlocksuiteDocEditor = forwardRef<
 
   return (
     <>
-      <div className={styles.affineDocViewport}>
+      <div className={styles.yunkeDocViewport}>
         {!isJournal ? (
           <LitDocTitle doc={page} ref={onTitleRef} />
         ) : (
@@ -326,7 +326,7 @@ const BlocksuiteEdgelessEditorComponent = forwardRef<
       performance.mark('edgeless-focus-start');
       editorRef.current.updateComplete
         .then(() => {
-          const root = editorRef.current?.querySelector<HTMLElement>('affine-edgeless-root');
+          const root = editorRef.current?.querySelector<HTMLElement>('yunke-edgeless-root');
           if (root) {
             root.focus();
             performance.mark('edgeless-focus-end');
@@ -338,7 +338,7 @@ const BlocksuiteEdgelessEditorComponent = forwardRef<
   }, []);
 
   return (
-    <div className={styles.affineEdgelessDocViewport}>
+    <div className={styles.yunkeEdgelessDocViewport}>
       <LitEdgelessEditor ref={onDocRef} doc={page} specs={specs} />
       {portals}
     </div>

@@ -1,7 +1,7 @@
 import { IconButton, Menu, MenuItem } from '@yunke/component';
 import { Divider } from '@yunke/component/ui/divider';
-import { useEnableCloud } from '@yunke/core/components/hooks/affine/use-enable-cloud';
-import { useAsyncCallback } from '@yunke/core/components/hooks/affine-async-hooks';
+import { useEnableCloud } from '@yunke/core/components/hooks/yunke/use-enable-cloud';
+import { useAsyncCallback } from '@yunke/core/components/hooks/yunke-async-hooks';
 import { useNavigateHelper } from '@yunke/core/components/hooks/use-navigate-helper';
 import type { AuthAccountInfo, Server } from '@yunke/core/modules/cloud';
 import { AuthService, ServersService } from '@yunke/core/modules/cloud';
@@ -60,8 +60,8 @@ const WorkspaceServerInfo = ({
 }) => {
   const t = useI18n();
   const isCloud = server !== 'local';
-  const isAffineCloud = server === 'affine-cloud';
-  const Icon = isAffineCloud
+  const isYunkeCloud = server === 'yunke-cloud';
+  const Icon = isYunkeCloud
     ? CloudWorkspaceIcon
     : isCloud
       ? SelfhostIcon
@@ -70,14 +70,14 @@ const WorkspaceServerInfo = ({
   const menuItems = useMemo(
     () =>
       [
-        server !== 'affine-cloud' && server !== 'local' && (
+        server !== 'yunke-cloud' && server !== 'local' && (
           <MenuItem
             prefixIcon={<DeleteIcon />}
             type="danger"
             key="delete-server"
             onClick={onDeleteServer}
           >
-            {t['com.affine.server.delete']()}
+            {t['com.yunke.server.delete']()}
           </MenuItem>
         ),
         accountStatus === 'authenticated' && (
@@ -214,7 +214,7 @@ const LocalWorkspaces = ({
     <>
       <WorkspaceServerInfo
         server="local"
-        name={t['com.affine.workspaceList.workspaceListType.local']()}
+        name={t['com.yunke.workspaceList.workspaceListType.local']()}
       />
       <WorkspaceList
         items={workspaces}
@@ -226,7 +226,7 @@ const LocalWorkspaces = ({
   );
 };
 
-export const AFFiNEWorkspaceList = ({
+export const YUNKEWorkspaceList = ({
   onEventEnd,
   onClickWorkspace,
   showEnableCloudButton,
@@ -242,12 +242,12 @@ export const AFFiNEWorkspaceList = ({
 
   const serversService = useService(ServersService);
   const servers = useLiveData(serversService.servers$);
-  const affineCloudServer = useMemo(
-    () => servers.find(s => s.id === 'affine-cloud') as Server,
+  const yunkeCloudServer = useMemo(
+    () => servers.find(s => s.id === 'yunke-cloud') as Server,
     [servers]
   );
   const selfhostServers = useMemo(
-    () => servers.filter(s => s.id !== 'affine-cloud'),
+    () => servers.filter(s => s.id !== 'yunke-cloud'),
     [servers]
   );
 
@@ -289,15 +289,15 @@ export const AFFiNEWorkspaceList = ({
 
   return (
     <>
-      {/* 1. affine-cloud */}
+      {/* 1. yunke-cloud */}
       <FrameworkScope
-        key={affineCloudServer.id}
-        scope={affineCloudServer.scope}
+        key={yunkeCloudServer.id}
+        scope={yunkeCloudServer.scope}
       >
         <CloudWorkSpaceList
-          server={affineCloudServer}
+          server={yunkeCloudServer}
           workspaces={cloudWorkspaces.filter(
-            ({ flavour }) => flavour === affineCloudServer.id
+            ({ flavour }) => flavour === yunkeCloudServer.id
           )}
           onClickWorkspace={handleClickWorkspace}
         />

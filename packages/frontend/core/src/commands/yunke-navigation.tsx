@@ -6,9 +6,9 @@ import { ArrowRightBigIcon } from '@blocksuite/icons/rc';
 import type { useNavigateHelper } from '../components/hooks/use-navigate-helper';
 import type { WorkspaceDialogService } from '../modules/dialogs';
 import type { WorkbenchService } from '../modules/workbench';
-import { registerAffineCommand } from './registry';
+import { registerYunkeCommand } from './registry';
 
-export function registerAffineNavigationCommands({
+export function registerYunkeNavigationCommands({
   t,
   docCollection,
   navigationHelper,
@@ -23,11 +23,11 @@ export function registerAffineNavigationCommands({
 }) {
   const unsubs: Array<() => void> = [];
   unsubs.push(
-    registerAffineCommand({
-      id: 'affine:goto-all-pages',
-      category: 'affine:navigation',
+    registerYunkeCommand({
+      id: 'yunke:goto-all-pages',
+      category: 'yunke:navigation',
       icon: <ArrowRightBigIcon />,
-      label: t['com.affine.cmdk.affine.navigation.goto-all-pages'](),
+      label: t['com.yunke.cmdk.yunke.navigation.goto-all-pages'](),
       run() {
         track.$.cmdk.navigation.navigate({
           to: 'allDocs',
@@ -39,9 +39,9 @@ export function registerAffineNavigationCommands({
   );
 
   unsubs.push(
-    registerAffineCommand({
-      id: 'affine:goto-collection-list',
-      category: 'affine:navigation',
+    registerYunkeCommand({
+      id: 'yunke:goto-collection-list',
+      category: 'yunke:navigation',
       icon: <ArrowRightBigIcon />,
       label: 'Go to Collection List',
       run() {
@@ -55,9 +55,9 @@ export function registerAffineNavigationCommands({
   );
 
   unsubs.push(
-    registerAffineCommand({
-      id: 'affine:goto-tag-list',
-      category: 'affine:navigation',
+    registerYunkeCommand({
+      id: 'yunke:goto-tag-list',
+      category: 'yunke:navigation',
       icon: <ArrowRightBigIcon />,
       label: 'Go to Tag List',
       run() {
@@ -71,11 +71,11 @@ export function registerAffineNavigationCommands({
   );
 
   unsubs.push(
-    registerAffineCommand({
-      id: 'affine:goto-workspace',
-      category: 'affine:navigation',
+    registerYunkeCommand({
+      id: 'yunke:goto-workspace',
+      category: 'yunke:navigation',
       icon: <ArrowRightBigIcon />,
-      label: t['com.affine.cmdk.affine.navigation.goto-workspace'](),
+      label: t['com.yunke.cmdk.yunke.navigation.goto-workspace'](),
       run() {
         track.$.cmdk.navigation.navigate({
           to: 'workspace',
@@ -87,11 +87,11 @@ export function registerAffineNavigationCommands({
   );
 
   unsubs.push(
-    registerAffineCommand({
-      id: 'affine:open-settings',
-      category: 'affine:navigation',
+    registerYunkeCommand({
+      id: 'yunke:open-settings',
+      category: 'yunke:navigation',
       icon: <ArrowRightBigIcon />,
-      label: t['com.affine.cmdk.affine.navigation.open-settings'](),
+      label: t['com.yunke.cmdk.yunke.navigation.open-settings'](),
       keyBinding: '$mod+,',
       run() {
         track.$.cmdk.settings.openSettings();
@@ -103,11 +103,11 @@ export function registerAffineNavigationCommands({
   );
 
   unsubs.push(
-    registerAffineCommand({
-      id: 'affine:open-account',
-      category: 'affine:navigation',
+    registerYunkeCommand({
+      id: 'yunke:open-account',
+      category: 'yunke:navigation',
       icon: <ArrowRightBigIcon />,
-      label: t['com.affine.cmdk.affine.navigation.open-account-settings'](),
+      label: t['com.yunke.cmdk.yunke.navigation.open-account-settings'](),
       run() {
         track.$.cmdk.settings.openSettings({ to: 'account' });
         workspaceDialogService.open('setting', {
@@ -118,11 +118,11 @@ export function registerAffineNavigationCommands({
   );
 
   unsubs.push(
-    registerAffineCommand({
-      id: 'affine:goto-trash',
-      category: 'affine:navigation',
+    registerYunkeCommand({
+      id: 'yunke:goto-trash',
+      category: 'yunke:navigation',
       icon: <ArrowRightBigIcon />,
-      label: t['com.affine.cmdk.affine.navigation.goto-trash'](),
+      label: t['com.yunke.cmdk.yunke.navigation.goto-trash'](),
       run() {
         track.$.cmdk.navigation.navigate({
           to: 'trash',

@@ -11,7 +11,7 @@ import type { FrameworkProvider } from '@toeverything/infra';
 export function patchFileSizeLimitExtension(framework: FrameworkProvider) {
   const workspaceDialogService = framework.get(WorkspaceDialogService);
 
-  class AffineFileSizeLimitService
+  class YunkeFileSizeLimitService
     extends Extension
     implements IFileSizeLimitService
   {
@@ -27,9 +27,9 @@ export function patchFileSizeLimitExtension(framework: FrameworkProvider) {
     }
 
     static override setup(di: Container) {
-      di.override(FileSizeLimitProvider, AffineFileSizeLimitService);
+      di.override(FileSizeLimitProvider, YunkeFileSizeLimitService);
     }
   }
 
-  return AffineFileSizeLimitService;
+  return YunkeFileSizeLimitService;
 }

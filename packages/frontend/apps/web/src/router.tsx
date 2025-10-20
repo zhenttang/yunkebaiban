@@ -1,4 +1,4 @@
-import { AffineErrorComponent } from '@yunke/core/components/affine/affine-error-boundary/affine-error-fallback';
+import { YunkeErrorComponent } from '@yunke/core/components/yunke/yunke-error-boundary/yunke-error-fallback';
 import { NavigateContext } from '@yunke/core/components/hooks/use-navigate-helper';
 import { RootWrapper } from '@yunke/core/desktop/pages/root';
 
@@ -25,7 +25,7 @@ function WebNavigateProvider() {
 export const topLevelRoutes = [
   {
     element: <WebNavigateProvider />,
-    errorElement: <AffineErrorComponent />,
+    errorElement: <YunkeErrorComponent />,
     children: [
       {
         path: '/',

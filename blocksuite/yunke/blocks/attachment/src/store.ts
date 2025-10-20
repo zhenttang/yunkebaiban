@@ -7,7 +7,7 @@ import { AttachmentBlockSchemaExtension } from '@blocksuite/yunke-model';
 import { AttachmentBlockAdapterExtensions } from './adapters/extension';
 
 export class AttachmentStoreExtension extends StoreExtensionProvider {
-  override name = 'affine-attachment-block';
+  override name = 'yunke-attachment-block';
 
   override setup(context: StoreExtensionContext) {
     super.setup(context);

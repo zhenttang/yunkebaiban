@@ -3,7 +3,7 @@ import {
   SettingRow,
   SettingWrapper,
 } from '@yunke/component/setting-components';
-import { useAsyncCallback } from '@yunke/core/components/hooks/affine-async-hooks';
+import { useAsyncCallback } from '@yunke/core/components/hooks/yunke-async-hooks';
 import { ServerService } from '@yunke/core/modules/cloud';
 import { WorkspacePermissionService } from '@yunke/core/modules/permissions';
 import { WorkspaceShareSettingService } from '@yunke/core/modules/share-setting';
@@ -35,11 +35,11 @@ export const AiSetting = () => {
 
   return (
     <SettingWrapper
-      title={t['com.affine.settings.workspace.affine-ai.title']()}
+      title={t['com.yunke.settings.workspace.yunke-ai.title']()}
     >
       <SettingRow
-        name={t['com.affine.settings.workspace.affine-ai.label']()}
-        desc={t['com.affine.settings.workspace.affine-ai.description']()}
+        name={t['com.yunke.settings.workspace.yunke-ai.label']()}
+        desc={t['com.yunke.settings.workspace.yunke-ai.description']()}
       >
         <Switch
           checked={!!workspaceEnableAi}

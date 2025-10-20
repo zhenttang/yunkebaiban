@@ -1,6 +1,6 @@
 import type {
-  AffineInlineEditor,
-  AffineTextAttributes,
+  YunkeInlineEditor,
+  YunkeTextAttributes,
 } from '@blocksuite/yunke-shared/types';
 import { WithDisposable } from '@blocksuite/global/lit';
 import { ShadowlessElement } from '@blocksuite/std';
@@ -61,7 +61,7 @@ export class RichText extends WithDisposable(ShadowlessElement) {
 
   #verticalScrollContainer: HTMLElement | null = null;
 
-  private readonly _inlineEditor$ = signal<AffineInlineEditor | null>(null);
+  private readonly _inlineEditor$ = signal<YunkeInlineEditor | null>(null);
 
   private readonly _onCopy = (e: ClipboardEvent) => {
     const inlineEditor = this.inlineEditor;
@@ -166,7 +166,7 @@ export class RichText extends WithDisposable(ShadowlessElement) {
     }
 
     // init inline editor
-    this._inlineEditor$.value = new InlineEditor<AffineTextAttributes>(
+    this._inlineEditor$.value = new InlineEditor<YunkeTextAttributes>(
       this._yText,
       {
         isEmbed: delta => this.embedChecker(delta),
@@ -407,7 +407,7 @@ export class RichText extends WithDisposable(ShadowlessElement) {
 
   @property({ attribute: false })
   accessor embedChecker: <
-    TextAttributes extends AffineTextAttributes = AffineTextAttributes,
+    TextAttributes extends YunkeTextAttributes = YunkeTextAttributes,
   >(
     delta: DeltaInsert<TextAttributes>
   ) => boolean = () => false;
@@ -434,7 +434,7 @@ export class RichText extends WithDisposable(ShadowlessElement) {
   accessor inlineRangeProvider: InlineRangeProvider | undefined = undefined;
 
   @property({ attribute: false })
-  accessor markdownMatches: InlineMarkdownMatch<AffineTextAttributes>[] = [];
+  accessor markdownMatches: InlineMarkdownMatch<YunkeTextAttributes>[] = [];
 
   @property({ attribute: false })
   accessor readonly = false;

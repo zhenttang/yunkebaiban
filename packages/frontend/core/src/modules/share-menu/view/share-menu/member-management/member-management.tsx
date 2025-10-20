@@ -52,7 +52,7 @@ export const MemberManagement = ({
     <div className={styles.containerStyle}>
       <div className={styles.headerStyle} onClick={onClickBack}>
         <ArrowLeftBigIcon className={styles.iconStyle} />
-        {t['com.affine.share-menu.member-management.header']({
+        {t['com.yunke.share-menu.member-management.header']({
           memberCount: grantedUserCount?.toString() || '??',
         })}
       </div>
@@ -74,7 +74,7 @@ export const MemberManagement = ({
             className={styles.addCollaboratorsStyle}
             onClick={onClickInvite}
           >
-            {t['com.affine.share-menu.member-management.add-collaborators']()}
+            {t['com.yunke.share-menu.member-management.add-collaborators']()}
           </span>
         ) : null}
       </div>

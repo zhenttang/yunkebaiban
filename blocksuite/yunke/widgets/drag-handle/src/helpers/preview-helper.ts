@@ -17,7 +17,7 @@ import { signal } from '@preact/signals-core';
 import { literal } from 'lit/static-html.js';
 
 import { EdgelessDndPreviewElement } from '../components/edgeless-preview/preview.js';
-import type { AffineDragHandleWidget } from '../drag-handle.js';
+import type { YunkeDragHandleWidget } from '../drag-handle.js';
 
 export class PreviewHelper {
   private readonly _calculateQuery = (selectedIds: string[]): Query => {
@@ -80,7 +80,7 @@ export class PreviewHelper {
         setup(di) {
           di.override(
             BlockViewIdentifier('yunke:database'),
-            () => literal`affine-dnd-preview-database`
+            () => literal`yunke-dnd-preview-database`
           );
         },
       } as ExtensionType,
@@ -91,10 +91,10 @@ export class PreviewHelper {
               const parent = model.store.getParent(model.id);
 
               if (parent?.flavour === 'yunke:surface') {
-                return literal`affine-edgeless-placeholder-preview-image`;
+                return literal`yunke-edgeless-placeholder-preview-image`;
               }
 
-              return literal`affine-placeholder-preview-image`;
+              return literal`yunke-placeholder-preview-image`;
             };
           });
         },
@@ -116,7 +116,7 @@ export class PreviewHelper {
     let width: number = 500;
     let height;
 
-    const noteBlock = this.widget.host.querySelector('affine-note');
+    const noteBlock = this.widget.host.querySelector('yunke-note');
     width = noteBlock?.offsetWidth ?? noteBlock?.clientWidth ?? 500;
 
     return {
@@ -203,5 +203,5 @@ export class PreviewHelper {
     };
   };
 
-  constructor(readonly widget: AffineDragHandleWidget) {}
+  constructor(readonly widget: YunkeDragHandleWidget) {}
 }

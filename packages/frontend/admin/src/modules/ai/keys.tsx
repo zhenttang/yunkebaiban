@@ -166,7 +166,7 @@ export function Keys() {
           </div>
           <Separator />
           <div className="px-5 space-y-3 text-sm font-normal text-gray-500">
-            自定义 API 密钥可能无法按预期工作。AFFiNE 不保证
+            自定义 API 密钥可能无法按预期工作。YUNKE 不保证
             使用自定义 API 密钥时的结果。
           </div>
         </div>

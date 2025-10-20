@@ -1,5 +1,5 @@
 import { IconButton } from '@yunke/component';
-import { AffineErrorBoundary } from '@yunke/core/components/affine/affine-error-boundary';
+import { YunkeErrorBoundary } from '@yunke/core/components/yunke/yunke-error-boundary';
 import { RightSidebarIcon } from '@blocksuite/icons/rc';
 import { useLiveData, useService } from '@toeverything/infra';
 import { Suspense, useCallback } from 'react';
@@ -74,11 +74,11 @@ export const RouteContainer = () => {
         )}
       </div>
 
-      <AffineErrorBoundary>
+      <YunkeErrorBoundary>
         <Suspense fallback={<div style={{ padding: '20px', textAlign: 'center' }}>加载中...</div>}>
           <Outlet />
         </Suspense>
-      </AffineErrorBoundary>
+      </YunkeErrorBoundary>
       <ViewBodyTarget viewId={view.id} className={styles.viewBodyContainer} />
     </div>
   );

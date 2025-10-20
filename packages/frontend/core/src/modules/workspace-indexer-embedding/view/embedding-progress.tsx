@@ -34,14 +34,14 @@ const EmbeddingProgress: React.FC<EmbeddingProgressProps> = ({ status }) => {
         <div>
           {loading
             ? t[
-                'com.affine.settings.workspace.indexer-embedding.embedding.progress.loading-sync-status'
+                'com.yunke.settings.workspace.indexer-embedding.embedding.progress.loading-sync-status'
               ]()
             : synced
               ? t[
-                  'com.affine.settings.workspace.indexer-embedding.embedding.progress.synced'
+                  'com.yunke.settings.workspace.indexer-embedding.embedding.progress.synced'
                 ]()
               : t[
-                  'com.affine.settings.workspace.indexer-embedding.embedding.progress.syncing'
+                  'com.yunke.settings.workspace.indexer-embedding.embedding.progress.syncing'
                 ]()}
         </div>
         {loading ? null : (

@@ -2,7 +2,7 @@ import { BlockSchemaExtension } from '../extension/schema.js';
 import { BlockModel, defineBlockSchema } from '../model/index.js';
 
 export const RootBlockSchema = defineBlockSchema({
-  flavour: 'affine:page',
+  flavour: 'yunke:page',
   props: internal => ({
     title: internal.Text(),
     count: 0,
@@ -22,25 +22,25 @@ export class RootBlockModel extends BlockModel<
 > {}
 
 export const NoteBlockSchema = defineBlockSchema({
-  flavour: 'affine:note',
+  flavour: 'yunke:note',
   props: () => ({}),
   metadata: {
     version: 1,
     role: 'hub',
-    parent: ['affine:page'],
+    parent: ['yunke:page'],
     children: [
-      'affine:paragraph',
-      'affine:list',
-      'affine:code',
-      'affine:divider',
-      'affine:database',
-      'affine:data-view',
-      'affine:image',
-      'affine:note-block-*',
-      'affine:bookmark',
-      'affine:attachment',
-      'affine:surface-ref',
-      'affine:embed-*',
+      'yunke:paragraph',
+      'yunke:list',
+      'yunke:code',
+      'yunke:divider',
+      'yunke:database',
+      'yunke:data-view',
+      'yunke:image',
+      'yunke:note-block-*',
+      'yunke:bookmark',
+      'yunke:attachment',
+      'yunke:surface-ref',
+      'yunke:embed-*',
     ],
   },
 });
@@ -48,7 +48,7 @@ export const NoteBlockSchema = defineBlockSchema({
 export const NoteBlockSchemaExtension = BlockSchemaExtension(NoteBlockSchema);
 
 export const ParagraphBlockSchema = defineBlockSchema({
-  flavour: 'affine:paragraph',
+  flavour: 'yunke:paragraph',
   props: internal => ({
     type: 'text',
     text: internal.Text(),
@@ -57,10 +57,10 @@ export const ParagraphBlockSchema = defineBlockSchema({
     version: 1,
     role: 'content',
     parent: [
-      'affine:note',
-      'affine:database',
-      'affine:paragraph',
-      'affine:list',
+      'yunke:note',
+      'yunke:database',
+      'yunke:paragraph',
+      'yunke:list',
     ],
   },
 });
@@ -69,7 +69,7 @@ export const ParagraphBlockSchemaExtension =
   BlockSchemaExtension(ParagraphBlockSchema);
 
 export const ListBlockSchema = defineBlockSchema({
-  flavour: 'affine:list',
+  flavour: 'yunke:list',
   props: internal => ({
     type: 'bulleted',
     text: internal.Text(),
@@ -80,10 +80,10 @@ export const ListBlockSchema = defineBlockSchema({
     version: 1,
     role: 'content',
     parent: [
-      'affine:note',
-      'affine:database',
-      'affine:list',
-      'affine:paragraph',
+      'yunke:note',
+      'yunke:database',
+      'yunke:list',
+      'yunke:paragraph',
     ],
   },
 });
@@ -91,7 +91,7 @@ export const ListBlockSchema = defineBlockSchema({
 export const ListBlockSchemaExtension = BlockSchemaExtension(ListBlockSchema);
 
 export const DividerBlockSchema = defineBlockSchema({
-  flavour: 'affine:divider',
+  flavour: 'yunke:divider',
   metadata: {
     version: 1,
     role: 'content',

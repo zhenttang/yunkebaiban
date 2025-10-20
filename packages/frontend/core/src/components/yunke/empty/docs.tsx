@@ -49,16 +49,16 @@ export const EmptyDocs = ({
     <EmptyLayout
       illustrationLight={docsIllustrationLight}
       illustrationDark={docsIllustrationDark}
-      title={t['com.affine.empty.docs.title']()}
+      title={t['com.yunke.empty.docs.title']()}
       description={
         type === 'trash'
-          ? t['com.affine.empty.docs.trash-description']()
-          : t['com.affine.empty.docs.all-description']()
+          ? t['com.yunke.empty.docs.trash-description']()
+          : t['com.yunke.empty.docs.all-description']()
       }
       action={
         showActionButton ? (
           <ActionButton onClick={onCreate} prefix={<AllDocsIcon />}>
-            {t['com.affine.empty.docs.action.new-doc']()}
+            {t['com.yunke.empty.docs.action.new-doc']()}
           </ActionButton>
         ) : null
       }

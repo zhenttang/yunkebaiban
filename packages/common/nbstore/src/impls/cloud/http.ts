@@ -29,7 +29,7 @@ export class HttpConnection extends DummyConnection {
         headers: {
           ...this.requestHeaders,
           ...init?.headers,
-          'x-affine-version': BUILD_CONFIG.appVersion,
+          'x-yunke-version': BUILD_CONFIG.appVersion,
         },
       })
       .catch(err => {

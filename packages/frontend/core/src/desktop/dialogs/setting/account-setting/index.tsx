@@ -6,8 +6,8 @@ import {
 } from '@yunke/component/setting-components';
 import { Avatar } from '@yunke/component/ui/avatar';
 import { Button } from '@yunke/component/ui/button';
-import { useSignOut } from '@yunke/core/components/hooks/affine/use-sign-out';
-import { useAsyncCallback } from '@yunke/core/components/hooks/affine-async-hooks';
+import { useSignOut } from '@yunke/core/components/hooks/yunke/use-sign-out';
+import { useAsyncCallback } from '@yunke/core/components/hooks/yunke-async-hooks';
 import { useCatchEventCallback } from '@yunke/core/components/hooks/use-catch-event-hook';
 import { Upload } from '@yunke/core/components/pure/file-upload';
 import { GlobalDialogService } from '@yunke/core/modules/dialogs';
@@ -149,8 +149,8 @@ export const UserAvatar = () => {
           }}
           hoverIcon={<CameraIcon />}
           onRemove={resolvedAvatarUrl ? handleRemoveUserAvatar : undefined}
-          avatarTooltipOptions={{ content: shouldShowSvgAvatar ? '点击上传自定义头像' : t['com.affine.settings.avatar.click-to-replace']() }}
-          removeTooltipOptions={{ content: t['com.affine.settings.avatar.remove']() }}
+          avatarTooltipOptions={{ content: shouldShowSvgAvatar ? '点击上传自定义头像' : t['com.yunke.settings.avatar.click-to-replace']() }}
+          removeTooltipOptions={{ content: t['com.yunke.settings.avatar.remove']() }}
           data-testid="user-setting-avatar"
           removeButtonProps={{
             ['data-testid' as string]: 'user-setting-remove-avatar-button',
@@ -263,20 +263,20 @@ export const AvatarAndName = () => {
 
   return (
     <SettingRow
-      name={t['com.affine.settings.profile']()}
-      desc={t['com.affine.settings.profile.message']()}
+      name={t['com.yunke.settings.profile']()}
+      desc={t['com.yunke.settings.profile.message']()}
       spreadCol={false}
     >
       <FlexWrapper style={{ margin: '12px 0 24px 0' }} alignItems="center">
         <UserAvatar />
 
         <div className={styles.profileInputWrapper}>
-          <label>{t['com.affine.settings.profile.name']()}</label>
+          <label>{t['com.yunke.settings.profile.name']()}</label>
           <FlexWrapper alignItems="center">
             <Input
               defaultValue={input}
               data-testid="user-name-input"
-              placeholder={t['com.affine.settings.profile.placeholder']()}
+              placeholder={t['com.yunke.settings.profile.placeholder']()}
               maxLength={64}
               minLength={0}
               style={{ width: 280, height: 32 }}
@@ -291,7 +291,7 @@ export const AvatarAndName = () => {
                   marginLeft: '12px',
                 }}
               >
-                {t['com.affine.editCollection.save']()}
+                {t['com.yunke.editCollection.save']()}
               </Button>
             ) : null}
           </FlexWrapper>
@@ -320,7 +320,7 @@ const StoragePanel = ({
 
   return (
     <SettingRow
-      name={t['com.affine.storage.title']()}
+      name={t['com.yunke.storage.title']()}
       desc=""
       spreadCol={false}
     >
@@ -400,30 +400,30 @@ export const AccountSetting = ({
   return (
     <>
       <SettingHeader
-        title={t['com.affine.setting.account']()}
-        subtitle={t['com.affine.setting.account.message']()}
+        title={t['com.yunke.setting.account']()}
+        subtitle={t['com.yunke.setting.account.message']()}
         data-testid="account-title"
       />
       <AvatarAndName />
       <SettingWrapper>
         <SettingRow
-          name={t['com.affine.settings.email']()}
+          name={t['com.yunke.settings.email']()}
           desc={account.email}
         >
           <Button onClick={onChangeEmail}>
             {account.info?.emailVerified
-              ? t['com.affine.settings.email.action.change']()
-              : t['com.affine.settings.email.action.verify']()}
+              ? t['com.yunke.settings.email.action.change']()
+              : t['com.yunke.settings.email.action.verify']()}
           </Button>
         </SettingRow>
         <SettingRow
-          name={t['com.affine.settings.password']()}
-          desc={t['com.affine.settings.password.message']()}
+          name={t['com.yunke.settings.password']()}
+          desc={t['com.yunke.settings.password.message']()}
         >
           <Button onClick={onPasswordButtonClick}>
             {account.info?.hasPassword
-              ? t['com.affine.settings.password.action.change']()
-              : t['com.affine.settings.password.action.set']()}
+              ? t['com.yunke.settings.password.action.change']()
+              : t['com.yunke.settings.password.action.set']()}
           </Button>
         </SettingRow>
         <StoragePanel onChangeSettingState={onChangeSettingState} />
@@ -431,8 +431,8 @@ export const AccountSetting = ({
           <AIUsagePanel onChangeSettingState={onChangeSettingState} />
         )}
         <SettingRow
-          name={t['com.affine.setting.sign.out']()}
-          desc={t['com.affine.setting.sign.out.message']()}
+          name={t['com.yunke.setting.sign.out']()}
+          desc={t['com.yunke.setting.sign.out.message']()}
           style={{ cursor: 'pointer' }}
           data-testid="sign-out-button"
           onClick={openSignOutModal}

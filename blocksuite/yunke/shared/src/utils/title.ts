@@ -2,7 +2,7 @@ import type { EditorHost } from '@blocksuite/std';
 import type { InlineEditor } from '@blocksuite/std/inline';
 
 function getDocTitleByEditorHost(editorHost: EditorHost): HTMLElement | null {
-  const docViewport = editorHost.closest('.affine-page-viewport');
+  const docViewport = editorHost.closest('.yunke-page-viewport');
   if (!docViewport) return null;
   return docViewport.querySelector('doc-title');
 }

@@ -132,8 +132,8 @@ export class BlockMovementAnimator {
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
       border-radius: 8px;
       transform: scale(1.05);
-      background: var(--affine-background-primary-color);
-      border: 2px solid var(--affine-primary-color);
+      background: var(--yunke-background-primary-color);
+      border: 2px solid var(--yunke-primary-color);
     `;
     
     // 移除可能导致问题的属性

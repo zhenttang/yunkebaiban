@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <component type="desktop-application">
-  <id>affine</id>
-  <name>AFFiNE</name>
+  <id>yunke</id>
+  <name>YUNKE</name>
   <summary>Productivity and note-taking app</summary>
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>MIT AND LicenseRef-proprietary=https://gitcode.com/xiaoleixiaolei/blob/canary/LICENSE</project_license>
-  <url type="homepage">https://affine.pro</url>
+  <url type="homepage">https://yunke.pro</url>
   <url type="bugtracker">https://gitcode.com/xiaoleixiaolei/issues</url>
-  <url type="help">https://docs.affine.pro/docs</url>
+  <url type="help">https://docs.yunke.pro/docs</url>
   <url type="vcs-browser">https://gitcode.com/xiaoleixiaolei</url>
-  <url type="contribute">https://docs.affine.pro/docs/contributing</url>
-  <developer id="pro.affine.app">
-    <name>affine</name>
+  <url type="contribute">https://docs.yunke.pro/docs/contributing</url>
+  <developer id="pro.yunke.app">
+    <name>yunke</name>
   </developer>
   <content_rating type="oars-1.1"/>
   <categories>
@@ -29,7 +29,7 @@
     <internet>always</internet>
   </recommends>
   <provides>
-    <mediatype>x-scheme-handler/affine</mediatype>
+    <mediatype>x-scheme-handler/yunke</mediatype>
   </provides>
   <supports>
     <control>pointing</control>
@@ -39,7 +39,7 @@
   </supports>
   <description>
     <p>Write, Draw, Plan, All at Once. With AI.</p>
-    <p>AFFiNE is a workspace with fully merged docs, whiteboards and databases. Get more things done, your creativity isn’t monotone.</p>
+    <p>YUNKE is a workspace with fully merged docs, whiteboards and databases. Get more things done, your creativity isn’t monotone.</p>
     <p>Features</p>
     <ul>
       <li>Write your way to better productivity. Build up your content like blocks and let your ideas run wild.</li>
@@ -48,24 +48,24 @@
       <li>AI partner helps you better write, draw and plan. Let you think bigger, create faster, work smarter in anytime, anywhere</li>
     </ul>
   </description>
-  <launchable type="desktop-id">affine.desktop</launchable>
+  <launchable type="desktop-id">yunke.desktop</launchable>
   <screenshots>
     <screenshot type="default">
-      <image>https://affine.pro/overview/Write.jpg</image>
+      <image>https://yunke.pro/overview/Write.jpg</image>
       <caption>Document writing interface with block-based editing</caption>
     </screenshot>
     <screenshot>
-      <image>https://affine.pro/overview/Draw.jpg</image>
+      <image>https://yunke.pro/overview/Draw.jpg</image>
       <caption>Whiteboard drawing and visualization capabilities</caption>
     </screenshot>
     <screenshot>
-      <image>https://affine.pro/overview/Plan.jpg</image>
+      <image>https://yunke.pro/overview/Plan.jpg</image>
       <caption>Project planning and task management view</caption>
     </screenshot>
   </screenshots>
   <releases>
     <release version="0.21.3" date="2025-04-18">
-      <url>https://github.com/toeverything/AFFiNE/releases/tag/v0.21.3</url>
+      <url>https://github.com/toeverything/YUNKE/releases/tag/v0.21.3</url>
     </release>
   </releases>
 </component>

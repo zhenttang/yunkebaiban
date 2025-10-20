@@ -5,7 +5,7 @@ import {
   MemberLimitModal,
 } from '@yunke/component/member-components';
 import { SettingRow } from '@yunke/component/setting-components';
-import { useAsyncCallback } from '@yunke/core/components/hooks/affine-async-hooks';
+import { useAsyncCallback } from '@yunke/core/components/hooks/yunke-async-hooks';
 import { Upload } from '@yunke/core/components/pure/file-upload';
 import {
   ServerService,
@@ -124,8 +124,8 @@ export const CloudWorkspaceMembersPanel = ({
       setIdempotencyKey(nanoid());
       closeConfirmModal();
       notify.success({
-        title: t['com.affine.payment.resume.success.title'](),
-        message: t['com.affine.payment.resume.success.team.message'](),
+        title: t['com.yunke.payment.resume.success.title'](),
+        message: t['com.yunke.payment.resume.success.team.message'](),
       });
     } catch (err) {
       const error = UserFriendlyError.fromAny(err);
@@ -140,18 +140,18 @@ export const CloudWorkspaceMembersPanel = ({
   const openInviteModal = useCallback(() => {
     if (isTeam && workspaceSubscription?.canceledAt) {
       openConfirmModal({
-        title: t['com.affine.payment.member.team.retry-payment.title'](),
+        title: t['com.yunke.payment.member.team.retry-payment.title'](),
         description:
           t[
-            `com.affine.payment.member.team.disabled-subscription.${isOwner ? 'owner' : 'admin'}.description`
+            `com.yunke.payment.member.team.disabled-subscription.${isOwner ? 'owner' : 'admin'}.description`
           ](),
         confirmText:
           t[
             isOwner
-              ? 'com.affine.payment.member.team.disabled-subscription.resume-subscription'
+              ? 'com.yunke.payment.member.team.disabled-subscription.resume-subscription'
               : '知道了'
           ](),
-        cancelText: t['com.affine.confirmModal.button.cancel'](),
+        cancelText: t['com.yunke.confirmModal.button.cancel'](),
         cancelButtonOptions: {
           style: {
             visibility: isOwner ? 'visible' : 'hidden',
@@ -217,7 +217,7 @@ export const CloudWorkspaceMembersPanel = ({
       }, []);
       if (results) {
         notify({
-          title: t['com.affine.payment.member.team.invite.notify.title']({
+          title: t['com.yunke.payment.member.team.invite.notify.title']({
             successCount: (
               uniqueEmails.length - unSuccessInvites.length
             ).toString(),
@@ -258,18 +258,18 @@ export const CloudWorkspaceMembersPanel = ({
     if (!workspaceQuota) return null;
 
     if (isTeam) {
-      return <span>{t['com.affine.payment.member.team.description']()}</span>;
+      return <span>{t['com.yunke.payment.member.team.description']()}</span>;
     }
     return (
       <span>
-        {t['com.affine.payment.member.description2']()}
+        {t['com.yunke.payment.member.description2']()}
         {hasPaymentFeature && isOwner ? (
           <div
             className={styles.goUpgradeWrapper}
             onClick={handleUpgradeConfirm}
           >
             <span className={styles.goUpgrade}>
-              {t['com.affine.payment.member.description.choose-plan']()}
+              {t['com.yunke.payment.member.description.choose-plan']()}
             </span>
           </div>
         ) : null}
@@ -286,9 +286,9 @@ export const CloudWorkspaceMembersPanel = ({
 
   const title = useMemo(() => {
     if (isTeam) {
-      return `${t['com.affine.settings.member.members']()} (${workspaceQuota?.memberCount ?? 0})`;
+      return `${t['com.yunke.settings.member.members']()} (${workspaceQuota?.memberCount ?? 0})`;
     }
-    return `${t['com.affine.settings.member.members']()} (${workspaceQuota?.memberCount ?? 0}/${workspaceQuota?.memberLimit ?? 10})`;
+    return `${t['com.yunke.settings.member.members']()} (${workspaceQuota?.memberCount ?? 0}/${workspaceQuota?.memberLimit ?? 10})`;
   }, [isTeam, t, workspaceQuota?.memberCount, workspaceQuota?.memberLimit]);
 
   if (workspaceQuota === null) {
@@ -310,7 +310,7 @@ export const CloudWorkspaceMembersPanel = ({
       <SettingRow name={title} desc={desc} spreadCol={!!isOwnerOrAdmin}>
         {isOwnerOrAdmin ? (
           <>
-            <Button onClick={openInviteModal}>{t['com.affine.settings.member.invite']()}</Button>
+            <Button onClick={openInviteModal}>{t['com.yunke.settings.member.invite']()}</Button>
             {!isTeam ? (
               <MemberLimitModal
                 isFreePlan={!plan}
@@ -358,12 +358,12 @@ const NotifyMessage = ({
   const t = useI18n();
 
   if (unSuccessInvites.length === 0) {
-    return t['com.affine.payment.member.team.invite.notify.success']();
+    return t['com.yunke.payment.member.team.invite.notify.success']();
   }
 
   return (
     <div>
-      {t['com.affine.payment.member.team.invite.notify.fail-message']()}
+      {t['com.yunke.payment.member.team.invite.notify.fail-message']()}
       {unSuccessInvites.map((email, index) => (
         <div key={`${index}:${email}`}>{email}</div>
       ))}
@@ -377,8 +377,8 @@ export const MembersPanelFallback = () => {
   return (
     <>
       <SettingRow
-        name={t['com.affine.settings.member.members']()}
-        desc={t['com.affine.payment.member.description2']()}
+        name={t['com.yunke.settings.member.members']()}
+        desc={t['com.yunke.payment.member.description2']()}
       />
       <div className={styles.membersPanel}>
         <MemberListFallback memberCount={1} />
@@ -406,7 +406,7 @@ const MemberListFallback = ({ memberCount }: { memberCount?: number }) => {
       className={styles.membersFallback}
     >
       <Loading size={20} />
-      <span>{t['com.affine.settings.member.loading']()}</span>
+      <span>{t['com.yunke.settings.member.loading']()}</span>
     </div>
   );
 };
@@ -421,7 +421,7 @@ const ImportCSV = ({ onImport }: { onImport: (file: File) => void }) => {
         prefix={<ExportIcon />}
         variant="secondary"
       >
-        {t['com.affine.payment.member.team.invite.import-csv']()}
+        {t['com.yunke.payment.member.team.invite.import-csv']()}
       </Button>
     </Upload>
   );

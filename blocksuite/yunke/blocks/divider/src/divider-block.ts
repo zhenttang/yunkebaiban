@@ -25,14 +25,14 @@ export class DividerBlockComponent extends CaptionedBlockComponent<DividerBlockM
 
   override renderBlock() {
     const children = html`<div
-      class="affine-block-children-container"
+      class="yunke-block-children-container"
       style="padding-left: ${BLOCK_CHILDREN_CONTAINER_PADDING_LEFT}px"
     >
       ${this.renderChildren(this.model)}
     </div>`;
 
     return html`
-      <div class="affine-divider-block-container">
+      <div class="yunke-divider-block-container">
         <hr />
 
         ${children}
@@ -45,6 +45,6 @@ export class DividerBlockComponent extends CaptionedBlockComponent<DividerBlockM
 
 declare global {
   interface HTMLElementTagNameMap {
-    'affine-divider': DividerBlockComponent;
+    'yunke-divider': DividerBlockComponent;
   }
 }

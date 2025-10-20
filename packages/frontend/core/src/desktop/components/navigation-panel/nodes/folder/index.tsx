@@ -18,7 +18,7 @@ import {
   OrganizeService,
 } from '@yunke/core/modules/organize';
 import { WorkspaceService } from '@yunke/core/modules/workspace';
-import type { AffineDNDData } from '@yunke/core/types/dnd';
+import type { YunkeDNDData } from '@yunke/core/types/dnd';
 import { Unreachable } from '@yunke/env/constant';
 import { useI18n } from '@yunke/i18n';
 import { track } from '@yunke/track';
@@ -60,7 +60,7 @@ export const NavigationPanelFolderNode = ({
 }: {
   defaultRenaming?: boolean;
   nodeId: string;
-  onDrop?: (data: DropTargetDropEvent<AffineDNDData>, node: FolderNode) => void;
+  onDrop?: (data: DropTargetDropEvent<YunkeDNDData>, node: FolderNode) => void;
   operations?:
     | NodeOperation[]
     | ((type: string, node: FolderNode) => NodeOperation[]);
@@ -72,7 +72,7 @@ export const NavigationPanelFolderNode = ({
   const type = useLiveData(node?.type$);
   const data = useLiveData(node?.data$);
   const handleDrop = useCallback(
-    (data: DropTargetDropEvent<AffineDNDData>) => {
+    (data: DropTargetDropEvent<YunkeDNDData>) => {
       if (!node) {
         return;
       }
@@ -205,10 +205,10 @@ const NavigationPanelFolderNodeFolder = ({
       type: 'folder',
     });
     notify.success({
-      title: t['com.affine.rootAppSidebar.organize.delete.notify-title']({
+      title: t['com.yunke.rootAppSidebar.organize.delete.notify-title']({
         name,
       }),
-      message: t['com.affine.rootAppSidebar.organize.delete.notify-message'](),
+      message: t['com.yunke.rootAppSidebar.organize.delete.notify-message'](),
     });
   }, [name, node, t]);
 
@@ -229,7 +229,7 @@ const NavigationPanelFolderNodeFolder = ({
       dropTarget: {
         at: 'navigation-panel:organize:folder',
       },
-    } satisfies AffineDNDData;
+    } satisfies YunkeDNDData;
   }, [location, node.id]);
 
   const handleRename = useCallback(
@@ -240,7 +240,7 @@ const NavigationPanelFolderNodeFolder = ({
   );
 
   const handleDropOnFolder = useCallback(
-    (data: DropTargetDropEvent<AffineDNDData>) => {
+    (data: DropTargetDropEvent<YunkeDNDData>) => {
       if (data.source.data.entity?.type) {
         track.$.navigationPanel.folders.drop({
           type: data.source.data.entity.type,
@@ -320,7 +320,7 @@ const NavigationPanelFolderNodeFolder = ({
   );
 
   const handleDropOnPlaceholder = useCallback(
-    (data: DropTargetDropEvent<AffineDNDData>) => {
+    (data: DropTargetDropEvent<YunkeDNDData>) => {
       if (data.source.data.entity?.type) {
         track.$.navigationPanel.folders.drop({
           type: data.source.data.entity.type,
@@ -364,7 +364,7 @@ const NavigationPanelFolderNodeFolder = ({
   );
 
   const handleDropOnChildren = useCallback(
-    (data: DropTargetDropEvent<AffineDNDData>, dropAtNode?: FolderNode) => {
+    (data: DropTargetDropEvent<YunkeDNDData>, dropAtNode?: FolderNode) => {
       if (!dropAtNode || !dropAtNode.id) {
         return;
       }
@@ -503,7 +503,7 @@ const NavigationPanelFolderNodeFolder = ({
       [dropEffect, node]
     );
 
-  const handleCanDrop = useMemo<DropTargetOptions<AffineDNDData>['canDrop']>(
+  const handleCanDrop = useMemo<DropTargetOptions<YunkeDNDData>['canDrop']>(
     () => args => {
       const entityType = args.source.data.entity?.type;
       if (args.treeInstruction && args.treeInstruction?.type !== 'make-child') {
@@ -537,7 +537,7 @@ const NavigationPanelFolderNodeFolder = ({
   );
 
   const handleChildrenCanDrop = useMemo<
-    DropTargetOptions<AffineDNDData>['canDrop']
+    DropTargetOptions<YunkeDNDData>['canDrop']
   >(
     () => args => {
       const entityType = args.source.data.entity?.type;
@@ -579,7 +579,7 @@ const NavigationPanelFolderNodeFolder = ({
 
   const handleCreateSubfolder = useCallback(() => {
     const newFolderId = node.createFolder(
-      t['com.affine.rootAppSidebar.organize.new-folders'](),
+      t['com.yunke.rootAppSidebar.organize.new-folders'](),
       node.indexAt('before')
     );
     track.$.navigationPanel.organize.createOrganizeItem({ type: 'folder' });
@@ -641,7 +641,7 @@ const NavigationPanelFolderNodeFolder = ({
             size="16"
             onClick={handleNewDoc}
             tooltip={t[
-              'com.affine.rootAppSidebar.explorer.organize-add-tooltip'
+              'com.yunke.rootAppSidebar.explorer.organize-add-tooltip'
             ]()}
           >
             <PlusIcon />
@@ -652,7 +652,7 @@ const NavigationPanelFolderNodeFolder = ({
         index: 100,
         view: (
           <MenuItem prefixIcon={<FolderIcon />} onClick={handleCreateSubfolder}>
-            {t['com.affine.rootAppSidebar.organize.folder.create-subfolder']()}
+            {t['com.yunke.rootAppSidebar.organize.folder.create-subfolder']()}
           </MenuItem>
         ),
       },
@@ -663,7 +663,7 @@ const NavigationPanelFolderNodeFolder = ({
             prefixIcon={<PageIcon />}
             onClick={() => handleAddToFolder('doc')}
           >
-            {t['com.affine.rootAppSidebar.organize.folder.add-docs']()}
+            {t['com.yunke.rootAppSidebar.organize.folder.add-docs']()}
           </MenuItem>
         ),
       },
@@ -680,20 +680,20 @@ const NavigationPanelFolderNodeFolder = ({
                   onClick={() => handleAddToFolder('tag')}
                   prefixIcon={<TagsIcon />}
                 >
-                  {t['com.affine.rootAppSidebar.organize.folder.add-tags']()}
+                  {t['com.yunke.rootAppSidebar.organize.folder.add-tags']()}
                 </MenuItem>
                 <MenuItem
                   onClick={() => handleAddToFolder('collection')}
                   prefixIcon={<AnimatedCollectionsIcon closed={false} />}
                 >
                   {t[
-                    'com.affine.rootAppSidebar.organize.folder.add-collections'
+                    'com.yunke.rootAppSidebar.organize.folder.add-collections'
                   ]()}
                 </MenuItem>
               </>
             }
           >
-            {t['com.affine.rootAppSidebar.organize.folder.add-others']()}
+            {t['com.yunke.rootAppSidebar.organize.folder.add-others']()}
           </MenuSub>
         ),
       },
@@ -715,7 +715,7 @@ const NavigationPanelFolderNodeFolder = ({
             prefixIcon={<DeleteIcon />}
             onClick={handleDelete}
           >
-            {t['com.affine.rootAppSidebar.organize.delete']()}
+            {t['com.yunke.rootAppSidebar.organize.delete']()}
           </MenuItem>
         ),
       },
@@ -750,7 +750,7 @@ const NavigationPanelFolderNodeFolder = ({
                 data-event-args-type={node.type$.value}
                 onClick={() => node.delete()}
               >
-                {t['com.affine.rootAppSidebar.organize.delete-from-folder']()}
+                {t['com.yunke.rootAppSidebar.organize.delete-from-folder']()}
               </MenuItem>
             ),
           },

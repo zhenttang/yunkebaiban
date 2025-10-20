@@ -59,8 +59,8 @@ import { registerMiniMindmapBlocks } from './mini-mindmap';
 import { AIChatBlockPeekView } from './peek-view/chat-block-peek-view';
 import { DateTime } from './peek-view/date-time';
 import {
-  AFFINE_AI_PANEL_WIDGET,
-  AffineAIPanelWidget,
+  YUNKE_AI_PANEL_WIDGET,
+  YunkeAIPanelWidget,
 } from './widgets/ai-panel/ai-panel';
 import {
   AIPanelAnswer,
@@ -72,7 +72,7 @@ import {
 import { AIFinishTip } from './widgets/ai-panel/components/finish-tip';
 import { GeneratingPlaceholder } from './widgets/ai-panel/components/generating-placeholder';
 import {
-  AFFINE_EDGELESS_COPILOT_WIDGET,
+  YUNKE_EDGELESS_COPILOT_WIDGET,
   EdgelessCopilotWidget,
 } from './widgets/edgeless-copilot';
 import { EdgelessCopilotPanel } from './widgets/edgeless-copilot-panel';
@@ -125,10 +125,10 @@ export function registerAIEffects() {
   customElements.define('ai-chat-block-peek-view', AIChatBlockPeekView);
   customElements.define('date-time', DateTime);
   customElements.define(
-    'affine-edgeless-ai-chat',
+    'yunke-edgeless-ai-chat',
     EdgelessAIChatBlockComponent
   );
-  customElements.define('affine-ai-chat', AIChatBlockComponent);
+  customElements.define('yunke-ai-chat', AIChatBlockComponent);
   customElements.define('ai-chat-message', AIChatMessage);
   customElements.define('ai-chat-messages', AIChatMessages);
   customElements.define(
@@ -156,8 +156,8 @@ export function registerAIEffects() {
   customElements.define('chat-message-assistant', ChatMessageAssistant);
   customElements.define('chat-message-user', ChatMessageUser);
 
-  customElements.define(AFFINE_AI_PANEL_WIDGET, AffineAIPanelWidget);
-  customElements.define(AFFINE_EDGELESS_COPILOT_WIDGET, EdgelessCopilotWidget);
+  customElements.define(YUNKE_AI_PANEL_WIDGET, YunkeAIPanelWidget);
+  customElements.define(YUNKE_EDGELESS_COPILOT_WIDGET, EdgelessCopilotWidget);
 
   customElements.define('edgeless-copilot-panel', EdgelessCopilotPanel);
   customElements.define(

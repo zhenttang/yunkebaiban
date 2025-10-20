@@ -3,7 +3,7 @@ import { useServiceOptional } from '@toeverything/infra';
 import { useCallback } from 'react';
 import { redirect } from 'react-router-dom';
 
-import { Onboarding } from '../../../components/affine/onboarding/onboarding';
+import { Onboarding } from '../../../components/yunke/onboarding/onboarding';
 import { appConfigStorage } from '../../../components/hooks/use-app-config-storage';
 
 /**

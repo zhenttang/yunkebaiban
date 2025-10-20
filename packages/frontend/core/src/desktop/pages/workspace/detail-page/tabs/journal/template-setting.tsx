@@ -59,7 +59,7 @@ export const JournalTemplateSetting = () => {
                     onClick={removeJournalTemplate}
                     type="danger"
                   >
-                    {t['com.affine.template-list.delete']()}
+                    {t['com.yunke.template-list.delete']()}
                   </MenuItem>
                 </>
               ) : null

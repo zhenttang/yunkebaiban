@@ -84,7 +84,7 @@ export class TableViewCellContainer extends SignalWatcher(
   }
 
   private get groupKey() {
-    return this.closest<TableGroup>('affine-data-view-table-group')?.group?.key;
+    return this.closest<TableGroup>('yunke-data-view-table-group')?.group?.key;
   }
 
   private get selectionController() {

@@ -21,25 +21,25 @@ import { useEffect } from 'react';
 import { usePageHelper } from '../../blocksuite/block-suite-page-list/utils';
 import {
   PreconditionStrategy,
-  registerAffineCommand,
-  registerAffineCreationCommands,
-  registerAffineHelpCommands,
-  registerAffineLanguageCommands,
-  registerAffineLayoutCommands,
-  registerAffineNavigationCommands,
-  registerAffineQuickMenuCommands,
-  registerAffineSettingsCommands,
-  registerAffineUpdatesCommands,
+  registerYunkeCommand,
+  registerYunkeCreationCommands,
+  registerYunkeHelpCommands,
+  registerYunkeLanguageCommands,
+  registerYunkeLayoutCommands,
+  registerYunkeNavigationCommands,
+  registerYunkeQuickMenuCommands,
+  registerYunkeSettingsCommands,
+  registerYunkeUpdatesCommands,
 } from '../../commands';
 import { EditorSettingService } from '../../modules/editor-setting';
 import { CMDKQuickSearchService } from '../../modules/quicksearch/services/cmdk';
 import { useNavigateHelper } from './use-navigate-helper';
 
 function registerCMDKCommand(service: CMDKQuickSearchService) {
-  return registerAffineCommand({
-    id: 'affine:show-quick-search',
+  return registerYunkeCommand({
+    id: 'yunke:show-quick-search',
     preconditionStrategy: PreconditionStrategy.Never,
-    category: 'affine:general',
+    category: 'yunke:general',
     keyBinding: {
       binding: '$mod+K',
     },
@@ -90,13 +90,13 @@ export function useRegisterWorkspaceCommands() {
     };
   }, [cMDKQuickSearchService]);
 
-  // register AffineUpdatesCommands
+  // register YunkeUpdatesCommands
   useEffect(() => {
     if (!quitAndInstall) {
       return;
     }
 
-    const unsub = registerAffineUpdatesCommands({
+    const unsub = registerYunkeUpdatesCommands({
       store,
       t,
       quitAndInstall,
@@ -107,9 +107,9 @@ export function useRegisterWorkspaceCommands() {
     };
   }, [quitAndInstall, store, t]);
 
-  // register AffineNavigationCommands
+  // register YunkeNavigationCommands
   useEffect(() => {
-    const unsub = registerAffineNavigationCommands({
+    const unsub = registerYunkeNavigationCommands({
       t,
       docCollection: currentWorkspace.docCollection,
       navigationHelper,
@@ -128,9 +128,9 @@ export function useRegisterWorkspaceCommands() {
     workbenchService,
   ]);
 
-  // register AffineSettingsCommands
+  // register YunkeSettingsCommands
   useEffect(() => {
-    const unsub = registerAffineSettingsCommands({
+    const unsub = registerYunkeSettingsCommands({
       store,
       t,
       theme,
@@ -143,7 +143,7 @@ export function useRegisterWorkspaceCommands() {
   }, [editorSettingService, store, t, theme]);
 
   useEffect(() => {
-    const unsub = registerAffineLanguageCommands({
+    const unsub = registerYunkeLanguageCommands({
       i18n,
       t,
     });
@@ -153,18 +153,18 @@ export function useRegisterWorkspaceCommands() {
     };
   }, [i18n, t]);
 
-  // register AffineLayoutCommands
+  // register YunkeLayoutCommands
   useEffect(() => {
-    const unsub = registerAffineLayoutCommands({ t, appSidebarService });
+    const unsub = registerYunkeLayoutCommands({ t, appSidebarService });
 
     return () => {
       unsub();
     };
   }, [appSidebarService, store, t]);
 
-  // register AffineCreationCommands
+  // register YunkeCreationCommands
   useEffect(() => {
-    const unsub = registerAffineCreationCommands({
+    const unsub = registerYunkeCreationCommands({
       globalDialogService,
       pageHelper: pageHelper,
       t,
@@ -175,9 +175,9 @@ export function useRegisterWorkspaceCommands() {
     };
   }, [store, pageHelper, t, globalDialogService]);
 
-  // register AffineHelpCommands
+  // register YunkeHelpCommands
   useEffect(() => {
-    const unsub = registerAffineHelpCommands({
+    const unsub = registerYunkeHelpCommands({
       t,
       urlService,
       workspaceDialogService,
@@ -188,9 +188,9 @@ export function useRegisterWorkspaceCommands() {
     };
   }, [t, globalDialogService, urlService, workspaceDialogService]);
 
-  // register AffineQuickMenuCommands
+  // register YunkeQuickMenuCommands
   useEffect(() => {
-    const unsub = registerAffineQuickMenuCommands({
+    const unsub = registerYunkeQuickMenuCommands({
       t,
       store,
     });

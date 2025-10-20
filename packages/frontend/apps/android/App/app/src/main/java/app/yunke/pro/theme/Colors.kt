@@ -1,11 +1,11 @@
-package app.affine.pro.theme
+package app.yunke.pro.theme
 
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 
 @Immutable
-data class AFFiNEColorScheme(
+data class YUNKEColorScheme(
     val textPrimary: Color,
     val textSecondary: Color,
     val textDisable: Color,
@@ -28,55 +28,55 @@ data class AFFiNEColorScheme(
     val divider: Color,
 )
 
-val affineLightScheme = AFFiNEColorScheme(
-    textPrimary = AFFiNEColorTokens.Grey900,
-    textSecondary = AFFiNEColorTokens.Grey600,
-    textDisable = AFFiNEColorTokens.Grey400,
-    textEmphasis = AFFiNEColorTokens.AFFiNE600,
-    backgroundPrimary = AFFiNEColorTokens.BaseWhite,
-    backgroundSecondary = AFFiNEColorTokens.Grey100,
-    backgroundOverlayPanel = AFFiNEColorTokens.Grey50,
-    backgroundTertiary = AFFiNEColorTokens.Grey300,
-    backgroundCodeBlock = AFFiNEColorTokens.Grey50,
-    backgroundModal = AFFiNEColorTokens.TransparentBlack700,
-    backgroundSuccess = AFFiNEColorTokens.Emerald50,
-    backgroundError = AFFiNEColorTokens.Rose50,
-    backgroundWarning = AFFiNEColorTokens.Orange25,
-    backgroundProgressing = AFFiNEColorTokens.Indigo50,
-    iconPrimary = AFFiNEColorTokens.Grey600,
-    iconSecondary = AFFiNEColorTokens.Grey400,
-    iconTertiary = AFFiNEColorTokens.Grey300,
-    iconDisable = AFFiNEColorTokens.Grey400,
-    iconActivated = AFFiNEColorTokens.AFFiNE600,
-    divider = AFFiNEColorTokens.TransparentGrey400,
+val yunkeLightScheme = YUNKEColorScheme(
+    textPrimary = YUNKEColorTokens.Grey900,
+    textSecondary = YUNKEColorTokens.Grey600,
+    textDisable = YUNKEColorTokens.Grey400,
+    textEmphasis = YUNKEColorTokens.YUNKE600,
+    backgroundPrimary = YUNKEColorTokens.BaseWhite,
+    backgroundSecondary = YUNKEColorTokens.Grey100,
+    backgroundOverlayPanel = YUNKEColorTokens.Grey50,
+    backgroundTertiary = YUNKEColorTokens.Grey300,
+    backgroundCodeBlock = YUNKEColorTokens.Grey50,
+    backgroundModal = YUNKEColorTokens.TransparentBlack700,
+    backgroundSuccess = YUNKEColorTokens.Emerald50,
+    backgroundError = YUNKEColorTokens.Rose50,
+    backgroundWarning = YUNKEColorTokens.Orange25,
+    backgroundProgressing = YUNKEColorTokens.Indigo50,
+    iconPrimary = YUNKEColorTokens.Grey600,
+    iconSecondary = YUNKEColorTokens.Grey400,
+    iconTertiary = YUNKEColorTokens.Grey300,
+    iconDisable = YUNKEColorTokens.Grey400,
+    iconActivated = YUNKEColorTokens.YUNKE600,
+    divider = YUNKEColorTokens.TransparentGrey400,
 )
 
-val affineDarkScheme = AFFiNEColorScheme(
-    textPrimary = AFFiNEColorTokens.Grey200,
-    textSecondary = AFFiNEColorTokens.Grey500,
-    textDisable = AFFiNEColorTokens.Grey700,
-    textEmphasis = AFFiNEColorTokens.AFFiNE500,
-    backgroundPrimary = AFFiNEColorTokens.Grey950,
-    backgroundSecondary = AFFiNEColorTokens.Grey900,
-    backgroundOverlayPanel = AFFiNEColorTokens.Grey900,
-    backgroundTertiary = AFFiNEColorTokens.Grey700,
-    backgroundCodeBlock = AFFiNEColorTokens.Grey900,
-    backgroundModal = AFFiNEColorTokens.TransparentBlack400,
-    backgroundSuccess = AFFiNEColorTokens.Emerald950,
-    backgroundError = AFFiNEColorTokens.Rose950,
-    backgroundWarning = AFFiNEColorTokens.Orange950,
-    backgroundProgressing = AFFiNEColorTokens.Indigo950,
-    iconPrimary = AFFiNEColorTokens.Grey100,
-    iconSecondary = AFFiNEColorTokens.Grey300,
-    iconTertiary = AFFiNEColorTokens.Grey700,
-    iconDisable = AFFiNEColorTokens.Grey800,
-    iconActivated = AFFiNEColorTokens.AFFiNE600,
-    divider = AFFiNEColorTokens.TransparentGrey300,
+val yunkeDarkScheme = YUNKEColorScheme(
+    textPrimary = YUNKEColorTokens.Grey200,
+    textSecondary = YUNKEColorTokens.Grey500,
+    textDisable = YUNKEColorTokens.Grey700,
+    textEmphasis = YUNKEColorTokens.YUNKE500,
+    backgroundPrimary = YUNKEColorTokens.Grey950,
+    backgroundSecondary = YUNKEColorTokens.Grey900,
+    backgroundOverlayPanel = YUNKEColorTokens.Grey900,
+    backgroundTertiary = YUNKEColorTokens.Grey700,
+    backgroundCodeBlock = YUNKEColorTokens.Grey900,
+    backgroundModal = YUNKEColorTokens.TransparentBlack400,
+    backgroundSuccess = YUNKEColorTokens.Emerald950,
+    backgroundError = YUNKEColorTokens.Rose950,
+    backgroundWarning = YUNKEColorTokens.Orange950,
+    backgroundProgressing = YUNKEColorTokens.Indigo950,
+    iconPrimary = YUNKEColorTokens.Grey100,
+    iconSecondary = YUNKEColorTokens.Grey300,
+    iconTertiary = YUNKEColorTokens.Grey700,
+    iconDisable = YUNKEColorTokens.Grey800,
+    iconActivated = YUNKEColorTokens.YUNKE600,
+    divider = YUNKEColorTokens.TransparentGrey300,
 )
 
-val LocalAFFiNEColors = staticCompositionLocalOf { affineLightScheme }
+val LocalYUNKEColors = staticCompositionLocalOf { yunkeLightScheme }
 
-object AFFiNEColorTokens {
+object YUNKEColorTokens {
     val BaseWhite = Color(0XFFFFFFFF)
     val BaseBlack = Color(0XFF000000)
 
@@ -210,18 +210,18 @@ object AFFiNEColorTokens {
     val Blue900 = Color(0XFF1C70A5)
     val Blue950 = Color(0XFF004B7B)
     
-    val AFFiNE25 = Color(0XFFE2F4FF)
-    val AFFiNE50 = Color(0XFFCAE9FF)
-    val AFFiNE100 = Color(0XFF8FD1FF)
-    val AFFiNE200 = Color(0XFF79C8FF)
-    val AFFiNE300 = Color(0XFF5EBCFF)
-    val AFFiNE400 = Color(0XFF49B1FA)
-    val AFFiNE500 = Color(0XFF29A2FA)
-    val AFFiNE600 = Color(0XFF1D96EB)
-    val AFFiNE700 = Color(0XFF158ADE)
-    val AFFiNE800 = Color(0XFF035F9F)
-    val AFFiNE900 = Color(0XFF003C67)
-    val AFFiNE950 = Color(0XFF002742)
+    val YUNKE25 = Color(0XFFE2F4FF)
+    val YUNKE50 = Color(0XFFCAE9FF)
+    val YUNKE100 = Color(0XFF8FD1FF)
+    val YUNKE200 = Color(0XFF79C8FF)
+    val YUNKE300 = Color(0XFF5EBCFF)
+    val YUNKE400 = Color(0XFF49B1FA)
+    val YUNKE500 = Color(0XFF29A2FA)
+    val YUNKE600 = Color(0XFF1D96EB)
+    val YUNKE700 = Color(0XFF158ADE)
+    val YUNKE800 = Color(0XFF035F9F)
+    val YUNKE900 = Color(0XFF003C67)
+    val YUNKE950 = Color(0XFF002742)
     
     val Indigo25 = Color(0XFFF5F7FF)
     val Indigo50 = Color(0XFFEEF2FF)

@@ -1,6 +1,6 @@
 import { Button } from '@yunke/component/ui/button';
 import { notify } from '@yunke/component/ui/notification';
-import { useAsyncCallback } from '@yunke/core/components/hooks/affine-async-hooks';
+import { useAsyncCallback } from '@yunke/core/components/hooks/yunke-async-hooks';
 import { AuthService, ServerService } from '@yunke/core/modules/cloud';
 import { UrlService } from '@yunke/core/modules/url';
 import { UserFriendlyError } from '@yunke/error';

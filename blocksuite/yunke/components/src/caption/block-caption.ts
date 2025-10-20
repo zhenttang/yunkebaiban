@@ -31,8 +31,8 @@ export class BlockCaptionEditor<
       outline: none;
       border: 0;
       background: transparent;
-      color: var(--affine-icon-color);
-      font-size: var(--affine-font-sm);
+      color: var(--yunke-icon-color);
+      font-size: var(--yunke-font-sm);
       font-family: inherit;
       text-align: center;
       field-sizing: content;
@@ -40,7 +40,7 @@ export class BlockCaptionEditor<
       margin-top: 4px;
     }
     .block-caption-editor::placeholder {
-      color: var(--affine-placeholder-color);
+      color: var(--yunke-placeholder-color);
     }
   `;
 

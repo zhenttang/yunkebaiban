@@ -15,18 +15,18 @@ export class DatabaseTitle extends SignalWatcher(
   WithDisposable(ShadowlessElement)
 ) {
   static override styles = css`
-    .affine-database-title {
+    .yunke-database-title {
       position: relative;
       flex: 1;
       font-family: inherit;
       font-size: 20px;
       line-height: 28px;
       font-weight: 600;
-      color: var(--affine-text-primary-color);
+      color: var(--yunke-text-primary-color);
       overflow: hidden;
     }
 
-    .affine-database-title textarea {
+    .yunke-database-title textarea {
       font-size: inherit;
       line-height: inherit;
       font-weight: inherit;
@@ -45,32 +45,32 @@ export class DatabaseTitle extends SignalWatcher(
       scrollbar-width: none;
     }
 
-    .affine-database-title .text {
+    .yunke-database-title .text {
       user-select: none;
       opacity: 0;
       white-space: pre-wrap;
     }
 
-    .affine-database-title[data-title-focus='false'] textarea {
+    .yunke-database-title[data-title-focus='false'] textarea {
       opacity: 0;
     }
 
-    .affine-database-title[data-title-focus='false'] .text {
+    .yunke-database-title[data-title-focus='false'] .text {
       text-overflow: ellipsis;
       overflow: hidden;
       opacity: 1;
       white-space: pre;
     }
 
-    .affine-database-title [data-title-empty='true']::before {
+    .yunke-database-title [data-title-empty='true']::before {
       content: '无标题';
       position: absolute;
       pointer-events: none;
-      color: var(--affine-text-primary-color);
+      color: var(--yunke-text-primary-color);
     }
 
-    .affine-database-title [data-title-focus='true']::before {
-      color: var(--affine-placeholder-color);
+    .yunke-database-title [data-title-focus='true']::before {
+      color: var(--yunke-placeholder-color);
     }
   `;
 
@@ -114,7 +114,7 @@ export class DatabaseTitle extends SignalWatcher(
   };
 
   get database() {
-    return this.closest<DatabaseBlockComponent>('affine-database');
+    return this.closest<DatabaseBlockComponent>('yunke-database');
   }
 
   override connectedCallback() {
@@ -132,7 +132,7 @@ export class DatabaseTitle extends SignalWatcher(
     const isEmpty = !this.text$.value;
 
     const classList = classMap({
-      'affine-database-title': true,
+      'yunke-database-title': true,
       ellipsis: !this.isFocus$.value,
     });
     const untitledStyle = styleMap({
@@ -186,6 +186,6 @@ export class DatabaseTitle extends SignalWatcher(
 
 declare global {
   interface HTMLElementTagNameMap {
-    'affine-database-title': DatabaseTitle;
+    'yunke-database-title': DatabaseTitle;
   }
 }

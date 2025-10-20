@@ -23,7 +23,7 @@ export class DatabaseCellContainer extends SignalWatcher(
   WithDisposable(ShadowlessElement)
 ) {
   static override styles = css`
-    affine-database-virtual-cell-container {
+    yunke-database-virtual-cell-container {
       display: flex;
       align-items: start;
       width: 100%;
@@ -32,11 +32,11 @@ export class DatabaseCellContainer extends SignalWatcher(
       box-sizing: content-box;
     }
 
-    affine-database-virtual-cell-container * {
+    yunke-database-virtual-cell-container * {
       box-sizing: border-box;
     }
 
-    affine-database-virtual-cell-container uni-lit > *:first-child {
+    yunke-database-virtual-cell-container uni-lit > *:first-child {
       padding: 6px;
     }
   `;
@@ -132,8 +132,8 @@ export class DatabaseCellContainer extends SignalWatcher(
     );
     const style = this.parentElement?.style;
     if (style) {
-      style.borderBottom = '1px solid var(--affine-border-color)';
-      style.borderRight = '1px solid var(--affine-border-color)';
+      style.borderBottom = '1px solid var(--yunke-border-color)';
+      style.borderRight = '1px solid var(--yunke-border-color)';
     }
   }
 
@@ -220,6 +220,6 @@ export class DatabaseCellContainer extends SignalWatcher(
 
 declare global {
   interface HTMLElementTagNameMap {
-    'affine-database-virtual-cell-container': DatabaseCellContainer;
+    'yunke-database-virtual-cell-container': DatabaseCellContainer;
   }
 }

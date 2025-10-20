@@ -1,7 +1,7 @@
 import { Button, type ButtonProps } from '@yunke/component/ui/button';
 import { Tooltip } from '@yunke/component/ui/tooltip';
-import { generateSubscriptionCallbackLink } from '@yunke/core/components/hooks/affine/use-subscription-notify';
-import { useAsyncCallback } from '@yunke/core/components/hooks/affine-async-hooks';
+import { generateSubscriptionCallbackLink } from '@yunke/core/components/hooks/yunke/use-subscription-notify';
+import { useAsyncCallback } from '@yunke/core/components/hooks/yunke-async-hooks';
 import {
   AuthService,
   ServerService,
@@ -109,11 +109,11 @@ const getSignUpText = (
 ) => {
   switch (plan) {
     case SubscriptionPlan.Free:
-      return t['com.affine.payment.sign-up-free']();
+      return t['com.yunke.payment.sign-up-free']();
     case SubscriptionPlan.Team:
-      return t['com.affine.payment.upgrade']();
+      return t['com.yunke.payment.upgrade']();
     default:
-      return t['com.affine.payment.buy-pro']();
+      return t['com.yunke.payment.buy-pro']();
   }
 };
 
@@ -169,7 +169,7 @@ const ActionButton = ({ detail, recurring }: PlanCardProps) => {
   if (isBeliever) {
     return (
       <Button className={styles.planAction} disabled>
-        {t['com.affine.payment.cloud.lifetime.included']()}
+        {t['com.yunke.payment.cloud.lifetime.included']()}
       </Button>
     );
   }
@@ -178,7 +178,7 @@ const ActionButton = ({ detail, recurring }: PlanCardProps) => {
   if (isOnetime) {
     return isFree ? (
       <Button className={styles.planAction} disabled>
-        {t['com.affine.payment.cloud.onetime.included']()}
+        {t['com.yunke.payment.cloud.onetime.included']()}
       </Button>
     ) : (
       <RedeemCode recurring={recurring} />
@@ -221,7 +221,7 @@ const CurrentPlan = () => {
   const t = useI18n();
   return (
     <Button className={styles.planAction}>
-      {t['com.affine.payment.current-plan']()}
+      {t['com.yunke.payment.current-plan']()}
     </Button>
   );
 };
@@ -231,7 +231,7 @@ const Downgrade = ({ disabled }: { disabled?: boolean }) => {
   const [open, setOpen] = useState(false);
 
   const tooltipContent = disabled
-    ? t['com.affine.payment.downgraded-tooltip']()
+    ? t['com.yunke.payment.downgraded-tooltip']()
     : null;
 
   const handleClick = useCallback(() => {
@@ -248,7 +248,7 @@ const Downgrade = ({ disabled }: { disabled?: boolean }) => {
             onClick={handleClick}
             disabled={disabled}
           >
-            {t['com.affine.payment.downgrade']()}
+            {t['com.yunke.payment.downgrade']()}
           </Button>
         </div>
       </Tooltip>
@@ -279,7 +279,7 @@ const UpgradeToTeam = ({ recurring }: { recurring: SubscriptionRecurring }) => {
         variant="primary"
         data-event-args-url={`${url}${urlParams.toString() ? `&${urlParams.toString()}` : ''}`}
       >
-        {t['com.affine.payment.upgrade']()}
+        {t['com.yunke.payment.upgrade']()}
       </Button>
     </a>
   );
@@ -353,7 +353,7 @@ export const Upgrade = ({
           {...props}
           {...btnProps}
         >
-          {children ?? t['com.affine.payment.upgrade']()}
+          {children ?? t['com.yunke.payment.upgrade']()}
         </Button>
       )}
     />
@@ -415,7 +415,7 @@ const ChangeRecurring = ({
         disabled={disabled || isMutating}
         loading={isMutating}
       >
-        {t['com.affine.payment.change-to']({ to })}
+        {t['com.yunke.payment.change-to']({ to })}
       </Button>
 
       <ConfirmLoadingModal
@@ -471,10 +471,10 @@ const ResumeButton = () => {
     <ResumeAction open={open} onOpenChange={setOpen}>
       <Button className={styles.resumeAction} onClick={handleClick}>
         <span data-show-hover="true" className={clsx(styles.resumeContent)}>
-          {t['com.affine.payment.resume-renewal']()}
+          {t['com.yunke.payment.resume-renewal']()}
         </span>
         <span data-show-hover="false" className={clsx(styles.resumeContent)}>
-          {t['com.affine.payment.current-plan']()}
+          {t['com.yunke.payment.current-plan']()}
         </span>
       </Button>
     </ResumeAction>
@@ -502,7 +502,7 @@ export const RedeemCode = ({
       plan={plan ?? SubscriptionPlan.Pro}
       {...btnProps}
     >
-      {children ?? t['com.affine.payment.redeem-code']()}
+      {children ?? t['com.yunke.payment.redeem-code']()}
     </Upgrade>
   );
 };

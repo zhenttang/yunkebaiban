@@ -98,7 +98,7 @@ export class GanttWorkingDaySegment extends LitElement {
 
     /* 选中状态 */
     .segment.selected {
-      box-shadow: 0 0 0 2px var(--affine-primary-color);
+      box-shadow: 0 0 0 2px var(--yunke-primary-color);
       z-index: 20;
     }
 
@@ -133,23 +133,23 @@ export class GanttWorkingDaySegment extends LitElement {
     }
 
     .status-indicator.not-started {
-      background: var(--affine-text-secondary-color);
+      background: var(--yunke-text-secondary-color);
     }
 
     .status-indicator.in-progress {
-      background: var(--affine-brand-color);
+      background: var(--yunke-brand-color);
     }
 
     .status-indicator.completed {
-      background: var(--affine-success-color);
+      background: var(--yunke-success-color);
     }
 
     .status-indicator.on-hold {
-      background: var(--affine-warning-color);
+      background: var(--yunke-warning-color);
     }
 
     .status-indicator.cancelled {
-      background: var(--affine-error-color);
+      background: var(--yunke-error-color);
     }
 
     /* 优先级指示器 */
@@ -163,20 +163,20 @@ export class GanttWorkingDaySegment extends LitElement {
     }
 
     .priority-indicator.critical {
-      background: var(--affine-error-color);
-      box-shadow: 0 0 4px var(--affine-error-color);
+      background: var(--yunke-error-color);
+      box-shadow: 0 0 4px var(--yunke-error-color);
     }
 
     .priority-indicator.high {
-      background: var(--affine-warning-color);
+      background: var(--yunke-warning-color);
     }
 
     .priority-indicator.medium {
-      background: var(--affine-brand-color);
+      background: var(--yunke-brand-color);
     }
 
     .priority-indicator.low {
-      background: var(--affine-text-secondary-color);
+      background: var(--yunke-text-secondary-color);
     }
 
     /* 响应式设计 */

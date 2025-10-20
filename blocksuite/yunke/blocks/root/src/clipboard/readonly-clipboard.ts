@@ -16,7 +16,7 @@ import { LifeCycleWatcher, type UIEventHandler } from '@blocksuite/std';
  * It is supported to copy models in the root block.
  */
 export class ReadOnlyClipboard extends LifeCycleWatcher {
-  static override key = 'affine-readonly-clipboard';
+  static override key = 'yunke-readonly-clipboard';
 
   protected readonly _copySelectedInPage = (onCopy?: () => void) => {
     return this.std.command

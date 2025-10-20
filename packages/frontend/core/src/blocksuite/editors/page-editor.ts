@@ -18,8 +18,8 @@ export class PageEditor extends SignalWatcher(
 ) {
   static override styles = css`
     page-editor {
-      font-family: var(--affine-font-family);
-      background: var(--affine-background-primary-color);
+      font-family: var(--yunke-font-family);
+      background: var(--yunke-background-primary-color);
     }
 
     page-editor * {
@@ -32,7 +32,7 @@ export class PageEditor extends SignalWatcher(
       }
     }
 
-    .affine-page-viewport {
+    .yunke-page-viewport {
       position: relative;
       height: 100%;
       overflow-x: hidden;

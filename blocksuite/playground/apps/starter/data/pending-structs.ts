@@ -8,7 +8,7 @@ export const pendingStructs: InitFn = (collection: Workspace, id: string) => {
   const tempDoc = collection.createDoc('tempDoc').getStore();
   doc.load();
   tempDoc.load(() => {
-    const rootId = tempDoc.addBlock('affine:page', {
+    const rootId = tempDoc.addBlock('yunke:page', {
       title: new Text('Pending Structs'),
     });
     const vec = Y.encodeStateVector(tempDoc.spaceDoc);
@@ -16,11 +16,11 @@ export const pendingStructs: InitFn = (collection: Workspace, id: string) => {
     // To avoid pending structs, uncomment the following line
     // const update = Y.encodeStateAsUpdate(tempDoc.spaceDoc);
 
-    tempDoc.addBlock('affine:surface', {}, rootId);
+    tempDoc.addBlock('yunke:surface', {}, rootId);
     // Add note block inside root block
-    const noteId = tempDoc.addBlock('affine:note', {}, rootId);
+    const noteId = tempDoc.addBlock('yunke:note', {}, rootId);
     tempDoc.addBlock(
-      'affine:paragraph',
+      'yunke:paragraph',
       {
         text: new Text('This is a paragraph block'),
       },

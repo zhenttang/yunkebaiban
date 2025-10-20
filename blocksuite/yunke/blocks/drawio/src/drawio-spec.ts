@@ -11,7 +11,7 @@ const flavour = DrawioBlockSchema.model.flavour;
 export const DrawioBlockSpec: ExtensionType[] = [
   FlavourExtension(flavour),
   BlockViewExtension(flavour, model => {
-    return literal`affine-drawio`;
+    return literal`yunke-drawio`;
   }),
   SlashMenuConfigExtension(flavour, drawioSlashMenuConfig),
 ].flat();

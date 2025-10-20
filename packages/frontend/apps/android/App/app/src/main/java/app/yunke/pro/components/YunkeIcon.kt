@@ -1,4 +1,4 @@
-package app.affine.pro.components
+package app.yunke.pro.components
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -12,13 +12,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import app.affine.pro.theme.AFFiNETheme
+import app.yunke.pro.theme.YUNKETheme
 
 @Composable
-fun AFFiNEIcon(
+fun YUNKEIcon(
     @DrawableRes resId: Int,
     modifier: Modifier = Modifier,
-    tint: Color = AFFiNETheme.colors.iconPrimary,
+    tint: Color = YUNKETheme.colors.iconPrimary,
     contentDescription: String? = null,
 ) {
     Icon(
@@ -30,18 +30,18 @@ fun AFFiNEIcon(
 }
 
 @Composable
-fun AFFiNEIconButton(
+fun YUNKEIconButton(
     @DrawableRes resId: Int,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     colors: IconButtonColors = IconButtonDefaults.iconButtonColors().copy(
-        contentColor = AFFiNETheme.colors.iconPrimary,
-        disabledContentColor = AFFiNETheme.colors.iconDisable,
+        contentColor = YUNKETheme.colors.iconPrimary,
+        disabledContentColor = YUNKETheme.colors.iconDisable,
     ),
     interactionSource: MutableInteractionSource? = null,
 ) {
     IconButton(onClick, modifier.size(24.dp), enabled, colors, interactionSource) {
-        AFFiNEIcon(resId)
+        YUNKEIcon(resId)
     }
 }

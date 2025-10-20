@@ -55,7 +55,7 @@ export const CreatePropertyMenuItems = ({
   return (
     <>
       <div role="heading" className={styles.menuHeader}>
-        {t['com.affine.page-properties.create-property.menu.header']()}
+        {t['com.yunke.page-properties.create-property.menu.header']()}
       </div>
       <MenuSeparator />
       {Object.entries(WorkspacePropertyTypes).map(([type, info]) => {
@@ -81,7 +81,7 @@ export const CreatePropertyMenuItems = ({
               {name}
               {isUniqueExist && (
                 <span>
-                  {t['com.affine.page-properties.create-property.added']()}
+                  {t['com.yunke.page-properties.create-property.added']()}
                 </span>
               )}
             </div>

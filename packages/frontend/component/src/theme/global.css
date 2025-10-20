@@ -168,7 +168,7 @@ legend {
   background-color: unset;
   outline: 0;
   border: 0;
-  font-size: var(--affine-font-base);
+  font-size: var(--yunke-font-base);
   font-family: inherit;
   font-feature-settings: 'calt' 0;
 }
@@ -189,7 +189,7 @@ input {
   outline: medium;
   /*Remove the default yellow border on mouse click*/
   background-color: transparent;
-  caret-color: var(--affine-primary-color);
+  caret-color: var(--yunke-primary-color);
 }
 
 input:-webkit-autofill {
@@ -233,23 +233,23 @@ editor-host *::-webkit-scrollbar {
   padding-right: 0;
 }
 
-/* issue: https://github.com/toeverything/AFFiNE/issues/2004 */
+/* issue: https://github.com/toeverything/YUNKE/issues/2004 */
 .editor-wrapper.edgeless-mode {
   padding: 0;
 }
 
-.affine-default-page-block-title-container {
+.yunke-default-page-block-title-container {
   margin-top: 40px;
   margin-bottom: 40px;
   transition: margin-top 0.2s;
 }
 
-.affine-default-page-block-container {
+.yunke-default-page-block-container {
   transition: max-width 0.2s;
   min-width: 550px;
 }
 
-affine-block-hub {
+yunke-block-hub {
   position: unset !important;
 }
 
@@ -258,7 +258,7 @@ affine-block-hub {
 }
 
 @media (max-width: 768px) {
-  .affine-default-page-block-title-container {
+  .yunke-default-page-block-title-container {
     margin-top: 24px;
   }
 
@@ -266,7 +266,7 @@ affine-block-hub {
     width: 100%;
   }
 
-  /* issue: https://github.com/toeverything/AFFiNE/issues/2004 */
+  /* issue: https://github.com/toeverything/YUNKE/issues/2004 */
   .editor-wrapper.edgeless-mode {
     padding: 0;
   }
@@ -284,7 +284,7 @@ body,
  * A hack to make the anchor wrapper not affect the layout of the page.
  */
 [data-lit-react-wrapper],
-affine-lit-template-wrapper {
+yunke-lit-template-wrapper {
   display: contents;
 }
 

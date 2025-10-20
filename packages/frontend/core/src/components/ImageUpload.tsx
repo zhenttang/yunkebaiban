@@ -86,7 +86,7 @@ export const ImageUpload = ({
           height: type === 'cover' ? '200px' : '200px',
           borderRadius: type === 'avatar' ? '50%' : '8px',
           overflow: 'hidden',
-          border: '2px solid var(--affine-border-color)',
+          border: '2px solid var(--yunke-border-color)',
         }}>
           <img
             src={preview}
@@ -123,7 +123,7 @@ export const ImageUpload = ({
 
       {error && (
         <div style={{
-          color: 'var(--affine-error-color)',
+          color: 'var(--yunke-error-color)',
           fontSize: '13px',
         }}>
           {error}
@@ -132,7 +132,7 @@ export const ImageUpload = ({
 
       <div style={{
         fontSize: '12px',
-        color: 'var(--affine-text-secondary-color)',
+        color: 'var(--yunke-text-secondary-color)',
       }}>
         支持 JPG、PNG、GIF、WEBP 格式，大小不超过 {maxSizeMB}MB
       </div>

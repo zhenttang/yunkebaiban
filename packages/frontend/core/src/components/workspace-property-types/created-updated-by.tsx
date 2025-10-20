@@ -15,13 +15,13 @@ import * as styles from './created-updated-by.css';
 
 const CreatedUsernameTip = ({ userName }: { userName: string }) => {
   const i18n = useI18n();
-  return i18n.t('com.affine.page-properties.property.createdBy.tip', {
+  return i18n.t('com.yunke.page-properties.property.createdBy.tip', {
     userName,
   });
 };
 const UpdatedUsernameTip = ({ userName }: { userName: string }) => {
   const i18n = useI18n();
-  return i18n.t('com.affine.page-properties.property.updatedBy.tip', {
+  return i18n.t('com.yunke.page-properties.property.updatedBy.tip', {
     userName,
   });
 };
@@ -64,14 +64,14 @@ const NoRecordValue = () => {
   const t = useI18n();
   return (
     <span>
-      {t['com.affine.page-properties.property-user-avatar-no-record']()}
+      {t['com.yunke.page-properties.property-user-avatar-no-record']()}
     </span>
   );
 };
 
 const LocalUserValue = () => {
   const t = useI18n();
-  return <span>{t['com.affine.page-properties.local-user']()}</span>;
+  return <span>{t['com.yunke.page-properties.local-user']()}</span>;
 };
 
 export const CreatedByValue = () => {
@@ -153,7 +153,7 @@ export const CreatedByUpdatedByFilterValue = ({
     <MemberSelectorInline
       placeholder={
         <span style={{ color: cssVarV2('text/placeholder') }}>
-          {t['com.affine.filter.empty']()}
+          {t['com.yunke.filter.empty']()}
         </span>
       }
       selected={selected}

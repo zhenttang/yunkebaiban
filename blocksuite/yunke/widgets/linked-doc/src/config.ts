@@ -11,7 +11,7 @@ import {
   DocModeProvider,
   TelemetryProvider,
 } from '@blocksuite/yunke-shared/services';
-import type { AffineInlineEditor } from '@blocksuite/yunke-shared/types';
+import type { YunkeInlineEditor } from '@blocksuite/yunke-shared/types';
 import {
   createDefaultDoc,
   isFuzzyMatch,
@@ -61,7 +61,7 @@ export type LinkedMenuGroup = {
 
 export type LinkedDocContext = {
   std: BlockStdScope;
-  inlineEditor: AffineInlineEditor;
+  inlineEditor: YunkeInlineEditor;
   startRange: InlineRange;
   startNativeRange: Range;
   triggerKey: string;
@@ -76,7 +76,7 @@ export function createLinkedDocMenuGroup(
   query: string,
   abort: () => void,
   editorHost: EditorHost,
-  inlineEditor: AffineInlineEditor
+  inlineEditor: YunkeInlineEditor
 ) {
   const doc = editorHost.store;
   const { docMetas } = doc.workspace.meta;
@@ -120,7 +120,7 @@ export function createNewDocMenuGroup(
   query: string,
   abort: () => void,
   editorHost: EditorHost,
-  inlineEditor: AffineInlineEditor
+  inlineEditor: YunkeInlineEditor
 ): LinkedMenuGroup {
   const doc = editorHost.store;
   const docName = query || DEFAULT_DOC_NAME;
@@ -210,7 +210,7 @@ export function getMenus(
   query: string,
   abort: () => void,
   editorHost: EditorHost,
-  inlineEditor: AffineInlineEditor
+  inlineEditor: YunkeInlineEditor
 ): Promise<LinkedMenuGroup[]> {
   return Promise.resolve([
     createLinkedDocMenuGroup(query, abort, editorHost, inlineEditor),
@@ -223,7 +223,7 @@ export const LinkedWidgetUtils = {
   insertLinkedNode,
 };
 
-export const AFFINE_LINKED_DOC_WIDGET = 'affine-linked-doc-widget';
+export const YUNKE_LINKED_DOC_WIDGET = 'yunke-linked-doc-widget';
 
 export const LinkedWidgetConfigExtension = ConfigExtensionFactory<
   Partial<LinkedWidgetConfig>

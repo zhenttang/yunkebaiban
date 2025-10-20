@@ -20,8 +20,8 @@ export const EmbedYoutubeViewExtensions: ExtensionType[] = [
   EmbedYoutubeBlockService,
   BlockViewExtension(flavour, model => {
     return model.parent?.flavour === 'yunke:surface'
-      ? literal`affine-embed-edgeless-youtube-block`
-      : literal`affine-embed-youtube-block`;
+      ? literal`yunke-embed-edgeless-youtube-block`
+      : literal`yunke-embed-youtube-block`;
   }),
   EmbedYoutubeBlockOptionConfig,
   createBuiltinToolbarConfigExtension(flavour, EmbedYoutubeBlockComponent),

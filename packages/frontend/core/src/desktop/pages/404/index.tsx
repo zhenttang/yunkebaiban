@@ -2,7 +2,7 @@ import {
   NoPermissionOrNotFound,
   NotFoundPage,
 } from '@yunke/component/not-found-page';
-import { useSignOut } from '@yunke/core/components/hooks/affine/use-sign-out';
+import { useSignOut } from '@yunke/core/components/hooks/yunke/use-sign-out';
 import { DesktopApiService } from '@yunke/core/modules/desktop-api';
 import {
   useLiveData,

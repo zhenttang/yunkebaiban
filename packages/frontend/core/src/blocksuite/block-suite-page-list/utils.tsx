@@ -3,7 +3,7 @@ import { getStoreManager } from '@yunke/core/blocksuite/manager/store';
 import { AppSidebarService } from '@yunke/core/modules/app-sidebar';
 import { DocsService } from '@yunke/core/modules/doc';
 import { WorkbenchService } from '@yunke/core/modules/workbench';
-import { getAFFiNEWorkspaceSchema } from '@yunke/core/modules/workspace';
+import { getYUNKEWorkspaceSchema } from '@yunke/core/modules/workspace';
 import { type DocMode } from '@blocksuite/yunke/model';
 import type { Workspace } from '@blocksuite/yunke/store';
 import { useServices } from '@toeverything/infra';
@@ -97,7 +97,7 @@ export const usePageHelper = (docCollection: Workspace) => {
       };
       showImportModal({
         collection: docCollection,
-        schema: getAFFiNEWorkspaceSchema(),
+        schema: getYUNKEWorkspaceSchema(),
         extensions: getStoreManager().config.init().value.get('store'),
         onSuccess,
         onFail: message => {

@@ -202,7 +202,7 @@ export class CloudDocStorage extends DocStorageBase<CloudDocStorageOptions> {
     const response = await fetch(`${this.options.serverBaseUrl}/api/workspaces/${this.spaceId}/docs/${oldDocId}`, {
       method: 'DELETE',
       headers: {
-        'x-affine-version': '0.17.0',
+        'x-yunke-version': '0.17.0',
       },
       credentials: 'include',
     });

@@ -17,11 +17,11 @@ export interface EmbedOptionProvider {
 }
 
 export const EmbedOptionProvider = createIdentifier<EmbedOptionProvider>(
-  'AffineEmbedOptionProvider'
+  'YunkeEmbedOptionProvider'
 );
 
 export const EmbedOptionConfigIdentifier = createIdentifier<EmbedOptions>(
-  'AffineEmbedOptionConfig'
+  'YunkeEmbedOptionConfig'
 );
 
 export const EmbedOptionConfig = (options: EmbedOptions): ExtensionType => {

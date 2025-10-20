@@ -65,7 +65,7 @@ export const PageSwitchItem = forwardRef<HTMLDivElement, Omit<HoverAnimateContro
     const t = useI18n();
     return (
       <Tooltip
-        content={t['com.affine.header.mode-switch.page']()}
+        content={t['com.yunke.header.mode-switch.page']()}
         shortcut={['$alt', 'S']}
         side="bottom"
       >
@@ -84,7 +84,7 @@ export const EdgelessSwitchItem = forwardRef<HTMLDivElement, Omit<HoverAnimateCo
     const t = useI18n();
     return (
       <Tooltip
-        content={t['com.affine.header.mode-switch.edgeless']()}
+        content={t['com.yunke.header.mode-switch.edgeless']()}
         shortcut={['$alt', 'S']}
         side="bottom"
       >

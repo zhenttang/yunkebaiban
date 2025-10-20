@@ -202,12 +202,12 @@ export class KanbanViewUI extends DataViewUIBase<KanbanViewUILogic> {
     }
 
     return html`${groups.map(group => {
-      return html` <affine-data-view-kanban-group
+      return html` <yunke-data-view-kanban-group
         ${sortable(group.key)}
         data-key="${group.key}"
         .kanbanViewLogic="${this.logic}"
         .group="${group}"
-      ></affine-data-view-kanban-group>`;
+      ></yunke-data-view-kanban-group>`;
     })}`;
   }
 
@@ -296,11 +296,11 @@ const kanbanGroupsStyle = css({
 
   '&:hover::-webkit-scrollbar-thumb': {
     borderRadius: '16px',
-    backgroundColor: 'var(--affine-black-30)',
+    backgroundColor: 'var(--yunke-black-30)',
   },
 
   '&:hover::-webkit-scrollbar-track': {
-    backgroundColor: 'var(--affine-hover-color)',
+    backgroundColor: 'var(--yunke-hover-color)',
   },
 });
 
@@ -312,14 +312,14 @@ const addGroupIconStyle = css({
   cursor: 'pointer',
 
   '&:hover': {
-    backgroundColor: 'var(--affine-hover-color)',
+    backgroundColor: 'var(--yunke-hover-color)',
   },
 
   '& svg': {
     width: '16px',
     height: '16px',
-    fill: 'var(--affine-icon-color)',
-    color: 'var(--affine-icon-color)',
+    fill: 'var(--yunke-icon-color)',
+    color: 'var(--yunke-icon-color)',
   },
 });
 

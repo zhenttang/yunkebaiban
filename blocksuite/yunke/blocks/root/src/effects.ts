@@ -11,18 +11,18 @@ export function effects() {
 }
 
 function registerRootComponents() {
-  customElements.define('affine-page-root', PageRootBlockComponent);
-  customElements.define('affine-preview-root', PreviewRootBlockComponent);
-  customElements.define('affine-edgeless-root', EdgelessRootBlockComponent);
+  customElements.define('yunke-page-root', PageRootBlockComponent);
+  customElements.define('yunke-preview-root', PreviewRootBlockComponent);
+  customElements.define('yunke-edgeless-root', EdgelessRootBlockComponent);
   customElements.define(
-    'affine-edgeless-root-preview',
+    'yunke-edgeless-root-preview',
     EdgelessRootPreviewBlockComponent
   );
 }
 
 declare global {
   interface HTMLElementTagNameMap {
-    'affine-edgeless-root': EdgelessRootBlockComponent;
-    'affine-page-root': PageRootBlockComponent;
+    'yunke-edgeless-root': EdgelessRootBlockComponent;
+    'yunke-page-root': PageRootBlockComponent;
   }
 }

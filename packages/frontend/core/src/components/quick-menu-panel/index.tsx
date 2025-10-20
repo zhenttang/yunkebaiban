@@ -33,8 +33,8 @@ export const QuickMenuPanel = memo(({ workspaceId, onClose }: QuickMenuPanelProp
   const menuItems = [
     {
       icon: <AllDocsIcon />,
-      title: t['com.affine.workspaceSubPath.all']?.() || 'All Docs',
-      description: t['com.affine.quick-menu.all-docs.description']?.() || 'View all your documents',
+      title: t['com.yunke.workspaceSubPath.all']?.() || 'All Docs',
+      description: t['com.yunke.quick-menu.all-docs.description']?.() || 'View all your documents',
       onClick: () => {
         track.$.quickMenu.$.navigate({ to: 'allDocs' });
         navigationHelper.jumpToPage(workspaceId, 'all');
@@ -43,8 +43,8 @@ export const QuickMenuPanel = memo(({ workspaceId, onClose }: QuickMenuPanelProp
     },
     {
       icon: <ShareIcon />,
-      title: t['com.affine.rootAppSidebar.community']?.() || 'Community',
-      description: t['com.affine.quick-menu.community.description']?.() || 'Explore community content',
+      title: t['com.yunke.rootAppSidebar.community']?.() || 'Community',
+      description: t['com.yunke.quick-menu.community.description']?.() || 'Explore community content',
       onClick: () => {
         track.$.quickMenu.$.navigate({ to: 'community' });
         workbenchService.workbench.openCommunity();
@@ -53,8 +53,8 @@ export const QuickMenuPanel = memo(({ workspaceId, onClose }: QuickMenuPanelProp
     },
     {
       icon: <JournalIcon />,
-      title: t['com.affine.journal.app-sidebar-title']?.() || 'Journal',
-      description: t['com.affine.quick-menu.journal.description']?.() || 'Open today\'s journal',
+      title: t['com.yunke.journal.app-sidebar-title']?.() || 'Journal',
+      description: t['com.yunke.quick-menu.journal.description']?.() || 'Open today\'s journal',
       onClick: () => {
         track.$.quickMenu.$.navigate({ to: 'journal' });
         workbenchService.workbench.openJournal();
@@ -63,8 +63,8 @@ export const QuickMenuPanel = memo(({ workspaceId, onClose }: QuickMenuPanelProp
     },
     {
       icon: <ViewLayersIcon />,
-      title: t['com.affine.collections.header']?.() || 'Collections',
-      description: t['com.affine.quick-menu.collections.description']?.() || 'Manage your collections',
+      title: t['com.yunke.collections.header']?.() || 'Collections',
+      description: t['com.yunke.quick-menu.collections.description']?.() || 'Manage your collections',
       onClick: () => {
         track.$.quickMenu.$.navigate({ to: 'collections' });
         navigationHelper.jumpToCollections(workspaceId);
@@ -73,8 +73,8 @@ export const QuickMenuPanel = memo(({ workspaceId, onClose }: QuickMenuPanelProp
     },
     {
       icon: <TagsIcon />,
-      title: t['com.affine.tags.header']?.() || 'Tags',
-      description: t['com.affine.quick-menu.tags.description']?.() || 'View all tags',
+      title: t['com.yunke.tags.header']?.() || 'Tags',
+      description: t['com.yunke.quick-menu.tags.description']?.() || 'View all tags',
       onClick: () => {
         track.$.quickMenu.$.navigate({ to: 'tags' });
         navigationHelper.jumpToTags(workspaceId);
@@ -83,8 +83,8 @@ export const QuickMenuPanel = memo(({ workspaceId, onClose }: QuickMenuPanelProp
     },
     {
       icon: <DeleteIcon />,
-      title: t['com.affine.workspaceSubPath.trash']?.() || 'Trash',
-      description: t['com.affine.quick-menu.trash.description']?.() || 'View deleted items',
+      title: t['com.yunke.workspaceSubPath.trash']?.() || 'Trash',
+      description: t['com.yunke.quick-menu.trash.description']?.() || 'View deleted items',
       onClick: () => {
         track.$.quickMenu.$.navigate({ to: 'trash' });
         navigationHelper.jumpToPage(workspaceId, 'trash');
@@ -93,8 +93,8 @@ export const QuickMenuPanel = memo(({ workspaceId, onClose }: QuickMenuPanelProp
     },
     {
       icon: <SettingsIcon />,
-      title: t['com.affine.settingSidebar.title']?.() || 'Settings',
-      description: t['com.affine.quick-menu.settings.description']?.() || 'Configure your workspace',
+      title: t['com.yunke.settingSidebar.title']?.() || 'Settings',
+      description: t['com.yunke.quick-menu.settings.description']?.() || 'Configure your workspace',
       onClick: () => {
         track.$.quickMenu.$.navigate({ to: 'settings' });
         workspaceDialogService.open('setting', {
@@ -136,7 +136,7 @@ export const QuickMenuPanel = memo(({ workspaceId, onClose }: QuickMenuPanelProp
       <div className={styles.quickMenuOverlay} onClick={onClose} />
       <div className={styles.quickMenuPanel}>
         <div className={styles.quickMenuHeader}>
-          {t['com.affine.quick-menu.title']?.() || 'Quick Menu'}
+          {t['com.yunke.quick-menu.title']?.() || 'Quick Menu'}
         </div>
         <div className={styles.quickMenuContent}>
           {menuItems.map((item, index) => (

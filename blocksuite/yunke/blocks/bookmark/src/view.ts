@@ -15,7 +15,7 @@ import { effects } from './effects';
 const flavour = BookmarkBlockSchema.model.flavour;
 
 export class BookmarkViewExtension extends ViewExtensionProvider {
-  override name = 'affine-bookmark-block';
+  override name = 'yunke-bookmark-block';
 
   override effect() {
     super.effect();
@@ -28,8 +28,8 @@ export class BookmarkViewExtension extends ViewExtensionProvider {
       FlavourExtension(flavour),
       BlockViewExtension(flavour, model => {
         return model.parent?.flavour === 'yunke:surface'
-          ? literal`affine-edgeless-bookmark`
-          : literal`affine-bookmark`;
+          ? literal`yunke-edgeless-bookmark`
+          : literal`yunke-bookmark`;
       }),
       BookmarkSlashMenuConfigExtension,
     ]);

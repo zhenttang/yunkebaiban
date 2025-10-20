@@ -11,7 +11,7 @@ import { effects } from './effects';
 const flavour = DataViewBlockSchema.model.flavour;
 
 export class DataViewViewExtension extends ViewExtensionProvider {
-  override name = 'affine-data-view-block';
+  override name = 'yunke-data-view-block';
 
   override effect() {
     super.effect();
@@ -22,7 +22,7 @@ export class DataViewViewExtension extends ViewExtensionProvider {
     super.setup(context);
     context.register([
       FlavourExtension(flavour),
-      BlockViewExtension(flavour, literal`affine-data-view`),
+      BlockViewExtension(flavour, literal`yunke-data-view`),
     ]);
   }
 }

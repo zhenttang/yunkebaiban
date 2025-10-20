@@ -8,7 +8,7 @@ import { MenuLinkItem } from '@yunke/core/modules/app-sidebar/views';
 import { DocsService } from '@yunke/core/modules/doc';
 import { GlobalContextService } from '@yunke/core/modules/global-context';
 import { GuardService } from '@yunke/core/modules/permissions';
-import type { AffineDNDData } from '@yunke/core/types/dnd';
+import type { YunkeDNDData } from '@yunke/core/types/dnd';
 import { UserFriendlyError } from '@yunke/error';
 import { useI18n } from '@yunke/i18n';
 import { useLiveData, useService } from '@toeverything/infra';
@@ -21,7 +21,7 @@ export const TrashButton = () => {
   const trashActive = useLiveData(globalContextService.globalContext.isTrash.$);
   const guardService = useService(GuardService);
 
-  const { dropTargetRef, draggedOver } = useDropTarget<AffineDNDData>(
+  const { dropTargetRef, draggedOver } = useDropTarget<YunkeDNDData>(
     () => ({
       data: {
         at: 'app-sidebar:trash',
@@ -35,8 +35,8 @@ export const TrashButton = () => {
           const docRecord = docsService.list.doc$(docId).value;
           if (docRecord) {
             openConfirmModal({
-              title: t['com.affine.moveToTrash.confirmModal.title'](),
-              description: t['com.affine.moveToTrash.confirmModal.description'](
+              title: t['com.yunke.moveToTrash.confirmModal.title'](),
+              description: t['com.yunke.moveToTrash.confirmModal.description'](
                 {
                   title: docRecord.title$.value || t['Untitled'](),
                 }
@@ -52,7 +52,7 @@ export const TrashButton = () => {
                     docRecord.id
                   );
                   if (!canTrash) {
-                    toast(t['com.affine.no-permission']());
+                    toast(t['com.yunke.no-permission']());
                     return;
                   }
                   docRecord.moveToTrash();
@@ -81,7 +81,7 @@ export const TrashButton = () => {
       to={'/trash'}
     >
       <span data-testid="trash-page">
-        {t['com.affine.workspaceSubPath.trash']()}
+        {t['com.yunke.workspaceSubPath.trash']()}
       </span>
     </MenuLinkItem>
   );

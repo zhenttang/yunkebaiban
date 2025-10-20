@@ -4,8 +4,8 @@ export const editor = style({
   selectors: {
     '&.full-screen': {
       vars: {
-        '--affine-editor-width': '100%',
-        '--affine-editor-side-padding': '72px',
+        '--yunke-editor-width': '100%',
+        '--yunke-editor-side-padding': '72px',
       },
     },
   },
@@ -14,8 +14,8 @@ export const editor = style({
       selectors: {
         '&.is-public': {
           vars: {
-            '--affine-editor-width': '100%',
-            '--affine-editor-side-padding': '24px',
+            '--yunke-editor-width': '100%',
+            '--yunke-editor-side-padding': '24px',
           },
         },
       },

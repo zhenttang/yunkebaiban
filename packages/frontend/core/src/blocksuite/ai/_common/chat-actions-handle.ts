@@ -170,7 +170,7 @@ function addAIChatBlock(
   const { store } = host;
   const surfaceBlock = store
     .getAllModels()
-    .find(block => block.flavour === 'affine:surface');
+    .find(block => block.flavour === 'yunke:surface');
   if (!surfaceBlock) {
     return;
   }
@@ -182,7 +182,7 @@ function addAIChatBlock(
   const y = viewportCenter.y - height / 2;
   const bound = new Bound(x, y, width, height);
   const aiChatBlockId = store.addBlock(
-    'affine:embed-ai-chat',
+    'yunke:embed-ai-chat',
     {
       xywh: bound.serialize(),
       messages: JSON.stringify(messages),
@@ -285,7 +285,7 @@ const PAGE_INSERT = {
       const [_, { firstBlock: noteBlock }] = host.command.exec(
         getFirstBlockCommand,
         {
-          flavour: 'affine:note',
+          flavour: 'yunke:note',
         }
       );
 
@@ -464,7 +464,7 @@ const ADD_TO_EDGELESS_AS_NOTE = {
       props.xywh = newBound.serialize();
     }
 
-    const id = store.addBlock('affine:note', props, store.root?.id);
+    const id = store.addBlock('yunke:note', props, store.root?.id);
 
     await insertFromMarkdown(host, content, store, id, 0);
 
@@ -487,9 +487,9 @@ const SAVE_AS_DOC = {
     const doc = host.store.workspace.createDoc();
     const newDoc = doc.getStore();
     newDoc.load();
-    const rootId = newDoc.addBlock('affine:page');
-    newDoc.addBlock('affine:surface', {}, rootId);
-    const noteId = newDoc.addBlock('affine:note', {}, rootId);
+    const rootId = newDoc.addBlock('yunke:page');
+    newDoc.addBlock('yunke:surface', {}, rootId);
+    const noteId = newDoc.addBlock('yunke:note', {}, rootId);
 
     host.std.getOptional(RefNodeSlotsProvider)?.docLinkClicked.next({
       pageId: newDoc.id,
@@ -531,7 +531,7 @@ const CREATE_AS_LINKED_DOC = {
     const { store } = host;
     const surfaceBlock = store
       .getAllModels()
-      .find(block => block.flavour === 'affine:surface');
+      .find(block => block.flavour === 'yunke:surface');
     if (!surfaceBlock) {
       return false;
     }
@@ -545,9 +545,9 @@ const CREATE_AS_LINKED_DOC = {
     // Create a new doc and add the content to it
     const newDoc = host.store.workspace.createDoc().getStore();
     newDoc.load();
-    const rootId = newDoc.addBlock('affine:page');
-    newDoc.addBlock('affine:surface', {}, rootId);
-    const noteId = newDoc.addBlock('affine:note', {}, rootId);
+    const rootId = newDoc.addBlock('yunke:page');
+    newDoc.addBlock('yunke:surface', {}, rootId);
+    const noteId = newDoc.addBlock('yunke:note', {}, rootId);
     await insertFromMarkdown(host, content, newDoc, noteId, 0);
 
     const gfx = host.std.get(GfxControllerIdentifier);
@@ -574,7 +574,7 @@ const CREATE_AS_LINKED_DOC = {
     }
 
     host.std.get(EdgelessCRUDIdentifier).addBlock(
-      'affine:embed-linked-doc',
+      'yunke:embed-linked-doc',
       {
         xywh: `[${x}, ${y}, ${width}, ${height}]`,
         style: 'vertical',

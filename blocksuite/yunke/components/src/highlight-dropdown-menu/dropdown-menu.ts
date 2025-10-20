@@ -1,4 +1,4 @@
-import type { AffineTextAttributes } from '@blocksuite/yunke-shared/types';
+import type { YunkeTextAttributes } from '@blocksuite/yunke-shared/types';
 import { PropTypes, requiredProperties } from '@blocksuite/std';
 import { LitElement } from 'lit';
 import { property } from 'lit/decorators.js';
@@ -33,7 +33,7 @@ type HighlightType = 'color' | 'background';
 })
 export class HighlightDropdownMenu extends LitElement {
   @property({ attribute: false })
-  accessor updateHighlight!: (styles: AffineTextAttributes) => void;
+  accessor updateHighlight!: (styles: YunkeTextAttributes) => void;
 
   private readonly _update = (value: string | null, type: HighlightType) => {
     // latestHighlightColor = value;
@@ -43,20 +43,20 @@ export class HighlightDropdownMenu extends LitElement {
   };
 
   override render() {
-    const prefix = '--affine-text-highlight';
+    const prefix = '--yunke-text-highlight';
 
     return html`
       <editor-menu-button
         .contentPadding="${'8px'}"
         .button=${html`
           <editor-icon-button aria-label="高亮" .tooltip="${'高亮'}">
-            <affine-highlight-duotone-icon
+            <yunke-highlight-duotone-icon
               style=${styleMap({
                 '--color':
-                  // latestHighlightColor ?? 'var(--affine-text-primary-color)',
-                  'var(--affine-text-primary-color)',
+                  // latestHighlightColor ?? 'var(--yunke-text-primary-color)',
+                  'var(--yunke-text-primary-color)',
               })}
-            ></affine-highlight-duotone-icon>
+            ></yunke-highlight-duotone-icon>
             ${EditorChevronDown}
           </editor-icon-button>
         `}
@@ -73,11 +73,11 @@ export class HighlightDropdownMenu extends LitElement {
                 data-testid="foreground-${color}"
                 @click=${() => this._update(value, 'color')}
               >
-                <affine-text-duotone-icon
+                <yunke-text-duotone-icon
                   style=${styleMap({
-                    '--color': value ?? 'var(--affine-text-primary-color)',
+                    '--color': value ?? 'var(--yunke-text-primary-color)',
                   })}
-                ></affine-text-duotone-icon>
+                ></yunke-text-duotone-icon>
                 <span class="label capitalize"
                   >${isDefault ? `${color === 'default' ? '默认' : color} 颜色` : color}</span
                 >
@@ -94,12 +94,12 @@ export class HighlightDropdownMenu extends LitElement {
                 data-testid="background-${color}"
                 @click=${() => this._update(value, 'background')}
               >
-                <affine-text-duotone-icon
+                <yunke-text-duotone-icon
                   style=${styleMap({
-                    '--color': 'var(--affine-text-primary-color)',
+                    '--color': 'var(--yunke-text-primary-color)',
                     '--background': value ?? 'transparent',
                   })}
-                ></affine-text-duotone-icon>
+                ></yunke-text-duotone-icon>
 
                 <span class="label capitalize"
                   >${isDefault ? `${color === 'default' ? '默认' : color} 背景` : color}</span
@@ -115,6 +115,6 @@ export class HighlightDropdownMenu extends LitElement {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'affine-highlight-dropdown-menu': HighlightDropdownMenu;
+    'yunke-highlight-dropdown-menu': HighlightDropdownMenu;
   }
 }

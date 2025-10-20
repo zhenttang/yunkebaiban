@@ -1,14 +1,14 @@
 import { DebugLogger } from '@yunke/debug';
 import { Unreachable } from '@yunke/env/constant';
 import { replaceIdMiddleware } from '@blocksuite/yunke/shared/adapters';
-import type { AffineTextAttributes } from '@blocksuite/yunke/shared/types';
+import type { YunkeTextAttributes } from '@blocksuite/yunke/shared/types';
 import type { DeltaInsert } from '@blocksuite/yunke/store';
 import { Slice, Text, Transformer } from '@blocksuite/yunke/store';
 import { ObjectPool, Service } from '@toeverything/infra';
 import { combineLatest, map } from 'rxjs';
 
 import { initDocFromProps } from '../../../blocksuite/initialization';
-import { getAFFiNEWorkspaceSchema } from '../../workspace';
+import { getYUNKEWorkspaceSchema } from '../../workspace';
 import type { Doc } from '../entities/doc';
 import { DocRecordList } from '../entities/record-list';
 import { DocCreated, DocInitialized } from '../events';
@@ -212,11 +212,11 @@ export class DocsService extends Service {
           },
         },
       },
-    ] as DeltaInsert<AffineTextAttributes>[]);
-    const [frame] = doc.blockSuiteDoc.getBlocksByFlavour('affine:note');
+    ] as DeltaInsert<YunkeTextAttributes>[]);
+    const [frame] = doc.blockSuiteDoc.getBlocksByFlavour('yunke:note');
     frame &&
       doc.blockSuiteDoc.addBlock(
-        'affine:paragraph' as never, // TODO(eyhn): fix type
+        'yunke:paragraph' as never, // TODO(eyhn): fix type
         { text },
         frame.id
       );
@@ -261,7 +261,7 @@ export class DocsService extends Service {
 
       const collection = this.store.getBlocksuiteCollection();
       const transformer = new Transformer({
-        schema: getAFFiNEWorkspaceSchema(),
+        schema: getYUNKEWorkspaceSchema(),
         blobCRUD: collection.blobSync,
         docCRUD: {
           create: (id: string) => {
@@ -361,7 +361,7 @@ export class DocsService extends Service {
 
       const collection = this.store.getBlocksuiteCollection();
       const transformer = new Transformer({
-        schema: getAFFiNEWorkspaceSchema(),
+        schema: getYUNKEWorkspaceSchema(),
         blobCRUD: collection.blobSync,
         docCRUD: {
           create: (id: string) => {

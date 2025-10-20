@@ -81,7 +81,7 @@ const DesktopTagEditMenu = ({
                 jumpToTag(tag.id);
               }}
             >
-              {t['com.affine.page-properties.tags.open-tags-page']()}
+              {t['com.yunke.page-properties.tags.open-tags-page']()}
             </MenuItem>
           ) : null}
           <MenuSeparator />

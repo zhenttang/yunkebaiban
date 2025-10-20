@@ -1,11 +1,11 @@
-import { AffineMention } from './affine-mention';
+import { YunkeMention } from './yunke-mention';
 
 export function effects() {
-  customElements.define('affine-mention', AffineMention);
+  customElements.define('yunke-mention', YunkeMention);
 }
 
 declare global {
   interface HTMLElementTagNameMap {
-    'affine-mention': AffineMention;
+    'yunke-mention': YunkeMention;
   }
 }

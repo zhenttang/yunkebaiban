@@ -13,8 +13,8 @@ export const TweetTooltip = html`<svg width="170" height="106" viewBox="0 0 170 
 <path d="M168.244 71H17.7557C16.7861 71 16 71.2054 16 71.4588V105.541C16 105.795 16.7861 106 17.7557 106H168.244C169.214 106 170 105.795 170 105.541V71.4588C170 71.2054 169.214 71 168.244 71Z" fill="url(#pattern0_24732_2246)" stroke="#E3E2E4" stroke-width="0.5"/>
 <text fill="#121212" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="9" letter-spacing="0em"><tspan x="16" y="62.5454">To Shape, Not to Adapt.</tspan></text>
 <path d="M32 42C32 37.5817 28.4183 34 24 34C19.5817 34 16 37.5817 16 42C16 46.4183 19.5817 50 24 50C28.4183 50 32 46.4183 32 42Z" fill="url(#pattern1_24732_2246)" stroke="#E3E2E4" stroke-width="0.5"/>
-<text fill="#121212" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="9" letter-spacing="0em"><tspan x="38" y="45.0454">AFFiNE</tspan></text>
-<text fill="#8E8D91" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="9" letter-spacing="0em"><tspan x="72" y="45.0454">@AFFiNEOfficial</tspan></text>
+<text fill="#121212" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="9" letter-spacing="0em"><tspan x="38" y="45.0454">YUNKE</tspan></text>
+<text fill="#8E8D91" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="9" letter-spacing="0em"><tspan x="72" y="45.0454">@YUNKEOfficial</tspan></text>
 </g>
 </g>
 <defs>

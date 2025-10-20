@@ -762,10 +762,10 @@ export type EventArgs = {
       | '新建白板'
       | '开始录制会议'
       | '停止录制'
-      | '打开 AFFiNE'
-      | '关于 AFFiNE'
+      | '打开 YUNKE'
+      | '关于 YUNKE'
       | '会议设置'
-      | '完全退出 AFFiNE';
+      | '完全退出 YUNKE';
   };
   mentionMember: {
     type: 'member' | 'invite' | 'more';

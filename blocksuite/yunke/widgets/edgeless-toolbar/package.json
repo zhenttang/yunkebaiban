@@ -1,6 +1,6 @@
 {
   "name": "@blocksuite/yunke-widget-edgeless-toolbar",
-  "description": "Affine edgeless toolbar widget.",
+  "description": "Yunke edgeless toolbar widget.",
   "type": "module",
   "scripts": {
     "build": "tsc"

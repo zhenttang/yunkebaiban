@@ -3,8 +3,8 @@ import {
   SettingHeader,
   SettingRow,
 } from '@yunke/component/setting-components';
-import { getUpgradeQuestionnaireLink } from '@yunke/core/components/hooks/affine/use-subscription-notify';
-import { useAsyncCallback } from '@yunke/core/components/hooks/affine-async-hooks';
+import { getUpgradeQuestionnaireLink } from '@yunke/core/components/hooks/yunke/use-subscription-notify';
+import { useAsyncCallback } from '@yunke/core/components/hooks/yunke-async-hooks';
 import { useMutation } from '@yunke/core/components/hooks/use-mutation';
 import {
   AuthService,
@@ -72,8 +72,8 @@ export const WorkspaceSettingLicense = ({
   return (
     <FrameworkScope scope={workspace.scope}>
       <SettingHeader
-        title={t['com.affine.settings.workspace.license']()}
-        subtitle={t['com.affine.settings.workspace.license.description']()}
+        title={t['com.yunke.settings.workspace.license']()}
+        subtitle={t['com.yunke.settings.workspace.license.description']()}
       />
       <SelfHostTeamPlan />
       {workspace.flavour === 'local' ? (
@@ -116,15 +116,15 @@ const ReplaceLicenseModal = () => {
       <SettingRow
         className={styles.paymentMethod}
         name={t[
-          'com.affine.settings.workspace.license.self-host-team.replace-license.title'
+          'com.yunke.settings.workspace.license.self-host-team.replace-license.title'
         ]()}
         desc={t[
-          'com.affine.settings.workspace.license.self-host-team.replace-license.description'
+          'com.yunke.settings.workspace.license.self-host-team.replace-license.description'
         ]()}
       >
         <Button onClick={handleClick}>
           {t[
-            'com.affine.settings.workspace.license.self-host-team.replace-license.upload'
+            'com.yunke.settings.workspace.license.self-host-team.replace-license.upload'
           ]()}
         </Button>
       </SettingRow>
@@ -159,11 +159,11 @@ const TypeFormLink = () => {
   return (
     <SettingRow
       className={styles.paymentMethod}
-      name={t['com.affine.payment.billing-type-form.title']()}
-      desc={t['com.affine.payment.billing-type-form.description']()}
+      name={t['com.yunke.payment.billing-type-form.title']()}
+      desc={t['com.yunke.payment.billing-type-form.description']()}
     >
       <a target="_blank" href={link} rel="noreferrer">
-        <Button>{t['com.affine.payment.billing-type-form.go']()}</Button>
+        <Button>{t['com.yunke.payment.billing-type-form.go']()}</Button>
       </a>
     </SettingRow>
   );
@@ -204,13 +204,13 @@ const PaymentMethodUpdater = () => {
   return (
     <SettingRow
       className={styles.paymentMethod}
-      name={t['com.affine.payment.billing-setting.payment-method']()}
+      name={t['com.yunke.payment.billing-setting.payment-method']()}
       desc={t[
-        'com.affine.payment.billing-setting.payment-method.description'
+        'com.yunke.payment.billing-setting.payment-method.description'
       ]()}
     >
       <Button onClick={update} loading={isMutating} disabled={isMutating}>
-        {t['com.affine.payment.billing-setting.payment-method.go']()}
+        {t['com.yunke.payment.billing-setting.payment-method.go']()}
       </Button>
     </SettingRow>
   );

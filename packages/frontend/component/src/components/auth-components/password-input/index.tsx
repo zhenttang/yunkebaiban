@@ -151,7 +151,7 @@ export const PasswordInput: FC<
         type="password"
         size="extraLarge"
         style={{ marginBottom: 20 }}
-        placeholder={t['com.affine.auth.set.password.placeholder']({
+        placeholder={t['com.yunke.auth.set.password.placeholder']({
           min: String(passwordLimits.minLength),
         })}
         onChange={onPasswordChange}
@@ -160,10 +160,10 @@ export const PasswordInput: FC<
             {status ? (
               <Tag
                 status={status}
-                minimum={t['com.affine.auth.set.password.message.minlength']({
+                minimum={t['com.yunke.auth.set.password.message.minlength']({
                   min: String(passwordLimits.minLength),
                 })}
-                maximum={t['com.affine.auth.set.password.message.maxlength']({
+                maximum={t['com.yunke.auth.set.password.message.maxlength']({
                   max: String(passwordLimits.maxLength),
                 })}
               />
@@ -177,7 +177,7 @@ export const PasswordInput: FC<
         className={styles.input}
         type="password"
         size="extraLarge"
-        placeholder={t['com.affine.auth.set.password.placeholder.confirm']()}
+        placeholder={t['com.yunke.auth.set.password.placeholder.confirm']()}
         onChange={onConfirmPasswordChange}
         endFix={
           <div className={statusWrapper}>

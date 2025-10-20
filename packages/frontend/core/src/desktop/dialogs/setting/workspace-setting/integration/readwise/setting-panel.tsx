@@ -38,8 +38,8 @@ const ReadwiseSettingHeader = ({ action }: { action?: ReactNode }) => {
   return (
     <IntegrationSettingHeader
       icon={<IntegrationTypeIcon type="readwise" />}
-      name={t['com.affine.integration.readwise.name']()}
-      desc={t['com.affine.integration.readwise.desc']()}
+      name={t['com.yunke.integration.readwise.name']()}
+      desc={t['com.yunke.integration.readwise.desc']()}
       action={action}
     />
   );
@@ -130,8 +130,8 @@ const NewHighlightSetting = () => {
     <li>
       <IntegrationSettingToggle
         checked={!!syncNewHighlights}
-        name={t['com.affine.integration.readwise.setting.sync-new-name']()}
-        desc={t['com.affine.integration.readwise.setting.sync-new-desc']()}
+        name={t['com.yunke.integration.readwise.setting.sync-new-name']()}
+        desc={t['com.yunke.integration.readwise.setting.sync-new-desc']()}
         onChange={toggle}
       />
     </li>
@@ -167,19 +167,19 @@ const UpdateStrategySetting = () => {
       [
         {
           name: t[
-            'com.affine.integration.readwise.setting.update-append-name'
+            'com.yunke.integration.readwise.setting.update-append-name'
           ](),
           desc: t[
-            'com.affine.integration.readwise.setting.update-append-desc'
+            'com.yunke.integration.readwise.setting.update-append-desc'
           ](),
           value: 'append',
         },
         {
           name: t[
-            'com.affine.integration.readwise.setting.update-override-name'
+            'com.yunke.integration.readwise.setting.update-override-name'
           ](),
           desc: t[
-            'com.affine.integration.readwise.setting.update-override-desc'
+            'com.yunke.integration.readwise.setting.update-override-desc'
           ](),
           value: 'override',
         },
@@ -192,8 +192,8 @@ const UpdateStrategySetting = () => {
       <li>
         <IntegrationSettingToggle
           checked={!!updateStrategy}
-          name={t['com.affine.integration.readwise.setting.update-name']()}
-          desc={t['com.affine.integration.readwise.setting.update-desc']()}
+          name={t['com.yunke.integration.readwise.setting.update-name']()}
+          desc={t['com.yunke.integration.readwise.setting.update-desc']()}
           onChange={toggle}
         />
       </li>
@@ -203,7 +203,7 @@ const UpdateStrategySetting = () => {
       >
         <div className={styles.updateStrategyGroupContent}>
           <h6 className={styles.updateStrategyLabel}>
-            {t['com.affine.integration.readwise.setting.update-strategy']()}
+            {t['com.yunke.integration.readwise.setting.update-strategy']()}
           </h6>
           <IntegrationSettingTextRadioGroup
             items={strategies}
@@ -231,11 +231,11 @@ const StartImport = ({ onImport }: { onImport: () => void }) => {
 
   return (
     <IntegrationSettingItem
-      name={t['com.affine.integration.readwise.setting.start-import-name']()}
-      desc={t['com.affine.integration.readwise.setting.start-import-desc']()}
+      name={t['com.yunke.integration.readwise.setting.start-import-name']()}
+      desc={t['com.yunke.integration.readwise.setting.start-import-desc']()}
     >
       <Button onClick={handleImport}>
-        {t['com.affine.integration.readwise.setting.start-import-button']()}
+        {t['com.yunke.integration.readwise.setting.start-import-button']()}
       </Button>
     </IntegrationSettingItem>
   );
@@ -277,12 +277,12 @@ const TagsSetting = () => {
   return (
     <li>
       <h6 className={styles.tagsLabel}>
-        {t['com.affine.integration.readwise.setting.tags-label']()}
+        {t['com.yunke.integration.readwise.setting.tags-label']()}
       </h6>
       <WorkspaceTagsInlineEditor
         placeholder={
           <span className={styles.tagsPlaceholder}>
-            {t['com.affine.integration.readwise.setting.tags-placeholder']()}
+            {t['com.yunke.integration.readwise.setting.tags-placeholder']()}
           </span>
         }
         className={styles.tagsEditor}

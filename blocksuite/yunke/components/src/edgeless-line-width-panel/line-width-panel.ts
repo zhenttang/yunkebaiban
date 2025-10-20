@@ -18,7 +18,7 @@ export class EdgelessLineWidthPanel extends WithDisposable(LitElement) {
   }
 
   override render() {
-    return html`<affine-slider
+    return html`<yunke-slider
       ?disabled=${this.disabled}
       .range=${{ points: this.lineWidths }}
       .value=${this.selectedSize}
@@ -27,7 +27,7 @@ export class EdgelessLineWidthPanel extends WithDisposable(LitElement) {
         e.stopPropagation();
         this._onSelect(e.detail.value);
       }}
-    ></affine-slider>`;
+    ></yunke-slider>`;
   }
 
   @property({ attribute: false })

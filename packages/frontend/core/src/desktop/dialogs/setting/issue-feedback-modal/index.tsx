@@ -23,12 +23,12 @@ export const IssueFeedbackModal = ({
           loop
         />
       }
-      title={t['com.affine.issue-feedback.title']()}
+      title={t['com.yunke.issue-feedback.title']()}
       onOpenChange={setOpen}
-      description={t['com.affine.issue-feedback.description']()}
-      cancelText={t['com.affine.issue-feedback.cancel']()}
+      description={t['com.yunke.issue-feedback.description']()}
+      cancelText={t['com.yunke.issue-feedback.cancel']()}
       to={`${BUILD_CONFIG.githubUrl}/issues/new/choose`}
-      confirmText={t['com.affine.issue-feedback.confirm']()}
+      confirmText={t['com.yunke.issue-feedback.confirm']()}
       confirmButtonOptions={{
         variant: 'primary',
       }}

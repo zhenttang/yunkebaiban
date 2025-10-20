@@ -200,7 +200,7 @@ export class EmbedSyncedDocBlockComponent extends EmbedBlockComponent<EmbedSynce
         [
           'page',
           () => html`
-            <div class="affine-page-viewport" data-theme=${appTheme}>
+            <div class="yunke-page-viewport" data-theme=${appTheme}>
               ${new BlockStdScope({
                 store: syncedDoc,
                 extensions: this._buildPreviewSpec('preview-page'),
@@ -211,7 +211,7 @@ export class EmbedSyncedDocBlockComponent extends EmbedBlockComponent<EmbedSynce
         [
           'edgeless',
           () => html`
-            <div class="affine-edgeless-viewport" data-theme=${edgelessTheme}>
+            <div class="yunke-edgeless-viewport" data-theme=${edgelessTheme}>
               ${new BlockStdScope({
                 store: syncedDoc,
                 extensions: this._buildPreviewSpec('preview-edgeless'),
@@ -226,7 +226,7 @@ export class EmbedSyncedDocBlockComponent extends EmbedBlockComponent<EmbedSynce
       () => html`
         <div
           class=${classMap({
-            'affine-embed-synced-doc-container': true,
+            'yunke-embed-synced-doc-container': true,
             [editorMode]: true,
             [theme]: true,
             surface: false,
@@ -237,10 +237,10 @@ export class EmbedSyncedDocBlockComponent extends EmbedBlockComponent<EmbedSynce
           style=${containerStyleMap}
           ?data-scale=${undefined}
         >
-          <div class="affine-embed-synced-doc-editor">
+          <div class="yunke-embed-synced-doc-editor">
             ${isPageMode && this._isEmptySyncedDoc
               ? html`
-                  <div class="affine-embed-synced-doc-editor-empty">
+                  <div class="yunke-embed-synced-doc-editor-empty">
                     <span>
                       这是一个链接文档，您可以在此处添加内容。
                     </span>
@@ -253,15 +253,15 @@ export class EmbedSyncedDocBlockComponent extends EmbedBlockComponent<EmbedSynce
           </div>
           <div
             class=${classMap({
-              'affine-embed-synced-doc-header-wrapper': true,
+              'yunke-embed-synced-doc-header-wrapper': true,
               selected: this.selected$.value,
             })}
           >
-            <div class="affine-embed-synced-doc-header">
-              <span class="affine-embed-synced-doc-icon"
+            <div class="yunke-embed-synced-doc-header">
+              <span class="yunke-embed-synced-doc-icon"
                 >${this.icon$.value}</span
               >
-              <span class="affine-embed-synced-doc-title">${this.title$}</span>
+              <span class="yunke-embed-synced-doc-title">${this.title$}</span>
             </div>
           </div>
         </div>
@@ -572,10 +572,10 @@ export class EmbedSyncedDocBlockComponent extends EmbedBlockComponent<EmbedSynce
     ) {
       return this.renderEmbed(
         () => html`
-          <affine-embed-synced-doc-card
+          <yunke-embed-synced-doc-card
             style=${this.cardStyleMap}
             .block=${this}
-          ></affine-embed-synced-doc-card>
+          ></yunke-embed-synced-doc-card>
         `
       );
     }
@@ -610,12 +610,12 @@ export class EmbedSyncedDocBlockComponent extends EmbedBlockComponent<EmbedSynce
   accessor depth = 0;
 
   @query(
-    ':scope > .affine-block-component > .embed-block-container > affine-embed-synced-doc-card'
+    ':scope > .yunke-block-component > .embed-block-container > yunke-embed-synced-doc-card'
   )
   accessor syncedDocCard: EmbedSyncedDocCard | null = null;
 
   @query(
-    ':scope > .affine-block-component > .embed-block-container > .affine-embed-synced-doc-container > .affine-embed-synced-doc-editor > div > editor-host'
+    ':scope > .yunke-block-component > .embed-block-container > .yunke-embed-synced-doc-container > .yunke-embed-synced-doc-editor > div > editor-host'
   )
   accessor syncedDocEditorHost: EditorHost | null = null;
 

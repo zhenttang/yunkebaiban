@@ -15,14 +15,14 @@ export interface ContextValue {
   style?: MindmapStyle;
   centerPosition?: SerializedXYWH;
   // slides
-  contents?: Array<{ blocks: AffineNode }>;
+  contents?: Array<{ blocks: YunkeNode }>;
   images?: TemplateImage[][];
 }
 
-export interface AffineNode {
+export interface YunkeNode {
   id: string;
   flavour: string;
-  children: AffineNode[];
+  children: YunkeNode[];
 }
 
 type MindMapNode = {

@@ -13,7 +13,7 @@ export const WorkspaceQuotaPanel = () => {
 
   return (
     <SettingRow
-      name={t['com.affine.workspace.storage']()}
+      name={t['com.yunke.workspace.storage']()}
       desc=""
       spreadCol={false}
     >
@@ -51,7 +51,7 @@ export const StorageProgress = () => {
     <div className={styles.storageProgressContainer}>
       <div className={styles.storageProgressWrapper}>
         <div className="storage-progress-desc">
-          <span>{t['com.affine.storage.used.hint']()}</span>
+          <span>{t['com.yunke.storage.used.hint']()}</span>
           <span>
             {usedFormatted}/{maxFormatted}
           </span>

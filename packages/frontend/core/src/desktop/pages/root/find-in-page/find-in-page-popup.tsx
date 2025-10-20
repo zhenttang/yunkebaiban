@@ -43,7 +43,7 @@ const drawText = (
 
   const rootStyles = getComputedStyle(document.documentElement);
   const textColor = rootStyles
-    .getPropertyValue('--affine-text-primary-color')
+    .getPropertyValue('--yunke-text-primary-color')
     .trim();
 
   ctx.scale(dpr, dpr);

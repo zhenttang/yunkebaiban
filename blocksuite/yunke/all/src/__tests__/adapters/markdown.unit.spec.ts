@@ -625,7 +625,7 @@ hhh
                 borderRadius: 8,
                 borderSize: 4,
                 borderStyle: 'solid',
-                shadowType: '--affine-note-shadow-box',
+                shadowType: '--yunke-note-shadow-box',
               },
             },
           },
@@ -768,7 +768,7 @@ hhh
                 borderRadius: 8,
                 borderSize: 4,
                 borderStyle: 'solid',
-                shadowType: '--affine-note-shadow-box',
+                shadowType: '--yunke-note-shadow-box',
               },
             },
           },
@@ -1141,7 +1141,7 @@ hhh
                     {
                       insert: 'bbb',
                       attributes: {
-                        link: 'https://affine.pro/',
+                        link: 'https://yunke.pro/',
                       },
                     },
                     {
@@ -1156,7 +1156,7 @@ hhh
         },
       ],
     };
-    const markdown = 'aaa [bbb](https://affine.pro/) ccc\n';
+    const markdown = 'aaa [bbb](https://yunke.pro/) ccc\n';
 
     const mdAdapter = new MarkdownAdapter(createJob(), provider);
     const target = await mdAdapter.fromBlockSnapshot({
@@ -1211,9 +1211,9 @@ hhh
                       insert: 'aaa ',
                     },
                     {
-                      insert: 'https://affine.pro/  ',
+                      insert: 'https://yunke.pro/  ',
                       attributes: {
-                        link: 'https://affine.pro/  ',
+                        link: 'https://yunke.pro/  ',
                       },
                     },
                   ],
@@ -1225,7 +1225,7 @@ hhh
         },
       ],
     };
-    const markdown = 'aaa https://affine.pro/  \n';
+    const markdown = 'aaa https://yunke.pro/  \n';
 
     const mdAdapter = new MarkdownAdapter(createJob(), provider);
     const target = await mdAdapter.fromBlockSnapshot({
@@ -1562,17 +1562,17 @@ hhh
               options: [
                 {
                   id: 'TKip9uc7Yx',
-                  color: 'var(--affine-tag-white)',
+                  color: 'var(--yunke-tag-white)',
                   value: 'TODO',
                 },
                 {
                   id: 'F2bgsaE3X2',
-                  color: 'var(--affine-tag-green)',
+                  color: 'var(--yunke-tag-green)',
                   value: 'In Progress',
                 },
                 {
                   id: 'y3O1A2IHHu',
-                  color: 'var(--affine-tag-gray)',
+                  color: 'var(--yunke-tag-gray)',
                   value: 'Done',
                 },
               ],
@@ -1607,12 +1607,12 @@ hhh
                 {
                   id: '73UrEZWaKk',
                   value: 'test2',
-                  color: 'var(--affine-tag-purple)',
+                  color: 'var(--yunke-tag-purple)',
                 },
                 {
                   id: '-2_QD3GZT1',
                   value: 'test1',
-                  color: 'var(--affine-tag-teal)',
+                  color: 'var(--yunke-tag-teal)',
                 },
               ],
             },
@@ -1993,7 +1993,7 @@ hhh
                   borderRadius: 8,
                   borderSize: 4,
                   borderStyle: 'solid',
-                  shadowType: '--affine-note-shadow-box',
+                  shadowType: '--yunke-note-shadow-box',
                 },
               },
             },
@@ -2077,7 +2077,7 @@ hhh
             version: 1,
             props: {
               xywh: '[0,0,800,95]',
-              background: '--affine-note-background-blue',
+              background: '--yunke-note-background-blue',
               index: 'a0',
               hidden: false,
               displayMode: 'both',
@@ -2086,7 +2086,7 @@ hhh
                   borderRadius: 0,
                   borderSize: 4,
                   borderStyle: 'none',
-                  shadowType: '--affine-note-shadow-sticker',
+                  shadowType: '--yunke-note-shadow-sticker',
                 },
               },
             },
@@ -2250,7 +2250,7 @@ hhh
             version: 1,
             props: {
               xywh: '[0,0,800,95]',
-              background: '--affine-note-background-blue',
+              background: '--yunke-note-background-blue',
               index: 'a0',
               hidden: false,
               displayMode: 'both',
@@ -2259,7 +2259,7 @@ hhh
                   borderRadius: 0,
                   borderSize: 4,
                   borderStyle: 'none',
-                  shadowType: '--affine-note-shadow-sticker',
+                  shadowType: '--yunke-note-shadow-sticker',
                 },
               },
             },
@@ -3661,7 +3661,7 @@ bbb
   });
 
   test('link', async () => {
-    const markdown = 'aaa [bbb](https://affine.pro/) ccc\n';
+    const markdown = 'aaa [bbb](https://yunke.pro/) ccc\n';
     const blockSnapshot: BlockSnapshot = {
       type: 'block',
       id: 'matchesReplaceMap[0]',
@@ -3689,7 +3689,7 @@ bbb
                 {
                   insert: 'bbb',
                   attributes: {
-                    link: 'https://affine.pro/',
+                    link: 'https://yunke.pro/',
                   },
                 },
                 {
@@ -3711,7 +3711,7 @@ bbb
   });
 
   test('inline link', async () => {
-    const markdown = 'aaa https://affine.pro/ ccc\n';
+    const markdown = 'aaa https://yunke.pro/ ccc\n';
     const blockSnapshot: BlockSnapshot = {
       type: 'block',
       id: 'matchesReplaceMap[0]',
@@ -3737,9 +3737,9 @@ bbb
                   insert: 'aaa ',
                 },
                 {
-                  insert: 'https://affine.pro/',
+                  insert: 'https://yunke.pro/',
                   attributes: {
-                    link: 'https://affine.pro/',
+                    link: 'https://yunke.pro/',
                   },
                 },
                 {

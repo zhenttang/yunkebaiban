@@ -12,7 +12,7 @@ export class EdgelessNoteMask extends SignalWatcher(
   WithDisposable(ShadowlessElement)
 ) {
   protected override firstUpdated() {
-    const maskDOM = this.renderRoot!.querySelector('.affine-note-mask');
+    const maskDOM = this.renderRoot!.querySelector('.yunke-note-mask');
     const observer = new ResizeObserver(entries => {
       for (const entry of entries) {
         if (!this.model.props.edgeless.collapse) {
@@ -43,7 +43,7 @@ export class EdgelessNoteMask extends SignalWatcher(
     const extra = this.editing ? ACTIVE_NOTE_EXTRA_PADDING : 0;
     return html`
       <div
-        class="affine-note-mask"
+        class="yunke-note-mask"
         style=${styleMap({
           position: 'absolute',
           top: `${-extra}px`,

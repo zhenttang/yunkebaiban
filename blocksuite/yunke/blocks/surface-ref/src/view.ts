@@ -18,7 +18,7 @@ import { effects } from './effects';
 const flavour = SurfaceRefBlockSchema.model.flavour;
 
 export class SurfaceRefViewExtension extends ViewExtensionProvider {
-  override name = 'affine-surface-ref-block';
+  override name = 'yunke-surface-ref-block';
 
   override effect(): void {
     super.effect();
@@ -34,11 +34,11 @@ export class SurfaceRefViewExtension extends ViewExtensionProvider {
     const isEdgeless = this.isEdgeless(context.scope);
     if (isEdgeless) {
       context.register([
-        BlockViewExtension(flavour, literal`affine-edgeless-surface-ref`),
+        BlockViewExtension(flavour, literal`yunke-edgeless-surface-ref`),
       ]);
     } else {
       context.register([
-        BlockViewExtension(flavour, literal`affine-surface-ref`),
+        BlockViewExtension(flavour, literal`yunke-surface-ref`),
         ToolbarModuleExtension({
           id: BlockFlavourIdentifier(flavour),
           config: surfaceRefToolbarModuleConfig,

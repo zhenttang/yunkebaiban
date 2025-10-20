@@ -1,6 +1,6 @@
 {
   "name": "@blocksuite/yunke-foundation",
-  "description": "Foundation extensions for affine.",
+  "description": "Foundation extensions for yunke.",
   "type": "module",
   "scripts": {
     "build": "tsc"

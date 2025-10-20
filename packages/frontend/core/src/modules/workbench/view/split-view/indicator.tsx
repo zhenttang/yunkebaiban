@@ -109,7 +109,7 @@ export const SplitViewIndicator = memo(
             <div className={styles.menuTrigger} />
           </Menu>
           <Tooltip
-            content={t['com.affine.split-view-drag-handle.tooltip']()}
+            content={t['com.yunke.split-view-drag-handle.tooltip']()}
             side="bottom"
           >
             <SplitViewDragHandle

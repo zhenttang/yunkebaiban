@@ -11,7 +11,7 @@ export const AIStarIconWithAnimation = html`<dotlottie-player
   autoplay
 ></dotlottie-player>`;
 
-export const AffineIcon = (color: string) =>
+export const YunkeIcon = (color: string) =>
   html`<svg
     width="63"
     height="62"
@@ -26,7 +26,7 @@ export const AffineIcon = (color: string) =>
         width="44"
         height="44"
         rx="8"
-        fill="var(--affine-white)"
+        fill="var(--yunke-white)"
       />
       <rect
         x="10"
@@ -34,7 +34,7 @@ export const AffineIcon = (color: string) =>
         width="43"
         height="43"
         rx="7.5"
-        stroke="var(--affine-border-color)"
+        stroke="var(--yunke-border-color)"
       />
       <g clip-path="url(#clip0_5885_200419)">
         <path

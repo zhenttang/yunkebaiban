@@ -1,5 +1,5 @@
 import { Divider, IconButton, Menu, MenuItem } from '@yunke/component';
-import { useAsyncCallback } from '@yunke/core/components/hooks/affine-async-hooks';
+import { useAsyncCallback } from '@yunke/core/components/hooks/yunke-async-hooks';
 import { useNavigateHelper } from '@yunke/core/components/hooks/use-navigate-helper';
 import { useWorkspaceInfo } from '@yunke/core/components/hooks/use-workspace-info';
 import { WorkspaceAvatar } from '@yunke/core/components/workspace-avatar';
@@ -112,14 +112,14 @@ const WorkspaceServerInfo = ({
   const menuItems = useMemo(
     () =>
       [
-        server !== 'affine-cloud' && server !== 'local' && (
+        server !== 'yunke-cloud' && server !== 'local' && (
           <MenuItem
             prefixIcon={<DeleteIcon />}
             type="danger"
             key="delete-server"
             onClick={onDeleteServer}
           >
-            {t['com.affine.server.delete']()}
+            {t['com.yunke.server.delete']()}
           </MenuItem>
         ),
         accountStatus === 'authenticated' && (
@@ -173,7 +173,7 @@ const LocalWorkspaces = ({
     <>
       <WorkspaceServerInfo
         server="local"
-        name={t['com.affine.workspaceList.workspaceListType.local']()}
+        name={t['com.yunke.workspaceList.workspaceListType.local']()}
       />
       <WorkspaceList
         items={workspaces}
@@ -293,12 +293,12 @@ export const SelectorMenu = ({ onClose }: { onClose?: () => void }) => {
   const servers = useLiveData(serversService.servers$);
   console.log('🔍 服务器列表调试:', servers.map(s => ({ id: s.id, baseUrl: s.baseUrl })));
   
-  const affineCloudServer = useMemo(
-    () => servers.find(s => s.id === 'affine-cloud') as Server,
+  const yunkeCloudServer = useMemo(
+    () => servers.find(s => s.id === 'yunke-cloud') as Server,
     [servers]
   );
   const selfhostServers = useMemo(
-    () => servers.filter(s => s.id !== 'affine-cloud'),
+    () => servers.filter(s => s.id !== 'yunke-cloud'),
     [servers]
   );
 
@@ -344,15 +344,15 @@ export const SelectorMenu = ({ onClose }: { onClose?: () => void }) => {
       </header>
       <div className={styles.divider} />
       <main className={styles.body}>
-        {/* 1. affine-cloud  */}
+        {/* 1. yunke-cloud  */}
         <FrameworkScope
-          key={affineCloudServer.id}
-          scope={affineCloudServer.scope}
+          key={yunkeCloudServer.id}
+          scope={yunkeCloudServer.scope}
         >
           <CloudWorkSpaceList
-            server={affineCloudServer}
+            server={yunkeCloudServer}
             workspaces={cloudWorkspaces.filter(
-              ({ flavour }) => flavour === affineCloudServer.id
+              ({ flavour }) => flavour === yunkeCloudServer.id
             )}
             onClickWorkspace={handleClickWorkspace}
           />

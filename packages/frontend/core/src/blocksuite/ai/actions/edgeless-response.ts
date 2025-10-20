@@ -22,8 +22,8 @@ import type { EditorHost } from '@blocksuite/yunke/std';
 import { GfxControllerIdentifier } from '@blocksuite/yunke/std/gfx';
 import { Text } from '@blocksuite/yunke/store';
 import {
-  AFFINE_TOOLBAR_WIDGET,
-  type AffineToolbarWidget,
+  YUNKE_TOOLBAR_WIDGET,
+  type YunkeToolbarWidget,
 } from '@blocksuite/yunke/widgets/toolbar';
 import {
   ChatWithAiIcon,
@@ -48,26 +48,26 @@ import {
   getCopilotSelectedElems,
   getSurfaceElementFromEditor,
 } from '../utils/selection-utils';
-import type { AffineAIPanelWidget } from '../widgets/ai-panel/ai-panel';
+import type { YunkeAIPanelWidget } from '../widgets/ai-panel/ai-panel';
 import type { EdgelessCopilotWidget } from '../widgets/edgeless-copilot';
 import { EXCLUDING_INSERT_ACTIONS, generatingStages } from './consts';
 
 type FinishConfig = Exclude<
-  AffineAIPanelWidget['config'],
+  YunkeAIPanelWidget['config'],
   null
 >['finishStateConfig'];
 
 type ErrorConfig = Exclude<
-  AffineAIPanelWidget['config'],
+  YunkeAIPanelWidget['config'],
   null
 >['errorStateConfig'];
 
 export function getToolbar(host: EditorHost) {
   const rootBlockId = host.store.root?.id as string;
   const toolbar = host.view.getWidget(
-    AFFINE_TOOLBAR_WIDGET,
+    YUNKE_TOOLBAR_WIDGET,
     rootBlockId
-  ) as AffineToolbarWidget;
+  ) as YunkeToolbarWidget;
 
   return toolbar.querySelector('editor-toolbar');
 }
@@ -79,7 +79,7 @@ export function getTriggerEntry(host: EditorHost) {
 }
 
 export function discard(
-  panel: AffineAIPanelWidget,
+  panel: YunkeAIPanelWidget,
   _: EdgelessCopilotWidget
 ): AIItemConfig {
   return {
@@ -93,7 +93,7 @@ export function discard(
   };
 }
 
-export function retry(panel: AffineAIPanelWidget): AIItemConfig {
+export function retry(panel: YunkeAIPanelWidget): AIItemConfig {
   return {
     name: '重试',
     icon: ResetIcon(),
@@ -253,10 +253,10 @@ function createBlockAndInsert(
       EDGELESS_TEXT_BLOCK_MIN_WIDTH,
       EDGELESS_TEXT_BLOCK_MIN_HEIGHT
     );
-    const surfaceBlock = doc.getBlocksByFlavour('affine:surface')[0];
+    const surfaceBlock = doc.getBlocksByFlavour('yunke:surface')[0];
     if (type === 'edgelessText') {
       blockId = doc.addBlock(
-        'affine:edgeless-text',
+        'yunke:edgeless-text',
         {
           xywh: bounds.serialize(),
         },
@@ -265,7 +265,7 @@ function createBlockAndInsert(
     } else {
       const bounds = edgelessCopilot.determineInsertionBounds(800, 95);
       blockId = doc.addBlock(
-        'affine:note',
+        'yunke:note',
         {
           xywh: bounds.serialize(),
           displayMode: NoteDisplayMode.EdgelessOnly,
@@ -498,20 +498,20 @@ function responseToMakeItReal(host: EditorHost, ctx: AIContext) {
 
     if (ifUseCodeBlock) {
       const note = host.store.addBlock(
-        'affine:note',
+        'yunke:note',
         {
           xywh: bounds.serialize(),
         },
         host.store.root
       );
       host.store.addBlock(
-        'affine:code',
+        'yunke:code',
         { text: new Text(html), language: 'html', preview: true },
         note
       );
     } else {
       host.store.addBlock(
-        'affine:embed-html',
+        'yunke:embed-html',
         {
           html,
           design: 'ai:makeItReal', // as tag
@@ -613,7 +613,7 @@ export function actionToGenerating<T extends keyof BlockSuitePresets.AIActions>(
 export function actionToErrorResponse<
   T extends keyof BlockSuitePresets.AIActions,
 >(
-  panel: AffineAIPanelWidget,
+  panel: YunkeAIPanelWidget,
   id: T,
   host: EditorHost,
   ctx: AIContext,

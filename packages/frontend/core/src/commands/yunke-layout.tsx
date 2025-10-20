@@ -3,9 +3,9 @@ import { track } from '@yunke/track';
 import { SidebarIcon } from '@blocksuite/icons/rc';
 
 import type { AppSidebarService } from '../modules/app-sidebar';
-import { registerAffineCommand } from './registry';
+import { registerYunkeCommand } from './registry';
 
-export function registerAffineLayoutCommands({
+export function registerYunkeLayoutCommands({
   t,
   appSidebarService,
 }: {
@@ -14,14 +14,14 @@ export function registerAffineLayoutCommands({
 }) {
   const unsubs: Array<() => void> = [];
   unsubs.push(
-    registerAffineCommand({
-      id: 'affine:toggle-left-sidebar',
-      category: 'affine:layout',
+    registerYunkeCommand({
+      id: 'yunke:toggle-left-sidebar',
+      category: 'yunke:layout',
       icon: <SidebarIcon />,
       label: () =>
         appSidebarService.sidebar.open$.value
-          ? t['com.affine.cmdk.affine.left-sidebar.collapse']()
-          : t['com.affine.cmdk.affine.left-sidebar.expand'](),
+          ? t['com.yunke.cmdk.yunke.left-sidebar.collapse']()
+          : t['com.yunke.cmdk.yunke.left-sidebar.expand'](),
 
       keyBinding: {
         binding: '$mod+/',

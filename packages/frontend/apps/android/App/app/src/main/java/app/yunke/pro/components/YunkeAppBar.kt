@@ -1,4 +1,4 @@
-package app.affine.pro.components
+package app.yunke.pro.components
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.Box
@@ -19,13 +19,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import app.affine.pro.R
-import app.affine.pro.theme.AFFiNETheme
-import app.affine.pro.theme.ThemeMode
+import app.yunke.pro.R
+import app.yunke.pro.theme.YUNKETheme
+import app.yunke.pro.theme.ThemeMode
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AFFiNEAppBar(
+fun YUNKEAppBar(
     modifier: Modifier = Modifier,
     scrollBehavior: TopAppBarScrollBehavior? = null,
     onNavIconPressed: () -> Unit = { },
@@ -38,11 +38,11 @@ fun AFFiNEAppBar(
         title = title,
         scrollBehavior = scrollBehavior,
         colors = TopAppBarDefaults.centerAlignedTopAppBarColors().copy(
-            containerColor = AFFiNETheme.colors.backgroundPrimary,
-            titleContentColor = AFFiNETheme.colors.textPrimary,
+            containerColor = YUNKETheme.colors.backgroundPrimary,
+            titleContentColor = YUNKETheme.colors.textPrimary,
         ),
         navigationIcon = {
-            AFFiNEIconButton(
+            YUNKEIconButton(
                 R.drawable.ic_close,
                 modifier = Modifier.size(44.dp),
                 onClick = onNavIconPressed
@@ -52,14 +52,14 @@ fun AFFiNEAppBar(
 }
 
 @Composable
-fun AFFiNEDropMenu(
+fun YUNKEDropMenu(
     @DrawableRes resId: Int,
     modifier: Modifier,
     menuItems: @Composable ColumnScope.() -> Unit = {}
 ) {
     var expanded by remember { mutableStateOf(false) }
     Box {
-        AFFiNEIconButton(
+        YUNKEIconButton(
             resId,
             modifier = modifier,
             onClick = { expanded = !expanded },
@@ -76,12 +76,12 @@ fun AFFiNEDropMenu(
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview
 @Composable
-fun AffineAppBarPreviewLight() {
-    AFFiNETheme(mode = ThemeMode.Light) {
-        AFFiNEAppBar(
+fun YunkeAppBarPreviewLight() {
+    YUNKETheme(mode = ThemeMode.Light) {
+        YUNKEAppBar(
             title = { Text("Preview!") },
             actions = {
-                AFFiNEDropMenu(R.drawable.ic_more_horizontal, Modifier.size(44.dp))
+                YUNKEDropMenu(R.drawable.ic_more_horizontal, Modifier.size(44.dp))
             },
         )
     }
@@ -90,12 +90,12 @@ fun AffineAppBarPreviewLight() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview
 @Composable
-fun AffineAppBarPreviewDark() {
-    AFFiNETheme(mode = ThemeMode.Dark) {
-        AFFiNEAppBar(
+fun YunkeAppBarPreviewDark() {
+    YUNKETheme(mode = ThemeMode.Dark) {
+        YUNKEAppBar(
             title = { Text("Preview!") },
             actions = {
-                AFFiNEDropMenu(R.drawable.ic_more_horizontal, Modifier.size(44.dp))
+                YUNKEDropMenu(R.drawable.ic_more_horizontal, Modifier.size(44.dp))
             },
         )
     }

@@ -1,4 +1,4 @@
-import { useExportPage } from '@yunke/core/components/hooks/affine/use-export-page';
+import { useExportPage } from '@yunke/core/components/hooks/yunke/use-export-page';
 import {
   ExportMenuItems,
   PrintMenuItems,
@@ -18,7 +18,7 @@ export const ShareExport = () => {
   return (
     <div className={styles.exportContainerStyle}>
       <div className={styles.descriptionStyle}>
-        {t['com.affine.share-menu.ShareViaExportDescription']()}
+        {t['com.yunke.share-menu.ShareViaExportDescription']()}
       </div>
       <div className={styles.exportContainerStyle}>
         <ExportMenuItems
@@ -30,7 +30,7 @@ export const ShareExport = () => {
       {currentMode === 'page' && (
         <>
           <div className={styles.descriptionStyle}>
-            {t['com.affine.share-menu.ShareViaPrintDescription']()}
+            {t['com.yunke.share-menu.ShareViaPrintDescription']()}
           </div>
           <div>
             <PrintMenuItems

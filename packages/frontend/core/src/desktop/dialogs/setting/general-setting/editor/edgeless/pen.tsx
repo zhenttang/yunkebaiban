@@ -67,13 +67,13 @@ export const PenSettings = () => {
   return (
     <>
       <EdgelessSnapshot
-        title={t['com.affine.settings.editorSettings.edgeless.pen']()}
+        title={t['com.yunke.settings.editorSettings.edgeless.pen']()}
         docName="pen"
         keyName="brush"
         getElements={getElements}
       />
       <SettingRow
-        name={t['com.affine.settings.editorSettings.edgeless.pen.color']()}
+        name={t['com.yunke.settings.editorSettings.edgeless.pen.color']()}
         desc={''}
       >
         {currentColor ? (
@@ -91,7 +91,7 @@ export const PenSettings = () => {
         ) : null}
       </SettingRow>
       <SettingRow
-        name={t['com.affine.settings.editorSettings.edgeless.pen.thickness']()}
+        name={t['com.yunke.settings.editorSettings.edgeless.pen.thickness']()}
         desc={''}
       >
         <Slider

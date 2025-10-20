@@ -26,9 +26,9 @@ export const PeekViewStyles = css`
     flex-direction: column;
     box-sizing: border-box;
     width: 100%;
-    color: var(--affine-text-primary-color);
+    color: var(--yunke-text-primary-color);
     line-height: 22px;
-    font-size: var(--affine-font-sm);
+    font-size: var(--yunke-font-sm);
     overflow-y: auto;
     overflow-x: hidden;
     flex: 1;

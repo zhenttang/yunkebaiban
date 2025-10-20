@@ -12,7 +12,7 @@ export class AIPanelDivider extends WithDisposable(LitElement) {
     }
     .divider {
       height: 0.5px;
-      background: var(--affine-border-color);
+      background: var(--yunke-border-color);
       width: 100%;
     }
   `;

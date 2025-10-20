@@ -1,15 +1,15 @@
-import { AFFINE_SLASH_MENU_WIDGET } from './consts';
+import { YUNKE_SLASH_MENU_WIDGET } from './consts';
 import { InnerSlashMenu, SlashMenu } from './slash-menu-popover';
-import { AffineSlashMenuWidget } from './widget';
+import { YunkeSlashMenuWidget } from './widget';
 
 export function effects() {
-  customElements.define(AFFINE_SLASH_MENU_WIDGET, AffineSlashMenuWidget);
-  customElements.define('affine-slash-menu', SlashMenu);
+  customElements.define(YUNKE_SLASH_MENU_WIDGET, YunkeSlashMenuWidget);
+  customElements.define('yunke-slash-menu', SlashMenu);
   customElements.define('inner-slash-menu', InnerSlashMenu);
 }
 
 declare global {
   interface HTMLElementTagNameMap {
-    [AFFINE_SLASH_MENU_WIDGET]: AffineSlashMenuWidget;
+    [YUNKE_SLASH_MENU_WIDGET]: YunkeSlashMenuWidget;
   }
 }

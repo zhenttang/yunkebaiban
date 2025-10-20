@@ -2,7 +2,7 @@ import { HoverController } from '@blocksuite/yunke-components/hover';
 import { PeekViewProvider } from '@blocksuite/yunke-components/peek';
 import type { FootNote } from '@blocksuite/yunke-model';
 import { unsafeCSSVarV2 } from '@blocksuite/yunke-shared/theme';
-import type { AffineTextAttributes } from '@blocksuite/yunke-shared/types';
+import type { YunkeTextAttributes } from '@blocksuite/yunke-shared/types';
 import { WithDisposable } from '@blocksuite/global/lit';
 import {
   BlockSelection,
@@ -31,7 +31,7 @@ const POPUP_SHIFT_PADDING = 8;
 // The offset between the footnote node and the popup.
 const POPUP_OFFSET = 4;
 
-export class AffineFootnoteNode extends WithDisposable(ShadowlessElement) {
+export class YunkeFootnoteNode extends WithDisposable(ShadowlessElement) {
   static override styles = css`
     .footnote-node {
       padding: 0 2px;
@@ -60,7 +60,7 @@ export class AffineFootnoteNode extends WithDisposable(ShadowlessElement) {
 
     .footnote-node.hover-effect {
       .footnote-content-default {
-        color: var(--affine-text-primary-color);
+        color: var(--yunke-text-primary-color);
         background: ${unsafeCSSVarV2('block/footnote/numberBg')};
       }
     }
@@ -98,7 +98,7 @@ export class AffineFootnoteNode extends WithDisposable(ShadowlessElement) {
   }
 
   get inlineEditor() {
-    const inlineRoot = this.closest<InlineRootElement<AffineTextAttributes>>(
+    const inlineRoot = this.closest<InlineRootElement<YunkeTextAttributes>>(
       `[${INLINE_ROOT_ATTR}]`
     );
     return inlineRoot?.inlineEditor;
@@ -260,7 +260,7 @@ export class AffineFootnoteNode extends WithDisposable(ShadowlessElement) {
   accessor config: FootNoteNodeConfigProvider | undefined = undefined;
 
   @property({ type: Object })
-  accessor delta: DeltaInsert<AffineTextAttributes> = {
+  accessor delta: DeltaInsert<YunkeTextAttributes> = {
     insert: ZERO_WIDTH_FOR_EMPTY_LINE,
     attributes: {},
   };

@@ -2,7 +2,7 @@ import Capacitor
 import Intelligents
 import UIKit
 
-class AFFiNEViewController: CAPBridgeViewController {
+class YUNKEViewController: CAPBridgeViewController {
   var baseUrl: String? {
     didSet { Intelligents.setUpstreamEndpoint(baseUrl ?? "") }
   }

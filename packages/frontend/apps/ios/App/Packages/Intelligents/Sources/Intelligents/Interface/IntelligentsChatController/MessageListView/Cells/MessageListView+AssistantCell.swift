@@ -21,7 +21,7 @@ extension MessageListView {
 
       avatarView.contentMode = .scaleAspectFit
       avatarView.image = UIImage(named: "spark", in: .module, with: nil)
-      usernameView.text = "AFFiNE AI"
+      usernameView.text = "YUNKE AI"
       usernameView.font = .preferredFont(forTextStyle: .body).bold
       usernameView.textColor = .label
 

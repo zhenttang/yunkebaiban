@@ -37,12 +37,12 @@ export const Upload = ({
   };
 
   if (disabled) {
-    return children ?? <Button>{t['com.affine.upload']()}</Button>;
+    return children ?? <Button>{t['com.yunke.upload']()}</Button>;
   }
 
   return (
     <div style={{ display: 'flex' }} onClick={_chooseFile}>
-      {children ?? <Button>{t['com.affine.upload']()}</Button>}
+      {children ?? <Button>{t['com.yunke.upload']()}</Button>}
       <input
         ref={input_ref}
         type="file"

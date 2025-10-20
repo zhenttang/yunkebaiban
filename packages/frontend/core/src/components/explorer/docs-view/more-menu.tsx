@@ -24,7 +24,7 @@ import {
 import { useLiveData, useService } from '@toeverything/infra';
 import { useCallback, useContext } from 'react';
 
-import { useBlockSuiteMetaHelper } from '../../hooks/affine/use-block-suite-meta-helper';
+import { useBlockSuiteMetaHelper } from '../../hooks/yunke/use-block-suite-meta-helper';
 import { IsFavoriteIcon } from '../../pure/icons';
 import { DocExplorerContext } from '../context';
 
@@ -52,8 +52,8 @@ const ToggleFavorite = ({ docId }: DocOperationProps) => {
       data-testid="doc-list-operation-favorite"
     >
       {favourite
-        ? t['com.affine.favoritePageOperation.remove']()
-        : t['com.affine.favoritePageOperation.add']()}
+        ? t['com.yunke.favoritePageOperation.remove']()
+        : t['com.yunke.favoritePageOperation.add']()}
     </MenuItem>
   );
 };
@@ -74,7 +74,7 @@ const DocInfo = ({ docId }: DocOperationProps) => {
 
   return (
     <MenuItem onClick={onOpenInfoModal} prefixIcon={<InformationIcon />}>
-      {t['com.affine.page-properties.page-info.view']()}
+      {t['com.yunke.page-properties.page-info.view']()}
     </MenuItem>
   );
 };
@@ -93,7 +93,7 @@ const NewTab = ({ docId }: DocOperationProps) => {
 
   return (
     <MenuItem onClick={onOpenInNewTab} prefixIcon={<OpenInNewIcon />}>
-      {t['com.affine.workbench.tab.page-menu-open']()}
+      {t['com.yunke.workbench.tab.page-menu-open']()}
     </MenuItem>
   );
 };
@@ -113,7 +113,7 @@ const SplitView = ({ docId }: DocOperationProps) => {
 
   return (
     <MenuItem onClick={onOpenInSplitView} prefixIcon={<SplitViewIcon />}>
-      {t['com.affine.workbench.split-view.page-menu-open']()}
+      {t['com.yunke.workbench.split-view.page-menu-open']()}
     </MenuItem>
   );
 };
@@ -134,7 +134,7 @@ const Duplicate = ({ docId }: DocOperationProps) => {
 
   return (
     <MenuItem prefixIcon={<DuplicateIcon />} onSelect={onDuplicate}>
-      {t['com.affine.header.option.duplicate']()}
+      {t['com.yunke.header.option.duplicate']()}
     </MenuItem>
   );
 };
@@ -158,11 +158,11 @@ const MoveToTrash = ({ docId }: DocOperationProps) => {
 
     track.allDocs.list.docMenu.deleteDoc();
     openConfirmModal({
-      title: t['com.affine.moveToTrash.confirmModal.title'](),
-      description: t['com.affine.moveToTrash.confirmModal.description']({
+      title: t['com.yunke.moveToTrash.confirmModal.title'](),
+      description: t['com.yunke.moveToTrash.confirmModal.description']({
         title: doc.title$.value || t['Untitled'](),
       }),
-      cancelText: t['com.affine.confirmModal.button.cancel'](),
+      cancelText: t['com.yunke.confirmModal.button.cancel'](),
       confirmText: t.Delete(),
       confirmButtonOptions: {
         variant: 'error',
@@ -180,7 +180,7 @@ const MoveToTrash = ({ docId }: DocOperationProps) => {
       onClick={onMoveToTrash}
       disabled={!canTrash}
     >
-      {t['com.affine.moveToTrash.title']()}
+      {t['com.yunke.moveToTrash.title']()}
     </MenuItem>
   );
 };

@@ -18,7 +18,7 @@ const optionsSchema = z.object({
 type CloudViewOptions = z.infer<typeof optionsSchema>;
 
 export class CloudViewExtension extends ViewExtensionProvider<CloudViewOptions> {
-  override name = 'affine-view-cloud';
+  override name = 'yunke-view-cloud';
 
   override schema = optionsSchema;
 

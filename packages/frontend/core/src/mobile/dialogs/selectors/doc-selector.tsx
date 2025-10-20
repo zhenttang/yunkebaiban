@@ -65,7 +65,7 @@ export const DocSelectorDialog = ({
         onBeforeConfirm={onBeforeConfirm}
         initial={init}
         data={list}
-        typeName={t[`com.affine.m.selector.type-doc`]()}
+        typeName={t[`com.yunke.m.selector.type-doc`]()}
       />
     </Modal>
   );

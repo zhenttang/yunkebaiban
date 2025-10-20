@@ -7,12 +7,12 @@ export const AboutGroup = () => {
   const t = useI18n();
 
   return (
-    <SettingGroup title={t['com.affine.mobile.setting.about.title']()}>
-      <RowLayout label={t['com.affine.mobile.setting.about.appVersion']()}>
+    <SettingGroup title={t['com.yunke.mobile.setting.about.title']()}>
+      <RowLayout label={t['com.yunke.mobile.setting.about.appVersion']()}>
         {BUILD_CONFIG.appVersion}
       </RowLayout>
 
-      <RowLayout label={t['com.affine.mobile.setting.about.editorVersion']()}>
+      <RowLayout label={t['com.yunke.mobile.setting.about.editorVersion']()}>
         {BUILD_CONFIG.editorVersion}
       </RowLayout>
     </SettingGroup>

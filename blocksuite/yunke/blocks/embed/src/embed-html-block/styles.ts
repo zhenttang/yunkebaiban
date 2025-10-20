@@ -4,7 +4,7 @@ export const EMBED_HTML_MIN_WIDTH = 370;
 export const EMBED_HTML_MIN_HEIGHT = 80;
 
 export const styles = css`
-  .affine-embed-html-block {
+  .yunke-embed-html-block {
     box-sizing: border-box;
     width: 100%;
     height: 100%;
@@ -15,32 +15,32 @@ export const styles = css`
     gap: 20px;
 
     border-radius: 12px;
-    border: 1px solid var(--affine-background-tertiary-color);
+    border: 1px solid var(--yunke-background-tertiary-color);
 
-    background: var(--affine-background-primary-color);
+    background: var(--yunke-background-primary-color);
     user-select: none;
   }
 
-  .affine-embed-html {
+  .yunke-embed-html {
     flex-grow: 1;
     width: 100%;
   }
 
-  .affine-embed-html img,
-  .affine-embed-html object,
-  .affine-embed-html svg {
+  .yunke-embed-html img,
+  .yunke-embed-html object,
+  .yunke-embed-html svg {
     width: 100%;
     height: 100%;
     object-fit: cover;
     border-radius: 4px;
   }
 
-  .affine-embed-html-iframe-container {
+  .yunke-embed-html-iframe-container {
     position: relative;
     width: 100%;
     height: 100%;
     border-radius: 4px 4px 0px 0px;
-    box-shadow: var(--affine-shadow-1);
+    box-shadow: var(--yunke-shadow-1);
     overflow: hidden;
   }
 
@@ -56,15 +56,15 @@ export const styles = css`
     border: none;
   }
 
-  .embed-html-block-iframe-wrapper affine-menu {
+  .embed-html-block-iframe-wrapper yunke-menu {
     min-width: 296px;
   }
 
-  .embed-html-block-iframe-wrapper affine-menu .settings-header {
+  .embed-html-block-iframe-wrapper yunke-menu .settings-header {
     padding: 7px 12px;
     font-weight: 500;
-    font-size: var(--affine-font-xs);
-    color: var(--affine-text-secondary-color);
+    font-size: var(--yunke-font-xs);
+    color: var(--yunke-text-secondary-color);
   }
 
   .embed-html-block-iframe-wrapper > embed-html-fullscreen-toolbar {
@@ -75,7 +75,7 @@ export const styles = css`
     visibility: visible;
   }
 
-  .affine-embed-html-iframe-overlay {
+  .yunke-embed-html-iframe-overlay {
     position: absolute;
     top: 0;
     left: 0;
@@ -83,18 +83,18 @@ export const styles = css`
     height: 100%;
   }
 
-  .affine-embed-html-iframe-overlay.hide {
+  .yunke-embed-html-iframe-overlay.hide {
     display: none;
   }
 
-  .affine-embed-html-title {
+  .yunke-embed-html-title {
     height: fit-content;
     display: flex;
     align-items: center;
     gap: 8px;
   }
 
-  .affine-embed-html-title-icon {
+  .yunke-embed-html-title-icon {
     display: flex;
     width: 20px;
     height: 20px;
@@ -102,15 +102,15 @@ export const styles = css`
     align-items: center;
   }
 
-  .affine-embed-html-title-icon img,
-  .affine-embed-html-title-icon object,
-  .affine-embed-html-title-icon svg {
+  .yunke-embed-html-title-icon img,
+  .yunke-embed-html-title-icon object,
+  .yunke-embed-html-title-icon svg {
     width: 20px;
     height: 20px;
-    fill: var(--affine-background-primary-color);
+    fill: var(--yunke-background-primary-color);
   }
 
-  .affine-embed-html-title-text {
+  .yunke-embed-html-title-text {
     display: -webkit-box;
     -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
@@ -118,10 +118,10 @@ export const styles = css`
     word-break: break-word;
     overflow: hidden;
     text-overflow: ellipsis;
-    color: var(--affine-text-primary-color);
+    color: var(--yunke-text-primary-color);
 
-    font-family: var(--affine-font-family);
-    font-size: var(--affine-font-sm);
+    font-family: var(--yunke-font-family);
+    font-size: var(--yunke-font-sm);
     font-style: normal;
     font-weight: 600;
     line-height: 22px;

@@ -13,7 +13,7 @@ export const NOTE_IMAGE_CARD_HEIGHT = 78;
 
 export class ImageBlockFallbackCard extends WithDisposable(ShadowlessElement) {
   static override styles = css`
-    affine-image-fallback-card {
+    yunke-image-fallback-card {
       width: 100%;
       height: 100%;
       display: flex;
@@ -22,7 +22,7 @@ export class ImageBlockFallbackCard extends WithDisposable(ShadowlessElement) {
       user-select: none;
     }
 
-    .affine-image-fallback-card {
+    .yunke-image-fallback-card {
       display: flex;
       flex: 1;
       gap: 8px;
@@ -42,7 +42,7 @@ export class ImageBlockFallbackCard extends WithDisposable(ShadowlessElement) {
       overflow: hidden;
     }
 
-    .affine-image-fallback-card-title {
+    .yunke-image-fallback-card-title {
       display: flex;
       flex-direction: row;
       gap: 8px;
@@ -50,41 +50,41 @@ export class ImageBlockFallbackCard extends WithDisposable(ShadowlessElement) {
       align-self: stretch;
     }
 
-    .affine-image-fallback-card-title-icon {
+    .yunke-image-fallback-card-title-icon {
       display: flex;
       width: 16px;
       height: 16px;
       align-items: center;
       justify-content: center;
-      color: var(--affine-text-primary-color);
+      color: var(--yunke-text-primary-color);
     }
 
-    .affine-image-fallback-card-title-text {
-      color: var(--affine-placeholder-color);
-      font-family: var(--affine-font-family);
-      font-size: var(--affine-font-sm);
+    .yunke-image-fallback-card-title-text {
+      color: var(--yunke-placeholder-color);
+      font-family: var(--yunke-font-family);
+      font-size: var(--yunke-font-sm);
       font-style: normal;
       font-weight: 600;
       line-height: 22px;
     }
 
-    .affine-image-fallback-card-description {
-      color: var(--affine-text-secondary-color);
-      font-family: var(--affine-font-family);
-      font-size: var(--affine-font-xs);
+    .yunke-image-fallback-card-description {
+      color: var(--yunke-text-secondary-color);
+      font-family: var(--yunke-font-family);
+      font-size: var(--yunke-font-xs);
       font-style: normal;
       font-weight: 400;
       line-height: 20px;
     }
 
-    .affine-image-fallback-card.loading {
-      .affine-image-fallback-card-title {
-        color: var(--affine-placeholder-color);
+    .yunke-image-fallback-card.loading {
+      .yunke-image-fallback-card-title {
+        color: var(--yunke-placeholder-color);
       }
     }
 
-    .affine-image-fallback-card.error {
-      .affine-image-fallback-card-title-icon {
+    .yunke-image-fallback-card.error {
+      .yunke-image-fallback-card-title-icon {
         color: ${unsafeCSSVarV2('status/error')};
       }
     }
@@ -94,7 +94,7 @@ export class ImageBlockFallbackCard extends WithDisposable(ShadowlessElement) {
     const { icon, title, description, loading, error } = this.state;
 
     const classInfo = {
-      'affine-image-fallback-card': true,
+      'yunke-image-fallback-card': true,
       'drag-target': true,
       loading,
       error,
@@ -102,13 +102,13 @@ export class ImageBlockFallbackCard extends WithDisposable(ShadowlessElement) {
 
     return html`
       <div class=${classMap(classInfo)}>
-        <div class="affine-image-fallback-card-title">
-          <div class="affine-image-fallback-card-title-icon">${icon}</div>
-          <div class="affine-image-fallback-card-title-text truncate">
+        <div class="yunke-image-fallback-card-title">
+          <div class="yunke-image-fallback-card-title-icon">${icon}</div>
+          <div class="yunke-image-fallback-card-title-text truncate">
             ${title}
           </div>
         </div>
-        <div class="affine-image-fallback-card-description truncate">
+        <div class="yunke-image-fallback-card-description truncate">
           ${description}
         </div>
       </div>
@@ -121,6 +121,6 @@ export class ImageBlockFallbackCard extends WithDisposable(ShadowlessElement) {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'affine-image-fallback-card': ImageBlockFallbackCard;
+    'yunke-image-fallback-card': ImageBlockFallbackCard;
   }
 }

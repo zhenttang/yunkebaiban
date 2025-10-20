@@ -25,12 +25,12 @@ export const DeletedAccountDialog = ({
     <ConfirmModal
       open
       persistent
-      title={t['com.affine.setting.account.delete.success-title']()}
+      title={t['com.yunke.setting.account.delete.success-title']()}
       description={
         <span className={styles.successDeleteAccountContainer}>
-          {t['com.affine.setting.account.delete.success-description-1']()}
+          {t['com.yunke.setting.account.delete.success-description-1']()}
           <span>
-            {t['com.affine.setting.account.delete.success-description-2']()}
+            {t['com.yunke.setting.account.delete.success-description-2']()}
           </span>
         </span>
       }

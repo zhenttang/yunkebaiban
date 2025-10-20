@@ -13,7 +13,7 @@ import { connectorQuickTool } from './toolbar/quick-tool';
 import { ConnectorElementView, ConnectorInteraction } from './view/view';
 
 export class ConnectorViewExtension extends ViewExtensionProvider {
-  override name = 'affine-connector-gfx';
+  override name = 'yunke-connector-gfx';
 
   override effect(): void {
     super.effect();

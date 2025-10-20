@@ -15,7 +15,7 @@ import { getLastPropsKey } from '../utils/get-last-props-key';
 import { isConnectable, isNoteBlock } from './query';
 
 export const EdgelessCRUDIdentifier = createIdentifier<EdgelessCRUDExtension>(
-  'AffineEdgelessCrudService'
+  'YunkeEdgelessCrudService'
 );
 
 export class EdgelessCRUDExtension extends Extension {

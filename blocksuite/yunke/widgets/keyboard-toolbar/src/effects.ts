@@ -1,28 +1,28 @@
 import {
-  AFFINE_KEYBOARD_TOOLBAR_WIDGET,
-  AffineKeyboardToolbarWidget,
+  YUNKE_KEYBOARD_TOOLBAR_WIDGET,
+  YunkeKeyboardToolbarWidget,
 } from './index.js';
 import {
-  AFFINE_KEYBOARD_TOOL_PANEL,
-  AffineKeyboardToolPanel,
+  YUNKE_KEYBOARD_TOOL_PANEL,
+  YunkeKeyboardToolPanel,
 } from './keyboard-tool-panel.js';
 import {
-  AFFINE_KEYBOARD_TOOLBAR,
-  AffineKeyboardToolbar,
+  YUNKE_KEYBOARD_TOOLBAR,
+  YunkeKeyboardToolbar,
 } from './keyboard-toolbar.js';
 
 export function effects() {
   customElements.define(
-    AFFINE_KEYBOARD_TOOLBAR_WIDGET,
-    AffineKeyboardToolbarWidget
+    YUNKE_KEYBOARD_TOOLBAR_WIDGET,
+    YunkeKeyboardToolbarWidget
   );
-  customElements.define(AFFINE_KEYBOARD_TOOLBAR, AffineKeyboardToolbar);
-  customElements.define(AFFINE_KEYBOARD_TOOL_PANEL, AffineKeyboardToolPanel);
+  customElements.define(YUNKE_KEYBOARD_TOOLBAR, YunkeKeyboardToolbar);
+  customElements.define(YUNKE_KEYBOARD_TOOL_PANEL, YunkeKeyboardToolPanel);
 }
 
 declare global {
   interface HTMLElementTagNameMap {
-    [AFFINE_KEYBOARD_TOOLBAR]: AffineKeyboardToolbar;
-    [AFFINE_KEYBOARD_TOOL_PANEL]: AffineKeyboardToolPanel;
+    [YUNKE_KEYBOARD_TOOLBAR]: YunkeKeyboardToolbar;
+    [YUNKE_KEYBOARD_TOOL_PANEL]: YunkeKeyboardToolPanel;
   }
 }

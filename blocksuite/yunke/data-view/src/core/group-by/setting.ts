@@ -128,7 +128,7 @@ export class GroupSetting extends SignalWatcher(
     return html`
       <div style="padding: 7px 0;">
         <div
-          style="padding: 0 4px; font-size: 12px;color: var(--affine-text-secondary-color);line-height: 20px;"
+          style="padding: 0 4px; font-size: 12px;color: var(--yunke-text-secondary-color);line-height: 20px;"
         >
           分组
         </div>
@@ -273,14 +273,14 @@ export const popGroupSetting = (
               name: '分组依据',
               postfix: html`
                 <div
-                  style="display:flex;align-items:center;gap: 4px;font-size: 12px;line-height: 20px;color: var(--affine-text-secondary-color);margin-right: 4px;margin-left: 8px;"
+                  style="display:flex;align-items:center;gap: 4px;font-size: 12px;line-height: 20px;color: var(--yunke-text-secondary-color);margin-right: 4px;margin-left: 8px;"
                   class="dv-icon-16"
                 >
                   ${renderUniLit(icon, {})} ${groupProperty.name$.value}
                 </div>
               `,
               label: () => html`
-                <div style="color: var(--affine-text-secondary-color);">
+                <div style="color: var(--yunke-text-secondary-color);">
                   分组依据
                 </div>
               `,

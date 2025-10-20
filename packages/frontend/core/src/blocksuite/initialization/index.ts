@@ -30,16 +30,16 @@ export function initDocFromProps(
 ) {
   doc.load(() => {
     const pageBlockId = doc.addBlock(
-      'affine:page',
+      'yunke:page',
       props?.page || { title: new Text(options.title || '') }
     );
     const surfaceId = doc.addBlock(
-      'affine:surface' as never,
+      'yunke:surface' as never,
       props?.surface || {},
       pageBlockId
     );
     const noteBlockId = doc.addBlock(
-      'affine:note',
+      'yunke:note',
       {
         ...props?.note,
         displayMode: NoteDisplayMode.DocAndEdgeless,
@@ -47,7 +47,7 @@ export function initDocFromProps(
       pageBlockId
     );
     const paragraphBlockId = doc.addBlock(
-      'affine:paragraph',
+      'yunke:paragraph',
       props?.paragraph || {},
       noteBlockId
     );

@@ -6,7 +6,7 @@ import {
   RequestToJoinPage,
   SentRequestPage,
 } from '@yunke/component/member-components';
-import { useAsyncCallback } from '@yunke/core/components/hooks/affine-async-hooks';
+import { useAsyncCallback } from '@yunke/core/components/hooks/yunke-async-hooks';
 import { WorkspacesService } from '@yunke/core/modules/workspace';
 import { UserFriendlyError } from '@yunke/error';
 // 本地枚举，替代 GraphQL
@@ -54,7 +54,7 @@ const AcceptInvite = ({ inviteId: targetInviteId }: { inviteId: string }) => {
     jumpToPage(inviteInfo.workspace.id, 'all', RouteLogic.REPLACE);
   }, [inviteInfo, workspacesService, jumpToPage]);
 
-  const onOpenAffine = useCallback(() => {
+  const onOpenYunke = useCallback(() => {
     navigateHelper.jumpToIndex();
   }, [navigateHelper]);
 
@@ -97,7 +97,7 @@ const AcceptInvite = ({ inviteId: targetInviteId }: { inviteId: string }) => {
   }
 
   if (!inviteInfo && !loading) {
-    return <ExpiredPage onOpenAffine={onOpenAffine} />;
+    return <ExpiredPage onOpenYunke={onOpenYunke} />;
   }
 
   if (error || acceptError) {

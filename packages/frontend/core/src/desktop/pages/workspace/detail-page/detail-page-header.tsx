@@ -13,7 +13,7 @@ import { PageHeaderMenuButton } from '@yunke/core/blocksuite/block-suite-header/
 import { DetailPageHeaderPresentButton } from '@yunke/core/blocksuite/block-suite-header/present/detail-header-present-button';
 import { BlocksuiteHeaderTitle } from '@yunke/core/blocksuite/block-suite-header/title';
 import { EditorModeSwitch } from '@yunke/core/blocksuite/block-suite-mode-switch';
-import { useRegisterCopyLinkCommands } from '@yunke/core/components/hooks/affine/use-register-copy-link-commands';
+import { useRegisterCopyLinkCommands } from '@yunke/core/components/hooks/yunke/use-register-copy-link-commands';
 import { HeaderDivider } from '@yunke/core/components/pure/header';
 import { DocService } from '@yunke/core/modules/doc';
 import { DocDisplayMetaService } from '@yunke/core/modules/doc-display-meta';
@@ -24,7 +24,7 @@ import { CommunityShareButton } from './community-share-button';
 import { TemplateDocService } from '@yunke/core/modules/template-doc';
 import { ViewIcon, ViewTitle } from '@yunke/core/modules/workbench';
 import type { Workspace } from '@yunke/core/modules/workspace';
-import type { AffineDNDData } from '@yunke/core/types/dnd';
+import type { YunkeDNDData } from '@yunke/core/types/dnd';
 import { useI18n } from '@yunke/i18n';
 import { track } from '@yunke/track';
 import type { Store } from '@blocksuite/yunke/store';
@@ -214,7 +214,7 @@ export function DetailPageHeader(
   });
 
   const { dragRef, dragging, CustomDragPreview } =
-    useDraggable<AffineDNDData>(() => {
+    useDraggable<YunkeDNDData>(() => {
       return {
         data: {
           from: {

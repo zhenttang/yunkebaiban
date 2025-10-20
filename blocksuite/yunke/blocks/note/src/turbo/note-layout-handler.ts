@@ -36,7 +36,7 @@ export class NoteLayoutHandlerExtension extends BlockLayoutHandlerExtension<Note
     if (!component) return null;
 
     // Get the note container element
-    const noteContainer = component.querySelector('.affine-note-mask');
+    const noteContainer = component.querySelector('.yunke-note-mask');
     if (!noteContainer) return null;
 
     // Get the bounding client rect of the note container

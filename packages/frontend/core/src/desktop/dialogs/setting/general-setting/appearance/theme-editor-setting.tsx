@@ -31,8 +31,8 @@ export const ThemeEditorSetting = () => {
 
   return (
     <SettingRow
-      name={t['com.affine.appearanceSettings.customize-theme.title']()}
-      desc={t['com.affine.appearanceSettings.customize-theme.description']()}
+      name={t['com.yunke.appearanceSettings.customize-theme.title']()}
+      desc={t['com.yunke.appearanceSettings.customize-theme.description']()}
     >
       <div style={{ display: 'flex', gap: 16 }}>
         {modified ? (
@@ -48,11 +48,11 @@ export const ThemeEditorSetting = () => {
             variant="secondary"
             prefix={<DeleteIcon />}
           >
-            {t['com.affine.appearanceSettings.customize-theme.reset']()}
+            {t['com.yunke.appearanceSettings.customize-theme.reset']()}
           </Button>
         ) : null}
         <Button onClick={open}>
-          {t['com.affine.appearanceSettings.customize-theme.open']()}
+          {t['com.yunke.appearanceSettings.customize-theme.open']()}
         </Button>
       </div>
     </SettingRow>

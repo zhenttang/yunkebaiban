@@ -40,8 +40,8 @@ import { filter } from 'rxjs/operators';
 
 import { markDownToDoc } from '../../utils';
 import type {
-  AffineAIPanelState,
-  AffineAIPanelWidgetConfig,
+  YunkeAIPanelState,
+  YunkeAIPanelWidgetConfig,
 } from '../widgets/ai-panel/type';
 
 export const getCustomPageEditorBlockSpecs: () => ExtensionType[] = () => {
@@ -51,8 +51,8 @@ export const getCustomPageEditorBlockSpecs: () => ExtensionType[] = () => {
     {
       setup: di => {
         di.override(
-          BlockViewIdentifier('affine:page'),
-          () => literal`affine-page-root`
+          BlockViewIdentifier('yunke:page'),
+          () => literal`yunke-page-root`
         );
       },
     },
@@ -62,39 +62,39 @@ export const getCustomPageEditorBlockSpecs: () => ExtensionType[] = () => {
 const customHeadingStyles = css`
   .custom-heading {
     .h1 {
-      font-size: calc(var(--affine-font-h-1) - 2px);
+      font-size: calc(var(--yunke-font-h-1) - 2px);
       code {
-        font-size: calc(var(--affine-font-base) + 6px);
+        font-size: calc(var(--yunke-font-base) + 6px);
       }
     }
     .h2 {
-      font-size: calc(var(--affine-font-h-2) - 2px);
+      font-size: calc(var(--yunke-font-h-2) - 2px);
       code {
-        font-size: calc(var(--affine-font-base) + 4px);
+        font-size: calc(var(--yunke-font-base) + 4px);
       }
     }
     .h3 {
-      font-size: calc(var(--affine-font-h-3) - 2px);
+      font-size: calc(var(--yunke-font-h-3) - 2px);
       code {
-        font-size: calc(var(--affine-font-base) + 2px);
+        font-size: calc(var(--yunke-font-base) + 2px);
       }
     }
     .h4 {
-      font-size: calc(var(--affine-font-h-4) - 2px);
+      font-size: calc(var(--yunke-font-h-4) - 2px);
       code {
-        font-size: var(--affine-font-base);
+        font-size: var(--yunke-font-base);
       }
     }
     .h5 {
-      font-size: calc(var(--affine-font-h-5) - 2px);
+      font-size: calc(var(--yunke-font-h-5) - 2px);
       code {
-        font-size: calc(var(--affine-font-base) - 2px);
+        font-size: calc(var(--yunke-font-base) - 2px);
       }
     }
     .h6 {
-      font-size: calc(var(--affine-font-h-6) - 2px);
+      font-size: calc(var(--yunke-font-h-6) - 2px);
       code {
-        font-size: calc(var(--affine-font-base) - 4px);
+        font-size: calc(var(--yunke-font-base) - 4px);
       }
     }
   }
@@ -105,23 +105,23 @@ export type TextRendererOptions = {
   extensions?: ExtensionType[];
   additionalMiddlewares?: TransformerMiddleware[];
   testId?: string;
-  affineFeatureFlagService?: FeatureFlagService;
+  yunkeFeatureFlagService?: FeatureFlagService;
 };
 
 // todo: refactor it for more general purpose usage instead of AI only?
 export class TextRenderer extends WithDisposable(ShadowlessElement) {
   static override styles = css`
-    .ai-answer-text-editor.affine-page-viewport {
+    .ai-answer-text-editor.yunke-page-viewport {
       background: transparent;
-      font-family: var(--affine-font-family);
+      font-family: var(--yunke-font-family);
       margin-top: 0;
       margin-bottom: 0;
     }
 
-    .ai-answer-text-editor .affine-page-root-block-container {
+    .ai-answer-text-editor .yunke-page-root-block-container {
       padding: 0;
       margin: 0;
-      line-height: var(--affine-line-height);
+      line-height: var(--yunke-line-height);
       color: ${unsafeCSSVarV2('text/primary')};
       font-weight: 400;
       min-height: auto;
@@ -131,10 +131,10 @@ export class TextRenderer extends WithDisposable(ShadowlessElement) {
     .ai-answer-text-editor {
       counter-reset: list-counter; /* 重置列表计数器 */
       
-      .affine-note-block-container {
-        > .affine-block-children-container {
-          > :first-child:not(affine-callout),
-          > :first-child:not(affine-callout) * {
+      .yunke-note-block-container {
+        > .yunke-block-children-container {
+          > :first-child:not(yunke-callout),
+          > :first-child:not(yunke-callout) * {
             margin-top: 0 !important;
           }
           > :last-child,
@@ -144,7 +144,7 @@ export class TextRenderer extends WithDisposable(ShadowlessElement) {
         }
       }
 
-      .affine-paragraph-block-container {
+      .yunke-paragraph-block-container {
         line-height: 1.6;
         margin: 6px 0;
         padding: 0;
@@ -155,7 +155,7 @@ export class TextRenderer extends WithDisposable(ShadowlessElement) {
           font-weight: 700;
           margin: 16px 0 12px 0;
           line-height: 1.2;
-          border-bottom: 2px solid var(--affine-border-color);
+          border-bottom: 2px solid var(--yunke-border-color);
           padding-bottom: 8px;
         }
         
@@ -192,13 +192,13 @@ export class TextRenderer extends WithDisposable(ShadowlessElement) {
           font-weight: 600;
           margin: 6px 0 4px 0;
           line-height: 1.5;
-          color: var(--affine-text-secondary-color);
+          color: var(--yunke-text-secondary-color);
         }
 
         .h6 {
           padding-left: 16px;
           color: ${unsafeCSSVarV2('text/link')};
-          font-size: var(--affine-font-base);
+          font-size: var(--yunke-font-base);
 
           .toggle-icon {
             transform: translateX(0);
@@ -210,12 +210,12 @@ export class TextRenderer extends WithDisposable(ShadowlessElement) {
       }
       
       /* 改善代码块显示 */
-      .affine-code-block-container {
+      .yunke-code-block-container {
         margin: 12px 0;
         border-radius: 6px;
-        background: var(--affine-background-secondary-color);
+        background: var(--yunke-background-secondary-color);
         padding: 12px;
-        font-family: var(--affine-font-code-family);
+        font-family: var(--yunke-font-code-family);
         
         pre {
           margin: 0;
@@ -225,7 +225,7 @@ export class TextRenderer extends WithDisposable(ShadowlessElement) {
       }
       
       /* 改善列表显示 */
-      .affine-list-block-container {
+      .yunke-list-block-container {
         margin: 6px 0;
         line-height: 1.6;
         
@@ -237,7 +237,7 @@ export class TextRenderer extends WithDisposable(ShadowlessElement) {
             content: "•";
             position: absolute;
             left: 8px;
-            color: var(--affine-text-primary-color);
+            color: var(--yunke-text-primary-color);
           }
         }
         
@@ -250,15 +250,15 @@ export class TextRenderer extends WithDisposable(ShadowlessElement) {
             content: counter(list-counter) ".";
             position: absolute;
             left: 8px;
-            color: var(--affine-text-primary-color);
+            color: var(--yunke-text-primary-color);
           }
         }
       }
       
       /* 改善分割线显示 */
-      .affine-divider-block-container {
+      .yunke-divider-block-container {
         margin: 16px 0;
-        border-top: 1px solid var(--affine-border-color);
+        border-top: 1px solid var(--yunke-border-color);
         height: 1px;
       }
       
@@ -277,7 +277,7 @@ export class TextRenderer extends WithDisposable(ShadowlessElement) {
     .text-renderer-container[data-state="generating"] {
       .ai-answer-text-editor {
         /* 只保留最后一个元素的光标效果 */
-        .affine-note-block-container > .affine-block-children-container > :last-child {
+        .yunke-note-block-container > .yunke-block-children-container > :last-child {
           position: relative;
           
           &::after {
@@ -285,7 +285,7 @@ export class TextRenderer extends WithDisposable(ShadowlessElement) {
             display: inline-block;
             width: 1px;
             height: 1em;
-            background-color: var(--affine-primary-color);
+            background-color: var(--yunke-primary-color);
             margin-left: 2px;
             animation: simpleBlink 1s infinite;
             vertical-align: baseline;
@@ -306,7 +306,7 @@ export class TextRenderer extends WithDisposable(ShadowlessElement) {
 
     /* 流式输出完成时移除光标 */
     .text-renderer-container[data-state="finished"] {
-      .ai-answer-text-editor .affine-note-block-container > .affine-block-children-container > :last-child::after {
+      .ai-answer-text-editor .yunke-note-block-container > .yunke-block-children-container > :last-child::after {
         display: none;
       }
     }
@@ -319,7 +319,7 @@ export class TextRenderer extends WithDisposable(ShadowlessElement) {
     }
 
     /* 只保留光标动画 */
-    .text-renderer-container[data-state="generating"] .ai-answer-text-editor .affine-note-block-container > .affine-block-children-container > :last-child::after {
+    .text-renderer-container[data-state="generating"] .ai-answer-text-editor .yunke-note-block-container > .yunke-block-children-container > :last-child::after {
       animation: simpleBlink 1s infinite !important;
     }
 
@@ -332,7 +332,7 @@ export class TextRenderer extends WithDisposable(ShadowlessElement) {
       height: auto;
       /* 优化滚动条显示 */
       scrollbar-width: thin;
-      scrollbar-color: var(--affine-border-color) transparent;
+      scrollbar-color: var(--yunke-border-color) transparent;
     }
     .text-renderer-container.show-scrollbar::-webkit-scrollbar {
       width: 5px;
@@ -342,7 +342,7 @@ export class TextRenderer extends WithDisposable(ShadowlessElement) {
       border-radius: 20px;
     }
     .text-renderer-container.show-scrollbar:hover::-webkit-scrollbar-thumb {
-      background-color: var(--affine-black-30);
+      background-color: var(--yunke-black-30);
     }
     .text-renderer-container.show-scrollbar::-webkit-scrollbar-corner {
       display: none;
@@ -365,14 +365,14 @@ export class TextRenderer extends WithDisposable(ShadowlessElement) {
     }
 
     .text-renderer-container[data-app-theme='dark'] {
-      .ai-answer-text-editor .affine-page-root-block-container {
-        color: ${unsafeCSS(darkCssVariablesV2['--affine-v2-text-primary'])};
+      .ai-answer-text-editor .yunke-page-root-block-container {
+        color: ${unsafeCSS(darkCssVariablesV2['--yunke-v2-text-primary'])};
       }
     }
 
     .text-renderer-container[data-app-theme='light'] {
-      .ai-answer-text-editor .affine-page-root-block-container {
-        color: ${unsafeCSS(lightCssVariablesV2['--affine-v2-text-primary'])};
+      .ai-answer-text-editor .yunke-page-root-block-container {
+        color: ${unsafeCSS(lightCssVariablesV2['--yunke-v2-text-primary'])};
       }
     }
 
@@ -395,19 +395,19 @@ export class TextRenderer extends WithDisposable(ShadowlessElement) {
   private readonly _query: Query = {
     mode: 'strict',
     match: [
-      'affine:page',
-      'affine:note',
-      'affine:table',
-      'affine:surface',
-      'affine:paragraph', // 段落支持标题格式
-      'affine:callout',
-      'affine:code',
-      'affine:list',
-      'affine:divider',
-      'affine:latex',
-      'affine:bookmark',
-      'affine:attachment',
-      'affine:embed-linked-doc',
+      'yunke:page',
+      'yunke:note',
+      'yunke:table',
+      'yunke:surface',
+      'yunke:paragraph', // 段落支持标题格式
+      'yunke:callout',
+      'yunke:code',
+      'yunke:list',
+      'yunke:divider',
+      'yunke:latex',
+      'yunke:bookmark',
+      'yunke:attachment',
+      'yunke:embed-linked-doc',
     ].map(flavour => ({ flavour, viewType: 'display' })),
   };
 
@@ -467,7 +467,7 @@ export class TextRenderer extends WithDisposable(ShadowlessElement) {
           codeBlockWrapMiddleware(true),
           ...(this.options.additionalMiddlewares ?? []),
         ];
-        const affineFeatureFlagService = this.options.affineFeatureFlagService;
+        const yunkeFeatureFlagService = this.options.yunkeFeatureFlagService;
         
         // 异步更新，避免阻塞UI
         markDownToDoc(
@@ -475,7 +475,7 @@ export class TextRenderer extends WithDisposable(ShadowlessElement) {
           schema,
           processedAnswer,
           middlewares,
-          affineFeatureFlagService
+          yunkeFeatureFlagService
         )
           .then(doc => {
             // 使用requestAnimationFrame确保DOM更新在下一帧
@@ -571,7 +571,7 @@ export class TextRenderer extends WithDisposable(ShadowlessElement) {
       >
         ${keyed(
           this._doc,
-          html`<div class="ai-answer-text-editor affine-page-viewport">
+          html`<div class="ai-answer-text-editor yunke-page-viewport">
             ${new BlockStdScope({
               store: this._doc,
               extensions:
@@ -640,13 +640,13 @@ export class TextRenderer extends WithDisposable(ShadowlessElement) {
   accessor options!: TextRendererOptions;
 
   @property({ attribute: false })
-  accessor state: AffineAIPanelState | undefined = undefined;
+  accessor state: YunkeAIPanelState | undefined = undefined;
 }
 
 export const createTextRenderer: (
   host: EditorHost,
   options: TextRendererOptions
-) => AffineAIPanelWidgetConfig['answerRenderer'] = (host, options) => {
+) => YunkeAIPanelWidgetConfig['answerRenderer'] = (host, options) => {
   return (answer, state) => {
     return html`<text-renderer
       contenteditable="false"

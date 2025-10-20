@@ -37,7 +37,7 @@ const WorkspaceSettingPropertiesMain = () => {
       <div className={styles.listHeader}>
         <Menu items={<CreatePropertyMenuItems onCreated={onCreated} />}>
           <Button variant="primary">
-            {t['com.affine.settings.workspace.properties.add_property']()}
+            {t['com.yunke.settings.workspace.properties.add_property']()}
           </Button>
         </Menu>
       </div>
@@ -59,13 +59,13 @@ export const WorkspaceSettingProperties = () => {
   return (
     <FrameworkScope scope={workspace.scope}>
       <SettingHeader
-        title={t['com.affine.settings.workspace.properties.header.title']()}
+        title={t['com.yunke.settings.workspace.properties.header.title']()}
         subtitle={
           <Trans
             values={{
               name: title,
             }}
-            i18nKey="com.affine.settings.workspace.properties.header.subtitle"
+            i18nKey="com.yunke.settings.workspace.properties.header.subtitle"
           >
             管理工作区 <strong>name</strong> 属性
           </Trans>

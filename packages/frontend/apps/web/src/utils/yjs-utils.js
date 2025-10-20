@@ -1,10 +1,10 @@
 /**
  * YJS 数据编码/解码工具函数
- * 严格按照 AFFiNE 原版实现，确保完全兼容
+ * 严格按照 YUNKE 原版实现，确保完全兼容
  */
 /**
  * 将 Uint8Array 编码为 Base64 字符串
- * 严格按照 AFFiNE 原版实现，确保 100% 兼容
+ * 严格按照 YUNKE 原版实现，确保 100% 兼容
  * @param array YJS 更新数据的二进制格式
  * @returns Promise<string> Base64 编码的字符串
  */
@@ -26,7 +26,7 @@ export function uint8ArrayToBase64(array) {
 }
 /**
  * 将 Base64 字符串解码为 Uint8Array
- * 严格按照 AFFiNE 原版实现，确保 100% 兼容
+ * 严格按照 YUNKE 原版实现，确保 100% 兼容
  * @param base64 Base64 编码的字符串
  * @returns Uint8Array YJS 更新数据的二进制格式
  */

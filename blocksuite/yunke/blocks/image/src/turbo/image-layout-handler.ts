@@ -30,7 +30,7 @@ export class ImageLayoutHandlerExtension extends BlockLayoutHandlerExtension<Ima
     ) as GfxBlockComponent | null;
     if (!component) return null;
 
-    const imageContainer = component.querySelector('.affine-image-container');
+    const imageContainer = component.querySelector('.yunke-image-container');
     if (!imageContainer) return null;
 
     const resizableImg = component.querySelector(

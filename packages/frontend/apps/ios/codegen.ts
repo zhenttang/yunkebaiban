@@ -11,15 +11,15 @@ console.log('[*] PackageRoot', PackageRoot);
 
 console.log('[*] rust...');
 execSync(
-  'cargo build -p affine_mobile_native --features use-as-lib --lib --release --target aarch64-apple-ios',
+  'cargo build -p yunke_mobile_native --features use-as-lib --lib --release --target aarch64-apple-ios',
   {
     stdio: 'inherit',
   }
 );
 
 execSync(
-  `cargo run -p affine_mobile_native --features use-as-lib --bin uniffi-bindgen generate \
-  --library ${ProjectRoot}/target/aarch64-apple-ios/release/libaffine_mobile_native.a \
+  `cargo run -p yunke_mobile_native --features use-as-lib --bin uniffi-bindgen generate \
+  --library ${ProjectRoot}/target/aarch64-apple-ios/release/libyunke_mobile_native.a \
   --language swift --out-dir ${PackageRoot}/App/App/uniffi`,
   { stdio: 'inherit' }
 );

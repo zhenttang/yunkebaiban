@@ -7,8 +7,8 @@ import { DeleteIcon, ResetIcon } from '@blocksuite/icons/rc';
 import { useService } from '@toeverything/infra';
 import { useCallback, useState } from 'react';
 
-import { useAppSettingHelper } from '../../../components/hooks/affine/use-app-setting-helper';
-import { useBlockSuiteMetaHelper } from '../../../components/hooks/affine/use-block-suite-meta-helper';
+import { useAppSettingHelper } from '../../../components/hooks/yunke/use-app-setting-helper';
+import { useBlockSuiteMetaHelper } from '../../../components/hooks/yunke/use-block-suite-meta-helper';
 import { useNavigateHelper } from '../../../components/hooks/use-navigate-helper';
 import { toast } from '../../../utils';
 import * as styles from './styles.css';
@@ -22,12 +22,12 @@ export const TrashPageFooter = () => {
   const { jumpToPage } = useNavigateHelper();
   const { restoreFromTrash } = useBlockSuiteMetaHelper();
   const [open, setOpen] = useState(false);
-  const hintText = t['com.affine.cmdk.affine.editor.trash-footer-hint']();
+  const hintText = t['com.yunke.cmdk.yunke.editor.trash-footer-hint']();
 
   const onRestore = useCallback(() => {
     restoreFromTrash(doc.id);
     toast(
-      t['com.affine.toastMessage.restored']({
+      t['com.yunke.toastMessage.restored']({
         title: doc.meta$.value.title || '未命名',
       })
     );
@@ -36,7 +36,7 @@ export const TrashPageFooter = () => {
   const onConfirmDelete = useCallback(() => {
     jumpToPage(workspace.id, 'all');
     docCollection.removeDoc(doc.id);
-    toast(t['com.affine.toastMessage.permanentlyDeleted']());
+    toast(t['com.yunke.toastMessage.permanentlyDeleted']());
   }, [jumpToPage, workspace.id, docCollection, doc.id, t]);
 
   const onDelete = useCallback(() => {
@@ -51,7 +51,7 @@ export const TrashPageFooter = () => {
       <div className={styles.deleteHintText}>{hintText}</div>
       <div className={styles.group}>
         <Button
-          tooltip={t['com.affine.trashOperation.restoreIt']()}
+          tooltip={t['com.yunke.trashOperation.restoreIt']()}
           data-testid="page-restore-button"
           variant="primary"
           onClick={onRestore}
@@ -60,7 +60,7 @@ export const TrashPageFooter = () => {
           prefixClassName={styles.icon}
         />
         <Button
-          tooltip={t['com.affine.trashOperation.deletePermanently']()}
+          tooltip={t['com.yunke.trashOperation.deletePermanently']()}
           variant="error"
           onClick={onDelete}
           className={styles.buttonContainer}
@@ -69,10 +69,10 @@ export const TrashPageFooter = () => {
         />
       </div>
       <ConfirmModal
-        title={t['com.affine.trashOperation.delete.title']()}
-        cancelText={t['com.affine.confirmModal.button.cancel']()}
-        description={t['com.affine.trashOperation.delete.description']()}
-        confirmText={t['com.affine.trashOperation.delete']()}
+        title={t['com.yunke.trashOperation.delete.title']()}
+        cancelText={t['com.yunke.confirmModal.button.cancel']()}
+        description={t['com.yunke.trashOperation.delete.description']()}
+        confirmText={t['com.yunke.trashOperation.delete']()}
         confirmButtonOptions={{
           variant: 'error',
         }}

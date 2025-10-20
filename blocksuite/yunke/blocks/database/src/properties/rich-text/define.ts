@@ -1,4 +1,4 @@
-import type { AffineTextAttributes } from '@blocksuite/yunke-shared/types';
+import type { YunkeTextAttributes } from '@blocksuite/yunke-shared/types';
 import { propertyType, t } from '@blocksuite/data-view';
 import type { DeltaInsert } from '@blocksuite/store';
 import { Text } from '@blocksuite/store';
@@ -49,7 +49,7 @@ export const richTextPropertyModelConfig = richTextColumnType.modelConfig({
         const yText = toYText(value);
         const deltas = yText?.toDelta();
         const text = deltas
-          .map((delta: DeltaInsert<AffineTextAttributes>) => {
+          .map((delta: DeltaInsert<YunkeTextAttributes>) => {
             if (isLinkedDoc(delta)) {
               const linkedDocId = delta.attributes?.reference?.pageId as string;
               return collection.getDoc(linkedDocId)?.meta?.title;

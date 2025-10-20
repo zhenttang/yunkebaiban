@@ -1,6 +1,6 @@
 {
   "name": "@blocksuite/yunke-widget-edgeless-auto-connect",
-  "description": "Affine edgeless auto connect widget.",
+  "description": "Yunke edgeless auto connect widget.",
   "type": "module",
   "scripts": {
     "build": "tsc"

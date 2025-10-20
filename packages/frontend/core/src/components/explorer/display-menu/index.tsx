@@ -56,7 +56,7 @@ const ExplorerDisplayMenu = ({
         }
       >
         <div className={styles.subMenuSelectorContainer}>
-          <span>{t['com.affine.explorer.display-menu.grouping']()}</span>
+          <span>{t['com.yunke.explorer.display-menu.grouping']()}</span>
           <span className={styles.subMenuSelectorSelected}>
             {displayPreference.groupBy ? (
               <GroupByName groupBy={displayPreference.groupBy} />
@@ -73,7 +73,7 @@ const ExplorerDisplayMenu = ({
         }
       >
         <div className={styles.subMenuSelectorContainer}>
-          <span>{t['com.affine.explorer.display-menu.ordering']()}</span>
+          <span>{t['com.yunke.explorer.display-menu.ordering']()}</span>
           <span className={styles.subMenuSelectorSelected}>
             {displayPreference.orderBy ? (
               <OrderByName orderBy={displayPreference.orderBy} />
@@ -122,7 +122,7 @@ export const ExplorerDisplayMenuButton = ({
       {...menuProps}
     >
       <Button className={className} style={style}>
-        {t['com.affine.explorer.display-menu.button']()}
+        {t['com.yunke.explorer.display-menu.button']()}
       </Button>
     </Menu>
   );

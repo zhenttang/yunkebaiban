@@ -14,7 +14,7 @@ export const AILogin = (btnProps: ButtonProps) => {
 
   return (
     <Button onClick={onClickSignIn} variant="primary" {...btnProps}>
-      {t['com.affine.payment.ai.action.login.button-label']()}
+      {t['com.yunke.payment.ai.action.login.button-label']()}
     </Button>
   );
 };

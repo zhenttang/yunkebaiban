@@ -34,7 +34,7 @@ function createProxy(initValue: (key: string) => any) {
         },
     });
 }
-export function useAFFiNEI18N(): {
+export function useYUNKEI18N(): {
     /**
       * `Back to my Content`
       */
@@ -48,9 +48,9 @@ export function useAFFiNEI18N(): {
       */
     ["404.signOut"](): string;
     /**
-      * `AFFiNE Cloud`
+      * `YUNKE Cloud`
       */
-    ["AFFiNE Cloud"](): string;
+    ["YUNKE Cloud"](): string;
     /**
       * `All docs`
       */
@@ -180,15 +180,15 @@ export function useAFFiNEI18N(): {
       */
     Enable(): string;
     /**
-      * `Enable AFFiNE Cloud`
+      * `Enable YUNKE Cloud`
       */
-    ["Enable AFFiNE Cloud"](): string;
+    ["Enable YUNKE Cloud"](): string;
     /**
-      * `If enabled, the data in this workspace will be backed up and synchronised via AFFiNE Cloud.`
+      * `If enabled, the data in this workspace will be backed up and synchronised via YUNKE Cloud.`
       */
-    ["Enable AFFiNE Cloud Description"](): string;
+    ["Enable YUNKE Cloud Description"](): string;
     /**
-      * `The following functions rely on AFFiNE Cloud. All data is stored on the current device. You can enable AFFiNE Cloud for this workspace to keep data in sync with the cloud.`
+      * `The following functions rely on YUNKE Cloud. All data is stored on the current device. You can enable YUNKE Cloud for this workspace to keep data in sync with the cloud.`
       */
     ["Enable cloud hint"](): string;
     /**
@@ -478,9 +478,9 @@ export function useAFFiNEI18N(): {
       */
     Sync(): string;
     /**
-      * `Synced with AFFiNE Cloud`
+      * `Synced with YUNKE Cloud`
       */
-    ["Synced with AFFiNE Cloud"](): string;
+    ["Synced with YUNKE Cloud"](): string;
     /**
       * `Tags`
       */
@@ -608,3889 +608,3889 @@ export function useAFFiNEI18N(): {
     /**
       * `Automatically check for new updates periodically.`
       */
-    ["com.affine.aboutAFFiNE.autoCheckUpdate.description"](): string;
+    ["com.yunke.aboutYUNKE.autoCheckUpdate.description"](): string;
     /**
       * `Check for updates automatically`
       */
-    ["com.affine.aboutAFFiNE.autoCheckUpdate.title"](): string;
+    ["com.yunke.aboutYUNKE.autoCheckUpdate.title"](): string;
     /**
       * `Automatically download updates (to this device).`
       */
-    ["com.affine.aboutAFFiNE.autoDownloadUpdate.description"](): string;
+    ["com.yunke.aboutYUNKE.autoDownloadUpdate.description"](): string;
     /**
       * `Download updates automatically`
       */
-    ["com.affine.aboutAFFiNE.autoDownloadUpdate.title"](): string;
+    ["com.yunke.aboutYUNKE.autoDownloadUpdate.title"](): string;
     /**
-      * `View the AFFiNE Changelog.`
+      * `View the YUNKE Changelog.`
       */
-    ["com.affine.aboutAFFiNE.changelog.description"](): string;
+    ["com.yunke.aboutYUNKE.changelog.description"](): string;
     /**
       * `Discover what's new`
       */
-    ["com.affine.aboutAFFiNE.changelog.title"](): string;
+    ["com.yunke.aboutYUNKE.changelog.title"](): string;
     /**
       * `Check for update`
       */
-    ["com.affine.aboutAFFiNE.checkUpdate.button.check"](): string;
+    ["com.yunke.aboutYUNKE.checkUpdate.button.check"](): string;
     /**
       * `Download update`
       */
-    ["com.affine.aboutAFFiNE.checkUpdate.button.download"](): string;
+    ["com.yunke.aboutYUNKE.checkUpdate.button.download"](): string;
     /**
       * `Restart to update`
       */
-    ["com.affine.aboutAFFiNE.checkUpdate.button.restart"](): string;
+    ["com.yunke.aboutYUNKE.checkUpdate.button.restart"](): string;
     /**
       * `Retry`
       */
-    ["com.affine.aboutAFFiNE.checkUpdate.button.retry"](): string;
+    ["com.yunke.aboutYUNKE.checkUpdate.button.retry"](): string;
     /**
       * `New version is ready`
       */
-    ["com.affine.aboutAFFiNE.checkUpdate.description"](): string;
+    ["com.yunke.aboutYUNKE.checkUpdate.description"](): string;
     /**
       * `Manually check for updates.`
       */
-    ["com.affine.aboutAFFiNE.checkUpdate.subtitle.check"](): string;
+    ["com.yunke.aboutYUNKE.checkUpdate.subtitle.check"](): string;
     /**
       * `Checking for updates...`
       */
-    ["com.affine.aboutAFFiNE.checkUpdate.subtitle.checking"](): string;
+    ["com.yunke.aboutYUNKE.checkUpdate.subtitle.checking"](): string;
     /**
       * `Downloading the latest version...`
       */
-    ["com.affine.aboutAFFiNE.checkUpdate.subtitle.downloading"](): string;
+    ["com.yunke.aboutYUNKE.checkUpdate.subtitle.downloading"](): string;
     /**
       * `Unable to connect to the update server.`
       */
-    ["com.affine.aboutAFFiNE.checkUpdate.subtitle.error"](): string;
+    ["com.yunke.aboutYUNKE.checkUpdate.subtitle.error"](): string;
     /**
-      * `You've got the latest version of AFFiNE.`
+      * `You've got the latest version of YUNKE.`
       */
-    ["com.affine.aboutAFFiNE.checkUpdate.subtitle.latest"](): string;
+    ["com.yunke.aboutYUNKE.checkUpdate.subtitle.latest"](): string;
     /**
       * `Restart to apply update.`
       */
-    ["com.affine.aboutAFFiNE.checkUpdate.subtitle.restart"](): string;
+    ["com.yunke.aboutYUNKE.checkUpdate.subtitle.restart"](): string;
     /**
       * `New update available ({{version}})`
       */
-    ["com.affine.aboutAFFiNE.checkUpdate.subtitle.update-available"](options: {
+    ["com.yunke.aboutYUNKE.checkUpdate.subtitle.update-available"](options: {
         readonly version: string;
     }): string;
     /**
       * `Check for updates`
       */
-    ["com.affine.aboutAFFiNE.checkUpdate.title"](): string;
+    ["com.yunke.aboutYUNKE.checkUpdate.title"](): string;
     /**
       * `Communities`
       */
-    ["com.affine.aboutAFFiNE.community.title"](): string;
+    ["com.yunke.aboutYUNKE.community.title"](): string;
     /**
-      * `AFFiNE community`
+      * `YUNKE community`
       */
-    ["com.affine.aboutAFFiNE.contact.community"](): string;
+    ["com.yunke.aboutYUNKE.contact.community"](): string;
     /**
       * `Contact us`
       */
-    ["com.affine.aboutAFFiNE.contact.title"](): string;
+    ["com.yunke.aboutYUNKE.contact.title"](): string;
     /**
       * `Official website`
       */
-    ["com.affine.aboutAFFiNE.contact.website"](): string;
+    ["com.yunke.aboutYUNKE.contact.website"](): string;
     /**
       * `Privacy`
       */
-    ["com.affine.aboutAFFiNE.legal.privacy"](): string;
+    ["com.yunke.aboutYUNKE.legal.privacy"](): string;
     /**
       * `Legal Info`
       */
-    ["com.affine.aboutAFFiNE.legal.title"](): string;
+    ["com.yunke.aboutYUNKE.legal.title"](): string;
     /**
       * `Terms of use`
       */
-    ["com.affine.aboutAFFiNE.legal.tos"](): string;
+    ["com.yunke.aboutYUNKE.legal.tos"](): string;
     /**
-      * `Information about AFFiNE`
+      * `Information about YUNKE`
       */
-    ["com.affine.aboutAFFiNE.subtitle"](): string;
+    ["com.yunke.aboutYUNKE.subtitle"](): string;
     /**
-      * `About AFFiNE`
+      * `About YUNKE`
       */
-    ["com.affine.aboutAFFiNE.title"](): string;
+    ["com.yunke.aboutYUNKE.title"](): string;
     /**
       * `App version`
       */
-    ["com.affine.aboutAFFiNE.version.app"](): string;
+    ["com.yunke.aboutYUNKE.version.app"](): string;
     /**
       * `Editor version`
       */
-    ["com.affine.aboutAFFiNE.version.editor.title"](): string;
+    ["com.yunke.aboutYUNKE.version.editor.title"](): string;
     /**
       * `Version`
       */
-    ["com.affine.aboutAFFiNE.version.title"](): string;
+    ["com.yunke.aboutYUNKE.version.title"](): string;
     /**
       * `Get started`
       */
-    ["com.affine.ai-onboarding.edgeless.get-started"](): string;
+    ["com.yunke.ai-onboarding.edgeless.get-started"](): string;
     /**
       * `Lets you think bigger, create faster, work smarter and save time for every project.`
       */
-    ["com.affine.ai-onboarding.edgeless.message"](): string;
+    ["com.yunke.ai-onboarding.edgeless.message"](): string;
     /**
       * `Upgrade to unlimited usage`
       */
-    ["com.affine.ai-onboarding.edgeless.purchase"](): string;
+    ["com.yunke.ai-onboarding.edgeless.purchase"](): string;
     /**
       * `Right-clicking to select content AI`
       */
-    ["com.affine.ai-onboarding.edgeless.title"](): string;
+    ["com.yunke.ai-onboarding.edgeless.title"](): string;
     /**
       * `Lets you think bigger, create faster, work smarter and save time for every project.`
       */
-    ["com.affine.ai-onboarding.general.1.description"](): string;
+    ["com.yunke.ai-onboarding.general.1.description"](): string;
     /**
-      * `Meet AFFiNE AI`
+      * `Meet YUNKE AI`
       */
-    ["com.affine.ai-onboarding.general.1.title"](): string;
+    ["com.yunke.ai-onboarding.general.1.title"](): string;
     /**
-      * `Answer questions, draft docs, visualize ideas - AFFiNE AI can save you time at every possible step. Powered by GPT's most powerful model.`
+      * `Answer questions, draft docs, visualize ideas - YUNKE AI can save you time at every possible step. Powered by GPT's most powerful model.`
       */
-    ["com.affine.ai-onboarding.general.2.description"](): string;
+    ["com.yunke.ai-onboarding.general.2.description"](): string;
     /**
-      * `Chat with AFFiNE AI`
+      * `Chat with YUNKE AI`
       */
-    ["com.affine.ai-onboarding.general.2.title"](): string;
+    ["com.yunke.ai-onboarding.general.2.title"](): string;
     /**
       * `Get insightful answer to any question, instantly.`
       */
-    ["com.affine.ai-onboarding.general.3.description"](): string;
+    ["com.yunke.ai-onboarding.general.3.description"](): string;
     /**
-      * `Edit inline with AFFiNE AI`
+      * `Edit inline with YUNKE AI`
       */
-    ["com.affine.ai-onboarding.general.3.title"](): string;
+    ["com.yunke.ai-onboarding.general.3.title"](): string;
     /**
       * `Expand thinking. Untangle complexity. Breakdown and visualise your content with crafted mindmap and presentable slides with one click.`
       */
-    ["com.affine.ai-onboarding.general.4.description"](): string;
+    ["com.yunke.ai-onboarding.general.4.description"](): string;
     /**
       * `Make mind-map and presents with AI`
       */
-    ["com.affine.ai-onboarding.general.4.title"](): string;
+    ["com.yunke.ai-onboarding.general.4.title"](): string;
     /**
-      * `AFFiNE AI is ready`
+      * `YUNKE AI is ready`
       */
-    ["com.affine.ai-onboarding.general.5.title"](): string;
+    ["com.yunke.ai-onboarding.general.5.title"](): string;
     /**
       * `Get started`
       */
-    ["com.affine.ai-onboarding.general.get-started"](): string;
+    ["com.yunke.ai-onboarding.general.get-started"](): string;
     /**
       * `Next`
       */
-    ["com.affine.ai-onboarding.general.next"](): string;
+    ["com.yunke.ai-onboarding.general.next"](): string;
     /**
       * `Back`
       */
-    ["com.affine.ai-onboarding.general.prev"](): string;
+    ["com.yunke.ai-onboarding.general.prev"](): string;
     /**
       * `Get unlimited usage`
       */
-    ["com.affine.ai-onboarding.general.purchase"](): string;
+    ["com.yunke.ai-onboarding.general.purchase"](): string;
     /**
       * `Remind me later`
       */
-    ["com.affine.ai-onboarding.general.skip"](): string;
+    ["com.yunke.ai-onboarding.general.skip"](): string;
     /**
       * `Try for free`
       */
-    ["com.affine.ai-onboarding.general.try-for-free"](): string;
+    ["com.yunke.ai-onboarding.general.try-for-free"](): string;
     /**
       * `Dismiss`
       */
-    ["com.affine.ai-onboarding.local.action-dismiss"](): string;
+    ["com.yunke.ai-onboarding.local.action-dismiss"](): string;
     /**
       * `Get started`
       */
-    ["com.affine.ai-onboarding.local.action-get-started"](): string;
+    ["com.yunke.ai-onboarding.local.action-get-started"](): string;
     /**
       * `Learn more`
       */
-    ["com.affine.ai-onboarding.local.action-learn-more"](): string;
+    ["com.yunke.ai-onboarding.local.action-learn-more"](): string;
     /**
       * `Lets you think bigger, create faster, work smarter and save time for every project.`
       */
-    ["com.affine.ai-onboarding.local.message"](): string;
+    ["com.yunke.ai-onboarding.local.message"](): string;
     /**
-      * `Meet AFFiNE AI`
+      * `Meet YUNKE AI`
       */
-    ["com.affine.ai-onboarding.local.title"](): string;
+    ["com.yunke.ai-onboarding.local.title"](): string;
     /**
       * `New`
       */
-    ["com.affine.ai-scroll-tip.tag"](): string;
+    ["com.yunke.ai-scroll-tip.tag"](): string;
     /**
-      * `Meet AFFiNE AI`
+      * `Meet YUNKE AI`
       */
-    ["com.affine.ai-scroll-tip.title"](): string;
+    ["com.yunke.ai-scroll-tip.title"](): string;
     /**
       * `View`
       */
-    ["com.affine.ai-scroll-tip.view"](): string;
+    ["com.yunke.ai-scroll-tip.view"](): string;
     /**
       * `Please switch to edgeless mode`
       */
-    ["com.affine.ai.action.edgeless-only.dialog-title"](): string;
+    ["com.yunke.ai.action.edgeless-only.dialog-title"](): string;
     /**
       * `Cancel`
       */
-    ["com.affine.ai.login-required.dialog-cancel"](): string;
+    ["com.yunke.ai.login-required.dialog-cancel"](): string;
     /**
       * `Sign in`
       */
-    ["com.affine.ai.login-required.dialog-confirm"](): string;
+    ["com.yunke.ai.login-required.dialog-confirm"](): string;
     /**
-      * `To use AFFiNE AI, please sign in to your AFFiNE Cloud account.`
+      * `To use YUNKE AI, please sign in to your YUNKE Cloud account.`
       */
-    ["com.affine.ai.login-required.dialog-content"](): string;
+    ["com.yunke.ai.login-required.dialog-content"](): string;
     /**
       * `Sign in to continue`
       */
-    ["com.affine.ai.login-required.dialog-title"](): string;
+    ["com.yunke.ai.login-required.dialog-title"](): string;
     /**
       * `Failed to insert template, please try again.`
       */
-    ["com.affine.ai.template-insert.failed"](): string;
+    ["com.yunke.ai.template-insert.failed"](): string;
     /**
       * `All docs`
       */
-    ["com.affine.all-pages.header"](): string;
+    ["com.yunke.all-pages.header"](): string;
     /**
       * `Learn more`
       */
-    ["com.affine.app-sidebar.learn-more"](): string;
+    ["com.yunke.app-sidebar.learn-more"](): string;
     /**
       * `Star us`
       */
-    ["com.affine.app-sidebar.star-us"](): string;
+    ["com.yunke.app-sidebar.star-us"](): string;
     /**
       * `Download update`
       */
-    ["com.affine.appUpdater.downloadUpdate"](): string;
+    ["com.yunke.appUpdater.downloadUpdate"](): string;
     /**
       * `Downloading`
       */
-    ["com.affine.appUpdater.downloading"](): string;
+    ["com.yunke.appUpdater.downloading"](): string;
     /**
       * `Restart to install update`
       */
-    ["com.affine.appUpdater.installUpdate"](): string;
+    ["com.yunke.appUpdater.installUpdate"](): string;
     /**
       * `Open download page`
       */
-    ["com.affine.appUpdater.openDownloadPage"](): string;
+    ["com.yunke.appUpdater.openDownloadPage"](): string;
     /**
       * `Update available`
       */
-    ["com.affine.appUpdater.updateAvailable"](): string;
+    ["com.yunke.appUpdater.updateAvailable"](): string;
     /**
       * `Discover what's new!`
       */
-    ["com.affine.appUpdater.whatsNew"](): string;
+    ["com.yunke.appUpdater.whatsNew"](): string;
     /**
       * `Customise the appearance of the client.`
       */
-    ["com.affine.appearanceSettings.clientBorder.description"](): string;
+    ["com.yunke.appearanceSettings.clientBorder.description"](): string;
     /**
       * `Client border style`
       */
-    ["com.affine.appearanceSettings.clientBorder.title"](): string;
+    ["com.yunke.appearanceSettings.clientBorder.title"](): string;
     /**
       * `Choose your colour mode`
       */
-    ["com.affine.appearanceSettings.color.description"](): string;
+    ["com.yunke.appearanceSettings.color.description"](): string;
     /**
       * `Colour mode`
       */
-    ["com.affine.appearanceSettings.color.title"](): string;
+    ["com.yunke.appearanceSettings.color.title"](): string;
     /**
-      * `Edit all AFFiNE theme variables here`
+      * `Edit all YUNKE theme variables here`
       */
-    ["com.affine.appearanceSettings.customize-theme.description"](): string;
+    ["com.yunke.appearanceSettings.customize-theme.description"](): string;
     /**
       * `Customize Theme`
       */
-    ["com.affine.appearanceSettings.customize-theme.title"](): string;
+    ["com.yunke.appearanceSettings.customize-theme.title"](): string;
     /**
       * `Reset all`
       */
-    ["com.affine.appearanceSettings.customize-theme.reset"](): string;
+    ["com.yunke.appearanceSettings.customize-theme.reset"](): string;
     /**
       * `Open Theme Editor`
       */
-    ["com.affine.appearanceSettings.customize-theme.open"](): string;
+    ["com.yunke.appearanceSettings.customize-theme.open"](): string;
     /**
       * `Choose your font style`
       */
-    ["com.affine.appearanceSettings.font.description"](): string;
+    ["com.yunke.appearanceSettings.font.description"](): string;
     /**
       * `Font style`
       */
-    ["com.affine.appearanceSettings.font.title"](): string;
+    ["com.yunke.appearanceSettings.font.title"](): string;
     /**
       * `Mono`
       */
-    ["com.affine.appearanceSettings.fontStyle.mono"](): string;
+    ["com.yunke.appearanceSettings.fontStyle.mono"](): string;
     /**
       * `Sans`
       */
-    ["com.affine.appearanceSettings.fontStyle.sans"](): string;
+    ["com.yunke.appearanceSettings.fontStyle.sans"](): string;
     /**
       * `Serif`
       */
-    ["com.affine.appearanceSettings.fontStyle.serif"](): string;
+    ["com.yunke.appearanceSettings.fontStyle.serif"](): string;
     /**
       * `Select the language for the interface.`
       */
-    ["com.affine.appearanceSettings.language.description"](): string;
+    ["com.yunke.appearanceSettings.language.description"](): string;
     /**
       * `Display language`
       */
-    ["com.affine.appearanceSettings.language.title"](): string;
+    ["com.yunke.appearanceSettings.language.title"](): string;
     /**
       * `Use background noise effect on the sidebar.`
       */
-    ["com.affine.appearanceSettings.noisyBackground.description"](): string;
+    ["com.yunke.appearanceSettings.noisyBackground.description"](): string;
     /**
       * `Noise background on the sidebar`
       */
-    ["com.affine.appearanceSettings.noisyBackground.title"](): string;
+    ["com.yunke.appearanceSettings.noisyBackground.title"](): string;
     /**
       * `Sidebar`
       */
-    ["com.affine.appearanceSettings.sidebar.title"](): string;
+    ["com.yunke.appearanceSettings.sidebar.title"](): string;
     /**
-      * `Customize your AFFiNE appearance`
+      * `Customize your YUNKE appearance`
       */
-    ["com.affine.appearanceSettings.subtitle"](): string;
+    ["com.yunke.appearanceSettings.subtitle"](): string;
     /**
       * `Menubar`
       */
-    ["com.affine.appearanceSettings.menubar.title"](): string;
+    ["com.yunke.appearanceSettings.menubar.title"](): string;
     /**
       * `Enable menubar app`
       */
-    ["com.affine.appearanceSettings.menubar.toggle"](): string;
+    ["com.yunke.appearanceSettings.menubar.toggle"](): string;
     /**
-      * `Display the menubar app in the tray for quick access to AFFiNE or meeting recordings.`
+      * `Display the menubar app in the tray for quick access to YUNKE or meeting recordings.`
       */
-    ["com.affine.appearanceSettings.menubar.description"](): string;
+    ["com.yunke.appearanceSettings.menubar.description"](): string;
     /**
       * `Theme`
       */
-    ["com.affine.appearanceSettings.theme.title"](): string;
+    ["com.yunke.appearanceSettings.theme.title"](): string;
     /**
       * `Appearance settings`
       */
-    ["com.affine.appearanceSettings.title"](): string;
+    ["com.yunke.appearanceSettings.title"](): string;
     /**
       * `Use transparency effect on the sidebar.`
       */
-    ["com.affine.appearanceSettings.translucentUI.description"](): string;
+    ["com.yunke.appearanceSettings.translucentUI.description"](): string;
     /**
       * `Translucent UI on the sidebar`
       */
-    ["com.affine.appearanceSettings.translucentUI.title"](): string;
+    ["com.yunke.appearanceSettings.translucentUI.title"](): string;
     /**
       * `Your current email is {{email}}. We'll send a temporary verification link to this email.`
       */
-    ["com.affine.auth.change.email.message"](options: {
+    ["com.yunke.auth.change.email.message"](options: {
         readonly email: string;
     }): string;
     /**
       * `Please enter your new email address below. We will send a verification link to this email address to complete the process.`
       */
-    ["com.affine.auth.change.email.page.subtitle"](): string;
+    ["com.yunke.auth.change.email.page.subtitle"](): string;
     /**
-      * `Congratulations! You have successfully updated the email address associated with your AFFiNE Cloud account.`
+      * `Congratulations! You have successfully updated the email address associated with your YUNKE Cloud account.`
       */
-    ["com.affine.auth.change.email.page.success.subtitle"](): string;
+    ["com.yunke.auth.change.email.page.success.subtitle"](): string;
     /**
       * `Email address updated!`
       */
-    ["com.affine.auth.change.email.page.success.title"](): string;
+    ["com.yunke.auth.change.email.page.success.title"](): string;
     /**
       * `Change email address`
       */
-    ["com.affine.auth.change.email.page.title"](): string;
+    ["com.yunke.auth.change.email.page.title"](): string;
     /**
       * `Forgot password`
       */
-    ["com.affine.auth.forget"](): string;
+    ["com.yunke.auth.forget"](): string;
     /**
       * `Later`
       */
-    ["com.affine.auth.later"](): string;
+    ["com.yunke.auth.later"](): string;
     /**
-      * `Open AFFiNE`
+      * `Open YUNKE`
       */
-    ["com.affine.auth.open.affine"](): string;
+    ["com.yunke.auth.open.yunke"](): string;
     /**
       * `Download app`
       */
-    ["com.affine.auth.open.affine.download-app"](): string;
+    ["com.yunke.auth.open.yunke.download-app"](): string;
     /**
       * `Try again`
       */
-    ["com.affine.auth.open.affine.try-again"](): string;
+    ["com.yunke.auth.open.yunke.try-again"](): string;
     /**
       * `Still have problems?`
       */
-    ["com.affine.auth.open.affine.still-have-problems"](): string;
+    ["com.yunke.auth.open.yunke.still-have-problems"](): string;
     /**
       * `Continue with Browser`
       */
-    ["com.affine.auth.open.affine.continue-with-browser"](): string;
+    ["com.yunke.auth.open.yunke.continue-with-browser"](): string;
     /**
       * `Download Latest Client`
       */
-    ["com.affine.auth.open.affine.download-latest-client"](): string;
+    ["com.yunke.auth.open.yunke.download-latest-client"](): string;
     /**
       * `Open here instead`
       */
-    ["com.affine.auth.open.affine.doc.open-here"](): string;
+    ["com.yunke.auth.open.yunke.doc.open-here"](): string;
     /**
       * `Edit settings`
       */
-    ["com.affine.auth.open.affine.doc.edit-settings"](): string;
+    ["com.yunke.auth.open.yunke.doc.edit-settings"](): string;
     /**
-      * `Requires AFFiNE desktop app version 0.18 or later.`
+      * `Requires YUNKE desktop app version 0.18 or later.`
       */
-    ["com.affine.auth.open.affine.doc.footer-text"](): string;
+    ["com.yunke.auth.open.yunke.doc.footer-text"](): string;
     /**
       * `Please set a password of {{min}}-{{max}} characters with both letters and numbers to continue signing up with `
       */
-    ["com.affine.auth.page.sent.email.subtitle"](options: Readonly<{
+    ["com.yunke.auth.page.sent.email.subtitle"](options: Readonly<{
         min: string;
         max: string;
     }>): string;
     /**
-      * `Welcome to AFFiNE Cloud, you are almost there!`
+      * `Welcome to YUNKE Cloud, you are almost there!`
       */
-    ["com.affine.auth.page.sent.email.title"](): string;
+    ["com.yunke.auth.page.sent.email.title"](): string;
     /**
       * `Password`
       */
-    ["com.affine.auth.password"](): string;
+    ["com.yunke.auth.password"](): string;
     /**
       * `Invalid password`
       */
-    ["com.affine.auth.password.error"](): string;
+    ["com.yunke.auth.password.error"](): string;
     /**
       * `Set password failed`
       */
-    ["com.affine.auth.password.set-failed"](): string;
+    ["com.yunke.auth.password.set-failed"](): string;
     /**
       * `Reset password`
       */
-    ["com.affine.auth.reset.password"](): string;
+    ["com.yunke.auth.reset.password"](): string;
     /**
       * `You will receive an email with a link to reset your password. Please check your inbox.`
       */
-    ["com.affine.auth.reset.password.message"](): string;
+    ["com.yunke.auth.reset.password.message"](): string;
     /**
       * `Password reset successful`
       */
-    ["com.affine.auth.reset.password.page.success"](): string;
+    ["com.yunke.auth.reset.password.page.success"](): string;
     /**
-      * `Reset your AFFiNE Cloud password`
+      * `Reset your YUNKE Cloud password`
       */
-    ["com.affine.auth.reset.password.page.title"](): string;
+    ["com.yunke.auth.reset.password.page.title"](): string;
     /**
       * `Send reset link`
       */
-    ["com.affine.auth.send.reset.password.link"](): string;
+    ["com.yunke.auth.send.reset.password.link"](): string;
     /**
       * `Send set link`
       */
-    ["com.affine.auth.send.set.password.link"](): string;
+    ["com.yunke.auth.send.set.password.link"](): string;
     /**
       * `Send verification link`
       */
-    ["com.affine.auth.send.verify.email.hint"](): string;
+    ["com.yunke.auth.send.verify.email.hint"](): string;
     /**
       * `Verification code`
       */
-    ["com.affine.auth.sign.auth.code"](): string;
+    ["com.yunke.auth.sign.auth.code"](): string;
     /**
       * `Invalid verification code`
       */
-    ["com.affine.auth.sign.auth.code.invalid"](): string;
+    ["com.yunke.auth.sign.auth.code.invalid"](): string;
     /**
       * `Continue with code`
       */
-    ["com.affine.auth.sign.auth.code.continue"](): string;
+    ["com.yunke.auth.sign.auth.code.continue"](): string;
     /**
       * `Resend code`
       */
-    ["com.affine.auth.sign.auth.code.resend"](): string;
+    ["com.yunke.auth.sign.auth.code.resend"](): string;
     /**
       * `Resend in {{second}}s`
       */
-    ["com.affine.auth.sign.auth.code.resend.hint"](options: {
+    ["com.yunke.auth.sign.auth.code.resend.hint"](options: {
         readonly second: string;
     }): string;
     /**
       * `Sent`
       */
-    ["com.affine.auth.sent"](): string;
+    ["com.yunke.auth.sent"](): string;
     /**
       * `The verification link failed to be sent, please try again later.`
       */
-    ["com.affine.auth.sent.change.email.fail"](): string;
+    ["com.yunke.auth.sent.change.email.fail"](): string;
     /**
       * `Verification link has been sent.`
       */
-    ["com.affine.auth.sent.change.email.hint"](): string;
+    ["com.yunke.auth.sent.change.email.hint"](): string;
     /**
       * `Reset password link has been sent.`
       */
-    ["com.affine.auth.sent.change.password.hint"](): string;
+    ["com.yunke.auth.sent.change.password.hint"](): string;
     /**
-      * `Your password has been updated! You can sign in AFFiNE Cloud with new password!`
+      * `Your password has been updated! You can sign in YUNKE Cloud with new password!`
       */
-    ["com.affine.auth.sent.reset.password.success.message"](): string;
+    ["com.yunke.auth.sent.reset.password.success.message"](): string;
     /**
       * `Set password link has been sent.`
       */
-    ["com.affine.auth.sent.set.password.hint"](): string;
+    ["com.yunke.auth.sent.set.password.hint"](): string;
     /**
-      * `Your password has saved! You can sign in AFFiNE Cloud with email and password!`
+      * `Your password has saved! You can sign in YUNKE Cloud with email and password!`
       */
-    ["com.affine.auth.sent.set.password.success.message"](): string;
+    ["com.yunke.auth.sent.set.password.success.message"](): string;
     /**
       * `Verification link has been sent.`
       */
-    ["com.affine.auth.sent.verify.email.hint"](): string;
+    ["com.yunke.auth.sent.verify.email.hint"](): string;
     /**
       * `Save Email`
       */
-    ["com.affine.auth.set.email.save"](): string;
+    ["com.yunke.auth.set.email.save"](): string;
     /**
       * `Set password`
       */
-    ["com.affine.auth.set.password"](): string;
+    ["com.yunke.auth.set.password"](): string;
     /**
       * `Please set a password of {{min}}-{{max}} characters with both letters and numbers to continue signing up with `
       */
-    ["com.affine.auth.set.password.message"](options: Readonly<{
+    ["com.yunke.auth.set.password.message"](options: Readonly<{
         min: string;
         max: string;
     }>): string;
     /**
       * `Maximum {{max}} characters`
       */
-    ["com.affine.auth.set.password.message.maxlength"](options: {
+    ["com.yunke.auth.set.password.message.maxlength"](options: {
         readonly max: string;
     }): string;
     /**
       * `Minimum {{min}} characters`
       */
-    ["com.affine.auth.set.password.message.minlength"](options: {
+    ["com.yunke.auth.set.password.message.minlength"](options: {
         readonly min: string;
     }): string;
     /**
       * `Password set successful`
       */
-    ["com.affine.auth.set.password.page.success"](): string;
+    ["com.yunke.auth.set.password.page.success"](): string;
     /**
-      * `Set your AFFiNE Cloud password`
+      * `Set your YUNKE Cloud password`
       */
-    ["com.affine.auth.set.password.page.title"](): string;
+    ["com.yunke.auth.set.password.page.title"](): string;
     /**
       * `Set a password at least {{min}} letters long`
       */
-    ["com.affine.auth.set.password.placeholder"](options: {
+    ["com.yunke.auth.set.password.placeholder"](options: {
         readonly min: string;
     }): string;
     /**
       * `Confirm password`
       */
-    ["com.affine.auth.set.password.placeholder.confirm"](): string;
+    ["com.yunke.auth.set.password.placeholder.confirm"](): string;
     /**
       * `Save password`
       */
-    ["com.affine.auth.set.password.save"](): string;
+    ["com.yunke.auth.set.password.save"](): string;
     /**
       * `Cancel`
       */
-    ["com.affine.auth.sign-out.confirm-modal.cancel"](): string;
+    ["com.yunke.auth.sign-out.confirm-modal.cancel"](): string;
     /**
       * `Sign Out`
       */
-    ["com.affine.auth.sign-out.confirm-modal.confirm"](): string;
+    ["com.yunke.auth.sign-out.confirm-modal.confirm"](): string;
     /**
       * `After signing out, the Cloud Workspaces associated with this account will be removed from the current device, and signing in again will add them back.`
       */
-    ["com.affine.auth.sign-out.confirm-modal.description"](): string;
+    ["com.yunke.auth.sign-out.confirm-modal.description"](): string;
     /**
       * `Sign out?`
       */
-    ["com.affine.auth.sign-out.confirm-modal.title"](): string;
+    ["com.yunke.auth.sign-out.confirm-modal.title"](): string;
     /**
       * `If you haven't received the email, please check your spam folder.`
       */
-    ["com.affine.auth.sign.auth.code.message"](): string;
+    ["com.yunke.auth.sign.auth.code.message"](): string;
     /**
       * `Sign in with magic link`
       */
-    ["com.affine.auth.sign.auth.code.send-email.sign-in"](): string;
+    ["com.yunke.auth.sign.auth.code.send-email.sign-in"](): string;
     /**
       * `Terms of conditions`
       */
-    ["com.affine.auth.sign.condition"](): string;
+    ["com.yunke.auth.sign.condition"](): string;
     /**
       * `Continue with email`
       */
-    ["com.affine.auth.sign.email.continue"](): string;
+    ["com.yunke.auth.sign.email.continue"](): string;
     /**
       * `Invalid email`
       */
-    ["com.affine.auth.sign.email.error"](): string;
+    ["com.yunke.auth.sign.email.error"](): string;
     /**
       * `Enter your email address`
       */
-    ["com.affine.auth.sign.email.placeholder"](): string;
+    ["com.yunke.auth.sign.email.placeholder"](): string;
     /**
       * `Sign in`
       */
-    ["com.affine.auth.sign.in"](): string;
+    ["com.yunke.auth.sign.in"](): string;
     /**
       * `Confirm your email`
       */
-    ["com.affine.auth.sign.in.sent.email.subtitle"](): string;
+    ["com.yunke.auth.sign.in.sent.email.subtitle"](): string;
     /**
       * `Self-Hosted`
       */
-    ["com.affine.auth.sign.add-selfhosted.title"](): string;
+    ["com.yunke.auth.sign.add-selfhosted.title"](): string;
     /**
       * `Connect to a Self-Hosted Instance`
       */
-    ["com.affine.auth.sign.add-selfhosted"](): string;
+    ["com.yunke.auth.sign.add-selfhosted"](): string;
     /**
       * `Server URL`
       */
-    ["com.affine.auth.sign.add-selfhosted.baseurl"](): string;
+    ["com.yunke.auth.sign.add-selfhosted.baseurl"](): string;
     /**
       * `Connect`
       */
-    ["com.affine.auth.sign.add-selfhosted.connect-button"](): string;
+    ["com.yunke.auth.sign.add-selfhosted.connect-button"](): string;
     /**
       * `Unable to connect to the server.`
       */
-    ["com.affine.auth.sign.add-selfhosted.error"](): string;
+    ["com.yunke.auth.sign.add-selfhosted.error"](): string;
     /**
       * `Privacy policy`
       */
-    ["com.affine.auth.sign.policy"](): string;
+    ["com.yunke.auth.sign.policy"](): string;
     /**
       * `Sign up`
       */
-    ["com.affine.auth.sign.up"](): string;
+    ["com.yunke.auth.sign.up"](): string;
     /**
       * `Create your account`
       */
-    ["com.affine.auth.sign.up.sent.email.subtitle"](): string;
+    ["com.yunke.auth.sign.up.sent.email.subtitle"](): string;
     /**
-      * `The app will automatically open or redirect to the web version. If you encounter any issues, you can also click the button below to manually open the AFFiNE app.`
+      * `The app will automatically open or redirect to the web version. If you encounter any issues, you can also click the button below to manually open the YUNKE app.`
       */
-    ["com.affine.auth.sign.up.success.subtitle"](): string;
+    ["com.yunke.auth.sign.up.success.subtitle"](): string;
     /**
       * `Your account has been created and you're now signed in!`
       */
-    ["com.affine.auth.sign.up.success.title"](): string;
+    ["com.yunke.auth.sign.up.success.title"](): string;
     /**
-      * `You have successfully signed in. The app will automatically open or redirect to the web version. if you encounter any issues, you can also click the button below to  manually open the AFFiNE app.`
+      * `You have successfully signed in. The app will automatically open or redirect to the web version. if you encounter any issues, you can also click the button below to  manually open the YUNKE app.`
       */
-    ["com.affine.auth.signed.success.subtitle"](): string;
+    ["com.yunke.auth.signed.success.subtitle"](): string;
     /**
       * `You're almost there!`
       */
-    ["com.affine.auth.signed.success.title"](): string;
+    ["com.yunke.auth.signed.success.title"](): string;
     /**
       * `Server error, please try again later.`
       */
-    ["com.affine.auth.toast.message.failed"](): string;
+    ["com.yunke.auth.toast.message.failed"](): string;
     /**
-      * `You have been signed in, start to sync your data with AFFiNE Cloud!`
+      * `You have been signed in, start to sync your data with YUNKE Cloud!`
       */
-    ["com.affine.auth.toast.message.signed-in"](): string;
+    ["com.yunke.auth.toast.message.signed-in"](): string;
     /**
       * `Unable to sign in`
       */
-    ["com.affine.auth.toast.title.failed"](): string;
+    ["com.yunke.auth.toast.title.failed"](): string;
     /**
       * `Signed in`
       */
-    ["com.affine.auth.toast.title.signed-in"](): string;
+    ["com.yunke.auth.toast.title.signed-in"](): string;
     /**
       * `Your current email is {{email}}. We'll send a temporary verification link to this email.`
       */
-    ["com.affine.auth.verify.email.message"](options: {
+    ["com.yunke.auth.verify.email.message"](options: {
         readonly email: string;
     }): string;
     /**
       * `Back`
       */
-    ["com.affine.backButton"](): string;
+    ["com.yunke.backButton"](): string;
     /**
       * `Your local data is stored in the browser and may be lost. Don't risk it - enable cloud now!`
       */
-    ["com.affine.banner.local-warning"](): string;
+    ["com.yunke.banner.local-warning"](): string;
     /**
-      * `AFFiNE Cloud`
+      * `YUNKE Cloud`
       */
-    ["com.affine.brand.affineCloud"](): string;
+    ["com.yunke.brand.yunkeCloud"](): string;
     /**
       * `Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec`
       */
-    ["com.affine.calendar-date-picker.month-names"](): string;
+    ["com.yunke.calendar-date-picker.month-names"](): string;
     /**
       * `Today`
       */
-    ["com.affine.calendar-date-picker.today"](): string;
+    ["com.yunke.calendar-date-picker.today"](): string;
     /**
       * `Su,Mo,Tu,We,Th,Fr,Sa`
       */
-    ["com.affine.calendar-date-picker.week-days"](): string;
+    ["com.yunke.calendar-date-picker.week-days"](): string;
     /**
-      * `Host by AFFiNE.Pro, Save, sync, and backup all your data.`
+      * `Host by YUNKE.Pro, Save, sync, and backup all your data.`
       */
-    ["com.affine.cloud-scroll-tip.caption"](): string;
+    ["com.yunke.cloud-scroll-tip.caption"](): string;
     /**
-      * `AFFiNE Cloud`
+      * `YUNKE Cloud`
       */
-    ["com.affine.cloud-scroll-tip.title"](): string;
+    ["com.yunke.cloud-scroll-tip.title"](): string;
     /**
       * `Collections`
       */
-    ["com.affine.cmdk.affine.category.affine.collections"](): string;
+    ["com.yunke.cmdk.yunke.category.yunke.collections"](): string;
     /**
       * `Create`
       */
-    ["com.affine.cmdk.affine.category.affine.creation"](): string;
+    ["com.yunke.cmdk.yunke.category.yunke.creation"](): string;
     /**
       * `Edgeless`
       */
-    ["com.affine.cmdk.affine.category.affine.edgeless"](): string;
+    ["com.yunke.cmdk.yunke.category.yunke.edgeless"](): string;
     /**
       * `General`
       */
-    ["com.affine.cmdk.affine.category.affine.general"](): string;
+    ["com.yunke.cmdk.yunke.category.yunke.general"](): string;
     /**
       * `Help`
       */
-    ["com.affine.cmdk.affine.category.affine.help"](): string;
+    ["com.yunke.cmdk.yunke.category.yunke.help"](): string;
     /**
       * `Layout controls`
       */
-    ["com.affine.cmdk.affine.category.affine.layout"](): string;
+    ["com.yunke.cmdk.yunke.category.yunke.layout"](): string;
     /**
       * `Navigation`
       */
-    ["com.affine.cmdk.affine.category.affine.navigation"](): string;
+    ["com.yunke.cmdk.yunke.category.yunke.navigation"](): string;
     /**
       * `Docs`
       */
-    ["com.affine.cmdk.affine.category.affine.pages"](): string;
+    ["com.yunke.cmdk.yunke.category.yunke.pages"](): string;
     /**
       * `Recent`
       */
-    ["com.affine.cmdk.affine.category.affine.recent"](): string;
+    ["com.yunke.cmdk.yunke.category.yunke.recent"](): string;
     /**
       * `Settings`
       */
-    ["com.affine.cmdk.affine.category.affine.settings"](): string;
+    ["com.yunke.cmdk.yunke.category.yunke.settings"](): string;
     /**
       * `Tags`
       */
-    ["com.affine.cmdk.affine.category.affine.tags"](): string;
+    ["com.yunke.cmdk.yunke.category.yunke.tags"](): string;
     /**
       * `Updates`
       */
-    ["com.affine.cmdk.affine.category.affine.updates"](): string;
+    ["com.yunke.cmdk.yunke.category.yunke.updates"](): string;
     /**
       * `Edgeless commands`
       */
-    ["com.affine.cmdk.affine.category.editor.edgeless"](): string;
+    ["com.yunke.cmdk.yunke.category.editor.edgeless"](): string;
     /**
       * `Insert object`
       */
-    ["com.affine.cmdk.affine.category.editor.insert-object"](): string;
+    ["com.yunke.cmdk.yunke.category.editor.insert-object"](): string;
     /**
       * `Doc Commands`
       */
-    ["com.affine.cmdk.affine.category.editor.page"](): string;
+    ["com.yunke.cmdk.yunke.category.editor.page"](): string;
     /**
       * `Results`
       */
-    ["com.affine.cmdk.affine.category.results"](): string;
+    ["com.yunke.cmdk.yunke.category.results"](): string;
     /**
       * `Change client border style to`
       */
-    ["com.affine.cmdk.affine.client-border-style.to"](): string;
+    ["com.yunke.cmdk.yunke.client-border-style.to"](): string;
     /**
       * `Change colour mode to`
       */
-    ["com.affine.cmdk.affine.color-mode.to"](): string;
+    ["com.yunke.cmdk.yunke.color-mode.to"](): string;
     /**
       * `Contact us`
       */
-    ["com.affine.cmdk.affine.contact-us"](): string;
+    ["com.yunke.cmdk.yunke.contact-us"](): string;
     /**
       * `Create "{{keyWord}}" doc and insert`
       */
-    ["com.affine.cmdk.affine.create-new-doc-and-insert"](options: {
+    ["com.yunke.cmdk.yunke.create-new-doc-and-insert"](options: {
         readonly keyWord: string;
     }): string;
     /**
       * `New "{{keyWord}}" edgeless`
       */
-    ["com.affine.cmdk.affine.create-new-edgeless-as"](options: {
+    ["com.yunke.cmdk.yunke.create-new-edgeless-as"](options: {
         readonly keyWord: string;
     }): string;
     /**
       * `New "{{keyWord}}" page`
       */
-    ["com.affine.cmdk.affine.create-new-page-as"](options: {
+    ["com.yunke.cmdk.yunke.create-new-page-as"](options: {
         readonly keyWord: string;
     }): string;
     /**
       * `Change display language to`
       */
-    ["com.affine.cmdk.affine.display-language.to"](): string;
+    ["com.yunke.cmdk.yunke.display-language.to"](): string;
     /**
       * `Add to favourites`
       */
-    ["com.affine.cmdk.affine.editor.add-to-favourites"](): string;
+    ["com.yunke.cmdk.yunke.editor.add-to-favourites"](): string;
     /**
       * `Start presentation`
       */
-    ["com.affine.cmdk.affine.editor.edgeless.presentation-start"](): string;
+    ["com.yunke.cmdk.yunke.editor.edgeless.presentation-start"](): string;
     /**
       * `Remove from favourites`
       */
-    ["com.affine.cmdk.affine.editor.remove-from-favourites"](): string;
+    ["com.yunke.cmdk.yunke.editor.remove-from-favourites"](): string;
     /**
       * `Restore from trash`
       */
-    ["com.affine.cmdk.affine.editor.restore-from-trash"](): string;
+    ["com.yunke.cmdk.yunke.editor.restore-from-trash"](): string;
     /**
       * `Reveal doc history modal`
       */
-    ["com.affine.cmdk.affine.editor.reveal-page-history-modal"](): string;
+    ["com.yunke.cmdk.yunke.editor.reveal-page-history-modal"](): string;
     /**
       * `This doc has been moved to the trash, you can either restore or permanently delete it.`
       */
-    ["com.affine.cmdk.affine.editor.trash-footer-hint"](): string;
+    ["com.yunke.cmdk.yunke.editor.trash-footer-hint"](): string;
     /**
       * `Change font style to`
       */
-    ["com.affine.cmdk.affine.font-style.to"](): string;
+    ["com.yunke.cmdk.yunke.font-style.to"](): string;
     /**
       * `Change full width layout to`
       */
-    ["com.affine.cmdk.affine.full-width-layout.to"](): string;
+    ["com.yunke.cmdk.yunke.full-width-layout.to"](): string;
     /**
       * `Change default width for new pages in to standard`
       */
-    ["com.affine.cmdk.affine.default-page-width-layout.standard"](): string;
+    ["com.yunke.cmdk.yunke.default-page-width-layout.standard"](): string;
     /**
       * `Change default width for new pages in to full width`
       */
-    ["com.affine.cmdk.affine.default-page-width-layout.full-width"](): string;
+    ["com.yunke.cmdk.yunke.default-page-width-layout.full-width"](): string;
     /**
       * `Change current page width to standard`
       */
-    ["com.affine.cmdk.affine.current-page-width-layout.standard"](): string;
+    ["com.yunke.cmdk.yunke.current-page-width-layout.standard"](): string;
     /**
       * `Change current page width to full width`
       */
-    ["com.affine.cmdk.affine.current-page-width-layout.full-width"](): string;
+    ["com.yunke.cmdk.yunke.current-page-width-layout.full-width"](): string;
     /**
       * `Getting started`
       */
-    ["com.affine.cmdk.affine.getting-started"](): string;
+    ["com.yunke.cmdk.yunke.getting-started"](): string;
     /**
       * `Import workspace`
       */
-    ["com.affine.cmdk.affine.import-workspace"](): string;
+    ["com.yunke.cmdk.yunke.import-workspace"](): string;
     /**
       * `Insert this link to the current doc`
       */
-    ["com.affine.cmdk.affine.insert-link"](): string;
+    ["com.yunke.cmdk.yunke.insert-link"](): string;
     /**
       * `Collapse left sidebar`
       */
-    ["com.affine.cmdk.affine.left-sidebar.collapse"](): string;
+    ["com.yunke.cmdk.yunke.left-sidebar.collapse"](): string;
     /**
       * `Expand left sidebar`
       */
-    ["com.affine.cmdk.affine.left-sidebar.expand"](): string;
+    ["com.yunke.cmdk.yunke.left-sidebar.expand"](): string;
     /**
       * `Go to all docs`
       */
-    ["com.affine.cmdk.affine.navigation.goto-all-pages"](): string;
+    ["com.yunke.cmdk.yunke.navigation.goto-all-pages"](): string;
     /**
       * `Go to edgeless list`
       */
-    ["com.affine.cmdk.affine.navigation.goto-edgeless-list"](): string;
+    ["com.yunke.cmdk.yunke.navigation.goto-edgeless-list"](): string;
     /**
       * `Go to page list`
       */
-    ["com.affine.cmdk.affine.navigation.goto-page-list"](): string;
+    ["com.yunke.cmdk.yunke.navigation.goto-page-list"](): string;
     /**
       * `Go to trash`
       */
-    ["com.affine.cmdk.affine.navigation.goto-trash"](): string;
+    ["com.yunke.cmdk.yunke.navigation.goto-trash"](): string;
     /**
       * `Go to workspace`
       */
-    ["com.affine.cmdk.affine.navigation.goto-workspace"](): string;
+    ["com.yunke.cmdk.yunke.navigation.goto-workspace"](): string;
     /**
       * `Go to account settings`
       */
-    ["com.affine.cmdk.affine.navigation.open-account-settings"](): string;
+    ["com.yunke.cmdk.yunke.navigation.open-account-settings"](): string;
     /**
       * `Go to Settings`
       */
-    ["com.affine.cmdk.affine.navigation.open-settings"](): string;
+    ["com.yunke.cmdk.yunke.navigation.open-settings"](): string;
     /**
       * `New edgeless`
       */
-    ["com.affine.cmdk.affine.new-edgeless-page"](): string;
+    ["com.yunke.cmdk.yunke.new-edgeless-page"](): string;
     /**
       * `New page`
       */
-    ["com.affine.cmdk.affine.new-page"](): string;
+    ["com.yunke.cmdk.yunke.new-page"](): string;
     /**
       * `New workspace`
       */
-    ["com.affine.cmdk.affine.new-workspace"](): string;
+    ["com.yunke.cmdk.yunke.new-workspace"](): string;
     /**
       * `Change noise background on the sidebar to`
       */
-    ["com.affine.cmdk.affine.noise-background-on-the-sidebar.to"](): string;
+    ["com.yunke.cmdk.yunke.noise-background-on-the-sidebar.to"](): string;
     /**
       * `Restart to upgrade`
       */
-    ["com.affine.cmdk.affine.restart-to-upgrade"](): string;
+    ["com.yunke.cmdk.yunke.restart-to-upgrade"](): string;
     /**
       * `OFF`
       */
-    ["com.affine.cmdk.affine.switch-state.off"](): string;
+    ["com.yunke.cmdk.yunke.switch-state.off"](): string;
     /**
       * `ON`
       */
-    ["com.affine.cmdk.affine.switch-state.on"](): string;
+    ["com.yunke.cmdk.yunke.switch-state.on"](): string;
     /**
       * `Change translucent UI on the sidebar to`
       */
-    ["com.affine.cmdk.affine.translucent-ui-on-the-sidebar.to"](): string;
+    ["com.yunke.cmdk.yunke.translucent-ui-on-the-sidebar.to"](): string;
     /**
       * `What's new`
       */
-    ["com.affine.cmdk.affine.whats-new"](): string;
+    ["com.yunke.cmdk.yunke.whats-new"](): string;
     /**
       * `Search docs or paste link...`
       */
-    ["com.affine.cmdk.docs.placeholder"](): string;
+    ["com.yunke.cmdk.docs.placeholder"](): string;
     /**
       * `Insert links`
       */
-    ["com.affine.cmdk.insert-links"](): string;
+    ["com.yunke.cmdk.insert-links"](): string;
     /**
       * `No results found`
       */
-    ["com.affine.cmdk.no-results"](): string;
+    ["com.yunke.cmdk.no-results"](): string;
     /**
       * `No results found for`
       */
-    ["com.affine.cmdk.no-results-for"](): string;
+    ["com.yunke.cmdk.no-results-for"](): string;
     /**
       * `Type a command or search anything...`
       */
-    ["com.affine.cmdk.placeholder"](): string;
+    ["com.yunke.cmdk.placeholder"](): string;
     /**
-      * `Switch to $t(com.affine.edgelessMode)`
+      * `Switch to $t(com.yunke.edgelessMode)`
       */
-    ["com.affine.cmdk.switch-to-edgeless"](): string;
+    ["com.yunke.cmdk.switch-to-edgeless"](): string;
     /**
-      * `Switch to $t(com.affine.pageMode)`
+      * `Switch to $t(com.yunke.pageMode)`
       */
-    ["com.affine.cmdk.switch-to-page"](): string;
+    ["com.yunke.cmdk.switch-to-page"](): string;
     /**
       * `Delete`
       */
-    ["com.affine.collection-bar.action.tooltip.delete"](): string;
+    ["com.yunke.collection-bar.action.tooltip.delete"](): string;
     /**
       * `Edit`
       */
-    ["com.affine.collection-bar.action.tooltip.edit"](): string;
+    ["com.yunke.collection-bar.action.tooltip.edit"](): string;
     /**
       * `Pin to sidebar`
       */
-    ["com.affine.collection-bar.action.tooltip.pin"](): string;
+    ["com.yunke.collection-bar.action.tooltip.pin"](): string;
     /**
       * `Unpin`
       */
-    ["com.affine.collection-bar.action.tooltip.unpin"](): string;
+    ["com.yunke.collection-bar.action.tooltip.unpin"](): string;
     /**
       * `Do you want to add a document to the current collection? If it is filtered based on rules, this will add a set of included rules.`
       */
-    ["com.affine.collection.add-doc.confirm.description"](): string;
+    ["com.yunke.collection.add-doc.confirm.description"](): string;
     /**
       * `Add new doc to this collection`
       */
-    ["com.affine.collection.add-doc.confirm.title"](): string;
+    ["com.yunke.collection.add-doc.confirm.title"](): string;
     /**
       * `Doc already exists`
       */
-    ["com.affine.collection.addPage.alreadyExists"](): string;
+    ["com.yunke.collection.addPage.alreadyExists"](): string;
     /**
       * `Added successfully`
       */
-    ["com.affine.collection.addPage.success"](): string;
+    ["com.yunke.collection.addPage.success"](): string;
     /**
       * `Add docs`
       */
-    ["com.affine.collection.addPages"](): string;
+    ["com.yunke.collection.addPages"](): string;
     /**
       * `Add rules`
       */
-    ["com.affine.collection.addRules"](): string;
+    ["com.yunke.collection.addRules"](): string;
     /**
       * `All collections`
       */
-    ["com.affine.collection.allCollections"](): string;
+    ["com.yunke.collection.allCollections"](): string;
     /**
       * `Empty collection`
       */
-    ["com.affine.collection.emptyCollection"](): string;
+    ["com.yunke.collection.emptyCollection"](): string;
     /**
       * `Collection is a smart folder where you can manually add docs or automatically add docs through rules.`
       */
-    ["com.affine.collection.emptyCollectionDescription"](): string;
+    ["com.yunke.collection.emptyCollectionDescription"](): string;
     /**
       * `HELP INFO`
       */
-    ["com.affine.collection.helpInfo"](): string;
+    ["com.yunke.collection.helpInfo"](): string;
     /**
       * `Edit collection`
       */
-    ["com.affine.collection.menu.edit"](): string;
+    ["com.yunke.collection.menu.edit"](): string;
     /**
       * `Rename`
       */
-    ["com.affine.collection.menu.rename"](): string;
+    ["com.yunke.collection.menu.rename"](): string;
     /**
       * `Removed successfully`
       */
-    ["com.affine.collection.removePage.success"](): string;
+    ["com.yunke.collection.removePage.success"](): string;
     /**
       * `No collections`
       */
-    ["com.affine.collections.empty.message"](): string;
+    ["com.yunke.collections.empty.message"](): string;
     /**
       * `New collection`
       */
-    ["com.affine.collections.empty.new-collection-button"](): string;
+    ["com.yunke.collections.empty.new-collection-button"](): string;
     /**
       * `Collections`
       */
-    ["com.affine.collections.header"](): string;
+    ["com.yunke.collections.header"](): string;
     /**
       * `Couldn't copy image`
       */
-    ["com.affine.copy.asImage.notAvailable.title"](): string;
+    ["com.yunke.copy.asImage.notAvailable.title"](): string;
     /**
       * `The 'Copy as image' feature is only available on our desktop app. Please download and install the client to access this feature.`
       */
-    ["com.affine.copy.asImage.notAvailable.message"](): string;
+    ["com.yunke.copy.asImage.notAvailable.message"](): string;
     /**
       * `Download Client`
       */
-    ["com.affine.copy.asImage.notAvailable.action"](): string;
+    ["com.yunke.copy.asImage.notAvailable.action"](): string;
     /**
       * `Image copied`
       */
-    ["com.affine.copy.asImage.success"](): string;
+    ["com.yunke.copy.asImage.success"](): string;
     /**
       * `Image copy failed`
       */
-    ["com.affine.copy.asImage.failed"](): string;
+    ["com.yunke.copy.asImage.failed"](): string;
     /**
       * `Cancel`
       */
-    ["com.affine.confirmModal.button.cancel"](): string;
+    ["com.yunke.confirmModal.button.cancel"](): string;
     /**
       * `Ok`
       */
-    ["com.affine.confirmModal.button.ok"](): string;
+    ["com.yunke.confirmModal.button.ok"](): string;
     /**
       * `Current year`
       */
-    ["com.affine.currentYear"](): string;
+    ["com.yunke.currentYear"](): string;
     /**
       * `Deleting {{count}} tags cannot be undone, please proceed with caution.`
       */
-    ["com.affine.delete-tags.confirm.multi-tag-description"](options: {
+    ["com.yunke.delete-tags.confirm.multi-tag-description"](options: {
         readonly count: string;
     }): string;
     /**
       * `Delete tag?`
       */
-    ["com.affine.delete-tags.confirm.title"](): string;
+    ["com.yunke.delete-tags.confirm.title"](): string;
     /**
       * `{{count}} tag deleted`
     
-      * - com.affine.delete-tags.count_one: `{{count}} tag deleted`
+      * - com.yunke.delete-tags.count_one: `{{count}} tag deleted`
     
-      * - com.affine.delete-tags.count_other: `{{count}} tags deleted`
+      * - com.yunke.delete-tags.count_other: `{{count}} tags deleted`
       */
-    ["com.affine.delete-tags.count"](options: {
+    ["com.yunke.delete-tags.count"](options: {
         readonly count: string | number | bigint;
     }): string;
     /**
       * `{{count}} tag deleted`
       */
-    ["com.affine.delete-tags.count_one"](options: {
+    ["com.yunke.delete-tags.count_one"](options: {
         readonly count: string | number | bigint;
     }): string;
     /**
       * `{{count}} tags deleted`
       */
-    ["com.affine.delete-tags.count_other"](options: {
+    ["com.yunke.delete-tags.count_other"](options: {
         readonly count: string | number | bigint;
     }): string;
     /**
       * `Delete workspace from this device and optionally delete all data.`
       */
-    ["com.affine.deleteLeaveWorkspace.description"](): string;
+    ["com.yunke.deleteLeaveWorkspace.description"](): string;
     /**
       * `Leave workspace`
       */
-    ["com.affine.deleteLeaveWorkspace.leave"](): string;
+    ["com.yunke.deleteLeaveWorkspace.leave"](): string;
     /**
       * `After you leave, you will not be able to access content within this workspace.`
       */
-    ["com.affine.deleteLeaveWorkspace.leaveDescription"](): string;
+    ["com.yunke.deleteLeaveWorkspace.leaveDescription"](): string;
     /**
       * `Docs`
       */
-    ["com.affine.docs.header"](): string;
+    ["com.yunke.docs.header"](): string;
     /**
       * `Draw with a blank whiteboard`
       */
-    ["com.affine.draw_with_a_blank_whiteboard"](): string;
+    ["com.yunke.draw_with_a_blank_whiteboard"](): string;
     /**
       * `Earlier`
       */
-    ["com.affine.earlier"](): string;
+    ["com.yunke.earlier"](): string;
     /**
       * `Edgeless mode`
       */
-    ["com.affine.edgelessMode"](): string;
+    ["com.yunke.edgelessMode"](): string;
     /**
       * `Cancel`
       */
-    ["com.affine.editCollection.button.cancel"](): string;
+    ["com.yunke.editCollection.button.cancel"](): string;
     /**
       * `Create`
       */
-    ["com.affine.editCollection.button.create"](): string;
+    ["com.yunke.editCollection.button.create"](): string;
     /**
       * `Create collection`
       */
-    ["com.affine.editCollection.createCollection"](): string;
+    ["com.yunke.editCollection.createCollection"](): string;
     /**
       * `Filters`
       */
-    ["com.affine.editCollection.filters"](): string;
+    ["com.yunke.editCollection.filters"](): string;
     /**
       * `Docs`
       */
-    ["com.affine.editCollection.pages"](): string;
+    ["com.yunke.editCollection.pages"](): string;
     /**
       * `Clear selected`
       */
-    ["com.affine.editCollection.pages.clear"](): string;
+    ["com.yunke.editCollection.pages.clear"](): string;
     /**
       * `Rename collection`
       */
-    ["com.affine.editCollection.renameCollection"](): string;
+    ["com.yunke.editCollection.renameCollection"](): string;
     /**
       * `Rules`
       */
-    ["com.affine.editCollection.rules"](): string;
+    ["com.yunke.editCollection.rules"](): string;
     /**
       * `No results`
       */
-    ["com.affine.editCollection.rules.empty.noResults"](): string;
+    ["com.yunke.editCollection.rules.empty.noResults"](): string;
     /**
       * `No docs meet the filtering rules`
       */
-    ["com.affine.editCollection.rules.empty.noResults.tips"](): string;
+    ["com.yunke.editCollection.rules.empty.noResults.tips"](): string;
     /**
       * `No rules`
       */
-    ["com.affine.editCollection.rules.empty.noRules"](): string;
+    ["com.yunke.editCollection.rules.empty.noRules"](): string;
     /**
       * `Add selected doc`
       */
-    ["com.affine.editCollection.rules.include.add"](): string;
+    ["com.yunke.editCollection.rules.include.add"](): string;
     /**
       * `is`
       */
-    ["com.affine.editCollection.rules.include.is"](): string;
+    ["com.yunke.editCollection.rules.include.is"](): string;
     /**
       * `is-not`
       */
-    ["com.affine.editCollection.rules.include.is-not"](): string;
+    ["com.yunke.editCollection.rules.include.is-not"](): string;
     /**
       * `Doc`
       */
-    ["com.affine.editCollection.rules.include.page"](): string;
+    ["com.yunke.editCollection.rules.include.page"](): string;
     /**
       * `“Selected docs” refers to manually adding docs rather than automatically adding them through rule matching. You can manually add docs through the “Add selected docs” option or by dragging and dropping.`
       */
-    ["com.affine.editCollection.rules.include.tips"](): string;
+    ["com.yunke.editCollection.rules.include.tips"](): string;
     /**
       * `What is "Selected docs"？`
       */
-    ["com.affine.editCollection.rules.include.tipsTitle"](): string;
+    ["com.yunke.editCollection.rules.include.tipsTitle"](): string;
     /**
       * `Selected docs`
       */
-    ["com.affine.editCollection.rules.include.title"](): string;
+    ["com.yunke.editCollection.rules.include.title"](): string;
     /**
       * `Preview`
       */
-    ["com.affine.editCollection.rules.preview"](): string;
+    ["com.yunke.editCollection.rules.preview"](): string;
     /**
       * `Reset`
       */
-    ["com.affine.editCollection.rules.reset"](): string;
+    ["com.yunke.editCollection.rules.reset"](): string;
     /**
       * `automatically`
       */
-    ["com.affine.editCollection.rules.tips.highlight"](): string;
+    ["com.yunke.editCollection.rules.tips.highlight"](): string;
     /**
       * `Save`
       */
-    ["com.affine.editCollection.save"](): string;
+    ["com.yunke.editCollection.save"](): string;
     /**
       * `Save as new collection`
       */
-    ["com.affine.editCollection.saveCollection"](): string;
+    ["com.yunke.editCollection.saveCollection"](): string;
     /**
       * `Search doc...`
       */
-    ["com.affine.editCollection.search.placeholder"](): string;
+    ["com.yunke.editCollection.search.placeholder"](): string;
     /**
       * `Untitled collection`
       */
-    ["com.affine.editCollection.untitledCollection"](): string;
+    ["com.yunke.editCollection.untitledCollection"](): string;
     /**
       * `Update collection`
       */
-    ["com.affine.editCollection.updateCollection"](): string;
+    ["com.yunke.editCollection.updateCollection"](): string;
     /**
       * `Collection is a smart folder where you can manually add docs or automatically add docs through rules.`
       */
-    ["com.affine.editCollectionName.createTips"](): string;
+    ["com.yunke.editCollectionName.createTips"](): string;
     /**
       * `Name`
       */
-    ["com.affine.editCollectionName.name"](): string;
+    ["com.yunke.editCollectionName.name"](): string;
     /**
       * `Collection name`
       */
-    ["com.affine.editCollectionName.name.placeholder"](): string;
+    ["com.yunke.editCollectionName.name.placeholder"](): string;
     /**
       * `Default to Edgeless mode`
       */
-    ["com.affine.editorDefaultMode.edgeless"](): string;
+    ["com.yunke.editorDefaultMode.edgeless"](): string;
     /**
       * `Default to Page mode`
       */
-    ["com.affine.editorDefaultMode.page"](): string;
+    ["com.yunke.editorDefaultMode.page"](): string;
     /**
       * `Add docs`
       */
-    ["com.affine.empty.collection-detail.action.add-doc"](): string;
+    ["com.yunke.empty.collection-detail.action.add-doc"](): string;
     /**
       * `Add rules`
       */
-    ["com.affine.empty.collection-detail.action.add-rule"](): string;
+    ["com.yunke.empty.collection-detail.action.add-rule"](): string;
     /**
       * `Collection is a smart folder where you can manually add docs or automatically add docs through rules.`
       */
-    ["com.affine.empty.collection-detail.description"](): string;
+    ["com.yunke.empty.collection-detail.description"](): string;
     /**
       * `Empty collection`
       */
-    ["com.affine.empty.collection-detail.title"](): string;
+    ["com.yunke.empty.collection-detail.title"](): string;
     /**
       * `Add collection`
       */
-    ["com.affine.empty.collections.action.new-collection"](): string;
+    ["com.yunke.empty.collections.action.new-collection"](): string;
     /**
       * `Create your first collection here.`
       */
-    ["com.affine.empty.collections.description"](): string;
+    ["com.yunke.empty.collections.description"](): string;
     /**
       * `Collection management`
       */
-    ["com.affine.empty.collections.title"](): string;
+    ["com.yunke.empty.collections.title"](): string;
     /**
       * `New doc`
       */
-    ["com.affine.empty.docs.action.new-doc"](): string;
+    ["com.yunke.empty.docs.action.new-doc"](): string;
     /**
       * `Create your first doc here.`
       */
-    ["com.affine.empty.docs.all-description"](): string;
+    ["com.yunke.empty.docs.all-description"](): string;
     /**
       * `Docs management`
       */
-    ["com.affine.empty.docs.title"](): string;
+    ["com.yunke.empty.docs.title"](): string;
     /**
       * `Deleted docs will appear here.`
       */
-    ["com.affine.empty.docs.trash-description"](): string;
+    ["com.yunke.empty.docs.trash-description"](): string;
     /**
       * `Create a new tag for your documents.`
       */
-    ["com.affine.empty.tags.description"](): string;
+    ["com.yunke.empty.tags.description"](): string;
     /**
       * `Tag management`
       */
-    ["com.affine.empty.tags.title"](): string;
+    ["com.yunke.empty.tags.title"](): string;
     /**
       * `There's no doc here yet`
       */
-    ["com.affine.emptyDesc"](): string;
+    ["com.yunke.emptyDesc"](): string;
     /**
       * `Cancel`
       */
-    ["com.affine.enableAffineCloudModal.button.cancel"](): string;
+    ["com.yunke.enableYunkeCloudModal.button.cancel"](): string;
     /**
       * `Enable Cloud for {{workspaceName}}`
       */
-    ["com.affine.enableAffineCloudModal.custom-server.title"](options: {
+    ["com.yunke.enableYunkeCloudModal.custom-server.title"](options: {
         readonly workspaceName: string;
     }): string;
     /**
       * `Choose an instance.`
       */
-    ["com.affine.enableAffineCloudModal.custom-server.description"](): string;
+    ["com.yunke.enableYunkeCloudModal.custom-server.description"](): string;
     /**
       * `Enable Cloud`
       */
-    ["com.affine.enableAffineCloudModal.custom-server.enable"](): string;
+    ["com.yunke.enableYunkeCloudModal.custom-server.enable"](): string;
     /**
       * `Hide error`
       */
-    ["com.affine.error.hide-error"](): string;
+    ["com.yunke.error.hide-error"](): string;
     /**
       * `Doc content is missing`
       */
-    ["com.affine.error.no-page-root.title"](): string;
+    ["com.yunke.error.no-page-root.title"](): string;
     /**
       * `It takes longer to load the doc content.`
       */
-    ["com.affine.error.loading-timeout-error"](): string;
+    ["com.yunke.error.loading-timeout-error"](): string;
     /**
       * `Refetch`
       */
-    ["com.affine.error.refetch"](): string;
+    ["com.yunke.error.refetch"](): string;
     /**
-      * `Reload AFFiNE`
+      * `Reload YUNKE`
       */
-    ["com.affine.error.reload"](): string;
+    ["com.yunke.error.reload"](): string;
     /**
       * `Refresh`
       */
-    ["com.affine.error.retry"](): string;
+    ["com.yunke.error.retry"](): string;
     /**
       * `Something is wrong...`
       */
-    ["com.affine.error.unexpected-error.title"](): string;
+    ["com.yunke.error.unexpected-error.title"](): string;
     /**
       * `Please request a new reset password link.`
       */
-    ["com.affine.expired.page.subtitle"](): string;
+    ["com.yunke.expired.page.subtitle"](): string;
     /**
       * `Please request a new link.`
       */
-    ["com.affine.expired.page.new-subtitle"](): string;
+    ["com.yunke.expired.page.new-subtitle"](): string;
     /**
       * `This link has expired...`
       */
-    ["com.affine.expired.page.title"](): string;
+    ["com.yunke.expired.page.title"](): string;
     /**
       * `Please try it again later.`
       */
-    ["com.affine.export.error.message"](): string;
+    ["com.yunke.export.error.message"](): string;
     /**
       * `Export failed due to an unexpected error`
       */
-    ["com.affine.export.error.title"](): string;
+    ["com.yunke.export.error.title"](): string;
     /**
       * `Print`
       */
-    ["com.affine.export.print"](): string;
+    ["com.yunke.export.print"](): string;
     /**
       * `Please open the download folder to check.`
       */
-    ["com.affine.export.success.message"](): string;
+    ["com.yunke.export.success.message"](): string;
     /**
       * `Exported successfully`
       */
-    ["com.affine.export.success.title"](): string;
+    ["com.yunke.export.success.title"](): string;
     /**
       * `Add to favourites`
       */
-    ["com.affine.favoritePageOperation.add"](): string;
+    ["com.yunke.favoritePageOperation.add"](): string;
     /**
       * `Remove from favourites`
       */
-    ["com.affine.favoritePageOperation.remove"](): string;
+    ["com.yunke.favoritePageOperation.remove"](): string;
     /**
       * `Filter`
       */
-    ["com.affine.filter"](): string;
+    ["com.yunke.filter"](): string;
     /**
       * `Add Filter Rule`
       */
-    ["com.affine.filter.add-filter"](): string;
+    ["com.yunke.filter.add-filter"](): string;
     /**
       * `after`
       */
-    ["com.affine.filter.after"](): string;
+    ["com.yunke.filter.after"](): string;
     /**
       * `before`
       */
-    ["com.affine.filter.before"](): string;
+    ["com.yunke.filter.before"](): string;
     /**
       * `contains all`
       */
-    ["com.affine.filter.contains all"](): string;
+    ["com.yunke.filter.contains all"](): string;
     /**
       * `contains one of`
       */
-    ["com.affine.filter.contains one of"](): string;
+    ["com.yunke.filter.contains one of"](): string;
     /**
       * `does not contains all`
       */
-    ["com.affine.filter.does not contains all"](): string;
+    ["com.yunke.filter.does not contains all"](): string;
     /**
       * `does not contains one of`
       */
-    ["com.affine.filter.does not contains one of"](): string;
+    ["com.yunke.filter.does not contains one of"](): string;
     /**
       * `Empty`
       */
-    ["com.affine.filter.empty-tag"](): string;
+    ["com.yunke.filter.empty-tag"](): string;
     /**
       * `Empty`
       */
-    ["com.affine.filter.empty"](): string;
+    ["com.yunke.filter.empty"](): string;
     /**
       * `false`
       */
-    ["com.affine.filter.false"](): string;
+    ["com.yunke.filter.false"](): string;
     /**
       * `is`
       */
-    ["com.affine.filter.is"](): string;
+    ["com.yunke.filter.is"](): string;
     /**
       * `is empty`
       */
-    ["com.affine.filter.is empty"](): string;
+    ["com.yunke.filter.is empty"](): string;
     /**
       * `is not empty`
       */
-    ["com.affine.filter.is not empty"](): string;
+    ["com.yunke.filter.is not empty"](): string;
     /**
       * `Favourited`
       */
-    ["com.affine.filter.is-favourited"](): string;
+    ["com.yunke.filter.is-favourited"](): string;
     /**
       * `Shared`
       */
-    ["com.affine.filter.is-public"](): string;
+    ["com.yunke.filter.is-public"](): string;
     /**
       * `between`
       */
-    ["com.affine.filter.between"](): string;
+    ["com.yunke.filter.between"](): string;
     /**
       * `last 3 days`
       */
-    ["com.affine.filter.last 3 days"](): string;
+    ["com.yunke.filter.last 3 days"](): string;
     /**
       * `last 7 days`
       */
-    ["com.affine.filter.last 7 days"](): string;
+    ["com.yunke.filter.last 7 days"](): string;
     /**
       * `last 15 days`
       */
-    ["com.affine.filter.last 15 days"](): string;
+    ["com.yunke.filter.last 15 days"](): string;
     /**
       * `last 30 days`
       */
-    ["com.affine.filter.last 30 days"](): string;
+    ["com.yunke.filter.last 30 days"](): string;
     /**
       * `this week`
       */
-    ["com.affine.filter.this week"](): string;
+    ["com.yunke.filter.this week"](): string;
     /**
       * `this month`
       */
-    ["com.affine.filter.this month"](): string;
+    ["com.yunke.filter.this month"](): string;
     /**
       * `this quarter`
       */
-    ["com.affine.filter.this quarter"](): string;
+    ["com.yunke.filter.this quarter"](): string;
     /**
       * `this year`
       */
-    ["com.affine.filter.this year"](): string;
+    ["com.yunke.filter.this year"](): string;
     /**
       * `last`
       */
-    ["com.affine.filter.last"](): string;
+    ["com.yunke.filter.last"](): string;
     /**
       * `Save view`
       */
-    ["com.affine.filter.save-view"](): string;
+    ["com.yunke.filter.save-view"](): string;
     /**
       * `true`
       */
-    ["com.affine.filter.true"](): string;
+    ["com.yunke.filter.true"](): string;
     /**
       * `Add filter`
       */
-    ["com.affine.filterList.button.add"](): string;
+    ["com.yunke.filterList.button.add"](): string;
     /**
       * `Display`
       */
-    ["com.affine.explorer.display-menu.button"](): string;
+    ["com.yunke.explorer.display-menu.button"](): string;
     /**
       * `Grouping`
       */
-    ["com.affine.explorer.display-menu.grouping"](): string;
+    ["com.yunke.explorer.display-menu.grouping"](): string;
     /**
       * `Remove group`
       */
-    ["com.affine.explorer.display-menu.grouping.remove"](): string;
+    ["com.yunke.explorer.display-menu.grouping.remove"](): string;
     /**
       * `Ordering`
       */
-    ["com.affine.explorer.display-menu.ordering"](): string;
+    ["com.yunke.explorer.display-menu.ordering"](): string;
     /**
       * `View in Page mode`
       */
-    ["com.affine.header.mode-switch.page"](): string;
+    ["com.yunke.header.mode-switch.page"](): string;
     /**
       * `View in Edgeless Canvas`
       */
-    ["com.affine.header.mode-switch.edgeless"](): string;
+    ["com.yunke.header.mode-switch.edgeless"](): string;
     /**
       * `Add tag`
       */
-    ["com.affine.header.option.add-tag"](): string;
+    ["com.yunke.header.option.add-tag"](): string;
     /**
       * `Duplicate`
       */
-    ["com.affine.header.option.duplicate"](): string;
+    ["com.yunke.header.option.duplicate"](): string;
     /**
       * `Open in desktop app`
       */
-    ["com.affine.header.option.open-in-desktop"](): string;
+    ["com.yunke.header.option.open-in-desktop"](): string;
     /**
       * `View all frames`
       */
-    ["com.affine.header.option.view-frame"](): string;
+    ["com.yunke.header.option.view-frame"](): string;
     /**
       * `View table of contents`
       */
-    ["com.affine.header.option.view-toc"](): string;
+    ["com.yunke.header.option.view-toc"](): string;
     /**
       * `Table of contents`
       */
-    ["com.affine.header.menu.toc"](): string;
+    ["com.yunke.header.menu.toc"](): string;
     /**
       * `Contact us`
       */
-    ["com.affine.helpIsland.contactUs"](): string;
+    ["com.yunke.helpIsland.contactUs"](): string;
     /**
       * `Getting started`
       */
-    ["com.affine.helpIsland.gettingStarted"](): string;
+    ["com.yunke.helpIsland.gettingStarted"](): string;
     /**
       * `Help and feedback`
       */
-    ["com.affine.helpIsland.helpAndFeedback"](): string;
+    ["com.yunke.helpIsland.helpAndFeedback"](): string;
     /**
       * `Cancel`
       */
-    ["com.affine.history-vision.tips-modal.cancel"](): string;
+    ["com.yunke.history-vision.tips-modal.cancel"](): string;
     /**
-      * `Enable AFFiNE Cloud`
+      * `Enable YUNKE Cloud`
       */
-    ["com.affine.history-vision.tips-modal.confirm"](): string;
+    ["com.yunke.history-vision.tips-modal.confirm"](): string;
     /**
-      * `The current workspace is a local workspace, and we do not support version history for it at the moment. You can enable AFFiNE Cloud. This will sync the workspace with the Cloud, allowing you to use this feature.`
+      * `The current workspace is a local workspace, and we do not support version history for it at the moment. You can enable YUNKE Cloud. This will sync the workspace with the Cloud, allowing you to use this feature.`
       */
-    ["com.affine.history-vision.tips-modal.description"](): string;
+    ["com.yunke.history-vision.tips-modal.description"](): string;
     /**
-      * `History vision needs AFFiNE Cloud`
+      * `History vision needs YUNKE Cloud`
       */
-    ["com.affine.history-vision.tips-modal.title"](): string;
+    ["com.yunke.history-vision.tips-modal.title"](): string;
     /**
       * `Back to doc`
       */
-    ["com.affine.history.back-to-page"](): string;
+    ["com.yunke.history.back-to-page"](): string;
     /**
       * `You are about to restore the current version of the doc to the latest version available. This action will overwrite any changes made prior to the latest version.`
       */
-    ["com.affine.history.confirm-restore-modal.hint"](): string;
+    ["com.yunke.history.confirm-restore-modal.hint"](): string;
     /**
       * `Load more`
       */
-    ["com.affine.history.confirm-restore-modal.load-more"](): string;
+    ["com.yunke.history.confirm-restore-modal.load-more"](): string;
     /**
       * `LIMITED DOC HISTORY`
       */
-    ["com.affine.history.confirm-restore-modal.plan-prompt.limited-title"](): string;
+    ["com.yunke.history.confirm-restore-modal.plan-prompt.limited-title"](): string;
     /**
       * `HELP INFO`
       */
-    ["com.affine.history.confirm-restore-modal.plan-prompt.title"](): string;
+    ["com.yunke.history.confirm-restore-modal.plan-prompt.title"](): string;
     /**
       * `Upgrade`
       */
-    ["com.affine.history.confirm-restore-modal.pro-plan-prompt.upgrade"](): string;
+    ["com.yunke.history.confirm-restore-modal.pro-plan-prompt.upgrade"](): string;
     /**
       * `Restore`
       */
-    ["com.affine.history.confirm-restore-modal.restore"](): string;
+    ["com.yunke.history.confirm-restore-modal.restore"](): string;
     /**
       * `This document is such a spring chicken, it hasn't sprouted a single historical sprig yet!`
       */
-    ["com.affine.history.empty-prompt.description"](): string;
+    ["com.yunke.history.empty-prompt.description"](): string;
     /**
       * `Empty`
       */
-    ["com.affine.history.empty-prompt.title"](): string;
+    ["com.yunke.history.empty-prompt.title"](): string;
     /**
       * `Restore current version`
       */
-    ["com.affine.history.restore-current-version"](): string;
+    ["com.yunke.history.restore-current-version"](): string;
     /**
       * `Version history`
       */
-    ["com.affine.history.version-history"](): string;
+    ["com.yunke.history.version-history"](): string;
     /**
       * `View history version`
       */
-    ["com.affine.history.view-history-version"](): string;
+    ["com.yunke.history.view-history-version"](): string;
     /**
       * `Create into a New Workspace`
       */
-    ["com.affine.import-template.dialog.createDocToNewWorkspace"](): string;
+    ["com.yunke.import-template.dialog.createDocToNewWorkspace"](): string;
     /**
       * `Create doc to "{{workspace}}"`
       */
-    ["com.affine.import-template.dialog.createDocToWorkspace"](options: {
+    ["com.yunke.import-template.dialog.createDocToWorkspace"](options: {
         readonly workspace: string;
     }): string;
     /**
       * `Create doc with "{{templateName}}" template`
       */
-    ["com.affine.import-template.dialog.createDocWithTemplate"](options: {
+    ["com.yunke.import-template.dialog.createDocWithTemplate"](options: {
         readonly templateName: string;
     }): string;
     /**
       * `Failed to import template, please try again.`
       */
-    ["com.affine.import-template.dialog.errorImport"](): string;
+    ["com.yunke.import-template.dialog.errorImport"](): string;
     /**
       * `Failed to load template, please try again.`
       */
-    ["com.affine.import-template.dialog.errorLoad"](): string;
+    ["com.yunke.import-template.dialog.errorLoad"](): string;
     /**
       * `Create into a New Workspace`
       */
-    ["com.affine.import-clipper.dialog.createDocToNewWorkspace"](): string;
+    ["com.yunke.import-clipper.dialog.createDocToNewWorkspace"](): string;
     /**
       * `Create doc to "{{workspace}}"`
       */
-    ["com.affine.import-clipper.dialog.createDocToWorkspace"](options: {
+    ["com.yunke.import-clipper.dialog.createDocToWorkspace"](options: {
         readonly workspace: string;
     }): string;
     /**
       * `Create doc from Web Clipper`
       */
-    ["com.affine.import-clipper.dialog.createDocFromClipper"](): string;
+    ["com.yunke.import-clipper.dialog.createDocFromClipper"](): string;
     /**
       * `Failed to import content, please try again.`
       */
-    ["com.affine.import-clipper.dialog.errorImport"](): string;
+    ["com.yunke.import-clipper.dialog.errorImport"](): string;
     /**
       * `Failed to load content, please try again.`
       */
-    ["com.affine.import-clipper.dialog.errorLoad"](): string;
+    ["com.yunke.import-clipper.dialog.errorLoad"](): string;
     /**
       * `Support Markdown/Notion`
       */
-    ["com.affine.import_file"](): string;
+    ["com.yunke.import_file"](): string;
     /**
-      * `AFFiNE workspace data`
+      * `YUNKE workspace data`
       */
-    ["com.affine.import.affine-workspace-data"](): string;
+    ["com.yunke.import.yunke-workspace-data"](): string;
     /**
       * `HTML`
       */
-    ["com.affine.import.html-files"](): string;
+    ["com.yunke.import.html-files"](): string;
     /**
       * `This is an experimental feature that is not perfect and may cause your data to be missing after import.`
       */
-    ["com.affine.import.html-files.tooltip"](): string;
+    ["com.yunke.import.html-files.tooltip"](): string;
     /**
       * `Markdown files (.md)`
       */
-    ["com.affine.import.markdown-files"](): string;
+    ["com.yunke.import.markdown-files"](): string;
     /**
       * `Markdown with media files (.zip)`
       */
-    ["com.affine.import.markdown-with-media-files"](): string;
+    ["com.yunke.import.markdown-with-media-files"](): string;
     /**
       * `Please upload a markdown zip file with attachments, experimental function, there may be data loss.`
       */
-    ["com.affine.import.markdown-with-media-files.tooltip"](): string;
+    ["com.yunke.import.markdown-with-media-files.tooltip"](): string;
     /**
       * `If you'd like to request support for additional file types, feel free to let us know on`
       */
-    ["com.affine.import.modal.tip"](): string;
+    ["com.yunke.import.modal.tip"](): string;
     /**
       * `Notion`
       */
-    ["com.affine.import.notion"](): string;
+    ["com.yunke.import.notion"](): string;
     /**
       * `Import your Notion data. Supported import formats: HTML with subpages.`
       */
-    ["com.affine.import.notion.tooltip"](): string;
+    ["com.yunke.import.notion.tooltip"](): string;
     /**
       * `Snapshot`
       */
-    ["com.affine.import.snapshot"](): string;
+    ["com.yunke.import.snapshot"](): string;
     /**
-      * `Import your AFFiNE workspace and page snapshot file.`
+      * `Import your YUNKE workspace and page snapshot file.`
       */
-    ["com.affine.import.snapshot.tooltip"](): string;
+    ["com.yunke.import.snapshot.tooltip"](): string;
     /**
       * `Import failed, please try again.`
       */
-    ["com.affine.import.status.failed.message"](): string;
+    ["com.yunke.import.status.failed.message"](): string;
     /**
       * `No file selected`
       */
-    ["com.affine.import.status.failed.message.no-file-selected"](): string;
+    ["com.yunke.import.status.failed.message.no-file-selected"](): string;
     /**
       * `Import failure`
       */
-    ["com.affine.import.status.failed.title"](): string;
+    ["com.yunke.import.status.failed.title"](): string;
     /**
       * `Importing your workspace data, please wait patiently.`
       */
-    ["com.affine.import.status.importing.message"](): string;
+    ["com.yunke.import.status.importing.message"](): string;
     /**
       * `Importing...`
       */
-    ["com.affine.import.status.importing.title"](): string;
+    ["com.yunke.import.status.importing.title"](): string;
     /**
-      * `Your document has been imported successfully, thank you for choosing AFFiNE. Any questions please feel free to feedback to us`
+      * `Your document has been imported successfully, thank you for choosing YUNKE. Any questions please feel free to feedback to us`
       */
-    ["com.affine.import.status.success.message"](): string;
+    ["com.yunke.import.status.success.message"](): string;
     /**
       * `Import completed`
       */
-    ["com.affine.import.status.success.title"](): string;
+    ["com.yunke.import.status.success.title"](): string;
     /**
       * `Cancel`
       */
-    ["com.affine.inviteModal.button.cancel"](): string;
+    ["com.yunke.inviteModal.button.cancel"](): string;
     /**
       * `Maybe later`
       */
-    ["com.affine.issue-feedback.cancel"](): string;
+    ["com.yunke.issue-feedback.cancel"](): string;
     /**
       * `Create issue on GitHub`
       */
-    ["com.affine.issue-feedback.confirm"](): string;
+    ["com.yunke.issue-feedback.confirm"](): string;
     /**
       * `Got feedback? We're all ears! Create an issue on GitHub to let us know your thoughts and suggestions`
       */
-    ["com.affine.issue-feedback.description"](): string;
+    ["com.yunke.issue-feedback.description"](): string;
     /**
       * `Share your feedback on GitHub`
       */
-    ["com.affine.issue-feedback.title"](): string;
+    ["com.yunke.issue-feedback.title"](): string;
     /**
       * `Journals`
       */
-    ["com.affine.journal.app-sidebar-title"](): string;
+    ["com.yunke.journal.app-sidebar-title"](): string;
     /**
       * `{{count}} more articles`
       */
-    ["com.affine.journal.conflict-show-more"](options: {
+    ["com.yunke.journal.conflict-show-more"](options: {
         readonly count: string;
     }): string;
     /**
       * `Created`
       */
-    ["com.affine.journal.created-today"](): string;
+    ["com.yunke.journal.created-today"](): string;
     /**
       * `You haven't created anything yet`
       */
-    ["com.affine.journal.daily-count-created-empty-tips"](): string;
+    ["com.yunke.journal.daily-count-created-empty-tips"](): string;
     /**
       * `You haven't updated anything yet`
       */
-    ["com.affine.journal.daily-count-updated-empty-tips"](): string;
+    ["com.yunke.journal.daily-count-updated-empty-tips"](): string;
     /**
       * `Updated`
       */
-    ["com.affine.journal.updated-today"](): string;
+    ["com.yunke.journal.updated-today"](): string;
     /**
       * `Just now`
       */
-    ["com.affine.just-now"](): string;
+    ["com.yunke.just-now"](): string;
     /**
       * `Append to daily note`
       */
-    ["com.affine.keyboardShortcuts.appendDailyNote"](): string;
+    ["com.yunke.keyboardShortcuts.appendDailyNote"](): string;
     /**
       * `Body text`
       */
-    ["com.affine.keyboardShortcuts.bodyText"](): string;
+    ["com.yunke.keyboardShortcuts.bodyText"](): string;
     /**
       * `Bold`
       */
-    ["com.affine.keyboardShortcuts.bold"](): string;
+    ["com.yunke.keyboardShortcuts.bold"](): string;
     /**
       * `Cancel`
       */
-    ["com.affine.keyboardShortcuts.cancel"](): string;
+    ["com.yunke.keyboardShortcuts.cancel"](): string;
     /**
       * `Code block`
       */
-    ["com.affine.keyboardShortcuts.codeBlock"](): string;
+    ["com.yunke.keyboardShortcuts.codeBlock"](): string;
     /**
       * `Copy private link`
       */
-    ["com.affine.keyboardShortcuts.copy-private-link"](): string;
+    ["com.yunke.keyboardShortcuts.copy-private-link"](): string;
     /**
       * `Connector`
       */
-    ["com.affine.keyboardShortcuts.connector"](): string;
+    ["com.yunke.keyboardShortcuts.connector"](): string;
     /**
       * `Divider`
       */
-    ["com.affine.keyboardShortcuts.divider"](): string;
+    ["com.yunke.keyboardShortcuts.divider"](): string;
     /**
       * `Expand/collapse sidebar`
       */
-    ["com.affine.keyboardShortcuts.expandOrCollapseSidebar"](): string;
+    ["com.yunke.keyboardShortcuts.expandOrCollapseSidebar"](): string;
     /**
       * `Go back`
       */
-    ["com.affine.keyboardShortcuts.goBack"](): string;
+    ["com.yunke.keyboardShortcuts.goBack"](): string;
     /**
       * `Go forward`
       */
-    ["com.affine.keyboardShortcuts.goForward"](): string;
+    ["com.yunke.keyboardShortcuts.goForward"](): string;
     /**
       * `Group`
       */
-    ["com.affine.keyboardShortcuts.group"](): string;
+    ["com.yunke.keyboardShortcuts.group"](): string;
     /**
       * `Group as database`
       */
-    ["com.affine.keyboardShortcuts.groupDatabase"](): string;
+    ["com.yunke.keyboardShortcuts.groupDatabase"](): string;
     /**
       * `Hand`
       */
-    ["com.affine.keyboardShortcuts.hand"](): string;
+    ["com.yunke.keyboardShortcuts.hand"](): string;
     /**
       * `Heading {{number}}`
       */
-    ["com.affine.keyboardShortcuts.heading"](options: {
+    ["com.yunke.keyboardShortcuts.heading"](options: {
         readonly number: string;
     }): string;
     /**
       * `Image`
       */
-    ["com.affine.keyboardShortcuts.image"](): string;
+    ["com.yunke.keyboardShortcuts.image"](): string;
     /**
       * `Increase indent`
       */
-    ["com.affine.keyboardShortcuts.increaseIndent"](): string;
+    ["com.yunke.keyboardShortcuts.increaseIndent"](): string;
     /**
       * `Inline code`
       */
-    ["com.affine.keyboardShortcuts.inlineCode"](): string;
+    ["com.yunke.keyboardShortcuts.inlineCode"](): string;
     /**
       * `Italic`
       */
-    ["com.affine.keyboardShortcuts.italic"](): string;
+    ["com.yunke.keyboardShortcuts.italic"](): string;
     /**
       * `Hyperlink (with selected text)`
       */
-    ["com.affine.keyboardShortcuts.link"](): string;
+    ["com.yunke.keyboardShortcuts.link"](): string;
     /**
       * `Move down`
       */
-    ["com.affine.keyboardShortcuts.moveDown"](): string;
+    ["com.yunke.keyboardShortcuts.moveDown"](): string;
     /**
       * `Move up`
       */
-    ["com.affine.keyboardShortcuts.moveUp"](): string;
+    ["com.yunke.keyboardShortcuts.moveUp"](): string;
     /**
       * `New doc`
       */
-    ["com.affine.keyboardShortcuts.newPage"](): string;
+    ["com.yunke.keyboardShortcuts.newPage"](): string;
     /**
       * `Note`
       */
-    ["com.affine.keyboardShortcuts.note"](): string;
+    ["com.yunke.keyboardShortcuts.note"](): string;
     /**
       * `Pen`
       */
-    ["com.affine.keyboardShortcuts.pen"](): string;
+    ["com.yunke.keyboardShortcuts.pen"](): string;
     /**
       * `Quick search`
       */
-    ["com.affine.keyboardShortcuts.quickSearch"](): string;
+    ["com.yunke.keyboardShortcuts.quickSearch"](): string;
     /**
       * `Redo`
       */
-    ["com.affine.keyboardShortcuts.redo"](): string;
+    ["com.yunke.keyboardShortcuts.redo"](): string;
     /**
       * `Reduce indent`
       */
-    ["com.affine.keyboardShortcuts.reduceIndent"](): string;
+    ["com.yunke.keyboardShortcuts.reduceIndent"](): string;
     /**
       * `Select`
       */
-    ["com.affine.keyboardShortcuts.select"](): string;
+    ["com.yunke.keyboardShortcuts.select"](): string;
     /**
       * `Select all`
       */
-    ["com.affine.keyboardShortcuts.selectAll"](): string;
+    ["com.yunke.keyboardShortcuts.selectAll"](): string;
     /**
       * `Shape`
       */
-    ["com.affine.keyboardShortcuts.shape"](): string;
+    ["com.yunke.keyboardShortcuts.shape"](): string;
     /**
       * `Strikethrough`
       */
-    ["com.affine.keyboardShortcuts.strikethrough"](): string;
+    ["com.yunke.keyboardShortcuts.strikethrough"](): string;
     /**
       * `Check keyboard shortcuts quickly`
       */
-    ["com.affine.keyboardShortcuts.subtitle"](): string;
+    ["com.yunke.keyboardShortcuts.subtitle"](): string;
     /**
       * `Switch view`
       */
-    ["com.affine.keyboardShortcuts.switch"](): string;
+    ["com.yunke.keyboardShortcuts.switch"](): string;
     /**
       * `Text`
       */
-    ["com.affine.keyboardShortcuts.text"](): string;
+    ["com.yunke.keyboardShortcuts.text"](): string;
     /**
       * `Keyboard shortcuts`
       */
-    ["com.affine.keyboardShortcuts.title"](): string;
+    ["com.yunke.keyboardShortcuts.title"](): string;
     /**
       * `Ungroup`
       */
-    ["com.affine.keyboardShortcuts.unGroup"](): string;
+    ["com.yunke.keyboardShortcuts.unGroup"](): string;
     /**
       * `Underline`
       */
-    ["com.affine.keyboardShortcuts.underline"](): string;
+    ["com.yunke.keyboardShortcuts.underline"](): string;
     /**
       * `Undo`
       */
-    ["com.affine.keyboardShortcuts.undo"](): string;
+    ["com.yunke.keyboardShortcuts.undo"](): string;
     /**
       * `Zoom in`
       */
-    ["com.affine.keyboardShortcuts.zoomIn"](): string;
+    ["com.yunke.keyboardShortcuts.zoomIn"](): string;
     /**
       * `Zoom out`
       */
-    ["com.affine.keyboardShortcuts.zoomOut"](): string;
+    ["com.yunke.keyboardShortcuts.zoomOut"](): string;
     /**
       * `Zoom to 100%`
       */
-    ["com.affine.keyboardShortcuts.zoomTo100"](): string;
+    ["com.yunke.keyboardShortcuts.zoomTo100"](): string;
     /**
       * `Zoom to fit`
       */
-    ["com.affine.keyboardShortcuts.zoomToFit"](): string;
+    ["com.yunke.keyboardShortcuts.zoomToFit"](): string;
     /**
       * `Zoom to selection`
       */
-    ["com.affine.keyboardShortcuts.zoomToSelection"](): string;
+    ["com.yunke.keyboardShortcuts.zoomToSelection"](): string;
     /**
       * `Last 30 days`
       */
-    ["com.affine.last30Days"](): string;
+    ["com.yunke.last30Days"](): string;
     /**
       * `Last 7 days`
       */
-    ["com.affine.last7Days"](): string;
+    ["com.yunke.last7Days"](): string;
     /**
       * `Last month`
       */
-    ["com.affine.lastMonth"](): string;
+    ["com.yunke.lastMonth"](): string;
     /**
       * `Last week`
       */
-    ["com.affine.lastWeek"](): string;
+    ["com.yunke.lastWeek"](): string;
     /**
       * `Last year`
       */
-    ["com.affine.lastYear"](): string;
+    ["com.yunke.lastYear"](): string;
     /**
       * `Loading`
       */
-    ["com.affine.loading"](): string;
+    ["com.yunke.loading"](): string;
     /**
       * `Loading document content, please wait a moment.`
       */
-    ["com.affine.loading.description"](): string;
+    ["com.yunke.loading.description"](): string;
     /**
       * `Rename`
       */
-    ["com.affine.menu.rename"](): string;
+    ["com.yunke.menu.rename"](): string;
     /**
       * `No results found`
       */
-    ["com.affine.mobile.search.empty"](): string;
+    ["com.yunke.mobile.search.empty"](): string;
     /**
       * `App version`
       */
-    ["com.affine.mobile.setting.about.appVersion"](): string;
+    ["com.yunke.mobile.setting.about.appVersion"](): string;
     /**
       * `Editor version`
       */
-    ["com.affine.mobile.setting.about.editorVersion"](): string;
+    ["com.yunke.mobile.setting.about.editorVersion"](): string;
     /**
       * `About`
       */
-    ["com.affine.mobile.setting.about.title"](): string;
+    ["com.yunke.mobile.setting.about.title"](): string;
     /**
       * `Font style`
       */
-    ["com.affine.mobile.setting.appearance.font"](): string;
+    ["com.yunke.mobile.setting.appearance.font"](): string;
     /**
       * `Display language`
       */
-    ["com.affine.mobile.setting.appearance.language"](): string;
+    ["com.yunke.mobile.setting.appearance.language"](): string;
     /**
       * `Color mode`
       */
-    ["com.affine.mobile.setting.appearance.theme"](): string;
+    ["com.yunke.mobile.setting.appearance.theme"](): string;
     /**
       * `Appearance`
       */
-    ["com.affine.mobile.setting.appearance.title"](): string;
+    ["com.yunke.mobile.setting.appearance.title"](): string;
     /**
       * `Settings`
       */
-    ["com.affine.mobile.setting.header-title"](): string;
+    ["com.yunke.mobile.setting.header-title"](): string;
     /**
       * `Star us on GitHub`
       */
-    ["com.affine.mobile.setting.others.github"](): string;
+    ["com.yunke.mobile.setting.others.github"](): string;
     /**
       * `Privacy`
       */
-    ["com.affine.mobile.setting.others.privacy"](): string;
+    ["com.yunke.mobile.setting.others.privacy"](): string;
     /**
       * `Terms of use`
       */
-    ["com.affine.mobile.setting.others.terms"](): string;
+    ["com.yunke.mobile.setting.others.terms"](): string;
     /**
       * `Privacy & others`
       */
-    ["com.affine.mobile.setting.others.title"](): string;
+    ["com.yunke.mobile.setting.others.title"](): string;
     /**
       * `Official website`
       */
-    ["com.affine.mobile.setting.others.website"](): string;
+    ["com.yunke.mobile.setting.others.website"](): string;
     /**
       * `Want to keep data local?`
       */
-    ["com.affine.mobile.sign-in.skip.hint"](): string;
+    ["com.yunke.mobile.sign-in.skip.hint"](): string;
     /**
-      * `Start AFFiNE without an account`
+      * `Start YUNKE without an account`
       */
-    ["com.affine.mobile.sign-in.skip.link"](): string;
+    ["com.yunke.mobile.sign-in.skip.link"](): string;
     /**
       * `Older than a month`
       */
-    ["com.affine.moreThan30Days"](): string;
+    ["com.yunke.moreThan30Days"](): string;
     /**
       * `Cancel`
       */
-    ["com.affine.moveToTrash.confirmModal.cancel"](): string;
+    ["com.yunke.moveToTrash.confirmModal.cancel"](): string;
     /**
       * `Delete`
       */
-    ["com.affine.moveToTrash.confirmModal.confirm"](): string;
+    ["com.yunke.moveToTrash.confirmModal.confirm"](): string;
     /**
       * `{{title}} will be moved to trash`
       */
-    ["com.affine.moveToTrash.confirmModal.description"](options: {
+    ["com.yunke.moveToTrash.confirmModal.description"](options: {
         readonly title: string;
     }): string;
     /**
       * `{{ number }} docs will be moved to Trash`
       */
-    ["com.affine.moveToTrash.confirmModal.description.multiple"](options: {
+    ["com.yunke.moveToTrash.confirmModal.description.multiple"](options: {
         readonly number: string;
     }): string;
     /**
       * `Delete doc?`
       */
-    ["com.affine.moveToTrash.confirmModal.title"](): string;
+    ["com.yunke.moveToTrash.confirmModal.title"](): string;
     /**
       * `Delete {{ number }} docs?`
       */
-    ["com.affine.moveToTrash.confirmModal.title.multiple"](options: {
+    ["com.yunke.moveToTrash.confirmModal.title.multiple"](options: {
         readonly number: string;
     }): string;
     /**
       * `Move to trash`
       */
-    ["com.affine.moveToTrash.title"](): string;
+    ["com.yunke.moveToTrash.title"](): string;
     /**
       * `New tab`
       */
-    ["com.affine.multi-tab.new-tab"](): string;
+    ["com.yunke.multi-tab.new-tab"](): string;
     /**
-      * `Enabling AFFiNE Cloud allows you to synchronise and backup data, as well as support multi-user collaboration and content publishing.`
+      * `Enabling YUNKE Cloud allows you to synchronise and backup data, as well as support multi-user collaboration and content publishing.`
       */
-    ["com.affine.nameWorkspace.affine-cloud.description"](): string;
+    ["com.yunke.nameWorkspace.yunke-cloud.description"](): string;
     /**
-      * `Sync across devices with AFFiNE Cloud`
+      * `Sync across devices with YUNKE Cloud`
       */
-    ["com.affine.nameWorkspace.affine-cloud.title"](): string;
+    ["com.yunke.nameWorkspace.yunke-cloud.title"](): string;
     /**
       * `If you want the workspace to be stored locally, you can download the desktop client.`
       */
-    ["com.affine.nameWorkspace.affine-cloud.web-tips"](): string;
+    ["com.yunke.nameWorkspace.yunke-cloud.web-tips"](): string;
     /**
       * `Cancel`
       */
-    ["com.affine.nameWorkspace.button.cancel"](): string;
+    ["com.yunke.nameWorkspace.button.cancel"](): string;
     /**
       * `Create`
       */
-    ["com.affine.nameWorkspace.button.create"](): string;
+    ["com.yunke.nameWorkspace.button.create"](): string;
     /**
       * `A workspace is your virtual space to capture, create and plan as just one person or together as a team.`
       */
-    ["com.affine.nameWorkspace.description"](): string;
+    ["com.yunke.nameWorkspace.description"](): string;
     /**
       * `Set a workspace name`
       */
-    ["com.affine.nameWorkspace.placeholder"](): string;
+    ["com.yunke.nameWorkspace.placeholder"](): string;
     /**
       * `Workspace name`
       */
-    ["com.affine.nameWorkspace.subtitle.workspace-name"](): string;
+    ["com.yunke.nameWorkspace.subtitle.workspace-name"](): string;
     /**
       * `Workspace type`
       */
-    ["com.affine.nameWorkspace.subtitle.workspace-type"](): string;
+    ["com.yunke.nameWorkspace.subtitle.workspace-type"](): string;
     /**
       * `Name your workspace`
       */
-    ["com.affine.nameWorkspace.title"](): string;
+    ["com.yunke.nameWorkspace.title"](): string;
     /**
       * `New page`
       */
-    ["com.affine.new.page-mode"](): string;
+    ["com.yunke.new.page-mode"](): string;
     /**
       * `New edgeless`
       */
-    ["com.affine.new_edgeless"](): string;
+    ["com.yunke.new_edgeless"](): string;
     /**
       * `Import`
       */
-    ["com.affine.new_import"](): string;
+    ["com.yunke.new_import"](): string;
     /**
       * `Next week`
       */
-    ["com.affine.nextWeek"](): string;
+    ["com.yunke.nextWeek"](): string;
     /**
       * `Back home`
       */
-    ["com.affine.notFoundPage.backButton"](): string;
+    ["com.yunke.notFoundPage.backButton"](): string;
     /**
       * `Page not found`
       */
-    ["com.affine.notFoundPage.title"](): string;
+    ["com.yunke.notFoundPage.title"](): string;
     /**
-      * `AFFiNE Community`
+      * `YUNKE Community`
       */
-    ["com.affine.other-page.nav.affine-community"](): string;
+    ["com.yunke.other-page.nav.yunke-community"](): string;
     /**
       * `Blog`
       */
-    ["com.affine.other-page.nav.blog"](): string;
+    ["com.yunke.other-page.nav.blog"](): string;
     /**
       * `Contact us`
       */
-    ["com.affine.other-page.nav.contact-us"](): string;
+    ["com.yunke.other-page.nav.contact-us"](): string;
     /**
       * `Download app`
       */
-    ["com.affine.other-page.nav.download-app"](): string;
+    ["com.yunke.other-page.nav.download-app"](): string;
     /**
       * `Official website`
       */
-    ["com.affine.other-page.nav.official-website"](): string;
+    ["com.yunke.other-page.nav.official-website"](): string;
     /**
-      * `Open AFFiNE`
+      * `Open YUNKE`
       */
-    ["com.affine.other-page.nav.open-affine"](): string;
+    ["com.yunke.other-page.nav.open-yunke"](): string;
     /**
       * `Add linked doc`
       */
-    ["com.affine.page-operation.add-linked-page"](): string;
+    ["com.yunke.page-operation.add-linked-page"](): string;
     /**
       * `{{ count }} more properties`
       */
-    ["com.affine.page-properties.more-property.more"](options: {
+    ["com.yunke.page-properties.more-property.more"](options: {
         readonly count: string;
     }): string;
     /**
       * `{{ count }} more property`
       */
-    ["com.affine.page-properties.more-property.one"](options: {
+    ["com.yunke.page-properties.more-property.one"](options: {
         readonly count: string;
     }): string;
     /**
       * `hide {{ count }} property`
       */
-    ["com.affine.page-properties.hide-property.one"](options: {
+    ["com.yunke.page-properties.hide-property.one"](options: {
         readonly count: string;
     }): string;
     /**
       * `hide {{ count }} properties`
       */
-    ["com.affine.page-properties.hide-property.more"](options: {
+    ["com.yunke.page-properties.hide-property.more"](options: {
         readonly count: string;
     }): string;
     /**
       * `Add property`
       */
-    ["com.affine.page-properties.add-property"](): string;
+    ["com.yunke.page-properties.add-property"](): string;
     /**
       * `Create property`
       */
-    ["com.affine.page-properties.add-property.menu.create"](): string;
+    ["com.yunke.page-properties.add-property.menu.create"](): string;
     /**
       * `Properties`
       */
-    ["com.affine.page-properties.add-property.menu.header"](): string;
+    ["com.yunke.page-properties.add-property.menu.header"](): string;
     /**
       * `Config properties`
       */
-    ["com.affine.page-properties.config-properties"](): string;
+    ["com.yunke.page-properties.config-properties"](): string;
     /**
       * `Backlinks`
       */
-    ["com.affine.page-properties.backlinks"](): string;
+    ["com.yunke.page-properties.backlinks"](): string;
     /**
       * `Type`
       */
-    ["com.affine.page-properties.create-property.menu.header"](): string;
+    ["com.yunke.page-properties.create-property.menu.header"](): string;
     /**
       * `Added`
       */
-    ["com.affine.page-properties.create-property.added"](): string;
+    ["com.yunke.page-properties.create-property.added"](): string;
     /**
       * `Icons`
       */
-    ["com.affine.page-properties.icons"](): string;
+    ["com.yunke.page-properties.icons"](): string;
     /**
       * `Local user`
       */
-    ["com.affine.page-properties.local-user"](): string;
+    ["com.yunke.page-properties.local-user"](): string;
     /**
       * `Outgoing links`
       */
-    ["com.affine.page-properties.outgoing-links"](): string;
+    ["com.yunke.page-properties.outgoing-links"](): string;
     /**
       * `Info`
       */
-    ["com.affine.page-properties.page-info"](): string;
+    ["com.yunke.page-properties.page-info"](): string;
     /**
       * `View Info`
       */
-    ["com.affine.page-properties.page-info.view"](): string;
+    ["com.yunke.page-properties.page-info.view"](): string;
     /**
       * `No Record`
       */
-    ["com.affine.page-properties.property-user-avatar-no-record"](): string;
+    ["com.yunke.page-properties.property-user-avatar-no-record"](): string;
     /**
       * `Local User`
       */
-    ["com.affine.page-properties.property-user-local"](): string;
+    ["com.yunke.page-properties.property-user-local"](): string;
     /**
       * `Empty`
       */
-    ["com.affine.page-properties.property-value-placeholder"](): string;
+    ["com.yunke.page-properties.property-value-placeholder"](): string;
     /**
       * `Always hide`
       */
-    ["com.affine.page-properties.property.always-hide"](): string;
+    ["com.yunke.page-properties.property.always-hide"](): string;
     /**
       * `Always show`
       */
-    ["com.affine.page-properties.property.always-show"](): string;
+    ["com.yunke.page-properties.property.always-show"](): string;
     /**
       * `Checkbox`
       */
-    ["com.affine.page-properties.property.checkbox"](): string;
+    ["com.yunke.page-properties.property.checkbox"](): string;
     /**
       * `Created by`
       */
-    ["com.affine.page-properties.property.createdBy"](): string;
+    ["com.yunke.page-properties.property.createdBy"](): string;
     /**
       * `Date`
       */
-    ["com.affine.page-properties.property.date"](): string;
+    ["com.yunke.page-properties.property.date"](): string;
     /**
       * `Hide in view`
       */
-    ["com.affine.page-properties.property.hide-in-view"](): string;
+    ["com.yunke.page-properties.property.hide-in-view"](): string;
     /**
       * `Hide in view when empty`
       */
-    ["com.affine.page-properties.property.hide-in-view-when-empty"](): string;
+    ["com.yunke.page-properties.property.hide-in-view-when-empty"](): string;
     /**
       * `Hide when empty`
       */
-    ["com.affine.page-properties.property.hide-when-empty"](): string;
+    ["com.yunke.page-properties.property.hide-when-empty"](): string;
     /**
       * `Number`
       */
-    ["com.affine.page-properties.property.number"](): string;
+    ["com.yunke.page-properties.property.number"](): string;
     /**
       * `Progress`
       */
-    ["com.affine.page-properties.property.progress"](): string;
+    ["com.yunke.page-properties.property.progress"](): string;
     /**
       * `Remove property`
       */
-    ["com.affine.page-properties.property.remove-property"](): string;
+    ["com.yunke.page-properties.property.remove-property"](): string;
     /**
       * `Required`
       */
-    ["com.affine.page-properties.property.required"](): string;
+    ["com.yunke.page-properties.property.required"](): string;
     /**
       * `Show in view`
       */
-    ["com.affine.page-properties.property.show-in-view"](): string;
+    ["com.yunke.page-properties.property.show-in-view"](): string;
     /**
       * `Tags`
       */
-    ["com.affine.page-properties.property.tags"](): string;
+    ["com.yunke.page-properties.property.tags"](): string;
     /**
       * `Doc mode`
       */
-    ["com.affine.page-properties.property.docPrimaryMode"](): string;
+    ["com.yunke.page-properties.property.docPrimaryMode"](): string;
     /**
       * `Text`
       */
-    ["com.affine.page-properties.property.text"](): string;
+    ["com.yunke.page-properties.property.text"](): string;
     /**
       * `Journal`
       */
-    ["com.affine.page-properties.property.journal"](): string;
+    ["com.yunke.page-properties.property.journal"](): string;
     /**
       * `Duplicated`
       */
-    ["com.affine.page-properties.property.journal-duplicated"](): string;
+    ["com.yunke.page-properties.property.journal-duplicated"](): string;
     /**
       * `Remove journal mark`
       */
-    ["com.affine.page-properties.property.journal-remove"](): string;
+    ["com.yunke.page-properties.property.journal-remove"](): string;
     /**
       * `Last edited by`
       */
-    ["com.affine.page-properties.property.updatedBy"](): string;
+    ["com.yunke.page-properties.property.updatedBy"](): string;
     /**
       * `Created`
       */
-    ["com.affine.page-properties.property.createdAt"](): string;
+    ["com.yunke.page-properties.property.createdAt"](): string;
     /**
       * `Updated`
       */
-    ["com.affine.page-properties.property.updatedAt"](): string;
+    ["com.yunke.page-properties.property.updatedAt"](): string;
     /**
       * `Edgeless theme`
       */
-    ["com.affine.page-properties.property.edgelessTheme"](): string;
+    ["com.yunke.page-properties.property.edgelessTheme"](): string;
     /**
       * `Page width`
       */
-    ["com.affine.page-properties.property.pageWidth"](): string;
+    ["com.yunke.page-properties.property.pageWidth"](): string;
     /**
       * `Template`
       */
-    ["com.affine.page-properties.property.template"](): string;
+    ["com.yunke.page-properties.property.template"](): string;
     /**
       * `Add relevant identifiers or categories to the doc. Useful for organizing content, improving searchability, and grouping related docs together.`
       */
-    ["com.affine.page-properties.property.tags.tooltips"](): string;
+    ["com.yunke.page-properties.property.tags.tooltips"](): string;
     /**
       * `Indicates that this doc is a journal entry or daily note. Facilitates easy capture of ideas, quick logging of thoughts, and ongoing personal reflection.`
       */
-    ["com.affine.page-properties.property.journal.tooltips"](): string;
+    ["com.yunke.page-properties.property.journal.tooltips"](): string;
     /**
       * `Use a checkbox to indicate whether a condition is true or false. Useful for confirming options, toggling features, or tracking task states.`
       */
-    ["com.affine.page-properties.property.checkbox.tooltips"](): string;
+    ["com.yunke.page-properties.property.checkbox.tooltips"](): string;
     /**
       * `Use a date field to select or display a specific date. Useful for scheduling, setting deadlines, or recording important events.`
       */
-    ["com.affine.page-properties.property.date.tooltips"](): string;
+    ["com.yunke.page-properties.property.date.tooltips"](): string;
     /**
       * `Upload images to display or manage them. Useful for showcasing visual content, adding illustrations, or organizing a gallery.`
       */
-    ["com.affine.page-properties.property.image.tooltips"](): string;
+    ["com.yunke.page-properties.property.image.tooltips"](): string;
     /**
       * `Select one or more options. Useful for categorizing items, filtering data, or managing tags.`
       */
-    ["com.affine.page-properties.property.multiSelect.tooltips"](): string;
+    ["com.yunke.page-properties.property.multiSelect.tooltips"](): string;
     /**
       * `Enter a numeric value. Useful for quantities, measurements, or ranking items.`
       */
-    ["com.affine.page-properties.property.number.tooltips"](): string;
+    ["com.yunke.page-properties.property.number.tooltips"](): string;
     /**
       * `Set a progress value between 0 and 100. Useful for tracking completion status, visualizing progress, or managing goals.`
       */
-    ["com.affine.page-properties.property.progress.tooltips"](): string;
+    ["com.yunke.page-properties.property.progress.tooltips"](): string;
     /**
       * `Choose one option. Useful for selecting a single preference, categorizing items, or making decisions.`
       */
-    ["com.affine.page-properties.property.select.tooltips"](): string;
+    ["com.yunke.page-properties.property.select.tooltips"](): string;
     /**
-      * `Enter a link to websites or AFFiNE docs. Useful for connecting to external resources and referencing internal docs.`
+      * `Enter a link to websites or YUNKE docs. Useful for connecting to external resources and referencing internal docs.`
       */
-    ["com.affine.page-properties.property.link.tooltips"](): string;
+    ["com.yunke.page-properties.property.link.tooltips"](): string;
     /**
       * `Enter text. Useful for descriptions, comments, notes, or any other free-form text input.`
       */
-    ["com.affine.page-properties.property.text.tooltips"](): string;
+    ["com.yunke.page-properties.property.text.tooltips"](): string;
     /**
       * `Displays the author of the current doc. Useful for tracking doc ownership, accountability, and collaboration.`
       */
-    ["com.affine.page-properties.property.createdBy.tooltips"](): string;
+    ["com.yunke.page-properties.property.createdBy.tooltips"](): string;
     /**
       * `Displays the last editor of the current doc. Useful for tracking recent changes.`
       */
-    ["com.affine.page-properties.property.updatedBy.tooltips"](): string;
+    ["com.yunke.page-properties.property.updatedBy.tooltips"](): string;
     /**
       * `Record the last modification timestamp. Useful for tracking changes, identifying recent updates, or monitoring content freshness.`
       */
-    ["com.affine.page-properties.property.updatedAt.tooltips"](): string;
+    ["com.yunke.page-properties.property.updatedAt.tooltips"](): string;
     /**
       * `Track when a doc was first created. Useful for maintaining record history, sorting by creation date, or auditing content chronologically.`
       */
-    ["com.affine.page-properties.property.createdAt.tooltips"](): string;
+    ["com.yunke.page-properties.property.createdAt.tooltips"](): string;
     /**
       * `Select the doc mode from Page Mode, Edgeless Mode, or Auto. Useful for choosing the best display for your content.`
       */
-    ["com.affine.page-properties.property.docPrimaryMode.tooltips"](): string;
+    ["com.yunke.page-properties.property.docPrimaryMode.tooltips"](): string;
     /**
       * `Select the doc theme from Light, Dark, or System. Useful for precise control over content viewing style.`
       */
-    ["com.affine.page-properties.property.edgelessTheme.tooltips"](): string;
+    ["com.yunke.page-properties.property.edgelessTheme.tooltips"](): string;
     /**
       * `Control the width of this page to fit content display needs.`
       */
-    ["com.affine.page-properties.property.pageWidth.tooltips"](): string;
+    ["com.yunke.page-properties.property.pageWidth.tooltips"](): string;
     /**
       * `Mark this doc as a template, which can be used to create new docs.`
       */
-    ["com.affine.page-properties.property.template.tooltips"](): string;
+    ["com.yunke.page-properties.property.template.tooltips"](): string;
     /**
       * `Created by {{userName}}`
       */
-    ["com.affine.page-properties.property.createdBy.tip"](options: {
+    ["com.yunke.page-properties.property.createdBy.tip"](options: {
         readonly userName: string;
     }): string;
     /**
       * `Last edited by {{userName}}`
       */
-    ["com.affine.page-properties.property.updatedBy.tip"](options: {
+    ["com.yunke.page-properties.property.updatedBy.tip"](options: {
         readonly userName: string;
     }): string;
     /**
       * `Properties`
       */
-    ["com.affine.propertySidebar.property-list.section"](): string;
+    ["com.yunke.propertySidebar.property-list.section"](): string;
     /**
       * `Add more properties`
       */
-    ["com.affine.propertySidebar.add-more.section"](): string;
+    ["com.yunke.propertySidebar.add-more.section"](): string;
     /**
       * `customize properties`
       */
-    ["com.affine.page-properties.settings.title"](): string;
+    ["com.yunke.page-properties.settings.title"](): string;
     /**
       * `Open tag page`
       */
-    ["com.affine.page-properties.tags.open-tags-page"](): string;
+    ["com.yunke.page-properties.tags.open-tags-page"](): string;
     /**
       * `Select tag or create one`
       */
-    ["com.affine.page-properties.tags.selector-header-title"](): string;
+    ["com.yunke.page-properties.tags.selector-header-title"](): string;
     /**
       * `Display`
       */
-    ["com.affine.page.display"](): string;
+    ["com.yunke.page.display"](): string;
     /**
       * `Display properties`
       */
-    ["com.affine.page.display.display-properties"](): string;
+    ["com.yunke.page.display.display-properties"](): string;
     /**
       * `Body notes`
       */
-    ["com.affine.page.display.display-properties.body-notes"](): string;
+    ["com.yunke.page.display.display-properties.body-notes"](): string;
     /**
       * `Grouping`
       */
-    ["com.affine.page.display.grouping"](): string;
+    ["com.yunke.page.display.grouping"](): string;
     /**
       * `Favourites`
       */
-    ["com.affine.page.display.grouping.group-by-favourites"](): string;
+    ["com.yunke.page.display.grouping.group-by-favourites"](): string;
     /**
       * `Tag`
       */
-    ["com.affine.page.display.grouping.group-by-tag"](): string;
+    ["com.yunke.page.display.grouping.group-by-tag"](): string;
     /**
       * `Untagged`
       */
-    ["com.affine.page.display.grouping.group-by-tag.untagged"](): string;
+    ["com.yunke.page.display.grouping.group-by-tag.untagged"](): string;
     /**
       * `No grouping`
       */
-    ["com.affine.page.display.grouping.no-grouping"](): string;
+    ["com.yunke.page.display.grouping.no-grouping"](): string;
     /**
       * `List option`
       */
-    ["com.affine.page.display.list-option"](): string;
+    ["com.yunke.page.display.list-option"](): string;
     /**
       * `Clear selection`
       */
-    ["com.affine.page.group-header.clear"](): string;
+    ["com.yunke.page.group-header.clear"](): string;
     /**
       * `Favourited`
       */
-    ["com.affine.page.group-header.favourited"](): string;
+    ["com.yunke.page.group-header.favourited"](): string;
     /**
       * `Not favourited`
       */
-    ["com.affine.page.group-header.not-favourited"](): string;
+    ["com.yunke.page.group-header.not-favourited"](): string;
     /**
       * `Select all`
       */
-    ["com.affine.page.group-header.select-all"](): string;
+    ["com.yunke.page.group-header.select-all"](): string;
     /**
       * `Created by {{name}}`
       */
-    ["com.affine.page.toolbar.created_by"](options: {
+    ["com.yunke.page.toolbar.created_by"](options: {
         readonly name: string;
     }): string;
     /**
       * `Doc mode`
       */
-    ["com.affine.pageMode"](): string;
+    ["com.yunke.pageMode"](): string;
     /**
       * `all`
       */
-    ["com.affine.pageMode.all"](): string;
+    ["com.yunke.pageMode.all"](): string;
     /**
       * `Edgeless`
       */
-    ["com.affine.pageMode.edgeless"](): string;
+    ["com.yunke.pageMode.edgeless"](): string;
     /**
       * `Page`
       */
-    ["com.affine.pageMode.page"](): string;
+    ["com.yunke.pageMode.page"](): string;
     /**
-      * `Congratulations on your successful purchase of AFFiNE AI! You're now empowered to refine your content, generate images, and craft comprehensive mindmaps directly within AFFiNE AI, dramatically enhancing your productivity.`
+      * `Congratulations on your successful purchase of YUNKE AI! You're now empowered to refine your content, generate images, and craft comprehensive mindmaps directly within YUNKE AI, dramatically enhancing your productivity.`
       */
-    ["com.affine.payment.ai-upgrade-success-page.text"](): string;
+    ["com.yunke.payment.ai-upgrade-success-page.text"](): string;
     /**
       * `Purchase successful!`
       */
-    ["com.affine.payment.ai-upgrade-success-page.title"](): string;
+    ["com.yunke.payment.ai-upgrade-success-page.title"](): string;
     /**
       * `Cancel subscription`
       */
-    ["com.affine.payment.ai.action.cancel.button-label"](): string;
+    ["com.yunke.payment.ai.action.cancel.button-label"](): string;
     /**
-      * `Keep AFFiNE AI`
+      * `Keep YUNKE AI`
       */
-    ["com.affine.payment.ai.action.cancel.confirm.cancel-text"](): string;
-    /**
-      * `Cancel subscription`
-      */
-    ["com.affine.payment.ai.action.cancel.confirm.confirm-text"](): string;
-    /**
-      * `If you end your subscription now, you can still use AFFiNE AI until the end of this billing period.`
-      */
-    ["com.affine.payment.ai.action.cancel.confirm.description"](): string;
+    ["com.yunke.payment.ai.action.cancel.confirm.cancel-text"](): string;
     /**
       * `Cancel subscription`
       */
-    ["com.affine.payment.ai.action.cancel.confirm.title"](): string;
+    ["com.yunke.payment.ai.action.cancel.confirm.confirm-text"](): string;
+    /**
+      * `If you end your subscription now, you can still use YUNKE AI until the end of this billing period.`
+      */
+    ["com.yunke.payment.ai.action.cancel.confirm.description"](): string;
+    /**
+      * `Cancel subscription`
+      */
+    ["com.yunke.payment.ai.action.cancel.confirm.title"](): string;
     /**
       * `Login`
       */
-    ["com.affine.payment.ai.action.login.button-label"](): string;
+    ["com.yunke.payment.ai.action.login.button-label"](): string;
     /**
       * `Resume`
       */
-    ["com.affine.payment.ai.action.resume.button-label"](): string;
+    ["com.yunke.payment.ai.action.resume.button-label"](): string;
     /**
       * `Cancel`
       */
-    ["com.affine.payment.ai.action.resume.confirm.cancel-text"](): string;
+    ["com.yunke.payment.ai.action.resume.confirm.cancel-text"](): string;
     /**
       * `Confirm`
       */
-    ["com.affine.payment.ai.action.resume.confirm.confirm-text"](): string;
+    ["com.yunke.payment.ai.action.resume.confirm.confirm-text"](): string;
     /**
-      * `Are you sure you want to resume the subscription for AFFiNE AI? This means your payment method will be charged automatically at the end of each billing cycle, starting from the next billing cycle.`
+      * `Are you sure you want to resume the subscription for YUNKE AI? This means your payment method will be charged automatically at the end of each billing cycle, starting from the next billing cycle.`
       */
-    ["com.affine.payment.ai.action.resume.confirm.description"](): string;
+    ["com.yunke.payment.ai.action.resume.confirm.description"](): string;
     /**
       * `You will be charged in the next billing cycle.`
       */
-    ["com.affine.payment.ai.action.resume.confirm.notify.msg"](): string;
+    ["com.yunke.payment.ai.action.resume.confirm.notify.msg"](): string;
     /**
       * `Subscription updated`
       */
-    ["com.affine.payment.ai.action.resume.confirm.notify.title"](): string;
+    ["com.yunke.payment.ai.action.resume.confirm.notify.title"](): string;
     /**
       * `Resume auto-renewal?`
       */
-    ["com.affine.payment.ai.action.resume.confirm.title"](): string;
+    ["com.yunke.payment.ai.action.resume.confirm.title"](): string;
     /**
       * `Write with you`
       */
-    ["com.affine.payment.ai.benefit.g1"](): string;
+    ["com.yunke.payment.ai.benefit.g1"](): string;
     /**
       * `Create quality content from sentences to articles on topics you need`
       */
-    ["com.affine.payment.ai.benefit.g1-1"](): string;
+    ["com.yunke.payment.ai.benefit.g1-1"](): string;
     /**
       * `Rewrite like the professionals`
       */
-    ["com.affine.payment.ai.benefit.g1-2"](): string;
+    ["com.yunke.payment.ai.benefit.g1-2"](): string;
     /**
       * `Change the tones / fix spelling & grammar`
       */
-    ["com.affine.payment.ai.benefit.g1-3"](): string;
+    ["com.yunke.payment.ai.benefit.g1-3"](): string;
     /**
       * `Draw with you`
       */
-    ["com.affine.payment.ai.benefit.g2"](): string;
+    ["com.yunke.payment.ai.benefit.g2"](): string;
     /**
       * `Visualize your mind, magically`
       */
-    ["com.affine.payment.ai.benefit.g2-1"](): string;
+    ["com.yunke.payment.ai.benefit.g2-1"](): string;
     /**
       * `Turn your outline into beautiful, engaging presentations`
       */
-    ["com.affine.payment.ai.benefit.g2-2"](): string;
+    ["com.yunke.payment.ai.benefit.g2-2"](): string;
     /**
       * `Summarize your content into structured mind-map`
       */
-    ["com.affine.payment.ai.benefit.g2-3"](): string;
+    ["com.yunke.payment.ai.benefit.g2-3"](): string;
     /**
       * `Plan with you`
       */
-    ["com.affine.payment.ai.benefit.g3"](): string;
+    ["com.yunke.payment.ai.benefit.g3"](): string;
     /**
       * `Memorize and tidy up your knowledge`
       */
-    ["com.affine.payment.ai.benefit.g3-1"](): string;
+    ["com.yunke.payment.ai.benefit.g3-1"](): string;
     /**
       * `Auto-sorting and auto-tagging`
       */
-    ["com.affine.payment.ai.benefit.g3-2"](): string;
+    ["com.yunke.payment.ai.benefit.g3-2"](): string;
     /**
       * `Open source & Privacy ensured`
       */
-    ["com.affine.payment.ai.benefit.g3-3"](): string;
+    ["com.yunke.payment.ai.benefit.g3-3"](): string;
     /**
-      * `You have purchased AFFiNE AI. The expiration date is {{end}}.`
+      * `You have purchased YUNKE AI. The expiration date is {{end}}.`
       */
-    ["com.affine.payment.ai.billing-tip.end-at"](options: {
+    ["com.yunke.payment.ai.billing-tip.end-at"](options: {
         readonly end: string;
     }): string;
     /**
-      * `You have purchased AFFiNE AI. The next payment date is {{due}}.`
+      * `You have purchased YUNKE AI. The next payment date is {{due}}.`
       */
-    ["com.affine.payment.ai.billing-tip.next-bill-at"](options: {
+    ["com.yunke.payment.ai.billing-tip.next-bill-at"](options: {
         readonly due: string;
     }): string;
     /**
       * `Your recent payment failed, the next payment date is {{due}}.`
       */
-    ["com.affine.payment.billing-tip.past-due"](options: {
+    ["com.yunke.payment.billing-tip.past-due"](options: {
         readonly due: string;
     }): string;
     /**
       * `You are currently on the Free plan.`
       */
-    ["com.affine.payment.ai.pricing-plan.caption-free"](): string;
+    ["com.yunke.payment.ai.pricing-plan.caption-free"](): string;
     /**
-      * `You have purchased AFFiNE AI`
+      * `You have purchased YUNKE AI`
       */
-    ["com.affine.payment.ai.pricing-plan.caption-purchased"](): string;
+    ["com.yunke.payment.ai.pricing-plan.caption-purchased"](): string;
     /**
-      * `Learn about AFFiNE AI`
+      * `Learn about YUNKE AI`
       */
-    ["com.affine.payment.ai.pricing-plan.learn"](): string;
+    ["com.yunke.payment.ai.pricing-plan.learn"](): string;
     /**
-      * `AFFiNE AI`
+      * `YUNKE AI`
       */
-    ["com.affine.payment.ai.pricing-plan.title"](): string;
+    ["com.yunke.payment.ai.pricing-plan.title"](): string;
     /**
       * `Turn all your ideas into reality`
       */
-    ["com.affine.payment.ai.pricing-plan.title-caption-1"](): string;
+    ["com.yunke.payment.ai.pricing-plan.title-caption-1"](): string;
     /**
       * `A true multimodal AI copilot.`
       */
-    ["com.affine.payment.ai.pricing-plan.title-caption-2"](): string;
+    ["com.yunke.payment.ai.pricing-plan.title-caption-2"](): string;
     /**
       * `Billed annually`
       */
-    ["com.affine.payment.ai.subscribe.billed-annually"](): string;
+    ["com.yunke.payment.ai.subscribe.billed-annually"](): string;
     /**
-      * `You have purchased AFFiNE AI.`
+      * `You have purchased YUNKE AI.`
       */
-    ["com.affine.payment.ai.usage-description-purchased"](): string;
+    ["com.yunke.payment.ai.usage-description-purchased"](): string;
     /**
-      * `AFFiNE AI usage`
+      * `YUNKE AI usage`
       */
-    ["com.affine.payment.ai.usage-title"](): string;
+    ["com.yunke.payment.ai.usage-title"](): string;
     /**
       * `Change plan`
       */
-    ["com.affine.payment.ai.usage.change-button-label"](): string;
+    ["com.yunke.payment.ai.usage.change-button-label"](): string;
     /**
       * `Purchase`
       */
-    ["com.affine.payment.ai.usage.purchase-button-label"](): string;
+    ["com.yunke.payment.ai.usage.purchase-button-label"](): string;
     /**
       * `Times used`
       */
-    ["com.affine.payment.ai.usage.used-caption"](): string;
+    ["com.yunke.payment.ai.usage.used-caption"](): string;
     /**
       * `{{used}}/{{limit}} times`
       */
-    ["com.affine.payment.ai.usage.used-detail"](options: Readonly<{
+    ["com.yunke.payment.ai.usage.used-detail"](options: Readonly<{
         used: string;
         limit: string;
     }>): string;
     /**
       * `Active`
       */
-    ["com.affine.payment.subscription-status.active"](): string;
+    ["com.yunke.payment.subscription-status.active"](): string;
     /**
       * `Past-due bill`
       */
-    ["com.affine.payment.subscription-status.past-due"](): string;
+    ["com.yunke.payment.subscription-status.past-due"](): string;
     /**
       * `Trialing`
       */
-    ["com.affine.payment.subscription-status.trialing"](): string;
+    ["com.yunke.payment.subscription-status.trialing"](): string;
     /**
       * `Unlimited local workspaces`
       */
-    ["com.affine.payment.benefit-1"](): string;
+    ["com.yunke.payment.benefit-1"](): string;
     /**
       * `Unlimited login devices`
       */
-    ["com.affine.payment.benefit-2"](): string;
+    ["com.yunke.payment.benefit-2"](): string;
     /**
       * `Unlimited blocks`
       */
-    ["com.affine.payment.benefit-3"](): string;
+    ["com.yunke.payment.benefit-3"](): string;
     /**
       * `{{capacity}} of cloud storage`
       */
-    ["com.affine.payment.benefit-4"](options: {
+    ["com.yunke.payment.benefit-4"](options: {
         readonly capacity: string;
     }): string;
     /**
       * `{{capacity}} of maximum file size`
       */
-    ["com.affine.payment.benefit-5"](options: {
+    ["com.yunke.payment.benefit-5"](options: {
         readonly capacity: string;
     }): string;
     /**
       * `Number of members per workspace ≤ {{capacity}}`
       */
-    ["com.affine.payment.benefit-6"](options: {
+    ["com.yunke.payment.benefit-6"](options: {
         readonly capacity: string;
     }): string;
     /**
       * `{{capacity}}-days version history`
       */
-    ["com.affine.payment.benefit-7"](options: {
+    ["com.yunke.payment.benefit-7"](options: {
         readonly capacity: string;
     }): string;
     /**
-      * `AFFiNE AI`
+      * `YUNKE AI`
       */
-    ["com.affine.payment.billing-setting.ai-plan"](): string;
+    ["com.yunke.payment.billing-setting.ai-plan"](): string;
     /**
       * `Purchase`
       */
-    ["com.affine.payment.billing-setting.ai.purchase"](): string;
+    ["com.yunke.payment.billing-setting.ai.purchase"](): string;
     /**
       * `Start free trial`
       */
-    ["com.affine.payment.billing-setting.ai.start-free-trial"](): string;
+    ["com.yunke.payment.billing-setting.ai.start-free-trial"](): string;
     /**
       * `One-time payment`
       */
-    ["com.affine.payment.billing-setting.believer.price-caption"](): string;
+    ["com.yunke.payment.billing-setting.believer.price-caption"](): string;
     /**
-      * `AFFiNE Cloud`
+      * `YUNKE Cloud`
       */
-    ["com.affine.payment.billing-setting.believer.title"](): string;
+    ["com.yunke.payment.billing-setting.believer.title"](): string;
     /**
       * `Cancel subscription`
       */
-    ["com.affine.payment.billing-setting.cancel-subscription"](): string;
+    ["com.yunke.payment.billing-setting.cancel-subscription"](): string;
     /**
       * `Once you canceled subscription you will no longer enjoy the plan benefits.`
       */
-    ["com.affine.payment.billing-setting.cancel-subscription.description"](): string;
+    ["com.yunke.payment.billing-setting.cancel-subscription.description"](): string;
     /**
       * `Change plan`
       */
-    ["com.affine.payment.billing-setting.change-plan"](): string;
+    ["com.yunke.payment.billing-setting.change-plan"](): string;
     /**
-      * `AFFiNE Cloud`
+      * `YUNKE Cloud`
       */
-    ["com.affine.payment.billing-setting.current-plan"](): string;
+    ["com.yunke.payment.billing-setting.current-plan"](): string;
     /**
       * `Expiration date`
       */
-    ["com.affine.payment.billing-setting.expiration-date"](): string;
+    ["com.yunke.payment.billing-setting.expiration-date"](): string;
     /**
       * `Your subscription is valid until {{expirationDate}}`
       */
-    ["com.affine.payment.billing-setting.expiration-date.description"](options: {
+    ["com.yunke.payment.billing-setting.expiration-date.description"](options: {
         readonly expirationDate: string;
     }): string;
     /**
       * `Billing history`
       */
-    ["com.affine.payment.billing-setting.history"](): string;
+    ["com.yunke.payment.billing-setting.history"](): string;
     /**
       * `Information`
       */
-    ["com.affine.payment.billing-setting.information"](): string;
+    ["com.yunke.payment.billing-setting.information"](): string;
     /**
       * `month`
       */
-    ["com.affine.payment.billing-setting.month"](): string;
+    ["com.yunke.payment.billing-setting.month"](): string;
     /**
       * `There are no invoices to display.`
       */
-    ["com.affine.payment.billing-setting.no-invoice"](): string;
+    ["com.yunke.payment.billing-setting.no-invoice"](): string;
     /**
       * `Paid`
       */
-    ["com.affine.payment.billing-setting.paid"](): string;
+    ["com.yunke.payment.billing-setting.paid"](): string;
     /**
       * `Manage payment details`
       */
-    ["com.affine.payment.billing-setting.payment-method"](): string;
+    ["com.yunke.payment.billing-setting.payment-method"](): string;
     /**
       * `View future and past invoices, update billing information, and change payment methods. Provided by Stripe.`
       */
-    ["com.affine.payment.billing-setting.payment-method.description"](): string;
+    ["com.yunke.payment.billing-setting.payment-method.description"](): string;
     /**
       * `Go`
       */
-    ["com.affine.payment.billing-setting.payment-method.go"](): string;
+    ["com.yunke.payment.billing-setting.payment-method.go"](): string;
     /**
       * `Renew date`
       */
-    ["com.affine.payment.billing-setting.renew-date"](): string;
+    ["com.yunke.payment.billing-setting.renew-date"](): string;
     /**
       * `Next billing date: {{renewDate}}`
       */
-    ["com.affine.payment.billing-setting.renew-date.description"](options: {
+    ["com.yunke.payment.billing-setting.renew-date.description"](options: {
         readonly renewDate: string;
     }): string;
     /**
       * `Due date`
       */
-    ["com.affine.payment.billing-setting.due-date"](): string;
+    ["com.yunke.payment.billing-setting.due-date"](): string;
     /**
       * `Your subscription will end on {{dueDate}}`
       */
-    ["com.affine.payment.billing-setting.due-date.description"](options: {
+    ["com.yunke.payment.billing-setting.due-date.description"](options: {
         readonly dueDate: string;
     }): string;
     /**
       * `Resume`
       */
-    ["com.affine.payment.billing-setting.resume-subscription"](): string;
+    ["com.yunke.payment.billing-setting.resume-subscription"](): string;
     /**
       * `Manage your billing information and invoices`
       */
-    ["com.affine.payment.billing-setting.subtitle"](): string;
+    ["com.yunke.payment.billing-setting.subtitle"](): string;
     /**
       * `Billing`
       */
-    ["com.affine.payment.billing-setting.title"](): string;
+    ["com.yunke.payment.billing-setting.title"](): string;
     /**
       * `Update`
       */
-    ["com.affine.payment.billing-setting.update"](): string;
+    ["com.yunke.payment.billing-setting.update"](): string;
     /**
       * `Upgrade`
       */
-    ["com.affine.payment.billing-setting.upgrade"](): string;
+    ["com.yunke.payment.billing-setting.upgrade"](): string;
     /**
       * `View invoice`
       */
-    ["com.affine.payment.billing-setting.view-invoice"](): string;
+    ["com.yunke.payment.billing-setting.view-invoice"](): string;
     /**
       * `year`
       */
-    ["com.affine.payment.billing-setting.year"](): string;
+    ["com.yunke.payment.billing-setting.year"](): string;
     /**
-      * `Please tell us more about your use case, to make AFFiNE better.`
+      * `Please tell us more about your use case, to make YUNKE better.`
       */
-    ["com.affine.payment.billing-type-form.description"](): string;
+    ["com.yunke.payment.billing-type-form.description"](): string;
     /**
       * `Go`
       */
-    ["com.affine.payment.billing-type-form.go"](): string;
+    ["com.yunke.payment.billing-type-form.go"](): string;
     /**
       * `Tell us your use case`
       */
-    ["com.affine.payment.billing-type-form.title"](): string;
+    ["com.yunke.payment.billing-type-form.title"](): string;
     /**
       * `You have reached the limit`
       */
-    ["com.affine.payment.blob-limit.title"](): string;
+    ["com.yunke.payment.blob-limit.title"](): string;
     /**
       * `Book a demo`
       */
-    ["com.affine.payment.book-a-demo"](): string;
+    ["com.yunke.payment.book-a-demo"](): string;
     /**
       * `Buy Pro`
       */
-    ["com.affine.payment.buy-pro"](): string;
+    ["com.yunke.payment.buy-pro"](): string;
     /**
       * `Change to {{to}} Billing`
       */
-    ["com.affine.payment.change-to"](options: {
+    ["com.yunke.payment.change-to"](options: {
         readonly to: string;
     }): string;
     /**
       * `Include in FOSS`
       */
-    ["com.affine.payment.cloud.free.benefit.g1"](): string;
+    ["com.yunke.payment.cloud.free.benefit.g1"](): string;
     /**
       * `Unlimited local workspaces`
       */
-    ["com.affine.payment.cloud.free.benefit.g1-1"](): string;
+    ["com.yunke.payment.cloud.free.benefit.g1-1"](): string;
     /**
       * `Unlimited use and customization`
       */
-    ["com.affine.payment.cloud.free.benefit.g1-2"](): string;
+    ["com.yunke.payment.cloud.free.benefit.g1-2"](): string;
     /**
       * `Unlimited doc and edgeless editing`
       */
-    ["com.affine.payment.cloud.free.benefit.g1-3"](): string;
+    ["com.yunke.payment.cloud.free.benefit.g1-3"](): string;
     /**
       * `Include in Basic`
       */
-    ["com.affine.payment.cloud.free.benefit.g2"](): string;
+    ["com.yunke.payment.cloud.free.benefit.g2"](): string;
     /**
       * `10 GB of cloud storage.`
       */
-    ["com.affine.payment.cloud.free.benefit.g2-1"](): string;
+    ["com.yunke.payment.cloud.free.benefit.g2-1"](): string;
     /**
       * `10 MB of maximum file size.`
       */
-    ["com.affine.payment.cloud.free.benefit.g2-2"](): string;
+    ["com.yunke.payment.cloud.free.benefit.g2-2"](): string;
     /**
       * `Up to 3 members per workspace.`
       */
-    ["com.affine.payment.cloud.free.benefit.g2-3"](): string;
+    ["com.yunke.payment.cloud.free.benefit.g2-3"](): string;
     /**
       * `7-days cloud time machine file version history.`
       */
-    ["com.affine.payment.cloud.free.benefit.g2-4"](): string;
+    ["com.yunke.payment.cloud.free.benefit.g2-4"](): string;
     /**
       * `Up to 3 login devices.`
       */
-    ["com.affine.payment.cloud.free.benefit.g2-5"](): string;
+    ["com.yunke.payment.cloud.free.benefit.g2-5"](): string;
     /**
       * `Local Editor under MIT license.`
       */
-    ["com.affine.payment.cloud.free.description"](): string;
+    ["com.yunke.payment.cloud.free.description"](): string;
     /**
       * `Local FOSS + Cloud Basic`
       */
-    ["com.affine.payment.cloud.free.name"](): string;
+    ["com.yunke.payment.cloud.free.name"](): string;
     /**
       * `Free forever`
       */
-    ["com.affine.payment.cloud.free.title"](): string;
+    ["com.yunke.payment.cloud.free.title"](): string;
     /**
       * `Included in Pro plan`
       */
-    ["com.affine.payment.cloud.onetime.included"](): string;
+    ["com.yunke.payment.cloud.onetime.included"](): string;
     /**
       * `Included in Believer plan`
       */
-    ["com.affine.payment.cloud.lifetime.included"](): string;
+    ["com.yunke.payment.cloud.lifetime.included"](): string;
     /**
       * `We host, no technical setup required.`
       */
-    ["com.affine.payment.cloud.pricing-plan.select.caption"](): string;
+    ["com.yunke.payment.cloud.pricing-plan.select.caption"](): string;
     /**
-      * `Hosted by AFFiNE.Pro`
+      * `Hosted by YUNKE.Pro`
       */
-    ["com.affine.payment.cloud.pricing-plan.select.title"](): string;
+    ["com.yunke.payment.cloud.pricing-plan.select.title"](): string;
     /**
       * `Billed annually`
       */
-    ["com.affine.payment.cloud.pricing-plan.toggle-billed-yearly"](): string;
+    ["com.yunke.payment.cloud.pricing-plan.toggle-billed-yearly"](): string;
     /**
       * `Saving {{discount}}%`
       */
-    ["com.affine.payment.cloud.pricing-plan.toggle-discount"](options: {
+    ["com.yunke.payment.cloud.pricing-plan.toggle-discount"](options: {
         readonly discount: string;
     }): string;
     /**
       * `Annually`
       */
-    ["com.affine.payment.cloud.pricing-plan.toggle-yearly"](): string;
+    ["com.yunke.payment.cloud.pricing-plan.toggle-yearly"](): string;
     /**
       * `Include in Pro`
       */
-    ["com.affine.payment.cloud.pro.benefit.g1"](): string;
+    ["com.yunke.payment.cloud.pro.benefit.g1"](): string;
     /**
-      * `Everything in AFFiNE FOSS & Basic.`
+      * `Everything in YUNKE FOSS & Basic.`
       */
-    ["com.affine.payment.cloud.pro.benefit.g1-1"](): string;
+    ["com.yunke.payment.cloud.pro.benefit.g1-1"](): string;
     /**
       * `100 GB of cloud storage.`
       */
-    ["com.affine.payment.cloud.pro.benefit.g1-2"](): string;
+    ["com.yunke.payment.cloud.pro.benefit.g1-2"](): string;
     /**
       * `100 MB of maximum file size.`
       */
-    ["com.affine.payment.cloud.pro.benefit.g1-3"](): string;
+    ["com.yunke.payment.cloud.pro.benefit.g1-3"](): string;
     /**
       * `Up to 10 members per workspace.`
       */
-    ["com.affine.payment.cloud.pro.benefit.g1-4"](): string;
+    ["com.yunke.payment.cloud.pro.benefit.g1-4"](): string;
     /**
       * `30-days cloud time machine file version history.`
       */
-    ["com.affine.payment.cloud.pro.benefit.g1-5"](): string;
+    ["com.yunke.payment.cloud.pro.benefit.g1-5"](): string;
     /**
       * `Add comments on Doc and Edgeless.`
       */
-    ["com.affine.payment.cloud.pro.benefit.g1-6"](): string;
+    ["com.yunke.payment.cloud.pro.benefit.g1-6"](): string;
     /**
       * `Community support.`
       */
-    ["com.affine.payment.cloud.pro.benefit.g1-7"](): string;
+    ["com.yunke.payment.cloud.pro.benefit.g1-7"](): string;
     /**
       * `Real-time syncing & collaboration for more people.`
       */
-    ["com.affine.payment.cloud.pro.benefit.g1-8"](): string;
+    ["com.yunke.payment.cloud.pro.benefit.g1-8"](): string;
     /**
       * `Granular edit access to docs.`
       */
-    ["com.affine.payment.cloud.pro.benefit.g1-9"](): string;
+    ["com.yunke.payment.cloud.pro.benefit.g1-9"](): string;
     /**
       * `For family and small teams.`
       */
-    ["com.affine.payment.cloud.pro.description"](): string;
+    ["com.yunke.payment.cloud.pro.description"](): string;
     /**
       * `Pro`
       */
-    ["com.affine.payment.cloud.pro.name"](): string;
+    ["com.yunke.payment.cloud.pro.name"](): string;
     /**
       * `annually`
       */
-    ["com.affine.payment.cloud.pro.title.billed-yearly"](): string;
+    ["com.yunke.payment.cloud.pro.title.billed-yearly"](): string;
     /**
       * `{{price}} per month`
       */
-    ["com.affine.payment.cloud.pro.title.price-monthly"](options: {
+    ["com.yunke.payment.cloud.pro.title.price-monthly"](options: {
         readonly price: string;
     }): string;
     /**
       * `Include in Team Workspace`
       */
-    ["com.affine.payment.cloud.team-workspace.benefit.g1"](): string;
+    ["com.yunke.payment.cloud.team-workspace.benefit.g1"](): string;
     /**
-      * `Everything in AFFiNE Pro.`
+      * `Everything in YUNKE Pro.`
       */
-    ["com.affine.payment.cloud.team-workspace.benefit.g1-1"](): string;
+    ["com.yunke.payment.cloud.team-workspace.benefit.g1-1"](): string;
     /**
       * `100 GB initial storage + 20 GB per seat.`
       */
-    ["com.affine.payment.cloud.team-workspace.benefit.g1-2"](): string;
+    ["com.yunke.payment.cloud.team-workspace.benefit.g1-2"](): string;
     /**
       * `500 MB of maximum file size.`
       */
-    ["com.affine.payment.cloud.team-workspace.benefit.g1-3"](): string;
+    ["com.yunke.payment.cloud.team-workspace.benefit.g1-3"](): string;
     /**
       * `Unlimited team members (10+ seats).`
       */
-    ["com.affine.payment.cloud.team-workspace.benefit.g1-4"](): string;
+    ["com.yunke.payment.cloud.team-workspace.benefit.g1-4"](): string;
     /**
       * `Multiple admin roles.`
       */
-    ["com.affine.payment.cloud.team-workspace.benefit.g1-5"](): string;
+    ["com.yunke.payment.cloud.team-workspace.benefit.g1-5"](): string;
     /**
       * `Priority customer support.`
       */
-    ["com.affine.payment.cloud.team-workspace.benefit.g1-6"](): string;
+    ["com.yunke.payment.cloud.team-workspace.benefit.g1-6"](): string;
     /**
       * `Best for scalable teams.`
       */
-    ["com.affine.payment.cloud.team-workspace.description"](): string;
+    ["com.yunke.payment.cloud.team-workspace.description"](): string;
     /**
       * `Team`
       */
-    ["com.affine.payment.cloud.team-workspace.name"](): string;
+    ["com.yunke.payment.cloud.team-workspace.name"](): string;
     /**
       * `annually`
       */
-    ["com.affine.payment.cloud.team-workspace.title.billed-yearly"](): string;
+    ["com.yunke.payment.cloud.team-workspace.title.billed-yearly"](): string;
     /**
       * `{{price}} per seat/month`
       */
-    ["com.affine.payment.cloud.team-workspace.title.price-monthly"](options: {
+    ["com.yunke.payment.cloud.team-workspace.title.price-monthly"](options: {
         readonly price: string;
     }): string;
     /**
       * `Contact sales`
       */
-    ["com.affine.payment.contact-sales"](): string;
+    ["com.yunke.payment.contact-sales"](): string;
     /**
       * `Current plan`
       */
-    ["com.affine.payment.current-plan"](): string;
+    ["com.yunke.payment.current-plan"](): string;
     /**
       * `Start 14-day free trial`
       */
-    ["com.affine.payment.start-free-trial"](): string;
+    ["com.yunke.payment.start-free-trial"](): string;
     /**
       * `{{amount}}% off`
       */
-    ["com.affine.payment.discount-amount"](options: {
+    ["com.yunke.payment.discount-amount"](options: {
         readonly amount: string;
     }): string;
     /**
       * `Downgrade`
       */
-    ["com.affine.payment.downgrade"](): string;
+    ["com.yunke.payment.downgrade"](): string;
     /**
-      * `We'd like to hear more about where we fall short, so that we can make AFFiNE better.`
+      * `We'd like to hear more about where we fall short, so that we can make YUNKE better.`
       */
-    ["com.affine.payment.downgraded-notify.content"](): string;
+    ["com.yunke.payment.downgraded-notify.content"](): string;
     /**
       * `Later`
       */
-    ["com.affine.payment.downgraded-notify.later"](): string;
+    ["com.yunke.payment.downgraded-notify.later"](): string;
     /**
       * `Sure, Open in browser`
       */
-    ["com.affine.payment.downgraded-notify.ok-client"](): string;
+    ["com.yunke.payment.downgraded-notify.ok-client"](): string;
     /**
       * `Sure, Open in new tab`
       */
-    ["com.affine.payment.downgraded-notify.ok-web"](): string;
+    ["com.yunke.payment.downgraded-notify.ok-web"](): string;
     /**
       * `Sorry to see you go`
       */
-    ["com.affine.payment.downgraded-notify.title"](): string;
+    ["com.yunke.payment.downgraded-notify.title"](): string;
     /**
       * `You have successfully downgraded. After the current billing period ends, your account will automatically switch to the Free plan.`
       */
-    ["com.affine.payment.downgraded-tooltip"](): string;
+    ["com.yunke.payment.downgraded-tooltip"](): string;
     /**
       * `Best team workspace for collaboration and knowledge distilling.`
       */
-    ["com.affine.payment.dynamic-benefit-1"](): string;
+    ["com.yunke.payment.dynamic-benefit-1"](): string;
     /**
       * `Focusing on what really matters with team project management and automation.`
       */
-    ["com.affine.payment.dynamic-benefit-2"](): string;
+    ["com.yunke.payment.dynamic-benefit-2"](): string;
     /**
       * `Pay for seats, fits all team size.`
       */
-    ["com.affine.payment.dynamic-benefit-3"](): string;
+    ["com.yunke.payment.dynamic-benefit-3"](): string;
     /**
       * `Solutions & best practices for dedicated needs.`
       */
-    ["com.affine.payment.dynamic-benefit-4"](): string;
+    ["com.yunke.payment.dynamic-benefit-4"](): string;
     /**
       * `Embedable & interrogations with IT support.`
       */
-    ["com.affine.payment.dynamic-benefit-5"](): string;
+    ["com.yunke.payment.dynamic-benefit-5"](): string;
     /**
-      * `Everything in AFFiNE Pro`
+      * `Everything in YUNKE Pro`
       */
-    ["com.affine.payment.lifetime.benefit-1"](): string;
+    ["com.yunke.payment.lifetime.benefit-1"](): string;
     /**
       * `Life-time personal usage`
       */
-    ["com.affine.payment.lifetime.benefit-2"](): string;
+    ["com.yunke.payment.lifetime.benefit-2"](): string;
     /**
       * `{{capacity}} Cloud Storage`
       */
-    ["com.affine.payment.lifetime.benefit-3"](options: {
+    ["com.yunke.payment.lifetime.benefit-3"](options: {
         readonly capacity: string;
     }): string;
     /**
-      * `Dedicated Discord support with AFFiNE makers`
+      * `Dedicated Discord support with YUNKE makers`
       */
-    ["com.affine.payment.lifetime.benefit-4"](): string;
+    ["com.yunke.payment.lifetime.benefit-4"](): string;
     /**
       * `Become a Life-time supporter?`
       */
-    ["com.affine.payment.lifetime.caption-1"](): string;
+    ["com.yunke.payment.lifetime.caption-1"](): string;
     /**
       * `Purchase`
       */
-    ["com.affine.payment.lifetime.purchase"](): string;
+    ["com.yunke.payment.lifetime.purchase"](): string;
     /**
       * `Purchased`
       */
-    ["com.affine.payment.lifetime.purchased"](): string;
+    ["com.yunke.payment.lifetime.purchased"](): string;
     /**
       * `Believer Plan`
       */
-    ["com.affine.payment.lifetime.title"](): string;
+    ["com.yunke.payment.lifetime.title"](): string;
     /**
       * `Upgrade`
       */
-    ["com.affine.payment.member-limit.free.confirm"](): string;
+    ["com.yunke.payment.member-limit.free.confirm"](): string;
     /**
       * `Workspaces created by {{planName}} users are limited to {{quota}} members. To add more collaborators, you can:`
       */
-    ["com.affine.payment.member-limit.description"](options: Readonly<{
+    ["com.yunke.payment.member-limit.description"](options: Readonly<{
         planName: string;
         quota: string;
     }>): string;
     /**
-      * `Upgrade to AFFiNE Pro for expanded member capacity`
+      * `Upgrade to YUNKE Pro for expanded member capacity`
       */
-    ["com.affine.payment.member-limit.description.tips-for-free-plan"](): string;
+    ["com.yunke.payment.member-limit.description.tips-for-free-plan"](): string;
     /**
       * `Convert to a Team Workspace for unlimited collaboration`
       */
-    ["com.affine.payment.member-limit.description.tips-1"](): string;
+    ["com.yunke.payment.member-limit.description.tips-1"](): string;
     /**
       * `Or create a new workspace`
       */
-    ["com.affine.payment.member-limit.description.tips-2"](): string;
+    ["com.yunke.payment.member-limit.description.tips-2"](): string;
     /**
       * `Got it`
       */
-    ["com.affine.payment.member-limit.pro.confirm"](): string;
+    ["com.yunke.payment.member-limit.pro.confirm"](): string;
     /**
       * `You have reached the limit`
       */
-    ["com.affine.payment.member-limit.title"](): string;
+    ["com.yunke.payment.member-limit.title"](): string;
     /**
       * `Manage members here. {{planName}} users can invite up to {{memberLimit}}`
       */
-    ["com.affine.payment.member.description"](options: Readonly<{
+    ["com.yunke.payment.member.description"](options: Readonly<{
         planName: string;
         memberLimit: string;
     }>): string;
     /**
       * `Choose your plan`
       */
-    ["com.affine.payment.member.description.choose-plan"](): string;
+    ["com.yunke.payment.member.description.choose-plan"](): string;
     /**
       * `go upgrade`
       */
-    ["com.affine.payment.member.description.go-upgrade"](): string;
+    ["com.yunke.payment.member.description.go-upgrade"](): string;
     /**
       * `Looking to collaborate with more people?`
       */
-    ["com.affine.payment.member.description2"](): string;
+    ["com.yunke.payment.member.description2"](): string;
     /**
       * `Work together with unlimited team members.`
       */
-    ["com.affine.payment.member.team.description"](): string;
+    ["com.yunke.payment.member.team.description"](): string;
     /**
       * `Invite team members`
       */
-    ["com.affine.payment.member.team.invite.title"](): string;
+    ["com.yunke.payment.member.team.invite.title"](): string;
     /**
       * `Invite new members to join your workspace via email or share an invite link`
       */
-    ["com.affine.payment.member.team.invite.description"](): string;
+    ["com.yunke.payment.member.team.invite.description"](): string;
     /**
       * `Email Invite`
       */
-    ["com.affine.payment.member.team.invite.email-invite"](): string;
+    ["com.yunke.payment.member.team.invite.email-invite"](): string;
     /**
       * `Invite Link`
       */
-    ["com.affine.payment.member.team.invite.invite-link"](): string;
+    ["com.yunke.payment.member.team.invite.invite-link"](): string;
     /**
       * `Email addresses`
       */
-    ["com.affine.payment.member.team.invite.email-addresses"](): string;
+    ["com.yunke.payment.member.team.invite.email-addresses"](): string;
     /**
       * `Enter email addresses (separated by commas)`
       */
-    ["com.affine.payment.member.team.invite.email-placeholder"](): string;
+    ["com.yunke.payment.member.team.invite.email-placeholder"](): string;
     /**
       * `Import CSV`
       */
-    ["com.affine.payment.member.team.invite.import-csv"](): string;
+    ["com.yunke.payment.member.team.invite.import-csv"](): string;
     /**
       * `Send Invites`
       */
-    ["com.affine.payment.member.team.invite.send-invites"](): string;
+    ["com.yunke.payment.member.team.invite.send-invites"](): string;
     /**
       * `Link expiration`
       */
-    ["com.affine.payment.member.team.invite.link-expiration"](): string;
+    ["com.yunke.payment.member.team.invite.link-expiration"](): string;
     /**
       * `{{number}} days`
       */
-    ["com.affine.payment.member.team.invite.expiration-date"](options: {
+    ["com.yunke.payment.member.team.invite.expiration-date"](options: {
         readonly number: string;
     }): string;
     /**
       * `To expire at: {{expireTime}}`
       */
-    ["com.affine.payment.member.team.invite.expire-at"](options: {
+    ["com.yunke.payment.member.team.invite.expire-at"](options: {
         readonly expireTime: string;
     }): string;
     /**
       * `Invitation link`
       */
-    ["com.affine.payment.member.team.invite.invitation-link"](): string;
+    ["com.yunke.payment.member.team.invite.invitation-link"](): string;
     /**
       * `Generate a link to invite members to your workspace`
       */
-    ["com.affine.payment.member.team.invite.invitation-link.description"](): string;
+    ["com.yunke.payment.member.team.invite.invitation-link.description"](): string;
     /**
       * `Generate`
       */
-    ["com.affine.payment.member.team.invite.generate"](): string;
+    ["com.yunke.payment.member.team.invite.generate"](): string;
     /**
       * `Copy`
       */
-    ["com.affine.payment.member.team.invite.copy"](): string;
+    ["com.yunke.payment.member.team.invite.copy"](): string;
     /**
       * `Done`
       */
-    ["com.affine.payment.member.team.invite.done"](): string;
+    ["com.yunke.payment.member.team.invite.done"](): string;
     /**
       * `Invitation sent,{{successCount}} successful, {{failedCount}} failed`
       */
-    ["com.affine.payment.member.team.invite.notify.title"](options: Readonly<{
+    ["com.yunke.payment.member.team.invite.notify.title"](options: Readonly<{
         successCount: string;
         failedCount: string;
     }>): string;
     /**
       * `These email addresses have already been invited:`
       */
-    ["com.affine.payment.member.team.invite.notify.fail-message"](): string;
+    ["com.yunke.payment.member.team.invite.notify.fail-message"](): string;
     /**
       * `Revoke invitation`
       */
-    ["com.affine.payment.member.team.revoke"](): string;
+    ["com.yunke.payment.member.team.revoke"](): string;
     /**
       * `Approve`
       */
-    ["com.affine.payment.member.team.approve"](): string;
+    ["com.yunke.payment.member.team.approve"](): string;
     /**
       * `Decline`
       */
-    ["com.affine.payment.member.team.decline"](): string;
+    ["com.yunke.payment.member.team.decline"](): string;
     /**
       * `Remove member`
       */
-    ["com.affine.payment.member.team.remove"](): string;
+    ["com.yunke.payment.member.team.remove"](): string;
     /**
       * `Retry payment`
       */
-    ["com.affine.payment.member.team.retry-payment"](): string;
+    ["com.yunke.payment.member.team.retry-payment"](): string;
     /**
       * `Change role to admin`
       */
-    ["com.affine.payment.member.team.change.admin"](): string;
+    ["com.yunke.payment.member.team.change.admin"](): string;
     /**
       * `Change role to collaborator`
       */
-    ["com.affine.payment.member.team.change.collaborator"](): string;
+    ["com.yunke.payment.member.team.change.collaborator"](): string;
     /**
       * `Assign as owner`
       */
-    ["com.affine.payment.member.team.assign"](): string;
+    ["com.yunke.payment.member.team.assign"](): string;
     /**
       * `Insufficient Team Seats`
       */
-    ["com.affine.payment.member.team.retry-payment.title"](): string;
+    ["com.yunke.payment.member.team.retry-payment.title"](): string;
     /**
       * `The payment for adding new team members has failed. To add more seats, please update your payment method and process unpaid invoices.`
       */
-    ["com.affine.payment.member.team.retry-payment.owner.description"](): string;
+    ["com.yunke.payment.member.team.retry-payment.owner.description"](): string;
     /**
       * `The payment for adding new team members has failed. Please contact your workspace owner to update the payment method and process unpaid invoices.`
       */
-    ["com.affine.payment.member.team.retry-payment.admin.description"](): string;
+    ["com.yunke.payment.member.team.retry-payment.admin.description"](): string;
     /**
       * `Update Payment`
       */
-    ["com.affine.payment.member.team.retry-payment.update-payment"](): string;
+    ["com.yunke.payment.member.team.retry-payment.update-payment"](): string;
     /**
       * `Subscription has been disabled for your team workspace. To add more seats, you'll need to resume subscription first.`
       */
-    ["com.affine.payment.member.team.disabled-subscription.owner.description"](): string;
+    ["com.yunke.payment.member.team.disabled-subscription.owner.description"](): string;
     /**
       * `Your team workspace has subscription disabled, which prevents adding more seats. Please contact your workspace owner to enable subscription.`
       */
-    ["com.affine.payment.member.team.disabled-subscription.admin.description"](): string;
+    ["com.yunke.payment.member.team.disabled-subscription.admin.description"](): string;
     /**
       * `Resume Subscription`
       */
-    ["com.affine.payment.member.team.disabled-subscription.resume-subscription"](): string;
+    ["com.yunke.payment.member.team.disabled-subscription.resume-subscription"](): string;
     /**
       * `Invitation Revoked`
       */
-    ["com.affine.payment.member.team.revoke.notify.title"](): string;
+    ["com.yunke.payment.member.team.revoke.notify.title"](): string;
     /**
       * `You have canceled the invitation for {{name}}`
       */
-    ["com.affine.payment.member.team.revoke.notify.message"](options: {
+    ["com.yunke.payment.member.team.revoke.notify.message"](options: {
         readonly name: string;
     }): string;
     /**
       * `Request approved`
       */
-    ["com.affine.payment.member.team.approve.notify.title"](): string;
+    ["com.yunke.payment.member.team.approve.notify.title"](): string;
     /**
       * `You have approved the {{name}}’s request to join this workspace`
       */
-    ["com.affine.payment.member.team.approve.notify.message"](options: {
+    ["com.yunke.payment.member.team.approve.notify.message"](options: {
         readonly name: string;
     }): string;
     /**
       * `Request declined`
       */
-    ["com.affine.payment.member.team.decline.notify.title"](): string;
+    ["com.yunke.payment.member.team.decline.notify.title"](): string;
     /**
       * `You have declined the {{name}}’s request to join this workspace`
       */
-    ["com.affine.payment.member.team.decline.notify.message"](options: {
+    ["com.yunke.payment.member.team.decline.notify.message"](options: {
         readonly name: string;
     }): string;
     /**
       * `Member removed`
       */
-    ["com.affine.payment.member.team.remove.notify.title"](): string;
+    ["com.yunke.payment.member.team.remove.notify.title"](): string;
     /**
       * `You have removed {{name}} from this workspace`
       */
-    ["com.affine.payment.member.team.remove.notify.message"](options: {
+    ["com.yunke.payment.member.team.remove.notify.message"](options: {
         readonly name: string;
     }): string;
     /**
       * `Role Updated`
       */
-    ["com.affine.payment.member.team.change.notify.title"](): string;
+    ["com.yunke.payment.member.team.change.notify.title"](): string;
     /**
       * `You have successfully promoted {{name}} to Admin.`
       */
-    ["com.affine.payment.member.team.change.admin.notify.message"](options: {
+    ["com.yunke.payment.member.team.change.admin.notify.message"](options: {
         readonly name: string;
     }): string;
     /**
       * `You have successfully changed {{name}} s role to collaborator.`
       */
-    ["com.affine.payment.member.team.change.collaborator.notify.message"](options: {
+    ["com.yunke.payment.member.team.change.collaborator.notify.message"](options: {
         readonly name: string;
     }): string;
     /**
       * `Owner assigned`
       */
-    ["com.affine.payment.member.team.assign.notify.title"](): string;
+    ["com.yunke.payment.member.team.assign.notify.title"](): string;
     /**
       * `You have successfully assigned {{name}} as the owner of this workspace.`
       */
-    ["com.affine.payment.member.team.assign.notify.message"](options: {
+    ["com.yunke.payment.member.team.assign.notify.message"](options: {
         readonly name: string;
     }): string;
     /**
       * `Confirm new workspace owner`
       */
-    ["com.affine.payment.member.team.assign.confirm.title"](): string;
+    ["com.yunke.payment.member.team.assign.confirm.title"](): string;
     /**
       * `You are about to transfer workspace ownership to {{name}}. Please review the following changes carefully:`
       */
-    ["com.affine.payment.member.team.assign.confirm.description"](options: {
+    ["com.yunke.payment.member.team.assign.confirm.description"](options: {
         readonly name: string;
     }): string;
     /**
       * `This action cannot be undone`
       */
-    ["com.affine.payment.member.team.assign.confirm.description-1"](): string;
+    ["com.yunke.payment.member.team.assign.confirm.description-1"](): string;
     /**
       * `Your role will be changed to Admin`
       */
-    ["com.affine.payment.member.team.assign.confirm.description-2"](): string;
+    ["com.yunke.payment.member.team.assign.confirm.description-2"](): string;
     /**
       * `You will lose ownership rights to the entire workspace`
       */
-    ["com.affine.payment.member.team.assign.confirm.description-3"](): string;
+    ["com.yunke.payment.member.team.assign.confirm.description-3"](): string;
     /**
       * `To confirm this transfer, please type the workspace name`
       */
-    ["com.affine.payment.member.team.assign.confirm.description-4"](): string;
+    ["com.yunke.payment.member.team.assign.confirm.description-4"](): string;
     /**
       * `Type workspace name to confirm`
       */
-    ["com.affine.payment.member.team.assign.confirm.placeholder"](): string;
+    ["com.yunke.payment.member.team.assign.confirm.placeholder"](): string;
     /**
       * `Transfer Ownership`
       */
-    ["com.affine.payment.member.team.assign.confirm.button"](): string;
+    ["com.yunke.payment.member.team.assign.confirm.button"](): string;
     /**
       * `Remove member from workspace?`
       */
-    ["com.affine.payment.member.team.remove.confirm.title"](): string;
+    ["com.yunke.payment.member.team.remove.confirm.title"](): string;
     /**
       * `This action will revoke their access to all workspace resources immediately.`
       */
-    ["com.affine.payment.member.team.remove.confirm.description"](): string;
+    ["com.yunke.payment.member.team.remove.confirm.description"](): string;
     /**
       * `Remove Member`
       */
-    ["com.affine.payment.member.team.remove.confirm.confirm-button"](): string;
+    ["com.yunke.payment.member.team.remove.confirm.confirm-button"](): string;
     /**
       * `Cancel`
       */
-    ["com.affine.payment.member.team.remove.confirm.cancel"](): string;
+    ["com.yunke.payment.member.team.remove.confirm.cancel"](): string;
     /**
       * `Cancel`
       */
-    ["com.affine.payment.modal.change.cancel"](): string;
+    ["com.yunke.payment.modal.change.cancel"](): string;
     /**
       * `Change`
       */
-    ["com.affine.payment.modal.change.confirm"](): string;
+    ["com.yunke.payment.modal.change.confirm"](): string;
     /**
       * `Change your subscription`
       */
-    ["com.affine.payment.modal.change.title"](): string;
+    ["com.yunke.payment.modal.change.title"](): string;
     /**
       * `Cancel subscription`
       */
-    ["com.affine.payment.modal.downgrade.cancel"](): string;
+    ["com.yunke.payment.modal.downgrade.cancel"](): string;
     /**
-      * `You can still use AFFiNE Cloud Pro until the end of this billing period :)`
+      * `You can still use YUNKE Cloud Pro until the end of this billing period :)`
       */
-    ["com.affine.payment.modal.downgrade.caption"](): string;
+    ["com.yunke.payment.modal.downgrade.caption"](): string;
     /**
-      * `Keep AFFiNE Cloud Pro`
+      * `Keep YUNKE Cloud Pro`
       */
-    ["com.affine.payment.modal.downgrade.confirm"](): string;
+    ["com.yunke.payment.modal.downgrade.confirm"](): string;
     /**
       * `Keep Team plan`
       */
-    ["com.affine.payment.modal.downgrade.team-confirm"](): string;
+    ["com.yunke.payment.modal.downgrade.team-confirm"](): string;
     /**
       * `We're sorry to see you go, but we're always working to improve, and your feedback is welcome. We hope to see you return in the future.`
       */
-    ["com.affine.payment.modal.downgrade.content"](): string;
+    ["com.yunke.payment.modal.downgrade.content"](): string;
     /**
       * `Are you sure?`
       */
-    ["com.affine.payment.modal.downgrade.title"](): string;
+    ["com.yunke.payment.modal.downgrade.title"](): string;
     /**
       * `Cancel`
       */
-    ["com.affine.payment.modal.resume.cancel"](): string;
+    ["com.yunke.payment.modal.resume.cancel"](): string;
     /**
       * `Confirm`
       */
-    ["com.affine.payment.modal.resume.confirm"](): string;
+    ["com.yunke.payment.modal.resume.confirm"](): string;
     /**
       * `Are you sure you want to resume the subscription for your pro account? This means your payment method will be charged automatically at the end of each billing cycle, starting from the next billing cycle.`
       */
-    ["com.affine.payment.modal.resume.content"](): string;
+    ["com.yunke.payment.modal.resume.content"](): string;
     /**
       * `Resume auto-renewal?`
       */
-    ["com.affine.payment.modal.resume.title"](): string;
+    ["com.yunke.payment.modal.resume.title"](): string;
     /**
       * `Refresh`
       */
-    ["com.affine.payment.plans-error-retry"](): string;
+    ["com.yunke.payment.plans-error-retry"](): string;
     /**
       * `Unable to load pricing plans, please check your network. `
       */
-    ["com.affine.payment.plans-error-tip"](): string;
+    ["com.yunke.payment.plans-error-tip"](): string;
     /**
       * `monthly`
       */
-    ["com.affine.payment.recurring-monthly"](): string;
+    ["com.yunke.payment.recurring-monthly"](): string;
     /**
       * `annually`
       */
-    ["com.affine.payment.recurring-yearly"](): string;
+    ["com.yunke.payment.recurring-yearly"](): string;
     /**
       * `Resume`
       */
-    ["com.affine.payment.resume"](): string;
+    ["com.yunke.payment.resume"](): string;
     /**
       * `Subscription Resumed`
       */
-    ["com.affine.payment.resume.success.title"](): string;
+    ["com.yunke.payment.resume.success.title"](): string;
     /**
       * `Your team workspace subscription has been enabled successfully. Changes will take effect immediately.`
       */
-    ["com.affine.payment.resume.success.team.message"](): string;
+    ["com.yunke.payment.resume.success.team.message"](): string;
     /**
       * `Resume auto-renewal`
       */
-    ["com.affine.payment.resume-renewal"](): string;
+    ["com.yunke.payment.resume-renewal"](): string;
     /**
       * `See all plans`
       */
-    ["com.affine.payment.see-all-plans"](): string;
+    ["com.yunke.payment.see-all-plans"](): string;
     /**
       * `Sign up free`
       */
-    ["com.affine.payment.sign-up-free"](): string;
+    ["com.yunke.payment.sign-up-free"](): string;
     /**
       * `Cloud storage is insufficient. Please contact the owner of that workspace.`
       */
-    ["com.affine.payment.storage-limit.description.member"](): string;
+    ["com.yunke.payment.storage-limit.description.member"](): string;
     /**
       * `Cloud storage is insufficient. You can upgrade your account to unlock more cloud storage.`
       */
-    ["com.affine.payment.storage-limit.description.owner"](): string;
+    ["com.yunke.payment.storage-limit.description.owner"](): string;
     /**
       * `Unable to sync due to insufficient storage space. You can remove excess content, upgrade your account, or increase your workspace storage to resolve this issue.`
       */
-    ["com.affine.payment.storage-limit.new-description.owner"](): string;
+    ["com.yunke.payment.storage-limit.new-description.owner"](): string;
     /**
       * `Sync failed due to storage space limit`
       */
-    ["com.affine.payment.storage-limit.new-title"](): string;
+    ["com.yunke.payment.storage-limit.new-title"](): string;
     /**
       * `View`
       */
-    ["com.affine.payment.storage-limit.view"](): string;
+    ["com.yunke.payment.storage-limit.view"](): string;
     /**
       * `You are currently on the {{plan}} plan. After the current billing period ends, your account will automatically switch to the Free plan.`
       */
-    ["com.affine.payment.subtitle-canceled"](options: {
+    ["com.yunke.payment.subtitle-canceled"](options: {
         readonly plan: string;
     }): string;
     /**
-      * `This is the pricing plans of AFFiNE Cloud. You can sign up or sign in to your account first.`
+      * `This is the pricing plans of YUNKE Cloud. You can sign up or sign in to your account first.`
       */
-    ["com.affine.payment.subtitle-not-signed-in"](): string;
+    ["com.yunke.payment.subtitle-not-signed-in"](): string;
     /**
       * `See all plans`
       */
-    ["com.affine.payment.tag-tooltips"](): string;
+    ["com.yunke.payment.tag-tooltips"](): string;
     /**
       * `Tell us your use case`
       */
-    ["com.affine.payment.tell-us-use-case"](): string;
+    ["com.yunke.payment.tell-us-use-case"](): string;
     /**
       * `Pricing plans`
       */
-    ["com.affine.payment.title"](): string;
+    ["com.yunke.payment.title"](): string;
     /**
       * `You have changed your plan to {{plan}} billing.`
       */
-    ["com.affine.payment.updated-notify-msg"](options: {
+    ["com.yunke.payment.updated-notify-msg"](options: {
         readonly plan: string;
     }): string;
     /**
       * `Subscription updated`
       */
-    ["com.affine.payment.updated-notify-title"](): string;
+    ["com.yunke.payment.updated-notify-title"](): string;
     /**
       * `Upgrade`
       */
-    ["com.affine.payment.upgrade"](): string;
+    ["com.yunke.payment.upgrade"](): string;
     /**
       * `Redeem code`
       */
-    ["com.affine.payment.redeem-code"](): string;
+    ["com.yunke.payment.redeem-code"](): string;
     /**
-      * `We'd like to hear more about your use case, so that we can make AFFiNE better.`
+      * `We'd like to hear more about your use case, so that we can make YUNKE better.`
       */
-    ["com.affine.payment.upgrade-success-notify.content"](): string;
+    ["com.yunke.payment.upgrade-success-notify.content"](): string;
     /**
       * `Later`
       */
-    ["com.affine.payment.upgrade-success-notify.later"](): string;
+    ["com.yunke.payment.upgrade-success-notify.later"](): string;
     /**
       * `Sure, open in browser`
       */
-    ["com.affine.payment.upgrade-success-notify.ok-client"](): string;
+    ["com.yunke.payment.upgrade-success-notify.ok-client"](): string;
     /**
       * `Sure, open in new tab`
       */
-    ["com.affine.payment.upgrade-success-notify.ok-web"](): string;
+    ["com.yunke.payment.upgrade-success-notify.ok-web"](): string;
     /**
       * `Thanks for subscribing!`
       */
-    ["com.affine.payment.upgrade-success-notify.title"](): string;
+    ["com.yunke.payment.upgrade-success-notify.title"](): string;
     /**
-      * `Congratulations! Your AFFiNE account has been successfully upgraded to a Pro account.`
+      * `Congratulations! Your YUNKE account has been successfully upgraded to a Pro account.`
       */
-    ["com.affine.payment.upgrade-success-page.text"](): string;
+    ["com.yunke.payment.upgrade-success-page.text"](): string;
     /**
       * `Upgrade successful!`
       */
-    ["com.affine.payment.upgrade-success-page.title"](): string;
+    ["com.yunke.payment.upgrade-success-page.title"](): string;
     /**
       * `Congratulations! Your workspace has been successfully upgraded to a Team Workspace. Now you can invite unlimited members to collaborate in this workspace.`
       */
-    ["com.affine.payment.upgrade-success-page.team.text-1"](): string;
+    ["com.yunke.payment.upgrade-success-page.team.text-1"](): string;
     /**
       * `Thank you for your purchase!`
       */
-    ["com.affine.payment.license-success.title"](): string;
+    ["com.yunke.payment.license-success.title"](): string;
     /**
-      * `Thank you for purchasing the AFFiNE self-hosted license.`
+      * `Thank you for purchasing the YUNKE self-hosted license.`
       */
-    ["com.affine.payment.license-success.text-1"](): string;
+    ["com.yunke.payment.license-success.text-1"](): string;
     /**
       * `You can use this key to upgrade in Settings > Workspace > License > Use purchased key`
       */
-    ["com.affine.payment.license-success.hint"](): string;
+    ["com.yunke.payment.license-success.hint"](): string;
     /**
-      * `Open AFFiNE`
+      * `Open YUNKE`
       */
-    ["com.affine.payment.license-success.open-affine"](): string;
+    ["com.yunke.payment.license-success.open-yunke"](): string;
     /**
       * `Copied key to clipboard`
       */
-    ["com.affine.payment.license-success.copy"](): string;
+    ["com.yunke.payment.license-success.copy"](): string;
     /**
       * `Close`
       */
-    ["com.affine.peek-view-controls.close"](): string;
+    ["com.yunke.peek-view-controls.close"](): string;
     /**
       * `Open this doc`
       */
-    ["com.affine.peek-view-controls.open-doc"](): string;
+    ["com.yunke.peek-view-controls.open-doc"](): string;
     /**
       * `Open in edgeless`
       */
-    ["com.affine.peek-view-controls.open-doc-in-edgeless"](): string;
+    ["com.yunke.peek-view-controls.open-doc-in-edgeless"](): string;
     /**
       * `Open in new tab`
       */
-    ["com.affine.peek-view-controls.open-doc-in-new-tab"](): string;
+    ["com.yunke.peek-view-controls.open-doc-in-new-tab"](): string;
     /**
       * `Open in split view`
       */
-    ["com.affine.peek-view-controls.open-doc-in-split-view"](): string;
+    ["com.yunke.peek-view-controls.open-doc-in-split-view"](): string;
     /**
       * `Open doc info`
       */
-    ["com.affine.peek-view-controls.open-info"](): string;
+    ["com.yunke.peek-view-controls.open-info"](): string;
     /**
       * `Open this attachment`
       */
-    ["com.affine.peek-view-controls.open-attachment"](): string;
+    ["com.yunke.peek-view-controls.open-attachment"](): string;
     /**
       * `Open in new tab`
       */
-    ["com.affine.peek-view-controls.open-attachment-in-new-tab"](): string;
+    ["com.yunke.peek-view-controls.open-attachment-in-new-tab"](): string;
     /**
       * `Open in split view`
       */
-    ["com.affine.peek-view-controls.open-attachment-in-split-view"](): string;
+    ["com.yunke.peek-view-controls.open-attachment-in-split-view"](): string;
     /**
       * `Open in center peek`
       */
-    ["com.affine.peek-view-controls.open-doc-in-center-peek"](): string;
+    ["com.yunke.peek-view-controls.open-doc-in-center-peek"](): string;
     /**
       * `Copy link`
       */
-    ["com.affine.peek-view-controls.copy-link"](): string;
+    ["com.yunke.peek-view-controls.copy-link"](): string;
     /**
       * `Click or drag`
       */
-    ["com.affine.split-view-drag-handle.tooltip"](): string;
+    ["com.yunke.split-view-drag-handle.tooltip"](): string;
     /**
       * `Split view does not support folders.`
       */
-    ["com.affine.split-view-folder-warning.description"](): string;
+    ["com.yunke.split-view-folder-warning.description"](): string;
     /**
       * `Do not show this again`
       */
@@ -4498,2032 +4498,2032 @@ export function useAFFiNEI18N(): {
     /**
       * `New`
       */
-    ["com.affine.quicksearch.group.creation"](): string;
+    ["com.yunke.quicksearch.group.creation"](): string;
     /**
       * `Search for "{{query}}"`
       */
-    ["com.affine.quicksearch.group.searchfor"](options: {
+    ["com.yunke.quicksearch.group.searchfor"](options: {
         readonly query: string;
     }): string;
     /**
       * `Reset sync`
       */
-    ["com.affine.resetSyncStatus.button"](): string;
+    ["com.yunke.resetSyncStatus.button"](): string;
     /**
       * `This operation may fix some synchronization issues.`
       */
-    ["com.affine.resetSyncStatus.description"](): string;
+    ["com.yunke.resetSyncStatus.description"](): string;
     /**
       * `Collections`
       */
-    ["com.affine.rootAppSidebar.collections"](): string;
+    ["com.yunke.rootAppSidebar.collections"](): string;
     /**
       * `Notifications`
       */
-    ["com.affine.rootAppSidebar.notifications"](): string;
+    ["com.yunke.rootAppSidebar.notifications"](): string;
     /**
       * `Only doc can be placed on here`
       */
-    ["com.affine.rootAppSidebar.doc.link-doc-only"](): string;
+    ["com.yunke.rootAppSidebar.doc.link-doc-only"](): string;
     /**
       * `No linked docs`
       */
-    ["com.affine.rootAppSidebar.docs.no-subdoc"](): string;
+    ["com.yunke.rootAppSidebar.docs.no-subdoc"](): string;
     /**
       * `Loading linked docs...`
       */
-    ["com.affine.rootAppSidebar.docs.references-loading"](): string;
+    ["com.yunke.rootAppSidebar.docs.references-loading"](): string;
     /**
       * `New doc`
       */
-    ["com.affine.rootAppSidebar.explorer.collection-add-tooltip"](): string;
+    ["com.yunke.rootAppSidebar.explorer.collection-add-tooltip"](): string;
     /**
       * `New collection`
       */
-    ["com.affine.rootAppSidebar.explorer.collection-section-add-tooltip"](): string;
+    ["com.yunke.rootAppSidebar.explorer.collection-section-add-tooltip"](): string;
     /**
       * `New linked doc`
       */
-    ["com.affine.rootAppSidebar.explorer.doc-add-tooltip"](): string;
+    ["com.yunke.rootAppSidebar.explorer.doc-add-tooltip"](): string;
     /**
       * `Copy`
       */
-    ["com.affine.rootAppSidebar.explorer.drop-effect.copy"](): string;
+    ["com.yunke.rootAppSidebar.explorer.drop-effect.copy"](): string;
     /**
       * `Link`
       */
-    ["com.affine.rootAppSidebar.explorer.drop-effect.link"](): string;
+    ["com.yunke.rootAppSidebar.explorer.drop-effect.link"](): string;
     /**
       * `Move`
       */
-    ["com.affine.rootAppSidebar.explorer.drop-effect.move"](): string;
+    ["com.yunke.rootAppSidebar.explorer.drop-effect.move"](): string;
     /**
       * `New doc`
       */
-    ["com.affine.rootAppSidebar.explorer.fav-section-add-tooltip"](): string;
+    ["com.yunke.rootAppSidebar.explorer.fav-section-add-tooltip"](): string;
     /**
       * `New doc`
       */
-    ["com.affine.rootAppSidebar.explorer.organize-add-tooltip"](): string;
+    ["com.yunke.rootAppSidebar.explorer.organize-add-tooltip"](): string;
     /**
       * `New folder`
       */
-    ["com.affine.rootAppSidebar.explorer.organize-section-add-tooltip"](): string;
+    ["com.yunke.rootAppSidebar.explorer.organize-section-add-tooltip"](): string;
     /**
       * `New doc`
       */
-    ["com.affine.rootAppSidebar.explorer.tag-add-tooltip"](): string;
+    ["com.yunke.rootAppSidebar.explorer.tag-add-tooltip"](): string;
     /**
       * `New tag`
       */
-    ["com.affine.rootAppSidebar.explorer.tag-section-add-tooltip"](): string;
+    ["com.yunke.rootAppSidebar.explorer.tag-section-add-tooltip"](): string;
     /**
       * `Favorites`
       */
-    ["com.affine.rootAppSidebar.favorites"](): string;
+    ["com.yunke.rootAppSidebar.favorites"](): string;
     /**
       * `No favorites`
       */
-    ["com.affine.rootAppSidebar.favorites.empty"](): string;
+    ["com.yunke.rootAppSidebar.favorites.empty"](): string;
     /**
       * `Migration data`
       */
-    ["com.affine.rootAppSidebar.migration-data"](): string;
+    ["com.yunke.rootAppSidebar.migration-data"](): string;
     /**
       * `Empty the old favorites`
       */
-    ["com.affine.rootAppSidebar.migration-data.clean-all"](): string;
+    ["com.yunke.rootAppSidebar.migration-data.clean-all"](): string;
     /**
       * `Cancel`
       */
-    ["com.affine.rootAppSidebar.migration-data.clean-all.cancel"](): string;
+    ["com.yunke.rootAppSidebar.migration-data.clean-all.cancel"](): string;
     /**
       * `OK`
       */
-    ["com.affine.rootAppSidebar.migration-data.clean-all.confirm"](): string;
+    ["com.yunke.rootAppSidebar.migration-data.clean-all.confirm"](): string;
     /**
       * `The old "Favorites" will be replaced`
       */
-    ["com.affine.rootAppSidebar.migration-data.help"](): string;
+    ["com.yunke.rootAppSidebar.migration-data.help"](): string;
     /**
       * `Empty the old favorites`
       */
-    ["com.affine.rootAppSidebar.migration-data.help.clean-all"](): string;
+    ["com.yunke.rootAppSidebar.migration-data.help.clean-all"](): string;
     /**
       * `OK`
       */
-    ["com.affine.rootAppSidebar.migration-data.help.confirm"](): string;
+    ["com.yunke.rootAppSidebar.migration-data.help.confirm"](): string;
     /**
       * `Organize`
       */
-    ["com.affine.rootAppSidebar.organize"](): string;
+    ["com.yunke.rootAppSidebar.organize"](): string;
     /**
       * `Delete`
       */
-    ["com.affine.rootAppSidebar.organize.delete"](): string;
+    ["com.yunke.rootAppSidebar.organize.delete"](): string;
     /**
       * `Remove from folder`
       */
-    ["com.affine.rootAppSidebar.organize.delete-from-folder"](): string;
+    ["com.yunke.rootAppSidebar.organize.delete-from-folder"](): string;
     /**
       * `Delete the folder will not delete any docs, tags, or collections.`
       */
-    ["com.affine.rootAppSidebar.organize.delete.notify-message"](): string;
+    ["com.yunke.rootAppSidebar.organize.delete.notify-message"](): string;
     /**
       * `Delete {{name}}`
       */
-    ["com.affine.rootAppSidebar.organize.delete.notify-title"](options: {
+    ["com.yunke.rootAppSidebar.organize.delete.notify-title"](options: {
         readonly name: string;
     }): string;
     /**
       * `No folders`
       */
-    ["com.affine.rootAppSidebar.organize.empty"](): string;
+    ["com.yunke.rootAppSidebar.organize.empty"](): string;
     /**
       * `Empty folder`
       */
-    ["com.affine.rootAppSidebar.organize.empty-folder"](): string;
+    ["com.yunke.rootAppSidebar.organize.empty-folder"](): string;
     /**
       * `Add pages`
       */
-    ["com.affine.rootAppSidebar.organize.empty-folder.add-pages"](): string;
+    ["com.yunke.rootAppSidebar.organize.empty-folder.add-pages"](): string;
     /**
       * `New folder`
       */
-    ["com.affine.rootAppSidebar.organize.empty.new-folders-button"](): string;
+    ["com.yunke.rootAppSidebar.organize.empty.new-folders-button"](): string;
     /**
       * `Add to favorites`
       */
-    ["com.affine.rootAppSidebar.organize.folder-add-favorite"](): string;
+    ["com.yunke.rootAppSidebar.organize.folder-add-favorite"](): string;
     /**
       * `Remove from favorites`
       */
-    ["com.affine.rootAppSidebar.organize.folder-rm-favorite"](): string;
+    ["com.yunke.rootAppSidebar.organize.folder-rm-favorite"](): string;
     /**
       * `Add Collections`
       */
-    ["com.affine.rootAppSidebar.organize.folder.add-collections"](): string;
+    ["com.yunke.rootAppSidebar.organize.folder.add-collections"](): string;
     /**
       * `New doc`
       */
-    ["com.affine.rootAppSidebar.organize.folder.new-doc"](): string;
+    ["com.yunke.rootAppSidebar.organize.folder.new-doc"](): string;
     /**
       * `Add docs`
       */
-    ["com.affine.rootAppSidebar.organize.folder.add-docs"](): string;
+    ["com.yunke.rootAppSidebar.organize.folder.add-docs"](): string;
     /**
       * `Add others`
       */
-    ["com.affine.rootAppSidebar.organize.folder.add-others"](): string;
+    ["com.yunke.rootAppSidebar.organize.folder.add-others"](): string;
     /**
       * `Add tags`
       */
-    ["com.affine.rootAppSidebar.organize.folder.add-tags"](): string;
+    ["com.yunke.rootAppSidebar.organize.folder.add-tags"](): string;
     /**
       * `Create a subfolder`
       */
-    ["com.affine.rootAppSidebar.organize.folder.create-subfolder"](): string;
+    ["com.yunke.rootAppSidebar.organize.folder.create-subfolder"](): string;
     /**
       * `New folder`
       */
-    ["com.affine.rootAppSidebar.organize.new-folders"](): string;
+    ["com.yunke.rootAppSidebar.organize.new-folders"](): string;
     /**
       * `Only folder can be placed on here`
       */
-    ["com.affine.rootAppSidebar.organize.root-folder-only"](): string;
+    ["com.yunke.rootAppSidebar.organize.root-folder-only"](): string;
     /**
       * `Add More`
       */
-    ["com.affine.rootAppSidebar.organize.add-more"](): string;
+    ["com.yunke.rootAppSidebar.organize.add-more"](): string;
     /**
       * `Add Folder`
       */
-    ["com.affine.rootAppSidebar.organize.add-folder"](): string;
+    ["com.yunke.rootAppSidebar.organize.add-folder"](): string;
     /**
       * `New Collection`
       */
-    ["com.affine.rootAppSidebar.collection.new"](): string;
+    ["com.yunke.rootAppSidebar.collection.new"](): string;
     /**
       * `Others`
       */
-    ["com.affine.rootAppSidebar.others"](): string;
+    ["com.yunke.rootAppSidebar.others"](): string;
     /**
       * `Only doc can be placed on here`
       */
-    ["com.affine.rootAppSidebar.tag.doc-only"](): string;
+    ["com.yunke.rootAppSidebar.tag.doc-only"](): string;
     /**
       * `Tags`
       */
-    ["com.affine.rootAppSidebar.tags"](): string;
+    ["com.yunke.rootAppSidebar.tags"](): string;
     /**
       * `No tags`
       */
-    ["com.affine.rootAppSidebar.tags.empty"](): string;
+    ["com.yunke.rootAppSidebar.tags.empty"](): string;
     /**
       * `New tag`
       */
-    ["com.affine.rootAppSidebar.tags.empty.new-tag-button"](): string;
+    ["com.yunke.rootAppSidebar.tags.empty.new-tag-button"](): string;
     /**
       * `New tag`
       */
-    ["com.affine.rootAppSidebar.tags.new-tag"](): string;
+    ["com.yunke.rootAppSidebar.tags.new-tag"](): string;
     /**
       * `No docs`
       */
-    ["com.affine.rootAppSidebar.tags.no-doc"](): string;
+    ["com.yunke.rootAppSidebar.tags.no-doc"](): string;
     /**
       * `Drag to resize`
       */
-    ["com.affine.rootAppSidebar.resize-handle.tooltip.drag"](): string;
+    ["com.yunke.rootAppSidebar.resize-handle.tooltip.drag"](): string;
     /**
       * `Click to collapse`
       */
-    ["com.affine.rootAppSidebar.resize-handle.tooltip.click"](): string;
+    ["com.yunke.rootAppSidebar.resize-handle.tooltip.click"](): string;
     /**
       * `Type here ...`
       */
-    ["com.affine.search-tags.placeholder"](): string;
+    ["com.yunke.search-tags.placeholder"](): string;
     /**
       * `Empty`
       */
-    ["com.affine.selectPage.empty"](): string;
+    ["com.yunke.selectPage.empty"](): string;
     /**
       * `Selected`
       */
-    ["com.affine.selectPage.selected"](): string;
+    ["com.yunke.selectPage.selected"](): string;
     /**
       * `Add include doc`
       */
-    ["com.affine.selectPage.title"](): string;
+    ["com.yunke.selectPage.title"](): string;
     /**
       * `Search collections...`
       */
-    ["com.affine.selector-collection.search.placeholder"](): string;
+    ["com.yunke.selector-collection.search.placeholder"](): string;
     /**
       * `Search tags...`
       */
-    ["com.affine.selector-tag.search.placeholder"](): string;
+    ["com.yunke.selector-tag.search.placeholder"](): string;
     /**
       * `Notifications`
       */
-    ["com.affine.setting.notifications"](): string;
+    ["com.yunke.setting.notifications"](): string;
     /**
       * `Notifications`
       */
-    ["com.affine.setting.notifications.header.title"](): string;
+    ["com.yunke.setting.notifications.header.title"](): string;
     /**
       * `Choose the types of updates you want to receive and where to get them.`
       */
-    ["com.affine.setting.notifications.header.description"](): string;
+    ["com.yunke.setting.notifications.header.description"](): string;
     /**
       * `Email notifications`
       */
-    ["com.affine.setting.notifications.email.title"](): string;
+    ["com.yunke.setting.notifications.email.title"](): string;
     /**
       * `Mention`
       */
-    ["com.affine.setting.notifications.email.mention.title"](): string;
+    ["com.yunke.setting.notifications.email.mention.title"](): string;
     /**
       * `You will be notified through email when other members of the workspace @ you.`
       */
-    ["com.affine.setting.notifications.email.mention.subtitle"](): string;
+    ["com.yunke.setting.notifications.email.mention.subtitle"](): string;
     /**
       * `Invites`
       */
-    ["com.affine.setting.notifications.email.invites.title"](): string;
+    ["com.yunke.setting.notifications.email.invites.title"](): string;
     /**
       * `Invitation related messages will be sent through emails.`
       */
-    ["com.affine.setting.notifications.email.invites.subtitle"](): string;
+    ["com.yunke.setting.notifications.email.invites.subtitle"](): string;
     /**
       * `Account settings`
       */
-    ["com.affine.setting.account"](): string;
+    ["com.yunke.setting.account"](): string;
     /**
       * `Delete your account`
       */
-    ["com.affine.setting.account.delete"](): string;
+    ["com.yunke.setting.account.delete"](): string;
     /**
       * `Once deleted, your account will no longer be accessible, and all data in your personal cloud space will be permanently deleted.`
       */
-    ["com.affine.setting.account.delete.message"](): string;
+    ["com.yunke.setting.account.delete.message"](): string;
     /**
       * `Cannot delete account`
       */
-    ["com.affine.setting.account.delete.team-warning-title"](): string;
+    ["com.yunke.setting.account.delete.team-warning-title"](): string;
     /**
       * `You’re the owner of a team workspace. To delete your account, please delete the workspace or transfer ownership first.`
       */
-    ["com.affine.setting.account.delete.team-warning-description"](): string;
+    ["com.yunke.setting.account.delete.team-warning-description"](): string;
     /**
       * `Delete your account?`
       */
-    ["com.affine.setting.account.delete.confirm-title"](): string;
+    ["com.yunke.setting.account.delete.confirm-title"](): string;
     /**
       * `Are you sure you want to delete your account?`
       */
-    ["com.affine.setting.account.delete.confirm-description-1"](): string;
+    ["com.yunke.setting.account.delete.confirm-description-1"](): string;
     /**
       * `Please type your email to confirm`
       */
-    ["com.affine.setting.account.delete.input-placeholder"](): string;
+    ["com.yunke.setting.account.delete.input-placeholder"](): string;
     /**
       * `Delete`
       */
-    ["com.affine.setting.account.delete.confirm-button"](): string;
+    ["com.yunke.setting.account.delete.confirm-button"](): string;
     /**
       * `Account deleted`
       */
-    ["com.affine.setting.account.delete.success-title"](): string;
+    ["com.yunke.setting.account.delete.success-title"](): string;
     /**
       * `Your account and cloud data have been deleted.`
       */
-    ["com.affine.setting.account.delete.success-description-1"](): string;
+    ["com.yunke.setting.account.delete.success-description-1"](): string;
     /**
       * `Local data can be deleted by uninstalling app and clearing browser data.`
       */
-    ["com.affine.setting.account.delete.success-description-2"](): string;
+    ["com.yunke.setting.account.delete.success-description-2"](): string;
     /**
       * `Your personal information`
       */
-    ["com.affine.setting.account.message"](): string;
+    ["com.yunke.setting.account.message"](): string;
     /**
-      * `Sync with AFFiNE Cloud`
+      * `Sync with YUNKE Cloud`
       */
-    ["com.affine.setting.sign.message"](): string;
+    ["com.yunke.setting.sign.message"](): string;
     /**
       * `Securely sign out of your account.`
       */
-    ["com.affine.setting.sign.out.message"](): string;
+    ["com.yunke.setting.sign.out.message"](): string;
     /**
       * `General`
       */
-    ["com.affine.settingSidebar.settings.general"](): string;
+    ["com.yunke.settingSidebar.settings.general"](): string;
     /**
       * `Workspace`
       */
-    ["com.affine.settingSidebar.settings.workspace"](): string;
+    ["com.yunke.settingSidebar.settings.workspace"](): string;
     /**
       * `Settings`
       */
-    ["com.affine.settingSidebar.title"](): string;
+    ["com.yunke.settingSidebar.title"](): string;
     /**
       * `Appearance`
       */
-    ["com.affine.settings.appearance"](): string;
+    ["com.yunke.settings.appearance"](): string;
     /**
       * `Customise the appearance of the client.`
       */
-    ["com.affine.settings.appearance.border-style-description"](): string;
+    ["com.yunke.settings.appearance.border-style-description"](): string;
     /**
       * `Customise your date style.`
       */
-    ["com.affine.settings.appearance.date-format-description"](): string;
+    ["com.yunke.settings.appearance.date-format-description"](): string;
     /**
       * `Maximum display of content within a doc.`
       */
-    ["com.affine.settings.appearance.full-width-description"](): string;
+    ["com.yunke.settings.appearance.full-width-description"](): string;
     /**
       * `Select the language for the interface.`
       */
-    ["com.affine.settings.appearance.language-description"](): string;
+    ["com.yunke.settings.appearance.language-description"](): string;
     /**
       * `By default, the week starts on Sunday.`
       */
-    ["com.affine.settings.appearance.start-week-description"](): string;
+    ["com.yunke.settings.appearance.start-week-description"](): string;
     /**
       * `Customise appearance of Windows Client.`
       */
-    ["com.affine.settings.appearance.window-frame-description"](): string;
+    ["com.yunke.settings.appearance.window-frame-description"](): string;
     /**
       * `Links`
       */
-    ["com.affine.setting.appearance.links"](): string;
+    ["com.yunke.setting.appearance.links"](): string;
     /**
-      * `Open AFFiNE links`
+      * `Open YUNKE links`
       */
-    ["com.affine.setting.appearance.open-in-app"](): string;
+    ["com.yunke.setting.appearance.open-in-app"](): string;
     /**
       * `You can choose to open the link in the desktop app or directly in the browser.`
       */
-    ["com.affine.setting.appearance.open-in-app.hint"](): string;
+    ["com.yunke.setting.appearance.open-in-app.hint"](): string;
     /**
       * `Ask me each time`
       */
-    ["com.affine.setting.appearance.open-in-app.always-ask"](): string;
+    ["com.yunke.setting.appearance.open-in-app.always-ask"](): string;
     /**
       * `Open links in desktop app`
       */
-    ["com.affine.setting.appearance.open-in-app.open-in-desktop-app"](): string;
+    ["com.yunke.setting.appearance.open-in-app.open-in-desktop-app"](): string;
     /**
       * `Open links in browser`
       */
-    ["com.affine.setting.appearance.open-in-app.open-in-web"](): string;
+    ["com.yunke.setting.appearance.open-in-app.open-in-web"](): string;
     /**
-      * `Open AFFiNE links`
+      * `Open YUNKE links`
       */
-    ["com.affine.setting.appearance.open-in-app.title"](): string;
+    ["com.yunke.setting.appearance.open-in-app.title"](): string;
     /**
-      * `Open this doc in AFFiNE app`
+      * `Open this doc in YUNKE app`
       */
-    ["com.affine.open-in-app.card.title"](): string;
+    ["com.yunke.open-in-app.card.title"](): string;
     /**
       * `Open in app`
       */
-    ["com.affine.open-in-app.card.button.open"](): string;
+    ["com.yunke.open-in-app.card.button.open"](): string;
     /**
       * `Dismiss`
       */
-    ["com.affine.open-in-app.card.button.dismiss"](): string;
+    ["com.yunke.open-in-app.card.button.dismiss"](): string;
     /**
       * `Remember choice`
       */
-    ["com.affine.open-in-app.card.remember"](): string;
+    ["com.yunke.open-in-app.card.remember"](): string;
     /**
       * `Download desktop app`
       */
-    ["com.affine.open-in-app.card.download"](): string;
+    ["com.yunke.open-in-app.card.download"](): string;
     /**
       * `If enabled, it will automatically check for new versions at regular intervals.`
       */
-    ["com.affine.settings.auto-check-description"](): string;
+    ["com.yunke.settings.auto-check-description"](): string;
     /**
       * `If enabled, new versions will be automatically downloaded to the current device.`
       */
-    ["com.affine.settings.auto-download-description"](): string;
+    ["com.yunke.settings.auto-download-description"](): string;
     /**
       * `Editor`
       */
-    ["com.affine.settings.editorSettings"](): string;
+    ["com.yunke.settings.editorSettings"](): string;
     /**
       * `Edgeless`
       */
-    ["com.affine.settings.editorSettings.edgeless"](): string;
+    ["com.yunke.settings.editorSettings.edgeless"](): string;
     /**
       * `Connector`
       */
-    ["com.affine.settings.editorSettings.edgeless.connecter"](): string;
+    ["com.yunke.settings.editorSettings.edgeless.connecter"](): string;
     /**
       * `Border style`
       */
-    ["com.affine.settings.editorSettings.edgeless.connecter.border-style"](): string;
+    ["com.yunke.settings.editorSettings.edgeless.connecter.border-style"](): string;
     /**
       * `Border thickness`
       */
-    ["com.affine.settings.editorSettings.edgeless.connecter.border-thickness"](): string;
+    ["com.yunke.settings.editorSettings.edgeless.connecter.border-thickness"](): string;
     /**
       * `Color`
       */
-    ["com.affine.settings.editorSettings.edgeless.connecter.color"](): string;
+    ["com.yunke.settings.editorSettings.edgeless.connecter.color"](): string;
     /**
       * `Connector shape`
       */
-    ["com.affine.settings.editorSettings.edgeless.connecter.connector-shape"](): string;
+    ["com.yunke.settings.editorSettings.edgeless.connecter.connector-shape"](): string;
     /**
       * `Curve`
       */
-    ["com.affine.settings.editorSettings.edgeless.connecter.connector-shape.curve"](): string;
+    ["com.yunke.settings.editorSettings.edgeless.connecter.connector-shape.curve"](): string;
     /**
       * `Elbowed`
       */
-    ["com.affine.settings.editorSettings.edgeless.connecter.connector-shape.elbowed"](): string;
+    ["com.yunke.settings.editorSettings.edgeless.connecter.connector-shape.elbowed"](): string;
     /**
       * `Straight`
       */
-    ["com.affine.settings.editorSettings.edgeless.connecter.connector-shape.straight"](): string;
+    ["com.yunke.settings.editorSettings.edgeless.connecter.connector-shape.straight"](): string;
     /**
       * `End endpoint`
       */
-    ["com.affine.settings.editorSettings.edgeless.connecter.end-endpoint"](): string;
+    ["com.yunke.settings.editorSettings.edgeless.connecter.end-endpoint"](): string;
     /**
       * `Start endpoint`
       */
-    ["com.affine.settings.editorSettings.edgeless.connecter.start-endpoint"](): string;
+    ["com.yunke.settings.editorSettings.edgeless.connecter.start-endpoint"](): string;
     /**
       * `Custom`
       */
-    ["com.affine.settings.editorSettings.edgeless.custom"](): string;
+    ["com.yunke.settings.editorSettings.edgeless.custom"](): string;
     /**
       * `Mind Map`
       */
-    ["com.affine.settings.editorSettings.edgeless.mind-map"](): string;
+    ["com.yunke.settings.editorSettings.edgeless.mind-map"](): string;
     /**
       * `Layout`
       */
-    ["com.affine.settings.editorSettings.edgeless.mind-map.layout"](): string;
+    ["com.yunke.settings.editorSettings.edgeless.mind-map.layout"](): string;
     /**
       * `Left`
       */
-    ["com.affine.settings.editorSettings.edgeless.mind-map.layout.left"](): string;
+    ["com.yunke.settings.editorSettings.edgeless.mind-map.layout.left"](): string;
     /**
       * `Radial`
       */
-    ["com.affine.settings.editorSettings.edgeless.mind-map.layout.radial"](): string;
+    ["com.yunke.settings.editorSettings.edgeless.mind-map.layout.radial"](): string;
     /**
       * `Right`
       */
-    ["com.affine.settings.editorSettings.edgeless.mind-map.layout.right"](): string;
+    ["com.yunke.settings.editorSettings.edgeless.mind-map.layout.right"](): string;
     /**
       * `Note`
       */
-    ["com.affine.settings.editorSettings.edgeless.note"](): string;
+    ["com.yunke.settings.editorSettings.edgeless.note"](): string;
     /**
       * `Background`
       */
-    ["com.affine.settings.editorSettings.edgeless.note.background"](): string;
+    ["com.yunke.settings.editorSettings.edgeless.note.background"](): string;
     /**
       * `Border style`
       */
-    ["com.affine.settings.editorSettings.edgeless.note.border"](): string;
+    ["com.yunke.settings.editorSettings.edgeless.note.border"](): string;
     /**
       * `Border thickness`
       */
-    ["com.affine.settings.editorSettings.edgeless.note.border-thickness"](): string;
+    ["com.yunke.settings.editorSettings.edgeless.note.border-thickness"](): string;
     /**
       * `Dash`
       */
-    ["com.affine.settings.editorSettings.edgeless.note.border.dash"](): string;
+    ["com.yunke.settings.editorSettings.edgeless.note.border.dash"](): string;
     /**
       * `None`
       */
-    ["com.affine.settings.editorSettings.edgeless.note.border.none"](): string;
+    ["com.yunke.settings.editorSettings.edgeless.note.border.none"](): string;
     /**
       * `Solid`
       */
-    ["com.affine.settings.editorSettings.edgeless.note.border.solid"](): string;
+    ["com.yunke.settings.editorSettings.edgeless.note.border.solid"](): string;
     /**
       * `Corners`
       */
-    ["com.affine.settings.editorSettings.edgeless.note.corners"](): string;
+    ["com.yunke.settings.editorSettings.edgeless.note.corners"](): string;
     /**
       * `Shadow style`
       */
-    ["com.affine.settings.editorSettings.edgeless.note.shadow"](): string;
+    ["com.yunke.settings.editorSettings.edgeless.note.shadow"](): string;
     /**
       * `Pen`
       */
-    ["com.affine.settings.editorSettings.edgeless.pen"](): string;
+    ["com.yunke.settings.editorSettings.edgeless.pen"](): string;
     /**
       * `Color`
       */
-    ["com.affine.settings.editorSettings.edgeless.pen.color"](): string;
+    ["com.yunke.settings.editorSettings.edgeless.pen.color"](): string;
     /**
       * `Thickness`
       */
-    ["com.affine.settings.editorSettings.edgeless.pen.thickness"](): string;
+    ["com.yunke.settings.editorSettings.edgeless.pen.thickness"](): string;
     /**
       * `Shape`
       */
-    ["com.affine.settings.editorSettings.edgeless.shape"](): string;
+    ["com.yunke.settings.editorSettings.edgeless.shape"](): string;
     /**
       * `Border color`
       */
-    ["com.affine.settings.editorSettings.edgeless.shape.border-color"](): string;
+    ["com.yunke.settings.editorSettings.edgeless.shape.border-color"](): string;
     /**
       * `Border style`
       */
-    ["com.affine.settings.editorSettings.edgeless.shape.border-style"](): string;
+    ["com.yunke.settings.editorSettings.edgeless.shape.border-style"](): string;
     /**
       * `Border thickness`
       */
-    ["com.affine.settings.editorSettings.edgeless.shape.border-thickness"](): string;
+    ["com.yunke.settings.editorSettings.edgeless.shape.border-thickness"](): string;
     /**
       * `Diamond`
       */
-    ["com.affine.settings.editorSettings.edgeless.shape.diamond"](): string;
+    ["com.yunke.settings.editorSettings.edgeless.shape.diamond"](): string;
     /**
       * `Ellipse`
       */
-    ["com.affine.settings.editorSettings.edgeless.shape.ellipse"](): string;
+    ["com.yunke.settings.editorSettings.edgeless.shape.ellipse"](): string;
     /**
       * `Fill color`
       */
-    ["com.affine.settings.editorSettings.edgeless.shape.fill-color"](): string;
+    ["com.yunke.settings.editorSettings.edgeless.shape.fill-color"](): string;
     /**
       * `Flow`
       */
-    ["com.affine.settings.editorSettings.edgeless.shape.flow"](): string;
+    ["com.yunke.settings.editorSettings.edgeless.shape.flow"](): string;
     /**
       * `Font`
       */
-    ["com.affine.settings.editorSettings.edgeless.shape.font"](): string;
+    ["com.yunke.settings.editorSettings.edgeless.shape.font"](): string;
     /**
       * `Font size`
       */
-    ["com.affine.settings.editorSettings.edgeless.shape.font-size"](): string;
+    ["com.yunke.settings.editorSettings.edgeless.shape.font-size"](): string;
     /**
       * `Font style`
       */
-    ["com.affine.settings.editorSettings.edgeless.shape.font-style"](): string;
+    ["com.yunke.settings.editorSettings.edgeless.shape.font-style"](): string;
     /**
       * `List`
       */
-    ["com.affine.settings.editorSettings.edgeless.shape.list"](): string;
+    ["com.yunke.settings.editorSettings.edgeless.shape.list"](): string;
     /**
       * `Rounded Rectangle`
       */
-    ["com.affine.settings.editorSettings.edgeless.shape.rounded-rectangle"](): string;
+    ["com.yunke.settings.editorSettings.edgeless.shape.rounded-rectangle"](): string;
     /**
       * `Square`
       */
-    ["com.affine.settings.editorSettings.edgeless.shape.square"](): string;
+    ["com.yunke.settings.editorSettings.edgeless.shape.square"](): string;
     /**
       * `Text alignment`
       */
-    ["com.affine.settings.editorSettings.edgeless.shape.text-alignment"](): string;
+    ["com.yunke.settings.editorSettings.edgeless.shape.text-alignment"](): string;
     /**
       * `Text color`
       */
-    ["com.affine.settings.editorSettings.edgeless.shape.text-color"](): string;
+    ["com.yunke.settings.editorSettings.edgeless.shape.text-color"](): string;
     /**
       * `Triangle`
       */
-    ["com.affine.settings.editorSettings.edgeless.shape.triangle"](): string;
+    ["com.yunke.settings.editorSettings.edgeless.shape.triangle"](): string;
     /**
       * `Frame`
       */
-    ["com.affine.settings.editorSettings.edgeless.frame"](): string;
+    ["com.yunke.settings.editorSettings.edgeless.frame"](): string;
     /**
       * `Background`
       */
-    ["com.affine.settings.editorSettings.edgeless.frame.background"](): string;
+    ["com.yunke.settings.editorSettings.edgeless.frame.background"](): string;
     /**
       * `Style`
       */
-    ["com.affine.settings.editorSettings.edgeless.style"](): string;
+    ["com.yunke.settings.editorSettings.edgeless.style"](): string;
     /**
       * `General`
       */
-    ["com.affine.settings.editorSettings.edgeless.style.general"](): string;
+    ["com.yunke.settings.editorSettings.edgeless.style.general"](): string;
     /**
       * `Scribbled`
       */
-    ["com.affine.settings.editorSettings.edgeless.style.scribbled"](): string;
+    ["com.yunke.settings.editorSettings.edgeless.style.scribbled"](): string;
     /**
       * `Text`
       */
-    ["com.affine.settings.editorSettings.edgeless.text"](): string;
+    ["com.yunke.settings.editorSettings.edgeless.text"](): string;
     /**
       * `Alignment`
       */
-    ["com.affine.settings.editorSettings.edgeless.text.alignment"](): string;
+    ["com.yunke.settings.editorSettings.edgeless.text.alignment"](): string;
     /**
       * `Center`
       */
-    ["com.affine.settings.editorSettings.edgeless.text.alignment.center"](): string;
+    ["com.yunke.settings.editorSettings.edgeless.text.alignment.center"](): string;
     /**
       * `Left`
       */
-    ["com.affine.settings.editorSettings.edgeless.text.alignment.left"](): string;
+    ["com.yunke.settings.editorSettings.edgeless.text.alignment.left"](): string;
     /**
       * `Right`
       */
-    ["com.affine.settings.editorSettings.edgeless.text.alignment.right"](): string;
+    ["com.yunke.settings.editorSettings.edgeless.text.alignment.right"](): string;
     /**
       * `Text color`
       */
-    ["com.affine.settings.editorSettings.edgeless.text.color"](): string;
+    ["com.yunke.settings.editorSettings.edgeless.text.color"](): string;
     /**
       * `Font`
       */
-    ["com.affine.settings.editorSettings.edgeless.text.font"](): string;
+    ["com.yunke.settings.editorSettings.edgeless.text.font"](): string;
     /**
       * `Font family`
       */
-    ["com.affine.settings.editorSettings.edgeless.text.font-family"](): string;
+    ["com.yunke.settings.editorSettings.edgeless.text.font-family"](): string;
     /**
       * `Font size`
       */
-    ["com.affine.settings.editorSettings.edgeless.text.font-size"](): string;
+    ["com.yunke.settings.editorSettings.edgeless.text.font-size"](): string;
     /**
       * `Font style`
       */
-    ["com.affine.settings.editorSettings.edgeless.text.font-style"](): string;
+    ["com.yunke.settings.editorSettings.edgeless.text.font-style"](): string;
     /**
       * `Font weight`
       */
-    ["com.affine.settings.editorSettings.edgeless.text.font-weight"](): string;
+    ["com.yunke.settings.editorSettings.edgeless.text.font-weight"](): string;
     /**
       * `General`
       */
-    ["com.affine.settings.editorSettings.general"](): string;
+    ["com.yunke.settings.editorSettings.general"](): string;
     /**
-      * `Enable the powerful AI assistant, AFFiNE AI.`
+      * `Enable the powerful AI assistant, YUNKE AI.`
       */
-    ["com.affine.settings.editorSettings.general.ai.description"](): string;
+    ["com.yunke.settings.editorSettings.general.ai.description"](): string;
     /**
       * `Disable AI and Reload`
       */
-    ["com.affine.settings.editorSettings.general.ai.disable.confirm"](): string;
+    ["com.yunke.settings.editorSettings.general.ai.disable.confirm"](): string;
     /**
       * `Are you sure you want to disable AI? We value your productivity and our AI can enhance it. Please think again!`
       */
-    ["com.affine.settings.editorSettings.general.ai.disable.description"](): string;
+    ["com.yunke.settings.editorSettings.general.ai.disable.description"](): string;
     /**
       * `Disable AI?`
       */
-    ["com.affine.settings.editorSettings.general.ai.disable.title"](): string;
+    ["com.yunke.settings.editorSettings.general.ai.disable.title"](): string;
     /**
       * `Enable AI and Reload`
       */
-    ["com.affine.settings.editorSettings.general.ai.enable.confirm"](): string;
+    ["com.yunke.settings.editorSettings.general.ai.enable.confirm"](): string;
     /**
       * `Do you want to enable AI? Our AI assistant is ready to enhance your productivity and provide smart assistance. Let's get started! We need reload page to make this change.`
       */
-    ["com.affine.settings.editorSettings.general.ai.enable.description"](): string;
+    ["com.yunke.settings.editorSettings.general.ai.enable.description"](): string;
     /**
       * `Enable AI?`
       */
-    ["com.affine.settings.editorSettings.general.ai.enable.title"](): string;
+    ["com.yunke.settings.editorSettings.general.ai.enable.title"](): string;
     /**
-      * `AFFiNE AI`
+      * `YUNKE AI`
       */
-    ["com.affine.settings.editorSettings.general.ai.title"](): string;
+    ["com.yunke.settings.editorSettings.general.ai.title"](): string;
     /**
       * `Set a default programming language.`
       */
-    ["com.affine.settings.editorSettings.general.default-code-block.language.description"](): string;
+    ["com.yunke.settings.editorSettings.general.default-code-block.language.description"](): string;
     /**
       * `Code blocks default language`
       */
-    ["com.affine.settings.editorSettings.general.default-code-block.language.title"](): string;
+    ["com.yunke.settings.editorSettings.general.default-code-block.language.title"](): string;
     /**
       * `Encapsulate code snippets for better readability.`
       */
-    ["com.affine.settings.editorSettings.general.default-code-block.wrap.description"](): string;
+    ["com.yunke.settings.editorSettings.general.default-code-block.wrap.description"](): string;
     /**
       * `Wrap code in code blocks`
       */
-    ["com.affine.settings.editorSettings.general.default-code-block.wrap.title"](): string;
+    ["com.yunke.settings.editorSettings.general.default-code-block.wrap.title"](): string;
     /**
       * `Default mode for new doc.`
       */
-    ["com.affine.settings.editorSettings.general.default-new-doc.description"](): string;
+    ["com.yunke.settings.editorSettings.general.default-new-doc.description"](): string;
     /**
       * `New doc default mode`
       */
-    ["com.affine.settings.editorSettings.general.default-new-doc.title"](): string;
+    ["com.yunke.settings.editorSettings.general.default-new-doc.title"](): string;
     /**
       * `Customize your text experience.`
       */
-    ["com.affine.settings.editorSettings.general.font-family.custom.description"](): string;
+    ["com.yunke.settings.editorSettings.general.font-family.custom.description"](): string;
     /**
       * `Custom font family`
       */
-    ["com.affine.settings.editorSettings.general.font-family.custom.title"](): string;
+    ["com.yunke.settings.editorSettings.general.font-family.custom.title"](): string;
     /**
       * `Choose your editor's font family.`
       */
-    ["com.affine.settings.editorSettings.general.font-family.description"](): string;
+    ["com.yunke.settings.editorSettings.general.font-family.description"](): string;
     /**
       * `Font family`
       */
-    ["com.affine.settings.editorSettings.general.font-family.title"](): string;
+    ["com.yunke.settings.editorSettings.general.font-family.title"](): string;
     /**
       * `Automatically detect and correct spelling errors.`
       */
-    ["com.affine.settings.editorSettings.general.spell-check.description"](): string;
+    ["com.yunke.settings.editorSettings.general.spell-check.description"](): string;
     /**
       * `Spell check`
       */
-    ["com.affine.settings.editorSettings.general.spell-check.title"](): string;
+    ["com.yunke.settings.editorSettings.general.spell-check.title"](): string;
     /**
       * `Page`
       */
-    ["com.affine.settings.editorSettings.page"](): string;
+    ["com.yunke.settings.editorSettings.page"](): string;
     /**
       * `Middle click paste`
       */
-    ["com.affine.settings.editorSettings.general.middle-click-paste.title"](): string;
+    ["com.yunke.settings.editorSettings.general.middle-click-paste.title"](): string;
     /**
       * `Enable default middle click paste behavior on Linux.`
       */
-    ["com.affine.settings.editorSettings.general.middle-click-paste.description"](): string;
+    ["com.yunke.settings.editorSettings.general.middle-click-paste.description"](): string;
     /**
       * `Display bi-directional links on the doc.`
       */
-    ["com.affine.settings.editorSettings.page.display-bi-link.description"](): string;
+    ["com.yunke.settings.editorSettings.page.display-bi-link.description"](): string;
     /**
       * `Display bi-directional links`
       */
-    ["com.affine.settings.editorSettings.page.display-bi-link.title"](): string;
+    ["com.yunke.settings.editorSettings.page.display-bi-link.title"](): string;
     /**
       * `Display document information on the doc.`
       */
-    ["com.affine.settings.editorSettings.page.display-doc-info.description"](): string;
+    ["com.yunke.settings.editorSettings.page.display-doc-info.description"](): string;
     /**
       * `Display doc info`
       */
-    ["com.affine.settings.editorSettings.page.display-doc-info.title"](): string;
+    ["com.yunke.settings.editorSettings.page.display-doc-info.title"](): string;
     /**
       * `Maximise display of content within a page.`
       */
-    ["com.affine.settings.editorSettings.page.full-width.description"](): string;
+    ["com.yunke.settings.editorSettings.page.full-width.description"](): string;
     /**
       * `Full width layout`
       */
-    ["com.affine.settings.editorSettings.page.full-width.title"](): string;
+    ["com.yunke.settings.editorSettings.page.full-width.title"](): string;
     /**
       * `Default page width`
       */
-    ["com.affine.settings.editorSettings.page.default-page-width.title"](): string;
+    ["com.yunke.settings.editorSettings.page.default-page-width.title"](): string;
     /**
       * `Set default width for new pages, individual pages can override.`
       */
-    ["com.affine.settings.editorSettings.page.default-page-width.description"](): string;
+    ["com.yunke.settings.editorSettings.page.default-page-width.description"](): string;
     /**
       * `Standard`
       */
-    ["com.affine.settings.editorSettings.page.default-page-width.standard"](): string;
+    ["com.yunke.settings.editorSettings.page.default-page-width.standard"](): string;
     /**
       * `Full width`
       */
-    ["com.affine.settings.editorSettings.page.default-page-width.full-width"](): string;
+    ["com.yunke.settings.editorSettings.page.default-page-width.full-width"](): string;
     /**
       * `Set edgeless default color scheme.`
       */
-    ["com.affine.settings.editorSettings.page.edgeless-default-theme.description"](): string;
+    ["com.yunke.settings.editorSettings.page.edgeless-default-theme.description"](): string;
     /**
       * `Edgeless default theme`
       */
-    ["com.affine.settings.editorSettings.page.edgeless-default-theme.title"](): string;
+    ["com.yunke.settings.editorSettings.page.edgeless-default-theme.title"](): string;
     /**
       * `Specified by current color mode`
       */
-    ["com.affine.settings.editorSettings.page.edgeless-default-theme.specified"](): string;
+    ["com.yunke.settings.editorSettings.page.edgeless-default-theme.specified"](): string;
     /**
       * `Scroll wheel zoom`
       */
-    ["com.affine.settings.editorSettings.page.edgeless-scroll-wheel-zoom.title"](): string;
+    ["com.yunke.settings.editorSettings.page.edgeless-scroll-wheel-zoom.title"](): string;
     /**
       * `Use the scroll wheel to zoom in and out.`
       */
-    ["com.affine.settings.editorSettings.page.edgeless-scroll-wheel-zoom.description"](): string;
+    ["com.yunke.settings.editorSettings.page.edgeless-scroll-wheel-zoom.description"](): string;
     /**
       * `Preferences`
       */
-    ["com.affine.settings.editorSettings.preferences"](): string;
+    ["com.yunke.settings.editorSettings.preferences"](): string;
     /**
       * `You can export the entire preferences data for backup, and the exported data can be re-imported.`
       */
-    ["com.affine.settings.editorSettings.preferences.export.description"](): string;
+    ["com.yunke.settings.editorSettings.preferences.export.description"](): string;
     /**
       * `Export Settings`
       */
-    ["com.affine.settings.editorSettings.preferences.export.title"](): string;
+    ["com.yunke.settings.editorSettings.preferences.export.title"](): string;
     /**
       * `You can import previously exported preferences data for restoration.`
       */
-    ["com.affine.settings.editorSettings.preferences.import.description"](): string;
+    ["com.yunke.settings.editorSettings.preferences.import.description"](): string;
     /**
       * `Import Settings`
       */
-    ["com.affine.settings.editorSettings.preferences.import.title"](): string;
+    ["com.yunke.settings.editorSettings.preferences.import.title"](): string;
     /**
       * `Configure your own editor`
       */
-    ["com.affine.settings.editorSettings.subtitle"](): string;
+    ["com.yunke.settings.editorSettings.subtitle"](): string;
     /**
       * `Editor settings`
       */
-    ["com.affine.settings.editorSettings.title"](): string;
+    ["com.yunke.settings.editorSettings.title"](): string;
     /**
       * `Ask me every time`
       */
-    ["com.affine.settings.editorSettings.ask-me-every-time"](): string;
+    ["com.yunke.settings.editorSettings.ask-me-every-time"](): string;
     /**
       * `Email`
       */
-    ["com.affine.settings.email"](): string;
+    ["com.yunke.settings.email"](): string;
     /**
       * `Change email`
       */
-    ["com.affine.settings.email.action"](): string;
+    ["com.yunke.settings.email.action"](): string;
     /**
       * `Change email`
       */
-    ["com.affine.settings.email.action.change"](): string;
+    ["com.yunke.settings.email.action.change"](): string;
     /**
       * `Verify email`
       */
-    ["com.affine.settings.email.action.verify"](): string;
+    ["com.yunke.settings.email.action.verify"](): string;
     /**
-      * `Enable AFFiNE Cloud to collaborate with others`
+      * `Enable YUNKE Cloud to collaborate with others`
       */
-    ["com.affine.settings.member-tooltip"](): string;
+    ["com.yunke.settings.member-tooltip"](): string;
     /**
       * `Loading member list...`
       */
-    ["com.affine.settings.member.loading"](): string;
+    ["com.yunke.settings.member.loading"](): string;
     /**
       * `Noise background on the sidebar`
       */
-    ["com.affine.settings.noise-style"](): string;
+    ["com.yunke.settings.noise-style"](): string;
     /**
       * `Use background noise effect on the sidebar.`
       */
-    ["com.affine.settings.noise-style-description"](): string;
+    ["com.yunke.settings.noise-style-description"](): string;
     /**
       * `Password`
       */
-    ["com.affine.settings.password"](): string;
+    ["com.yunke.settings.password"](): string;
     /**
       * `Change password`
       */
-    ["com.affine.settings.password.action.change"](): string;
+    ["com.yunke.settings.password.action.change"](): string;
     /**
       * `Set password`
       */
-    ["com.affine.settings.password.action.set"](): string;
+    ["com.yunke.settings.password.action.set"](): string;
     /**
       * `Set a password to sign in to your account`
       */
-    ["com.affine.settings.password.message"](): string;
+    ["com.yunke.settings.password.message"](): string;
     /**
       * `My profile`
       */
-    ["com.affine.settings.profile"](): string;
+    ["com.yunke.settings.profile"](): string;
     /**
       * `Your account profile will be displayed to everyone.`
       */
-    ["com.affine.settings.profile.message"](): string;
+    ["com.yunke.settings.profile.message"](): string;
     /**
       * `Display name`
       */
-    ["com.affine.settings.profile.name"](): string;
+    ["com.yunke.settings.profile.name"](): string;
     /**
       * `Input account name`
       */
-    ["com.affine.settings.profile.placeholder"](): string;
+    ["com.yunke.settings.profile.placeholder"](): string;
     /**
       * `Remove workspace`
       */
-    ["com.affine.settings.remove-workspace"](): string;
+    ["com.yunke.settings.remove-workspace"](): string;
     /**
       * `Remove workspace from this device and optionally delete all data.`
       */
-    ["com.affine.settings.remove-workspace-description"](): string;
+    ["com.yunke.settings.remove-workspace-description"](): string;
     /**
       * `Sign in / Sign up`
       */
-    ["com.affine.settings.sign"](): string;
+    ["com.yunke.settings.sign"](): string;
     /**
       * `Need more customization options? Tell us in the community.`
       */
-    ["com.affine.settings.suggestion"](): string;
+    ["com.yunke.settings.suggestion"](): string;
     /**
       * `Translucent UI on the sidebar`
       */
-    ["com.affine.settings.translucent-style"](): string;
+    ["com.yunke.settings.translucent-style"](): string;
     /**
       * `Use transparency effect on the sidebar.`
       */
-    ["com.affine.settings.translucent-style-description"](): string;
+    ["com.yunke.settings.translucent-style-description"](): string;
     /**
       * `Meetings`
       */
-    ["com.affine.settings.meetings"](): string;
+    ["com.yunke.settings.meetings"](): string;
     /**
       * `Beyond Recording
     Your AI Meeting Assistant is Here`
       */
-    ["com.affine.settings.meetings.setting.welcome"](): string;
+    ["com.yunke.settings.meetings.setting.welcome"](): string;
     /**
       * `Native Audio Capture, No Bots Required - Direct from Your Mac to Meeting Intelligence.`
       */
-    ["com.affine.settings.meetings.setting.prompt"](): string;
+    ["com.yunke.settings.meetings.setting.prompt"](): string;
     /**
       * `Learn more`
       */
-    ["com.affine.settings.meetings.setting.welcome.learn-more"](): string;
+    ["com.yunke.settings.meetings.setting.welcome.learn-more"](): string;
     /**
       * `Enable meeting notes`
       */
-    ["com.affine.settings.meetings.enable.title"](): string;
+    ["com.yunke.settings.meetings.enable.title"](): string;
     /**
       * `Meeting recording`
       */
-    ["com.affine.settings.meetings.record.header"](): string;
+    ["com.yunke.settings.meetings.record.header"](): string;
     /**
       * `When meeting starts`
       */
-    ["com.affine.settings.meetings.record.recording-mode"](): string;
+    ["com.yunke.settings.meetings.record.recording-mode"](): string;
     /**
       * `Choose the behavior when the meeting starts.`
       */
-    ["com.affine.settings.meetings.record.recording-mode.description"](): string;
+    ["com.yunke.settings.meetings.record.recording-mode.description"](): string;
     /**
       * `Open saved recordings`
       */
-    ["com.affine.settings.meetings.record.open-saved-file"](): string;
+    ["com.yunke.settings.meetings.record.open-saved-file"](): string;
     /**
       * `Open the locally stored recording files.`
       */
-    ["com.affine.settings.meetings.record.open-saved-file.description"](): string;
+    ["com.yunke.settings.meetings.record.open-saved-file.description"](): string;
     /**
       * `Transcription with AI`
       */
-    ["com.affine.settings.meetings.transcription.header"](): string;
+    ["com.yunke.settings.meetings.transcription.header"](): string;
     /**
       * `AI auto summary`
       */
-    ["com.affine.settings.meetings.transcription.auto-summary"](): string;
+    ["com.yunke.settings.meetings.transcription.auto-summary"](): string;
     /**
       * `Automatically generate a summary of the meeting notes.`
       */
-    ["com.affine.settings.meetings.transcription.auto-summary.description"](): string;
+    ["com.yunke.settings.meetings.transcription.auto-summary.description"](): string;
     /**
       * `AI auto todo list`
       */
-    ["com.affine.settings.meetings.transcription.auto-todo"](): string;
+    ["com.yunke.settings.meetings.transcription.auto-todo"](): string;
     /**
       * `Automatically generate a todo list of the meeting notes.`
       */
-    ["com.affine.settings.meetings.transcription.auto-todo.description"](): string;
+    ["com.yunke.settings.meetings.transcription.auto-todo.description"](): string;
     /**
       * `Privacy & Security`
       */
-    ["com.affine.settings.meetings.privacy.header"](): string;
+    ["com.yunke.settings.meetings.privacy.header"](): string;
     /**
       * `Screen & System audio recording`
       */
-    ["com.affine.settings.meetings.privacy.screen-system-audio-recording"](): string;
+    ["com.yunke.settings.meetings.privacy.screen-system-audio-recording"](): string;
     /**
       * `The Meeting feature requires permission to be used.`
       */
-    ["com.affine.settings.meetings.privacy.screen-system-audio-recording.description"](): string;
+    ["com.yunke.settings.meetings.privacy.screen-system-audio-recording.description"](): string;
     /**
       * `Click to allow`
       */
-    ["com.affine.settings.meetings.privacy.screen-system-audio-recording.permission-setting"](): string;
+    ["com.yunke.settings.meetings.privacy.screen-system-audio-recording.permission-setting"](): string;
     /**
       * `Microphone`
       */
-    ["com.affine.settings.meetings.privacy.microphone"](): string;
+    ["com.yunke.settings.meetings.privacy.microphone"](): string;
     /**
       * `The Meeting feature requires permission to be used.`
       */
-    ["com.affine.settings.meetings.privacy.microphone.description"](): string;
+    ["com.yunke.settings.meetings.privacy.microphone.description"](): string;
     /**
       * `Click to allow`
       */
-    ["com.affine.settings.meetings.privacy.microphone.permission-setting"](): string;
+    ["com.yunke.settings.meetings.privacy.microphone.permission-setting"](): string;
     /**
       * `Permission issues`
       */
-    ["com.affine.settings.meetings.privacy.issues"](): string;
+    ["com.yunke.settings.meetings.privacy.issues"](): string;
     /**
       * `Permissions are granted but the status isn't updated? Restart the app to refresh permissions.`
       */
-    ["com.affine.settings.meetings.privacy.issues.description"](): string;
+    ["com.yunke.settings.meetings.privacy.issues.description"](): string;
     /**
       * `Restart App`
       */
-    ["com.affine.settings.meetings.privacy.issues.restart"](): string;
+    ["com.yunke.settings.meetings.privacy.issues.restart"](): string;
     /**
       * `Do nothing`
       */
-    ["com.affine.settings.meetings.record.recording-mode.none"](): string;
+    ["com.yunke.settings.meetings.record.recording-mode.none"](): string;
     /**
       * `Auto start recording`
       */
-    ["com.affine.settings.meetings.record.recording-mode.auto-start"](): string;
+    ["com.yunke.settings.meetings.record.recording-mode.auto-start"](): string;
     /**
       * `Show a recording prompt`
       */
-    ["com.affine.settings.meetings.record.recording-mode.prompt"](): string;
+    ["com.yunke.settings.meetings.record.recording-mode.prompt"](): string;
     /**
       * `Screen & System Audio Recording`
       */
-    ["com.affine.settings.meetings.record.permission-modal.title"](): string;
+    ["com.yunke.settings.meetings.record.permission-modal.title"](): string;
     /**
-      * `AFFiNE will generate meeting notes by recording your meetings. Authorization to "Screen & System Audio Recording" is necessary.`
+      * `YUNKE will generate meeting notes by recording your meetings. Authorization to "Screen & System Audio Recording" is necessary.`
       */
-    ["com.affine.settings.meetings.record.permission-modal.description"](): string;
+    ["com.yunke.settings.meetings.record.permission-modal.description"](): string;
     /**
       * `Save meeting's recording block to`
       */
-    ["com.affine.settings.meetings.record.save-mode"](): string;
+    ["com.yunke.settings.meetings.record.save-mode"](): string;
     /**
       * `Open System Settings`
       */
-    ["com.affine.settings.meetings.record.permission-modal.open-setting"](): string;
+    ["com.yunke.settings.meetings.record.permission-modal.open-setting"](): string;
     /**
       * `Workspace`
       */
-    ["com.affine.settings.workspace"](): string;
+    ["com.yunke.settings.workspace"](): string;
     /**
       * `You can view current workspace's information here.`
       */
-    ["com.affine.settings.workspace.description"](): string;
+    ["com.yunke.settings.workspace.description"](): string;
     /**
       * `Experimental features`
       */
-    ["com.affine.settings.workspace.experimental-features"](): string;
+    ["com.yunke.settings.workspace.experimental-features"](): string;
     /**
       * `Get started`
       */
-    ["com.affine.settings.workspace.experimental-features.get-started"](): string;
+    ["com.yunke.settings.workspace.experimental-features.get-started"](): string;
     /**
       * `Experimental features`
       */
-    ["com.affine.settings.workspace.experimental-features.header.plugins"](): string;
+    ["com.yunke.settings.workspace.experimental-features.header.plugins"](): string;
     /**
       * `Some features available for early access`
       */
-    ["com.affine.settings.workspace.experimental-features.header.subtitle"](): string;
+    ["com.yunke.settings.workspace.experimental-features.header.subtitle"](): string;
     /**
       * `I am aware of the risks, and I am willing to continue to use it.`
       */
-    ["com.affine.settings.workspace.experimental-features.prompt-disclaimer"](): string;
+    ["com.yunke.settings.workspace.experimental-features.prompt-disclaimer"](): string;
     /**
       * `Do you want to use the plugin system that is in an experimental stage?`
       */
-    ["com.affine.settings.workspace.experimental-features.prompt-header"](): string;
+    ["com.yunke.settings.workspace.experimental-features.prompt-header"](): string;
     /**
       * `You are about to enable an experimental feature. This feature is still in development and may contain errors or behave unpredictably. Please proceed with caution and at your own risk.`
       */
-    ["com.affine.settings.workspace.experimental-features.prompt-warning"](): string;
+    ["com.yunke.settings.workspace.experimental-features.prompt-warning"](): string;
     /**
       * `WARNING MESSAGE`
       */
-    ["com.affine.settings.workspace.experimental-features.prompt-warning-title"](): string;
+    ["com.yunke.settings.workspace.experimental-features.prompt-warning-title"](): string;
     /**
       * `Enable AI`
       */
-    ["com.affine.settings.workspace.experimental-features.enable-ai.name"](): string;
+    ["com.yunke.settings.workspace.experimental-features.enable-ai.name"](): string;
     /**
       * `Enable or disable ALL AI features.`
       */
-    ["com.affine.settings.workspace.experimental-features.enable-ai.description"](): string;
+    ["com.yunke.settings.workspace.experimental-features.enable-ai.description"](): string;
     /**
       * `Enable AI Network Search`
       */
-    ["com.affine.settings.workspace.experimental-features.enable-ai-network-search.name"](): string;
+    ["com.yunke.settings.workspace.experimental-features.enable-ai-network-search.name"](): string;
     /**
       * `Enable or disable AI Network Search feature.`
       */
-    ["com.affine.settings.workspace.experimental-features.enable-ai-network-search.description"](): string;
+    ["com.yunke.settings.workspace.experimental-features.enable-ai-network-search.description"](): string;
     /**
       * `Enable AI Model Switch`
       */
-    ["com.affine.settings.workspace.experimental-features.enable-ai-model-switch.name"](): string;
+    ["com.yunke.settings.workspace.experimental-features.enable-ai-model-switch.name"](): string;
     /**
       * `Enable or disable AI model switch feature.`
       */
-    ["com.affine.settings.workspace.experimental-features.enable-ai-model-switch.description"](): string;
+    ["com.yunke.settings.workspace.experimental-features.enable-ai-model-switch.description"](): string;
     /**
       * `Database Full Width`
       */
-    ["com.affine.settings.workspace.experimental-features.enable-database-full-width.name"](): string;
+    ["com.yunke.settings.workspace.experimental-features.enable-database-full-width.name"](): string;
     /**
       * `The database will be displayed in full-width mode.`
       */
-    ["com.affine.settings.workspace.experimental-features.enable-database-full-width.description"](): string;
+    ["com.yunke.settings.workspace.experimental-features.enable-database-full-width.description"](): string;
     /**
       * `Database Attachment Note`
       */
-    ["com.affine.settings.workspace.experimental-features.enable-database-attachment-note.name"](): string;
+    ["com.yunke.settings.workspace.experimental-features.enable-database-attachment-note.name"](): string;
     /**
       * `Allows adding notes to database attachments.`
       */
-    ["com.affine.settings.workspace.experimental-features.enable-database-attachment-note.description"](): string;
+    ["com.yunke.settings.workspace.experimental-features.enable-database-attachment-note.description"](): string;
     /**
       * `Todo Block Query`
       */
-    ["com.affine.settings.workspace.experimental-features.enable-block-query.name"](): string;
+    ["com.yunke.settings.workspace.experimental-features.enable-block-query.name"](): string;
     /**
       * `Enables querying of todo blocks.`
       */
-    ["com.affine.settings.workspace.experimental-features.enable-block-query.description"](): string;
+    ["com.yunke.settings.workspace.experimental-features.enable-block-query.description"](): string;
     /**
       * `Synced Doc Block`
       */
-    ["com.affine.settings.workspace.experimental-features.enable-synced-doc-block.name"](): string;
+    ["com.yunke.settings.workspace.experimental-features.enable-synced-doc-block.name"](): string;
     /**
       * `Enables syncing of doc blocks.`
       */
-    ["com.affine.settings.workspace.experimental-features.enable-synced-doc-block.description"](): string;
+    ["com.yunke.settings.workspace.experimental-features.enable-synced-doc-block.description"](): string;
     /**
       * `Edgeless Text`
       */
-    ["com.affine.settings.workspace.experimental-features.enable-edgeless-text.name"](): string;
+    ["com.yunke.settings.workspace.experimental-features.enable-edgeless-text.name"](): string;
     /**
       * `Enables edgeless text blocks.`
       */
-    ["com.affine.settings.workspace.experimental-features.enable-edgeless-text.description"](): string;
+    ["com.yunke.settings.workspace.experimental-features.enable-edgeless-text.description"](): string;
     /**
       * `Color Picker`
       */
-    ["com.affine.settings.workspace.experimental-features.enable-color-picker.name"](): string;
+    ["com.yunke.settings.workspace.experimental-features.enable-color-picker.name"](): string;
     /**
       * `Enables color picker blocks.`
       */
-    ["com.affine.settings.workspace.experimental-features.enable-color-picker.description"](): string;
+    ["com.yunke.settings.workspace.experimental-features.enable-color-picker.description"](): string;
     /**
       * `AI Chat Block`
       */
-    ["com.affine.settings.workspace.experimental-features.enable-ai-chat-block.name"](): string;
+    ["com.yunke.settings.workspace.experimental-features.enable-ai-chat-block.name"](): string;
     /**
       * `Enables AI chat blocks.`
       */
-    ["com.affine.settings.workspace.experimental-features.enable-ai-chat-block.description"](): string;
+    ["com.yunke.settings.workspace.experimental-features.enable-ai-chat-block.description"](): string;
     /**
       * `AI Onboarding`
       */
-    ["com.affine.settings.workspace.experimental-features.enable-ai-onboarding.name"](): string;
+    ["com.yunke.settings.workspace.experimental-features.enable-ai-onboarding.name"](): string;
     /**
       * `Enables AI onboarding.`
       */
-    ["com.affine.settings.workspace.experimental-features.enable-ai-onboarding.description"](): string;
+    ["com.yunke.settings.workspace.experimental-features.enable-ai-onboarding.description"](): string;
     /**
       * `Mind Map Import`
       */
-    ["com.affine.settings.workspace.experimental-features.enable-mind-map-import.name"](): string;
+    ["com.yunke.settings.workspace.experimental-features.enable-mind-map-import.name"](): string;
     /**
       * `Enables mind map import.`
       */
-    ["com.affine.settings.workspace.experimental-features.enable-mind-map-import.description"](): string;
+    ["com.yunke.settings.workspace.experimental-features.enable-mind-map-import.description"](): string;
     /**
       * `Block Meta`
       */
-    ["com.affine.settings.workspace.experimental-features.enable-block-meta.name"](): string;
+    ["com.yunke.settings.workspace.experimental-features.enable-block-meta.name"](): string;
     /**
       * `Once enabled, all blocks will have created time, updated time, created by and updated by.`
       */
-    ["com.affine.settings.workspace.experimental-features.enable-block-meta.description"](): string;
+    ["com.yunke.settings.workspace.experimental-features.enable-block-meta.description"](): string;
     /**
       * `Callout`
       */
-    ["com.affine.settings.workspace.experimental-features.enable-callout.name"](): string;
+    ["com.yunke.settings.workspace.experimental-features.enable-callout.name"](): string;
     /**
       * `Let your words stand out. This also include the callout in the transcription block.`
       */
-    ["com.affine.settings.workspace.experimental-features.enable-callout.description"](): string;
+    ["com.yunke.settings.workspace.experimental-features.enable-callout.description"](): string;
     /**
       * `Embed Iframe Block`
       */
-    ["com.affine.settings.workspace.experimental-features.enable-embed-iframe-block.name"](): string;
+    ["com.yunke.settings.workspace.experimental-features.enable-embed-iframe-block.name"](): string;
     /**
       * `Enables Embed Iframe Block.`
       */
-    ["com.affine.settings.workspace.experimental-features.enable-embed-iframe-block.description"](): string;
+    ["com.yunke.settings.workspace.experimental-features.enable-embed-iframe-block.description"](): string;
     /**
       * `Emoji Folder Icon`
       */
-    ["com.affine.settings.workspace.experimental-features.enable-emoji-folder-icon.name"](): string;
+    ["com.yunke.settings.workspace.experimental-features.enable-emoji-folder-icon.name"](): string;
     /**
       * `Once enabled, you can use an emoji as the folder icon. When the first character of the folder name is an emoji, it will be extracted and used as its icon.`
       */
-    ["com.affine.settings.workspace.experimental-features.enable-emoji-folder-icon.description"](): string;
+    ["com.yunke.settings.workspace.experimental-features.enable-emoji-folder-icon.description"](): string;
     /**
       * `Emoji Doc Icon`
       */
-    ["com.affine.settings.workspace.experimental-features.enable-emoji-doc-icon.name"](): string;
+    ["com.yunke.settings.workspace.experimental-features.enable-emoji-doc-icon.name"](): string;
     /**
       * `Once enabled, you can use an emoji as the doc icon. When the first character of the doc name is an emoji, it will be extracted and used as its icon.`
       */
-    ["com.affine.settings.workspace.experimental-features.enable-emoji-doc-icon.description"](): string;
+    ["com.yunke.settings.workspace.experimental-features.enable-emoji-doc-icon.description"](): string;
     /**
       * `Editor Settings`
       */
-    ["com.affine.settings.workspace.experimental-features.enable-editor-settings.name"](): string;
+    ["com.yunke.settings.workspace.experimental-features.enable-editor-settings.name"](): string;
     /**
       * `Enables editor settings.`
       */
-    ["com.affine.settings.workspace.experimental-features.enable-editor-settings.description"](): string;
+    ["com.yunke.settings.workspace.experimental-features.enable-editor-settings.description"](): string;
     /**
       * `Theme Editor`
       */
-    ["com.affine.settings.workspace.experimental-features.enable-theme-editor.name"](): string;
+    ["com.yunke.settings.workspace.experimental-features.enable-theme-editor.name"](): string;
     /**
       * `Enables theme editor.`
       */
-    ["com.affine.settings.workspace.experimental-features.enable-theme-editor.description"](): string;
+    ["com.yunke.settings.workspace.experimental-features.enable-theme-editor.description"](): string;
     /**
       * `Allow create local workspace`
       */
-    ["com.affine.settings.workspace.experimental-features.enable-local-workspace.name"](): string;
+    ["com.yunke.settings.workspace.experimental-features.enable-local-workspace.name"](): string;
     /**
       * `Allow create local workspace`
       */
-    ["com.affine.settings.workspace.experimental-features.enable-local-workspace.description"](): string;
+    ["com.yunke.settings.workspace.experimental-features.enable-local-workspace.description"](): string;
     /**
       * `Advanced block visibility control`
       */
-    ["com.affine.settings.workspace.experimental-features.enable-advanced-block-visibility.name"](): string;
+    ["com.yunke.settings.workspace.experimental-features.enable-advanced-block-visibility.name"](): string;
     /**
       * `To provide detailed control over which edgeless blocks are visible in page mode.`
       */
-    ["com.affine.settings.workspace.experimental-features.enable-advanced-block-visibility.description"](): string;
+    ["com.yunke.settings.workspace.experimental-features.enable-advanced-block-visibility.description"](): string;
     /**
       * `Mobile Keyboard Toolbar`
       */
-    ["com.affine.settings.workspace.experimental-features.enable-mobile-keyboard-toolbar.name"](): string;
+    ["com.yunke.settings.workspace.experimental-features.enable-mobile-keyboard-toolbar.name"](): string;
     /**
       * `Enables the mobile keyboard toolbar.`
       */
-    ["com.affine.settings.workspace.experimental-features.enable-mobile-keyboard-toolbar.description"](): string;
+    ["com.yunke.settings.workspace.experimental-features.enable-mobile-keyboard-toolbar.description"](): string;
     /**
       * `Mobile Linked Doc Widget`
       */
-    ["com.affine.settings.workspace.experimental-features.enable-mobile-linked-doc-menu.name"](): string;
+    ["com.yunke.settings.workspace.experimental-features.enable-mobile-linked-doc-menu.name"](): string;
     /**
       * `Enables the mobile linked doc menu.`
       */
-    ["com.affine.settings.workspace.experimental-features.enable-mobile-linked-doc-menu.description"](): string;
+    ["com.yunke.settings.workspace.experimental-features.enable-mobile-linked-doc-menu.description"](): string;
     /**
       * `Enable Snapshot Import Export`
       */
-    ["com.affine.settings.workspace.experimental-features.enable-snapshot-import-export.name"](): string;
+    ["com.yunke.settings.workspace.experimental-features.enable-snapshot-import-export.name"](): string;
     /**
       * `Once enabled, users can import and export blocksuite snapshots.`
       */
-    ["com.affine.settings.workspace.experimental-features.enable-snapshot-import-export.description"](): string;
+    ["com.yunke.settings.workspace.experimental-features.enable-snapshot-import-export.description"](): string;
     /**
       * `Enable Edgeless Editing`
       */
-    ["com.affine.settings.workspace.experimental-features.enable-mobile-edgeless-editing.name"](): string;
+    ["com.yunke.settings.workspace.experimental-features.enable-mobile-edgeless-editing.name"](): string;
     /**
       * `Once enabled, users can edit edgeless canvas.`
       */
-    ["com.affine.settings.workspace.experimental-features.enable-mobile-edgeless-editing.description"](): string;
+    ["com.yunke.settings.workspace.experimental-features.enable-mobile-edgeless-editing.description"](): string;
     /**
       * `PDF embed preview`
       */
-    ["com.affine.settings.workspace.experimental-features.enable-pdf-embed-preview.name"](): string;
+    ["com.yunke.settings.workspace.experimental-features.enable-pdf-embed-preview.name"](): string;
     /**
       * `Once enabled, you can preview PDF in embed view.`
       */
-    ["com.affine.settings.workspace.experimental-features.enable-pdf-embed-preview.description"](): string;
+    ["com.yunke.settings.workspace.experimental-features.enable-pdf-embed-preview.description"](): string;
     /**
       * `Audio block`
       */
-    ["com.affine.settings.workspace.experimental-features.enable-audio-block.name"](): string;
+    ["com.yunke.settings.workspace.experimental-features.enable-audio-block.name"](): string;
     /**
       * `Audio block allows you to play audio files globally and add notes to them.`
       */
-    ["com.affine.settings.workspace.experimental-features.enable-audio-block.description"](): string;
+    ["com.yunke.settings.workspace.experimental-features.enable-audio-block.description"](): string;
     /**
       * `Meetings`
       */
-    ["com.affine.settings.workspace.experimental-features.enable-meetings.name"](): string;
+    ["com.yunke.settings.workspace.experimental-features.enable-meetings.name"](): string;
     /**
-      * `Meetings allows you to record and transcribe meetings. Don't forget to enable it in AFFiNE settings.`
+      * `Meetings allows you to record and transcribe meetings. Don't forget to enable it in YUNKE settings.`
       */
-    ["com.affine.settings.workspace.experimental-features.enable-meetings.description"](): string;
+    ["com.yunke.settings.workspace.experimental-features.enable-meetings.description"](): string;
     /**
       * `Editor RTL`
       */
-    ["com.affine.settings.workspace.experimental-features.enable-editor-rtl.name"](): string;
+    ["com.yunke.settings.workspace.experimental-features.enable-editor-rtl.name"](): string;
     /**
       * `Once enabled, the editor will be displayed in RTL mode.`
       */
-    ["com.affine.settings.workspace.experimental-features.enable-editor-rtl.description"](): string;
+    ["com.yunke.settings.workspace.experimental-features.enable-editor-rtl.description"](): string;
     /**
       * `Edgeless scribbled style`
       */
-    ["com.affine.settings.workspace.experimental-features.enable-edgeless-scribbled-style.name"](): string;
+    ["com.yunke.settings.workspace.experimental-features.enable-edgeless-scribbled-style.name"](): string;
     /**
       * `Once enabled, you can use scribbled style in edgeless mode.`
       */
-    ["com.affine.settings.workspace.experimental-features.enable-edgeless-scribbled-style.description"](): string;
+    ["com.yunke.settings.workspace.experimental-features.enable-edgeless-scribbled-style.description"](): string;
     /**
       * `Database block table view virtual scroll`
       */
-    ["com.affine.settings.workspace.experimental-features.enable-table-virtual-scroll.name"](): string;
+    ["com.yunke.settings.workspace.experimental-features.enable-table-virtual-scroll.name"](): string;
     /**
       * `Once enabled, switch table view to virtual scroll mode in Database Block.`
       */
-    ["com.affine.settings.workspace.experimental-features.enable-table-virtual-scroll.description"](): string;
+    ["com.yunke.settings.workspace.experimental-features.enable-table-virtual-scroll.description"](): string;
     /**
       * `Code block HTML preview`
       */
-    ["com.affine.settings.workspace.experimental-features.enable-code-block-html-preview.name"](): string;
+    ["com.yunke.settings.workspace.experimental-features.enable-code-block-html-preview.name"](): string;
     /**
       * `Once enabled, you can preview HTML in code block.`
       */
-    ["com.affine.settings.workspace.experimental-features.enable-code-block-html-preview.description"](): string;
+    ["com.yunke.settings.workspace.experimental-features.enable-code-block-html-preview.description"](): string;
     /**
       * `Adapter Panel`
       */
-    ["com.affine.settings.workspace.experimental-features.enable-adapter-panel.name"](): string;
+    ["com.yunke.settings.workspace.experimental-features.enable-adapter-panel.name"](): string;
     /**
       * `Once enabled, you can preview adapter export content in the right side bar.`
       */
-    ["com.affine.settings.workspace.experimental-features.enable-adapter-panel.description"](): string;
+    ["com.yunke.settings.workspace.experimental-features.enable-adapter-panel.description"](): string;
     /**
       * `Only an owner can edit the workspace avatar and name. Changes will be shown for everyone.`
       */
-    ["com.affine.settings.workspace.not-owner"](): string;
+    ["com.yunke.settings.workspace.not-owner"](): string;
     /**
       * `Preference`
       */
-    ["com.affine.settings.workspace.preferences"](): string;
+    ["com.yunke.settings.workspace.preferences"](): string;
     /**
       * `Team's Billing`
       */
-    ["com.affine.settings.workspace.billing"](): string;
+    ["com.yunke.settings.workspace.billing"](): string;
     /**
       * `Team Workspace`
       */
-    ["com.affine.settings.workspace.billing.team-workspace"](): string;
+    ["com.yunke.settings.workspace.billing.team-workspace"](): string;
     /**
       * `Your workspace is in a free trail period.`
       */
-    ["com.affine.settings.workspace.billing.team-workspace.description.free-trail"](): string;
+    ["com.yunke.settings.workspace.billing.team-workspace.description.free-trail"](): string;
     /**
       * `Your workspace is billed annually.`
       */
-    ["com.affine.settings.workspace.billing.team-workspace.description.billed.annually"](): string;
+    ["com.yunke.settings.workspace.billing.team-workspace.description.billed.annually"](): string;
     /**
       * `Your workspace is billed monthly.`
       */
-    ["com.affine.settings.workspace.billing.team-workspace.description.billed.monthly"](): string;
+    ["com.yunke.settings.workspace.billing.team-workspace.description.billed.monthly"](): string;
     /**
       * `Your subscription will end on {{date}}`
       */
-    ["com.affine.settings.workspace.billing.team-workspace.not-renewed"](options: {
+    ["com.yunke.settings.workspace.billing.team-workspace.not-renewed"](options: {
         readonly date: string;
     }): string;
     /**
       * `Next billing date: {{date}}`
       */
-    ["com.affine.settings.workspace.billing.team-workspace.next-billing-date"](options: {
+    ["com.yunke.settings.workspace.billing.team-workspace.next-billing-date"](options: {
         readonly date: string;
     }): string;
     /**
       * `Cancel Plan`
       */
-    ["com.affine.settings.workspace.billing.team-workspace.cancel-plan"](): string;
+    ["com.yunke.settings.workspace.billing.team-workspace.cancel-plan"](): string;
     /**
       * `License`
       */
-    ["com.affine.settings.workspace.license"](): string;
+    ["com.yunke.settings.workspace.license"](): string;
     /**
       * `Manage license information and invoices for the self host team workspace.`
       */
-    ["com.affine.settings.workspace.license.description"](): string;
+    ["com.yunke.settings.workspace.license.description"](): string;
     /**
       * `Get teams plan for your self hosted workspace.`
       */
-    ["com.affine.settings.workspace.license.benefit.team.title"](): string;
+    ["com.yunke.settings.workspace.license.benefit.team.title"](): string;
     /**
       * `Need more seats? Best for scalable teams.`
       */
-    ["com.affine.settings.workspace.license.benefit.team.subtitle"](): string;
+    ["com.yunke.settings.workspace.license.benefit.team.subtitle"](): string;
     /**
       * `Everything in Self Hosted FOSS`
       */
-    ["com.affine.settings.workspace.license.benefit.team.g1"](): string;
+    ["com.yunke.settings.workspace.license.benefit.team.g1"](): string;
     /**
       * `{{initialQuota}} initial storage + {{quotaPerSeat}} per seat`
       */
-    ["com.affine.settings.workspace.license.benefit.team.g2"](options: Readonly<{
+    ["com.yunke.settings.workspace.license.benefit.team.g2"](options: Readonly<{
         initialQuota: string;
         quotaPerSeat: string;
     }>): string;
     /**
       * `{{quota}} of maximum file size`
       */
-    ["com.affine.settings.workspace.license.benefit.team.g3"](options: {
+    ["com.yunke.settings.workspace.license.benefit.team.g3"](options: {
         readonly quota: string;
     }): string;
     /**
       * `Unlimited team members (10+ seats)`
       */
-    ["com.affine.settings.workspace.license.benefit.team.g4"](): string;
+    ["com.yunke.settings.workspace.license.benefit.team.g4"](): string;
     /**
       * `Multiple admin roles`
       */
-    ["com.affine.settings.workspace.license.benefit.team.g5"](): string;
+    ["com.yunke.settings.workspace.license.benefit.team.g5"](): string;
     /**
       * `Priority customer support`
       */
-    ["com.affine.settings.workspace.license.benefit.team.g6"](): string;
+    ["com.yunke.settings.workspace.license.benefit.team.g6"](): string;
     /**
       * `Lean more`
       */
-    ["com.affine.settings.workspace.license.lean-more"](): string;
+    ["com.yunke.settings.workspace.license.lean-more"](): string;
     /**
       * `Selfhosted workspace`
       */
-    ["com.affine.settings.workspace.license.self-host"](): string;
+    ["com.yunke.settings.workspace.license.self-host"](): string;
     /**
       * `Self-host Team Workspace`
       */
-    ["com.affine.settings.workspace.license.self-host-team"](): string;
+    ["com.yunke.settings.workspace.license.self-host-team"](): string;
     /**
       * `This license will expire on {{expirationDate}}, with {{leftDays}} days remaining.`
       */
-    ["com.affine.settings.workspace.license.self-host-team.team.description"](options: Readonly<{
+    ["com.yunke.settings.workspace.license.self-host-team.team.description"](options: Readonly<{
         expirationDate: string;
         leftDays: string;
     }>): string;
     /**
       * `Basic version: {{memberCount}} seats. For more, purchase or use activation key.`
       */
-    ["com.affine.settings.workspace.license.self-host-team.free.description"](options: {
+    ["com.yunke.settings.workspace.license.self-host-team.free.description"](options: {
         readonly memberCount: string;
     }): string;
     /**
       * `Seats`
       */
-    ["com.affine.settings.workspace.license.self-host-team.seats"](): string;
+    ["com.yunke.settings.workspace.license.self-host-team.seats"](): string;
     /**
       * `Use purchased key`
       */
-    ["com.affine.settings.workspace.license.self-host-team.use-purchased-key"](): string;
+    ["com.yunke.settings.workspace.license.self-host-team.use-purchased-key"](): string;
     /**
       * `Upload license file`
       */
-    ["com.affine.settings.workspace.license.self-host-team.upload-license-file"](): string;
+    ["com.yunke.settings.workspace.license.self-host-team.upload-license-file"](): string;
     /**
       * `Upload license file locally and verify the license information.`
       */
-    ["com.affine.settings.workspace.license.self-host-team.upload-license-file.description"](): string;
+    ["com.yunke.settings.workspace.license.self-host-team.upload-license-file.description"](): string;
     /**
       * `To purchase a license:`
       */
-    ["com.affine.settings.workspace.license.self-host-team.upload-license-file.tips.title"](): string;
+    ["com.yunke.settings.workspace.license.self-host-team.upload-license-file.tips.title"](): string;
     /**
       * `Workspace id`
       */
-    ["com.affine.settings.workspace.license.self-host-team.upload-license-file.tips.workspace-id"](): string;
+    ["com.yunke.settings.workspace.license.self-host-team.upload-license-file.tips.workspace-id"](): string;
     /**
       * `Click to upload`
       */
-    ["com.affine.settings.workspace.license.self-host-team.upload-license-file.click-to-upload"](): string;
+    ["com.yunke.settings.workspace.license.self-host-team.upload-license-file.click-to-upload"](): string;
     /**
       * `Activation failed`
       */
-    ["com.affine.settings.workspace.license.self-host-team.upload-license-file.failed"](): string;
+    ["com.yunke.settings.workspace.license.self-host-team.upload-license-file.failed"](): string;
     /**
       * `Activation Success`
       */
-    ["com.affine.settings.workspace.license.self-host-team.upload-license-file.success.title"](): string;
+    ["com.yunke.settings.workspace.license.self-host-team.upload-license-file.success.title"](): string;
     /**
       * `License has been successfully applied`
       */
-    ["com.affine.settings.workspace.license.self-host-team.upload-license-file.success.description"](): string;
+    ["com.yunke.settings.workspace.license.self-host-team.upload-license-file.success.description"](): string;
     /**
       * `If you encounter any issues, contact support@toeverything.info.`
       */
-    ["com.affine.settings.workspace.license.self-host-team.upload-license-file.help"](): string;
+    ["com.yunke.settings.workspace.license.self-host-team.upload-license-file.help"](): string;
     /**
       * `Deactivate`
       */
-    ["com.affine.settings.workspace.license.self-host-team.deactivate-license"](): string;
+    ["com.yunke.settings.workspace.license.self-host-team.deactivate-license"](): string;
     /**
       * `Replace your license file`
       */
-    ["com.affine.settings.workspace.license.self-host-team.replace-license.title"](): string;
+    ["com.yunke.settings.workspace.license.self-host-team.replace-license.title"](): string;
     /**
       * `Replace the existing license file with a new, updated version.`
       */
-    ["com.affine.settings.workspace.license.self-host-team.replace-license.description"](): string;
+    ["com.yunke.settings.workspace.license.self-host-team.replace-license.description"](): string;
     /**
       * `Upload license file`
       */
-    ["com.affine.settings.workspace.license.self-host-team.replace-license.upload"](): string;
+    ["com.yunke.settings.workspace.license.self-host-team.replace-license.upload"](): string;
     /**
       * `Buy more seat`
       */
-    ["com.affine.settings.workspace.license.buy-more-seat"](): string;
+    ["com.yunke.settings.workspace.license.buy-more-seat"](): string;
     /**
       * `Activate License`
       */
-    ["com.affine.settings.workspace.license.activate-modal.title"](): string;
+    ["com.yunke.settings.workspace.license.activate-modal.title"](): string;
     /**
       * `Enter license key to activate this self host workspace.`
       */
-    ["com.affine.settings.workspace.license.activate-modal.description"](): string;
+    ["com.yunke.settings.workspace.license.activate-modal.description"](): string;
     /**
       * `License activated successfully.`
       */
-    ["com.affine.settings.workspace.license.activate-success"](): string;
+    ["com.yunke.settings.workspace.license.activate-success"](): string;
     /**
       * `Confirm deactivation?`
       */
-    ["com.affine.settings.workspace.license.deactivate-modal.title"](): string;
+    ["com.yunke.settings.workspace.license.deactivate-modal.title"](): string;
     /**
       * `After deactivation, you will need to upload a new license to continue using team feature`
       */
-    ["com.affine.settings.workspace.license.deactivate-modal.description-license"](): string;
+    ["com.yunke.settings.workspace.license.deactivate-modal.description-license"](): string;
     /**
       * `Manage Payment`
       */
-    ["com.affine.settings.workspace.license.deactivate-modal.manage-payment"](): string;
+    ["com.yunke.settings.workspace.license.deactivate-modal.manage-payment"](): string;
     /**
       * `License deactivated successfully.`
       */
-    ["com.affine.settings.workspace.license.deactivate-success"](): string;
+    ["com.yunke.settings.workspace.license.deactivate-success"](): string;
     /**
       * `Local`
       */
-    ["com.affine.settings.workspace.state.local"](): string;
+    ["com.yunke.settings.workspace.state.local"](): string;
     /**
-      * `Sync with AFFiNE Cloud`
+      * `Sync with YUNKE Cloud`
       */
-    ["com.affine.settings.workspace.state.sync-affine-cloud"](): string;
+    ["com.yunke.settings.workspace.state.sync-yunke-cloud"](): string;
     /**
       * `Self-Hosted Server`
       */
-    ["com.affine.settings.workspace.state.self-hosted"](): string;
+    ["com.yunke.settings.workspace.state.self-hosted"](): string;
     /**
       * `Joined Workspace`
       */
-    ["com.affine.settings.workspace.state.joined"](): string;
+    ["com.yunke.settings.workspace.state.joined"](): string;
     /**
       * `Available Offline`
       */
-    ["com.affine.settings.workspace.state.available-offline"](): string;
+    ["com.yunke.settings.workspace.state.available-offline"](): string;
     /**
       * `Published to Web`
       */
-    ["com.affine.settings.workspace.state.published"](): string;
+    ["com.yunke.settings.workspace.state.published"](): string;
     /**
       * `Team Workspace`
       */
-    ["com.affine.settings.workspace.state.team"](): string;
+    ["com.yunke.settings.workspace.state.team"](): string;
     /**
       * `Properties`
       */
-    ["com.affine.settings.workspace.properties"](): string;
+    ["com.yunke.settings.workspace.properties"](): string;
     /**
       * `Add property`
       */
-    ["com.affine.settings.workspace.properties.add_property"](): string;
+    ["com.yunke.settings.workspace.properties.add_property"](): string;
     /**
       * `All`
       */
-    ["com.affine.settings.workspace.properties.all"](): string;
+    ["com.yunke.settings.workspace.properties.all"](): string;
     /**
       * `Delete property`
       */
-    ["com.affine.settings.workspace.properties.delete-property"](): string;
+    ["com.yunke.settings.workspace.properties.delete-property"](): string;
     /**
       * `Edit property`
       */
-    ["com.affine.settings.workspace.properties.edit-property"](): string;
+    ["com.yunke.settings.workspace.properties.edit-property"](): string;
     /**
       * `General properties`
       */
-    ["com.affine.settings.workspace.properties.general-properties"](): string;
+    ["com.yunke.settings.workspace.properties.general-properties"](): string;
     /**
       * `Properties`
       */
-    ["com.affine.settings.workspace.properties.header.title"](): string;
+    ["com.yunke.settings.workspace.properties.header.title"](): string;
     /**
       * `In use`
       */
-    ["com.affine.settings.workspace.properties.in-use"](): string;
+    ["com.yunke.settings.workspace.properties.in-use"](): string;
     /**
       * `Readonly properties`
       */
-    ["com.affine.settings.workspace.properties.readonly-properties"](): string;
+    ["com.yunke.settings.workspace.properties.readonly-properties"](): string;
     /**
       * `Required properties`
       */
-    ["com.affine.settings.workspace.properties.required-properties"](): string;
+    ["com.yunke.settings.workspace.properties.required-properties"](): string;
     /**
       * `Set as required property`
       */
-    ["com.affine.settings.workspace.properties.set-as-required"](): string;
+    ["com.yunke.settings.workspace.properties.set-as-required"](): string;
     /**
       * `Unused`
       */
-    ["com.affine.settings.workspace.properties.unused"](): string;
+    ["com.yunke.settings.workspace.properties.unused"](): string;
     /**
       * `You can view current workspace's storage and files here.`
       */
-    ["com.affine.settings.workspace.storage.subtitle"](): string;
+    ["com.yunke.settings.workspace.storage.subtitle"](): string;
     /**
-      * `Enable AFFiNE Cloud to publish this workspace`
+      * `Enable YUNKE Cloud to publish this workspace`
       */
-    ["com.affine.settings.workspace.publish-tooltip"](): string;
+    ["com.yunke.settings.workspace.publish-tooltip"](): string;
     /**
       * `Sharing`
       */
-    ["com.affine.settings.workspace.sharing.title"](): string;
+    ["com.yunke.settings.workspace.sharing.title"](): string;
     /**
       * `Allow URL unfurling by Slack & other social apps, even if a doc is only accessible by workspace members.`
       */
-    ["com.affine.settings.workspace.sharing.url-preview.description"](): string;
+    ["com.yunke.settings.workspace.sharing.url-preview.description"](): string;
     /**
       * `Always enable url preview`
       */
-    ["com.affine.settings.workspace.sharing.url-preview.title"](): string;
+    ["com.yunke.settings.workspace.sharing.url-preview.title"](): string;
     /**
-      * `AFFiNE AI`
+      * `YUNKE AI`
       */
-    ["com.affine.settings.workspace.affine-ai.title"](): string;
+    ["com.yunke.settings.workspace.yunke-ai.title"](): string;
     /**
-      * `Allow AFFiNE AI Assistant`
+      * `Allow YUNKE AI Assistant`
       */
-    ["com.affine.settings.workspace.affine-ai.label"](): string;
+    ["com.yunke.settings.workspace.yunke-ai.label"](): string;
     /**
-      * `Allow workspace members to use AFFiNE AI features. This setting doesn't affect billing. Workspace members use AFFiNE AI through their personal accounts.`
+      * `Allow workspace members to use YUNKE AI features. This setting doesn't affect billing. Workspace members use YUNKE AI through their personal accounts.`
       */
-    ["com.affine.settings.workspace.affine-ai.description"](): string;
+    ["com.yunke.settings.workspace.yunke-ai.description"](): string;
     /**
       * `Archived workspaces`
       */
-    ["com.affine.settings.workspace.backup"](): string;
+    ["com.yunke.settings.workspace.backup"](): string;
     /**
       * `Manage archived local workspace files`
       */
-    ["com.affine.settings.workspace.backup.subtitle"](): string;
+    ["com.yunke.settings.workspace.backup.subtitle"](): string;
     /**
       * `No archived workspace files found`
       */
-    ["com.affine.settings.workspace.backup.empty"](): string;
+    ["com.yunke.settings.workspace.backup.empty"](): string;
     /**
       * `Delete archived workspace`
       */
-    ["com.affine.settings.workspace.backup.delete"](): string;
+    ["com.yunke.settings.workspace.backup.delete"](): string;
     /**
       * `Are you sure you want to delete this workspace. This action cannot be undone. Make sure you no longer need them before proceeding.`
       */
-    ["com.affine.settings.workspace.backup.delete.warning"](): string;
+    ["com.yunke.settings.workspace.backup.delete.warning"](): string;
     /**
       * `Workspace backup deleted successfully`
       */
-    ["com.affine.settings.workspace.backup.delete.success"](): string;
+    ["com.yunke.settings.workspace.backup.delete.success"](): string;
     /**
       * `Workspace enabled successfully`
       */
-    ["com.affine.settings.workspace.backup.import.success"](): string;
+    ["com.yunke.settings.workspace.backup.import.success"](): string;
     /**
       * `Enable local workspace`
       */
-    ["com.affine.settings.workspace.backup.import"](): string;
+    ["com.yunke.settings.workspace.backup.import"](): string;
     /**
       * `Open`
       */
-    ["com.affine.settings.workspace.backup.import.success.action"](): string;
+    ["com.yunke.settings.workspace.backup.import.success.action"](): string;
     /**
       * `Deleted on {{date}} at {{time}}`
       */
-    ["com.affine.settings.workspace.backup.delete-at"](options: Readonly<{
+    ["com.yunke.settings.workspace.backup.delete-at"](options: Readonly<{
         date: string;
         time: string;
     }>): string;
     /**
       * `Indexer & Embedding`
       */
-    ["com.affine.settings.workspace.indexer-embedding.title"](): string;
+    ["com.yunke.settings.workspace.indexer-embedding.title"](): string;
     /**
-      * `Manage AFFiNE indexing and AFFiNE AI Embedding for local content processing`
+      * `Manage YUNKE indexing and YUNKE AI Embedding for local content processing`
       */
-    ["com.affine.settings.workspace.indexer-embedding.description"](): string;
+    ["com.yunke.settings.workspace.indexer-embedding.description"](): string;
     /**
       * `Embedding`
       */
-    ["com.affine.settings.workspace.indexer-embedding.embedding.title"](): string;
+    ["com.yunke.settings.workspace.indexer-embedding.embedding.title"](): string;
     /**
       * `Embedding allows AI to retrieve your content. If the indexer uses local settings, it may affect some of the results of the Embedding.`
       */
-    ["com.affine.settings.workspace.indexer-embedding.embedding.description"](): string;
+    ["com.yunke.settings.workspace.indexer-embedding.embedding.description"](): string;
     /**
       * `Only the workspace owner can enable Workspace Embedding.`
       */
-    ["com.affine.settings.workspace.indexer-embedding.embedding.disabled-tooltip"](): string;
+    ["com.yunke.settings.workspace.indexer-embedding.embedding.disabled-tooltip"](): string;
     /**
       * `Select doc`
       */
-    ["com.affine.settings.workspace.indexer-embedding.embedding.select-doc"](): string;
+    ["com.yunke.settings.workspace.indexer-embedding.embedding.select-doc"](): string;
     /**
       * `Upload file`
       */
-    ["com.affine.settings.workspace.indexer-embedding.embedding.upload-file"](): string;
+    ["com.yunke.settings.workspace.indexer-embedding.embedding.upload-file"](): string;
     /**
       * `Workspace Embedding`
       */
-    ["com.affine.settings.workspace.indexer-embedding.embedding.switch.title"](): string;
+    ["com.yunke.settings.workspace.indexer-embedding.embedding.switch.title"](): string;
     /**
       * `AI can call files embedded in the workspace.`
       */
-    ["com.affine.settings.workspace.indexer-embedding.embedding.switch.description"](): string;
+    ["com.yunke.settings.workspace.indexer-embedding.embedding.switch.description"](): string;
     /**
       * `Failed to update workspace doc embedding enabled`
       */
-    ["com.affine.settings.workspace.indexer-embedding.embedding.switch.error"](): string;
+    ["com.yunke.settings.workspace.indexer-embedding.embedding.switch.error"](): string;
     /**
       * `Failed to remove attachment from embedding`
       */
-    ["com.affine.settings.workspace.indexer-embedding.embedding.remove-attachment.error"](): string;
+    ["com.yunke.settings.workspace.indexer-embedding.embedding.remove-attachment.error"](): string;
     /**
       * `Failed to update ignored docs`
       */
-    ["com.affine.settings.workspace.indexer-embedding.embedding.update-ignored-docs.error"](): string;
+    ["com.yunke.settings.workspace.indexer-embedding.embedding.update-ignored-docs.error"](): string;
     /**
       * `Embedding progress`
       */
-    ["com.affine.settings.workspace.indexer-embedding.embedding.progress.title"](): string;
+    ["com.yunke.settings.workspace.indexer-embedding.embedding.progress.title"](): string;
     /**
       * `Syncing`
       */
-    ["com.affine.settings.workspace.indexer-embedding.embedding.progress.syncing"](): string;
+    ["com.yunke.settings.workspace.indexer-embedding.embedding.progress.syncing"](): string;
     /**
       * `Synced`
       */
-    ["com.affine.settings.workspace.indexer-embedding.embedding.progress.synced"](): string;
+    ["com.yunke.settings.workspace.indexer-embedding.embedding.progress.synced"](): string;
     /**
       * `Loading sync status...`
       */
-    ["com.affine.settings.workspace.indexer-embedding.embedding.progress.loading-sync-status"](): string;
+    ["com.yunke.settings.workspace.indexer-embedding.embedding.progress.loading-sync-status"](): string;
     /**
       * `Ignore Docs`
       */
-    ["com.affine.settings.workspace.indexer-embedding.embedding.ignore-docs.title"](): string;
+    ["com.yunke.settings.workspace.indexer-embedding.embedding.ignore-docs.title"](): string;
     /**
       * `The Ignored docs will not be embedded into the current workspace.`
       */
-    ["com.affine.settings.workspace.indexer-embedding.embedding.ignore-docs.description"](): string;
+    ["com.yunke.settings.workspace.indexer-embedding.embedding.ignore-docs.description"](): string;
     /**
       * `Additional attachments`
       */
-    ["com.affine.settings.workspace.indexer-embedding.embedding.additional-attachments.title"](): string;
+    ["com.yunke.settings.workspace.indexer-embedding.embedding.additional-attachments.title"](): string;
     /**
       * `The uploaded file will be embedded in the current workspace.`
       */
-    ["com.affine.settings.workspace.indexer-embedding.embedding.additional-attachments.description"](): string;
+    ["com.yunke.settings.workspace.indexer-embedding.embedding.additional-attachments.description"](): string;
     /**
       * `Remove the attachment from embedding?`
       */
-    ["com.affine.settings.workspace.indexer-embedding.embedding.additional-attachments.remove-attachment.title"](): string;
+    ["com.yunke.settings.workspace.indexer-embedding.embedding.additional-attachments.remove-attachment.title"](): string;
     /**
       * `Attachment will be removed. AI will not continue to extract content from this attachment.`
       */
-    ["com.affine.settings.workspace.indexer-embedding.embedding.additional-attachments.remove-attachment.description"](): string;
+    ["com.yunke.settings.workspace.indexer-embedding.embedding.additional-attachments.remove-attachment.description"](): string;
     /**
       * `Delete File`
       */
-    ["com.affine.settings.workspace.indexer-embedding.embedding.additional-attachments.remove-attachment.tooltip"](): string;
+    ["com.yunke.settings.workspace.indexer-embedding.embedding.additional-attachments.remove-attachment.tooltip"](): string;
     /**
-      * `Sharing doc requires AFFiNE Cloud.`
+      * `Sharing doc requires YUNKE Cloud.`
       */
-    ["com.affine.share-menu.EnableCloudDescription"](): string;
+    ["com.yunke.share-menu.EnableCloudDescription"](): string;
     /**
       * `Share mode`
       */
-    ["com.affine.share-menu.ShareMode"](): string;
+    ["com.yunke.share-menu.ShareMode"](): string;
     /**
       * `Share doc`
       */
-    ["com.affine.share-menu.SharePage"](): string;
+    ["com.yunke.share-menu.SharePage"](): string;
     /**
       * `General access`
       */
-    ["com.affine.share-menu.generalAccess"](): string;
+    ["com.yunke.share-menu.generalAccess"](): string;
     /**
       * `Share via export`
       */
-    ["com.affine.share-menu.ShareViaExport"](): string;
+    ["com.yunke.share-menu.ShareViaExport"](): string;
     /**
       * `Download a static copy of your doc to share with others`
       */
-    ["com.affine.share-menu.ShareViaExportDescription"](): string;
+    ["com.yunke.share-menu.ShareViaExportDescription"](): string;
     /**
       * `Print a paper copy`
       */
-    ["com.affine.share-menu.ShareViaPrintDescription"](): string;
+    ["com.yunke.share-menu.ShareViaPrintDescription"](): string;
     /**
       * `Share with link`
       */
-    ["com.affine.share-menu.ShareWithLink"](): string;
+    ["com.yunke.share-menu.ShareWithLink"](): string;
     /**
       * `Create a link you can easily share with anyone. The visitors will open your doc in the form od a document`
       */
-    ["com.affine.share-menu.ShareWithLinkDescription"](): string;
+    ["com.yunke.share-menu.ShareWithLinkDescription"](): string;
     /**
       * `Shared doc`
       */
-    ["com.affine.share-menu.SharedPage"](): string;
+    ["com.yunke.share-menu.SharedPage"](): string;
     /**
       * `Copy Link`
       */
-    ["com.affine.share-menu.copy"](): string;
+    ["com.yunke.share-menu.copy"](): string;
     /**
       * `Copy private link`
       */
-    ["com.affine.share-menu.copy-private-link"](): string;
+    ["com.yunke.share-menu.copy-private-link"](): string;
     /**
       * `Copy Link to Selected Block`
       */
-    ["com.affine.share-menu.copy.block"](): string;
+    ["com.yunke.share-menu.copy.block"](): string;
     /**
       * `Copy Link to Edgeless Mode`
       */
-    ["com.affine.share-menu.copy.edgeless"](): string;
+    ["com.yunke.share-menu.copy.edgeless"](): string;
     /**
       * `Copy Link to Selected Frame`
       */
-    ["com.affine.share-menu.copy.frame"](): string;
+    ["com.yunke.share-menu.copy.frame"](): string;
     /**
       * `Copy Link to Page Mode`
       */
-    ["com.affine.share-menu.copy.page"](): string;
+    ["com.yunke.share-menu.copy.page"](): string;
     /**
       * `You can share this document with link.`
       */
-    ["com.affine.share-menu.create-public-link.notification.success.message"](): string;
+    ["com.yunke.share-menu.create-public-link.notification.success.message"](): string;
     /**
       * `Public link created`
       */
-    ["com.affine.share-menu.create-public-link.notification.success.title"](): string;
+    ["com.yunke.share-menu.create-public-link.notification.success.title"](): string;
     /**
       * `Please try again later.`
       */
-    ["com.affine.share-menu.disable-publish-link.notification.fail.message"](): string;
+    ["com.yunke.share-menu.disable-publish-link.notification.fail.message"](): string;
     /**
       * `Failed to disable public link`
       */
-    ["com.affine.share-menu.disable-publish-link.notification.fail.title"](): string;
+    ["com.yunke.share-menu.disable-publish-link.notification.fail.title"](): string;
     /**
       * `This doc is no longer shared publicly.`
       */
-    ["com.affine.share-menu.disable-publish-link.notification.success.message"](): string;
+    ["com.yunke.share-menu.disable-publish-link.notification.success.message"](): string;
     /**
       * `Public link disabled`
       */
-    ["com.affine.share-menu.disable-publish-link.notification.success.title"](): string;
+    ["com.yunke.share-menu.disable-publish-link.notification.success.title"](): string;
     /**
       * `Manage workspace members`
       */
-    ["com.affine.share-menu.navigate.workspace"](): string;
+    ["com.yunke.share-menu.navigate.workspace"](): string;
     /**
       * `Anyone with the link`
       */
-    ["com.affine.share-menu.option.link.label"](): string;
+    ["com.yunke.share-menu.option.link.label"](): string;
     /**
       * `No access`
       */
-    ["com.affine.share-menu.option.link.no-access"](): string;
+    ["com.yunke.share-menu.option.link.no-access"](): string;
     /**
       * `Only workspace members can access this link`
       */
-    ["com.affine.share-menu.option.link.no-access.description"](): string;
+    ["com.yunke.share-menu.option.link.no-access.description"](): string;
     /**
       * `Read only`
       */
-    ["com.affine.share-menu.option.link.readonly"](): string;
+    ["com.yunke.share-menu.option.link.readonly"](): string;
     /**
       * `Anyone can access this link`
       */
-    ["com.affine.share-menu.option.link.readonly.description"](): string;
+    ["com.yunke.share-menu.option.link.readonly.description"](): string;
     /**
       * `Can manage`
       */
-    ["com.affine.share-menu.option.permission.can-manage"](): string;
+    ["com.yunke.share-menu.option.permission.can-manage"](): string;
     /**
       * `Can edit`
       */
-    ["com.affine.share-menu.option.permission.can-edit"](): string;
+    ["com.yunke.share-menu.option.permission.can-edit"](): string;
     /**
       * `Can read`
       */
-    ["com.affine.share-menu.option.permission.can-read"](): string;
+    ["com.yunke.share-menu.option.permission.can-read"](): string;
     /**
       * `No access`
       */
-    ["com.affine.share-menu.option.permission.no-access"](): string;
+    ["com.yunke.share-menu.option.permission.no-access"](): string;
     /**
       * `Members in workspace`
       */
-    ["com.affine.share-menu.option.permission.label"](): string;
+    ["com.yunke.share-menu.option.permission.label"](): string;
     /**
       * `Workspace admins and owner automatically have Can manage permissions.`
       */
-    ["com.affine.share-menu.option.permission.tips"](): string;
+    ["com.yunke.share-menu.option.permission.tips"](): string;
     /**
       * `Publish to web`
       */
-    ["com.affine.share-menu.publish-to-web"](): string;
+    ["com.yunke.share-menu.publish-to-web"](): string;
     /**
       * `Share privately`
       */
-    ["com.affine.share-menu.share-privately"](): string;
+    ["com.yunke.share-menu.share-privately"](): string;
     /**
       * `Share`
       */
-    ["com.affine.share-menu.shareButton"](): string;
+    ["com.yunke.share-menu.shareButton"](): string;
     /**
       * `Shared`
       */
-    ["com.affine.share-menu.sharedButton"](): string;
+    ["com.yunke.share-menu.sharedButton"](): string;
     /**
       * `{{member1}} and {{member2}} are in this doc`
       */
-    ["com.affine.share-menu.member-management.member-count-2"](options: Readonly<{
+    ["com.yunke.share-menu.member-management.member-count-2"](options: Readonly<{
         member1: string;
         member2: string;
     }>): string;
     /**
       * `{{member1}}, {{member2}} and {{member3}} are in this doc`
       */
-    ["com.affine.share-menu.member-management.member-count-3"](options: Readonly<{
+    ["com.yunke.share-menu.member-management.member-count-3"](options: Readonly<{
         member1: string;
         member2: string;
         member3: string;
@@ -6531,7 +6531,7 @@ export function useAFFiNEI18N(): {
     /**
       * `{{member1}}, {{member2}} and {{memberCount}} others`
       */
-    ["com.affine.share-menu.member-management.member-count-more"](options: Readonly<{
+    ["com.yunke.share-menu.member-management.member-count-more"](options: Readonly<{
         member1: string;
         member2: string;
         memberCount: string;
@@ -6539,681 +6539,681 @@ export function useAFFiNEI18N(): {
     /**
       * `Remove`
       */
-    ["com.affine.share-menu.member-management.remove"](): string;
+    ["com.yunke.share-menu.member-management.remove"](): string;
     /**
       * `Set as owner`
       */
-    ["com.affine.share-menu.member-management.set-as-owner"](): string;
+    ["com.yunke.share-menu.member-management.set-as-owner"](): string;
     /**
       * `Make this person the owner?`
       */
-    ["com.affine.share-menu.member-management.set-as-owner.confirm.title"](): string;
+    ["com.yunke.share-menu.member-management.set-as-owner.confirm.title"](): string;
     /**
       * `The new owner will be effective immediately, and you might lose access to this doc if other users remove you, please confirm.`
       */
-    ["com.affine.share-menu.member-management.set-as-owner.confirm.description"](): string;
+    ["com.yunke.share-menu.member-management.set-as-owner.confirm.description"](): string;
     /**
       * `Permission updated`
       */
-    ["com.affine.share-menu.member-management.update-success"](): string;
+    ["com.yunke.share-menu.member-management.update-success"](): string;
     /**
       * `Failed to update permission`
       */
-    ["com.affine.share-menu.member-management.update-fail"](): string;
+    ["com.yunke.share-menu.member-management.update-fail"](): string;
     /**
       * `{{memberCount}} collaborators in the doc`
       */
-    ["com.affine.share-menu.member-management.header"](options: {
+    ["com.yunke.share-menu.member-management.header"](options: {
         readonly memberCount: string;
     }): string;
     /**
       * `Add collaborators`
       */
-    ["com.affine.share-menu.member-management.add-collaborators"](): string;
+    ["com.yunke.share-menu.member-management.add-collaborators"](): string;
     /**
       * `Send invite`
       */
-    ["com.affine.share-menu.invite-editor.header"](): string;
+    ["com.yunke.share-menu.invite-editor.header"](): string;
     /**
       * `Manage members`
       */
-    ["com.affine.share-menu.invite-editor.manage-members"](): string;
+    ["com.yunke.share-menu.invite-editor.manage-members"](): string;
     /**
       * `Invite`
       */
-    ["com.affine.share-menu.invite-editor.invite"](): string;
+    ["com.yunke.share-menu.invite-editor.invite"](): string;
     /**
       * `No results found`
       */
-    ["com.affine.share-menu.invite-editor.no-found"](): string;
+    ["com.yunke.share-menu.invite-editor.no-found"](): string;
     /**
       * `Invite other members`
       */
-    ["com.affine.share-menu.invite-editor.placeholder"](): string;
+    ["com.yunke.share-menu.invite-editor.placeholder"](): string;
     /**
       * `Notify via Email`
       */
-    ["com.affine.share-menu.invite-editor.sent-email"](): string;
+    ["com.yunke.share-menu.invite-editor.sent-email"](): string;
     /**
       * `Permission not available in Free plan`
       */
-    ["com.affine.share-menu.paywall.owner.title"](): string;
+    ["com.yunke.share-menu.paywall.owner.title"](): string;
     /**
       * `Upgrade to Pro or higher to unlock permission settings for this doc.`
       */
-    ["com.affine.share-menu.paywall.owner.description"](): string;
+    ["com.yunke.share-menu.paywall.owner.description"](): string;
     /**
       * `Upgrade`
       */
-    ["com.affine.share-menu.paywall.owner.confirm"](): string;
+    ["com.yunke.share-menu.paywall.owner.confirm"](): string;
     /**
       * `Permission requires a workspace upgrade`
       */
-    ["com.affine.share-menu.paywall.member.title"](): string;
+    ["com.yunke.share-menu.paywall.member.title"](): string;
     /**
       * `Ask your workspace owner to upgrade to Pro or higher to enable permissions.`
       */
-    ["com.affine.share-menu.paywall.member.description"](): string;
+    ["com.yunke.share-menu.paywall.member.description"](): string;
     /**
       * `Got it`
       */
-    ["com.affine.share-menu.paywall.member.confirm"](): string;
+    ["com.yunke.share-menu.paywall.member.confirm"](): string;
     /**
       * `Built with`
       */
-    ["com.affine.share-page.footer.built-with"](): string;
+    ["com.yunke.share-page.footer.built-with"](): string;
     /**
       * `Create with`
       */
-    ["com.affine.share-page.footer.create-with"](): string;
+    ["com.yunke.share-page.footer.create-with"](): string;
     /**
-      * `Empower your sharing with AFFiNE Cloud: One-click doc sharing`
+      * `Empower your sharing with YUNKE Cloud: One-click doc sharing`
       */
-    ["com.affine.share-page.footer.description"](): string;
+    ["com.yunke.share-page.footer.description"](): string;
     /**
       * `Get started for free`
       */
-    ["com.affine.share-page.footer.get-started"](): string;
+    ["com.yunke.share-page.footer.get-started"](): string;
     /**
       * `Use This Template`
       */
-    ["com.affine.share-page.header.import-template"](): string;
+    ["com.yunke.share-page.header.import-template"](): string;
     /**
       * `Login or Sign Up`
       */
-    ["com.affine.share-page.header.login"](): string;
+    ["com.yunke.share-page.header.login"](): string;
     /**
       * `Present`
       */
-    ["com.affine.share-page.header.present"](): string;
+    ["com.yunke.share-page.header.present"](): string;
     /**
       * `Edgeless`
       */
-    ["com.affine.shortcutsTitle.edgeless"](): string;
+    ["com.yunke.shortcutsTitle.edgeless"](): string;
     /**
       * `General`
       */
-    ["com.affine.shortcutsTitle.general"](): string;
+    ["com.yunke.shortcutsTitle.general"](): string;
     /**
       * `Markdown syntax`
       */
-    ["com.affine.shortcutsTitle.markdownSyntax"](): string;
+    ["com.yunke.shortcutsTitle.markdownSyntax"](): string;
     /**
       * `Page`
       */
-    ["com.affine.shortcutsTitle.page"](): string;
+    ["com.yunke.shortcutsTitle.page"](): string;
     /**
       * `Collapse sidebar`
       */
-    ["com.affine.sidebarSwitch.collapse"](): string;
+    ["com.yunke.sidebarSwitch.collapse"](): string;
     /**
       * `Expand sidebar`
       */
-    ["com.affine.sidebarSwitch.expand"](): string;
+    ["com.yunke.sidebarSwitch.expand"](): string;
     /**
       * `Snapshot Imp. & Exp.`
       */
-    ["com.affine.snapshot.import-export.enable"](): string;
+    ["com.yunke.snapshot.import-export.enable"](): string;
     /**
       * `Once enabled you can find the Snapshot Export Import option in the document's More menu.`
       */
-    ["com.affine.snapshot.import-export.enable.desc"](): string;
+    ["com.yunke.snapshot.import-export.enable.desc"](): string;
     /**
       * `Maybe later`
       */
-    ["com.affine.star-affine.cancel"](): string;
+    ["com.yunke.star-yunke.cancel"](): string;
     /**
       * `Star on GitHub`
       */
-    ["com.affine.star-affine.confirm"](): string;
+    ["com.yunke.star-yunke.confirm"](): string;
     /**
       * `Are you finding our app useful and enjoyable? We'd love your support to keep improving! A great way to help us out is by giving us a star on GitHub. This simple action can make a big difference and helps us continue to deliver the best experience for you.`
       */
-    ["com.affine.star-affine.description"](): string;
+    ["com.yunke.star-yunke.description"](): string;
     /**
       * `Star us on GitHub`
       */
-    ["com.affine.star-affine.title"](): string;
+    ["com.yunke.star-yunke.title"](): string;
     /**
       * `Change plan`
       */
-    ["com.affine.storage.change-plan"](): string;
+    ["com.yunke.storage.change-plan"](): string;
     /**
       * `You have reached the maximum capacity limit for your current account`
       */
-    ["com.affine.storage.maximum-tips"](): string;
+    ["com.yunke.storage.maximum-tips"](): string;
     /**
       * `Pro users will have unlimited storage capacity during the alpha test period of the team version`
       */
-    ["com.affine.storage.maximum-tips.pro"](): string;
+    ["com.yunke.storage.maximum-tips.pro"](): string;
     /**
       * `Plan`
       */
-    ["com.affine.storage.plan"](): string;
+    ["com.yunke.storage.plan"](): string;
     /**
-      * `AFFiNE Cloud storage`
+      * `YUNKE Cloud storage`
       */
-    ["com.affine.storage.title"](): string;
+    ["com.yunke.storage.title"](): string;
     /**
       * `Upgrade`
       */
-    ["com.affine.storage.upgrade"](): string;
+    ["com.yunke.storage.upgrade"](): string;
     /**
       * `Space used`
       */
-    ["com.affine.storage.used.hint"](): string;
+    ["com.yunke.storage.used.hint"](): string;
     /**
       * `Syncing`
       */
-    ["com.affine.syncing"](): string;
+    ["com.yunke.syncing"](): string;
     /**
       * `{{count}} doc`
     
-      * - com.affine.tags.count_one: `{{count}} doc`
+      * - com.yunke.tags.count_one: `{{count}} doc`
     
-      * - com.affine.tags.count_other: `{{count}} docs`
+      * - com.yunke.tags.count_other: `{{count}} docs`
     
-      * - com.affine.tags.count_zero: `{{count}} doc`
+      * - com.yunke.tags.count_zero: `{{count}} doc`
       */
-    ["com.affine.tags.count"](options: {
+    ["com.yunke.tags.count"](options: {
         readonly count: string | number | bigint;
     }): string;
     /**
       * `{{count}} doc`
       */
-    ["com.affine.tags.count_one"](options: {
+    ["com.yunke.tags.count_one"](options: {
         readonly count: string | number | bigint;
     }): string;
     /**
       * `{{count}} docs`
       */
-    ["com.affine.tags.count_other"](options: {
+    ["com.yunke.tags.count_other"](options: {
         readonly count: string | number | bigint;
     }): string;
     /**
       * `{{count}} doc`
       */
-    ["com.affine.tags.count_zero"](options: {
+    ["com.yunke.tags.count_zero"](options: {
         readonly count: string | number | bigint;
     }): string;
     /**
       * `Type tag name here...`
       */
-    ["com.affine.tags.create-tag.placeholder"](): string;
+    ["com.yunke.tags.create-tag.placeholder"](): string;
     /**
       * `Tag already exists`
       */
-    ["com.affine.tags.create-tag.toast.exist"](): string;
+    ["com.yunke.tags.create-tag.toast.exist"](): string;
     /**
       * `Tag created`
       */
-    ["com.affine.tags.create-tag.toast.success"](): string;
+    ["com.yunke.tags.create-tag.toast.success"](): string;
     /**
       * `Tag deleted`
       */
-    ["com.affine.tags.delete-tags.toast"](): string;
+    ["com.yunke.tags.delete-tags.toast"](): string;
     /**
       * `Tag updated`
       */
-    ["com.affine.tags.edit-tag.toast.success"](): string;
+    ["com.yunke.tags.edit-tag.toast.success"](): string;
     /**
       * `New tag`
       */
-    ["com.affine.tags.empty.new-tag-button"](): string;
+    ["com.yunke.tags.empty.new-tag-button"](): string;
     /**
       * `Enable telemetry`
       */
-    ["com.affine.telemetry.enable"](): string;
+    ["com.yunke.telemetry.enable"](): string;
     /**
       * `Telemetry is a feature that allows us to collect data on how you use the app. This data helps us improve the app and provide better features.`
       */
-    ["com.affine.telemetry.enable.desc"](): string;
+    ["com.yunke.telemetry.enable.desc"](): string;
     /**
       * `Dark`
       */
-    ["com.affine.themeSettings.dark"](): string;
+    ["com.yunke.themeSettings.dark"](): string;
     /**
       * `Light`
       */
-    ["com.affine.themeSettings.light"](): string;
+    ["com.yunke.themeSettings.light"](): string;
     /**
       * `System`
       */
-    ["com.affine.themeSettings.system"](): string;
+    ["com.yunke.themeSettings.system"](): string;
     /**
       * `Auto`
       */
-    ["com.affine.themeSettings.auto"](): string;
+    ["com.yunke.themeSettings.auto"](): string;
     /**
       * `now`
       */
-    ["com.affine.time.now"](): string;
+    ["com.yunke.time.now"](): string;
     /**
       * `this month`
       */
-    ["com.affine.time.this-mouth"](): string;
+    ["com.yunke.time.this-mouth"](): string;
     /**
       * `this week`
       */
-    ["com.affine.time.this-week"](): string;
+    ["com.yunke.time.this-week"](): string;
     /**
       * `this year`
       */
-    ["com.affine.time.this-year"](): string;
+    ["com.yunke.time.this-year"](): string;
     /**
       * `today`
       */
-    ["com.affine.time.today"](): string;
+    ["com.yunke.time.today"](): string;
     /**
       * `Successfully added linked doc`
       */
-    ["com.affine.toastMessage.addLinkedPage"](): string;
+    ["com.yunke.toastMessage.addLinkedPage"](): string;
     /**
       * `Added to favorites`
       */
-    ["com.affine.toastMessage.addedFavorites"](): string;
+    ["com.yunke.toastMessage.addedFavorites"](): string;
     /**
       * `Edgeless mode`
       */
-    ["com.affine.toastMessage.edgelessMode"](): string;
+    ["com.yunke.toastMessage.edgelessMode"](): string;
     /**
       * `Moved to trash`
       */
-    ["com.affine.toastMessage.movedTrash"](): string;
+    ["com.yunke.toastMessage.movedTrash"](): string;
     /**
       * `Page Mode`
       */
-    ["com.affine.toastMessage.pageMode"](): string;
+    ["com.yunke.toastMessage.pageMode"](): string;
     /**
       * `Default mode has changed`
       */
-    ["com.affine.toastMessage.defaultMode.page.title"](): string;
+    ["com.yunke.toastMessage.defaultMode.page.title"](): string;
     /**
       * `The default mode for this document has been changed to Page mode`
       */
-    ["com.affine.toastMessage.defaultMode.page.message"](): string;
+    ["com.yunke.toastMessage.defaultMode.page.message"](): string;
     /**
       * `Default mode has changed`
       */
-    ["com.affine.toastMessage.defaultMode.edgeless.title"](): string;
+    ["com.yunke.toastMessage.defaultMode.edgeless.title"](): string;
     /**
       * `The default mode for this document has been changed to Edgeless mode`
       */
-    ["com.affine.toastMessage.defaultMode.edgeless.message"](): string;
+    ["com.yunke.toastMessage.defaultMode.edgeless.message"](): string;
     /**
       * `Permanently deleted`
       */
-    ["com.affine.toastMessage.permanentlyDeleted"](): string;
+    ["com.yunke.toastMessage.permanentlyDeleted"](): string;
     /**
       * `Removed from favourites`
       */
-    ["com.affine.toastMessage.removedFavorites"](): string;
+    ["com.yunke.toastMessage.removedFavorites"](): string;
     /**
       * `Successfully renamed`
       */
-    ["com.affine.toastMessage.rename"](): string;
+    ["com.yunke.toastMessage.rename"](): string;
     /**
       * `{{title}} restored`
       */
-    ["com.affine.toastMessage.restored"](options: {
+    ["com.yunke.toastMessage.restored"](options: {
         readonly title: string;
     }): string;
     /**
       * `Successfully deleted`
       */
-    ["com.affine.toastMessage.successfullyDeleted"](): string;
+    ["com.yunke.toastMessage.successfullyDeleted"](): string;
     /**
       * `Today`
       */
-    ["com.affine.today"](): string;
+    ["com.yunke.today"](): string;
     /**
       * `Tomorrow`
       */
-    ["com.affine.tomorrow"](): string;
+    ["com.yunke.tomorrow"](): string;
     /**
       * `Last {{weekday}}`
       */
-    ["com.affine.last-week"](options: {
+    ["com.yunke.last-week"](options: {
         readonly weekday: string;
     }): string;
     /**
       * `Next {{weekday}}`
       */
-    ["com.affine.next-week"](options: {
+    ["com.yunke.next-week"](options: {
         readonly weekday: string;
     }): string;
     /**
       * `Limited to view-only on mobile.`
       */
-    ["com.affine.top-tip.mobile"](): string;
+    ["com.yunke.top-tip.mobile"](): string;
     /**
       * `Delete`
       */
-    ["com.affine.trashOperation.delete"](): string;
+    ["com.yunke.trashOperation.delete"](): string;
     /**
       * `Once deleted, you can't undo this action. Do you confirm?`
       */
-    ["com.affine.trashOperation.delete.description"](): string;
+    ["com.yunke.trashOperation.delete.description"](): string;
     /**
       * `Permanently delete`
       */
-    ["com.affine.trashOperation.delete.title"](): string;
+    ["com.yunke.trashOperation.delete.title"](): string;
     /**
       * `Once deleted, you can't undo this action. Do you confirm?`
       */
-    ["com.affine.trashOperation.deleteDescription"](): string;
+    ["com.yunke.trashOperation.deleteDescription"](): string;
     /**
       * `Delete permanently`
       */
-    ["com.affine.trashOperation.deletePermanently"](): string;
+    ["com.yunke.trashOperation.deletePermanently"](): string;
     /**
       * `Restore it`
       */
-    ["com.affine.trashOperation.restoreIt"](): string;
+    ["com.yunke.trashOperation.restoreIt"](): string;
     /**
       * `Refresh current page`
       */
-    ["com.affine.upgrade.button-text.done"](): string;
+    ["com.yunke.upgrade.button-text.done"](): string;
     /**
       * `Data upgrade error`
       */
-    ["com.affine.upgrade.button-text.error"](): string;
+    ["com.yunke.upgrade.button-text.error"](): string;
     /**
       * `Upgrade workspace data`
       */
-    ["com.affine.upgrade.button-text.pending"](): string;
+    ["com.yunke.upgrade.button-text.pending"](): string;
     /**
       * `Upgrading`
       */
-    ["com.affine.upgrade.button-text.upgrading"](): string;
+    ["com.yunke.upgrade.button-text.upgrading"](): string;
     /**
       * `After upgrading the workspace data, please refresh the page to see the changes.`
       */
-    ["com.affine.upgrade.tips.done"](): string;
+    ["com.yunke.upgrade.tips.done"](): string;
     /**
       * `We encountered some errors while upgrading the workspace data.`
       */
-    ["com.affine.upgrade.tips.error"](): string;
+    ["com.yunke.upgrade.tips.error"](): string;
     /**
-      * `To ensure compatibility with the updated AFFiNE client, please upgrade your data by clicking the "Upgrade workspace data" button below.`
+      * `To ensure compatibility with the updated YUNKE client, please upgrade your data by clicking the "Upgrade workspace data" button below.`
       */
-    ["com.affine.upgrade.tips.normal"](): string;
+    ["com.yunke.upgrade.tips.normal"](): string;
     /**
       * `AI usage`
       */
-    ["com.affine.user-info.usage.ai"](): string;
+    ["com.yunke.user-info.usage.ai"](): string;
     /**
       * `Cloud storage`
       */
-    ["com.affine.user-info.usage.cloud"](): string;
+    ["com.yunke.user-info.usage.cloud"](): string;
     /**
       * `Close`
       */
-    ["com.affine.workbench.split-view-menu.close"](): string;
+    ["com.yunke.workbench.split-view-menu.close"](): string;
     /**
       * `Full screen`
       */
-    ["com.affine.workbench.split-view-menu.full-screen"](): string;
+    ["com.yunke.workbench.split-view-menu.full-screen"](): string;
     /**
       * `Solo view`
       */
-    ["com.affine.workbench.split-view-menu.keep-this-one"](): string;
+    ["com.yunke.workbench.split-view-menu.keep-this-one"](): string;
     /**
       * `Move left`
       */
-    ["com.affine.workbench.split-view-menu.move-left"](): string;
+    ["com.yunke.workbench.split-view-menu.move-left"](): string;
     /**
       * `Move right`
       */
-    ["com.affine.workbench.split-view-menu.move-right"](): string;
+    ["com.yunke.workbench.split-view-menu.move-right"](): string;
     /**
       * `Open in split view`
       */
-    ["com.affine.workbench.split-view.page-menu-open"](): string;
+    ["com.yunke.workbench.split-view.page-menu-open"](): string;
     /**
       * `Open in new tab`
       */
-    ["com.affine.workbench.tab.page-menu-open"](): string;
+    ["com.yunke.workbench.tab.page-menu-open"](): string;
     /**
       * `You cannot delete the last workspace`
       */
-    ["com.affine.workspace.cannot-delete"](): string;
+    ["com.yunke.workspace.cannot-delete"](): string;
     /**
       * `Cloud workspaces`
       */
-    ["com.affine.workspace.cloud"](): string;
+    ["com.yunke.workspace.cloud"](): string;
     /**
       * `Sign out`
       */
-    ["com.affine.workspace.cloud.account.logout"](): string;
+    ["com.yunke.workspace.cloud.account.logout"](): string;
     /**
       * `Account settings`
       */
-    ["com.affine.workspace.cloud.account.settings"](): string;
+    ["com.yunke.workspace.cloud.account.settings"](): string;
     /**
       * `Admin panel`
       */
-    ["com.affine.workspace.cloud.account.admin"](): string;
+    ["com.yunke.workspace.cloud.account.admin"](): string;
     /**
       * `Team owner`
       */
-    ["com.affine.workspace.cloud.account.team.owner"](): string;
+    ["com.yunke.workspace.cloud.account.team.owner"](): string;
     /**
       * `Team member`
       */
-    ["com.affine.workspace.cloud.account.team.member"](): string;
+    ["com.yunke.workspace.cloud.account.team.member"](): string;
     /**
       * `Multiple teams`
       */
-    ["com.affine.workspace.cloud.account.team.multi"](): string;
+    ["com.yunke.workspace.cloud.account.team.multi"](): string;
     /**
       * `Click to open workspace`
       */
-    ["com.affine.workspace.cloud.account.team.tips-1"](): string;
+    ["com.yunke.workspace.cloud.account.team.tips-1"](): string;
     /**
       * `Click to open workspace list`
       */
-    ["com.affine.workspace.cloud.account.team.tips-2"](): string;
+    ["com.yunke.workspace.cloud.account.team.tips-2"](): string;
     /**
       * `Sign up/ Sign in`
       */
-    ["com.affine.workspace.cloud.auth"](): string;
+    ["com.yunke.workspace.cloud.auth"](): string;
     /**
-      * `Sync with AFFiNE Cloud`
+      * `Sync with YUNKE Cloud`
       */
-    ["com.affine.workspace.cloud.description"](): string;
+    ["com.yunke.workspace.cloud.description"](): string;
     /**
       * `Join workspace`
       */
-    ["com.affine.workspace.cloud.join"](): string;
+    ["com.yunke.workspace.cloud.join"](): string;
     /**
       * `Cloud sync`
       */
-    ["com.affine.workspace.cloud.sync"](): string;
+    ["com.yunke.workspace.cloud.sync"](): string;
     /**
       * `Failed to enable Cloud, please try again.`
       */
-    ["com.affine.workspace.enable-cloud.failed"](): string;
+    ["com.yunke.workspace.enable-cloud.failed"](): string;
     /**
       * `Local workspaces`
       */
-    ["com.affine.workspace.local"](): string;
+    ["com.yunke.workspace.local"](): string;
     /**
       * `Import workspace`
       */
-    ["com.affine.workspace.local.import"](): string;
+    ["com.yunke.workspace.local.import"](): string;
     /**
       * `Cancel`
       */
-    ["com.affine.workspaceDelete.button.cancel"](): string;
+    ["com.yunke.workspaceDelete.button.cancel"](): string;
     /**
       * `Delete`
       */
-    ["com.affine.workspaceDelete.button.delete"](): string;
+    ["com.yunke.workspaceDelete.button.delete"](): string;
     /**
       * `Please type workspace name to confirm`
       */
-    ["com.affine.workspaceDelete.placeholder"](): string;
+    ["com.yunke.workspaceDelete.placeholder"](): string;
     /**
       * `Delete workspace`
       */
-    ["com.affine.workspaceDelete.title"](): string;
+    ["com.yunke.workspaceDelete.title"](): string;
     /**
       * `Create workspace`
       */
-    ["com.affine.workspaceList.addWorkspace.create"](): string;
+    ["com.yunke.workspaceList.addWorkspace.create"](): string;
     /**
       * `Create cloud workspace`
       */
-    ["com.affine.workspaceList.addWorkspace.create-cloud"](): string;
+    ["com.yunke.workspaceList.addWorkspace.create-cloud"](): string;
     /**
       * `Cloud sync`
       */
-    ["com.affine.workspaceList.workspaceListType.cloud"](): string;
+    ["com.yunke.workspaceList.workspaceListType.cloud"](): string;
     /**
       * `Local storage`
       */
-    ["com.affine.workspaceList.workspaceListType.local"](): string;
+    ["com.yunke.workspaceList.workspaceListType.local"](): string;
     /**
       * `Add Server`
       */
-    ["com.affine.workspaceList.addServer"](): string;
+    ["com.yunke.workspaceList.addServer"](): string;
     /**
       * `All docs`
       */
-    ["com.affine.workspaceSubPath.all"](): string;
+    ["com.yunke.workspaceSubPath.all"](): string;
     /**
       * `Trash`
       */
-    ["com.affine.workspaceSubPath.trash"](): string;
+    ["com.yunke.workspaceSubPath.trash"](): string;
     /**
       * `Deleted docs will appear here.`
       */
-    ["com.affine.workspaceSubPath.trash.empty-description"](): string;
+    ["com.yunke.workspaceSubPath.trash.empty-description"](): string;
     /**
       * `Write with a blank page`
       */
-    ["com.affine.write_with_a_blank_page"](): string;
+    ["com.yunke.write_with_a_blank_page"](): string;
     /**
       * `Yesterday`
       */
-    ["com.affine.yesterday"](): string;
+    ["com.yunke.yesterday"](): string;
     /**
       * `Inactive`
       */
-    ["com.affine.inactive"](): string;
+    ["com.yunke.inactive"](): string;
     /**
       * `Inactive member`
       */
-    ["com.affine.inactive-member"](): string;
+    ["com.yunke.inactive-member"](): string;
     /**
       * `Inactive workspace`
       */
-    ["com.affine.inactive-workspace"](): string;
+    ["com.yunke.inactive-workspace"](): string;
     /**
       * `Display Properties`
       */
-    ["com.affine.all-docs.display.properties"](): string;
+    ["com.yunke.all-docs.display.properties"](): string;
     /**
       * `List view options`
       */
-    ["com.affine.all-docs.display.list-view"](): string;
+    ["com.yunke.all-docs.display.list-view"](): string;
     /**
       * `Icon`
       */
-    ["com.affine.all-docs.display.list-view.icon"](): string;
+    ["com.yunke.all-docs.display.list-view.icon"](): string;
     /**
       * `Body`
       */
-    ["com.affine.all-docs.display.list-view.body"](): string;
+    ["com.yunke.all-docs.display.list-view.body"](): string;
     /**
       * `Quick actions`
       */
-    ["com.affine.all-docs.quick-actions"](): string;
+    ["com.yunke.all-docs.quick-actions"](): string;
     /**
       * `Favorite`
       */
-    ["com.affine.all-docs.quick-action.favorite"](): string;
+    ["com.yunke.all-docs.quick-action.favorite"](): string;
     /**
       * `Move to trash`
       */
-    ["com.affine.all-docs.quick-action.trash"](): string;
+    ["com.yunke.all-docs.quick-action.trash"](): string;
     /**
       * `Open in split view`
       */
-    ["com.affine.all-docs.quick-action.split"](): string;
+    ["com.yunke.all-docs.quick-action.split"](): string;
     /**
       * `Open in new tab`
       */
-    ["com.affine.all-docs.quick-action.tab"](): string;
+    ["com.yunke.all-docs.quick-action.tab"](): string;
     /**
       * `Select checkbox`
       */
-    ["com.affine.all-docs.quick-action.select"](): string;
+    ["com.yunke.all-docs.quick-action.select"](): string;
     /**
       * `Delete permanently`
       */
-    ["com.affine.all-docs.quick-action.delete-permanently"](): string;
+    ["com.yunke.all-docs.quick-action.delete-permanently"](): string;
     /**
       * `Restore`
       */
-    ["com.affine.all-docs.quick-action.restore"](): string;
+    ["com.yunke.all-docs.quick-action.restore"](): string;
     /**
       * `All`
       */
-    ["com.affine.all-docs.pinned-collection.all"](): string;
+    ["com.yunke.all-docs.pinned-collection.all"](): string;
     /**
       * `Edit collection rules`
       */
-    ["com.affine.all-docs.pinned-collection.edit"](): string;
+    ["com.yunke.all-docs.pinned-collection.edit"](): string;
     /**
       * `Template`
       */
-    ["com.affine.all-docs.group.is-template"](): string;
+    ["com.yunke.all-docs.group.is-template"](): string;
     /**
       * `Not Template`
       */
-    ["com.affine.all-docs.group.is-not-template"](): string;
+    ["com.yunke.all-docs.group.is-not-template"](): string;
     /**
       * `Journal`
       */
-    ["com.affine.all-docs.group.is-journal"](): string;
+    ["com.yunke.all-docs.group.is-journal"](): string;
     /**
       * `Not Journal`
       */
-    ["com.affine.all-docs.group.is-not-journal"](): string;
+    ["com.yunke.all-docs.group.is-not-journal"](): string;
     /**
       * `Checked`
       */
-    ["com.affine.all-docs.group.is-checked"](): string;
+    ["com.yunke.all-docs.group.is-checked"](): string;
     /**
       * `Unchecked`
       */
-    ["com.affine.all-docs.group.is-not-checked"](): string;
+    ["com.yunke.all-docs.group.is-not-checked"](): string;
     /**
       * `Never updated`
       */
-    ["com.affine.all-docs.group.updated-at.never-updated"](): string;
+    ["com.yunke.all-docs.group.updated-at.never-updated"](): string;
     /**
       * `core`
       */
@@ -7249,485 +7249,485 @@ export function useAFFiNEI18N(): {
     /**
       * `Workspace properties`
       */
-    ["com.affine.workspace.properties"](): string;
+    ["com.yunke.workspace.properties"](): string;
     /**
       * `Rename to "{{name}}"`
       */
-    ["com.affine.m.rename-to"](options: {
+    ["com.yunke.m.rename-to"](options: {
         readonly name: string;
     }): string;
     /**
       * `Rename`
       */
-    ["com.affine.m.explorer.folder.rename"](): string;
+    ["com.yunke.m.explorer.folder.rename"](): string;
     /**
       * `Create Folder`
       */
-    ["com.affine.m.explorer.folder.new-dialog-title"](): string;
+    ["com.yunke.m.explorer.folder.new-dialog-title"](): string;
     /**
       * `Organize`
       */
-    ["com.affine.m.explorer.folder.root"](): string;
+    ["com.yunke.m.explorer.folder.root"](): string;
     /**
       * `Create a folder in the {{parent}}.`
       */
-    ["com.affine.m.explorer.folder.new-tip-empty"](options: {
+    ["com.yunke.m.explorer.folder.new-tip-empty"](options: {
         readonly parent: string;
     }): string;
     /**
       * `Create "{{value}}" in the {{parent}}.`
       */
-    ["com.affine.m.explorer.folder.new-tip-not-empty"](options: Readonly<{
+    ["com.yunke.m.explorer.folder.new-tip-not-empty"](options: Readonly<{
         value: string;
         parent: string;
     }>): string;
     /**
       * `Done`
       */
-    ["com.affine.m.explorer.folder.rename-confirm"](): string;
+    ["com.yunke.m.explorer.folder.rename-confirm"](): string;
     /**
       * `Rename`
       */
-    ["com.affine.m.explorer.tag.rename"](): string;
+    ["com.yunke.m.explorer.tag.rename"](): string;
     /**
       * `Rename Tag`
       */
-    ["com.affine.m.explorer.tag.rename-menu-title"](): string;
+    ["com.yunke.m.explorer.tag.rename-menu-title"](): string;
     /**
       * `Create Tag`
       */
-    ["com.affine.m.explorer.tag.new-dialog-title"](): string;
+    ["com.yunke.m.explorer.tag.new-dialog-title"](): string;
     /**
       * `Done`
       */
-    ["com.affine.m.explorer.tag.rename-confirm"](): string;
+    ["com.yunke.m.explorer.tag.rename-confirm"](): string;
     /**
       * `Create a tag in this workspace.`
       */
-    ["com.affine.m.explorer.tag.new-tip-empty"](): string;
+    ["com.yunke.m.explorer.tag.new-tip-empty"](): string;
     /**
       * `Create "{{value}}" tag in this workspace.`
       */
-    ["com.affine.m.explorer.tag.new-tip-not-empty"](options: {
+    ["com.yunke.m.explorer.tag.new-tip-not-empty"](options: {
         readonly value: string;
     }): string;
     /**
       * `Manage Doc(s)`
       */
-    ["com.affine.m.explorer.tag.manage-docs"](): string;
+    ["com.yunke.m.explorer.tag.manage-docs"](): string;
     /**
       * `Rename`
       */
-    ["com.affine.m.explorer.collection.rename"](): string;
+    ["com.yunke.m.explorer.collection.rename"](): string;
     /**
       * `Rename Collection`
       */
-    ["com.affine.m.explorer.collection.rename-menu-title"](): string;
+    ["com.yunke.m.explorer.collection.rename-menu-title"](): string;
     /**
       * `Create Collection`
       */
-    ["com.affine.m.explorer.collection.new-dialog-title"](): string;
+    ["com.yunke.m.explorer.collection.new-dialog-title"](): string;
     /**
       * `Rename`
       */
-    ["com.affine.m.explorer.doc.rename"](): string;
+    ["com.yunke.m.explorer.doc.rename"](): string;
     /**
       * `Doc`
       */
-    ["com.affine.m.selector.type-doc"](): string;
+    ["com.yunke.m.selector.type-doc"](): string;
     /**
       * `Tag`
       */
-    ["com.affine.m.selector.type-tag"](): string;
+    ["com.yunke.m.selector.type-tag"](): string;
     /**
       * `Collection`
       */
-    ["com.affine.m.selector.type-collection"](): string;
+    ["com.yunke.m.selector.type-collection"](): string;
     /**
       * `Folder`
       */
-    ["com.affine.m.selector.where-folder"](): string;
+    ["com.yunke.m.selector.where-folder"](): string;
     /**
       * `Tag`
       */
-    ["com.affine.m.selector.where-tag"](): string;
+    ["com.yunke.m.selector.where-tag"](): string;
     /**
       * `Collection`
       */
-    ["com.affine.m.selector.where-collection"](): string;
+    ["com.yunke.m.selector.where-collection"](): string;
     /**
       * `Apply`
       */
-    ["com.affine.m.selector.confirm-default"](): string;
+    ["com.yunke.m.selector.confirm-default"](): string;
     /**
       * `Manage {{type}}(s)`
       */
-    ["com.affine.m.selector.title"](options: {
+    ["com.yunke.m.selector.title"](options: {
         readonly type: string;
     }): string;
     /**
       * `{{total}} item(s)`
       */
-    ["com.affine.m.selector.info-total"](options: {
+    ["com.yunke.m.selector.info-total"](options: {
         readonly total: string;
     }): string;
     /**
       * `Add {{count}} {{type}}(s)`
       */
-    ["com.affine.m.selector.info-added"](options: Readonly<{
+    ["com.yunke.m.selector.info-added"](options: Readonly<{
         count: string;
         type: string;
     }>): string;
     /**
       * `Remove {{count}} {{type}}(s)`
       */
-    ["com.affine.m.selector.info-removed"](options: Readonly<{
+    ["com.yunke.m.selector.info-removed"](options: Readonly<{
         count: string;
         type: string;
     }>): string;
     /**
       * `Remove items`
       */
-    ["com.affine.m.selector.remove-warning.title"](): string;
+    ["com.yunke.m.selector.remove-warning.title"](): string;
     /**
       * `You unchecked {{type}} that already exist in the current {{where}}, which means you will remove them from this {{where}}. The item will not be deleted.`
       */
-    ["com.affine.m.selector.remove-warning.message"](options: Readonly<{
+    ["com.yunke.m.selector.remove-warning.message"](options: Readonly<{
         type: string;
         where: string;
     }>): string;
     /**
       * `Do not ask again`
       */
-    ["com.affine.m.selector.remove-warning.confirm"](): string;
+    ["com.yunke.m.selector.remove-warning.confirm"](): string;
     /**
       * `Cancel`
       */
-    ["com.affine.m.selector.remove-warning.cancel"](): string;
+    ["com.yunke.m.selector.remove-warning.cancel"](): string;
     /**
       * `tag`
       */
-    ["com.affine.m.selector.remove-warning.where-tag"](): string;
+    ["com.yunke.m.selector.remove-warning.where-tag"](): string;
     /**
       * `folder`
       */
-    ["com.affine.m.selector.remove-warning.where-folder"](): string;
+    ["com.yunke.m.selector.remove-warning.where-folder"](): string;
     /**
       * `Today's activity`
       */
-    ["com.affine.m.selector.journal-menu.today-activity"](): string;
+    ["com.yunke.m.selector.journal-menu.today-activity"](): string;
     /**
       * `Duplicate Entries in Today's Journal`
       */
-    ["com.affine.m.selector.journal-menu.conflicts"](): string;
+    ["com.yunke.m.selector.journal-menu.conflicts"](): string;
     /**
       * `Unable to preview this file`
       */
-    ["com.affine.attachment.preview.error.title"](): string;
+    ["com.yunke.attachment.preview.error.title"](): string;
     /**
       * `file type not supported.`
       */
-    ["com.affine.attachment.preview.error.subtitle"](): string;
+    ["com.yunke.attachment.preview.error.subtitle"](): string;
     /**
       * `Failed to render page.`
       */
-    ["com.affine.pdf.page.render.error"](): string;
+    ["com.yunke.pdf.page.render.error"](): string;
     /**
       * `Duplicate Entries in Today's Journal`
       */
-    ["com.affine.editor.journal-conflict.title"](): string;
+    ["com.yunke.editor.journal-conflict.title"](): string;
     /**
       * `Search for "{{query}}"`
       */
-    ["com.affine.editor.at-menu.link-to-doc"](options: {
+    ["com.yunke.editor.at-menu.link-to-doc"](options: {
         readonly query: string;
     }): string;
     /**
       * `Recent`
       */
-    ["com.affine.editor.at-menu.recent-docs"](): string;
+    ["com.yunke.editor.at-menu.recent-docs"](): string;
     /**
       * `Tags`
       */
-    ["com.affine.editor.at-menu.tags"](): string;
+    ["com.yunke.editor.at-menu.tags"](): string;
     /**
       * `Collections`
       */
-    ["com.affine.editor.at-menu.collections"](): string;
+    ["com.yunke.editor.at-menu.collections"](): string;
     /**
       * `Loading...`
       */
-    ["com.affine.editor.at-menu.loading"](): string;
+    ["com.yunke.editor.at-menu.loading"](): string;
     /**
       * `New`
       */
-    ["com.affine.editor.at-menu.new-doc"](): string;
+    ["com.yunke.editor.at-menu.new-doc"](): string;
     /**
       * `New "{{name}}" page`
       */
-    ["com.affine.editor.at-menu.create-page"](options: {
+    ["com.yunke.editor.at-menu.create-page"](options: {
         readonly name: string;
     }): string;
     /**
       * `New "{{name}}" edgeless`
       */
-    ["com.affine.editor.at-menu.create-edgeless"](options: {
+    ["com.yunke.editor.at-menu.create-edgeless"](options: {
         readonly name: string;
     }): string;
     /**
       * `Import`
       */
-    ["com.affine.editor.at-menu.import"](): string;
+    ["com.yunke.editor.at-menu.import"](): string;
     /**
       * `{{count}} more docs`
       */
-    ["com.affine.editor.at-menu.more-docs-hint"](options: {
+    ["com.yunke.editor.at-menu.more-docs-hint"](options: {
         readonly count: string;
     }): string;
     /**
       * `{{count}} more members`
       */
-    ["com.affine.editor.at-menu.more-members-hint"](options: {
+    ["com.yunke.editor.at-menu.more-members-hint"](options: {
         readonly count: string;
     }): string;
     /**
       * `Journal`
       */
-    ["com.affine.editor.at-menu.journal"](): string;
+    ["com.yunke.editor.at-menu.journal"](): string;
     /**
       * `Select a specific date`
       */
-    ["com.affine.editor.at-menu.date-picker"](): string;
+    ["com.yunke.editor.at-menu.date-picker"](): string;
     /**
       * `Mention Members`
       */
-    ["com.affine.editor.at-menu.mention-members"](): string;
+    ["com.yunke.editor.at-menu.mention-members"](): string;
     /**
       * `Member not notified`
       */
-    ["com.affine.editor.at-menu.member-not-notified"](): string;
+    ["com.yunke.editor.at-menu.member-not-notified"](): string;
     /**
       * `This member does not have access to this doc, they are not notified.`
       */
-    ["com.affine.editor.at-menu.member-not-notified-message"](): string;
+    ["com.yunke.editor.at-menu.member-not-notified-message"](): string;
     /**
       * `Invited and notified`
       */
-    ["com.affine.editor.at-menu.invited-and-notified"](): string;
+    ["com.yunke.editor.at-menu.invited-and-notified"](): string;
     /**
       * `Access needed`
       */
-    ["com.affine.editor.at-menu.access-needed"](): string;
+    ["com.yunke.editor.at-menu.access-needed"](): string;
     /**
       * `{{username}} does not have access to this doc, do you want to invite and notify them?`
       */
-    ["com.affine.editor.at-menu.access-needed-message"](options: {
+    ["com.yunke.editor.at-menu.access-needed-message"](options: {
         readonly username: string;
     }): string;
     /**
       * `Show`
       */
-    ["com.affine.editor.bi-directional-link-panel.show"](): string;
+    ["com.yunke.editor.bi-directional-link-panel.show"](): string;
     /**
       * `Hide`
       */
-    ["com.affine.editor.bi-directional-link-panel.hide"](): string;
+    ["com.yunke.editor.bi-directional-link-panel.hide"](): string;
     /**
       * `Fold page block`
       */
-    ["com.affine.editor.edgeless-note-header.fold-page-block"](): string;
+    ["com.yunke.editor.edgeless-note-header.fold-page-block"](): string;
     /**
       * `Open in Page`
       */
-    ["com.affine.editor.edgeless-note-header.open-in-page"](): string;
+    ["com.yunke.editor.edgeless-note-header.open-in-page"](): string;
     /**
       * `Fold`
       */
-    ["com.affine.editor.edgeless-embed-synced-doc-header.fold"](): string;
+    ["com.yunke.editor.edgeless-embed-synced-doc-header.fold"](): string;
     /**
       * `Unfold`
       */
-    ["com.affine.editor.edgeless-embed-synced-doc-header.unfold"](): string;
+    ["com.yunke.editor.edgeless-embed-synced-doc-header.unfold"](): string;
     /**
       * `Open`
       */
-    ["com.affine.editor.edgeless-embed-synced-doc-header.open"](): string;
+    ["com.yunke.editor.edgeless-embed-synced-doc-header.open"](): string;
     /**
       * `Empower Your Team with Seamless Collaboration`
       */
-    ["com.affine.upgrade-to-team-page.title"](): string;
+    ["com.yunke.upgrade-to-team-page.title"](): string;
     /**
       * `Select an existing workspace or create a new one`
       */
-    ["com.affine.upgrade-to-team-page.workspace-selector.placeholder"](): string;
+    ["com.yunke.upgrade-to-team-page.workspace-selector.placeholder"](): string;
     /**
       * `Create Workspace`
       */
-    ["com.affine.upgrade-to-team-page.workspace-selector.create-workspace"](): string;
+    ["com.yunke.upgrade-to-team-page.workspace-selector.create-workspace"](): string;
     /**
       * `Upgrade to Team Workspace`
       */
-    ["com.affine.upgrade-to-team-page.upgrade-button"](): string;
+    ["com.yunke.upgrade-to-team-page.upgrade-button"](): string;
     /**
       * `Team Workspace gives you everything you need for seamless team collaboration:`
       */
-    ["com.affine.upgrade-to-team-page.benefit.title"](): string;
+    ["com.yunke.upgrade-to-team-page.benefit.title"](): string;
     /**
       * `Invite unlimited members to your workspace`
       */
-    ["com.affine.upgrade-to-team-page.benefit.g1"](): string;
+    ["com.yunke.upgrade-to-team-page.benefit.g1"](): string;
     /**
       * `Set custom roles and permissions for better control`
       */
-    ["com.affine.upgrade-to-team-page.benefit.g2"](): string;
+    ["com.yunke.upgrade-to-team-page.benefit.g2"](): string;
     /**
       * `Access advanced team management features`
       */
-    ["com.affine.upgrade-to-team-page.benefit.g3"](): string;
+    ["com.yunke.upgrade-to-team-page.benefit.g3"](): string;
     /**
       * `Get priority customer support`
       */
-    ["com.affine.upgrade-to-team-page.benefit.g4"](): string;
+    ["com.yunke.upgrade-to-team-page.benefit.g4"](): string;
     /**
       * `Perfect for growing teams and organizations that need professional collaboration tools.`
       */
-    ["com.affine.upgrade-to-team-page.benefit.description"](): string;
+    ["com.yunke.upgrade-to-team-page.benefit.description"](): string;
     /**
       * `Upgrade to Team Workspace`
       */
-    ["com.affine.upgrade-to-team-page.upgrade-confirm.title"](): string;
+    ["com.yunke.upgrade-to-team-page.upgrade-confirm.title"](): string;
     /**
       * `Name Your Workspace`
       */
-    ["com.affine.upgrade-to-team-page.create-and-upgrade-confirm.title"](): string;
+    ["com.yunke.upgrade-to-team-page.create-and-upgrade-confirm.title"](): string;
     /**
       * `A workspace is your virtual space to capture, create and plan as just one person or together as a team.`
       */
-    ["com.affine.upgrade-to-team-page.create-and-upgrade-confirm.description"](): string;
+    ["com.yunke.upgrade-to-team-page.create-and-upgrade-confirm.description"](): string;
     /**
       * `Set a workspace name`
       */
-    ["com.affine.upgrade-to-team-page.create-and-upgrade-confirm.placeholder"](): string;
+    ["com.yunke.upgrade-to-team-page.create-and-upgrade-confirm.placeholder"](): string;
     /**
       * `Continue to Pricing`
       */
-    ["com.affine.upgrade-to-team-page.create-and-upgrade-confirm.confirm"](): string;
+    ["com.yunke.upgrade-to-team-page.create-and-upgrade-confirm.confirm"](): string;
     /**
       * `No workspace available`
       */
-    ["com.affine.upgrade-to-team-page.no-workspace-available"](): string;
+    ["com.yunke.upgrade-to-team-page.no-workspace-available"](): string;
     /**
       * `Workspace storage`
       */
-    ["com.affine.workspace.storage"](): string;
+    ["com.yunke.workspace.storage"](): string;
     /**
       * `Journal`
       */
-    ["com.affine.cmdk.affine.category.affine.journal"](): string;
+    ["com.yunke.cmdk.yunke.category.yunke.journal"](): string;
     /**
       * `Select a specific date`
       */
-    ["com.affine.cmdk.affine.category.affine.date-picker"](): string;
+    ["com.yunke.cmdk.yunke.category.yunke.date-picker"](): string;
     /**
       * `Workspace sync paused`
       */
-    ["com.affine.payment.sync-paused.title"](): string;
+    ["com.yunke.payment.sync-paused.title"](): string;
     /**
       * `Your workspace has exceeded both storage and member limits, causing synchronization to pause. To resume syncing, please either:`
       */
-    ["com.affine.payment.sync-paused.owner.both.description"](): string;
+    ["com.yunke.payment.sync-paused.owner.both.description"](): string;
     /**
       * `Reduce storage usage and remove some team members`
       */
-    ["com.affine.payment.sync-paused.owner.both.tips-1"](): string;
+    ["com.yunke.payment.sync-paused.owner.both.tips-1"](): string;
     /**
       * `Upgrade your plan for increased capacity`
       */
-    ["com.affine.payment.sync-paused.owner.both.tips-2"](): string;
+    ["com.yunke.payment.sync-paused.owner.both.tips-2"](): string;
     /**
       * `Your workspace has exceeded its storage limit and synchronization has been paused. To resume syncing, please either:`
       */
-    ["com.affine.payment.sync-paused.owner.storage.description"](): string;
+    ["com.yunke.payment.sync-paused.owner.storage.description"](): string;
     /**
       * `Remove unnecessary files or content to reduce storage usage`
       */
-    ["com.affine.payment.sync-paused.owner.storage.tips-1"](): string;
+    ["com.yunke.payment.sync-paused.owner.storage.tips-1"](): string;
     /**
       * `Upgrade your plan for increased storage capacity`
       */
-    ["com.affine.payment.sync-paused.owner.storage.tips-2"](): string;
+    ["com.yunke.payment.sync-paused.owner.storage.tips-2"](): string;
     /**
       * `Your workspace has reached its maximum member capacity and synchronization has been paused. To resume syncing, you can either`
       */
-    ["com.affine.payment.sync-paused.owner.member.description"](): string;
+    ["com.yunke.payment.sync-paused.owner.member.description"](): string;
     /**
       * `Remove some team members from the workspace`
       */
-    ["com.affine.payment.sync-paused.owner.member.tips-1"](): string;
+    ["com.yunke.payment.sync-paused.owner.member.tips-1"](): string;
     /**
       * `Upgrade your plan to accommodate more members`
       */
-    ["com.affine.payment.sync-paused.owner.member.tips-2"](): string;
+    ["com.yunke.payment.sync-paused.owner.member.tips-2"](): string;
     /**
       * `This workspace has exceeded both storage and member limits, causing synchronization to pause. Please contact your workspace owner to address these limits and resume syncing.`
       */
-    ["com.affine.payment.sync-paused.member.both.description"](): string;
+    ["com.yunke.payment.sync-paused.member.both.description"](): string;
     /**
       * `This workspace has exceeded its storage limit and synchronization has been paused. Please contact your workspace owner to either reduce storage usage or upgrade the plan to resume syncing.`
       */
-    ["com.affine.payment.sync-paused.member.storage.description"](): string;
+    ["com.yunke.payment.sync-paused.member.storage.description"](): string;
     /**
       * `This workspace has reached its maximum member capacity and synchronization has been paused. Please contact your workspace owner to either adjust team membership or upgrade the plan to resume syncing.`
       */
-    ["com.affine.payment.sync-paused.member.member.description"](): string;
+    ["com.yunke.payment.sync-paused.member.member.description"](): string;
     /**
       * `Got It`
       */
-    ["com.affine.payment.sync-paused.member.member.confirm"](): string;
+    ["com.yunke.payment.sync-paused.member.member.confirm"](): string;
     /**
       * `Delete Server`
       */
-    ["com.affine.server.delete"](): string;
+    ["com.yunke.server.delete"](): string;
     /**
       * `Start`
       */
-    ["com.affine.page-starter-bar.start"](): string;
+    ["com.yunke.page-starter-bar.start"](): string;
     /**
       * `Template`
       */
-    ["com.affine.page-starter-bar.template"](): string;
+    ["com.yunke.page-starter-bar.template"](): string;
     /**
       * `With AI`
       */
-    ["com.affine.page-starter-bar.ai"](): string;
+    ["com.yunke.page-starter-bar.ai"](): string;
     /**
       * `Edgeless`
       */
-    ["com.affine.page-starter-bar.edgeless"](): string;
+    ["com.yunke.page-starter-bar.edgeless"](): string;
     /**
       * `Unsupported message`
       */
-    ["com.affine.notification.unsupported"](): string;
+    ["com.yunke.notification.unsupported"](): string;
     /**
       * `No new notifications`
       */
-    ["com.affine.notification.empty"](): string;
+    ["com.yunke.notification.empty"](): string;
     /**
       * `Loading more...`
       */
-    ["com.affine.notification.loading-more"](): string;
+    ["com.yunke.notification.loading-more"](): string;
     /**
       * `You'll be notified here for @mentions and workspace invites.`
       */
-    ["com.affine.notification.empty.description"](): string;
+    ["com.yunke.notification.empty.description"](): string;
     /**
       * `Open workspace`
       */
-    ["com.affine.notification.invitation-review-approved.open-workspace"](): string;
+    ["com.yunke.notification.invitation-review-approved.open-workspace"](): string;
     /**
       * `Accept & Join`
       */
-    ["com.affine.notification.invitation.accept"](): string;
+    ["com.yunke.notification.invitation.accept"](): string;
     /**
       * `Tips`
       */
@@ -7739,451 +7739,451 @@ export function useAFFiNEI18N(): {
     /**
       * `Delete Template`
       */
-    ["com.affine.template-list.delete"](): string;
+    ["com.yunke.template-list.delete"](): string;
     /**
       * `No template`
       */
-    ["com.affine.template-list.empty"](): string;
+    ["com.yunke.template-list.empty"](): string;
     /**
       * `Create new template`
       */
-    ["com.affine.template-list.create-new"](): string;
+    ["com.yunke.template-list.create-new"](): string;
     /**
       * `Set a Template for the Journal`
       */
-    ["com.affine.template-journal-onboarding.title"](): string;
+    ["com.yunke.template-journal-onboarding.title"](): string;
     /**
       * `Select`
       */
-    ["com.affine.template-journal-onboarding.select"](): string;
+    ["com.yunke.template-journal-onboarding.select"](): string;
     /**
       * `My Templates`
       */
-    ["com.affine.settings.workspace.template.title"](): string;
+    ["com.yunke.settings.workspace.template.title"](): string;
     /**
       * `Template for journal`
       */
-    ["com.affine.settings.workspace.template.journal"](): string;
+    ["com.yunke.settings.workspace.template.journal"](): string;
     /**
       * `Select a template for your journal`
       */
-    ["com.affine.settings.workspace.template.journal-desc"](): string;
+    ["com.yunke.settings.workspace.template.journal-desc"](): string;
     /**
       * `Keep empty`
       */
-    ["com.affine.settings.workspace.template.keep-empty"](): string;
+    ["com.yunke.settings.workspace.template.keep-empty"](): string;
     /**
       * `New doc with template`
       */
-    ["com.affine.settings.workspace.template.page"](): string;
+    ["com.yunke.settings.workspace.template.page"](): string;
     /**
       * `New docs will use the specified template, ignoring default settings.`
       */
-    ["com.affine.settings.workspace.template.page-desc"](): string;
+    ["com.yunke.settings.workspace.template.page-desc"](): string;
     /**
       * `Template for new doc`
       */
-    ["com.affine.settings.workspace.template.page-select"](): string;
+    ["com.yunke.settings.workspace.template.page-select"](): string;
     /**
       * `Remove template`
       */
-    ["com.affine.settings.workspace.template.remove"](): string;
+    ["com.yunke.settings.workspace.template.remove"](): string;
     /**
       * `You don't have permission to do this`
       */
-    ["com.affine.no-permission"](): string;
+    ["com.yunke.no-permission"](): string;
     /**
       * `Unused blobs`
       */
-    ["com.affine.settings.workspace.storage.unused-blobs"](): string;
+    ["com.yunke.settings.workspace.storage.unused-blobs"](): string;
     /**
       * `No unused blobs`
       */
-    ["com.affine.settings.workspace.storage.unused-blobs.empty"](): string;
+    ["com.yunke.settings.workspace.storage.unused-blobs.empty"](): string;
     /**
       * `Selected`
       */
-    ["com.affine.settings.workspace.storage.unused-blobs.selected"](): string;
+    ["com.yunke.settings.workspace.storage.unused-blobs.selected"](): string;
     /**
       * `Delete blob files`
       */
-    ["com.affine.settings.workspace.storage.unused-blobs.delete.title"](): string;
+    ["com.yunke.settings.workspace.storage.unused-blobs.delete.title"](): string;
     /**
       * `Are you sure you want to delete these blob files? This action cannot be undone. Make sure you no longer need them before proceeding.`
       */
-    ["com.affine.settings.workspace.storage.unused-blobs.delete.warning"](): string;
+    ["com.yunke.settings.workspace.storage.unused-blobs.delete.warning"](): string;
     /**
       * `Join Failed`
       */
-    ["com.affine.fail-to-join-workspace.title"](): string;
+    ["com.yunke.fail-to-join-workspace.title"](): string;
     /**
       * `Please contact your workspace owner to add more seats.`
       */
-    ["com.affine.fail-to-join-workspace.description-2"](): string;
+    ["com.yunke.fail-to-join-workspace.description-2"](): string;
     /**
       * `Request to join`
       */
-    ["com.affine.request-to-join-workspace.button"](): string;
+    ["com.yunke.request-to-join-workspace.button"](): string;
     /**
       * `Request Sent successfully`
       */
-    ["com.affine.sent-request-to-join-workspace.title"](): string;
+    ["com.yunke.sent-request-to-join-workspace.title"](): string;
     /**
       * `Request failed to send`
       */
-    ["com.affine.failed-to-send-request.title"](): string;
+    ["com.yunke.failed-to-send-request.title"](): string;
     /**
       * `Readwise`
       */
-    ["com.affine.integration.name.readwise"](): string;
+    ["com.yunke.integration.name.readwise"](): string;
     /**
       * `Integrations`
       */
-    ["com.affine.integration.integrations"](): string;
+    ["com.yunke.integration.integrations"](): string;
     /**
       * `Web Clipper`
       */
-    ["com.affine.integration.web-clipper.name"](): string;
+    ["com.yunke.integration.web-clipper.name"](): string;
     /**
-      * `Import web pages to AFFiNE`
+      * `Import web pages to YUNKE`
       */
-    ["com.affine.integration.web-clipper.desc"](): string;
+    ["com.yunke.integration.web-clipper.desc"](): string;
     /**
-      * `Elevate your AFFiNE experience with diverse add-ons and seamless integrations.`
+      * `Elevate your YUNKE experience with diverse add-ons and seamless integrations.`
       */
-    ["com.affine.integration.setting.description"](): string;
+    ["com.yunke.integration.setting.description"](): string;
     /**
-      * `Learn how to develop a integration for AFFiNE`
+      * `Learn how to develop a integration for YUNKE`
       */
-    ["com.affine.integration.setting.learn"](): string;
+    ["com.yunke.integration.setting.learn"](): string;
     /**
       * `Readwise`
       */
-    ["com.affine.integration.readwise.name"](): string;
+    ["com.yunke.integration.readwise.name"](): string;
     /**
-      * `Manually import your content to AFFiNE from Readwise`
+      * `Manually import your content to YUNKE from Readwise`
       */
-    ["com.affine.integration.readwise.desc"](): string;
+    ["com.yunke.integration.readwise.desc"](): string;
     /**
       * `Connect`
       */
-    ["com.affine.integration.readwise.connect"](): string;
+    ["com.yunke.integration.readwise.connect"](): string;
     /**
       * `Connect to Readwise`
       */
-    ["com.affine.integration.readwise.connect.title"](): string;
+    ["com.yunke.integration.readwise.connect.title"](): string;
     /**
       * `Paste your access token here`
       */
-    ["com.affine.integration.readwise.connect.placeholder"](): string;
+    ["com.yunke.integration.readwise.connect.placeholder"](): string;
     /**
       * `Please enter a valid access token.`
       */
-    ["com.affine.integration.readwise.connect.input-error"](): string;
+    ["com.yunke.integration.readwise.connect.input-error"](): string;
     /**
       * `Access Token failed validation`
       */
-    ["com.affine.integration.readwise.connect.error-notify-title"](): string;
+    ["com.yunke.integration.readwise.connect.error-notify-title"](): string;
     /**
       * `The token could not access Readwise. Please verify access and try again.`
       */
-    ["com.affine.integration.readwise.connect.error-notify-desc"](): string;
+    ["com.yunke.integration.readwise.connect.error-notify-desc"](): string;
     /**
       * `Import`
       */
-    ["com.affine.integration.readwise.import"](): string;
+    ["com.yunke.integration.readwise.import"](): string;
     /**
       * `Disconnect`
       */
-    ["com.affine.integration.readwise.disconnect"](): string;
+    ["com.yunke.integration.readwise.disconnect"](): string;
     /**
       * `Disconnect Readwise?`
       */
-    ["com.affine.integration.readwise.disconnect.title"](): string;
+    ["com.yunke.integration.readwise.disconnect.title"](): string;
     /**
-      * `Once disconnected, content will no longer be imported. Do you want to keep your existing highlights in AFFiNE?`
+      * `Once disconnected, content will no longer be imported. Do you want to keep your existing highlights in YUNKE?`
       */
-    ["com.affine.integration.readwise.disconnect.desc"](): string;
+    ["com.yunke.integration.readwise.disconnect.desc"](): string;
     /**
       * `Keep`
       */
-    ["com.affine.integration.readwise.disconnect.keep"](): string;
+    ["com.yunke.integration.readwise.disconnect.keep"](): string;
     /**
       * `Delete`
       */
-    ["com.affine.integration.readwise.disconnect.delete"](): string;
+    ["com.yunke.integration.readwise.disconnect.delete"](): string;
     /**
       * `Highlights to be imported this time`
       */
-    ["com.affine.integration.readwise.import.title"](): string;
+    ["com.yunke.integration.readwise.import.title"](): string;
     /**
       * `Importing everything from the start`
       */
-    ["com.affine.integration.readwise.import.desc-from-start"](): string;
+    ["com.yunke.integration.readwise.import.desc-from-start"](): string;
     /**
       * `Content`
       */
-    ["com.affine.integration.readwise.import.cell-h-content"](): string;
+    ["com.yunke.integration.readwise.import.cell-h-content"](): string;
     /**
       * `Todo`
       */
-    ["com.affine.integration.readwise.import.cell-h-todo"](): string;
+    ["com.yunke.integration.readwise.import.cell-h-todo"](): string;
     /**
       * `Last update on Readwise`
       */
-    ["com.affine.integration.readwise.import.cell-h-time"](): string;
+    ["com.yunke.integration.readwise.import.cell-h-time"](): string;
     /**
       * `New`
       */
-    ["com.affine.integration.readwise.import.todo-new"](): string;
+    ["com.yunke.integration.readwise.import.todo-new"](): string;
     /**
       * `Skip`
       */
-    ["com.affine.integration.readwise.import.todo-skip"](): string;
+    ["com.yunke.integration.readwise.import.todo-skip"](): string;
     /**
       * `Updated`
       */
-    ["com.affine.integration.readwise.import.todo-update"](): string;
+    ["com.yunke.integration.readwise.import.todo-update"](): string;
     /**
       * `No highlights needs to be imported`
       */
-    ["com.affine.integration.readwise.import.empty"](): string;
+    ["com.yunke.integration.readwise.import.empty"](): string;
     /**
       * `Importing...`
       */
-    ["com.affine.integration.readwise.import.importing"](): string;
+    ["com.yunke.integration.readwise.import.importing"](): string;
     /**
       * `Please keep this app active until it's finished`
       */
-    ["com.affine.integration.readwise.import.importing-desc"](): string;
+    ["com.yunke.integration.readwise.import.importing-desc"](): string;
     /**
       * `Stop Importing`
       */
-    ["com.affine.integration.readwise.import.importing-stop"](): string;
+    ["com.yunke.integration.readwise.import.importing-stop"](): string;
     /**
       * `Importing aborted`
       */
-    ["com.affine.integration.readwise.import.abort-notify-title"](): string;
+    ["com.yunke.integration.readwise.import.abort-notify-title"](): string;
     /**
       * `Import aborted, with {{finished}} highlights processed`
       */
-    ["com.affine.integration.readwise.import.abort-notify-desc"](options: {
+    ["com.yunke.integration.readwise.import.abort-notify-desc"](options: {
         readonly finished: string;
     }): string;
     /**
       * `Configuration`
       */
-    ["com.affine.integration.readwise.setting.caption"](): string;
+    ["com.yunke.integration.readwise.setting.caption"](): string;
     /**
-      * `New Readwise highlights will be imported to AFFiNE `
+      * `New Readwise highlights will be imported to YUNKE `
       */
-    ["com.affine.integration.readwise.setting.sync-new-name"](): string;
+    ["com.yunke.integration.readwise.setting.sync-new-name"](): string;
     /**
-      * `New highlights in Readwise will be synced to AFFiNE `
+      * `New highlights in Readwise will be synced to YUNKE `
       */
-    ["com.affine.integration.readwise.setting.sync-new-desc"](): string;
+    ["com.yunke.integration.readwise.setting.sync-new-desc"](): string;
     /**
       * `Updates to Readwise highlights will be imported`
       */
-    ["com.affine.integration.readwise.setting.update-name"](): string;
+    ["com.yunke.integration.readwise.setting.update-name"](): string;
     /**
       * `Enable this, so that we will process updates of existing highlights from Readwise `
       */
-    ["com.affine.integration.readwise.setting.update-desc"](): string;
+    ["com.yunke.integration.readwise.setting.update-desc"](): string;
     /**
       * `How do we handle updates`
       */
-    ["com.affine.integration.readwise.setting.update-strategy"](): string;
+    ["com.yunke.integration.readwise.setting.update-strategy"](): string;
     /**
       * `Append new version to the end`
       */
-    ["com.affine.integration.readwise.setting.update-append-name"](): string;
+    ["com.yunke.integration.readwise.setting.update-append-name"](): string;
     /**
       * `Cited or modified highlights will have future versions added to the end of them`
       */
-    ["com.affine.integration.readwise.setting.update-append-desc"](): string;
+    ["com.yunke.integration.readwise.setting.update-append-desc"](): string;
     /**
       * `Overwrite with new version`
       */
-    ["com.affine.integration.readwise.setting.update-override-name"](): string;
+    ["com.yunke.integration.readwise.setting.update-override-name"](): string;
     /**
       * `Cited or modified highlights will be overwritten if there are future updates`
       */
-    ["com.affine.integration.readwise.setting.update-override-desc"](): string;
+    ["com.yunke.integration.readwise.setting.update-override-desc"](): string;
     /**
       * `Start Importing`
       */
-    ["com.affine.integration.readwise.setting.start-import-name"](): string;
+    ["com.yunke.integration.readwise.setting.start-import-name"](): string;
     /**
       * `Using the settings above`
       */
-    ["com.affine.integration.readwise.setting.start-import-desc"](): string;
+    ["com.yunke.integration.readwise.setting.start-import-desc"](): string;
     /**
       * `Import`
       */
-    ["com.affine.integration.readwise.setting.start-import-button"](): string;
+    ["com.yunke.integration.readwise.setting.start-import-button"](): string;
     /**
       * `Apply tags to highlight imports`
       */
-    ["com.affine.integration.readwise.setting.tags-label"](): string;
+    ["com.yunke.integration.readwise.setting.tags-label"](): string;
     /**
       * `Click to add tags`
       */
-    ["com.affine.integration.readwise.setting.tags-placeholder"](): string;
+    ["com.yunke.integration.readwise.setting.tags-placeholder"](): string;
     /**
       * `Author`
       */
-    ["com.affine.integration.readwise-prop.author"](): string;
+    ["com.yunke.integration.readwise-prop.author"](): string;
     /**
       * `Source`
       */
-    ["com.affine.integration.readwise-prop.source"](): string;
+    ["com.yunke.integration.readwise-prop.source"](): string;
     /**
       * `Created`
       */
-    ["com.affine.integration.readwise-prop.created"](): string;
+    ["com.yunke.integration.readwise-prop.created"](): string;
     /**
       * `Updated`
       */
-    ["com.affine.integration.readwise-prop.updated"](): string;
+    ["com.yunke.integration.readwise-prop.updated"](): string;
     /**
       * `Integration properties`
       */
-    ["com.affine.integration.properties"](): string;
+    ["com.yunke.integration.properties"](): string;
     /**
       * `Calendar`
       */
-    ["com.affine.integration.calendar.name"](): string;
+    ["com.yunke.integration.calendar.name"](): string;
     /**
-      * `New events will be scheduled in AFFiNE’s journal`
+      * `New events will be scheduled in YUNKE’s journal`
       */
-    ["com.affine.integration.calendar.desc"](): string;
+    ["com.yunke.integration.calendar.desc"](): string;
     /**
       * `Subscribe`
       */
-    ["com.affine.integration.calendar.new-subscription"](): string;
+    ["com.yunke.integration.calendar.new-subscription"](): string;
     /**
       * `Unsubscribe`
       */
-    ["com.affine.integration.calendar.unsubscribe"](): string;
+    ["com.yunke.integration.calendar.unsubscribe"](): string;
     /**
       * `Add a calendar by URL`
       */
-    ["com.affine.integration.calendar.new-title"](): string;
+    ["com.yunke.integration.calendar.new-title"](): string;
     /**
       * `Calendar URL`
       */
-    ["com.affine.integration.calendar.new-url-label"](): string;
+    ["com.yunke.integration.calendar.new-url-label"](): string;
     /**
       * `This is a duplicate calendar`
       */
-    ["com.affine.integration.calendar.new-duplicate-error-title"](): string;
+    ["com.yunke.integration.calendar.new-duplicate-error-title"](): string;
     /**
       * `This subscription calendar already exists in the account of subscribed calendars.`
       */
-    ["com.affine.integration.calendar.new-duplicate-error-content"](): string;
+    ["com.yunke.integration.calendar.new-duplicate-error-content"](): string;
     /**
       * `An error occurred while adding the calendar`
       */
-    ["com.affine.integration.calendar.new-error"](): string;
+    ["com.yunke.integration.calendar.new-error"](): string;
     /**
       * `All day`
       */
-    ["com.affine.integration.calendar.all-day"](): string;
+    ["com.yunke.integration.calendar.all-day"](): string;
     /**
       * `New doc`
       */
-    ["com.affine.integration.calendar.new-doc"](): string;
+    ["com.yunke.integration.calendar.new-doc"](): string;
     /**
       * `Show calendar events`
       */
-    ["com.affine.integration.calendar.show-events"](): string;
+    ["com.yunke.integration.calendar.show-events"](): string;
     /**
-      * `Enabling this setting allows you to connect your calendar events to your Journal in AFFiNE`
+      * `Enabling this setting allows you to connect your calendar events to your Journal in YUNKE`
       */
-    ["com.affine.integration.calendar.show-events-desc"](): string;
+    ["com.yunke.integration.calendar.show-events-desc"](): string;
     /**
       * `Show all day event`
       */
-    ["com.affine.integration.calendar.show-all-day-events"](): string;
+    ["com.yunke.integration.calendar.show-all-day-events"](): string;
     /**
       * `Are you sure you want to unsubscribe "{{name}}"? Unsubscribing this account will remove its data from Journal.`
       */
-    ["com.affine.integration.calendar.unsubscribe-content"](options: {
+    ["com.yunke.integration.calendar.unsubscribe-content"](options: {
         readonly name: string;
     }): string;
     /**
       * `Notes`
       */
-    ["com.affine.audio.notes"](): string;
+    ["com.yunke.audio.notes"](): string;
     /**
       * `Transcribing`
       */
-    ["com.affine.audio.transcribing"](): string;
+    ["com.yunke.audio.transcribing"](): string;
     /**
       * `Unable to retrieve AI results for others`
       */
-    ["com.affine.audio.transcribe.non-owner.confirm.title"](): string;
+    ["com.yunke.audio.transcribe.non-owner.confirm.title"](): string;
     /**
       * `Audio activity`
       */
-    ["com.affine.recording.new"](): string;
+    ["com.yunke.recording.new"](): string;
     /**
       * `Finished`
       */
-    ["com.affine.recording.success.prompt"](): string;
+    ["com.yunke.recording.success.prompt"](): string;
     /**
       * `Open app`
       */
-    ["com.affine.recording.success.button"](): string;
+    ["com.yunke.recording.success.button"](): string;
     /**
       * `Failed to save`
       */
-    ["com.affine.recording.failed.prompt"](): string;
+    ["com.yunke.recording.failed.prompt"](): string;
     /**
       * `Open file`
       */
-    ["com.affine.recording.failed.button"](): string;
+    ["com.yunke.recording.failed.button"](): string;
     /**
       * `{{appName}}'s audio`
       */
-    ["com.affine.recording.recording"](options: {
+    ["com.yunke.recording.recording"](options: {
         readonly appName: string;
     }): string;
     /**
       * `Audio recording`
       */
-    ["com.affine.recording.recording.unnamed"](): string;
+    ["com.yunke.recording.recording.unnamed"](): string;
     /**
       * `Start`
       */
-    ["com.affine.recording.start"](): string;
+    ["com.yunke.recording.start"](): string;
     /**
       * `Dismiss`
       */
-    ["com.affine.recording.dismiss"](): string;
+    ["com.yunke.recording.dismiss"](): string;
     /**
       * `Stop`
       */
-    ["com.affine.recording.stop"](): string;
+    ["com.yunke.recording.stop"](): string;
     /**
       * `Migrate Data to Enhance User Experience`
       */
-    ["com.affine.migration-all-docs-notification.header"](): string;
+    ["com.yunke.migration-all-docs-notification.header"](): string;
     /**
       * `We are updating the local data to facilitate the recording and filtering of created by and Last edited by information. Please click the “Migrate Data” button and ensure a stable network connection during the process.`
       */
-    ["com.affine.migration-all-docs-notification.desc"](): string;
+    ["com.yunke.migration-all-docs-notification.desc"](): string;
     /**
       * `Migration failed: {{errorMessage}}`
       */
-    ["com.affine.migration-all-docs-notification.error"](options: {
+    ["com.yunke.migration-all-docs-notification.error"](options: {
         readonly errorMessage: string;
     }): string;
     /**
       * `Migrate data`
       */
-    ["com.affine.migration-all-docs-notification.button"](): string;
+    ["com.yunke.migration-all-docs-notification.button"](): string;
     /**
       * `An internal error occurred.`
       */
@@ -8318,7 +8318,7 @@ export function useAFFiNEI18N(): {
       */
     ["error.WRONG_SIGN_IN_METHOD"](): string;
     /**
-      * `You don't have early access permission. Visit https://community.affine.pro/c/insider-general/ for more information.`
+      * `You don't have early access permission. Visit https://community.yunke.pro/c/insider-general/ for more information.`
       */
     ["error.EARLY_ACCESS_REQUIRED"](): string;
     /**
@@ -8857,9 +8857,9 @@ function createComponent(i18nKey: string) {
 }
 export const TypedTrans: {
     /**
-      * `Go to <a>{{link}}</a> for learn more details about AFFiNE AI.`
+      * `Go to <a>{{link}}</a> for learn more details about YUNKE AI.`
       */
-    ["com.affine.ai-onboarding.general.5.description"]: ComponentType<TypedTransProps<{
+    ["com.yunke.ai-onboarding.general.5.description"]: ComponentType<TypedTransProps<{
         readonly link: string;
     }, {
         a: JSX.Element;
@@ -8867,25 +8867,25 @@ export const TypedTrans: {
     /**
       * `By continuing, you are agreeing to our <a>AI Terms</a>.`
       */
-    ["com.affine.ai-onboarding.general.privacy"]: ComponentType<TypedTransProps<Readonly<{}>, {
+    ["com.yunke.ai-onboarding.general.privacy"]: ComponentType<TypedTransProps<Readonly<{}>, {
         a: JSX.Element;
     }>>;
     /**
-      * `Opening <1>AFFiNE</1> app now`
+      * `Opening <1>YUNKE</1> app now`
       */
-    ["com.affine.auth.open.affine.prompt"]: ComponentType<TypedTransProps<Readonly<{}>, {
+    ["com.yunke.auth.open.yunke.prompt"]: ComponentType<TypedTransProps<Readonly<{}>, {
         ["1"]: JSX.Element;
     }>>;
     /**
-      * `This doc is now opened in <1>AFFiNE</1> app`
+      * `This doc is now opened in <1>YUNKE</1> app`
       */
-    ["com.affine.auth.open.affine.open-doc-prompt"]: ComponentType<TypedTransProps<Readonly<{}>, {
+    ["com.yunke.auth.open.yunke.open-doc-prompt"]: ComponentType<TypedTransProps<Readonly<{}>, {
         ["1"]: JSX.Element;
     }>>;
     /**
       * `To continue signing in, please enter the code that was sent to <a>{{email}}</a>.`
       */
-    ["com.affine.auth.sign.auth.code.hint"]: ComponentType<TypedTransProps<{
+    ["com.yunke.auth.sign.auth.code.hint"]: ComponentType<TypedTransProps<{
         readonly email: string;
     }, {
         a: JSX.Element;
@@ -8893,36 +8893,36 @@ export const TypedTrans: {
     /**
       * `Or <1>sign in with password</1> instead.`
       */
-    ["com.affine.auth.sign.auth.code.message.password"]: ComponentType<TypedTransProps<Readonly<{}>, {
+    ["com.yunke.auth.sign.auth.code.message.password"]: ComponentType<TypedTransProps<Readonly<{}>, {
         ["1"]: JSX.Element;
     }>>;
     /**
-      * `The Self-Hosted instance is not hosted or deployed by AFFiNE. Your data will be stored on these instances.  <1>Learn more about Self-Host details.</1>`
+      * `The Self-Hosted instance is not hosted or deployed by YUNKE. Your data will be stored on these instances.  <1>Learn more about Self-Host details.</1>`
       */
-    ["com.affine.auth.sign.add-selfhosted.description"]: ComponentType<TypedTransProps<Readonly<{}>, {
+    ["com.yunke.auth.sign.add-selfhosted.description"]: ComponentType<TypedTransProps<Readonly<{}>, {
         ["1"]: JSX.Element;
     }>>;
     /**
-      * `By clicking “Continue with Google/Email” above, you acknowledge that you agree to AFFiNE's <1>Terms of Conditions</1> and <3>Privacy Policy</3>.`
+      * `By clicking “Continue with Google/Email” above, you acknowledge that you agree to YUNKE's <1>Terms of Conditions</1> and <3>Privacy Policy</3>.`
       */
-    ["com.affine.auth.sign.message"]: ComponentType<TypedTransProps<Readonly<{}>, {
+    ["com.yunke.auth.sign.message"]: ComponentType<TypedTransProps<Readonly<{}>, {
         ["1"]: JSX.Element;
         ["3"]: JSX.Element;
     }>>;
     /**
-      * `This demo is limited. <1>Download the AFFiNE Client</1> for the latest features and Performance.`
+      * `This demo is limited. <1>Download the YUNKE Client</1> for the latest features and Performance.`
       */
-    ["com.affine.banner.content"]: ComponentType<TypedTransProps<Readonly<{}>, {
+    ["com.yunke.banner.content"]: ComponentType<TypedTransProps<Readonly<{}>, {
         ["1"]: JSX.Element;
     }>>;
     /**
       * `<0>{{count}}</0> selected`
     
-      * - com.affine.collection.toolbar.selected_one: `<0>{{count}}</0> collection selected`
+      * - com.yunke.collection.toolbar.selected_one: `<0>{{count}}</0> collection selected`
     
-      * - com.affine.collection.toolbar.selected_other: `<0>{{count}}</0> collection(s) selected`
+      * - com.yunke.collection.toolbar.selected_other: `<0>{{count}}</0> collection(s) selected`
       */
-    ["com.affine.collection.toolbar.selected"]: ComponentType<TypedTransProps<{
+    ["com.yunke.collection.toolbar.selected"]: ComponentType<TypedTransProps<{
         readonly count: string | number | bigint;
     }, {
         ["0"]: JSX.Element;
@@ -8930,7 +8930,7 @@ export const TypedTrans: {
     /**
       * `<0>{{count}}</0> collection selected`
       */
-    ["com.affine.collection.toolbar.selected_one"]: ComponentType<TypedTransProps<{
+    ["com.yunke.collection.toolbar.selected_one"]: ComponentType<TypedTransProps<{
         readonly count: string | number | bigint;
     }, {
         ["0"]: JSX.Element;
@@ -8938,7 +8938,7 @@ export const TypedTrans: {
     /**
       * `<0>{{count}}</0> collection(s) selected`
       */
-    ["com.affine.collection.toolbar.selected_other"]: ComponentType<TypedTransProps<{
+    ["com.yunke.collection.toolbar.selected_other"]: ComponentType<TypedTransProps<{
         readonly count: string | number | bigint;
     }, {
         ["0"]: JSX.Element;
@@ -8946,7 +8946,7 @@ export const TypedTrans: {
     /**
       * `<0>{{count}}</0> collection(s) selected`
       */
-    ["com.affine.collection.toolbar.selected_others"]: ComponentType<TypedTransProps<{
+    ["com.yunke.collection.toolbar.selected_others"]: ComponentType<TypedTransProps<{
         readonly count: string;
     }, {
         ["0"]: JSX.Element;
@@ -8954,7 +8954,7 @@ export const TypedTrans: {
     /**
       * `Deleting <1>{{tag}}</1> cannot be undone, please proceed with caution.`
       */
-    ["com.affine.delete-tags.confirm.description"]: ComponentType<TypedTransProps<{
+    ["com.yunke.delete-tags.confirm.description"]: ComponentType<TypedTransProps<{
         readonly tag: string;
     }, {
         ["1"]: JSX.Element;
@@ -8962,7 +8962,7 @@ export const TypedTrans: {
     /**
       * `Selected <1>{{selectedCount}}</1>, filtered <3>{{filteredCount}}</3>`
       */
-    ["com.affine.editCollection.rules.countTips"]: ComponentType<TypedTransProps<Readonly<{
+    ["com.yunke.editCollection.rules.countTips"]: ComponentType<TypedTransProps<Readonly<{
         selectedCount: string;
         filteredCount: string;
     }>, {
@@ -8972,7 +8972,7 @@ export const TypedTrans: {
     /**
       * `Showing <1>{{count}}</1> docs.`
       */
-    ["com.affine.editCollection.rules.countTips.more"]: ComponentType<TypedTransProps<{
+    ["com.yunke.editCollection.rules.countTips.more"]: ComponentType<TypedTransProps<{
         readonly count: string;
     }, {
         ["1"]: JSX.Element;
@@ -8980,7 +8980,7 @@ export const TypedTrans: {
     /**
       * `Showing <1>{{count}}</1> doc.`
       */
-    ["com.affine.editCollection.rules.countTips.one"]: ComponentType<TypedTransProps<{
+    ["com.yunke.editCollection.rules.countTips.one"]: ComponentType<TypedTransProps<{
         readonly count: string;
     }, {
         ["1"]: JSX.Element;
@@ -8988,7 +8988,7 @@ export const TypedTrans: {
     /**
       * `Showing <1>{{count}}</1> docs.`
       */
-    ["com.affine.editCollection.rules.countTips.zero"]: ComponentType<TypedTransProps<{
+    ["com.yunke.editCollection.rules.countTips.zero"]: ComponentType<TypedTransProps<{
         readonly count: string;
     }, {
         ["1"]: JSX.Element;
@@ -8996,14 +8996,14 @@ export const TypedTrans: {
     /**
       * `Please <1>add rules</1> to save this collection or switch to <3>Docs</3>, use manual selection mode`
       */
-    ["com.affine.editCollection.rules.empty.noRules.tips"]: ComponentType<TypedTransProps<Readonly<{}>, {
+    ["com.yunke.editCollection.rules.empty.noRules.tips"]: ComponentType<TypedTransProps<Readonly<{}>, {
         ["1"]: JSX.Element;
         ["3"]: JSX.Element;
     }>>;
     /**
       * `Docs that meet the rules will be added to the current collection <2>{{highlight}}</2>`
       */
-    ["com.affine.editCollection.rules.tips"]: ComponentType<TypedTransProps<{
+    ["com.yunke.editCollection.rules.tips"]: ComponentType<TypedTransProps<{
         readonly highlight: string;
     }, {
         ["2"]: JSX.Element;
@@ -9011,29 +9011,29 @@ export const TypedTrans: {
     /**
       * `If you are still experiencing this issue, please <1>contact us through the community</1>.`
       */
-    ["com.affine.error.contact-us"]: ComponentType<TypedTransProps<Readonly<{}>, {
+    ["com.yunke.error.contact-us"]: ComponentType<TypedTransProps<Readonly<{}>, {
         ["1"]: JSX.Element;
     }>>;
     /**
       * `With the workspace creator's free account, every member can access up to <1>7 days<1> of version history.`
       */
-    ["com.affine.history.confirm-restore-modal.free-plan-prompt.description"]: ComponentType<TypedTransProps<Readonly<{}>, {
+    ["com.yunke.history.confirm-restore-modal.free-plan-prompt.description"]: ComponentType<TypedTransProps<Readonly<{}>, {
         ["1"]: JSX.Element;
     }>>;
     /**
       * `With the workspace creator's Pro account, every member enjoys the privilege of accessing up to <1>30 days<1> of version history.`
       */
-    ["com.affine.history.confirm-restore-modal.pro-plan-prompt.description"]: ComponentType<TypedTransProps<Readonly<{}>, {
+    ["com.yunke.history.confirm-restore-modal.pro-plan-prompt.description"]: ComponentType<TypedTransProps<Readonly<{}>, {
         ["1"]: JSX.Element;
     }>>;
     /**
       * `<0>{{count}}</0> selected`
     
-      * - com.affine.page.toolbar.selected_one: `<0>{{count}}</0> doc selected`
+      * - com.yunke.page.toolbar.selected_one: `<0>{{count}}</0> doc selected`
     
-      * - com.affine.page.toolbar.selected_other: `<0>{{count}}</0> doc(s) selected`
+      * - com.yunke.page.toolbar.selected_other: `<0>{{count}}</0> doc(s) selected`
       */
-    ["com.affine.page.toolbar.selected"]: ComponentType<TypedTransProps<{
+    ["com.yunke.page.toolbar.selected"]: ComponentType<TypedTransProps<{
         readonly count: string | number | bigint;
     }, {
         ["0"]: JSX.Element;
@@ -9041,7 +9041,7 @@ export const TypedTrans: {
     /**
       * `<0>{{count}}</0> doc selected`
       */
-    ["com.affine.page.toolbar.selected_one"]: ComponentType<TypedTransProps<{
+    ["com.yunke.page.toolbar.selected_one"]: ComponentType<TypedTransProps<{
         readonly count: string | number | bigint;
     }, {
         ["0"]: JSX.Element;
@@ -9049,7 +9049,7 @@ export const TypedTrans: {
     /**
       * `<0>{{count}}</0> doc(s) selected`
       */
-    ["com.affine.page.toolbar.selected_other"]: ComponentType<TypedTransProps<{
+    ["com.yunke.page.toolbar.selected_other"]: ComponentType<TypedTransProps<{
         readonly count: string | number | bigint;
     }, {
         ["0"]: JSX.Element;
@@ -9057,7 +9057,7 @@ export const TypedTrans: {
     /**
       * `<0>{{count}}</0> doc(s) selected`
       */
-    ["com.affine.page.toolbar.selected_others"]: ComponentType<TypedTransProps<{
+    ["com.yunke.page.toolbar.selected_others"]: ComponentType<TypedTransProps<{
         readonly count: string;
     }, {
         ["0"]: JSX.Element;
@@ -9065,19 +9065,19 @@ export const TypedTrans: {
     /**
       * `You are currently on the <a>free plan</a>.`
       */
-    ["com.affine.payment.billing-setting.ai.free-desc"]: ComponentType<TypedTransProps<Readonly<{}>, {
+    ["com.yunke.payment.billing-setting.ai.free-desc"]: ComponentType<TypedTransProps<Readonly<{}>, {
         a: JSX.Element;
     }>>;
     /**
       * `You have purchased <a>Believer plan</a>. Enjoy with your benefits!`
       */
-    ["com.affine.payment.billing-setting.believer.description"]: ComponentType<TypedTransProps<Readonly<{}>, {
+    ["com.yunke.payment.billing-setting.believer.description"]: ComponentType<TypedTransProps<Readonly<{}>, {
         a: JSX.Element;
     }>>;
     /**
       * `You are currently on the <1>{{planName}} plan</1>.`
       */
-    ["com.affine.payment.billing-setting.current-plan.description"]: ComponentType<TypedTransProps<{
+    ["com.yunke.payment.billing-setting.current-plan.description"]: ComponentType<TypedTransProps<{
         readonly planName: string;
     }, {
         ["1"]: JSX.Element;
@@ -9085,7 +9085,7 @@ export const TypedTrans: {
     /**
       * `You are currently on the believer <1>{{planName}} plan</1>.`
       */
-    ["com.affine.payment.billing-setting.current-plan.description.lifetime"]: ComponentType<TypedTransProps<{
+    ["com.yunke.payment.billing-setting.current-plan.description.lifetime"]: ComponentType<TypedTransProps<{
         readonly planName: string;
     }, {
         ["1"]: JSX.Element;
@@ -9093,7 +9093,7 @@ export const TypedTrans: {
     /**
       * `You are currently on the monthly <1>{{planName}} plan</1>.`
       */
-    ["com.affine.payment.billing-setting.current-plan.description.monthly"]: ComponentType<TypedTransProps<{
+    ["com.yunke.payment.billing-setting.current-plan.description.monthly"]: ComponentType<TypedTransProps<{
         readonly planName: string;
     }, {
         ["1"]: JSX.Element;
@@ -9101,7 +9101,7 @@ export const TypedTrans: {
     /**
       * `You are currently on the annually <1>{{planName}} plan</1>.`
       */
-    ["com.affine.payment.billing-setting.current-plan.description.yearly"]: ComponentType<TypedTransProps<{
+    ["com.yunke.payment.billing-setting.current-plan.description.yearly"]: ComponentType<TypedTransProps<{
         readonly planName: string;
     }, {
         ["1"]: JSX.Element;
@@ -9109,13 +9109,13 @@ export const TypedTrans: {
     /**
       * `One-time Purchase. Personal use rights for up to 150 years. <a>Fair Usage Policies</a> may apply.`
       */
-    ["com.affine.payment.lifetime.caption-2"]: ComponentType<TypedTransProps<Readonly<{}>, {
+    ["com.yunke.payment.lifetime.caption-2"]: ComponentType<TypedTransProps<Readonly<{}>, {
         a: JSX.Element;
     }>>;
     /**
       * `You are currently on the {{currentPlan}} plan. If you have any questions, please contact our <3>customer support</3>.`
       */
-    ["com.affine.payment.subtitle-active"]: ComponentType<TypedTransProps<{
+    ["com.yunke.payment.subtitle-active"]: ComponentType<TypedTransProps<{
         readonly currentPlan: string;
     }, {
         ["3"]: JSX.Element;
@@ -9123,37 +9123,37 @@ export const TypedTrans: {
     /**
       * `If you have any questions, please contact our <1> customer support</1>.`
       */
-    ["com.affine.payment.upgrade-success-page.support"]: ComponentType<TypedTransProps<Readonly<{}>, {
+    ["com.yunke.payment.upgrade-success-page.support"]: ComponentType<TypedTransProps<Readonly<{}>, {
         ["1"]: JSX.Element;
     }>>;
     /**
       * `If you have any questions, please contact our <1>customer support</1>.`
       */
-    ["com.affine.payment.upgrade-success-page.team.text-2"]: ComponentType<TypedTransProps<Readonly<{}>, {
+    ["com.yunke.payment.upgrade-success-page.team.text-2"]: ComponentType<TypedTransProps<Readonly<{}>, {
         ["1"]: JSX.Element;
     }>>;
     /**
       * `If you have any questions, please contact our <1>customer support</1>.`
       */
-    ["com.affine.payment.license-success.text-2"]: ComponentType<TypedTransProps<Readonly<{}>, {
+    ["com.yunke.payment.license-success.text-2"]: ComponentType<TypedTransProps<Readonly<{}>, {
         ["1"]: JSX.Element;
     }>>;
     /**
       * `This action deletes the old Favorites section. <b>Your documents are safe</b>, ensure you've moved your frequently accessed documents to the new personal Favorites section.`
       */
-    ["com.affine.rootAppSidebar.migration-data.clean-all.description"]: ComponentType<TypedTransProps<Readonly<{}>, {
+    ["com.yunke.rootAppSidebar.migration-data.clean-all.description"]: ComponentType<TypedTransProps<Readonly<{}>, {
         b: JSX.Element;
     }>>;
     /**
       * `<b>Your documents are safe</b>, but you'll need to re-pin your most-used ones. "Favorites" are now personal. Move items from the old shared section to your new personal section or remove the old one by clicking "Empty the old favorites" now.`
       */
-    ["com.affine.rootAppSidebar.migration-data.help.description"]: ComponentType<TypedTransProps<Readonly<{}>, {
+    ["com.yunke.rootAppSidebar.migration-data.help.description"]: ComponentType<TypedTransProps<Readonly<{}>, {
         b: JSX.Element;
     }>>;
     /**
       * `No doc titles contain <1>{{search}}</1>`
       */
-    ["com.affine.selectPage.empty.tips"]: ComponentType<TypedTransProps<{
+    ["com.yunke.selectPage.empty.tips"]: ComponentType<TypedTransProps<{
         readonly search: string;
     }, {
         ["1"]: JSX.Element;
@@ -9161,77 +9161,77 @@ export const TypedTrans: {
     /**
       * `Your account will be inaccessible, and your personal cloud space will be permanently deleted. You can remove local data by uninstalling the app or clearing your browser storage. <1>This action is irreversible.</1>`
       */
-    ["com.affine.setting.account.delete.confirm-description-2"]: ComponentType<TypedTransProps<Readonly<{}>, {
+    ["com.yunke.setting.account.delete.confirm-description-2"]: ComponentType<TypedTransProps<Readonly<{}>, {
         ["1"]: JSX.Element;
     }>>;
     /**
       * `Don't have the app? <1>Click to download</1>.`
       */
-    ["com.affine.open-in-app.card.subtitle"]: ComponentType<TypedTransProps<Readonly<{}>, {
+    ["com.yunke.open-in-app.card.subtitle"]: ComponentType<TypedTransProps<Readonly<{}>, {
         ["1"]: JSX.Element;
     }>>;
     /**
       * `Settings changed; please restart the app. <1>Restart</1>`
       */
-    ["com.affine.settings.editorSettings.general.spell-check.restart-hint"]: ComponentType<TypedTransProps<Readonly<{}>, {
+    ["com.yunke.settings.editorSettings.general.spell-check.restart-hint"]: ComponentType<TypedTransProps<Readonly<{}>, {
         ["1"]: JSX.Element;
     }>>;
     /**
       * `Love our app? <1>Star us on GitHub</1> and <2>create issues</2> for your valuable feedback!`
       */
-    ["com.affine.settings.suggestion-2"]: ComponentType<TypedTransProps<Readonly<{}>, {
+    ["com.yunke.settings.suggestion-2"]: ComponentType<TypedTransProps<Readonly<{}>, {
         ["1"]: JSX.Element;
         ["2"]: JSX.Element;
     }>>;
     /**
       * `Meeting Features Available <strong>Free</strong> in Beta Phase`
       */
-    ["com.affine.settings.meetings.setting.prompt.2"]: ComponentType<TypedTransProps<Readonly<{}>, {
+    ["com.yunke.settings.meetings.setting.prompt.2"]: ComponentType<TypedTransProps<Readonly<{}>, {
         strong: JSX.Element;
     }>>;
     /**
-      * `<strong>Where AI meets your meetings - affine your collaboration.</strong>
+      * `<strong>Where AI meets your meetings - yunke your collaboration.</strong>
     <ul><li>Extract Action Items & Key Insights Instantly</li><li>Smart Auto-Capture Starts With Your Meeting</li><li>Seamless Integration Across All Meeting Platforms</li><li>One Unified Space for All Your Meeting's Context</li><li>Your AI Assistant with Every Meeting Context Preserved</li></ul>`
       */
-    ["com.affine.settings.meetings.setting.welcome.hints"]: ComponentType<TypedTransProps<Readonly<{}>, {
+    ["com.yunke.settings.meetings.setting.welcome.hints"]: ComponentType<TypedTransProps<Readonly<{}>, {
         strong: JSX.Element;
         ul: JSX.Element;
         li: JSX.Element;
     }>>;
     /**
-      * `Utilize the meeting notes and AI summarization features provided by AFFiNE. <1>Discuss more in the community</1>.`
+      * `Utilize the meeting notes and AI summarization features provided by YUNKE. <1>Discuss more in the community</1>.`
       */
-    ["com.affine.settings.meetings.enable.description"]: ComponentType<TypedTransProps<Readonly<{}>, {
+    ["com.yunke.settings.meetings.enable.description"]: ComponentType<TypedTransProps<Readonly<{}>, {
         ["1"]: JSX.Element;
     }>>;
     /**
       * `Activate using the local key from <1>Toeverything.Inc</1>`
       */
-    ["com.affine.settings.workspace.license.self-host-team.team.license"]: ComponentType<TypedTransProps<Readonly<{}>, {
+    ["com.yunke.settings.workspace.license.self-host-team.team.license"]: ComponentType<TypedTransProps<Readonly<{}>, {
         ["1"]: JSX.Element;
     }>>;
     /**
       * `Copy your workspace id and <1>reach out to us</1>.`
       */
-    ["com.affine.settings.workspace.license.self-host-team.upload-license-file.tips.content"]: ComponentType<TypedTransProps<Readonly<{}>, {
+    ["com.yunke.settings.workspace.license.self-host-team.upload-license-file.tips.content"]: ComponentType<TypedTransProps<Readonly<{}>, {
         ["1"]: JSX.Element;
     }>>;
     /**
       * `If you encounter any issues, contact support@toeverything.info. No license yet? <1>Click to purchase</1>.`
       */
-    ["com.affine.settings.workspace.license.activate-modal.tips"]: ComponentType<TypedTransProps<Readonly<{}>, {
+    ["com.yunke.settings.workspace.license.activate-modal.tips"]: ComponentType<TypedTransProps<Readonly<{}>, {
         ["1"]: JSX.Element;
     }>>;
     /**
       * `This will make the workspace read-only. Your key remains usable elsewhere. Deactivation doesn't cancel your Team plan. To cancel, go to <1>Manage Payment</1>.`
       */
-    ["com.affine.settings.workspace.license.deactivate-modal.description"]: ComponentType<TypedTransProps<Readonly<{}>, {
+    ["com.yunke.settings.workspace.license.deactivate-modal.description"]: ComponentType<TypedTransProps<Readonly<{}>, {
         ["1"]: JSX.Element;
     }>>;
     /**
       * `The "<1>{{ name }}</1>" property will be removed. This action cannot be undone.`
       */
-    ["com.affine.settings.workspace.properties.delete-property-desc"]: ComponentType<TypedTransProps<{
+    ["com.yunke.settings.workspace.properties.delete-property-desc"]: ComponentType<TypedTransProps<{
         readonly name: string;
     }, {
         ["1"]: JSX.Element;
@@ -9239,7 +9239,7 @@ export const TypedTrans: {
     /**
       * `<0>{{count}}</0> doc`
       */
-    ["com.affine.settings.workspace.properties.doc"]: ComponentType<TypedTransProps<{
+    ["com.yunke.settings.workspace.properties.doc"]: ComponentType<TypedTransProps<{
         readonly count: string;
     }, {
         ["0"]: JSX.Element;
@@ -9247,7 +9247,7 @@ export const TypedTrans: {
     /**
       * `<0>{{count}}</0> docs`
       */
-    ["com.affine.settings.workspace.properties.doc_others"]: ComponentType<TypedTransProps<{
+    ["com.yunke.settings.workspace.properties.doc_others"]: ComponentType<TypedTransProps<{
         readonly count: string;
     }, {
         ["0"]: JSX.Element;
@@ -9255,7 +9255,7 @@ export const TypedTrans: {
     /**
       * `Manage workspace <1>{{name}}</1> properties`
       */
-    ["com.affine.settings.workspace.properties.header.subtitle"]: ComponentType<TypedTransProps<{
+    ["com.yunke.settings.workspace.properties.header.subtitle"]: ComponentType<TypedTransProps<{
         readonly name: string;
     }, {
         ["1"]: JSX.Element;
@@ -9263,11 +9263,11 @@ export const TypedTrans: {
     /**
       * `<0>{{count}}</0> selected`
     
-      * - com.affine.tag.toolbar.selected_one: `<0>{{count}}</0> tag selected`
+      * - com.yunke.tag.toolbar.selected_one: `<0>{{count}}</0> tag selected`
     
-      * - com.affine.tag.toolbar.selected_other: `<0>{{count}}</0> tag(s) selected`
+      * - com.yunke.tag.toolbar.selected_other: `<0>{{count}}</0> tag(s) selected`
       */
-    ["com.affine.tag.toolbar.selected"]: ComponentType<TypedTransProps<{
+    ["com.yunke.tag.toolbar.selected"]: ComponentType<TypedTransProps<{
         readonly count: string | number | bigint;
     }, {
         ["0"]: JSX.Element;
@@ -9275,7 +9275,7 @@ export const TypedTrans: {
     /**
       * `<0>{{count}}</0> tag selected`
       */
-    ["com.affine.tag.toolbar.selected_one"]: ComponentType<TypedTransProps<{
+    ["com.yunke.tag.toolbar.selected_one"]: ComponentType<TypedTransProps<{
         readonly count: string | number | bigint;
     }, {
         ["0"]: JSX.Element;
@@ -9283,7 +9283,7 @@ export const TypedTrans: {
     /**
       * `<0>{{count}}</0> tag(s) selected`
       */
-    ["com.affine.tag.toolbar.selected_other"]: ComponentType<TypedTransProps<{
+    ["com.yunke.tag.toolbar.selected_other"]: ComponentType<TypedTransProps<{
         readonly count: string | number | bigint;
     }, {
         ["0"]: JSX.Element;
@@ -9291,7 +9291,7 @@ export const TypedTrans: {
     /**
       * `<0>{{count}}</0> tag(s) selected`
       */
-    ["com.affine.tag.toolbar.selected_others"]: ComponentType<TypedTransProps<{
+    ["com.yunke.tag.toolbar.selected_others"]: ComponentType<TypedTransProps<{
         readonly count: string;
     }, {
         ["0"]: JSX.Element;
@@ -9299,7 +9299,7 @@ export const TypedTrans: {
     /**
       * `Deleting <1>{{workspace}}</1> cannot be undone, please proceed with caution. All contents will be lost.`
       */
-    ["com.affine.workspaceDelete.description"]: ComponentType<TypedTransProps<{
+    ["com.yunke.workspaceDelete.description"]: ComponentType<TypedTransProps<{
         readonly workspace: string;
     }, {
         ["1"]: JSX.Element;
@@ -9307,7 +9307,7 @@ export const TypedTrans: {
     /**
       * `Deleting <1>{{workspace}}</1> will delete both local and cloud data, this operation cannot be undone, please proceed with caution.`
       */
-    ["com.affine.workspaceDelete.description2"]: ComponentType<TypedTransProps<{
+    ["com.yunke.workspaceDelete.description2"]: ComponentType<TypedTransProps<{
         readonly workspace: string;
     }, {
         ["1"]: JSX.Element;
@@ -9321,7 +9321,7 @@ export const TypedTrans: {
     /**
       * `Are you sure you want to upgrade <1>{{workspaceName}}</1> to a Team Workspace? This will allow unlimited members to collaborate in this workspace.`
       */
-    ["com.affine.upgrade-to-team-page.upgrade-confirm.description"]: ComponentType<TypedTransProps<{
+    ["com.yunke.upgrade-to-team-page.upgrade-confirm.description"]: ComponentType<TypedTransProps<{
         readonly workspaceName: string;
     }, {
         ["1"]: JSX.Element;
@@ -9329,7 +9329,7 @@ export const TypedTrans: {
     /**
       * `<1>{{username}}</1> mentioned you in <2>{{docTitle}}</2>`
       */
-    ["com.affine.notification.mention"]: ComponentType<TypedTransProps<Readonly<{
+    ["com.yunke.notification.mention"]: ComponentType<TypedTransProps<Readonly<{
         username: string;
         docTitle: string;
     }>, {
@@ -9339,7 +9339,7 @@ export const TypedTrans: {
     /**
       * `<1>{{username}}</1> has accept your invitation`
       */
-    ["com.affine.notification.invitation-accepted"]: ComponentType<TypedTransProps<{
+    ["com.yunke.notification.invitation-accepted"]: ComponentType<TypedTransProps<{
         readonly username: string;
     }, {
         ["1"]: JSX.Element;
@@ -9347,7 +9347,7 @@ export const TypedTrans: {
     /**
       * `<1>{{username}}</1> has requested to join <2>{{workspaceName}}</2>`
       */
-    ["com.affine.notification.invitation-review-request"]: ComponentType<TypedTransProps<Readonly<{
+    ["com.yunke.notification.invitation-review-request"]: ComponentType<TypedTransProps<Readonly<{
         username: string;
         workspaceName: string;
     }>, {
@@ -9357,7 +9357,7 @@ export const TypedTrans: {
     /**
       * `<1>{{username}}</1> has declined your request to join <2>{{workspaceName}}</2>`
       */
-    ["com.affine.notification.invitation-review-declined"]: ComponentType<TypedTransProps<Readonly<{
+    ["com.yunke.notification.invitation-review-declined"]: ComponentType<TypedTransProps<Readonly<{
         username: string;
         workspaceName: string;
     }>, {
@@ -9367,7 +9367,7 @@ export const TypedTrans: {
     /**
       * `<1>{{username}}</1> has approved your request to join <2>{{workspaceName}}</2>`
       */
-    ["com.affine.notification.invitation-review-approved"]: ComponentType<TypedTransProps<Readonly<{
+    ["com.yunke.notification.invitation-review-approved"]: ComponentType<TypedTransProps<Readonly<{
         username: string;
         workspaceName: string;
     }>, {
@@ -9377,7 +9377,7 @@ export const TypedTrans: {
     /**
       * `There is an issue regarding your invitation to <1>{{workspaceName}}</1> `
       */
-    ["com.affine.notification.invitation-blocked"]: ComponentType<TypedTransProps<{
+    ["com.yunke.notification.invitation-blocked"]: ComponentType<TypedTransProps<{
         readonly workspaceName: string;
     }, {
         ["1"]: JSX.Element;
@@ -9385,7 +9385,7 @@ export const TypedTrans: {
     /**
       * `<1>{{username}}</1> invited you to join <2>{{workspaceName}}</2>`
       */
-    ["com.affine.notification.invitation"]: ComponentType<TypedTransProps<Readonly<{
+    ["com.yunke.notification.invitation"]: ComponentType<TypedTransProps<Readonly<{
         username: string;
         workspaceName: string;
     }>, {
@@ -9395,7 +9395,7 @@ export const TypedTrans: {
     /**
       * `Unable to join <1/> <2>{{workspaceName}}</2> due to insufficient seats available.`
       */
-    ["com.affine.fail-to-join-workspace.description-1"]: ComponentType<TypedTransProps<{
+    ["com.yunke.fail-to-join-workspace.description-1"]: ComponentType<TypedTransProps<{
         readonly workspaceName: string;
     }, {
         ["1"]: JSX.Element;
@@ -9404,7 +9404,7 @@ export const TypedTrans: {
     /**
       * `You requested to join <1/> <2>{{workspaceName}}</2> with <3>{{userEmail}}</3>, the workspace owner and team admins will review your request.`
       */
-    ["com.affine.sent-request-to-join-workspace.description"]: ComponentType<TypedTransProps<Readonly<{
+    ["com.yunke.sent-request-to-join-workspace.description"]: ComponentType<TypedTransProps<Readonly<{
         workspaceName: string;
         userEmail: string;
     }>, {
@@ -9415,7 +9415,7 @@ export const TypedTrans: {
     /**
       * `Unable to process your request to join <1/> <2>{{workspaceName}}</2> with <3>{{userEmail}}</3>, the workspace has reached its member limit. Please contact the workspace owner for available seats.`
       */
-    ["com.affine.failed-to-send-request.description"]: ComponentType<TypedTransProps<Readonly<{
+    ["com.yunke.failed-to-send-request.description"]: ComponentType<TypedTransProps<Readonly<{
         workspaceName: string;
         userEmail: string;
     }>, {
@@ -9424,16 +9424,16 @@ export const TypedTrans: {
         ["3"]: JSX.Element;
     }>>;
     /**
-      * `Import your Readwise highlights to AFFiNE. Please visit Readwise, <br />click <a>"Get Access Token"</a>, and paste the token below.`
+      * `Import your Readwise highlights to YUNKE. Please visit Readwise, <br />click <a>"Get Access Token"</a>, and paste the token below.`
       */
-    ["com.affine.integration.readwise.connect.desc"]: ComponentType<TypedTransProps<Readonly<{}>, {
+    ["com.yunke.integration.readwise.connect.desc"]: ComponentType<TypedTransProps<Readonly<{}>, {
         br: JSX.Element;
         a: JSX.Element;
     }>>;
     /**
       * `Updates to be imported since last successful import on {{lastImportedAt}} <a>Import everything instead</a>`
       */
-    ["com.affine.integration.readwise.import.desc-from-last"]: ComponentType<TypedTransProps<{
+    ["com.yunke.integration.readwise.import.desc-from-last"]: ComponentType<TypedTransProps<{
         readonly lastImportedAt: string;
     }, {
         a: JSX.Element;
@@ -9441,7 +9441,7 @@ export const TypedTrans: {
     /**
       * `Please contact <1>{{user}}</1> to upgrade AI rights or resend the attachment.`
       */
-    ["com.affine.audio.transcribe.non-owner.confirm.message"]: ComponentType<TypedTransProps<{
+    ["com.yunke.audio.transcribe.non-owner.confirm.message"]: ComponentType<TypedTransProps<{
         readonly user: string;
     }, {
         ["1"]: JSX.Element;

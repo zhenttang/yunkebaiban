@@ -63,4 +63,4 @@ for arch in $ARCHS; do
   esac
 done
 
-$HOME/.cargo/bin/cargo run -p affine_mobile_native --features use-as-lib --bin uniffi-bindgen generate --library $SRCROOT/lib${FFI_TARGET}.a --language swift --out-dir $SRCROOT/../../ios/App/App/uniffi
+$HOME/.cargo/bin/cargo run -p yunke_mobile_native --features use-as-lib --bin uniffi-bindgen generate --library $SRCROOT/lib${FFI_TARGET}.a --language swift --out-dir $SRCROOT/../../ios/App/App/uniffi

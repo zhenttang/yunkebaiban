@@ -21,7 +21,7 @@ import {
 const flavour = AttachmentBlockSchema.model.flavour;
 
 export class AttachmentViewExtension extends ViewExtensionProvider {
-  override name = 'affine-attachment-block';
+  override name = 'yunke-attachment-block';
 
   override effect() {
     super.effect();
@@ -34,8 +34,8 @@ export class AttachmentViewExtension extends ViewExtensionProvider {
       FlavourExtension(flavour),
       BlockViewExtension(flavour, model => {
         return model.parent?.flavour === 'yunke:surface'
-          ? literal`affine-edgeless-attachment`
-          : literal`affine-attachment`;
+          ? literal`yunke-edgeless-attachment`
+          : literal`yunke-attachment`;
       }),
       AttachmentDropOption,
       AttachmentEmbedConfigExtension(),

@@ -11,7 +11,7 @@ import type { FrameworkProvider } from '@toeverything/infra';
 
 import { ServerService } from '../../../modules/cloud/services/server';
 
-class AffineLinkPreviewService extends LinkPreviewService {
+class YunkeLinkPreviewService extends LinkPreviewService {
   constructor(endpoint: string, cache: LinkPreviewCacheProvider) {
     super(cache);
     this.setEndpoint(endpoint);
@@ -45,7 +45,7 @@ export function patchLinkPreviewService(
   return {
     setup: (di: Container) => {
       di.override(LinkPreviewServiceIdentifier, provider => {
-        return new AffineLinkPreviewService(
+        return new YunkeLinkPreviewService(
           linkPreviewUrl,
           provider.get(LinkPreviewCacheIdentifier)
         );

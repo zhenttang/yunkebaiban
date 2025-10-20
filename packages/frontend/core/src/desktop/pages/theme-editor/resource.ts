@@ -116,7 +116,7 @@ const getTree = (
   };
 };
 
-export const affineThemes = {
+export const yunkeThemes = {
   v1: getTree(lightCssVariables, darkCssVariables),
   v2: getTree(lightCssVariablesV2, darkCssVariablesV2),
 };

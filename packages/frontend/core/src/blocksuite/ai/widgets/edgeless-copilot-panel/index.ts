@@ -24,26 +24,26 @@ export class EdgelessCopilotPanel extends WithDisposable(LitElement) {
       min-width: 330px;
       overflow-y: auto;
       overscroll-behavior: contain;
-      background: ${unsafeCSSVar('--affine-background-overlay-panel-color')};
-      box-shadow: ${unsafeCSSVar('--affine-overlay-shadow')};
+      background: ${unsafeCSSVar('--yunke-background-overlay-panel-color')};
+      box-shadow: ${unsafeCSSVar('--yunke-overlay-shadow')};
       border-radius: 8px;
-      z-index: var(--affine-z-index-popover);
+      z-index: var(--yunke-z-index-popover);
     }
 
     .edgeless-copilot-panel[data-app-theme='light'] {
       background: ${unsafeCSS(
-        lightCssVariables['--affine-background-overlay-panel-color']
+        lightCssVariables['--yunke-background-overlay-panel-color']
       )};
 
-      box-shadow: ${unsafeCSS(lightCssVariables['--affine-overlay-shadow'])};
+      box-shadow: ${unsafeCSS(lightCssVariables['--yunke-overlay-shadow'])};
     }
 
     .edgeless-copilot-panel[data-app-theme='dark'] {
       background: ${unsafeCSS(
-        darkCssVariables['--affine-background-overlay-panel-color']
+        darkCssVariables['--yunke-background-overlay-panel-color']
       )};
 
-      box-shadow: ${unsafeCSS(darkCssVariables['--affine-overlay-shadow'])};
+      box-shadow: ${unsafeCSS(darkCssVariables['--yunke-overlay-shadow'])};
     }
 
     .edgeless-copilot-panel[data-app-theme='dark'] ai-item {
@@ -52,15 +52,15 @@ export class EdgelessCopilotPanel extends WithDisposable(LitElement) {
 
     ${scrollbarStyle('.edgeless-copilot-panel')}
     .edgeless-copilot-panel:hover::-webkit-scrollbar-thumb {
-      background-color: var(--affine-black-30);
+      background-color: var(--yunke-black-30);
     }
 
     .edgeless-copilot-panel[data-app-theme='light']:hover::-webkit-scrollbar-thumb {
-      background-color: ${unsafeCSS(lightCssVariables['--affine-black30'])};
+      background-color: ${unsafeCSS(lightCssVariables['--yunke-black30'])};
     }
 
     .edgeless-copilot-panel[data-app-theme='dark']:hover::-webkit-scrollbar-thumb {
-      background-color: ${unsafeCSS(darkCssVariables['--affine-black30'])};
+      background-color: ${unsafeCSS(darkCssVariables['--yunke-black30'])};
     }
   `;
 

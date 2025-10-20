@@ -1,7 +1,7 @@
 import type { ServiceProvider } from '@blocksuite/global/di';
 import type { BaseTextAttributes, DeltaInsert } from '@blocksuite/store';
 
-import type { AffineTextAttributes } from '../../types';
+import type { YunkeTextAttributes } from '../../types';
 
 export type DeltaASTConverterOptions = {
   trim?: boolean;
@@ -32,10 +32,10 @@ export abstract class DeltaASTConverter<
 }
 
 export type InlineDeltaMatcher<TNode extends object = never> = {
-  name: keyof AffineTextAttributes | string;
-  match: (delta: DeltaInsert<AffineTextAttributes>) => boolean;
+  name: keyof YunkeTextAttributes | string;
+  match: (delta: DeltaInsert<YunkeTextAttributes>) => boolean;
   toAST: (
-    delta: DeltaInsert<AffineTextAttributes>,
+    delta: DeltaInsert<YunkeTextAttributes>,
     context: {
       configs: Map<string, string>;
       current: TNode;
@@ -55,7 +55,7 @@ export type ASTToDeltaMatcher<AST> = {
       toDelta: (
         ast: AST,
         options?: DeltaASTConverterOptions
-      ) => DeltaInsert<AffineTextAttributes>[];
+      ) => DeltaInsert<YunkeTextAttributes>[];
     }
-  ) => DeltaInsert<AffineTextAttributes>[];
+  ) => DeltaInsert<YunkeTextAttributes>[];
 };

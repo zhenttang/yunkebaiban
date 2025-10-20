@@ -1,12 +1,12 @@
 import { getInlineEditorByModel } from '@blocksuite/yunke-rich-text';
-import type { AffineInlineEditor } from '@blocksuite/yunke-shared/types';
+import type { YunkeInlineEditor } from '@blocksuite/yunke-shared/types';
 import { DisposableGroup } from '@blocksuite/global/disposable';
 import type { UIEventStateContext } from '@blocksuite/std';
 import { TextSelection, WidgetComponent } from '@blocksuite/std';
 import { InlineEditor } from '@blocksuite/std/inline';
 import debounce from 'lodash-es/debounce';
 
-import { AFFINE_SLASH_MENU_TRIGGER_KEY } from './consts';
+import { YUNKE_SLASH_MENU_TRIGGER_KEY } from './consts';
 import { SlashMenuExtension } from './extensions';
 import { SlashMenu } from './slash-menu-popover';
 import type { SlashMenuConfig, SlashMenuContext, SlashMenuItem } from './types';
@@ -58,14 +58,14 @@ const showSlashMenu = debounce(
   { leading: true }
 );
 
-export class AffineSlashMenuWidget extends WidgetComponent {
+export class YunkeSlashMenuWidget extends WidgetComponent {
   private readonly _getInlineEditor = (
     evt: KeyboardEvent | CompositionEvent
   ) => {
     if (evt.target instanceof HTMLElement) {
       const editor = (
         evt.target.closest('.inline-editor') as {
-          inlineEditor?: AffineInlineEditor;
+          inlineEditor?: YunkeInlineEditor;
         }
       )?.inlineEditor;
       if (editor instanceof InlineEditor) {
@@ -127,7 +127,7 @@ export class AffineSlashMenuWidget extends WidgetComponent {
         ? leafStart.textContent.slice(0, offsetStart)
         : '';
 
-      if (!text.endsWith(AFFINE_SLASH_MENU_TRIGGER_KEY)) return;
+      if (!text.endsWith(YUNKE_SLASH_MENU_TRIGGER_KEY)) return;
 
       closeSlashMenu();
       showSlashMenu({
@@ -144,7 +144,7 @@ export class AffineSlashMenuWidget extends WidgetComponent {
   private readonly _onCompositionEnd = (ctx: UIEventStateContext) => {
     const event = ctx.get('defaultState').event as CompositionEvent;
 
-    if (event.data !== AFFINE_SLASH_MENU_TRIGGER_KEY) return;
+    if (event.data !== YUNKE_SLASH_MENU_TRIGGER_KEY) return;
 
     const inlineEditor = this._getInlineEditor(event);
     if (!inlineEditor) return;
@@ -158,7 +158,7 @@ export class AffineSlashMenuWidget extends WidgetComponent {
 
     const key = event.key;
 
-    if (event.isComposing || key !== AFFINE_SLASH_MENU_TRIGGER_KEY) return;
+    if (event.isComposing || key !== YUNKE_SLASH_MENU_TRIGGER_KEY) return;
 
     const inlineEditor = this._getInlineEditor(event);
     if (!inlineEditor) return;

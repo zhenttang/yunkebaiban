@@ -37,7 +37,7 @@ export class EdgelessNoteMenu extends EdgelessToolbarToolMixin(LitElement) {
       justify-content: center;
       align-items: center;
       gap: 14px;
-      fill: var(--affine-icon-color);
+      fill: var(--yunke-icon-color);
     }
     .button-group-container svg {
       width: 20px;
@@ -46,7 +46,7 @@ export class EdgelessNoteMenu extends EdgelessToolbarToolMixin(LitElement) {
     .divider {
       width: 1px;
       height: 24px;
-      background: var(--affine-border-color);
+      background: var(--yunke-border-color);
       transform: scaleX(0.5);
       margin: 0 14px;
     }
@@ -124,10 +124,10 @@ export class EdgelessNoteMenu extends EdgelessToolbarToolMixin(LitElement) {
 
             <edgeless-tool-icon-button
               .activeMode=${'background'}
-              .tooltip=${html`<affine-tooltip-content-with-shortcut
+              .tooltip=${html`<yunke-tooltip-content-with-shortcut
                 data-tip="${'链接'}"
                 data-shortcut="${'@'}"
-              ></affine-tooltip-content-with-shortcut>`}
+              ></yunke-tooltip-content-with-shortcut>`}
               @click=${() => {
                 this._onHandleLinkButtonClick();
               }}

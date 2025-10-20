@@ -73,7 +73,7 @@ export const TagSelectorDialog = ({
         onBeforeConfirm={onBeforeConfirm}
         initial={init}
         data={list}
-        typeName={t[`com.affine.m.selector.type-tag`]()}
+        typeName={t[`com.yunke.m.selector.type-tag`]()}
       />
     </Modal>
   );

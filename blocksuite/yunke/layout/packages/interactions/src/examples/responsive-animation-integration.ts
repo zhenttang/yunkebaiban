@@ -469,7 +469,7 @@ export class ResponsiveAwareAnimationManager {
       top: 0;
       bottom: 0;
       width: 2px;
-      background: var(--affine-primary-color);
+      background: var(--yunke-primary-color);
       opacity: 0.8;
       z-index: 1000;
       pointer-events: none;

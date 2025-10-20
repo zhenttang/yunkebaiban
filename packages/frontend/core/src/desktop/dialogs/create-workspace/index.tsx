@@ -1,5 +1,5 @@
 import { Button, ConfirmModal, notify, RowInput } from '@yunke/component';
-import { useAsyncCallback } from '@yunke/core/components/hooks/affine-async-hooks';
+import { useAsyncCallback } from '@yunke/core/components/hooks/yunke-async-hooks';
 import {
   AuthService,
   type Server,
@@ -44,7 +44,7 @@ export const CreateWorkspaceDialog = ({
 
   const [workspaceName, setWorkspaceName] = useState('');
   const [inputServerId, setInputServerId] = useState(
-    serverId ?? 'affine-cloud'
+    serverId ?? 'yunke-cloud'
   );
 
   const serversService = useService(ServersService);
@@ -63,9 +63,9 @@ export const CreateWorkspaceDialog = ({
     <ConfirmModal
       open
       onOpenChange={onOpenChange}
-      title={t['com.affine.nameWorkspace.title']()}
-      description={t['com.affine.nameWorkspace.description']()}
-      cancelText={t['com.affine.nameWorkspace.button.cancel']()}
+      title={t['com.yunke.nameWorkspace.title']()}
+      description={t['com.yunke.nameWorkspace.description']()}
+      cancelText={t['com.yunke.nameWorkspace.button.cancel']()}
       closeButtonOptions={{
         ['data-testid' as string]: 'create-workspace-close-button',
       }}
@@ -87,13 +87,13 @@ export const CreateWorkspaceDialog = ({
       {...props}
     >
       <FormSection
-        label={t['com.affine.nameWorkspace.subtitle.workspace-name']()}
+        label={t['com.yunke.nameWorkspace.subtitle.workspace-name']()}
         input={
           <RowInput
             autoFocus
             className={styles.input}
             data-testid="create-workspace-input"
-            placeholder={t['com.affine.nameWorkspace.placeholder']()}
+            placeholder={t['com.yunke.nameWorkspace.placeholder']()}
             maxLength={64}
             minLength={0}
             onChange={setWorkspaceName}
@@ -102,7 +102,7 @@ export const CreateWorkspaceDialog = ({
       />
 
       <FormSection
-        label={t['com.affine.nameWorkspace.subtitle.workspace-type']()}
+        label={t['com.yunke.nameWorkspace.subtitle.workspace-type']()}
         input={
           <ServerSelector
             className={styles.select}
@@ -140,7 +140,7 @@ const CustomConfirmButton = ({
     if (loading) return;
     setLoading(true);
     track.$.$.$.createWorkspace({
-      flavour: !server ? 'local' : 'affine-cloud',
+      flavour: !server ? 'local' : 'yunke-cloud',
     });
 
     // 这将是网页版当前的最后一步
@@ -178,7 +178,7 @@ const CustomConfirmButton = ({
       onClick={handleCheckSessionAndConfirm}
       loading={loading}
     >
-      {t['com.affine.nameWorkspace.button.create']()}
+      {t['com.yunke.nameWorkspace.button.create']()}
     </Button>
   );
 };

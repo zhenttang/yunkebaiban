@@ -282,12 +282,12 @@ export const layoutSwitcherStyles = css`
   /* === 深色模式适配 === */
   ${StyleUtils.darkMode(`
     .layout-switcher {
-      background: var(--affine-background-primary-color);
-      border-color: var(--affine-border-color);
+      background: var(--yunke-background-primary-color);
+      border-color: var(--yunke-border-color);
     }
     
     .layout-button:hover {
-      background: var(--affine-hover-color);
+      background: var(--yunke-hover-color);
     }
   `)}
 

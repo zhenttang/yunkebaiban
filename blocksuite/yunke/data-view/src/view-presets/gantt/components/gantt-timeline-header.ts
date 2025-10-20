@@ -27,8 +27,8 @@ export class GanttTimelineHeader extends LitElement {
   static override styles = css`
     :host {
       display: block;
-      background: var(--affine-background-primary-color);
-      border-bottom: 1px solid var(--affine-border-color);
+      background: var(--yunke-background-primary-color);
+      border-bottom: 1px solid var(--yunke-border-color);
       position: sticky;
       top: 0;
       z-index: 10;
@@ -40,7 +40,7 @@ export class GanttTimelineHeader extends LitElement {
       height: 40px;
       font-size: 12px;
       font-weight: 500;
-      color: var(--affine-text-primary-color);
+      color: var(--yunke-text-primary-color);
     }
 
     .timeline-unit {
@@ -49,19 +49,19 @@ export class GanttTimelineHeader extends LitElement {
       justify-content: center;
       min-width: 40px;
       height: 100%;
-      border-right: 1px solid var(--affine-border-color);
-      background: var(--affine-background-primary-color);
+      border-right: 1px solid var(--yunke-border-color);
+      background: var(--yunke-background-primary-color);
       transition: background-color 0.2s ease;
       cursor: pointer;
       
       &:hover {
-        background: var(--affine-hover-color);
+        background: var(--yunke-hover-color);
       }
     }
 
     .timeline-unit.today {
-      background: color-mix(in srgb, var(--affine-primary-color) 10%, transparent);
-      color: var(--affine-primary-color);
+      background: color-mix(in srgb, var(--yunke-primary-color) 10%, transparent);
+      color: var(--yunke-primary-color);
       font-weight: 600;
       
       &::after {
@@ -71,22 +71,22 @@ export class GanttTimelineHeader extends LitElement {
         left: 0;
         right: 0;
         height: 2px;
-        background: var(--affine-primary-color);
+        background: var(--yunke-primary-color);
       }
     }
 
     .timeline-unit.weekend {
-      background: var(--affine-background-secondary-color);
-      color: var(--affine-text-secondary-color);
+      background: var(--yunke-background-secondary-color);
+      color: var(--yunke-text-secondary-color);
     }
 
     .timeline-unit.non-working-day {
-      background: color-mix(in srgb, var(--affine-background-secondary-color) 50%, transparent);
-      color: var(--affine-text-secondary-color);
+      background: color-mix(in srgb, var(--yunke-background-secondary-color) 50%, transparent);
+      color: var(--yunke-text-secondary-color);
     }
 
     .timeline-unit.selected {
-      background: var(--affine-primary-color);
+      background: var(--yunke-primary-color);
       color: white;
     }
 

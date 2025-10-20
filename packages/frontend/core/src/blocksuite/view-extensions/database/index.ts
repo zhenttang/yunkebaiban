@@ -8,16 +8,16 @@ import { patchDatabaseBlockConfigService } from './database-block-config-service
 
 const optionsSchema = z.object({});
 
-export type AffineDatabaseViewOptions = z.infer<typeof optionsSchema>;
+export type YunkeDatabaseViewOptions = z.infer<typeof optionsSchema>;
 
-export class AffineDatabaseViewExtension extends ViewExtensionProvider<AffineDatabaseViewOptions> {
-  override name = 'affine-database-view';
+export class YunkeDatabaseViewExtension extends ViewExtensionProvider<YunkeDatabaseViewOptions> {
+  override name = 'yunke-database-view';
 
   override schema = optionsSchema;
 
   override setup(
     context: ViewExtensionContext,
-    options?: AffineDatabaseViewOptions
+    options?: YunkeDatabaseViewOptions
   ) {
     super.setup(context, options);
 

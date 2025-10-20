@@ -1,4 +1,4 @@
-import type { AffineTextAttributes } from '@blocksuite/yunke/shared/types';
+import type { YunkeTextAttributes } from '@blocksuite/yunke/shared/types';
 import {
   type DeltaInsert,
   Text,
@@ -23,10 +23,10 @@ export function useReferenceLinkHelper(docCollection: Workspace) {
             },
           },
         },
-      ] as DeltaInsert<AffineTextAttributes>[]);
-      const [frame] = page.getModelsByFlavour('affine:note');
+      ] as DeltaInsert<YunkeTextAttributes>[]);
+      const [frame] = page.getModelsByFlavour('yunke:note');
 
-      frame && page.addBlock('affine:paragraph', { text }, frame.id);
+      frame && page.addBlock('yunke:paragraph', { text }, frame.id);
     },
     [docCollection]
   );

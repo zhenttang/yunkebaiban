@@ -117,7 +117,7 @@ export class ExcalidrawBlockComponent extends CaptionedBlockComponent<Excalidraw
       
       // 方法3: 通过模态框body查找
       if (!editorElement && this.shadowRoot) {
-        const modalBody = this.shadowRoot.querySelector('.affine-excalidraw-modal-body') as HTMLDivElement;
+        const modalBody = this.shadowRoot.querySelector('.yunke-excalidraw-modal-body') as HTMLDivElement;
         console.log('Method 3 - modal body:', modalBody);
         
         if (modalBody) {
@@ -130,10 +130,10 @@ export class ExcalidrawBlockComponent extends CaptionedBlockComponent<Excalidraw
       if (!editorElement && this.shadowRoot) {
         const allContainers = this.shadowRoot.querySelectorAll('*');
         console.log('All elements in shadowRoot:', allContainers);
-        const modalOverlay = this.shadowRoot.querySelector('.affine-excalidraw-modal-overlay');
-        const modal = this.shadowRoot.querySelector('.affine-excalidraw-modal');
-        const modalHeader = this.shadowRoot.querySelector('.affine-excalidraw-modal-header');
-        const modalBodys = this.shadowRoot.querySelectorAll('.affine-excalidraw-modal-body');
+        const modalOverlay = this.shadowRoot.querySelector('.yunke-excalidraw-modal-overlay');
+        const modal = this.shadowRoot.querySelector('.yunke-excalidraw-modal');
+        const modalHeader = this.shadowRoot.querySelector('.yunke-excalidraw-modal-header');
+        const modalBodys = this.shadowRoot.querySelectorAll('.yunke-excalidraw-modal-body');
         const containers = this.shadowRoot.querySelectorAll('.excalidraw-container');
         
         console.log('Debug elements:', {
@@ -173,7 +173,7 @@ export class ExcalidrawBlockComponent extends CaptionedBlockComponent<Excalidraw
 
   private _createFallbackInterface() {
     // 创建一个简单的提示界面
-    const modalBody = this.shadowRoot?.querySelector('.affine-excalidraw-modal-body') as HTMLDivElement;
+    const modalBody = this.shadowRoot?.querySelector('.yunke-excalidraw-modal-body') as HTMLDivElement;
     if (modalBody) {
       modalBody.innerHTML = `
         <div style="
@@ -188,7 +188,7 @@ export class ExcalidrawBlockComponent extends CaptionedBlockComponent<Excalidraw
         ">
           <h3 style="margin: 0 0 20px 0; color: #007bff;">Excalidraw 编辑器</h3>
           <p style="margin: 0 0 20px 0; color: #666;">正在准备绘图界面...</p>
-          <button onclick="this.closest('.affine-excalidraw-modal-overlay').style.display='none'" style="
+          <button onclick="this.closest('.yunke-excalidraw-modal-overlay').style.display='none'" style="
             padding: 10px 20px;
             background: #007bff;
             color: white;
@@ -495,7 +495,7 @@ export class ExcalidrawBlockComponent extends CaptionedBlockComponent<Excalidraw
 
   private _renderPlaceholder(): TemplateResult {
     return html`
-      <div class="affine-excalidraw-placeholder">
+      <div class="yunke-excalidraw-placeholder">
         <div class="placeholder-content">
           <div class="placeholder-icon">✏️</div>
           <div class="placeholder-text">点击创建 Excalidraw 图表</div>
@@ -508,7 +508,7 @@ export class ExcalidrawBlockComponent extends CaptionedBlockComponent<Excalidraw
   private _renderImage(): TemplateResult {
     const { src, title } = this.model.props;
     return html`
-      <div class="affine-excalidraw-image">
+      <div class="yunke-excalidraw-image">
         <img src=${src} alt=${title || 'Excalidraw图表'} />
       </div>
     `;
@@ -518,9 +518,9 @@ export class ExcalidrawBlockComponent extends CaptionedBlockComponent<Excalidraw
     if (this.readonly) return nothing;
 
     return html`
-      <div class="affine-excalidraw-toolbar">
+      <div class="yunke-excalidraw-toolbar">
         <button
-          class="affine-excalidraw-edit-button"
+          class="yunke-excalidraw-edit-button"
           @click=${this._openEditor}
           title="编辑图表"
         >
@@ -535,16 +535,16 @@ export class ExcalidrawBlockComponent extends CaptionedBlockComponent<Excalidraw
 
     return html`
       <div 
-        class="affine-excalidraw-modal-overlay"
+        class="yunke-excalidraw-modal-overlay"
         @click=${(e: Event) => {
           // 只有点击背景遮罩时才关闭
-          if ((e.target as HTMLElement).classList.contains('affine-excalidraw-modal-overlay')) {
+          if ((e.target as HTMLElement).classList.contains('yunke-excalidraw-modal-overlay')) {
             this._closeEditor();
           }
         }}
       >
-        <div class="affine-excalidraw-modal" @click=${(e: Event) => e.stopPropagation()}>
-          <div class="affine-excalidraw-modal-header">
+        <div class="yunke-excalidraw-modal" @click=${(e: Event) => e.stopPropagation()}>
+          <div class="yunke-excalidraw-modal-header">
             <h3>Excalidraw 编辑器</h3>
             <div class="header-buttons">
               ${this._hasChanges ? html`
@@ -571,7 +571,7 @@ export class ExcalidrawBlockComponent extends CaptionedBlockComponent<Excalidraw
               </button>
             </div>
           </div>
-          <div class="affine-excalidraw-modal-body">
+          <div class="yunke-excalidraw-modal-body">
             ${this._loading 
               ? html`<div class="loading">正在加载 Excalidraw...</div>`
               : html`<div class="excalidraw-container"></div>`
@@ -584,7 +584,7 @@ export class ExcalidrawBlockComponent extends CaptionedBlockComponent<Excalidraw
 
   override renderBlock(): TemplateResult {
     const classes = classMap({
-      'affine-excalidraw-container': true,
+      'yunke-excalidraw-container': true,
       'selected': this.selected,
     });
 

@@ -1,7 +1,7 @@
 {
   "name": "@yunke/web",
   "version": "0.21.0",
-  "description": "AFFiNE Desktop Web application",
+  "description": "YUNKE Desktop Web application",
   "private": true,
   "browser": "src/index.tsx",
   "scripts": {

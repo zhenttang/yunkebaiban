@@ -2,7 +2,7 @@
   "name": "@yunke/request",
   "version": "0.1.0",
   "private": true,
-  "description": "AFFiNE unified request configuration module",
+  "description": "YUNKE unified request configuration module",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",

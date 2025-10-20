@@ -1,6 +1,6 @@
 import { Checkbox, notify, useDndMonitor } from '@yunke/component';
-import { useAppSettingHelper } from '@yunke/core/components/hooks/affine/use-app-setting-helper';
-import type { AffineDNDData } from '@yunke/core/types/dnd';
+import { useAppSettingHelper } from '@yunke/core/components/hooks/yunke/use-app-setting-helper';
+import type { YunkeDNDData } from '@yunke/core/types/dnd';
 import { useI18n } from '@yunke/i18n';
 import track from '@yunke/track';
 import { useService } from '@toeverything/infra';
@@ -89,7 +89,7 @@ export const SplitView = ({
   const t = useI18n();
   const hideFolderWarningRef = useRef(false);
 
-  useDndMonitor<AffineDNDData>(() => {
+  useDndMonitor<YunkeDNDData>(() => {
     return {
       canMonitor(data) {
         if (!BUILD_CONFIG.isElectron) {
@@ -130,7 +130,7 @@ export const SplitView = ({
                 message: (
                   <div className={styles.folderWarningMessage}>
                     <p>
-                      {t['com.affine.split-view-folder-warning.description']()}
+                      {t['com.yunke.split-view-folder-warning.description']()}
                     </p>
                     <p>
                       <Checkbox
@@ -165,7 +165,7 @@ export const SplitView = ({
           return;
         }
 
-        const dropTarget = candidate.data as AffineDNDData['draggable']['from'];
+        const dropTarget = candidate.data as YunkeDNDData['draggable']['from'];
         const entity = data.source.data.entity;
         const from = data.source.data.from;
 

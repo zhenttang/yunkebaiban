@@ -73,7 +73,7 @@ export class EdgelessNoteStylePanel extends SignalWatcher(
         'clig' off;
 
       /* Client/sm */
-      font-family: var(--affine-font-family);
+      font-family: var(--yunke-font-family);
       font-size: 14px;
       font-style: normal;
       font-weight: 400;
@@ -92,7 +92,7 @@ export class EdgelessNoteStylePanel extends SignalWatcher(
       align-items: stretch;
       gap: 8px;
 
-      affine-slider {
+      yunke-slider {
         width: 168px;
       }
 
@@ -319,7 +319,7 @@ export class EdgelessNoteStylePanel extends SignalWatcher(
       </div>
       <div
         class="edgeless-note-style-section"
-        data-testid="affine-note-border-style-panel"
+        data-testid="yunke-note-border-style-panel"
       >
         <div class="edgeless-note-style-section-title">边框</div>
         <edgeless-line-styles-panel
@@ -330,17 +330,17 @@ export class EdgelessNoteStylePanel extends SignalWatcher(
       </div>
       <div
         class="edgeless-note-style-section"
-        data-testid="affine-note-corner-radius-panel"
+        data-testid="yunke-note-corner-radius-panel"
       >
         <div class="edgeless-note-style-section-title">圆角半径</div>
         <div class="edgeless-note-corner-radius-panel">
-          <affine-slider
+          <yunke-slider
             .value=${this._borderRadius}
             .range=${{
               points: [0, 4, 8, 16, 24, 32],
             }}
             @select=${this._selectBorderRadius}
-          ></affine-slider>
+          ></yunke-slider>
 
           <editor-toolbar-separator></editor-toolbar-separator>
 

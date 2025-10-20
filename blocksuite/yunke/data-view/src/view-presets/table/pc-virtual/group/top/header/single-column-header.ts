@@ -57,11 +57,11 @@ export class DatabaseHeaderColumn extends SignalWatcher(
   WithDisposable(ShadowlessElement)
 ) {
   static override styles = css`
-    affine-database-header-column {
+    yunke-database-header-column {
       display: flex;
     }
 
-    .affine-database-header-column-grabbing * {
+    .yunke-database-header-column-grabbing * {
       cursor: grabbing;
     }
   `;
@@ -229,7 +229,7 @@ export class DatabaseHeaderColumn extends SignalWatcher(
                         return menu.action({
                           isSelected: data.format === format.type,
                           prefix: html`<span
-                            style="font-size: var(--affine-font-base); scale: 1.2;"
+                            style="font-size: var(--yunke-font-base); scale: 1.2;"
                             >${format.symbol}</span
                           >`,
                           name: format.label,
@@ -423,13 +423,13 @@ export class DatabaseHeaderColumn extends SignalWatcher(
       height: DEFAULT_COLUMN_TITLE_HEIGHT + 'px',
     });
     const classes = classMap({
-      'affine-database-column-move': true,
+      'yunke-database-column-move': true,
       [this.grabStatus]: true,
     });
     return html`
       <div
         style=${style}
-        class="affine-database-column-content"
+        class="yunke-database-column-content"
         @click="${this._clickColumn}"
         @contextmenu="${this._contextMenu}"
         ${dragHandler(column.id)}
@@ -444,15 +444,15 @@ export class DatabaseHeaderColumn extends SignalWatcher(
               <div class="control-l"></div>
               <div class="control-r"></div>
             </button>`}
-        <div class="affine-database-column-text ${column.type$.value}">
+        <div class="yunke-database-column-text ${column.type$.value}">
           <div
-            class="affine-database-column-type-icon dv-hover"
+            class="yunke-database-column-type-icon dv-hover"
             @click="${this._clickTypeIcon}"
           >
             <uni-lit .uni="${column.icon}"></uni-lit>
           </div>
-          <div class="affine-database-column-text-content">
-            <div class="affine-database-column-text-input">
+          <div class="yunke-database-column-text-content">
+            <div class="yunke-database-column-text-input">
               ${column.name$.value}
             </div>
           </div>

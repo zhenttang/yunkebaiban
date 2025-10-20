@@ -84,31 +84,31 @@ export class BookmarkCard extends SignalWatcher(
 
     return html`
       <div
-        class="affine-bookmark-card ${cardClassMap}"
+        class="yunke-bookmark-card ${cardClassMap}"
         @click=${this.bookmark.handleClick}
         @dblclick=${this.bookmark.handleDoubleClick}
       >
-        <div class="affine-bookmark-content">
-          <div class="affine-bookmark-content-title">
-            <div class="affine-bookmark-content-title-icon">${titleIcon}</div>
-            <div class="affine-bookmark-content-title-text">${titleText}</div>
+        <div class="yunke-bookmark-content">
+          <div class="yunke-bookmark-content-title">
+            <div class="yunke-bookmark-content-title-icon">${titleIcon}</div>
+            <div class="yunke-bookmark-content-title-text">${titleText}</div>
           </div>
-          <div class="affine-bookmark-content-description">
+          <div class="yunke-bookmark-content-description">
             ${descriptionText}
           </div>
-          <div class="affine-bookmark-content-url-wrapper">
+          <div class="yunke-bookmark-content-url-wrapper">
             <div
-              class="affine-bookmark-content-url"
+              class="yunke-bookmark-content-url"
               @click=${this.bookmark.open}
             >
               <span>${getHostName(url)}</span>
-              <div class="affine-bookmark-content-url-icon">
+              <div class="yunke-bookmark-content-url-icon">
                 ${OpenInNewIcon({ width: '12', height: '12' })}
               </div>
             </div>
           </div>
         </div>
-        <div class="affine-bookmark-banner">${bannerImage}</div>
+        <div class="yunke-bookmark-banner">${bannerImage}</div>
       </div>
     `;
   }

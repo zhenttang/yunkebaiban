@@ -40,7 +40,7 @@ const JournalConflictList = ({ docRecords }: { docRecords: DocRecord[] }) => {
     <>
       <div className={styles.body}>
         <div className={styles.header}>
-          {t['com.affine.editor.journal-conflict.title']()}
+          {t['com.yunke.editor.journal-conflict.title']()}
         </div>
         {docRecords.map(docRecord => (
           <ConflictItem docRecord={docRecord} key={docRecord.id} />
@@ -63,7 +63,7 @@ const ConflictItem = ({ docRecord }: { docRecord: DocRecord }) => {
       <div className={styles.content}>
         <div className={styles.title}>{title}</div>
         <div className={styles.duplicatedTag}>
-          {i18n['com.affine.page-properties.property.journal-duplicated']()}
+          {i18n['com.yunke.page-properties.property.journal-duplicated']()}
         </div>
       </div>
       <Menu items={<ResolveConflictOperations docRecord={docRecord} />}>

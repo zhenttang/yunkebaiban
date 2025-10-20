@@ -1,5 +1,5 @@
 import { type DropTargetDropEvent, useDropTarget } from '@yunke/component';
-import type { AffineDNDData } from '@yunke/core/types/dnd';
+import type { YunkeDNDData } from '@yunke/core/types/dnd';
 import { useI18n } from '@yunke/i18n';
 
 import { EmptyNodeChildren } from '../../layouts/empty-node-children';
@@ -7,7 +7,7 @@ import { EmptyNodeChildren } from '../../layouts/empty-node-children';
 export const Empty = ({
   onDrop,
 }: {
-  onDrop: (data: DropTargetDropEvent<AffineDNDData>) => void;
+  onDrop: (data: DropTargetDropEvent<YunkeDNDData>) => void;
 }) => {
   const { dropTargetRef } = useDropTarget(
     () => ({
@@ -18,7 +18,7 @@ export const Empty = ({
   const t = useI18n();
   return (
     <EmptyNodeChildren ref={dropTargetRef}>
-      {t['com.affine.collection.emptyCollection']()}
+      {t['com.yunke.collection.emptyCollection']()}
     </EmptyNodeChildren>
   );
 };

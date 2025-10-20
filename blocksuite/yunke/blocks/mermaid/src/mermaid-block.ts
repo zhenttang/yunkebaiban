@@ -162,7 +162,7 @@ export class MermaidBlockComponent extends CaptionedBlockComponent<MermaidBlockM
 
   private _renderPlaceholder(): TemplateResult {
     return html`
-      <div class="affine-mermaid-placeholder" @click=${this._handlePlaceholderClick}>
+      <div class="yunke-mermaid-placeholder" @click=${this._handlePlaceholderClick}>
         <div class="placeholder-content">
           <div class="placeholder-icon">📊</div>
           <div class="placeholder-text">点击创建 Mermaid 图表</div>
@@ -175,7 +175,7 @@ export class MermaidBlockComponent extends CaptionedBlockComponent<MermaidBlockM
   private _renderImage(): TemplateResult {
     if (this._loading) {
       return html`
-        <div class="affine-mermaid-loading">
+        <div class="yunke-mermaid-loading">
           正在渲染图表...
         </div>
       `;
@@ -183,7 +183,7 @@ export class MermaidBlockComponent extends CaptionedBlockComponent<MermaidBlockM
 
     if (this._error) {
       return html`
-        <div class="affine-mermaid-error">
+        <div class="yunke-mermaid-error">
           Mermaid 图表错误: ${this._error}
         </div>
       `;
@@ -191,7 +191,7 @@ export class MermaidBlockComponent extends CaptionedBlockComponent<MermaidBlockM
 
     return html`
       <div 
-        class="affine-mermaid-preview"
+        class="yunke-mermaid-preview"
         .innerHTML=${this._diagramSvg}
       ></div>
     `;
@@ -201,9 +201,9 @@ export class MermaidBlockComponent extends CaptionedBlockComponent<MermaidBlockM
     if (this.readonly) return nothing;
 
     return html`
-      <div class="affine-mermaid-toolbar">
+      <div class="yunke-mermaid-toolbar">
         <button
-          class="affine-mermaid-edit-button"
+          class="yunke-mermaid-edit-button"
           @click=${this._openEditor}
           title="编辑图表"
         >
@@ -218,15 +218,15 @@ export class MermaidBlockComponent extends CaptionedBlockComponent<MermaidBlockM
 
     return html`
       <div 
-        class="affine-mermaid-modal-overlay"
+        class="yunke-mermaid-modal-overlay"
         @click=${(e: Event) => {
-          if ((e.target as HTMLElement).classList.contains('affine-mermaid-modal-overlay')) {
+          if ((e.target as HTMLElement).classList.contains('yunke-mermaid-modal-overlay')) {
             this._closeEditor();
           }
         }}
       >
-        <div class="affine-mermaid-modal" @click=${(e: Event) => e.stopPropagation()}>
-          <div class="affine-mermaid-modal-header">
+        <div class="yunke-mermaid-modal" @click=${(e: Event) => e.stopPropagation()}>
+          <div class="yunke-mermaid-modal-header">
             <h3>Mermaid 图表编辑器</h3>
             <div class="header-buttons">
               ${this._hasChanges ? html`
@@ -241,7 +241,7 @@ export class MermaidBlockComponent extends CaptionedBlockComponent<MermaidBlockM
               <button class="close-button" @click=${this._closeEditor}>✕</button>
             </div>
           </div>
-          <div class="affine-mermaid-modal-body">
+          <div class="yunke-mermaid-modal-body">
             <div class="editor-container">
               <textarea
                 class="code-editor"
@@ -275,7 +275,7 @@ flowchart TD
 
   override renderBlock(): TemplateResult {
     const classes = classMap({
-      'affine-mermaid-container': true,
+      'yunke-mermaid-container': true,
       'selected': this.selected,
     });
 

@@ -7,7 +7,7 @@ import { effects } from './effects';
 import { SlashMenuExtension } from './extensions';
 
 export class SlashMenuViewExtension extends ViewExtensionProvider {
-  override name = 'affine-slash-menu-widget';
+  override name = 'yunke-slash-menu-widget';
 
   override effect() {
     super.effect();

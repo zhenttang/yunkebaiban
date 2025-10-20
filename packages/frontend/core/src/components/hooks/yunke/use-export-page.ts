@@ -3,9 +3,9 @@ import {
   pushGlobalLoadingEventAtom,
   resolveGlobalLoadingEventAtom,
 } from '@yunke/component/global-loading';
-import type { AffineEditorContainer } from '@yunke/core/blocksuite/block-suite-editor/blocksuite-editor';
+import type { YunkeEditorContainer } from '@yunke/core/blocksuite/block-suite-editor/blocksuite-editor';
 import { EditorService } from '@yunke/core/modules/editor';
-import { getAFFiNEWorkspaceSchema } from '@yunke/core/modules/workspace/global-schema';
+import { getYUNKEWorkspaceSchema } from '@yunke/core/modules/workspace/global-schema';
 import { useI18n } from '@yunke/i18n';
 import { track } from '@yunke/track';
 import { ExportManager } from '@blocksuite/yunke/blocks/surface';
@@ -30,13 +30,13 @@ import { useLiveData, useService } from '@toeverything/infra';
 import { useSetAtom } from 'jotai';
 import { nanoid } from 'nanoid';
 
-import { useAsyncCallback } from '../affine-async-hooks';
+import { useAsyncCallback } from '../yunke-async-hooks';
 
 type ExportType = 'pdf' | 'html' | 'png' | 'markdown' | 'snapshot';
 
 interface ExportHandlerOptions {
   page: Store;
-  editorContainer: AffineEditorContainer;
+  editorContainer: YunkeEditorContainer;
   type: ExportType;
 }
 
@@ -62,7 +62,7 @@ async function exportDoc(
   config: AdapterConfig
 ) {
   const transformer = new Transformer({
-    schema: getAFFiNEWorkspaceSchema(),
+    schema: getYUNKEWorkspaceSchema(),
     blobCRUD: doc.workspace.blobSync,
     docCRUD: {
       create: (id: string) => doc.workspace.createDoc(id).getStore({ id }),
@@ -153,7 +153,7 @@ async function exportHandler({
     case 'snapshot':
       await ZipTransformer.exportDocs(
         page.workspace,
-        getAFFiNEWorkspaceSchema(),
+        getYUNKEWorkspaceSchema(),
         [page]
       );
       return;
@@ -181,7 +181,7 @@ export const useExportPage = () => {
 
       // 编辑器容器被代理包装，我们需要获取原始对象
       const originEditorContainer = (editorContainer as any)
-        .origin as AffineEditorContainer;
+        .origin as YunkeEditorContainer;
 
       const globalLoadingID = nanoid();
       pushGlobalLoadingEvent({
@@ -194,14 +194,14 @@ export const useExportPage = () => {
           editorContainer: originEditorContainer,
         });
         notify.success({
-          title: t['com.affine.export.success.title'](),
-          message: t['com.affine.export.success.message'](),
+          title: t['com.yunke.export.success.title'](),
+          message: t['com.yunke.export.success.message'](),
         });
       } catch (err) {
         console.error(err);
         notify.error({
-          title: t['com.affine.export.error.title'](),
-          message: t['com.affine.export.error.message'](),
+          title: t['com.yunke.export.error.title'](),
+          message: t['com.yunke.export.error.message'](),
         });
       } finally {
         resolveGlobalLoadingEvent(globalLoadingID);

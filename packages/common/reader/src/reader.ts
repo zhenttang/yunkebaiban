@@ -6,9 +6,9 @@ import type {
   ImageBlockModel,
   TableBlockModel,
 } from '@blocksuite/yunke/model';
-import { AffineSchemas } from '@blocksuite/yunke/schemas';
+import { YunkeSchemas } from '@blocksuite/yunke/schemas';
 import { MarkdownAdapter } from '@blocksuite/yunke/shared/adapters';
-import type { AffineTextAttributes } from '@blocksuite/yunke/shared/types';
+import type { YunkeTextAttributes } from '@blocksuite/yunke/shared/types';
 import {
   createYProxy,
   type DeltaInsert,
@@ -29,7 +29,7 @@ import {
 import { getStoreManager } from './bs-store';
 
 const blocksuiteSchema = new Schema();
-blocksuiteSchema.register([...AffineSchemas]);
+blocksuiteSchema.register([...YunkeSchemas]);
 
 export interface BlockDocumentInfo {
   docId: string;
@@ -51,11 +51,11 @@ export interface BlockDocumentInfo {
 }
 
 const bookmarkFlavours = new Set([
-  'affine:bookmark',
-  'affine:embed-youtube',
-  'affine:embed-figma',
-  'affine:embed-github',
-  'affine:embed-loom',
+  'yunke:bookmark',
+  'yunke:embed-youtube',
+  'yunke:embed-figma',
+  'yunke:embed-github',
+  'yunke:embed-loom',
 ]);
 
 function generateMarkdownPreviewBuilder(
@@ -175,7 +175,7 @@ function generateMarkdownPreviewBuilder(
       );
 
       // 到达根块。不计算它。
-      if (!currentBlock || currentBlock.flavour !== 'affine:list') {
+      if (!currentBlock || currentBlock.flavour !== 'yunke:list') {
         break;
       }
       parentBlockCount++;
@@ -199,7 +199,7 @@ function generateMarkdownPreviewBuilder(
 
   const generateDatabaseMarkdownPreview = (block: BlockDocumentInfo) => {
     const isDatabaseBlock = (block: BlockDocumentInfo) => {
-      return block.flavour === 'affine:database';
+      return block.flavour === 'yunke:database';
     };
 
     const model = yblockToDraftModal(block.yblock);
@@ -234,7 +234,7 @@ function generateMarkdownPreviewBuilder(
     const isImageModel = (
       model: DraftModel | null
     ): model is DraftModel<ImageBlockModel> => {
-      return model?.flavour === 'affine:image';
+      return model?.flavour === 'yunke:image';
     };
 
     const model = yblockToDraftModal(block.yblock);
@@ -261,8 +261,8 @@ function generateMarkdownPreviewBuilder(
       model: DraftModel | null
     ): model is DraftModel<EmbedBlockModel> => {
       return (
-        model?.flavour === 'affine:embed-linked-doc' ||
-        model?.flavour === 'affine:embed-synced-doc'
+        model?.flavour === 'yunke:embed-linked-doc' ||
+        model?.flavour === 'yunke:embed-synced-doc'
       );
     };
 
@@ -307,7 +307,7 @@ function generateMarkdownPreviewBuilder(
     const isAttachmentModel = (
       model: DraftModel | null
     ): model is DraftModel<AttachmentBlockModel> => {
-      return model?.flavour === 'affine:attachment';
+      return model?.flavour === 'yunke:attachment';
     };
 
     const draftModel = yblockToDraftModal(block.yblock);
@@ -322,7 +322,7 @@ function generateMarkdownPreviewBuilder(
     const isTableModel = (
       model: DraftModel | null
     ): model is DraftModel<TableBlockModel> => {
-      return model?.flavour === 'affine:table';
+      return model?.flavour === 'yunke:table';
     };
 
     const draftModel = yblockToDraftModal(block.yblock);
@@ -343,48 +343,48 @@ function generateMarkdownPreviewBuilder(
     let markdown: string | null = null;
 
     if (
-      flavour === 'affine:paragraph' ||
-      flavour === 'affine:list' ||
-      flavour === 'affine:code'
+      flavour === 'yunke:paragraph' ||
+      flavour === 'yunke:list' ||
+      flavour === 'yunke:code'
     ) {
       const draftModel = yblockToDraftModal(block.yblock);
       markdown =
-        block.parentFlavour === 'affine:database'
+        block.parentFlavour === 'yunke:database'
           ? generateDatabaseMarkdownPreview(block)
           : ((draftModel ? await markdownAdapter.fromBlock(draftModel) : null)
               ?.file ?? null);
 
       if (markdown) {
-        if (flavour === 'affine:code') {
+        if (flavour === 'yunke:code') {
           markdown = trimCodeBlock(markdown);
-        } else if (flavour === 'affine:paragraph') {
+        } else if (flavour === 'yunke:paragraph') {
           markdown = trimParagraph(markdown);
         }
       }
-    } else if (flavour === 'affine:database') {
+    } else if (flavour === 'yunke:database') {
       markdown = generateDatabaseMarkdownPreview(block);
     } else if (
-      flavour === 'affine:embed-linked-doc' ||
-      flavour === 'affine:embed-synced-doc'
+      flavour === 'yunke:embed-linked-doc' ||
+      flavour === 'yunke:embed-synced-doc'
     ) {
       markdown = generateEmbedMarkdownPreview(block);
-    } else if (flavour === 'affine:attachment') {
+    } else if (flavour === 'yunke:attachment') {
       markdown = generateAttachmentMarkdownPreview(block);
-    } else if (flavour === 'affine:image') {
+    } else if (flavour === 'yunke:image') {
       markdown = generateImageMarkdownPreview(block);
-    } else if (flavour === 'affine:surface' || flavour === 'affine:page') {
+    } else if (flavour === 'yunke:surface' || flavour === 'yunke:page') {
       // 跳过
-    } else if (flavour === 'affine:latex') {
+    } else if (flavour === 'yunke:latex') {
       markdown = generateLatexMarkdownPreview(block);
     } else if (bookmarkFlavours.has(flavour)) {
       markdown = generateBookmarkMarkdownPreview(block);
-    } else if (flavour === 'affine:table') {
+    } else if (flavour === 'yunke:table') {
       markdown = generateTableMarkdownPreview(block);
     } else {
       console.warn(`unknown flavour: ${flavour}`);
     }
 
-    if (markdown && flavour === 'affine:list') {
+    if (markdown && flavour === 'yunke:list') {
       const blockDepth = getListDepth(block);
       markdown = indentMarkdown(markdown, Math.max(0, blockDepth));
     }
@@ -504,7 +504,7 @@ export async function readAllBlocksFromDoc({
   for (const block of blocks.values()) {
     const flavour = block.get('sys:flavour')?.toString();
     const blockId = block.get('sys:id')?.toString();
-    if (flavour === 'affine:page' && blockId) {
+    if (flavour === 'yunke:page' && blockId) {
       rootBlockId = blockId;
     }
   }
@@ -545,7 +545,7 @@ export async function readAllBlocksFromDoc({
 
     const flavour = block.get('sys:flavour')?.toString();
     const parentFlavour = parentBlock?.get('sys:flavour')?.toString();
-    const noteBlock = nearestByFlavour(blockId, 'affine:note');
+    const noteBlock = nearestByFlavour(blockId, 'yunke:note');
 
     // 显示模式：
     // - both: page and edgeless -> 退回到page
@@ -572,13 +572,13 @@ export async function readAllBlocksFromDoc({
       additional: { displayMode, noteBlockId },
     };
 
-    if (flavour === 'affine:page') {
+    if (flavour === 'yunke:page') {
       docTitle = block.get('prop:title').toString();
       blockDocuments.push({ ...commonBlockProps, content: docTitle });
     } else if (
-      flavour === 'affine:paragraph' ||
-      flavour === 'affine:list' ||
-      flavour === 'affine:code'
+      flavour === 'yunke:paragraph' ||
+      flavour === 'yunke:list' ||
+      flavour === 'yunke:code'
     ) {
       const text = block.get('prop:text') as YText;
 
@@ -586,7 +586,7 @@ export async function readAllBlocksFromDoc({
         continue;
       }
 
-      const deltas: DeltaInsert<AffineTextAttributes>[] = text.toDelta();
+      const deltas: DeltaInsert<YunkeTextAttributes>[] = text.toDelta();
       const refs = uniq(
         deltas
           .flatMap(delta => {
@@ -608,7 +608,7 @@ export async function readAllBlocksFromDoc({
       );
 
       const databaseName =
-        flavour === 'affine:paragraph' && parentFlavour === 'affine:database' // 如果块是数据库行
+        flavour === 'yunke:paragraph' && parentFlavour === 'yunke:database' // 如果块是数据库行
           ? parentBlock?.get('prop:title')?.toString()
           : undefined;
 
@@ -633,8 +633,8 @@ export async function readAllBlocksFromDoc({
         maxSummaryLength -= text.length;
       }
     } else if (
-      flavour === 'affine:embed-linked-doc' ||
-      flavour === 'affine:embed-synced-doc'
+      flavour === 'yunke:embed-linked-doc' ||
+      flavour === 'yunke:embed-synced-doc'
     ) {
       const pageId = block.get('prop:pageId');
       if (typeof pageId === 'string') {
@@ -648,7 +648,7 @@ export async function readAllBlocksFromDoc({
           parentBlockId,
         });
       }
-    } else if (flavour === 'affine:attachment' || flavour === 'affine:image') {
+    } else if (flavour === 'yunke:attachment' || flavour === 'yunke:image') {
       const blobId = block.get('prop:sourceId');
       if (typeof blobId === 'string') {
         blockDocuments.push({
@@ -658,7 +658,7 @@ export async function readAllBlocksFromDoc({
           parentBlockId,
         });
       }
-    } else if (flavour === 'affine:surface') {
+    } else if (flavour === 'yunke:surface') {
       const texts = [];
 
       const elementsObj = block.get('prop:elements');
@@ -693,7 +693,7 @@ export async function readAllBlocksFromDoc({
         parentFlavour,
         parentBlockId,
       });
-    } else if (flavour === 'affine:database') {
+    } else if (flavour === 'yunke:database') {
       const texts = [];
       const columnsObj = block.get('prop:columns');
       const databaseTitle = block.get('prop:title');
@@ -737,12 +737,12 @@ export async function readAllBlocksFromDoc({
           databaseName: databaseTitle?.toString(),
         },
       });
-    } else if (flavour === 'affine:latex') {
+    } else if (flavour === 'yunke:latex') {
       blockDocuments.push({
         ...commonBlockProps,
         content: block.get('prop:latex')?.toString() ?? '',
       });
-    } else if (flavour === 'affine:table') {
+    } else if (flavour === 'yunke:table') {
       const contents = Array.from<string>(block.keys())
         .map(key => {
           if (key.startsWith('prop:cells.') && key.endsWith('.text')) {
@@ -769,13 +769,13 @@ export async function readAllBlocksFromDoc({
     if (block.ref?.length) {
       const target = block;
 
-      // 应该只生成属于同一个affine:note的markdown预览
-      const noteBlock = nearestByFlavour(block.blockId, 'affine:note');
+      // 应该只生成属于同一个yunke:note的markdown预览
+      const noteBlock = nearestByFlavour(block.blockId, 'yunke:note');
 
       const sameNoteBlocks = noteBlock
         ? blockDocuments.filter(
             candidate =>
-              nearestByFlavour(candidate.blockId, 'affine:note') === noteBlock
+              nearestByFlavour(candidate.blockId, 'yunke:note') === noteBlock
           )
         : [];
 

@@ -14,8 +14,8 @@ import {
 import { Subject } from 'rxjs';
 
 import {
-  AFFINE_AI_PANEL_WIDGET,
-  type AffineAIPanelWidget,
+  YUNKE_AI_PANEL_WIDGET,
+  type YunkeAIPanelWidget,
 } from '../widgets/ai-panel/ai-panel.js';
 
 export class CopilotTool extends BaseTool {
@@ -49,9 +49,9 @@ export class CopilotTool extends BaseTool {
   // AI processing
   get processing() {
     const aiPanel = this.gfx.std.view.getWidget(
-      AFFINE_AI_PANEL_WIDGET,
+      YUNKE_AI_PANEL_WIDGET,
       this.doc.root!.id
-    ) as AffineAIPanelWidget;
+    ) as YunkeAIPanelWidget;
     return aiPanel && aiPanel.state !== 'hidden';
   }
 

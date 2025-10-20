@@ -80,8 +80,8 @@ export const SubscriptionSetting = ({
       </div>
       <div className={styles.divider} />
       <IntegrationSettingToggle
-        name={t['com.affine.integration.calendar.show-events']()}
-        desc={t['com.affine.integration.calendar.show-events-desc']()}
+        name={t['com.yunke.integration.calendar.show-events']()}
+        desc={t['com.yunke.integration.calendar.show-events-desc']()}
         checked={!!config.showEvents}
         onChange={toggleShowEvents}
       />
@@ -92,7 +92,7 @@ export const SubscriptionSetting = ({
         <div className={styles.allDayEventsContent}>
           <div className={styles.divider} />
           <IntegrationSettingToggle
-            name={t['com.affine.integration.calendar.show-all-day-events']()}
+            name={t['com.yunke.integration.calendar.show-all-day-events']()}
             checked={!!config.showAllDayEvents}
             onChange={toggleShowAllDayEvents}
           />
@@ -109,8 +109,8 @@ const UnsubscribeButton = ({ url, name }: { url: string; name: string }) => {
 
   const handleUnsubscribe = useCallback(() => {
     openConfirmModal({
-      title: t['com.affine.integration.calendar.unsubscribe'](),
-      children: t.t('com.affine.integration.calendar.unsubscribe-content', {
+      title: t['com.yunke.integration.calendar.unsubscribe'](),
+      children: t.t('com.yunke.integration.calendar.unsubscribe-content', {
         name,
       }),
       onConfirm: () => {
@@ -120,7 +120,7 @@ const UnsubscribeButton = ({ url, name }: { url: string; name: string }) => {
           control: 'Calendar Setting',
         });
       },
-      confirmText: t['com.affine.integration.calendar.unsubscribe'](),
+      confirmText: t['com.yunke.integration.calendar.unsubscribe'](),
       confirmButtonOptions: {
         variant: 'error',
       },
@@ -129,7 +129,7 @@ const UnsubscribeButton = ({ url, name }: { url: string; name: string }) => {
 
   return (
     <Button variant="error" onClick={handleUnsubscribe}>
-      {t['com.affine.integration.calendar.unsubscribe']()}
+      {t['com.yunke.integration.calendar.unsubscribe']()}
     </Button>
   );
 };

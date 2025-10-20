@@ -13,9 +13,9 @@ export const RootEmpty = ({
   return (
     <NavigationPanelEmptySection
       icon={ViewLayersIcon}
-      message={t['com.affine.collections.empty.message']()}
+      message={t['com.yunke.collections.empty.message']()}
       messageTestId="slider-bar-collection-empty-message"
-      actionText={t['com.affine.collections.empty.new-collection-button']()}
+      actionText={t['com.yunke.collections.empty.new-collection-button']()}
       onActionClick={onClickCreate}
     />
   );

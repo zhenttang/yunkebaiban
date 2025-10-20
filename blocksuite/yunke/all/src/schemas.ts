@@ -29,8 +29,8 @@ import {
 import type { BlockSchema } from '@blocksuite/store';
 import type { z } from 'zod';
 
-/** Built-in first party block models built for affine */
-export const AffineSchemas: z.infer<typeof BlockSchema>[] = [
+/** Built-in first party block models built for yunke */
+export const YunkeSchemas: z.infer<typeof BlockSchema>[] = [
   CodeBlockSchema,
   ParagraphBlockSchema,
   RootBlockSchema,

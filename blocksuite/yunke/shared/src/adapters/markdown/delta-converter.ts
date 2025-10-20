@@ -5,7 +5,7 @@ import {
 import type { DeltaInsert, ExtensionType } from '@blocksuite/store';
 import type { PhrasingContent } from 'mdast';
 
-import type { AffineTextAttributes } from '../../types/index.js';
+import type { YunkeTextAttributes } from '../../types/index.js';
 import {
   type ASTToDeltaMatcher,
   DeltaASTConverter,
@@ -57,7 +57,7 @@ export function MarkdownASTToDeltaExtension(
 }
 
 export class MarkdownDeltaConverter extends DeltaASTConverter<
-  AffineTextAttributes,
+  YunkeTextAttributes,
   MarkdownAST
 > {
   constructor(
@@ -69,7 +69,7 @@ export class MarkdownDeltaConverter extends DeltaASTConverter<
   }
 
   applyTextFormatting(
-    delta: DeltaInsert<AffineTextAttributes>
+    delta: DeltaInsert<YunkeTextAttributes>
   ): PhrasingContent {
     let mdast: PhrasingContent = {
       type: 'text',
@@ -95,7 +95,7 @@ export class MarkdownDeltaConverter extends DeltaASTConverter<
     return mdast;
   }
 
-  astToDelta(ast: MarkdownAST): DeltaInsert<AffineTextAttributes>[] {
+  astToDelta(ast: MarkdownAST): DeltaInsert<YunkeTextAttributes>[] {
     const context = {
       configs: this.configs,
       options: Object.create(null),
@@ -112,7 +112,7 @@ export class MarkdownDeltaConverter extends DeltaASTConverter<
   }
 
   deltaToAST(
-    deltas: DeltaInsert<AffineTextAttributes>[],
+    deltas: DeltaInsert<YunkeTextAttributes>[],
     depth = 0
   ): PhrasingContent[] {
     if (depth > 0) {

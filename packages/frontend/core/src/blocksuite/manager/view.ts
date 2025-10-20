@@ -2,23 +2,23 @@ import type { ReactToLit } from '@yunke/component';
 import { AIViewExtension } from '@yunke/core/blocksuite/view-extensions/ai';
 import { CloudViewExtension } from '@yunke/core/blocksuite/view-extensions/cloud';
 import { CodeBlockPreviewViewExtension } from '@yunke/core/blocksuite/view-extensions/code-block-preview';
-import { AffineDatabaseViewExtension } from '@yunke/core/blocksuite/view-extensions/database';
+import { YunkeDatabaseViewExtension } from '@yunke/core/blocksuite/view-extensions/database';
 import {
   EdgelessBlockHeaderConfigViewExtension,
   type EdgelessBlockHeaderViewOptions,
 } from '@yunke/core/blocksuite/view-extensions/edgeless-block-header';
-import { AffineEditorConfigViewExtension } from '@yunke/core/blocksuite/view-extensions/editor-config';
+import { YunkeEditorConfigViewExtension } from '@yunke/core/blocksuite/view-extensions/editor-config';
 import { createDatabaseOptionsConfig } from '@yunke/core/blocksuite/view-extensions/editor-config/database';
 import { createLinkedWidgetConfig } from '@yunke/core/blocksuite/view-extensions/editor-config/linked';
 import {
-  AffineEditorViewExtension,
-  type AffineEditorViewOptions,
+  YunkeEditorViewExtension,
+  type YunkeEditorViewOptions,
 } from '@yunke/core/blocksuite/view-extensions/editor-view/editor-view';
 import { ElectronViewExtension } from '@yunke/core/blocksuite/view-extensions/electron';
-import { AffineLinkPreviewExtension } from '@yunke/core/blocksuite/view-extensions/link-preview-service';
+import { YunkeLinkPreviewExtension } from '@yunke/core/blocksuite/view-extensions/link-preview-service';
 import { MobileViewExtension } from '@yunke/core/blocksuite/view-extensions/mobile';
 import { PdfViewExtension } from '@yunke/core/blocksuite/view-extensions/pdf';
-import { AffineThemeViewExtension } from '@yunke/core/blocksuite/view-extensions/theme';
+import { YunkeThemeViewExtension } from '@yunke/core/blocksuite/view-extensions/theme';
 import { TurboRendererViewExtension } from '@yunke/core/blocksuite/view-extensions/turbo-renderer';
 import { DeckViewExtension } from '@yunke/core/components/deck-integration';
 import { PeekViewService } from '@yunke/core/modules/peek-view';
@@ -33,7 +33,7 @@ import type {
 import { ViewExtensionManager } from '@blocksuite/yunke/ext-loader';
 import { getInternalViewExtensions } from '@blocksuite/yunke/extensions/view';
 import { FoundationViewExtension } from '@blocksuite/yunke/foundation/view';
-import { AffineCanvasTextFonts } from '@blocksuite/yunke/shared/services';
+import { YunkeCanvasTextFonts } from '@blocksuite/yunke/shared/services';
 import { LinkedDocViewExtension } from '@blocksuite/yunke/widgets/linked-doc/view';
 import type { FrameworkProvider } from '@toeverything/infra';
 import type { TemplateResult } from 'lit';
@@ -42,7 +42,7 @@ type Configure = {
   init: () => Configure;
 
   foundation: (framework?: FrameworkProvider) => Configure;
-  editorView: (options?: AffineEditorViewOptions) => Configure;
+  editorView: (options?: YunkeEditorViewOptions) => Configure;
   theme: (framework?: FrameworkProvider) => Configure;
   editorConfig: (framework?: FrameworkProvider) => Configure;
   edgelessBlockHeader: (options?: EdgelessBlockHeaderViewOptions) => Configure;
@@ -61,7 +61,7 @@ type Configure = {
   value: ViewExtensionManager;
 };
 
-const peekViewLogger = new DebugLogger('affine::patch-peek-view-service');
+const peekViewLogger = new DebugLogger('yunke::patch-peek-view-service');
 
 class ViewProvider {
   static instance: ViewProvider | null = null;
@@ -78,9 +78,9 @@ class ViewProvider {
     this._manager = new ViewExtensionManager([
       ...getInternalViewExtensions(),
 
-      AffineThemeViewExtension,
-      AffineEditorViewExtension,
-      AffineEditorConfigViewExtension,
+      YunkeThemeViewExtension,
+      YunkeEditorViewExtension,
+      YunkeEditorConfigViewExtension,
       CodeBlockPreviewViewExtension,
       EdgelessBlockHeaderConfigViewExtension,
       TurboRendererViewExtension,
@@ -89,8 +89,8 @@ class ViewProvider {
       MobileViewExtension,
       AIViewExtension,
       ElectronViewExtension,
-      AffineLinkPreviewExtension,
-      AffineDatabaseViewExtension,
+      YunkeLinkPreviewExtension,
+      YunkeDatabaseViewExtension,
       DeckViewExtension,
     ]);
   }
@@ -153,7 +153,7 @@ class ViewProvider {
           mixpanel.track(eventName, props);
         },
       },
-      fontConfig: AffineCanvasTextFonts.map(font => ({
+      fontConfig: YunkeCanvasTextFonts.map(font => ({
         ...font,
         url: environment.publicPath + 'fonts/' + font.url.split('/').pop(),
       })),
@@ -188,19 +188,19 @@ class ViewProvider {
   };
 
   private readonly _configureEditorView = (
-    options?: AffineEditorViewOptions
+    options?: YunkeEditorViewOptions
   ) => {
-    this._manager.configure(AffineEditorViewExtension, options);
+    this._manager.configure(YunkeEditorViewExtension, options);
     return this.config;
   };
 
   private readonly _configureTheme = (framework?: FrameworkProvider) => {
-    this._manager.configure(AffineThemeViewExtension, { framework });
+    this._manager.configure(YunkeThemeViewExtension, { framework });
     return this.config;
   };
 
   private readonly _configureEditorConfig = (framework?: FrameworkProvider) => {
-    this._manager.configure(AffineEditorConfigViewExtension, { framework });
+    this._manager.configure(YunkeEditorConfigViewExtension, { framework });
     return this.config;
   };
 
@@ -315,7 +315,7 @@ class ViewProvider {
   };
 
   private readonly _configureLinkPreview = (framework?: FrameworkProvider) => {
-    this._manager.configure(AffineLinkPreviewExtension, { framework });
+    this._manager.configure(YunkeLinkPreviewExtension, { framework });
     return this.config;
   };
 

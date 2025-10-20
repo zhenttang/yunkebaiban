@@ -43,7 +43,7 @@ export interface LinkPreviewProvider {
 }
 
 export const LinkPreviewServiceIdentifier =
-  createIdentifier<LinkPreviewProvider>('AffineLinkPreviewService');
+  createIdentifier<LinkPreviewProvider>('YunkeLinkPreviewService');
 
 export class LinkPreviewService
   extends Extension

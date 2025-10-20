@@ -7,7 +7,7 @@ import { effects } from './effects.js';
 import { MermaidBlockSpec } from './mermaid-spec.js';
 
 export class MermaidViewExtension extends ViewExtensionProvider {
-  override name = 'affine-mermaid-block';
+  override name = 'yunke-mermaid-block';
 
   override effect() {
     super.effect();

@@ -12,7 +12,7 @@ export const NoPageRootFallback = createErrorFallback(
 
     return (
       <ErrorDetail
-        title={t['com.affine.error.no-page-root.title']()}
+        title={t['com.yunke.error.no-page-root.title']()}
         description={<ContactUS />}
         resetError={resetError}
       />

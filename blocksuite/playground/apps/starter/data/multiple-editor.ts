@@ -7,16 +7,16 @@ export const multiEditor: InitFn = (collection: Workspace, id: string) => {
   const doc = collection.createDoc(id).getStore({ id });
   doc.load(() => {
     // Add root block and surface block at root level
-    const rootId = doc.addBlock('affine:page', {
+    const rootId = doc.addBlock('yunke:page', {
       title: new Text(),
     });
 
-    doc.addBlock('affine:surface', {}, rootId);
+    doc.addBlock('yunke:surface', {}, rootId);
 
     // Add note block inside root block
-    const noteId = doc.addBlock('affine:note', {}, rootId);
+    const noteId = doc.addBlock('yunke:note', {}, rootId);
     // Add paragraph block inside note block
-    doc.addBlock('affine:paragraph', {}, noteId);
+    doc.addBlock('yunke:paragraph', {}, noteId);
   });
 
   doc.resetHistory();
@@ -24,7 +24,7 @@ export const multiEditor: InitFn = (collection: Workspace, id: string) => {
   const app = document.getElementById('app');
   if (app) {
     const editor = createTestEditor(doc, collection);
-    editor.style.borderRight = '1px solid var(--affine-border-color)';
+    editor.style.borderRight = '1px solid var(--yunke-border-color)';
 
     app.append(editor);
     app.style.display = 'flex';
@@ -42,16 +42,16 @@ export const multiEditorVertical: InitFn = (
   const doc = collection.createDoc(docId).getStore();
   doc.load(() => {
     // Add root block and surface block at root level
-    const rootId = doc.addBlock('affine:page', {
+    const rootId = doc.addBlock('yunke:page', {
       title: new Text(),
     });
 
-    doc.addBlock('affine:surface', {}, rootId);
+    doc.addBlock('yunke:surface', {}, rootId);
 
     // Add note block inside root block
-    const noteId = doc.addBlock('affine:note', {}, rootId);
+    const noteId = doc.addBlock('yunke:note', {}, rootId);
     // Add paragraph block inside note block
-    doc.addBlock('affine:paragraph', {}, noteId);
+    doc.addBlock('yunke:paragraph', {}, noteId);
   });
 
   doc.resetHistory();
@@ -59,7 +59,7 @@ export const multiEditorVertical: InitFn = (
   const app = document.getElementById('app');
   if (app) {
     const editor = createTestEditor(doc, collection);
-    editor.style.borderBottom = '1px solid var(--affine-border-color)';
+    editor.style.borderBottom = '1px solid var(--yunke-border-color)';
 
     app.append(editor);
     app.style.display = 'flex';

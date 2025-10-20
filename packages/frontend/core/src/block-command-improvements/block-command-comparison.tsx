@@ -358,7 +358,7 @@ const ImplementationSuggestions: React.FC = () => {
 // 原来的样式
 .slash-menu {
   border-radius: 8px;
-  box-shadow: var(--affine-overlay-shadow);
+  box-shadow: var(--yunke-overlay-shadow);
 }
 
 // 改进后的样式
@@ -397,11 +397,11 @@ const ImplementationSuggestions: React.FC = () => {
           <pre>{`
 // 使用统一的设计令牌
 :root {
-  --affine-primary-blue: #5B9CFF;
-  --affine-surface-hover: #F1F3F5;
-  --affine-border-light: #F3F4F6;
-  --affine-radius-lg: 12px;
-  --affine-radius-md: 6px;
+  --yunke-primary-blue: #5B9CFF;
+  --yunke-surface-hover: #F1F3F5;
+  --yunke-border-light: #F3F4F6;
+  --yunke-radius-lg: 12px;
+  --yunke-radius-md: 6px;
 }
           `}</pre>
         </div>

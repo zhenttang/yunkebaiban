@@ -21,7 +21,7 @@ export const Page = () => {
         value: 'standard',
         label:
           t[
-            'com.affine.settings.editorSettings.page.default-page-width.standard'
+            'com.yunke.settings.editorSettings.page.default-page-width.standard'
           ](),
         testId: 'standard-width-trigger',
       },
@@ -29,7 +29,7 @@ export const Page = () => {
         value: 'fullWidth',
         label:
           t[
-            'com.affine.settings.editorSettings.page.default-page-width.full-width'
+            'com.yunke.settings.editorSettings.page.default-page-width.full-width'
           ](),
         testId: 'full-width-trigger',
       },
@@ -58,13 +58,13 @@ export const Page = () => {
   );
 
   return (
-    <SettingWrapper title={t['com.affine.settings.editorSettings.page']()}>
+    <SettingWrapper title={t['com.yunke.settings.editorSettings.page']()}>
       <SettingRow
         name={t[
-          'com.affine.settings.editorSettings.page.default-page-width.title'
+          'com.yunke.settings.editorSettings.page.default-page-width.title'
         ]()}
         desc={t[
-          'com.affine.settings.editorSettings.page.default-page-width.description'
+          'com.yunke.settings.editorSettings.page.default-page-width.description'
         ]()}
       >
         <RadioGroup
@@ -77,10 +77,10 @@ export const Page = () => {
       </SettingRow>
       <SettingRow
         name={t[
-          'com.affine.settings.editorSettings.page.display-doc-info.title'
+          'com.yunke.settings.editorSettings.page.display-doc-info.title'
         ]()}
         desc={t[
-          'com.affine.settings.editorSettings.page.display-doc-info.description'
+          'com.yunke.settings.editorSettings.page.display-doc-info.description'
         ]()}
       >
         <Switch
@@ -91,10 +91,10 @@ export const Page = () => {
       </SettingRow>
       <SettingRow
         name={t[
-          'com.affine.settings.editorSettings.page.display-bi-link.title'
+          'com.yunke.settings.editorSettings.page.display-bi-link.title'
         ]()}
         desc={t[
-          'com.affine.settings.editorSettings.page.display-bi-link.description'
+          'com.yunke.settings.editorSettings.page.display-bi-link.description'
         ]()}
       >
         <Switch

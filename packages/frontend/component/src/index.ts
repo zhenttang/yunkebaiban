@@ -35,3 +35,4 @@ export * from './ui/themed-img';
 export * from './ui/toast';
 export * from './ui/tooltip';
 export * from './utils';
+export * from './icons/yunke-icon';

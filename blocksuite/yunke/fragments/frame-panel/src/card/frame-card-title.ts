@@ -19,7 +19,7 @@ const styles = css`
     height: 20px;
     box-sizing: border-box;
     gap: 6px;
-    font-size: var(--affine-font-sm);
+    font-size: var(--yunke-font-sm);
     cursor: default;
     position: relative;
   }
@@ -33,10 +33,10 @@ const styles = css`
     height: 18px;
     box-sizing: border-box;
     border-radius: 2px;
-    background: var(--affine-black);
+    background: var(--yunke-black);
     margin-left: 2px;
 
-    color: var(--affine-white);
+    color: var(--yunke-white);
     text-align: center;
     font-weight: 500;
     line-height: 18px;
@@ -44,7 +44,7 @@ const styles = css`
 
   .frame-card-title-container .card-title {
     height: 20px;
-    color: var(--affine-text-primary-color);
+    color: var(--yunke-text-primary-color);
     font-weight: 400;
     line-height: 20px;
 
@@ -55,7 +55,7 @@ const styles = css`
   }
 `;
 
-export const AFFINE_FRAME_CARD_TITLE = 'affine-frame-card-title';
+export const YUNKE_FRAME_CARD_TITLE = 'yunke-frame-card-title';
 
 export class FrameCardTitle extends WithDisposable(ShadowlessElement) {
   static override styles = styles;
@@ -146,6 +146,6 @@ export class FrameCardTitle extends WithDisposable(ShadowlessElement) {
 
 declare global {
   interface HTMLElementTagNameMap {
-    [AFFINE_FRAME_CARD_TITLE]: FrameCardTitle;
+    [YUNKE_FRAME_CARD_TITLE]: FrameCardTitle;
   }
 }

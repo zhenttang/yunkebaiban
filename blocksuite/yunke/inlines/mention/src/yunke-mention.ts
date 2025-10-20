@@ -1,6 +1,6 @@
 import { UserProvider } from '@blocksuite/yunke-shared/services';
 import { unsafeCSSVarV2 } from '@blocksuite/yunke-shared/theme';
-import type { AffineTextAttributes } from '@blocksuite/yunke-shared/types';
+import type { YunkeTextAttributes } from '@blocksuite/yunke-shared/types';
 import { SignalWatcher, WithDisposable } from '@blocksuite/global/lit';
 import type { BlockStdScope } from '@blocksuite/std';
 import { ShadowlessElement } from '@blocksuite/std';
@@ -12,11 +12,11 @@ import type { DeltaInsert } from '@blocksuite/store';
 import { css, html } from 'lit';
 import { property } from 'lit/decorators.js';
 
-export class AffineMention extends SignalWatcher(
+export class YunkeMention extends SignalWatcher(
   WithDisposable(ShadowlessElement)
 ) {
   static override styles = css`
-    .affine-mention {
+    .yunke-mention {
       color: ${unsafeCSSVarV2('text/primary')};
       font-feature-settings:
         'liga' off,
@@ -31,22 +31,22 @@ export class AffineMention extends SignalWatcher(
       border-radius: 4px;
       user-select: none;
     }
-    .affine-mention:hover {
-      background: var(--affine-hover-color);
+    .yunke-mention:hover {
+      background: var(--yunke-hover-color);
     }
-    .affine-mention[data-selected='true'] {
-      background: var(--affine-hover-color);
+    .yunke-mention[data-selected='true'] {
+      background: var(--yunke-hover-color);
     }
-    .affine-mention[data-type='default'] {
+    .yunke-mention[data-type='default'] {
       color: ${unsafeCSSVarV2('text/primary')};
     }
-    .affine-mention[data-type='removed'] {
+    .yunke-mention[data-type='removed'] {
       color: ${unsafeCSSVarV2('text/disable')};
     }
-    .affine-mention[data-type='error'] {
+    .yunke-mention[data-type='error'] {
       color: ${unsafeCSSVarV2('text/disable')};
     }
-    .affine-mention[data-type='loading'] {
+    .yunke-mention[data-type='loading'] {
       color: ${unsafeCSSVarV2('text/placeholder')};
       background: ${unsafeCSSVarV2('skeleton/skeleton')};
     }
@@ -87,7 +87,7 @@ export class AffineMention extends SignalWatcher(
     const errorContent = html`<span
       data-selected=${this.selected}
       data-type="error"
-      class="affine-mention"
+      class="yunke-mention"
       >@Unknown Member<v-text .str=${ZERO_WIDTH_FOR_EMBED_NODE}></v-text
     ></span>`;
 
@@ -106,14 +106,14 @@ export class AffineMention extends SignalWatcher(
         return html`<span
           data-selected=${this.selected}
           data-type="removed"
-          class="affine-mention"
+          class="yunke-mention"
           >@Inactive Member<v-text .str=${ZERO_WIDTH_FOR_EMBED_NODE}></v-text
         ></span>`;
       } else {
         return html`<span
           data-selected=${this.selected}
           data-type="default"
-          class="affine-mention"
+          class="yunke-mention"
           >@${userInfo$.value.name ?? 'Unknown'}<v-text
             .str=${ZERO_WIDTH_FOR_EMBED_NODE}
           ></v-text
@@ -125,7 +125,7 @@ export class AffineMention extends SignalWatcher(
       return html`<span
         data-selected=${this.selected}
         data-type="loading"
-        class="affine-mention"
+        class="yunke-mention"
         >@loading<span class="dots"
           ><span class="dot">.</span><span class="dot">.</span
           ><span class="dot">.</span></span
@@ -137,7 +137,7 @@ export class AffineMention extends SignalWatcher(
   }
 
   @property({ type: Object })
-  accessor delta: DeltaInsert<AffineTextAttributes> = {
+  accessor delta: DeltaInsert<YunkeTextAttributes> = {
     insert: ZERO_WIDTH_FOR_EMPTY_LINE,
     attributes: {},
   };

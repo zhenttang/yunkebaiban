@@ -1,6 +1,6 @@
 import type { UIEventHandler } from '@blocksuite/std';
 
-import type { AffineDragHandleWidget } from '../drag-handle.js';
+import type { YunkeDragHandleWidget } from '../drag-handle.js';
 
 export class KeyboardEventWatcher {
   private readonly _keyboardHandler: UIEventHandler = ctx => {
@@ -14,7 +14,7 @@ export class KeyboardEventWatcher {
     event.stopPropagation();
   };
 
-  constructor(readonly widget: AffineDragHandleWidget) {}
+  constructor(readonly widget: YunkeDragHandleWidget) {}
 
   watch() {
     this.widget.handleEvent('beforeInput', () => this.widget.hide());

@@ -7,7 +7,7 @@ import { toolbarWidget } from '.';
 import { effects } from './effects';
 
 export class ToolbarViewExtension extends ViewExtensionProvider {
-  override name = 'affine-toolbar-widget';
+  override name = 'yunke-toolbar-widget';
 
   override effect() {
     super.effect();

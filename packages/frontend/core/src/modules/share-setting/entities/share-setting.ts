@@ -19,7 +19,7 @@ type EnableAi = GetWorkspaceConfigQuery['workspace']['enableAi'];
 type EnableUrlPreview =
   GetWorkspaceConfigQuery['workspace']['enableUrlPreview'];
 
-const logger = new DebugLogger('affine:workspace-permission');
+const logger = new DebugLogger('yunke:workspace-permission');
 
 export class WorkspaceShareSetting extends Entity {
   enableAi$ = new LiveData<EnableAi | null>(null);

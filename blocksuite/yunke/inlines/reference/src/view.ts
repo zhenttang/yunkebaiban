@@ -9,7 +9,7 @@ import { RefNodeSlotsExtension } from './reference-node';
 import { referenceNodeToolbar } from './toolbar';
 
 export class ReferenceViewExtension extends ViewExtensionProvider {
-  override name = 'affine-reference-inline';
+  override name = 'yunke-reference-inline';
 
   override effect(): void {
     super.effect();

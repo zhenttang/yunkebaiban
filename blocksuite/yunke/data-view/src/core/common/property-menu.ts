@@ -9,7 +9,7 @@ export const inputConfig = (property: Property) => {
   if (IS_MOBILE) {
     return menu.input({
       prefix: html`
-        <div class="affine-database-column-type-menu-icon">
+        <div class="yunke-database-column-type-menu-icon">
           ${renderUniLit(property.icon)}
         </div>
       `,
@@ -22,7 +22,7 @@ export const inputConfig = (property: Property) => {
   }
   return menu.input({
     prefix: html`
-      <div class="affine-database-column-type-menu-icon">
+      <div class="yunke-database-column-type-menu-icon">
         ${renderUniLit(property.icon)}
       </div>
     `,
@@ -40,8 +40,8 @@ export const typeConfig = (property: Property) => {
         name: '类型',
         hide: () => !property.typeCanSet,
         postfix: html` <div
-          class="affine-database-column-type-icon"
-          style="color: var(--affine-text-secondary-color);gap:4px;font-size: 14px;"
+          class="yunke-database-column-type-icon"
+          style="color: var(--yunke-text-secondary-color);gap:4px;font-size: 14px;"
         >
           ${renderUniLit(property.icon)}
           ${property.view.propertyMetas$.value.find(

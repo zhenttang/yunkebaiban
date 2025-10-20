@@ -7,9 +7,9 @@ export class ImageEdgelessPlaceholderBlockComponent extends toGfxBlockComponent(
   ImagePlaceholderBlockComponent
 ) {
   static override styles = css`
-    affine-edgeless-placeholder-preview-image
-      .affine-placeholder-preview-container {
-      border: 1px solid var(--affine-background-tertiary-color);
+    yunke-edgeless-placeholder-preview-image
+      .yunke-placeholder-preview-container {
+      border: 1px solid var(--yunke-background-tertiary-color);
     }
   `;
 
@@ -20,6 +20,6 @@ export class ImageEdgelessPlaceholderBlockComponent extends toGfxBlockComponent(
 
 declare global {
   interface HTMLElementTagNameMap {
-    'affine-edgeless-placeholder-preview-image': ImageEdgelessPlaceholderBlockComponent;
+    'yunke-edgeless-placeholder-preview-image': ImageEdgelessPlaceholderBlockComponent;
   }
 }

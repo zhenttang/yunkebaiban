@@ -9,7 +9,7 @@ import { effects } from './effects.js';
 import { ListKeymapExtension, ListTextKeymapExtension } from './list-keymap.js';
 
 export class ListViewExtension extends ViewExtensionProvider {
-  override name = 'affine-list-block';
+  override name = 'yunke-list-block';
 
   override effect(): void {
     super.effect();
@@ -20,7 +20,7 @@ export class ListViewExtension extends ViewExtensionProvider {
     super.setup(context);
     context.register([
       FlavourExtension('yunke:list'),
-      BlockViewExtension('yunke:list', literal`affine-list`),
+      BlockViewExtension('yunke:list', literal`yunke-list`),
       ListKeymapExtension,
       ListTextKeymapExtension,
     ]);

@@ -48,7 +48,7 @@ export const OpenInAppCard = () => {
       </div>
       <div className={styles.contentCol}>
         <div className={styles.titleRow}>
-          {t.t('com.affine.open-in-app.card.title')}
+          {t.t('com.yunke.open-in-app.card.title')}
           <div className={styles.spacer} />
           <IconButton
             className={styles.closeButton}
@@ -57,10 +57,10 @@ export const OpenInAppCard = () => {
           />
         </div>
         <div className={styles.subtitleRow}>
-          <Trans i18nKey="com.affine.open-in-app.card.subtitle">
+          <Trans i18nKey="com.yunke.open-in-app.card.subtitle">
             Don&apos;t have the app?
             <a
-              href="https://affine.pro/download"
+              href="https://yunke.pro/download"
               target="_blank"
               rel="noreferrer"
               className={styles.link}
@@ -77,7 +77,7 @@ export const OpenInAppCard = () => {
               checked={remember}
               onChange={onToggleRemember}
             />
-            {t.t('com.affine.open-in-app.card.remember')}
+            {t.t('com.yunke.open-in-app.card.remember')}
           </label>
           <div className={styles.spacer} />
           <div className={styles.buttonGroup}>
@@ -87,7 +87,7 @@ export const OpenInAppCard = () => {
               className={styles.button}
               onClick={onDismiss}
             >
-              {t.t('com.affine.open-in-app.card.button.dismiss')}
+              {t.t('com.yunke.open-in-app.card.button.dismiss')}
             </Button>
             <Button
               variant="primary"
@@ -95,7 +95,7 @@ export const OpenInAppCard = () => {
               className={styles.button}
               onClick={onOpen}
             >
-              {t.t('com.affine.open-in-app.card.button.open')}
+              {t.t('com.yunke.open-in-app.card.button.open')}
             </Button>
           </div>
         </div>

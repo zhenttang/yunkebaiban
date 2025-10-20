@@ -168,15 +168,15 @@ export const DocsExplorer = ({
     }
 
     openConfirmModal({
-      title: t['com.affine.moveToTrash.confirmModal.title.multiple']({
+      title: t['com.yunke.moveToTrash.confirmModal.title.multiple']({
         number: selectedDocIds.length.toString(),
       }),
       description: t[
-        'com.affine.moveToTrash.confirmModal.description.multiple'
+        'com.yunke.moveToTrash.confirmModal.description.multiple'
       ]({
         number: selectedDocIds.length.toString(),
       }),
-      cancelText: t['com.affine.confirmModal.button.cancel'](),
+      cancelText: t['com.yunke.confirmModal.button.cancel'](),
       confirmText: t.Delete(),
       confirmButtonOptions: {
         variant: 'error',
@@ -254,7 +254,7 @@ export const DocsExplorer = ({
           onClose={handleCloseFloatingToolbar}
           content={
             <Trans
-              i18nKey="com.affine.page.toolbar.selected"
+              i18nKey="com.yunke.page.toolbar.selected"
               count={selectedDocIds.length}
             >
               <div style={{ color: cssVarV2.text.secondary }}>

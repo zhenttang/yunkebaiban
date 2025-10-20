@@ -156,7 +156,7 @@ export const listBlockHtmlAdapterMatcher: BlockHtmlAdapterMatcher = {
           type: 'element',
           tagName: 'li',
           properties: {
-            className: ['affine-list-block-container'],
+            className: ['yunke-list-block-container'],
           },
           children: liChildren,
         },

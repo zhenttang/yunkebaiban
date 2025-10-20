@@ -4,7 +4,7 @@ import {
   AuthHeader,
   AuthInput,
 } from '@yunke/component/auth-components';
-import { useAsyncCallback } from '@yunke/core/components/hooks/affine-async-hooks';
+import { useAsyncCallback } from '@yunke/core/components/hooks/yunke-async-hooks';
 import {
   AuthService,
   DefaultServerService,
@@ -69,14 +69,14 @@ export const ChangePasswordDialog = ({
 
       notify.success({
         title: hasPassword
-          ? t['com.affine.auth.sent.change.password.hint']()
-          : t['com.affine.auth.sent.set.password.hint'](),
+          ? t['com.yunke.auth.sent.change.password.hint']()
+          : t['com.yunke.auth.sent.set.password.hint'](),
       });
       setHasSentEmail(true);
     } catch (err) {
       console.error(err);
       notify.error({
-        title: t['com.affine.auth.sent.change.email.fail'](),
+        title: t['com.yunke.auth.sent.change.email.fail'](),
       });
     } finally {
       setLoading(false);
@@ -103,21 +103,21 @@ export const ChangePasswordDialog = ({
         title={serverName}
         subTitle={
           hasPassword
-            ? t['com.affine.auth.reset.password']()
-            : t['com.affine.auth.set.password']()
+            ? t['com.yunke.auth.reset.password']()
+            : t['com.yunke.auth.set.password']()
         }
       />
       <AuthContent>
         <p>
           {hasPassword
-            ? t['com.affine.auth.reset.password.message']()
-            : t['com.affine.auth.set.password.message']({
+            ? t['com.yunke.auth.reset.password.message']()
+            : t['com.yunke.auth.set.password.message']({
                 min: String(passwordLimits.minLength),
                 max: String(passwordLimits.maxLength),
               })}
         </p>
         <AuthInput
-          label={t['com.affine.settings.email']()}
+          label={t['com.yunke.settings.email']()}
           disabled={true}
           value={email}
         />
@@ -130,10 +130,10 @@ export const ChangePasswordDialog = ({
           onClick={onSendEmail}
         >
           {hasSentEmail
-            ? t['com.affine.auth.sent']()
+            ? t['com.yunke.auth.sent']()
             : hasPassword
-              ? t['com.affine.auth.send.reset.password.link']()
-              : t['com.affine.auth.send.set.password.link']()}
+              ? t['com.yunke.auth.send.reset.password.link']()
+              : t['com.yunke.auth.send.set.password.link']()}
         </Button>
       </AuthContent>
     </Modal>

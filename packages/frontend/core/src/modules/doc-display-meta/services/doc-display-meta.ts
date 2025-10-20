@@ -213,7 +213,7 @@ export class DocDisplayMetaService extends Service {
       // doc not found
       if (!doc) {
         return this.i18nService.i18n.i18next.t(
-          'com.affine.notFoundPage.title',
+          'com.yunke.notFoundPage.title',
           { lng }
         );
       }

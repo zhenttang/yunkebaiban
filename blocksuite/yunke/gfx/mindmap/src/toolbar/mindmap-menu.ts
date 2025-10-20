@@ -72,7 +72,7 @@ export class EdgelessMindmapMenu extends EdgelessToolbarToolMixin(
       width: 1px;
       transform: scaleX(0.5);
       height: 48px;
-      background: var(--affine-border-color);
+      background: var(--yunke-border-color);
     }
     .text-item,
     .media-item {
@@ -106,7 +106,7 @@ export class EdgelessMindmapMenu extends EdgelessToolbarToolMixin(
     .media-item:hover,
     .mindmap-item[data-is-active='true'],
     .mindmap-item:hover {
-      background: var(--affine-hover-color);
+      background: var(--yunke-hover-color);
     }
     .text-item > button.next,
     .media-item > button.next,
@@ -171,11 +171,11 @@ export class EdgelessMindmapMenu extends EdgelessToolbarToolMixin(
       >
         ${importMindMapIcon}
       </button>
-      <affine-tooltip tip-position="top" .offset=${12}>
-        <affine-tooltip-content-with-shortcut
+      <yunke-tooltip tip-position="top" .offset=${12}>
+        <yunke-tooltip-content-with-shortcut
           data-tip="${'支持导入FreeMind、OPML格式'}"
-        ></affine-tooltip-content-with-shortcut>
-      </affine-tooltip>
+        ></yunke-tooltip-content-with-shortcut>
+      </yunke-tooltip>
     </div>`;
   }
 
@@ -301,11 +301,11 @@ export class EdgelessMindmapMenu extends EdgelessToolbarToolMixin(
           >
             ${mediaItem.icon}
           </button>
-          <affine-tooltip tip-position="top" .offset=${12}>
-            <affine-tooltip-content-with-shortcut
+          <yunke-tooltip tip-position="top" .offset=${12}>
+            <yunke-tooltip-content-with-shortcut
               data-tip="${'添加媒体'}"
-            ></affine-tooltip-content-with-shortcut>
-          </affine-tooltip>
+            ></yunke-tooltip-content-with-shortcut>
+          </yunke-tooltip>
         </div>
         <div class="thin-divider"></div>
         <div class="text-item">
@@ -332,12 +332,12 @@ export class EdgelessMindmapMenu extends EdgelessToolbarToolMixin(
           >
             ${textItem.icon}
           </button>
-          <affine-tooltip tip-position="top" .offset=${12}>
-            <affine-tooltip-content-with-shortcut
+          <yunke-tooltip tip-position="top" .offset=${12}>
+            <yunke-tooltip-content-with-shortcut
               data-tip="${'无边界文本'}"
               data-shortcup="${'T'}"
-            ></affine-tooltip-content-with-shortcut>
-          </affine-tooltip>
+            ></yunke-tooltip-content-with-shortcut>
+          </yunke-tooltip>
         </div>
         <div class="thin-divider"></div>
         <!-- mind map -->
@@ -378,12 +378,12 @@ export class EdgelessMindmapMenu extends EdgelessToolbarToolMixin(
               >
                 ${mindMap.icon}
               </button>
-              <affine-tooltip tip-position="top" .offset=${12}>
-                <affine-tooltip-content-with-shortcut
+              <yunke-tooltip tip-position="top" .offset=${12}>
+                <yunke-tooltip-content-with-shortcut
                   data-tip="${'思维导图'}"
                   data-shortcup="${'M'}"
-                ></affine-tooltip-content-with-shortcut>
-              </affine-tooltip>
+                ></yunke-tooltip-content-with-shortcut>
+              </yunke-tooltip>
             </div>
           `;
         })}

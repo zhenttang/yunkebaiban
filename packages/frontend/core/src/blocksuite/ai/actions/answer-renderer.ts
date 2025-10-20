@@ -10,12 +10,12 @@ import { createSlidesRenderer } from '../messages/slides-renderer';
 import { createIframeRenderer, createImageRenderer } from '../messages/wrapper';
 import type { AIContext } from '../utils/context';
 import { isMindmapChild, isMindMapRoot } from '../utils/edgeless';
-import type { AffineAIPanelWidget } from '../widgets/ai-panel/ai-panel';
+import type { YunkeAIPanelWidget } from '../widgets/ai-panel/ai-panel';
 import { IMAGE_ACTIONS } from './consts';
 import { responseToExpandMindmap } from './edgeless-response';
 
 type AnswerRenderer = NonNullable<
-  AffineAIPanelWidget['config']
+  YunkeAIPanelWidget['config']
 >['answerRenderer'];
 
 export function actionToAnswerRenderer<

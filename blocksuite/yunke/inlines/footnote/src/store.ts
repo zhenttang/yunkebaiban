@@ -10,7 +10,7 @@ import {
 } from './adapters';
 
 export class FootnoteStoreExtension extends StoreExtensionProvider {
-  override name = 'affine-footnote-inline';
+  override name = 'yunke-footnote-inline';
 
   override setup(context: StoreExtensionContext) {
     super.setup(context);

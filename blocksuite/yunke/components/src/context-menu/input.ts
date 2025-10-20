@@ -22,24 +22,24 @@ export type MenuInputData = {
 
 export class MenuInput extends MenuFocusable {
   static override styles = css`
-    .affine-menu-input {
+    .yunke-menu-input {
       flex: 1;
       outline: none;
       border-radius: 4px;
       font-size: 14px;
       line-height: 22px;
       padding: 4px 6px;
-      border: 1px solid var(--affine-border-color);
+      border: 1px solid var(--yunke-border-color);
       width: 100%;
       color: ${unsafeCSSVarV2('text/primary')};
       background-color: transparent;
     }
 
-    .affine-menu-input.focused {
+    .yunke-menu-input.focused {
       border: 1px solid ${unsafeCSSVarV2('layer/insideBorder/primaryBorder')};
     }
 
-    .affine-menu-input:focus {
+    .yunke-menu-input:focus {
       border: 1px solid ${unsafeCSSVarV2('layer/insideBorder/primaryBorder')};
       box-shadow: 0px 0px 0px 2px rgba(28, 158, 228, 0.3);
     }
@@ -101,7 +101,7 @@ export class MenuInput extends MenuFocusable {
   protected override render(): unknown {
     const classString = classMap({
       [this.data.class ?? '']: true,
-      'affine-menu-input': true,
+      'yunke-menu-input': true,
       focused: this.isFocused$.value,
     });
 
@@ -200,11 +200,11 @@ const renderInput = (data: MenuInputData, menu: Menu) => {
       .menu="${menu}"
     ></mobile-menu-input>`;
   }
-  return html` <affine-menu-input
+  return html` <yunke-menu-input
     style="flex:1"
     .data="${data}"
     .menu="${menu}"
-  ></affine-menu-input>`;
+  ></yunke-menu-input>`;
 };
 export const menuInputItems = {
   input:

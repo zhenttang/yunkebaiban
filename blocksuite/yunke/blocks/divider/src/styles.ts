@@ -1,7 +1,7 @@
 import { css } from 'lit';
 
 export const dividerBlockStyles = css`
-  .affine-divider-block-container {
+  .yunke-divider-block-container {
     position: relative;
     width: 100%;
     height: 1px;
@@ -9,11 +9,11 @@ export const dividerBlockStyles = css`
     flex-direction: column;
     justify-content: center;
     padding: 18px 8px;
-    margin-top: var(--affine-paragraph-space);
+    margin-top: var(--yunke-paragraph-space);
   }
-  .affine-divider-block-container hr {
+  .yunke-divider-block-container hr {
     border: none;
-    border-top: 1px solid var(--affine-divider-color);
+    border-top: 1px solid var(--yunke-divider-color);
     width: 100%;
   }
 `;

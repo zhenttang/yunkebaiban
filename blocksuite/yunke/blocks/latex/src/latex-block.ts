@@ -143,7 +143,7 @@ export class LatexBlockComponent extends CaptionedBlockComponent<LatexBlockModel
       abortController: this._editorAbortController,
       shadowDom: false,
       portalStyles: {
-        zIndex: 'var(--affine-z-index-popover)',
+        zIndex: 'var(--yunke-z-index-popover)',
       },
     });
 
@@ -162,6 +162,6 @@ export class LatexBlockComponent extends CaptionedBlockComponent<LatexBlockModel
 
 declare global {
   interface HTMLElementTagNameMap {
-    'affine-latex': LatexBlockComponent;
+    'yunke-latex': LatexBlockComponent;
   }
 }

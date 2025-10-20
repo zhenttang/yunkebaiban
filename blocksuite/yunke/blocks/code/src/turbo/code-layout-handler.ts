@@ -31,7 +31,7 @@ export class CodeLayoutHandlerExtension extends BlockLayoutHandlerExtension<Code
     if (!component) return null;
 
     const codeBlockElement = component.querySelector(
-      '.affine-code-block-container'
+      '.yunke-code-block-container'
     );
     if (!codeBlockElement) return null;
 

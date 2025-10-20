@@ -6,7 +6,7 @@ import {
   Tooltip,
 } from '@yunke/component';
 import { Guard } from '@yunke/core/components/guard';
-import { useAsyncCallback } from '@yunke/core/components/hooks/affine-async-hooks';
+import { useAsyncCallback } from '@yunke/core/components/hooks/yunke-async-hooks';
 import { WorkspaceDialogService } from '@yunke/core/modules/dialogs';
 import { DocsService } from '@yunke/core/modules/doc';
 import { DocDisplayMetaService } from '@yunke/core/modules/doc-display-meta';
@@ -14,7 +14,7 @@ import { DocsSearchService } from '@yunke/core/modules/docs-search';
 import { FeatureFlagService } from '@yunke/core/modules/feature-flag';
 import { GlobalContextService } from '@yunke/core/modules/global-context';
 import { GuardService } from '@yunke/core/modules/permissions';
-import type { AffineDNDData } from '@yunke/core/types/dnd';
+import type { YunkeDNDData } from '@yunke/core/types/dnd';
 import { useI18n } from '@yunke/i18n';
 import { track } from '@yunke/track';
 import {
@@ -132,7 +132,7 @@ export const NavigationPanelDocNode = ({
       dropTarget: {
         at: 'navigation-panel:doc',
       },
-    } satisfies AffineDNDData;
+    } satisfies YunkeDNDData;
   }, [docId, location]);
 
   const handleRename = useAsyncCallback(
@@ -144,12 +144,12 @@ export const NavigationPanelDocNode = ({
   );
 
   const handleDropOnDoc = useAsyncCallback(
-    async (data: DropTargetDropEvent<AffineDNDData>) => {
+    async (data: DropTargetDropEvent<YunkeDNDData>) => {
       if (data.treeInstruction?.type === 'make-child') {
         if (data.source.data.entity?.type === 'doc') {
           const canEdit = await guardService.can('Doc_Update', docId);
           if (!canEdit) {
-            toast(t['com.affine.no-permission']());
+            toast(t['com.yunke.no-permission']());
             return;
           }
           await docsService.addLinkedDoc(docId, data.source.data.entity.id);
@@ -160,7 +160,7 @@ export const NavigationPanelDocNode = ({
             type: data.source.data.entity.type,
           });
         } else {
-          toast(t['com.affine.rootAppSidebar.doc.link-doc-only']());
+          toast(t['com.yunke.rootAppSidebar.doc.link-doc-only']());
         }
       } else {
         onDrop?.(data);
@@ -184,11 +184,11 @@ export const NavigationPanelDocNode = ({
   );
 
   const handleDropOnPlaceholder = useAsyncCallback(
-    async (data: DropTargetDropEvent<AffineDNDData>) => {
+    async (data: DropTargetDropEvent<YunkeDNDData>) => {
       if (data.source.data.entity?.type === 'doc') {
         const canEdit = await guardService.can('Doc_Update', docId);
         if (!canEdit) {
-          toast(t['com.affine.no-permission']());
+          toast(t['com.yunke.no-permission']());
           return;
         }
         // TODO(eyhn): timeout&error handling
@@ -200,13 +200,13 @@ export const NavigationPanelDocNode = ({
           type: data.source.data.entity.type,
         });
       } else {
-        toast(t['com.affine.rootAppSidebar.doc.link-doc-only']());
+        toast(t['com.yunke.rootAppSidebar.doc.link-doc-only']());
       }
     },
     [docId, docsService, guardService, t]
   );
 
-  const handleCanDrop = useMemo<DropTargetOptions<AffineDNDData>['canDrop']>(
+  const handleCanDrop = useMemo<DropTargetOptions<YunkeDNDData>['canDrop']>(
     () => args => {
       const entityType = args.source.data.entity?.type;
       return args.treeInstruction?.type !== 'make-child'
@@ -259,7 +259,7 @@ export const NavigationPanelDocNode = ({
         referencesLoading &&
         !collapsed && (
           <Tooltip
-            content={t['com.affine.rootAppSidebar.docs.references-loading']()}
+            content={t['com.yunke.rootAppSidebar.docs.references-loading']()}
           >
             <div className={styles.loadingIcon}>
               <Loading />

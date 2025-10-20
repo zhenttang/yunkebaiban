@@ -141,12 +141,12 @@ export const attachmentViewDropdownMenu = {
 
     return html`${keyed(
       model,
-      html`<affine-view-dropdown-menu
+      html`<yunke-view-dropdown-menu
         @toggle=${onToggle}
         .actions=${actions.value}
         .context=${ctx}
         .viewType$=${viewType$}
-      ></affine-view-dropdown-menu>`
+      ></yunke-view-dropdown-menu>`
     )}`;
   },
 } as const satisfies ToolbarActionGroup<ToolbarAction>;
@@ -345,12 +345,12 @@ const builtinSurfaceToolbarConfig = {
 
         return html`${keyed(
           model,
-          html`<affine-card-style-dropdown-menu
+          html`<yunke-card-style-dropdown-menu
             @toggle=${onToggle}
             .actions=${actions}
             .context=${ctx}
             .style$=${style$}
-          ></affine-card-style-dropdown-menu>`
+          ></yunke-card-style-dropdown-menu>`
         )}`;
       },
     } satisfies ToolbarActionGroup<ToolbarAction>,

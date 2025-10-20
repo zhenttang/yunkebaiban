@@ -5,12 +5,12 @@ export function delay(ms: number) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-export type AffineTextEvent = {
+export type YunkeTextEvent = {
   type: 'attachment' | 'message';
   data: string;
 };
 
-type AffineTextStream = AsyncIterable<AffineTextEvent>;
+type YunkeTextStream = AsyncIterable<YunkeTextEvent>;
 
 type toTextStreamOptions = {
   timeout?: number;
@@ -31,12 +31,12 @@ const safeParseError = (data: string): { status: number } => {
 export function toTextStream(
   eventSource: EventSource,
   { timeout, signal }: toTextStreamOptions = {}
-): AffineTextStream {
+): YunkeTextStream {
   console.log(`[toTextStream] 开始创建文本流, EventSource状态:`, eventSource.readyState);
   
   return {
     [Symbol.asyncIterator]: async function* () {
-      const messageQueue: AffineTextEvent[] = [];
+      const messageQueue: YunkeTextEvent[] = [];
       let resolveMessagePromise: () => void;
       let rejectMessagePromise: (err: Error) => void;
 

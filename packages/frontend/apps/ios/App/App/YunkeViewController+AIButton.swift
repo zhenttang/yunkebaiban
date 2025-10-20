@@ -1,5 +1,5 @@
 //
-//  AffineViewController+AIButton.swift
+//  YunkeViewController+AIButton.swift
 //  App
 //
 //  Created by 秋星桥 on 2025/1/8.
@@ -9,7 +9,7 @@ import ChidoriMenu
 import Intelligents
 import UIKit
 
-extension AFFiNEViewController: IntelligentsButtonDelegate, IntelligentsFocusApertureViewDelegate {
+extension YUNKEViewController: IntelligentsButtonDelegate, IntelligentsFocusApertureViewDelegate {
   func onIntelligentsButtonTapped(_ button: IntelligentsButton) {
     guard let webView else {
       assertionFailure() // ? wdym ?

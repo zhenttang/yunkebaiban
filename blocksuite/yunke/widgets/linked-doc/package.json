@@ -1,6 +1,6 @@
 {
   "name": "@blocksuite/yunke-widget-linked-doc",
-  "description": "Affine linked doc widget.",
+  "description": "Yunke linked doc widget.",
   "type": "module",
   "scripts": {
     "build": "tsc"

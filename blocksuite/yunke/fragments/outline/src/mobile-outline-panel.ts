@@ -25,7 +25,7 @@ import {
   scrollToBlockWithHighlight,
 } from './utils/scroll.js';
 
-export const AFFINE_MOBILE_OUTLINE_MENU = 'affine-mobile-outline-menu';
+export const YUNKE_MOBILE_OUTLINE_MENU = 'yunke-mobile-outline-menu';
 
 @requiredProperties({
   editor: PropTypes.object,
@@ -71,7 +71,7 @@ export class MobileOutlineMenu extends SignalWatcher(
     }
 
     .outline-menu-item:active {
-      background: var(--affine-hover-color);
+      background: var(--yunke-hover-color);
     }
 
     .outline-menu-item.title,
@@ -192,6 +192,6 @@ export class MobileOutlineMenu extends SignalWatcher(
 
 declare global {
   interface HTMLElementTagNameMap {
-    [AFFINE_MOBILE_OUTLINE_MENU]: MobileOutlineMenu;
+    [YUNKE_MOBILE_OUTLINE_MENU]: MobileOutlineMenu;
   }
 }

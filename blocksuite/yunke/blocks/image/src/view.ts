@@ -9,7 +9,7 @@ import { ImageEdgelessBlockInteraction } from './image-edgeless-block';
 import { ImageBlockSpec } from './image-spec';
 
 export class ImageViewExtension extends ViewExtensionProvider {
-  override name = 'affine-image-block';
+  override name = 'yunke-image-block';
 
   override effect() {
     super.effect();

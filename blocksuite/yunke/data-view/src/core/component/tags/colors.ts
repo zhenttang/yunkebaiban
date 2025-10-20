@@ -7,52 +7,52 @@ export type SelectOptionColor = {
 };
 export const selectOptionColors: SelectOptionColor[] = [
   {
-    oldColor: 'var(--affine-tag-red)',
+    oldColor: 'var(--yunke-tag-red)',
     color: cssVarV2('chip/label/red'),
     name: '红色',
   },
   {
-    oldColor: 'var(--affine-tag-pink)',
+    oldColor: 'var(--yunke-tag-pink)',
     color: cssVarV2('chip/label/magenta'),
     name: '品红',
   },
   {
-    oldColor: 'var(--affine-tag-orange)',
+    oldColor: 'var(--yunke-tag-orange)',
     color: cssVarV2('chip/label/orange'),
     name: '橙色',
   },
   {
-    oldColor: 'var(--affine-tag-yellow)',
+    oldColor: 'var(--yunke-tag-yellow)',
     color: cssVarV2('chip/label/yellow'),
     name: '黄色',
   },
   {
-    oldColor: 'var(--affine-tag-green)',
+    oldColor: 'var(--yunke-tag-green)',
     color: cssVarV2('chip/label/green'),
     name: '绿色',
   },
   {
-    oldColor: 'var(--affine-tag-teal)',
+    oldColor: 'var(--yunke-tag-teal)',
     color: cssVarV2('chip/label/teal'),
     name: '青色',
   },
   {
-    oldColor: 'var(--affine-tag-blue)',
+    oldColor: 'var(--yunke-tag-blue)',
     color: cssVarV2('chip/label/blue'),
     name: '蓝色',
   },
   {
-    oldColor: 'var(--affine-tag-purple)',
+    oldColor: 'var(--yunke-tag-purple)',
     color: cssVarV2('chip/label/purple'),
     name: '紫色',
   },
   {
-    oldColor: 'var(--affine-tag-gray)',
+    oldColor: 'var(--yunke-tag-gray)',
     color: cssVarV2('chip/label/grey'),
     name: '灰色',
   },
   {
-    oldColor: 'var(--affine-tag-white)',
+    oldColor: 'var(--yunke-tag-white)',
     color: cssVarV2('chip/label/white'),
     name: '白色',
   },
@@ -63,7 +63,7 @@ const oldColorMap = Object.fromEntries(
 );
 
 export const getColorByColor = (color: string) => {
-  if (color.startsWith('--affine-tag')) {
+  if (color.startsWith('--yunke-tag')) {
     return oldColorMap[color] ?? color;
   }
   return color;

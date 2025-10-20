@@ -3,7 +3,7 @@ import { unsafeCSSVarV2 } from '@blocksuite/yunke-shared/theme';
 import { css } from 'lit';
 
 export const keyboardToolbarStyles = css`
-  affine-keyboard-toolbar {
+  yunke-keyboard-toolbar {
     position: fixed;
     display: block;
     width: 100vw;
@@ -17,7 +17,7 @@ export const keyboardToolbarStyles = css`
     padding: 0px 8px;
     box-sizing: border-box;
     gap: 8px;
-    z-index: var(--affine-z-index-popover);
+    z-index: var(--yunke-z-index-popover);
 
     background-color: ${unsafeCSSVarV2('layer/background/primary')};
     border-top: 0.5px solid ${unsafeCSSVarV2('layer/insideBorder/border')};
@@ -59,7 +59,7 @@ export const keyboardToolbarStyles = css`
 `;
 
 export const keyboardToolPanelStyles = css`
-  affine-keyboard-tool-panel {
+  yunke-keyboard-tool-panel {
     display: flex;
     flex-direction: column;
     gap: 24px;
@@ -70,7 +70,7 @@ export const keyboardToolPanelStyles = css`
     background-color: ${unsafeCSSVarV2('layer/background/primary')};
   }
 
-  ${scrollbarStyle('affine-keyboard-tool-panel')}
+  ${scrollbarStyle('yunke-keyboard-tool-panel')}
 
   .keyboard-tool-panel-group {
     display: flex;

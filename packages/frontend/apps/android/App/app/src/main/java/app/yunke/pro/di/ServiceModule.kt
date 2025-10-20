@@ -1,7 +1,7 @@
-package app.affine.pro.di
+package app.yunke.pro.di
 
-import app.affine.pro.service.SSEService
-import app.affine.pro.service.WebService
+import app.yunke.pro.service.SSEService
+import app.yunke.pro.service.WebService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

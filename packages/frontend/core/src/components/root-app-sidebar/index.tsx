@@ -83,14 +83,14 @@ const AllDocsButton = () => {
   return (
     <MenuLinkItem icon={<AllDocsIcon />} active={allPageActive} to={'/all'}>
       <span data-testid="all-pages">
-        {t['com.affine.workspaceSubPath.all']()}
+        {t['com.yunke.workspaceSubPath.all']()}
       </span>
     </MenuLinkItem>
   );
 };
 
 /**
- * This is for the whole affine app sidebar.
+ * This is for the whole yunke app sidebar.
  * This component wraps the app sidebar in `@yunke/component` with logic and data.
  *
  */
@@ -195,7 +195,7 @@ export const RootAppSidebar = memo((): ReactElement => {
           onClick={onOpenSettingModal}
         >
           <span data-testid="settings-modal-trigger">
-            {t['com.affine.settingSidebar.title']()}
+            {t['com.yunke.settingSidebar.title']()}
           </span>
         </MenuItem>
       </SidebarContainer>
@@ -207,7 +207,7 @@ export const RootAppSidebar = memo((): ReactElement => {
         <NavigationPanelCollections />
         <CollapsibleSection
           name="others"
-          title={t['com.affine.rootAppSidebar.others']()}
+          title={t['com.yunke.rootAppSidebar.others']()}
           contentStyle={{ padding: '6px 8px 0 8px' }}
         >
           <TrashButton />

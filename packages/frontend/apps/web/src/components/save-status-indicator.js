@@ -10,7 +10,7 @@ export const SaveStatusIndicator = () => {
     const params = useParams();
     // 从路由参数获取workspaceId和docId
     const workspaceId = params.workspaceId;
-    const docId = params.pageId; // 在AFFiNE中，pageId就是docId
+    const docId = params.pageId; // 在YUNKE中，pageId就是docId
     // 调试信息 - 显示所有可能的参数
     // console.log('🔍 [SaveStatusIndicator] 路由参数调试:', {
     //   allParams: params,
@@ -87,7 +87,7 @@ export const SaveStatusIndicator = () => {
         try {
             // 获取当前页面的文档内容
             const pageContent = document.querySelector('[data-block-id]')?.textContent ||
-                document.querySelector('.affine-page-viewport')?.textContent ||
+                document.querySelector('.yunke-page-viewport')?.textContent ||
                 document.querySelector('[contenteditable]')?.textContent ||
                 document.querySelector('.ProseMirror')?.textContent ||
                 `手动保存测试内容 - ${new Date().toISOString()}`;

@@ -56,7 +56,7 @@ export const CreateAdmin = ({
             创建管理员账户
           </h1>
           <p className="text-sm text-muted-foreground">
-            此账户也可用于以AFFiNE用户身份登录。
+            此账户也可用于以YUNKE用户身份登录。
           </p>
         </div>
         <div className="flex flex-col gap-9">

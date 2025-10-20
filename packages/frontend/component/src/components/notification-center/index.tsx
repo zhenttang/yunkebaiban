@@ -239,7 +239,7 @@ function NotificationCard(props: NotificationCardProps): ReactNode {
       data-index={index}
       data-front={isFront}
       data-expanded={expand}
-      data-testid="affine-notification"
+      data-testid="yunke-notification"
       onMouseEnter={() => {
         setExpand(true);
       }}
@@ -310,7 +310,7 @@ function NotificationCard(props: NotificationCardProps): ReactNode {
               onClick={onClickAction}
             >
               {notification.actionLabel ??
-                t['com.affine.keyboardShortcuts.undo']()}
+                t['com.yunke.keyboardShortcuts.undo']()}
             </div>
           )}
           {notification.multimedia ? null : (
@@ -322,8 +322,8 @@ function NotificationCard(props: NotificationCardProps): ReactNode {
                 color:
                   notification.theme !== 'light' &&
                   notification.theme !== 'default'
-                    ? 'var(--affine-pure-white)'
-                    : 'var(--affine-text-primary-color)',
+                    ? 'var(--yunke-pure-white)'
+                    : 'var(--yunke-text-primary-color)',
               }}
             >
               <CloseIcon onClick={onClickRemove} />
@@ -345,14 +345,14 @@ function NotificationCard(props: NotificationCardProps): ReactNode {
               <rect
                 width="100%"
                 height="4"
-                fill="var(--affine-hover-color)"
+                fill="var(--yunke-hover-color)"
                 rx="2"
                 ry="2"
               />
               <rect
                 width="0%"
                 height="4"
-                fill="var(--affine-primary-color)"
+                fill="var(--yunke-primary-color)"
                 rx="2"
                 ry="2"
               >

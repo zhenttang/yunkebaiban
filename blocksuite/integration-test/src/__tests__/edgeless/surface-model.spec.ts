@@ -14,7 +14,7 @@ let model: SurfaceBlockModel;
 beforeEach(async () => {
   const cleanup = await setupEditor('edgeless');
   const models = doc.getModelsByFlavour(
-    'affine:surface'
+    'yunke:surface'
   ) as SurfaceBlockModel[];
 
   model = models[0];

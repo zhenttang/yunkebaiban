@@ -45,7 +45,7 @@ export const NavigationPanelOrganize = () => {
   return (
     <CollapsibleSection
       name="organize"
-      title={t['com.affine.rootAppSidebar.organize']()}
+      title={t['com.yunke.rootAppSidebar.organize']()}
     >
       {/* TODO(@CatsJuice): Organize loading UI */}
       <NavigationPanelTreeRoot placeholder={isLoading ? <Skeleton /> : null}>
@@ -58,7 +58,7 @@ export const NavigationPanelOrganize = () => {
         <AddItemPlaceholder
           icon={<AddOrganizeIcon />}
           data-testid="navigation-panel-bar-add-organize-button"
-          label={t['com.affine.rootAppSidebar.organize.add-folder']()}
+          label={t['com.yunke.rootAppSidebar.organize.add-folder']()}
           onClick={() => setOpenNewFolderDialog(true)}
         />
       </NavigationPanelTreeRoot>

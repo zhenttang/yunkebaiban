@@ -53,13 +53,13 @@ export const CollectionOperations = ({
       return openRenameModal();
     }
     openPromptModal({
-      title: t['com.affine.editCollection.renameCollection'](),
-      label: t['com.affine.editCollectionName.name'](),
+      title: t['com.yunke.editCollection.renameCollection'](),
+      label: t['com.yunke.editCollectionName.name'](),
       inputOptions: {
-        placeholder: t['com.affine.editCollectionName.name.placeholder'](),
+        placeholder: t['com.yunke.editCollectionName.name.placeholder'](),
       },
-      confirmText: t['com.affine.editCollection.save'](),
-      cancelText: t['com.affine.editCollection.button.cancel'](),
+      confirmText: t['com.yunke.editCollection.save'](),
+      cancelText: t['com.yunke.editCollection.button.cancel'](),
       confirmButtonOptions: {
         variant: 'primary',
       },
@@ -116,12 +116,12 @@ export const CollectionOperations = ({
     () => [
       {
         icon: <EditIcon />,
-        name: t['com.affine.collection.menu.rename'](),
+        name: t['com.yunke.collection.menu.rename'](),
         click: showEditName,
       },
       {
         icon: <FilterIcon />,
-        name: t['com.affine.collection.menu.edit'](),
+        name: t['com.yunke.collection.menu.edit'](),
         click: showEdit,
       },
       ...(onAddDocToCollection
@@ -136,20 +136,20 @@ export const CollectionOperations = ({
       {
         icon: <IsFavoriteIcon favorite={favorite} />,
         name: favorite
-          ? t['com.affine.favoritePageOperation.remove']()
-          : t['com.affine.favoritePageOperation.add'](),
+          ? t['com.yunke.favoritePageOperation.remove']()
+          : t['com.yunke.favoritePageOperation.add'](),
         click: onToggleFavoritePage,
       },
       {
         icon: <OpenInNewIcon />,
-        name: t['com.affine.workbench.tab.page-menu-open'](),
+        name: t['com.yunke.workbench.tab.page-menu-open'](),
         click: openCollectionNewTab,
       },
       ...(BUILD_CONFIG.isElectron
         ? [
             {
               icon: <SplitViewIcon />,
-              name: t['com.affine.workbench.split-view.page-menu-open'](),
+              name: t['com.yunke.workbench.split-view.page-menu-open'](),
               click: openCollectionSplitView,
             },
           ]

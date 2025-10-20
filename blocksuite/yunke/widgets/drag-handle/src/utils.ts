@@ -1,6 +1,6 @@
 import { type CalloutBlockComponent } from '@blocksuite/yunke-block-callout';
 import {
-  AFFINE_EDGELESS_NOTE,
+  YUNKE_EDGELESS_NOTE,
   EdgelessNoteBackground,
   EdgelessNoteBlockComponent,
 } from '@blocksuite/yunke-block-note';
@@ -111,7 +111,7 @@ export const extractIdsFromSnapshot = (snapshot: SliceSnapshot) => {
 
 // TODO: this is a hack, need to find a better way
 export const insideDatabaseTable = (element: Element) => {
-  return !!element.closest('.affine-database-block-table');
+  return !!element.closest('.yunke-database-block-table');
 };
 
 export const includeTextSelection = (selections: BaseSelection[]) => {
@@ -158,7 +158,7 @@ export const isOutOfNoteBlock = (
 };
 
 export const getParentNoteBlock = (blockComponent: BlockComponent) => {
-  return blockComponent.closest('affine-note, affine-edgeless-note') ?? null;
+  return blockComponent.closest('yunke-note, yunke-edgeless-note') ?? null;
 };
 
 export const getClosestNoteBlock = (
@@ -169,7 +169,7 @@ export const getClosestNoteBlock = (
   const isInsidePageEditor =
     editorHost.std.get(DocModeProvider).getEditorMode() === 'page';
   return isInsidePageEditor
-    ? findClosestBlockComponent(rootComponent, point, 'affine-note')
+    ? findClosestBlockComponent(rootComponent, point, 'yunke-note')
     : getHoveringNote(point);
 };
 
@@ -183,7 +183,7 @@ export const getClosestBlockByPoint = (
     rootComponent,
     point
   );
-  if (!closestNoteBlock || closestNoteBlock.closest('.affine-surface-ref')) {
+  if (!closestNoteBlock || closestNoteBlock.closest('.yunke-surface-ref')) {
     return null;
   }
 
@@ -195,7 +195,7 @@ export const getClosestBlockByPoint = (
   }) as BlockComponent | null;
 
   const blockSelector =
-    '.affine-note-block-container > .affine-block-children-container > [data-block-id]';
+    '.yunke-note-block-container > .yunke-block-children-container > [data-block-id]';
 
   const closestBlock = (
     block && containChildBlock([closestNoteBlock], block.model)
@@ -213,7 +213,7 @@ export const getClosestBlockByPoint = (
 
   if (matchModels(closestBlock.model, [ParagraphBlockModel])) {
     const callout =
-      closestBlock.closest<CalloutBlockComponent>('affine-callout');
+      closestBlock.closest<CalloutBlockComponent>('yunke-callout');
     if (callout) {
       return callout;
     }
@@ -294,7 +294,7 @@ function getHoveringNote(point: Point) {
     // note-background and edgeless-note, using elementsFromPoint alone cannot correctly
     // retrieve the edgeless-note.
     if (el instanceof EdgelessNoteBackground) {
-      return el.closest(AFFINE_EDGELESS_NOTE) ?? null;
+      return el.closest(YUNKE_EDGELESS_NOTE) ?? null;
     }
   }
   return null;

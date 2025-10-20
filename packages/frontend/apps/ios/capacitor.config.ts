@@ -9,14 +9,14 @@ const packageJson = JSON.parse(
 );
 
 interface AppConfig {
-  affineVersion: string;
+  yunkeVersion: string;
 }
 
 const config: CapacitorConfig & AppConfig = {
-  appId: 'app.affine.pro',
+  appId: 'app.yunke.pro',
   appName: '云科',
   webDir: 'dist',
-  affineVersion: packageJson.version,
+  yunkeVersion: packageJson.version,
   ios: {
     scheme: '云科',
     path: '.',

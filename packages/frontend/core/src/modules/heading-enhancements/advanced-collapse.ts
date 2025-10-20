@@ -50,8 +50,8 @@ export class AdvancedCollapse extends WithDisposable(ShadowlessElement) {
     }
 
     .collapse-header:hover {
-      background: var(--affine-hover-color);
-      border-color: var(--affine-border-color);
+      background: var(--yunke-hover-color);
+      border-color: var(--yunke-border-color);
     }
 
     .collapse-header.active {
@@ -67,7 +67,7 @@ export class AdvancedCollapse extends WithDisposable(ShadowlessElement) {
       height: 16px;
       font-size: 12px;
       transition: transform 0.2s ease;
-      color: var(--affine-icon-color);
+      color: var(--yunke-icon-color);
     }
 
     .collapse-icon.expanded {
@@ -85,7 +85,7 @@ export class AdvancedCollapse extends WithDisposable(ShadowlessElement) {
     .collapse-title {
       font-size: 12px;
       font-weight: 500;
-      color: var(--affine-text-primary-color);
+      color: var(--yunke-text-primary-color);
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
@@ -93,8 +93,8 @@ export class AdvancedCollapse extends WithDisposable(ShadowlessElement) {
 
     .collapse-count {
       font-size: 10px;
-      color: var(--affine-text-secondary-color);
-      background: var(--affine-background-secondary-color);
+      color: var(--yunke-text-secondary-color);
+      background: var(--yunke-background-secondary-color);
       padding: 2px 6px;
       border-radius: 10px;
       white-space: nowrap;
@@ -114,23 +114,23 @@ export class AdvancedCollapse extends WithDisposable(ShadowlessElement) {
     .collapse-btn {
       padding: 2px 4px;
       background: transparent;
-      border: 1px solid var(--affine-border-color);
+      border: 1px solid var(--yunke-border-color);
       border-radius: 3px;
       cursor: pointer;
       font-size: 10px;
       transition: all 0.2s ease;
-      color: var(--affine-text-secondary-color);
+      color: var(--yunke-text-secondary-color);
     }
 
     .collapse-btn:hover {
-      background: var(--affine-hover-color);
-      color: var(--affine-text-primary-color);
+      background: var(--yunke-hover-color);
+      color: var(--yunke-text-primary-color);
     }
 
     .collapse-content {
       overflow: hidden;
       transition: all var(--animation-duration, 0.3s) ease;
-      border-left: 2px solid var(--affine-border-color);
+      border-left: 2px solid var(--yunke-border-color);
       margin-left: 8px;
       padding-left: 8px;
     }
@@ -159,11 +159,11 @@ export class AdvancedCollapse extends WithDisposable(ShadowlessElement) {
       gap: 6px;
       padding: 4px 8px;
       margin: 2px 0;
-      background: var(--affine-background-secondary-color);
+      background: var(--yunke-background-secondary-color);
       border-radius: 4px;
       font-size: 11px;
-      color: var(--affine-text-secondary-color);
-      border-left: 2px solid var(--affine-border-color);
+      color: var(--yunke-text-secondary-color);
+      border-left: 2px solid var(--yunke-border-color);
       margin-left: 8px;
     }
 
@@ -177,7 +177,7 @@ export class AdvancedCollapse extends WithDisposable(ShadowlessElement) {
 
     .preview-more {
       font-size: 10px;
-      color: var(--affine-text-tertiary-color);
+      color: var(--yunke-text-tertiary-color);
       cursor: pointer;
       padding: 2px 4px;
       border-radius: 2px;
@@ -185,8 +185,8 @@ export class AdvancedCollapse extends WithDisposable(ShadowlessElement) {
     }
 
     .preview-more:hover {
-      background: var(--affine-hover-color);
-      color: var(--affine-text-secondary-color);
+      background: var(--yunke-hover-color);
+      color: var(--yunke-text-secondary-color);
     }
 
     .collapse-placeholder {
@@ -195,19 +195,19 @@ export class AdvancedCollapse extends WithDisposable(ShadowlessElement) {
       gap: 6px;
       padding: 8px;
       margin: 4px 0;
-      background: var(--affine-background-secondary-color);
-      border: 1px dashed var(--affine-border-color);
+      background: var(--yunke-background-secondary-color);
+      border: 1px dashed var(--yunke-border-color);
       border-radius: 4px;
       font-size: 11px;
-      color: var(--affine-text-secondary-color);
+      color: var(--yunke-text-secondary-color);
       cursor: pointer;
       transition: all 0.2s ease;
     }
 
     .collapse-placeholder:hover {
-      background: var(--affine-hover-color);
-      border-color: var(--affine-primary-color);
-      color: var(--affine-text-primary-color);
+      background: var(--yunke-hover-color);
+      border-color: var(--yunke-primary-color);
+      color: var(--yunke-text-primary-color);
     }
 
     .collapse-indicator {
@@ -217,7 +217,7 @@ export class AdvancedCollapse extends WithDisposable(ShadowlessElement) {
       transform: translateY(-50%);
       width: 8px;
       height: 8px;
-      background: var(--affine-primary-color);
+      background: var(--yunke-primary-color);
       border-radius: 50%;
       transition: all 0.2s ease;
       opacity: 0;
@@ -263,7 +263,7 @@ export class AdvancedCollapse extends WithDisposable(ShadowlessElement) {
       top: 0;
       bottom: 0;
       width: 2px;
-      background: linear-gradient(to bottom, var(--affine-primary-color), transparent);
+      background: linear-gradient(to bottom, var(--yunke-primary-color), transparent);
       opacity: 0.3;
     }
 
@@ -275,19 +275,19 @@ export class AdvancedCollapse extends WithDisposable(ShadowlessElement) {
 
     .shortcut-btn {
       padding: 2px 6px;
-      background: var(--affine-background-secondary-color);
-      border: 1px solid var(--affine-border-color);
+      background: var(--yunke-background-secondary-color);
+      border: 1px solid var(--yunke-border-color);
       border-radius: 3px;
       font-size: 10px;
       cursor: pointer;
       transition: all 0.2s ease;
-      color: var(--affine-text-secondary-color);
+      color: var(--yunke-text-secondary-color);
     }
 
     .shortcut-btn:hover {
-      background: var(--affine-primary-color);
+      background: var(--yunke-primary-color);
       color: white;
-      border-color: var(--affine-primary-color);
+      border-color: var(--yunke-primary-color);
     }
   `;
 
@@ -391,7 +391,7 @@ export class AdvancedCollapse extends WithDisposable(ShadowlessElement) {
   }
 
   private _getHeadingLevel(block: BlockModel): number {
-    if (block.flavour !== 'affine:paragraph') return 0;
+    if (block.flavour !== 'yunke:paragraph') return 0;
     
     const type = (block as any).type;
     const match = type?.match(/h(\d+)/);
@@ -423,7 +423,7 @@ export class AdvancedCollapse extends WithDisposable(ShadowlessElement) {
   }
 
   private _getBlockText(block: BlockModel): string {
-    if (block.flavour === 'affine:paragraph' || block.flavour === 'affine:list') {
+    if (block.flavour === 'yunke:paragraph' || block.flavour === 'yunke:list') {
       return (block as any).text?.toString() || '';
     }
     return '';

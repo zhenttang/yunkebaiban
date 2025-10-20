@@ -48,7 +48,7 @@ export const NavigationPanelTags = () => {
       name="tags"
       testId="navigation-panel-tags"
       headerClassName={styles.draggedOverHighlight}
-      title={t['com.affine.rootAppSidebar.tags']()}
+      title={t['com.yunke.rootAppSidebar.tags']()}
       actions={
         <div className={styles.iconContainer}>
           <IconButton
@@ -56,7 +56,7 @@ export const NavigationPanelTags = () => {
             onClick={handleOpenCreateModal}
             size="16"
             tooltip={t[
-              'com.affine.rootAppSidebar.explorer.tag-section-add-tooltip'
+              'com.yunke.rootAppSidebar.explorer.tag-section-add-tooltip'
             ]()}
           >
             <AddTagIcon />
@@ -65,7 +65,7 @@ export const NavigationPanelTags = () => {
             <CreateTagModal
               setRenaming={setCreating}
               handleRename={handleCreateNewTag}
-              rawName={t['com.affine.rootAppSidebar.tags.new-tag']()}
+              rawName={t['com.yunke.rootAppSidebar.tags.new-tag']()}
               className={styles.createModalAnchor}
             />
           )}

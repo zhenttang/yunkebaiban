@@ -257,7 +257,7 @@ export function registerProtocol() {
 
     (async () => {
       // session cookies are set to file:// on production
-      // if sending request to the cloud, attach the session cookie (to affine cloud server)
+      // if sending request to the cloud, attach the session cookie (to yunke cloud server)
       if (
         url.protocol === 'http:' ||
         url.protocol === 'https:' ||

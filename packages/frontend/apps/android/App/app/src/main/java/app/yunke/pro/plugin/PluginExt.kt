@@ -1,4 +1,4 @@
-package app.affine.pro.plugin
+package app.yunke.pro.plugin
 
 import androidx.lifecycle.lifecycleScope
 import com.getcapacitor.Plugin

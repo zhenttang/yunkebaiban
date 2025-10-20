@@ -43,16 +43,16 @@ export const AIOnboardingLocal = () => {
     const result: NonNullable<Notification['actions']> = [
       {
         key: 'learn-more',
-        label: t['com.affine.ai-onboarding.local.action-learn-more'](),
+        label: t['com.yunke.ai-onboarding.local.action-learn-more'](),
         onClick: () => {
-          window.open('https://ai.affine.pro', '_blank', 'noreferrer');
+          window.open('https://ai.yunke.pro', '_blank', 'noreferrer');
         },
       },
     ];
     if (notSignedIn) {
       result.push({
         key: 'get-started',
-        label: t['com.affine.ai-onboarding.local.action-get-started'](),
+        label: t['com.yunke.ai-onboarding.local.action-get-started'](),
         onClick: () => {
           jumpToSignIn('', RouteLogic.REPLACE, {}, { initCloud: 'true' });
         },
@@ -76,10 +76,10 @@ export const AIOnboardingLocal = () => {
         {
           title: (
             <div className={styles.title}>
-              {t['com.affine.ai-onboarding.local.title']()}
+              {t['com.yunke.ai-onboarding.local.title']()}
             </div>
           ),
-          message: t['com.affine.ai-onboarding.local.message'](),
+          message: t['com.yunke.ai-onboarding.local.message'](),
           icon: <AiIcon />,
           iconColor: cssVar('brandColor'),
           thumb: <LocalOnboardingAnimation />,

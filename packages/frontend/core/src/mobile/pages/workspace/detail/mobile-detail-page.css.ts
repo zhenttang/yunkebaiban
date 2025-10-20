@@ -62,8 +62,8 @@ export const editorContainer = style({
   flex: 1,
   zIndex: 0,
 });
-// brings styles of .affine-page-viewport from blocksuite
-export const affineDocViewport = style({
+// brings styles of .yunke-page-viewport from blocksuite
+export const yunkeDocViewport = style({
   display: 'flex',
   flexDirection: 'column',
   containerName: 'viewport',
@@ -102,7 +102,7 @@ globalStyle('[data-peek-view-wrapper] .doc-title-container', {
   fontSize: cssVar('fontH6'),
 });
 
-globalStyle('.affine-page-root-block-container', {
+globalStyle('.yunke-page-root-block-container', {
   '@container': {
     [`viewport (width <= 640px)`]: {
       paddingLeft: 16,

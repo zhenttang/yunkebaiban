@@ -21,7 +21,7 @@ export const LocalDemoTips = ({
 }: LocalDemoTipsProps) => {
   const t = useI18n();
   const buttonLabel = isLoggedIn
-    ? t['Enable AFFiNE Cloud']()
+    ? t['Enable YUNKE Cloud']()
     : t['Sign in and Enable']();
 
   const handleClick = useCallback(() => {
@@ -34,7 +34,7 @@ export const LocalDemoTips = ({
   return (
     <div className={styles.tipsContainer} data-testid="local-demo-tips">
       <div className={styles.tipsMessage}>
-        {t['com.affine.banner.local-warning']()}
+        {t['com.yunke.banner.local-warning']()}
       </div>
 
       <div className={styles.tipsRightItem}>

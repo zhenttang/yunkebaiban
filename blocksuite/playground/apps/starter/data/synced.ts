@@ -31,14 +31,14 @@ export const synced: InitFn = (collection: Workspace, id: string) => {
 
   docSyncedPage.load(() => {
     // Add root block and surface block at root level
-    const rootId = docSyncedPage.addBlock('affine:page', {
+    const rootId = docSyncedPage.addBlock('yunke:page', {
       title: new Text('Synced - Page View'),
     });
 
-    docSyncedPage.addBlock('affine:surface', {}, rootId);
+    docSyncedPage.addBlock('yunke:surface', {}, rootId);
 
     // Add note block inside root block
-    const noteId = docSyncedPage.addBlock('affine:note', {}, rootId);
+    const noteId = docSyncedPage.addBlock('yunke:note', {}, rootId);
 
     // Add markdown to note block
     MarkdownTransformer.importMarkdownToBlock({
@@ -51,14 +51,14 @@ export const synced: InitFn = (collection: Workspace, id: string) => {
 
   docSyncedEdgeless.load(() => {
     // Add root block and surface block at root level
-    const rootId = docSyncedEdgeless.addBlock('affine:page', {
+    const rootId = docSyncedEdgeless.addBlock('yunke:page', {
       title: new Text('Synced - Edgeless View'),
     });
 
-    docSyncedEdgeless.addBlock('affine:surface', {}, rootId);
+    docSyncedEdgeless.addBlock('yunke:surface', {}, rootId);
 
     // Add note block inside root block
-    const noteId = docSyncedEdgeless.addBlock('affine:note', {}, rootId);
+    const noteId = docSyncedEdgeless.addBlock('yunke:note', {}, rootId);
 
     // Add markdown to note block
     MarkdownTransformer.importMarkdownToBlock({
@@ -71,12 +71,12 @@ export const synced: InitFn = (collection: Workspace, id: string) => {
 
   docMain.load(() => {
     // Add root block and surface block at root level
-    const rootId = docMain.addBlock('affine:page', {
+    const rootId = docMain.addBlock('yunke:page', {
       title: new Text('Home doc, having synced blocks'),
     });
 
-    const surfaceId = docMain.addBlock('affine:surface', {}, rootId);
-    const noteId = docMain.addBlock('affine:note', {}, rootId);
+    const surfaceId = docMain.addBlock('yunke:surface', {}, rootId);
+    const noteId = docMain.addBlock('yunke:note', {}, rootId);
 
     // Add markdown to note block
     MarkdownTransformer.importMarkdownToBlock({
@@ -88,7 +88,7 @@ export const synced: InitFn = (collection: Workspace, id: string) => {
       .then(() => {
         // Add synced block - self
         docMain.addBlock(
-          'affine:paragraph',
+          'yunke:paragraph',
           {
             text: new Text('Cyclic / Matryoshka synced block 👇'),
             type: 'h4',
@@ -98,7 +98,7 @@ export const synced: InitFn = (collection: Workspace, id: string) => {
 
         // Add synced block - self
         docMain.addBlock(
-          'affine:embed-synced-doc',
+          'yunke:embed-synced-doc',
           {
             pageId: id,
           },
@@ -107,7 +107,7 @@ export const synced: InitFn = (collection: Workspace, id: string) => {
 
         // Add synced block - page view
         docMain.addBlock(
-          'affine:embed-synced-doc',
+          'yunke:embed-synced-doc',
           {
             pageId: docSyncedPageId,
           },
@@ -116,7 +116,7 @@ export const synced: InitFn = (collection: Workspace, id: string) => {
 
         // Add synced block - edgeless view
         docMain.addBlock(
-          'affine:embed-synced-doc',
+          'yunke:embed-synced-doc',
           {
             pageId: docSyncedEdgelessId,
           },
@@ -125,7 +125,7 @@ export const synced: InitFn = (collection: Workspace, id: string) => {
 
         // Add synced block - page view
         docMain.addBlock(
-          'affine:embed-synced-doc',
+          'yunke:embed-synced-doc',
           {
             pageId: docSyncedPageId,
             xywh: '[-1000, 0, 752, 455]',
@@ -135,7 +135,7 @@ export const synced: InitFn = (collection: Workspace, id: string) => {
 
         // Add synced block - edgeless view
         docMain.addBlock(
-          'affine:embed-synced-doc',
+          'yunke:embed-synced-doc',
           {
             pageId: docSyncedEdgelessId,
             xywh: '[-1000, 500, 752, 455]',
@@ -145,7 +145,7 @@ export const synced: InitFn = (collection: Workspace, id: string) => {
 
         // Add synced block - self
         docMain.addBlock(
-          'affine:embed-synced-doc',
+          'yunke:embed-synced-doc',
           {
             pageId: id,
             xywh: '[-1000, 1000, 752, 455]',
@@ -155,7 +155,7 @@ export const synced: InitFn = (collection: Workspace, id: string) => {
 
         // Add synced block - self
         docMain.addBlock(
-          'affine:embed-synced-doc',
+          'yunke:embed-synced-doc',
           {
             pageId: 'doc:deleted-page',
           },

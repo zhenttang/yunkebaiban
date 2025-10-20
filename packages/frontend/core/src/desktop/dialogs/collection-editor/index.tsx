@@ -46,13 +46,13 @@ export const CollectionEditorDialog = ({
         style: {
           padding: 0,
           maxWidth: 944,
-          backgroundColor: 'var(--affine-background-primary-color)',
+          backgroundColor: 'var(--yunke-background-primary-color)',
         },
       }}
       persistent
     >
       <EditCollection
-        onConfirmText={t['com.affine.editCollection.save']()}
+        onConfirmText={t['com.yunke.editCollection.save']()}
         init={info}
         mode={mode}
         onCancel={onCancel}

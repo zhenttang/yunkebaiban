@@ -5,11 +5,11 @@ import {
   MenuSeparator,
   MenuSub,
 } from '@yunke/component/ui/menu';
-import { PageHistoryModal } from '@yunke/core/components/affine/page-history-modal';
+import { PageHistoryModal } from '@yunke/core/components/yunke/page-history-modal';
 import { useGuard } from '@yunke/core/components/guard';
-import { useBlockSuiteMetaHelper } from '@yunke/core/components/hooks/affine/use-block-suite-meta-helper';
-import { useEnableCloud } from '@yunke/core/components/hooks/affine/use-enable-cloud';
-import { useExportPage } from '@yunke/core/components/hooks/affine/use-export-page';
+import { useBlockSuiteMetaHelper } from '@yunke/core/components/hooks/yunke/use-block-suite-meta-helper';
+import { useEnableCloud } from '@yunke/core/components/hooks/yunke/use-enable-cloud';
+import { useExportPage } from '@yunke/core/components/hooks/yunke/use-export-page';
 import { Export, MoveToTrash } from '@yunke/core/components/page-list';
 import { IsFavoriteIcon } from '@yunke/core/components/pure/icons';
 import { useDetailPageHeaderResponsive } from '@yunke/core/desktop/pages/workspace/detail-page/use-header-responsive';
@@ -197,11 +197,11 @@ const PageHeaderMenuItem = ({
   const handleOpenTrashModal = useCallback(() => {
     track.$.header.docOptions.deleteDoc();
     openConfirmModal({
-      title: t['com.affine.moveToTrash.confirmModal.title'](),
-      description: t['com.affine.moveToTrash.confirmModal.description']({
+      title: t['com.yunke.moveToTrash.confirmModal.title'](),
+      description: t['com.yunke.moveToTrash.confirmModal.description']({
         title: editorService.editor.doc.title$.value || t['Untitled'](),
       }),
-      cancelText: t['com.affine.confirmModal.button.cancel'](),
+      cancelText: t['com.yunke.confirmModal.button.cancel'](),
       confirmText: t.Delete(),
       confirmButtonOptions: {
         variant: 'error',
@@ -209,7 +209,7 @@ const PageHeaderMenuItem = ({
       onConfirm: async () => {
         const canTrash = await guardService.can('Doc_Trash', pageId);
         if (!canTrash) {
-          toast(t['com.affine.no-permission']());
+          toast(t['com.yunke.no-permission']());
           return;
         }
         editorService.editor.doc.moveToTrash();
@@ -232,12 +232,12 @@ const PageHeaderMenuItem = ({
     notify.success({
       title:
         primaryMode === 'page'
-          ? t['com.affine.toastMessage.defaultMode.edgeless.title']()
-          : t['com.affine.toastMessage.defaultMode.page.title'](),
+          ? t['com.yunke.toastMessage.defaultMode.edgeless.title']()
+          : t['com.yunke.toastMessage.defaultMode.page.title'](),
       message:
         primaryMode === 'page'
-          ? t['com.affine.toastMessage.defaultMode.edgeless.message']()
-          : t['com.affine.toastMessage.defaultMode.page.message'](),
+          ? t['com.yunke.toastMessage.defaultMode.edgeless.message']()
+          : t['com.yunke.toastMessage.defaultMode.page.message'](),
     });
   }, [primaryMode, editorService, t]);
 
@@ -312,7 +312,7 @@ const PageHeaderMenuItem = ({
               <ShareMenuContent
                 workspaceMetadata={workspace.meta}
                 currentPage={page}
-                onEnableAffineCloud={() =>
+                onEnableYunkeCloud={() =>
                   confirmEnableCloud(workspace, {
                     openPageId: page.id,
                   })
@@ -327,7 +327,7 @@ const PageHeaderMenuItem = ({
             onOpenChange: handleShareMenuOpenChange,
           }}
         >
-          {t['com.affine.share-menu.shareButton']()}
+          {t['com.yunke.share-menu.shareButton']()}
         </MenuSub>
       ) : null}
       <MenuSeparator />
@@ -361,8 +361,8 @@ const PageHeaderMenuItem = ({
         disabled={!canEdit}
       >
         {primaryMode === 'page'
-          ? t['com.affine.editorDefaultMode.edgeless']()
-          : t['com.affine.editorDefaultMode.page']()}
+          ? t['com.yunke.editorDefaultMode.edgeless']()
+          : t['com.yunke.editorDefaultMode.page']()}
       </MenuItem>
       <MenuItem
         data-testid="editor-option-menu-favorite"
@@ -370,8 +370,8 @@ const PageHeaderMenuItem = ({
         prefixIcon={<IsFavoriteIcon favorite={favorite} />}
       >
         {favorite
-          ? t['com.affine.favoritePageOperation.remove']()
-          : t['com.affine.favoritePageOperation.add']()}
+          ? t['com.yunke.favoritePageOperation.remove']()
+          : t['com.yunke.favoritePageOperation.add']()}
       </MenuItem>
       <MenuSeparator />
       <MenuItem
@@ -379,7 +379,7 @@ const PageHeaderMenuItem = ({
         data-testid="editor-option-menu-open-in-new-tab"
         onSelect={handleOpenInNewTab}
       >
-        {t['com.affine.workbench.tab.page-menu-open']()}
+        {t['com.yunke.workbench.tab.page-menu-open']()}
       </MenuItem>
       {BUILD_CONFIG.isElectron && (
         <MenuItem
@@ -387,7 +387,7 @@ const PageHeaderMenuItem = ({
           data-testid="editor-option-menu-open-in-split-new"
           onSelect={handleOpenInSplitView}
         >
-          {t['com.affine.workbench.split-view.page-menu-open']()}
+          {t['com.yunke.workbench.split-view.page-menu-open']()}
         </MenuItem>
       )}
 
@@ -397,7 +397,7 @@ const PageHeaderMenuItem = ({
         data-testid="editor-option-menu-info"
         onSelect={openInfoModal}
       >
-        {t['com.affine.page-properties.page-info.view']()}
+        {t['com.yunke.page-properties.page-info.view']()}
       </MenuItem>
       {currentMode === 'page' ? (
         <MenuItem
@@ -405,7 +405,7 @@ const PageHeaderMenuItem = ({
           data-testid="editor-option-toc"
           onSelect={openOutlinePanel}
         >
-          {t['com.affine.header.option.view-toc']()}
+          {t['com.yunke.header.option.view-toc']()}
         </MenuItem>
       ) : (
         <MenuItem
@@ -413,7 +413,7 @@ const PageHeaderMenuItem = ({
           data-testid="editor-option-frame"
           onSelect={openAllFrames}
         >
-          {t['com.affine.header.option.view-frame']()}
+          {t['com.yunke.header.option.view-frame']()}
         </MenuItem>
       )}
       <MenuItem
@@ -421,7 +421,7 @@ const PageHeaderMenuItem = ({
         data-testid="editor-option-menu-history"
         onSelect={openHistoryModal}
       >
-        {t['com.affine.history.view-history-version']()}
+        {t['com.yunke.history.view-history-version']()}
       </MenuItem>
       <MenuSeparator />
       {!isJournal && (
@@ -430,7 +430,7 @@ const PageHeaderMenuItem = ({
           data-testid="editor-option-menu-duplicate"
           onSelect={handleDuplicate}
         >
-          {t['com.affine.header.option.duplicate']()}
+          {t['com.yunke.header.option.duplicate']()}
         </MenuItem>
       )}
       <MenuItem
@@ -453,7 +453,7 @@ const PageHeaderMenuItem = ({
           data-testid="editor-option-menu-link"
           onSelect={onOpenInDesktop}
         >
-          {t['com.affine.header.option.open-in-desktop']()}
+          {t['com.yunke.header.option.open-in-desktop']()}
         </MenuItem>
       ) : null}
     </>

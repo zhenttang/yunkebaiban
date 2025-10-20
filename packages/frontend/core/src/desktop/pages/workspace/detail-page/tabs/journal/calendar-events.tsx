@@ -1,6 +1,6 @@
 import { Loading, toast, Tooltip } from '@yunke/component';
 import { usePageHelper } from '@yunke/core/blocksuite/block-suite-page-list/utils';
-import { useAsyncCallback } from '@yunke/core/components/hooks/affine-async-hooks';
+import { useAsyncCallback } from '@yunke/core/components/hooks/yunke-async-hooks';
 import { DocsService } from '@yunke/core/modules/doc';
 import {
   type CalendarEvent,
@@ -87,7 +87,7 @@ const CalendarEventRenderer = ({ event }: { event: CalendarEvent }) => {
       for (const doc of docs) {
         const canEdit = await guardService.can('Doc_Update', doc.id);
         if (!canEdit) {
-          toast(t['com.affine.no-permission']());
+          toast(t['com.yunke.no-permission']());
           continue;
         }
 
@@ -145,12 +145,12 @@ const CalendarEventRenderer = ({ event }: { event: CalendarEvent }) => {
         <div className={styles.eventCaption}>
           <span className={styles.eventTime}>
             {allDay
-              ? t['com.affine.integration.calendar.all-day']()
+              ? t['com.yunke.integration.calendar.all-day']()
               : formatTime(startAt, endAt)}
           </span>
           <span className={styles.eventNewDoc}>
             <PlusIcon style={{ fontSize: 18 }} />
-            {t['com.affine.integration.calendar.new-doc']()}
+            {t['com.yunke.integration.calendar.new-doc']()}
           </span>
         </div>
       )}

@@ -1,6 +1,6 @@
-package app.affine.pro.service
+package app.yunke.pro.service
 
-import app.affine.pro.utils.getCurrentServerBaseUrl
+import app.yunke.pro.utils.getCurrentServerBaseUrl
 import com.getcapacitor.Bridge
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.awaitClose

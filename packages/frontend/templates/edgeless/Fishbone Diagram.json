@@ -13,7 +13,7 @@
     "blocks": {
       "type": "block",
       "id": "block:MEJSPV5QSj",
-      "flavour": "affine:page",
+      "flavour": "yunke:page",
       "props": {
         "title": {
           "$blocksuite:internal:text$": true,
@@ -24,7 +24,7 @@
         {
           "type": "block",
           "id": "block:Q-l66z06cc",
-          "flavour": "affine:surface",
+          "flavour": "yunke:surface",
           "props": {
             "elements": {
               "jffHzBY8z3": {
@@ -35,17 +35,17 @@
                 "shapeStyle": "General",
                 "radius": 0,
                 "filled": true,
-                "fillColor": "--affine-palette-shape-black",
+                "fillColor": "--yunke-palette-shape-black",
                 "strokeWidth": 4,
-                "strokeColor": "--affine-palette-line-yellow",
+                "strokeColor": "--yunke-palette-line-yellow",
                 "strokeStyle": "none",
                 "roughness": 1.4,
                 "id": "jffHzBY8z3",
                 "index": "ai",
                 "seed": 898661492,
-                "color": "--affine-palette-line-white",
+                "color": "--yunke-palette-line-white",
                 "text": {
-                  "affine:surface:text": true,
+                  "yunke:surface:text": true,
                   "delta": []
                 },
                 "fontFamily": "blocksuite:surface:Inter",
@@ -59,23 +59,23 @@
                 "shapeStyle": "General",
                 "radius": 0.1,
                 "filled": false,
-                "fillColor": "--affine-palette-transparent",
+                "fillColor": "--yunke-palette-transparent",
                 "strokeWidth": 12,
-                "strokeColor": "--affine-palette-line-black",
+                "strokeColor": "--yunke-palette-line-black",
                 "strokeStyle": "solid",
                 "roughness": 1.4,
                 "id": "N57wr1yjiL",
                 "index": "aj",
                 "seed": 100229520,
                 "text": {
-                  "affine:surface:text": true,
+                  "yunke:surface:text": true,
                   "delta": [
                     {
                       "insert": "Category"
                     }
                   ]
                 },
-                "color": "--affine-palette-line-black",
+                "color": "--yunke-palette-line-black",
                 "fontFamily": "blocksuite:surface:BebasNeue",
                 "fontSize": 64,
                 "fontWeight": "400",
@@ -89,23 +89,23 @@
                 "shapeStyle": "General",
                 "radius": 0.1,
                 "filled": false,
-                "fillColor": "--affine-palette-transparent",
+                "fillColor": "--yunke-palette-transparent",
                 "strokeWidth": 12,
-                "strokeColor": "--affine-palette-line-black",
+                "strokeColor": "--yunke-palette-line-black",
                 "strokeStyle": "dash",
                 "roughness": 1.4,
                 "id": "-KiTiMr3nZ",
                 "index": "ak",
                 "seed": 1774361779,
                 "text": {
-                  "affine:surface:text": true,
+                  "yunke:surface:text": true,
                   "delta": [
                     {
                       "insert": "Item 2"
                     }
                   ]
                 },
-                "color": "--affine-palette-line-black",
+                "color": "--yunke-palette-line-black",
                 "fontFamily": "blocksuite:surface:BebasNeue",
                 "fontSize": 64,
                 "fontWeight": "400",
@@ -119,23 +119,23 @@
                 "shapeStyle": "General",
                 "radius": 0.1,
                 "filled": false,
-                "fillColor": "--affine-palette-transparent",
+                "fillColor": "--yunke-palette-transparent",
                 "strokeWidth": 12,
-                "strokeColor": "--affine-palette-line-black",
+                "strokeColor": "--yunke-palette-line-black",
                 "strokeStyle": "dash",
                 "roughness": 1.4,
                 "id": "dvtmuxThEX",
                 "index": "al",
                 "seed": 1975714611,
                 "text": {
-                  "affine:surface:text": true,
+                  "yunke:surface:text": true,
                   "delta": [
                     {
                       "insert": "Item 1"
                     }
                   ]
                 },
-                "color": "--affine-palette-line-black",
+                "color": "--yunke-palette-line-black",
                 "fontFamily": "blocksuite:surface:BebasNeue",
                 "fontSize": 64,
                 "fontWeight": "400",
@@ -149,23 +149,23 @@
                 "shapeStyle": "General",
                 "radius": 0.1,
                 "filled": false,
-                "fillColor": "--affine-palette-transparent",
+                "fillColor": "--yunke-palette-transparent",
                 "strokeWidth": 12,
-                "strokeColor": "--affine-palette-line-black",
+                "strokeColor": "--yunke-palette-line-black",
                 "strokeStyle": "dash",
                 "roughness": 1.4,
                 "id": "2EXu_R3ZFC",
                 "index": "am",
                 "seed": 2028054473,
                 "text": {
-                  "affine:surface:text": true,
+                  "yunke:surface:text": true,
                   "delta": [
                     {
                       "insert": "Item 1"
                     }
                   ]
                 },
-                "color": "--affine-palette-line-black",
+                "color": "--yunke-palette-line-black",
                 "fontFamily": "blocksuite:surface:BebasNeue",
                 "fontSize": 64,
                 "fontWeight": "400",
@@ -179,23 +179,23 @@
                 "shapeStyle": "General",
                 "radius": 0.1,
                 "filled": false,
-                "fillColor": "--affine-palette-transparent",
+                "fillColor": "--yunke-palette-transparent",
                 "strokeWidth": 12,
-                "strokeColor": "--affine-palette-line-black",
+                "strokeColor": "--yunke-palette-line-black",
                 "strokeStyle": "dash",
                 "roughness": 1.4,
                 "id": "v6-OOByQmN",
                 "index": "an",
                 "seed": 1101297049,
                 "text": {
-                  "affine:surface:text": true,
+                  "yunke:surface:text": true,
                   "delta": [
                     {
                       "insert": "Item 2"
                     }
                   ]
                 },
-                "color": "--affine-palette-line-black",
+                "color": "--yunke-palette-line-black",
                 "fontFamily": "blocksuite:surface:BebasNeue",
                 "fontSize": 64,
                 "fontWeight": "400",
@@ -209,23 +209,23 @@
                 "shapeStyle": "General",
                 "radius": 0.1,
                 "filled": false,
-                "fillColor": "--affine-palette-transparent",
+                "fillColor": "--yunke-palette-transparent",
                 "strokeWidth": 12,
-                "strokeColor": "--affine-palette-line-black",
+                "strokeColor": "--yunke-palette-line-black",
                 "strokeStyle": "solid",
                 "roughness": 1.4,
                 "id": "tpWBfJ83J_",
                 "index": "ao",
                 "seed": 96786809,
                 "text": {
-                  "affine:surface:text": true,
+                  "yunke:surface:text": true,
                   "delta": [
                     {
                       "insert": "Category"
                     }
                   ]
                 },
-                "color": "--affine-palette-line-black",
+                "color": "--yunke-palette-line-black",
                 "fontFamily": "blocksuite:surface:BebasNeue",
                 "fontSize": 64,
                 "fontWeight": "400",
@@ -239,17 +239,17 @@
                 "shapeStyle": "General",
                 "radius": 0,
                 "filled": true,
-                "fillColor": "--affine-palette-shape-black",
+                "fillColor": "--yunke-palette-shape-black",
                 "strokeWidth": 4,
-                "strokeColor": "--affine-palette-line-yellow",
+                "strokeColor": "--yunke-palette-line-yellow",
                 "strokeStyle": "none",
                 "roughness": 1.4,
                 "id": "EZVpCcaP7S",
                 "index": "aw",
                 "seed": 77230658,
-                "color": "--affine-palette-line-white",
+                "color": "--yunke-palette-line-white",
                 "text": {
-                  "affine:surface:text": true,
+                  "yunke:surface:text": true,
                   "delta": []
                 },
                 "fontFamily": "blocksuite:surface:Inter",
@@ -263,23 +263,23 @@
                 "shapeStyle": "General",
                 "radius": 0.1,
                 "filled": false,
-                "fillColor": "--affine-palette-transparent",
+                "fillColor": "--yunke-palette-transparent",
                 "strokeWidth": 12,
-                "strokeColor": "--affine-palette-line-black",
+                "strokeColor": "--yunke-palette-line-black",
                 "strokeStyle": "solid",
                 "roughness": 1.4,
                 "id": "KE4nT5i9sX",
                 "index": "ax",
                 "seed": 1851160611,
                 "text": {
-                  "affine:surface:text": true,
+                  "yunke:surface:text": true,
                   "delta": [
                     {
                       "insert": "Category"
                     }
                   ]
                 },
-                "color": "--affine-palette-line-black",
+                "color": "--yunke-palette-line-black",
                 "fontFamily": "blocksuite:surface:BebasNeue",
                 "fontSize": 64,
                 "fontWeight": "400",
@@ -293,23 +293,23 @@
                 "shapeStyle": "General",
                 "radius": 0.1,
                 "filled": false,
-                "fillColor": "--affine-palette-transparent",
+                "fillColor": "--yunke-palette-transparent",
                 "strokeWidth": 12,
-                "strokeColor": "--affine-palette-line-black",
+                "strokeColor": "--yunke-palette-line-black",
                 "strokeStyle": "dash",
                 "roughness": 1.4,
                 "id": "S4cLMyyMKE",
                 "index": "ay",
                 "seed": 35879121,
                 "text": {
-                  "affine:surface:text": true,
+                  "yunke:surface:text": true,
                   "delta": [
                     {
                       "insert": "Item 2"
                     }
                   ]
                 },
-                "color": "--affine-palette-line-black",
+                "color": "--yunke-palette-line-black",
                 "fontFamily": "blocksuite:surface:BebasNeue",
                 "fontSize": 64,
                 "fontWeight": "400",
@@ -323,23 +323,23 @@
                 "shapeStyle": "General",
                 "radius": 0.1,
                 "filled": false,
-                "fillColor": "--affine-palette-transparent",
+                "fillColor": "--yunke-palette-transparent",
                 "strokeWidth": 12,
-                "strokeColor": "--affine-palette-line-black",
+                "strokeColor": "--yunke-palette-line-black",
                 "strokeStyle": "dash",
                 "roughness": 1.4,
                 "id": "EC7uRRQ07Q",
                 "index": "az",
                 "seed": 139337416,
                 "text": {
-                  "affine:surface:text": true,
+                  "yunke:surface:text": true,
                   "delta": [
                     {
                       "insert": "Item 1"
                     }
                   ]
                 },
-                "color": "--affine-palette-line-black",
+                "color": "--yunke-palette-line-black",
                 "fontFamily": "blocksuite:surface:BebasNeue",
                 "fontSize": 64,
                 "fontWeight": "400",
@@ -353,23 +353,23 @@
                 "shapeStyle": "General",
                 "radius": 0.1,
                 "filled": false,
-                "fillColor": "--affine-palette-transparent",
+                "fillColor": "--yunke-palette-transparent",
                 "strokeWidth": 12,
-                "strokeColor": "--affine-palette-line-black",
+                "strokeColor": "--yunke-palette-line-black",
                 "strokeStyle": "dash",
                 "roughness": 1.4,
                 "id": "zpqtspAAZ6",
                 "index": "b00",
                 "seed": 935249019,
                 "text": {
-                  "affine:surface:text": true,
+                  "yunke:surface:text": true,
                   "delta": [
                     {
                       "insert": "Item 1"
                     }
                   ]
                 },
-                "color": "--affine-palette-line-black",
+                "color": "--yunke-palette-line-black",
                 "fontFamily": "blocksuite:surface:BebasNeue",
                 "fontSize": 64,
                 "fontWeight": "400",
@@ -383,23 +383,23 @@
                 "shapeStyle": "General",
                 "radius": 0.1,
                 "filled": false,
-                "fillColor": "--affine-palette-transparent",
+                "fillColor": "--yunke-palette-transparent",
                 "strokeWidth": 12,
-                "strokeColor": "--affine-palette-line-black",
+                "strokeColor": "--yunke-palette-line-black",
                 "strokeStyle": "dash",
                 "roughness": 1.4,
                 "id": "5vmOZs09GP",
                 "index": "b01",
                 "seed": 1004110600,
                 "text": {
-                  "affine:surface:text": true,
+                  "yunke:surface:text": true,
                   "delta": [
                     {
                       "insert": "Item 2"
                     }
                   ]
                 },
-                "color": "--affine-palette-line-black",
+                "color": "--yunke-palette-line-black",
                 "fontFamily": "blocksuite:surface:BebasNeue",
                 "fontSize": 64,
                 "fontWeight": "400",
@@ -413,23 +413,23 @@
                 "shapeStyle": "General",
                 "radius": 0.1,
                 "filled": false,
-                "fillColor": "--affine-palette-transparent",
+                "fillColor": "--yunke-palette-transparent",
                 "strokeWidth": 12,
-                "strokeColor": "--affine-palette-line-black",
+                "strokeColor": "--yunke-palette-line-black",
                 "strokeStyle": "solid",
                 "roughness": 1.4,
                 "id": "sjDL3QN9Ji",
                 "index": "b02",
                 "seed": 1132643231,
                 "text": {
-                  "affine:surface:text": true,
+                  "yunke:surface:text": true,
                   "delta": [
                     {
                       "insert": "Category"
                     }
                   ]
                 },
-                "color": "--affine-palette-line-black",
+                "color": "--yunke-palette-line-black",
                 "fontFamily": "blocksuite:surface:BebasNeue",
                 "fontSize": 64,
                 "fontWeight": "400",
@@ -443,17 +443,17 @@
                 "shapeStyle": "General",
                 "radius": 0,
                 "filled": true,
-                "fillColor": "--affine-palette-shape-black",
+                "fillColor": "--yunke-palette-shape-black",
                 "strokeWidth": 4,
-                "strokeColor": "--affine-palette-line-yellow",
+                "strokeColor": "--yunke-palette-line-yellow",
                 "strokeStyle": "none",
                 "roughness": 1.4,
                 "id": "KZTljIVRu5",
                 "index": "b0A",
                 "seed": 267669734,
-                "color": "--affine-palette-line-white",
+                "color": "--yunke-palette-line-white",
                 "text": {
-                  "affine:surface:text": true,
+                  "yunke:surface:text": true,
                   "delta": []
                 },
                 "fontFamily": "blocksuite:surface:Inter",
@@ -467,23 +467,23 @@
                 "shapeStyle": "General",
                 "radius": 0.1,
                 "filled": false,
-                "fillColor": "--affine-palette-transparent",
+                "fillColor": "--yunke-palette-transparent",
                 "strokeWidth": 12,
-                "strokeColor": "--affine-palette-line-black",
+                "strokeColor": "--yunke-palette-line-black",
                 "strokeStyle": "solid",
                 "roughness": 1.4,
                 "id": "U8AxVC5AYn",
                 "index": "b0B",
                 "seed": 258050253,
                 "text": {
-                  "affine:surface:text": true,
+                  "yunke:surface:text": true,
                   "delta": [
                     {
                       "insert": "Category"
                     }
                   ]
                 },
-                "color": "--affine-palette-line-black",
+                "color": "--yunke-palette-line-black",
                 "fontFamily": "blocksuite:surface:BebasNeue",
                 "fontSize": 64,
                 "fontWeight": "400",
@@ -497,23 +497,23 @@
                 "shapeStyle": "General",
                 "radius": 0.1,
                 "filled": false,
-                "fillColor": "--affine-palette-transparent",
+                "fillColor": "--yunke-palette-transparent",
                 "strokeWidth": 12,
-                "strokeColor": "--affine-palette-line-black",
+                "strokeColor": "--yunke-palette-line-black",
                 "strokeStyle": "dash",
                 "roughness": 1.4,
                 "id": "G30aYdJxyd",
                 "index": "b0C",
                 "seed": 7375873,
                 "text": {
-                  "affine:surface:text": true,
+                  "yunke:surface:text": true,
                   "delta": [
                     {
                       "insert": "Item 2"
                     }
                   ]
                 },
-                "color": "--affine-palette-line-black",
+                "color": "--yunke-palette-line-black",
                 "fontFamily": "blocksuite:surface:BebasNeue",
                 "fontSize": 64,
                 "fontWeight": "400",
@@ -527,23 +527,23 @@
                 "shapeStyle": "General",
                 "radius": 0.1,
                 "filled": false,
-                "fillColor": "--affine-palette-transparent",
+                "fillColor": "--yunke-palette-transparent",
                 "strokeWidth": 12,
-                "strokeColor": "--affine-palette-line-black",
+                "strokeColor": "--yunke-palette-line-black",
                 "strokeStyle": "dash",
                 "roughness": 1.4,
                 "id": "p5r_F4x5dd",
                 "index": "b0D",
                 "seed": 479286311,
                 "text": {
-                  "affine:surface:text": true,
+                  "yunke:surface:text": true,
                   "delta": [
                     {
                       "insert": "Item 1"
                     }
                   ]
                 },
-                "color": "--affine-palette-line-black",
+                "color": "--yunke-palette-line-black",
                 "fontFamily": "blocksuite:surface:BebasNeue",
                 "fontSize": 64,
                 "fontWeight": "400",
@@ -557,23 +557,23 @@
                 "shapeStyle": "General",
                 "radius": 0.1,
                 "filled": false,
-                "fillColor": "--affine-palette-transparent",
+                "fillColor": "--yunke-palette-transparent",
                 "strokeWidth": 12,
-                "strokeColor": "--affine-palette-line-black",
+                "strokeColor": "--yunke-palette-line-black",
                 "strokeStyle": "dash",
                 "roughness": 1.4,
                 "id": "Yn4BfI3U0J",
                 "index": "b0E",
                 "seed": 1454885780,
                 "text": {
-                  "affine:surface:text": true,
+                  "yunke:surface:text": true,
                   "delta": [
                     {
                       "insert": "Item 1"
                     }
                   ]
                 },
-                "color": "--affine-palette-line-black",
+                "color": "--yunke-palette-line-black",
                 "fontFamily": "blocksuite:surface:BebasNeue",
                 "fontSize": 64,
                 "fontWeight": "400",
@@ -587,23 +587,23 @@
                 "shapeStyle": "General",
                 "radius": 0.1,
                 "filled": false,
-                "fillColor": "--affine-palette-transparent",
+                "fillColor": "--yunke-palette-transparent",
                 "strokeWidth": 12,
-                "strokeColor": "--affine-palette-line-black",
+                "strokeColor": "--yunke-palette-line-black",
                 "strokeStyle": "dash",
                 "roughness": 1.4,
                 "id": "RrtBd5QE0E",
                 "index": "b0F",
                 "seed": 1364763702,
                 "text": {
-                  "affine:surface:text": true,
+                  "yunke:surface:text": true,
                   "delta": [
                     {
                       "insert": "Item 2"
                     }
                   ]
                 },
-                "color": "--affine-palette-line-black",
+                "color": "--yunke-palette-line-black",
                 "fontFamily": "blocksuite:surface:BebasNeue",
                 "fontSize": 64,
                 "fontWeight": "400",
@@ -617,23 +617,23 @@
                 "shapeStyle": "General",
                 "radius": 0.1,
                 "filled": false,
-                "fillColor": "--affine-palette-transparent",
+                "fillColor": "--yunke-palette-transparent",
                 "strokeWidth": 12,
-                "strokeColor": "--affine-palette-line-black",
+                "strokeColor": "--yunke-palette-line-black",
                 "strokeStyle": "solid",
                 "roughness": 1.4,
                 "id": "OVx02AoBIm",
                 "index": "b0G",
                 "seed": 1901980653,
                 "text": {
-                  "affine:surface:text": true,
+                  "yunke:surface:text": true,
                   "delta": [
                     {
                       "insert": "Category"
                     }
                   ]
                 },
-                "color": "--affine-palette-line-black",
+                "color": "--yunke-palette-line-black",
                 "fontFamily": "blocksuite:surface:BebasNeue",
                 "fontSize": 64,
                 "fontWeight": "400",
@@ -647,17 +647,17 @@
                 "shapeStyle": "General",
                 "radius": 0,
                 "filled": true,
-                "fillColor": "--affine-palette-shape-black",
+                "fillColor": "--yunke-palette-shape-black",
                 "strokeWidth": 4,
-                "strokeColor": "--affine-palette-line-yellow",
+                "strokeColor": "--yunke-palette-line-yellow",
                 "strokeStyle": "none",
                 "roughness": 1.4,
                 "id": "Gc2y-UMUyW",
                 "index": "b0P",
                 "seed": 2120642858,
-                "color": "--affine-palette-line-white",
+                "color": "--yunke-palette-line-white",
                 "text": {
-                  "affine:surface:text": true,
+                  "yunke:surface:text": true,
                   "delta": []
                 },
                 "fontFamily": "blocksuite:surface:Inter",
@@ -668,14 +668,14 @@
                 "xywh": "[-2694.8068698436673,-1508.202085986139,1261.8244195873492,2283.666666666667]",
                 "rotate": 0,
                 "text": {
-                  "affine:surface:text": true,
+                  "yunke:surface:text": true,
                   "delta": [
                     {
                       "insert": "A Fishbone template, also known as an Ishikawa diagram template, is a layout for identifying and categorizing potential causes of a problem. \n\nIt's structured with a central \"problem\" line and branches for different cause categories, aiding in systematic analysis.\n\n\nHere's a step-by-step guide on how to use a fishbone diagram:\n\n1. Begin by clearly defining the problem you want to solve. Write problem statement at the fish 'head' .\n\n2. Decide on Major Categories of Causes.  These categories form the 'bones' of the fish.\n\n3. For each category, brainstorm possible specific causes of the problem. Add each cause under the appropriate category on the diagram.\n \n\n4. Once the diagram is populated, analyze it to identify the most likely root causes of the problem.\n\n5. Based on the analysis, prioritize the causes that are most likely contributing to the problem."
                     }
                   ]
                 },
-                "color": "--affine-palette-line-black",
+                "color": "--yunke-palette-line-black",
                 "fontSize": 52,
                 "fontFamily": "blocksuite:surface:Poppins",
                 "fontWeight": "400",
@@ -691,14 +691,14 @@
                 "xywh": "[-2694.8068698436673,-1785.0527944255136,1199,181]",
                 "rotate": 0,
                 "text": {
-                  "affine:surface:text": true,
+                  "yunke:surface:text": true,
                   "delta": [
                     {
                       "insert": "Fishbone Diagram"
                     }
                   ]
                 },
-                "color": "--affine-palette-line-black",
+                "color": "--yunke-palette-line-black",
                 "fontSize": 128,
                 "fontFamily": "blocksuite:surface:Poppins",
                 "fontWeight": "600",
@@ -712,7 +712,7 @@
                 "type": "connector",
                 "mode": 0,
                 "strokeWidth": 12,
-                "stroke": "--affine-palette-line-black",
+                "stroke": "--yunke-palette-line-black",
                 "strokeStyle": "solid",
                 "roughness": 1.4,
                 "source": {
@@ -738,7 +738,7 @@
                 "type": "connector",
                 "mode": 0,
                 "strokeWidth": 12,
-                "stroke": "--affine-palette-line-black",
+                "stroke": "--yunke-palette-line-black",
                 "strokeStyle": "solid",
                 "roughness": 1.4,
                 "source": {
@@ -765,7 +765,7 @@
                 "type": "connector",
                 "mode": 0,
                 "strokeWidth": 12,
-                "stroke": "--affine-palette-line-black",
+                "stroke": "--yunke-palette-line-black",
                 "strokeStyle": "dash",
                 "roughness": 1.4,
                 "source": {
@@ -791,7 +791,7 @@
                 "type": "connector",
                 "mode": 0,
                 "strokeWidth": 12,
-                "stroke": "--affine-palette-line-black",
+                "stroke": "--yunke-palette-line-black",
                 "strokeStyle": "dash",
                 "roughness": 1.4,
                 "source": {
@@ -816,7 +816,7 @@
                 "type": "connector",
                 "mode": 0,
                 "strokeWidth": 12,
-                "stroke": "--affine-palette-line-black",
+                "stroke": "--yunke-palette-line-black",
                 "strokeStyle": "dash",
                 "roughness": 1.4,
                 "source": {
@@ -843,7 +843,7 @@
                 "mode": 0,
                 "rearEndpointStyle": "None",
                 "strokeWidth": 12,
-                "stroke": "--affine-palette-line-black",
+                "stroke": "--yunke-palette-line-black",
                 "strokeStyle": "dash",
                 "roughness": 1.4,
                 "source": {
@@ -867,7 +867,7 @@
               "XGhdHP6bow": {
                 "type": "group",
                 "children": {
-                  "affine:surface:ymap": true,
+                  "yunke:surface:ymap": true,
                   "json": {
                     "jffHzBY8z3": true,
                     "N57wr1yjiL": true,
@@ -885,7 +885,7 @@
                   }
                 },
                 "title": {
-                  "affine:surface:text": true,
+                  "yunke:surface:text": true,
                   "delta": [
                     {
                       "insert": "Group 3"
@@ -900,7 +900,7 @@
                 "type": "connector",
                 "mode": 0,
                 "strokeWidth": 12,
-                "stroke": "--affine-palette-line-black",
+                "stroke": "--yunke-palette-line-black",
                 "strokeStyle": "solid",
                 "roughness": 1.4,
                 "source": {
@@ -926,7 +926,7 @@
                 "type": "connector",
                 "mode": 0,
                 "strokeWidth": 12,
-                "stroke": "--affine-palette-line-black",
+                "stroke": "--yunke-palette-line-black",
                 "strokeStyle": "solid",
                 "roughness": 1.4,
                 "source": {
@@ -952,7 +952,7 @@
                 "type": "connector",
                 "mode": 0,
                 "strokeWidth": 12,
-                "stroke": "--affine-palette-line-black",
+                "stroke": "--yunke-palette-line-black",
                 "strokeStyle": "dash",
                 "roughness": 1.4,
                 "source": {
@@ -978,7 +978,7 @@
                 "type": "connector",
                 "mode": 0,
                 "strokeWidth": 12,
-                "stroke": "--affine-palette-line-black",
+                "stroke": "--yunke-palette-line-black",
                 "strokeStyle": "dash",
                 "roughness": 1.4,
                 "source": {
@@ -1004,7 +1004,7 @@
                 "type": "connector",
                 "mode": 0,
                 "strokeWidth": 12,
-                "stroke": "--affine-palette-line-black",
+                "stroke": "--yunke-palette-line-black",
                 "strokeStyle": "dash",
                 "roughness": 1.4,
                 "source": {
@@ -1030,7 +1030,7 @@
                 "type": "connector",
                 "mode": 0,
                 "strokeWidth": 12,
-                "stroke": "--affine-palette-line-black",
+                "stroke": "--yunke-palette-line-black",
                 "strokeStyle": "dash",
                 "roughness": 1.4,
                 "source": {
@@ -1055,7 +1055,7 @@
               "jxq2WmFM1m": {
                 "type": "group",
                 "children": {
-                  "affine:surface:ymap": true,
+                  "yunke:surface:ymap": true,
                   "json": {
                     "EZVpCcaP7S": true,
                     "KE4nT5i9sX": true,
@@ -1073,7 +1073,7 @@
                   }
                 },
                 "title": {
-                  "affine:surface:text": true,
+                  "yunke:surface:text": true,
                   "delta": [
                     {
                       "insert": "Group 2"
@@ -1089,7 +1089,7 @@
                 "type": "connector",
                 "mode": 0,
                 "strokeWidth": 12,
-                "stroke": "--affine-palette-line-black",
+                "stroke": "--yunke-palette-line-black",
                 "strokeStyle": "solid",
                 "roughness": 1.4,
                 "source": {
@@ -1115,7 +1115,7 @@
                 "type": "connector",
                 "mode": 0,
                 "strokeWidth": 12,
-                "stroke": "--affine-palette-line-black",
+                "stroke": "--yunke-palette-line-black",
                 "strokeStyle": "solid",
                 "roughness": 1.4,
                 "source": {
@@ -1141,7 +1141,7 @@
                 "type": "connector",
                 "mode": 0,
                 "strokeWidth": 12,
-                "stroke": "--affine-palette-line-black",
+                "stroke": "--yunke-palette-line-black",
                 "strokeStyle": "dash",
                 "roughness": 1.4,
                 "source": {
@@ -1167,7 +1167,7 @@
                 "type": "connector",
                 "mode": 0,
                 "strokeWidth": 12,
-                "stroke": "--affine-palette-line-black",
+                "stroke": "--yunke-palette-line-black",
                 "strokeStyle": "dash",
                 "roughness": 1.4,
                 "source": {
@@ -1193,7 +1193,7 @@
                 "type": "connector",
                 "mode": 0,
                 "strokeWidth": 12,
-                "stroke": "--affine-palette-line-black",
+                "stroke": "--yunke-palette-line-black",
                 "strokeStyle": "dash",
                 "roughness": 1.4,
                 "source": {
@@ -1219,7 +1219,7 @@
                 "type": "connector",
                 "mode": 0,
                 "strokeWidth": 12,
-                "stroke": "--affine-palette-line-black",
+                "stroke": "--yunke-palette-line-black",
                 "strokeStyle": "dash",
                 "roughness": 1.4,
                 "source": {
@@ -1244,7 +1244,7 @@
               "_gj81ftDO4": {
                 "type": "group",
                 "children": {
-                  "affine:surface:ymap": true,
+                  "yunke:surface:ymap": true,
                   "json": {
                     "KZTljIVRu5": true,
                     "U8AxVC5AYn": true,
@@ -1262,7 +1262,7 @@
                   }
                 },
                 "title": {
-                  "affine:surface:text": true,
+                  "yunke:surface:text": true,
                   "delta": [
                     {
                       "insert": "Group 1"
@@ -1277,14 +1277,14 @@
               "1Si6nu-woE": {
                 "type": "group",
                 "children": {
-                  "affine:surface:ymap": true,
+                  "yunke:surface:ymap": true,
                   "json": {
                     "Gc2y-UMUyW": true,
                     "block:sCGDUOAQEm": true
                   }
                 },
                 "title": {
-                  "affine:surface:text": true,
+                  "yunke:surface:text": true,
                   "delta": [
                     {
                       "insert": "Group 4"
@@ -1303,12 +1303,12 @@
                 "shapeStyle": "General",
                 "radius": 0.1,
                 "filled": true,
-                "fillColor": "--affine-palette-shape-white",
+                "fillColor": "--yunke-palette-shape-white",
                 "strokeWidth": 12,
-                "strokeColor": "--affine-palette-line-black",
+                "strokeColor": "--yunke-palette-line-black",
                 "strokeStyle": "dash",
                 "roughness": 1.4,
-                "color": "--affine-palette-line-black",
+                "color": "--yunke-palette-line-black",
                 "fontSize": 36,
                 "fontFamily": "blocksuite:surface:Poppins",
                 "fontWeight": "600",
@@ -1320,14 +1320,14 @@
               "n3sPoHJPmX": {
                 "type": "group",
                 "children": {
-                  "affine:surface:ymap": true,
+                  "yunke:surface:ymap": true,
                   "json": {
                     "Bf4k36Jvg6": true,
                     "1mdK7DYOmr": true
                   }
                 },
                 "title": {
-                  "affine:surface:text": true,
+                  "yunke:surface:text": true,
                   "delta": [
                     {
                       "insert": "Instruction"
@@ -1344,7 +1344,7 @@
             {
               "type": "block",
               "id": "block:sCGDUOAQEm",
-              "flavour": "affine:image",
+              "flavour": "yunke:image",
               "props": {
                 "caption": "",
                 "sourceId": "/static/templates/YUo3S6WvBWTO3fcRR1iUKLXVFxnILmP-VTwdM3ai-h0=.png",
@@ -1360,7 +1360,7 @@
             {
               "type": "block",
               "id": "block:5Uralav1Is",
-              "flavour": "affine:image",
+              "flavour": "yunke:image",
               "props": {
                 "caption": "",
                 "sourceId": "/static/templates/lrxxmLPiDeoDlEDUuBQp51JXetfPiG7l7HUzuKzDKuo=.png",

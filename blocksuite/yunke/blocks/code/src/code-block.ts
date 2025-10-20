@@ -417,7 +417,7 @@ export class CodeBlockComponent extends CaptionedBlockComponent<CodeBlockModel> 
     return html`
       <div
         class=${classMap({
-          'affine-code-block-container': true,
+          'yunke-code-block-container': true,
           mobile: IS_MOBILE,
           wrap: this.model.props.wrap,
           'disable-line-numbers': !showLineNumbers,
@@ -454,7 +454,7 @@ export class CodeBlockComponent extends CaptionedBlockComponent<CodeBlockModel> 
             display: shouldRenderPreview ? undefined : 'none',
           })}
           contenteditable="false"
-          class="affine-code-block-preview"
+          class="yunke-code-block-preview"
         >
           ${previewContext?.renderer(this.model)}
         </div>
@@ -500,6 +500,6 @@ export class CodeBlockComponent extends CaptionedBlockComponent<CodeBlockModel> 
 
 declare global {
   interface HTMLElementTagNameMap {
-    'affine-code': CodeBlockComponent;
+    'yunke-code': CodeBlockComponent;
   }
 }

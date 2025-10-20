@@ -181,7 +181,7 @@ export class ImportDoc extends WithDisposable(LitElement) {
   private _openLearnImportLink(event: MouseEvent) {
     event.stopPropagation();
     window.open(
-      'https://affine.pro/blog/import-your-data-from-notion-into-affine',
+      'https://yunke.pro/blog/import-your-data-from-notion-into-yunke',
       '_blank'
     );
   }
@@ -219,9 +219,9 @@ export class ImportDoc extends WithDisposable(LitElement) {
           <div>导入</div>
         </header>
         <div>
-          AFFiNE 将逐步支持更多文件格式导入。
+          YUNKE 将逐步支持更多文件格式导入。
           <a
-            href="https://community.affine.pro/c/feature-requests/import-export"
+            href="https://community.yunke.pro/c/feature-requests/import-export"
             target="_blank"
             >提供反馈。</a
           >
@@ -255,9 +255,9 @@ export class ImportDoc extends WithDisposable(LitElement) {
               @click="${this._openLearnImportLink}"
             >
               ${HelpIcon}
-              <affine-tooltip>
-                了解如何将您的 Notion 页面导入到 AFFiNE。
-              </affine-tooltip>
+              <yunke-tooltip>
+                了解如何将您的 Notion 页面导入到 YUNKE。
+              </yunke-tooltip>
             </div>
           </icon-button>
           <icon-button class="button-item" text="即将推出..." disabled>
@@ -265,7 +265,7 @@ export class ImportDoc extends WithDisposable(LitElement) {
           </icon-button>
         </div>
         <!-- <div class="footer">
-        <div>Migrate from other versions of AFFiNE?</div>
+        <div>Migrate from other versions of YUNKE?</div>
       </div> -->
       </div>
     `;

@@ -44,5 +44,5 @@ export function effects() {
   customElements.define('editor-menu-button', EditorMenuButton);
   customElements.define('editor-menu-content', EditorMenuContent);
   customElements.define('editor-menu-action', EditorMenuAction);
-  customElements.define('affine-tooltip', Tooltip);
+  customElements.define('yunke-tooltip', Tooltip);
 }

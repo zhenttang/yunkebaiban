@@ -12,7 +12,7 @@ import type { WorkspaceListService } from './list';
 import type { WorkspaceProfileService } from './profile';
 import { WorkspaceService } from './workspace';
 
-const logger = new DebugLogger('affine:workspace-repository');
+const logger = new DebugLogger('yunke:workspace-repository');
 
 export class WorkspaceRepositoryService extends Service {
   constructor(

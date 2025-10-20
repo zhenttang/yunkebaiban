@@ -48,7 +48,7 @@ export const ServerSelector = ({
   );
   const selectedServerName =
     selectedId === 'local'
-      ? t['com.affine.workspaceList.workspaceListType.local']()
+      ? t['com.yunke.workspaceList.workspaceListType.local']()
       : serverName;
 
   return (
@@ -111,7 +111,7 @@ const LocalSelectorItem = ({
       onClick={handleSelect}
       suffixIcon={active ? <DoneIcon className={styles.done} /> : null}
     >
-      {t['com.affine.workspaceList.workspaceListType.local']()}
+      {t['com.yunke.workspaceList.workspaceListType.local']()}
     </MenuItem>
   );
 };
@@ -127,7 +127,7 @@ const ServerSelectorItem = ({
 }) => {
   const name = useLiveData(server.config$.selector(c => c.serverName));
 
-  const Icon = server.id === 'affine-cloud' ? CloudWorkspaceIcon : SelfhostIcon;
+  const Icon = server.id === 'yunke-cloud' ? CloudWorkspaceIcon : SelfhostIcon;
 
   const handleSelect = useCallback(() => {
     onSelect?.(server.id);

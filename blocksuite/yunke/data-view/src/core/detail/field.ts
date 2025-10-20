@@ -30,7 +30,7 @@ export class RecordField extends SignalWatcher(
   WithDisposable(ShadowlessElement)
 ) {
   static override styles = css`
-    affine-data-view-record-field {
+    yunke-data-view-record-field {
       display: flex;
       gap: 12px;
     }
@@ -43,7 +43,7 @@ export class RecordField extends SignalWatcher(
       gap: 6px;
       font-size: var(--data-view-cell-text-size);
       line-height: var(--data-view-cell-text-line-height);
-      color: var(--affine-text-secondary-color);
+      color: var(--yunke-text-secondary-color);
       width: 160px;
       border-radius: 4px;
       cursor: pointer;
@@ -51,20 +51,20 @@ export class RecordField extends SignalWatcher(
     }
 
     .field-left:hover {
-      background-color: var(--affine-hover-color);
+      background-color: var(--yunke-hover-color);
     }
 
-    affine-data-view-record-field .icon {
+    yunke-data-view-record-field .icon {
       display: flex;
       align-items: center;
       width: 16px;
       height: 16px;
     }
 
-    affine-data-view-record-field .icon svg {
+    yunke-data-view-record-field .icon svg {
       width: 16px;
       height: 16px;
-      fill: var(--affine-icon-color);
+      fill: var(--yunke-icon-color);
     }
 
     .filed-name {
@@ -83,13 +83,13 @@ export class RecordField extends SignalWatcher(
       border: 1px solid transparent;
     }
 
-    .field-content .affine-database-number {
+    .field-content .yunke-database-number {
       text-align: left;
       justify-content: start;
     }
 
     .field-content:hover {
-      background-color: var(--affine-hover-color);
+      background-color: var(--yunke-hover-color);
     }
 
     .field-content.is-editing {
@@ -97,12 +97,12 @@ export class RecordField extends SignalWatcher(
     }
 
     .field-content.is-focus {
-      border: 1px solid var(--affine-primary-color);
+      border: 1px solid var(--yunke-primary-color);
     }
 
     .field-content.empty::before {
       content: '空';
-      color: var(--affine-text-disable-color);
+      color: var(--yunke-text-disable-color);
       font-size: 14px;
       line-height: 22px;
     }
@@ -217,7 +217,7 @@ export class RecordField extends SignalWatcher(
   });
 
   changeEditing = (editing: boolean) => {
-    const selection = this.closest('affine-data-view-record-detail')?.selection;
+    const selection = this.closest('yunke-data-view-record-detail')?.selection;
     if (selection) {
       selection.selection = {
         propertyId: this.column.id,
@@ -281,6 +281,6 @@ export class RecordField extends SignalWatcher(
 
 declare global {
   interface HTMLElementTagNameMap {
-    'affine-data-view-record-field': RecordField;
+    'yunke-data-view-record-field': RecordField;
   }
 }

@@ -44,7 +44,7 @@ export const NavigationPanelFavorites = () => {
   return (
     <CollapsibleSection
       name="favorites"
-      title={t['com.affine.rootAppSidebar.favorites']()}
+      title={t['com.yunke.rootAppSidebar.favorites']()}
       testId="navigation-panel-favorites"
       headerTestId="navigation-panel-favorite-category-divider"
     >

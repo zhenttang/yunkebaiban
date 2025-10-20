@@ -1,7 +1,7 @@
 import { notify } from '@yunke/component';
-import { useDowngradeNotify } from '@yunke/core/components/affine/subscription-landing/notify';
-import { getDowngradeQuestionnaireLink } from '@yunke/core/components/hooks/affine/use-subscription-notify';
-import { useAsyncCallback } from '@yunke/core/components/hooks/affine-async-hooks';
+import { useDowngradeNotify } from '@yunke/core/components/yunke/subscription-landing/notify';
+import { getDowngradeQuestionnaireLink } from '@yunke/core/components/hooks/yunke/use-subscription-notify';
+import { useAsyncCallback } from '@yunke/core/components/hooks/yunke-async-hooks';
 // import { SubscriptionPlan } from '@yunke/graphql';
 import { useI18n } from '@yunke/i18n';
 import { track } from '@yunke/track';
@@ -247,8 +247,8 @@ export const TeamResumeAction = ({
       setIdempotencyKey(nanoid());
       onOpenChange(false);
       notify.success({
-        title: t['com.affine.payment.resume.success.title'](),
-        message: t['com.affine.payment.resume.success.team.message'](),
+        title: t['com.yunke.payment.resume.success.title'](),
+        message: t['com.yunke.payment.resume.success.team.message'](),
       });
     } finally {
       setIsMutating(false);

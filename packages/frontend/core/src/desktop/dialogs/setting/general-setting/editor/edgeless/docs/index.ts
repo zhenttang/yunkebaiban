@@ -1,5 +1,5 @@
 // Edgeless docs functionality - reimplemented without GraphQL dependency
-import { AffineSchemas } from '@blocksuite/yunke/schemas';
+import { YunkeSchemas } from '@blocksuite/yunke/schemas';
 import { nanoid, Schema } from '@blocksuite/yunke/store';
 import { type DocCollectionOptions, TestWorkspace } from '@blocksuite/yunke/store/test';
 import { MemoryBlobSource } from '@blocksuite/yunke/sync';
@@ -23,7 +23,7 @@ const storeExtensions = storeManager.get('store');
 // 创建基础的 Workspace
 const createWorkspace = (id: string) => {
   const schema = new Schema();
-  schema.register(AffineSchemas);
+  schema.register(YunkeSchemas);
 
   const options: DocCollectionOptions = {
     id,
@@ -48,16 +48,16 @@ const createNoteDoc = async () => {
   const store = doc.getStore();
   
   store.load(() => {
-    const pageBlockId = store.addBlock('affine:page', {});
+    const pageBlockId = store.addBlock('yunke:page', {});
     // 创建 surface 块（虽然这里不使用它的 ID，但块本身是需要的）
-    store.addBlock('affine:surface', {}, pageBlockId);
+    store.addBlock('yunke:surface', {}, pageBlockId);
     
-    // 添加一个笔记块用于预览 - 修复：affine:note 应该是 page 的子块，不是 surface 的子块
+    // 添加一个笔记块用于预览 - 修复：yunke:note 应该是 page 的子块，不是 surface 的子块
     store.addBlock(
-      'affine:note',
+      'yunke:note',
       {
         xywh: '[0,0,400,300]',
-        background: '--affine-note-background-blue',
+        background: '--yunke-note-background-blue',
         index: 'a0',
       },
       pageBlockId  // ✓ 修复：使用 pageBlockId 而不是 surfaceBlockId
@@ -73,8 +73,8 @@ const createConnectorDoc = async () => {
   const store = doc.getStore();
   
   store.load(() => {
-    const pageBlockId = store.addBlock('affine:page', {});
-    store.addBlock('affine:surface', {}, pageBlockId);
+    const pageBlockId = store.addBlock('yunke:page', {});
+    store.addBlock('yunke:surface', {}, pageBlockId);
   });
   
   return store;
@@ -86,8 +86,8 @@ const createShapeDoc = async () => {
   const store = doc.getStore();
   
   store.load(() => {
-    const pageBlockId = store.addBlock('affine:page', {});
-    store.addBlock('affine:surface', {}, pageBlockId);
+    const pageBlockId = store.addBlock('yunke:page', {});
+    store.addBlock('yunke:surface', {}, pageBlockId);
   });
   
   return store;
@@ -99,8 +99,8 @@ const createTextDoc = async () => {
   const store = doc.getStore();
   
   store.load(() => {
-    const pageBlockId = store.addBlock('affine:page', {});
-    store.addBlock('affine:surface', {}, pageBlockId);
+    const pageBlockId = store.addBlock('yunke:page', {});
+    store.addBlock('yunke:surface', {}, pageBlockId);
   });
   
   return store;
@@ -112,8 +112,8 @@ const createPenDoc = async () => {
   const store = doc.getStore();
   
   store.load(() => {
-    const pageBlockId = store.addBlock('affine:page', {});
-    store.addBlock('affine:surface', {}, pageBlockId);
+    const pageBlockId = store.addBlock('yunke:page', {});
+    store.addBlock('yunke:surface', {}, pageBlockId);
   });
   
   return store;
@@ -125,8 +125,8 @@ const createFrameDoc = async () => {
   const store = doc.getStore();
   
   store.load(() => {
-    const pageBlockId = store.addBlock('affine:page', {});
-    store.addBlock('affine:surface', {}, pageBlockId);
+    const pageBlockId = store.addBlock('yunke:page', {});
+    store.addBlock('yunke:surface', {}, pageBlockId);
   });
   
   return store;
@@ -138,8 +138,8 @@ const createMindMapDoc = async () => {
   const store = doc.getStore();
   
   store.load(() => {
-    const pageBlockId = store.addBlock('affine:page', {});
-    store.addBlock('affine:surface', {}, pageBlockId);
+    const pageBlockId = store.addBlock('yunke:page', {});
+    store.addBlock('yunke:surface', {}, pageBlockId);
   });
   
   return store;

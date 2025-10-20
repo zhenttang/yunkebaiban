@@ -1,4 +1,4 @@
-import { EmptyCollections } from '@yunke/core/components/affine/empty';
+import { EmptyCollections } from '@yunke/core/components/yunke/empty';
 import { CollectionService } from '@yunke/core/modules/collection';
 import { useLiveData, useService } from '@toeverything/infra';
 

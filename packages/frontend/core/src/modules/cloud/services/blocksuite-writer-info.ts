@@ -28,7 +28,7 @@ export class BlocksuiteWriterInfoService extends Service {
       
       // 检查是否已有WriterInfo扩展，避免重复添加
       const hasWriterInfo = doc.storeExtensions.some(ext => 
-        ext.setup && ext.setup.toString().includes('affine-writer-info-service')
+        ext.setup && ext.setup.toString().includes('yunke-writer-info-service')
       );
 
       if (!hasWriterInfo) {

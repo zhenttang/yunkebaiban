@@ -10,7 +10,7 @@ import { GroupInteractionExtension } from './interaction-ext';
 import { groupToolbarExtension } from './toolbar/config';
 
 export class GroupViewExtension extends ViewExtensionProvider {
-  override name = 'affine-group-gfx';
+  override name = 'yunke-group-gfx';
 
   override effect(): void {
     super.effect();

@@ -40,7 +40,7 @@ const styles = css`
     user-select: none;
     font-size: 12px;
     line-height: 20px;
-    color: var(--affine-text-secondary-color);
+    color: var(--yunke-text-secondary-color);
   }
 `;
 
@@ -109,7 +109,7 @@ export class MobileTableGroup extends SignalWatcher(
         .renderGroupHeader="${this.renderGroupHeader}"
         .tableViewManager="${this.view}"
       ></mobile-table-header>
-      <div class="mobile-affine-table-body">
+      <div class="mobile-yunke-table-body">
         ${repeat(
           rows,
           row => row.rowId,
@@ -132,7 +132,7 @@ export class MobileTableGroup extends SignalWatcher(
           >
             <div
               class="data-view-table-group-add-row-button dv-icon-16"
-              data-test-id="affine-database-add-row-button"
+              data-test-id="yunke-database-add-row-button"
               role="button"
             >
               ${PlusIcon()}<span style="font-size: 12px">新建记录</span>

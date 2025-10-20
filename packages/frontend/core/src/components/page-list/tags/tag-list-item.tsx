@@ -1,6 +1,6 @@
 import { Checkbox, useDraggable } from '@yunke/component';
 import { WorkbenchLink } from '@yunke/core/modules/workbench';
-import type { AffineDNDData } from '@yunke/core/types/dnd';
+import type { YunkeDNDData } from '@yunke/core/types/dnd';
 import { stopPropagation } from '@yunke/core/utils';
 import { useI18n } from '@yunke/i18n';
 import type { ForwardedRef, PropsWithChildren } from 'react';
@@ -26,7 +26,7 @@ const TagListTitleCell = ({ title }: Pick<TagListItemProps, 'title'>) => {
         data-testid="page-list-item-preview-text"
         className={styles.titleCellPreview}
       >
-        {` · ${t['com.affine.tags.count']({ count: pageCount || 0 })}`}
+        {` · ${t['com.yunke.tags.count']({ count: pageCount || 0 })}`}
       </div> */}
     </div>
   );
@@ -81,7 +81,7 @@ const TagListOperationsCell = ({
 };
 
 export const TagListItem = (props: TagListItemProps) => {
-  const { dragRef, CustomDragPreview, dragging } = useDraggable<AffineDNDData>(
+  const { dragRef, CustomDragPreview, dragging } = useDraggable<YunkeDNDData>(
     () => ({
       canDrag: props.draggable,
       data: {

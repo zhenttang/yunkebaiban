@@ -126,23 +126,23 @@ export class EdgelessAutoComplete extends WithDisposable(LitElement) {
 
     .edgeless-auto-complete-arrow-wrapper:hover
       > .edgeless-auto-complete-arrow {
-      border: 1px solid var(--affine-border-color);
-      box-shadow: var(--affine-shadow-1);
-      background: var(--affine-white);
+      border: 1px solid var(--yunke-border-color);
+      box-shadow: var(--yunke-shadow-1);
+      background: var(--yunke-white);
     }
 
     .edgeless-auto-complete-arrow-wrapper
       > .edgeless-auto-complete-arrow:hover {
-      border: 1px solid var(--affine-white-10);
-      box-shadow: var(--affine-shadow-1);
-      background: var(--affine-primary-color);
+      border: 1px solid var(--yunke-white-10);
+      box-shadow: var(--yunke-shadow-1);
+      background: var(--yunke-primary-color);
     }
 
     .edgeless-auto-complete-arrow-wrapper.mindmap
       > .edgeless-auto-complete-arrow {
-      border: 1px solid var(--affine-border-color);
-      box-shadow: var(--affine-shadow-1);
-      background: var(--affine-white);
+      border: 1px solid var(--yunke-border-color);
+      box-shadow: var(--yunke-shadow-1);
+      background: var(--yunke-white);
 
       transition:
         background 0.3s linear,
@@ -151,9 +151,9 @@ export class EdgelessAutoComplete extends WithDisposable(LitElement) {
 
     .edgeless-auto-complete-arrow-wrapper.mindmap
       > .edgeless-auto-complete-arrow:hover {
-      border: 1px solid var(--affine-white-10);
-      box-shadow: var(--affine-shadow-1);
-      background: var(--affine-primary-color);
+      border: 1px solid var(--yunke-white-10);
+      box-shadow: var(--yunke-shadow-1);
+      background: var(--yunke-primary-color);
     }
 
     .edgeless-auto-complete-arrow svg {

@@ -64,8 +64,8 @@ export const RequestToJoinPage = ({
     >
       <Button variant="primary" size="large" onClick={requestToJoin}>
         {inviteInfo?.status === WorkspaceMemberStatus.Pending
-          ? t['com.affine.notification.invitation.accept']()
-          : t['com.affine.request-to-join-workspace.button']()}
+          ? t['com.yunke.notification.invitation.accept']()
+          : t['com.yunke.request-to-join-workspace.button']()}
       </Button>
       {user ? (
         <div className={styles.userInfoWrapper}>

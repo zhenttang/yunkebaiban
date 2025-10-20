@@ -1,6 +1,6 @@
 {
   "name": "@blocksuite/yunke-widget-page-dragging-area",
-  "description": "Affine page dragging area widget.",
+  "description": "Yunke page dragging area widget.",
   "type": "module",
   "scripts": {
     "build": "tsc"

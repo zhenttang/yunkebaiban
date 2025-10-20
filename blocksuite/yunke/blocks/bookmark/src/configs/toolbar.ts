@@ -56,7 +56,7 @@ const previewAction = {
 
     const { url } = model.props;
 
-    return html`<affine-link-preview .url=${url}></affine-link-preview>`;
+    return html`<yunke-link-preview .url=${url}></yunke-link-preview>`;
   },
 } satisfies ToolbarAction;
 
@@ -235,12 +235,12 @@ const builtinToolbarConfig = {
 
         return html`${keyed(
           model,
-          html`<affine-view-dropdown-menu
+          html`<yunke-view-dropdown-menu
             @toggle=${onToggle}
             .actions=${actions}
             .context=${ctx}
             .viewType$=${viewType$}
-          ></affine-view-dropdown-menu>`
+          ></yunke-view-dropdown-menu>`
         )}`;
       },
     } satisfies ToolbarActionGroup<ToolbarAction>,
@@ -280,12 +280,12 @@ const builtinToolbarConfig = {
 
         return html`${keyed(
           model,
-          html`<affine-card-style-dropdown-menu
+          html`<yunke-card-style-dropdown-menu
             @toggle=${onToggle}
             .actions=${actions}
             .context=${ctx}
             .style$=${model.props.style$}
-          ></affine-card-style-dropdown-menu>`
+          ></yunke-card-style-dropdown-menu>`
         )}`;
       },
     } satisfies ToolbarActionGroup<ToolbarAction>,
@@ -471,12 +471,12 @@ const builtinSurfaceToolbarConfig = {
 
         return html`${keyed(
           model,
-          html`<affine-view-dropdown-menu
+          html`<yunke-view-dropdown-menu
             @toggle=${onToggle}
             .actions=${actions}
             .context=${ctx}
             .viewType$=${viewType$}
-          ></affine-view-dropdown-menu>`
+          ></yunke-view-dropdown-menu>`
         )}`;
       },
     } satisfies ToolbarActionGroup<ToolbarAction>,
@@ -533,12 +533,12 @@ const builtinSurfaceToolbarConfig = {
 
         return html`${keyed(
           model,
-          html`<affine-card-style-dropdown-menu
+          html`<yunke-card-style-dropdown-menu
             @toggle=${onToggle}
             .actions=${actions}
             .context=${ctx}
             .style$=${style$}
-          ></affine-card-style-dropdown-menu>`
+          ></yunke-card-style-dropdown-menu>`
         )}`;
       },
     } satisfies ToolbarActionGroup<ToolbarAction>,
@@ -590,12 +590,12 @@ const builtinSurfaceToolbarConfig = {
 
         return html`${keyed(
           model,
-          html`<affine-size-dropdown-menu
+          html`<yunke-size-dropdown-menu
             @select=${onSelect}
             @toggle=${onToggle}
             .format=${format}
             .size$=${scale$}
-          ></affine-size-dropdown-menu>`
+          ></yunke-size-dropdown-menu>`
         )}`;
       },
     },

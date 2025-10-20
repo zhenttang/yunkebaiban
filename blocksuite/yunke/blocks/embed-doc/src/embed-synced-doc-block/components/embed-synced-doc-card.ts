@@ -188,32 +188,32 @@ export class EmbedSyncedDocCard extends WithDisposable(ShadowlessElement) {
 
     return html`
       <div
-        class="affine-embed-synced-doc-card ${cardClassMap}"
+        class="yunke-embed-synced-doc-card ${cardClassMap}"
         @click=${this._handleClick}
       >
-        <div class="affine-embed-synced-doc-card-content">
-          <div class="affine-embed-synced-doc-card-content-title">
-            <div class="affine-embed-synced-doc-card-content-title-icon">
+        <div class="yunke-embed-synced-doc-card-content">
+          <div class="yunke-embed-synced-doc-card-content-title">
+            <div class="yunke-embed-synced-doc-card-content-title-icon">
               ${icon}
             </div>
 
-            <div class="affine-embed-synced-doc-card-content-title-text">
+            <div class="yunke-embed-synced-doc-card-content-title-text">
               ${title}
             </div>
           </div>
 
           ${showDefaultNoteContent
-            ? html`<div class="affine-embed-synced-doc-content-note default">
+            ? html`<div class="yunke-embed-synced-doc-content-note default">
                 ${defaultNoteContent}
               </div>`
             : nothing}
-          <div class="affine-embed-synced-doc-content-note render"></div>
+          <div class="yunke-embed-synced-doc-content-note render"></div>
 
           ${error
             ? html`
-                <div class="affine-embed-synced-doc-card-content-reload">
+                <div class="yunke-embed-synced-doc-card-content-reload">
                   <div
-                    class="affine-embed-synced-doc-card-content-reload-button"
+                    class="yunke-embed-synced-doc-card-content-reload-button"
                     @click=${() => this.block.refreshData()}
                   >
                     ${ResetIcon()} <span>Reload</span>
@@ -221,7 +221,7 @@ export class EmbedSyncedDocCard extends WithDisposable(ShadowlessElement) {
                 </div>
               `
             : html`
-                <div class="affine-embed-synced-doc-card-content-date">
+                <div class="yunke-embed-synced-doc-card-content-date">
                   <span>Updated</span>
 
                   <span>${dateText}</span>
@@ -229,11 +229,11 @@ export class EmbedSyncedDocCard extends WithDisposable(ShadowlessElement) {
               `}
         </div>
 
-        <div class="affine-embed-synced-doc-card-banner render"></div>
+        <div class="yunke-embed-synced-doc-card-banner render"></div>
 
         ${showDefaultBanner
           ? html`
-              <div class="affine-embed-synced-doc-card-banner default">
+              <div class="yunke-embed-synced-doc-card-banner default">
                 ${defaultBanner}
               </div>
             `
@@ -242,7 +242,7 @@ export class EmbedSyncedDocCard extends WithDisposable(ShadowlessElement) {
     `;
   }
 
-  @queryAsync('.affine-embed-synced-doc-card-banner.render')
+  @queryAsync('.yunke-embed-synced-doc-card-banner.render')
   accessor bannerContainer!: Promise<HTMLDivElement>;
 
   @property({ attribute: false })
@@ -257,6 +257,6 @@ export class EmbedSyncedDocCard extends WithDisposable(ShadowlessElement) {
   @property({ attribute: false })
   accessor isNoteContentEmpty = false;
 
-  @queryAsync('.affine-embed-synced-doc-content-note.render')
+  @queryAsync('.yunke-embed-synced-doc-content-note.render')
   accessor noteContainer!: Promise<HTMLDivElement>;
 }

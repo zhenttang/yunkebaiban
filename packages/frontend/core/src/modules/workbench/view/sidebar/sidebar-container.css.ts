@@ -74,7 +74,7 @@ export const sidebarBodyNoSelection = style({
   overflow: 'hidden',
   justifyContent: 'center',
   userSelect: 'none',
-  color: cssVar('--affine-text-secondary-color'),
+  color: cssVar('--yunke-text-secondary-color'),
   alignItems: 'center',
   fontSize: '14px',
   fontWeight: '500',

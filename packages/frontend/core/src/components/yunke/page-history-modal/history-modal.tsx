@@ -33,7 +33,7 @@ import { BlockSuiteEditor } from '../../../blocksuite/block-suite-editor';
 import { PureEditorModeSwitch } from '../../../blocksuite/block-suite-mode-switch';
 import { pageHistoryModalAtom } from '../../atoms/page-history';
 import { useGuard } from '../../guard';
-import { AffineErrorBoundary } from '../affine-error-boundary';
+import { YunkeErrorBoundary } from '../yunke-error-boundary';
 import {
   historyListGroupByDay,
   useDocSnapshotList,
@@ -58,7 +58,7 @@ const contentOptions: DialogContentProps = {
   style: {
     padding: 0,
     maxWidth: 944,
-    backgroundColor: 'var(--affine-background-primary-color)',
+    backgroundColor: 'var(--yunke-background-primary-color)',
     overflow: 'hidden',
   },
 };
@@ -126,9 +126,9 @@ const HistoryEditorPreview = ({
         </div>
 
         {snapshotPage ? (
-          <AffineErrorBoundary>
+          <YunkeErrorBoundary>
             <Scrollable.Root>
-              <Scrollable.Viewport className="affine-page-viewport">
+              <Scrollable.Viewport className="yunke-page-viewport">
                 <BlockSuiteEditor
                   className={styles.editor}
                   mode={mode}
@@ -138,7 +138,7 @@ const HistoryEditorPreview = ({
               </Scrollable.Viewport>
               <Scrollable.Scrollbar />
             </Scrollable.Root>
-          </AffineErrorBoundary>
+          </YunkeErrorBoundary>
         ) : (
           <div className={styles.loadingContainer}>
             <Loading size={24} />
@@ -211,10 +211,10 @@ const PlanPrompt = () => {
           isProWorkspace !== null
             ? !isProWorkspace
               ? t[
-                  'com.affine.history.confirm-restore-modal.plan-prompt.limited-title'
+                  'com.yunke.history.confirm-restore-modal.plan-prompt.limited-title'
                 ]()
               : t[
-                  'com.affine.history.confirm-restore-modal.plan-prompt.title'
+                  'com.yunke.history.confirm-restore-modal.plan-prompt.title'
                 ]()
             : '' /* TODO(@catsjuice): loading UI */
         }
@@ -230,7 +230,7 @@ const PlanPrompt = () => {
     if (!isProWorkspace) {
       return (
         <>
-          <Trans i18nKey="com.affine.history.confirm-restore-modal.free-plan-prompt.description">
+          <Trans i18nKey="com.yunke.history.confirm-restore-modal.free-plan-prompt.description">
             With the workspace creator&apos;s Free account, every member can
             access up to <b>7 days</b> of version history.
           </Trans>
@@ -240,7 +240,7 @@ const PlanPrompt = () => {
               onClick={onClickUpgrade}
             >
               {t[
-                'com.affine.history.confirm-restore-modal.pro-plan-prompt.upgrade'
+                'com.yunke.history.confirm-restore-modal.pro-plan-prompt.upgrade'
               ]()}
             </span>
           ) : null}
@@ -248,7 +248,7 @@ const PlanPrompt = () => {
       );
     } else {
       return (
-        <Trans i18nKey="com.affine.history.confirm-restore-modal.pro-plan-prompt.description">
+        <Trans i18nKey="com.yunke.history.confirm-restore-modal.pro-plan-prompt.description">
           With the workspace creator&apos;s Pro account, every member enjoys the
           privilege of accessing up to <b>30 days</b> of version history.
         </Trans>
@@ -297,7 +297,7 @@ const PageHistoryList = ({
   return (
     <div className={styles.historyList}>
       <div className={styles.historyListHeader}>
-        {t['com.affine.history.version-history']()}
+        {t['com.yunke.history.version-history']()}
       </div>
       <Scrollable.Root className={styles.historyListScrollable}>
         <Scrollable.Viewport className={styles.historyListScrollableInner}>
@@ -377,7 +377,7 @@ const PageHistoryList = ({
                             onClick={onLoadMore}
                           >
                             {t[
-                              'com.affine.history.confirm-restore-modal.load-more'
+                              'com.yunke.history.confirm-restore-modal.load-more'
                             ]()}
                           </Button>
                         ) : null}
@@ -405,10 +405,10 @@ const EmptyHistoryPrompt = () => {
     >
       <EmptyHistoryShape />
       <div className={styles.emptyHistoryPromptTitle}>
-        {t['com.affine.history.empty-prompt.title']()}
+        {t['com.yunke.history.empty-prompt.title']()}
       </div>
       <div className={styles.emptyHistoryPromptDescription}>
-        {t['com.affine.history.empty-prompt.description']()}
+        {t['com.yunke.history.empty-prompt.description']()}
       </div>
     </div>
   );
@@ -461,14 +461,14 @@ const PageHistoryManager = ({
 
   const onConfirmRestore = useCallback(() => {
     openConfirmModal({
-      title: t['com.affine.history.restore-current-version'](),
-      description: t['com.affine.history.confirm-restore-modal.hint'](),
+      title: t['com.yunke.history.restore-current-version'](),
+      description: t['com.yunke.history.confirm-restore-modal.hint'](),
       cancelText: t['Cancel'](),
       contentOptions: {
         ['data-testid' as string]: 'confirm-restore-history-modal',
         style: { padding: '20px 26px' },
       },
-      confirmText: t['com.affine.history.confirm-restore-modal.restore'](),
+      confirmText: t['com.yunke.history.confirm-restore-modal.restore'](),
       confirmButtonOptions: {
         variant: 'primary',
         ['data-testid' as string]: 'confirm-restore-history-button',
@@ -511,7 +511,7 @@ const PageHistoryManager = ({
 
       <div className={styles.historyFooter}>
         <Button onClick={onClose}>
-          {t['com.affine.history.back-to-page']()}
+          {t['com.yunke.history.back-to-page']()}
         </Button>
         <div className={styles.spacer} />
         <Button
@@ -519,7 +519,7 @@ const PageHistoryManager = ({
           onClick={onConfirmRestore}
           disabled={isMutating || !activeVersion || !canEdit}
         >
-          {t['com.affine.history.restore-current-version']()}
+          {t['com.yunke.history.restore-current-version']()}
         </Button>
       </div>
     </div>

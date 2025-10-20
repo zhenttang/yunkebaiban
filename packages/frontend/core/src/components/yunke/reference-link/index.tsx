@@ -22,7 +22,7 @@ import { Link } from 'react-router-dom';
 
 import * as styles from './styles.css';
 
-interface AffinePageReferenceProps {
+interface YunkePageReferenceProps {
   pageId: string;
   params?: URLSearchParams;
   title?: string; // title alias
@@ -31,12 +31,12 @@ interface AffinePageReferenceProps {
   onClick?: (e: MouseEvent) => void;
 }
 
-function AffinePageReferenceInner({
+function YunkePageReferenceInner({
   pageId,
   params,
   title,
   Icon: UserIcon,
-}: AffinePageReferenceProps) {
+}: YunkePageReferenceProps) {
   const docDisplayMetaService = useService(DocDisplayMetaService);
   const docsService = useService(DocsService);
 
@@ -75,19 +75,19 @@ function AffinePageReferenceInner({
   return (
     <span className={notFound ? styles.notFound : ''}>
       <Icon className={styles.pageReferenceIcon} />
-      <span className="affine-reference-title">{title}</span>
+      <span className="yunke-reference-title">{title}</span>
     </span>
   );
 }
 
-export function AffinePageReference({
+export function YunkePageReference({
   pageId,
   params,
   title,
   className,
   Icon,
   onClick: userOnClick,
-}: AffinePageReferenceProps) {
+}: YunkePageReferenceProps) {
   const journalService = useService(JournalService);
   const isJournal = !!useLiveData(journalService.journalDate$(pageId));
 
@@ -149,7 +149,7 @@ export function AffinePageReference({
       onClick={onClick}
       className={clsx(styles.pageReferenceLink, className)}
     >
-      <AffinePageReferenceInner
+      <YunkePageReferenceInner
         pageId={pageId}
         params={params}
         title={title}
@@ -159,14 +159,14 @@ export function AffinePageReference({
   );
 }
 
-export function AffineSharedPageReference({
+export function YunkeSharedPageReference({
   pageId,
   docCollection,
   params,
   title,
   Icon,
   onClick: userOnClick,
-}: AffinePageReferenceProps & {
+}: YunkePageReferenceProps & {
   docCollection: Workspace;
 }) {
   const journalService = useService(JournalService);
@@ -216,7 +216,7 @@ export function AffineSharedPageReference({
       onClick={onClick}
       className={styles.pageReferenceLink}
     >
-      <AffinePageReferenceInner
+      <YunkePageReferenceInner
         pageId={pageId}
         params={params}
         title={title}

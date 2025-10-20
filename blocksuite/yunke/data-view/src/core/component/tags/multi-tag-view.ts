@@ -12,7 +12,7 @@ import { getColorByColor } from './colors.js';
 
 export class MultiTagView extends WithDisposable(ShadowlessElement) {
   static override styles = css`
-    affine-multi-tag-view {
+    yunke-multi-tag-view {
       display: flex;
       align-items: center;
       width: 100%;
@@ -20,27 +20,27 @@ export class MultiTagView extends WithDisposable(ShadowlessElement) {
       min-height: 22px;
     }
 
-    .affine-select-cell-container * {
+    .yunke-select-cell-container * {
       box-sizing: border-box;
     }
 
-    .affine-select-cell-container {
+    .yunke-select-cell-container {
       display: flex;
       align-items: center;
       flex-wrap: wrap;
       gap: 6px;
       width: 100%;
-      font-size: var(--affine-font-sm);
+      font-size: var(--yunke-font-sm);
     }
 
-    .affine-select-cell-container .select-selected {
+    .yunke-select-cell-container .select-selected {
       height: 22px;
       font-size: 14px;
       line-height: 20px;
       padding: 0 8px;
       border-radius: 4px;
       white-space: nowrap;
-      background: var(--affine-tag-white);
+      background: var(--yunke-tag-white);
       overflow: hidden;
       text-overflow: ellipsis;
       border: 1px solid ${unsafeCSSVarV2('database/border')};
@@ -51,7 +51,7 @@ export class MultiTagView extends WithDisposable(ShadowlessElement) {
     const values = this.value;
     const map = new Map<string, SelectTag>(this.options?.map(v => [v.id, v]));
     return html`
-      <div contenteditable="false" class="affine-select-cell-container">
+      <div contenteditable="false" class="yunke-select-cell-container">
         ${repeat(values, id => {
           const option = map.get(id);
           if (!option) {
@@ -74,7 +74,7 @@ export class MultiTagView extends WithDisposable(ShadowlessElement) {
   @property({ attribute: false })
   accessor options: SelectTag[] = [];
 
-  @query('.affine-select-cell-container')
+  @query('.yunke-select-cell-container')
   accessor selectContainer!: HTMLElement;
 
   @property({ attribute: false })
@@ -83,6 +83,6 @@ export class MultiTagView extends WithDisposable(ShadowlessElement) {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'affine-multi-tag-view': MultiTagView;
+    'yunke-multi-tag-view': MultiTagView;
   }
 }

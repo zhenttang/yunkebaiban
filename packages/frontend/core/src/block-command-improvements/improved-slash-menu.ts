@@ -1,6 +1,6 @@
 /**
  * 改进后的 Slash Menu 组件
- * 与 AFFiNE 系统设计语言保持一致
+ * 与 YUNKE 系统设计语言保持一致
  */
 
 import { css, html, LitElement } from 'lit';
@@ -8,7 +8,7 @@ import { customElement, property, state } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { styleMap } from 'lit/directives/style-map.js';
 import { classMap } from 'lit/directives/class-map.js';
-import { AFFINE_DESIGN_TOKENS } from './design-tokens.js';
+import { YUNKE_DESIGN_TOKENS } from './design-tokens.js';
 
 interface SlashMenuItem {
   id: string;

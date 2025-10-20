@@ -15,7 +15,7 @@ export const outlineNotice = style({
   fontSize: '12px',
   flexDirection: 'column',
   borderRadius: '8px',
-  backgroundColor: cssVar('--affine-background-overlay-panel-color'),
+  backgroundColor: cssVar('--yunke-background-overlay-panel-color'),
 });
 
 export const outlineNoticeHeader = style({

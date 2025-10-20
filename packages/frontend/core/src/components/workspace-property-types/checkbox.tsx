@@ -126,8 +126,8 @@ export const CheckboxGroupHeader = ({
   const t = useI18n();
   const text =
     groupId === 'true'
-      ? t['com.affine.all-docs.group.is-checked']()
-      : t['com.affine.all-docs.group.is-not-checked']();
+      ? t['com.yunke.all-docs.group.is-checked']()
+      : t['com.yunke.all-docs.group.is-not-checked']();
   return (
     <PlainTextDocGroupHeader docCount={docCount} groupId={groupId}>
       {text}

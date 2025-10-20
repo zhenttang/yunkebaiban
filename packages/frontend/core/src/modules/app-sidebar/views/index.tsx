@@ -1,9 +1,9 @@
 import { type DropTargetGetFeedback, Skeleton } from '@yunke/component';
 import { ResizePanel } from '@yunke/component/resize-panel';
-import { useAppSettingHelper } from '@yunke/core/components/hooks/affine/use-app-setting-helper';
+import { useAppSettingHelper } from '@yunke/core/components/hooks/yunke/use-app-setting-helper';
 import { NavigateContext } from '@yunke/core/components/hooks/use-navigate-helper';
 import { WorkspaceNavigator } from '@yunke/core/components/workspace-selector';
-import type { AffineDNDData } from '@yunke/core/types/dnd';
+import type { YunkeDNDData } from '@yunke/core/types/dnd';
 import { useI18n } from '@yunke/i18n';
 import {
   useLiveData,
@@ -128,7 +128,7 @@ export function AppSidebar({ children }: PropsWithChildren) {
           viewId: firstView.id,
         };
       },
-      canDrop: (data: DropTargetGetFeedback<AffineDNDData>) => {
+      canDrop: (data: DropTargetGetFeedback<YunkeDNDData>) => {
         return (
           (!!data.source.data.entity?.type &&
             allowedSplitViewEntityTypes.has(data.source.data.entity?.type)) ||
@@ -199,8 +199,8 @@ const ResizeHandleTooltipContent = () => {
   const t = useI18n();
   return (
     <div>
-      <div>{t['com.affine.rootAppSidebar.resize-handle.tooltip.drag']()}</div>
-      <div>{t['com.affine.rootAppSidebar.resize-handle.tooltip.click']()}</div>
+      <div>{t['com.yunke.rootAppSidebar.resize-handle.tooltip.drag']()}</div>
+      <div>{t['com.yunke.rootAppSidebar.resize-handle.tooltip.click']()}</div>
     </div>
   );
 };

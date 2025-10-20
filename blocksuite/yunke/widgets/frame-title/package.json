@@ -1,6 +1,6 @@
 {
   "name": "@blocksuite/yunke-widget-frame-title",
-  "description": "Affine frame title widget.",
+  "description": "Yunke frame title widget.",
   "type": "module",
   "scripts": {
     "build": "tsc"

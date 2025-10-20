@@ -1,12 +1,12 @@
 /**
- * AFFiNE 界面修改示例
+ * YUNKE 界面修改示例
  * 
- * 这个文件展示了如何将数据透明化系统集成到AFFiNE的现有界面中
+ * 这个文件展示了如何将数据透明化系统集成到YUNKE的现有界面中
  * 包括具体的代码修改和界面效果展示
  */
 
 import React, { useState, useEffect } from 'react';
-import { DocumentStatusIndicator, WorkspaceDataPanel, DocumentDataTab, EditorStatusBar } from './affine-integration';
+import { DocumentStatusIndicator, WorkspaceDataPanel, DocumentDataTab, EditorStatusBar } from './yunke-integration';
 
 /**
  * 1. 文档详情页头部修改示例
@@ -250,13 +250,13 @@ const ModifiedPageEditor = ({ docId, workspaceId }) => (
  * 
  * 展示所有组件如何协同工作
  */
-const AFFiNEIntegrationDemo = () => {
+const YUNKEIntegrationDemo = () => {
   const [docId] = useState('222222');
   const [workspaceId] = useState('new-workspace');
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
   return (
-    <div className="affine-app">
+    <div className="yunke-app">
       {/* 左侧边栏 */}
       <aside className={`app-sidebar ${sidebarCollapsed ? 'collapsed' : ''}`}>
         <ModifiedWorkspaceSidebar 
@@ -460,7 +460,7 @@ const DataTransparencyEffectDemo = () => {
  */
 const IntegrationGuide = () => (
   <div className="integration-guide">
-    <h2>🚀 AFFiNE 数据透明化集成指南</h2>
+    <h2>🚀 YUNKE 数据透明化集成指南</h2>
     
     <div className="guide-section">
       <h3>步骤1：导入数据透明化组件</h3>
@@ -471,7 +471,7 @@ import {
   DocumentDataTab,
   EditorStatusBar,
   DataTransparencySettings,
-} from '@yunke/core/data-transparency/affine-integration';
+} from '@yunke/core/data-transparency/yunke-integration';
       `}</code></pre>
     </div>
 
@@ -541,14 +541,14 @@ import {
       <h3>步骤6：导入样式文件</h3>
       <p>在主样式文件中导入：</p>
       <pre><code>{`
-@import "@yunke/core/data-transparency/affine-integration.css";
+@import "@yunke/core/data-transparency/yunke-integration.css";
       `}</code></pre>
     </div>
   </div>
 );
 
 export {
-  AFFiNEIntegrationDemo,
+  YUNKEIntegrationDemo,
   DataTransparencyEffectDemo,
   IntegrationGuide,
   ModifiedDetailPageHeader,

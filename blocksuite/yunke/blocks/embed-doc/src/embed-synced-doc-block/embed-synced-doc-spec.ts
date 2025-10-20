@@ -12,8 +12,8 @@ export const EmbedSyncedDocViewExtensions: ExtensionType[] = [
   FlavourExtension(flavour),
   BlockViewExtension(flavour, model => {
     return model.parent?.flavour === 'yunke:surface'
-      ? literal`affine-embed-edgeless-synced-doc-block`
-      : literal`affine-embed-synced-doc-block`;
+      ? literal`yunke-embed-edgeless-synced-doc-block`
+      : literal`yunke-embed-synced-doc-block`;
   }),
   createBuiltinToolbarConfigExtension(flavour),
   HeightInitializationExtension,

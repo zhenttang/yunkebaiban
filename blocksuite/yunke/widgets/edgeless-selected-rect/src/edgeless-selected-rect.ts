@@ -49,7 +49,7 @@ export class EdgelessSelectedRectWidget extends WidgetComponent<RootBlockModel> 
       z-index: 1;
     }
 
-    .affine-edgeless-selected-rect {
+    .yunke-edgeless-selected-rect {
       position: absolute;
       top: 0;
       left: 0;
@@ -58,17 +58,17 @@ export class EdgelessSelectedRectWidget extends WidgetComponent<RootBlockModel> 
       pointer-events: none;
       box-sizing: border-box;
       z-index: 1;
-      border-color: var(--affine-blue);
+      border-color: var(--yunke-blue);
       border-width: 2px;
       border-style: solid;
       transform: translate(0, 0) rotate(0);
     }
 
-    .affine-edgeless-selected-rect[data-locked='true'] {
+    .yunke-edgeless-selected-rect[data-locked='true'] {
       border-color: ${unsafeCSSVarV2('edgeless/lock/locked', '#00000085')};
     }
 
-    .affine-edgeless-selected-rect .handle {
+    .yunke-edgeless-selected-rect .handle {
       position: absolute;
       user-select: none;
       outline: none;
@@ -83,27 +83,27 @@ export class EdgelessSelectedRectWidget extends WidgetComponent<RootBlockModel> 
       touch-action: none;
     }
 
-    .affine-edgeless-selected-rect .handle[aria-label^='top-'],
-    .affine-edgeless-selected-rect .handle[aria-label^='bottom-'] {
+    .yunke-edgeless-selected-rect .handle[aria-label^='top-'],
+    .yunke-edgeless-selected-rect .handle[aria-label^='bottom-'] {
       width: 18px;
       height: 18px;
       box-sizing: border-box;
       z-index: 10;
     }
 
-    .affine-edgeless-selected-rect .handle[aria-label^='top-'] .resize,
-    .affine-edgeless-selected-rect .handle[aria-label^='bottom-'] .resize {
+    .yunke-edgeless-selected-rect .handle[aria-label^='top-'] .resize,
+    .yunke-edgeless-selected-rect .handle[aria-label^='bottom-'] .resize {
       position: absolute;
       width: 12px;
       height: 12px;
       box-sizing: border-box;
       border-radius: 50%;
-      border: 2px var(--affine-blue) solid;
+      border: 2px var(--yunke-blue) solid;
       background: white;
     }
 
-    .affine-edgeless-selected-rect .handle[aria-label^='top-'] .rotate,
-    .affine-edgeless-selected-rect .handle[aria-label^='bottom-'] .rotate {
+    .yunke-edgeless-selected-rect .handle[aria-label^='top-'] .rotate,
+    .yunke-edgeless-selected-rect .handle[aria-label^='bottom-'] .rotate {
       position: absolute;
       width: 12px;
       height: 12px;
@@ -112,77 +112,77 @@ export class EdgelessSelectedRectWidget extends WidgetComponent<RootBlockModel> 
     }
 
     /* -18 + 6.5 */
-    .affine-edgeless-selected-rect .handle[aria-label='top-left'] {
+    .yunke-edgeless-selected-rect .handle[aria-label='top-left'] {
       left: -12px;
       top: -12px;
     }
-    .affine-edgeless-selected-rect .handle[aria-label='top-left'] .resize {
+    .yunke-edgeless-selected-rect .handle[aria-label='top-left'] .resize {
       right: 0;
       bottom: 0;
     }
-    .affine-edgeless-selected-rect .handle[aria-label='top-left'] .rotate {
+    .yunke-edgeless-selected-rect .handle[aria-label='top-left'] .rotate {
       right: 6px;
       bottom: 6px;
     }
 
-    .affine-edgeless-selected-rect .handle[aria-label='top-right'] {
+    .yunke-edgeless-selected-rect .handle[aria-label='top-right'] {
       top: -12px;
       right: -12px;
     }
-    .affine-edgeless-selected-rect .handle[aria-label='top-right'] .resize {
+    .yunke-edgeless-selected-rect .handle[aria-label='top-right'] .resize {
       left: 0;
       bottom: 0;
     }
-    .affine-edgeless-selected-rect .handle[aria-label='top-right'] .rotate {
+    .yunke-edgeless-selected-rect .handle[aria-label='top-right'] .rotate {
       left: 6px;
       bottom: 6px;
     }
 
-    .affine-edgeless-selected-rect .handle[aria-label='bottom-right'] {
+    .yunke-edgeless-selected-rect .handle[aria-label='bottom-right'] {
       right: -12px;
       bottom: -12px;
     }
-    .affine-edgeless-selected-rect .handle[aria-label='bottom-right'] .resize {
+    .yunke-edgeless-selected-rect .handle[aria-label='bottom-right'] .resize {
       left: 0;
       top: 0;
     }
-    .affine-edgeless-selected-rect .handle[aria-label='bottom-right'] .rotate {
+    .yunke-edgeless-selected-rect .handle[aria-label='bottom-right'] .rotate {
       left: 6px;
       top: 6px;
     }
 
-    .affine-edgeless-selected-rect .handle[aria-label='bottom-left'] {
+    .yunke-edgeless-selected-rect .handle[aria-label='bottom-left'] {
       bottom: -12px;
       left: -12px;
     }
-    .affine-edgeless-selected-rect .handle[aria-label='bottom-left'] .resize {
+    .yunke-edgeless-selected-rect .handle[aria-label='bottom-left'] .resize {
       right: 0;
       top: 0;
     }
-    .affine-edgeless-selected-rect .handle[aria-label='bottom-left'] .rotate {
+    .yunke-edgeless-selected-rect .handle[aria-label='bottom-left'] .rotate {
       right: 6px;
       top: 6px;
     }
 
-    .affine-edgeless-selected-rect .handle[aria-label='top'],
-    .affine-edgeless-selected-rect .handle[aria-label='bottom'],
-    .affine-edgeless-selected-rect .handle[aria-label='left'],
-    .affine-edgeless-selected-rect .handle[aria-label='right'] {
+    .yunke-edgeless-selected-rect .handle[aria-label='top'],
+    .yunke-edgeless-selected-rect .handle[aria-label='bottom'],
+    .yunke-edgeless-selected-rect .handle[aria-label='left'],
+    .yunke-edgeless-selected-rect .handle[aria-label='right'] {
       border: 0;
       background: transparent;
-      border-color: var('--affine-blue');
+      border-color: var('--yunke-blue');
     }
 
-    .affine-edgeless-selected-rect .handle[aria-label='left'],
-    .affine-edgeless-selected-rect .handle[aria-label='right'] {
+    .yunke-edgeless-selected-rect .handle[aria-label='left'],
+    .yunke-edgeless-selected-rect .handle[aria-label='right'] {
       top: 0;
       bottom: 0;
       height: 100%;
       width: 6px;
     }
 
-    .affine-edgeless-selected-rect .handle[aria-label='top'],
-    .affine-edgeless-selected-rect .handle[aria-label='bottom'] {
+    .yunke-edgeless-selected-rect .handle[aria-label='top'],
+    .yunke-edgeless-selected-rect .handle[aria-label='bottom'] {
       left: 0;
       right: 0;
       width: 100%;
@@ -190,31 +190,31 @@ export class EdgelessSelectedRectWidget extends WidgetComponent<RootBlockModel> 
     }
 
     /* calc(-1px - (6px - 1px) / 2) = -3.5px */
-    .affine-edgeless-selected-rect .handle[aria-label='left'] {
+    .yunke-edgeless-selected-rect .handle[aria-label='left'] {
       left: -3.5px;
     }
-    .affine-edgeless-selected-rect .handle[aria-label='right'] {
+    .yunke-edgeless-selected-rect .handle[aria-label='right'] {
       right: -3.5px;
     }
-    .affine-edgeless-selected-rect .handle[aria-label='top'] {
+    .yunke-edgeless-selected-rect .handle[aria-label='top'] {
       top: -3.5px;
     }
-    .affine-edgeless-selected-rect .handle[aria-label='bottom'] {
+    .yunke-edgeless-selected-rect .handle[aria-label='bottom'] {
       bottom: -3.5px;
     }
 
-    .affine-edgeless-selected-rect .handle[aria-label='top'] .resize,
-    .affine-edgeless-selected-rect .handle[aria-label='bottom'] .resize,
-    .affine-edgeless-selected-rect .handle[aria-label='left'] .resize,
-    .affine-edgeless-selected-rect .handle[aria-label='right'] .resize {
+    .yunke-edgeless-selected-rect .handle[aria-label='top'] .resize,
+    .yunke-edgeless-selected-rect .handle[aria-label='bottom'] .resize,
+    .yunke-edgeless-selected-rect .handle[aria-label='left'] .resize,
+    .yunke-edgeless-selected-rect .handle[aria-label='right'] .resize {
       width: 100%;
       height: 100%;
     }
 
-    .affine-edgeless-selected-rect .handle[aria-label='top'] .resize:after,
-    .affine-edgeless-selected-rect .handle[aria-label='bottom'] .resize:after,
-    .affine-edgeless-selected-rect .handle[aria-label='left'] .resize:after,
-    .affine-edgeless-selected-rect .handle[aria-label='right'] .resize:after {
+    .yunke-edgeless-selected-rect .handle[aria-label='top'] .resize:after,
+    .yunke-edgeless-selected-rect .handle[aria-label='bottom'] .resize:after,
+    .yunke-edgeless-selected-rect .handle[aria-label='left'] .resize:after,
+    .yunke-edgeless-selected-rect .handle[aria-label='right'] .resize:after {
       position: absolute;
       width: 7px;
       height: 7px;
@@ -225,45 +225,45 @@ export class EdgelessSelectedRectWidget extends WidgetComponent<RootBlockModel> 
       background: white;
     }
 
-    .affine-edgeless-selected-rect
+    .yunke-edgeless-selected-rect
       .handle[aria-label='top']
       .transparent-handle:after,
-    .affine-edgeless-selected-rect
+    .yunke-edgeless-selected-rect
       .handle[aria-label='bottom']
       .transparent-handle:after,
-    .affine-edgeless-selected-rect
+    .yunke-edgeless-selected-rect
       .handle[aria-label='left']
       .transparent-handle:after,
-    .affine-edgeless-selected-rect
+    .yunke-edgeless-selected-rect
       .handle[aria-label='right']
       .transparent-handle:after {
       opacity: 0;
     }
 
-    .affine-edgeless-selected-rect .handle[aria-label='left'] .resize:after,
-    .affine-edgeless-selected-rect .handle[aria-label='right'] .resize:after {
+    .yunke-edgeless-selected-rect .handle[aria-label='left'] .resize:after,
+    .yunke-edgeless-selected-rect .handle[aria-label='right'] .resize:after {
       top: calc(50% - 6px);
     }
 
-    .affine-edgeless-selected-rect .handle[aria-label='top'] .resize:after,
-    .affine-edgeless-selected-rect .handle[aria-label='bottom'] .resize:after {
+    .yunke-edgeless-selected-rect .handle[aria-label='top'] .resize:after,
+    .yunke-edgeless-selected-rect .handle[aria-label='bottom'] .resize:after {
       left: calc(50% - 6px);
     }
 
-    .affine-edgeless-selected-rect .handle[aria-label='left'] .resize:after {
+    .yunke-edgeless-selected-rect .handle[aria-label='left'] .resize:after {
       left: -0.5px;
     }
-    .affine-edgeless-selected-rect .handle[aria-label='right'] .resize:after {
+    .yunke-edgeless-selected-rect .handle[aria-label='right'] .resize:after {
       right: -0.5px;
     }
-    .affine-edgeless-selected-rect .handle[aria-label='top'] .resize:after {
+    .yunke-edgeless-selected-rect .handle[aria-label='top'] .resize:after {
       top: -0.5px;
     }
-    .affine-edgeless-selected-rect .handle[aria-label='bottom'] .resize:after {
+    .yunke-edgeless-selected-rect .handle[aria-label='bottom'] .resize:after {
       bottom: -0.5px;
     }
 
-    .affine-edgeless-selected-rect .handle .resize::before {
+    .yunke-edgeless-selected-rect .handle .resize::before {
       content: '';
       display: none;
       position: absolute;
@@ -273,10 +273,10 @@ export class EdgelessSelectedRectWidget extends WidgetComponent<RootBlockModel> 
       background-size: contain;
       background-repeat: no-repeat;
     }
-    .affine-edgeless-selected-rect[data-mode='scale']
+    .yunke-edgeless-selected-rect[data-mode='scale']
       .handle[aria-label='top-left']
       .resize:hover::before,
-    .affine-edgeless-selected-rect[data-scale-direction='top-left'][data-scale-percent]
+    .yunke-edgeless-selected-rect[data-scale-direction='top-left'][data-scale-percent]
       .handle[aria-label='top-left']
       .resize::before {
       display: block;
@@ -284,10 +284,10 @@ export class EdgelessSelectedRectWidget extends WidgetComponent<RootBlockModel> 
       left: 0px;
       transform: translate(-100%, -100%);
     }
-    .affine-edgeless-selected-rect[data-mode='scale']
+    .yunke-edgeless-selected-rect[data-mode='scale']
       .handle[aria-label='top-right']
       .resize:hover::before,
-    .affine-edgeless-selected-rect[data-scale-direction='top-right'][data-scale-percent]
+    .yunke-edgeless-selected-rect[data-scale-direction='top-right'][data-scale-percent]
       .handle[aria-label='top-right']
       .resize::before {
       display: block;
@@ -295,10 +295,10 @@ export class EdgelessSelectedRectWidget extends WidgetComponent<RootBlockModel> 
       right: 0px;
       transform: translate(100%, -100%) rotate(90deg);
     }
-    .affine-edgeless-selected-rect[data-mode='scale']
+    .yunke-edgeless-selected-rect[data-mode='scale']
       .handle[aria-label='bottom-right']
       .resize:hover::before,
-    .affine-edgeless-selected-rect[data-scale-direction='bottom-right'][data-scale-percent]
+    .yunke-edgeless-selected-rect[data-scale-direction='bottom-right'][data-scale-percent]
       .handle[aria-label='bottom-right']
       .resize::before {
       display: block;
@@ -306,10 +306,10 @@ export class EdgelessSelectedRectWidget extends WidgetComponent<RootBlockModel> 
       right: 0px;
       transform: translate(100%, 100%) rotate(180deg);
     }
-    .affine-edgeless-selected-rect[data-mode='scale']
+    .yunke-edgeless-selected-rect[data-mode='scale']
       .handle[aria-label='bottom-left']
       .resize:hover::before,
-    .affine-edgeless-selected-rect[data-scale-direction='bottom-left'][data-scale-percent]
+    .yunke-edgeless-selected-rect[data-scale-direction='bottom-left'][data-scale-percent]
       .handle[aria-label='bottom-left']
       .resize::before {
       display: block;
@@ -318,39 +318,39 @@ export class EdgelessSelectedRectWidget extends WidgetComponent<RootBlockModel> 
       transform: translate(-100%, 100%) rotate(-90deg);
     }
 
-    .affine-edgeless-selected-rect::after {
+    .yunke-edgeless-selected-rect::after {
       content: attr(data-scale-percent);
       display: none;
       position: absolute;
-      color: var(--affine-icon-color);
+      color: var(--yunke-icon-color);
       font-feature-settings:
         'clig' off,
         'liga' off;
-      font-family: var(--affine-font-family);
+      font-family: var(--yunke-font-family);
       font-size: 12px;
       font-style: normal;
       font-weight: 400;
       line-height: 24px;
     }
-    .affine-edgeless-selected-rect[data-scale-direction='top-left']::after {
+    .yunke-edgeless-selected-rect[data-scale-direction='top-left']::after {
       display: block;
       top: -20px;
       left: -20px;
       transform: translate(-100%, -100%);
     }
-    .affine-edgeless-selected-rect[data-scale-direction='top-right']::after {
+    .yunke-edgeless-selected-rect[data-scale-direction='top-right']::after {
       display: block;
       top: -20px;
       right: -20px;
       transform: translate(100%, -100%);
     }
-    .affine-edgeless-selected-rect[data-scale-direction='bottom-right']::after {
+    .yunke-edgeless-selected-rect[data-scale-direction='bottom-right']::after {
       display: block;
       bottom: -20px;
       right: -20px;
       transform: translate(100%, 100%);
     }
-    .affine-edgeless-selected-rect[data-scale-direction='bottom-left']::after {
+    .yunke-edgeless-selected-rect[data-scale-direction='bottom-left']::after {
       display: block;
       bottom: -20px;
       left: -20px;
@@ -724,7 +724,7 @@ export class EdgelessSelectedRectWidget extends WidgetComponent<RootBlockModel> 
               width: `${w * this.zoom}px`,
               height: `${h * this.zoom}px`,
               transform: `rotate(${element.rotate}deg)`,
-              border: `1px solid var(--affine-primary-color)`,
+              border: `1px solid var(--yunke-primary-color)`,
             };
             return html`<div
               class="element-handle"
@@ -768,7 +768,7 @@ export class EdgelessSelectedRectWidget extends WidgetComponent<RootBlockModel> 
 
     return html`
       <style>
-        .affine-edgeless-selected-rect .handle[aria-label='right']::after {
+        .yunke-edgeless-selected-rect .handle[aria-label='right']::after {
           content: '';
           display: ${this._isWidthLimit ? 'initial' : 'none'};
           position: absolute;
@@ -776,11 +776,11 @@ export class EdgelessSelectedRectWidget extends WidgetComponent<RootBlockModel> 
           left: 1.5px;
           width: 2px;
           height: 100%;
-          background: var(--affine-error-color);
+          background: var(--yunke-error-color);
           filter: drop-shadow(-6px 0px 12px rgba(235, 67, 53, 0.35));
         }
 
-        .affine-edgeless-selected-rect .handle[aria-label='bottom']::after {
+        .yunke-edgeless-selected-rect .handle[aria-label='bottom']::after {
           content: '';
           display: ${this._isHeightLimit ? 'initial' : 'none'};
           position: absolute;
@@ -788,7 +788,7 @@ export class EdgelessSelectedRectWidget extends WidgetComponent<RootBlockModel> 
           left: 0px;
           width: 100%;
           height: 2px;
-          background: var(--affine-error-color);
+          background: var(--yunke-error-color);
           filter: drop-shadow(-6px 0px 12px rgba(235, 67, 53, 0.35));
         }
       </style>
@@ -796,7 +796,7 @@ export class EdgelessSelectedRectWidget extends WidgetComponent<RootBlockModel> 
       ${this._renderAutoComplete()}
 
       <div
-        class="affine-edgeless-selected-rect"
+        class="yunke-edgeless-selected-rect"
         style=${styleMap({
           width: `${_selectedRect.width}px`,
           height: `${_selectedRect.height}px`,

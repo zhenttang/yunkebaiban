@@ -1,6 +1,6 @@
 import type { DNDData } from '@yunke/component';
 
-export type AffineDNDEntity =
+export type YunkeDNDEntity =
   | {
       type: 'doc';
       id: string;
@@ -22,9 +22,9 @@ export type AffineDNDEntity =
       id: string;
     };
 
-export interface AffineDNDData extends DNDData {
+export interface YunkeDNDData extends DNDData {
   draggable: {
-    entity?: AffineDNDEntity;
+    entity?: YunkeDNDEntity;
     from?:
       | {
           at: 'navigation-panel:organize:folder-node';

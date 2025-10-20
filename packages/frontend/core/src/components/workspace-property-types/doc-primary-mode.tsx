@@ -50,12 +50,12 @@ export const DocPrimaryModeValue = ({
       notify.success({
         title:
           mode === 'page'
-            ? t['com.affine.toastMessage.defaultMode.page.title']()
-            : t['com.affine.toastMessage.defaultMode.edgeless.title'](),
+            ? t['com.yunke.toastMessage.defaultMode.page.title']()
+            : t['com.yunke.toastMessage.defaultMode.edgeless.title'](),
         message:
           mode === 'page'
-            ? t['com.affine.toastMessage.defaultMode.page.message']()
-            : t['com.affine.toastMessage.defaultMode.edgeless.message'](),
+            ? t['com.yunke.toastMessage.defaultMode.page.message']()
+            : t['com.yunke.toastMessage.defaultMode.edgeless.message'](),
       });
       onChange?.(mode, true);
     },
@@ -157,9 +157,9 @@ export const DocPrimaryModeGroupHeader = ({
   const t = useI18n();
   const text =
     groupId === 'edgeless'
-      ? t['com.affine.edgelessMode']()
+      ? t['com.yunke.edgelessMode']()
       : groupId === 'page'
-        ? t['com.affine.pageMode']()
+        ? t['com.yunke.pageMode']()
         : '默认';
 
   return (

@@ -38,7 +38,7 @@ interface WorkspaceQuotaType {
 
 type QuotaType = WorkspaceQuotaType;
 
-const logger = new DebugLogger('affine:workspace-permission');
+const logger = new DebugLogger('yunke:workspace-permission');
 
 export class WorkspaceQuota extends Entity {
   quota$ = new LiveData<QuotaType | null>(null);

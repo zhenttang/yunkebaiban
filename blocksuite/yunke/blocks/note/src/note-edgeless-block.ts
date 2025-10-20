@@ -27,7 +27,7 @@ import { NoteBlockComponent } from './note-block';
 import { ACTIVE_NOTE_EXTRA_PADDING } from './note-edgeless-block.css';
 import * as styles from './note-edgeless-block.css';
 
-export const AFFINE_EDGELESS_NOTE = 'affine-edgeless-note';
+export const YUNKE_EDGELESS_NOTE = 'yunke-edgeless-note';
 
 export class EdgelessNoteBlockComponent extends toGfxBlockComponent(
   NoteBlockComponent
@@ -369,7 +369,7 @@ export class EdgelessNoteBlockComponent extends toGfxBlockComponent(
 
 declare global {
   interface HTMLElementTagNameMap {
-    [AFFINE_EDGELESS_NOTE]: EdgelessNoteBlockComponent;
+    [YUNKE_EDGELESS_NOTE]: EdgelessNoteBlockComponent;
   }
 }
 
@@ -466,7 +466,7 @@ export const EdgelessNoteInteraction =
                     }
                   } else {
                     const rect = view
-                      .querySelector('.affine-block-children-container')
+                      .querySelector('.yunke-block-children-container')
                       ?.getBoundingClientRect();
 
                     if (rect) {

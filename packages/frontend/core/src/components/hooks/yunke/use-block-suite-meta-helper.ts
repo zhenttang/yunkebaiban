@@ -1,4 +1,4 @@
-import { useAsyncCallback } from '@yunke/core/components/hooks/affine-async-hooks';
+import { useAsyncCallback } from '@yunke/core/components/hooks/yunke-async-hooks';
 import { DocsService } from '@yunke/core/modules/doc';
 import { WorkspaceService } from '@yunke/core/modules/workspace';
 import { useService } from '@toeverything/infra';

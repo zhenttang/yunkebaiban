@@ -1,27 +1,27 @@
 import { CodeBlockComponent } from './code-block';
 import {
-  AFFINE_CODE_TOOLBAR_WIDGET,
-  AffineCodeToolbarWidget,
+  YUNKE_CODE_TOOLBAR_WIDGET,
+  YunkeCodeToolbarWidget,
 } from './code-toolbar';
-import { AffineCodeToolbar } from './code-toolbar/components/code-toolbar';
+import { YunkeCodeToolbar } from './code-toolbar/components/code-toolbar';
 import { LanguageListButton } from './code-toolbar/components/lang-button';
 import { PreviewButton } from './code-toolbar/components/preview-button';
-import { AffineCodeUnit } from './highlight/affine-code-unit';
+import { YunkeCodeUnit } from './highlight/yunke-code-unit';
 
 export function effects() {
   customElements.define('language-list-button', LanguageListButton);
-  customElements.define('affine-code-toolbar', AffineCodeToolbar);
-  customElements.define(AFFINE_CODE_TOOLBAR_WIDGET, AffineCodeToolbarWidget);
-  customElements.define('affine-code-unit', AffineCodeUnit);
-  customElements.define('affine-code', CodeBlockComponent);
+  customElements.define('yunke-code-toolbar', YunkeCodeToolbar);
+  customElements.define(YUNKE_CODE_TOOLBAR_WIDGET, YunkeCodeToolbarWidget);
+  customElements.define('yunke-code-unit', YunkeCodeUnit);
+  customElements.define('yunke-code', CodeBlockComponent);
   customElements.define('preview-button', PreviewButton);
 }
 
 declare global {
   interface HTMLElementTagNameMap {
     'language-list-button': LanguageListButton;
-    'affine-code-toolbar': AffineCodeToolbar;
+    'yunke-code-toolbar': YunkeCodeToolbar;
     'preview-button': PreviewButton;
-    [AFFINE_CODE_TOOLBAR_WIDGET]: AffineCodeToolbarWidget;
+    [YUNKE_CODE_TOOLBAR_WIDGET]: YunkeCodeToolbarWidget;
   }
 }

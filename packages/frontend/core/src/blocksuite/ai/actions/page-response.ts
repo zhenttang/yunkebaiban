@@ -26,7 +26,7 @@ import { type BlockProps, Text } from '@blocksuite/yunke/store';
 import * as Y from 'yjs';
 
 import { getAIPanelWidget } from '../utils/ai-widgets';
-import type { AffineNode, AIContext } from '../utils/context';
+import type { YunkeNode, AIContext } from '../utils/context';
 import { insertAbove, insertBelow, replace } from '../utils/editor-actions';
 import { preprocessHtml } from '../utils/html';
 import { fetchImageToFile } from '../utils/image';
@@ -123,14 +123,14 @@ function responseToMakeItReal(host: EditorHost, ctx: AIContext, place: Place) {
     );
     if (ifUseCodeBlock) {
       const note = host.store.addBlock(
-        'affine:note',
+        'yunke:note',
         {
           xywh: htmlBound.serialize(),
         },
         host.store.root
       );
       host.store.addBlock(
-        'affine:code',
+        'yunke:code',
         { text: new Text(html), language: 'html', preview: true },
         note
       );
@@ -138,7 +138,7 @@ function responseToMakeItReal(host: EditorHost, ctx: AIContext, place: Place) {
       addSurfaceRefBlock(host, frameBound, place);
     } else {
       host.store.addBlock(
-        'affine:embed-html',
+        'yunke:embed-html',
         {
           html,
           design: 'ai:makeItReal', // as tag
@@ -179,8 +179,8 @@ async function responseToCreateSlides(
       frame && frameIds.push(frame.id);
     }
     const props = frameIds.map(id => ({
-      flavour: 'affine:surface-ref',
-      refFlavour: 'affine:frame',
+      flavour: 'yunke:surface-ref',
+      refFlavour: 'yunke:frame',
       reference: id,
     }));
     addSiblingBlocks(host, props, place);
@@ -286,7 +286,7 @@ function addSurfaceRefBlock(host: EditorHost, bound: Bound, place: Place) {
   const surface = getSurfaceBlock(host.store);
   if (!surface) return;
   const frame = host.store.addBlock(
-    'affine:frame',
+    'yunke:frame',
     {
       title: new Text(new Y.Text('Frame')),
       xywh: bound.serialize(),
@@ -295,8 +295,8 @@ function addSurfaceRefBlock(host: EditorHost, bound: Bound, place: Place) {
     surface
   );
   const props = {
-    flavour: 'affine:surface-ref',
-    refFlavour: 'affine:frame',
+    flavour: 'yunke:surface-ref',
+    refFlavour: 'yunke:frame',
     reference: frame,
   };
   return addSiblingBlocks(host, [props], place);
@@ -320,8 +320,8 @@ function addSiblingBlocks(
   return host.store.addSiblingBlocks(targetModel, props, place);
 }
 
-function findFrameObject(obj: AffineNode): AffineNode | null {
-  if (obj.flavour === 'affine:frame') {
+function findFrameObject(obj: YunkeNode): YunkeNode | null {
+  if (obj.flavour === 'yunke:frame') {
     return obj;
   }
 

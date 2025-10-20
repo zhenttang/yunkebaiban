@@ -8,7 +8,7 @@ import { DebugLogger } from '@yunke/debug';
 // import { AiJobStatus } from '@yunke/graphql';
 import track from '@yunke/track';
 import type { AttachmentBlockModel } from '@blocksuite/yunke/model';
-import type { AffineTextAttributes } from '@blocksuite/yunke/shared/types';
+import type { YunkeTextAttributes } from '@blocksuite/yunke/shared/types';
 import { type DeltaInsert, Text } from '@blocksuite/yunke/store';
 import { computed } from '@preact/signals-core';
 import { Entity, LiveData } from '@toeverything/infra';
@@ -114,7 +114,7 @@ export class AudioAttachmentBlock extends Entity<AttachmentBlockModel> {
     if (!transcriptionBlockProps) {
       // transcription block is not created yet, we need to create it
       this.props.store.addBlock(
-        'affine:transcription',
+        'yunke:transcription',
         {
           transcription: {},
         },
@@ -180,14 +180,14 @@ export class AudioAttachmentBlock extends Entity<AttachmentBlockModel> {
       collapsed: boolean = false
     ) => {
       const calloutId = this.props.store.addBlock(
-        'affine:callout',
+        'yunke:callout',
         {
           emoji,
         },
         this.transcriptionBlock$.value?.id
       );
       this.props.store.addBlock(
-        'affine:paragraph',
+        'yunke:paragraph',
         {
           type: 'h6',
           collapsed,
@@ -211,7 +211,7 @@ export class AudioAttachmentBlock extends Entity<AttachmentBlockModel> {
           color = colorOptions[speakerToColors.size % colorOptions.length];
           speakerToColors.set(segment.speaker, color);
         }
-        const deltaInserts: DeltaInsert<AffineTextAttributes>[] = [
+        const deltaInserts: DeltaInsert<YunkeTextAttributes>[] = [
           {
             insert: sanitizeText(segment.start + ' ' + segment.speaker),
             attributes: {
@@ -224,7 +224,7 @@ export class AudioAttachmentBlock extends Entity<AttachmentBlockModel> {
           },
         ];
         this.props.store.addBlock(
-          'affine:paragraph',
+          'yunke:paragraph',
           {
             text: new Text(deltaInserts),
           },

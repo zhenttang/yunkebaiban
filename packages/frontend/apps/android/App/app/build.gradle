@@ -17,14 +17,14 @@ plugins {
 apply from: 'capacitor.build.gradle'
 
 android {
-    namespace "app.affine.pro"
+    namespace "app.yunke.pro"
     compileSdk rootProject.ext.compileSdkVersion
     def ndkDir = new File(sdkDirectory, "ndk")
     if (ndkDir.exists() && ndkDir.listFiles() != null) {
         ndkVersion = ndkDir.listFiles().sort().last().name
     }
     defaultConfig {
-        applicationId "app.affine.pro"
+        applicationId "app.yunke.pro"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
@@ -140,7 +140,7 @@ dependencies {
 
 // cargo {
 //     module = "../../../../mobile-native"
-//     libname = "affine_mobile_native"
+//     libname = "yunke_mobile_native"
 //     features {
 //         defaultAnd("use-as-lib")
 //     }
@@ -148,7 +148,7 @@ dependencies {
 //     pythonCommand = "python3"
 //     targetDirectory = "../../../../../../target"
 //     apiLevel = 28
-//     targetIncludes = ["libaffine_mobile_native.so"]
+//     targetIncludes = ["libyunke_mobile_native.so"]
 //     profile = "release"
 // }
 
@@ -176,7 +176,7 @@ kotlin {
 //     def t = tasks.register("generate${variant.name.capitalize()}UniFFIBindings", Exec) {
 //         workingDir "${project.projectDir}"
 //         // Runs the bindings generation, note that you must have uniffi-bindgen installed and in your PATH environment variable
-//         commandLine 'cargo', 'run', '--bin', 'uniffi-bindgen', 'generate', '--library', "${buildDir}/rustJniLibs/android/arm64-v8a/libaffine_mobile_native.so", '--language', 'kotlin', '--out-dir', "${project.projectDir}/src/main/java"
+//         commandLine 'cargo', 'run', '--bin', 'uniffi-bindgen', 'generate', '--library', "${buildDir}/rustJniLibs/android/arm64-v8a/libyunke_mobile_native.so", '--language', 'kotlin', '--out-dir', "${project.projectDir}/src/main/java"
 //         dependsOn("cargoBuild")
 //     }
 //     variant.javaCompileProvider.get().dependsOn(t)

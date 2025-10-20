@@ -69,7 +69,7 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/toeverything/blocksuite.git",
-    "directory": "packages/affine/layout/packages/components"
+    "directory": "packages/yunke/layout/packages/components"
   },
   "publishConfig": {
     "access": "public",

@@ -648,18 +648,18 @@ export class ImageBlockComponent extends CaptionedBlockComponent<ImageBlockModel
     });
 
     return html`
-      <div class="affine-image-container" style=${containerStyleMap}>
+      <div class="yunke-image-container" style=${containerStyleMap}>
         ${when(
           blobUrl,
           () =>
-            html`<affine-page-image
+            html`<yunke-page-image
               .block=${this}
               .state=${resovledState}
-            ></affine-page-image>`,
+            ></yunke-page-image>`,
           () =>
-            html`<affine-image-fallback-card
+            html`<yunke-image-fallback-card
               .state=${resovledState}
-            ></affine-image-fallback-card>`
+            ></yunke-image-fallback-card>`
         )}
       </div>
 
@@ -674,10 +674,10 @@ export class ImageBlockComponent extends CaptionedBlockComponent<ImageBlockModel
 
   override accessor blockContainerStyles = { margin: '18px 0' };
 
-  @query('affine-page-image')
+  @query('yunke-page-image')
   private accessor pageImage: ImageBlockPageComponent | null = null;
 
-  @query('.affine-image-container')
+  @query('.yunke-image-container')
   accessor hoverableContainer!: HTMLDivElement;
 
   override accessor useCaptionEditor = true;
@@ -687,6 +687,6 @@ export class ImageBlockComponent extends CaptionedBlockComponent<ImageBlockModel
 
 declare global {
   interface HTMLElementTagNameMap {
-    'affine-image': ImageBlockComponent;
+    'yunke-image': ImageBlockComponent;
   }
 }

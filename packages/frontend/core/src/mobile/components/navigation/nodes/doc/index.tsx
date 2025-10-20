@@ -159,7 +159,7 @@ export const NavigationPanelDocNode = ({
         {canEdit =>
           canEdit ? (
             <AddItemPlaceholder
-              label={t['com.affine.rootAppSidebar.explorer.doc-add-tooltip']()}
+              label={t['com.yunke.rootAppSidebar.explorer.doc-add-tooltip']()}
               onClick={handleAddLinkedPage}
             />
           ) : null

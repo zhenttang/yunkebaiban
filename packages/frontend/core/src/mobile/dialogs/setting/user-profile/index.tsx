@@ -1,5 +1,5 @@
 import { Avatar } from '@yunke/component';
-import { useSignOut } from '@yunke/core/components/hooks/affine/use-sign-out';
+import { useSignOut } from '@yunke/core/components/hooks/yunke/use-sign-out';
 import { AuthService } from '@yunke/core/modules/cloud';
 import { GlobalDialogService } from '@yunke/core/modules/dialogs';
 import { ArrowRightSmallIcon } from '@blocksuite/icons/rc';
@@ -81,7 +81,7 @@ const UnauthorizedUserProfile = () => {
       onClick={() => globalDialogService.open('sign-in', {})}
       avatar={<Avatar size={48} rounded={4} />}
                 title="注册 / 登录"
-          caption="与 AFFiNE 云端同步"
+          caption="与 YUNKE 云端同步"
     />
   );
 };

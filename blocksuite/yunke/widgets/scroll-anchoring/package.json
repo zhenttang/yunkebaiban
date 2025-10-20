@@ -1,6 +1,6 @@
 {
   "name": "@blocksuite/yunke-widget-scroll-anchoring",
-  "description": "Affine scroll anchoring widget.",
+  "description": "Yunke scroll anchoring widget.",
   "type": "module",
   "scripts": {
     "build": "tsc"

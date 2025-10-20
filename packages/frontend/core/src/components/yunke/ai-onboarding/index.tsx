@@ -1,6 +1,6 @@
 import { Suspense, useCallback, useEffect, useState } from 'react';
 
-import { useEnableAI } from '../../hooks/affine/use-enable-ai';
+import { useEnableAI } from '../../hooks/yunke/use-enable-ai';
 import { AIOnboardingEdgeless } from './edgeless.dialog';
 import { AIOnboardingLocal } from './local.dialog';
 import { AIOnboardingType } from './type';

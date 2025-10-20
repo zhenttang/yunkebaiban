@@ -3,13 +3,13 @@ import { css, html } from 'lit';
 
 export class IconCell extends BaseCellRenderer<string> {
   static override styles = css`
-    affine-database-image-cell {
+    yunke-database-image-cell {
       width: 100%;
       height: 100%;
       display: flex;
       align-items: center;
     }
-    affine-database-image-cell img {
+    yunke-database-image-cell img {
       width: 20px;
       height: 20px;
     }

@@ -47,17 +47,17 @@ import type { DataViewBlockModel } from './data-view-model.js';
 
 export class DataViewBlockComponent extends CaptionedBlockComponent<DataViewBlockModel> {
   static override styles = css`
-    ${unsafeCSS(dataViewCommonStyle('affine-database'))}
-    affine-database {
+    ${unsafeCSS(dataViewCommonStyle('yunke-database'))}
+    yunke-database {
       display: block;
       border-radius: 8px;
-      background-color: var(--affine-background-primary-color);
+      background-color: var(--yunke-background-primary-color);
       padding: 8px;
       margin: 8px -8px -8px;
     }
 
     .database-block-selected {
-      background-color: var(--affine-hover-color);
+      background-color: var(--yunke-hover-color);
       border-radius: 4px;
     }
 
@@ -71,11 +71,11 @@ export class DataViewBlockComponent extends CaptionedBlockComponent<DataViewBloc
     .database-ops svg {
       width: 16px;
       height: 16px;
-      color: var(--affine-icon-color);
+      color: var(--yunke-icon-color);
     }
 
     .database-ops:hover {
-      background-color: var(--affine-hover-color);
+      background-color: var(--yunke-hover-color);
     }
 
     @media print {
@@ -313,6 +313,6 @@ export class DataViewBlockComponent extends CaptionedBlockComponent<DataViewBloc
 
 declare global {
   interface HTMLElementTagNameMap {
-    'affine-data-view': DataViewBlockComponent;
+    'yunke-data-view': DataViewBlockComponent;
   }
 }

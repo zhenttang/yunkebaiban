@@ -9,15 +9,15 @@ export const quickMenuButton = style({
   borderRadius: '8px',
   cursor: 'pointer',
   transition: 'all 0.2s',
-  color: 'var(--affine-icon-color)',
+  color: 'var(--yunke-icon-color)',
   ':hover': {
-    backgroundColor: 'var(--affine-hover-color)',
-    color: 'var(--affine-primary-color)',
+    backgroundColor: 'var(--yunke-hover-color)',
+    color: 'var(--yunke-primary-color)',
   },
   selectors: {
     '&[data-active="true"]': {
-      backgroundColor: 'var(--affine-hover-color)',
-      color: 'var(--affine-primary-color)',
+      backgroundColor: 'var(--yunke-hover-color)',
+      color: 'var(--yunke-primary-color)',
     },
   },
 });

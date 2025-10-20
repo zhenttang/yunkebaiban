@@ -77,7 +77,7 @@ const EmbeddingCloud: React.FC<{ disabled: boolean }> = ({ disabled }) => {
         notify.error({
           title:
             t[
-              'com.affine.settings.workspace.indexer-embedding.embedding.switch.error'
+              'com.yunke.settings.workspace.indexer-embedding.embedding.switch.error'
             ](),
           message: t[`error.${err.name}`](err.data),
         });
@@ -107,7 +107,7 @@ const EmbeddingCloud: React.FC<{ disabled: boolean }> = ({ disabled }) => {
           notify.error({
             title:
               t[
-                'com.affine.settings.workspace.indexer-embedding.embedding.remove-attachment.error'
+                'com.yunke.settings.workspace.indexer-embedding.embedding.remove-attachment.error'
               ](),
             message: t[`error.${err.name}`](err.data),
           });
@@ -153,7 +153,7 @@ const EmbeddingCloud: React.FC<{ disabled: boolean }> = ({ disabled }) => {
             notify.error({
               title:
                 t[
-                  'com.affine.settings.workspace.indexer-embedding.embedding.update-ignored-docs.error'
+                  'com.yunke.settings.workspace.indexer-embedding.embedding.update-ignored-docs.error'
                 ](),
               message: t[`error.${err.name}`](err.data),
             });
@@ -196,10 +196,10 @@ const EmbeddingCloud: React.FC<{ disabled: boolean }> = ({ disabled }) => {
     >
       <SettingRow
         name={t[
-          'com.affine.settings.workspace.indexer-embedding.embedding.switch.title'
+          'com.yunke.settings.workspace.indexer-embedding.embedding.switch.title'
         ]()}
         desc={t[
-          'com.affine.settings.workspace.indexer-embedding.embedding.switch.description'
+          'com.yunke.settings.workspace.indexer-embedding.embedding.switch.description'
         ]()}
       >
         <Switch
@@ -213,7 +213,7 @@ const EmbeddingCloud: React.FC<{ disabled: boolean }> = ({ disabled }) => {
         <>
           <SettingRow
             name={t[
-              'com.affine.settings.workspace.indexer-embedding.embedding.progress.title'
+              'com.yunke.settings.workspace.indexer-embedding.embedding.progress.title'
             ]()}
             style={{ marginBottom: '0px' }}
           />
@@ -224,10 +224,10 @@ const EmbeddingCloud: React.FC<{ disabled: boolean }> = ({ disabled }) => {
 
       <SettingRow
         name={t[
-          'com.affine.settings.workspace.indexer-embedding.embedding.additional-attachments.title'
+          'com.yunke.settings.workspace.indexer-embedding.embedding.additional-attachments.title'
         ]()}
         desc={t[
-          'com.affine.settings.workspace.indexer-embedding.embedding.additional-attachments.description'
+          'com.yunke.settings.workspace.indexer-embedding.embedding.additional-attachments.description'
         ]()}
       >
         <Upload fileChange={handleAttachmentUpload}>
@@ -236,7 +236,7 @@ const EmbeddingCloud: React.FC<{ disabled: boolean }> = ({ disabled }) => {
             variant="primary"
           >
             {t[
-              'com.affine.settings.workspace.indexer-embedding.embedding.upload-file'
+              'com.yunke.settings.workspace.indexer-embedding.embedding.upload-file'
             ]()}
           </Button>
         </Upload>
@@ -254,10 +254,10 @@ const EmbeddingCloud: React.FC<{ disabled: boolean }> = ({ disabled }) => {
 
       <SettingRow
         name={t[
-          'com.affine.settings.workspace.indexer-embedding.embedding.ignore-docs.title'
+          'com.yunke.settings.workspace.indexer-embedding.embedding.ignore-docs.title'
         ]()}
         desc={t[
-          'com.affine.settings.workspace.indexer-embedding.embedding.ignore-docs.description'
+          'com.yunke.settings.workspace.indexer-embedding.embedding.ignore-docs.description'
         ]()}
       >
         <Button
@@ -266,7 +266,7 @@ const EmbeddingCloud: React.FC<{ disabled: boolean }> = ({ disabled }) => {
           onClick={handleSelectDoc}
         >
           {t[
-            'com.affine.settings.workspace.indexer-embedding.embedding.select-doc'
+            'com.yunke.settings.workspace.indexer-embedding.embedding.select-doc'
           ]()}
         </Button>
       </SettingRow>
@@ -298,17 +298,17 @@ export const EmbeddingSettings: React.FC<EmbeddingSettingsProps> = () => {
         content={
           !isEmbeddingEnabled &&
           t[
-            'com.affine.settings.workspace.indexer-embedding.embedding.disabled-tooltip'
+            'com.yunke.settings.workspace.indexer-embedding.embedding.disabled-tooltip'
           ]()
         }
       >
         <SettingHeader
           data-testid="workspace-embedding-setting-header"
           title={t[
-            'com.affine.settings.workspace.indexer-embedding.embedding.title'
+            'com.yunke.settings.workspace.indexer-embedding.embedding.title'
           ]()}
           subtitle={t[
-            'com.affine.settings.workspace.indexer-embedding.embedding.description'
+            'com.yunke.settings.workspace.indexer-embedding.embedding.description'
           ]()}
         />
       </Tooltip>

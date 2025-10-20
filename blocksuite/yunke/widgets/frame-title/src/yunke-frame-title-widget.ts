@@ -3,19 +3,19 @@ import { WidgetComponent, WidgetViewExtension } from '@blocksuite/std';
 import { html } from 'lit';
 import { literal, unsafeStatic } from 'lit/static-html.js';
 
-export const AFFINE_FRAME_TITLE_WIDGET = 'affine-frame-title-widget';
+export const YUNKE_FRAME_TITLE_WIDGET = 'yunke-frame-title-widget';
 
-export class AffineFrameTitleWidget extends WidgetComponent<FrameBlockModel> {
+export class YunkeFrameTitleWidget extends WidgetComponent<FrameBlockModel> {
   override render() {
-    return html`<affine-frame-title
+    return html`<yunke-frame-title
       .model=${this.model}
       data-id=${this.model.id}
-    ></affine-frame-title>`;
+    ></yunke-frame-title>`;
   }
 }
 
 export const frameTitleWidget = WidgetViewExtension(
   'yunke:frame',
-  AFFINE_FRAME_TITLE_WIDGET,
-  literal`${unsafeStatic(AFFINE_FRAME_TITLE_WIDGET)}`
+  YUNKE_FRAME_TITLE_WIDGET,
+  literal`${unsafeStatic(YUNKE_FRAME_TITLE_WIDGET)}`
 );

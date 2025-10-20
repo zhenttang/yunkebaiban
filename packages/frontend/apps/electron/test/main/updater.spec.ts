@@ -18,9 +18,9 @@ import {
 } from 'vitest';
 
 import {
-  AFFiNEUpdateProvider,
+  YUNKEUpdateProvider,
   availableForMyPlatformAndInstaller,
-} from '../../src/main/updater/affine-update-provider';
+} from '../../src/main/updater/yunke-update-provider';
 import { MockedAppAdapter, MockedUpdater } from './mocks';
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url));
@@ -39,7 +39,7 @@ describe('客户端更新测试', () => {
   ];
 
   const basicRequestHandlers = [
-    http.get('https://affine.pro/api/worker/releases', async ({ request }) => {
+    http.get('https://yunke.pro/api/worker/releases', async ({ request }) => {
       const url = new URL(request.url);
       const buffer = await fs.readFile(
         path.join(
@@ -56,7 +56,7 @@ describe('客户端更新测试', () => {
       expectReleaseList.map(({ version }) => {
         return [
           http.get(
-            `https://github.com/toeverything/AFFiNE/releases/download/v${version}/latest.yml`,
+            `https://github.com/toeverything/YUNKE/releases/download/v${version}/latest.yml`,
             async req => {
               const buffer = await fs.readFile(
                 path.join(
@@ -88,7 +88,7 @@ describe('客户端更新测试', () => {
         const updater = new MockedUpdater(null, app);
 
         updater.setFeedURL(
-          AFFiNEUpdateProvider.configFeed({
+          YUNKEUpdateProvider.configFeed({
             channel: buildType as any,
           })
         );
@@ -120,7 +120,7 @@ describe('客户端更新测试', () => {
         const files = parseUpdateInfo(
           data,
           '',
-          new URL('https://affine.pro')
+          new URL('https://yunke.pro')
         ).files.map(file => file.url);
 
         it(`filter for platform [${platform}] arch [${arch}]`, () => {

@@ -86,7 +86,7 @@ function getIndexLabelTooltip(icon: TemplateResult, content: string) {
     }
 
     .index-label-tooltip-content {
-      font-size: var(--affine-font-sm);
+      font-size: var(--yunke-font-sm);
 
       display: flex;
       height: 16px;
@@ -111,8 +111,8 @@ function isAutoConnectElement(element: unknown): element is AutoConnectElement {
   );
 }
 
-export const AFFINE_EDGELESS_AUTO_CONNECT_WIDGET =
-  'affine-edgeless-auto-connect-widget';
+export const YUNKE_EDGELESS_AUTO_CONNECT_WIDGET =
+  'yunke-edgeless-auto-connect-widget';
 
 export class EdgelessAutoConnectWidget extends WidgetComponent<RootBlockModel> {
   static override styles = css`
@@ -125,7 +125,7 @@ export class EdgelessAutoConnectWidget extends WidgetComponent<RootBlockModel> {
       height: 24px;
       min-width: 24px;
 
-      color: var(--affine-white);
+      color: var(--yunke-white);
       font-size: 15px;
       line-height: 22px;
       text-align: center;
@@ -134,7 +134,7 @@ export class EdgelessAutoConnectWidget extends WidgetComponent<RootBlockModel> {
       user-select: none;
 
       border-radius: 25px;
-      background: var(--affine-primary-color);
+      background: var(--yunke-primary-color);
     }
 
     .navigator {
@@ -163,7 +163,7 @@ export class EdgelessAutoConnectWidget extends WidgetComponent<RootBlockModel> {
     }
 
     .navigator div:hover {
-      background: var(--affine-hover-color);
+      background: var(--yunke-hover-color);
     }
 
     .navigator.show {
@@ -249,9 +249,9 @@ export class EdgelessAutoConnectWidget extends WidgetComponent<RootBlockModel> {
           width: `${EDGELESS_ONLY_INDEX_LABEL_WIDTH}px`,
           height: `${EDGELESS_ONLY_INDEX_LABEL_HEIGHT}px`,
           borderRadius: '50%',
-          backgroundColor: 'var(--affine-text-secondary-color)',
-          border: '1px solid var(--affine-border-color)',
-          color: 'var(--affine-white)',
+          backgroundColor: 'var(--yunke-text-secondary-color)',
+          border: '1px solid var(--yunke-border-color)',
+          color: 'var(--yunke-white)',
           position: 'absolute',
           transform: `translate(${
             left + width / 2 - EDGELESS_ONLY_INDEX_LABEL_WIDTH / 2
@@ -264,9 +264,9 @@ export class EdgelessAutoConnectWidget extends WidgetComponent<RootBlockModel> {
 
         return html`<div style=${style} class="edgeless-only-index-label">
           ${InvisibleIcon({ width: '20px', height: '20px' })}
-          <affine-tooltip tip-position="bottom">
+          <yunke-tooltip tip-position="bottom">
             ${getIndexLabelTooltip(SmallDocIcon, 'Hidden on page')}
-          </affine-tooltip>
+          </yunke-tooltip>
         </div>`;
       }
     )}`;
@@ -485,9 +485,9 @@ export class EdgelessAutoConnectWidget extends WidgetComponent<RootBlockModel> {
               }}
             >
               ${index}
-              <affine-tooltip tip-position="bottom">
+              <yunke-tooltip tip-position="bottom">
                 ${getIndexLabelTooltip(SmallDocIcon, 'Page mode index')}
-              </affine-tooltip>
+              </yunke-tooltip>
             </div>
           `);
         }
@@ -623,12 +623,12 @@ export class EdgelessAutoConnectWidget extends WidgetComponent<RootBlockModel> {
 
 export const autoConnectWidget = WidgetViewExtension(
   'yunke:page',
-  AFFINE_EDGELESS_AUTO_CONNECT_WIDGET,
-  literal`${unsafeStatic(AFFINE_EDGELESS_AUTO_CONNECT_WIDGET)}`
+  YUNKE_EDGELESS_AUTO_CONNECT_WIDGET,
+  literal`${unsafeStatic(YUNKE_EDGELESS_AUTO_CONNECT_WIDGET)}`
 );
 
 declare global {
   interface HTMLElementTagNameMap {
-    'affine-edgeless-auto-connect-widget': EdgelessAutoConnectWidget;
+    'yunke-edgeless-auto-connect-widget': EdgelessAutoConnectWidget;
   }
 }

@@ -10,7 +10,7 @@ import { DocRole } from '@yunke/core/modules/share-doc/types';
 import track from '@yunke/track';
 import type { DocMode } from '@blocksuite/yunke/model';
 import { DocModeProvider } from '@blocksuite/yunke/shared/services';
-import type { AffineInlineEditor } from '@blocksuite/yunke/shared/types';
+import type { YunkeInlineEditor } from '@blocksuite/yunke/shared/types';
 import {
   BLOCK_ID_ATTR,
   type BlockComponent,
@@ -88,7 +88,7 @@ export class AtMenuConfigService extends Service {
     };
   }
 
-  private insertDoc(inlineEditor: AffineInlineEditor, id: string) {
+  private insertDoc(inlineEditor: YunkeInlineEditor, id: string) {
     LinkedWidgetUtils.insertLinkedNode({
       inlineEditor,
       docId: id,
@@ -121,7 +121,7 @@ export class AtMenuConfigService extends Service {
     query: string,
     close: () => void,
     editorHost: EditorHost,
-    inlineEditor: AffineInlineEditor
+    inlineEditor: YunkeInlineEditor
   ): LinkedMenuGroup {
     const originalNewDocMenuGroup = LinkedWidgetUtils.createNewDocMenuGroup(
       query,
@@ -154,7 +154,7 @@ export class AtMenuConfigService extends Service {
       {
         key: RESERVED_ITEM_KEYS.createPage,
         icon: NewXxxPageIcon(),
-        name: I18n.t('com.affine.editor.at-menu.create-page', {
+        name: I18n.t('com.yunke.editor.at-menu.create-page', {
           name: query || I18n.t('Untitled'),
         }),
         action: () => {
@@ -169,7 +169,7 @@ export class AtMenuConfigService extends Service {
       {
         key: RESERVED_ITEM_KEYS.createEdgeless,
         icon: NewXxxEdgelessIcon(),
-        name: I18n.t('com.affine.editor.at-menu.create-edgeless', {
+        name: I18n.t('com.yunke.editor.at-menu.create-edgeless', {
           name: query || I18n.t('Untitled'),
         }),
         action: () => {
@@ -184,7 +184,7 @@ export class AtMenuConfigService extends Service {
     ];
     const customImportItem: LinkedMenuItem = {
       ...importItem,
-      name: I18n.t('com.affine.editor.at-menu.import'),
+      name: I18n.t('com.yunke.editor.at-menu.import'),
       action: () => {
         close();
         track.doc.editor.atMenu.import();
@@ -210,7 +210,7 @@ export class AtMenuConfigService extends Service {
 
     return {
       ...originalNewDocMenuGroup,
-      name: I18n.t('com.affine.editor.at-menu.new-doc'),
+      name: I18n.t('com.yunke.editor.at-menu.new-doc'),
       items: [...customNewDocItems, customImportItem],
     };
   }
@@ -218,7 +218,7 @@ export class AtMenuConfigService extends Service {
   private journalGroup(
     query: string,
     close: () => void,
-    inlineEditor: AffineInlineEditor
+    inlineEditor: YunkeInlineEditor
   ): LinkedMenuGroup {
     const suggestedDate = suggestJournalDate(query);
 
@@ -226,7 +226,7 @@ export class AtMenuConfigService extends Service {
       {
         icon: DateTimeIcon(),
         key: RESERVED_ITEM_KEYS.datePicker,
-        name: I18n.t('com.affine.editor.at-menu.date-picker'),
+        name: I18n.t('com.yunke.editor.at-menu.date-picker'),
         action: () => {
           close();
 
@@ -298,7 +298,7 @@ export class AtMenuConfigService extends Service {
     }
 
     return {
-      name: I18n.t('com.affine.editor.at-menu.journal'),
+      name: I18n.t('com.yunke.editor.at-menu.journal'),
       items,
     };
   }
@@ -306,7 +306,7 @@ export class AtMenuConfigService extends Service {
   private linkToDocGroup(
     query: string,
     close: () => void,
-    inlineEditor: AffineInlineEditor,
+    inlineEditor: YunkeInlineEditor,
     abortSignal: AbortSignal
   ): LinkedMenuGroup {
     const action = (meta: DocMeta) => {
@@ -361,7 +361,7 @@ export class AtMenuConfigService extends Service {
   private memberGroup(
     query: string,
     close: () => void,
-    inlineEditor: AffineInlineEditor,
+    inlineEditor: YunkeInlineEditor,
     _: AbortSignal
   ): LinkedMenuGroup {
     const getMenuItem = (
@@ -479,9 +479,9 @@ export class AtMenuConfigService extends Service {
                 if (canUserManage) {
                   const username = name ?? '未知';
                   notify.error({
-                    title: I18n.t('com.affine.editor.at-menu.access-needed'),
+                    title: I18n.t('com.yunke.editor.at-menu.access-needed'),
                     message: I18n[
-                      'com.affine.editor.at-menu.access-needed-message'
+                      'com.yunke.editor.at-menu.access-needed-message'
                     ]({
                       username,
                     }),
@@ -516,7 +516,7 @@ export class AtMenuConfigService extends Service {
 
                             notify.success({
                               title: I18n.t(
-                                'com.affine.editor.at-menu.invited-and-notified'
+                                'com.yunke.editor.at-menu.invited-and-notified'
                               ),
                             });
                           } catch (error) {
@@ -532,11 +532,11 @@ export class AtMenuConfigService extends Service {
                 } else {
                   notify.error({
                     title: I18n.t(
-                      'com.affine.editor.at-menu.member-not-notified'
+                      'com.yunke.editor.at-menu.member-not-notified'
                     ),
                     message:
                       I18n[
-                        'com.affine.editor.at-menu.member-not-notified-message'
+                        'com.yunke.editor.at-menu.member-not-notified-message'
                       ](),
                   });
                 }
@@ -641,7 +641,7 @@ export class AtMenuConfigService extends Service {
     }
 
     return {
-      name: I18n.t('com.affine.editor.at-menu.mention-members'),
+      name: I18n.t('com.yunke.editor.at-menu.mention-members'),
       items,
       loading: this.memberSearchService.isLoading$.signal,
       hidden,
@@ -649,7 +649,7 @@ export class AtMenuConfigService extends Service {
       overflowText: computed(() => {
         const totalCount = this.memberSearchService.result$.signal.value.length;
         const remainingCount = totalCount - 3;
-        return I18n.t('com.affine.editor.at-menu.more-members-hint', {
+        return I18n.t('com.yunke.editor.at-menu.more-members-hint', {
           count: remainingCount,
         });
       }),

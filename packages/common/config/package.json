@@ -1,7 +1,7 @@
 {
   "name": "@yunke/config",
   "version": "0.1.0",
-  "description": "Unified configuration management for AFFiNE",
+  "description": "Unified configuration management for YUNKE",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {

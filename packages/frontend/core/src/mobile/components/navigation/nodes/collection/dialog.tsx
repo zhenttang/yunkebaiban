@@ -15,8 +15,8 @@ export const CollectionRenameSubMenu = ({
   const t = useI18n();
   return (
     <RenameSubMenu
-      title={title || t['com.affine.m.explorer.collection.rename-menu-title']()}
-      text={text || t['com.affine.m.explorer.collection.rename']()}
+      title={title || t['com.yunke.m.explorer.collection.rename-menu-title']()}
+      text={text || t['com.yunke.m.explorer.collection.rename']()}
       {...props}
     />
   );
@@ -24,7 +24,7 @@ export const CollectionRenameSubMenu = ({
 
 const CollectionDesc = () => {
   const t = useI18n();
-  return t['com.affine.collection.emptyCollectionDescription']();
+  return t['com.yunke.collection.emptyCollectionDescription']();
 };
 
 export const CollectionRenameDialog = ({

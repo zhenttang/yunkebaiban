@@ -205,7 +205,7 @@ describe('snapshot to plain text', () => {
                 borderRadius: 8,
                 borderSize: 4,
                 borderStyle: 'solid',
-                shadowType: '--affine-note-shadow-box',
+                shadowType: '--yunke-note-shadow-box',
               },
             },
           },
@@ -503,7 +503,7 @@ describe('snapshot to plain text', () => {
                     {
                       insert: 'aaa',
                       attributes: {
-                        link: 'https://affine.pro/',
+                        link: 'https://yunke.pro/',
                       },
                     },
                   ],
@@ -576,7 +576,7 @@ describe('snapshot to plain text', () => {
     );
 
     const plainText =
-      'aaa: https://affine.pro/\ntest: https://example.com/deadbeef?mode=page&blockIds=abc%2C123&elementIds=def%2C456&databaseId=deadbeef&databaseRowId=123\nE=mc^2\n';
+      'aaa: https://yunke.pro/\ntest: https://example.com/deadbeef?mode=page&blockIds=abc%2C123&elementIds=def%2C456&databaseId=deadbeef&databaseRowId=123\nE=mc^2\n';
     const target = await plainTextAdapter.fromBlockSnapshot({
       snapshot: blockSnapshot,
     });
@@ -819,7 +819,7 @@ describe('snapshot to plain text', () => {
                     borderRadius: 8,
                     borderSize: 4,
                     borderStyle: 'solid',
-                    shadowType: '--affine-note-shadow-box',
+                    shadowType: '--yunke-note-shadow-box',
                   },
                 },
               },
@@ -903,7 +903,7 @@ describe('snapshot to plain text', () => {
               version: 1,
               props: {
                 xywh: '[0,0,800,95]',
-                background: '--affine-note-background-blue',
+                background: '--yunke-note-background-blue',
                 index: 'a0',
                 hidden: false,
                 displayMode: 'both',
@@ -912,7 +912,7 @@ describe('snapshot to plain text', () => {
                     borderRadius: 0,
                     borderSize: 4,
                     borderStyle: 'none',
-                    shadowType: '--affine-note-shadow-sticker',
+                    shadowType: '--yunke-note-shadow-sticker',
                   },
                 },
               },
@@ -1076,7 +1076,7 @@ describe('snapshot to plain text', () => {
               version: 1,
               props: {
                 xywh: '[0,0,800,95]',
-                background: '--affine-note-background-blue',
+                background: '--yunke-note-background-blue',
                 index: 'a0',
                 hidden: false,
                 displayMode: 'both',
@@ -1085,7 +1085,7 @@ describe('snapshot to plain text', () => {
                     borderRadius: 0,
                     borderSize: 4,
                     borderStyle: 'none',
-                    shadowType: '--affine-note-shadow-sticker',
+                    shadowType: '--yunke-note-shadow-sticker',
                   },
                 },
               },
@@ -1293,17 +1293,17 @@ describe('snapshot to plain text', () => {
               options: [
                 {
                   id: 'TKip9uc7Yx',
-                  color: 'var(--affine-tag-white)',
+                  color: 'var(--yunke-tag-white)',
                   value: 'TODO',
                 },
                 {
                   id: 'F2bgsaE3X2',
-                  color: 'var(--affine-tag-green)',
+                  color: 'var(--yunke-tag-green)',
                   value: 'In Progress',
                 },
                 {
                   id: 'y3O1A2IHHu',
-                  color: 'var(--affine-tag-gray)',
+                  color: 'var(--yunke-tag-gray)',
                   value: 'Done',
                 },
               ],
@@ -1338,12 +1338,12 @@ describe('snapshot to plain text', () => {
                 {
                   id: '73UrEZWaKk',
                   value: 'test2',
-                  color: 'var(--affine-tag-purple)',
+                  color: 'var(--yunke-tag-purple)',
                 },
                 {
                   id: '-2_QD3GZT1',
                   value: 'test1',
-                  color: 'var(--affine-tag-teal)',
+                  color: 'var(--yunke-tag-teal)',
                 },
               ],
             },

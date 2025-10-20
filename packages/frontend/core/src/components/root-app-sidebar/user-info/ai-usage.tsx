@@ -64,11 +64,11 @@ export const AIUsage = () => {
       >
         <div className={styles.usageLabel}>
           <div className={styles.usageLabelTitle}>
-            {t['com.affine.user-info.usage.ai']()}
+            {t['com.yunke.user-info.usage.ai']()}
           </div>
         </div>
         <div className={styles.usageLabel}>
-          {t['com.affine.payment.ai.usage-description-purchased']()}
+          {t['com.yunke.payment.ai.usage-description-purchased']()}
         </div>
       </div>
     );
@@ -95,7 +95,7 @@ export const AIUsage = () => {
       <div className={styles.usageLabel}>
         <div>
           <span className={styles.usageLabelTitle}>
-            {t['com.affine.user-info.usage.ai']()}
+            {t['com.yunke.user-info.usage.ai']()}
           </span>
           <span>{copilotActionUsed}</span>
           <span>&nbsp;/&nbsp;</span>

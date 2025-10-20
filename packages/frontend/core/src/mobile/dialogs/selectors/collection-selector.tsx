@@ -48,7 +48,7 @@ export const CollectionSelectorDialog = ({
         onBeforeConfirm={onBeforeConfirm}
         initial={init}
         data={list}
-        typeName={t[`com.affine.m.selector.type-collection`]()}
+        typeName={t[`com.yunke.m.selector.type-collection`]()}
       />
     </Modal>
   );

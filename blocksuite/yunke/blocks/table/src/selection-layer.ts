@@ -14,7 +14,7 @@ type Rect = {
   height: number;
 };
 
-export const SelectionLayerComponentName = 'affine-table-selection-layer';
+export const SelectionLayerComponentName = 'yunke-table-selection-layer';
 export class SelectionLayer extends SignalWatcher(
   WithDisposable(ShadowlessElement)
 ) {
@@ -67,7 +67,7 @@ export class SelectionLayer extends SignalWatcher(
       return styleMap({
         display: 'none',
       });
-    const border = '2px solid var(--affine-primary-color)';
+    const border = '2px solid var(--yunke-primary-color)';
 
     return styleMap({
       position: 'absolute',

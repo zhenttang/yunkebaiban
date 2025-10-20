@@ -107,7 +107,7 @@ export class EmbedLoomBlockComponent extends EmbedBlockComponent<
       () => html`
         <div
           class=${classMap({
-            'affine-embed-loom-block': true,
+            'yunke-embed-loom-block': true,
             loading,
             selected: this.selected$.value,
           })}
@@ -117,10 +117,10 @@ export class EmbedLoomBlockComponent extends EmbedBlockComponent<
           @click=${this._handleClick}
           @dblclick=${this._handleDoubleClick}
         >
-          <div class="affine-embed-loom-video">
+          <div class="yunke-embed-loom-video">
             ${videoId
               ? html`
-                  <div class="affine-embed-loom-video-iframe-container">
+                  <div class="yunke-embed-loom-video-iframe-container">
                     <iframe
                       src=${`https://www.loom.com/embed/${videoId}?hide_title=true`}
                       frameborder="0"
@@ -132,7 +132,7 @@ export class EmbedLoomBlockComponent extends EmbedBlockComponent<
                     <!-- overlay to prevent the iframe from capturing pointer events -->
                     <div
                       class=${classMap({
-                        'affine-embed-loom-video-iframe-overlay': true,
+                        'yunke-embed-loom-video-iframe-overlay': true,
                         hide: !this.showOverlay$.value,
                       })}
                     ></div>
@@ -140,25 +140,25 @@ export class EmbedLoomBlockComponent extends EmbedBlockComponent<
                 `
               : bannerImage}
           </div>
-          <div class="affine-embed-loom-content">
-            <div class="affine-embed-loom-content-header">
-              <div class="affine-embed-loom-content-title-icon">
+          <div class="yunke-embed-loom-content">
+            <div class="yunke-embed-loom-content-header">
+              <div class="yunke-embed-loom-content-title-icon">
                 ${titleIcon}
               </div>
 
-              <div class="affine-embed-loom-content-title-text">
+              <div class="yunke-embed-loom-content-title-text">
                 ${titleText}
               </div>
             </div>
 
-            <div class="affine-embed-loom-content-description">
+            <div class="yunke-embed-loom-content-description">
               ${descriptionText}
             </div>
 
-            <div class="affine-embed-loom-content-url" @click=${this.open}>
+            <div class="yunke-embed-loom-content-url" @click=${this.open}>
               <span>loom.com</span>
 
-              <div class="affine-embed-loom-content-url-icon">${OpenIcon}</div>
+              <div class="yunke-embed-loom-content-url-icon">${OpenIcon}</div>
             </div>
           </div>
         </div>

@@ -4,7 +4,7 @@ import {
   defineBlockSchema,
 } from '@blocksuite/yunke/store';
 
-export const TranscriptionBlockFlavour = 'affine:transcription';
+export const TranscriptionBlockFlavour = 'yunke:transcription';
 
 const defaultProps: TranscriptionBlockProps = {
   transcription: {},
@@ -18,8 +18,8 @@ export const TranscriptionBlockSchema = defineBlockSchema({
   metadata: {
     version: 1,
     role: 'attachment-viewer',
-    parent: ['affine:attachment'],
-    children: ['affine:callout'],
+    parent: ['yunke:attachment'],
+    children: ['yunke:callout'],
   },
   toModel: () => new TranscriptionBlockModel(),
 });

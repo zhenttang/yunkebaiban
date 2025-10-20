@@ -1,4 +1,4 @@
-package app.affine.pro.theme
+package app.yunke.pro.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
@@ -6,30 +6,30 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.ReadOnlyComposable
 
-object AFFiNETheme {
-    val colors: AFFiNEColorScheme
+object YUNKETheme {
+    val colors: YUNKEColorScheme
         @ReadOnlyComposable
         @Composable
-        get() = LocalAFFiNEColors.current
+        get() = LocalYUNKEColors.current
 
-    val typography: AFFiNETypography
+    val typography: YUNKETypography
         @ReadOnlyComposable
         @Composable
-        get() = LocalAFFiNETypography.current
+        get() = LocalYUNKETypography.current
 }
 
 @Composable
-fun AFFiNETheme(
+fun YUNKETheme(
     mode: ThemeMode = ThemeMode.System,
     content: @Composable () -> Unit
 ) {
     val colors = when (mode) {
-        ThemeMode.Light -> affineLightScheme
-        ThemeMode.Dark -> affineDarkScheme
-        ThemeMode.System -> if (isSystemInDarkTheme()) affineDarkScheme else affineLightScheme
+        ThemeMode.Light -> yunkeLightScheme
+        ThemeMode.Dark -> yunkeDarkScheme
+        ThemeMode.System -> if (isSystemInDarkTheme()) yunkeDarkScheme else yunkeLightScheme
     }
 
-    CompositionLocalProvider(LocalAFFiNEColors provides colors) {
+    CompositionLocalProvider(LocalYUNKEColors provides colors) {
         MaterialTheme {
             content()
         }

@@ -122,7 +122,7 @@ export async function extractMarkdownFromDoc(
 
 function getNoteBlockModels(doc: Store) {
   const notes = doc
-    .getBlocksByFlavour('affine:note')
+    .getBlocksByFlavour('yunke:note')
     .filter(
       note =>
         (note.model as NoteBlockModel).props.displayMode !==

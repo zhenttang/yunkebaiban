@@ -17,12 +17,12 @@ import type {
 } from './config.js';
 import { keyboardToolPanelStyles } from './styles.js';
 
-export const AFFINE_KEYBOARD_TOOL_PANEL = 'affine-keyboard-tool-panel';
+export const YUNKE_KEYBOARD_TOOL_PANEL = 'yunke-keyboard-tool-panel';
 
 @requiredProperties({
   context: PropTypes.object,
 })
-export class AffineKeyboardToolPanel extends SignalWatcher(
+export class YunkeKeyboardToolPanel extends SignalWatcher(
   WithDisposable(ShadowlessElement)
 ) {
   static override styles = keyboardToolPanelStyles;

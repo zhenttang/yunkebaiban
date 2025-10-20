@@ -44,7 +44,7 @@ declare type Environment = {
     env: Record<string, string>;
   };
   var environment: Environment;
-  var $AFFINE_SETUP: boolean | undefined;
+  var $YUNKE_SETUP: boolean | undefined;
   /**
    * 通过 https://www.npmjs.com/package/@sentry/webpack-plugin 注入
    */

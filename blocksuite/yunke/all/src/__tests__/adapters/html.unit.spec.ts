@@ -67,7 +67,7 @@ describe('snapshot to html', () => {
   };
 
   const paragraphTemplate = (html: string) =>
-    `<div class="affine-paragraph-block-container">${html}<div class="affine-block-children-container" style="padding-left: 26px;"></div></div>`;
+    `<div class="yunke-paragraph-block-container">${html}<div class="yunke-block-children-container" style="padding-left: 26px;"></div></div>`;
 
   test('code', async () => {
     const blockSnapshot: BlockSnapshot = {
@@ -443,7 +443,7 @@ describe('snapshot to html', () => {
       ],
     };
     const html = template(
-      `<div class="affine-paragraph-block-container"><p>aaa</p><div class="affine-block-children-container" style="padding-left: 26px;"><div class="affine-paragraph-block-container"><p>bbb</p><div class="affine-block-children-container" style="padding-left: 26px;"></div></div><div class="affine-paragraph-block-container"><p>ccc</p><div class="affine-block-children-container" style="padding-left: 26px;"><div class="affine-paragraph-block-container"><p>ddd</p><div class="affine-block-children-container" style="padding-left: 26px;"></div></div><div class="affine-paragraph-block-container"><p>eee</p><div class="affine-block-children-container" style="padding-left: 26px;"></div></div><div class="affine-paragraph-block-container"><p>fff</p><div class="affine-block-children-container" style="padding-left: 26px;"></div></div></div></div><div class="affine-paragraph-block-container"><p>ggg</p><div class="affine-block-children-container" style="padding-left: 26px;"></div></div></div></div><div class="affine-paragraph-block-container"><p>hhh</p><div class="affine-block-children-container" style="padding-left: 26px;"></div></div>`
+      `<div class="yunke-paragraph-block-container"><p>aaa</p><div class="yunke-block-children-container" style="padding-left: 26px;"><div class="yunke-paragraph-block-container"><p>bbb</p><div class="yunke-block-children-container" style="padding-left: 26px;"></div></div><div class="yunke-paragraph-block-container"><p>ccc</p><div class="yunke-block-children-container" style="padding-left: 26px;"><div class="yunke-paragraph-block-container"><p>ddd</p><div class="yunke-block-children-container" style="padding-left: 26px;"></div></div><div class="yunke-paragraph-block-container"><p>eee</p><div class="yunke-block-children-container" style="padding-left: 26px;"></div></div><div class="yunke-paragraph-block-container"><p>fff</p><div class="yunke-block-children-container" style="padding-left: 26px;"></div></div></div></div><div class="yunke-paragraph-block-container"><p>ggg</p><div class="yunke-block-children-container" style="padding-left: 26px;"></div></div></div></div><div class="yunke-paragraph-block-container"><p>hhh</p><div class="yunke-block-children-container" style="padding-left: 26px;"></div></div>`
     );
 
     const htmlAdapter = new HtmlAdapter(createJob(), provider);
@@ -588,7 +588,7 @@ describe('snapshot to html', () => {
       ],
     };
     const html = template(
-      `<ul class="bulleted-list"><li class="affine-list-block-container">aaa<ul class="bulleted-list"><li class="affine-list-block-container">bbb<ul class="bulleted-list"><li class="affine-list-block-container">ccc</li></ul></li><li class="affine-list-block-container">ddd</li></ul></li><li class="affine-list-block-container">eee</li></ul>`
+      `<ul class="bulleted-list"><li class="yunke-list-block-container">aaa<ul class="bulleted-list"><li class="yunke-list-block-container">bbb<ul class="bulleted-list"><li class="yunke-list-block-container">ccc</li></ul></li><li class="yunke-list-block-container">ddd</li></ul></li><li class="yunke-list-block-container">eee</li></ul>`
     );
 
     const htmlAdapter = new HtmlAdapter(createJob(), provider);
@@ -693,7 +693,7 @@ describe('snapshot to html', () => {
       ],
     };
     const html = template(
-      `<ul class="bulleted-list"><li class="affine-list-block-container">aaa</li></ul><ul style="list-style-type: none; padding-inline-start: 18px;" class="todo-list"><li class="affine-list-block-container"><input type="checkbox"><label style="margin-right: 3px;"></label></input>bbb</li></ul><ul class="bulleted-list"><li class="affine-list-block-container">ccc</li></ul>`
+      `<ul class="bulleted-list"><li class="yunke-list-block-container">aaa</li></ul><ul style="list-style-type: none; padding-inline-start: 18px;" class="todo-list"><li class="yunke-list-block-container"><input type="checkbox"><label style="margin-right: 3px;"></label></input>bbb</li></ul><ul class="bulleted-list"><li class="yunke-list-block-container">ccc</li></ul>`
     );
 
     const htmlAdapter = new HtmlAdapter(createJob(), provider);
@@ -767,7 +767,7 @@ describe('snapshot to html', () => {
       ],
     };
     const html = template(
-      `<div class="affine-paragraph-block-container"><p>aaa <code>bbb</code> ccc</p><div class="affine-block-children-container" style="padding-left: 26px;"></div></div>`
+      `<div class="yunke-paragraph-block-container"><p>aaa <code>bbb</code> ccc</p><div class="yunke-block-children-container" style="padding-left: 26px;"></div></div>`
     );
 
     const htmlAdapter = new HtmlAdapter(createJob(), provider);
@@ -825,7 +825,7 @@ describe('snapshot to html', () => {
                     {
                       insert: 'bbb',
                       attributes: {
-                        link: 'https://affine.pro/',
+                        link: 'https://yunke.pro/',
                       },
                     },
                     {
@@ -841,7 +841,7 @@ describe('snapshot to html', () => {
       ],
     };
     const html = template(
-      `<div class="affine-paragraph-block-container"><p>aaa <a href="https://affine.pro/">bbb</a> ccc</p><div class="affine-block-children-container" style="padding-left: 26px;"></div></div>`
+      `<div class="yunke-paragraph-block-container"><p>aaa <a href="https://yunke.pro/">bbb</a> ccc</p><div class="yunke-block-children-container" style="padding-left: 26px;"></div></div>`
     );
 
     const htmlAdapter = new HtmlAdapter(createJob(), provider);
@@ -916,7 +916,7 @@ describe('snapshot to html', () => {
     };
 
     const html = template(
-      `<div class="affine-paragraph-block-container"><p>aaa<strong>bbb</strong>ccc</p><div class="affine-block-children-container" style="padding-left: 26px;"></div></div>`
+      `<div class="yunke-paragraph-block-container"><p>aaa<strong>bbb</strong>ccc</p><div class="yunke-block-children-container" style="padding-left: 26px;"></div></div>`
     );
 
     const htmlAdapter = new HtmlAdapter(createJob(), provider);
@@ -991,7 +991,7 @@ describe('snapshot to html', () => {
     };
 
     const html = template(
-      `<div class="affine-paragraph-block-container"><p>aaa<em>bbb</em>ccc</p><div class="affine-block-children-container" style="padding-left: 26px;"></div></div>`
+      `<div class="yunke-paragraph-block-container"><p>aaa<em>bbb</em>ccc</p><div class="yunke-block-children-container" style="padding-left: 26px;"></div></div>`
     );
 
     const htmlAdapter = new HtmlAdapter(createJob(), provider);
@@ -1068,7 +1068,7 @@ describe('snapshot to html', () => {
     };
 
     const html = template(
-      `<figure class="affine-image-block-container"><img src="assets/YXXTjRmLlNyiOUnHb8nAIvUP6V7PAXhwW9F5_tc2LGs=.blob" alt="YXXTjRmLlNyiOUnHb8nAIvUP6V7PAXhwW9F5_tc2LGs=.blob" title="aaa"></figure><div class="affine-paragraph-block-container"><p></p><div class="affine-block-children-container" style="padding-left: 26px;"></div></div>`
+      `<figure class="yunke-image-block-container"><img src="assets/YXXTjRmLlNyiOUnHb8nAIvUP6V7PAXhwW9F5_tc2LGs=.blob" alt="YXXTjRmLlNyiOUnHb8nAIvUP6V7PAXhwW9F5_tc2LGs=.blob" title="aaa"></figure><div class="yunke-paragraph-block-container"><p></p><div class="yunke-block-children-container" style="padding-left: 26px;"></div></div>`
     );
 
     const htmlAdapter = new HtmlAdapter(createJob(), provider);
@@ -1170,7 +1170,7 @@ describe('snapshot to html', () => {
         };
 
         const html = template(
-          `<div class="affine-paragraph-block-container"><a href="${testCase.url}">${testCase.title}</a></div>`
+          `<div class="yunke-paragraph-block-container"><a href="${testCase.url}">${testCase.title}</a></div>`
         );
 
         const htmlAdapter = new HtmlAdapter(createJob(), provider);
@@ -1312,17 +1312,17 @@ describe('snapshot to html', () => {
                       options: [
                         {
                           id: 'TKip9uc7Yx',
-                          color: 'var(--affine-tag-white)',
+                          color: 'var(--yunke-tag-white)',
                           value: 'TODO',
                         },
                         {
                           id: 'F2bgsaE3X2',
-                          color: 'var(--affine-tag-green)',
+                          color: 'var(--yunke-tag-green)',
                           value: 'In Progress',
                         },
                         {
                           id: 'y3O1A2IHHu',
-                          color: 'var(--affine-tag-gray)',
+                          color: 'var(--yunke-tag-gray)',
                           value: 'Done',
                         },
                       ],
@@ -1357,12 +1357,12 @@ describe('snapshot to html', () => {
                         {
                           id: '73UrEZWaKk',
                           value: 'test2',
-                          color: 'var(--affine-tag-purple)',
+                          color: 'var(--yunke-tag-purple)',
                         },
                         {
                           id: '-2_QD3GZT1',
                           value: 'test1',
-                          color: 'var(--affine-tag-teal)',
+                          color: 'var(--yunke-tag-teal)',
                         },
                       ],
                     },
@@ -1510,7 +1510,7 @@ describe('snapshot to html', () => {
       adapterConfigs.set('docLinkBaseUrl', 'https://example.com');
     };
     const html = template(
-      '<div class="affine-paragraph-block-container"><a href="https://example.com/4T5ObMgEIMII-4Bexyta1?mode=page&#x26;blockIds=abc%2C123&#x26;elementIds=def%2C456&#x26;databaseId=deadbeef&#x26;databaseRowId=123">Test Doc</a></div>'
+      '<div class="yunke-paragraph-block-container"><a href="https://example.com/4T5ObMgEIMII-4Bexyta1?mode=page&#x26;blockIds=abc%2C123&#x26;elementIds=def%2C456&#x26;databaseId=deadbeef&#x26;databaseRowId=123">Test Doc</a></div>'
     );
     const htmlAdapter = new HtmlAdapter(createJob([middleware]), provider);
     const target = await htmlAdapter.fromBlockSnapshot({
@@ -1573,7 +1573,7 @@ describe('snapshot to html', () => {
                   borderRadius: 8,
                   borderSize: 4,
                   borderStyle: 'solid',
-                  shadowType: '--affine-note-shadow-box',
+                  shadowType: '--yunke-note-shadow-box',
                 },
               },
             },
@@ -1657,7 +1657,7 @@ describe('snapshot to html', () => {
             version: 1,
             props: {
               xywh: '[0,0,800,95]',
-              background: '--affine-note-background-blue',
+              background: '--yunke-note-background-blue',
               index: 'a0',
               hidden: false,
               displayMode: 'both',
@@ -1666,7 +1666,7 @@ describe('snapshot to html', () => {
                   borderRadius: 0,
                   borderSize: 4,
                   borderStyle: 'none',
-                  shadowType: '--affine-note-shadow-sticker',
+                  shadowType: '--yunke-note-shadow-sticker',
                 },
               },
             },
@@ -1813,7 +1813,7 @@ describe('snapshot to html', () => {
             version: 1,
             props: {
               xywh: '[0,0,800,95]',
-              background: '--affine-note-background-blue',
+              background: '--yunke-note-background-blue',
               index: 'a0',
               hidden: false,
               displayMode: 'both',
@@ -1822,7 +1822,7 @@ describe('snapshot to html', () => {
                   borderRadius: 0,
                   borderSize: 4,
                   borderStyle: 'none',
-                  shadowType: '--affine-note-shadow-sticker',
+                  shadowType: '--yunke-note-shadow-sticker',
                 },
               },
             },
@@ -1886,7 +1886,7 @@ describe('snapshot to html', () => {
     const docHtml = template(
       paragraphTemplate('<p>Hello</p>') +
         syncedDocHtml +
-        '<div class="affine-paragraph-block-container"><p>Deepest Doc</p></div>' +
+        '<div class="yunke-paragraph-block-container"><p>Deepest Doc</p></div>' +
         paragraphTemplate('<p>World!</p>'),
       'Test Doc'
     );

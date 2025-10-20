@@ -5,7 +5,7 @@ import {
   type ReferenceReactRenderer,
 } from '@yunke/core/blocksuite/view-extensions/editor-view/reference-renderer';
 import { useGuard } from '@yunke/core/components/guard';
-import { useEnableAI } from '@yunke/core/components/hooks/affine/use-enable-ai';
+import { useEnableAI } from '@yunke/core/components/hooks/yunke/use-enable-ai';
 import { DocService } from '@yunke/core/modules/doc';
 import {
   type Backlink,
@@ -16,7 +16,7 @@ import { toDocSearchParams } from '@yunke/core/modules/navigation/utils';
 import { GlobalSessionStateService } from '@yunke/core/modules/storage';
 import { WorkbenchLink } from '@yunke/core/modules/workbench';
 import {
-  getAFFiNEWorkspaceSchema,
+  getYUNKEWorkspaceSchema,
   WorkspaceService,
 } from '@yunke/core/modules/workspace';
 import { useI18n } from '@yunke/i18n';
@@ -42,9 +42,9 @@ import {
 } from 'react';
 
 import {
-  AffinePageReference,
-  AffineSharedPageReference,
-} from '../../components/affine/reference-link';
+  YunkePageReference,
+  YunkeSharedPageReference,
+} from '../../components/yunke/reference-link';
 import { LitTextRenderer } from '../ai/components/text-renderer';
 import * as styles from './bi-directional-link-panel.css';
 
@@ -148,7 +148,7 @@ const usePreviewExtensions = () => {
 
       if (workspaceService.workspace.openOptions.isSharedMode) {
         return (
-          <AffineSharedPageReference
+          <YunkeSharedPageReference
             docCollection={workspaceService.workspace.docCollection}
             pageId={pageId}
             params={params}
@@ -156,7 +156,7 @@ const usePreviewExtensions = () => {
         );
       }
 
-      return <AffinePageReference pageId={pageId} params={params} />;
+      return <YunkePageReference pageId={pageId} params={params} />;
     };
   }, [workspaceService]);
 
@@ -240,7 +240,7 @@ export const BacklinkGroups = () => {
         <CollapsibleSection
           key={linkGroup.docId}
           title={
-            <AffinePageReference
+            <YunkePageReference
               pageId={linkGroup.docId}
               onClick={() => {
                 track.doc.biDirectionalLinksPanel.backlinkTitle.navigate();
@@ -279,7 +279,7 @@ export const LinkPreview = ({
   if (!canAccess) {
     return (
       <span className={styles.notFound}>
-        {t['com.affine.share-menu.option.permission.no-access']()}
+        {t['com.yunke.share-menu.option.permission.no-access']()}
       </span>
     );
   }
@@ -294,8 +294,8 @@ export const LinkPreview = ({
         searchParams.set('mode', displayMode);
 
         let blockId = link.blockId;
-        if (link.parentFlavour === 'affine:database' && link.parentBlockId) {
-          // if parentBlockFlavour is 'affine:database',
+        if (link.parentFlavour === 'yunke:database' && link.parentBlockId) {
+          // if parentBlockFlavour is 'yunke:database',
           // we will fallback to the database block instead
           blockId = link.parentBlockId;
         } else if (displayMode === 'edgeless' && link.noteBlockId) {
@@ -328,7 +328,7 @@ export const LinkPreview = ({
             {edgelessLink ? (
               <>
                 [Edgeless]
-                <AffinePageReference
+                <YunkePageReference
                   key={link.blockId}
                   pageId={linkGroup.docId}
                   params={searchParams}
@@ -338,7 +338,7 @@ export const LinkPreview = ({
               <LitTextRenderer
                 className={styles.linkPreviewRenderer}
                 answer={link.markdownPreview}
-                schema={getAFFiNEWorkspaceSchema()}
+                schema={getYUNKEWorkspaceSchema()}
                 options={textRendererOptions}
               />
             )}
@@ -383,12 +383,12 @@ export const BiDirectionalLinkPanel = () => {
 
       <div className={styles.titleLine}>
         <div className={styles.title}>
-          {t['com.affine.settings.editorSettings.page.display-bi-link.title']()}
+          {t['com.yunke.settings.editorSettings.page.display-bi-link.title']()}
         </div>
         <Button className={styles.showButton} onClick={handleClickShow}>
           {show
-            ? t['com.affine.editor.bi-directional-link-panel.hide']()
-            : t['com.affine.editor.bi-directional-link-panel.show']()}
+            ? t['com.yunke.editor.bi-directional-link-panel.hide']()
+            : t['com.yunke.editor.bi-directional-link-panel.show']()}
         </Button>
       </div>
 
@@ -398,13 +398,13 @@ export const BiDirectionalLinkPanel = () => {
 
           <div className={styles.linksContainer}>
             <div className={styles.linksTitles}>
-              {t['com.affine.page-properties.backlinks']()} · {backlinkCount}
+              {t['com.yunke.page-properties.backlinks']()} · {backlinkCount}
             </div>
             <BacklinkGroups />
           </div>
           <div className={styles.linksContainer}>
             <div className={styles.linksTitles}>
-              {t['com.affine.page-properties.outgoing-links']()} ·{' '}
+              {t['com.yunke.page-properties.outgoing-links']()} ·{' '}
               {links.length}
             </div>
             {links.map((link, i) => (
@@ -412,7 +412,7 @@ export const BiDirectionalLinkPanel = () => {
                 key={`${link.docId}-${link.params?.toString()}-${i}`}
                 className={styles.link}
               >
-                <AffinePageReference pageId={link.docId} params={link.params} />
+                <YunkePageReference pageId={link.docId} params={link.params} />
               </div>
             ))}
           </div>

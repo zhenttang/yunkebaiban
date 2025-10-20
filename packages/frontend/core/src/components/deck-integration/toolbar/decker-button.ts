@@ -27,11 +27,11 @@ export class EdgelessDeckerButton extends EdgelessToolbarToolMixin(LitElement) {
     }
 
     .decker-button:hover {
-      background: var(--affine-hover-color);
+      background: var(--yunke-hover-color);
     }
 
     .decker-button:active {
-      background: var(--affine-pressed-color);
+      background: var(--yunke-pressed-color);
     }
 
     .decker-icon {

@@ -5,7 +5,7 @@ import {
 import { EdgelessTextBlockSchemaExtension } from '@blocksuite/yunke-model';
 
 export class EdgelessTextStoreExtension extends StoreExtensionProvider {
-  override name = 'affine-edgeless-text-block';
+  override name = 'yunke-edgeless-text-block';
 
   override setup(context: StoreExtensionContext) {
     super.setup(context);

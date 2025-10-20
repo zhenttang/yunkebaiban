@@ -11,16 +11,16 @@ const optionsSchema = z.object({
   framework: z.instanceof(FrameworkProvider).optional(),
 });
 
-type AffineLinkPreviewViewOptions = z.infer<typeof optionsSchema>;
+type YunkeLinkPreviewViewOptions = z.infer<typeof optionsSchema>;
 
-export class AffineLinkPreviewExtension extends ViewExtensionProvider<AffineLinkPreviewViewOptions> {
-  override name = 'affine-link-preview-extension';
+export class YunkeLinkPreviewExtension extends ViewExtensionProvider<YunkeLinkPreviewViewOptions> {
+  override name = 'yunke-link-preview-extension';
 
   override schema = optionsSchema;
 
   override setup(
     context: ViewExtensionContext,
-    options?: AffineLinkPreviewViewOptions
+    options?: YunkeLinkPreviewViewOptions
   ) {
     super.setup(context, options);
     if (!options?.framework) {

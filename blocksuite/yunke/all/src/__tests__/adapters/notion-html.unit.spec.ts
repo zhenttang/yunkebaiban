@@ -1267,16 +1267,16 @@ describe('notion html to snapshot', () => {
 
   test('bookmark', async () => {
     const html = `<div class="page-body">
-      <figure id="ed3d2ae9-62f5-433a-9049-9ddbd1c81ac5"><a href="https://affine.pro/" class="bookmark source">
+      <figure id="ed3d2ae9-62f5-433a-9049-9ddbd1c81ac5"><a href="https://yunke.pro/" class="bookmark source">
           <div class="bookmark-info">
             <div class="bookmark-text">
-              <div class="bookmark-title">AFFiNE - All In One KnowledgeOS</div>
+              <div class="bookmark-title">YUNKE - All In One KnowledgeOS</div>
               <div class="bookmark-description">The universal editor that lets you work, play, present or
                 create just about anything.</div>
             </div>
-            <div class="bookmark-href"><img src="https://affine.pro/favicon-96.png"
-                class="icon bookmark-icon" />https://affine.pro/</div>
-          </div><img src="https://affine.pro/og.png" class="bookmark-image" />
+            <div class="bookmark-href"><img src="https://yunke.pro/favicon-96.png"
+                class="icon bookmark-icon" />https://yunke.pro/</div>
+          </div><img src="https://yunke.pro/og.png" class="bookmark-image" />
         </a></figure>
     </div>`;
 
@@ -1298,11 +1298,11 @@ describe('notion html to snapshot', () => {
           flavour: 'yunke:bookmark',
           props: {
             type: 'card',
-            url: 'https://affine.pro/',
-            title: 'AFFiNE - All In One KnowledgeOS',
+            url: 'https://yunke.pro/',
+            title: 'YUNKE - All In One KnowledgeOS',
             description:
               'The universal editor that lets you work, play, present or create just about anything.',
-            icon: 'https://affine.pro/favicon-96.png',
+            icon: 'https://yunke.pro/favicon-96.png',
           },
           children: [],
         },
@@ -1402,7 +1402,7 @@ describe('notion html to snapshot', () => {
           <tbody>
             <tr id="ed3d2ae9-62f5-433a-9049-9ddbd1c81ac5">
               <td class="cell-title"><a
-                  href="https://www.notion.so/https-affine-pro-ed3d2ae962f5433a90499ddbd1c81ac5?pvs=21">https://affine.pro</a>
+                  href="https://www.notion.so/https-yunke-pro-ed3d2ae962f5433a90499ddbd1c81ac5?pvs=21">https://yunke.pro</a>
               </td>
               <td class="cell-tC]_"><span class="selected-value select-value-color-red">aaa</span></td>
               <td class="cell-GFq@"><span class="selected-value select-value-color-gray">aaa</span><span
@@ -1659,9 +1659,9 @@ describe('notion html to snapshot', () => {
                   '$blocksuite:internal:text$': true,
                   delta: [
                     {
-                      insert: 'https://affine.pro',
+                      insert: 'https://yunke.pro',
                       attributes: {
-                        link: 'https://www.notion.so/https-affine-pro-ed3d2ae962f5433a90499ddbd1c81ac5?pvs=21',
+                        link: 'https://www.notion.so/https-yunke-pro-ed3d2ae962f5433a90499ddbd1c81ac5?pvs=21',
                       },
                     },
                   ],

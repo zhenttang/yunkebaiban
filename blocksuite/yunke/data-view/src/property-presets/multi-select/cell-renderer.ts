@@ -71,10 +71,10 @@ export class MultiSelectCell extends BaseCellRenderer<
         class="${multiSelectStyle}"
         @pointerdown="${this.isEditing$.value ? stopPropagation : undefined}"
       >
-        <affine-multi-tag-view
+        <yunke-multi-tag-view
           .value="${this._value$.value}"
           .options="${this.options$.value}"
-        ></affine-multi-tag-view>
+        ></yunke-multi-tag-view>
       </div>
     `;
   }

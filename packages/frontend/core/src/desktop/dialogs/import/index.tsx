@@ -1,13 +1,13 @@
 import { Button, IconButton, Modal } from '@yunke/component';
 import { getStoreManager } from '@yunke/core/blocksuite/manager/store';
-import { useAsyncCallback } from '@yunke/core/components/hooks/affine-async-hooks';
+import { useAsyncCallback } from '@yunke/core/components/hooks/yunke-async-hooks';
 import type {
   DialogComponentProps,
   WORKSPACE_DIALOG_SCHEMA,
 } from '@yunke/core/modules/dialogs';
 import { UrlService } from '@yunke/core/modules/url';
 import {
-  getAFFiNEWorkspaceSchema,
+  getYUNKEWorkspaceSchema,
   WorkspaceService,
 } from '@yunke/core/modules/workspace';
 import { DebugLogger } from '@yunke/debug';
@@ -63,7 +63,7 @@ type ImportConfig = {
 const importOptions = [
   {
     key: 'markdown',
-    label: 'com.affine.import.markdown-files',
+    label: 'com.yunke.import.markdown-files',
     prefixIcon: (
       <ExportToMarkdownIcon
         color={cssVarV2('icon/primary')}
@@ -76,20 +76,20 @@ const importOptions = [
   },
   {
     key: 'markdownZip',
-    label: 'com.affine.import.markdown-with-media-files',
+    label: 'com.yunke.import.markdown-with-media-files',
     prefixIcon: (
       <ZipIcon color={cssVarV2('icon/primary')} width={20} height={20} />
     ),
     suffixIcon: (
       <HelpIcon color={cssVarV2('icon/primary')} width={20} height={20} />
     ),
-    suffixTooltip: 'com.affine.import.markdown-with-media-files.tooltip',
+    suffixTooltip: 'com.yunke.import.markdown-with-media-files.tooltip',
     testId: 'editor-option-menu-import-markdown-with-media',
     type: 'markdownZip' as ImportType,
   },
   {
     key: 'html',
-    label: 'com.affine.import.html-files',
+    label: 'com.yunke.import.html-files',
     prefixIcon: (
       <ExportToHtmlIcon
         color={cssVarV2('icon/primary')}
@@ -100,31 +100,31 @@ const importOptions = [
     suffixIcon: (
       <HelpIcon color={cssVarV2('icon/primary')} width={20} height={20} />
     ),
-    suffixTooltip: 'com.affine.import.html-files.tooltip',
+    suffixTooltip: 'com.yunke.import.html-files.tooltip',
     testId: 'editor-option-menu-import-html',
     type: 'html' as ImportType,
   },
   {
     key: 'notion',
-    label: 'com.affine.import.notion',
+    label: 'com.yunke.import.notion',
     prefixIcon: <NotionIcon color={cssVar('black')} width={20} height={20} />,
     suffixIcon: (
       <HelpIcon color={cssVarV2('icon/primary')} width={20} height={20} />
     ),
-    suffixTooltip: 'com.affine.import.notion.tooltip',
+    suffixTooltip: 'com.yunke.import.notion.tooltip',
     testId: 'editor-option-menu-import-notion',
     type: 'notion' as ImportType,
   },
   {
     key: 'snapshot',
-    label: 'com.affine.import.snapshot',
+    label: 'com.yunke.import.snapshot',
     prefixIcon: (
       <PageIcon color={cssVarV2('icon/primary')} width={20} height={20} />
     ),
     suffixIcon: (
       <HelpIcon color={cssVarV2('icon/primary')} width={20} height={20} />
     ),
-    suffixTooltip: 'com.affine.import.snapshot.tooltip',
+    suffixTooltip: 'com.yunke.import.snapshot.tooltip',
     testId: 'editor-option-menu-import-snapshot',
     type: 'snapshot' as ImportType,
   },
@@ -140,7 +140,7 @@ const importConfigs: Record<ImportType, ImportConfig> = {
         const fileName = file.name.split('.').slice(0, -1).join('.');
         const docId = await MarkdownTransformer.importMarkdownToDoc({
           collection: docCollection,
-          schema: getAFFiNEWorkspaceSchema(),
+          schema: getYUNKEWorkspaceSchema(),
           markdown: text,
           fileName,
           extensions: getStoreManager().config.init().value.get('store'),
@@ -161,7 +161,7 @@ const importConfigs: Record<ImportType, ImportConfig> = {
       }
       const docIds = await MarkdownTransformer.importMarkdownZip({
         collection: docCollection,
-        schema: getAFFiNEWorkspaceSchema(),
+        schema: getYUNKEWorkspaceSchema(),
         imported: file,
         extensions: getStoreManager().config.init().value.get('store'),
       });
@@ -179,7 +179,7 @@ const importConfigs: Record<ImportType, ImportConfig> = {
         const fileName = file.name.split('.').slice(0, -1).join('.');
         const docId = await HtmlTransformer.importHTMLToDoc({
           collection: docCollection,
-          schema: getAFFiNEWorkspaceSchema(),
+          schema: getYUNKEWorkspaceSchema(),
           extensions: getStoreManager().config.init().value.get('store'),
           html: text,
           fileName,
@@ -201,7 +201,7 @@ const importConfigs: Record<ImportType, ImportConfig> = {
       const { entryId, pageIds, isWorkspaceFile } =
         await NotionHtmlTransformer.importNotionZip({
           collection: docCollection,
-          schema: getAFFiNEWorkspaceSchema(),
+          schema: getYUNKEWorkspaceSchema(),
           imported: file,
           extensions: getStoreManager().config.init().value.get('store'),
         });
@@ -222,7 +222,7 @@ const importConfigs: Record<ImportType, ImportConfig> = {
       const docIds = (
         await ZipTransformer.importDocs(
           docCollection,
-          getAFFiNEWorkspaceSchema(),
+          getYUNKEWorkspaceSchema(),
           file
         )
       )
@@ -303,7 +303,7 @@ const ImportOptions = ({
         )}
       </div>
       <div className={style.importModalTip}>
-        {t['com.affine.import.modal.tip']()}{' '}
+        {t['com.yunke.import.modal.tip']()}{' '}
         <a
           className={style.link}
           href={BUILD_CONFIG.discordUrl}
@@ -323,10 +323,10 @@ const ImportingStatus = () => {
   return (
     <>
       <div className={style.importModalTitle}>
-        {t['com.affine.import.status.importing.title']()}
+        {t['com.yunke.import.status.importing.title']()}
       </div>
       <p className={style.importStatusContent}>
-        {t['com.affine.import.status.importing.message']()}
+        {t['com.yunke.import.status.importing.message']()}
       </p>
     </>
   );
@@ -337,10 +337,10 @@ const SuccessStatus = ({ onComplete }: { onComplete: () => void }) => {
   return (
     <>
       <div className={style.importModalTitle}>
-        {t['com.affine.import.status.success.title']()}
+        {t['com.yunke.import.status.success.title']()}
       </div>
       <p className={style.importStatusContent}>
-        {t['com.affine.import.status.success.message']()}{' '}
+        {t['com.yunke.import.status.success.message']()}{' '}
         <a
           className={style.link}
           href={BUILD_CONFIG.discordUrl}
@@ -353,7 +353,7 @@ const SuccessStatus = ({ onComplete }: { onComplete: () => void }) => {
       </p>
       <div className={style.importModalButtonContainer}>
         <Button onClick={onComplete} variant="primary">
-          {t['com.affine.complete']()}
+          {t['com.yunke.complete']()}
         </Button>
       </div>
     </>
@@ -372,7 +372,7 @@ const ErrorStatus = ({
   return (
     <>
       <div className={style.importModalTitle}>
-        {t['com.affine.import.status.failed.title']()}
+        {t['com.yunke.import.status.failed.title']()}
       </div>
       <p className={style.importStatusContent}>
         {error || '发生未知错误'}
@@ -384,10 +384,10 @@ const ErrorStatus = ({
           }}
           variant="secondary"
         >
-          {t['com.affine.feedback']()}
+          {t['com.yunke.feedback']()}
         </Button>
         <Button onClick={onRetry} variant="primary">
-          {t['com.affine.retry']()}
+          {t['com.yunke.retry']()}
         </Button>
       </div>
     </>
@@ -414,7 +414,7 @@ export const ImportDialog = ({
 
         if (!files || files.length === 0) {
           throw new Error(
-            t['com.affine.import.status.failed.message.no-file-selected']()
+            t['com.yunke.import.status.failed.message.no-file-selected']()
           );
         }
 

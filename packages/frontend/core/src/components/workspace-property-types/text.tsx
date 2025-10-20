@@ -71,7 +71,7 @@ const DesktopTextValue = ({
         data-empty={!tempValue}
         autoFocus={false}
         placeholder={t[
-          'com.affine.page-properties.property-value-placeholder'
+          'com.yunke.page-properties.property-value-placeholder'
         ]()}
         disabled={readonly}
       />
@@ -135,7 +135,7 @@ const MobileTextValue = ({
       >
         <div className={styles.mobileTextareaPlain} data-empty={!tempValue}>
           {tempValue ||
-            t['com.affine.page-properties.property-value-placeholder']()}
+            t['com.yunke.page-properties.property-value-placeholder']()}
         </div>
       </PropertyValue>
       <ConfigModal
@@ -158,7 +158,7 @@ const MobileTextValue = ({
             data-empty={!tempValue}
             autoFocus
             placeholder={t[
-              'com.affine.page-properties.property-value-placeholder'
+              'com.yunke.page-properties.property-value-placeholder'
             ]()}
           />
           <div className={styles.mobileTextInvisible}>
@@ -269,7 +269,7 @@ export const TextFilterValue = ({
         <span>{filter.value}</span>
       ) : (
         <span style={{ color: cssVarV2('text/placeholder') }}>
-          {t['com.affine.filter.empty']()}
+          {t['com.yunke.filter.empty']()}
         </span>
       )}
     </Menu>

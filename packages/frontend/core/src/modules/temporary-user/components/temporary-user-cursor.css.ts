@@ -9,8 +9,8 @@ export const container = style({
   flexDirection: 'column',
   gap: '8px',
   padding: '12px',
-  backgroundColor: 'var(--affine-background-primary-color)',
-  border: '1px solid var(--affine-border-color)',
+  backgroundColor: 'var(--yunke-background-primary-color)',
+  border: '1px solid var(--yunke-border-color)',
   borderRadius: '8px',
   boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
   maxWidth: '280px',
@@ -27,7 +27,7 @@ export const avatar = style({
   width: '24px',
   height: '24px',
   borderRadius: '50%',
-  backgroundColor: 'var(--affine-brand-color)',
+  backgroundColor: 'var(--yunke-brand-color)',
   backgroundSize: 'cover',
   backgroundPosition: 'center',
   display: 'flex',
@@ -49,13 +49,13 @@ export const userInfo = style({
 export const userName = style({
   fontSize: '13px',
   fontWeight: 500,
-  color: 'var(--affine-text-primary-color)',
+  color: 'var(--yunke-text-primary-color)',
   lineHeight: '16px',
 });
 
 export const userStatus = style({
   fontSize: '11px',
-  color: 'var(--affine-text-secondary-color)',
+  color: 'var(--yunke-text-secondary-color)',
   lineHeight: '14px',
 });
 
@@ -64,22 +64,22 @@ export const collaborationIndicator = style({
   alignItems: 'center',
   gap: '6px',
   padding: '4px 8px',
-  backgroundColor: 'var(--affine-background-success-color)',
+  backgroundColor: 'var(--yunke-background-success-color)',
   borderRadius: '4px',
-  border: '1px solid var(--affine-success-color)',
+  border: '1px solid var(--yunke-success-color)',
 });
 
 export const collaboratorDot = style({
   width: '6px',
   height: '6px',
   borderRadius: '50%',
-  backgroundColor: 'var(--affine-success-color)',
+  backgroundColor: 'var(--yunke-success-color)',
   animation: 'pulse 2s infinite',
 });
 
 export const collaboratorText = style({
   fontSize: '11px',
-  color: 'var(--affine-success-color)',
+  color: 'var(--yunke-success-color)',
   fontWeight: 500,
 });
 
@@ -88,9 +88,9 @@ export const editHint = style({
   alignItems: 'center',
   gap: '6px',
   padding: '6px 8px',
-  backgroundColor: 'var(--affine-background-secondary-color)',
+  backgroundColor: 'var(--yunke-background-secondary-color)',
   borderRadius: '4px',
-  border: '1px dashed var(--affine-border-color)',
+  border: '1px dashed var(--yunke-border-color)',
 });
 
 export const hintIcon = style({
@@ -100,7 +100,7 @@ export const hintIcon = style({
 
 export const hintText = style({
   fontSize: '11px',
-  color: 'var(--affine-text-secondary-color)',
+  color: 'var(--yunke-text-secondary-color)',
   lineHeight: '14px',
 });
 
@@ -114,7 +114,7 @@ export const cursorDecorator = style({
 export const cursorLine = style({
   width: '2px',
   height: '20px',
-  backgroundColor: 'var(--affine-brand-color)',
+  backgroundColor: 'var(--yunke-brand-color)',
   animation: 'blink 1s infinite',
 });
 
@@ -126,7 +126,7 @@ export const cursorLabel = style({
   alignItems: 'center',
   gap: '4px',
   padding: '2px 6px',
-  backgroundColor: 'var(--affine-brand-color)',
+  backgroundColor: 'var(--yunke-brand-color)',
   borderRadius: '4px',
   whiteSpace: 'nowrap',
   fontSize: '10px',

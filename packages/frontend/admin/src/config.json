@@ -9,7 +9,7 @@
     "privateKey": {
       "type": "String",
       "desc": "加密模块用于创建签名令牌或加密数据的私钥",
-      "env": "AFFINE_PRIVATE_KEY"
+      "env": "YUNKE_PRIVATE_KEY"
     }
   },
   "job": {
@@ -107,7 +107,7 @@
     },
     "SMTP.sender": {
       "type": "String",
-      "desc": "所有邮件的发送者（例如：\"AFFiNE团队 <noreply@affine.pro>\"）",
+      "desc": "所有邮件的发送者（例如：\"YUNKE团队 <noreply@yunke.pro>\"）",
       "env": "MAILER_SENDER"
     },
     "SMTP.ignoreTLS": {
@@ -154,32 +154,32 @@
   "server": {
     "name": {
       "type": "String",
-      "desc": "服务器的可识别名称。连接到AFFiNE桌面端时将显示此名称。"
+      "desc": "服务器的可识别名称。连接到YUNKE桌面端时将显示此名称。"
     },
     "externalUrl": {
       "type": "String",
-      "desc": "AFFiNE服务器的基础URL，用于生成外部链接。\n如果未指定，默认为`[server.protocol]://[server.host][:server.port]`。\n    ",
-      "env": "AFFINE_SERVER_EXTERNAL_URL"
+      "desc": "YUNKE服务器的基础URL，用于生成外部链接。\n如果未指定，默认为`[server.protocol]://[server.host][:server.port]`。\n    ",
+      "env": "YUNKE_SERVER_EXTERNAL_URL"
     },
     "https": {
       "type": "Boolean",
       "desc": "服务器是否部署在启用SSL的域名上(https://)。",
-      "env": "AFFINE_SERVER_HTTPS"
+      "env": "YUNKE_SERVER_HTTPS"
     },
     "host": {
       "type": "String",
       "desc": "服务器部署的位置(FQDN)。",
-      "env": "AFFINE_SERVER_HOST"
+      "env": "YUNKE_SERVER_HOST"
     },
     "port": {
       "type": "Number",
       "desc": "服务器监听的端口。",
-      "env": "AFFINE_SERVER_PORT"
+      "env": "YUNKE_SERVER_PORT"
     },
     "path": {
       "type": "String",
-      "desc": "服务器部署的子路径(如果有的话)。(例如: /affine)",
-      "env": "AFFINE_SERVER_SUB_PATH"
+      "desc": "服务器部署的子路径(如果有的话)。(例如: /yunke)",
+      "env": "YUNKE_SERVER_SUB_PATH"
     }
   },
   "flags": {
@@ -281,34 +281,34 @@
     "enabled": {
       "type": "Boolean",
       "desc": "启用索引插件",
-      "env": "AFFINE_INDEXER_ENABLED"
+      "env": "YUNKE_INDEXER_ENABLED"
     },
     "provider.type": {
       "type": "String",
       "desc": "索引搜索服务提供商名称",
-      "env": "AFFINE_INDEXER_SEARCH_PROVIDER"
+      "env": "YUNKE_INDEXER_SEARCH_PROVIDER"
     },
     "provider.endpoint": {
       "type": "String",
       "desc": "索引搜索服务端点",
-      "env": "AFFINE_INDEXER_SEARCH_ENDPOINT"
+      "env": "YUNKE_INDEXER_SEARCH_ENDPOINT"
     },
     "provider.apiKey": {
       "type": "String",
       "desc": "索引搜索服务API密钥。对Elasticsearch可选",
       "link": "https://www.elastic.co/guide/server/current/api-key.html",
-      "env": "AFFINE_INDEXER_SEARCH_API_KEY"
+      "env": "YUNKE_INDEXER_SEARCH_API_KEY"
     },
     "provider.username": {
       "type": "String",
       "desc": "索引搜索服务认证用户名，如未设置则禁用基本认证。对Elasticsearch可选",
       "link": "https://www.elastic.co/guide/en/elasticsearch/reference/current/http-clients.html",
-      "env": "AFFINE_INDEXER_SEARCH_USERNAME"
+      "env": "YUNKE_INDEXER_SEARCH_USERNAME"
     },
     "provider.password": {
       "type": "String",
       "desc": "索引搜索服务认证密码，如未设置则禁用基本认证。对Elasticsearch可选",
-      "env": "AFFINE_INDEXER_SEARCH_PASSWORD"
+      "env": "YUNKE_INDEXER_SEARCH_PASSWORD"
     },
     "autoIndex.batchSize": {
       "type": "Number",

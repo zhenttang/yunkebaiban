@@ -1,4 +1,4 @@
-import { toggleGeneralAIOnboarding } from '@yunke/core/components/affine/ai-onboarding/apis';
+import { toggleGeneralAIOnboarding } from '@yunke/core/components/yunke/ai-onboarding/apis';
 import type { AuthAccountInfo, AuthService } from '@yunke/core/modules/cloud';
 import type { GlobalDialogService } from '@yunke/core/modules/dialogs';
 //import {
@@ -101,9 +101,9 @@ export function setupAIProvider(
     
     const { input, contexts, webSearch } = options;
 
-    console.log(`[AI调试] 为提示名称创建会话: 'Chat With AFFiNE AI'`);
+    console.log(`[AI调试] 为提示名称创建会话: 'Chat With YUNKE AI'`);
     const sessionId = await createSession({
-      promptName: 'Chat With AFFiNE AI',
+      promptName: 'Chat With YUNKE AI',
       ...options,
     });
     console.log(`[AI调试] 会话已创建: ${sessionId}`);

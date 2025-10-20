@@ -6,7 +6,7 @@ import { css, html } from 'lit';
 
 export class DatabaseDndPreviewBlockComponent extends BlockComponent<DatabaseBlockModel> {
   static override styles = css`
-    .affine-database-preview-container {
+    .yunke-database-preview-container {
       display: flex;
       flex-direction: column;
       align-items: flex-start;
@@ -31,7 +31,7 @@ export class DatabaseDndPreviewBlockComponent extends BlockComponent<DatabaseBlo
     }
 
     .database-preview-content > .text {
-      color: var(--affine-text-primary-color);
+      color: var(--yunke-text-primary-color);
       color: ${unsafeCSSVarV2('text/primary', '#121212')};
       font-size: 14px;
       line-height: 24px;
@@ -40,7 +40,7 @@ export class DatabaseDndPreviewBlockComponent extends BlockComponent<DatabaseBlo
 
   override renderBlock() {
     return html`<div
-      class="affine-database-preview-container"
+      class="yunke-database-preview-container"
       contenteditable="false"
     >
       <div class="database-preview-content">
@@ -53,6 +53,6 @@ export class DatabaseDndPreviewBlockComponent extends BlockComponent<DatabaseBlo
 
 declare global {
   interface HTMLElementTagNameMap {
-    'affine-dnd-preview-database': DatabaseDndPreviewBlockComponent;
+    'yunke-dnd-preview-database': DatabaseDndPreviewBlockComponent;
   }
 }

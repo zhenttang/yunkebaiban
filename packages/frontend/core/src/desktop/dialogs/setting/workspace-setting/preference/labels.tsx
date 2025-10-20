@@ -47,7 +47,7 @@ const getConditions = (
     { condition: !isOwner, label: 'joinedWorkspace' },
     { condition: flavour === 'local', label: 'local' },
     {
-      condition: flavour === 'affine-cloud',
+      condition: flavour === 'yunke-cloud',
       label: 'syncCloud',
     },
     {
@@ -55,7 +55,7 @@ const getConditions = (
       label: 'teamWorkspace',
     },
     {
-      condition: flavour !== 'affine-cloud' && flavour !== 'local',
+      condition: flavour !== 'yunke-cloud' && flavour !== 'local',
       label: 'selfHosted',
     },
   ];
@@ -63,31 +63,31 @@ const getConditions = (
 
 const getLabelMap = (t: ReturnType<typeof useI18n>): LabelMap => ({
   local: {
-    value: t['com.affine.settings.workspace.state.local'](),
+    value: t['com.yunke.settings.workspace.state.local'](),
     background: cssVarV2('chip/label/orange'),
   },
   syncCloud: {
-    value: t['com.affine.settings.workspace.state.sync-affine-cloud'](),
+    value: t['com.yunke.settings.workspace.state.sync-yunke-cloud'](),
     background: cssVarV2('chip/label/blue'),
   },
   selfHosted: {
-    value: t['com.affine.settings.workspace.state.self-hosted'](),
+    value: t['com.yunke.settings.workspace.state.self-hosted'](),
     background: cssVarV2('chip/label/purple'),
   },
   joinedWorkspace: {
-    value: t['com.affine.settings.workspace.state.joined'](),
+    value: t['com.yunke.settings.workspace.state.joined'](),
     background: cssVarV2('chip/label/yellow'),
   },
   availableOffline: {
-    value: t['com.affine.settings.workspace.state.available-offline'](),
+    value: t['com.yunke.settings.workspace.state.available-offline'](),
     background: cssVarV2('chip/label/green'),
   },
   publishedToWeb: {
-    value: t['com.affine.settings.workspace.state.published'](),
+    value: t['com.yunke.settings.workspace.state.published'](),
     background: cssVarV2('chip/label/blue'),
   },
   teamWorkspace: {
-    value: t['com.affine.settings.workspace.state.team'](),
+    value: t['com.yunke.settings.workspace.state.team'](),
     background: cssVarV2('chip/label/purple'),
   },
 });

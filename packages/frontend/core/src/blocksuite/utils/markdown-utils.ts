@@ -163,12 +163,12 @@ export async function markDownToDoc(
   schema: Schema,
   answer: string,
   middlewares?: TransformerMiddleware[],
-  affineFeatureFlagService?: FeatureFlagService
+  yunkeFeatureFlagService?: FeatureFlagService
 ) {
   // Should not create a new doc in the original collection
   const collection = new WorkspaceImpl({
     rootDoc: new YDoc({ guid: 'markdownToDoc' }),
-    featureFlagService: affineFeatureFlagService,
+    featureFlagService: yunkeFeatureFlagService,
   });
   collection.meta.initialize();
   const transformer = new Transformer({

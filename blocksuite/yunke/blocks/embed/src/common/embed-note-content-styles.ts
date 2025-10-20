@@ -1,77 +1,77 @@
 import { css } from 'lit';
 
 export const embedNoteContentStyles = css`
-  .affine-embed-doc-content-note-blocks affine-divider,
-  .affine-embed-doc-content-note-blocks affine-divider > * {
+  .yunke-embed-doc-content-note-blocks yunke-divider,
+  .yunke-embed-doc-content-note-blocks yunke-divider > * {
     margin-top: 0px !important;
     margin-bottom: 0px !important;
     padding-top: 8px;
     padding-bottom: 8px;
   }
-  .affine-embed-doc-content-note-blocks affine-paragraph,
-  .affine-embed-doc-content-note-blocks affine-list {
+  .yunke-embed-doc-content-note-blocks yunke-paragraph,
+  .yunke-embed-doc-content-note-blocks yunke-list {
     margin-top: 4px !important;
     margin-bottom: 4px !important;
     padding: 0 2px;
   }
-  .affine-embed-doc-content-note-blocks affine-paragraph *,
-  .affine-embed-doc-content-note-blocks affine-list * {
+  .yunke-embed-doc-content-note-blocks yunke-paragraph *,
+  .yunke-embed-doc-content-note-blocks yunke-list * {
     margin-top: 0px !important;
     margin-bottom: 0px !important;
     padding-top: 0;
     padding-bottom: 0;
     line-height: 20px;
-    font-size: var(--affine-font-xs);
+    font-size: var(--yunke-font-xs);
     font-weight: 400;
   }
-  .affine-embed-doc-content-note-blocks affine-list .affine-list-block__prefix {
+  .yunke-embed-doc-content-note-blocks yunke-list .yunke-list-block__prefix {
     height: 20px;
   }
-  .affine-embed-doc-content-note-blocks affine-paragraph .quote {
+  .yunke-embed-doc-content-note-blocks yunke-paragraph .quote {
     padding-left: 15px;
     padding-top: 8px;
     padding-bottom: 8px;
   }
-  .affine-embed-doc-content-note-blocks affine-paragraph:has(.h1),
-  .affine-embed-doc-content-note-blocks affine-paragraph:has(.h2),
-  .affine-embed-doc-content-note-blocks affine-paragraph:has(.h3),
-  .affine-embed-doc-content-note-blocks affine-paragraph:has(.h4),
-  .affine-embed-doc-content-note-blocks affine-paragraph:has(.h5),
-  .affine-embed-doc-content-note-blocks affine-paragraph:has(.h6) {
+  .yunke-embed-doc-content-note-blocks yunke-paragraph:has(.h1),
+  .yunke-embed-doc-content-note-blocks yunke-paragraph:has(.h2),
+  .yunke-embed-doc-content-note-blocks yunke-paragraph:has(.h3),
+  .yunke-embed-doc-content-note-blocks yunke-paragraph:has(.h4),
+  .yunke-embed-doc-content-note-blocks yunke-paragraph:has(.h5),
+  .yunke-embed-doc-content-note-blocks yunke-paragraph:has(.h6) {
     margin-top: 6px !important;
     margin-bottom: 4px !important;
     padding: 0 2px;
   }
-  .affine-embed-doc-content-note-blocks affine-paragraph:has(.h1) *,
-  .affine-embed-doc-content-note-blocks affine-paragraph:has(.h2) *,
-  .affine-embed-doc-content-note-blocks affine-paragraph:has(.h3) *,
-  .affine-embed-doc-content-note-blocks affine-paragraph:has(.h4) *,
-  .affine-embed-doc-content-note-blocks affine-paragraph:has(.h5) *,
-  .affine-embed-doc-content-note-blocks affine-paragraph:has(.h6) * {
+  .yunke-embed-doc-content-note-blocks yunke-paragraph:has(.h1) *,
+  .yunke-embed-doc-content-note-blocks yunke-paragraph:has(.h2) *,
+  .yunke-embed-doc-content-note-blocks yunke-paragraph:has(.h3) *,
+  .yunke-embed-doc-content-note-blocks yunke-paragraph:has(.h4) *,
+  .yunke-embed-doc-content-note-blocks yunke-paragraph:has(.h5) *,
+  .yunke-embed-doc-content-note-blocks yunke-paragraph:has(.h6) * {
     margin-top: 0px !important;
     margin-bottom: 0px !important;
     padding-top: 0;
     padding-bottom: 0;
     line-height: 20px;
-    font-size: var(--affine-font-xs);
+    font-size: var(--yunke-font-xs);
     font-weight: 600;
   }
 
-  .affine-embed-linked-doc-block.horizontal {
-    affine-paragraph,
-    affine-list {
+  .yunke-embed-linked-doc-block.horizontal {
+    yunke-paragraph,
+    yunke-list {
       margin-top: 0 !important;
       margin-bottom: 0 !important;
       max-height: 40px;
       overflow: hidden;
       display: flex;
     }
-    affine-paragraph .quote {
+    yunke-paragraph .quote {
       padding-top: 4px;
       padding-bottom: 4px;
       height: 28px;
     }
-    affine-paragraph .quote::after {
+    yunke-paragraph .quote::after {
       height: 20px;
       margin-top: 4px !important;
       margin-bottom: 4px !important;

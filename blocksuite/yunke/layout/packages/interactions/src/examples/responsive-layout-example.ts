@@ -36,16 +36,16 @@ export class ResponsiveLayoutSwitcher extends LitElement {
       align-items: center;
       gap: 8px;
       padding: 8px 12px;
-      background: var(--affine-background-secondary-color);
+      background: var(--yunke-background-secondary-color);
       border-radius: 8px;
-      border: 1px solid var(--affine-border-color);
+      border: 1px solid var(--yunke-border-color);
       user-select: none;
     }
 
     .breakpoint-indicator {
       font-size: 12px;
-      color: var(--affine-text-secondary-color);
-      background: var(--affine-background-overlay-panel-color);
+      color: var(--yunke-text-secondary-color);
+      background: var(--yunke-background-overlay-panel-color);
       padding: 2px 6px;
       border-radius: 4px;
       margin-right: 8px;
@@ -65,18 +65,18 @@ export class ResponsiveLayoutSwitcher extends LitElement {
       transition: all 0.2s ease;
       font-family: monospace;
       font-size: 12px;
-      color: var(--affine-text-primary-color);
+      color: var(--yunke-text-primary-color);
     }
 
     .layout-button:hover {
-      background: var(--affine-hover-color);
-      border-color: var(--affine-primary-color);
+      background: var(--yunke-hover-color);
+      border-color: var(--yunke-primary-color);
     }
 
     .layout-button.active {
-      background: var(--affine-primary-color);
+      background: var(--yunke-primary-color);
       color: white;
-      border-color: var(--affine-primary-color);
+      border-color: var(--yunke-primary-color);
     }
 
     .layout-button:disabled {
@@ -248,8 +248,8 @@ export class ResponsiveLayoutSwitcher extends LitElement {
       top: 20px;
       left: 50%;
       transform: translateX(-50%);
-      background: var(--affine-background-overlay-panel-color);
-      color: var(--affine-text-primary-color);
+      background: var(--yunke-background-overlay-panel-color);
+      color: var(--yunke-text-primary-color);
       padding: 8px 16px;
       border-radius: 6px;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
@@ -354,8 +354,8 @@ export class ResponsiveLayoutContainer extends LitElement {
     }
 
     .column {
-      background: var(--affine-background-primary-color);
-      border: 2px solid var(--affine-border-color);
+      background: var(--yunke-background-primary-color);
+      border: 2px solid var(--yunke-border-color);
       border-radius: 8px;
       padding: 16px;
       min-height: 200px;
@@ -363,8 +363,8 @@ export class ResponsiveLayoutContainer extends LitElement {
     }
 
     .column.drag-over {
-      border-color: var(--affine-primary-color);
-      background: var(--affine-primary-color-alpha);
+      border-color: var(--yunke-primary-color);
+      background: var(--yunke-primary-color-alpha);
     }
 
     /* 响应式布局 */

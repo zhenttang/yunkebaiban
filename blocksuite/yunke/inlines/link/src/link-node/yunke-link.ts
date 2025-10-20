@@ -5,8 +5,8 @@ import {
   ParseDocUrlProvider,
   ToolbarRegistryIdentifier,
 } from '@blocksuite/yunke-shared/services';
-import { affineTextStyles } from '@blocksuite/yunke-shared/styles';
-import type { AffineTextAttributes } from '@blocksuite/yunke-shared/types';
+import { yunkeTextStyles } from '@blocksuite/yunke-shared/styles';
+import type { YunkeTextAttributes } from '@blocksuite/yunke-shared/types';
 import { normalizeUrl } from '@blocksuite/yunke-shared/utils';
 import { WithDisposable } from '@blocksuite/global/lit';
 import type { BlockComponent, BlockStdScope } from '@blocksuite/std';
@@ -21,9 +21,9 @@ import { css, html } from 'lit';
 import { property } from 'lit/decorators.js';
 import { type StyleInfo, styleMap } from 'lit/directives/style-map.js';
 
-export class AffineLink extends WithDisposable(ShadowlessElement) {
+export class YunkeLink extends WithDisposable(ShadowlessElement) {
   static override styles = css`
-    affine-link a:hover [data-v-text='true'] {
+    yunke-link a:hover [data-v-text='true'] {
       text-decoration: underline;
     }
   `;
@@ -31,7 +31,7 @@ export class AffineLink extends WithDisposable(ShadowlessElement) {
   // The link has been identified.
   private _identified: boolean = false;
 
-  // see https://github.com/toeverything/AFFiNE/issues/1540
+  // see https://github.com/toeverything/YUNKE/issues/1540
   private readonly _onMouseUp = () => {
     const anchorElement = this.querySelector('a');
     if (!anchorElement || !anchorElement.isContentEditable) return;
@@ -114,7 +114,7 @@ export class AffineLink extends WithDisposable(ShadowlessElement) {
   }
 
   get inlineEditor() {
-    const inlineRoot = this.closest<InlineRootElement<AffineTextAttributes>>(
+    const inlineRoot = this.closest<InlineRootElement<YunkeTextAttributes>>(
       `[${INLINE_ROOT_ATTR}]`
     );
     return inlineRoot?.inlineEditor;
@@ -156,28 +156,28 @@ export class AffineLink extends WithDisposable(ShadowlessElement) {
 
   override render() {
     const linkStyle = {
-      color: 'var(--affine-link-color)',
-      fill: 'var(--affine-link-color)',
+      color: 'var(--yunke-link-color)',
+      fill: 'var(--yunke-link-color)',
       'text-decoration': 'none',
       cursor: 'pointer',
     };
 
     if (this.delta.attributes && this.delta.attributes?.code) {
-      const codeStyle = affineTextStyles(this.delta.attributes);
+      const codeStyle = yunkeTextStyles(this.delta.attributes);
       return html`<code style=${styleMap(codeStyle)}>
         ${this._renderLink(linkStyle)}
       </code>`;
     }
 
     const style = this.delta.attributes
-      ? affineTextStyles(this.delta.attributes, linkStyle)
+      ? yunkeTextStyles(this.delta.attributes, linkStyle)
       : {};
 
     return this._renderLink(style);
   }
 
   @property({ type: Object })
-  accessor delta: DeltaInsert<AffineTextAttributes> = {
+  accessor delta: DeltaInsert<YunkeTextAttributes> = {
     insert: ZERO_WIDTH_FOR_EMPTY_LINE,
   };
 

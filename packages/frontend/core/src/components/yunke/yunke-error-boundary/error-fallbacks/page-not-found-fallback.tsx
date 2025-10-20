@@ -31,7 +31,7 @@ export const PageNotFoundDetail = createErrorFallback(PageNotFoundError, () => {
 
   return (
     <ErrorDetail
-      title={t['com.affine.notFoundPage.title']()}
+      title={t['com.yunke.notFoundPage.title']()}
       description={t['404.hint']()}
       buttonText={t['404.back']()}
       onButtonClick={onBtnClick}

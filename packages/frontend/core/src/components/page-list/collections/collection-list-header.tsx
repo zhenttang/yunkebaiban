@@ -13,14 +13,14 @@ export const CollectionListHeader = ({
   return (
     <div className={styles.collectionListHeader}>
       <div className={styles.collectionListHeaderTitle}>
-        {t['com.affine.collections.header']()}
+        {t['com.yunke.collections.header']()}
       </div>
       <Button
         className={styles.newCollectionButton}
         onClick={onCreate}
         data-testid="all-collection-new-button"
       >
-        {t['com.affine.collections.empty.new-collection-button']()}
+        {t['com.yunke.collections.empty.new-collection-button']()}
       </Button>
     </div>
   );

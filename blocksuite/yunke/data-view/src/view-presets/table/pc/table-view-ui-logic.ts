@@ -149,7 +149,7 @@ export class TableViewUI extends DataViewUIBase<TableViewUILogic> {
     this.logic.dragController.hostConnected();
     this.logic.hotkeysController.hostConnected();
     this.logic.selectionController.hostConnected();
-    this.classList.add('affine-database-table', tableViewStyle);
+    this.classList.add('yunke-database-table', tableViewStyle);
     this.dataset['testid'] = 'dv-table-view';
   }
 
@@ -162,20 +162,20 @@ export class TableViewUI extends DataViewUIBase<TableViewUILogic> {
             groups,
             v => v.key,
             group => {
-              return html` <affine-data-view-table-group
+              return html` <yunke-data-view-table-group
                 data-group-key="${group.key}"
                 .tableViewLogic="${this.logic}"
                 .group="${group}"
-              ></affine-data-view-table-group>`;
+              ></yunke-data-view-table-group>`;
             }
           )}
           ${this.logic.renderAddGroup(this.logic.view.groupTrait)}
         </div>
       `;
     }
-    return html` <affine-data-view-table-group
+    return html` <yunke-data-view-table-group
       .tableViewLogic="${this.logic}"
-    ></affine-data-view-table-group>`;
+    ></yunke-data-view-table-group>`;
   }
 
   override render(): TemplateResult {
@@ -202,7 +202,7 @@ export class TableViewUI extends DataViewUIBase<TableViewUILogic> {
         >
           <div
             ${ref(this.logic.tableContainer$)}
-            class="affine-database-table-container"
+            class="yunke-database-table-container"
             style="${containerStyle}"
           >
             ${this.renderTable()}

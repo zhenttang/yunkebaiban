@@ -123,11 +123,11 @@ export const ShareToCommunityModal = ({
           <div
             style={{
               padding: '12px',
-              backgroundColor: 'var(--affine-background-secondary-color)',
+              backgroundColor: 'var(--yunke-background-secondary-color)',
               borderRadius: '8px',
               marginBottom: '16px',
               fontSize: '13px',
-              color: 'var(--affine-text-secondary-color)',
+              color: 'var(--yunke-text-secondary-color)',
               lineHeight: '1.5',
             }}
           >

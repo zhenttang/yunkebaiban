@@ -4,7 +4,7 @@ import {
 } from '@blocksuite/global/di';
 import type { DeltaInsert, ExtensionType } from '@blocksuite/store';
 
-import type { AffineTextAttributes } from '../../types/index.js';
+import type { YunkeTextAttributes } from '../../types/index.js';
 import type { TextBuffer } from '../types/adapter.js';
 import {
   type ASTToDeltaMatcher,
@@ -39,7 +39,7 @@ export function InlineDeltaToPlainTextAdapterExtension(
 export type PlainTextASTToDeltaMatcher = ASTToDeltaMatcher<string>;
 
 export class PlainTextDeltaConverter extends DeltaASTConverter<
-  AffineTextAttributes,
+  YunkeTextAttributes,
   string
 > {
   constructor(
@@ -64,7 +64,7 @@ export class PlainTextDeltaConverter extends DeltaASTConverter<
     return [];
   }
 
-  deltaToAST(deltas: DeltaInsert<AffineTextAttributes>[]): string[] {
+  deltaToAST(deltas: DeltaInsert<YunkeTextAttributes>[]): string[] {
     return deltas.map(delta => {
       const context = {
         configs: this.configs,

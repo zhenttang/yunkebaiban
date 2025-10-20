@@ -66,9 +66,9 @@ export const RenameModal = ({
     <style>
       ${renameStyles}
     </style>
-    <div class="affine-attachment-rename-overlay-mask" @click="${abort}"></div>
-    <div class="affine-attachment-rename-container">
-      <div class="affine-attachment-rename-input-wrapper">
+    <div class="yunke-attachment-rename-overlay-mask" @click="${abort}"></div>
+    <div class="yunke-attachment-rename-container">
+      <div class="yunke-attachment-rename-input-wrapper">
         <input
           ${ref(inputRef)}
           type="text"
@@ -76,10 +76,10 @@ export const RenameModal = ({
           @input=${onInput}
           @keydown=${onKeydown}
         />
-        <span class="affine-attachment-rename-extension">${extension}</span>
+        <span class="yunke-attachment-rename-extension">${extension}</span>
       </div>
       <editor-icon-button
-        class="affine-confirm-button"
+        class="yunke-confirm-button"
         .iconSize=${'24px'}
         @click=${onConfirm}
       >

@@ -1,5 +1,5 @@
 /**
- * AFFiNE 块命令样式一致性改进方案
+ * YUNKE 块命令样式一致性改进方案
  * 
  * 基于对现有系统的分析，发现块命令在以下方面与系统设计语言不一致：
  * 1. 右侧面板的现代化卡片式设计 vs 块命令的传统菜单样式
@@ -15,7 +15,7 @@ import { baseTheme } from '@toeverything/theme';
 /**
  * 系统设计规范分析（基于截图）
  */
-export const AFFINE_DESIGN_TOKENS = {
+export const YUNKE_DESIGN_TOKENS = {
   // 从截图观察到的设计特征
   colors: {
     // 主色调 - 蓝色系（基础块按钮）
@@ -100,27 +100,27 @@ export const improvedSlashMenuStyles = css`
     /* 现代化容器设计 */
     width: 320px;                                    /* 增加宽度，更现代 */
     max-height: 420px;                              /* 调整高度 */
-    padding: ${AFFINE_DESIGN_TOKENS.spacing.lg};   /* 统一间距 */
+    padding: ${YUNKE_DESIGN_TOKENS.spacing.lg};   /* 统一间距 */
     
     /* 现代化背景和边框 */
-    background: ${AFFINE_DESIGN_TOKENS.colors.background};
-    border: 1px solid ${AFFINE_DESIGN_TOKENS.colors.borderLight};
-    border-radius: ${AFFINE_DESIGN_TOKENS.borderRadius.xl};  /* 更圆润 */
+    background: ${YUNKE_DESIGN_TOKENS.colors.background};
+    border: 1px solid ${YUNKE_DESIGN_TOKENS.colors.borderLight};
+    border-radius: ${YUNKE_DESIGN_TOKENS.borderRadius.xl};  /* 更圆润 */
     
     /* 现代化阴影 */
-    box-shadow: ${AFFINE_DESIGN_TOKENS.shadows.lg};
+    box-shadow: ${YUNKE_DESIGN_TOKENS.shadows.lg};
     
     /* 字体系统 */
     font-family: ${unsafeCSS(baseTheme.fontSansFamily)};
-    font-size: ${AFFINE_DESIGN_TOKENS.fontSize.base};
+    font-size: ${YUNKE_DESIGN_TOKENS.fontSize.base};
     
     /* 过渡效果 */
-    transition: all ${AFFINE_DESIGN_TOKENS.transitions.normal};
+    transition: all ${YUNKE_DESIGN_TOKENS.transitions.normal};
     
     /* 滚动条样式 */
     overflow-y: auto;
     scrollbar-width: thin;
-    scrollbar-color: ${AFFINE_DESIGN_TOKENS.colors.border} transparent;
+    scrollbar-color: ${YUNKE_DESIGN_TOKENS.colors.border} transparent;
   }
   
   .slash-menu::-webkit-scrollbar {
@@ -132,19 +132,19 @@ export const improvedSlashMenuStyles = css`
   }
   
   .slash-menu::-webkit-scrollbar-thumb {
-    background: ${AFFINE_DESIGN_TOKENS.colors.border};
+    background: ${YUNKE_DESIGN_TOKENS.colors.border};
     border-radius: 3px;
   }
   
   /* 分组标题样式 - 与右侧面板一致 */
   .slash-menu-group-title {
-    font-size: ${AFFINE_DESIGN_TOKENS.fontSize.xs};
+    font-size: ${YUNKE_DESIGN_TOKENS.fontSize.xs};
     font-weight: 600;
-    color: ${AFFINE_DESIGN_TOKENS.colors.textSecondary};
+    color: ${YUNKE_DESIGN_TOKENS.colors.textSecondary};
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    margin: ${AFFINE_DESIGN_TOKENS.spacing.lg} 0 ${AFFINE_DESIGN_TOKENS.spacing.md} 0;
-    padding: 0 ${AFFINE_DESIGN_TOKENS.spacing.sm};
+    margin: ${YUNKE_DESIGN_TOKENS.spacing.lg} 0 ${YUNKE_DESIGN_TOKENS.spacing.md} 0;
+    padding: 0 ${YUNKE_DESIGN_TOKENS.spacing.sm};
   }
   
   .slash-menu-group-title:first-child {
@@ -155,17 +155,17 @@ export const improvedSlashMenuStyles = css`
   .slash-menu-item {
     display: flex;
     align-items: center;
-    gap: ${AFFINE_DESIGN_TOKENS.spacing.lg};
-    padding: ${AFFINE_DESIGN_TOKENS.spacing.lg} ${AFFINE_DESIGN_TOKENS.spacing.md};
-    margin-bottom: ${AFFINE_DESIGN_TOKENS.spacing.sm};
+    gap: ${YUNKE_DESIGN_TOKENS.spacing.lg};
+    padding: ${YUNKE_DESIGN_TOKENS.spacing.lg} ${YUNKE_DESIGN_TOKENS.spacing.md};
+    margin-bottom: ${YUNKE_DESIGN_TOKENS.spacing.sm};
     
     /* 现代化卡片样式 */
-    background: ${AFFINE_DESIGN_TOKENS.colors.background};
+    background: ${YUNKE_DESIGN_TOKENS.colors.background};
     border: 1px solid transparent;
-    border-radius: ${AFFINE_DESIGN_TOKENS.borderRadius.md};
+    border-radius: ${YUNKE_DESIGN_TOKENS.borderRadius.md};
     
     /* 过渡效果 */
-    transition: all ${AFFINE_DESIGN_TOKENS.transitions.fast};
+    transition: all ${YUNKE_DESIGN_TOKENS.transitions.fast};
     cursor: pointer;
     
     /* 文字不可选择 */
@@ -174,10 +174,10 @@ export const improvedSlashMenuStyles = css`
   
   /* 菜单项悬停状态 - 现代化设计 */
   .slash-menu-item:hover {
-    background: ${AFFINE_DESIGN_TOKENS.colors.surfaceHover};
-    border-color: ${AFFINE_DESIGN_TOKENS.colors.border};
+    background: ${YUNKE_DESIGN_TOKENS.colors.surfaceHover};
+    border-color: ${YUNKE_DESIGN_TOKENS.colors.border};
     transform: translateY(-1px);                    /* 微妙的悬浮效果 */
-    box-shadow: ${AFFINE_DESIGN_TOKENS.shadows.sm};
+    box-shadow: ${YUNKE_DESIGN_TOKENS.shadows.sm};
   }
   
   /* 菜单项激活状态 */
@@ -189,8 +189,8 @@ export const improvedSlashMenuStyles = css`
   /* 菜单项选中状态 */
   .slash-menu-item.selected {
     background: rgba(91, 156, 255, 0.08);          /* 主色调透明背景 */
-    border-color: ${AFFINE_DESIGN_TOKENS.colors.primary};
-    color: ${AFFINE_DESIGN_TOKENS.colors.primary};
+    border-color: ${YUNKE_DESIGN_TOKENS.colors.primary};
+    color: ${YUNKE_DESIGN_TOKENS.colors.primary};
   }
   
   /* 图标容器 - 现代化设计 */
@@ -203,23 +203,23 @@ export const improvedSlashMenuStyles = css`
     flex-shrink: 0;
     
     /* 现代化背景 */
-    background: ${AFFINE_DESIGN_TOKENS.colors.surface};
-    border: 1px solid ${AFFINE_DESIGN_TOKENS.colors.borderLight};
-    border-radius: ${AFFINE_DESIGN_TOKENS.borderRadius.md};
+    background: ${YUNKE_DESIGN_TOKENS.colors.surface};
+    border: 1px solid ${YUNKE_DESIGN_TOKENS.colors.borderLight};
+    border-radius: ${YUNKE_DESIGN_TOKENS.borderRadius.md};
     
     /* 过渡效果 */
-    transition: all ${AFFINE_DESIGN_TOKENS.transitions.fast};
+    transition: all ${YUNKE_DESIGN_TOKENS.transitions.fast};
   }
   
   .slash-menu-item:hover .slash-menu-item-icon {
-    background: ${AFFINE_DESIGN_TOKENS.colors.background};
-    border-color: ${AFFINE_DESIGN_TOKENS.colors.border};
+    background: ${YUNKE_DESIGN_TOKENS.colors.background};
+    border-color: ${YUNKE_DESIGN_TOKENS.colors.border};
   }
   
   .slash-menu-item.selected .slash-menu-item-icon {
     background: rgba(91, 156, 255, 0.1);
-    border-color: ${AFFINE_DESIGN_TOKENS.colors.primary};
-    color: ${AFFINE_DESIGN_TOKENS.colors.primary};
+    border-color: ${YUNKE_DESIGN_TOKENS.colors.primary};
+    color: ${YUNKE_DESIGN_TOKENS.colors.primary};
   }
   
   /* 图标SVG样式 */
@@ -234,31 +234,31 @@ export const improvedSlashMenuStyles = css`
     flex: 1;
     display: flex;
     flex-direction: column;
-    gap: ${AFFINE_DESIGN_TOKENS.spacing.xs};
+    gap: ${YUNKE_DESIGN_TOKENS.spacing.xs};
     min-width: 0;                                   /* 允许文字截断 */
   }
   
   /* 主标题样式 */
   .slash-menu-item-title {
-    font-size: ${AFFINE_DESIGN_TOKENS.fontSize.base};
+    font-size: ${YUNKE_DESIGN_TOKENS.fontSize.base};
     font-weight: 500;
-    color: ${AFFINE_DESIGN_TOKENS.colors.textPrimary};
+    color: ${YUNKE_DESIGN_TOKENS.colors.textPrimary};
     line-height: 1.4;
     margin: 0;
   }
   
   .slash-menu-item:hover .slash-menu-item-title {
-    color: ${AFFINE_DESIGN_TOKENS.colors.textPrimary};
+    color: ${YUNKE_DESIGN_TOKENS.colors.textPrimary};
   }
   
   .slash-menu-item.selected .slash-menu-item-title {
-    color: ${AFFINE_DESIGN_TOKENS.colors.primary};
+    color: ${YUNKE_DESIGN_TOKENS.colors.primary};
   }
   
   /* 描述文字样式 */
   .slash-menu-item-description {
-    font-size: ${AFFINE_DESIGN_TOKENS.fontSize.sm};
-    color: ${AFFINE_DESIGN_TOKENS.colors.textSecondary};
+    font-size: ${YUNKE_DESIGN_TOKENS.fontSize.sm};
+    color: ${YUNKE_DESIGN_TOKENS.colors.textSecondary};
     line-height: 1.3;
     margin: 0;
     
@@ -269,7 +269,7 @@ export const improvedSlashMenuStyles = css`
   }
   
   .slash-menu-item:hover .slash-menu-item-description {
-    color: ${AFFINE_DESIGN_TOKENS.colors.textSecondary};
+    color: ${YUNKE_DESIGN_TOKENS.colors.textSecondary};
   }
   
   .slash-menu-item.selected .slash-menu-item-description {
@@ -278,49 +278,49 @@ export const improvedSlashMenuStyles = css`
   
   /* 键盘快捷键显示 */
   .slash-menu-item-shortcut {
-    font-size: ${AFFINE_DESIGN_TOKENS.fontSize.xs};
-    color: ${AFFINE_DESIGN_TOKENS.colors.textTertiary};
-    background: ${AFFINE_DESIGN_TOKENS.colors.surfaceHover};
-    padding: ${AFFINE_DESIGN_TOKENS.spacing.xs} ${AFFINE_DESIGN_TOKENS.spacing.sm};
-    border-radius: ${AFFINE_DESIGN_TOKENS.borderRadius.sm};
+    font-size: ${YUNKE_DESIGN_TOKENS.fontSize.xs};
+    color: ${YUNKE_DESIGN_TOKENS.colors.textTertiary};
+    background: ${YUNKE_DESIGN_TOKENS.colors.surfaceHover};
+    padding: ${YUNKE_DESIGN_TOKENS.spacing.xs} ${YUNKE_DESIGN_TOKENS.spacing.sm};
+    border-radius: ${YUNKE_DESIGN_TOKENS.borderRadius.sm};
     font-family: ui-monospace, 'SF Mono', 'Monaco', 'Cascadia Code', monospace;
   }
   
   /* 分隔线样式 */
   .slash-menu-divider {
     height: 1px;
-    background: ${AFFINE_DESIGN_TOKENS.colors.borderLight};
-    margin: ${AFFINE_DESIGN_TOKENS.spacing.md} 0;
+    background: ${YUNKE_DESIGN_TOKENS.colors.borderLight};
+    margin: ${YUNKE_DESIGN_TOKENS.spacing.md} 0;
   }
   
   /* 空状态样式 */
   .slash-menu-empty {
-    padding: ${AFFINE_DESIGN_TOKENS.spacing.xxxl};
+    padding: ${YUNKE_DESIGN_TOKENS.spacing.xxxl};
     text-align: center;
-    color: ${AFFINE_DESIGN_TOKENS.colors.textSecondary};
-    font-size: ${AFFINE_DESIGN_TOKENS.fontSize.sm};
+    color: ${YUNKE_DESIGN_TOKENS.colors.textSecondary};
+    font-size: ${YUNKE_DESIGN_TOKENS.fontSize.sm};
   }
   
   .slash-menu-empty-icon {
     width: 48px;
     height: 48px;
-    margin: 0 auto ${AFFINE_DESIGN_TOKENS.spacing.lg};
+    margin: 0 auto ${YUNKE_DESIGN_TOKENS.spacing.lg};
     opacity: 0.3;
   }
   
   /* 加载状态 */
   .slash-menu-loading {
-    padding: ${AFFINE_DESIGN_TOKENS.spacing.xl};
+    padding: ${YUNKE_DESIGN_TOKENS.spacing.xl};
     text-align: center;
-    color: ${AFFINE_DESIGN_TOKENS.colors.textSecondary};
+    color: ${YUNKE_DESIGN_TOKENS.colors.textSecondary};
   }
   
   .slash-menu-loading-spinner {
     width: 20px;
     height: 20px;
-    margin: 0 auto ${AFFINE_DESIGN_TOKENS.spacing.md};
-    border: 2px solid ${AFFINE_DESIGN_TOKENS.colors.border};
-    border-top-color: ${AFFINE_DESIGN_TOKENS.colors.primary};
+    margin: 0 auto ${YUNKE_DESIGN_TOKENS.spacing.md};
+    border: 2px solid ${YUNKE_DESIGN_TOKENS.colors.border};
+    border-top-color: ${YUNKE_DESIGN_TOKENS.colors.primary};
     border-radius: 50%;
     animation: spin 1s linear infinite;
   }
@@ -370,12 +370,12 @@ export const improvedSlashMenuStyles = css`
     .slash-menu {
       width: 300px;
       max-height: 360px;
-      padding: ${AFFINE_DESIGN_TOKENS.spacing.md};
+      padding: ${YUNKE_DESIGN_TOKENS.spacing.md};
     }
     
     .slash-menu-item {
-      padding: ${AFFINE_DESIGN_TOKENS.spacing.md} ${AFFINE_DESIGN_TOKENS.spacing.sm};
-      gap: ${AFFINE_DESIGN_TOKENS.spacing.md};
+      padding: ${YUNKE_DESIGN_TOKENS.spacing.md} ${YUNKE_DESIGN_TOKENS.spacing.sm};
+      gap: ${YUNKE_DESIGN_TOKENS.spacing.md};
     }
     
     .slash-menu-item-icon {
@@ -392,15 +392,15 @@ export const improvedSlashMenuStyles = css`
   /* 高对比度模式支持 */
   @media (prefers-contrast: high) {
     .slash-menu-item {
-      border-color: ${AFFINE_DESIGN_TOKENS.colors.border};
+      border-color: ${YUNKE_DESIGN_TOKENS.colors.border};
     }
     
     .slash-menu-item:hover {
-      border-color: ${AFFINE_DESIGN_TOKENS.colors.textPrimary};
+      border-color: ${YUNKE_DESIGN_TOKENS.colors.textPrimary};
     }
     
     .slash-menu-item.selected {
-      border-color: ${AFFINE_DESIGN_TOKENS.colors.primary};
+      border-color: ${YUNKE_DESIGN_TOKENS.colors.primary};
       background: rgba(91, 156, 255, 0.15);
     }
   }
@@ -426,42 +426,42 @@ export const improvedSlashMenuStyles = css`
  * 与系统整体设计保持一致
  */
 export const improvedToolbarStyles = css`
-  .affine-toolbar {
+  .yunke-toolbar {
     /* 现代化容器 */
-    background: ${AFFINE_DESIGN_TOKENS.colors.background};
-    border: 1px solid ${AFFINE_DESIGN_TOKENS.colors.borderLight};
-    border-radius: ${AFFINE_DESIGN_TOKENS.borderRadius.lg};
-    box-shadow: ${AFFINE_DESIGN_TOKENS.shadows.md};
+    background: ${YUNKE_DESIGN_TOKENS.colors.background};
+    border: 1px solid ${YUNKE_DESIGN_TOKENS.colors.borderLight};
+    border-radius: ${YUNKE_DESIGN_TOKENS.borderRadius.lg};
+    box-shadow: ${YUNKE_DESIGN_TOKENS.shadows.md};
     
     /* 内边距调整 */
-    padding: ${AFFINE_DESIGN_TOKENS.spacing.sm} ${AFFINE_DESIGN_TOKENS.spacing.md};
-    gap: ${AFFINE_DESIGN_TOKENS.spacing.sm};
+    padding: ${YUNKE_DESIGN_TOKENS.spacing.sm} ${YUNKE_DESIGN_TOKENS.spacing.md};
+    gap: ${YUNKE_DESIGN_TOKENS.spacing.sm};
     
     /* 过渡效果 */
-    transition: all ${AFFINE_DESIGN_TOKENS.transitions.normal};
+    transition: all ${YUNKE_DESIGN_TOKENS.transitions.normal};
   }
   
-  .affine-toolbar-item {
+  .yunke-toolbar-item {
     /* 现代化按钮设计 */
-    padding: ${AFFINE_DESIGN_TOKENS.spacing.md};
-    border-radius: ${AFFINE_DESIGN_TOKENS.borderRadius.md};
+    padding: ${YUNKE_DESIGN_TOKENS.spacing.md};
+    border-radius: ${YUNKE_DESIGN_TOKENS.borderRadius.md};
     border: 1px solid transparent;
     
     /* 悬停效果 */
-    transition: all ${AFFINE_DESIGN_TOKENS.transitions.fast};
+    transition: all ${YUNKE_DESIGN_TOKENS.transitions.fast};
   }
   
-  .affine-toolbar-item:hover {
-    background: ${AFFINE_DESIGN_TOKENS.colors.surfaceHover};
-    border-color: ${AFFINE_DESIGN_TOKENS.colors.border};
+  .yunke-toolbar-item:hover {
+    background: ${YUNKE_DESIGN_TOKENS.colors.surfaceHover};
+    border-color: ${YUNKE_DESIGN_TOKENS.colors.border};
     transform: translateY(-1px);
-    box-shadow: ${AFFINE_DESIGN_TOKENS.shadows.sm};
+    box-shadow: ${YUNKE_DESIGN_TOKENS.shadows.sm};
   }
   
-  .affine-toolbar-item.active {
+  .yunke-toolbar-item.active {
     background: rgba(91, 156, 255, 0.1);
-    border-color: ${AFFINE_DESIGN_TOKENS.colors.primary};
-    color: ${AFFINE_DESIGN_TOKENS.colors.primary};
+    border-color: ${YUNKE_DESIGN_TOKENS.colors.primary};
+    color: ${YUNKE_DESIGN_TOKENS.colors.primary};
   }
 `;
 
@@ -473,21 +473,21 @@ export const blockCommandItemStyles = css`
     /* 基础布局 */
     display: flex;
     align-items: center;
-    gap: ${AFFINE_DESIGN_TOKENS.spacing.lg};
+    gap: ${YUNKE_DESIGN_TOKENS.spacing.lg};
     width: 100%;
-    padding: ${AFFINE_DESIGN_TOKENS.spacing.lg};
-    margin-bottom: ${AFFINE_DESIGN_TOKENS.spacing.sm};
+    padding: ${YUNKE_DESIGN_TOKENS.spacing.lg};
+    margin-bottom: ${YUNKE_DESIGN_TOKENS.spacing.sm};
     
     /* 现代化外观 */
-    background: ${AFFINE_DESIGN_TOKENS.colors.background};
+    background: ${YUNKE_DESIGN_TOKENS.colors.background};
     border: 1px solid transparent;
-    border-radius: ${AFFINE_DESIGN_TOKENS.borderRadius.md};
-    color: ${AFFINE_DESIGN_TOKENS.colors.textPrimary};
+    border-radius: ${YUNKE_DESIGN_TOKENS.borderRadius.md};
+    color: ${YUNKE_DESIGN_TOKENS.colors.textPrimary};
     text-align: left;
     cursor: pointer;
     
     /* 过渡效果 */
-    transition: all ${AFFINE_DESIGN_TOKENS.transitions.fast};
+    transition: all ${YUNKE_DESIGN_TOKENS.transitions.fast};
     
     /* 移除默认按钮样式 */
     font-family: inherit;
@@ -497,10 +497,10 @@ export const blockCommandItemStyles = css`
   }
   
   .block-command-item:hover {
-    background: ${AFFINE_DESIGN_TOKENS.colors.surfaceHover};
-    border-color: ${AFFINE_DESIGN_TOKENS.colors.border};
+    background: ${YUNKE_DESIGN_TOKENS.colors.surfaceHover};
+    border-color: ${YUNKE_DESIGN_TOKENS.colors.border};
     transform: translateY(-1px);
-    box-shadow: ${AFFINE_DESIGN_TOKENS.shadows.sm};
+    box-shadow: ${YUNKE_DESIGN_TOKENS.shadows.sm};
   }
   
   .block-command-item:active {
@@ -509,7 +509,7 @@ export const blockCommandItemStyles = css`
   }
   
   .block-command-item:focus-visible {
-    outline: 2px solid ${AFFINE_DESIGN_TOKENS.colors.primary};
+    outline: 2px solid ${YUNKE_DESIGN_TOKENS.colors.primary};
     outline-offset: 2px;
   }
   
@@ -522,16 +522,16 @@ export const blockCommandItemStyles = css`
     height: 36px;
     flex-shrink: 0;
     
-    background: ${AFFINE_DESIGN_TOKENS.colors.surface};
-    border: 1px solid ${AFFINE_DESIGN_TOKENS.colors.borderLight};
-    border-radius: ${AFFINE_DESIGN_TOKENS.borderRadius.md};
+    background: ${YUNKE_DESIGN_TOKENS.colors.surface};
+    border: 1px solid ${YUNKE_DESIGN_TOKENS.colors.borderLight};
+    border-radius: ${YUNKE_DESIGN_TOKENS.borderRadius.md};
     
-    transition: all ${AFFINE_DESIGN_TOKENS.transitions.fast};
+    transition: all ${YUNKE_DESIGN_TOKENS.transitions.fast};
   }
   
   .block-command-item:hover .block-command-icon {
-    background: ${AFFINE_DESIGN_TOKENS.colors.background};
-    border-color: ${AFFINE_DESIGN_TOKENS.colors.border};
+    background: ${YUNKE_DESIGN_TOKENS.colors.background};
+    border-color: ${YUNKE_DESIGN_TOKENS.colors.border};
   }
   
   /* 文本内容 */
@@ -541,16 +541,16 @@ export const blockCommandItemStyles = css`
   }
   
   .block-command-title {
-    font-size: ${AFFINE_DESIGN_TOKENS.fontSize.base};
+    font-size: ${YUNKE_DESIGN_TOKENS.fontSize.base};
     font-weight: 500;
-    color: ${AFFINE_DESIGN_TOKENS.colors.textPrimary};
-    margin: 0 0 ${AFFINE_DESIGN_TOKENS.spacing.xs} 0;
+    color: ${YUNKE_DESIGN_TOKENS.colors.textPrimary};
+    margin: 0 0 ${YUNKE_DESIGN_TOKENS.spacing.xs} 0;
     line-height: 1.4;
   }
   
   .block-command-description {
-    font-size: ${AFFINE_DESIGN_TOKENS.fontSize.sm};
-    color: ${AFFINE_DESIGN_TOKENS.colors.textSecondary};
+    font-size: ${YUNKE_DESIGN_TOKENS.fontSize.sm};
+    color: ${YUNKE_DESIGN_TOKENS.colors.textSecondary};
     margin: 0;
     line-height: 1.3;
     
@@ -561,17 +561,17 @@ export const blockCommandItemStyles = css`
   
   /* 键盘快捷键 */
   .block-command-shortcut {
-    font-size: ${AFFINE_DESIGN_TOKENS.fontSize.xs};
-    color: ${AFFINE_DESIGN_TOKENS.colors.textTertiary};
-    background: ${AFFINE_DESIGN_TOKENS.colors.surfaceHover};
-    padding: ${AFFINE_DESIGN_TOKENS.spacing.xs} ${AFFINE_DESIGN_TOKENS.spacing.sm};
-    border-radius: ${AFFINE_DESIGN_TOKENS.borderRadius.sm};
+    font-size: ${YUNKE_DESIGN_TOKENS.fontSize.xs};
+    color: ${YUNKE_DESIGN_TOKENS.colors.textTertiary};
+    background: ${YUNKE_DESIGN_TOKENS.colors.surfaceHover};
+    padding: ${YUNKE_DESIGN_TOKENS.spacing.xs} ${YUNKE_DESIGN_TOKENS.spacing.sm};
+    border-radius: ${YUNKE_DESIGN_TOKENS.borderRadius.sm};
     font-family: ui-monospace, 'SF Mono', monospace;
   }
 `;
 
 export default {
-  AFFINE_DESIGN_TOKENS,
+  YUNKE_DESIGN_TOKENS,
   improvedSlashMenuStyles,
   improvedToolbarStyles,
   blockCommandItemStyles,

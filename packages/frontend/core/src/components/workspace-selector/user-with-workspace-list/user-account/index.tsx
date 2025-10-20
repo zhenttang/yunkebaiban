@@ -1,4 +1,4 @@
-import { UserPlanButton } from '@yunke/core/components/affine/auth/user-plan-button';
+import { UserPlanButton } from '@yunke/core/components/yunke/auth/user-plan-button';
 import type { SyntheticEvent } from 'react';
 
 import * as styles from './index.css';

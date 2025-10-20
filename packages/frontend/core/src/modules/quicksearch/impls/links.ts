@@ -64,7 +64,7 @@ export class LinksQuickSearchSession
         group: {
           id: 'docs',
           label: {
-            i18nKey: 'com.affine.quicksearch.group.searchfor',
+            i18nKey: 'com.yunke.quicksearch.group.searchfor',
             options: { query: truncate(query) },
           },
           score: 5,

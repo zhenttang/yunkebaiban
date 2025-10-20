@@ -25,7 +25,7 @@ import { getVerticalIndicator } from './header/vertical-indicator.js';
 import type { TableViewUILogic } from './table-view-ui-logic.js';
 
 const styles = css`
-  affine-data-view-table-group:hover .group-header-op {
+  yunke-data-view-table-group:hover .group-header-op {
     visibility: visible;
     opacity: 1;
   }
@@ -58,7 +58,7 @@ const styles = css`
     user-select: none;
     font-size: 12px;
     line-height: 20px;
-    color: var(--affine-text-secondary-color);
+    color: var(--yunke-text-secondary-color);
   }
 `;
 
@@ -240,11 +240,11 @@ export class TableGroup extends SignalWatcher(
 
   private renderRows(rows: Row[]) {
     return html`
-      <affine-database-column-header
+      <yunke-database-column-header
         .renderGroupHeader="${this.renderGroupHeader}"
         .tableViewLogic="${this.tableViewLogic}"
-      ></affine-database-column-header>
-      <div class="affine-database-block-rows">
+      ></yunke-database-column-header>
+      <div class="yunke-database-block-rows">
         ${repeat(
           rows,
           row => row.rowId,
@@ -267,17 +267,17 @@ export class TableGroup extends SignalWatcher(
           >
             <div
               class="data-view-table-group-add-row-button dv-icon-16"
-              data-test-id="affine-database-add-row-button"
+              data-test-id="yunke-database-add-row-button"
               role="button"
             >
               ${PlusIcon()}<span style="font-size: 12px">新建记录</span>
             </div>
           </div>`}
-      <affine-database-column-stats
+      <yunke-database-column-stats
         .tableViewLogic="${this.tableViewLogic}"
         .group="${this.group}"
       >
-      </affine-database-column-stats>
+      </yunke-database-column-stats>
     `;
   }
 
@@ -290,7 +290,7 @@ export class TableGroup extends SignalWatcher(
     return this.renderRows(this.rows);
   }
 
-  @query('.affine-database-block-rows')
+  @query('.yunke-database-block-rows')
   accessor rowsContainer: HTMLElement | null = null;
 
   @property({ attribute: false })
@@ -303,6 +303,6 @@ export class TableGroup extends SignalWatcher(
 
 declare global {
   interface HTMLElementTagNameMap {
-    'affine-data-view-table-group': TableGroup;
+    'yunke-data-view-table-group': TableGroup;
   }
 }

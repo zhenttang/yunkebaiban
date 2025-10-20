@@ -14,7 +14,7 @@ import { Guard } from '@yunke/core/components/guard';
 import { AppSidebarService } from '@yunke/core/modules/app-sidebar';
 import type { DocPermissionActions } from '@yunke/core/modules/permissions';
 import { WorkbenchLink } from '@yunke/core/modules/workbench';
-import type { AffineDNDData } from '@yunke/core/types/dnd';
+import type { YunkeDNDData } from '@yunke/core/types/dnd';
 import { extractEmojiIcon } from '@yunke/core/utils';
 import { useI18n } from '@yunke/i18n';
 import {
@@ -45,7 +45,7 @@ import * as styles from './node.css';
 import type { NodeOperation } from './types';
 
 export type NavigationPanelTreeNodeDropEffectData = {
-  source: { data: AffineDNDData['draggable'] };
+  source: { data: YunkeDNDData['draggable'] };
   treeInstruction: DropTargetTreeInstruction | null;
 };
 export type NavigationPanelTreeNodeDropEffect = (
@@ -88,10 +88,10 @@ interface WebNavigationPanelTreeNodeProps
   renameableGuard?: { docId: string; action: DocPermissionActions };
   defaultRenaming?: boolean;
 
-  canDrop?: DropTargetOptions<AffineDNDData>['canDrop'];
+  canDrop?: DropTargetOptions<YunkeDNDData>['canDrop'];
   reorderable?: boolean;
-  dndData?: AffineDNDData;
-  onDrop?: (data: DropTargetDropEvent<AffineDNDData>) => void;
+  dndData?: YunkeDNDData;
+  onDrop?: (data: DropTargetDropEvent<YunkeDNDData>) => void;
   dropEffect?: NavigationPanelTreeNodeDropEffect;
 }
 
@@ -177,7 +177,7 @@ export const NavigationPanelTreeNode = ({
     };
   }, [extractEmojiAsIcon, rawName]);
   const { dragRef, dragging, CustomDragPreview } = useDraggable<
-    AffineDNDData & { draggable: { __cid: string } }
+    YunkeDNDData & { draggable: { __cid: string } }
   >(
     () => ({
       data: { ...dndData?.draggable, __cid: cid },
@@ -185,7 +185,7 @@ export const NavigationPanelTreeNode = ({
     }),
     [cid, dndData]
   );
-  const handleCanDrop = useMemo<DropTargetOptions<AffineDNDData>['canDrop']>(
+  const handleCanDrop = useMemo<DropTargetOptions<YunkeDNDData>['canDrop']>(
     () => args => {
       if (!reorderable && args.treeInstruction?.type !== 'make-child') {
         return false;
@@ -201,7 +201,7 @@ export const NavigationPanelTreeNode = ({
     draggedOverDraggable,
     draggedOver,
     draggedOverPosition,
-  } = useDropTarget<AffineDNDData & { draggable: { __cid: string } }>(
+  } = useDropTarget<YunkeDNDData & { draggable: { __cid: string } }>(
     () => ({
       data: dndData?.dropTarget,
       treeInstruction: {
@@ -300,7 +300,7 @@ export const NavigationPanelTreeNode = ({
                         onClick={() => setRenaming(true)}
                         disabled={!can}
                       >
-                        {t['com.affine.menu.rename']()}
+                        {t['com.yunke.menu.rename']()}
                       </MenuItem>
                     )}
                   </Guard>
@@ -311,7 +311,7 @@ export const NavigationPanelTreeNode = ({
                     prefixIcon={<EditIcon />}
                     onClick={() => setRenaming(true)}
                   >
-                    {t['com.affine.menu.rename']()}
+                    {t['com.yunke.menu.rename']()}
                   </MenuItem>
                 ),
               }

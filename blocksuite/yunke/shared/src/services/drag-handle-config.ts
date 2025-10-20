@@ -3,7 +3,7 @@ import { type BlockStdScope, StdIdentifier } from '@blocksuite/std';
 import { Extension, Slice, type SliceSnapshot } from '@blocksuite/store';
 
 export const DndApiExtensionIdentifier = createIdentifier<DNDAPIExtension>(
-  'AffineDndApiIdentifier'
+  'YunkeDndApiIdentifier'
 );
 
 export class DNDAPIExtension extends Extension {

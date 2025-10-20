@@ -1,33 +1,33 @@
 import { css } from 'lit';
 
 export const excalidrawBlockStyles = css`
-  .affine-excalidraw-container {
+  .yunke-excalidraw-container {
     position: relative;
-    border: 1px solid var(--affine-border-color);
+    border: 1px solid var(--yunke-border-color);
     border-radius: 8px;
     overflow: hidden;
     margin: 8px 0;
-    background: var(--affine-background-primary-color);
+    background: var(--yunke-background-primary-color);
   }
 
-  .affine-excalidraw-container:hover {
-    border-color: var(--affine-primary-color);
+  .yunke-excalidraw-container:hover {
+    border-color: var(--yunke-primary-color);
   }
 
-  .affine-excalidraw-container.selected {
-    border-color: var(--affine-primary-color);
-    box-shadow: 0 0 0 2px var(--affine-primary-color-20);
+  .yunke-excalidraw-container.selected {
+    border-color: var(--yunke-primary-color);
+    box-shadow: 0 0 0 2px var(--yunke-primary-color-20);
   }
 
-  .affine-excalidraw-placeholder {
+  .yunke-excalidraw-placeholder {
     display: flex;
     align-items: center;
     justify-content: center;
     min-height: 300px;
-    color: var(--affine-text-secondary-color);
+    color: var(--yunke-text-secondary-color);
     font-size: 14px;
-    background: var(--affine-background-secondary-color);
-    border: 2px dashed var(--affine-border-color);
+    background: var(--yunke-background-secondary-color);
+    border: 2px dashed var(--yunke-border-color);
     border-radius: 8px;
     cursor: pointer;
     flex-direction: column;
@@ -54,25 +54,25 @@ export const excalidrawBlockStyles = css`
     opacity: 0.7;
   }
 
-  .affine-excalidraw-placeholder:hover {
-    border-color: var(--affine-primary-color);
-    color: var(--affine-primary-color);
+  .yunke-excalidraw-placeholder:hover {
+    border-color: var(--yunke-primary-color);
+    color: var(--yunke-primary-color);
   }
 
-  .affine-excalidraw-image {
+  .yunke-excalidraw-image {
     width: 100%;
     height: auto;
     display: block;
     cursor: pointer;
   }
 
-  .affine-excalidraw-image img {
+  .yunke-excalidraw-image img {
     width: 100%;
     height: auto;
     display: block;
   }
 
-  .affine-excalidraw-toolbar {
+  .yunke-excalidraw-toolbar {
     position: absolute;
     top: 8px;
     right: 8px;
@@ -80,17 +80,17 @@ export const excalidrawBlockStyles = css`
     gap: 4px;
     opacity: 0;
     transition: opacity 0.2s;
-    background: var(--affine-background-overlay-panel-color);
+    background: var(--yunke-background-overlay-panel-color);
     border-radius: 4px;
     padding: 4px;
-    box-shadow: var(--affine-shadow-2);
+    box-shadow: var(--yunke-shadow-2);
   }
 
-  .affine-excalidraw-container:hover .affine-excalidraw-toolbar {
+  .yunke-excalidraw-container:hover .yunke-excalidraw-toolbar {
     opacity: 1;
   }
 
-  .affine-excalidraw-edit-button {
+  .yunke-excalidraw-edit-button {
     display: flex;
     align-items: center;
     gap: 4px;
@@ -98,18 +98,18 @@ export const excalidrawBlockStyles = css`
     border-radius: 4px;
     background: transparent;
     border: none;
-    color: var(--affine-text-secondary-color);
+    color: var(--yunke-text-secondary-color);
     cursor: pointer;
     transition: all 0.2s;
     font-size: 12px;
   }
 
-  .affine-excalidraw-edit-button:hover {
-    background: var(--affine-hover-color);
-    color: var(--affine-text-primary-color);
+  .yunke-excalidraw-edit-button:hover {
+    background: var(--yunke-hover-color);
+    color: var(--yunke-text-primary-color);
   }
 
-  .affine-excalidraw-modal-overlay {
+  .yunke-excalidraw-modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -124,7 +124,7 @@ export const excalidrawBlockStyles = css`
     box-sizing: border-box;
   }
 
-  .affine-excalidraw-modal {
+  .yunke-excalidraw-modal {
     width: calc(100vw - 40px);
     height: calc(100vh - 40px);
     max-width: 1200px;
@@ -138,22 +138,22 @@ export const excalidrawBlockStyles = css`
     box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
   }
 
-  .affine-excalidraw-modal-header {
+  .yunke-excalidraw-modal-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 12px 16px;
-    background: var(--affine-background-secondary-color);
-    border-bottom: 1px solid var(--affine-border-color);
+    background: var(--yunke-background-secondary-color);
+    border-bottom: 1px solid var(--yunke-border-color);
     flex-shrink: 0;
     min-height: 48px;
   }
 
-  .affine-excalidraw-modal-header h3 {
+  .yunke-excalidraw-modal-header h3 {
     margin: 0;
     font-size: 14px;
     font-weight: 500;
-    color: var(--affine-text-primary-color);
+    color: var(--yunke-text-primary-color);
   }
 
   .header-buttons {
@@ -163,7 +163,7 @@ export const excalidrawBlockStyles = css`
   }
 
   .save-button {
-    background: var(--affine-primary-color);
+    background: var(--yunke-primary-color);
     color: white;
     border: none;
     padding: 6px 12px;
@@ -177,7 +177,7 @@ export const excalidrawBlockStyles = css`
   }
 
   .save-button:hover {
-    background: var(--affine-primary-color-hover);
+    background: var(--yunke-primary-color-hover);
   }
 
   .close-button {
@@ -186,7 +186,7 @@ export const excalidrawBlockStyles = css`
     cursor: pointer;
     padding: 4px;
     border-radius: 4px;
-    color: var(--affine-text-secondary-color);
+    color: var(--yunke-text-secondary-color);
     font-size: 16px;
     width: 24px;
     height: 24px;
@@ -196,11 +196,11 @@ export const excalidrawBlockStyles = css`
   }
 
   .close-button:hover {
-    background: var(--affine-hover-color);
-    color: var(--affine-text-primary-color);
+    background: var(--yunke-hover-color);
+    color: var(--yunke-text-primary-color);
   }
 
-  .affine-excalidraw-modal-body {
+  .yunke-excalidraw-modal-body {
     flex: 1;
     overflow: hidden;
     position: relative;
@@ -225,7 +225,7 @@ export const excalidrawBlockStyles = css`
     align-items: center;
     justify-content: center;
     height: 100%;
-    color: var(--affine-text-secondary-color);
+    color: var(--yunke-text-secondary-color);
     font-size: 14px;
   }
 `;

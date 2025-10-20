@@ -1,5 +1,5 @@
 import { IconButton } from '@yunke/component';
-import { useSharingUrl } from '@yunke/core/components/hooks/affine/use-share-url';
+import { useSharingUrl } from '@yunke/core/components/hooks/yunke/use-share-url';
 import { WorkspaceDialogService } from '@yunke/core/modules/dialogs';
 import { WorkspaceService } from '@yunke/core/modules/workspace';
 import { useI18n } from '@yunke/i18n';
@@ -31,7 +31,7 @@ export const DocInfoButton = ({
     <IconButton
       className={styles.button}
       size={styles.iconSize}
-      tooltip={t['com.affine.page-properties.page-info.view']()}
+      tooltip={t['com.yunke.page-properties.page-info.view']()}
       data-testid={dataTestId}
       onClick={onClick}
     >
@@ -70,7 +70,7 @@ export const CopyLinkButton = ({
     <IconButton
       className={styles.button}
       size={styles.iconSize}
-      tooltip={t['com.affine.share-menu.copy']()}
+      tooltip={t['com.yunke.share-menu.copy']()}
       data-testid={dataTestId}
       onClick={copyLink}
     >

@@ -65,14 +65,14 @@ export const TemporaryUserStatus = ({
       } else {
         const success = await temporaryUserService.extendSession();
         if (success) {
-          toast(t['com.affine.share.temporary-user.session-extended']());
+          toast(t['com.yunke.share.temporary-user.session-extended']());
         } else {
-          toast(t['com.affine.share.temporary-user.extend-failed']());
+          toast(t['com.yunke.share.temporary-user.extend-failed']());
         }
       }
     } catch (error) {
               console.error('扩展会话失败:', error);
-      toast(t['com.affine.share.temporary-user.extend-failed']());
+      toast(t['com.yunke.share.temporary-user.extend-failed']());
     }
   }, [temporaryUserService, onExtendSession, t]);
 
@@ -82,11 +82,11 @@ export const TemporaryUserStatus = ({
         await onLogout();
       } else {
         await temporaryUserService.logout();
-        toast(t['com.affine.share.temporary-user.logged-out']());
+        toast(t['com.yunke.share.temporary-user.logged-out']());
       }
     } catch (error) {
       console.error('登出失败:', error);
-      toast(t['com.affine.share.temporary-user.logout-failed']());
+      toast(t['com.yunke.share.temporary-user.logout-failed']());
     }
   }, [temporaryUserService, onLogout, t]);
 
@@ -97,12 +97,12 @@ export const TemporaryUserStatus = ({
 
   const statusMessage = useMemo(() => {
     if (isSessionExpired) {
-      return t['com.affine.share.temporary-user.status.expired']();
+      return t['com.yunke.share.temporary-user.status.expired']();
     }
     if (isExpiringSoon) {
-      return t['com.affine.share.temporary-user.status.expiring-soon']();
+      return t['com.yunke.share.temporary-user.status.expiring-soon']();
     }
-    return t['com.affine.share.temporary-user.status.active']();
+    return t['com.yunke.share.temporary-user.status.active']();
   }, [isSessionExpired, isExpiringSoon, t]);
 
   if (compact) {
@@ -114,9 +114,9 @@ export const TemporaryUserStatus = ({
           alignItems: 'center',
           gap: '8px',
           padding: '6px 12px',
-          backgroundColor: 'var(--affine-background-secondary-color)',
+          backgroundColor: 'var(--yunke-background-secondary-color)',
           borderRadius: '6px',
-          border: '1px solid var(--affine-border-color)',
+          border: '1px solid var(--yunke-border-color)',
         }}
       >
         <Avatar
@@ -127,19 +127,19 @@ export const TemporaryUserStatus = ({
         <span style={{ 
           fontSize: '12px', 
           fontWeight: 500, 
-          color: 'var(--affine-text-primary-color)' 
+          color: 'var(--yunke-text-primary-color)' 
         }}>
           {user.name}
         </span>
         {showTimeRemaining && (
           <span style={{ 
             fontSize: '11px', 
-            color: isExpiringSoon ? 'var(--affine-warning-color)' : 'var(--affine-text-secondary-color)' 
+            color: isExpiringSoon ? 'var(--yunke-warning-color)' : 'var(--yunke-text-secondary-color)' 
           }}>
             {timeRemaining}
           </span>
         )}
-        <Tooltip content={t['com.affine.share.temporary-user.more-actions']()}>
+        <Tooltip content={t['com.yunke.share.temporary-user.more-actions']()}>
           <IconButton size={16}>
             <MoreHorizontalIcon />
           </IconButton>
@@ -156,9 +156,9 @@ export const TemporaryUserStatus = ({
         flexDirection: 'column',
         gap: '12px',
         padding: '16px',
-        backgroundColor: 'var(--affine-background-secondary-color)',
+        backgroundColor: 'var(--yunke-background-secondary-color)',
         borderRadius: '8px',
-        border: '1px solid var(--affine-border-color)',
+        border: '1px solid var(--yunke-border-color)',
         maxWidth: '300px',
       }}
     >
@@ -172,7 +172,7 @@ export const TemporaryUserStatus = ({
           <div style={{ 
             fontWeight: 500, 
             fontSize: '14px', 
-            color: 'var(--affine-text-primary-color)',
+            color: 'var(--yunke-text-primary-color)',
             overflow: 'hidden',
             textOverflow: 'ellipsis',
             whiteSpace: 'nowrap'
@@ -182,8 +182,8 @@ export const TemporaryUserStatus = ({
           <div style={{ 
             fontSize: '12px', 
             color: isExpiringSoon 
-              ? 'var(--affine-warning-color)' 
-              : 'var(--affine-success-color)' 
+              ? 'var(--yunke-warning-color)' 
+              : 'var(--yunke-success-color)' 
           }}>
             {statusMessage}
           </div>
@@ -196,16 +196,16 @@ export const TemporaryUserStatus = ({
           justifyContent: 'space-between', 
           alignItems: 'center',
           padding: '8px',
-          backgroundColor: 'var(--affine-background-tertiary-color)',
+          backgroundColor: 'var(--yunke-background-tertiary-color)',
           borderRadius: '4px'
         }}>
-          <span style={{ fontSize: '12px', color: 'var(--affine-text-secondary-color)' }}>
-            {t['com.affine.share.temporary-user.time-remaining']()}:
+          <span style={{ fontSize: '12px', color: 'var(--yunke-text-secondary-color)' }}>
+            {t['com.yunke.share.temporary-user.time-remaining']()}:
           </span>
           <span style={{ 
             fontSize: '12px', 
             fontWeight: 500, 
-            color: isExpiringSoon ? 'var(--affine-warning-color)' : 'var(--affine-text-primary-color)' 
+            color: isExpiringSoon ? 'var(--yunke-warning-color)' : 'var(--yunke-text-primary-color)' 
           }}>
             {timeRemaining}
           </span>
@@ -219,17 +219,17 @@ export const TemporaryUserStatus = ({
             prefix={<UpgradeIcon />}
             style={{ fontSize: '12px' }}
           >
-            {t['com.affine.share.temporary-user.extend-session']()}
+            {t['com.yunke.share.temporary-user.extend-session']()}
           </Button>
         )}
         
-        <Tooltip content={t['com.affine.share.temporary-user.info-tooltip']()}>
+        <Tooltip content={t['com.yunke.share.temporary-user.info-tooltip']()}>
           <IconButton size={16}>
             <InformationIcon />
           </IconButton>
         </Tooltip>
 
-        <Tooltip content={t['com.affine.share.temporary-user.logout']()}>
+        <Tooltip content={t['com.yunke.share.temporary-user.logout']()}>
           <IconButton size={16} onClick={handleLogout}>
             <SignOutIcon />
           </IconButton>

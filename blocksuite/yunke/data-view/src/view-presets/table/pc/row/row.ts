@@ -22,14 +22,14 @@ export class TableRowView extends SignalWatcher(
   WithDisposable(ShadowlessElement)
 ) {
   static override styles = css`
-    .affine-database-block-row:has(.row-select-checkbox.selected) {
-      background: var(--affine-primary-color-04);
+    .yunke-database-block-row:has(.row-select-checkbox.selected) {
+      background: var(--yunke-primary-color-04);
     }
-    .affine-database-block-row:has(.row-select-checkbox.selected)
+    .yunke-database-block-row:has(.row-select-checkbox.selected)
       .row-selected-bg {
       position: relative;
     }
-    .affine-database-block-row:has(.row-select-checkbox.selected)
+    .yunke-database-block-row:has(.row-select-checkbox.selected)
       .row-selected-bg:before {
       content: '';
       position: absolute;
@@ -37,9 +37,9 @@ export class TableRowView extends SignalWatcher(
       right: 0;
       top: 0;
       bottom: 0;
-      background: var(--affine-primary-color-04);
+      background: var(--yunke-primary-color-04);
     }
-    .affine-database-block-row {
+    .yunke-database-block-row {
       width: 100%;
       display: flex;
       flex-direction: row;
@@ -47,7 +47,7 @@ export class TableRowView extends SignalWatcher(
       position: relative;
     }
 
-    .affine-database-block-row.selected > .database-cell {
+    .yunke-database-block-row.selected > .database-cell {
       background: transparent;
     }
 
@@ -67,19 +67,19 @@ export class TableRowView extends SignalWatcher(
       margin-right: 8px;
     }
 
-    .affine-database-block-row .show-on-hover-row {
+    .yunke-database-block-row .show-on-hover-row {
       visibility: hidden;
       opacity: 0;
     }
-    .affine-database-block-row:hover .show-on-hover-row {
+    .yunke-database-block-row:hover .show-on-hover-row {
       visibility: visible;
       opacity: 1;
     }
-    .affine-database-block-row:has(.active) .show-on-hover-row {
+    .yunke-database-block-row:has(.active) .show-on-hover-row {
       visibility: visible;
       opacity: 1;
     }
-    .affine-database-block-row:has([data-editing='true']) .show-on-hover-row {
+    .yunke-database-block-row:has([data-editing='true']) .show-on-hover-row {
       visibility: hidden;
       opacity: 0;
     }
@@ -88,8 +88,8 @@ export class TableRowView extends SignalWatcher(
       display: flex;
       padding: 4px;
       border-radius: 4px;
-      box-shadow: var(--affine-button-shadow);
-      background-color: var(--affine-background-primary-color);
+      box-shadow: var(--yunke-button-shadow);
+      background-color: var(--yunke-background-primary-color);
       position: relative;
     }
 
@@ -101,12 +101,12 @@ export class TableRowView extends SignalWatcher(
       right: 0;
       top: 0;
       bottom: 0;
-      background-color: var(--affine-hover-color);
+      background-color: var(--yunke-hover-color);
     }
 
     .row-op svg {
-      fill: var(--affine-icon-color);
-      color: var(--affine-icon-color);
+      fill: var(--yunke-icon-color);
+      color: var(--yunke-icon-color);
       width: 16px;
       height: 16px;
     }
@@ -117,7 +117,7 @@ export class TableRowView extends SignalWatcher(
       align-items: center;
       justify-content: center;
       cursor: grab;
-      background-color: var(--affine-background-primary-color);
+      background-color: var(--yunke-background-primary-color);
     }
   `;
 
@@ -160,7 +160,7 @@ export class TableRowView extends SignalWatcher(
   };
 
   get groupKey() {
-    return this.closest<TableGroup>('affine-data-view-table-group')?.group?.key;
+    return this.closest<TableGroup>('yunke-data-view-table-group')?.group?.key;
   }
 
   get selectionController() {
@@ -171,7 +171,7 @@ export class TableRowView extends SignalWatcher(
     super.connectedCallback();
     this.disposables.addFromEvent(this, 'contextmenu', this.contextMenu);
 
-    this.classList.add('affine-database-block-row', 'database-row');
+    this.classList.add('yunke-database-block-row', 'database-row');
   }
 
   protected override render(): unknown {
@@ -189,7 +189,7 @@ export class TableRowView extends SignalWatcher(
                   style="width: 4px;
                   border-radius: 2px;
                   height: 12px;
-                  background-color: var(--affine-placeholder-color);"
+                  background-color: var(--yunke-placeholder-color);"
                 ></div>
               </div>
               <row-select-checkbox

@@ -1,5 +1,5 @@
 import type { EditorHost } from '@blocksuite/yunke/block-std';
-import type { TestAffineEditorContainer } from '@blocksuite/integration-test';
+import type { TestYunkeEditorContainer } from '@blocksuite/integration-test';
 import type { BlockSchema, Blocks, Workspace, Transformer } from '@blocksuite/yunke/store';
 import type { z } from 'zod';
 import type * as Y from 'yjs';
@@ -12,7 +12,7 @@ declare global {
   ];
 
   interface Window {
-    editor: TestAffineEditorContainer;
+    editor: TestYunkeEditorContainer;
     doc: Blocks;
     collection: Workspace;
     blockSchemas: z.infer<typeof BlockSchema>[];

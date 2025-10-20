@@ -9,7 +9,7 @@ import {
 import type { DocCustomPropertyInfo } from '@yunke/core/modules/db';
 import { WorkspaceService } from '@yunke/core/modules/workspace';
 import { WorkspacePropertyService } from '@yunke/core/modules/workspace-property';
-import type { AffineDNDData } from '@yunke/core/types/dnd';
+import type { YunkeDNDData } from '@yunke/core/types/dnd';
 import { useI18n } from '@yunke/i18n';
 import { MoreHorizontalIcon } from '@blocksuite/icons/rc';
 import { useLiveData, useService } from '@toeverything/infra';
@@ -51,7 +51,7 @@ const PropertyItem = ({
     setMoreMenuOpen(true);
   }, []);
 
-  const { dragRef } = useDraggable<AffineDNDData>(
+  const { dragRef } = useDraggable<YunkeDNDData>(
     () => ({
       canDrag: canEditPropertyInfo,
       data: {
@@ -68,7 +68,7 @@ const PropertyItem = ({
     [propertyInfo, workspaceService, canEditPropertyInfo]
   );
 
-  const { dropTargetRef, closestEdge } = useDropTarget<AffineDNDData>(
+  const { dropTargetRef, closestEdge } = useDropTarget<YunkeDNDData>(
     () => ({
       canDrop(data) {
         return (
@@ -133,10 +133,10 @@ const PropertyItem = ({
         </span>
         <span className={styles.itemVisibility}>
           {propertyInfo.show === 'hide-when-empty'
-            ? t['com.affine.page-properties.property.hide-when-empty']()
+            ? t['com.yunke.page-properties.property.hide-when-empty']()
             : propertyInfo.show === 'always-hide'
-              ? t['com.affine.page-properties.property.always-hide']()
-              : t['com.affine.page-properties.property.always-show']()}
+              ? t['com.yunke.page-properties.property.always-hide']()
+              : t['com.yunke.page-properties.property.always-show']()}
         </span>
         <Menu
           rootOptions={{

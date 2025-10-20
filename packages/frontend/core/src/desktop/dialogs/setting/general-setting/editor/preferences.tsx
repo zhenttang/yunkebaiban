@@ -9,24 +9,24 @@ export const Preferences = () => {
   const t = useI18n();
   return (
     <SettingWrapper
-      title={t['com.affine.settings.editorSettings.preferences']()}
+      title={t['com.yunke.settings.editorSettings.preferences']()}
     >
       <SettingRow
         name={t[
-          'com.affine.settings.editorSettings.preferences.export.title'
+          'com.yunke.settings.editorSettings.preferences.export.title'
         ]()}
         desc={t[
-          'com.affine.settings.editorSettings.preferences.export.description'
+          'com.yunke.settings.editorSettings.preferences.export.description'
         ]()}
       >
         <Button>导出</Button>
       </SettingRow>
       <SettingRow
         name={t[
-          'com.affine.settings.editorSettings.preferences.import.title'
+          'com.yunke.settings.editorSettings.preferences.import.title'
         ]()}
         desc={t[
-          'com.affine.settings.editorSettings.preferences.import.description'
+          'com.yunke.settings.editorSettings.preferences.import.description'
         ]()}
       >
         <Button>导入</Button>

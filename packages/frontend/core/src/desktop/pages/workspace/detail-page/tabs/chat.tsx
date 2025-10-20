@@ -1,6 +1,6 @@
 import { ChatPanel } from '@yunke/core/blocksuite/ai';
-import type { AffineEditorContainer } from '@yunke/core/blocksuite/block-suite-editor';
-import { useAIChatConfig } from '@yunke/core/components/hooks/affine/use-ai-chat-config';
+import type { YunkeEditorContainer } from '@yunke/core/blocksuite/block-suite-editor';
+import { useAIChatConfig } from '@yunke/core/components/hooks/yunke/use-ai-chat-config';
 import { FeatureFlagService } from '@yunke/core/modules/feature-flag';
 import { WorkbenchService } from '@yunke/core/modules/workbench';
 import { ViewExtensionManagerIdentifier } from '@blocksuite/yunke/ext-loader';
@@ -13,7 +13,7 @@ import { forwardRef, useEffect, useRef } from 'react';
 import * as styles from './chat.css';
 
 export interface SidebarTabProps {
-  editor: AffineEditorContainer | null;
+  editor: YunkeEditorContainer | null;
   onLoad?: ((component: HTMLElement) => void) | null;
 }
 
@@ -78,7 +78,7 @@ export const EditorChatPanel = forwardRef(function EditorChatPanel(
       chatPanelRef.current.extensions = editor.host.std
         .get(ViewExtensionManagerIdentifier)
         .get('preview-page');
-      chatPanelRef.current.affineFeatureFlagService =
+      chatPanelRef.current.yunkeFeatureFlagService =
         framework.get(FeatureFlagService);
 
       containerRef.current?.append(chatPanelRef.current);

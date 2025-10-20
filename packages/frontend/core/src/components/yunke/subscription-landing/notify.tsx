@@ -21,7 +21,7 @@ export const useDowngradeNotify = () => {
       const actions: Notification['actions'] = [
         {
           key: 'later',
-          label: t['com.affine.payment.downgraded-notify.later'](),
+          label: t['com.yunke.payment.downgraded-notify.later'](),
           onClick: () => {},
           buttonProps: {
             className: clsx(actionButton, cancelButton),
@@ -30,8 +30,8 @@ export const useDowngradeNotify = () => {
         {
           key: 'ok',
           label: BUILD_CONFIG.isElectron
-            ? t['com.affine.payment.downgraded-notify.ok-client']()
-            : t['com.affine.payment.downgraded-notify.ok-web'](),
+            ? t['com.yunke.payment.downgraded-notify.ok-client']()
+            : t['com.yunke.payment.downgraded-notify.ok-web'](),
           onClick: () => {
             window.open(link, '_blank', 'noreferrer');
           },
@@ -45,10 +45,10 @@ export const useDowngradeNotify = () => {
         {
           title: (
             <span className={notifyHeader}>
-              {t['com.affine.payment.downgraded-notify.title']()}
+              {t['com.yunke.payment.downgraded-notify.title']()}
             </span>
           ),
-          message: t['com.affine.payment.downgraded-notify.content'](),
+          message: t['com.yunke.payment.downgraded-notify.content'](),
           alignMessage: 'title',
           icon: null,
           actions,

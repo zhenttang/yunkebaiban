@@ -16,7 +16,7 @@ import { signal } from '@preact/signals-core';
 import { html } from 'lit-html';
 import { keyed } from 'lit-html/directives/keyed.js';
 
-import { AffineReference } from '../reference-node';
+import { YunkeReference } from '../reference-node';
 
 const trackBaseProps = {
   segment: 'doc',
@@ -32,7 +32,7 @@ export const builtinInlineReferenceToolbarConfig = {
       id: 'a.doc-title',
       content(ctx) {
         const target = ctx.message$.peek()?.element;
-        if (!(target instanceof AffineReference)) return null;
+        if (!(target instanceof YunkeReference)) return null;
         if (!target.referenceInfo.title) return null;
 
         const originalTitle =
@@ -40,10 +40,10 @@ export const builtinInlineReferenceToolbarConfig = {
             .value || 'Untitled';
         const open = (event: MouseEvent) => target.open({ event });
 
-        return html`<affine-linked-doc-title
+        return html`<yunke-linked-doc-title
           .title=${originalTitle}
           .open=${open}
-        ></affine-linked-doc-title>`;
+        ></yunke-linked-doc-title>`;
       },
     },
     {
@@ -59,7 +59,7 @@ export const builtinInlineReferenceToolbarConfig = {
           label: '卡片视图',
           run(ctx) {
             const target = ctx.message$.peek()?.element;
-            if (!(target instanceof AffineReference)) return;
+            if (!(target instanceof YunkeReference)) return;
             if (!target.block) return;
 
             const {
@@ -108,7 +108,7 @@ export const builtinInlineReferenceToolbarConfig = {
           label: '嵌入视图',
           disabled(ctx) {
             const target = ctx.message$.peek()?.element;
-            if (!(target instanceof AffineReference)) return true;
+            if (!(target instanceof YunkeReference)) return true;
             if (!target.block) return true;
 
             if (
@@ -121,7 +121,7 @@ export const builtinInlineReferenceToolbarConfig = {
               return true;
 
             // nesting is not supported
-            if (target.closest('affine-embed-synced-doc-block')) return true;
+            if (target.closest('yunke-embed-synced-doc-block')) return true;
 
             // same doc
             if (target.referenceInfo.pageId === ctx.store.id) return true;
@@ -133,7 +133,7 @@ export const builtinInlineReferenceToolbarConfig = {
           },
           run(ctx) {
             const target = ctx.message$.peek()?.element;
-            if (!(target instanceof AffineReference)) return;
+            if (!(target instanceof YunkeReference)) return;
             if (!target.block) return;
 
             const {
@@ -186,7 +186,7 @@ export const builtinInlineReferenceToolbarConfig = {
       ],
       content(ctx) {
         const target = ctx.message$.peek()?.element;
-        if (!(target instanceof AffineReference)) return null;
+        if (!(target instanceof YunkeReference)) return null;
 
         const actions = this.actions.map(action => ({ ...action }));
         const viewType$ = signal(actions[0].label);
@@ -202,23 +202,23 @@ export const builtinInlineReferenceToolbarConfig = {
 
         return html`${keyed(
           target,
-          html`<affine-view-dropdown-menu
+          html`<yunke-view-dropdown-menu
             .actions=${actions}
             .context=${ctx}
             .onToggle=${onToggle}
             .viewType$=${viewType$}
-          ></affine-view-dropdown-menu>`
+          ></yunke-view-dropdown-menu>`
         )}`;
       },
       when(ctx) {
         const target = ctx.message$.peek()?.element;
-        if (!(target instanceof AffineReference)) return false;
+        if (!(target instanceof YunkeReference)) return false;
         if (!target.block) return false;
 
         if (ctx.flags.isNative()) return false;
         if (
-          target.block.closest('affine-database') ||
-          target.block.closest('affine-table')
+          target.block.closest('yunke-database') ||
+          target.block.closest('yunke-table')
         )
           return false;
 
@@ -233,7 +233,7 @@ export const builtinInlineReferenceToolbarConfig = {
       variant: 'destructive',
       run(ctx) {
         const target = ctx.message$.peek()?.element;
-        if (!(target instanceof AffineReference)) return;
+        if (!(target instanceof YunkeReference)) return;
 
         const { inlineEditor, selfInlineRange } = target;
         if (!inlineEditor || !selfInlineRange) return;

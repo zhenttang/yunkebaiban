@@ -2,7 +2,7 @@ import { fontSMStyle, panelBaseStyle } from '@blocksuite/yunke-shared/styles';
 import { css } from 'lit';
 
 const editLinkStyle = css`
-  .affine-link-edit-popover {
+  .yunke-link-edit-popover {
     display: grid;
     grid-template-columns: auto auto;
     grid-template-rows: repeat(2, 1fr);
@@ -17,33 +17,33 @@ const editLinkStyle = css`
     box-sizing: content-box;
   }
 
-  ${fontSMStyle('.affine-link-edit-popover label')}
-  .affine-link-edit-popover label {
+  ${fontSMStyle('.yunke-link-edit-popover label')}
+  .yunke-link-edit-popover label {
     box-sizing: border-box;
-    color: var(--affine-icon-color);
+    color: var(--yunke-icon-color);
     font-weight: 400;
   }
 
-  ${fontSMStyle('.affine-link-edit-popover input')}
-  .affine-link-edit-popover input {
+  ${fontSMStyle('.yunke-link-edit-popover input')}
+  .yunke-link-edit-popover input {
     color: inherit;
     padding: 0;
     border: none;
     background: transparent;
-    color: var(--affine-text-primary-color);
+    color: var(--yunke-text-primary-color);
   }
-  .affine-link-edit-popover input::placeholder {
-    color: var(--affine-placeholder-color);
+  .yunke-link-edit-popover input::placeholder {
+    color: var(--yunke-placeholder-color);
   }
   input:focus {
     outline: none;
   }
-  .affine-link-edit-popover input:focus ~ label,
-  .affine-link-edit-popover input:active ~ label {
-    color: var(--affine-primary-color);
+  .yunke-link-edit-popover input:focus ~ label,
+  .yunke-link-edit-popover input:active ~ label {
+    color: var(--yunke-primary-color);
   }
 
-  .affine-edit-area {
+  .yunke-edit-area {
     width: 280px;
     padding: 4px 10px;
     display: grid;
@@ -54,35 +54,35 @@ const editLinkStyle = css`
     user-select: none;
     box-sizing: border-box;
 
-    border: 1px solid var(--affine-border-color);
+    border: 1px solid var(--yunke-border-color);
     box-sizing: border-box;
 
     outline: none;
     border-radius: 4px;
     background: transparent;
   }
-  .affine-edit-area:focus-within {
-    border-color: var(--affine-blue-700);
-    box-shadow: var(--affine-active-shadow);
+  .yunke-edit-area:focus-within {
+    border-color: var(--yunke-blue-700);
+    box-shadow: var(--yunke-active-shadow);
   }
 
-  .affine-edit-area.text {
+  .yunke-edit-area.text {
     grid-area: text-area;
   }
 
-  .affine-edit-area.link {
+  .yunke-edit-area.link {
     grid-area: link-area;
   }
 
-  .affine-edit-label {
+  .yunke-edit-label {
     grid-area: label;
   }
 
-  .affine-edit-input {
+  .yunke-edit-input {
     grid-area: input;
   }
 
-  .affine-confirm-button {
+  .yunke-confirm-button {
     grid-area: btn;
     user-select: none;
   }
@@ -100,12 +100,12 @@ export const linkPopupStyle = css`
 
   ${panelBaseStyle('.popover-container')}
   .popover-container {
-    z-index: var(--affine-z-index-popover);
-    animation: affine-popover-fade-in 0.2s ease;
+    z-index: var(--yunke-z-index-popover);
+    animation: yunke-popover-fade-in 0.2s ease;
     position: absolute;
   }
 
-  @keyframes affine-popover-fade-in {
+  @keyframes yunke-popover-fade-in {
     from {
       opacity: 0;
       transform: translateY(-3px);
@@ -122,40 +122,40 @@ export const linkPopupStyle = css`
     left: 0;
     width: 100vw;
     height: 100vh;
-    z-index: var(--affine-z-index-popover);
+    z-index: var(--yunke-z-index-popover);
   }
 
   .mock-selection-container {
     pointer-events: none;
   }
 
-  .affine-link-popover.create {
+  .yunke-link-popover.create {
     display: flex;
     gap: 12px;
     padding: 8px;
 
-    color: var(--affine-text-primary-color);
+    color: var(--yunke-text-primary-color);
   }
 
-  .affine-link-popover-input {
+  .yunke-link-popover-input {
     min-width: 280px;
     height: 30px;
     box-sizing: border-box;
     padding: 4px 10px;
-    background: var(--affine-white-10);
+    background: var(--yunke-white-10);
     border-radius: 4px;
     border-width: 1px;
     border-style: solid;
-    border-color: var(--affine-border-color);
-    color: var(--affine-text-primary-color);
+    border-color: var(--yunke-border-color);
+    color: var(--yunke-text-primary-color);
   }
-  ${fontSMStyle('.affine-link-popover-input')}
-  .affine-link-popover-input::placeholder {
-    color: var(--affine-placeholder-color);
+  ${fontSMStyle('.yunke-link-popover-input')}
+  .yunke-link-popover-input::placeholder {
+    color: var(--yunke-placeholder-color);
   }
-  .affine-link-popover-input:focus {
-    border-color: var(--affine-blue-700);
-    box-shadow: var(--affine-active-shadow);
+  .yunke-link-popover-input:focus {
+    border-color: var(--yunke-blue-700);
+    box-shadow: var(--yunke-active-shadow);
   }
 
   ${editLinkStyle}

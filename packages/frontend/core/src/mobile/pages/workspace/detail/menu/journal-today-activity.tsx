@@ -44,8 +44,8 @@ const ActivityBlock = ({
 
   const title =
     name === 'created'
-      ? t['com.affine.journal.created-today']()
-      : t['com.affine.journal.updated-today']();
+      ? t['com.yunke.journal.created-today']()
+      : t['com.yunke.journal.updated-today']();
   return (
     <>
       <div className={styles.title}>{title}</div>
@@ -56,8 +56,8 @@ const ActivityBlock = ({
       ) : (
         <div className={styles.empty}>
           {name === 'created'
-            ? t['com.affine.journal.daily-count-created-empty-tips']()
-            : t['com.affine.journal.daily-count-updated-empty-tips']()}
+            ? t['com.yunke.journal.daily-count-created-empty-tips']()
+            : t['com.yunke.journal.daily-count-updated-empty-tips']()}
         </div>
       )}
     </>
@@ -120,9 +120,9 @@ export const JournalTodayActivityMenuItem = ({
           prefixIcon: <HistoryIcon />,
         }}
         items={<TodaysActivity date={journalDate} />}
-        title={t['com.affine.m.selector.journal-menu.today-activity']()}
+        title={t['com.yunke.m.selector.journal-menu.today-activity']()}
       >
-        {t['com.affine.m.selector.journal-menu.today-activity']()}
+        {t['com.yunke.m.selector.journal-menu.today-activity']()}
       </MobileMenuSub>
       {suffix}
     </>

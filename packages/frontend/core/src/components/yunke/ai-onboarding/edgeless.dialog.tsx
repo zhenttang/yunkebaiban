@@ -70,7 +70,7 @@ export const AIOnboardingEdgeless = () => {
         key: 'get-started',
         label: (
           <span className={styles.getStartedButtonText}>
-            {t['com.affine.ai-onboarding.edgeless.get-started']()}
+            {t['com.yunke.ai-onboarding.edgeless.get-started']()}
           </span>
         ),
         onClick: () => {
@@ -84,7 +84,7 @@ export const AIOnboardingEdgeless = () => {
         key: 'purchase',
         label: (
           <span className={styles.purchaseButtonText}>
-            {t['com.affine.ai-onboarding.edgeless.purchase']()}
+            {t['com.yunke.ai-onboarding.edgeless.purchase']()}
           </span>
         ),
         onClick: () => {
@@ -109,8 +109,8 @@ export const AIOnboardingEdgeless = () => {
 
       const id = notify(
         {
-          title: t['com.affine.ai-onboarding.edgeless.title'](),
-          message: t['com.affine.ai-onboarding.edgeless.message'](),
+          title: t['com.yunke.ai-onboarding.edgeless.title'](),
+          message: t['com.yunke.ai-onboarding.edgeless.message'](),
           icon: <AiIcon />,
           iconColor: cssVar('processingColor'),
           thumb: <EdgelessOnboardingAnimation />,

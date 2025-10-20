@@ -18,56 +18,56 @@ export const linked: InitFn = (collection: Workspace, id: string) => {
   docC.doc.clear();
 
   docB.load(() => {
-    const rootId = docB.addBlock('affine:page', {
+    const rootId = docB.addBlock('yunke:page', {
       title: new Text(''),
     });
 
-    docB.addBlock('affine:surface', {}, rootId);
+    docB.addBlock('yunke:surface', {}, rootId);
 
     // Add note block inside root block
-    const noteId = docB.addBlock('affine:note', {}, rootId);
+    const noteId = docB.addBlock('yunke:note', {}, rootId);
     // Add paragraph block inside note block
-    docB.addBlock('affine:paragraph', {}, noteId);
+    docB.addBlock('yunke:paragraph', {}, noteId);
   });
 
   docC.load(() => {
-    const rootId = docC.addBlock('affine:page', {
+    const rootId = docC.addBlock('yunke:page', {
       title: new Text(''),
     });
 
-    docC.addBlock('affine:surface', {}, rootId);
+    docC.addBlock('yunke:surface', {}, rootId);
 
     // Add note block inside root block
-    const noteId = docC.addBlock('affine:note', {}, rootId);
+    const noteId = docC.addBlock('yunke:note', {}, rootId);
     // Add paragraph block inside note block
-    docC.addBlock('affine:paragraph', {}, noteId);
+    docC.addBlock('yunke:paragraph', {}, noteId);
   });
 
   docA.load();
   // Add root block and surface block at root level
-  const rootId = docA.addBlock('affine:page', {
+  const rootId = docA.addBlock('yunke:page', {
     title: new Text('Doc A'),
   });
 
-  docA.addBlock('affine:surface', {}, rootId);
+  docA.addBlock('yunke:surface', {}, rootId);
 
   // Add note block inside root block
-  const noteId = docA.addBlock('affine:note', {}, rootId);
+  const noteId = docA.addBlock('yunke:note', {}, rootId);
   // Add paragraph block inside note block
-  docA.addBlock('affine:paragraph', {}, noteId);
+  docA.addBlock('yunke:paragraph', {}, noteId);
 
-  docA.addBlock('affine:embed-linked-doc', { pageId: docBId }, noteId);
+  docA.addBlock('yunke:embed-linked-doc', { pageId: docBId }, noteId);
 
   docA.addBlock(
-    'affine:embed-linked-doc',
+    'yunke:embed-linked-doc',
     { pageId: 'doc:deleted-example' },
     noteId
   );
 
-  docA.addBlock('affine:embed-linked-doc', { pageId: docCId }, noteId);
+  docA.addBlock('yunke:embed-linked-doc', { pageId: docCId }, noteId);
 
   docA.addBlock(
-    'affine:embed-linked-doc',
+    'yunke:embed-linked-doc',
     { pageId: 'doc:deleted-example-edgeless' },
     noteId
   );

@@ -15,7 +15,7 @@ import {
 import { penSeniorTool } from './toolbar/senior-tool';
 
 export class BrushViewExtension extends ViewExtensionProvider {
-  override name = 'affine-brush-gfx';
+  override name = 'yunke-brush-gfx';
 
   override effect(): void {
     super.effect();

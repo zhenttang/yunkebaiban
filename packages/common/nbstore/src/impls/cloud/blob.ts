@@ -49,7 +49,7 @@ export class CloudBlobStorage extends BlobStorageBase {
       {
         cache: 'default',
         headers: {
-          'x-affine-version': BUILD_CONFIG.appVersion,
+          'x-yunke-version': BUILD_CONFIG.appVersion,
         },
         signal,
       }
@@ -73,7 +73,7 @@ export class CloudBlobStorage extends BlobStorageBase {
           const res = await this.connection.fetch(json.url, {
             cache: 'default',
             headers: {
-              'x-affine-version': BUILD_CONFIG.appVersion,
+              'x-yunke-version': BUILD_CONFIG.appVersion,
             },
             signal,
           });
@@ -120,7 +120,7 @@ export class CloudBlobStorage extends BlobStorageBase {
           method: 'PUT',
           body: formData,
           headers: {
-            'x-affine-version': BUILD_CONFIG.appVersion,
+            'x-yunke-version': BUILD_CONFIG.appVersion,
           },
           signal,
         }
@@ -160,7 +160,7 @@ export class CloudBlobStorage extends BlobStorageBase {
         {
           method: 'DELETE',
           headers: {
-            'x-affine-version': BUILD_CONFIG.appVersion,
+            'x-yunke-version': BUILD_CONFIG.appVersion,
           },
         }
       );
@@ -187,7 +187,7 @@ export class CloudBlobStorage extends BlobStorageBase {
         {
           method: 'POST',
           headers: {
-            'x-affine-version': BUILD_CONFIG.appVersion,
+            'x-yunke-version': BUILD_CONFIG.appVersion,
           },
         }
       );
@@ -214,7 +214,7 @@ export class CloudBlobStorage extends BlobStorageBase {
         {
           method: 'GET',
           headers: {
-            'x-affine-version': BUILD_CONFIG.appVersion,
+            'x-yunke-version': BUILD_CONFIG.appVersion,
           },
         }
       );

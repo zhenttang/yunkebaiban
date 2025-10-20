@@ -1,4 +1,4 @@
-import { generateUrl } from '@yunke/core/components/hooks/affine/use-share-url';
+import { generateUrl } from '@yunke/core/components/hooks/yunke/use-share-url';
 import { WorkspaceServerService } from '@yunke/core/modules/cloud';
 import { resolveLinkToDoc } from '@yunke/core/modules/navigation/utils';
 import { WorkspaceService } from '@yunke/core/modules/workspace';

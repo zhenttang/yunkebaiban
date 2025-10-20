@@ -1,6 +1,6 @@
 {
   "name": "@blocksuite/yunke-widget-remote-selection",
-  "description": "Affine remote selection widget.",
+  "description": "Yunke remote selection widget.",
   "type": "module",
   "scripts": {
     "build": "tsc"

@@ -47,7 +47,7 @@ export class AIChatBlockComponent extends BlockComponent<AIChatBlockModel> {
   override renderBlock() {
     const messages = this._deserializeChatMessages.value.slice(-2);
 
-    return html`<div class="affine-ai-chat-block-container">
+    return html`<div class="yunke-ai-chat-block-container">
       <div class="ai-chat-messages-container">
         <ai-chat-messages
           .host=${this.host}
@@ -69,6 +69,6 @@ export class AIChatBlockComponent extends BlockComponent<AIChatBlockModel> {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'affine-ai-chat': AIChatBlockComponent;
+    'yunke-ai-chat': AIChatBlockComponent;
   }
 }

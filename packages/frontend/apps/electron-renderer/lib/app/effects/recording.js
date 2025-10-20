@@ -104,7 +104,7 @@ export function setupRecordingEvents(frameworkProvider) {
                                             timestamp +
                                             '.opus';
                                         // 稍后将大小和sourceId添加到附件
-                                        const attachmentId = doc.addBlock('affine:attachment', {
+                                        const attachmentId = doc.addBlock('yunke:attachment', {
                                             name: attachmentName,
                                             type: 'audio/opus',
                                             size: blob.size,

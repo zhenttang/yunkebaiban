@@ -46,7 +46,7 @@ export class CaptionedBlockComponent<
     return html`<div
       style=${style}
       class=${classMap({
-        'affine-block-component': true,
+        'yunke-block-component': true,
         [theme]: true,
         border: isBorder,
       })}
@@ -58,9 +58,9 @@ export class CaptionedBlockComponent<
           ></block-caption-editor>`
         : nothing}
       ${this.selectedStyle === SelectedStyle.Background
-        ? html`<affine-block-selection
+        ? html`<yunke-block-selection
             .selected=${this.selected$.value}
-          ></affine-block-selection>`
+          ></yunke-block-selection>`
         : null}
       ${this.useZeroWidth && !this.store.readonly
         ? html`<block-zero-width .block=${this}></block-zero-width>`

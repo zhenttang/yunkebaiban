@@ -38,7 +38,7 @@ import type {
   ToolbarModuleConfig,
 } from '@blocksuite/yunke-shared/services';
 import { ActionPlacement } from '@blocksuite/yunke-shared/services';
-import type { AffineTextAttributes } from '@blocksuite/yunke-shared/types';
+import type { YunkeTextAttributes } from '@blocksuite/yunke-shared/types';
 import { tableViewMeta } from '@blocksuite/data-view/view-presets';
 import {
   CopyIcon,
@@ -140,7 +140,7 @@ const highlightActionGroup = {
   id: 'c.highlight',
   when: ({ chain }) => isFormatSupported(chain).run()[0],
   content({ chain }) {
-    const updateHighlight = (styles: AffineTextAttributes) => {
+    const updateHighlight = (styles: YunkeTextAttributes) => {
       const payload = { styles };
       chain
         .try(chain => [
@@ -153,9 +153,9 @@ const highlightActionGroup = {
         .run();
     };
     return html`
-      <affine-highlight-dropdown-menu
+      <yunke-highlight-dropdown-menu
         .updateHighlight=${updateHighlight}
-      ></affine-highlight-dropdown-menu>
+      ></yunke-highlight-dropdown-menu>
     `;
   },
 } as const satisfies ToolbarAction;

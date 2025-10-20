@@ -10,7 +10,7 @@
     "blocks": {
       "type": "block",
       "id": "QiBH29dycZ",
-      "flavour": "affine:page",
+      "flavour": "yunke:page",
       "version": 2,
       "props": {
         "title": {
@@ -22,7 +22,7 @@
         {
           "type": "block",
           "id": "WZ9zUizVrs",
-          "flavour": "affine:surface",
+          "flavour": "yunke:surface",
           "version": 5,
           "props": {
             "elements": {
@@ -32,14 +32,14 @@
                 "xywh": "[-83.54346701558063,-50.225603646128235,1600.17596435546875,179]",
                 "rotate": 0,
                 "text": {
-                  "affine:surface:text": true,
+                  "yunke:surface:text": true,
                   "delta": [
                     {
                       "insert": "section1.title"
                     }
                   ]
                 },
-                "color": "--affine-palette-line-black",
+                "color": "--yunke-palette-line-black",
                 "fontSize": 128,
                 "fontFamily": "blocksuite:surface:Poppins",
                 "fontWeight": "400",
@@ -55,7 +55,7 @@
             {
               "type": "block",
               "id": "Rb6xTvGyzU",
-              "flavour": "affine:image",
+              "flavour": "yunke:image",
               "version": 1,
               "props": {
                 "caption": "background",
@@ -72,7 +72,7 @@
             {
               "type": "block",
               "id": "Pa1ZO7Udi-",
-              "flavour": "affine:frame",
+              "flavour": "yunke:frame",
               "version": 1,
               "props": {
                 "title": {
@@ -83,7 +83,7 @@
                     }
                   ]
                 },
-                "background": "--affine-palette-transparent",
+                "background": "--yunke-palette-transparent",
                 "xywh": "[-340.7451171875,-395.744140625,2000,1160]",
                 "index": "Zz",
                 "childElementIds": {

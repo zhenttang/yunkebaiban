@@ -18,7 +18,7 @@ export const InfoButton = ({ docId }: { docId: string }) => {
   return (
     <IconButton
       size="20"
-      tooltip={t['com.affine.page-properties.page-info.view']()}
+      tooltip={t['com.yunke.page-properties.page-info.view']()}
       data-testid="header-info-button"
       onClick={onOpenInfoModal}
     >

@@ -1,4 +1,4 @@
-import { EmptyTags } from '@yunke/core/components/affine/empty';
+import { EmptyTags } from '@yunke/core/components/yunke/empty';
 import { TagService } from '@yunke/core/modules/tag';
 import { useLiveData, useService } from '@toeverything/infra';
 

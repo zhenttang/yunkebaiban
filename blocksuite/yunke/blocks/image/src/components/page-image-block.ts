@@ -30,7 +30,7 @@ export class ImageBlockPageComponent extends SignalWatcher(
   WithDisposable(ShadowlessElement)
 ) {
   static override styles = css`
-    affine-page-image {
+    yunke-page-image {
       position: relative;
       display: flex;
       flex-direction: column;
@@ -40,7 +40,7 @@ export class ImageBlockPageComponent extends SignalWatcher(
       cursor: pointer;
     }
 
-    affine-page-image .loading {
+    yunke-page-image .loading {
       display: flex;
       align-items: center;
       justify-content: center;
@@ -61,18 +61,18 @@ export class ImageBlockPageComponent extends SignalWatcher(
       }
     }
 
-    affine-page-image .affine-image-status {
+    yunke-page-image .yunke-image-status {
       position: absolute;
       left: 18px;
       bottom: 18px;
     }
 
-    affine-page-image .resizable-img {
+    yunke-page-image .resizable-img {
       position: relative;
       max-width: 100%;
     }
 
-    affine-page-image .resizable-img img {
+    yunke-page-image .resizable-img img {
       width: 100%;
       height: 100%;
     }
@@ -381,15 +381,15 @@ export class ImageBlockPageComponent extends SignalWatcher(
       ${when(
         Boolean(error && description),
         () =>
-          html`<affine-resource-status
-            class="affine-image-status"
+          html`<yunke-resource-status
+            class="yunke-image-status"
             .message=${description}
             .needUpload=${needUpload}
             .action=${() =>
               needUpload
                 ? this.block.resourceController.upload()
                 : this.block.refreshData()}
-          ></affine-resource-status>`
+          ></yunke-resource-status>`
       )}
     `;
   }
@@ -406,6 +406,6 @@ export class ImageBlockPageComponent extends SignalWatcher(
 
 declare global {
   interface HTMLElementTagNameMap {
-    'affine-page-image': ImageBlockPageComponent;
+    'yunke-page-image': ImageBlockPageComponent;
   }
 }

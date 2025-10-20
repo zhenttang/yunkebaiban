@@ -39,7 +39,7 @@ import { SharePage } from './share-page';
 export interface ShareMenuProps extends PropsWithChildren {
   workspaceMetadata: WorkspaceMetadata;
   currentPage: Store;
-  onEnableAffineCloud: () => void;
+  onEnableYunkeCloud: () => void;
   onOpenShareModal?: (open: boolean) => void;
   openPaywallModal?: () => void;
   hittingPaywall?: boolean;
@@ -105,18 +105,18 @@ export const ShareMenuContent = (props: ShareMenuProps) => {
     openConfirmModal({
       title:
         t[
-          `com.affine.share-menu.paywall.${isOwner ? 'owner' : 'member'}.title`
+          `com.yunke.share-menu.paywall.${isOwner ? 'owner' : 'member'}.title`
         ](),
       description:
         t[
-          `com.affine.share-menu.paywall.${isOwner ? 'owner' : 'member'}.description`
+          `com.yunke.share-menu.paywall.${isOwner ? 'owner' : 'member'}.description`
         ](),
       confirmText:
         t[
-          `com.affine.share-menu.paywall.${isOwner ? 'owner' : 'member'}.confirm`
+          `com.yunke.share-menu.paywall.${isOwner ? 'owner' : 'member'}.confirm`
         ](),
       onConfirm: onConfirm,
-      cancelText: t['com.affine.confirmModal.button.cancel']() || '取消',
+      cancelText: t['com.yunke.confirmModal.button.cancel']() || '取消',
       cancelButtonOptions: {
         style: {
           visibility: isOwner ? 'visible' : 'hidden',
@@ -162,7 +162,7 @@ export const ShareMenuContent = (props: ShareMenuProps) => {
       >
         <Tabs.List className={styles.tabList}>
           <Tabs.Trigger value={ShareMenuTab.Share} className={styles.tab}>
-            {t['com.affine.share-menu.shareButton']()}
+            {t['com.yunke.share-menu.shareButton']()}
           </Tabs.Trigger>
           <Tabs.Trigger
             value={ShareMenuTab.Export}
@@ -171,7 +171,7 @@ export const ShareMenuContent = (props: ShareMenuProps) => {
               display: BUILD_CONFIG.isMobileEdition ? 'none' : undefined,
             }}
           >
-            {t['com.affine.share-menu.tab.export']() || '导出'}
+            {t['com.yunke.share-menu.tab.export']() || '导出'}
           </Tabs.Trigger>
           <Tabs.Trigger value={ShareMenuTab.Invite} style={{ display: 'none' }}>
             邀请
@@ -226,14 +226,14 @@ const DefaultShareButton = forwardRef(function DefaultShareButton(
     <Tooltip
       content={
         shared
-          ? t['com.affine.share-menu.option.link.readonly.description']()
-          : t['com.affine.share-menu.option.link.no-access.description']()
+          ? t['com.yunke.share-menu.option.link.readonly.description']()
+          : t['com.yunke.share-menu.option.link.no-access.description']()
       }
     >
       <Button ref={ref} className={styles.button} variant="primary">
         <div className={styles.buttonContainer}>
           {shared ? <PublishIcon fontSize={16} /> : <LockIcon fontSize={16} />}
-          {t['com.affine.share-menu.shareButton']()}
+          {t['com.yunke.share-menu.shareButton']()}
         </div>
       </Button>
     </Tooltip>

@@ -8,7 +8,7 @@ import { ImageSelectionExtension } from '@blocksuite/yunke-shared/selection';
 import { ImageBlockAdapterExtensions } from './adapters/extension';
 
 export class ImageStoreExtension extends StoreExtensionProvider {
-  override name = 'affine-image-block';
+  override name = 'yunke-image-block';
 
   override setup(context: StoreExtensionContext) {
     super.setup(context);

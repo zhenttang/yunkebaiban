@@ -20,7 +20,7 @@ export function pcVirtualEffects() {
   customElements.define('dv-table-view-ui-virtual', TableViewUI);
   customElements.define('dv-kanban-view-ui', KanbanViewUI);
   customElements.define(
-    'affine-database-virtual-cell-container',
+    'yunke-database-virtual-cell-container',
     DatabaseCellContainer
   );
   customElements.define('virtual-table-header', VirtualTableHeader);
@@ -43,11 +43,11 @@ export function pcVirtualEffects() {
   );
   customElements.define('virtual-element-wrapper', VirtualElementWrapper);
   customElements.define(
-    'affine-database-virtual-column-stats',
+    'yunke-database-virtual-column-stats',
     VirtualDataBaseColumnStats
   );
   customElements.define(
-    'affine-database-virtual-column-stats-cell',
+    'yunke-database-virtual-column-stats-cell',
     VirtualDatabaseColumnStatsCell
   );
   customElements.define('virtual-table-group-header', TableGroupHeader);

@@ -15,7 +15,7 @@ export const onboardingVars = {
     h: '302px',
     r: '8px',
     bg: 'white',
-    // textColor: 'var(--affine-light-text-primary-color)',
+    // textColor: 'var(--yunke-light-text-primary-color)',
     textColor: '#121212',
     borderColor: '#E3E2E4',
   },

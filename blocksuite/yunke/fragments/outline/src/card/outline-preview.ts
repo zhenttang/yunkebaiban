@@ -9,7 +9,7 @@ import type {
   RootBlockModel,
 } from '@blocksuite/yunke-model';
 import { DocDisplayMetaProvider } from '@blocksuite/yunke-shared/services';
-import type { AffineTextAttributes } from '@blocksuite/yunke-shared/types';
+import type { YunkeTextAttributes } from '@blocksuite/yunke-shared/types';
 import { SignalWatcher, WithDisposable } from '@blocksuite/global/lit';
 import { noop } from '@blocksuite/global/utils';
 import { LinkedPageIcon } from '@blocksuite/icons/lit';
@@ -33,7 +33,7 @@ function assertType<T>(value: unknown): asserts value is T {
   noop(value);
 }
 
-export const AFFINE_OUTLINE_BLOCK_PREVIEW = 'affine-outline-block-preview';
+export const YUNKE_OUTLINE_BLOCK_PREVIEW = 'yunke-outline-block-preview';
 
 export class OutlineBlockPreview extends SignalWatcher(
   WithDisposable(ShadowlessElement)
@@ -43,7 +43,7 @@ export class OutlineBlockPreview extends SignalWatcher(
   }
 
   private _TextBlockPreview(block: ParagraphBlockModel | ListBlockModel) {
-    const deltas: DeltaInsert<AffineTextAttributes>[] =
+    const deltas: DeltaInsert<YunkeTextAttributes>[] =
       block.props.text.yText.toDelta();
     if (!block.props.text.length) return nothing;
     const iconClass = this.disabledIcon ? styles.iconDisabled : styles.icon;
@@ -223,6 +223,6 @@ export class OutlineBlockPreview extends SignalWatcher(
 
 declare global {
   interface HTMLElementTagNameMap {
-    [AFFINE_OUTLINE_BLOCK_PREVIEW]: OutlineBlockPreview;
+    [YUNKE_OUTLINE_BLOCK_PREVIEW]: OutlineBlockPreview;
   }
 }

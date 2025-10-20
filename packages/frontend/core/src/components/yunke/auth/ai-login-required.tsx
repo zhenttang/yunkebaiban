@@ -20,17 +20,17 @@ export const AiLoginRequiredModal = () => {
   useEffect(() => {
     if (open) {
       openConfirmModal({
-        title: t['com.affine.ai.login-required.dialog-title'](),
-        description: t['com.affine.ai.login-required.dialog-content'](),
+        title: t['com.yunke.ai.login-required.dialog-title'](),
+        description: t['com.yunke.ai.login-required.dialog-content'](),
         onConfirm: () => {
           setOpen(false);
           openSignIn();
         },
-        confirmText: t['com.affine.ai.login-required.dialog-confirm'](),
+        confirmText: t['com.yunke.ai.login-required.dialog-confirm'](),
         confirmButtonOptions: {
           variant: 'primary',
         },
-        cancelText: t['com.affine.ai.login-required.dialog-cancel'](),
+        cancelText: t['com.yunke.ai.login-required.dialog-cancel'](),
         onOpenChange: setOpen,
       });
     } else {

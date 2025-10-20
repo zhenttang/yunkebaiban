@@ -1,6 +1,6 @@
 import { SettingRow } from '@yunke/component/setting-components';
 import { Button } from '@yunke/component/ui/button';
-import { getUpgradeQuestionnaireLink } from '@yunke/core/components/hooks/affine/use-subscription-notify';
+import { getUpgradeQuestionnaireLink } from '@yunke/core/components/hooks/yunke/use-subscription-notify';
 import { AuthService, SubscriptionService } from '@yunke/core/modules/cloud';
 // import { SubscriptionPlan, SubscriptionRecurring } from '@yunke/graphql';
 import { useI18n } from '@yunke/i18n';
@@ -35,11 +35,11 @@ export const TypeformLink = () => {
   return (
     <SettingRow
       className={styles.paymentMethod}
-      name={t['com.affine.payment.billing-type-form.title']()}
-      desc={t['com.affine.payment.billing-type-form.description']()}
+      name={t['com.yunke.payment.billing-type-form.title']()}
+      desc={t['com.yunke.payment.billing-type-form.description']()}
     >
       <a target="_blank" href={link} rel="noreferrer">
-        <Button>{t['com.affine.payment.billing-type-form.go']()}</Button>
+        <Button>{t['com.yunke.payment.billing-type-form.go']()}</Button>
       </a>
     </SettingRow>
   );

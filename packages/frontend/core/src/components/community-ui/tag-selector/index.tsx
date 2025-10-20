@@ -133,7 +133,7 @@ export const TagSelector: React.FC<TagSelectorProps> = ({
           </span>
         ))}
         {selectedTags.length === 0 && (
-          <span style={{ color: 'var(--affine-text-tertiary-color)', fontSize: '14px' }}>
+          <span style={{ color: 'var(--yunke-text-tertiary-color)', fontSize: '14px' }}>
             点击输入框搜索或添加标签
           </span>
         )}

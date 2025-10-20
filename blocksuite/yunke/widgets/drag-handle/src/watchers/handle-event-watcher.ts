@@ -3,7 +3,7 @@ import {
   DRAG_HANDLE_GRABBER_BORDER_RADIUS,
   DRAG_HANDLE_GRABBER_WIDTH_HOVERED,
 } from '../config.js';
-import type { AffineDragHandleWidget } from '../drag-handle.js';
+import type { YunkeDragHandleWidget } from '../drag-handle.js';
 
 export class HandleEventWatcher {
   private readonly _onDragHandlePointerDown = () => {
@@ -58,7 +58,7 @@ export class HandleEventWatcher {
     this.widget.dragHoverRect = null;
   };
 
-  constructor(readonly widget: AffineDragHandleWidget) {}
+  constructor(readonly widget: YunkeDragHandleWidget) {}
 
   watch() {
     const { dragHandleContainer, disposables } = this.widget;

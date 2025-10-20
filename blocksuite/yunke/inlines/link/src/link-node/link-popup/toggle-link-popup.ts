@@ -1,4 +1,4 @@
-import type { AffineInlineEditor } from '@blocksuite/yunke-shared/types';
+import type { YunkeInlineEditor } from '@blocksuite/yunke-shared/types';
 import type { BlockStdScope } from '@blocksuite/std';
 import type { InlineRange } from '@blocksuite/std/inline';
 
@@ -7,7 +7,7 @@ import { LinkPopup } from './link-popup';
 export function toggleLinkPopup(
   std: BlockStdScope,
   type: LinkPopup['type'],
-  inlineEditor: AffineInlineEditor,
+  inlineEditor: YunkeInlineEditor,
   targetInlineRange: InlineRange,
   abortController: AbortController
 ): LinkPopup {

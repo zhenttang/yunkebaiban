@@ -47,7 +47,7 @@ export function Component() {
     !userPoints.lastSignInDate ||
     new Date(userPoints.lastSignInDate).toDateString() !== new Date().toDateString();
 
-  const currentUserId = Number(globalThis.localStorage?.getItem('affine-user-id') || '0');
+  const currentUserId = Number(globalThis.localStorage?.getItem('yunke-user-id') || '0');
   const isCurrentUser = currentUserId ? currentUserId === userPoints.userId : true;
 
   return (

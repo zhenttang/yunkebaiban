@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /**
- * AFFiNE 依赖分析工具
+ * YUNKE 依赖分析工具
  * 用于分析项目依赖的大小、使用情况和优化建议
  */
 
@@ -208,7 +208,7 @@ class DependencyAnalyzer {
    * 运行完整分析
    */
   async runFullAnalysis() {
-    console.log('🚀 开始 AFFiNE 依赖分析...\n');
+    console.log('🚀 开始 YUNKE 依赖分析...\n');
     console.log('=' .repeat(50));
     
     await this.analyzeSizes();

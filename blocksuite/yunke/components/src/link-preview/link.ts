@@ -9,7 +9,7 @@ import { html } from 'lit-html';
 })
 export class LinkPreview extends LitElement {
   static override styles = css`
-    .affine-link-preview {
+    .yunke-link-preview {
       display: flex;
       justify-content: flex-start;
       min-width: 60px;
@@ -17,19 +17,19 @@ export class LinkPreview extends LitElement {
       user-select: none;
       cursor: pointer;
 
-      color: var(--affine-link-color);
+      color: var(--yunke-link-color);
       font-feature-settings:
         'clig' off,
         'liga' off;
-      font-family: var(--affine-font-family);
-      font-size: var(--affine-font-sm);
+      font-family: var(--yunke-font-family);
+      font-size: var(--yunke-font-sm);
       font-style: normal;
       font-weight: 400;
       text-decoration: none;
       text-wrap: nowrap;
     }
 
-    .affine-link-preview > span {
+    .yunke-link-preview > span {
       display: inline-block;
       -webkit-line-clamp: 1;
       -webkit-box-orient: vertical;
@@ -47,7 +47,7 @@ export class LinkPreview extends LitElement {
 
     return html`
       <a
-        class="affine-link-preview"
+        class="yunke-link-preview"
         rel="noopener noreferrer"
         target="_blank"
         href=${url}
@@ -60,6 +60,6 @@ export class LinkPreview extends LitElement {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'affine-link-preview': LinkPreview;
+    'yunke-link-preview': LinkPreview;
   }
 }

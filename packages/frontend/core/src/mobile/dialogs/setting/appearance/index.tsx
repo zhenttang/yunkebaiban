@@ -8,7 +8,7 @@ import { ThemeSetting } from './theme';
 export const AppearanceGroup = () => {
   const t = useI18n();
   return (
-    <SettingGroup title={t['com.affine.mobile.setting.appearance.title']()}>
+    <SettingGroup title={t['com.yunke.mobile.setting.appearance.title']()}>
       <ThemeSetting />
       <FontStyleSetting />
       <LanguageSetting />

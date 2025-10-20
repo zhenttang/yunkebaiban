@@ -35,7 +35,7 @@ export type IndentContext = {
   type: 'indent' | 'dedent';
 };
 
-export interface AffineTextAttributes {
+export interface YunkeTextAttributes {
   bold?: true | null;
   italic?: true | null;
   underline?: true | null;
@@ -57,7 +57,7 @@ export interface AffineTextAttributes {
   } | null;
 }
 
-export type AffineInlineEditor = InlineEditor<AffineTextAttributes>;
+export type YunkeInlineEditor = InlineEditor<YunkeTextAttributes>;
 
 export type SelectedRect = {
   left: number;

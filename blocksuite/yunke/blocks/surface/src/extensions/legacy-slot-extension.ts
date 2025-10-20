@@ -17,7 +17,7 @@ export const EdgelessLegacySlotIdentifier = createIdentifier<{
   toggleNoteSlicer: Subject<void>;
 
   toolbarLocked: Subject<boolean>;
-}>('AffineEdgelessLegacySlotService');
+}>('YunkeEdgelessLegacySlotService');
 
 export const EdgelessLegacySlotExtension: ExtensionType = {
   setup: di => {

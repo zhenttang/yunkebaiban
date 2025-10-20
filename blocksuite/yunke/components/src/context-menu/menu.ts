@@ -70,7 +70,7 @@ export class Menu {
   constructor(public options: MenuOptions) {
     this.menuElement = IS_MOBILE
       ? document.createElement('mobile-menu')
-      : document.createElement('affine-menu');
+      : document.createElement('yunke-menu');
     this.menuElement.menu = this;
 
     // Call global menu open listeners

@@ -110,7 +110,7 @@ export class DeckerIntegrationManager {
     }
 
     // 获取页面块
-    const pageBlock = rootDoc.getBlockByFlavour('affine:page')[0];
+    const pageBlock = rootDoc.getBlockByFlavour('yunke:page')[0];
     if (!pageBlock) {
       console.error('未找到页面块');
       return;
@@ -118,7 +118,7 @@ export class DeckerIntegrationManager {
 
     // 在页面中添加图片块
     const imageBlockId = rootDoc.addBlock(
-      'affine:image',
+      'yunke:image',
       {
         sourceId,
         customData,
@@ -252,7 +252,7 @@ export class DeckerIntegrationManager {
 
     // 创建iframe
     const iframe = document.createElement('iframe');
-    const deckerUrl = `/affine_whiteboard.html?whiteboard=true&origin=${encodeURIComponent(window.location.origin)}`;
+    const deckerUrl = `/yunke_whiteboard.html?whiteboard=true&origin=${encodeURIComponent(window.location.origin)}`;
     iframe.src = deckerUrl;
     iframe.style.cssText = `
       width: 100% !important;

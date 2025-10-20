@@ -71,7 +71,7 @@ export const HelpIsland = () => {
         style={{ height: spread ? `${showList.length * 40 + 4}px` : 0 }}
       >
         {showList.includes('whatNew') && (
-          <Tooltip content={t['com.affine.appUpdater.whatsNew']()} side="left">
+          <Tooltip content={t['com.yunke.appUpdater.whatsNew']()} side="left">
             <StyledIconWrapper
               data-testid="right-bottom-change-log-icon"
               onClick={() => {
@@ -83,7 +83,7 @@ export const HelpIsland = () => {
           </Tooltip>
         )}
         {showList.includes('contact') && (
-          <Tooltip content={t['com.affine.helpIsland.contactUs']()} side="left">
+          <Tooltip content={t['com.yunke.helpIsland.contactUs']()} side="left">
             <StyledIconWrapper
               data-testid="right-bottom-contact-us-icon"
               onClick={openAbout}
@@ -94,7 +94,7 @@ export const HelpIsland = () => {
         )}
         {showList.includes('shortcuts') && (
           <Tooltip
-            content={t['com.affine.keyboardShortcuts.title']()}
+            content={t['com.yunke.keyboardShortcuts.title']()}
             side="left"
           >
             <StyledIconWrapper
@@ -113,7 +113,7 @@ export const HelpIsland = () => {
         </StyledTriggerWrapper>
       ) : (
         <Tooltip
-          content={t['com.affine.helpIsland.helpAndFeedback']()}
+          content={t['com.yunke.helpIsland.helpAndFeedback']()}
           side="left"
         >
           <StyledTriggerWrapper data-testid="faq-icon">

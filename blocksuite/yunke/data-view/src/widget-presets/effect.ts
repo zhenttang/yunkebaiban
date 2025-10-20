@@ -25,7 +25,7 @@ export function widgetPresetsEffects() {
     'data-view-header-tools-add-row',
     DataViewHeaderToolsAddRow
   );
-  customElements.define('affine-database-new-record-preview', NewRecordPreview);
+  customElements.define('yunke-database-new-record-preview', NewRecordPreview);
   customElements.define(
     'data-view-header-tools-filter',
     DataViewHeaderToolsFilter

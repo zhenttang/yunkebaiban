@@ -136,7 +136,7 @@ export class ExportManager {
             : null
           : null;
         const imageCard = rootComponent?.querySelector(
-          'affine-image-fallback-card'
+          'yunke-image-fallback-card'
         );
         const isReady =
           !imageCard || imageCard.getAttribute('imageState') === '0';
@@ -187,7 +187,7 @@ export class ExportManager {
     const viewportElement = rootComponent.viewportElement;
     if (!viewportElement) return;
     const pageContainer = viewportElement.querySelector(
-      '.affine-page-root-block-container'
+      '.yunke-page-root-block-container'
     );
     const rect = pageContainer?.getBoundingClientRect();
     const { viewport } = rootComponent;
@@ -211,7 +211,7 @@ export class ExportManager {
           (element.classList.contains('expand') &&
             element.parentElement?.classList.contains('meta-data'))
         ) {
-          // the close and expand buttons in affine-doc-meta-data is not needed to be showed
+          // the close and expand buttons in yunke-doc-meta-data is not needed to be showed
           return true;
         } else {
           return false;
@@ -303,7 +303,7 @@ export class ExportManager {
       onclone: async (documentClone: Document, element: HTMLElement) => {
         // html2canvas can't support transform feature
         element.style.setProperty('transform', 'none');
-        const layer = element.classList.contains('.affine-edgeless-layer')
+        const layer = element.classList.contains('.yunke-edgeless-layer')
           ? element
           : null;
 
@@ -395,7 +395,7 @@ export class ExportManager {
     const containerComputedStyle = window.getComputedStyle(viewportElement);
 
     const container = rootComponent.querySelector(
-      '.affine-block-children-container'
+      '.yunke-block-children-container'
     );
 
     if (!container) return;
@@ -408,11 +408,11 @@ export class ExportManager {
     if (edgelessBackground) {
       await this._drawEdgelessBackground(ctx, {
         backgroundColor: containerComputedStyle.getPropertyValue(
-          '--affine-background-primary-color'
+          '--yunke-background-primary-color'
         ),
         size: getBgGridGap(edgelessBackground.zoom),
         gridColor: containerComputedStyle.getPropertyValue(
-          '--affine-edgeless-grid-color'
+          '--yunke-edgeless-grid-color'
         ),
       });
     }

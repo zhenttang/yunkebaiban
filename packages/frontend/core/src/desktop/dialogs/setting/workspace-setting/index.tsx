@@ -83,13 +83,13 @@ export const useWorkspaceSettingList = (): SettingSidebarItem[] => {
     return [
       {
         key: 'workspace:preference',
-        title: t['com.affine.settings.workspace.preferences'](),
+        title: t['com.yunke.settings.workspace.preferences'](),
         icon: <SettingsIcon />,
         testId: 'workspace-setting:preference',
       },
       {
         key: 'workspace:properties',
-        title: t['com.affine.settings.workspace.properties'](),
+        title: t['com.yunke.settings.workspace.properties'](),
         icon: <PropertyIcon />,
         testId: 'workspace-setting:properties',
       },
@@ -101,7 +101,7 @@ export const useWorkspaceSettingList = (): SettingSidebarItem[] => {
       },
       {
         key: 'workspace:integrations',
-        title: t['com.affine.integration.integrations'](),
+        title: t['com.yunke.integration.integrations'](),
         icon: <IntegrationsIcon />,
         testId: 'workspace-setting:integrations',
       },
@@ -115,20 +115,20 @@ export const useWorkspaceSettingList = (): SettingSidebarItem[] => {
         key: 'workspace:embedding',
         title:
           t[
-            'com.affine.settings.workspace.indexer-embedding.embedding.title'
+            'com.yunke.settings.workspace.indexer-embedding.embedding.title'
           ](),
         icon: <AiEmbeddingIcon />,
         testId: 'workspace-setting:embedding',
       },
       showBilling && {
         key: 'workspace:billing' as SettingTab,
-        title: t['com.affine.settings.workspace.billing'](),
+        title: t['com.yunke.settings.workspace.billing'](),
         icon: <PaymentIcon />,
         testId: 'workspace-setting:billing',
       },
       showLicense && {
         key: 'workspace:license' as SettingTab,
-        title: t['com.affine.settings.workspace.license'](),
+        title: t['com.yunke.settings.workspace.license'](),
         icon: <PaymentIcon />,
         testId: 'workspace-setting:license',
       },

@@ -1,9 +1,9 @@
-import type { AffineDNDEntity } from '@yunke/core/types/dnd';
+import type { YunkeDNDEntity } from '@yunke/core/types/dnd';
 
-export const allowedSplitViewEntityTypes: Set<AffineDNDEntity['type']> =
+export const allowedSplitViewEntityTypes: Set<YunkeDNDEntity['type']> =
   new Set(['doc', 'collection', 'tag']);
 
-export const inferToFromEntity = (entity: AffineDNDEntity) => {
+export const inferToFromEntity = (entity: YunkeDNDEntity) => {
   if (entity.type === 'doc') {
     return `/${entity.id}`;
   } else if (entity.type === 'collection') {

@@ -36,15 +36,15 @@ export interface DetailSlots {
 }
 
 const styles = css`
-  ${unsafeCSS(dataViewCommonStyle('affine-data-view-record-detail'))}
-  affine-data-view-record-detail {
+  ${unsafeCSS(dataViewCommonStyle('yunke-data-view-record-detail'))}
+  yunke-data-view-record-detail {
     position: relative;
     display: flex;
     flex: 1;
     flex-direction: column;
     padding: 20px;
     gap: 12px;
-    background-color: var(--affine-background-primary-color);
+    background-color: var(--yunke-background-primary-color);
     border-radius: 8px;
     height: 100%;
     width: 100%;
@@ -59,7 +59,7 @@ const styles = css`
     font-style: normal;
     font-weight: 400;
     line-height: var(--data-view-cell-text-line-height);
-    color: var(--affine-text-disable-color);
+    color: var(--yunke-text-disable-color);
     border-radius: 4px;
     padding: 6px 8px 6px 4px;
     cursor: pointer;
@@ -68,7 +68,7 @@ const styles = css`
   }
 
   .add-property:hover {
-    background-color: var(--affine-hover-color);
+    background-color: var(--yunke-hover-color);
   }
 
   .add-property .icon {
@@ -77,7 +77,7 @@ const styles = css`
   }
 
   .add-property .icon svg {
-    fill: var(--affine-icon-color);
+    fill: var(--yunke-icon-color);
     width: 20px;
     height: 20px;
   }
@@ -90,11 +90,11 @@ const styles = css`
     border-radius: 4px;
     cursor: pointer;
     font-size: 22px;
-    color: var(--affine-icon-color);
+    color: var(--yunke-icon-color);
   }
 
   .switch-row:hover {
-    background-color: var(--affine-hover-color);
+    background-color: var(--yunke-hover-color);
   }
 
   .switch-row.disable {
@@ -182,7 +182,7 @@ export class RecordDetail extends SignalWatcher(
       this.selection.selection = undefined;
     });
     //FIXME: simulate as a widget
-    this.dataset.widgetId = 'affine-detail-widget';
+    this.dataset.widgetId = 'yunke-detail-widget';
   }
 
   row$ = computed(() => {
@@ -238,7 +238,7 @@ export class RecordDetail extends SignalWatcher(
       </div>
       <div style="flex:1;overflow-y: auto;overflow-x: hidden">
         <div
-          style="width: 100%;max-width: var(--affine-editor-width);display: flex;flex-direction: column;margin: 0 auto;box-sizing: border-box;"
+          style="width: 100%;max-width: var(--yunke-editor-width);display: flex;flex-direction: column;margin: 0 auto;box-sizing: border-box;"
         >
           ${keyed(this.rowId, this.renderHeader())}
           ${repeat(
@@ -247,12 +247,12 @@ export class RecordDetail extends SignalWatcher(
             property => {
               return keyed(
                 this.rowId,
-                html` <affine-data-view-record-field
+                html` <yunke-data-view-record-field
                   .view="${this.view}"
                   .column="${property}"
                   .rowId="${this.rowId}"
                   data-column-id="${property.id}"
-                ></affine-data-view-record-field>`
+                ></yunke-data-view-record-field>`
               );
             }
           )}
@@ -286,7 +286,7 @@ export class RecordDetail extends SignalWatcher(
 
 declare global {
   interface HTMLElementTagNameMap {
-    'affine-data-view-record-detail': RecordDetail;
+    'yunke-data-view-record-detail': RecordDetail;
   }
 }
 export const createRecordDetail = (ops: {
@@ -295,11 +295,11 @@ export const createRecordDetail = (ops: {
   detail: DetailSlots;
   openDoc: (docId: string) => void;
 }) => {
-  return html` <affine-data-view-record-detail
+  return html` <yunke-data-view-record-detail
     .view=${ops.view}
     .rowId=${ops.rowId}
     .detailSlots=${ops.detail}
     .openDoc=${ops.openDoc}
     class="data-view-popup-container"
-  ></affine-data-view-record-detail>`;
+  ></yunke-data-view-record-detail>`;
 };

@@ -1,8 +1,8 @@
 import type { ConfirmModalProps, ElementOrFactory } from '@yunke/component';
 import {
-  AffinePageReference,
-  AffineSharedPageReference,
-} from '@yunke/core/components/affine/reference-link';
+  YunkePageReference,
+  YunkeSharedPageReference,
+} from '@yunke/core/components/yunke/reference-link';
 import { DocService, DocsService } from '@yunke/core/modules/doc';
 import { EditorService } from '@yunke/core/modules/editor';
 import { toDocSearchParams } from '@yunke/core/modules/navigation';
@@ -46,10 +46,10 @@ const optionsSchema = z.object({
   }),
 });
 
-export type AffineEditorViewOptions = z.infer<typeof optionsSchema>;
+export type YunkeEditorViewOptions = z.infer<typeof optionsSchema>;
 
-export class AffineEditorViewExtension extends ViewExtensionProvider<AffineEditorViewOptions> {
-  override name = 'affine-editor-view';
+export class YunkeEditorViewExtension extends ViewExtensionProvider<YunkeEditorViewOptions> {
+  override name = 'yunke-editor-view';
 
   override schema = optionsSchema;
 
@@ -70,7 +70,7 @@ export class AffineEditorViewExtension extends ViewExtensionProvider<AffineEdito
 
       if (workspaceService.workspace.openOptions.isSharedMode) {
         return (
-          <AffineSharedPageReference
+          <YunkeSharedPageReference
             docCollection={workspaceService.workspace.docCollection}
             pageId={pageId}
             params={params}
@@ -80,14 +80,14 @@ export class AffineEditorViewExtension extends ViewExtensionProvider<AffineEdito
       }
 
       return (
-        <AffinePageReference pageId={pageId} params={params} title={title} />
+        <YunkePageReference pageId={pageId} params={params} title={title} />
       );
     };
   };
 
   override setup(
     context: ViewExtensionContext,
-    options?: AffineEditorViewOptions
+    options?: YunkeEditorViewOptions
   ) {
     super.setup(context, options);
     if (!options) {

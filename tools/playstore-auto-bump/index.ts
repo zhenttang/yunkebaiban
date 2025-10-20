@@ -64,7 +64,7 @@ let gradleVersionCode = 0;
 const gradleFile = fs.readFileSync(gradlePath, 'utf8');
 const matched = gradleFile.match(versionCodeRegexPattern);
 
-const remoteVersion = await fetchVersionCode('app.affine.pro');
+const remoteVersion = await fetchVersionCode('app.yunke.pro');
 
 gradleVersionCode = parseInt(matched?.[2] || '0');
 gradleVersionCode = isNaN(gradleVersionCode) ? 0 : gradleVersionCode;

@@ -16,8 +16,8 @@ export const TagDesc = ({ input }: { input: string }) => {
   const t = useI18n();
 
   return input
-    ? t['com.affine.m.explorer.tag.new-tip-not-empty']({ value: input })
-    : t['com.affine.m.explorer.tag.new-tip-empty']();
+    ? t['com.yunke.m.explorer.tag.new-tip-not-empty']({ value: input })
+    : t['com.yunke.m.explorer.tag.new-tip-empty']();
 };
 
 export const NavigationPanelTags = () => {
@@ -44,7 +44,7 @@ export const NavigationPanelTags = () => {
   return (
     <CollapsibleSection
       name="tags"
-      title={t['com.affine.rootAppSidebar.tags']()}
+      title={t['com.yunke.rootAppSidebar.tags']()}
     >
       <NavigationPanelTreeRoot>
         {tags.map(tag => (
@@ -55,7 +55,7 @@ export const NavigationPanelTags = () => {
           data-testid="navigation-panel-add-tag-button"
           onClick={() => setShowNewTagDialog(true)}
           label={t[
-            'com.affine.rootAppSidebar.explorer.tag-section-add-tooltip'
+            'com.yunke.rootAppSidebar.explorer.tag-section-add-tooltip'
           ]()}
         />
         <TagRenameDialog

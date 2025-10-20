@@ -7,8 +7,8 @@ import { property, query } from 'lit/decorators.js';
 import throttle from 'lodash-es/throttle';
 
 import type {
-  AffineAIPanelState,
-  AffineAIPanelWidgetConfig,
+  YunkeAIPanelState,
+  YunkeAIPanelWidgetConfig,
 } from '../widgets/ai-panel/type';
 import type { TextRendererOptions } from './text-renderer';
 
@@ -86,7 +86,7 @@ export class AIScrollableTextRenderer extends WithDisposable(
   accessor host: EditorHost | null = null;
 
   @property({ attribute: false })
-  accessor state: AffineAIPanelState | undefined = undefined;
+  accessor state: YunkeAIPanelState | undefined = undefined;
 
   @property({ attribute: false })
   accessor textRendererOptions!: TextRendererOptions;
@@ -106,7 +106,7 @@ export const createAIScrollableTextRenderer: (
   textRendererOptions: TextRendererOptions,
   maxHeight: number,
   autoScroll: boolean
-) => AffineAIPanelWidgetConfig['answerRenderer'] = (
+) => YunkeAIPanelWidgetConfig['answerRenderer'] = (
   host,
   textRendererOptions,
   maxHeight,

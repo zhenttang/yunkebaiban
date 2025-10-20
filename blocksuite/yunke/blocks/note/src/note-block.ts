@@ -4,11 +4,11 @@ import { css, html } from 'lit';
 
 export class NoteBlockComponent extends BlockComponent<NoteBlockModel> {
   static override styles = css`
-    .affine-note-block-container {
+    .yunke-note-block-container {
       display: flow-root;
     }
-    .affine-note-block-container.selected {
-      background-color: var(--affine-hover-color);
+    .yunke-note-block-container.selected {
+      background-color: var(--yunke-hover-color);
     }
   `;
 
@@ -18,8 +18,8 @@ export class NoteBlockComponent extends BlockComponent<NoteBlockModel> {
 
   override renderBlock() {
     return html`
-      <div class="affine-note-block-container">
-        <div class="affine-block-children-container">
+      <div class="yunke-note-block-container">
+        <div class="yunke-block-children-container">
           ${this.renderChildren(this.model)}
         </div>
       </div>
@@ -29,6 +29,6 @@ export class NoteBlockComponent extends BlockComponent<NoteBlockModel> {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'affine-note': NoteBlockComponent;
+    'yunke-note': NoteBlockComponent;
   }
 }

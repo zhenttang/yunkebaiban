@@ -60,7 +60,7 @@ export const indentBlock: Command<{
     store.moveBlocks([model], previousSibling);
   }
 
-  // update collapsed state of affine list
+  // update collapsed state of yunke list
   if (
     matchModels(previousSibling, [ListBlockModel]) &&
     previousSibling.props.collapsed

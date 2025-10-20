@@ -52,7 +52,7 @@ export class EdgelessRootBlockComponent extends BlockComponent<
   EdgelessRootService
 > {
   static override styles = css`
-    affine-edgeless-root {
+    yunke-edgeless-root {
       -webkit-user-select: none;
       user-select: none;
       display: block;
@@ -76,15 +76,15 @@ export class EdgelessRootBlockComponent extends BlockComponent<
 
     .edgeless-background {
       height: 100%;
-      background-color: var(--affine-background-primary-color);
+      background-color: var(--yunke-background-primary-color);
       background-image: radial-gradient(
-        var(--affine-edgeless-grid-color) 1px,
-        var(--affine-background-primary-color) 1px
+        var(--yunke-edgeless-grid-color) 1px,
+        var(--yunke-background-primary-color) 1px
       );
     }
 
     .edgeless-container {
-      color: var(--affine-text-primary-color);
+      color: var(--yunke-text-primary-color);
       position: relative;
     }
 
@@ -545,6 +545,6 @@ export class EdgelessRootBlockComponent extends BlockComponent<
   @query('.edgeless-mount-point')
   accessor mountElm: HTMLDivElement | null = null;
 
-  @query('affine-surface')
+  @query('yunke-surface')
   accessor surface!: SurfaceBlockComponent;
 }

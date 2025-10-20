@@ -15,7 +15,7 @@ import {
   type Transformer,
 } from '@blocksuite/store';
 
-import type { AffineTextAttributes } from '../types';
+import type { YunkeTextAttributes } from '../types';
 import { AdapterFactoryIdentifier } from './types/adapter';
 
 type NotionEditingStyle = {
@@ -93,7 +93,7 @@ export class NotionTextAdapter extends BaseAdapter<NotionText> {
   ): SliceSnapshot | null {
     const notionText = JSON.parse(payload.file) as NotionTextSerialized;
     const content: SliceSnapshot['content'] = [];
-    const deltas: DeltaInsert<AffineTextAttributes>[] = [];
+    const deltas: DeltaInsert<YunkeTextAttributes>[] = [];
 
     // Check if the notionText.editing is an array
     if (!Array.isArray(notionText.editing)) {
@@ -101,7 +101,7 @@ export class NotionTextAdapter extends BaseAdapter<NotionText> {
     }
 
     for (const editing of notionText.editing) {
-      const delta: DeltaInsert<AffineTextAttributes> = {
+      const delta: DeltaInsert<YunkeTextAttributes> = {
         insert: editing[0],
       };
 

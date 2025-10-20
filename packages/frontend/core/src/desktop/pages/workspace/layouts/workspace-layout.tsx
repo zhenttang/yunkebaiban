@@ -1,5 +1,5 @@
 import { uniReactRoot } from '@yunke/component';
-import { AiLoginRequiredModal } from '@yunke/core/components/affine/auth/ai-login-required';
+import { AiLoginRequiredModal } from '@yunke/core/components/yunke/auth/ai-login-required';
 import { useResponsiveSidebar } from '@yunke/core/components/hooks/use-responsive-siedebar';
 import { SWRConfigProvider } from '@yunke/core/components/providers/swr-config-provider';
 import { WorkspaceSideEffects } from '@yunke/core/components/providers/workspace-side-effects';

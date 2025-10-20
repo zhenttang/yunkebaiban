@@ -13,7 +13,7 @@ export const ThemeSetting = () => {
   const { setTheme, theme } = useTheme();
 
   return (
-    <RowLayout label={t['com.affine.mobile.setting.appearance.theme']()}>
+    <RowLayout label={t['com.yunke.mobile.setting.appearance.theme']()}>
       <SettingDropdownSelect
         options={options}
         value={theme}

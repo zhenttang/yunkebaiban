@@ -42,7 +42,7 @@ export const DocIntegrationPropertiesTable = ({
   return (
     <>
       <PropertyCollapsibleSection
-        title={t['com.affine.integration.properties']()}
+        title={t['com.yunke.integration.properties']()}
       >
         <PropertyCollapsibleContent>
           {properties.map(property => {

@@ -28,7 +28,7 @@ extension MessageListView {
       .eraseToAnyPublisher()
 
     // after so, limit the refresh rate so we can handle them better
-    let updateQueue = DispatchQueue(label: "affine.message-list-update-queue", qos: .userInteractive)
+    let updateQueue = DispatchQueue(label: "yunke.message-list-update-queue", qos: .userInteractive)
     let inQueuePublisher = publisher
       .throttle(for: .seconds(1 / 5), scheduler: updateQueue, latest: true)
       .eraseToAnyPublisher()

@@ -6,7 +6,7 @@ import { repeat } from 'lit/directives/repeat.js';
 
 export class PreviewRootBlockComponent extends BlockComponent {
   static override styles = css`
-    affine-preview-root {
+    yunke-preview-root {
       display: block;
     }
   `;
@@ -36,6 +36,6 @@ export class PreviewRootBlockComponent extends BlockComponent {
       return !(isNote && displayOnEdgeless);
     });
 
-    return html`<div class="affine-preview-root">${children} ${widgets}</div>`;
+    return html`<div class="yunke-preview-root">${children} ${widgets}</div>`;
   }
 }

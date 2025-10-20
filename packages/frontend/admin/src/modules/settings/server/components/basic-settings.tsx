@@ -50,7 +50,7 @@ export function BasicSettings({ config, onSave, saving }: BasicSettingsProps) {
   const form = useForm<ServerConfigForm>({
     resolver: zodResolver(serverConfigSchema),
     defaultValues: {
-      serverName: config.serverName || 'AFFiNE',
+      serverName: config.serverName || 'YUNKE',
       externalUrl: config.externalUrl || '',
       maxUploadSize: config.maxUploadSize || 100,
       sessionTimeout: config.sessionTimeout || 1440,

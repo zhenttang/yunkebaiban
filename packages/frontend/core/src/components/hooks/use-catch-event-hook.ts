@@ -1,6 +1,6 @@
 import { type DependencyList, type SyntheticEvent } from 'react';
 
-import { useAsyncCallback } from './affine-async-hooks';
+import { useAsyncCallback } from './yunke-async-hooks';
 
 export const useCatchEventCallback = <
   E extends SyntheticEvent,

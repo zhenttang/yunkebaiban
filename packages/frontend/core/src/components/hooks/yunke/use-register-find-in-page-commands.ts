@@ -1,6 +1,6 @@
 import {
   PreconditionStrategy,
-  registerAffineCommand,
+  registerYunkeCommand,
 } from '@yunke/core/commands';
 import { FindInPageService } from '@yunke/core/modules/find-in-page/services/find-in-page';
 import { track } from '@yunke/track';
@@ -23,9 +23,9 @@ export function useRegisterFindInPageCommands() {
     }
     const unsubs: Array<() => void> = [];
     unsubs.push(
-      registerAffineCommand({
+      registerYunkeCommand({
         preconditionStrategy: PreconditionStrategy.Never,
-        id: `affine:find-in-page`,
+        id: `yunke:find-in-page`,
         keyBinding: {
           binding: '$mod+f',
         },

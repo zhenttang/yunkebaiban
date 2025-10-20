@@ -7,7 +7,7 @@ import { edgelessToolbarWidget } from './edgeless-toolbar';
 import { effects } from './effects';
 
 export class EdgelessToolbarViewExtension extends ViewExtensionProvider {
-  override name = 'affine-edgeless-toolbar-widget';
+  override name = 'yunke-edgeless-toolbar-widget';
 
   override effect() {
     super.effect();

@@ -21,7 +21,7 @@ public class RotatedImagePreview: UIView {
     clipsToBounds = false
 
     heightAnchor.constraint(equalToConstant: 300).isActive = true
-    imageView.transform = CGAffineTransform(rotationAngle: rotationDegree * CGFloat.pi / 180)
+    imageView.transform = CGYunkeTransform(rotationAngle: rotationDegree * CGFloat.pi / 180)
   }
 
   @available(*, unavailable)

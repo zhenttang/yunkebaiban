@@ -82,10 +82,10 @@ export class EdgelessLinkToolButton extends QuickToolMixin(LitElement) {
   override render() {
     return html`<edgeless-tool-icon-button
       .iconContainerPadding="${6}"
-      .tooltip="${html`<affine-tooltip-content-with-shortcut
+      .tooltip="${html`<yunke-tooltip-content-with-shortcut
         data-tip="${'链接'}"
         data-shortcut="${'@'}"
-      ></affine-tooltip-content-with-shortcut>`}"
+      ></yunke-tooltip-content-with-shortcut>`}"
       .tooltipOffset=${17}
       class="edgeless-link-tool-button"
       @click=${this._onClick}

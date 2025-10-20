@@ -4,7 +4,7 @@ import {
   AuthHeader,
   AuthInput,
 } from '@yunke/component/auth-components';
-import { useAsyncCallback } from '@yunke/core/components/hooks/affine-async-hooks';
+import { useAsyncCallback } from '@yunke/core/components/hooks/yunke-async-hooks';
 import {
   AuthService,
   DefaultServerService,
@@ -66,13 +66,13 @@ export const VerifyEmailDialog = ({
       await server.fetch(path, { method: 'POST' });
 
       notify.success({
-        title: t['com.affine.auth.send.verify.email.hint'](),
+        title: t['com.yunke.auth.send.verify.email.hint'](),
       });
       setHasSentEmail(true);
     } catch (err) {
       console.error(err);
       notify.error({
-        title: t['com.affine.auth.sent.change.email.fail'](),
+        title: t['com.yunke.auth.sent.change.email.fail'](),
       });
     } finally {
       setLoading(false);
@@ -97,12 +97,12 @@ export const VerifyEmailDialog = ({
     >
       <AuthHeader
         title={serverName}
-        subTitle={t['com.affine.settings.email.action.change']()}
+        subTitle={t['com.yunke.settings.email.action.change']()}
       />
       <AuthContent>
-        <p>{t['com.affine.auth.verify.email.message']({ email })}</p>
+        <p>{t['com.yunke.auth.verify.email.message']({ email })}</p>
         <AuthInput
-          label={t['com.affine.settings.email']()}
+          label={t['com.yunke.settings.email']()}
           disabled={true}
           value={email}
         />
@@ -115,8 +115,8 @@ export const VerifyEmailDialog = ({
           onClick={onSendEmail}
         >
           {hasSentEmail
-            ? t['com.affine.auth.sent']()
-            : t['com.affine.auth.send.verify.email.hint']()}
+            ? t['com.yunke.auth.sent']()
+            : t['com.yunke.auth.send.verify.email.hint']()}
         </Button>
       </AuthContent>
     </Modal>

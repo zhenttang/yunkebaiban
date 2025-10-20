@@ -15,7 +15,7 @@ import { mindMapSeniorTool } from './toolbar/senior-tool';
 import { MindMapInteraction, MindMapView } from './view/view';
 
 export class MindmapViewExtension extends ViewExtensionProvider {
-  override name = 'affine-mindmap-gfx';
+  override name = 'yunke-mindmap-gfx';
 
   override effect(): void {
     super.effect();

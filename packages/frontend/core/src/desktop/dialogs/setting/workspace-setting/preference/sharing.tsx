@@ -3,7 +3,7 @@ import {
   SettingRow,
   SettingWrapper,
 } from '@yunke/component/setting-components';
-import { useAsyncCallback } from '@yunke/core/components/hooks/affine-async-hooks';
+import { useAsyncCallback } from '@yunke/core/components/hooks/yunke-async-hooks';
 import { WorkspacePermissionService } from '@yunke/core/modules/permissions';
 import { WorkspaceShareSettingService } from '@yunke/core/modules/share-setting';
 import { WorkspaceService } from '@yunke/core/modules/workspace';
@@ -38,11 +38,11 @@ export const Sharing = () => {
   }
 
   return (
-    <SettingWrapper title={t['com.affine.settings.workspace.sharing.title']()}>
+    <SettingWrapper title={t['com.yunke.settings.workspace.sharing.title']()}>
       <SettingRow
-        name={t['com.affine.settings.workspace.sharing.url-preview.title']()}
+        name={t['com.yunke.settings.workspace.sharing.url-preview.title']()}
         desc={t[
-          'com.affine.settings.workspace.sharing.url-preview.description'
+          'com.yunke.settings.workspace.sharing.url-preview.description'
         ]()}
       >
         <Switch

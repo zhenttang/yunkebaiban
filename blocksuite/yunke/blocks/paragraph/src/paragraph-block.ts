@@ -49,7 +49,7 @@ export class ParagraphBlockComponent extends CaptionedBlockComponent<ParagraphBl
   private readonly _isInDatabase = () => {
     let parent = this.parentElement;
     while (parent && parent !== document.body) {
-      if (parent.tagName.toLowerCase() === 'affine-database') {
+      if (parent.tagName.toLowerCase() === 'yunke-database') {
         return true;
       }
       parent = parent.parentElement;
@@ -82,7 +82,7 @@ export class ParagraphBlockComponent extends CaptionedBlockComponent<ParagraphBl
   get inEdgelessText() {
     return (
       this.topContenteditableElement?.tagName.toLowerCase() ===
-      'affine-edgeless-text'
+      'yunke-edgeless-text'
     );
   }
 
@@ -236,7 +236,7 @@ export class ParagraphBlockComponent extends CaptionedBlockComponent<ParagraphBl
     }
 
     const children = html`<div
-      class="affine-block-children-container"
+      class="yunke-block-children-container"
       style=${styleMap({
         paddingLeft: `${BLOCK_CHILDREN_CONTAINER_PADDING_LEFT}px`,
         display: collapsed ? 'none' : undefined,
@@ -248,28 +248,28 @@ export class ParagraphBlockComponent extends CaptionedBlockComponent<ParagraphBl
     return html`
       ${style}
       <style>
-        .affine-paragraph-block-container[data-has-collapsed-siblings='false']
-          affine-paragraph-heading-icon
+        .yunke-paragraph-block-container[data-has-collapsed-siblings='false']
+          yunke-paragraph-heading-icon
           .heading-icon {
           transform: translateX(-48px);
         }
       </style>
       <div
-        class="affine-paragraph-block-container"
+        class="yunke-paragraph-block-container"
         data-has-collapsed-siblings="${collapsedSiblings.length > 0}"
       >
         <div
           class=${classMap({
-            'affine-paragraph-rich-text-wrapper': true,
+            'yunke-paragraph-rich-text-wrapper': true,
             [type$.value]: true,
             [TOGGLE_BUTTON_PARENT_CLASS]: true,
           })}
         >
           ${this.model.props.type$.value.startsWith('h')
             ? html`
-                <affine-paragraph-heading-icon
+                <yunke-paragraph-heading-icon
                   .model=${this.model}
-                ></affine-paragraph-heading-icon>
+                ></yunke-paragraph-heading-icon>
               `
             : nothing}
           ${this.model.props.type$.value.startsWith('h') &&
@@ -311,7 +311,7 @@ export class ParagraphBlockComponent extends CaptionedBlockComponent<ParagraphBl
                 <div
                   contenteditable="false"
                   class=${classMap({
-                    'affine-paragraph-placeholder': true,
+                    'yunke-paragraph-placeholder': true,
                     visible: this._displayPlaceholder.value,
                   })}
                 >
@@ -332,7 +332,7 @@ export class ParagraphBlockComponent extends CaptionedBlockComponent<ParagraphBl
   private accessor _richTextElement: RichText | null = null;
 
   override accessor blockContainerStyles = {
-    margin: 'var(--affine-paragraph-margin, 10px 0)',
+    margin: 'var(--yunke-paragraph-margin, 10px 0)',
     minHeight: '1em',
     height: 'auto',
   };

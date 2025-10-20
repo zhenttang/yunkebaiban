@@ -1,6 +1,6 @@
 import { useDraggable } from '@yunke/component';
-import { useAsyncCallback } from '@yunke/core/components/hooks/affine-async-hooks';
-import type { AffineDNDData, AffineDNDEntity } from '@yunke/core/types/dnd';
+import { useAsyncCallback } from '@yunke/core/components/hooks/yunke-async-hooks';
+import type { YunkeDNDData, YunkeDNDEntity } from '@yunke/core/types/dnd';
 import { inferOpenMode as inferOpenAt } from '@yunke/core/utils';
 import { useLiveData, useServices } from '@toeverything/infra';
 import { type To } from 'history';
@@ -20,7 +20,7 @@ export type WorkbenchLinkProps = React.PropsWithChildren<
 function resolveToEntity(
   to: To,
   basename: string
-): AffineDNDEntity | undefined {
+): YunkeDNDEntity | undefined {
   const link =
     basename +
     (typeof to === 'string' ? to : `${to.pathname}${to.search}${to.hash}`);
@@ -73,7 +73,7 @@ export const WorkbenchLink = forwardRef<HTMLAnchorElement, WorkbenchLinkProps>(
       [onClick, replaceHistory, to, workbench]
     );
 
-    const { dragRef } = useDraggable<AffineDNDData>(() => {
+    const { dragRef } = useDraggable<YunkeDNDData>(() => {
       return {
         data: {
           entity: resolveToEntity(to, basename),

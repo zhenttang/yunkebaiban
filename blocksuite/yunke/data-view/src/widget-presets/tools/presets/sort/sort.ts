@@ -17,7 +17,7 @@ import {
 import { popSortRoot } from '../../../quick-setting-bar/sort/root-panel.js';
 
 const styles = css`
-  .affine-database-sort-button {
+  .yunke-database-sort-button {
     display: flex;
     align-items: center;
     gap: 6px;
@@ -28,12 +28,12 @@ const styles = css`
     font-size: 20px;
   }
 
-  .affine-database-sort-button:hover,
-  .affine-database-sort-button.active {
-    background-color: var(--affine-hover-color);
+  .yunke-database-sort-button:hover,
+  .yunke-database-sort-button.active {
+    background-color: var(--yunke-hover-color);
   }
 
-  .affine-database-sort-button {
+  .yunke-database-sort-button {
   }
 `;
 
@@ -73,7 +73,7 @@ export class DataViewHeaderToolsSort extends WidgetBase {
           this.toggleShowQuickSettingBar(true);
           requestAnimationFrame(() => {
             const ele = this.closest(
-              'affine-data-view-renderer'
+              'yunke-data-view-renderer'
             )?.querySelector('.data-view-sort-button');
             if (ele) {
               popSortRoot(popupTargetFromElement(ele as HTMLElement), {
@@ -102,7 +102,7 @@ export class DataViewHeaderToolsSort extends WidgetBase {
     return html` <div
       @click="${this.clickSort}"
       style="${style}"
-      class="affine-database-sort-button"
+      class="yunke-database-sort-button"
     >
       ${SortIcon()}
     </div>`;

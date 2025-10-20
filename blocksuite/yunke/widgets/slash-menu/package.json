@@ -1,6 +1,6 @@
 {
   "name": "@blocksuite/yunke-widget-slash-menu",
-  "description": "Affine slash menu widget.",
+  "description": "Yunke slash menu widget.",
   "type": "module",
   "scripts": {
     "build": "tsc"

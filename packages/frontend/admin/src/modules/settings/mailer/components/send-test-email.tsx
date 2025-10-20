@@ -53,8 +53,8 @@ export function SendTestEmail() {
     resolver: zodResolver(testEmailSchema),
     defaultValues: {
       toEmail: '',
-      subject: 'AFFiNE 测试邮件',
-      content: '这是一封来自 AFFiNE 的测试邮件，发送时间：' + new Date().toLocaleString(),
+      subject: 'YUNKE 测试邮件',
+      content: '这是一封来自 YUNKE 的测试邮件，发送时间：' + new Date().toLocaleString(),
       useCurrentConfig: true,
       templateId: '',
     },
@@ -96,7 +96,7 @@ export function SendTestEmail() {
   };
 
   const fillExampleContent = () => {
-    form.setValue('subject', 'AFFiNE 邮件服务链路测试');
+    form.setValue('subject', 'YUNKE 邮件服务链路测试');
     form.setValue(
       'content',
       `<!DOCTYPE html>
@@ -110,9 +110,9 @@ export function SendTestEmail() {
   </style>
 </head>
 <body>
-  <h2 style="color:#6366f1;">AFFiNE 邮件服务测试</h2>
+  <h2 style="color:#6366f1;">YUNKE 邮件服务测试</h2>
   <p>您好，</p>
-  <p>这是一封来自 <strong>AFFiNE 管理后台</strong> 的测试邮件，发送时间：${new Date().toLocaleString()}。</p>
+  <p>这是一封来自 <strong>YUNKE 管理后台</strong> 的测试邮件，发送时间：${new Date().toLocaleString()}。</p>
   <div class="card">
     <p><strong>当前配置验证通过</strong></p>
     <ul>
@@ -233,7 +233,7 @@ export function SendTestEmail() {
 
               <div className="space-y-2">
                 <Label htmlFor="subject">邮件主题</Label>
-                <Input id="subject" placeholder="AFFiNE 测试邮件" {...form.register('subject')} />
+                <Input id="subject" placeholder="YUNKE 测试邮件" {...form.register('subject')} />
                 {form.formState.errors.subject && (
                   <p className="text-xs text-red-500">{form.formState.errors.subject.message}</p>
                 )}

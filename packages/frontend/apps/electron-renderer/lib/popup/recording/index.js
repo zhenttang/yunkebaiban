@@ -1,6 +1,6 @@
 import { jsx as _jsx, Fragment as _Fragment, jsxs as _jsxs } from "react/jsx-runtime";
 import { Button } from '@yunke/component';
-import { useAsyncCallback } from '@yunke/core/components/hooks/affine-async-hooks';
+import { useAsyncCallback } from '@yunke/core/components/hooks/yunke-async-hooks';
 import { appIconMap } from '@yunke/core/utils';
 import { createStreamEncoder, encodeRawBufferToOpus, } from '@yunke/core/utils/opus-encoding';
 import { apis, events } from '@yunke/electron-api';
@@ -33,24 +33,24 @@ export function Recording() {
             return null;
         }
         if (status.status === 'new') {
-            return t['com.affine.recording.new']();
+            return t['com.yunke.recording.new']();
         }
         else if (status.status === 'create-block-success') {
-            return t['com.affine.recording.success.prompt']();
+            return t['com.yunke.recording.success.prompt']();
         }
         else if (status.status === 'create-block-failed') {
-            return t['com.affine.recording.failed.prompt']();
+            return t['com.yunke.recording.failed.prompt']();
         }
         else if (status.status === 'recording' ||
             status.status === 'ready' ||
             status.status === 'stopped') {
             if (status.appName) {
-                return t['com.affine.recording.recording']({
+                return t['com.yunke.recording.recording']({
                     appName: status.appName,
                 });
             }
             else {
-                return t['com.affine.recording.recording.unnamed']();
+                return t['com.yunke.recording.recording.unnamed']();
             }
         }
         return null;
@@ -179,19 +179,19 @@ export function Recording() {
             return null;
         }
         if (status.status === 'new') {
-            return (_jsxs(_Fragment, { children: [_jsx(Button, { variant: "plain", onClick: handleDismiss, children: t['com.affine.recording.dismiss']() }), _jsx(Button, { onClick: handleStartRecording, variant: "primary", prefix: _jsx("div", { className: styles.recordingIcon }), children: t['com.affine.recording.start']() })] }));
+            return (_jsxs(_Fragment, { children: [_jsx(Button, { variant: "plain", onClick: handleDismiss, children: t['com.yunke.recording.dismiss']() }), _jsx(Button, { onClick: handleStartRecording, variant: "primary", prefix: _jsx("div", { className: styles.recordingIcon }), children: t['com.yunke.recording.start']() })] }));
         }
         else if (status.status === 'recording') {
-            return (_jsx(Button, { variant: "error", onClick: handleStopRecording, children: t['com.affine.recording.stop']() }));
+            return (_jsx(Button, { variant: "error", onClick: handleStopRecording, children: t['com.yunke.recording.stop']() }));
         }
         else if (status.status === 'stopped' || status.status === 'ready') {
             return (_jsx(Button, { variant: "error", onClick: handleDismiss, loading: true, disabled: true }));
         }
         else if (status.status === 'create-block-success') {
-            return (_jsx(Button, { variant: "primary", onClick: handleDismiss, children: t['com.affine.recording.success.button']() }));
+            return (_jsx(Button, { variant: "primary", onClick: handleDismiss, children: t['com.yunke.recording.success.button']() }));
         }
         else if (status.status === 'create-block-failed') {
-            return (_jsxs(_Fragment, { children: [_jsx(Button, { variant: "plain", onClick: handleDismiss, children: t['com.affine.recording.dismiss']() }), _jsx(Button, { variant: "error", onClick: handleOpenFile, children: t['com.affine.recording.failed.button']() })] }));
+            return (_jsxs(_Fragment, { children: [_jsx(Button, { variant: "plain", onClick: handleDismiss, children: t['com.yunke.recording.dismiss']() }), _jsx(Button, { variant: "error", onClick: handleOpenFile, children: t['com.yunke.recording.failed.button']() })] }));
         }
         return null;
     }, [
@@ -205,6 +205,6 @@ export function Recording() {
     if (!status) {
         return null;
     }
-    return (_jsxs("div", { className: styles.root, children: [_jsx("img", { className: styles.affineIcon, src: appIcon, alt: "AFFiNE\u56FE\u6807" }), _jsx("div", { className: styles.text, children: textElement }), _jsx("div", { className: styles.controls, children: controlsElement })] }));
+    return (_jsxs("div", { className: styles.root, children: [_jsx("img", { className: styles.yunkeIcon, src: appIcon, alt: "YUNKE\u56FE\u6807" }), _jsx("div", { className: styles.text, children: textElement }), _jsx("div", { className: styles.controls, children: controlsElement })] }));
 }
 //# sourceMappingURL=index.js.map

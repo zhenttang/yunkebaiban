@@ -10,7 +10,7 @@ import {
 import { groupRelationWatcherExtension } from './group-watcher';
 
 export class GroupStoreExtension extends StoreExtensionProvider {
-  override name = 'affine-group-gfx';
+  override name = 'yunke-group-gfx';
 
   override setup(context: StoreExtensionContext) {
     super.setup(context);

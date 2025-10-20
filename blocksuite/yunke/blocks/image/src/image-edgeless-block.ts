@@ -29,11 +29,11 @@ import {
 @Peekable()
 export class ImageEdgelessBlockComponent extends GfxBlockComponent<ImageBlockModel> {
   static override styles = css`
-    affine-edgeless-image {
+    yunke-edgeless-image {
       position: relative;
     }
 
-    affine-edgeless-image .loading {
+    yunke-edgeless-image .loading {
       display: flex;
       align-items: center;
       justify-content: center;
@@ -54,14 +54,14 @@ export class ImageEdgelessBlockComponent extends GfxBlockComponent<ImageBlockMod
       }
     }
 
-    affine-edgeless-image .affine-image-status {
+    yunke-edgeless-image .yunke-image-status {
       position: absolute;
       left: 18px;
       bottom: 18px;
     }
 
-    affine-edgeless-image .resizable-img,
-    affine-edgeless-image .resizable-img img {
+    yunke-edgeless-image .resizable-img,
+    yunke-edgeless-image .resizable-img img {
       width: 100%;
       height: 100%;
       pointer-events: none; /* 禁用图片的所有鼠标事件 */
@@ -69,12 +69,12 @@ export class ImageEdgelessBlockComponent extends GfxBlockComponent<ImageBlockMod
       -webkit-user-drag: none; /* 禁止拖拽 */
     }
 
-    affine-edgeless-image.crop-mode .resizable-img,
-    affine-edgeless-image.crop-mode .resizable-img img {
+    yunke-edgeless-image.crop-mode .resizable-img,
+    yunke-edgeless-image.crop-mode .resizable-img img {
       pointer-events: none !important; /* 在剪裁模式下强制禁用 */
     }
 
-    affine-edgeless-image .crop-overlay {
+    yunke-edgeless-image .crop-overlay {
       position: absolute;
       top: 0;
       left: 0;
@@ -84,37 +84,37 @@ export class ImageEdgelessBlockComponent extends GfxBlockComponent<ImageBlockMod
       z-index: 10;
     }
 
-    affine-edgeless-image.crop-mode .crop-overlay {
+    yunke-edgeless-image.crop-mode .crop-overlay {
       pointer-events: all; /* 在剪裁模式下启用覆盖层事件 */
     }
 
-    affine-edgeless-image .crop-mask {
+    yunke-edgeless-image .crop-mask {
       position: absolute;
       background: rgba(0, 0, 0, 0.5);
       pointer-events: none;
     }
 
-    affine-edgeless-image .crop-mask.top {
+    yunke-edgeless-image .crop-mask.top {
       top: 0;
       left: 0;
       right: 0;
     }
 
-    affine-edgeless-image .crop-mask.bottom {
+    yunke-edgeless-image .crop-mask.bottom {
       left: 0;
       right: 0;
       bottom: 0;
     }
 
-    affine-edgeless-image .crop-mask.left {
+    yunke-edgeless-image .crop-mask.left {
       left: 0;
     }
 
-    affine-edgeless-image .crop-mask.right {
+    yunke-edgeless-image .crop-mask.right {
       right: 0;
     }
 
-    affine-edgeless-image .crop-area {
+    yunke-edgeless-image .crop-area {
       position: absolute;
       border: 2px dashed #00a6fb;
       background: transparent;
@@ -122,11 +122,11 @@ export class ImageEdgelessBlockComponent extends GfxBlockComponent<ImageBlockMod
       cursor: move;
     }
 
-    affine-edgeless-image .crop-area::before {
+    yunke-edgeless-image .crop-area::before {
       content: none; /* 移除之前的虚线边框 */
     }
 
-    affine-edgeless-image .crop-handle {
+    yunke-edgeless-image .crop-handle {
       position: absolute;
       width: 10px;
       height: 10px;
@@ -137,59 +137,59 @@ export class ImageEdgelessBlockComponent extends GfxBlockComponent<ImageBlockMod
       box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
     }
 
-    affine-edgeless-image .crop-handle.nw {
+    yunke-edgeless-image .crop-handle.nw {
       top: -7px;
       left: -7px;
       cursor: nw-resize;
     }
 
-    affine-edgeless-image .crop-handle.ne {
+    yunke-edgeless-image .crop-handle.ne {
       top: -7px;
       right: -7px;
       cursor: ne-resize;
     }
 
-    affine-edgeless-image .crop-handle.sw {
+    yunke-edgeless-image .crop-handle.sw {
       bottom: -7px;
       left: -7px;
       cursor: sw-resize;
     }
 
-    affine-edgeless-image .crop-handle.se {
+    yunke-edgeless-image .crop-handle.se {
       bottom: -7px;
       right: -7px;
       cursor: se-resize;
     }
 
-    affine-edgeless-image .crop-handle.n {
+    yunke-edgeless-image .crop-handle.n {
       top: -7px;
       left: 50%;
       transform: translateX(-50%);
       cursor: n-resize;
     }
 
-    affine-edgeless-image .crop-handle.s {
+    yunke-edgeless-image .crop-handle.s {
       bottom: -7px;
       left: 50%;
       transform: translateX(-50%);
       cursor: s-resize;
     }
 
-    affine-edgeless-image .crop-handle.w {
+    yunke-edgeless-image .crop-handle.w {
       top: 50%;
       left: -7px;
       transform: translateY(-50%);
       cursor: w-resize;
     }
 
-    affine-edgeless-image .crop-handle.e {
+    yunke-edgeless-image .crop-handle.e {
       top: 50%;
       right: -7px;
       transform: translateY(-50%);
       cursor: e-resize;
     }
 
-    affine-edgeless-image .crop-controls {
+    yunke-edgeless-image .crop-controls {
       position: absolute;
       top: -50px;
       right: 0;
@@ -202,7 +202,7 @@ export class ImageEdgelessBlockComponent extends GfxBlockComponent<ImageBlockMod
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
     }
 
-    affine-edgeless-image .crop-button {
+    yunke-edgeless-image .crop-button {
       padding: 6px 16px;
       border: none;
       border-radius: 16px;
@@ -213,39 +213,39 @@ export class ImageEdgelessBlockComponent extends GfxBlockComponent<ImageBlockMod
       white-space: nowrap;
     }
 
-    affine-edgeless-image .crop-save {
+    yunke-edgeless-image .crop-save {
       background: #00a6fb;
       color: white;
     }
 
-    affine-edgeless-image .crop-save:hover {
+    yunke-edgeless-image .crop-save:hover {
       background: #0090e3;
     }
 
-    affine-edgeless-image .crop-cancel {
+    yunke-edgeless-image .crop-cancel {
       background: transparent;
       color: #666;
       border: 1px solid #ddd;
     }
 
-    affine-edgeless-image .crop-cancel:hover {
+    yunke-edgeless-image .crop-cancel:hover {
       background: #f5f5f5;
     }
 
-    affine-edgeless-image.crop-mode {
+    yunke-edgeless-image.crop-mode {
       cursor: crosshair;
     }
 
-    affine-edgeless-image.crop-mode .resizable-img,
-    affine-edgeless-image.crop-mode .resizable-img img {
+    yunke-edgeless-image.crop-mode .resizable-img,
+    yunke-edgeless-image.crop-mode .resizable-img img {
       pointer-events: none !important; /* 在剪裁模式下强制禁用 */
       position: relative; /* 确保图片位置固定 */
       transform: none !important; /* 禁止任何变换 */
     }
 
     /* 在剪裁模式下禁用所有可能的交互 */
-    affine-edgeless-image.crop-mode,
-    affine-edgeless-image.crop-mode *:not(.crop-overlay):not(.crop-overlay *) {
+    yunke-edgeless-image.crop-mode,
+    yunke-edgeless-image.crop-mode *:not(.crop-overlay):not(.crop-overlay *) {
       pointer-events: none !important;
       user-select: none !important;
       -webkit-user-select: none !important;
@@ -258,9 +258,9 @@ export class ImageEdgelessBlockComponent extends GfxBlockComponent<ImageBlockMod
     }
 
     /* 强制禁用拖拽相关样式 */
-    affine-edgeless-image.crop-mode .affine-image-container,
-    affine-edgeless-image.crop-mode .resizable-img,
-    affine-edgeless-image.crop-mode img {
+    yunke-edgeless-image.crop-mode .yunke-image-container,
+    yunke-edgeless-image.crop-mode .resizable-img,
+    yunke-edgeless-image.crop-mode img {
       cursor: default !important;
       pointer-events: none !important;
       transform: none !important;
@@ -268,7 +268,7 @@ export class ImageEdgelessBlockComponent extends GfxBlockComponent<ImageBlockMod
     }
 
     /* 确保剪裁覆盖层在最顶层并可交互 */
-    affine-edgeless-image.crop-mode .crop-overlay {
+    yunke-edgeless-image.crop-mode .crop-overlay {
       pointer-events: all !important;
       z-index: 999999 !important;
     }
@@ -385,7 +385,7 @@ export class ImageEdgelessBlockComponent extends GfxBlockComponent<ImageBlockMod
   }
 
   private _initializeCropArea() {
-    const imgElement = this.querySelector('img') || this.querySelector('.affine-image-container img');
+    const imgElement = this.querySelector('img') || this.querySelector('.yunke-image-container img');
     if (imgElement) {
       const containerRect = this.getBoundingClientRect();
       const imgRect = imgElement.getBoundingClientRect();
@@ -442,7 +442,7 @@ export class ImageEdgelessBlockComponent extends GfxBlockComponent<ImageBlockMod
         
         img.onload = async () => {
           // 获取图片元素和容器元素
-          const imgElement = this.querySelector('img') || this.querySelector('.affine-image-container img');
+          const imgElement = this.querySelector('img') || this.querySelector('.yunke-image-container img');
           if (!imgElement || !ctx) return;
           
           const containerRect = this.getBoundingClientRect();
@@ -764,7 +764,7 @@ export class ImageEdgelessBlockComponent extends GfxBlockComponent<ImageBlockMod
     const startY = e.clientY - containerRect.top;
     
     // 获取图片边界
-    const imgElement = this.querySelector('img') || this.querySelector('.affine-image-container img');
+    const imgElement = this.querySelector('img') || this.querySelector('.yunke-image-container img');
     if (!imgElement) return;
     
     const imgRect = imgElement.getBoundingClientRect();
@@ -816,7 +816,7 @@ export class ImageEdgelessBlockComponent extends GfxBlockComponent<ImageBlockMod
     const startY = e.clientY - containerRect.top;
     
     // 获取图片边界
-    const imgElement = this.querySelector('img') || this.querySelector('.affine-image-container img');
+    const imgElement = this.querySelector('img') || this.querySelector('.yunke-image-container img');
     if (!imgElement) return;
     
     const imgRect = imgElement.getBoundingClientRect();
@@ -910,7 +910,7 @@ export class ImageEdgelessBlockComponent extends GfxBlockComponent<ImageBlockMod
     const startY = e.clientY - containerRect.top;
     
     // 获取图片的实际边界
-    const imgElement = this.querySelector('img') || this.querySelector('.affine-image-container img');
+    const imgElement = this.querySelector('img') || this.querySelector('.yunke-image-container img');
     if (!imgElement) return;
     
     const imgRect = imgElement.getBoundingClientRect();
@@ -1028,7 +1028,7 @@ export class ImageEdgelessBlockComponent extends GfxBlockComponent<ImageBlockMod
     });
 
     // 计算图片区域
-    const imgElement = this.querySelector('img') || this.querySelector('.affine-image-container img');
+    const imgElement = this.querySelector('img') || this.querySelector('.yunke-image-container img');
     let imgBounds = { x: 0, y: 0, width: 0, height: 0 };
     
     if (imgElement) {
@@ -1173,7 +1173,7 @@ export class ImageEdgelessBlockComponent extends GfxBlockComponent<ImageBlockMod
 
     return html`
       <div 
-        class="affine-image-container ${this._cropMode ? 'crop-mode' : ''}" 
+        class="yunke-image-container ${this._cropMode ? 'crop-mode' : ''}" 
         style=${containerStyleMap}
       >
         ${when(
@@ -1193,24 +1193,24 @@ export class ImageEdgelessBlockComponent extends GfxBlockComponent<ImageBlockMod
             ${when(
               Boolean(error && description),
               () =>
-                html`<affine-resource-status
-                  class="affine-image-status"
+                html`<yunke-resource-status
+                  class="yunke-image-status"
                   .message=${description}
                   .needUpload=${needUpload}
                   .action=${() =>
                     needUpload
                       ? this.resourceController.upload()
                       : this.refreshData()}
-                ></affine-resource-status>`
+                ></yunke-resource-status>`
             )}
             ${this._renderCropOverlay()}
           `,
           () =>
-            html`<affine-image-fallback-card
+            html`<yunke-image-fallback-card
               .state=${resovledState}
-            ></affine-image-fallback-card>`
+            ></yunke-image-fallback-card>`
         )}
-        <affine-block-selection .block=${this}></affine-block-selection>
+        <yunke-block-selection .block=${this}></yunke-block-selection>
       </div>
       <block-caption-editor></block-caption-editor>
 
@@ -1241,6 +1241,6 @@ export const ImageEdgelessBlockInteraction = GfxViewInteractionExtension(
 
 declare global {
   interface HTMLElementTagNameMap {
-    'affine-edgeless-image': ImageEdgelessBlockComponent;
+    'yunke-edgeless-image': ImageEdgelessBlockComponent;
   }
 }

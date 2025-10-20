@@ -1,5 +1,5 @@
 import { ResizePanel } from '@yunke/component/resize-panel';
-import { AffineErrorComponent } from '@yunke/core/components/affine/affine-error-boundary/affine-error-fallback';
+import { YunkeErrorComponent } from '@yunke/core/components/yunke/yunke-error-boundary/yunke-error-fallback';
 import { workbenchRoutes } from '@yunke/core/desktop/workbench-router';
 import {
   appSettingAtom,
@@ -29,7 +29,7 @@ const useAdapter = BUILD_CONFIG.isElectron
 const routes: RouteObject[] = [
   {
     element: <RouteContainer />,
-    errorElement: <AffineErrorComponent />,
+    errorElement: <YunkeErrorComponent />,
     children: workbenchRoutes,
   },
 ];

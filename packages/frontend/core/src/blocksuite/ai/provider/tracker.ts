@@ -77,7 +77,7 @@ const trackAction = ({
 };
 
 const inferPageMode = (host: EditorHost) => {
-  return host.querySelector('affine-page-root') ? 'doc' : 'edgeless';
+  return host.querySelector('yunke-page-root') ? 'doc' : 'edgeless';
 };
 
 const defaultActionOptions = [
@@ -121,13 +121,13 @@ function inferObjectType(event: BlocksuiteActionEvent) {
     return 'draw object';
   } else if (models.every(isBlockModel)) {
     const flavour = models[0].flavour;
-    if (flavour === 'affine:note') {
+    if (flavour === 'yunke:note') {
       return 'note';
     } else if (
-      ['affine:paragraph', 'affine:list', 'affine:code'].includes(flavour)
+      ['yunke:paragraph', 'yunke:list', 'yunke:code'].includes(flavour)
     ) {
       return 'text';
-    } else if (flavour === 'affine:image') {
+    } else if (flavour === 'yunke:image') {
       return 'image';
     }
   }

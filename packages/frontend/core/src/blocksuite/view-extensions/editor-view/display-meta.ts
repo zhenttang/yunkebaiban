@@ -30,7 +30,7 @@ export function buildDocDisplayMetaExtension(framework: FrameworkProvider) {
     });
   }
 
-  class AffineDocDisplayMetaService
+  class YunkeDocDisplayMetaService
     extends LifeCycleWatcher
     implements DocDisplayMetaExtension
   {
@@ -94,5 +94,5 @@ export function buildDocDisplayMetaExtension(framework: FrameworkProvider) {
     }
   }
 
-  return AffineDocDisplayMetaService;
+  return YunkeDocDisplayMetaService;
 }

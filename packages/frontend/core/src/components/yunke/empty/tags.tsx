@@ -12,8 +12,8 @@ export const EmptyTags = (props: UniversalEmptyProps) => {
     <EmptyLayout
       illustrationLight={tagsLight}
       illustrationDark={tagsDark}
-      title={t['com.affine.empty.tags.title']()}
-      description={t['com.affine.empty.tags.description']()}
+      title={t['com.yunke.empty.tags.title']()}
+      description={t['com.yunke.empty.tags.description']()}
       {...props}
     />
   );

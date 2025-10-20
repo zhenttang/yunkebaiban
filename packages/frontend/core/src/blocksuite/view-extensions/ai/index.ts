@@ -29,7 +29,7 @@ const optionsSchema = z.object({
 type AIViewOptions = z.infer<typeof optionsSchema>;
 
 export class AIViewExtension extends ViewExtensionProvider<AIViewOptions> {
-  override name = 'affine-ai-view-extension';
+  override name = 'yunke-ai-view-extension';
 
   override schema = optionsSchema;
 
@@ -46,7 +46,7 @@ export class AIViewExtension extends ViewExtensionProvider<AIViewOptions> {
       .register(AICodeBlockWatcher)
       .register(
         ToolbarModuleExtension({
-          id: BlockFlavourIdentifier('custom:affine:image'),
+          id: BlockFlavourIdentifier('custom:yunke:image'),
           config: imageToolbarAIEntryConfig(),
         })
       );
@@ -55,7 +55,7 @@ export class AIViewExtension extends ViewExtensionProvider<AIViewOptions> {
         aiPanelWidget,
         AiSlashMenuConfigExtension(),
         ToolbarModuleExtension({
-          id: BlockFlavourIdentifier('custom:affine:note'),
+          id: BlockFlavourIdentifier('custom:yunke:note'),
           config: toolbarAIEntryConfig(),
         }),
       ]);
@@ -67,7 +67,7 @@ export class AIViewExtension extends ViewExtensionProvider<AIViewOptions> {
         getAIEdgelessRootWatcher(framework),
         // In note
         ToolbarModuleExtension({
-          id: BlockFlavourIdentifier('custom:affine:surface:*'),
+          id: BlockFlavourIdentifier('custom:yunke:surface:*'),
           config: edgelessToolbarAIEntryConfig(),
         }),
       ]);

@@ -6,7 +6,7 @@ import {
   AuthHeader,
   AuthInput,
 } from '@yunke/component/auth-components';
-import { useAsyncCallback } from '@yunke/core/components/hooks/affine-async-hooks';
+import { useAsyncCallback } from '@yunke/core/components/hooks/yunke-async-hooks';
 import { ServersService } from '@yunke/core/modules/cloud';
 import { Trans, useI18n } from '@yunke/i18n';
 import { useService } from '@toeverything/infra';
@@ -90,18 +90,18 @@ export const AddSelfhostedStep = ({
   return (
     <AuthContainer>
       <AuthHeader
-        title={t['com.affine.auth.sign.add-selfhosted.title']()}
-        subTitle={t['com.affine.auth.sign.add-selfhosted']()}
+        title={t['com.yunke.auth.sign.add-selfhosted.title']()}
+        subTitle={t['com.yunke.auth.sign.add-selfhosted']()}
       />
       <AuthContent>
         <AuthInput
-          label={t['com.affine.auth.sign.add-selfhosted.baseurl']()}
+          label={t['com.yunke.auth.sign.add-selfhosted.baseurl']()}
           value={baseURL}
           onChange={onBaseURLChange}
           placeholder="https://您的服务器地址.com"
           error={!!error}
           disabled={isConnecting}
-          errorHint={t['com.affine.auth.sign.add-selfhosted.error']()}
+          errorHint={t['com.yunke.auth.sign.add-selfhosted.error']()}
           onEnter={onConnect}
         />
         <Button
@@ -113,17 +113,17 @@ export const AddSelfhostedStep = ({
           loading={isConnecting}
           onClick={onConnect}
         >
-          {t['com.affine.auth.sign.add-selfhosted.connect-button']()}
+          {t['com.yunke.auth.sign.add-selfhosted.connect-button']()}
         </Button>
       </AuthContent>
       <AuthFooter>
         <div className={styles.authMessage}>
           <Trans
-            i18nKey="com.affine.auth.sign.add-selfhosted.description"
+            i18nKey="com.yunke.auth.sign.add-selfhosted.description"
             components={{
               1: (
                 <a
-                  href="https://docs.affine.pro/docs/self-host-affine"
+                  href="https://docs.yunke.pro/docs/self-host-yunke"
                   target="_blank"
                   rel="noreferrer"
                 />

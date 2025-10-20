@@ -16,8 +16,8 @@ import { styleMap } from 'lit/directives/style-map.js';
 
 import { RemoteColorManager } from '../manager/remote-color-manager';
 
-export const AFFINE_EDGELESS_REMOTE_SELECTION_WIDGET =
-  'affine-edgeless-remote-selection-widget';
+export const YUNKE_EDGELESS_REMOTE_SELECTION_WIDGET =
+  'yunke-edgeless-remote-selection-widget';
 
 export class EdgelessRemoteSelectionWidget extends WidgetComponent<RootBlockModel> {
   static override styles = css`
@@ -62,7 +62,7 @@ export class EdgelessRemoteSelectionWidget extends WidgetComponent<RootBlockMode
 
       max-width: 160px;
       padding: 0px 3px;
-      border: 1px solid var(--affine-pure-black-20);
+      border: 1px solid var(--yunke-pure-black-20);
 
       box-shadow: 0px 1px 6px 0px rgba(0, 0, 0, 0.16);
       border-radius: 4px;
@@ -269,7 +269,7 @@ export class EdgelessRemoteSelectionWidget extends WidgetComponent<RootBlockMode
     );
 
     return html`
-      <div class="affine-edgeless-remote-selection">${rects}${cursors}</div>
+      <div class="yunke-edgeless-remote-selection">${rects}${cursors}</div>
     `;
   }
 
@@ -299,6 +299,6 @@ export class EdgelessRemoteSelectionWidget extends WidgetComponent<RootBlockMode
 
 declare global {
   interface HTMLElementTagNameMap {
-    [AFFINE_EDGELESS_REMOTE_SELECTION_WIDGET]: EdgelessRemoteSelectionWidget;
+    [YUNKE_EDGELESS_REMOTE_SELECTION_WIDGET]: EdgelessRemoteSelectionWidget;
   }
 }

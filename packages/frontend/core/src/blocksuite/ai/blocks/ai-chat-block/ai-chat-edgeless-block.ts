@@ -20,8 +20,8 @@ export class EdgelessAIChatBlockComponent extends toGfxBlockComponent(
       height: `${height}px`,
       borderRadius: '8px',
       transformOrigin: '0 0',
-      boxShadow: 'var(--affine-shadow-1)',
-      border: '1px solid var(--affine-border-color)',
+      boxShadow: 'var(--yunke-shadow-1)',
+      border: '1px solid var(--yunke-border-color)',
       transform: `scale(${scale})`,
     };
 
@@ -98,6 +98,6 @@ export const EdgelessAIChatBlockInteraction =
 
 declare global {
   interface HTMLElementTagNameMap {
-    'affine-edgeless-ai-chat': EdgelessAIChatBlockComponent;
+    'yunke-edgeless-ai-chat': EdgelessAIChatBlockComponent;
   }
 }

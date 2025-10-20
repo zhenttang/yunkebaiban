@@ -1,3 +1,3 @@
-export * from './affine-mention';
+export * from './yunke-mention';
 export * from './effects';
 export * from './inline-spec';

@@ -11,8 +11,8 @@ export class EdgelessEditor extends SignalWatcher(
 ) {
   static override styles = css`
     edgeless-editor {
-      font-family: var(--affine-font-family);
-      background: var(--affine-background-primary-color);
+      font-family: var(--yunke-font-family);
+      background: var(--yunke-background-primary-color);
     }
 
     edgeless-editor * {
@@ -25,7 +25,7 @@ export class EdgelessEditor extends SignalWatcher(
       }
     }
 
-    .affine-edgeless-viewport {
+    .yunke-edgeless-viewport {
       display: block;
       height: 100%;
       position: relative;
@@ -68,7 +68,7 @@ export class EdgelessEditor extends SignalWatcher(
 
     performance.mark('edgeless-render-start');
     const result = html`
-      <div class="affine-edgeless-viewport" data-theme=${theme}>
+      <div class="yunke-edgeless-viewport" data-theme=${theme}>
         ${guard([std], () => {
           performance.mark('std-render-start');
           const rendered = std.render();

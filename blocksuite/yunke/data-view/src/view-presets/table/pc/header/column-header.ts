@@ -31,7 +31,7 @@ export class DatabaseColumnHeader extends SignalWatcher(
   };
 
   editLastColumnTitle = () => {
-    const columns = this.querySelectorAll('affine-database-header-column');
+    const columns = this.querySelectorAll('yunke-database-header-column');
     const column = columns.item(columns.length - 1);
     column.editTitle();
   };
@@ -65,9 +65,9 @@ export class DatabaseColumnHeader extends SignalWatcher(
   override connectedCallback() {
     super.connectedCallback();
     const scrollContainer = getScrollContainer(
-      this.closest('affine-data-view-renderer')!
+      this.closest('yunke-data-view-renderer')!
     );
-    const group = this.closest('affine-data-view-table-group');
+    const group = this.closest('yunke-data-view-table-group');
     if (group) {
       const cancel = autoUpdate(group, this, () => {
         if (!scrollContainer) {
@@ -86,7 +86,7 @@ export class DatabaseColumnHeader extends SignalWatcher(
   override render() {
     return html`
       ${this.renderGroupHeader?.()}
-      <div class="affine-database-column-header database-row">
+      <div class="yunke-database-column-header database-row">
         ${this.readonly
           ? nothing
           : html`<div class="${tableStyle.leftToolBarStyle}"></div>`}
@@ -99,14 +99,14 @@ export class DatabaseColumnHeader extends SignalWatcher(
               border: index === 0 ? 'none' : undefined,
             });
             return html`
-              <affine-database-header-column
+              <yunke-database-header-column
                 style="${style}"
                 data-column-id="${column.id}"
                 data-column-index="${index}"
-                class="affine-database-column database-cell"
+                class="yunke-database-column database-cell"
                 .column="${column}"
                 .tableViewLogic="${this.tableViewLogic}"
-              ></affine-database-header-column>
+              ></yunke-database-header-column>
               <div class="${cellDivider}" style="height: auto;"></div>
             `;
           }
@@ -138,6 +138,6 @@ export class DatabaseColumnHeader extends SignalWatcher(
 
 declare global {
   interface HTMLElementTagNameMap {
-    'affine-database-column-header': DatabaseColumnHeader;
+    'yunke-database-column-header': DatabaseColumnHeader;
   }
 }

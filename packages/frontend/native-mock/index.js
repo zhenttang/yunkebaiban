@@ -4,7 +4,7 @@ const BASE_URL = 'http://localhost:8080';
 
 // 获取JWT token
 function getAuthToken() {
-  return localStorage.getItem('affine-admin-token') || localStorage.getItem('affine-access-token');
+  return localStorage.getItem('yunke-admin-token') || localStorage.getItem('yunke-access-token');
 }
 
 // 创建带认证的fetch请求
@@ -89,9 +89,9 @@ export class DocStoragePool {
   async pushUpdate(universalId, docId, update) {
     // console.log('[MOCK->JAVA] DocStoragePool.pushUpdate:', universalId, docId);
     try {
-      // 将Uint8Array编码为Base64（AFFiNE标准）
+      // 将Uint8Array编码为Base64（YUNKE标准）
       const base64 = uint8ArrayToBase64(update);
-      // 发送到Java后端的AFFiNE兼容端点
+      // 发送到Java后端的YUNKE兼容端点
       const response = await fetchWithAuth(`/api/workspaces/${universalId}/docs/${docId}/updates`, {
         method: 'POST',
         body: JSON.stringify({

@@ -27,15 +27,15 @@ export const useActions = ({
       {
         icon: <FilterIcon />,
         name: 'edit',
-        tooltip: t['com.affine.collection-bar.action.tooltip.edit'](),
+        tooltip: t['com.yunke.collection-bar.action.tooltip.edit'](),
         click: () => {
           openEdit(collection);
         },
       },
       {
-        icon: <DeleteIcon style={{ color: 'var(--affine-error-color)' }} />,
+        icon: <DeleteIcon style={{ color: 'var(--yunke-error-color)' }} />,
         name: 'delete',
-        tooltip: t['com.affine.collection-bar.action.tooltip.delete'](),
+        tooltip: t['com.yunke.collection-bar.action.tooltip.delete'](),
         click: onDelete,
       },
     ];

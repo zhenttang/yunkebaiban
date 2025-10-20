@@ -1,7 +1,7 @@
 import { notify } from '@yunke/component';
 import { SettingRow } from '@yunke/component/setting-components';
 import { ConfirmModal } from '@yunke/component/ui/modal';
-import { useAsyncCallback } from '@yunke/core/components/hooks/affine-async-hooks';
+import { useAsyncCallback } from '@yunke/core/components/hooks/yunke-async-hooks';
 import { GlobalContextService } from '@yunke/core/modules/global-context';
 import { WorkspacePermissionService } from '@yunke/core/modules/permissions';
 import {
@@ -104,11 +104,11 @@ export const DeleteLeaveWorkspace = ({
         name={
           <span style={{ color: cssVarV2('status/error') }}>
             {isOwner
-              ? t['com.affine.workspaceDelete.title']()
-              : t['com.affine.deleteLeaveWorkspace.leave']()}
+              ? t['com.yunke.workspaceDelete.title']()
+              : t['com.yunke.deleteLeaveWorkspace.leave']()}
           </span>
         }
-        desc={t['com.affine.deleteLeaveWorkspace.description']()}
+        desc={t['com.yunke.deleteLeaveWorkspace.description']()}
         style={{ cursor: 'pointer' }}
         onClick={onLeaveOrDelete}
         data-testid="delete-workspace-button"
@@ -125,11 +125,11 @@ export const DeleteLeaveWorkspace = ({
       ) : (
         <ConfirmModal
           open={showLeave}
-          cancelText={t['com.affine.confirmModal.button.cancel']()}
+          cancelText={t['com.yunke.confirmModal.button.cancel']()}
           onConfirm={onDeleteConfirm}
           onOpenChange={setShowLeave}
-          title={`${t['com.affine.deleteLeaveWorkspace.leave']()}?`}
-          description={t['com.affine.deleteLeaveWorkspace.leaveDescription']()}
+          title={`${t['com.yunke.deleteLeaveWorkspace.leave']()}?`}
+          description={t['com.yunke.deleteLeaveWorkspace.leaveDescription']()}
           confirmText={t['Leave']()}
           confirmButtonOptions={{
             variant: 'error',

@@ -13,7 +13,7 @@ import {
 } from './adapters';
 
 export class LinkStoreExtension extends StoreExtensionProvider {
-  override name = 'affine-link-inline';
+  override name = 'yunke-link-inline';
 
   override setup(context: StoreExtensionContext) {
     super.setup(context);

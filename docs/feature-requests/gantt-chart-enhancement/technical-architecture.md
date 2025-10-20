@@ -169,7 +169,7 @@ export class GanttView extends DataViewUILogicBase<GanttViewData> {
       display: flex;
       flex-direction: column;
       height: 100%;
-      background: var(--affine-background-primary-color);
+      background: var(--yunke-background-primary-color);
     }
     
     .gantt-content {
@@ -180,7 +180,7 @@ export class GanttView extends DataViewUILogicBase<GanttViewData> {
     
     .task-list {
       width: 300px;
-      border-right: 1px solid var(--affine-border-color);
+      border-right: 1px solid var(--yunke-border-color);
       overflow-y: auto;
     }
     
@@ -277,7 +277,7 @@ export class WorkingDaySegment extends WidgetElement {
     }
     
     .segment.selected {
-      box-shadow: 0 0 0 2px var(--affine-primary-color);
+      box-shadow: 0 0 0 2px var(--yunke-primary-color);
     }
     
     .segment.dragging {
@@ -413,19 +413,19 @@ export class DependencyArrow extends WidgetElement {
     }
     
     .dependency-line.critical {
-      stroke: var(--affine-error-color);
+      stroke: var(--yunke-error-color);
       stroke-width: 3px;
     }
     
     .dependency-line:hover {
-      stroke: var(--affine-primary-color);
+      stroke: var(--yunke-primary-color);
       stroke-width: 3px;
       cursor: pointer;
     }
     
     .dependency-label {
       font-size: 10px;
-      fill: var(--affine-text-secondary-color);
+      fill: var(--yunke-text-secondary-color);
       text-anchor: middle;
       pointer-events: all;
     }

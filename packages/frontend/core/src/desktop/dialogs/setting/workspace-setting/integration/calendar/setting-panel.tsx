@@ -19,8 +19,8 @@ export const CalendarSettingPanel = () => {
     <>
       <IntegrationSettingHeader
         icon={<TodayIcon />}
-        name={t['com.affine.integration.calendar.name']()}
-        desc={t['com.affine.integration.calendar.desc']()}
+        name={t['com.yunke.integration.calendar.name']()}
+        desc={t['com.yunke.integration.calendar.desc']()}
         divider={false}
       />
       <div className={styles.list}>
@@ -60,9 +60,9 @@ const AddSubscription = () => {
     const exists = calendar.getSubscription(_url);
     if (exists) {
       notify.error({
-        title: t['com.affine.integration.calendar.new-duplicate-error-title'](),
+        title: t['com.yunke.integration.calendar.new-duplicate-error-title'](),
         message:
-          t['com.affine.integration.calendar.new-duplicate-error-content'](),
+          t['com.yunke.integration.calendar.new-duplicate-error-content'](),
       });
       return;
     }
@@ -81,7 +81,7 @@ const AddSubscription = () => {
       })
       .catch(() => {
         notify.error({
-          title: t['com.affine.integration.calendar.new-error'](),
+          title: t['com.yunke.integration.calendar.new-error'](),
         });
       })
       .finally(() => {
@@ -97,7 +97,7 @@ const AddSubscription = () => {
         onClick={handleOpen}
         className={styles.newButton}
       >
-        {t['com.affine.integration.calendar.new-subscription']()}
+        {t['com.yunke.integration.calendar.new-subscription']()}
       </Button>
       <Modal
         open={open}
@@ -111,13 +111,13 @@ const AddSubscription = () => {
             <TodayIcon />
           </IntegrationCardIcon>
           <div className={styles.newDialogTitle}>
-            {t['com.affine.integration.calendar.new-title']()}
+            {t['com.yunke.integration.calendar.new-title']()}
           </div>
         </header>
 
         <div className={styles.newDialogContent}>
           <div className={styles.newDialogLabel}>
-            {t['com.affine.integration.calendar.new-url-label']()}
+            {t['com.yunke.integration.calendar.new-url-label']()}
           </div>
           <Input
             type="text"
@@ -131,7 +131,7 @@ const AddSubscription = () => {
         <footer className={styles.newDialogFooter}>
           <Button onClick={handleClose}>{t['Cancel']()}</Button>
           <Button variant="primary" onClick={handleAddSub} loading={verifying}>
-            {t['com.affine.integration.calendar.new-subscription']()}
+            {t['com.yunke.integration.calendar.new-subscription']()}
           </Button>
         </footer>
       </Modal>

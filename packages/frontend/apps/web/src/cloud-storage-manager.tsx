@@ -42,7 +42,7 @@ function getSocketIOUrl(): string {
 const OFFLINE_OPERATIONS_KEY = 'cloud_storage_offline_operations';
 const LAST_SYNC_KEY = 'cloud_storage_last_sync';
 
-// 离线操作类型 - 严格按照AFFiNE格式
+// 离线操作类型 - 严格按照YUNKE格式
 interface OfflineOperation {
   id: string;
   docId: string;
@@ -102,7 +102,7 @@ export const CloudStorageProvider = ({
   }>>([]);
   const [offlineOperationsCount, setOfflineOperationsCount] = useState(0);
 
-  // 保存离线操作 - 按照AFFiNE标准格式
+  // 保存离线操作 - 按照YUNKE标准格式
   const saveOfflineOperation = async (docId: string, update: Uint8Array) => {
     if (!currentWorkspaceId) return;
     
@@ -140,7 +140,7 @@ export const CloudStorageProvider = ({
     setOfflineOperationsCount(0);
   };
 
-  // 同步离线操作 - 按照AFFiNE标准格式
+  // 同步离线操作 - 按照YUNKE标准格式
   const syncOfflineOperations = async (): Promise<void> => {
     if (!currentWorkspaceId || !socket?.connected) {
       console.warn('⚠️ [云存储管理器] 无法同步：缺少workspace或连接');
@@ -160,7 +160,7 @@ export const CloudStorageProvider = ({
 
     for (const operation of operations) {
       try {
-        // 按照AFFiNE标准格式发送
+        // 按照YUNKE标准格式发送
         const result = await socket.emitWithAck('space:push-doc-update', {
           spaceType: operation.spaceType || 'workspace',
           spaceId: operation.spaceId,
@@ -403,7 +403,7 @@ export const CloudStorageProvider = ({
         return Date.now();
       }
       
-      // 按照AFFiNE标准格式编码数据
+      // 按照YUNKE标准格式编码数据
       const updateBase64 = await uint8ArrayToBase64(update);
       
       // 验证编码结果
@@ -414,13 +414,13 @@ export const CloudStorageProvider = ({
       logYjsUpdateInfo('发送前', update, updateBase64);
       
       const requestData = {
-        spaceType: 'workspace' as const,  // 按照AFFiNE标准：spaceType
-        spaceId: currentWorkspaceId,      // 按照AFFiNE标准：spaceId而不是workspaceId
+        spaceType: 'workspace' as const,  // 按照YUNKE标准：spaceType
+        spaceId: currentWorkspaceId,      // 按照YUNKE标准：spaceId而不是workspaceId
         docId: docId,
-        update: updateBase64              // 按照AFFiNE标准：update单个Base64字符串
+        update: updateBase64              // 按照YUNKE标准：update单个Base64字符串
       };
       
-      console.log('🎯🎯🎯 [AFFiNE-Standard] Socket.IO请求数据:');
+      console.log('🎯🎯🎯 [YUNKE-Standard] Socket.IO请求数据:');
       console.log('  🌟 spaceType:', requestData.spaceType);
       console.log('  🆔 spaceId:', requestData.spaceId);
       console.log('  🔍 spaceId格式: 长度=', requestData.spaceId?.length, '包含连字符=', requestData.spaceId?.includes('-'));
@@ -428,7 +428,7 @@ export const CloudStorageProvider = ({
       console.log('  📊 update类型:', typeof requestData.update);
       
       // 详细记录请求数据
-      console.log('  📋 AFFiNE标准请求详情:');
+      console.log('  📋 YUNKE标准请求详情:');
       console.log(`    🌟 spaceType: "${requestData.spaceType}"`);
       console.log(`    🆔 spaceId: "${requestData.spaceId}"`);
       console.log(`    📄 docId: "${requestData.docId}"`);
@@ -531,11 +531,11 @@ export const CloudStorageProvider = ({
         setSocket(newSocket);
         reconnectAttempts.current = 0;
         
-        // 加入工作空间 - 严格按照AFFiNE标准格式
+        // 加入工作空间 - 严格按照YUNKE标准格式
         newSocket.emit('space:join', {
           spaceType: 'workspace',
           spaceId: currentWorkspaceId,
-          clientVersion: '1.0.0'  // 添加AFFiNE标准要求的clientVersion
+          clientVersion: '1.0.0'  // 添加YUNKE标准要求的clientVersion
         }, (response) => {
           // 修复：检查response是否存在
           if (!response) {

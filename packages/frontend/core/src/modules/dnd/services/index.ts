@@ -6,7 +6,7 @@ import {
   type MonitorGetFeedback,
   type toExternalData,
 } from '@yunke/component';
-import type { AffineDNDData } from '@yunke/core/types/dnd';
+import type { YunkeDNDData } from '@yunke/core/types/dnd';
 import {
   DNDAPIExtension,
   DndApiExtensionIdentifier,
@@ -21,12 +21,12 @@ import type { EditorSettingService } from '../../editor-setting';
 import { resolveLinkToDoc } from '../../navigation';
 import type { WorkspaceService } from '../../workspace';
 
-type Entity = AffineDNDData['draggable']['entity'];
+type Entity = YunkeDNDData['draggable']['entity'];
 type EntityResolver = (data: string) => Entity | null;
 
 type ExternalDragPayload = ExternalGetDataFeedbackArgs['source'];
 
-type MixedDNDData = AffineDNDData & {
+type MixedDNDData = YunkeDNDData & {
   draggable: DragBlockPayload;
 };
 
@@ -71,10 +71,10 @@ export class DndService extends Service {
 
   private setupBlocksuiteAdapter() {
     /**
-     * Migrate from affine to blocksuite
+     * Migrate from yunke to blocksuite
      * For now, we only support doc
      */
-    const affineToBlocksuite = (args: MonitorGetFeedback<MixedDNDData>) => {
+    const yunkeToBlocksuite = (args: MonitorGetFeedback<MixedDNDData>) => {
       const data = args.source.data;
       if (data.entity && !data.bsEntity) {
         if (data.entity.type !== 'doc') {
@@ -86,7 +86,7 @@ export class DndService extends Service {
         }
         const snapshotSlice = dndAPI.fromEntity({
           docId: data.entity.id,
-          flavour: 'affine:embed-linked-doc',
+          flavour: 'yunke:embed-linked-doc',
         });
         if (!snapshotSlice) {
           return;
@@ -100,9 +100,9 @@ export class DndService extends Service {
     };
 
     /**
-     * Migrate from blocksuite to affine
+     * Migrate from blocksuite to yunke
      */
-    const blocksuiteToAffine = (args: MonitorGetFeedback<MixedDNDData>) => {
+    const blocksuiteToYunke = (args: MonitorGetFeedback<MixedDNDData>) => {
       const data = args.source.data;
       if (!data.entity && data.bsEntity) {
         if (data.bsEntity.type !== 'blocks' || !data.bsEntity.snapshot) {
@@ -121,8 +121,8 @@ export class DndService extends Service {
     };
 
     function adaptDragEvent(args: MonitorGetFeedback<MixedDNDData>) {
-      affineToBlocksuite(args);
-      blocksuiteToAffine(args);
+      yunkeToBlocksuite(args);
+      blocksuiteToYunke(args);
     }
 
     function canMonitor(args: MonitorGetFeedback<MixedDNDData>) {
@@ -136,9 +136,9 @@ export class DndService extends Service {
     function getBSDropTarget(args: MonitorDragEvent<MixedDNDData>) {
       for (const target of args.location.current.dropTargets) {
         const { tagName } = target.element;
-        if (['AFFINE-EDGELESS-NOTE', 'AFFINE-NOTE'].includes(tagName))
+        if (['YUNKE-EDGELESS-NOTE', 'YUNKE-NOTE'].includes(tagName))
           return 'note';
-        if (tagName === 'AFFINE-EDGELESS-ROOT') return 'canvas';
+        if (tagName === 'YUNKE-EDGELESS-ROOT') return 'canvas';
       }
       return 'other';
     }
@@ -152,7 +152,7 @@ export class DndService extends Service {
       const flavour =
         dropTarget === 'canvas'
           ? this.editorSettingService.editorSetting.docCanvasPreferView.value
-          : 'affine:embed-linked-doc';
+          : 'yunke:embed-linked-doc';
 
       const { entity, bsEntity } = args.source.data;
       if (!entity || !bsEntity) return;
@@ -192,7 +192,7 @@ export class DndService extends Service {
 
   private readonly resolvers: ((
     source: ExternalDragPayload
-  ) => AffineDNDData['draggable'] | null)[] = [];
+  ) => YunkeDNDData['draggable'] | null)[] = [];
 
   getBlocksuiteDndAPI(sourceDocId?: string) {
     const collection = this.workspaceService.workspace.docCollection;
@@ -211,7 +211,7 @@ export class DndService extends Service {
     return dndAPI;
   }
 
-  fromExternalData: fromExternalData<AffineDNDData> = (
+  fromExternalData: fromExternalData<YunkeDNDData> = (
     args: ExternalGetDataFeedbackArgs,
     isDropEvent?: boolean
   ) => {
@@ -219,7 +219,7 @@ export class DndService extends Service {
       return {};
     }
 
-    let resolved: AffineDNDData['draggable'] | null = null;
+    let resolved: YunkeDNDData['draggable'] | null = null;
 
     // in the order of the resolvers instead of the order of the types
     for (const resolver of this.resolvers) {
@@ -237,7 +237,7 @@ export class DndService extends Service {
     return resolved;
   };
 
-  toExternalData: toExternalData<AffineDNDData> = (args, data) => {
+  toExternalData: toExternalData<YunkeDNDData> = (args, data) => {
     const normalData = typeof data === 'function' ? data(args) : data;
 
     if (
@@ -257,7 +257,7 @@ export class DndService extends Service {
 
     const snapshotSlice = dndAPI.fromEntity({
       docId: normalData.entity.id,
-      flavour: 'affine:embed-linked-doc',
+      flavour: 'yunke:embed-linked-doc',
     });
 
     if (!snapshotSlice) {
@@ -301,7 +301,7 @@ export class DndService extends Service {
    */
   private readonly resolveBlocksuiteExternalData = (
     source: ExternalDragPayload
-  ): AffineDNDData['draggable'] | null => {
+  ): YunkeDNDData['draggable'] | null => {
     const dndAPI = this.getBlocksuiteDndAPI();
     if (!dndAPI) {
       return null;
@@ -347,7 +347,7 @@ export class DndService extends Service {
   ): Entity | null => {
     for (const block of snapshot.content) {
       if (
-        ['affine:embed-linked-doc', 'affine:embed-synced-doc'].includes(
+        ['yunke:embed-linked-doc', 'yunke:embed-synced-doc'].includes(
           block.flavour
         )
       ) {

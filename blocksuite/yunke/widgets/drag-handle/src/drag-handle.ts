@@ -15,7 +15,7 @@ import { query, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
-import type { AFFINE_DRAG_HANDLE_WIDGET } from './consts.js';
+import type { YUNKE_DRAG_HANDLE_WIDGET } from './consts.js';
 import { RectHelper } from './helpers/rect-helper.js';
 import { SelectionHelper } from './helpers/selection-helper.js';
 import { styles } from './styles.js';
@@ -27,7 +27,7 @@ import { KeyboardEventWatcher } from './watchers/keyboard-event-watcher.js';
 import { PageWatcher } from './watchers/page-watcher.js';
 import { PointerEventWatcher } from './watchers/pointer-event-watcher.js';
 
-export class AffineDragHandleWidget extends WidgetComponent<RootBlockModel> {
+export class YunkeDragHandleWidget extends WidgetComponent<RootBlockModel> {
   static override styles = styles;
 
   private _anchorModelDisposables: DisposableGroup | null = null;
@@ -205,13 +205,13 @@ export class AffineDragHandleWidget extends WidgetComponent<RootBlockModel> {
     );
     const isGfx = this.activeDragHandle === 'gfx';
     const classes = {
-      'affine-drag-handle-grabber': true,
+      'yunke-drag-handle-grabber': true,
       dots: isGfx ? true : false,
     };
 
     return html`
-      <div class="affine-drag-handle-widget">
-        <div class="affine-drag-handle-container">
+      <div class="yunke-drag-handle-widget">
+        <div class="yunke-drag-handle-container">
           <div class=${classMap(classes)}>
             ${isGfx
               ? html`
@@ -225,15 +225,15 @@ export class AffineDragHandleWidget extends WidgetComponent<RootBlockModel> {
               : nothing}
           </div>
         </div>
-        <div class="affine-drag-hover-rect" style=${hoverRectStyle}></div>
+        <div class="yunke-drag-hover-rect" style=${hoverRectStyle}></div>
       </div>
     `;
   }
 
-  @query('.affine-drag-handle-container')
+  @query('.yunke-drag-handle-container')
   accessor dragHandleContainer!: HTMLDivElement;
 
-  @query('.affine-drag-handle-grabber')
+  @query('.yunke-drag-handle-grabber')
   accessor dragHandleGrabber!: HTMLDivElement;
 
   @state()
@@ -247,6 +247,6 @@ export class AffineDragHandleWidget extends WidgetComponent<RootBlockModel> {
 
 declare global {
   interface HTMLElementTagNameMap {
-    [AFFINE_DRAG_HANDLE_WIDGET]: AffineDragHandleWidget;
+    [YUNKE_DRAG_HANDLE_WIDGET]: YunkeDragHandleWidget;
   }
 }

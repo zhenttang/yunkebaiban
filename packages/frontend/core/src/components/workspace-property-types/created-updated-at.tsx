@@ -78,7 +78,7 @@ export const UpdatedAtGroupHeader = ({
   const t = useI18n();
   const date = groupId
     ? toRelativeDate(groupId)
-    : t['com.affine.all-docs.group.updated-at.never-updated']();
+    : t['com.yunke.all-docs.group.updated-at.never-updated']();
   return (
     <PlainTextDocGroupHeader
       style={{ textTransform: 'capitalize' }}

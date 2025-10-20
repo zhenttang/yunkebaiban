@@ -599,8 +599,8 @@ export class AccessibilitySupport {
         overflow: visible !important;
         clip: auto !important;
         white-space: normal !important;
-        background: var(--affine-background-overlay-panel-color) !important;
-        border: 1px solid var(--affine-border-color) !important;
+        background: var(--yunke-background-overlay-panel-color) !important;
+        border: 1px solid var(--yunke-border-color) !important;
         border-radius: 4px !important;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
         z-index: 1000 !important;
@@ -608,7 +608,7 @@ export class AccessibilitySupport {
       
       /* 焦点样式增强 */
       .interaction-focused {
-        outline: 2px solid var(--affine-primary-color) !important;
+        outline: 2px solid var(--yunke-primary-color) !important;
         outline-offset: 2px !important;
       }
       
@@ -625,7 +625,7 @@ export class AccessibilitySupport {
       .high-contrast .interaction-focused {
         outline-width: var(--focus-outline-width) !important;
         outline-style: solid !important;
-        outline-color: var(--affine-primary-color) !important;
+        outline-color: var(--yunke-primary-color) !important;
       }
       
       /* 减弱动画模式 */
@@ -637,9 +637,9 @@ export class AccessibilitySupport {
       
       /* 键盘拖拽状态 */
       .keyboard-dragging {
-        outline: 3px dashed var(--affine-primary-color) !important;
+        outline: 3px dashed var(--yunke-primary-color) !important;
         outline-offset: 4px !important;
-        background: var(--affine-primary-color-alpha) !important;
+        background: var(--yunke-primary-color-alpha) !important;
       }
       
       /* 键盘帮助对话框 */
@@ -651,8 +651,8 @@ export class AccessibilitySupport {
         width: 90%;
         max-width: 600px;
         max-height: 80vh;
-        background: var(--affine-background-overlay-panel-color);
-        border: 1px solid var(--affine-border-color);
+        background: var(--yunke-background-overlay-panel-color);
+        border: 1px solid var(--yunke-border-color);
         border-radius: 8px;
         box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
         z-index: 10000;
@@ -666,13 +666,13 @@ export class AccessibilitySupport {
       .keyboard-help-content h2 {
         margin: 0 0 16px 0;
         font-size: 18px;
-        color: var(--affine-text-primary-color);
+        color: var(--yunke-text-primary-color);
       }
       
       .keyboard-help-content h3 {
         margin: 16px 0 8px 0;
         font-size: 14px;
-        color: var(--affine-text-primary-color);
+        color: var(--yunke-text-primary-color);
         font-weight: 600;
       }
       
@@ -685,7 +685,7 @@ export class AccessibilitySupport {
         min-width: 120px;
         font-family: monospace;
         font-size: 12px;
-        background: var(--affine-background-secondary-color);
+        background: var(--yunke-background-secondary-color);
         padding: 2px 6px;
         border-radius: 3px;
         margin-right: 8px;
@@ -695,7 +695,7 @@ export class AccessibilitySupport {
         display: inline;
         margin: 0;
         font-size: 13px;
-        color: var(--affine-text-secondary-color);
+        color: var(--yunke-text-secondary-color);
       }
       
       .keyboard-help-close {
@@ -703,7 +703,7 @@ export class AccessibilitySupport {
         top: 12px;
         right: 12px;
         padding: 8px 16px;
-        background: var(--affine-primary-color);
+        background: var(--yunke-primary-color);
         color: white;
         border: none;
         border-radius: 4px;
@@ -711,7 +711,7 @@ export class AccessibilitySupport {
       }
       
       .keyboard-help-close:hover {
-        background: var(--affine-primary-color-hover);
+        background: var(--yunke-primary-color-hover);
       }
       
       .keyboard-help-close:focus {

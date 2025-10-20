@@ -7,9 +7,9 @@ import {
   useDraggable,
   useDropTarget,
 } from '@yunke/component';
-import { useAsyncCallback } from '@yunke/core/components/hooks/affine-async-hooks';
+import { useAsyncCallback } from '@yunke/core/components/hooks/yunke-async-hooks';
 import { useCatchEventCallback } from '@yunke/core/components/hooks/use-catch-event-hook';
-import type { AffineDNDData } from '@yunke/core/types/dnd';
+import type { YunkeDNDData } from '@yunke/core/types/dnd';
 import { useI18n } from '@yunke/i18n';
 import { track } from '@yunke/track';
 import { CloseIcon, PlusIcon, RightSidebarIcon } from '@blocksuite/icons/rc';
@@ -44,7 +44,7 @@ import * as styles from './styles.css';
 const TabSupportType = new Set(['collection', 'tag', 'doc']);
 
 const tabCanDrop =
-  (tab?: TabStatus): NonNullable<DropTargetOptions<AffineDNDData>['canDrop']> =>
+  (tab?: TabStatus): NonNullable<DropTargetOptions<YunkeDNDData>['canDrop']> =>
   ctx => {
     if (
       ctx.source.data.from?.at === 'app-header:tabs' &&
@@ -217,7 +217,7 @@ const WorkbenchTab = ({
   active: boolean;
   tabsLength: number;
   dnd?: boolean;
-  onDrop?: (data: DropTargetDropEvent<AffineDNDData>) => void;
+  onDrop?: (data: DropTargetDropEvent<YunkeDNDData>) => void;
 }) => {
   useServiceOptional(DesktopStateSynchronizer);
   const tabsHeaderService = useService(AppTabsHeaderService);
@@ -231,7 +231,7 @@ const WorkbenchTab = ({
     });
   }, [tabsHeaderService, workbench.id]);
 
-  const { dropTargetRef, closestEdge } = useDropTarget<AffineDNDData>(
+  const { dropTargetRef, closestEdge } = useDropTarget<YunkeDNDData>(
     () => ({
       closestEdge: {
         allowedEdges: ['left', 'right'],
@@ -245,7 +245,7 @@ const WorkbenchTab = ({
     [dnd, onDrop, workbench]
   );
 
-  const { dragRef } = useDraggable<AffineDNDData>(() => {
+  const { dragRef } = useDraggable<YunkeDNDData>(() => {
     const urls = workbench.views.map(view => {
       const url = new URL(
         workbench.basename + (view.path?.pathname ?? ''),
@@ -255,7 +255,7 @@ const WorkbenchTab = ({
       return url.toString();
     });
 
-    let entity: AffineDNDData['draggable']['entity'];
+    let entity: YunkeDNDData['draggable']['entity'];
 
     for (const url of urls) {
       const maybeDocLink = resolveLinkToDoc(url);
@@ -410,7 +410,7 @@ export const AppTabsHeader = ({
   }, [mode, desktopApi]);
 
   const onDrop = useAsyncCallback(
-    async (data: DropTargetDropEvent<AffineDNDData>, targetId?: string) => {
+    async (data: DropTargetDropEvent<YunkeDNDData>, targetId?: string) => {
       const edge = data.closestEdge ?? 'right';
       targetId = targetId ?? tabs.at(-1)?.id;
 
@@ -476,7 +476,7 @@ export const AppTabsHeader = ({
   );
 
   const { dropTargetRef: spacerDropTargetRef, draggedOver } =
-    useDropTarget<AffineDNDData>(
+    useDropTarget<YunkeDNDData>(
       () => ({
         onDrop,
         dropEffect: 'move',
@@ -543,7 +543,7 @@ export const AppTabsHeader = ({
         <IconButton
           size={22.86}
           onClick={onAddTab}
-          tooltip={t['com.affine.multi-tab.new-tab']()}
+          tooltip={t['com.yunke.multi-tab.new-tab']()}
           tooltipShortcut={['$mod', 'T']}
           data-testid="add-tab-view-button"
           style={{ width: 32, height: 32 }}

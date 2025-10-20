@@ -39,7 +39,7 @@ export function TemplatePreview({ template }: TemplatePreviewProps) {
     const sampleValues: Record<string, string> = {
       username: 'John Doe',
       email: 'john.doe@example.com',
-      company: 'AFFiNE',
+      company: 'YUNKE',
       date: new Date().toLocaleDateString(),
       time: new Date().toLocaleTimeString(),
       verificationCode: '123456',
@@ -247,7 +247,7 @@ export function TemplatePreview({ template }: TemplatePreviewProps) {
                         <div className="space-y-1 text-sm">
                           <div><strong>主题:</strong> {template.subject}</div>
                           <div><strong>发送至:</strong> {testEmail || 'test@example.com'}</div>
-                          <div><strong>发送方:</strong> AFFiNE &lt;noreply@affine.pro&gt;</div>
+                          <div><strong>发送方:</strong> YUNKE &lt;noreply@yunke.pro&gt;</div>
                         </div>
                       </div>
                       
@@ -266,7 +266,7 @@ export function TemplatePreview({ template }: TemplatePreviewProps) {
                         <div className="space-y-1 text-sm">
                           <div><strong>主题:</strong> {template.subject}</div>
                           <div><strong>发送至:</strong> {testEmail || 'test@example.com'}</div>
-                          <div><strong>发送方:</strong> AFFiNE &lt;noreply@affine.pro&gt;</div>
+                          <div><strong>发送方:</strong> YUNKE &lt;noreply@yunke.pro&gt;</div>
                         </div>
                       </div>
                       

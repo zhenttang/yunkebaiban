@@ -12,8 +12,8 @@ import { useSearchParams } from 'react-router-dom';
 import { AppContainer } from '../../components/app-container';
 
 export const ConfirmVerifiedEmail: FC<{
-  onOpenAffine: () => void;
-}> = ({ onOpenAffine }) => {
+  onOpenYunke: () => void;
+}> = ({ onOpenYunke }) => {
   const t = useI18n();
   const fetchService = useService(FetchService);
   const [isLoading, setIsLoading] = useState(false);
@@ -49,11 +49,11 @@ export const ConfirmVerifiedEmail: FC<{
 
   return (
     <AuthPageContainer
-      title={t['com.affine.auth.change.email.page.success.title']()}
-      subtitle={t['com.affine.auth.change.email.page.success.subtitle']()}
+      title={t['com.yunke.auth.change.email.page.success.title']()}
+      subtitle={t['com.yunke.auth.change.email.page.success.subtitle']()}
     >
-      <Button variant="primary" size="large" onClick={onOpenAffine}>
-        {t['com.affine.auth.open.affine']()}
+      <Button variant="primary" size="large" onClick={onOpenYunke}>
+        {t['com.yunke.auth.open.yunke']()}
       </Button>
     </AuthPageContainer>
   );

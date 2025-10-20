@@ -15,7 +15,7 @@ import { ExportManagerExtension } from './extensions/export-manager/export-manag
 import { DefaultTool } from './tool/default-tool';
 
 export class SurfaceViewExtension extends ViewExtensionProvider {
-  override name = 'affine-surface-block';
+  override name = 'yunke-surface-block';
 
   override effect() {
     super.effect();
@@ -33,12 +33,12 @@ export class SurfaceViewExtension extends ViewExtensionProvider {
     if (this.isEdgeless(context.scope)) {
       context.register(DefaultTool);
       context.register(
-        BlockViewExtension('yunke:surface', literal`affine-surface`)
+        BlockViewExtension('yunke:surface', literal`yunke-surface`)
       );
       context.register(EditPropsMiddlewareBuilder);
     } else {
       context.register(
-        BlockViewExtension('yunke:surface', literal`affine-surface-void`)
+        BlockViewExtension('yunke:surface', literal`yunke-surface-void`)
       );
     }
   }

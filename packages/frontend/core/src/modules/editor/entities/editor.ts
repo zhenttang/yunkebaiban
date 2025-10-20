@@ -1,4 +1,4 @@
-import type { AffineEditorContainer } from '@yunke/core/blocksuite/block-suite-editor';
+import type { YunkeEditorContainer } from '@yunke/core/blocksuite/block-suite-editor';
 import type { DefaultOpenProperty } from '@yunke/core/components/properties';
 import { Bound } from '@blocksuite/yunke/global/gfx';
 import { PresentTool } from '@blocksuite/yunke/blocks/frame';
@@ -31,7 +31,7 @@ export class Editor extends Entity {
   readonly doc = this.docService.doc;
   readonly isSharedMode =
     this.workspaceService.workspace.openOptions.isSharedMode;
-  readonly editorContainer$ = new LiveData<AffineEditorContainer | null>(null);
+  readonly editorContainer$ = new LiveData<YunkeEditorContainer | null>(null);
   readonly defaultOpenProperty$ = new LiveData<DefaultOpenProperty | undefined>(
     undefined
   );
@@ -185,7 +185,7 @@ export class Editor extends Entity {
   }
 
   bindEditorContainer(
-    editorContainer: AffineEditorContainer,
+    editorContainer: YunkeEditorContainer,
     docTitle?: DocTitle | null,
     scrollViewport?: HTMLElement | null
   ) {
@@ -305,8 +305,8 @@ export class Editor extends Entity {
               if (block?.model?.xywh) {
                 const bound = Bound.deserialize(block.model.xywh);
                 
-                // 使用 surface 的 fitToViewport 方法，这是 AFFiNE 的标准方式
-                const surface = editorContainer.host?.querySelector('affine-surface');
+                // 使用 surface 的 fitToViewport 方法，这是 YUNKE 的标准方式
+                const surface = editorContainer.host?.querySelector('yunke-surface');
                 if (surface && typeof surface.fitToViewport === 'function') {
                   surface.fitToViewport(bound);
                 } else {

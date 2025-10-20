@@ -5,9 +5,9 @@ import { track } from '@yunke/track';
 import { ResetIcon } from '@blocksuite/icons/rc';
 import type { createStore } from 'jotai';
 
-import { registerAffineCommand } from './registry';
+import { registerYunkeCommand } from './registry';
 
-export function registerAffineUpdatesCommands({
+export function registerYunkeUpdatesCommands({
   t,
   store,
   quitAndInstall,
@@ -19,11 +19,11 @@ export function registerAffineUpdatesCommands({
   const unsubs: Array<() => void> = [];
 
   unsubs.push(
-    registerAffineCommand({
-      id: 'affine:restart-to-upgrade',
-      category: 'affine:updates',
+    registerYunkeCommand({
+      id: 'yunke:restart-to-upgrade',
+      category: 'yunke:updates',
       icon: <ResetIcon />,
-      label: t['com.affine.cmdk.affine.restart-to-upgrade'](),
+      label: t['com.yunke.cmdk.yunke.restart-to-upgrade'](),
       preconditionStrategy: () => !!store.get(updateReadyAtom),
       run() {
         track.$.cmdk.updates.quitAndInstall();

@@ -12,7 +12,7 @@ import { property } from 'lit/decorators.js';
 import { AIProvider } from '../provider';
 import { getAIPanelWidget } from '../utils/ai-widgets';
 import { extractSelectedContent } from '../utils/extract';
-import type { AffineAIPanelWidgetConfig } from '../widgets/ai-panel/type';
+import type { YunkeAIPanelWidgetConfig } from '../widgets/ai-panel/type';
 import type { AIItemGroupConfig } from './ai-item/types';
 
 export class AskAIToolbarButton extends WithDisposable(LitElement) {
@@ -68,7 +68,7 @@ export class AskAIToolbarButton extends WithDisposable(LitElement) {
     });
   };
 
-  private readonly _generateAnswer: AffineAIPanelWidgetConfig['generateAnswer'] =
+  private readonly _generateAnswer: YunkeAIPanelWidgetConfig['generateAnswer'] =
     ({ finish, input }) => {
       finish('success');
       const aiPanel = getAIPanelWidget(this.host);

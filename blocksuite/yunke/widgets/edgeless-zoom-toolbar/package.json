@@ -1,6 +1,6 @@
 {
   "name": "@blocksuite/yunke-widget-edgeless-zoom-toolbar",
-  "description": "Affine edgeless zoom toolbar widget.",
+  "description": "Yunke edgeless zoom toolbar widget.",
   "type": "module",
   "scripts": {
     "build": "tsc"

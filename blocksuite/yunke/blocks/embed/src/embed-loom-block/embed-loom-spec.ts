@@ -20,8 +20,8 @@ export const EmbedLoomViewExtensions: ExtensionType[] = [
   EmbedLoomBlockService,
   BlockViewExtension(flavour, model => {
     return model.parent?.flavour === 'yunke:surface'
-      ? literal`affine-embed-edgeless-loom-block`
-      : literal`affine-embed-loom-block`;
+      ? literal`yunke-embed-edgeless-loom-block`
+      : literal`yunke-embed-loom-block`;
   }),
   EmbedLoomBlockOptionConfig,
   createBuiltinToolbarConfigExtension(flavour, EmbedLoomBlockComponent),

@@ -11,7 +11,7 @@ import type { DataViewWidget } from '../../core/widget/types.js';
 import { WidgetBase } from '../../core/widget/widget-base.js';
 
 const styles = css`
-  .affine-database-toolbar {
+  .yunke-database-toolbar {
     display: flex;
     align-items: center;
     gap: 6px;
@@ -19,11 +19,11 @@ const styles = css`
     transition: opacity 150ms cubic-bezier(0.42, 0, 1, 1);
   }
 
-  .toolbar-hover-container:hover .affine-database-toolbar {
+  .toolbar-hover-container:hover .yunke-database-toolbar {
     visibility: visible;
     opacity: 1;
   }
-  .toolbar-hover-container:has(.active) .affine-database-toolbar {
+  .toolbar-hover-container:has(.active) .yunke-database-toolbar {
     visibility: visible;
     opacity: 1;
   }
@@ -34,7 +34,7 @@ const styles = css`
   }
 
   @media print {
-    .affine-database-toolbar {
+    .yunke-database-toolbar {
       display: none;
     }
   }
@@ -46,7 +46,7 @@ export class DataViewHeaderTools extends WidgetBase {
   override render() {
     const classList = classMap({
       'show-toolbar': IS_MOBILE,
-      'affine-database-toolbar': true,
+      'yunke-database-toolbar': true,
     });
     const tools = this.toolsMap[this.view.type];
     return html` <div class="${classList}">

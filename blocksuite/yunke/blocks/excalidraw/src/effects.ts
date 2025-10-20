@@ -3,11 +3,11 @@ import { ExcalidrawBlockComponent } from './excalidraw-block.js';
 declare global {
   namespace BlockSuite {
     interface CustomElements {
-      'affine-excalidraw': ExcalidrawBlockComponent;
+      'yunke-excalidraw': ExcalidrawBlockComponent;
     }
   }
 }
 
 export function effects() {
-  customElements.define('affine-excalidraw', ExcalidrawBlockComponent);
+  customElements.define('yunke-excalidraw', ExcalidrawBlockComponent);
 }

@@ -21,12 +21,12 @@ import type {
 import { mobileLinkedDocMenuStyles } from './styles.js';
 import { resolveSignal } from './utils.js';
 
-export const AFFINE_MOBILE_LINKED_DOC_MENU = 'affine-mobile-linked-doc-menu';
+export const YUNKE_MOBILE_LINKED_DOC_MENU = 'yunke-mobile-linked-doc-menu';
 
 @requiredProperties({
   context: PropTypes.object,
 })
-export class AffineMobileLinkedDocMenu extends SignalWatcher(
+export class YunkeMobileLinkedDocMenu extends SignalWatcher(
   WithDisposable(LitElement)
 ) {
   static override styles = mobileLinkedDocMenuStyles;

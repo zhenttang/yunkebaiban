@@ -19,7 +19,7 @@ export function createEvent<T>(id: string): FrameworkEvent<T> {
 export type FrameworkEventType<T> =
   T extends FrameworkEvent<infer E> ? E : never;
 
-const logger = new DebugLogger('affine:event-bus');
+const logger = new DebugLogger('yunke:event-bus');
 
 export class EventBus {
   private listeners: Record<string, Array<(payload: any) => void>> = {};

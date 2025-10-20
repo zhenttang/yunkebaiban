@@ -148,10 +148,10 @@ const builtinSurfaceToolbarConfig = {
       id: 'e.slicer',
       label: '切片器',
       icon: ScissorsIcon(),
-      tooltip: html`<affine-tooltip-content-with-shortcut
+      tooltip: html`<yunke-tooltip-content-with-shortcut
         data-tip="${'切割模式'}"
         data-shortcut="${'-'}"
-      ></affine-tooltip-content-with-shortcut>`,
+      ></yunke-tooltip-content-with-shortcut>`,
       active: false,
       when(ctx) {
         return (
@@ -269,12 +269,12 @@ const builtinSurfaceToolbarConfig = {
         };
         const format = (value: number) => `${value}%`;
 
-        return html`<affine-size-dropdown-menu
+        return html`<yunke-size-dropdown-menu
           @select=${onSelect}
           @toggle=${onToggle}
           .format=${format}
           .size$=${scale$}
-        ></affine-size-dropdown-menu>`;
+        ></yunke-size-dropdown-menu>`;
       },
     },
   ],

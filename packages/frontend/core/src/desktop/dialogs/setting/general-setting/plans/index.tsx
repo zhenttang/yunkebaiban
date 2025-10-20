@@ -27,7 +27,7 @@ const Settings = () => {
   return <PlanLayout cloud={<CloudPlans />} ai={<AIPlan />} />;
 };
 
-export const AFFiNEPricingPlans = () => {
+export const YUNKEPricingPlans = () => {
   return (
     <SWRErrorBoundary FallbackComponent={PlansErrorBoundary}>
       <Settings />
@@ -40,9 +40,9 @@ const PlansErrorBoundary = ({ resetErrorBoundary }: FallbackProps) => {
 
   const scroll = (
     <div className={styles.errorTip}>
-      <span>{t['com.affine.payment.plans-error-tip']()}</span>
+      <span>{t['com.yunke.payment.plans-error-tip']()}</span>
       <a onClick={resetErrorBoundary} className={styles.errorTipRetry}>
-        {t['com.affine.payment.plans-error-retry']()}
+        {t['com.yunke.payment.plans-error-retry']()}
       </a>
     </div>
   );

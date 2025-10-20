@@ -1,5 +1,5 @@
 import { Button, Modal, notify } from '@yunke/component';
-import { useAsyncCallback } from '@yunke/core/components/hooks/affine-async-hooks';
+import { useAsyncCallback } from '@yunke/core/components/hooks/yunke-async-hooks';
 import { useNavigateHelper } from '@yunke/core/components/hooks/use-navigate-helper';
 import { ServerSelector } from '@yunke/core/components/server-selector';
 import {
@@ -66,7 +66,7 @@ const Dialog = ({
     } catch (e) {
       console.error(e);
       notify.error({
-        title: t['com.affine.workspace.enable-cloud.failed'](),
+        title: t['com.yunke.workspace.enable-cloud.failed'](),
       });
     }
   }, [
@@ -101,12 +101,12 @@ const Dialog = ({
       <CloudWorkspaceIcon width={'36px'} height={'36px'} />
       <div className={styles.textContainer}>
         <div className={styles.title}>
-          {t['com.affine.enableAffineCloudModal.custom-server.title']({
+          {t['com.yunke.enableYunkeCloudModal.custom-server.title']({
             workspaceName: workspace?.name$.value || '未命名',
           })}
         </div>
         <div className={styles.description}>
-          {t['com.affine.enableAffineCloudModal.custom-server.description']()}
+          {t['com.yunke.enableYunkeCloudModal.custom-server.description']()}
         </div>
       </div>
       <div className={styles.serverSelector}>
@@ -123,7 +123,7 @@ const Dialog = ({
         size="extraLarge"
         variant="primary"
       >
-        {t['com.affine.enableAffineCloudModal.custom-server.enable']()}
+        {t['com.yunke.enableYunkeCloudModal.custom-server.enable']()}
       </Button>
     </div>
   );

@@ -1,5 +1,5 @@
 import type { ReferenceInfo } from '@blocksuite/yunke-model';
-import type { AffineTextAttributes } from '@blocksuite/yunke-shared/types';
+import type { YunkeTextAttributes } from '@blocksuite/yunke-shared/types';
 import type { BlockStdScope } from '@blocksuite/std';
 import type { InlineEditor, InlineRange } from '@blocksuite/std/inline';
 
@@ -9,7 +9,7 @@ export function toggleReferencePopup(
   std: BlockStdScope,
   docTitle: string,
   referenceInfo: ReferenceInfo,
-  inlineEditor: InlineEditor<AffineTextAttributes>,
+  inlineEditor: InlineEditor<YunkeTextAttributes>,
   inlineRange: InlineRange,
   abortController: AbortController
 ): ReferencePopup {

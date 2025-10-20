@@ -10,7 +10,7 @@ export const root = style({
     alignItems: 'center',
     ['WebkitAppRegion']: 'drag',
 });
-export const affineIcon = style({
+export const yunkeIcon = style({
     width: 28,
     height: 28,
 });

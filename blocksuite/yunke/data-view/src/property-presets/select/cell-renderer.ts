@@ -70,10 +70,10 @@ export class SelectCell extends BaseCellRenderer<
   override render() {
     return html`
       <div class="${selectStyle}">
-        <affine-multi-tag-view
+        <yunke-multi-tag-view
           .value="${this._value$.value}"
           .options="${this.options$.value}"
-        ></affine-multi-tag-view>
+        ></yunke-multi-tag-view>
       </div>
     `;
   }

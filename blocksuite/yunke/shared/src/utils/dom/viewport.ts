@@ -13,7 +13,7 @@ import type { EditorHost } from '@blocksuite/std';
  */
 export function getViewportElement(editorHost: EditorHost) {
   return (
-    editorHost.closest<HTMLElement>('.affine-page-viewport') ??
-    editorHost.closest<HTMLElement>('.affine-edgeless-viewport')
+    editorHost.closest<HTMLElement>('.yunke-page-viewport') ??
+    editorHost.closest<HTMLElement>('.yunke-edgeless-viewport')
   );
 }

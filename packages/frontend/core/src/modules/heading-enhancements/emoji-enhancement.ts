@@ -74,7 +74,7 @@ export class EmojiEnhancement extends WithDisposable(ShadowlessElement) {
       top: 100%;
       left: 0;
       background: white;
-      border: 1px solid var(--affine-border-color);
+      border: 1px solid var(--yunke-border-color);
       border-radius: 8px;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
       z-index: 1000;
@@ -90,41 +90,41 @@ export class EmojiEnhancement extends WithDisposable(ShadowlessElement) {
 
     .emoji-header {
       padding: 8px 12px;
-      border-bottom: 1px solid var(--affine-border-color);
+      border-bottom: 1px solid var(--yunke-border-color);
       font-size: 12px;
       font-weight: 600;
-      color: var(--affine-text-primary-color);
-      background: var(--affine-background-secondary-color);
+      color: var(--yunke-text-primary-color);
+      background: var(--yunke-background-secondary-color);
     }
 
     .emoji-categories {
       display: flex;
       padding: 8px 12px;
       gap: 4px;
-      border-bottom: 1px solid var(--affine-border-color);
-      background: var(--affine-background-secondary-color);
+      border-bottom: 1px solid var(--yunke-border-color);
+      background: var(--yunke-background-secondary-color);
     }
 
     .emoji-category {
       padding: 4px 8px;
       background: transparent;
-      border: 1px solid var(--affine-border-color);
+      border: 1px solid var(--yunke-border-color);
       border-radius: 4px;
       font-size: 10px;
       cursor: pointer;
       transition: all 0.2s ease;
-      color: var(--affine-text-secondary-color);
+      color: var(--yunke-text-secondary-color);
     }
 
     .emoji-category:hover {
-      background: var(--affine-hover-color);
-      color: var(--affine-text-primary-color);
+      background: var(--yunke-hover-color);
+      color: var(--yunke-text-primary-color);
     }
 
     .emoji-category.active {
-      background: var(--affine-primary-color);
+      background: var(--yunke-primary-color);
       color: white;
-      border-color: var(--affine-primary-color);
+      border-color: var(--yunke-primary-color);
     }
 
     .emoji-list {
@@ -146,8 +146,8 @@ export class EmojiEnhancement extends WithDisposable(ShadowlessElement) {
     }
 
     .emoji-item:hover {
-      background: var(--affine-hover-color);
-      border-color: var(--affine-border-color);
+      background: var(--yunke-hover-color);
+      border-color: var(--yunke-border-color);
     }
 
     .emoji-item.highlighted {
@@ -169,13 +169,13 @@ export class EmojiEnhancement extends WithDisposable(ShadowlessElement) {
     .emoji-name {
       font-size: 12px;
       font-weight: 500;
-      color: var(--affine-text-primary-color);
+      color: var(--yunke-text-primary-color);
       margin-bottom: 2px;
     }
 
     .emoji-keywords {
       font-size: 10px;
-      color: var(--affine-text-secondary-color);
+      color: var(--yunke-text-secondary-color);
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
@@ -183,8 +183,8 @@ export class EmojiEnhancement extends WithDisposable(ShadowlessElement) {
 
     .emoji-relevance {
       font-size: 10px;
-      color: var(--affine-text-tertiary-color);
-      background: var(--affine-background-secondary-color);
+      color: var(--yunke-text-tertiary-color);
+      background: var(--yunke-background-secondary-color);
       padding: 2px 6px;
       border-radius: 10px;
       margin-left: 4px;
@@ -195,8 +195,8 @@ export class EmojiEnhancement extends WithDisposable(ShadowlessElement) {
       flex-wrap: wrap;
       gap: 4px;
       padding: 8px 12px;
-      border-top: 1px solid var(--affine-border-color);
-      background: var(--affine-background-secondary-color);
+      border-top: 1px solid var(--yunke-border-color);
+      background: var(--yunke-background-secondary-color);
     }
 
     .emoji-shortcut {
@@ -205,18 +205,18 @@ export class EmojiEnhancement extends WithDisposable(ShadowlessElement) {
       gap: 4px;
       padding: 4px 8px;
       background: white;
-      border: 1px solid var(--affine-border-color);
+      border: 1px solid var(--yunke-border-color);
       border-radius: 4px;
       font-size: 10px;
       cursor: pointer;
       transition: all 0.2s ease;
-      color: var(--affine-text-secondary-color);
+      color: var(--yunke-text-secondary-color);
     }
 
     .emoji-shortcut:hover {
-      background: var(--affine-hover-color);
-      border-color: var(--affine-primary-color);
-      color: var(--affine-text-primary-color);
+      background: var(--yunke-hover-color);
+      border-color: var(--yunke-primary-color);
+      color: var(--yunke-text-primary-color);
     }
 
     .emoji-search {
@@ -224,13 +224,13 @@ export class EmojiEnhancement extends WithDisposable(ShadowlessElement) {
       align-items: center;
       gap: 8px;
       padding: 8px 12px;
-      border-bottom: 1px solid var(--affine-border-color);
+      border-bottom: 1px solid var(--yunke-border-color);
     }
 
     .emoji-search-input {
       flex: 1;
       padding: 4px 8px;
-      border: 1px solid var(--affine-border-color);
+      border: 1px solid var(--yunke-border-color);
       border-radius: 4px;
       font-size: 12px;
       outline: none;
@@ -238,14 +238,14 @@ export class EmojiEnhancement extends WithDisposable(ShadowlessElement) {
     }
 
     .emoji-search-input:focus {
-      border-color: var(--affine-primary-color);
+      border-color: var(--yunke-primary-color);
     }
 
     .emoji-recent {
       display: flex;
       gap: 4px;
       padding: 8px 12px;
-      border-bottom: 1px solid var(--affine-border-color);
+      border-bottom: 1px solid var(--yunke-border-color);
     }
 
     .emoji-recent-item {
@@ -257,16 +257,16 @@ export class EmojiEnhancement extends WithDisposable(ShadowlessElement) {
     }
 
     .emoji-recent-item:hover {
-      background: var(--affine-hover-color);
+      background: var(--yunke-hover-color);
       transform: scale(1.1);
     }
 
     .emoji-context-info {
       padding: 8px 12px;
-      border-bottom: 1px solid var(--affine-border-color);
+      border-bottom: 1px solid var(--yunke-border-color);
       font-size: 11px;
-      color: var(--affine-text-secondary-color);
-      background: var(--affine-background-secondary-color);
+      color: var(--yunke-text-secondary-color);
+      background: var(--yunke-background-secondary-color);
     }
 
     .context-item {
@@ -329,14 +329,14 @@ export class EmojiEnhancement extends WithDisposable(ShadowlessElement) {
     .no-results {
       padding: 20px;
       text-align: center;
-      color: var(--affine-text-secondary-color);
+      color: var(--yunke-text-secondary-color);
       font-size: 12px;
     }
 
     .loading {
       padding: 20px;
       text-align: center;
-      color: var(--affine-text-secondary-color);
+      color: var(--yunke-text-secondary-color);
       font-size: 12px;
     }
 
@@ -345,8 +345,8 @@ export class EmojiEnhancement extends WithDisposable(ShadowlessElement) {
       display: inline-block;
       width: 12px;
       height: 12px;
-      border: 2px solid var(--affine-border-color);
-      border-top: 2px solid var(--affine-primary-color);
+      border: 2px solid var(--yunke-border-color);
+      border-top: 2px solid var(--yunke-primary-color);
       border-radius: 50%;
       animation: spin 1s linear infinite;
       margin-left: 8px;
@@ -832,7 +832,7 @@ export class EmojiEnhancement extends WithDisposable(ShadowlessElement) {
     
     return html`
       <div class="emoji-recent">
-        <span style="font-size: 11px; color: var(--affine-text-secondary-color); margin-right: 8px;">最近使用:</span>
+        <span style="font-size: 11px; color: var(--yunke-text-secondary-color); margin-right: 8px;">最近使用:</span>
         ${this._recentEmojis.map(emoji => html`
           <div class="emoji-recent-item" @click=${() => this._insertEmoji(emoji)}>
             ${emoji}
@@ -914,7 +914,7 @@ export class EmojiEnhancement extends WithDisposable(ShadowlessElement) {
     
     return html`
       <div class="emoji-shortcuts">
-        <span style="font-size: 11px; color: var(--affine-text-secondary-color); margin-right: 8px;">快捷方式:</span>
+        <span style="font-size: 11px; color: var(--yunke-text-secondary-color); margin-right: 8px;">快捷方式:</span>
         ${shortcuts.map(shortcut => html`
           <div class="emoji-shortcut" @click=${() => this._insertEmoji(shortcut.emoji)}>
             ${shortcut.emoji} ${shortcut.shortcut}

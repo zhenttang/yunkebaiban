@@ -13,7 +13,7 @@
     "blocks": {
       "type": "block",
       "id": "block:dFHfZ7DK2T",
-      "flavour": "affine:page",
+      "flavour": "yunke:page",
       "props": {
         "title": {
           "$blocksuite:internal:text$": true,
@@ -28,10 +28,10 @@
         {
           "type": "block",
           "id": "block:fhGeqvBWaH",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[316.9434255755823,-388.5999870023072,956.5023831485366,102]",
-            "background": "--affine-tag-orange",
+            "background": "--yunke-tag-orange",
             "index": "aN",
             "displayMode": "edgeless",
             "hidden": false,
@@ -50,7 +50,7 @@
             {
               "type": "block",
               "id": "block:kxRZmc6G8Y",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "h4",
                 "text": {
@@ -69,10 +69,10 @@
         {
           "type": "block",
           "id": "block:hMqqdDTMJ4",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[2349.4085591451085,-286.5999870023072,454.45160923865933,102]",
-            "background": "--affine-tag-orange",
+            "background": "--yunke-tag-orange",
             "index": "aU",
             "displayMode": "edgeless",
             "hidden": false,
@@ -91,7 +91,7 @@
             {
               "type": "block",
               "id": "block:nKC90e88Yh",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "h4",
                 "text": {
@@ -110,10 +110,10 @@
         {
           "type": "block",
           "id": "block:Bzo3q6tLyy",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[775.7257472299925,-67.22559886985249,512.2848801152704,102]",
-            "background": "--affine-tag-pink",
+            "background": "--yunke-tag-pink",
             "index": "aP",
             "displayMode": "edgeless",
             "hidden": false,
@@ -132,7 +132,7 @@
             {
               "type": "block",
               "id": "block:pHtEdy769F",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "h4",
                 "text": {
@@ -151,10 +151,10 @@
         {
           "type": "block",
           "id": "block:tgCuRPo22k",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[963.8184872780671,56.095071913649605,807.9424593814309,102]",
-            "background": "--affine-tag-pink",
+            "background": "--yunke-tag-pink",
             "index": "aQ",
             "hidden": false,
             "edgeless": {
@@ -172,7 +172,7 @@
             {
               "type": "block",
               "id": "block:2tKR3RDcA7",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "h4",
                 "text": {
@@ -191,10 +191,10 @@
         {
           "type": "block",
           "id": "block:DD0a6qLPUo",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[963.8184872780671,242.86308190668998,512.2848801152704,102]",
-            "background": "--affine-tag-blue",
+            "background": "--yunke-tag-blue",
             "index": "aS",
             "hidden": false,
             "edgeless": {
@@ -212,7 +212,7 @@
             {
               "type": "block",
               "id": "block:6nOYOsIuDM",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "h4",
                 "text": {
@@ -231,10 +231,10 @@
         {
           "type": "block",
           "id": "block:nJSzr7pJQp",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[1795.969378325836,242.86308190669,760.1443117093463,102.00000000000003]",
-            "background": "--affine-tag-blue",
+            "background": "--yunke-tag-blue",
             "index": "aR",
             "hidden": false,
             "edgeless": {
@@ -252,7 +252,7 @@
             {
               "type": "block",
               "id": "block:qXv7hmmumu",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "h4",
                 "text": {
@@ -271,10 +271,10 @@
         {
           "type": "block",
           "id": "block:J_sXgMZbDS",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[1795.969378325836,365.0437621455573,1463.4164242767897,102]",
-            "background": "--affine-tag-blue",
+            "background": "--yunke-tag-blue",
             "index": "aT",
             "hidden": false,
             "edgeless": {
@@ -292,7 +292,7 @@
             {
               "type": "block",
               "id": "block:_14glRQv1o",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "h4",
                 "text": {
@@ -311,10 +311,10 @@
         {
           "type": "block",
           "id": "block:17pPTk7Hxz",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[354.3509961388838,589.2444991125155,433.12456861620115,102]",
-            "background": "--affine-tag-green",
+            "background": "--yunke-tag-green",
             "index": "aM",
             "hidden": false,
             "edgeless": {
@@ -332,7 +332,7 @@
             {
               "type": "block",
               "id": "block:EZgznRqcyu",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "h4",
                 "text": {
@@ -351,10 +351,10 @@
         {
           "type": "block",
           "id": "block:nJ9Ea2z4VD",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[2349.4085591451085,690.5099711329365,917.5646433088205,102]",
-            "background": "--affine-tag-green",
+            "background": "--yunke-tag-green",
             "index": "aO",
             "hidden": false,
             "edgeless": {
@@ -372,7 +372,7 @@
             {
               "type": "block",
               "id": "block:_XP76JLaKs",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "h4",
                 "text": {
@@ -391,7 +391,7 @@
         {
           "type": "block",
           "id": "block:Yf6OGamTb8",
-          "flavour": "affine:surface",
+          "flavour": "yunke:surface",
           "props": {
             "elements": {
               "QBu5Lifhoz": {
@@ -402,23 +402,23 @@
                 "shapeStyle": "General",
                 "radius": 0,
                 "filled": true,
-                "fillColor": "--affine-palette-shape-orange",
+                "fillColor": "--yunke-palette-shape-orange",
                 "strokeWidth": 4,
-                "strokeColor": "--affine-palette-transparent",
+                "strokeColor": "--yunke-palette-transparent",
                 "strokeStyle": "solid",
                 "roughness": 1.4,
                 "id": "QBu5Lifhoz",
                 "index": "a0",
                 "seed": 104302524,
                 "text": {
-                  "affine:surface:text": true,
+                  "yunke:surface:text": true,
                   "delta": [
                     {
                       "insert": "Project name"
                     }
                   ]
                 },
-                "color": "--affine-palette-line-black",
+                "color": "--yunke-palette-line-black",
                 "fontFamily": "blocksuite:surface:Poppins",
                 "fontWeight": "600",
                 "fontStyle": "normal",
@@ -432,17 +432,17 @@
                 "shapeStyle": "General",
                 "radius": 0,
                 "filled": true,
-                "fillColor": "--affine-palette-shape-tangerine",
+                "fillColor": "--yunke-palette-shape-tangerine",
                 "strokeWidth": 4,
-                "strokeColor": "--affine-palette-transparent",
+                "strokeColor": "--yunke-palette-transparent",
                 "strokeStyle": "solid",
                 "roughness": 1.4,
                 "id": "hPbhsTcrvb",
                 "index": "aHG",
                 "seed": 1385846865,
-                "color": "--affine-palette-line-black",
+                "color": "--yunke-palette-line-black",
                 "text": {
-                  "affine:surface:text": true,
+                  "yunke:surface:text": true,
                   "delta": [
                     {
                       "insert": "Product Team"
@@ -463,17 +463,17 @@
                 "shapeStyle": "General",
                 "radius": 0,
                 "filled": true,
-                "fillColor": "--affine-palette-shape-purple",
+                "fillColor": "--yunke-palette-shape-purple",
                 "strokeWidth": 4,
-                "strokeColor": "--affine-palette-transparent",
+                "strokeColor": "--yunke-palette-transparent",
                 "strokeStyle": "solid",
                 "roughness": 1.4,
                 "id": "IxullQRE2-",
                 "index": "aIG",
                 "seed": 1024566422,
-                "color": "--affine-palette-line-black",
+                "color": "--yunke-palette-line-black",
                 "text": {
-                  "affine:surface:text": true,
+                  "yunke:surface:text": true,
                   "delta": [
                     {
                       "insert": "Design Team"
@@ -494,17 +494,17 @@
                 "shapeStyle": "General",
                 "radius": 0,
                 "filled": true,
-                "fillColor": "--affine-palette-shape-blue",
+                "fillColor": "--yunke-palette-shape-blue",
                 "strokeWidth": 4,
-                "strokeColor": "--affine-palette-transparent",
+                "strokeColor": "--yunke-palette-transparent",
                 "strokeStyle": "solid",
                 "roughness": 1.4,
                 "id": "3N14J0FoBl",
                 "index": "aJG",
                 "seed": 1725109778,
-                "color": "--affine-palette-line-black",
+                "color": "--yunke-palette-line-black",
                 "text": {
-                  "affine:surface:text": true,
+                  "yunke:surface:text": true,
                   "delta": [
                     {
                       "insert": "Development Team"
@@ -525,17 +525,17 @@
                 "shapeStyle": "General",
                 "radius": 0,
                 "filled": true,
-                "fillColor": "--affine-palette-shape-green",
+                "fillColor": "--yunke-palette-shape-green",
                 "strokeWidth": 4,
-                "strokeColor": "--affine-palette-transparent",
+                "strokeColor": "--yunke-palette-transparent",
                 "strokeStyle": "solid",
                 "roughness": 1.4,
                 "id": "7ewYItvKCX",
                 "index": "aKG",
                 "seed": 443669891,
-                "color": "--affine-palette-line-black",
+                "color": "--yunke-palette-line-black",
                 "text": {
-                  "affine:surface:text": true,
+                  "yunke:surface:text": true,
                   "delta": [
                     {
                       "insert": "Operations Team"
@@ -556,17 +556,17 @@
                 "shapeStyle": "General",
                 "radius": 0,
                 "filled": true,
-                "fillColor": "--affine-palette-shape-yellow",
+                "fillColor": "--yunke-palette-shape-yellow",
                 "strokeWidth": 4,
-                "strokeColor": "--affine-palette-transparent",
+                "strokeColor": "--yunke-palette-transparent",
                 "strokeStyle": "solid",
                 "roughness": 1.4,
                 "id": "A6SAz7oJV_",
                 "index": "a6",
                 "seed": 1446871931,
-                "color": "--affine-palette-line-black",
+                "color": "--yunke-palette-line-black",
                 "text": {
-                  "affine:surface:text": true,
+                  "yunke:surface:text": true,
                   "delta": [
                     {
                       "insert": "Team"
@@ -587,17 +587,17 @@
                 "shapeStyle": "General",
                 "radius": 0,
                 "filled": true,
-                "fillColor": "--affine-palette-shape-yellow",
+                "fillColor": "--yunke-palette-shape-yellow",
                 "strokeWidth": 4,
-                "strokeColor": "--affine-palette-transparent",
+                "strokeColor": "--yunke-palette-transparent",
                 "strokeStyle": "solid",
                 "roughness": 1.4,
                 "id": "ndxm4yPbzn",
                 "index": "a7",
                 "seed": 1562786805,
-                "color": "--affine-palette-line-black",
+                "color": "--yunke-palette-line-black",
                 "text": {
-                  "affine:surface:text": true,
+                  "yunke:surface:text": true,
                   "delta": [
                     {
                       "insert": "Week 1"
@@ -618,17 +618,17 @@
                 "shapeStyle": "General",
                 "radius": 0,
                 "filled": true,
-                "fillColor": "--affine-palette-shape-yellow",
+                "fillColor": "--yunke-palette-shape-yellow",
                 "strokeWidth": 4,
-                "strokeColor": "--affine-palette-transparent",
+                "strokeColor": "--yunke-palette-transparent",
                 "strokeStyle": "solid",
                 "roughness": 1.4,
                 "id": "o_GwDae6t5",
                 "index": "a8",
                 "seed": 369041213,
-                "color": "--affine-palette-line-black",
+                "color": "--yunke-palette-line-black",
                 "text": {
-                  "affine:surface:text": true,
+                  "yunke:surface:text": true,
                   "delta": [
                     {
                       "insert": "Week 2"
@@ -649,17 +649,17 @@
                 "shapeStyle": "General",
                 "radius": 0,
                 "filled": true,
-                "fillColor": "--affine-palette-shape-yellow",
+                "fillColor": "--yunke-palette-shape-yellow",
                 "strokeWidth": 4,
-                "strokeColor": "--affine-palette-transparent",
+                "strokeColor": "--yunke-palette-transparent",
                 "strokeStyle": "solid",
                 "roughness": 1.4,
                 "id": "t8ReBu-vGy",
                 "index": "a9",
                 "seed": 1889247856,
-                "color": "--affine-palette-line-black",
+                "color": "--yunke-palette-line-black",
                 "text": {
-                  "affine:surface:text": true,
+                  "yunke:surface:text": true,
                   "delta": [
                     {
                       "insert": "Week 3"
@@ -680,17 +680,17 @@
                 "shapeStyle": "General",
                 "radius": 0,
                 "filled": true,
-                "fillColor": "--affine-palette-shape-yellow",
+                "fillColor": "--yunke-palette-shape-yellow",
                 "strokeWidth": 4,
-                "strokeColor": "--affine-palette-transparent",
+                "strokeColor": "--yunke-palette-transparent",
                 "strokeStyle": "solid",
                 "roughness": 1.4,
                 "id": "9y7hmXB7vH",
                 "index": "aA",
                 "seed": 706323358,
-                "color": "--affine-palette-line-black",
+                "color": "--yunke-palette-line-black",
                 "text": {
-                  "affine:surface:text": true,
+                  "yunke:surface:text": true,
                   "delta": [
                     {
                       "insert": "Week 4"
@@ -711,17 +711,17 @@
                 "shapeStyle": "General",
                 "radius": 0,
                 "filled": true,
-                "fillColor": "--affine-palette-shape-yellow",
+                "fillColor": "--yunke-palette-shape-yellow",
                 "strokeWidth": 4,
-                "strokeColor": "--affine-palette-transparent",
+                "strokeColor": "--yunke-palette-transparent",
                 "strokeStyle": "solid",
                 "roughness": 1.4,
                 "id": "eATzJuFCDy",
                 "index": "aB",
                 "seed": 1512922881,
-                "color": "--affine-palette-line-black",
+                "color": "--yunke-palette-line-black",
                 "text": {
-                  "affine:surface:text": true,
+                  "yunke:surface:text": true,
                   "delta": [
                     {
                       "insert": "Week 5"
@@ -742,17 +742,17 @@
                 "shapeStyle": "General",
                 "radius": 0,
                 "filled": true,
-                "fillColor": "--affine-palette-shape-yellow",
+                "fillColor": "--yunke-palette-shape-yellow",
                 "strokeWidth": 4,
-                "strokeColor": "--affine-palette-transparent",
+                "strokeColor": "--yunke-palette-transparent",
                 "strokeStyle": "solid",
                 "roughness": 1.4,
                 "id": "aCLgPjIA6r",
                 "index": "aC",
                 "seed": 1447411329,
-                "color": "--affine-palette-line-black",
+                "color": "--yunke-palette-line-black",
                 "text": {
-                  "affine:surface:text": true,
+                  "yunke:surface:text": true,
                   "delta": [
                     {
                       "insert": "Week 6"
@@ -773,15 +773,15 @@
                 "shapeStyle": "General",
                 "radius": 0,
                 "filled": true,
-                "fillColor": "--affine-palette-shape-tangerine",
+                "fillColor": "--yunke-palette-shape-tangerine",
                 "strokeWidth": 4,
-                "strokeColor": "--affine-palette-transparent",
+                "strokeColor": "--yunke-palette-transparent",
                 "strokeStyle": "solid",
                 "roughness": 1.4,
                 "id": "vCDm4UDNs9",
                 "index": "aHV",
                 "seed": 1767513575,
-                "color": "--affine-palette-line-black"
+                "color": "--yunke-palette-line-black"
               },
               "zGlXigM06M": {
                 "type": "shape",
@@ -791,17 +791,17 @@
                 "shapeStyle": "General",
                 "radius": 0,
                 "filled": true,
-                "fillColor": "--affine-palette-shape-purple",
+                "fillColor": "--yunke-palette-shape-purple",
                 "strokeWidth": 4,
-                "strokeColor": "--affine-palette-transparent",
+                "strokeColor": "--yunke-palette-transparent",
                 "strokeStyle": "solid",
                 "roughness": 1.4,
                 "id": "zGlXigM06M",
                 "index": "aIV",
                 "seed": 507545410,
-                "color": "--affine-palette-line-black",
+                "color": "--yunke-palette-line-black",
                 "text": {
-                  "affine:surface:text": true,
+                  "yunke:surface:text": true,
                   "delta": []
                 },
                 "fontFamily": "blocksuite:surface:Poppins",
@@ -818,17 +818,17 @@
                 "shapeStyle": "General",
                 "radius": 0,
                 "filled": true,
-                "fillColor": "--affine-palette-shape-blue",
+                "fillColor": "--yunke-palette-shape-blue",
                 "strokeWidth": 4,
-                "strokeColor": "--affine-palette-transparent",
+                "strokeColor": "--yunke-palette-transparent",
                 "strokeStyle": "solid",
                 "roughness": 1.4,
                 "id": "kon4M9YRFp",
                 "index": "aJV",
                 "seed": 271186894,
-                "color": "--affine-palette-line-black",
+                "color": "--yunke-palette-line-black",
                 "text": {
-                  "affine:surface:text": true,
+                  "yunke:surface:text": true,
                   "delta": []
                 },
                 "fontFamily": "blocksuite:surface:Poppins",
@@ -845,17 +845,17 @@
                 "shapeStyle": "General",
                 "radius": 0,
                 "filled": true,
-                "fillColor": "--affine-palette-shape-green",
+                "fillColor": "--yunke-palette-shape-green",
                 "strokeWidth": 4,
-                "strokeColor": "--affine-palette-transparent",
+                "strokeColor": "--yunke-palette-transparent",
                 "strokeStyle": "solid",
                 "roughness": 1.4,
                 "id": "DSfEkr4OQN",
                 "index": "aKV",
                 "seed": 1227614862,
-                "color": "--affine-palette-line-black",
+                "color": "--yunke-palette-line-black",
                 "text": {
-                  "affine:surface:text": true,
+                  "yunke:surface:text": true,
                   "delta": []
                 },
                 "fontFamily": "blocksuite:surface:Poppins",
@@ -869,14 +869,14 @@
                 "xywh": "[-1275.4919764936606,-788.8353316096283,387.199951171875,89.60000000000001]",
                 "rotate": 0,
                 "text": {
-                  "affine:surface:text": true,
+                  "yunke:surface:text": true,
                   "delta": [
                     {
                       "insert": "Gantt Chart"
                     }
                   ]
                 },
-                "color": "--affine-palette-line-black",
+                "color": "--yunke-palette-line-black",
                 "fontSize": 64,
                 "fontFamily": "blocksuite:surface:Poppins",
                 "fontWeight": "600",
@@ -891,14 +891,14 @@
                 "xywh": "[-1275.4919764936606,-672.1641803723196,773,618]",
                 "rotate": 0,
                 "text": {
-                  "affine:surface:text": true,
+                  "yunke:surface:text": true,
                   "delta": [
                     {
                       "insert": "A Gantt Chart template is a tool for scheduling and tracking project tasks, featuring horizontal bars representing each task's duration against a timeline.\n \nThis template helps in planning, coordinating, and tracking the progress of different tasks within a project.\n\nTo use this Gantt chart, list all project tasks with Note tool, showing dependencies and progress to effectively plan and monitor the project's schedule."
                     }
                   ]
                 },
-                "color": "--affine-palette-line-black",
+                "color": "--yunke-palette-line-black",
                 "fontSize": 32,
                 "fontFamily": "blocksuite:surface:Poppins",
                 "fontWeight": "400",
@@ -912,7 +912,7 @@
               "hjt6APTUti": {
                 "type": "group",
                 "children": {
-                  "affine:surface:ymap": true,
+                  "yunke:surface:ymap": true,
                   "json": {
                     "A6SAz7oJV_": true,
                     "ndxm4yPbzn": true,
@@ -924,7 +924,7 @@
                   }
                 },
                 "title": {
-                  "affine:surface:text": true,
+                  "yunke:surface:text": true,
                   "delta": [
                     {
                       "insert": "Group 5"
@@ -943,9 +943,9 @@
                 "shapeStyle": "General",
                 "radius": 0,
                 "filled": true,
-                "fillColor": "--affine-palette-shape-yellow",
+                "fillColor": "--yunke-palette-shape-yellow",
                 "strokeWidth": 12,
-                "strokeColor": "--affine-palette-line-yellow",
+                "strokeColor": "--yunke-palette-line-yellow",
                 "strokeStyle": "solid",
                 "roughness": 1.4,
                 "id": "taGZNeRc2-",
@@ -955,7 +955,7 @@
               "xmLzu3S297": {
                 "type": "group",
                 "children": {
-                  "affine:surface:ymap": true,
+                  "yunke:surface:ymap": true,
                   "json": {
                     "taGZNeRc2-": true,
                     "HCZJDUA-v9": true,
@@ -963,7 +963,7 @@
                   }
                 },
                 "title": {
-                  "affine:surface:text": true,
+                  "yunke:surface:text": true,
                   "delta": [
                     {
                       "insert": "Instruction"

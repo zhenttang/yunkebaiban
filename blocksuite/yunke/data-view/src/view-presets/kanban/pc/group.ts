@@ -17,7 +17,7 @@ import { dragHandler } from '../../../core/utils/wc-dnd/dnd-context.js';
 import type { KanbanViewUILogic } from './kanban-view-ui-logic.js';
 
 const styles = css`
-  affine-data-view-kanban-group {
+  yunke-data-view-kanban-group {
     width: 260px;
     flex-shrink: 0;
     border-radius: 8px;
@@ -43,7 +43,7 @@ const styles = css`
     font-size: var(--data-view-cell-text-size);
   }
 
-  affine-data-view-kanban-group:hover .group-header-op {
+  yunke-data-view-kanban-group:hover .group-header-op {
     visibility: visible;
     opacity: 1;
   }
@@ -67,26 +67,26 @@ const styles = css`
     visibility: hidden;
     opacity: 0;
     transition: all 150ms cubic-bezier(0.42, 0, 1, 1);
-    color: var(--affine-text-secondary-color);
+    color: var(--yunke-text-secondary-color);
   }
 
-  affine-data-view-kanban-group:hover .add-card {
+  yunke-data-view-kanban-group:hover .add-card {
     visibility: visible;
     opacity: 1;
   }
 
-  affine-data-view-kanban-group .add-card:hover {
-    background-color: var(--affine-hover-color);
-    color: var(--affine-text-primary-color);
+  yunke-data-view-kanban-group .add-card:hover {
+    background-color: var(--yunke-hover-color);
+    color: var(--yunke-text-primary-color);
   }
 
   .sortable-ghost {
-    background-color: var(--affine-hover-color);
+    background-color: var(--yunke-hover-color);
     opacity: 0.5;
   }
 
   .sortable-drag {
-    background-color: var(--affine-background-primary-color);
+    background-color: var(--yunke-background-primary-color);
   }
 `;
 
@@ -166,12 +166,12 @@ export class KanbanGroup extends SignalWatcher(
           row => row.rowId,
           row => {
             return html`
-              <affine-data-view-kanban-card
+              <yunke-data-view-kanban-card
                 data-card-id="${row.rowId}"
                 .groupKey="${this.group.key}"
                 .kanbanViewLogic="${this.kanbanViewLogic}"
                 .cardId="${row.rowId}"
-              ></affine-data-view-kanban-card>
+              ></yunke-data-view-kanban-card>
             `;
           }
         )}
@@ -202,6 +202,6 @@ export class KanbanGroup extends SignalWatcher(
 
 declare global {
   interface HTMLElementTagNameMap {
-    'affine-data-view-kanban-group': KanbanGroup;
+    'yunke-data-view-kanban-group': KanbanGroup;
   }
 }

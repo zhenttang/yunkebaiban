@@ -7,9 +7,9 @@ export const quickMenuPanel = style({
   transform: 'translate(-50%, -50%)',
   width: '480px',
   maxHeight: '600px',
-  backgroundColor: 'var(--affine-background-overlay-panel-color)',
+  backgroundColor: 'var(--yunke-background-overlay-panel-color)',
   borderRadius: '12px',
-  boxShadow: 'var(--affine-shadow-2)',
+  boxShadow: 'var(--yunke-shadow-2)',
   padding: '12px',
   zIndex: 1000,
   display: 'flex',
@@ -22,8 +22,8 @@ export const quickMenuHeader = style({
   padding: '8px 12px',
   fontSize: '14px',
   fontWeight: 600,
-  color: 'var(--affine-text-primary-color)',
-  borderBottom: '1px solid var(--affine-border-color)',
+  color: 'var(--yunke-text-primary-color)',
+  borderBottom: '1px solid var(--yunke-border-color)',
   marginBottom: '8px',
 });
 
@@ -44,11 +44,11 @@ export const quickMenuItem = style({
   cursor: 'pointer',
   transition: 'all 0.2s',
   ':hover': {
-    backgroundColor: 'var(--affine-hover-color)',
+    backgroundColor: 'var(--yunke-hover-color)',
   },
   selectors: {
     '&[data-active="true"]': {
-      backgroundColor: 'var(--affine-hover-color)',
+      backgroundColor: 'var(--yunke-hover-color)',
     },
   },
 });
@@ -59,7 +59,7 @@ export const quickMenuItemIcon = style({
   justifyContent: 'center',
   width: '24px',
   height: '24px',
-  color: 'var(--affine-icon-color)',
+  color: 'var(--yunke-icon-color)',
 });
 
 export const quickMenuItemContent = style({
@@ -72,12 +72,12 @@ export const quickMenuItemContent = style({
 export const quickMenuItemTitle = style({
   fontSize: '14px',
   fontWeight: 500,
-  color: 'var(--affine-text-primary-color)',
+  color: 'var(--yunke-text-primary-color)',
 });
 
 export const quickMenuItemDescription = style({
   fontSize: '12px',
-  color: 'var(--affine-text-secondary-color)',
+  color: 'var(--yunke-text-secondary-color)',
 });
 
 export const quickMenuOverlay = style({

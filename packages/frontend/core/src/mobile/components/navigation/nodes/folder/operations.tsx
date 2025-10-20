@@ -23,8 +23,8 @@ export const FavoriteFolderOperation = ({ id }: { id: string }) => {
       onClick={() => compatibleFavoriteItemsAdapter.toggle(id, 'folder')}
     >
       {favorite
-        ? t['com.affine.rootAppSidebar.organize.folder-rm-favorite']()
-        : t['com.affine.rootAppSidebar.organize.folder-add-favorite']()}
+        ? t['com.yunke.rootAppSidebar.organize.folder-rm-favorite']()
+        : t['com.yunke.rootAppSidebar.organize.folder-add-favorite']()}
     </MenuItem>
   );
 };

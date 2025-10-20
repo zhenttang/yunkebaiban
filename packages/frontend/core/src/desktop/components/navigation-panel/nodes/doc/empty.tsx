@@ -1,5 +1,5 @@
 import { type DropTargetDropEvent, useDropTarget } from '@yunke/component';
-import type { AffineDNDData } from '@yunke/core/types/dnd';
+import type { YunkeDNDData } from '@yunke/core/types/dnd';
 import { useI18n } from '@yunke/i18n';
 
 import { EmptyNodeChildren } from '../../layouts/empty-node-children';
@@ -8,10 +8,10 @@ export const Empty = ({
   onDrop,
   noAccessible = false,
 }: {
-  onDrop: (data: DropTargetDropEvent<AffineDNDData>) => void;
+  onDrop: (data: DropTargetDropEvent<YunkeDNDData>) => void;
   noAccessible?: boolean;
 }) => {
-  const { dropTargetRef } = useDropTarget<AffineDNDData>(
+  const { dropTargetRef } = useDropTarget<YunkeDNDData>(
     () => ({
       onDrop,
     }),
@@ -22,8 +22,8 @@ export const Empty = ({
   return (
     <EmptyNodeChildren ref={dropTargetRef}>
       {noAccessible
-        ? t['com.affine.share-menu.option.permission.no-access']()
-        : t['com.affine.rootAppSidebar.docs.no-subdoc']()}
+        ? t['com.yunke.share-menu.option.permission.no-access']()
+        : t['com.yunke.rootAppSidebar.docs.no-subdoc']()}
     </EmptyNodeChildren>
   );
 };

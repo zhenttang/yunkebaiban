@@ -51,13 +51,13 @@ export const WorkspaceModeFilterTab = ({
         () => [
           {
             value: 'docs',
-            label: t['com.affine.docs.header'](),
+            label: t['com.yunke.docs.header'](),
             testId: 'workspace-docs-button',
             className: styles.filterTab,
           },
           {
             value: 'collections',
-            label: t['com.affine.collections.header'](),
+            label: t['com.yunke.collections.header'](),
             testId: 'workspace-collections-button',
             className: styles.filterTab,
           },

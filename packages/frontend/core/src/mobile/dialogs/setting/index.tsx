@@ -55,7 +55,7 @@ export const SettingDialog = ({
 
   return (
     <SwipeDialog
-      title={t['com.affine.mobile.setting.header-title']()}
+      title={t['com.yunke.mobile.setting.header-title']()}
       open
       onOpenChange={() => close()}
     >
@@ -65,7 +65,7 @@ export const SettingDialog = ({
 
   // return (
   //   <ConfigModal
-  //     title={t['com.affine.mobile.setting.header-title']()}
+  //     title={t['com.yunke.mobile.setting.header-title']()}
   //     open
   //     onOpenChange={() => close()}
   //     onBack={close}

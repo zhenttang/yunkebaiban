@@ -16,7 +16,7 @@ export const ImportTemplateButton = ({
       variant="primary"
       onClick={() => jumpToImportTemplate(name, snapshotUrl)}
     >
-      {t['com.affine.share-page.header.import-template']()}
+      {t['com.yunke.share-page.header.import-template']()}
     </Button>
   );
 };

@@ -179,7 +179,7 @@ export class MindMapIndicatorOverlay extends Overlay {
     const targetPos = this.targetBound;
     const points = this._generatePath();
     const color = this.themeService.getColorValue(
-      '--affine-primary-color',
+      '--yunke-primary-color',
       '#1E96EB',
       true
     );

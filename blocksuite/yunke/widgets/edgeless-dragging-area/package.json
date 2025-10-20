@@ -1,6 +1,6 @@
 {
   "name": "@blocksuite/yunke-widget-edgeless-dragging-area",
-  "description": "Affine edgeless dragging area widget.",
+  "description": "Yunke edgeless dragging area widget.",
   "type": "module",
   "scripts": {
     "build": "tsc"

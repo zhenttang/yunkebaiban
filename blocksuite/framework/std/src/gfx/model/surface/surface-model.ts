@@ -23,11 +23,11 @@ import type { GfxLocalElementModel } from './local-element-model.js';
 /**
  * Used for text field
  */
-export const SURFACE_TEXT_UNIQ_IDENTIFIER = 'affine:surface:text';
+export const SURFACE_TEXT_UNIQ_IDENTIFIER = 'yunke:surface:text';
 /**
  * Used for field that use Y.Map. E.g. group children field
  */
-export const SURFACE_YMAP_UNIQ_IDENTIFIER = 'affine:surface:ymap';
+export const SURFACE_YMAP_UNIQ_IDENTIFIER = 'yunke:surface:ymap';
 
 export type SurfaceBlockProps = {
   elements: Boxed<Y.Map<Y.Map<unknown>>>;

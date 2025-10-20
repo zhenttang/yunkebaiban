@@ -9,7 +9,7 @@ export const RootEmpty = () => {
   return (
     <NavigationPanelEmptySection
       icon={TagIcon}
-      message={t['com.affine.rootAppSidebar.tags.empty']()}
+      message={t['com.yunke.rootAppSidebar.tags.empty']()}
       messageTestId="slider-bar-tags-empty-message"
     />
   );

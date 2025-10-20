@@ -8,7 +8,7 @@ import { LinkInlineSpecExtension } from './inline-spec';
 import { linkToolbar } from './toolbar';
 
 export class LinkViewExtension extends ViewExtensionProvider {
-  override name = 'affine-link-inline';
+  override name = 'yunke-link-inline';
 
   override effect(): void {
     super.effect();

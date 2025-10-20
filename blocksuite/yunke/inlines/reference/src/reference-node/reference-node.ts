@@ -9,8 +9,8 @@ import {
   DocDisplayMetaProvider,
   ToolbarRegistryIdentifier,
 } from '@blocksuite/yunke-shared/services';
-import { affineTextStyles } from '@blocksuite/yunke-shared/styles';
-import type { AffineTextAttributes } from '@blocksuite/yunke-shared/types';
+import { yunkeTextStyles } from '@blocksuite/yunke-shared/styles';
+import type { YunkeTextAttributes } from '@blocksuite/yunke-shared/types';
 import {
   cloneReferenceInfo,
   referenceToNode,
@@ -37,13 +37,13 @@ import { RefNodeSlotsProvider } from './reference-node-slots';
 import type { DocLinkClickedEvent } from './types';
 
 @Peekable({ action: false })
-export class AffineReference extends WithDisposable(ShadowlessElement) {
+export class YunkeReference extends WithDisposable(ShadowlessElement) {
   static override styles = css`
-    .affine-reference {
+    .yunke-reference {
       white-space: normal;
       word-break: break-word;
-      color: var(--affine-text-primary-color);
-      fill: var(--affine-icon-color);
+      color: var(--yunke-text-primary-color);
+      fill: var(--yunke-icon-color);
       border-radius: 4px;
       text-decoration: none;
       cursor: pointer;
@@ -54,21 +54,21 @@ export class AffineReference extends WithDisposable(ShadowlessElement) {
         margin-bottom: 0.1em;
       }
     }
-    .affine-reference:hover {
-      background: var(--affine-hover-color);
+    .yunke-reference:hover {
+      background: var(--yunke-hover-color);
     }
 
-    .affine-reference[data-selected='true'] {
-      background: var(--affine-hover-color);
+    .yunke-reference[data-selected='true'] {
+      background: var(--yunke-hover-color);
     }
 
-    .affine-reference-title {
+    .yunke-reference-title {
       margin-left: 4px;
-      border-bottom: 0.5px solid var(--affine-divider-color);
+      border-bottom: 0.5px solid var(--yunke-divider-color);
       transition: border 0.2s ease-out;
     }
-    .affine-reference-title:hover {
-      border-bottom: 0.5px solid var(--affine-icon-color);
+    .yunke-reference-title:hover {
+      border-bottom: 0.5px solid var(--yunke-icon-color);
     }
   `;
 
@@ -130,7 +130,7 @@ export class AffineReference extends WithDisposable(ShadowlessElement) {
   }
 
   get inlineEditor() {
-    const inlineRoot = this.closest<InlineRootElement<AffineTextAttributes>>(
+    const inlineRoot = this.closest<InlineRootElement<YunkeTextAttributes>>(
       `[${INLINE_ROOT_ATTR}]`
     );
     return inlineRoot?.inlineEditor;
@@ -259,13 +259,13 @@ export class AffineReference extends WithDisposable(ShadowlessElement) {
       ],
     ]);
 
-    const style = affineTextStyles(
+    const style = yunkeTextStyles(
       attributes,
       isDeleted
         ? {
-            color: 'var(--affine-text-disable-color)',
+            color: 'var(--yunke-text-disable-color)',
             textDecoration: 'line-through',
-            fill: 'var(--affine-text-disable-color)',
+            fill: 'var(--yunke-text-disable-color)',
           }
         : {}
     );
@@ -274,7 +274,7 @@ export class AffineReference extends WithDisposable(ShadowlessElement) {
       ? this.customContent(this)
       : html`${icon}<span
             data-title=${ifDefined(title)}
-            class="affine-reference-title"
+            class="yunke-reference-title"
             >${title}</span
           >`;
 
@@ -282,7 +282,7 @@ export class AffineReference extends WithDisposable(ShadowlessElement) {
     // embed element to make sure inline range calculation is correct
     return html`<span
       data-selected=${this.selected}
-      class="affine-reference"
+      class="yunke-reference"
       style=${styleMap(style)}
       @click=${(event: MouseEvent) => this.open({ event })}
       >${content}<v-text .str=${ZERO_WIDTH_FOR_EMBED_NODE}></v-text
@@ -302,7 +302,7 @@ export class AffineReference extends WithDisposable(ShadowlessElement) {
   accessor config!: ReferenceNodeConfigProvider;
 
   @property({ type: Object })
-  accessor delta: DeltaInsert<AffineTextAttributes> = {
+  accessor delta: DeltaInsert<YunkeTextAttributes> = {
     insert: ZERO_WIDTH_FOR_EMPTY_LINE,
     attributes: {},
   };

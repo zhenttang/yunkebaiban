@@ -12,8 +12,8 @@ import {
   Scrollable,
 } from '@yunke/component';
 import { AuthPageContainer } from '@yunke/component/auth-components';
-import { useSignOut } from '@yunke/core/components/hooks/affine/use-sign-out';
-import { useAsyncCallback } from '@yunke/core/components/hooks/affine-async-hooks';
+import { useSignOut } from '@yunke/core/components/hooks/yunke/use-sign-out';
+import { useAsyncCallback } from '@yunke/core/components/hooks/yunke-async-hooks';
 import { useNavigateHelper } from '@yunke/core/components/hooks/use-navigate-helper';
 import { useWorkspaceInfo } from '@yunke/core/components/hooks/use-workspace-info';
 import { PureWorkspaceCard } from '@yunke/core/components/workspace-selector/workspace-card';
@@ -36,10 +36,10 @@ import { PageNotFound } from '../404';
 import * as styles from './styles.css';
 
 const benefitList: I18nString[] = [
-  'com.affine.upgrade-to-team-page.benefit.g1',
-  'com.affine.upgrade-to-team-page.benefit.g2',
-  'com.affine.upgrade-to-team-page.benefit.g3',
-  'com.affine.upgrade-to-team-page.benefit.g4',
+  'com.yunke.upgrade-to-team-page.benefit.g1',
+  'com.yunke.upgrade-to-team-page.benefit.g2',
+  'com.yunke.upgrade-to-team-page.benefit.g3',
+  'com.yunke.upgrade-to-team-page.benefit.g4',
 ];
 
 export const Component = () => {
@@ -83,7 +83,7 @@ export const UpgradeToTeam = ({ recurring }: { recurring: string | null }) => {
       return name;
     }
     return t[
-      'com.affine.upgrade-to-team-page.workspace-selector.placeholder'
+      'com.yunke.upgrade-to-team-page.workspace-selector.placeholder'
     ]();
   }, [name, selectedWorkspace, t]);
 
@@ -103,7 +103,7 @@ export const UpgradeToTeam = ({ recurring }: { recurring: string | null }) => {
   const [params] = useSearchParams();
   const isTeam = workspaceInfo?.isTeam;
 
-  const openAFFiNE = useCallback(() => {
+  const openYUNKE = useCallback(() => {
     if (params.get('client')) {
       jumpToOpenInApp(`/workspace/${selectedWorkspace?.id}/all`);
     } else if (selectedWorkspace) {
@@ -124,12 +124,12 @@ export const UpgradeToTeam = ({ recurring }: { recurring: string | null }) => {
 
   useEffect(() => {
     if (isTeam && selectedWorkspace) {
-      return openAFFiNE();
+      return openYUNKE();
     }
-  }, [isTeam, jumpToPage, openAFFiNE, selectedWorkspace]);
+  }, [isTeam, jumpToPage, openYUNKE, selectedWorkspace]);
 
   return (
-    <AuthPageContainer title={t['com.affine.upgrade-to-team-page.title']()}>
+    <AuthPageContainer title={t['com.yunke.upgrade-to-team-page.title']()}>
       <div className={styles.root}>
         <Menu
           items={
@@ -159,11 +159,11 @@ export const UpgradeToTeam = ({ recurring }: { recurring: string | null }) => {
             onClick={onUpgradeButtonClick}
             disabled={!selectedWorkspace}
           >
-            {t['com.affine.upgrade-to-team-page.upgrade-button']()}
+            {t['com.yunke.upgrade-to-team-page.upgrade-button']()}
           </Button>
         </div>
         <div className={styles.contentContainer}>
-          <div>{t['com.affine.upgrade-to-team-page.benefit.title']()}</div>
+          <div>{t['com.yunke.upgrade-to-team-page.benefit.title']()}</div>
           <ul>
             {benefitList.map((benefit, index) => (
               <li key={`${benefit}:${index}`} className={styles.liStyle}>
@@ -173,7 +173,7 @@ export const UpgradeToTeam = ({ recurring }: { recurring: string | null }) => {
             ))}
           </ul>
           <div>
-            {t['com.affine.upgrade-to-team-page.benefit.description']()}
+            {t['com.yunke.upgrade-to-team-page.benefit.description']()}
           </div>
           {selectedWorkspace && (
             <UpgradeDialog
@@ -236,11 +236,11 @@ const UpgradeDialog = ({
   return (
     <Modal width={480} open={open} onOpenChange={onOpenChange}>
       <div className={styles.dialogTitle}>
-        {t['com.affine.upgrade-to-team-page.upgrade-confirm.title']()}
+        {t['com.yunke.upgrade-to-team-page.upgrade-confirm.title']()}
       </div>
       <div className={styles.dialogMessage}>
         <Trans
-          i18nKey="com.affine.upgrade-to-team-page.upgrade-confirm.description"
+          i18nKey="com.yunke.upgrade-to-team-page.upgrade-confirm.description"
           components={{
             1: <span style={{ fontWeight: 600 }} />,
           }}
@@ -264,7 +264,7 @@ const UpgradeDialog = ({
             },
           }}
         >
-          {t['com.affine.payment.upgrade']()}
+          {t['com.yunke.payment.upgrade']()}
         </Upgrade>
       </div>
     </Modal>
@@ -284,7 +284,7 @@ const WorkspaceSelector = ({
   const cloudWorkspaces = useMemo(
     () =>
       metas.filter(
-        ({ flavour }) => flavour === 'affine-cloud'
+        ({ flavour }) => flavour === 'yunke-cloud'
       ) as WorkspaceMetadata[],
     [metas]
   );
@@ -313,7 +313,7 @@ const WorkspaceSelector = ({
         </Scrollable.Root>
       ) : (
         <div className={styles.noWorkspaceItem}>
-          {t['com.affine.upgrade-to-team-page.no-workspace-available']()}
+          {t['com.yunke.upgrade-to-team-page.no-workspace-available']()}
         </div>
       )}
       <Divider size="thinner" />
@@ -325,7 +325,7 @@ const WorkspaceSelector = ({
       >
         <div className={styles.itemContent}>
           {t[
-            'com.affine.upgrade-to-team-page.workspace-selector.create-workspace'
+            'com.yunke.upgrade-to-team-page.workspace-selector.create-workspace'
           ]()}
         </div>
       </MenuItem>
@@ -379,7 +379,7 @@ const CreateWorkspaceDialog = ({
   const onCreate = useCallback(async () => {
     const newWorkspace = await buildShowcaseWorkspace(
       workspacesService,
-      'affine-cloud',
+      'yunke-cloud',
       name
     );
     notify.success({
@@ -397,19 +397,19 @@ const CreateWorkspaceDialog = ({
     <Modal width={480} open={open} onOpenChange={onOpenChange}>
       <div className={styles.dialogTitle}>
         {t[
-          'com.affine.upgrade-to-team-page.create-and-upgrade-confirm.title'
+          'com.yunke.upgrade-to-team-page.create-and-upgrade-confirm.title'
         ]()}
       </div>
 
       <div className={styles.createConfirmContent}>
         <div>
           {t[
-            'com.affine.upgrade-to-team-page.create-and-upgrade-confirm.description'
+            'com.yunke.upgrade-to-team-page.create-and-upgrade-confirm.description'
           ]()}
         </div>
         <Input
           placeholder={t[
-            'com.affine.upgrade-to-team-page.create-and-upgrade-confirm.placeholder'
+            'com.yunke.upgrade-to-team-page.create-and-upgrade-confirm.placeholder'
           ]()}
           value={name}
           onChange={setName}
@@ -424,7 +424,7 @@ const CreateWorkspaceDialog = ({
           onClick={onBeforeCheckout}
         >
           {t[
-            'com.affine.upgrade-to-team-page.create-and-upgrade-confirm.confirm'
+            'com.yunke.upgrade-to-team-page.create-and-upgrade-confirm.confirm'
           ]()}
         </Button>
       </div>

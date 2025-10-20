@@ -62,12 +62,12 @@ export const PageHeaderMenuButton = () => {
     notify.success({
       title:
         primaryMode === 'page'
-          ? t['com.affine.toastMessage.defaultMode.edgeless.title']()
-          : t['com.affine.toastMessage.defaultMode.page.title'](),
+          ? t['com.yunke.toastMessage.defaultMode.edgeless.title']()
+          : t['com.yunke.toastMessage.defaultMode.page.title'](),
       message:
         primaryMode === 'page'
-          ? t['com.affine.toastMessage.defaultMode.edgeless.message']()
-          : t['com.affine.toastMessage.defaultMode.page.message'](),
+          ? t['com.yunke.toastMessage.defaultMode.edgeless.message']()
+          : t['com.yunke.toastMessage.defaultMode.page.message'](),
     });
   }, [primaryMode, editorService, t]);
 
@@ -99,8 +99,8 @@ export const PageHeaderMenuButton = () => {
         disabled={!canEdit}
       >
         {primaryMode === 'page'
-          ? t['com.affine.editorDefaultMode.edgeless']()
-          : t['com.affine.editorDefaultMode.page']()}
+          ? t['com.yunke.editorDefaultMode.edgeless']()
+          : t['com.yunke.editorDefaultMode.page']()}
       </MobileMenuItem>
       <MobileMenuItem
         data-testid="editor-option-menu-favorite"
@@ -108,8 +108,8 @@ export const PageHeaderMenuButton = () => {
         prefixIcon={<IsFavoriteIcon favorite={favorite} />}
       >
         {favorite
-          ? t['com.affine.favoritePageOperation.remove']()
-          : t['com.affine.favoritePageOperation.add']()}
+          ? t['com.yunke.favoritePageOperation.remove']()
+          : t['com.yunke.favoritePageOperation.add']()}
       </MobileMenuItem>
       <MenuSeparator />
       <MenuSub
@@ -120,10 +120,10 @@ export const PageHeaderMenuButton = () => {
         title={title ?? t['unnamed']()}
         items={<DocInfoSheet docId={docId} />}
       >
-        <span>{t['com.affine.page-properties.page-info.view']()}</span>
+        <span>{t['com.yunke.page-properties.page-info.view']()}</span>
       </MenuSub>
       <MobileMenu
-        title={t['com.affine.header.menu.toc']()}
+        title={t['com.yunke.header.menu.toc']()}
         items={
           <div className={styles.outlinePanel}>
             <MobileTocMenu editor={editorContainer?.host ?? null} />
@@ -131,7 +131,7 @@ export const PageHeaderMenuButton = () => {
         }
       >
         <MobileMenuItem prefixIcon={<TocIcon />} onClick={preventDefault}>
-          <span>{t['com.affine.header.option.view-toc']()}</span>
+          <span>{t['com.yunke.header.option.view-toc']()}</span>
         </MobileMenuItem>
       </MobileMenu>
       <JournalConflictsMenuItem />

@@ -8,21 +8,21 @@ const packageJson = JSON.parse(
 );
 
 interface AppConfig {
-  affineVersion: string;
+  yunkeVersion: string;
 }
 
 const config: CapacitorConfig & AppConfig = {
-  appId: 'app.affine.pro',
+  appId: 'app.yunke.pro',
   appName: '云科',
   webDir: 'dist',
-  affineVersion: packageJson.version,
+  yunkeVersion: packageJson.version,
   android: {
     path: 'App',
     buildOptions: {
-      keystorePath: join(__dirname, 'affine.keystore'),
-      keystorePassword: process.env.AFFINE_ANDROID_KEYSTORE_PASSWORD,
+      keystorePath: join(__dirname, 'yunke.keystore'),
+      keystorePassword: process.env.YUNKE_ANDROID_KEYSTORE_PASSWORD,
       keystoreAlias: 'key0',
-      keystoreAliasPassword: process.env.AFFINE_ANDROID_KEYSTORE_ALIAS_PASSWORD,
+      keystoreAliasPassword: process.env.YUNKE_ANDROID_KEYSTORE_ALIAS_PASSWORD,
       releaseType: 'APK',
     },
     adjustMarginsForEdgeToEdge: 'force',

@@ -7,5 +7,5 @@ export interface DatabaseBlockConfigService {
 
 export const DatabaseBlockConfigService =
   createIdentifier<DatabaseBlockConfigService>(
-    'AffineDatabaseBlockConfigService'
+    'YunkeDatabaseBlockConfigService'
   );

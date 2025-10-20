@@ -8,12 +8,12 @@ import { SelectCell } from './select/cell-renderer.js';
 import { TextCell } from './text/cell-renderer.js';
 
 export function propertyPresetsEffects() {
-  customElements.define('affine-database-checkbox-cell', CheckboxCell);
-  customElements.define('affine-database-date-cell', DateCell);
-  customElements.define('affine-database-image-cell', ImageCell);
-  customElements.define('affine-database-multi-select-cell', MultiSelectCell);
-  customElements.define('affine-database-number-cell', NumberCell);
-  customElements.define('affine-database-progress-cell', ProgressCell);
-  customElements.define('affine-database-select-cell', SelectCell);
-  customElements.define('affine-database-text-cell', TextCell);
+  customElements.define('yunke-database-checkbox-cell', CheckboxCell);
+  customElements.define('yunke-database-date-cell', DateCell);
+  customElements.define('yunke-database-image-cell', ImageCell);
+  customElements.define('yunke-database-multi-select-cell', MultiSelectCell);
+  customElements.define('yunke-database-number-cell', NumberCell);
+  customElements.define('yunke-database-progress-cell', ProgressCell);
+  customElements.define('yunke-database-select-cell', SelectCell);
+  customElements.define('yunke-database-text-cell', TextCell);
 }

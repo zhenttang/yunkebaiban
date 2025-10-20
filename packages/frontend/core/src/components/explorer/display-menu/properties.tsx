@@ -66,7 +66,7 @@ export const DisplayProperties = ({
   return (
     <div className={styles.root}>
       <section className={styles.sectionLabel}>
-        {t['com.affine.all-docs.display.properties']()}
+        {t['com.yunke.all-docs.display.properties']()}
       </section>
       <div className={styles.properties}>
         {explorerPropertyList
@@ -104,7 +104,7 @@ export const DisplayProperties = ({
       </div>
       <Divider size="thinner" />
       <section className={styles.sectionLabel}>
-        {t['com.affine.all-docs.display.list-view']()}
+        {t['com.yunke.all-docs.display.list-view']()}
       </section>
       <div className={styles.properties}>
         <Button
@@ -112,14 +112,14 @@ export const DisplayProperties = ({
           data-show={showIcon}
           onClick={toggleIcon}
         >
-          {t['com.affine.all-docs.display.list-view.icon']()}
+          {t['com.yunke.all-docs.display.list-view.icon']()}
         </Button>
         <Button
           className={styles.property}
           data-show={showBody}
           onClick={toggleBody}
         >
-          {t['com.affine.all-docs.display.list-view.body']()}
+          {t['com.yunke.all-docs.display.list-view.body']()}
         </Button>
       </div>
     </div>

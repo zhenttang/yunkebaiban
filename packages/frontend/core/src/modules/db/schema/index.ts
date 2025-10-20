@@ -1,7 +1,7 @@
 export type { DocCustomPropertyInfo, DocProperties } from './schema';
 export {
-  AFFiNE_WORKSPACE_DB_SCHEMA,
-  AFFiNE_WORKSPACE_USERDATA_DB_SCHEMA,
-  type AFFiNEWorkspaceDbSchema,
-  type AFFiNEWorkspaceUserdataDbSchema,
+  YUNKE_WORKSPACE_DB_SCHEMA,
+  YUNKE_WORKSPACE_USERDATA_DB_SCHEMA,
+  type YUNKEWorkspaceDbSchema,
+  type YUNKEWorkspaceUserdataDbSchema,
 } from './schema';

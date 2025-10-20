@@ -1,4 +1,4 @@
-import { useEnableCloud } from '@yunke/core/components/hooks/affine/use-enable-cloud';
+import { useEnableCloud } from '@yunke/core/components/hooks/yunke/use-enable-cloud';
 import type { Workspace } from '@yunke/core/modules/workspace';
 import { track } from '@yunke/track';
 import type { Store } from '@blocksuite/yunke/store';
@@ -25,7 +25,7 @@ export const SharePageButton = ({ workspace, page }: SharePageModalProps) => {
     <ShareMenu
       workspaceMetadata={workspace.meta}
       currentPage={page}
-      onEnableAffineCloud={() =>
+      onEnableYunkeCloud={() =>
         confirmEnableCloud(workspace, {
           openPageId: page.id,
         })

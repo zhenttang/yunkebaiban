@@ -1,6 +1,6 @@
 {
   "name": "@blocksuite/yunke-widget-viewport-overlay",
-  "description": "Affine viewport overlay widget.",
+  "description": "Yunke viewport overlay widget.",
   "type": "module",
   "scripts": {
     "build": "tsc"

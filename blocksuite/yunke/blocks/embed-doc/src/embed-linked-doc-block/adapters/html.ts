@@ -30,7 +30,7 @@ export const embedLinkedDocBlockHtmlAdapterMatcher: BlockHtmlAdapterMatcher = {
             type: 'element',
             tagName: 'div',
             properties: {
-              className: ['affine-paragraph-block-container'],
+              className: ['yunke-paragraph-block-container'],
             },
             children: [],
           },

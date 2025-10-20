@@ -1,5 +1,5 @@
 import type { EditorIconButton } from '@blocksuite/yunke-components/toolbar';
-import type { AffineInlineEditor } from '@blocksuite/yunke-shared/types';
+import type { YunkeInlineEditor } from '@blocksuite/yunke-shared/types';
 import {
   isValidUrl,
   normalizeUrl,
@@ -41,10 +41,10 @@ export class LinkPopup extends WithDisposable(ShadowlessElement) {
       .catch(console.error);
 
     return html`
-      <div class="affine-link-popover create">
+      <div class="yunke-link-popover create">
         <input
           id="link-input"
-          class="affine-link-popover-input"
+          class="yunke-link-popover-input"
           type="text"
           spellcheck="false"
           placeholder="粘贴或输入链接"
@@ -77,27 +77,27 @@ export class LinkPopup extends WithDisposable(ShadowlessElement) {
       .catch(console.error);
 
     return html`
-      <div class="affine-link-edit-popover">
-        <div class="affine-edit-area text">
+      <div class="yunke-link-edit-popover">
+        <div class="yunke-edit-area text">
           <input
-            class="affine-edit-input"
+            class="yunke-edit-input"
             id="text-input"
             type="text"
             placeholder="输入文本"
             @input=${this._updateConfirmBtn}
           />
-          <label class="affine-edit-label" for="text-input">文本</label>
+          <label class="yunke-edit-label" for="text-input">文本</label>
         </div>
-        <div class="affine-edit-area link">
+        <div class="yunke-edit-area link">
           <input
             id="link-input"
-            class="affine-edit-input"
+            class="yunke-edit-input"
             type="text"
             spellcheck="false"
             placeholder="粘贴或输入链接"
             @input=${this._updateConfirmBtn}
           />
-          <label class="affine-edit-label" for="link-input">链接</label>
+          <label class="yunke-edit-label" for="link-input">链接</label>
         </div>
         ${this._confirmBtnTemplate()}
       </div>
@@ -118,7 +118,7 @@ export class LinkPopup extends WithDisposable(ShadowlessElement) {
   private _confirmBtnTemplate() {
     return html`
       <editor-icon-button
-        class="affine-confirm-button"
+        class="yunke-confirm-button"
         .iconSize="${'24px'}"
         .disabled=${true}
         @click=${this._onConfirm}
@@ -303,11 +303,11 @@ export class LinkPopup extends WithDisposable(ShadowlessElement) {
   @property({ attribute: false })
   accessor abortController!: AbortController;
 
-  @query('.affine-confirm-button')
+  @query('.yunke-confirm-button')
   accessor confirmButton: EditorIconButton | null = null;
 
   @property({ attribute: false })
-  accessor inlineEditor!: AffineInlineEditor;
+  accessor inlineEditor!: YunkeInlineEditor;
 
   @query('#link-input')
   accessor linkInput: HTMLInputElement | null = null;

@@ -49,7 +49,7 @@ const useKeyboardShortcutsI18N = () => {
   const t = useI18n();
   return useCallback(
     (key: KeyboardShortcutsI18NKeys) =>
-      t[`com.affine.keyboardShortcuts.${key}`](),
+      t[`com.yunke.keyboardShortcuts.${key}`](),
     [t]
   );
 };
@@ -58,7 +58,7 @@ const useKeyboardShortcutsI18N = () => {
 const useHeadingKeyboardShortcutsI18N = () => {
   const t = useI18n();
   return useCallback(
-    (number: string) => t['com.affine.keyboardShortcuts.heading']({ number }),
+    (number: string) => t['com.yunke.keyboardShortcuts.heading']({ number }),
     [t]
   );
 };
@@ -293,7 +293,7 @@ export const useMarkdownShortcuts = (): ShortcutsInfo => {
   const shortcuts = shortcutsMap.useMarkdownShortcuts();
 
   return {
-    title: t['com.affine.shortcutsTitle.markdownSyntax'](),
+    title: t['com.yunke.shortcutsTitle.markdownSyntax'](),
     shortcuts,
   };
 };
@@ -303,7 +303,7 @@ export const usePageShortcuts = (): ShortcutsInfo => {
   const shortcuts = shortcutsMap.usePageShortcuts();
 
   return {
-    title: t['com.affine.shortcutsTitle.page'](),
+    title: t['com.yunke.shortcutsTitle.page'](),
     shortcuts,
   };
 };
@@ -313,7 +313,7 @@ export const useEdgelessShortcuts = (): ShortcutsInfo => {
   const shortcuts = shortcutsMap.useEdgelessShortcuts();
 
   return {
-    title: t['com.affine.shortcutsTitle.edgeless'](),
+    title: t['com.yunke.shortcutsTitle.edgeless'](),
     shortcuts,
   };
 };
@@ -323,7 +323,7 @@ export const useGeneralShortcuts = (): ShortcutsInfo => {
   const shortcuts = shortcutsMap.useGeneralShortcuts();
 
   return {
-    title: t['com.affine.shortcutsTitle.general'](),
+    title: t['com.yunke.shortcutsTitle.general'](),
     shortcuts,
   };
 };

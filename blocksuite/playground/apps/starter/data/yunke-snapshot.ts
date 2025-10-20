@@ -1,24 +1,24 @@
-import { AffineSchemas } from '@blocksuite/yunke/schemas';
+import { YunkeSchemas } from '@blocksuite/yunke/schemas';
 import { Schema, Text, type Workspace } from '@blocksuite/yunke/store';
 import { ZipTransformer } from '@blocksuite/yunke/widgets/linked-doc';
-export async function affineSnapshot(collection: Workspace, id: string) {
+export async function yunkeSnapshot(collection: Workspace, id: string) {
   const doc = collection.createDoc(id);
   doc.load();
   const store = doc.getStore();
   // Add root block and surface block at root level
-  const rootId = store.addBlock('affine:page', {
-    title: new Text('Affine Snapshot Test'),
+  const rootId = store.addBlock('yunke:page', {
+    title: new Text('Yunke Snapshot Test'),
   });
-  store.addBlock('affine:surface', {}, rootId);
+  store.addBlock('yunke:surface', {}, rootId);
 
-  const path = '/apps/starter/data/snapshots/affine-default.zip';
+  const path = '/apps/starter/data/snapshots/yunke-default.zip';
   const response = await fetch(path);
   const file = await response.blob();
   const schema = new Schema();
-  schema.register(AffineSchemas);
+  schema.register(YunkeSchemas);
   await ZipTransformer.importDocs(collection, schema, file);
 }
 
-affineSnapshot.id = 'affine-snapshot';
-affineSnapshot.displayName = 'Affine Snapshot Test';
-affineSnapshot.description = 'Affine Snapshot Test';
+yunkeSnapshot.id = 'yunke-snapshot';
+yunkeSnapshot.displayName = 'Yunke Snapshot Test';
+yunkeSnapshot.description = 'Yunke Snapshot Test';

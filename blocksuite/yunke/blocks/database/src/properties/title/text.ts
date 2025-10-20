@@ -45,7 +45,7 @@ export class HeaderAreaTextCell extends BaseCellRenderer<Text, string> {
 
   get topContenteditableElement() {
     const databaseBlock =
-      this.closest<DatabaseBlockComponent>('affine-database');
+      this.closest<DatabaseBlockComponent>('yunke-database');
     return databaseBlock?.topContenteditableElement;
   }
 

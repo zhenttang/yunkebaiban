@@ -1,8 +1,5 @@
-import {
-  AfFiNeIcon,
-  ArrowRightBigIcon,
-  FolderIcon,
-} from '@blocksuite/icons/rc';
+import { ArrowRightBigIcon, FolderIcon } from '@blocksuite/icons/rc';
+import { YunkeIcon } from '../../icons/yunke-icon';
 import type { Meta } from '@storybook/react';
 import clsx from 'clsx';
 import { useCallback, useEffect, useState } from 'react';
@@ -170,7 +167,7 @@ export const FixedWidth = () => {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
       {widths.map(width => (
-        <Button prefix={<AfFiNeIcon />} key={width} style={{ width }}>
+        <Button prefix={<YunkeIcon />} key={width} style={{ width }}>
           This is a width fixed button
         </Button>
       ))}

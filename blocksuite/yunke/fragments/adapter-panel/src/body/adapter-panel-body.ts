@@ -12,7 +12,7 @@ import {
   ADAPTERS,
 } from '../config';
 
-export const AFFINE_ADAPTER_PANEL_BODY = 'affine-adapter-panel-body';
+export const YUNKE_ADAPTER_PANEL_BODY = 'yunke-adapter-panel-body';
 
 export class AdapterPanelBody extends SignalWatcher(LitElement) {
   static override styles = css`
@@ -30,8 +30,8 @@ export class AdapterPanelBody extends SignalWatcher(LitElement) {
       width: 100%;
       height: 100%;
       white-space: pre-wrap;
-      color: var(--affine-text-primary-color);
-      font-size: var(--affine-font-sm);
+      color: var(--yunke-text-primary-color);
+      font-size: var(--yunke-font-sm);
       box-sizing: border-box;
     }
 
@@ -48,7 +48,7 @@ export class AdapterPanelBody extends SignalWatcher(LitElement) {
       flex: 1 0 0;
       border: none;
       box-sizing: border-box;
-      color: var(--affine-text-primary-color);
+      color: var(--yunke-text-primary-color);
       overflow: auto;
     }
 
@@ -211,6 +211,6 @@ export class AdapterPanelBody extends SignalWatcher(LitElement) {
 
 declare global {
   interface HTMLElementTagNameMap {
-    [AFFINE_ADAPTER_PANEL_BODY]: AdapterPanelBody;
+    [YUNKE_ADAPTER_PANEL_BODY]: AdapterPanelBody;
   }
 }

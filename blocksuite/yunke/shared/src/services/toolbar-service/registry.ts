@@ -9,11 +9,11 @@ import { Flags } from './flags';
 import type { ToolbarModule } from './module';
 
 export const ToolbarModuleIdentifier = createIdentifier<ToolbarModule>(
-  'AffineToolbarModuleIdentifier'
+  'YunkeToolbarModuleIdentifier'
 );
 
 export const ToolbarRegistryIdentifier =
-  createIdentifier<ToolbarRegistryExtension>('AffineToolbarRegistryIdentifier');
+  createIdentifier<ToolbarRegistryExtension>('YunkeToolbarRegistryIdentifier');
 
 export function ToolbarModuleExtension(module: ToolbarModule): ExtensionType {
   return {

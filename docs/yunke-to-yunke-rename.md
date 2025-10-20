@@ -1,24 +1,24 @@
-# AFFiNE → Yunke 重命名工作说明
+# YUNKE → Yunke 重命名工作说明
 
 ## 背景与目标
-- 将仓库内所有与 AFFiNE 相关的命令、命名空间、品牌素材逐步替换为 Yunke。
+- 将仓库内所有与 YUNKE 相关的命令、命名空间、品牌素材逐步替换为 Yunke。
 - 确保命名调整后构建、发布、移动端打包以及周边工具链均能正常运行。
 - 在重命名前，通过该文档统一协作准则与执行顺序，降低冲突与回滚成本。
 
 ## 命名覆盖范围
 1. **JavaScript/TypeScript 生态**
-   - 包名 Scope：`@yunke/*`、`@affine-tools/*`、`@blocksuite/yunke*`。
+   - 包名 Scope：`@yunke/*`、`@yunke-tools/*`、`@blocksuite/yunke*`。
    - CLI 及脚本：命令名称、帮助信息、环境变量、生成文件默认前缀。
    - 构建产物：Webpack/Vite banner、HTML 模板、错误页资源、CDN 链接。
    - 配置文件：`tsconfig.*`、`*.d.ts` 类型声明、ESLint/Prettier/CI 配置中的别名和注释。
 2. **资源与文案**
    - README、用户文档、国际化词条及自适应文案。
-   - 品牌域名：`affine.pro`、`app.affine.pro` 等外链及 API host。
+   - 品牌域名：`yunke.pro`、`app.yunke.pro` 等外链及 API host。
    - 静态资源：LOGO、图片文件名、CSS 变量、颜色方案前缀。
 3. **原生能力与移动端**
-   - Android：`applicationId`、Kotlin 包路径 `app.affine.pro.*`、资源命名、Play Store 配置。
-   - iOS：Bundle Identifier、Asset Catalog 文件名 (`affine@png-*`)、Capacitor/Swift 模块。
-   - Uniffi/Rust Bridge：`uniffi.affine_mobile_native.*` 命名空间。
+   - Android：`applicationId`、Kotlin 包路径 `app.yunke.pro.*`、资源命名、Play Store 配置。
+   - iOS：Bundle Identifier、Asset Catalog 文件名 (`yunke@png-*`)、Capacitor/Swift 模块。
+   - Uniffi/Rust Bridge：`uniffi.yunke_mobile_native.*` 命名空间。
 4. **服务端 & 基础设施**
    - Docker 模板、证书命名、CI/CD 脚本 (`.docker`, GitHub Actions, PlayStore 自动化)。
    - 安装脚本、环境变量、监控告警（如 Sentry 项目名）。
@@ -64,7 +64,7 @@
 - **外部服务切换窗口**：提前完成新域名 SSL、Sentry 项目的初始化，并在切换当天同步更新。
 
 ## 验收标准
-- 所有命名相关文件搜索 `affine` 时仅返回历史或第三方依赖引用。
+- 所有命名相关文件搜索 `yunke` 时仅返回历史或第三方依赖引用。
 - Web/Electron/移动端可正常构建、启动并访问 Yunke 域名与服务。
 - CI/CD 流程通过，自动化脚本产出的文件/镜像均使用 Yunke 前缀。
 - 文档、发行说明、商店页面对外品牌统一为 Yunke。

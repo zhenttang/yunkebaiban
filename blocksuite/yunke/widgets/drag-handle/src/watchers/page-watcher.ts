@@ -1,13 +1,13 @@
 import { PageViewportService } from '@blocksuite/yunke-shared/services';
 
-import type { AffineDragHandleWidget } from '../drag-handle.js';
+import type { YunkeDragHandleWidget } from '../drag-handle.js';
 
 export class PageWatcher {
   get pageViewportService() {
     return this.widget.std.get(PageViewportService);
   }
 
-  constructor(readonly widget: AffineDragHandleWidget) {}
+  constructor(readonly widget: YunkeDragHandleWidget) {}
 
   watch() {
     const { disposables } = this.widget;

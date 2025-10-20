@@ -1,4 +1,4 @@
-import type { AffineTextAttributes } from '@blocksuite/yunke-shared/types';
+import type { YunkeTextAttributes } from '@blocksuite/yunke-shared/types';
 import type { BlockStdScope } from '@blocksuite/std';
 import type { InlineEditor } from '@blocksuite/std/inline';
 import type { BlockModel } from '@blocksuite/store';
@@ -10,7 +10,7 @@ export function insertContent(
   std: BlockStdScope,
   model: BlockModel,
   text: string,
-  attributes?: AffineTextAttributes
+  attributes?: YunkeTextAttributes
 ) {
   if (!model.text) {
     // console.error("无法插入文本！未找到文本");

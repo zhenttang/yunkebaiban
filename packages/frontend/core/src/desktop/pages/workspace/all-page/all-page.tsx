@@ -298,14 +298,14 @@ export const AllPage = () => {
       setTempFilters(null);
     } else {
       openPromptModal({
-        title: t['com.affine.editCollection.saveCollection'](),
-        label: t['com.affine.editCollectionName.name'](),
+        title: t['com.yunke.editCollection.saveCollection'](),
+        label: t['com.yunke.editCollectionName.name'](),
         inputOptions: {
-          placeholder: t['com.affine.editCollectionName.name.placeholder'](),
+          placeholder: t['com.yunke.editCollectionName.name.placeholder'](),
         },
-        children: t['com.affine.editCollectionName.createTips'](),
-        confirmText: t['com.affine.editCollection.save'](),
-        cancelText: t['com.affine.editCollection.button.cancel'](),
+        children: t['com.yunke.editCollectionName.createTips'](),
+        confirmText: t['com.yunke.editCollection.save'](),
+        cancelText: t['com.yunke.editCollection.button.cancel'](),
         confirmButtonOptions: {
           variant: 'primary',
         },
@@ -356,9 +356,9 @@ export const AllPage = () => {
       tempFilters ?? (selectedCollectionInfo?.rules.filters ?? []);
     const count = activeFilters.length;
     if (count > 0) {
-      return `${count} ${t['com.affine.filter']()}`;
+      return `${count} ${t['com.yunke.filter']()}`;
     }
-    return t['com.affine.filterList.button.add']();
+    return t['com.yunke.filterList.button.add']();
   }, [selectedCollectionInfo, tempFilters, t]);
 
   return (
@@ -393,7 +393,7 @@ export const AllPage = () => {
             <section className={styles.filterCard}>
               <div className={styles.filterHeader}>
                 <div>
-                  <div className={styles.sectionTitle}>{t['com.affine.filter']()}</div>
+                  <div className={styles.sectionTitle}>{t['com.yunke.filter']()}</div>
                   <div className={styles.filterSummary}>{filterSummaryText}</div>
                 </div>
                 {tempFilters === null ? (
@@ -406,7 +406,7 @@ export const AllPage = () => {
                       setTempFiltersInitial(null);
                     }}
                   >
-                    {t['com.affine.filterList.button.add']()}
+                    {t['com.yunke.filterList.button.add']()}
                   </Button>
                 ) : null}
               </div>

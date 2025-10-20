@@ -1,6 +1,6 @@
 import { uniReactRoot } from '@yunke/component';
-import { AffineErrorBoundary } from '@yunke/core/components/affine/affine-error-boundary';
-import { AiLoginRequiredModal } from '@yunke/core/components/affine/auth/ai-login-required';
+import { YunkeErrorBoundary } from '@yunke/core/components/yunke/yunke-error-boundary';
+import { AiLoginRequiredModal } from '@yunke/core/components/yunke/auth/ai-login-required';
 import { SWRConfigProvider } from '@yunke/core/components/providers/swr-config-provider';
 import { WorkspaceSideEffects } from '@yunke/core/components/providers/workspace-side-effects';
 import {
@@ -45,7 +45,7 @@ declare global {
   // oxlint-disable-next-line no-var
   var importWorkspaceSnapshot: () => Promise<void>;
   interface WindowEventMap {
-    'affine:workspace:change': CustomEvent<{ id: string }>;
+    'yunke:workspace:change': CustomEvent<{ id: string }>;
   }
 }
 
@@ -77,7 +77,7 @@ export const WorkspaceLayout = ({
       // for debug purpose
       window.currentWorkspace = workspace ?? undefined;
       window.dispatchEvent(
-        new CustomEvent('affine:workspace:change', {
+        new CustomEvent('yunke:workspace:change', {
           detail: {
             id: workspace.id,
           },
@@ -137,7 +137,7 @@ export const WorkspaceLayout = ({
   return (
     <FrameworkScope scope={workspaceServer?.scope}>
       <FrameworkScope scope={workspace.scope}>
-        <AffineErrorBoundary height="100dvh">
+        <YunkeErrorBoundary height="100dvh">
           <SWRConfigProvider>
             <WorkspaceDialogs />
 
@@ -149,7 +149,7 @@ export const WorkspaceLayout = ({
             {children}
             <CurvedAppTabs background={`linear-gradient(135deg, #d4fc79 0%, #96e6a1 100%)`} />
           </SWRConfigProvider>
-        </AffineErrorBoundary>
+        </YunkeErrorBoundary>
       </FrameworkScope>
     </FrameworkScope>
   );

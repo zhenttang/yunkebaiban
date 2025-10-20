@@ -6,7 +6,7 @@ import {
 import { MermaidBlockSchemaExtension } from './mermaid-model.js';
 
 export class MermaidStoreExtension extends StoreExtensionProvider {
-  override name = 'affine-mermaid-block';
+  override name = 'yunke-mermaid-block';
 
   override setup(context: StoreExtensionContext) {
     super.setup(context);

@@ -6,10 +6,10 @@ import { property } from 'lit/decorators.js';
 
 import type { ChatStatus } from '../../components/ai-chat-messages';
 
-const AffineAvatarIcon = AiIcon({
+const YunkeAvatarIcon = AiIcon({
   width: '20px',
   height: '20px',
-  style: 'color: var(--affine-primary-color)',
+  style: 'color: var(--yunke-primary-color)',
 });
 
 export class AssistantAvatar extends ShadowlessElement {
@@ -27,8 +27,8 @@ export class AssistantAvatar extends ShadowlessElement {
   protected override render() {
     return html`${this.status === 'transmitting'
       ? AIStarIconWithAnimation
-      : AffineAvatarIcon}
-    AFFiNE AI`;
+      : YunkeAvatarIcon}
+    YUNKE AI`;
   }
 }
 

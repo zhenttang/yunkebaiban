@@ -10,7 +10,7 @@ export class MenuDivider extends LitElement {
     }
 
     .divider {
-      background-color: var(--affine-border-color);
+      background-color: var(--yunke-border-color);
     }
 
     .divider.vertical {

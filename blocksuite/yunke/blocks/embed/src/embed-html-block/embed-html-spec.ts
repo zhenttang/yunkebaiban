@@ -11,8 +11,8 @@ const flavour = EmbedHtmlBlockSchema.model.flavour;
 export const EmbedHtmlViewExtensions: ExtensionType[] = [
   BlockViewExtension(flavour, model => {
     return model.parent?.flavour === 'yunke:surface'
-      ? literal`affine-embed-edgeless-html-block`
-      : literal`affine-embed-html-block`;
+      ? literal`yunke-embed-edgeless-html-block`
+      : literal`yunke-embed-html-block`;
   }),
   createBuiltinToolbarConfigExtension(flavour),
   EmbedEdgelessHtmlBlockInteraction,

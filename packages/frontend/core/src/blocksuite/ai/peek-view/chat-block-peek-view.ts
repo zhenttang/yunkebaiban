@@ -200,7 +200,7 @@ export class AIChatBlockPeekView extends LitElement {
     // create a new AI chat block
     const surfaceBlock = store
       .getAllModels()
-      .find(block => block.flavour === 'affine:surface');
+      .find(block => block.flavour === 'yunke:surface');
     if (!surfaceBlock) {
       return;
     }
@@ -220,7 +220,7 @@ export class AIChatBlockPeekView extends LitElement {
 
     const crud = this.host.std.get(EdgelessCRUDIdentifier);
     const forkBlockId = crud.addBlock(
-      'affine:embed-ai-chat',
+      'yunke:embed-ai-chat',
       {
         xywh: bound.serialize(),
         messages: JSON.stringify(messages),
@@ -448,7 +448,7 @@ export class AIChatBlockPeekView extends LitElement {
 
     this._textRendererOptions = {
       extensions,
-      affineFeatureFlagService: this.affineFeatureFlagService,
+      yunkeFeatureFlagService: this.yunkeFeatureFlagService,
     };
     this._historyMessages = this._deserializeHistoryChatMessages(
       this.historyMessagesString
@@ -561,7 +561,7 @@ export class AIChatBlockPeekView extends LitElement {
   accessor searchMenuConfig!: SearchMenuConfig;
 
   @property({ attribute: false })
-  accessor affineFeatureFlagService!: FeatureFlagService;
+  accessor yunkeFeatureFlagService!: FeatureFlagService;
 
   @state()
   accessor _historyMessages: ChatMessage[] = [];
@@ -592,7 +592,7 @@ export const AIChatBlockPeekViewTemplate = (
   searchMenuConfig: SearchMenuConfig,
   networkSearchConfig: AINetworkSearchConfig,
   reasoningConfig: AIReasoningConfig,
-  affineFeatureFlagService: FeatureFlagService
+  yunkeFeatureFlagService: FeatureFlagService
 ) => {
   return html`<ai-chat-block-peek-view
     .blockModel=${blockModel}
@@ -601,6 +601,6 @@ export const AIChatBlockPeekViewTemplate = (
     .docDisplayConfig=${docDisplayConfig}
     .searchMenuConfig=${searchMenuConfig}
     .reasoningConfig=${reasoningConfig}
-    .affineFeatureFlagService=${affineFeatureFlagService}
+    .yunkeFeatureFlagService=${yunkeFeatureFlagService}
   ></ai-chat-block-peek-view>`;
 };

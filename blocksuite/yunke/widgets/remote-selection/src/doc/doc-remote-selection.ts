@@ -34,10 +34,10 @@ export interface SelectionRect {
   transparent?: boolean;
 }
 
-export const AFFINE_DOC_REMOTE_SELECTION_WIDGET =
-  'affine-doc-remote-selection-widget';
+export const YUNKE_DOC_REMOTE_SELECTION_WIDGET =
+  'yunke-doc-remote-selection-widget';
 
-export class AffineDocRemoteSelectionWidget extends WidgetComponent {
+export class YunkeDocRemoteSelectionWidget extends WidgetComponent {
   // avoid being unable to select text by mouse click or drag
   static override styles = css`
     :host {
@@ -369,7 +369,7 @@ export class AffineDocRemoteSelectionWidget extends WidgetComponent {
                       color: 'white',
                       maxWidth: '160px',
                       padding: '0 3px',
-                      border: '1px solid var(--affine-pure-black-20)',
+                      border: '1px solid var(--yunke-pure-black-20)',
                       boxShadow: '0px 1px 6px 0px rgba(0, 0, 0, 0.16)',
                       borderRadius: '4px',
                       fontSize: '12px',
@@ -393,6 +393,6 @@ export class AffineDocRemoteSelectionWidget extends WidgetComponent {
 
 declare global {
   interface HTMLElementTagNameMap {
-    [AFFINE_DOC_REMOTE_SELECTION_WIDGET]: AffineDocRemoteSelectionWidget;
+    [YUNKE_DOC_REMOTE_SELECTION_WIDGET]: YunkeDocRemoteSelectionWidget;
   }
 }

@@ -1,5 +1,5 @@
 import { PropertyCollapsibleSection } from '@yunke/component';
-import { AffinePageReference } from '@yunke/core/components/affine/reference-link';
+import { YunkePageReference } from '@yunke/core/components/yunke/reference-link';
 import type { Backlink, Link } from '@yunke/core/modules/doc-link';
 import type { MouseEvent, ReactNode } from 'react';
 
@@ -25,7 +25,7 @@ export const LinksRow = ({
     >
       {Array.isArray(references)
         ? references.map(link => (
-            <AffinePageReference
+            <YunkePageReference
               key={link.docId}
               pageId={link.docId}
               params={'params' in link ? link.params : undefined}

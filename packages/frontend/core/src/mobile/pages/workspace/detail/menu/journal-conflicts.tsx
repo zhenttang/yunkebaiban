@@ -34,11 +34,11 @@ export const ResolveConflictOperations = ({
   const handleOpenTrashModal = useCallback(
     (docRecord: DocRecord) => {
       openConfirmModal({
-        title: t['com.affine.moveToTrash.confirmModal.title'](),
-        description: t['com.affine.moveToTrash.confirmModal.description']({
+        title: t['com.yunke.moveToTrash.confirmModal.title'](),
+        description: t['com.yunke.moveToTrash.confirmModal.description']({
           title: docRecord.title$.value || t['Untitled'](),
         }),
-        cancelText: t['com.affine.confirmModal.button.cancel'](),
+        cancelText: t['com.yunke.confirmModal.button.cancel'](),
         confirmText: t.Delete(),
         confirmButtonOptions: {
           variant: 'error',
@@ -69,7 +69,7 @@ export const ResolveConflictOperations = ({
             data-testid="journal-conflict-remove-mark"
             disabled={!canEdit}
           >
-            {t['com.affine.page-properties.property.journal-remove']()}
+            {t['com.yunke.page-properties.property.journal-remove']()}
           </MobileMenuItem>
         )}
       </Guard>
@@ -111,7 +111,7 @@ const DocItem = ({ docRecord }: { docRecord: DocRecord }) => {
         <div className={styles.docItem}>
           {title}
           <div className={styles.duplicateTag}>
-            {i18n['com.affine.page-properties.property.journal-duplicated']()}
+            {i18n['com.yunke.page-properties.property.journal-duplicated']()}
           </div>
         </div>
       </MobileMenuItem>
@@ -152,7 +152,7 @@ const ConflictListMenuItem = ({ docRecords }: { docRecords: DocRecord[] }) => {
       }}
       items={<ConflictList docRecords={docRecords} />}
     >
-      {t['com.affine.m.selector.journal-menu.conflicts']()}
+      {t['com.yunke.m.selector.journal-menu.conflicts']()}
     </MobileMenuSub>
   );
 };

@@ -304,7 +304,7 @@ export const useSnapshotPage = (
   pageDocId: string,
   ts?: string
 ) => {
-  const affineWorkspace = useService(WorkspaceService).workspace;
+  const yunkeWorkspace = useService(WorkspaceService).workspace;
   const workspacesService = useService(WorkspacesService);
   const fetchService = useService(FetchService);
   const snapshot = usePageHistory(docCollection.id, pageDocId, ts);
@@ -315,7 +315,7 @@ export const useSnapshotPage = (
     const pageId = pageDocId + '-' + ts;
     const historyShellWorkspace = getOrCreateShellWorkspace(
       docCollection.id,
-      workspacesService.getWorkspaceFlavourProvider(affineWorkspace.meta)
+      workspacesService.getWorkspaceFlavourProvider(yunkeWorkspace.meta)
     );
     let page = historyShellWorkspace.getDoc(pageId)?.getStore();
     if (!page && snapshot) {
@@ -332,21 +332,21 @@ export const useSnapshotPage = (
     pageDocId,
     docCollection.id,
     workspacesService,
-    affineWorkspace.meta,
+    yunkeWorkspace.meta,
     snapshot,
   ]);
 
   useEffect(() => {
     const historyShellWorkspace = getOrCreateShellWorkspace(
       docCollection.id,
-      workspacesService.getWorkspaceFlavourProvider(affineWorkspace.meta)
+      workspacesService.getWorkspaceFlavourProvider(yunkeWorkspace.meta)
     );
     // apply the rootdoc's update to the current workspace
     // this makes sure the page reference links are not deleted ones in the preview
     const update = encodeStateAsUpdate(docCollection.doc);
     applyUpdate(historyShellWorkspace.doc, update);
   }, [
-    affineWorkspace.meta,
+    yunkeWorkspace.meta,
     docCollection,
     fetchService,
     workspacesService,

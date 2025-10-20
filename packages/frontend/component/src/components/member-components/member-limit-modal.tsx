@@ -31,11 +31,11 @@ export const MemberLimitModal = ({
     <ConfirmModal
       open={open}
       onOpenChange={setOpen}
-      title={t['com.affine.payment.member-limit.title']()}
+      title={t['com.yunke.payment.member-limit.title']()}
       description={
         <ConfirmDescription plan={plan} quota={quota} isFreePlan={isFreePlan} />
       }
-      confirmText={t['com.affine.payment.upgrade']()}
+      confirmText={t['com.yunke.payment.upgrade']()}
       confirmButtonOptions={{
         variant: 'primary',
       }}
@@ -56,7 +56,7 @@ export const ConfirmDescription = ({
   const t = useI18n();
   return (
     <div>
-      {t['com.affine.payment.member-limit.description']({
+      {t['com.yunke.payment.member-limit.description']({
         planName: plan,
         quota: quota,
       })}
@@ -65,17 +65,17 @@ export const ConfirmDescription = ({
           <li className={styles.liStyle}>
             <div className={styles.prefixDot} />
             {t[
-              'com.affine.payment.member-limit.description.tips-for-free-plan'
+              'com.yunke.payment.member-limit.description.tips-for-free-plan'
             ]()}
           </li>
         )}
         <li className={styles.liStyle}>
           <div className={styles.prefixDot} />
-          {t['com.affine.payment.member-limit.description.tips-1']()}
+          {t['com.yunke.payment.member-limit.description.tips-1']()}
         </li>
         <li className={styles.liStyle}>
           <div className={styles.prefixDot} />
-          {t['com.affine.payment.member-limit.description.tips-2']()}
+          {t['com.yunke.payment.member-limit.description.tips-2']()}
         </li>
       </ul>
     </div>

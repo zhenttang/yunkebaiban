@@ -30,7 +30,7 @@ export const WeekHeader = memo(function WeekHeader({
   const t = useI18n();
 
   const days = useMemo(
-    () => t['com.affine.calendar-date-picker.week-days']().split(','),
+    () => t['com.yunke.calendar-date-picker.week-days']().split(','),
     [t]
   );
   return (

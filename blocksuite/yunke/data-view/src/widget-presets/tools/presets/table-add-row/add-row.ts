@@ -33,7 +33,7 @@ export class DataViewHeaderToolsAddRow extends WidgetBase {
       return;
     }
     return html` <data-view-component-button
-      class="affine-database-toolbar-item new-record"
+      class="yunke-database-toolbar-item new-record"
       .onClick="${this.onAddNewRecord}"
       .icon="${PlusIcon()}"
       .text="${IS_MOBILE

@@ -81,6 +81,6 @@ export class ViewDropdownMenu extends SignalWatcher(LitElement) {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'affine-view-dropdown-menu': ViewDropdownMenu;
+    'yunke-view-dropdown-menu': ViewDropdownMenu;
   }
 }

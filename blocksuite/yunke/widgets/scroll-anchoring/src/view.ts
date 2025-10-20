@@ -7,7 +7,7 @@ import { effects } from './effects';
 import { scrollAnchoringWidget } from './index';
 
 export class ScrollAnchoringViewExtension extends ViewExtensionProvider {
-  override name = 'affine-scroll-anchoring-widget';
+  override name = 'yunke-scroll-anchoring-widget';
 
   override effect() {
     super.effect();

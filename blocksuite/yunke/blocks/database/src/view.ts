@@ -23,7 +23,7 @@ const optionsSchema = z.object({
 export type DatabaseViewExtensionOptions = z.infer<typeof optionsSchema>;
 
 export class DatabaseViewExtension extends ViewExtensionProvider<DatabaseViewExtensionOptions> {
-  override name = 'affine-database-block';
+  override name = 'yunke-database-block';
 
   override schema = optionsSchema;
 
@@ -39,7 +39,7 @@ export class DatabaseViewExtension extends ViewExtensionProvider<DatabaseViewExt
     super.setup(context);
     context.register([
       FlavourExtension('yunke:database'),
-      BlockViewExtension('yunke:database', literal`affine-database`),
+      BlockViewExtension('yunke:database', literal`yunke-database`),
       SlashMenuConfigExtension('yunke:database', databaseSlashMenuConfig),
     ]);
     if (options) {

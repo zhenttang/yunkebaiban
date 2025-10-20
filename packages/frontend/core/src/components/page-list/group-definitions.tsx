@@ -44,7 +44,7 @@ export const useDateGroupDefinitions = <T extends ListItem>(
         label: count => (
           <GroupLabel
             id="today"
-            label={t['com.affine.today']()}
+            label={t['com.yunke.today']()}
             count={count}
           />
         ),
@@ -56,7 +56,7 @@ export const useDateGroupDefinitions = <T extends ListItem>(
         label: count => (
           <GroupLabel
             id="yesterday"
-            label={t['com.affine.yesterday']()}
+            label={t['com.yunke.yesterday']()}
             count={count}
           />
         ),
@@ -68,7 +68,7 @@ export const useDateGroupDefinitions = <T extends ListItem>(
         label: count => (
           <GroupLabel
             id="last7Days"
-            label={t['com.affine.last7Days']()}
+            label={t['com.yunke.last7Days']()}
             count={count}
           />
         ),
@@ -80,7 +80,7 @@ export const useDateGroupDefinitions = <T extends ListItem>(
         label: count => (
           <GroupLabel
             id="last30Days"
-            label={t['com.affine.last30Days']()}
+            label={t['com.yunke.last30Days']()}
             count={count}
           />
         ),
@@ -92,7 +92,7 @@ export const useDateGroupDefinitions = <T extends ListItem>(
         label: count => (
           <GroupLabel
             id="moreThan30Days"
-            label={t['com.affine.moreThan30Days']()}
+            label={t['com.yunke.moreThan30Days']()}
             count={count}
           />
         ),
@@ -144,7 +144,7 @@ export const useTagGroupDefinitions = (): ItemGroupDefinition<ListItem>[] => {
       label: (count: number) => (
         <GroupLabel
           id="Untagged"
-          label={t['com.affine.page.display.grouping.group-by-tag.untagged']()}
+          label={t['com.yunke.page.display.grouping.group-by-tag.untagged']()}
           count={count}
         />
       ),
@@ -180,7 +180,7 @@ export const useFavoriteGroupDefinitions = <
         label: count => (
           <GroupLabel
             id="favourited"
-            label={t['com.affine.page.group-header.favourited']()}
+            label={t['com.yunke.page.group-header.favourited']()}
             count={count}
             icon={<FavoritedIcon className={styles.favouritedIcon} />}
           />
@@ -192,7 +192,7 @@ export const useFavoriteGroupDefinitions = <
         label: count => (
           <GroupLabel
             id="notFavourited"
-            label={t['com.affine.page.group-header.not-favourited']()}
+            label={t['com.yunke.page.group-header.not-favourited']()}
             count={count}
             icon={<FavoriteIcon className={styles.notFavouritedIcon} />}
           />

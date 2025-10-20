@@ -1,5 +1,5 @@
 import { Button, type ButtonProps, Skeleton } from '@yunke/component';
-import { generateSubscriptionCallbackLink } from '@yunke/core/components/hooks/affine/use-subscription-notify';
+import { generateSubscriptionCallbackLink } from '@yunke/core/components/hooks/yunke/use-subscription-notify';
 import { AuthService, SubscriptionService } from '@yunke/core/modules/cloud';
 // import { SubscriptionPlan, SubscriptionRecurring } from '@yunke/graphql';
 import { useI18n } from '@yunke/i18n';
@@ -66,8 +66,8 @@ export const AISubscribe = ({
   ).toFixed(2)}`;
   const priceFrequency =
     displayedFrequency === 'yearly'
-      ? t['com.affine.payment.billing-setting.year']()
-      : t['com.affine.payment.billing-setting.month']();
+      ? t['com.yunke.payment.billing-setting.year']()
+      : t['com.yunke.payment.billing-setting.month']();
 
   return (
     <CheckoutSlot
@@ -90,7 +90,7 @@ export const AISubscribe = ({
                 paddingLeft: 4,
               }}
             >
-              {t['com.affine.payment.ai.subscribe.billed-annually']()}
+              {t['com.yunke.payment.ai.subscribe.billed-annually']()}
             </span>
           ) : null}
         </Button>

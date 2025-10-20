@@ -46,7 +46,7 @@ export const UserPlanButton = ({
   const planLabel = isBeliever ? 'Believer' : (plan ?? SubscriptionPlan.Free);
 
   return (
-    <Tooltip content={t['com.affine.payment.tag-tooltips']()} side="top">
+    <Tooltip content={t['com.yunke.payment.tag-tooltips']()} side="top">
       <div
         data-is-believer={isBeliever ? 'true' : undefined}
         data-is-pro={plan === SubscriptionPlan.Pro ? 'true' : undefined}

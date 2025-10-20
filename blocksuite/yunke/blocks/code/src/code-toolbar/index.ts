@@ -20,8 +20,8 @@ import type { CodeBlockComponent } from '../code-block.js';
 import { MORE_GROUPS, PRIMARY_GROUPS } from './config.js';
 import { CodeBlockToolbarContext } from './context.js';
 
-export const AFFINE_CODE_TOOLBAR_WIDGET = 'affine-code-toolbar-widget';
-export class AffineCodeToolbarWidget extends WidgetComponent<
+export const YUNKE_CODE_TOOLBAR_WIDGET = 'yunke-code-toolbar-widget';
+export class YunkeCodeToolbarWidget extends WidgetComponent<
   CodeBlockModel,
   CodeBlockComponent
 > {
@@ -72,16 +72,16 @@ export class AffineCodeToolbarWidget extends WidgetComponent<
         );
 
         return {
-          template: html`<affine-code-toolbar
+          template: html`<yunke-code-toolbar
             .context=${context}
             .primaryGroups=${this.primaryGroups}
             .moreGroups=${this.moreGroups}
             .onActiveStatusChange=${setActive}
-          ></affine-code-toolbar>`,
+          ></yunke-code-toolbar>`,
           container: this.block,
           // stacking-context(editor-host)
           portalStyles: {
-            zIndex: 'var(--affine-z-index-popover)',
+            zIndex: 'var(--yunke-z-index-popover)',
           },
           computePosition: {
             referenceElement: codeBlock,

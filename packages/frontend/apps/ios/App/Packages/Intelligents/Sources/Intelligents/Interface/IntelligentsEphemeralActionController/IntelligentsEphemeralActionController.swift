@@ -150,7 +150,7 @@ public class IntelligentsEphemeralActionController: UIViewController {
     let headerIcon = UIImageView()
 
     headerLabel.translatesAutoresizingMaskIntoConstraints = false
-    headerLabel.text = NSLocalizedString("AFFiNE AI", comment: "")
+    headerLabel.text = NSLocalizedString("YUNKE AI", comment: "")
     headerLabel.font = .preferredFont(for: .title3, weight: .bold)
     headerLabel.textColor = .white
     headerLabel.textAlignment = .left

@@ -64,7 +64,7 @@ export function effects() {
   customElements.define('icon-button', IconButton);
   customElements.define('smooth-corner', SmoothCorner);
   customElements.define('toggle-switch', ToggleSwitch);
-  customElements.define('affine-filterable-list', FilterableListComponent);
+  customElements.define('yunke-filterable-list', FilterableListComponent);
   customElements.define('block-zero-width', BlockZeroWidth);
-  customElements.define('affine-block-selection', BlockSelection);
+  customElements.define('yunke-block-selection', BlockSelection);
 }

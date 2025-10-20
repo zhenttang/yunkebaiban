@@ -41,7 +41,7 @@ export const progressDragHandleStyle = css({
   borderRadius: '2px',
   opacity: '1',
   cursor: 'ew-resize',
-  background: 'var(--affine-primary-color)',
+  background: 'var(--yunke-primary-color)',
   transition: 'opacity 0.2s ease-in-out',
 });
 
@@ -51,7 +51,7 @@ export const progressNumberStyle = css({
   alignItems: 'center',
   height: '18px',
   width: '25px',
-  color: 'var(--affine-text-secondary-color)',
+  color: 'var(--yunke-text-secondary-color)',
   fontSize: '14px',
   fontFamily: baseTheme.fontSansFamily,
 });

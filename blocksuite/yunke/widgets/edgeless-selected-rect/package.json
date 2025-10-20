@@ -1,6 +1,6 @@
 {
   "name": "@blocksuite/yunke-widget-edgeless-selected-rect",
-  "description": "Affine edgeless selected-rect widget.",
+  "description": "Yunke edgeless selected-rect widget.",
   "type": "module",
   "scripts": {
     "build": "tsc"

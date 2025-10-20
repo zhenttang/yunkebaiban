@@ -16,7 +16,7 @@ import {
 import { EmbedSyncedDocInteraction } from './embed-synced-doc-block/configs/edgeless-interaction';
 
 export class EmbedDocViewExtension extends ViewExtensionProvider {
-  override name = 'affine-embed-doc-block';
+  override name = 'yunke-embed-doc-block';
 
   override effect(): void {
     super.effect();

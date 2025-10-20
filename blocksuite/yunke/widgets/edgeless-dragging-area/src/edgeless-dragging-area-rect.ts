@@ -14,7 +14,7 @@ export const EDGELESS_DRAGGING_AREA_WIDGET = 'edgeless-dragging-area-rect';
 
 export class EdgelessDraggingAreaRectWidget extends WidgetComponent<RootBlockModel> {
   static override styles = css`
-    .affine-edgeless-dragging-area {
+    .yunke-edgeless-dragging-area {
       position: absolute;
       background: ${unsafeCSS(
         cssVarV2('edgeless/selection/selectionMarqueeBackground', '#1E96EB14')
@@ -56,7 +56,7 @@ export class EdgelessDraggingAreaRectWidget extends WidgetComponent<RootBlockMod
     };
 
     return html`
-      <div class="affine-edgeless-dragging-area" style=${styleMap(style)}></div>
+      <div class="yunke-edgeless-dragging-area" style=${styleMap(style)}></div>
     `;
   }
 }

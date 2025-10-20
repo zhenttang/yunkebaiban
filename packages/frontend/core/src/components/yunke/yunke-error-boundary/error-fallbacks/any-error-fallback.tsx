@@ -18,9 +18,9 @@ export const AnyErrorFallback: FC<FallbackProps> = props => {
 
   return (
     <ErrorDetail
-      title={t['com.affine.error.unexpected-error.title']()}
+      title={t['com.yunke.error.unexpected-error.title']()}
       resetError={reloadPage}
-      buttonText={t['com.affine.error.reload']()}
+      buttonText={t['com.yunke.error.reload']()}
       description={
         'message' in (error as Error) ? (error as Error).message : `${error}`
       }

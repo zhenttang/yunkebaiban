@@ -27,7 +27,7 @@ export class ImagePreviewGrid extends LitElement {
       width: 58px;
       height: 58px;
       border-radius: 4px;
-      border: 1px solid var(--affine-border-color);
+      border: 1px solid var(--yunke-border-color);
       cursor: pointer;
       overflow: hidden;
       position: relative;
@@ -48,23 +48,23 @@ export class ImagePreviewGrid extends LitElement {
       width: 16px;
       height: 16px;
       border-radius: 4px;
-      border: 1px solid var(--affine-border-color);
+      border: 1px solid var(--yunke-border-color);
       justify-content: center;
       align-items: center;
       display: none;
       position: absolute;
-      background-color: var(--affine-white);
+      background-color: var(--yunke-white);
       z-index: 1;
       cursor: pointer;
     }
 
     .close-wrapper:hover {
-      background-color: var(--affine-background-error-color);
-      border: 1px solid var(--affine-error-color);
+      background-color: var(--yunke-background-error-color);
+      border: 1px solid var(--yunke-error-color);
     }
 
     .close-wrapper:hover svg path {
-      fill: var(--affine-error-color);
+      fill: var(--yunke-error-color);
     }
   `;
 

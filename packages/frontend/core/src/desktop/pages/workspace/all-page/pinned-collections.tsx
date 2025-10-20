@@ -116,7 +116,7 @@ export const PinnedCollections = ({
           role="button"
         >
           <span className={styles.pillLabel}>
-            {t['com.affine.all-docs.pinned-collection.all']()}
+            {t['com.yunke.all-docs.pinned-collection.all']()}
           </span>
           <span className={styles.pillIndicator} />
         </div>
@@ -153,7 +153,7 @@ export const PinnedCollections = ({
           />
         )}
         {activeCollectionId && (
-          <Tooltip content={t['com.affine.all-docs.pinned-collection.edit']()}>
+          <Tooltip content={t['com.yunke.all-docs.pinned-collection.edit']()}>
             <IconButton
               size="16"
               className={styles.iconButton}
@@ -192,7 +192,7 @@ export const AddPinnedCollection = ({
     >
       <button type="button" className={styles.addButton}>
         <PlusIcon />
-        {t['com.affine.filter.add-filter']()}
+        {t['com.yunke.filter.add-filter']()}
       </button>
     </Menu>
   );
@@ -236,7 +236,7 @@ export const AddPinnedCollectionMenuContent = ({
           setAddingFilter(true);
         }}
       >
-        {t['com.affine.filter']()}
+        {t['com.yunke.filter']()}
       </MenuItem>
       {unpinnedCollectionMetas.length > 0 && <Divider />}
       {unpinnedCollectionMetas.map(meta => (

@@ -55,7 +55,7 @@ const Success = ({ licenseKey }: { licenseKey: string | null }) => {
   const t = useI18n();
   const openInAppService = useService(OpenInAppService);
 
-  const openAFFiNE = useCallback(() => {
+  const openYUNKE = useCallback(() => {
     openInAppService.showOpenInAppPage();
   }, [openInAppService]);
 
@@ -68,7 +68,7 @@ const Success = ({ licenseKey }: { licenseKey: string | null }) => {
       .then(success => {
         if (success) {
           notify.success({
-            title: t['com.affine.payment.license-success.copy'](),
+            title: t['com.yunke.payment.license-success.copy'](),
           });
         }
       })
@@ -80,10 +80,10 @@ const Success = ({ licenseKey }: { licenseKey: string | null }) => {
 
   const subtitle = (
     <div className={styles.copy}>
-      <p>{t['com.affine.payment.license-success.text-1']()}</p>
+      <p>{t['com.yunke.payment.license-success.text-1']()}</p>
       <p>
         <Trans
-          i18nKey={'com.affine.payment.license-success.text-2'}
+          i18nKey={'com.yunke.payment.license-success.text-2'}
           components={{
             1: (
               <a
@@ -98,7 +98,7 @@ const Success = ({ licenseKey }: { licenseKey: string | null }) => {
   );
   return (
     <AuthPageContainer
-      title={t['com.affine.payment.license-success.title']()}
+      title={t['com.yunke.payment.license-success.title']()}
       subtitle={subtitle}
     >
       <div className={styles.content}>
@@ -112,10 +112,10 @@ const Success = ({ licenseKey }: { licenseKey: string | null }) => {
             onClick={onCopy}
           />
         </div>
-        <div>{t['com.affine.payment.license-success.hint']()}</div>
+        <div>{t['com.yunke.payment.license-success.hint']()}</div>
         <div>
-          <Button variant="primary" size="extraLarge" onClick={openAFFiNE}>
-            {t['com.affine.payment.license-success.open-affine']()}
+          <Button variant="primary" size="extraLarge" onClick={openYUNKE}>
+            {t['com.yunke.payment.license-success.open-yunke']()}
           </Button>
         </div>
       </div>

@@ -41,11 +41,11 @@ export const SetPassword: FC<{
           onSetPassword(passwordRef.current);
         }, [onSetPassword])}
       >
-        {t['com.affine.auth.set.password.save']()}
+        {t['com.yunke.auth.set.password.save']()}
       </Button>
       {showLater ? (
         <Button variant="plain" size="large" onClick={onLater}>
-          {t['com.affine.auth.later']()}
+          {t['com.yunke.auth.later']()}
         </Button>
       ) : null}
     </>

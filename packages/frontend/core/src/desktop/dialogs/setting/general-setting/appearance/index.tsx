@@ -5,7 +5,7 @@ import {
   SettingRow,
   SettingWrapper,
 } from '@yunke/component/setting-components';
-import { LanguageMenu } from '@yunke/core/components/affine/language-menu';
+import { LanguageMenu } from '@yunke/core/components/yunke/language-menu';
 import { TraySettingService } from '@yunke/core/modules/editor-setting/services/tray-settings';
 import { FeatureFlagService } from '@yunke/core/modules/feature-flag';
 import { useI18n } from '@yunke/i18n';
@@ -13,7 +13,7 @@ import { useLiveData, useService } from '@toeverything/infra';
 import { useTheme } from 'next-themes';
 import { useCallback, useMemo } from 'react';
 
-import { useAppSettingHelper } from '../../../../../components/hooks/affine/use-app-setting-helper';
+import { useAppSettingHelper } from '../../../../../components/hooks/yunke/use-app-setting-helper';
 import { OpenInAppLinksMenu } from './links';
 import { settingWrapper } from './style.css';
 import { ThemeEditorSetting } from './theme-editor-setting';
@@ -22,17 +22,17 @@ export const getThemeOptions = (t: ReturnType<typeof useI18n>) =>
   [
     {
       value: 'system',
-      label: t['com.affine.themeSettings.system'](),
+      label: t['com.yunke.themeSettings.system'](),
       testId: 'system-theme-trigger',
     },
     {
       value: 'light',
-      label: t['com.affine.themeSettings.light'](),
+      label: t['com.yunke.themeSettings.light'](),
       testId: 'light-theme-trigger',
     },
     {
       value: 'dark',
-      label: t['com.affine.themeSettings.dark'](),
+      label: t['com.yunke.themeSettings.dark'](),
       testId: 'dark-theme-trigger',
     },
   ] satisfies RadioItem[];
@@ -66,11 +66,11 @@ const MenubarSetting = () => {
   return (
     <SettingWrapper
       id="menubar"
-      title={t['com.affine.appearanceSettings.menubar.title']()}
+      title={t['com.yunke.appearanceSettings.menubar.title']()}
     >
       <SettingRow
-        name={t['com.affine.appearanceSettings.menubar.toggle']()}
-        desc={t['com.affine.appearanceSettings.menubar.description']()}
+        name={t['com.yunke.appearanceSettings.menubar.toggle']()}
+        desc={t['com.yunke.appearanceSettings.menubar.description']()}
       >
         <Switch
           checked={enabled}
@@ -93,20 +93,20 @@ export const AppearanceSettings = () => {
   return (
     <>
       <SettingHeader
-        title={t['com.affine.appearanceSettings.title']()}
-        subtitle={t['com.affine.appearanceSettings.subtitle']()}
+        title={t['com.yunke.appearanceSettings.title']()}
+        subtitle={t['com.yunke.appearanceSettings.subtitle']()}
       />
 
-      <SettingWrapper title={t['com.affine.appearanceSettings.theme.title']()}>
+      <SettingWrapper title={t['com.yunke.appearanceSettings.theme.title']()}>
         <SettingRow
-          name={t['com.affine.appearanceSettings.color.title']()}
-          desc={t['com.affine.appearanceSettings.color.description']()}
+          name={t['com.yunke.appearanceSettings.color.title']()}
+          desc={t['com.yunke.appearanceSettings.color.description']()}
         >
           <ThemeSettings />
         </SettingRow>
         <SettingRow
-          name={t['com.affine.appearanceSettings.language.title']()}
-          desc={t['com.affine.appearanceSettings.language.description']()}
+          name={t['com.yunke.appearanceSettings.language.title']()}
+          desc={t['com.yunke.appearanceSettings.language.description']()}
         >
           <div className={settingWrapper}>
             <LanguageMenu />
@@ -114,8 +114,8 @@ export const AppearanceSettings = () => {
         </SettingRow>
         {BUILD_CONFIG.isElectron ? (
           <SettingRow
-            name={t['com.affine.appearanceSettings.clientBorder.title']()}
-            desc={t['com.affine.appearanceSettings.clientBorder.description']()}
+            name={t['com.yunke.appearanceSettings.clientBorder.title']()}
+            desc={t['com.yunke.appearanceSettings.clientBorder.description']()}
             data-testid="client-border-style-trigger"
           >
             <Switch
@@ -128,10 +128,10 @@ export const AppearanceSettings = () => {
       </SettingWrapper>
 
       {BUILD_CONFIG.isWeb && !environment.isMobile ? (
-        <SettingWrapper title={t['com.affine.setting.appearance.links']()}>
+        <SettingWrapper title={t['com.yunke.setting.appearance.links']()}>
           <SettingRow
-            name={t['com.affine.setting.appearance.open-in-app']()}
-            desc={t['com.affine.setting.appearance.open-in-app.hint']()}
+            name={t['com.yunke.setting.appearance.open-in-app']()}
+            desc={t['com.yunke.setting.appearance.open-in-app.hint']()}
             data-testid="open-in-app-links-trigger"
           >
             <OpenInAppLinksMenu />
@@ -141,12 +141,12 @@ export const AppearanceSettings = () => {
 
       {BUILD_CONFIG.isElectron ? (
         <SettingWrapper
-          title={t['com.affine.appearanceSettings.sidebar.title']()}
+          title={t['com.yunke.appearanceSettings.sidebar.title']()}
         >
           <SettingRow
-            name={t['com.affine.appearanceSettings.noisyBackground.title']()}
+            name={t['com.yunke.appearanceSettings.noisyBackground.title']()}
             desc={t[
-              'com.affine.appearanceSettings.noisyBackground.description'
+              'com.yunke.appearanceSettings.noisyBackground.description'
             ]()}
           >
             <Switch
@@ -158,9 +158,9 @@ export const AppearanceSettings = () => {
           </SettingRow>
           {environment.isMacOs && (
             <SettingRow
-              name={t['com.affine.appearanceSettings.translucentUI.title']()}
+              name={t['com.yunke.appearanceSettings.translucentUI.title']()}
               desc={t[
-                'com.affine.appearanceSettings.translucentUI.description'
+                'com.yunke.appearanceSettings.translucentUI.description'
               ]()}
             >
               <Switch

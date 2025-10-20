@@ -110,7 +110,7 @@ export const useDraggable = <D extends DNDData = DNDData>(
       },
     };
 
-    element.dataset.affineDraggable = 'true';
+    element.dataset.yunkeDraggable = 'true';
 
     const cleanupDraggable = draggable({
       element,

@@ -7,7 +7,7 @@ import {
 } from '@blocksuite/yunke-model';
 import { REFERENCE_NODE } from '@blocksuite/yunke-shared/consts';
 import { TelemetryProvider } from '@blocksuite/yunke-shared/services';
-import type { AffineTextAttributes } from '@blocksuite/yunke-shared/types';
+import type { YunkeTextAttributes } from '@blocksuite/yunke-shared/types';
 import { createDefaultDoc, matchModels } from '@blocksuite/yunke-shared/utils';
 import type { DetailSlotProps, SingleView } from '@blocksuite/data-view';
 import { SignalWatcher, WithDisposable } from '@blocksuite/global/lit';
@@ -27,7 +27,7 @@ export class NoteRenderer
   static override styles = css`
     database-datasource-note-renderer {
       width: 100%;
-      --affine-editor-side-padding: 0;
+      --yunke-editor-side-padding: 0;
       flex: 1;
     }
   `;
@@ -65,7 +65,7 @@ export class NoteRenderer
             type: 'LinkedPage',
             pageId: note.id,
           },
-        } satisfies AffineTextAttributes as BaseTextAttributes
+        } satisfies YunkeTextAttributes as BaseTextAttributes
       );
       collection.meta.setDocMeta(note.id, { title: rowContent });
       if (note.root) {
@@ -93,7 +93,7 @@ export class NoteRenderer
   protected override render(): unknown {
     return html`
       <div
-        style="height: 1px;max-width: var(--affine-editor-width);background-color: ${unsafeCSS(
+        style="height: 1px;max-width: var(--yunke-editor-width);background-color: ${unsafeCSS(
           cssVarV2.layer.insideBorder.border
         )};margin: auto;margin-bottom: 16px"
       ></div>
@@ -106,7 +106,7 @@ export class NoteRenderer
       return html` <div>
         <div
           @click="${this.addNote}"
-          style="max-width: var(--affine-editor-width);margin: auto;cursor: pointer;color: var(--affine-text-disable-color)"
+          style="max-width: var(--yunke-editor-width);margin: auto;cursor: pointer;color: var(--yunke-text-disable-color)"
         >
           Click to create a linked doc in center peek.
         </div>

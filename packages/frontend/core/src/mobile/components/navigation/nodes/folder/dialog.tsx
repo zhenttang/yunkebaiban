@@ -14,14 +14,14 @@ export const FolderCreateTip = ({
   const t = useI18n();
   const parent = parentName
     ? parentName
-    : t['com.affine.m.explorer.folder.root']();
+    : t['com.yunke.m.explorer.folder.root']();
 
   const tip = input
-    ? t['com.affine.m.explorer.folder.new-tip-not-empty']({
+    ? t['com.yunke.m.explorer.folder.new-tip-not-empty']({
         value: input,
         parent,
       })
-    : t['com.affine.m.explorer.folder.new-tip-empty']({ parent });
+    : t['com.yunke.m.explorer.folder.new-tip-empty']({ parent });
 
   return tip;
 };
@@ -33,7 +33,7 @@ export const FolderRenameSubMenu = ({
   ...props
 }: RenameSubMenuProps) => {
   const t = useI18n();
-  const title = propsTitle || t['com.affine.m.explorer.folder.rename']();
+  const title = propsTitle || t['com.yunke.m.explorer.folder.rename']();
   const icon = propsIcon || <EditIcon />;
   const text = propsText || title;
 
@@ -50,9 +50,9 @@ export const FolderRenameDialog = ({
 }) => {
   const t = useI18n();
   const title =
-    propsTitle || t['com.affine.m.explorer.folder.new-dialog-title']();
+    propsTitle || t['com.yunke.m.explorer.folder.new-dialog-title']();
   const confirmText =
-    propsConfirmText || t['com.affine.m.explorer.folder.rename-confirm']();
+    propsConfirmText || t['com.yunke.m.explorer.folder.rename-confirm']();
 
   return <RenameDialog title={title} confirmText={confirmText} {...props} />;
 };

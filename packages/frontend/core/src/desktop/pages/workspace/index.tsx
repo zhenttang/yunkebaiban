@@ -1,5 +1,5 @@
 import { DNDContext } from '@yunke/component';
-import { AffineOtherPageLayout } from '@yunke/component/affine-other-page-layout';
+import { YunkeOtherPageLayout } from '@yunke/component/yunke-other-page-layout';
 import { workbenchRoutes } from '@yunke/core/desktop/workbench-router';
 import {
   DefaultServerService,
@@ -10,7 +10,7 @@ import { DndService } from '@yunke/core/modules/dnd/services';
 import { GlobalContextService } from '@yunke/core/modules/global-context';
 import { OpenInAppGuard } from '@yunke/core/modules/open-in-app';
 import {
-  getAFFiNEWorkspaceSchema,
+  getYUNKEWorkspaceSchema,
   type Workspace,
   type WorkspaceMetadata,
   WorkspacesService,
@@ -34,7 +34,7 @@ import {
 import { map } from 'rxjs';
 import * as _Y from 'yjs';
 
-import { AffineErrorBoundary } from '../../../components/affine/affine-error-boundary';
+import { YunkeErrorBoundary } from '../../../components/yunke/yunke-error-boundary';
 import { WorkbenchRoot } from '../../../modules/workbench';
 import { cleanupInvalidWorkspaceStorage, getRecommendedWorkspaceId } from '../../../utils/workspace-storage-cleanup';
 import { AppContainer } from '../../components/app-container';
@@ -56,7 +56,7 @@ declare global {
   // oxlint-disable-next-line no-var 禁用no-var规则
   var Y: typeof _Y;
   interface WindowEventMap {
-    'affine:workspace:change': CustomEvent<{ id: string }>;
+    'yunke:workspace:change': CustomEvent<{ id: string }>;
   }
 }
 
@@ -328,9 +328,9 @@ export const Component = (): ReactElement => {
     
     return (
       <FrameworkScope scope={server?.scope}>
-        <AffineOtherPageLayout>
+        <YunkeOtherPageLayout>
           <PageNotFound noPermission />
-        </AffineOtherPageLayout>
+        </YunkeOtherPageLayout>
       </FrameworkScope>
     );
   }
@@ -454,7 +454,7 @@ const WorkspacePage = ({ meta }: { meta: WorkspaceMetadata }) => {
       // for debug purpose
       window.currentWorkspace = workspace ?? undefined;
       window.dispatchEvent(
-        new CustomEvent('affine:workspace:change', {
+        new CustomEvent('yunke:workspace:change', {
           detail: {
             id: workspace.id,
           },
@@ -463,7 +463,7 @@ const WorkspacePage = ({ meta }: { meta: WorkspaceMetadata }) => {
       window.exportWorkspaceSnapshot = async (docs?: string[]) => {
         await ZipTransformer.exportDocs(
           workspace.docCollection,
-          getAFFiNEWorkspaceSchema(),
+          getYUNKEWorkspaceSchema(),
           Array.from(workspace.docCollection.docs.values())
             .filter(doc => (docs ? docs.includes(doc.id) : true))
             .map(doc => doc.getStore())
@@ -479,7 +479,7 @@ const WorkspacePage = ({ meta }: { meta: WorkspaceMetadata }) => {
             const blob = new Blob([file], { type: 'application/zip' });
             const newDocs = await ZipTransformer.importDocs(
               workspace.docCollection,
-              getAFFiNEWorkspaceSchema(),
+              getYUNKEWorkspaceSchema(),
               blob
             );
             console.log(
@@ -529,11 +529,11 @@ const WorkspacePage = ({ meta }: { meta: WorkspaceMetadata }) => {
     <FrameworkScope scope={workspace.scope}>
       <DNDContextProvider>
         <OpenInAppGuard>
-          <AffineErrorBoundary height="100vh">
+          <YunkeErrorBoundary height="100vh">
             <WorkspaceLayout>
               <WorkbenchRoot />
             </WorkspaceLayout>
-          </AffineErrorBoundary>
+          </YunkeErrorBoundary>
         </OpenInAppGuard>
       </DNDContextProvider>
     </FrameworkScope>

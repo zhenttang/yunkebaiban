@@ -31,7 +31,7 @@ export const AddWorkspace = ({
           className={styles.ItemContainer}
         >
           <div className={styles.ItemText}>
-            {t['com.affine.workspace.local.import']()}
+            {t['com.yunke.workspace.local.import']()}
           </div>
         </MenuItem>
       )}
@@ -45,8 +45,8 @@ export const AddWorkspace = ({
       >
         <div className={styles.ItemText}>
           {enableLocalWorkspace
-            ? t['com.affine.workspaceList.addWorkspace.create']()
-            : t['com.affine.workspaceList.addWorkspace.create-cloud']()}
+            ? t['com.yunke.workspaceList.addWorkspace.create']()
+            : t['com.yunke.workspaceList.addWorkspace.create-cloud']()}
         </div>
       </MenuItem>
     </>

@@ -5,8 +5,8 @@ import {
   useConfirmModal,
 } from '@yunke/component';
 import { AudioPlayer } from '@yunke/component/ui/audio-player';
-import { useEnableAI } from '@yunke/core/components/hooks/affine/use-enable-ai';
-import { useAsyncCallback } from '@yunke/core/components/hooks/affine-async-hooks';
+import { useEnableAI } from '@yunke/core/components/hooks/yunke/use-enable-ai';
+import { useAsyncCallback } from '@yunke/core/components/hooks/yunke-async-hooks';
 import { useSeekTime } from '@yunke/core/components/hooks/use-seek-time';
 import { CurrentServerScopeProvider } from '@yunke/core/components/providers/current-server-scope';
 import { PublicUserLabel } from '@yunke/core/modules/cloud/views/public-user';
@@ -96,13 +96,13 @@ const AttachmentAudioPlayer = ({ block }: { block: AudioAttachmentBlock }) => {
 
     if (!block.transcriptionJob.currentUserId) {
       confirmModal.openConfirmModal({
-        title: t['com.affine.ai.login-required.dialog-title'](),
-        description: t['com.affine.ai.login-required.dialog-content'](),
-        confirmText: t['com.affine.ai.login-required.dialog-confirm'](),
+        title: t['com.yunke.ai.login-required.dialog-title'](),
+        description: t['com.yunke.ai.login-required.dialog-content'](),
+        confirmText: t['com.yunke.ai.login-required.dialog-confirm'](),
         confirmButtonOptions: {
           variant: 'primary',
         },
-        cancelText: t['com.affine.ai.login-required.dialog-cancel'](),
+        cancelText: t['com.yunke.ai.login-required.dialog-cancel'](),
         onConfirm: () => {
           globalDialogService.open('sign-in', {});
         },
@@ -119,9 +119,9 @@ const AttachmentAudioPlayer = ({ block }: { block: AudioAttachmentBlock }) => {
     setPreflightChecking(false);
     if (result?.error === 'created-by-others') {
       confirmModal.openConfirmModal({
-        title: t['com.affine.audio.transcribe.non-owner.confirm.title'](),
+        title: t['com.yunke.audio.transcribe.non-owner.confirm.title'](),
         description: (
-          <Trans i18nKey="com.affine.audio.transcribe.non-owner.confirm.message">
+          <Trans i18nKey="com.yunke.audio.transcribe.non-owner.confirm.message">
             Please contact <PublicUserLabel id={result.userId} /> to upgrade AI
             rights or resend the attachment.
           </Trans>
@@ -173,13 +173,13 @@ const AttachmentAudioPlayer = ({ block }: { block: AudioAttachmentBlock }) => {
         onClick={handleNotesClick}
       >
         {transcribing
-          ? t['com.affine.audio.transcribing']()
-          : t['com.affine.audio.notes']()}
+          ? t['com.yunke.audio.transcribing']()
+          : t['com.yunke.audio.notes']()}
       </Button>
     );
     if (transcribing) {
       return (
-        <Tooltip content={t['com.affine.audio.transcribing']()}>
+        <Tooltip content={t['com.yunke.audio.transcribing']()}>
           {inner}
         </Tooltip>
       );

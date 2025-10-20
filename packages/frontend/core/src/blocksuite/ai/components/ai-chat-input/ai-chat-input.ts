@@ -58,7 +58,7 @@ export class AIChatInput extends SignalWatcher(
       box-sizing: border-box;
       border-width: 1px;
       border-style: solid;
-      border-color: var(--affine-border-color);
+      border-color: var(--yunke-border-color);
 
       .chat-selection-quote {
         padding: 4px 0px 8px 0px;
@@ -67,7 +67,7 @@ export class AIChatInput extends SignalWatcher(
         font-size: 14px;
         font-weight: 400;
         line-height: 22px;
-        color: var(--affine-text-secondary-color);
+        color: var(--yunke-text-secondary-color);
         position: relative;
 
         div {
@@ -85,8 +85,8 @@ export class AIChatInput extends SignalWatcher(
           width: 16px;
           height: 16px;
           border-radius: 4px;
-          border: 1px solid var(--affine-border-color);
-          background-color: var(--affine-white);
+          border: 1px solid var(--yunke-border-color);
+          background-color: var(--yunke-white);
         }
       }
 
@@ -104,7 +104,7 @@ export class AIChatInput extends SignalWatcher(
         position: absolute;
         left: 0;
         top: 0;
-        background: var(--affine-quote-color);
+        background: var(--yunke-quote-color);
         border-radius: 18px;
       }
     }
@@ -173,10 +173,10 @@ export class AIChatInput extends SignalWatcher(
         margin: 0;
         border: none;
         line-height: 22px;
-        font-size: var(--affine-font-sm);
+        font-size: var(--yunke-font-sm);
         font-weight: 400;
-        font-family: var(--affine-font-family);
-        color: var(--affine-text-primary-color);
+        font-family: var(--yunke-font-family);
+        color: var(--yunke-text-primary-color);
         box-sizing: border-box;
         resize: none;
         overflow-y: scroll;
@@ -206,8 +206,8 @@ export class AIChatInput extends SignalWatcher(
       textarea::placeholder {
         font-size: 14px;
         font-weight: 400;
-        font-family: var(--affine-font-family);
-        color: var(--affine-placeholder-color);
+        font-family: var(--yunke-font-family);
+        color: var(--yunke-placeholder-color);
       }
 
       textarea:focus {
@@ -216,8 +216,8 @@ export class AIChatInput extends SignalWatcher(
     }
 
     .chat-panel-input[data-if-focused='true'] {
-      border-color: var(--affine-primary-color);
-      box-shadow: var(--affine-active-shadow);
+      border-color: var(--yunke-primary-color);
+      box-shadow: var(--yunke-active-shadow);
       user-select: none;
     }
 
@@ -228,13 +228,13 @@ export class AIChatInput extends SignalWatcher(
     }
 
     .chat-panel-send svg rect {
-      fill: var(--affine-primary-color);
+      fill: var(--yunke-primary-color);
     }
     .chat-panel-send[aria-disabled='true'] {
       cursor: not-allowed;
     }
     .chat-panel-send[aria-disabled='true'] svg rect {
-      fill: var(--affine-text-disable-color);
+      fill: var(--yunke-text-disable-color);
     }
   `;
 
@@ -402,7 +402,7 @@ export class AIChatInput extends SignalWatcher(
           @click=${this._uploadImageFiles}
         >
           ${ImageIcon()}
-          <affine-tooltip>上传</affine-tooltip>
+          <yunke-tooltip>上传</yunke-tooltip>
         </div>
         ${this.modelSwitchConfig?.visible.value
           ? html`
@@ -425,7 +425,7 @@ export class AIChatInput extends SignalWatcher(
               >
                 ${PublishIcon()}
                 ${!showLabel
-                  ? html`<affine-tooltip>搜索</affine-tooltip>`
+                  ? html`<yunke-tooltip>搜索</yunke-tooltip>`
                   : nothing}
                 ${showLabel
                   ? html`<span class="chat-input-icon-label">搜索</span>`
@@ -442,7 +442,7 @@ export class AIChatInput extends SignalWatcher(
         >
           ${ThinkingIcon()}
           ${!showLabel
-            ? html`<affine-tooltip>推理</affine-tooltip>`
+            ? html`<yunke-tooltip>推理</yunke-tooltip>`
             : nothing}
           ${showLabel
             ? html`<span class="chat-input-icon-label">推理</span>`
@@ -627,7 +627,7 @@ export class AIChatInput extends SignalWatcher(
       for await (const event of stream) {
         // console.log(`[AI_DEBUG] 收到流式事件:`, event);
         
-        // 修复: event是AffineTextEvent对象，需要获取data字段
+        // 修复: event是YunkeTextEvent对象，需要获取data字段
         const text = event.data;
         // console.log(`[AI_DEBUG] 提取的文本内容:`, JSON.stringify(text));
         

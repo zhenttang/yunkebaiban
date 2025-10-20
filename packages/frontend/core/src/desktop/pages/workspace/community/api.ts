@@ -13,8 +13,8 @@ const API_BASE_URL = '/api/community';
 async function request<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
   const url = `${API_BASE_URL}${endpoint}`;
   const token =
-    globalThis.localStorage?.getItem('affine-admin-token') ||
-    globalThis.localStorage?.getItem('affine-access-token');
+    globalThis.localStorage?.getItem('yunke-admin-token') ||
+    globalThis.localStorage?.getItem('yunke-access-token');
 
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',

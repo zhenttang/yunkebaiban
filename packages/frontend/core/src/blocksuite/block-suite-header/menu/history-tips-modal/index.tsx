@@ -1,5 +1,5 @@
 import { OverlayModal } from '@yunke/component';
-import { useEnableCloud } from '@yunke/core/components/hooks/affine/use-enable-cloud';
+import { useEnableCloud } from '@yunke/core/components/hooks/yunke/use-enable-cloud';
 import { WorkspaceService } from '@yunke/core/modules/workspace';
 import { useI18n } from '@yunke/i18n';
 import { useService } from '@toeverything/infra';
@@ -27,15 +27,15 @@ export const HistoryTipsModal = ({
     <OverlayModal
       open={open}
       topImage={<TopSvg />}
-      title={t['com.affine.history-vision.tips-modal.title']()}
+      title={t['com.yunke.history-vision.tips-modal.title']()}
       onOpenChange={setOpen}
-      description={t['com.affine.history-vision.tips-modal.description']()}
-      cancelText={t['com.affine.history-vision.tips-modal.cancel']()}
+      description={t['com.yunke.history-vision.tips-modal.description']()}
+      cancelText={t['com.yunke.history-vision.tips-modal.cancel']()}
       confirmButtonOptions={{
         variant: 'primary',
       }}
       onConfirm={handleConfirm}
-      confirmText={t['com.affine.history-vision.tips-modal.confirm']()}
+      confirmText={t['com.yunke.history-vision.tips-modal.confirm']()}
     />
   );
 };

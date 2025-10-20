@@ -1,11 +1,11 @@
 import {
-  AFFINE_VIEWPORT_OVERLAY_WIDGET,
-  AffineViewportOverlayWidget,
+  YUNKE_VIEWPORT_OVERLAY_WIDGET,
+  YunkeViewportOverlayWidget,
 } from './index';
 
 export function effects() {
   customElements.define(
-    AFFINE_VIEWPORT_OVERLAY_WIDGET,
-    AffineViewportOverlayWidget
+    YUNKE_VIEWPORT_OVERLAY_WIDGET,
+    YunkeViewportOverlayWidget
   );
 }

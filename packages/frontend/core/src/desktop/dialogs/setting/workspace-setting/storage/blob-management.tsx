@@ -24,7 +24,7 @@ const Empty = () => {
   const t = useI18n();
   return (
     <div className={styles.empty}>
-      {t['com.affine.settings.workspace.storage.unused-blobs.empty']()}
+      {t['com.yunke.settings.workspace.storage.unused-blobs.empty']()}
     </div>
   );
 };
@@ -219,11 +219,11 @@ export const BlobManagementPanel = () => {
       openConfirmModal({
         title:
           t[
-            'com.affine.settings.workspace.storage.unused-blobs.delete.title'
+            'com.yunke.settings.workspace.storage.unused-blobs.delete.title'
           ](),
         children:
           t[
-            'com.affine.settings.workspace.storage.unused-blobs.delete.warning'
+            'com.yunke.settings.workspace.storage.unused-blobs.delete.warning'
           ](),
         onConfirm: async () => {
           setDeleting(true);
@@ -276,12 +276,12 @@ export const BlobManagementPanel = () => {
       {selectedBlobs.length > 0 ? (
         <div className={styles.blobManagementControls}>
           <div className={styles.blobManagementName}>
-            {`${selectedBlobs.length} ${t['com.affine.settings.workspace.storage.unused-blobs.selected']()}`}
+            {`${selectedBlobs.length} ${t['com.yunke.settings.workspace.storage.unused-blobs.selected']()}`}
           </div>
           <div className={styles.spacer} />
           {showSelectAll && (
             <Button onClick={handleSelectAll} variant="primary">
-              {t['com.affine.keyboardShortcuts.selectAll']()}
+              {t['com.yunke.keyboardShortcuts.selectAll']()}
             </Button>
           )}
           <Button
@@ -295,7 +295,7 @@ export const BlobManagementPanel = () => {
         </div>
       ) : (
         <div className={styles.blobManagementNameInactive}>
-          {`${t['com.affine.settings.workspace.storage.unused-blobs']()} (${unusedBlobs.length})`}
+          {`${t['com.yunke.settings.workspace.storage.unused-blobs']()} (${unusedBlobs.length})`}
         </div>
       )}
       {isEmpty ? (
@@ -309,8 +309,8 @@ export const BlobManagementPanel = () => {
           ) : loadError ? (
             <div className={styles.loadingContainer}>
               <ErrorMessage>
-                {t['com.affine.settings.workspace.storage.load-error']
-                    ? t['com.affine.settings.workspace.storage.load-error']()
+                {t['com.yunke.settings.workspace.storage.load-error']
+                    ? t['com.yunke.settings.workspace.storage.load-error']()
                     : '加载失败，可能是同步或索引过程超时'
                 }
               </ErrorMessage>

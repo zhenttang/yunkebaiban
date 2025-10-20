@@ -3,24 +3,24 @@ import { unsafeCSSVarV2 } from '@blocksuite/yunke-shared/theme';
 import { css, html } from 'lit';
 
 export const styles = css`
-  .affine-embed-linked-doc-block {
+  .yunke-embed-linked-doc-block {
     box-sizing: border-box;
     display: flex;
     width: 100%;
     height: 100%;
     border-radius: 8px;
-    border: 1px solid var(--affine-background-tertiary-color);
+    border: 1px solid var(--yunke-background-tertiary-color);
     background: ${unsafeCSSVarV2('layer/background/primary')};
     user-select: none;
     position: relative;
   }
 
-  .affine-embed-linked-doc-block.in-canvas {
+  .yunke-embed-linked-doc-block.in-canvas {
     border: 1px solid ${unsafeCSSVarV2('layer/insideBorder/border')};
     background: ${unsafeCSSVarV2('layer/background/linkedDocOnEdgeless')};
   }
 
-  .affine-embed-linked-doc-content {
+  .yunke-embed-linked-doc-content {
     flex-grow: 1;
     height: 100%;
     display: flex;
@@ -31,7 +31,7 @@ export const styles = css`
     max-width: 100%;
   }
 
-  .affine-embed-linked-doc-content-title {
+  .yunke-embed-linked-doc-content-title {
     display: flex;
     flex-direction: row;
     gap: 8px;
@@ -39,7 +39,7 @@ export const styles = css`
     align-self: stretch;
   }
 
-  .affine-embed-linked-doc-content-title-icon {
+  .yunke-embed-linked-doc-content-title-icon {
     display: flex;
     width: 16px;
     height: 16px;
@@ -47,30 +47,30 @@ export const styles = css`
     align-items: center;
     color: ${unsafeCSSVarV2('icon/primary')};
   }
-  .affine-embed-linked-doc-content-title-icon img,
-  .affine-embed-linked-doc-content-title-icon object,
-  .affine-embed-linked-doc-content-title-icon svg {
+  .yunke-embed-linked-doc-content-title-icon img,
+  .yunke-embed-linked-doc-content-title-icon object,
+  .yunke-embed-linked-doc-content-title-icon svg {
     width: 16px;
     height: 16px;
-    fill: var(--affine-background-primary-color);
+    fill: var(--yunke-background-primary-color);
   }
 
-  .affine-embed-linked-doc-content-title-text {
+  .yunke-embed-linked-doc-content-title-text {
     flex-grow: 1;
     position: relative;
     height: 22px;
     word-break: break-word;
     overflow: hidden;
     text-overflow: ellipsis;
-    color: var(--affine-text-primary-color);
-    font-family: var(--affine-font-family);
-    font-size: var(--affine-font-sm);
+    color: var(--yunke-text-primary-color);
+    font-family: var(--yunke-font-family);
+    font-size: var(--yunke-font-sm);
     font-style: normal;
     font-weight: 600;
     line-height: 22px;
   }
 
-  .affine-embed-linked-doc-content-note.render {
+  .yunke-embed-linked-doc-content-note.render {
     display: none;
     overflow: hidden;
     pointer-events: none;
@@ -79,8 +79,8 @@ export const styles = css`
 
   ${embedNoteContentStyles}
 
-  .affine-embed-linked-doc-content-note.alias,
-  .affine-embed-linked-doc-content-note.default {
+  .yunke-embed-linked-doc-content-note.alias,
+  .yunke-embed-linked-doc-content-note.default {
     flex: 1;
     display: -webkit-box;
     -webkit-line-clamp: 2;
@@ -90,9 +90,9 @@ export const styles = css`
     word-break: break-word;
     overflow: hidden;
     text-overflow: ellipsis;
-    color: var(--affine-placeholder-color);
-    font-family: var(--affine-font-family);
-    font-size: var(--affine-font-xs);
+    color: var(--yunke-placeholder-color);
+    font-family: var(--yunke-font-family);
+    font-size: var(--yunke-font-xs);
     font-style: normal;
     font-weight: 400;
     line-height: 20px;
@@ -102,12 +102,12 @@ export const styles = css`
     }
   }
 
-  .affine-embed-linked-doc-content-note.alias {
-    color: var(--affine-text-primary-color);
+  .yunke-embed-linked-doc-content-note.alias {
+    color: var(--yunke-text-primary-color);
   }
 
-  .affine-embed-linked-doc-card-content-reload,
-  .affine-embed-linked-doc-content-date {
+  .yunke-embed-linked-doc-card-content-reload,
+  .yunke-embed-linked-doc-content-date {
     display: flex;
     height: 20px;
     align-items: flex-end;
@@ -118,7 +118,7 @@ export const styles = css`
     line-height: 20px;
   }
 
-  .affine-embed-linked-doc-card-content-reload-button {
+  .yunke-embed-linked-doc-card-content-reload-button {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -126,11 +126,11 @@ export const styles = css`
     cursor: pointer;
     color: ${unsafeCSSVarV2('button/primary')};
   }
-  .affine-embed-linked-doc-card-content-reload-button svg {
+  .yunke-embed-linked-doc-card-content-reload-button svg {
     width: 12px;
     height: 12px;
   }
-  .affine-embed-linked-doc-card-content-reload-button > span {
+  .yunke-embed-linked-doc-card-content-reload-button > span {
     display: -webkit-box;
     -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
@@ -138,14 +138,14 @@ export const styles = css`
     white-space: normal;
     overflow: hidden;
     text-overflow: ellipsis;
-    font-family: var(--affine-font-family);
-    font-size: var(--affine-font-xs);
+    font-family: var(--yunke-font-family);
+    font-size: var(--yunke-font-xs);
     font-style: normal;
     font-weight: 500;
     line-height: 20px;
   }
 
-  .affine-embed-linked-doc-content-date > span {
+  .yunke-embed-linked-doc-content-date > span {
     display: -webkit-box;
     -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
@@ -153,24 +153,24 @@ export const styles = css`
     white-space: normal;
     overflow: hidden;
     text-overflow: ellipsis;
-    color: var(--affine-text-secondary-color);
-    font-family: var(--affine-font-family);
-    font-size: var(--affine-font-xs);
+    color: var(--yunke-text-secondary-color);
+    font-family: var(--yunke-font-family);
+    font-size: var(--yunke-font-xs);
     font-style: normal;
     font-weight: 400;
     line-height: 20px;
   }
 
-  .affine-embed-linked-doc-banner {
+  .yunke-embed-linked-doc-banner {
     margin: 12px 12px 0px 0px;
     width: 204px;
     max-width: 100%;
     height: 102px;
     pointer-events: none;
   }
-  .affine-embed-linked-doc-banner img,
-  .affine-embed-linked-doc-banner object,
-  .affine-embed-linked-doc-banner svg {
+  .yunke-embed-linked-doc-banner img,
+  .yunke-embed-linked-doc-banner object,
+  .yunke-embed-linked-doc-banner svg {
     width: 204px;
     max-width: 100%;
     height: 102px;
@@ -178,162 +178,162 @@ export const styles = css`
     border-radius: 4px;
   }
 
-  .affine-embed-linked-doc-block.loading {
-    .affine-embed-linked-doc-content-date {
+  .yunke-embed-linked-doc-block.loading {
+    .yunke-embed-linked-doc-content-date {
       display: none;
     }
   }
 
-  .affine-embed-linked-doc-block:not(.loading):not(.note-empty) {
-    .affine-embed-linked-doc-content-note.render {
+  .yunke-embed-linked-doc-block:not(.loading):not(.note-empty) {
+    .yunke-embed-linked-doc-content-note.render {
       display: block;
     }
 
-    .affine-embed-linked-doc-content-note.default {
+    .yunke-embed-linked-doc-content-note.default {
       display: none;
     }
   }
 
-  .affine-embed-linked-doc-block:not(.loading):not(.banner-empty) {
-    .affine-embed-linked-doc-banner.default {
+  .yunke-embed-linked-doc-block:not(.loading):not(.banner-empty) {
+    .yunke-embed-linked-doc-banner.default {
       display: none;
     }
   }
 
-  .affine-embed-linked-doc-block:not(.loading):not(.deleted):not(.error):not(
+  .yunke-embed-linked-doc-block:not(.loading):not(.deleted):not(.error):not(
       .empty
     ).banner-empty {
-    .affine-embed-linked-doc-content {
+    .yunke-embed-linked-doc-content {
       width: 100%;
       height: 100%;
     }
 
-    .affine-embed-linked-doc-banner.default {
+    .yunke-embed-linked-doc-banner.default {
       display: none;
     }
   }
-  .affine-embed-linked-doc-block:not(.loading).error,
-  .affine-embed-linked-doc-block:not(.loading).deleted {
-    background: var(--affine-background-secondary-color);
+  .yunke-embed-linked-doc-block:not(.loading).error,
+  .yunke-embed-linked-doc-block:not(.loading).deleted {
+    background: var(--yunke-background-secondary-color);
 
-    .affine-embed-linked-doc-content-note.render {
+    .yunke-embed-linked-doc-content-note.render {
       display: none;
     }
-    .affine-embed-linked-doc-content-note.default {
+    .yunke-embed-linked-doc-content-note.default {
       display: block;
     }
 
-    .affine-embed-linked-doc-content-date {
+    .yunke-embed-linked-doc-content-date {
       display: none;
     }
 
-    .affine-embed-linked-doc-banner.default {
+    .yunke-embed-linked-doc-banner.default {
       display: block;
     }
   }
-  .affine-embed-linked-doc-block.horizontalThin {
-    .affine-embed-linked-doc-banner {
+  .yunke-embed-linked-doc-block.horizontalThin {
+    .yunke-embed-linked-doc-banner {
       height: 66px;
     }
 
-    .affine-embed-linked-doc-banner img,
-    .affine-embed-linked-doc-banner object,
-    .affine-embed-linked-doc-banner svg {
+    .yunke-embed-linked-doc-banner img,
+    .yunke-embed-linked-doc-banner object,
+    .yunke-embed-linked-doc-banner svg {
       height: 66px;
     }
 
-    .affine-embed-linked-doc-content {
+    .yunke-embed-linked-doc-content {
       gap: 12px;
     }
   }
-  .affine-embed-linked-doc-block.list {
-    .affine-embed-linked-doc-content {
+  .yunke-embed-linked-doc-block.list {
+    .yunke-embed-linked-doc-content {
       width: 100%;
       flex-direction: row;
       align-items: center;
       justify-content: space-between;
     }
 
-    .affine-embed-linked-doc-content-title {
+    .yunke-embed-linked-doc-content-title {
       width: calc(100% - 204px);
     }
 
-    .affine-embed-linked-doc-content-note {
+    .yunke-embed-linked-doc-content-note {
       display: none !important;
     }
 
-    .affine-embed-linked-doc-content-date {
+    .yunke-embed-linked-doc-content-date {
       width: 204px;
       justify-content: flex-end;
     }
 
-    .affine-embed-linked-doc-banner {
+    .yunke-embed-linked-doc-banner {
       display: none !important;
     }
   }
-  .affine-embed-linked-doc-block.vertical {
+  .yunke-embed-linked-doc-block.vertical {
     flex-direction: column-reverse;
 
-    .affine-embed-linked-doc-content {
+    .yunke-embed-linked-doc-content {
       width: 100%;
     }
 
-    .affine-embed-linked-doc-banner {
+    .yunke-embed-linked-doc-banner {
       width: 340px;
       height: 170px;
       margin-left: 12px;
     }
-    .affine-embed-linked-doc-banner img,
-    .affine-embed-linked-doc-banner object,
-    .affine-embed-linked-doc-banner svg {
+    .yunke-embed-linked-doc-banner img,
+    .yunke-embed-linked-doc-banner object,
+    .yunke-embed-linked-doc-banner svg {
       width: 340px;
       height: 170px;
     }
   }
-  .affine-embed-linked-doc-block.vertical:not(.loading):not(.deleted):not(
+  .yunke-embed-linked-doc-block.vertical:not(.loading):not(.deleted):not(
       .error
     ):not(.empty).banner-empty {
-    .affine-embed-linked-doc-content {
+    .yunke-embed-linked-doc-content {
       width: 100%;
       height: 100%;
     }
 
-    .affine-embed-linked-doc-banner.default {
+    .yunke-embed-linked-doc-banner.default {
       display: none;
     }
 
-    .affine-embed-linked-doc-content-note {
+    .yunke-embed-linked-doc-content-note {
       -webkit-line-clamp: 16;
     }
 
-    .affine-embed-linked-doc-content-date {
+    .yunke-embed-linked-doc-content-date {
       flex-grow: unset;
       align-items: center;
     }
   }
-  .affine-embed-linked-doc-block.cube {
-    .affine-embed-linked-doc-content {
+  .yunke-embed-linked-doc-block.cube {
+    .yunke-embed-linked-doc-content {
       width: 100%;
       flex-direction: column;
       align-items: flex-start;
       justify-content: space-between;
     }
 
-    .affine-embed-linked-doc-content-title {
+    .yunke-embed-linked-doc-content-title {
       flex-direction: column;
       gap: 4px;
       align-items: flex-start;
     }
 
-    .affine-embed-linked-doc-content-title-text {
+    .yunke-embed-linked-doc-content-title-text {
       -webkit-line-clamp: 2;
     }
 
-    .affine-embed-linked-doc-content-note {
+    .yunke-embed-linked-doc-content-note {
       display: none !important;
     }
 
-    .affine-embed-linked-doc-banner {
+    .yunke-embed-linked-doc-banner {
       display: none !important;
     }
   }

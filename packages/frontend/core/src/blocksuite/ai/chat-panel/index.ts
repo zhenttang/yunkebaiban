@@ -63,7 +63,7 @@ export class ChatPanel extends SignalWatcher(
     }
 
     .chat-panel-title {
-      background: var(--affine-background-primary-color);
+      background: var(--yunke-background-primary-color);
       position: relative;
       padding: 8px 0px;
       width: 100%;
@@ -76,13 +76,13 @@ export class ChatPanel extends SignalWatcher(
       .chat-panel-title-text {
         font-size: 14px;
         font-weight: 500;
-        color: var(--affine-text-secondary-color);
+        color: var(--yunke-text-secondary-color);
       }
 
       svg {
         width: 18px;
         height: 18px;
-        color: var(--affine-text-secondary-color);
+        color: var(--yunke-text-secondary-color);
       }
     }
 
@@ -95,18 +95,18 @@ export class ChatPanel extends SignalWatcher(
       margin: 0 4px;
       padding: 8px 12px;
       border-radius: 8px;
-      border: 1px solid var(--affine-border-color);
+      border: 1px solid var(--yunke-border-color);
       font-size: 14px;
       font-weight: 500;
       cursor: pointer;
     }
 
     .chat-panel-hints :first-child {
-      color: var(--affine-text-primary-color);
+      color: var(--yunke-text-primary-color);
     }
 
     .chat-panel-hints :nth-child(2) {
-      color: var(--affine-text-secondary-color);
+      color: var(--yunke-text-secondary-color);
     }
 
     .chat-panel-playground {
@@ -195,7 +195,7 @@ export class ChatPanel extends SignalWatcher(
     const sessionId = await AIProvider.session?.createSession({
       docId: this.doc.id,
       workspaceId: this.doc.workspace.id,
-      promptName: '与 AFFiNE AI 对话',
+      promptName: '与 YUNKE AI 对话',
     });
     if (sessionId) {
       this.session = await AIProvider.session?.getSession(
@@ -234,7 +234,7 @@ export class ChatPanel extends SignalWatcher(
   accessor extensions!: ExtensionType[];
 
   @property({ attribute: false })
-  accessor affineFeatureFlagService!: FeatureFlagService;
+  accessor yunkeFeatureFlagService!: FeatureFlagService;
 
   @state()
   accessor isLoading = false;
@@ -298,7 +298,7 @@ export class ChatPanel extends SignalWatcher(
         .searchMenuConfig=${this.searchMenuConfig}
         .docDisplayConfig=${this.docDisplayConfig}
         .extensions=${this.extensions}
-        .affineFeatureFlagService=${this.affineFeatureFlagService}
+        .yunkeFeatureFlagService=${this.yunkeFeatureFlagService}
       ></playground-content>
     `;
 
@@ -433,7 +433,7 @@ export class ChatPanel extends SignalWatcher(
             ? html`<span data-testid="chat-panel-embedding-progress"
                 >Embedding ${done}/${total}</span
               >`
-            : 'AFFiNE AI'}
+            : 'YUNKE AI'}
         </div>
         ${this.modelSwitchConfig.visible.value
           ? html`
@@ -459,7 +459,7 @@ export class ChatPanel extends SignalWatcher(
         .host=${this.host}
         .isLoading=${this.isLoading}
         .extensions=${this.extensions}
-        .affineFeatureFlagService=${this.affineFeatureFlagService}
+        .yunkeFeatureFlagService=${this.yunkeFeatureFlagService}
       ></chat-panel-messages>
       <ai-chat-composer
         .host=${this.host}

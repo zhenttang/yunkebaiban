@@ -140,11 +140,11 @@ export class DatabaseBlockComponent extends CaptionedBlockComponent<DatabaseBloc
   });
 
   private readonly renderTitle = (dataViewLogic: DataViewUILogicBase) => {
-    return html` <affine-database-title
+    return html` <yunke-database-title
       class="${databaseTitleStyles}"
       .titleText="${this.model.props.title}"
       .dataViewLogic="${dataViewLogic}"
-    ></affine-database-title>`;
+    ></yunke-database-title>`;
   };
 
   createTemplate = (
@@ -440,6 +440,6 @@ export class DatabaseBlockComponent extends CaptionedBlockComponent<DatabaseBloc
 
 declare global {
   interface HTMLElementTagNameMap {
-    'affine-database': DatabaseBlockComponent;
+    'yunke-database': DatabaseBlockComponent;
   }
 }

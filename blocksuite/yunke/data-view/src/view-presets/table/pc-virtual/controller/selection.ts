@@ -260,7 +260,7 @@ export class TableSelectionController implements ReactiveController {
       const focusCellContainer = this.getFocusCellContainer();
       cell = focusCellContainer ?? null;
     } else {
-      cell = target.closest('affine-database-virtual-cell-container');
+      cell = target.closest('yunke-database-virtual-cell-container');
     }
     return [cell, fillValues];
   }
@@ -463,7 +463,7 @@ export class TableSelectionController implements ReactiveController {
 
   getCellElement(cell: TableGridCell): DatabaseCellContainer | undefined {
     return (
-      cell.element.querySelector('affine-database-virtual-cell-container') ??
+      cell.element.querySelector('yunke-database-virtual-cell-container') ??
       undefined
     );
   }
@@ -977,7 +977,7 @@ export class SelectionElement extends SignalWatcher(
       position: absolute;
       z-index: 2;
       box-sizing: border-box;
-      background-color: var(--affine-primary-color-04);
+      background-color: var(--yunke-primary-color-04);
       pointer-events: none;
       display: none;
     }
@@ -986,7 +986,7 @@ export class SelectionElement extends SignalWatcher(
       position: absolute;
       z-index: 2;
       box-sizing: border-box;
-      border: 1px solid var(--affine-primary-color);
+      border: 1px solid var(--yunke-primary-color);
       border-radius: 2px;
       pointer-events: none;
       outline: none;

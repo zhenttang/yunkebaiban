@@ -1,5 +1,5 @@
 import { notify } from '@yunke/component';
-import { AffineOtherPageLayout } from '@yunke/component/affine-other-page-layout';
+import { YunkeOtherPageLayout } from '@yunke/component/yunke-other-page-layout';
 import { SignInPageContainer } from '@yunke/component/auth-components';
 import { SignInPanel } from '@yunke/core/components/sign-in';
 import { SignInBackgroundArts } from '@yunke/core/components/sign-in/background-arts';
@@ -31,7 +31,7 @@ export const SignIn = ({
   useEffect(() => {
     if (error) {
       notify.error({
-        title: t['com.affine.auth.toast.title.failed'](),
+        title: t['com.yunke.auth.toast.title.failed'](),
         message: error,
       });
     }
@@ -64,9 +64,9 @@ export const SignIn = ({
   const initStep = server ? 'addSelfhosted' : 'signIn';
 
   const highlightItems = [
-    t['com.affine.auth.sign.hero.point.email'](),
-    t['com.affine.auth.sign.hero.point.selfhost'](),
-    t['com.affine.auth.sign.hero.point.offline'](),
+    t['com.yunke.auth.sign.hero.point.email'](),
+    t['com.yunke.auth.sign.hero.point.selfhost'](),
+    t['com.yunke.auth.sign.hero.point.offline'](),
   ];
 
   return (
@@ -74,12 +74,12 @@ export const SignIn = ({
       <SignInBackgroundArts />
       <div className={pageStyle.layout}>
         <section className={pageStyle.hero}>
-          <span className={pageStyle.heroBadge}>AFFiNE</span>
+          <span className={pageStyle.heroBadge}>YUNKE</span>
           <h1 className={pageStyle.heroTitle}>
-            {t['com.affine.auth.sign.hero.title']()}
+            {t['com.yunke.auth.sign.hero.title']()}
           </h1>
           <p className={pageStyle.heroSubtitle}>
-            {t['com.affine.auth.sign.hero.subtitle']()}
+            {t['com.yunke.auth.sign.hero.subtitle']()}
           </p>
           <div className={pageStyle.heroHighlights}>
             {highlightItems.map((item, index) => (
@@ -105,8 +105,8 @@ export const SignIn = ({
 
 export const Component = () => {
   return (
-    <AffineOtherPageLayout>
+    <YunkeOtherPageLayout>
       <SignIn />
-    </AffineOtherPageLayout>
+    </YunkeOtherPageLayout>
   );
 };

@@ -1,5 +1,5 @@
 /**
- * AFFiNE管理面板的自定义fetch工具
+ * YUNKE管理面板的自定义fetch工具
  * 现在使用统一的httpClient，而不是独立的fetch实现
  */
 
@@ -20,7 +20,7 @@ const getAppVersion = () => {
  * @param init 请求初始化选项
  * @returns 返回fetch Response的Promise
  */
-export const affineFetch = async (
+export const yunkeFetch = async (
   input: RequestInfo | URL,
   init?: RequestInit
 ): Promise<Response> => {
@@ -30,7 +30,7 @@ export const affineFetch = async (
   // 使用统一的httpClient发送请求
   try {
     const headers = {
-      'x-affine-version': getAppVersion(),
+      'x-yunke-version': getAppVersion(),
       ...init?.headers,
     };
 

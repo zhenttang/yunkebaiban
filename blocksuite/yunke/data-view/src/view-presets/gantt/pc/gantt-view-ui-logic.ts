@@ -59,7 +59,7 @@ export class GanttViewUI extends DataViewUIBase<GanttViewUILogic> {
   override connectedCallback(): void {
     super.connectedCallback();
     console.log('🔌 [GanttViewUI] Connected callback called, logic:', this.logic);
-    this.classList.add('affine-database-gantt');
+    this.classList.add('yunke-database-gantt');
     this.dataset['testid'] = 'dv-gantt-view';
   }
 

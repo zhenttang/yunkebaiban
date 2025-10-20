@@ -4,7 +4,7 @@ import {
   PropertyCollapsibleSection,
   PropertyName,
 } from '@yunke/component';
-import { AffinePageReference } from '@yunke/core/components/affine/reference-link';
+import { YunkePageReference } from '@yunke/core/components/yunke/reference-link';
 import { DocService } from '@yunke/core/modules/doc';
 import { TemplateDocService } from '@yunke/core/modules/template-doc';
 import { useI18n } from '@yunke/i18n';
@@ -142,7 +142,7 @@ const DatabaseBacklinkRow = ({
         defaultCollapsed={!defaultOpen}
         icon={<DatabaseTableViewIcon />}
         suffix={
-          <AffinePageReference
+          <YunkePageReference
             className={
               BUILD_CONFIG.isMobileEdition
                 ? styles.mobileDocRefLink

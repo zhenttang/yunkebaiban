@@ -287,7 +287,7 @@ export function SmtpConfig() {
               </div>
               <div className="space-y-2">
                 <Label htmlFor="senderName">发件人名称</Label>
-                <Input id="senderName" placeholder="AFFiNE" {...form.register('senderName')} />
+                <Input id="senderName" placeholder="YUNKE" {...form.register('senderName')} />
               </div>
             </div>
 

@@ -11,7 +11,7 @@ const flavour = MermaidBlockSchema.model.flavour;
 export const MermaidBlockSpec: ExtensionType[] = [
   FlavourExtension(flavour),
   BlockViewExtension(flavour, model => {
-    return literal`affine-mermaid`;
+    return literal`yunke-mermaid`;
   }),
   SlashMenuConfigExtension(flavour, mermaidSlashMenuConfig),
 ].flat();

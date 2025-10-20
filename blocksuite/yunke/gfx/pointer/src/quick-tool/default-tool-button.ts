@@ -82,10 +82,10 @@ export class EdgelessDefaultToolButton extends QuickToolMixin(LitElement) {
     return html`
       <edgeless-tool-icon-button
         class="edgeless-default-button ${type}"
-        .tooltip=${html`<affine-tooltip-content-with-shortcut
+        .tooltip=${html`<yunke-tooltip-content-with-shortcut
           data-tip="${tipInfo.tip}"
           data-shortcut="${tipInfo.shortcut}"
-        ></affine-tooltip-content-with-shortcut>`}
+        ></yunke-tooltip-content-with-shortcut>`}
         .tooltipOffset=${17}
         .active=${active}
         .iconContainerPadding=${6}

@@ -16,7 +16,7 @@ import { NoteKeymapExtension } from './note-keymap';
 const flavour = NoteBlockSchema.model.flavour;
 
 export class NoteViewExtension extends ViewExtensionProvider {
-  override name = 'affine-note-block';
+  override name = 'yunke-note-block';
 
   override effect() {
     super.effect();
@@ -35,13 +35,13 @@ export class NoteViewExtension extends ViewExtensionProvider {
 
     if (isEdgeless) {
       context.register(
-        BlockViewExtension(flavour, literal`affine-edgeless-note`)
+        BlockViewExtension(flavour, literal`yunke-edgeless-note`)
       );
       context.register(createBuiltinToolbarConfigExtension(flavour));
       context.register(EdgelessClipboardNoteConfig);
       context.register(EdgelessNoteInteraction);
     } else {
-      context.register(BlockViewExtension(flavour, literal`affine-note`));
+      context.register(BlockViewExtension(flavour, literal`yunke-note`));
     }
   }
 }

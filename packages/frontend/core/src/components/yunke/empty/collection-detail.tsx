@@ -26,8 +26,8 @@ export const EmptyCollectionDetail = ({
     <EmptyLayout
       illustrationLight={collectionDetailLight}
       illustrationDark={collectionDetailDark}
-      title={t['com.affine.empty.collection-detail.title']()}
-      description={t['com.affine.empty.collection-detail.description']()}
+      title={t['com.yunke.empty.collection-detail.title']()}
+      description={t['com.yunke.empty.collection-detail.description']()}
       action={
         BUILD_CONFIG.isMobileEdition ? null : (
           <Actions collection={collection} />
@@ -59,11 +59,11 @@ const Actions = ({ collection }: { collection: Collection }) => {
   return (
     <div className={actionGroup}>
       <ActionButton prefix={<AllDocsIcon />} onClick={openAddDocs}>
-        {t['com.affine.empty.collection-detail.action.add-doc']()}
+        {t['com.yunke.empty.collection-detail.action.add-doc']()}
       </ActionButton>
 
       <ActionButton prefix={<FilterIcon />} onClick={openAddRules}>
-        {t['com.affine.empty.collection-detail.action.add-rule']()}
+        {t['com.yunke.empty.collection-detail.action.add-rule']()}
       </ActionButton>
     </div>
   );

@@ -21,7 +21,7 @@ const optionsSchema = z.object({
 type PdfViewOptions = z.infer<typeof optionsSchema>;
 
 export class PdfViewExtension extends ViewExtensionProvider<PdfViewOptions> {
-  override name = 'affine-view-pdf';
+  override name = 'yunke-view-pdf';
 
   override schema = optionsSchema;
 

@@ -35,13 +35,13 @@ export class SurfaceBlockComponent extends BlockComponent<SurfaceBlockModel> {
   };
 
   static override styles = css`
-    .affine-edgeless-surface-block-container {
+    .yunke-edgeless-surface-block-container {
       width: 100%;
       height: 100%;
       position: relative;
     }
 
-    .affine-edgeless-surface-block-container canvas {
+    .yunke-edgeless-surface-block-container canvas {
       left: 0;
       top: 0;
       width: 100%;
@@ -57,14 +57,14 @@ export class SurfaceBlockComponent extends BlockComponent<SurfaceBlockModel> {
       overflow: hidden;
       display: block;
       height: 100%;
-      font-family: var(--affine-font-family);
-      font-size: var(--affine-font-base);
-      line-height: var(--affine-line-height);
-      color: var(--affine-text-primary-color);
+      font-family: var(--yunke-font-family);
+      font-size: var(--yunke-font-base);
+      line-height: var(--yunke-line-height);
+      color: var(--yunke-text-primary-color);
       font-weight: 400;
     }
 
-    .affine-block-children-container.edgeless {
+    .yunke-block-children-container.edgeless {
       padding-left: 0;
       position: relative;
       overflow: hidden;
@@ -76,21 +76,21 @@ export class SurfaceBlockComponent extends BlockComponent<SurfaceBlockModel> {
        * https://developer.mozilla.org/en-US/docs/Web/CSS/touch-action
        */
       touch-action: none;
-      background-color: var(--affine-background-primary-color);
+      background-color: var(--yunke-background-primary-color);
       background-image: radial-gradient(
-        var(--affine-edgeless-grid-color) 1px,
-        var(--affine-background-primary-color) 1px
+        var(--yunke-edgeless-grid-color) 1px,
+        var(--yunke-background-primary-color) 1px
       );
       z-index: 0;
     }
 
-    .affine-edgeless-block-child {
+    .yunke-edgeless-block-child {
       position: absolute;
       transform-origin: center;
       box-sizing: border-box;
-      border: 2px solid var(--affine-white-10);
+      border: 2px solid var(--yunke-white-10);
       border-radius: 8px;
-      box-shadow: var(--affine-shadow-3);
+      box-shadow: var(--yunke-shadow-3);
       pointer-events: all;
     }
   `;
@@ -238,18 +238,18 @@ export class SurfaceBlockComponent extends BlockComponent<SurfaceBlockModel> {
 
   override render() {
     return html`
-      <div class="affine-edgeless-surface-block-container">
+      <div class="yunke-edgeless-surface-block-container">
         <!-- attach canvas later in renderer -->
       </div>
     `;
   }
 
-  @query('.affine-edgeless-surface-block-container')
+  @query('.yunke-edgeless-surface-block-container')
   private accessor _surfaceContainer!: HTMLElement;
 }
 
 declare global {
   interface HTMLElementTagNameMap {
-    'affine-surface': SurfaceBlockComponent;
+    'yunke-surface': SurfaceBlockComponent;
   }
 }

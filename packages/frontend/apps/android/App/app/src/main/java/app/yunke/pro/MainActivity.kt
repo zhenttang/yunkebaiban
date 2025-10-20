@@ -1,4 +1,4 @@
-package app.affine.pro
+package app.yunke.pro
 
 import android.content.res.ColorStateList
 import android.os.Bundle
@@ -13,17 +13,17 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updateMargins
 import androidx.lifecycle.lifecycleScope
 import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat
-// import app.affine.pro.ai.AIActivity  // 禁用AI功能
-import app.affine.pro.plugin.AIButtonPlugin
-import app.affine.pro.plugin.AFFiNEThemePlugin
-import app.affine.pro.plugin.AuthPlugin
-import app.affine.pro.plugin.HashCashPlugin
-import app.affine.pro.plugin.NbStorePlugin
-// import app.affine.pro.service.GraphQLService  // 禁用GraphQL
-import app.affine.pro.service.SSEService
-import app.affine.pro.service.WebService
-import app.affine.pro.utils.px2dp
-import app.affine.pro.utils.dp2px
+// import app.yunke.pro.ai.AIActivity  // 禁用AI功能
+import app.yunke.pro.plugin.AIButtonPlugin
+import app.yunke.pro.plugin.YUNKEThemePlugin
+import app.yunke.pro.plugin.AuthPlugin
+import app.yunke.pro.plugin.HashCashPlugin
+import app.yunke.pro.plugin.NbStorePlugin
+// import app.yunke.pro.service.GraphQLService  // 禁用GraphQL
+import app.yunke.pro.service.SSEService
+import app.yunke.pro.service.WebService
+import app.yunke.pro.utils.px2dp
+import app.yunke.pro.utils.dp2px
 import com.getcapacitor.BridgeActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import dagger.hilt.android.AndroidEntryPoint
@@ -32,7 +32,7 @@ import javax.inject.Inject
 
 
 @AndroidEntryPoint
-class MainActivity : BridgeActivity(), AIButtonPlugin.Callback, AFFiNEThemePlugin.Callback,
+class MainActivity : BridgeActivity(), AIButtonPlugin.Callback, YUNKEThemePlugin.Callback,
     View.OnClickListener {
 
     @Inject
@@ -47,7 +47,7 @@ class MainActivity : BridgeActivity(), AIButtonPlugin.Callback, AFFiNEThemePlugi
     init {
         registerPlugins(
             listOf(
-                AFFiNEThemePlugin::class.java,
+                YUNKEThemePlugin::class.java,
                 AIButtonPlugin::class.java,
                 AuthPlugin::class.java,
                 HashCashPlugin::class.java,
@@ -69,7 +69,7 @@ class MainActivity : BridgeActivity(), AIButtonPlugin.Callback, AFFiNEThemePlugi
                 VectorDrawableCompat.create(resources, R.drawable.ic_ai, theme)?.apply {
                     DrawableCompat.setTint(
                         this,
-                        ContextCompat.getColor(context, R.color.affine_primary)
+                        ContextCompat.getColor(context, R.color.yunke_primary)
                     )
                 })
             setOnClickListener(this@MainActivity)
@@ -83,11 +83,11 @@ class MainActivity : BridgeActivity(), AIButtonPlugin.Callback, AFFiNEThemePlugi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         
-        android.util.Log.d("AffineApp", "=== MainActivity onCreate 开始 ===")
-        android.util.Log.d("AffineApp", "应用包名: ${packageName}")
-        android.util.Log.d("AffineApp", "应用版本: ${packageManager.getPackageInfo(packageName, 0).versionName}")
-        android.util.Log.d("AffineApp", "系统版本: ${android.os.Build.VERSION.RELEASE}")
-        android.util.Log.d("AffineApp", "设备型号: ${android.os.Build.MODEL}")
+        android.util.Log.d("YunkeApp", "=== MainActivity onCreate 开始 ===")
+        android.util.Log.d("YunkeApp", "应用包名: ${packageName}")
+        android.util.Log.d("YunkeApp", "应用版本: ${packageManager.getPackageInfo(packageName, 0).versionName}")
+        android.util.Log.d("YunkeApp", "系统版本: ${android.os.Build.VERSION.RELEASE}")
+        android.util.Log.d("YunkeApp", "设备型号: ${android.os.Build.MODEL}")
         
         // 配置WebView存储设置 - 启用IndexedDB支持
         bridge.webView.settings.apply {
@@ -97,23 +97,23 @@ class MainActivity : BridgeActivity(), AIButtonPlugin.Callback, AFFiNEThemePlugi
             allowFileAccess = true            // 允许文件访问
             allowContentAccess = true         // 允许内容访问
             cacheMode = WebSettings.LOAD_DEFAULT  // 默认缓存模式
-            android.util.Log.d("AffineApp", "✅ WebView存储配置已启用")
+            android.util.Log.d("YunkeApp", "✅ WebView存储配置已启用")
         }
         
         ViewCompat.setOnApplyWindowInsetsListener(window.decorView) { v, insets ->
             navHeight = px2dp(insets.getInsets(WindowInsetsCompat.Type.navigationBars()).bottom)
-            android.util.Log.d("AffineApp", "导航栏高度: $navHeight dp")
+            android.util.Log.d("YunkeApp", "导航栏高度: $navHeight dp")
             ViewCompat.onApplyWindowInsets(v, insets)
         }
         
-        android.util.Log.d("AffineApp", "=== MainActivity onCreate 完成 ===")
+        android.util.Log.d("YunkeApp", "=== MainActivity onCreate 完成 ===")
     }
 
     override fun load() {
         super.load()
-        android.util.Log.d("AffineApp", "=== MainActivity.load() 开始 ===")
+        android.util.Log.d("YunkeApp", "=== MainActivity.load() 开始 ===")
         AuthInitializer.initialize(bridge)
-        android.util.Log.d("AffineApp", "=== MainActivity.load() 完成 ===")
+        android.util.Log.d("YunkeApp", "=== MainActivity.load() 完成 ===")
     }
 
     override fun present() {

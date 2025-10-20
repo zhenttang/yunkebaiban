@@ -1,9 +1,9 @@
-package app.affine.pro.service
+package app.yunke.pro.service
 
-import app.affine.pro.AFFiNEApp
-import app.affine.pro.CapacitorConfig
-import app.affine.pro.utils.dataStore
-import app.affine.pro.utils.set
+import app.yunke.pro.YUNKEApp
+import app.yunke.pro.CapacitorConfig
+import app.yunke.pro.utils.dataStore
+import app.yunke.pro.utils.set
 // import com.google.firebase.crashlytics.ktx.crashlytics  // 禁用Firebase
 // import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.Dispatchers
@@ -37,7 +37,7 @@ object OkHttp {
             it.proceed(
                 it.request()
                     .newBuilder()
-                    .addHeader("x-affine-version", CapacitorConfig.getAffineVersion())
+                    .addHeader("x-yunke-version", CapacitorConfig.getYunkeVersion())
                     .build()
             )
         }
@@ -52,20 +52,20 @@ object OkHttp {
 
 object CookieStore {
 
-    const val AFFINE_SESSION = "affine_session"
-    const val AFFINE_USER_ID = "affine_user_id"
+    const val YUNKE_SESSION = "yunke_session"
+    const val YUNKE_USER_ID = "yunke_user_id"
 
     private val _cookies = ConcurrentHashMap<String, List<Cookie>>()
 
     fun saveCookies(host: String, cookies: List<Cookie>) {
         _cookies[host] = cookies
         MainScope().launch(Dispatchers.IO) {
-            cookies.find { it.name == AFFINE_SESSION }?.let {
-                AFFiNEApp.context().dataStore.set(host + AFFINE_SESSION, it.toString())
+            cookies.find { it.name == YUNKE_SESSION }?.let {
+                YUNKEApp.context().dataStore.set(host + YUNKE_SESSION, it.toString())
             }
-            cookies.find { it.name == AFFINE_USER_ID }?.let {
+            cookies.find { it.name == YUNKE_USER_ID }?.let {
                 Timber.d("Update user id [${it.value}]")
-                AFFiNEApp.context().dataStore.set(host + AFFINE_USER_ID, it.toString())
+                YUNKEApp.context().dataStore.set(host + YUNKE_USER_ID, it.toString())
                 // Firebase.crashlytics.setUserId(it.value)  // 禁用Firebase
             }
         }

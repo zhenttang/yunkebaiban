@@ -1,4 +1,4 @@
-package app.affine.pro.utils
+package app.yunke.pro.utils
 
 import android.content.Context
 import androidx.datastore.core.DataStore
@@ -9,7 +9,7 @@ import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 
-val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "affine")
+val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "yunke")
 
 suspend fun DataStore<Preferences>.set(key: String, value: String) {
     edit {

@@ -5,7 +5,7 @@
 //  Created by 秋星桥 on 2025/1/15.
 //
 
-import AffineGraphQL
+import YunkeGraphQL
 import Foundation
 import LDSwiftEventSource
 
@@ -97,7 +97,7 @@ extension IntelligentsEphemeralActionController {
   }
 
   func chat_processWithMessageID(sessionID: String, messageID: String) {
-    let url = Constant.affineUpstreamURL
+    let url = Constant.yunkeUpstreamURL
       .appendingPathComponent("api")
       .appendingPathComponent("copilot")
       .appendingPathComponent("chat")

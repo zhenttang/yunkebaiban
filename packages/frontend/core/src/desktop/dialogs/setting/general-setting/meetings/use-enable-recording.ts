@@ -1,5 +1,5 @@
 import { useConfirmModal } from '@yunke/component';
-import { useAsyncCallback } from '@yunke/core/components/hooks/affine-async-hooks';
+import { useAsyncCallback } from '@yunke/core/components/hooks/yunke-async-hooks';
 import { MeetingSettingsService } from '@yunke/core/modules/media/services/meeting-settings';
 import { useI18n } from '@yunke/i18n';
 import track from '@yunke/track';
@@ -21,23 +21,23 @@ export const useEnableRecording = () => {
       } catch {
         confirmModal.openConfirmModal({
           title:
-            t['com.affine.settings.meetings.record.permission-modal.title'](),
+            t['com.yunke.settings.meetings.record.permission-modal.title'](),
           description:
             t[
-              'com.affine.settings.meetings.record.permission-modal.description'
+              'com.yunke.settings.meetings.record.permission-modal.description'
             ](),
           onConfirm: async () => {
             await meetingSettingsService.showRecordingPermissionSetting(
               'screen'
             );
           },
-          cancelText: t['com.affine.recording.dismiss'](),
+          cancelText: t['com.yunke.recording.dismiss'](),
           confirmButtonOptions: {
             variant: 'primary',
           },
           confirmText:
             t[
-              'com.affine.settings.meetings.record.permission-modal.open-setting'
+              'com.yunke.settings.meetings.record.permission-modal.open-setting'
             ](),
         });
       }

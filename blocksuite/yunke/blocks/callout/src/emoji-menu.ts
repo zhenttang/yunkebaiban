@@ -25,10 +25,10 @@ export class EmojiMenu extends WithDisposable(LitElement) {
   @property({ attribute: false })
   accessor theme: 'light' | 'dark' = 'light';
 
-  @query('.affine-emoji-menu')
+  @query('.yunke-emoji-menu')
   accessor emojiMenu!: HTMLElement;
 
   override render() {
-    return html`<div class="affine-emoji-menu"></div>`;
+    return html`<div class="yunke-emoji-menu"></div>`;
   }
 }

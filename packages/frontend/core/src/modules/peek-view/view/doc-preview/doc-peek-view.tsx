@@ -1,9 +1,9 @@
 import { Scrollable } from '@yunke/component';
 import { PageDetailLoading } from '@yunke/component/page-detail-skeleton';
 import { AIProvider } from '@yunke/core/blocksuite/ai';
-import type { AffineEditorContainer } from '@yunke/core/blocksuite/block-suite-editor';
+import type { YunkeEditorContainer } from '@yunke/core/blocksuite/block-suite-editor';
 import { EditorOutlineViewer } from '@yunke/core/blocksuite/outline-viewer';
-import { AffineErrorBoundary } from '@yunke/core/components/affine/affine-error-boundary';
+import { YunkeErrorBoundary } from '@yunke/core/components/yunke/yunke-error-boundary';
 import { useGuard } from '@yunke/core/components/guard';
 import { PageNotFound } from '@yunke/core/desktop/pages/404';
 import { EditorService } from '@yunke/core/modules/editor';
@@ -38,7 +38,7 @@ const BlockSuiteEditor = lazy(() =>
 );
 
 function fitViewport(
-  editor: AffineEditorContainer,
+  editor: YunkeEditorContainer,
   xywh?: `[${number},${number},${number},${number}]`
 ) {
   try {
@@ -90,7 +90,7 @@ function DocPeekPreviewEditor({
   const isInTrash = useLiveData(doc.record.trash$);
 
   const handleOnEditorReady = useCallback(
-    (editorContainer: AffineEditorContainer) => {
+    (editorContainer: YunkeEditorContainer) => {
       const disposableGroup = new DisposableGroup();
       const refNodeSlots =
         editorContainer.std.getOptional(RefNodeSlotsProvider);
@@ -155,10 +155,10 @@ function DocPeekPreviewEditor({
   const readonly = !canEdit || isInTrash;
 
   return (
-    <AffineErrorBoundary>
+    <YunkeErrorBoundary>
       <Scrollable.Root>
         <Scrollable.Viewport
-          className={clsx('affine-page-viewport', styles.affineDocViewport)}
+          className={clsx('yunke-page-viewport', styles.yunkeDocViewport)}
         >
           <Suspense fallback={<PageDetailLoading />}>
             <BlockSuiteEditor
@@ -180,7 +180,7 @@ function DocPeekPreviewEditor({
           openOutlinePanel={openOutlinePanel}
         />
       ) : null}
-    </AffineErrorBoundary>
+    </YunkeErrorBoundary>
   );
 }
 

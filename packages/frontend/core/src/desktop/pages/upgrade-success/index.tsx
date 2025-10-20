@@ -17,7 +17,7 @@ export const Component = () => {
   const [params] = useSearchParams();
   const { jumpToIndex, jumpToOpenInApp } = useNavigateHelper();
 
-  const openAFFiNE = useCallback(() => {
+  const openYUNKE = useCallback(() => {
     if (params.get('client')) {
       return jumpToOpenInApp('bring-to-front');
     } else {
@@ -27,10 +27,10 @@ export const Component = () => {
 
   const subtitle = (
     <div className={styles.copy}>
-      <p>{t['com.affine.payment.upgrade-success-page.text']()}</p>
+      <p>{t['com.yunke.payment.upgrade-success-page.text']()}</p>
       <p>
         <Trans
-          i18nKey={'com.affine.payment.upgrade-success-page.support'}
+          i18nKey={'com.yunke.payment.upgrade-success-page.support'}
           components={{
             1: (
               <a
@@ -46,11 +46,11 @@ export const Component = () => {
 
   return (
     <AuthPageContainer
-      title={t['com.affine.payment.upgrade-success-page.title']()}
+      title={t['com.yunke.payment.upgrade-success-page.title']()}
       subtitle={subtitle}
     >
-      <Button variant="primary" size="extraLarge" onClick={openAFFiNE}>
-        {t['com.affine.other-page.nav.open-affine']()}
+      <Button variant="primary" size="extraLarge" onClick={openYUNKE}>
+        {t['com.yunke.other-page.nav.open-yunke']()}
       </Button>
     </AuthPageContainer>
   );

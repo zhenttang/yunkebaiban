@@ -1,7 +1,7 @@
 import { Button, type ButtonProps, useConfirmModal } from '@yunke/component';
-import { useDowngradeNotify } from '@yunke/core/components/affine/subscription-landing/notify';
-import { getDowngradeQuestionnaireLink } from '@yunke/core/components/hooks/affine/use-subscription-notify';
-import { useAsyncCallback } from '@yunke/core/components/hooks/affine-async-hooks';
+import { useDowngradeNotify } from '@yunke/core/components/yunke/subscription-landing/notify';
+import { getDowngradeQuestionnaireLink } from '@yunke/core/components/hooks/yunke/use-subscription-notify';
+import { useAsyncCallback } from '@yunke/core/components/hooks/yunke-async-hooks';
 import { AuthService, SubscriptionService } from '@yunke/core/modules/cloud';
 // import { SubscriptionPlan } from '@yunke/graphql';
 import { useI18n } from '@yunke/i18n';
@@ -29,17 +29,17 @@ export const AICancel = (btnProps: ButtonProps) => {
       });
     }
     openConfirmModal({
-      title: t['com.affine.payment.ai.action.cancel.confirm.title'](),
+      title: t['com.yunke.payment.ai.action.cancel.confirm.title'](),
       description:
-        t['com.affine.payment.ai.action.cancel.confirm.description'](),
+        t['com.yunke.payment.ai.action.cancel.confirm.description'](),
       reverseFooter: true,
       confirmText:
-        t['com.affine.payment.ai.action.cancel.confirm.confirm-text'](),
+        t['com.yunke.payment.ai.action.cancel.confirm.confirm-text'](),
       confirmButtonOptions: {
         variant: 'secondary',
       },
       cancelText:
-        t['com.affine.payment.ai.action.cancel.confirm.cancel-text'](),
+        t['com.yunke.payment.ai.action.cancel.confirm.cancel-text'](),
       cancelButtonOptions: {
         variant: 'primary',
       },
@@ -89,7 +89,7 @@ export const AICancel = (btnProps: ButtonProps) => {
       variant="secondary"
       {...btnProps}
     >
-      {t['com.affine.payment.ai.action.cancel.button-label']()}
+      {t['com.yunke.payment.ai.action.cancel.button-label']()}
     </Button>
   );
 };

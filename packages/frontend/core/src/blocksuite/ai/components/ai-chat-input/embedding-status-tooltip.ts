@@ -33,7 +33,7 @@ export class AIChatEmbeddingStatusTooltip extends SignalWatcher(LitElement) {
       border-radius: 4px;
     }
     .check-status:hover {
-      background-color: ${unsafeCSSVar('--affine-hover-color')};
+      background-color: ${unsafeCSSVar('--yunke-hover-color')};
     }
   `;
 
@@ -94,8 +94,8 @@ export class AIChatEmbeddingStatusTooltip extends SignalWatcher(LitElement) {
           @mouseenter=${this._handleCheckStatusMouseEnter}
         >
           检查状态
-          <affine-tooltip tip-position="top-start"
-            >${this.progressText}</affine-tooltip
+          <yunke-tooltip tip-position="top-start"
+            >${this.progressText}</yunke-tooltip
           >
         </div>
       </div>

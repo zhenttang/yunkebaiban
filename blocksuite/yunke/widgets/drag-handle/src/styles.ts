@@ -4,7 +4,7 @@ import { css } from 'lit';
 import { DRAG_HANDLE_CONTAINER_WIDTH } from './config.js';
 
 export const styles = css`
-  .affine-drag-handle-widget {
+  .yunke-drag-handle-widget {
     display: flex;
     position: absolute;
     left: 0;
@@ -12,7 +12,7 @@ export const styles = css`
     contain: size layout;
   }
 
-  .affine-drag-handle-container {
+  .yunke-drag-handle-container {
     top: 0;
     left: 0;
     position: absolute;
@@ -24,19 +24,19 @@ export const styles = css`
     user-select: none;
     box-sizing: border-box;
   }
-  .affine-drag-handle-container:hover {
+  .yunke-drag-handle-container:hover {
     cursor: grab;
   }
 
-  .affine-drag-handle-grabber {
+  .yunke-drag-handle-grabber {
     width: 4px;
     height: 100%;
     border-radius: 1px;
-    background: var(--affine-placeholder-color);
+    background: var(--yunke-placeholder-color);
     transition: width 0.25s ease;
   }
 
-  .affine-drag-handle-grabber.dots {
+  .yunke-drag-handle-grabber.dots {
     width: 14px;
     height: 26px;
     box-sizing: border-box;
@@ -50,11 +50,11 @@ export const styles = css`
     transition: unset;
   }
 
-  .affine-drag-handle-grabber.dots:hover {
+  .yunke-drag-handle-grabber.dots:hover {
     background-color: ${unsafeCSSVarV2('layer/background/hoverOverlay')};
   }
 
-  .affine-drag-handle-grabber.dots > .dot {
+  .yunke-drag-handle-grabber.dots > .dot {
     width: 4px;
     height: 4px;
     border-radius: 50%;
@@ -63,16 +63,16 @@ export const styles = css`
   }
 
   @media print {
-    .affine-drag-handle-widget {
+    .yunke-drag-handle-widget {
       display: none;
     }
   }
-  .affine-drag-hover-rect {
+  .yunke-drag-hover-rect {
     position: absolute;
     top: 0;
     left: 0;
     border-radius: 6px;
-    background: var(--affine-hover-color);
+    background: var(--yunke-hover-color);
     pointer-events: none;
     z-index: 2;
     animation: expand 0.25s forwards;

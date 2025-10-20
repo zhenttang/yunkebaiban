@@ -58,7 +58,7 @@ export function calcDropTarget(
 
   if (!shouldAppendToDatabase && !matchModels(model, [DatabaseBlockModel])) {
     const databaseBlockComponent =
-      element.closest<BlockComponent>('affine-database');
+      element.closest<BlockComponent>('yunke-database');
     if (databaseBlockComponent) {
       element = databaseBlockComponent;
       model = databaseBlockComponent.model;

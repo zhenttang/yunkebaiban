@@ -20,11 +20,11 @@ export const SeeAllLink = () => {
   return (
     <a
       className={styles.allPlansLink}
-      href="https://affine.pro/pricing"
+      href="https://yunke.pro/pricing"
       target="_blank"
       rel="noopener noreferrer"
     >
-      {t['com.affine.payment.see-all-plans']()}
+      {t['com.yunke.payment.see-all-plans']()}
       {<ArrowRightBigIcon width="16" height="16" />}
     </a>
   );
@@ -78,7 +78,7 @@ export const PlanLayout = ({ cloud, ai }: PlanLayoutProps) => {
       {/* TODO(@catsjuice): SettingHeader component shouldn't have margin itself  */}
       <SettingHeader
         style={{ marginBottom: '0px' }}
-        title={t['com.affine.payment.title']()}
+        title={t['com.yunke.payment.title']()}
       />
       {ai ? (
         <>
@@ -101,7 +101,7 @@ export interface PlanCardProps {
   scrollRef?: React.RefObject<HTMLDivElement>;
 }
 export const CloudPlanLayout = ({
-  title = 'AFFiNE 云端',
+  title = 'YUNKE 云端',
   caption,
   select,
   toggle,
@@ -111,7 +111,7 @@ export const CloudPlanLayout = ({
 }: PlanCardProps) => {
   return (
     <PricingCollapsible title={title} caption={caption}>
-      <div className={styles.affineCloudHeader}>
+      <div className={styles.yunkeCloudHeader}>
         <div>{select}</div>
         <div>{toggle}</div>
       </div>

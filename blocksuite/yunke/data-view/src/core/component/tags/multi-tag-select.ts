@@ -475,7 +475,7 @@ export class MultiTagSelect extends SignalWatcher(
 
 declare global {
   interface HTMLElementTagNameMap {
-    'affine-multi-tag-select': MultiTagSelect;
+    'yunke-multi-tag-select': MultiTagSelect;
   }
 }
 

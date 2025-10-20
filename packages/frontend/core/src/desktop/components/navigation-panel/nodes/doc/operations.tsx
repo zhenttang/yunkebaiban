@@ -7,8 +7,8 @@ import {
 } from '@yunke/component';
 import { usePageHelper } from '@yunke/core/blocksuite/block-suite-page-list/utils';
 import { Guard } from '@yunke/core/components/guard';
-import { useBlockSuiteMetaHelper } from '@yunke/core/components/hooks/affine/use-block-suite-meta-helper';
-import { useAsyncCallback } from '@yunke/core/components/hooks/affine-async-hooks';
+import { useBlockSuiteMetaHelper } from '@yunke/core/components/hooks/yunke/use-block-suite-meta-helper';
+import { useAsyncCallback } from '@yunke/core/components/hooks/yunke-async-hooks';
 import { IsFavoriteIcon } from '@yunke/core/components/pure/icons';
 import { DocsService } from '@yunke/core/modules/doc';
 import { CompatibleFavoriteItemsAdapter } from '@yunke/core/modules/favorite';
@@ -82,12 +82,12 @@ export const useNavigationPanelDocNodeOperations = (
       return;
     }
     openConfirmModal({
-      title: t['com.affine.moveToTrash.title'](),
-      description: t['com.affine.moveToTrash.confirmModal.description']({
+      title: t['com.yunke.moveToTrash.title'](),
+      description: t['com.yunke.moveToTrash.confirmModal.description']({
         title: docRecord.title$.value,
       }),
-      confirmText: t['com.affine.moveToTrash.confirmModal.confirm'](),
-      cancelText: t['com.affine.moveToTrash.confirmModal.cancel'](),
+      confirmText: t['com.yunke.moveToTrash.confirmModal.confirm'](),
+      cancelText: t['com.yunke.moveToTrash.confirmModal.cancel'](),
       confirmButtonOptions: {
         variant: 'error',
       },
@@ -96,7 +96,7 @@ export const useNavigationPanelDocNodeOperations = (
         track.$.navigationPanel.docs.deleteDoc({
           control: 'button',
         });
-        toast(t['com.affine.toastMessage.movedTrash']());
+        toast(t['com.yunke.toastMessage.movedTrash']());
       },
     });
   }, [docRecord, openConfirmModal, t]);
@@ -126,7 +126,7 @@ export const useNavigationPanelDocNodeOperations = (
     try {
       const canEdit = await guardService.can('Doc_Update', docId);
       if (!canEdit) {
-        toast(t['com.affine.no-permission']());
+        toast(t['com.yunke.no-permission']());
         return;
       }
       const newDoc = createPage();
@@ -156,7 +156,7 @@ export const useNavigationPanelDocNodeOperations = (
           <IconButton
             size="16"
             icon={<PlusIcon />}
-            tooltip={t['com.affine.rootAppSidebar.explorer.doc-add-tooltip']()}
+            tooltip={t['com.yunke.rootAppSidebar.explorer.doc-add-tooltip']()}
             onClick={handleAddLinkedPage}
             loading={addLinkedPageLoading}
             disabled={addLinkedPageLoading}
@@ -170,7 +170,7 @@ export const useNavigationPanelDocNodeOperations = (
             prefixIcon={<InformationIcon />}
             onClick={handleOpenInfoModal}
           >
-            {t['com.affine.page-properties.page-info.view']()}
+            {t['com.yunke.page-properties.page-info.view']()}
           </MenuItem>
         ),
       },
@@ -184,7 +184,7 @@ export const useNavigationPanelDocNodeOperations = (
                 onClick={handleAddLinkedPage}
                 disabled={!canEdit}
               >
-                {t['com.affine.page-operation.add-linked-page']()}
+                {t['com.yunke.page-operation.add-linked-page']()}
               </MenuItem>
             )}
           </Guard>
@@ -194,7 +194,7 @@ export const useNavigationPanelDocNodeOperations = (
         index: 99,
         view: (
           <MenuItem prefixIcon={<DuplicateIcon />} onClick={handleDuplicate}>
-            {t['com.affine.header.option.duplicate']()}
+            {t['com.yunke.header.option.duplicate']()}
           </MenuItem>
         ),
       },
@@ -202,7 +202,7 @@ export const useNavigationPanelDocNodeOperations = (
         index: 99,
         view: (
           <MenuItem prefixIcon={<OpenInNewIcon />} onClick={handleOpenInNewTab}>
-            {t['com.affine.workbench.tab.page-menu-open']()}
+            {t['com.yunke.workbench.tab.page-menu-open']()}
           </MenuItem>
         ),
       },
@@ -215,7 +215,7 @@ export const useNavigationPanelDocNodeOperations = (
                   prefixIcon={<SplitViewIcon />}
                   onClick={handleOpenInSplitView}
                 >
-                  {t['com.affine.workbench.split-view.page-menu-open']()}
+                  {t['com.yunke.workbench.split-view.page-menu-open']()}
                 </MenuItem>
               ),
             },
@@ -229,8 +229,8 @@ export const useNavigationPanelDocNodeOperations = (
             onClick={handleToggleFavoriteDoc}
           >
             {favorite
-              ? t['com.affine.favoritePageOperation.remove']()
-              : t['com.affine.favoritePageOperation.add']()}
+              ? t['com.yunke.favoritePageOperation.remove']()
+              : t['com.yunke.favoritePageOperation.add']()}
           </MenuItem>
         ),
       },
@@ -249,7 +249,7 @@ export const useNavigationPanelDocNodeOperations = (
                 onClick={handleMoveToTrash}
                 disabled={!canMoveToTrash}
               >
-                {t['com.affine.moveToTrash.title']()}
+                {t['com.yunke.moveToTrash.title']()}
               </MenuItem>
             )}
           </Guard>

@@ -7,7 +7,7 @@ import { RootBlockSchemaExtension } from '@blocksuite/yunke-model';
 import { RootBlockAdapterExtensions } from './adapters/extension';
 
 export class RootStoreExtension extends StoreExtensionProvider {
-  override name = 'affine-root-block';
+  override name = 'yunke-root-block';
 
   override setup(context: StoreExtensionContext) {
     super.setup(context);

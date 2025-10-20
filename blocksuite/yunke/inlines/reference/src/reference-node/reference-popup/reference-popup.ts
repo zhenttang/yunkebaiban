@@ -7,7 +7,7 @@ import {
   TelemetryProvider,
 } from '@blocksuite/yunke-shared/services';
 import { fontXSStyle, panelBaseStyle } from '@blocksuite/yunke-shared/styles';
-import type { AffineTextAttributes } from '@blocksuite/yunke-shared/types';
+import type { YunkeTextAttributes } from '@blocksuite/yunke-shared/types';
 import { stopPropagation } from '@blocksuite/yunke-shared/utils';
 import { SignalWatcher, WithDisposable } from '@blocksuite/global/lit';
 import { DoneIcon, ResetIcon } from '@blocksuite/icons/lit';
@@ -29,7 +29,7 @@ export class ReferencePopup extends SignalWatcher(
 
     .overlay-mask {
       position: fixed;
-      z-index: var(--affine-z-index-popover);
+      z-index: var(--yunke-z-index-popover);
       top: 0;
       left: 0;
       width: 100vw;
@@ -44,11 +44,11 @@ export class ReferencePopup extends SignalWatcher(
       box-sizing: content-box;
       justify-content: space-between;
       align-items: center;
-      animation: affine-popover-fade-in 0.2s ease;
-      z-index: var(--affine-z-index-popover);
+      animation: yunke-popover-fade-in 0.2s ease;
+      z-index: var(--yunke-z-index-popover);
     }
 
-    @keyframes affine-popover-fade-in {
+    @keyframes yunke-popover-fade-in {
       from {
         opacity: 0;
         transform: translateY(-3px);
@@ -65,11 +65,11 @@ export class ReferencePopup extends SignalWatcher(
       padding: 0;
       border: none;
       background: transparent;
-      color: var(--affine-text-primary-color);
+      color: var(--yunke-text-primary-color);
     }
     ${fontXSStyle('input')}
     input::placeholder {
-      color: var(--affine-placeholder-color);
+      color: var(--yunke-placeholder-color);
     }
     input:focus {
       outline: none;
@@ -128,7 +128,7 @@ export class ReferencePopup extends SignalWatcher(
   }
 
   private _setTitle(title?: string) {
-    const reference: AffineTextAttributes['reference'] = {
+    const reference: YunkeTextAttributes['reference'] = {
       type: 'LinkedPage',
       ...this.referenceInfo,
     };
@@ -240,7 +240,7 @@ export class ReferencePopup extends SignalWatcher(
   accessor docTitle!: string;
 
   @property({ attribute: false })
-  accessor inlineEditor!: InlineEditor<AffineTextAttributes>;
+  accessor inlineEditor!: InlineEditor<YunkeTextAttributes>;
 
   @property({ attribute: false })
   accessor inlineRange!: InlineRange;

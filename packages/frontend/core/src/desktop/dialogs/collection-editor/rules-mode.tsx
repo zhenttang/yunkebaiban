@@ -11,7 +11,7 @@ import {
 } from '@yunke/core/components/explorer/context';
 import { DocListItemComponent } from '@yunke/core/components/explorer/docs-view/docs-list';
 import { Filters } from '@yunke/core/components/filter';
-import { AffineShapeIcon } from '@yunke/core/components/page-list';
+import { YunkeShapeIcon } from '@yunke/core/components/page-list';
 import type { CollectionInfo } from '@yunke/core/modules/collection';
 import { CollectionRulesService } from '@yunke/core/modules/collection-rules';
 import { DocsService } from '@yunke/core/modules/doc';
@@ -125,7 +125,7 @@ export const RulesMode = ({
           height: 30,
           children: (
             <div className={styles.includeListTitle}>
-              {t['com.affine.editCollection.rules.include.title']()}
+              {t['com.yunke.editCollection.rules.include.title']()}
             </div>
           ),
           className: styles.includeListGroup,
@@ -148,9 +148,9 @@ export const RulesMode = ({
   const tips = useMemo(
     () => (
       <Trans
-        i18nKey="com.affine.editCollection.rules.tips"
+        i18nKey="com.yunke.editCollection.rules.tips"
         values={{
-          highlight: t['com.affine.editCollection.rules.tips.highlight'](),
+          highlight: t['com.yunke.editCollection.rules.tips.highlight'](),
         }}
         components={{
           2: <span className={styles.rulesTitleHighlight} />,
@@ -202,7 +202,7 @@ export const RulesMode = ({
                       icon={<ToggleRightIcon />}
                     />
                     <div style={{ color: cssVar('textSecondaryColor') }}>
-                      {t['com.affine.editCollection.rules.include.title']()}
+                      {t['com.yunke.editCollection.rules.include.title']()}
                     </div>
                   </div>
                 ) : null}
@@ -231,11 +231,11 @@ export const RulesMode = ({
                               <PageIcon style={{ width: 16, height: 16 }} />
                             )}
                             {t[
-                              'com.affine.editCollection.rules.include.page'
+                              'com.yunke.editCollection.rules.include.page'
                             ]()}
                           </div>
                           <div className={styles.includeItemContentIs}>
-                            {t['com.affine.editCollection.rules.include.is']()}
+                            {t['com.yunke.editCollection.rules.include.is']()}
                           </div>
                           <DocTitle id={id} />
                         </div>
@@ -280,14 +280,14 @@ export const RulesMode = ({
               setShowPreview(!showPreview);
             }}
           >
-            {t['com.affine.editCollection.rules.preview']()}
+            {t['com.yunke.editCollection.rules.preview']()}
           </Button>
           <Button variant="plain" onClick={reset}>
-            {t['com.affine.editCollection.rules.reset']()}
+            {t['com.yunke.editCollection.rules.reset']()}
           </Button>
           <div className={styles.previewCountTips}>
             <Trans
-              i18nKey="com.affine.editCollection.rules.countTips"
+              i18nKey="com.yunke.editCollection.rules.countTips"
               values={{
                 selectedCount: collection.allowList.length,
                 filteredCount: rulesPageIds.length,
@@ -327,11 +327,11 @@ const RulesEmpty = ({
         padding: '48px 0',
       }}
     >
-      <AffineShapeIcon />
+      <YunkeShapeIcon />
       <strong style={{ fontSize: 20, lineHeight: '28px' }}>
         {noRules
-          ? t['com.affine.editCollection.rules.empty.noRules']()
-          : t['com.affine.editCollection.rules.empty.noResults']()}
+          ? t['com.yunke.editCollection.rules.empty.noRules']()
+          : t['com.yunke.editCollection.rules.empty.noResults']()}
       </strong>
       <div
         style={{
@@ -342,12 +342,12 @@ const RulesEmpty = ({
         }}
       >
         {noRules ? (
-          <Trans i18nKey="com.affine.editCollection.rules.empty.noRules.tips">
+          <Trans i18nKey="com.yunke.editCollection.rules.empty.noRules.tips">
             请 <strong>添加规则</strong> 来保存此集合或切换
             到 <strong>页面</strong>，使用手动选择模式
           </Trans>
         ) : (
-          t['com.affine.editCollection.rules.empty.noResults.tips']()
+          t['com.yunke.editCollection.rules.empty.noResults.tips']()
         )}
       </div>
     </div>

@@ -46,7 +46,7 @@ export const RenameContent = ({
         {DescRenderer ? (
           <DescRenderer input={value} />
         ) : (
-          t['com.affine.m.rename-to']({ name: value })
+          t['com.yunke.m.rename-to']({ name: value })
         )}
       </div>
       <div className={styles.doneWrapper}>

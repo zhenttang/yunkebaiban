@@ -6,16 +6,16 @@ import { ImageEdgelessPlaceholderBlockComponent } from './preview-image/edgeless
 import { ImagePlaceholderBlockComponent } from './preview-image/page.js';
 
 export function effects() {
-  customElements.define('affine-image', ImageBlockComponent);
-  customElements.define('affine-edgeless-image', ImageEdgelessBlockComponent);
-  customElements.define('affine-page-image', ImageBlockPageComponent);
-  customElements.define('affine-image-fallback-card', ImageBlockFallbackCard);
+  customElements.define('yunke-image', ImageBlockComponent);
+  customElements.define('yunke-edgeless-image', ImageEdgelessBlockComponent);
+  customElements.define('yunke-page-image', ImageBlockPageComponent);
+  customElements.define('yunke-image-fallback-card', ImageBlockFallbackCard);
   customElements.define(
-    'affine-placeholder-preview-image',
+    'yunke-placeholder-preview-image',
     ImagePlaceholderBlockComponent
   );
   customElements.define(
-    'affine-edgeless-placeholder-preview-image',
+    'yunke-edgeless-placeholder-preview-image',
     ImageEdgelessPlaceholderBlockComponent
   );
 }

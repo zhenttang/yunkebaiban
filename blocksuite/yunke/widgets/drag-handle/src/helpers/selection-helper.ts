@@ -6,7 +6,7 @@ import {
   TextSelection,
 } from '@blocksuite/std';
 
-import type { AffineDragHandleWidget } from '../drag-handle.js';
+import type { YunkeDragHandleWidget } from '../drag-handle.js';
 
 export class SelectionHelper {
   /** Check if given block component is selected */
@@ -63,5 +63,5 @@ export class SelectionHelper {
     return this.widget.std.selection;
   }
 
-  constructor(readonly widget: AffineDragHandleWidget) {}
+  constructor(readonly widget: YunkeDragHandleWidget) {}
 }

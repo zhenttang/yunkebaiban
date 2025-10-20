@@ -30,15 +30,15 @@ export const LocalSharePage = (props: ShareMenuProps) => {
             className={styles.descriptionStyle}
             style={{ maxWidth: '230px' }}
           >
-            {t['com.affine.share-menu.EnableCloudDescription']()}
+            {t['com.yunke.share-menu.EnableCloudDescription']()}
           </div>
           <div>
             <Button
-              onClick={props.onEnableAffineCloud}
+              onClick={props.onEnableYunkeCloud}
               variant="primary"
-              data-testid="share-menu-enable-affine-cloud-button"
+              data-testid="share-menu-enable-yunke-cloud-button"
             >
-              {t['Enable AFFiNE Cloud']()}
+              {t['Enable YUNKE Cloud']()}
             </Button>
           </div>
         </div>
@@ -51,7 +51,7 @@ export const LocalSharePage = (props: ShareMenuProps) => {
   );
 };
 
-export const AFFiNESharePage = (
+export const YUNKESharePage = (
   props: ShareMenuProps & {
     onClickInvite: () => void;
     onClickMembers: () => void;
@@ -98,7 +98,7 @@ export const AFFiNESharePage = (
         </div>
 
         <div className={styles.generalAccessStyle}>
-          {t['com.affine.share-menu.generalAccess']()}
+          {t['com.yunke.share-menu.generalAccess']()}
         </div>
         <MembersPermission
           openPaywallModal={props.openPaywallModal}
@@ -126,7 +126,7 @@ export const SharePage = (
       // TODO(@eyhn): 重构这部分
       <ErrorBoundary fallback={null}>
         <Suspense>
-          <AFFiNESharePage {...props} />
+          <YUNKESharePage {...props} />
         </Suspense>
       </ErrorBoundary>
     );

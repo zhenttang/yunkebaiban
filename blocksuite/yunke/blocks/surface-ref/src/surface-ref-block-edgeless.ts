@@ -8,19 +8,19 @@ import { classMap } from 'lit/directives/class-map.js';
 
 export class EdgelessSurfaceRefBlockComponent extends BlockComponent<SurfaceRefBlockModel> {
   static override styles = css`
-    affine-edgeless-surface-ref {
+    yunke-edgeless-surface-ref {
       position: relative;
       overflow: hidden;
     }
 
-    .affine-edgeless-surface-ref-container {
+    .yunke-edgeless-surface-ref-container {
       border-radius: 8px;
       border: 1px solid
         ${unsafeCSSVarV2('layer/insideBorder/border', '#e6e6e6')};
       margin: 18px 0;
     }
 
-    .affine-edgeless-surface-ref-container.focused {
+    .yunke-edgeless-surface-ref-container.focused {
       border-color: ${unsafeCSSVarV2('edgeless/frame/border/active')};
     }
   `;
@@ -60,7 +60,7 @@ export class EdgelessSurfaceRefBlockComponent extends BlockComponent<SurfaceRefB
   override renderBlock() {
     return html` <div
       class=${classMap({
-        'affine-edgeless-surface-ref-container': true,
+        'yunke-edgeless-surface-ref-container': true,
         focused: this._focused,
       })}
     >
@@ -75,6 +75,6 @@ export class EdgelessSurfaceRefBlockComponent extends BlockComponent<SurfaceRefB
 
 declare global {
   interface HTMLElementTagNameMap {
-    'affine-edgeless-surface-ref': EdgelessSurfaceRefBlockComponent;
+    'yunke-edgeless-surface-ref': EdgelessSurfaceRefBlockComponent;
   }
 }

@@ -1,7 +1,7 @@
 import type { InlineEditProps } from '@yunke/component';
 import { InlineEdit } from '@yunke/component';
 import { useGuard } from '@yunke/core/components/guard';
-import { useAsyncCallback } from '@yunke/core/components/hooks/affine-async-hooks';
+import { useAsyncCallback } from '@yunke/core/components/hooks/yunke-async-hooks';
 import { DocService, DocsService } from '@yunke/core/modules/doc';
 import { WorkspaceService } from '@yunke/core/modules/workspace';
 import { track } from '@yunke/track';

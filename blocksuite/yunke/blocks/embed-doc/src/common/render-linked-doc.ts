@@ -154,7 +154,7 @@ async function renderNoteContent(
   }
 
   const noteBlocksContainer = document.createElement('div');
-  noteBlocksContainer.classList.add('affine-embed-doc-content-note-blocks');
+  noteBlocksContainer.classList.add('yunke-embed-doc-content-note-blocks');
   noteBlocksContainer.contentEditable = 'false';
   noteContainer.append(noteBlocksContainer);
 

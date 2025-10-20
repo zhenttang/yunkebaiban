@@ -70,7 +70,7 @@ export const GroupByList = ({
       ))}
       <Divider size="thinner" style={{ margin: '4px 0' }} />
       <MenuItem onClick={() => onChange?.(undefined)}>
-        {t['com.affine.explorer.display-menu.grouping.remove']()}
+        {t['com.yunke.explorer.display-menu.grouping.remove']()}
       </MenuItem>
     </>
   );

@@ -80,7 +80,7 @@ export interface LinkPreviewCacheProvider {
 }
 
 export const LinkPreviewCacheIdentifier =
-  createIdentifier<LinkPreviewCacheProvider>('AffineLinkPreviewCache');
+  createIdentifier<LinkPreviewCacheProvider>('YunkeLinkPreviewCache');
 
 /**
  * The link preview cache, it will cache the link preview data in the memory and local storage

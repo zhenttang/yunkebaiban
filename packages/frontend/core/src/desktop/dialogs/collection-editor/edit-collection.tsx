@@ -49,7 +49,7 @@ export const EditCollection = ({
     () => (
       <>
         <Button onClick={onCancel} className={styles.actionButton}>
-          {t['com.affine.editCollection.button.cancel']()}
+          {t['com.yunke.editCollection.button.cancel']()}
         </Button>
         <Button
           className={styles.actionButton}
@@ -58,7 +58,7 @@ export const EditCollection = ({
           disabled={isNameEmpty}
           onClick={onSaveCollection}
         >
-          {onConfirmText ?? t['com.affine.editCollection.button.create']()}
+          {onConfirmText ?? t['com.yunke.editCollection.button.create']()}
         </Button>
       </>
     ),
@@ -74,12 +74,12 @@ export const EditCollection = ({
         items={[
           {
             value: 'page',
-            label: t['com.affine.editCollection.pages'](),
+            label: t['com.yunke.editCollection.pages'](),
             testId: 'edit-collection-pages-button',
           },
           {
             value: 'rule',
-            label: t['com.affine.editCollection.rules'](),
+            label: t['com.yunke.editCollection.rules'](),
             testId: 'edit-collection-rules-button',
           },
         ]}

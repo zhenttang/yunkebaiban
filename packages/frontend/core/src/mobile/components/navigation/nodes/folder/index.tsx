@@ -146,10 +146,10 @@ const NavigationPanelFolderNodeFolder = ({
       type: 'folder',
     });
     notify.success({
-      title: t['com.affine.rootAppSidebar.organize.delete.notify-title']({
+      title: t['com.yunke.rootAppSidebar.organize.delete.notify-title']({
         name,
       }),
-      message: t['com.affine.rootAppSidebar.organize.delete.notify-message'](),
+      message: t['com.yunke.rootAppSidebar.organize.delete.notify-message'](),
     });
   }, [name, node, t]);
 
@@ -243,7 +243,7 @@ const NavigationPanelFolderNodeFolder = ({
             size="16"
             onClick={handleNewDoc}
             tooltip={t[
-              'com.affine.rootAppSidebar.explorer.organize-add-tooltip'
+              'com.yunke.rootAppSidebar.explorer.organize-add-tooltip'
             ]()}
           >
             <PlusIcon />
@@ -271,10 +271,10 @@ const NavigationPanelFolderNodeFolder = ({
         view: (
           <FolderRenameSubMenu
             text={t[
-              'com.affine.rootAppSidebar.organize.folder.create-subfolder'
+              'com.yunke.rootAppSidebar.organize.folder.create-subfolder'
             ]()}
             title={t[
-              'com.affine.rootAppSidebar.organize.folder.create-subfolder'
+              'com.yunke.rootAppSidebar.organize.folder.create-subfolder'
             ]()}
             onConfirm={handleCreateSubfolder}
             descRenderer={createSubTipRenderer}
@@ -298,26 +298,26 @@ const NavigationPanelFolderNodeFolder = ({
                   prefixIcon={<PageIcon />}
                   onClick={() => handleAddToFolder('doc')}
                 >
-                  {t['com.affine.rootAppSidebar.organize.folder.add-docs']()}
+                  {t['com.yunke.rootAppSidebar.organize.folder.add-docs']()}
                 </MenuItem>
                 <MenuItem
                   onClick={() => handleAddToFolder('tag')}
                   prefixIcon={<TagsIcon />}
                 >
-                  {t['com.affine.rootAppSidebar.organize.folder.add-tags']()}
+                  {t['com.yunke.rootAppSidebar.organize.folder.add-tags']()}
                 </MenuItem>
                 <MenuItem
                   onClick={() => handleAddToFolder('collection')}
                   prefixIcon={<LayerIcon />}
                 >
                   {t[
-                    'com.affine.rootAppSidebar.organize.folder.add-collections'
+                    'com.yunke.rootAppSidebar.organize.folder.add-collections'
                   ]()}
                 </MenuItem>
               </>
             }
           >
-            {t['com.affine.rootAppSidebar.organize.folder.add-others']()}
+            {t['com.yunke.rootAppSidebar.organize.folder.add-others']()}
           </MenuSub>
         ),
       },
@@ -339,7 +339,7 @@ const NavigationPanelFolderNodeFolder = ({
             prefixIcon={<DeleteIcon />}
             onClick={handleDelete}
           >
-            {t['com.affine.rootAppSidebar.organize.delete']()}
+            {t['com.yunke.rootAppSidebar.organize.delete']()}
           </MenuItem>
         ),
       },
@@ -377,7 +377,7 @@ const NavigationPanelFolderNodeFolder = ({
                 data-event-args-type={node.type$.value}
                 onClick={() => node.delete()}
               >
-                {t['com.affine.rootAppSidebar.organize.delete-from-folder']()}
+                {t['com.yunke.rootAppSidebar.organize.delete-from-folder']()}
               </MenuItem>
             ),
           },
@@ -416,7 +416,7 @@ const NavigationPanelFolderNodeFolder = ({
         />
       ))}
       <AddItemPlaceholder
-        label={t['com.affine.rootAppSidebar.organize.folder.new-doc']()}
+        label={t['com.yunke.rootAppSidebar.organize.folder.new-doc']()}
         onClick={handleNewDoc}
         data-testid="new-folder-in-folder-button"
       />

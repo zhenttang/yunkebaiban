@@ -1,8 +1,8 @@
-package app.affine.pro.service
+package app.yunke.pro.service
 
-import app.affine.pro.utils.getCurrentDocContentInMarkdown
-import app.affine.pro.utils.getCurrentDocId
-import app.affine.pro.utils.getCurrentWorkspaceId
+import app.yunke.pro.utils.getCurrentDocContentInMarkdown
+import app.yunke.pro.utils.getCurrentDocId
+import app.yunke.pro.utils.getCurrentWorkspaceId
 import com.getcapacitor.Bridge
 import javax.inject.Inject
 import javax.inject.Singleton

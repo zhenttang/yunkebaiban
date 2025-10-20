@@ -7,7 +7,7 @@
 
 import { DebugLogger } from '@yunke/debug';
 
-const logger = new DebugLogger('affine:workspace-storage-cleanup');
+const logger = new DebugLogger('yunke:workspace-storage-cleanup');
 
 export interface ValidWorkspace {
   id: string;

@@ -113,6 +113,6 @@ export class CardStyleDropdownMenu extends SignalWatcher(LitElement) {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'affine-card-style-dropdown-menu': CardStyleDropdownMenu;
+    'yunke-card-style-dropdown-menu': CardStyleDropdownMenu;
   }
 }

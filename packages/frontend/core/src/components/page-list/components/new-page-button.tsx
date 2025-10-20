@@ -32,16 +32,16 @@ export const CreateNewPagePopup = ({
       }}
     >
       <BlockCard
-        title={t['com.affine.new.page-mode']()}
-        desc={t['com.affine.write_with_a_blank_page']()}
+        title={t['com.yunke.new.page-mode']()}
+        desc={t['com.yunke.write_with_a_blank_page']()}
         right={<PageIcon width={20} height={20} />}
         onClick={createNewPage}
         onAuxClick={createNewPage}
         data-testid="new-page-button-in-all-page"
       />
       <BlockCard
-        title={t['com.affine.new_edgeless']()}
-        desc={t['com.affine.draw_with_a_blank_whiteboard']()}
+        title={t['com.yunke.new_edgeless']()}
+        desc={t['com.yunke.draw_with_a_blank_whiteboard']()}
         right={<EdgelessIcon width={20} height={20} />}
         onClick={createNewEdgeless}
         onAuxClick={createNewEdgeless}
@@ -49,8 +49,8 @@ export const CreateNewPagePopup = ({
       />
       {importFile ? (
         <BlockCard
-          title={t['com.affine.new_import']()}
-          desc={t['com.affine.import_file']()}
+          title={t['com.yunke.new_import']()}
+          desc={t['com.yunke.import_file']()}
           right={<ImportIcon width={20} height={20} />}
           onClick={importFile}
           data-testid="import-button-in-all-page"

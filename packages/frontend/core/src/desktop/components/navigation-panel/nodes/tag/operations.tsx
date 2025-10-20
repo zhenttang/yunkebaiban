@@ -58,7 +58,7 @@ export const useNavigationPanelTagNodeOperations = (
   const handleMoveToTrash = useCallback(() => {
     tagService.tagList.deleteTag(tagId);
     track.$.navigationPanel.organize.deleteOrganizeItem({ type: 'tag' });
-    toast(t['com.affine.tags.delete-tags.toast']());
+    toast(t['com.yunke.tags.delete-tags.toast']());
   }, [t, tagId, tagService.tagList]);
 
   const handleOpenInSplitView = useCallback(() => {
@@ -92,7 +92,7 @@ export const useNavigationPanelTagNodeOperations = (
             size="16"
             onClick={handleNewDoc}
             data-testid="tag-add-doc-button"
-            tooltip={t['com.affine.rootAppSidebar.explorer.tag-add-tooltip']()}
+            tooltip={t['com.yunke.rootAppSidebar.explorer.tag-add-tooltip']()}
           >
             <PlusIcon />
           </IconButton>
@@ -102,7 +102,7 @@ export const useNavigationPanelTagNodeOperations = (
         index: 50,
         view: (
           <MenuItem prefixIcon={<OpenInNewIcon />} onClick={handleOpenInNewTab}>
-            {t['com.affine.workbench.tab.page-menu-open']()}
+            {t['com.yunke.workbench.tab.page-menu-open']()}
           </MenuItem>
         ),
       },
@@ -115,7 +115,7 @@ export const useNavigationPanelTagNodeOperations = (
                   prefixIcon={<SplitViewIcon />}
                   onClick={handleOpenInSplitView}
                 >
-                  {t['com.affine.workbench.split-view.page-menu-open']()}
+                  {t['com.yunke.workbench.split-view.page-menu-open']()}
                 </MenuItem>
               ),
             },
@@ -129,8 +129,8 @@ export const useNavigationPanelTagNodeOperations = (
             onClick={handleToggleFavoriteTag}
           >
             {favorite
-              ? t['com.affine.favoritePageOperation.remove']()
-              : t['com.affine.favoritePageOperation.add']()}
+              ? t['com.yunke.favoritePageOperation.remove']()
+              : t['com.yunke.favoritePageOperation.add']()}
           </MenuItem>
         ),
       },

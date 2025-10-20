@@ -75,7 +75,7 @@ export class EmbeddedContentQuickSearchSession
                   group: {
                     id: 'embedded-content',
                     label: {
-                      i18nKey: 'com.affine.quicksearch.group.embeddedcontent',
+                      i18nKey: 'com.yunke.quicksearch.group.embeddedcontent',
                       options: { query: truncate(query) },
                     },
                     score: 3,

@@ -12,7 +12,7 @@ import {
   DRAG_HANDLE_CONTAINER_WIDTH_TOP_LEVEL,
   HOVER_AREA_RECT_PADDING_TOP_LEVEL,
 } from '../config.js';
-import type { AffineDragHandleWidget } from '../drag-handle.js';
+import type { YunkeDragHandleWidget } from '../drag-handle.js';
 
 /**
  * Used to control the drag handle visibility in edgeless mode
@@ -158,7 +158,7 @@ export class EdgelessWatcher {
     };
   }
 
-  constructor(readonly widget: AffineDragHandleWidget) {}
+  constructor(readonly widget: YunkeDragHandleWidget) {}
 
   watch() {
     if (this.widget.mode === 'page') {

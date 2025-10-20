@@ -1,6 +1,6 @@
 {
   "name": "@blocksuite/yunke-model",
-  "description": "Models for BlockSuite in Affine.",
+  "description": "Models for BlockSuite in Yunke.",
   "type": "module",
   "scripts": {
     "build": "tsc"

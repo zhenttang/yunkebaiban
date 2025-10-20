@@ -1,5 +1,5 @@
 import { Avatar } from '@yunke/component/ui/avatar';
-import { UserPlanButton } from '@yunke/core/components/affine/auth/user-plan-button';
+import { UserPlanButton } from '@yunke/core/components/yunke/auth/user-plan-button';
 import { useCatchEventCallback } from '@yunke/core/components/hooks/use-catch-event-hook';
 import { AuthService } from '@yunke/core/modules/cloud';
 import { GlobalDialogService } from '@yunke/core/modules/dialogs';
@@ -94,11 +94,11 @@ export const SignInButton = () => {
       </div>
 
       <div className="content">
-        <div className="name" title={t['com.affine.settings.sign']()}>
-          {t['com.affine.settings.sign']()}
+        <div className="name" title={t['com.yunke.settings.sign']()}>
+          {t['com.yunke.settings.sign']()}
         </div>
-        <div className="email" title={t['com.affine.setting.sign.message']()}>
-          {t['com.affine.setting.sign.message']()}
+        <div className="email" title={t['com.yunke.setting.sign.message']()}>
+          {t['com.yunke.setting.sign.message']()}
         </div>
       </div>
     </div>
@@ -184,12 +184,12 @@ export const SettingSidebar = ({
     const res = [
       {
         key: 'setting:general',
-        title: t['com.affine.settingSidebar.settings.general'](),
+        title: t['com.yunke.settingSidebar.settings.general'](),
         items: generalList,
       },
       {
         key: 'setting:workspace',
-        title: t['com.affine.settingSidebar.settings.workspace'](),
+        title: t['com.yunke.settingSidebar.settings.workspace'](),
         items: workspaceSettingList,
       },
     ].map(group => {
@@ -211,7 +211,7 @@ export const SettingSidebar = ({
   return (
     <div className={style.settingSlideBar} data-testid="settings-sidebar">
       <div className={style.sidebarTitle}>
-        {t['com.affine.settingSidebar.title']()}
+        {t['com.yunke.settingSidebar.title']()}
       </div>
 
       {loginStatus === 'unauthenticated' ? <SignInButton /> : null}

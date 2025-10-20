@@ -1,6 +1,6 @@
 import { Button, Tooltip } from '@yunke/component';
 import { SettingRow } from '@yunke/component/setting-components';
-import { AffineErrorBoundary } from '@yunke/core/components/affine/affine-error-boundary';
+import { YunkeErrorBoundary } from '@yunke/core/components/yunke/yunke-error-boundary';
 import { useWorkspaceInfo } from '@yunke/core/components/hooks/use-workspace-info';
 import { WorkspaceService } from '@yunke/core/modules/workspace';
 import { useI18n } from '@yunke/i18n';
@@ -25,12 +25,12 @@ export const MembersPanel = ({
     return <MembersPanelLocal onCloseSetting={onCloseSetting} />;
   }
   return (
-    <AffineErrorBoundary>
+    <YunkeErrorBoundary>
       <CloudWorkspaceMembersPanel
         onChangeSettingState={onChangeSettingState}
         isTeam={isTeam}
       />
-    </AffineErrorBoundary>
+    </YunkeErrorBoundary>
   );
 };
 
@@ -42,7 +42,7 @@ const MembersPanelLocal = ({
   const t = useI18n();
   return (
     <div className={styles.localMembersPanel}>
-      <Tooltip content={t['com.affine.settings.member-tooltip']()}>
+      <Tooltip content={t['com.yunke.settings.member-tooltip']()}>
         <div className={styles.fakeWrapper}>
           <SettingRow name={`${t['Members']()} (0)`} desc={t['Members hint']()}>
             <Button>{t['Invite Members']()}</Button>

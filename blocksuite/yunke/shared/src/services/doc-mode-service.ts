@@ -57,7 +57,7 @@ export interface DocModeProvider {
 }
 
 export const DocModeProvider = createIdentifier<DocModeProvider>(
-  'AffineDocModeService'
+  'YunkeDocModeService'
 );
 
 const modeMap = new Map<string, DocMode>();

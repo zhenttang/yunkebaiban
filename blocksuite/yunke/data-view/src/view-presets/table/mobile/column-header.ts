@@ -94,7 +94,7 @@ export class MobileTableColumnHeader extends SignalWatcher(
                         return menu.action({
                           isSelected: data.format === format.type,
                           prefix: html`<span
-                            style="font-size: var(--affine-font-base); scale: 1.2;"
+                            style="font-size: var(--yunke-font-base); scale: 1.2;"
                             >${format.symbol}</span
                           >`,
                           name: format.label,
@@ -260,9 +260,9 @@ export class MobileTableColumnHeader extends SignalWatcher(
 
 function numberFormatConfig(column: Property): MenuConfig {
   return () =>
-    html` <affine-database-number-format-bar
+    html` <yunke-database-number-format-bar
       .column="${column}"
-    ></affine-database-number-format-bar>`;
+    ></yunke-database-number-format-bar>`;
 }
 
 declare global {

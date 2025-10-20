@@ -1,32 +1,32 @@
-import type { AffineTextAttributes } from '@blocksuite/yunke-shared/types';
+import type { YunkeTextAttributes } from '@blocksuite/yunke-shared/types';
 import { StdIdentifier } from '@blocksuite/std';
 import { InlineSpecExtension } from '@blocksuite/std/inline';
 import { html } from 'lit';
 import { z } from 'zod';
 
 export const LatexInlineSpecExtension =
-  InlineSpecExtension<AffineTextAttributes>('latex', provider => {
+  InlineSpecExtension<YunkeTextAttributes>('latex', provider => {
     const std = provider.get(StdIdentifier);
     return {
       name: 'latex',
       schema: z.string().optional().nullable().catch(undefined),
       match: delta => typeof delta.attributes?.latex === 'string',
       renderer: ({ delta, selected, editor, startOffset, endOffset }) => {
-        return html`<affine-latex-node
+        return html`<yunke-latex-node
           .std=${std}
           .delta=${delta}
           .selected=${selected}
           .editor=${editor}
           .startOffset=${startOffset}
           .endOffset=${endOffset}
-        ></affine-latex-node>`;
+        ></yunke-latex-node>`;
       },
       embed: true,
     };
   });
 
 export const LatexEditorUnitSpecExtension =
-  InlineSpecExtension<AffineTextAttributes>({
+  InlineSpecExtension<YunkeTextAttributes>({
     name: 'latex-editor-unit',
     schema: z.undefined(),
     match: () => true,

@@ -1,4 +1,4 @@
-import { AffineSchemas } from '@blocksuite/yunke/schemas';
+import { YunkeSchemas } from '@blocksuite/yunke/schemas';
 import { replaceIdMiddleware } from '@blocksuite/yunke/shared/adapters';
 import {
   type DocSnapshot,
@@ -12,7 +12,7 @@ export async function importFromSnapshot(
   snapshot: DocSnapshot
 ) {
   const job = new Transformer({
-    schema: new Schema().register(AffineSchemas),
+    schema: new Schema().register(YunkeSchemas),
     blobCRUD: collection.blobSync,
     docCRUD: {
       create: (id: string) => collection.createDoc(id).getStore({ id }),

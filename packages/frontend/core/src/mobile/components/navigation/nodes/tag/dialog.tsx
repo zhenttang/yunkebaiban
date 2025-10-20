@@ -133,9 +133,9 @@ export const TagRenameDialog = ({
   ...props
 }: TagRenameDialogProps) => {
   const t = useI18n();
-  const title = propsTitle || t['com.affine.m.explorer.tag.new-dialog-title']();
+  const title = propsTitle || t['com.yunke.m.explorer.tag.new-dialog-title']();
   const confirmText =
-    propsConfirmText || t['com.affine.m.explorer.tag.rename-confirm']();
+    propsConfirmText || t['com.yunke.m.explorer.tag.rename-confirm']();
 
   return (
     <RenameDialog
@@ -183,7 +183,7 @@ export const TagRenameSubMenu = ({
 
   return (
     <RenameSubMenu
-      title={title ?? t['com.affine.m.explorer.tag.rename-menu-title']()}
+      title={title ?? t['com.yunke.m.explorer.tag.rename-menu-title']()}
       icon={icon}
       text={text}
       menuProps={menuProps}

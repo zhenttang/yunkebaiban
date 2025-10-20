@@ -9,7 +9,7 @@ import {
   type FolderNode,
   OrganizeService,
 } from '@yunke/core/modules/organize';
-import type { AffineDNDData } from '@yunke/core/types/dnd';
+import type { YunkeDNDData } from '@yunke/core/types/dnd';
 import { useI18n } from '@yunke/i18n';
 import { track } from '@yunke/track';
 import { AddOrganizeIcon } from '@blocksuite/icons/rc';
@@ -51,7 +51,7 @@ export const NavigationPanelOrganize = () => {
   }, [navigationPanelSection, rootFolder]);
 
   const handleOnChildrenDrop = useCallback(
-    (data: DropTargetDropEvent<AffineDNDData>, node?: FolderNode) => {
+    (data: DropTargetDropEvent<YunkeDNDData>, node?: FolderNode) => {
       if (!node || !node.id) {
         return; // never happens
       }
@@ -68,7 +68,7 @@ export const NavigationPanelOrganize = () => {
           );
           track.$.navigationPanel.organize.moveOrganizeItem({ type: 'folder' });
         } else {
-          toast(t['com.affine.rootAppSidebar.organize.root-folder-only']());
+          toast(t['com.yunke.rootAppSidebar.organize.root-folder-only']());
         }
       } else {
         return; // not supported
@@ -78,7 +78,7 @@ export const NavigationPanelOrganize = () => {
   );
 
   const createFolderAndDrop = useCallback(
-    (data: DropTargetDropEvent<AffineDNDData>) => {
+    (data: DropTargetDropEvent<YunkeDNDData>) => {
       const newFolderId = handleCreateFolder();
       setNewFolderId(null);
       const newFolder$ = folderTree.folderNode$(newFolderId);
@@ -96,7 +96,7 @@ export const NavigationPanelOrganize = () => {
   );
 
   const handleChildrenCanDrop = useMemo<
-    DropTargetOptions<AffineDNDData>['canDrop']
+    DropTargetOptions<YunkeDNDData>['canDrop']
   >(() => args => args.source.data.entity?.type === 'folder', []);
 
   useEffect(() => {
@@ -106,14 +106,14 @@ export const NavigationPanelOrganize = () => {
   return (
     <CollapsibleSection
       name="organize"
-      title={t['com.affine.rootAppSidebar.organize']()}
+      title={t['com.yunke.rootAppSidebar.organize']()}
       actions={
         <IconButton
           data-testid="navigation-panel-bar-add-organize-button"
           onClick={handleCreateFolder}
           size="16"
           tooltip={t[
-            'com.affine.rootAppSidebar.explorer.organize-section-add-tooltip'
+            'com.yunke.rootAppSidebar.explorer.organize-section-add-tooltip'
           ]()}
         >
           <AddOrganizeIcon />

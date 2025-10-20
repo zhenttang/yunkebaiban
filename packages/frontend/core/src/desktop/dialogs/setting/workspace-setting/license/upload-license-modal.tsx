@@ -1,5 +1,5 @@
 import { Button, Modal, notify, useConfirmModal } from '@yunke/component';
-import { useAsyncCallback } from '@yunke/core/components/hooks/affine-async-hooks';
+import { useAsyncCallback } from '@yunke/core/components/hooks/yunke-async-hooks';
 import { Upload } from '@yunke/core/components/pure/file-upload';
 import {
   SelfhostLicenseService,
@@ -51,11 +51,11 @@ export const UploadLicenseModal = ({
         openConfirmModal({
           title:
             t[
-              'com.affine.settings.workspace.license.self-host-team.upload-license-file.success.title'
+              'com.yunke.settings.workspace.license.self-host-team.upload-license-file.success.title'
             ](),
           description:
             t[
-              'com.affine.settings.workspace.license.self-host-team.upload-license-file.success.description'
+              'com.yunke.settings.workspace.license.self-host-team.upload-license-file.success.description'
             ](),
           confirmText: t['Confirm'](),
           cancelButtonOptions: {
@@ -74,7 +74,7 @@ export const UploadLicenseModal = ({
         openConfirmModal({
           title:
             t[
-              'com.affine.settings.workspace.license.self-host-team.upload-license-file.failed'
+              'com.yunke.settings.workspace.license.self-host-team.upload-license-file.failed'
             ](),
           description: err.message,
           confirmText: t['Confirm'](),
@@ -129,22 +129,22 @@ export const UploadLicenseModal = ({
       open={open}
       onOpenChange={handleOpenChange}
       title={t[
-        'com.affine.settings.workspace.license.self-host-team.upload-license-file'
+        'com.yunke.settings.workspace.license.self-host-team.upload-license-file'
       ]()}
       description={t[
-        'com.affine.settings.workspace.license.self-host-team.upload-license-file.description'
+        'com.yunke.settings.workspace.license.self-host-team.upload-license-file.description'
       ]()}
     >
       <div className={styles.activateModalContent}>
         <div className={styles.tipsContainer}>
           <div className={styles.tipsTitle}>
             {t[
-              'com.affine.settings.workspace.license.self-host-team.upload-license-file.tips.title'
+              'com.yunke.settings.workspace.license.self-host-team.upload-license-file.tips.title'
             ]()}
           </div>
           <div className={styles.tipsContent}>
             <Trans
-              i18nKey="com.affine.settings.workspace.license.self-host-team.upload-license-file.tips.content"
+              i18nKey="com.yunke.settings.workspace.license.self-host-team.upload-license-file.tips.content"
               components={{
                 1: (
                   <a
@@ -160,7 +160,7 @@ export const UploadLicenseModal = ({
           <div className={styles.workspaceIdContainer}>
             <div className={styles.workspaceIdLabel}>
               {t[
-                'com.affine.settings.workspace.license.self-host-team.upload-license-file.tips.workspace-id'
+                'com.yunke.settings.workspace.license.self-host-team.upload-license-file.tips.workspace-id'
               ]()}
             </div>
             <Button
@@ -187,14 +187,14 @@ export const UploadLicenseModal = ({
             <span className={styles.uploadButtonContent}>
               <FileIcon className={styles.uploadButtonIcon} />
               {t[
-                'com.affine.settings.workspace.license.self-host-team.upload-license-file.click-to-upload'
+                'com.yunke.settings.workspace.license.self-host-team.upload-license-file.click-to-upload'
               ]()}
             </span>
           </Button>
         </Upload>
         <div className={styles.footer}>
           {t[
-            'com.affine.settings.workspace.license.self-host-team.upload-license-file.help'
+            'com.yunke.settings.workspace.license.self-host-team.upload-license-file.help'
           ]()}
         </div>
       </div>

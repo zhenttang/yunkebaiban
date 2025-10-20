@@ -111,7 +111,7 @@ export const button = style({
   fontWeight: 600,
   fontSize: cssVar('fontBase'),
 });
-export const openAFFiNEButton = style({
+export const openYUNKEButton = style({
   alignSelf: 'flex-start',
 });
 export const disableButton = style({

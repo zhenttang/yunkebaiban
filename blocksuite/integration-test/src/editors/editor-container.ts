@@ -13,11 +13,11 @@ import { property } from 'lit/decorators.js';
 import { keyed } from 'lit/directives/keyed.js';
 import { when } from 'lit/directives/when.js';
 
-export class TestAffineEditorContainer extends SignalWatcher(
+export class TestYunkeEditorContainer extends SignalWatcher(
   WithDisposable(ShadowlessElement)
 ) {
   static override styles = css`
-    .affine-page-viewport {
+    .yunke-page-viewport {
       position: relative;
       display: flex;
       flex-direction: column;
@@ -25,21 +25,21 @@ export class TestAffineEditorContainer extends SignalWatcher(
       overflow-y: auto;
       container-name: viewport;
       container-type: inline-size;
-      font-family: var(--affine-font-family);
+      font-family: var(--yunke-font-family);
     }
-    .affine-page-viewport * {
+    .yunke-page-viewport * {
       box-sizing: border-box;
     }
 
     @media print {
-      .affine-page-viewport {
+      .yunke-page-viewport {
         height: auto;
       }
     }
 
     .playground-page-editor-container {
       flex-grow: 1;
-      font-family: var(--affine-font-family);
+      font-family: var(--yunke-font-family);
       display: block;
     }
 
@@ -54,8 +54,8 @@ export class TestAffineEditorContainer extends SignalWatcher(
     }
 
     .edgeless-editor-container {
-      font-family: var(--affine-font-family);
-      background: var(--affine-background-primary-color);
+      font-family: var(--yunke-font-family);
+      background: var(--yunke-background-primary-color);
       display: block;
       height: 100%;
       position: relative;
@@ -72,7 +72,7 @@ export class TestAffineEditorContainer extends SignalWatcher(
       }
     }
 
-    .affine-edgeless-viewport {
+    .yunke-edgeless-viewport {
       display: block;
       height: 100%;
       position: relative;
@@ -187,8 +187,8 @@ export class TestAffineEditorContainer extends SignalWatcher(
         <div
           data-theme=${mode === 'page' ? appTheme : edgelessTheme}
           class=${mode === 'page'
-            ? 'affine-page-viewport'
-            : 'affine-edgeless-viewport'}
+            ? 'yunke-page-viewport'
+            : 'yunke-edgeless-viewport'}
         >
           ${when(
             mode === 'page',
@@ -216,6 +216,6 @@ export class TestAffineEditorContainer extends SignalWatcher(
 
 declare global {
   interface HTMLElementTagNameMap {
-    'affine-editor-container': TestAffineEditorContainer;
+    'yunke-editor-container': TestYunkeEditorContainer;
   }
 }

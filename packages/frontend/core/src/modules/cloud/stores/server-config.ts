@@ -48,7 +48,7 @@ export class ServerConfigStore extends Store {
       const config = {
         initialized: true,
         version: healthData.version || '1.0.0',
-        name: healthData.serverName || 'AFFiNE',
+        name: healthData.serverName || 'YUNKE',
         flavor: healthData.flavor || 'allinone',
         deployment: healthData.deployment || 'selfhosted',
         features: healthData.features || [],
@@ -67,7 +67,7 @@ export class ServerConfigStore extends Store {
       const defaultConfig = {
         initialized: true,
         version: '1.0.0',
-        name: 'AFFiNE',
+        name: 'YUNKE',
         flavor: 'allinone',
         deployment: 'selfhosted',
         features: ['copilot'],

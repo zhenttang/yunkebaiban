@@ -5,7 +5,7 @@
 //  Created by 秋星桥 on 2024/12/26.
 //
 
-import AffineGraphQL
+import YunkeGraphQL
 import LDSwiftEventSource
 import MarkdownParser
 import UIKit
@@ -212,7 +212,7 @@ private extension IntelligentsChatController {
     Intelligents.qlClient.perform(
       mutation: CreateCopilotSessionMutation(options: .init(
         docId: metadata[.documentID] ?? "",
-        promptName: Prompt.general_Chat_With_AFFiNE_AI.rawValue,
+        promptName: Prompt.general_Chat_With_YUNKE_AI.rawValue,
         workspaceId: metadata[.workspaceID] ?? ""
       )),
       queue: .global()
@@ -284,7 +284,7 @@ private extension IntelligentsChatController {
   }
 
   func chat_processWithMessageID(sessionID: String, messageID: String, cellID: UUID) {
-    let url = Constant.affineUpstreamURL
+    let url = Constant.yunkeUpstreamURL
       .appendingPathComponent("api")
       .appendingPathComponent("copilot")
       .appendingPathComponent("chat")

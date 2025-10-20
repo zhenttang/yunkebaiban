@@ -14,7 +14,7 @@ export const AnimateInTooltip = ({
   return (
     <>
       <div className={styles.tooltip}>
-        AFFiNE is a workspace with fully merged docs, <br />
+        YUNKE is a workspace with fully merged docs, <br />
         whiteboards and databases
       </div>
       <div className={styles.next}>

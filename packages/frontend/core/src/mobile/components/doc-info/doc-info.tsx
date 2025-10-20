@@ -78,24 +78,24 @@ export const DocInfoSheet = ({
           <TimeRow docId={docId} className={styles.timeRow} />
           <Divider size="thinner" />
           <PropertyCollapsibleSection
-            title={t.t('com.affine.workspace.properties')}
+            title={t.t('com.yunke.workspace.properties')}
           >
             <PropertyCollapsibleContent
               className={styles.tableBodyRoot}
               collapseButtonText={({ hide, isCollapsed }) =>
                 isCollapsed
                   ? hide === 1
-                    ? t['com.affine.page-properties.more-property.one']({
+                    ? t['com.yunke.page-properties.more-property.one']({
                         count: hide.toString(),
                       })
-                    : t['com.affine.page-properties.more-property.more']({
+                    : t['com.yunke.page-properties.more-property.more']({
                         count: hide.toString(),
                       })
                   : hide === 1
-                    ? t['com.affine.page-properties.hide-property.one']({
+                    ? t['com.yunke.page-properties.hide-property.one']({
                         count: hide.toString(),
                       })
-                    : t['com.affine.page-properties.hide-property.more']({
+                    : t['com.yunke.page-properties.hide-property.more']({
                         count: hide.toString(),
                       })
               }
@@ -115,7 +115,7 @@ export const DocInfoSheet = ({
                   prefix={<PlusIcon />}
                   className={styles.addPropertyButton}
                 >
-                  {t['com.affine.page-properties.add-property']()}
+                  {t['com.yunke.page-properties.add-property']()}
                 </Button>
               ) : (
                 <Menu
@@ -133,7 +133,7 @@ export const DocInfoSheet = ({
                     prefix={<PlusIcon />}
                     className={styles.addPropertyButton}
                   >
-                    {t['com.affine.page-properties.add-property']()}
+                    {t['com.yunke.page-properties.add-property']()}
                   </Button>
                 </Menu>
               )}
@@ -149,7 +149,7 @@ export const DocInfoSheet = ({
                 className={styles.linksRow}
                 references={backlinks}
                 count={backlinks.length}
-                label={t['com.affine.page-properties.backlinks']()}
+                label={t['com.yunke.page-properties.backlinks']()}
               />
               <Divider size="thinner" />
             </>
@@ -160,7 +160,7 @@ export const DocInfoSheet = ({
                 className={styles.linksRow}
                 references={links}
                 count={links.length}
-                label={t['com.affine.page-properties.outgoing-links']()}
+                label={t['com.yunke.page-properties.outgoing-links']()}
               />
               <Divider size="thinner" />
             </>

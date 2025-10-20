@@ -32,8 +32,8 @@ export class MenuComponent
   implements MenuComponentInterface
 {
   static override styles = css`
-    affine-menu {
-      font-family: var(--affine-font-family);
+    yunke-menu {
+      font-family: var(--yunke-font-family);
       display: flex;
       flex-direction: column;
       user-select: none;
@@ -49,7 +49,7 @@ export class MenuComponent
       color: ${unsafeCSSVarV2('text/primary')};
     }
 
-    .affine-menu-search-container {
+    .yunke-menu-search-container {
       border-radius: 4px;
       display: flex;
       align-items: center;
@@ -58,7 +58,7 @@ export class MenuComponent
       border: 1px solid ${unsafeCSSVarV2('input/border/default')};
     }
 
-    .affine-menu-search {
+    .yunke-menu-search {
       flex: 1;
       outline: none;
       font-size: 14px;
@@ -67,7 +67,7 @@ export class MenuComponent
       background-color: transparent;
     }
 
-    .affine-menu-body {
+    .yunke-menu-body {
       display: flex;
       flex-direction: column;
       gap: 4px;
@@ -76,7 +76,7 @@ export class MenuComponent
     .no-results {
       font-size: 12px;
       line-height: 20px;
-      color: var(--affine-text-secondary-color);
+      color: var(--yunke-text-secondary-color);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -159,7 +159,7 @@ export class MenuComponent
     const result = this.menu.renderItems(this.menu.options.items);
     return html`
       ${this.renderTitle()} ${this.renderSearch()}
-      <div class="affine-menu-body">
+      <div class="yunke-menu-body">
         ${result.length === 0 && this.menu.enableSearch
           ? html` <div class="no-results">No Results</div>`
           : ''}
@@ -178,15 +178,15 @@ export class MenuComponent
       position: showSearch ? undefined : 'absolute',
       pointerEvents: showSearch ? undefined : 'none',
     });
-    return html` <div style=${searchStyle} class="affine-menu-search-container">
+    return html` <div style=${searchStyle} class="yunke-menu-search-container">
       <div
-        style="font-size:20px;display:flex;align-items:center;color: var(--affine-text-secondary-color)"
+        style="font-size:20px;display:flex;align-items:center;color: var(--yunke-text-secondary-color)"
       >
         ${SearchIcon()}
       </div>
       <input
         autocomplete="off"
-        class="affine-menu-search"
+        class="yunke-menu-search"
         placeholder="${config?.placeholder ?? ''}"
         data-1p-ignore
         ${ref(this.searchRef)}
@@ -221,7 +221,7 @@ export class MenuComponent
             </div>`
           : nothing}
         <div
-          style="flex:1;font-weight:500;font-size: 14px;line-height: 22px;color: var(--affine-text-primary-color)"
+          style="flex:1;font-weight:500;font-size: 14px;line-height: 22px;color: var(--yunke-text-primary-color)"
         >
           ${title.text}
         </div>
@@ -245,7 +245,7 @@ export class MenuComponent
 
 declare global {
   interface HTMLElementTagNameMap {
-    'affine-menu': MenuComponent;
+    'yunke-menu': MenuComponent;
   }
 }
 
@@ -256,7 +256,7 @@ export class MobileMenuComponent
   static override styles = css`
     mobile-menu {
       height: 100%;
-      font-family: var(--affine-font-family);
+      font-family: var(--yunke-font-family);
       display: flex;
       flex-direction: column;
       user-select: none;
@@ -339,7 +339,7 @@ export class MobileMenuComponent
           font-style: normal;
           font-weight: 500;
           line-height: 22px;
-          color: var(--affine-text-primary-color);
+          color: var(--yunke-text-primary-color);
           display: flex;
           justify-content: center;
 "
@@ -392,7 +392,7 @@ export const createModal = (container: HTMLElement = document.body) => {
   div.style.width = '100%';
   div.style.height = '100%';
   div.style.zIndex = '1001';
-  div.style.fontFamily = 'var(--affine-font-family)';
+  div.style.fontFamily = 'var(--yunke-font-family)';
   container.append(div);
   return div;
 };

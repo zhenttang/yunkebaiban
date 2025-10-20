@@ -70,7 +70,7 @@ export const JournalTemplateOnboarding = () => {
     >
       <div className={styles.card} data-animation-played={animationPlayed}>
         <p className={styles.title}>
-          {t['com.affine.template-journal-onboarding.title']()}
+          {t['com.yunke.template-journal-onboarding.title']()}
         </p>
         <Menu
           contentOptions={{ className: styles.menu, align: 'end' }}
@@ -81,7 +81,7 @@ export const JournalTemplateOnboarding = () => {
           }
         >
           <Button variant="primary" prefix={<TemplateIcon />}>
-            {t['com.affine.template-journal-onboarding.select']()}
+            {t['com.yunke.template-journal-onboarding.select']()}
           </Button>
         </Menu>
         <JournalPaper />

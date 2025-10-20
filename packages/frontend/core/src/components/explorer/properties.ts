@@ -5,7 +5,7 @@ import { SystemPropertyTypes } from '../system-property-types';
 const systemProperties = Object.entries(SystemPropertyTypes);
 
 /**
- * In AFFiNE's property system, the property list can be fully customized by users.
+ * In YUNKE's property system, the property list can be fully customized by users.
  * For example, system properties like `createdAt` and `updatedAt`.
  * Users can completely remove them or create multiple instances. (This doesn't affect the underlying data, only the property display)
  *

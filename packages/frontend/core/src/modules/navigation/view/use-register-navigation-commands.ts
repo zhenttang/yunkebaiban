@@ -1,6 +1,6 @@
 import {
   PreconditionStrategy,
-  registerAffineCommand,
+  registerYunkeCommand,
 } from '@yunke/core/commands';
 import { track } from '@yunke/track';
 import { useService } from '@toeverything/infra';
@@ -14,9 +14,9 @@ export function useRegisterNavigationCommands() {
     const unsubs: Array<() => void> = [];
 
     unsubs.push(
-      registerAffineCommand({
-        id: 'affine:shortcut-history-go-back',
-        category: 'affine:general',
+      registerYunkeCommand({
+        id: 'yunke:shortcut-history-go-back',
+        category: 'yunke:general',
         preconditionStrategy: PreconditionStrategy.Never,
         icon: 'none',
         label: '后退',
@@ -31,9 +31,9 @@ export function useRegisterNavigationCommands() {
       })
     );
     unsubs.push(
-      registerAffineCommand({
-        id: 'affine:shortcut-history-go-forward',
-        category: 'affine:general',
+      registerYunkeCommand({
+        id: 'yunke:shortcut-history-go-forward',
+        category: 'yunke:general',
         preconditionStrategy: PreconditionStrategy.Never,
         icon: 'none',
         label: '前进',

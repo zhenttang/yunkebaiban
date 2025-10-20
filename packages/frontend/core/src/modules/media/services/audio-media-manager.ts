@@ -1,4 +1,4 @@
-import { generateUrl } from '@yunke/core/components/hooks/affine/use-share-url';
+import { generateUrl } from '@yunke/core/components/hooks/yunke/use-share-url';
 import { AttachmentBlockModel } from '@blocksuite/yunke/model';
 import {
   attachmentBlockAudioMediaKey,
@@ -125,7 +125,7 @@ export class AudioMediaManagerService extends Service {
           blobId: descriptor.blobId,
           metadata: new MediaMetadata({
             title: descriptor.name,
-            artist: 'AFFiNE',
+            artist: 'YUNKE',
             // 待办：添加艺术图片，如应用图标？
           }),
         })

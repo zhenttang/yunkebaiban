@@ -7,7 +7,7 @@ import { effects } from './effects';
 import { edgelessSelectedRectWidget } from './spec';
 
 export class EdgelessSelectedRectViewExtension extends ViewExtensionProvider {
-  override name = 'affine-edgeless-selected-rect-widget';
+  override name = 'yunke-edgeless-selected-rect-widget';
 
   override effect() {
     super.effect();

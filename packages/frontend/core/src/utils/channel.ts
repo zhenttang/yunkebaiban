@@ -1,29 +1,29 @@
 import { z } from 'zod';
 
 export const appSchemes = z.enum([
-  'affine',
-  'affine-canary',
-  'affine-beta',
-  'affine-internal',
-  'affine-dev',
+  'yunke',
+  'yunke-canary',
+  'yunke-beta',
+  'yunke-internal',
+  'yunke-dev',
 ]);
 
 export type Scheme = z.infer<typeof appSchemes>;
 export type Channel = 'stable' | 'canary' | 'beta' | 'internal';
 
 export const schemeToChannel = {
-  affine: 'stable',
-  'affine-canary': 'canary',
-  'affine-beta': 'beta',
-  'affine-internal': 'internal',
-  'affine-dev': 'canary', // dev 没有专门的应用，使用 canary 作为占位符
+  yunke: 'stable',
+  'yunke-canary': 'canary',
+  'yunke-beta': 'beta',
+  'yunke-internal': 'internal',
+  'yunke-dev': 'canary', // dev 没有专门的应用，使用 canary 作为占位符
 } as Record<Scheme, Channel>;
 
 export const channelToScheme = {
-  stable: 'affine',
-  canary: BUILD_CONFIG.debug ? 'affine-dev' : 'affine-canary',
-  beta: 'affine-beta',
-  internal: 'affine-internal',
+  stable: 'yunke',
+  canary: BUILD_CONFIG.debug ? 'yunke-dev' : 'yunke-canary',
+  beta: 'yunke-beta',
+  internal: 'yunke-internal',
 } as Record<Channel, Scheme>;
 
 export const appIconMap = {
@@ -34,10 +34,10 @@ export const appIconMap = {
 } satisfies Record<Channel, string>;
 
 export const appNames = {
-  stable: 'AFFiNE',
-  canary: 'AFFiNE Canary',
-  beta: 'AFFiNE Beta',
-  internal: 'AFFiNE Internal',
+  stable: 'YUNKE',
+  canary: 'YUNKE Canary',
+  beta: 'YUNKE Beta',
+  internal: 'YUNKE Internal',
 } satisfies Record<Channel, string>;
 
 export const appSchemaUrl = z.custom<string>(

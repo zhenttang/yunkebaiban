@@ -55,7 +55,7 @@ export type ActionEventType =
 /**
  * AI provider for the block suite
  *
- * To use it, downstream (affine) has to provide AI actions implementation,
+ * To use it, downstream (yunke) has to provide AI actions implementation,
  * user info etc
  *
  * TODO: breakdown into different parts?

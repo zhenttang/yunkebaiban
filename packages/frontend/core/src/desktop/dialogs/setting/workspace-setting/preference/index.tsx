@@ -26,7 +26,7 @@ import type { WorkspaceSettingDetailProps } from './types';
 // 模拟测试文档数据
 const mockTestDocument: CommunityDocument = {
   id: 'test-payment-' + Date.now(),
-  title: 'AFFiNE支付功能测试',
+  title: 'YUNKE支付功能测试',
   description: '测试支付宝沙箱环境集成功能',
   author: {
     id: 'system',
@@ -102,12 +102,12 @@ export const WorkspaceSettingDetail = ({
         title={t[`Workspace Settings with name`]({
           name: workspaceInfo?.name ?? UNTITLED_WORKSPACE_NAME,
         })}
-        subtitle={t['com.affine.settings.workspace.description']()}
+        subtitle={t['com.yunke.settings.workspace.description']()}
       />
       <SettingWrapper title={t['Info']()}>
         <SettingRow
           name={t['Workspace Profile']()}
-          desc={t['com.affine.settings.workspace.not-owner']()}
+          desc={t['com.yunke.settings.workspace.not-owner']()}
           spreadCol={false}
         >
           <ProfilePanel />
@@ -123,11 +123,11 @@ export const WorkspaceSettingDetail = ({
       <SettingWrapper title="支付功能测试" description="测试支付宝沙箱环境集成">
         <div style={{ display: 'flex', gap: '16px', margin: '16px 0' }}>
           <div style={{
-            backgroundColor: 'var(--affine-background-primary-color)',
+            backgroundColor: 'var(--yunke-background-primary-color)',
             minHeight: '280px',
             minWidth: '258px',
             borderRadius: '16px',
-            border: '1px solid var(--affine-border-color)',
+            border: '1px solid var(--yunke-border-color)',
             position: 'relative',
             userSelect: 'none',
             transition: 'all 0.23s ease',
@@ -137,11 +137,11 @@ export const WorkspaceSettingDetail = ({
               flexDirection: 'column',
               alignItems: 'flex-start',
               padding: '12px 16px',
-              background: 'var(--affine-background-overlay-panel-color)',
+              background: 'var(--yunke-background-overlay-panel-color)',
               borderRadius: 'inherit',
               borderBottomLeftRadius: 0,
               borderBottomRightRadius: 0,
-              borderBottom: '1px solid var(--affine-border-color)',
+              borderBottom: '1px solid var(--yunke-border-color)',
               fontWeight: 600,
               overflow: 'hidden',
               position: 'relative'
@@ -149,31 +149,31 @@ export const WorkspaceSettingDetail = ({
               <div style={{ paddingBottom: 12 }}>
                 <section style={{
                   fontWeight: 600,
-                  fontSize: 'var(--affine-font-xs)',
+                  fontSize: 'var(--yunke-font-xs)',
                   lineHeight: '20px'
                 }}>支付功能测试</section>
                 <section style={{
                   fontWeight: 400,
-                  fontSize: 'var(--affine-font-xs)',
+                  fontSize: 'var(--yunke-font-xs)',
                   lineHeight: '20px',
-                  color: 'var(--affine-text-secondary-color)',
+                  color: 'var(--yunke-text-secondary-color)',
                   marginBottom: 8
                 }}>沙箱环境集成测试</section>
                 <section style={{
                   fontWeight: 600,
-                  fontSize: 'var(--affine-font-base)',
+                  fontSize: 'var(--yunke-font-base)',
                   lineHeight: '20px',
                   height: 20,
                   display: 'flex',
                   alignItems: 'flex-end'
                 }}>
                   <span style={{
-                    fontSize: 'var(--affine-font-h5)',
+                    fontSize: 'var(--yunke-font-h5)',
                     marginRight: '8px'
                   }}>¥1.00</span>
                   <span style={{
-                    color: 'var(--affine-text-secondary-color)',
-                    fontSize: 'var(--affine-font-sm)'
+                    color: 'var(--yunke-text-secondary-color)',
+                    fontSize: 'var(--yunke-font-sm)'
                   }}>测试金额</span>
                 </section>
               </div>
@@ -186,7 +186,7 @@ export const WorkspaceSettingDetail = ({
               </Button>
             </div>
             <div style={{
-              fontSize: 'var(--affine-font-xs)',
+              fontSize: 'var(--yunke-font-xs)',
               display: 'flex',
               flexDirection: 'column',
               gap: '8px',
@@ -199,9 +199,9 @@ export const WorkspaceSettingDetail = ({
               }}>
                 <section style={{
                   fontWeight: 500,
-                  fontSize: 'var(--affine-font-xs)',
+                  fontSize: 'var(--yunke-font-xs)',
                   lineHeight: '20px',
-                  color: 'var(--affine-text-secondary-color)'
+                  color: 'var(--yunke-text-secondary-color)'
                 }}>测试功能:</section>
                 <li style={{
                   display: 'flex',
@@ -214,14 +214,14 @@ export const WorkspaceSettingDetail = ({
                     alignItems: 'center',
                     height: '20px'
                   }}>
-                    <span style={{ color: 'var(--affine-brand-color)' }}>✓</span>
+                    <span style={{ color: 'var(--yunke-brand-color)' }}>✓</span>
                   </div>
                   <div style={{
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
-                    color: 'var(--affine-text-primary-color)',
-                    fontSize: 'var(--affine-font-xs)'
+                    color: 'var(--yunke-text-primary-color)',
+                    fontSize: 'var(--yunke-font-xs)'
                   }}>订单创建与管理</div>
                 </li>
                 <li style={{
@@ -235,14 +235,14 @@ export const WorkspaceSettingDetail = ({
                     alignItems: 'center',
                     height: '20px'
                   }}>
-                    <span style={{ color: 'var(--affine-brand-color)' }}>✓</span>
+                    <span style={{ color: 'var(--yunke-brand-color)' }}>✓</span>
                   </div>
                   <div style={{
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
-                    color: 'var(--affine-text-primary-color)',
-                    fontSize: 'var(--affine-font-xs)'
+                    color: 'var(--yunke-text-primary-color)',
+                    fontSize: 'var(--yunke-font-xs)'
                   }}>二维码生成</div>
                 </li>
                 <li style={{
@@ -256,14 +256,14 @@ export const WorkspaceSettingDetail = ({
                     alignItems: 'center',
                     height: '20px'
                   }}>
-                    <span style={{ color: 'var(--affine-brand-color)' }}>✓</span>
+                    <span style={{ color: 'var(--yunke-brand-color)' }}>✓</span>
                   </div>
                   <div style={{
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
-                    color: 'var(--affine-text-primary-color)',
-                    fontSize: 'var(--affine-font-xs)'
+                    color: 'var(--yunke-text-primary-color)',
+                    fontSize: 'var(--yunke-font-xs)'
                   }}>支付状态查询</div>
                 </li>
                 <li style={{
@@ -277,14 +277,14 @@ export const WorkspaceSettingDetail = ({
                     alignItems: 'center',
                     height: '20px'
                   }}>
-                    <span style={{ color: 'var(--affine-brand-color)' }}>✓</span>
+                    <span style={{ color: 'var(--yunke-brand-color)' }}>✓</span>
                   </div>
                   <div style={{
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
-                    color: 'var(--affine-text-primary-color)',
-                    fontSize: 'var(--affine-font-xs)'
+                    color: 'var(--yunke-text-primary-color)',
+                    fontSize: 'var(--yunke-font-xs)'
                   }}>沙箱环境模拟</div>
                 </li>
               </ul>
@@ -304,11 +304,11 @@ export const WorkspaceSettingDetail = ({
         <DeleteLeaveWorkspace onCloseSetting={onCloseSetting} />
         <SettingRow
           name={
-            <span style={{ color: 'var(--affine-text-secondary-color)' }}>
-              {t['com.affine.resetSyncStatus.button']()}
+            <span style={{ color: 'var(--yunke-text-secondary-color)' }}>
+              {t['com.yunke.resetSyncStatus.button']()}
             </span>
           }
-          desc={t['com.affine.resetSyncStatus.description']()}
+          desc={t['com.yunke.resetSyncStatus.description']()}
           style={{ cursor: 'pointer' }}
           onClick={handleResetSyncStatus}
           data-testid="reset-sync-status"

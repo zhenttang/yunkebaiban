@@ -13,10 +13,10 @@ export const filterableListStyles = css`
     max-height: 100%;
     pointer-events: auto;
     overflow: hidden;
-    z-index: var(--affine-z-index-popover);
+    z-index: var(--yunke-z-index-popover);
   }
 
-  .affine-filterable-list {
+  .yunke-filterable-list {
     display: flex;
     flex-direction: column;
     align-items: stretch;
@@ -27,7 +27,7 @@ export const filterableListStyles = css`
     overflow: hidden;
   }
 
-  .affine-filterable-list.flipped {
+  .yunke-filterable-list.flipped {
     flex-direction: column-reverse;
   }
 
@@ -58,8 +58,8 @@ export const filterableListStyles = css`
   }
 
   .input-wrapper:focus-within {
-    border-color: var(--affine-blue-700);
-    box-shadow: var(--affine-active-shadow);
+    border-color: var(--yunke-blue-700);
+    box-shadow: var(--yunke-active-shadow);
   }
 
   ${scrollbarStyle('.items-container')}
@@ -82,8 +82,8 @@ export const filterableListStyles = css`
   }
 
   .filterable-item.focussed {
-    color: var(--affine-blue-700);
-    background: var(--affine-hover-color-filled);
+    color: var(--yunke-blue-700);
+    background: var(--yunke-hover-color-filled);
   }
 
   #filter-input {
@@ -103,7 +103,7 @@ export const filterableListStyles = css`
   }
 
   #filter-input::placeholder {
-    color: var(--affine-placeholder-color);
-    font-size: var(--affine-font-sm);
+    color: var(--yunke-placeholder-color);
+    font-size: var(--yunke-font-sm);
   }
 `;

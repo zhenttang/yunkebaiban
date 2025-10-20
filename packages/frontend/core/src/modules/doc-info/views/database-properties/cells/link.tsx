@@ -1,5 +1,5 @@
 import { PropertyValue } from '@yunke/component';
-import { AffinePageReference } from '@yunke/core/components/affine/reference-link';
+import { YunkePageReference } from '@yunke/core/components/yunke/reference-link';
 import { ConfigModal } from '@yunke/core/components/mobile';
 import { resolveLinkToDoc } from '@yunke/core/modules/navigation';
 import { useI18n } from '@yunke/i18n';
@@ -116,7 +116,7 @@ export const LinkCell = ({
         onChange={handleOnChange}
         data-empty={!tempValue}
         placeholder={t[
-          'com.affine.page-properties.property-value-placeholder'
+          'com.yunke.page-properties.property-value-placeholder'
         ]()}
       />
       <div
@@ -143,7 +143,7 @@ export const LinkCell = ({
       >
         {!editing ? (
           resolvedDocLink ? (
-            <AffinePageReference
+            <YunkePageReference
               pageId={resolvedDocLink.docId}
               params={resolvedDocLink.params}
             />

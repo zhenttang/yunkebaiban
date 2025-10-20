@@ -47,7 +47,7 @@ export const WeekDatePicker = memo(function WeekDatePicker({
   const [viewPortSize, setViewPortSize] = useState(7);
 
   const weekDays = useMemo(
-    () => t['com.affine.calendar-date-picker.week-days']().split(','),
+    () => t['com.yunke.calendar-date-picker.week-days']().split(','),
     [t]
   );
 

@@ -310,7 +310,7 @@ export class SmartHeadingLevelDetector {
    * 工具方法：检查是否是标题块
    */
   private isHeadingBlock(block: BlockModel): boolean {
-    return block.flavour === 'affine:paragraph' && 
+    return block.flavour === 'yunke:paragraph' && 
            (block as any).type?.startsWith('h');
   }
 

@@ -17,8 +17,8 @@ export class EmbedIframeLoadingCard extends LitElement {
       height: 100%;
     }
 
-    .affine-embed-iframe-loading-card {
-      container: affine-embed-iframe-loading-card / size;
+    .yunke-embed-iframe-loading-card {
+      container: yunke-embed-iframe-loading-card / size;
       display: flex;
       box-sizing: border-box;
       border-radius: 8px;
@@ -51,7 +51,7 @@ export class EmbedIframeLoadingCard extends LitElement {
           text-overflow: ellipsis;
           /* Client/smMedium */
           font-family: Inter;
-          font-size: var(--affine-font-sm);
+          font-size: var(--yunke-font-sm);
           font-style: normal;
           font-weight: 500;
           line-height: 22px; /* 157.143% */
@@ -82,14 +82,14 @@ export class EmbedIframeLoadingCard extends LitElement {
         }
       }
 
-      @container affine-embed-iframe-loading-card (width < 360px) {
+      @container yunke-embed-iframe-loading-card (width < 360px) {
         .loading-banner {
           display: none;
         }
       }
     }
 
-    .affine-embed-iframe-loading-card.horizontal {
+    .yunke-embed-iframe-loading-card.horizontal {
       flex-direction: row;
       align-items: flex-start;
 
@@ -118,7 +118,7 @@ export class EmbedIframeLoadingCard extends LitElement {
       }
     }
 
-    .affine-embed-iframe-loading-card.vertical {
+    .yunke-embed-iframe-loading-card.vertical {
       flex-direction: column-reverse;
       align-items: center;
       justify-content: center;
@@ -146,7 +146,7 @@ export class EmbedIframeLoadingCard extends LitElement {
         }
       }
 
-      @container affine-embed-iframe-loading-card (height < 240px) {
+      @container yunke-embed-iframe-loading-card (height < 240px) {
         .loading-banner {
           display: none;
         }
@@ -157,7 +157,7 @@ export class EmbedIframeLoadingCard extends LitElement {
   override render() {
     const { layout, width, height } = this.options;
     const cardClasses = classMap({
-      'affine-embed-iframe-loading-card': true,
+      'yunke-embed-iframe-loading-card': true,
       horizontal: layout === 'horizontal',
       vertical: layout === 'vertical',
     });

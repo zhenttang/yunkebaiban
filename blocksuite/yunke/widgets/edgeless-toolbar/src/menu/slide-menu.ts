@@ -22,9 +22,9 @@ export class EdgelessSlideMenu extends WithDisposable(LitElement) {
       position: relative;
     }
     .menu-container {
-      background: var(--affine-background-overlay-panel-color);
+      background: var(--yunke-background-overlay-panel-color);
       border-radius: 8px 8px 0 0;
-      border: 1px solid var(--affine-border-color);
+      border: 1px solid var(--yunke-border-color);
       border-bottom: none;
       display: flex;
       align-items: center;
@@ -59,10 +59,10 @@ export class EdgelessSlideMenu extends WithDisposable(LitElement) {
       width: 32px;
       height: 32px;
       border-radius: 50%;
-      border: 1px solid var(--affine-border-color);
-      background: var(--affine-background-overlay-panel-color);
-      box-shadow: var(--affine-shadow-2);
-      color: var(--affine-icon-color);
+      border: 1px solid var(--yunke-border-color);
+      background: var(--yunke-background-overlay-panel-color);
+      box-shadow: var(--yunke-shadow-2);
+      color: var(--yunke-icon-color);
       transition:
         transform 0.3s ease-in-out,
         opacity 0.5s ease-in-out;

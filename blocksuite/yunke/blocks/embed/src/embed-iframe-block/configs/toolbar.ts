@@ -198,12 +198,12 @@ export const builtinToolbarConfig = {
 
         return html`${keyed(
           model,
-          html`<affine-view-dropdown-menu
+          html`<yunke-view-dropdown-menu
             .actions=${actions}
             .context=${ctx}
             .toggle=${toggle}
             .viewType$=${signal(actions[2].label)}
-          ></affine-view-dropdown-menu>`
+          ></yunke-view-dropdown-menu>`
         )}`;
       },
     } satisfies ToolbarActionGroup<ToolbarAction>,
@@ -404,12 +404,12 @@ export const builtinSurfaceToolbarConfig = {
 
         return html`${keyed(
           model,
-          html`<affine-view-dropdown-menu
+          html`<yunke-view-dropdown-menu
             @toggle=${onToggle}
             .actions=${actions}
             .context=${ctx}
             .viewType$=${signal(actions[1].label)}
-          ></affine-view-dropdown-menu>`
+          ></yunke-view-dropdown-menu>`
         )}`;
       },
     } satisfies ToolbarActionGroup<ToolbarAction>,
@@ -461,12 +461,12 @@ export const builtinSurfaceToolbarConfig = {
 
         return html`${keyed(
           model,
-          html`<affine-size-dropdown-menu
+          html`<yunke-size-dropdown-menu
             @select=${onSelect}
             @toggle=${onToggle}
             .format=${format}
             .size$=${scale$}
-          ></affine-size-dropdown-menu>`
+          ></yunke-size-dropdown-menu>`
         )}`;
       },
     },

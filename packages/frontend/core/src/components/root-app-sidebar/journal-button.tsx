@@ -25,7 +25,7 @@ export const AppSidebarJournalButton = () => {
       to={'/journals'}
       icon={<Icon />}
     >
-      {t['com.affine.journal.app-sidebar-title']()}
+      {t['com.yunke.journal.app-sidebar-title']()}
     </MenuLinkItem>
   );
 };

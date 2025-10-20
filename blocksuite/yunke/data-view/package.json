@@ -1,6 +1,6 @@
 {
   "name": "@blocksuite/data-view",
-  "description": "Views of database in affine",
+  "description": "Views of database in yunke",
   "type": "module",
   "scripts": {
     "build": "tsc"

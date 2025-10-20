@@ -31,7 +31,7 @@ extension IntelligentsFocusApertureView {
         headerGroup.trailingAnchor.constraint(equalTo: trailingAnchor),
       ].forEach { $0.isActive = true }
 
-      headerLabel.text = NSLocalizedString("AFFiNE AI", comment: "") // TODO: FREE TRAIL???
+      headerLabel.text = NSLocalizedString("YUNKE AI", comment: "") // TODO: FREE TRAIL???
       // title 3 with bold
       headerLabel.font = .preferredFont(for: .title3, weight: .bold)
       headerLabel.textColor = .white

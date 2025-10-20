@@ -26,7 +26,7 @@ import { ReadOnlyClipboard } from './readonly-clipboard';
  * It is supported to copy and paste models in the page root block.
  */
 export class PageClipboard extends ReadOnlyClipboard {
-  static override key = 'affine-page-clipboard';
+  static override key = 'yunke-page-clipboard';
 
   protected _init = () => {
     this._initAdapters();

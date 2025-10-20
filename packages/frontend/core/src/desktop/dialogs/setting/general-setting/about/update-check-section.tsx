@@ -1,7 +1,7 @@
 import { Loading } from '@yunke/component';
 import { SettingRow } from '@yunke/component/setting-components';
 import { Button } from '@yunke/component/ui/button';
-import { useAsyncCallback } from '@yunke/core/components/hooks/affine-async-hooks';
+import { useAsyncCallback } from '@yunke/core/components/hooks/yunke-async-hooks';
 import { useAppUpdater } from '@yunke/core/components/hooks/use-app-updater';
 import { useI18n } from '@yunke/i18n';
 import clsx from 'clsx';
@@ -23,37 +23,37 @@ const useUpdateStatusLabels = (checkUpdateStatus: CheckUpdateStatus) => {
 
   const buttonLabel = useMemo(() => {
     if (updateReady) {
-      return t['com.affine.aboutAFFiNE.checkUpdate.button.restart']();
+      return t['com.yunke.aboutYUNKE.checkUpdate.button.restart']();
     }
     if (updateAvailable && downloadProgress === null) {
-      return t['com.affine.aboutAFFiNE.checkUpdate.button.download']();
+      return t['com.yunke.aboutYUNKE.checkUpdate.button.download']();
     }
     if (
       checkUpdateStatus === CheckUpdateStatus.LATEST ||
       checkUpdateStatus === CheckUpdateStatus.ERROR
     ) {
-      return t['com.affine.aboutAFFiNE.checkUpdate.button.retry']();
+      return t['com.yunke.aboutYUNKE.checkUpdate.button.retry']();
     }
-    return t['com.affine.aboutAFFiNE.checkUpdate.button.check']();
+    return t['com.yunke.aboutYUNKE.checkUpdate.button.check']();
   }, [checkUpdateStatus, downloadProgress, t, updateAvailable, updateReady]);
 
   const subtitleLabel = useMemo(() => {
     if (updateReady) {
-      return t['com.affine.aboutAFFiNE.checkUpdate.subtitle.restart']();
+      return t['com.yunke.aboutYUNKE.checkUpdate.subtitle.restart']();
     } else if (updateAvailable && downloadProgress === null) {
-      return t['com.affine.aboutAFFiNE.checkUpdate.subtitle.update-available']({
+      return t['com.yunke.aboutYUNKE.checkUpdate.subtitle.update-available']({
         version: updateAvailable.version,
       });
     } else if (checkingForUpdates) {
-      return t['com.affine.aboutAFFiNE.checkUpdate.subtitle.checking']();
+      return t['com.yunke.aboutYUNKE.checkUpdate.subtitle.checking']();
     } else if (updateAvailable && downloadProgress !== null) {
-      return t['com.affine.aboutAFFiNE.checkUpdate.subtitle.downloading']();
+      return t['com.yunke.aboutYUNKE.checkUpdate.subtitle.downloading']();
     } else if (checkUpdateStatus === CheckUpdateStatus.ERROR) {
-      return t['com.affine.aboutAFFiNE.checkUpdate.subtitle.error']();
+      return t['com.yunke.aboutYUNKE.checkUpdate.subtitle.error']();
     } else if (checkUpdateStatus === CheckUpdateStatus.LATEST) {
-      return t['com.affine.aboutAFFiNE.checkUpdate.subtitle.latest']();
+      return t['com.yunke.aboutYUNKE.checkUpdate.subtitle.latest']();
     }
-    return t['com.affine.aboutAFFiNE.checkUpdate.subtitle.check']();
+    return t['com.yunke.aboutYUNKE.checkUpdate.subtitle.check']();
   }, [
     checkUpdateStatus,
     downloadProgress,
@@ -145,7 +145,7 @@ export const UpdateCheckSection = () => {
 
   return (
     <SettingRow
-      name={t['com.affine.aboutAFFiNE.checkUpdate.title']()}
+      name={t['com.yunke.aboutYUNKE.checkUpdate.title']()}
       desc={subtitle}
     >
       <Button

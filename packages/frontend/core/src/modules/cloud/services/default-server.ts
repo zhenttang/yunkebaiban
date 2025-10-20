@@ -11,8 +11,8 @@ export class DefaultServerService extends Service {
   constructor(private readonly serversService: ServersService) {
     super();
 
-    // global server is always affine-cloud
-    const server = this.serversService.server$('affine-cloud').value;
+    // global server is always yunke-cloud
+    const server = this.serversService.server$('yunke-cloud').value;
     if (!server) {
       throw new Error('未找到服务器');
     }

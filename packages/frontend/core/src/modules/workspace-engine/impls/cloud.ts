@@ -75,13 +75,13 @@ import { WorkspaceImpl } from '../../workspace/impls/workspace';
 import { getWorkspaceProfileWorker } from './out-worker';
 
 const getCloudWorkspaceCacheKey = (serverId: string) => {
-  if (serverId === 'affine-cloud') {
+  if (serverId === 'yunke-cloud') {
     return 'cloud-workspace:'; // FOR BACKWARD COMPATIBILITY
   }
   return `selfhosted-workspace-${serverId}:`;
 };
 
-const logger = new DebugLogger('affine:cloud-workspace-flavour-provider');
+const logger = new DebugLogger('yunke:cloud-workspace-flavour-provider');
 
 class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
   private readonly authService: AuthService;
@@ -165,7 +165,7 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
       } as Record<string, string>;
       
       // 尝试从localStorage获取JWT token
-      const token = localStorage.getItem('affine-admin-token');
+      const token = localStorage.getItem('yunke-admin-token');
       if (token) {
         headers['Authorization'] = `Bearer ${token}`;
       }
@@ -361,7 +361,7 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
         };
         
         // 尝试从localStorage获取JWT token
-        const token = localStorage.getItem('affine-admin-token');
+        const token = localStorage.getItem('yunke-admin-token');
         if (token) {
           headers['Authorization'] = `Bearer ${token}`;
           console.log('添加JWT token到请求头');
@@ -1029,7 +1029,7 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
 
   private getDefaultWorkspaceProfile(): WorkspaceProfileInfo {
     return {
-      name: 'AFFiNE Workspace',
+      name: 'YUNKE Workspace',
       avatar: undefined,
       isOwner: false,
       isAdmin: false,
@@ -1094,7 +1094,7 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
   }
 
   onWorkspaceInitialized(workspace: Workspace): void {
-    // bind the workspace to the affine cloud server
+    // bind the workspace to the yunke cloud server
     workspace.scope.get(WorkspaceServerService).bindServer(this.server);
   }
 

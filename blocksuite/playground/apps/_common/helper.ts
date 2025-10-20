@@ -12,10 +12,10 @@ export function createEmptyDoc() {
     doc,
     init() {
       doc.load();
-      const rootId = store.addBlock('affine:page', {});
-      store.addBlock('affine:surface', {}, rootId);
-      const noteId = store.addBlock('affine:note', {}, rootId);
-      store.addBlock('affine:paragraph', {}, noteId);
+      const rootId = store.addBlock('yunke:page', {});
+      store.addBlock('yunke:surface', {}, rootId);
+      const noteId = store.addBlock('yunke:note', {}, rootId);
+      store.addBlock('yunke:paragraph', {}, noteId);
       return store;
     },
   };

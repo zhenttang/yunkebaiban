@@ -1,5 +1,5 @@
-import { affineTextStyles } from '@blocksuite/yunke-shared/styles';
-import type { AffineTextAttributes } from '@blocksuite/yunke-shared/types';
+import { yunkeTextStyles } from '@blocksuite/yunke-shared/styles';
+import type { YunkeTextAttributes } from '@blocksuite/yunke-shared/types';
 import { ShadowlessElement } from '@blocksuite/std';
 import { ZERO_WIDTH_FOR_EMPTY_LINE } from '@blocksuite/std/inline';
 import type { DeltaInsert } from '@blocksuite/store';
@@ -7,10 +7,10 @@ import { html } from 'lit';
 import { property } from 'lit/decorators.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
-export class AffineText extends ShadowlessElement {
+export class YunkeText extends ShadowlessElement {
   override render() {
     const style = this.delta.attributes
-      ? affineTextStyles(this.delta.attributes)
+      ? yunkeTextStyles(this.delta.attributes)
       : {};
 
     // we need to avoid \n appearing before and after the span element, which will
@@ -29,7 +29,7 @@ export class AffineText extends ShadowlessElement {
   }
 
   @property({ type: Object })
-  accessor delta: DeltaInsert<AffineTextAttributes> = {
+  accessor delta: DeltaInsert<YunkeTextAttributes> = {
     insert: ZERO_WIDTH_FOR_EMPTY_LINE,
   };
 }

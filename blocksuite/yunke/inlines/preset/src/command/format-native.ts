@@ -1,4 +1,4 @@
-import type { AffineTextAttributes } from '@blocksuite/yunke-shared/types';
+import type { YunkeTextAttributes } from '@blocksuite/yunke-shared/types';
 import {
   BLOCK_ID_ATTR,
   type BlockComponent,
@@ -14,7 +14,7 @@ import { FORMAT_NATIVE_SUPPORT_FLAVOURS } from './consts.js';
 // for native range
 export const formatNativeCommand: Command<{
   range?: Range;
-  styles: AffineTextAttributes;
+  styles: YunkeTextAttributes;
   mode?: 'replace' | 'merge';
 }> = (ctx, next) => {
   const { styles, mode = 'merge' } = ctx;

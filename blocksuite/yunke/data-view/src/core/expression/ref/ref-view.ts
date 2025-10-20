@@ -25,14 +25,14 @@ export class VariableRefView extends WithDisposable(ShadowlessElement) {
     }
 
     variable-ref-view:hover {
-      background-color: var(--affine-hover-color);
+      background-color: var(--yunke-hover-color);
     }
 
     variable-ref-view svg {
       width: 16px;
       height: 16px;
-      fill: var(--affine-icon-color);
-      color: var(--affine-icon-color);
+      fill: var(--yunke-icon-color);
+      color: var(--yunke-icon-color);
     }
   `;
 

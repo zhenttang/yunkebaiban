@@ -4,8 +4,8 @@ import {
   getTextSelectionCommand,
 } from '@blocksuite/yunke-shared/commands';
 import type {
-  AffineInlineEditor,
-  AffineTextAttributes,
+  YunkeInlineEditor,
+  YunkeTextAttributes,
 } from '@blocksuite/yunke-shared/types';
 import {
   BLOCK_ID_ATTR,
@@ -27,9 +27,9 @@ import {
 } from './consts.js';
 
 function getCombinedFormatFromInlineEditors(
-  inlineEditors: [AffineInlineEditor, InlineRange | null][]
-): AffineTextAttributes {
-  const formatArr: AffineTextAttributes[] = [];
+  inlineEditors: [YunkeInlineEditor, InlineRange | null][]
+): YunkeTextAttributes {
+  const formatArr: YunkeTextAttributes[] = [];
   inlineEditors.forEach(([inlineEditor, inlineRange]) => {
     if (!inlineRange) return;
 
@@ -41,9 +41,9 @@ function getCombinedFormatFromInlineEditors(
 
   // format will be active only when all inline editors have the same format.
   return formatArr.reduce((acc, cur) => {
-    const newFormat: AffineTextAttributes = {};
+    const newFormat: YunkeTextAttributes = {};
     for (const key in acc) {
-      const typedKey = key as keyof AffineTextAttributes;
+      const typedKey = key as keyof YunkeTextAttributes;
       if (acc[typedKey] === cur[typedKey]) {
         // This cast is secure because we have checked that the value of the key is the same.
 
@@ -57,12 +57,12 @@ function getCombinedFormatFromInlineEditors(
 function getSelectedInlineEditors(
   blocks: BlockComponent[],
   filter: (
-    inlineRoot: InlineRootElement<AffineTextAttributes>
-  ) => InlineEditor<AffineTextAttributes> | []
+    inlineRoot: InlineRootElement<YunkeTextAttributes>
+  ) => InlineEditor<YunkeTextAttributes> | []
 ) {
   return blocks.flatMap(el => {
     const inlineRoot = el.querySelector<
-      InlineRootElement<AffineTextAttributes>
+      InlineRootElement<YunkeTextAttributes>
     >(`[${INLINE_ROOT_ATTR}]`);
 
     if (inlineRoot) {
@@ -76,9 +76,9 @@ function handleCurrentSelection(
   chain: Chain<InitCommandCtx>,
   handler: (
     type: 'text' | 'block' | 'native',
-    inlineEditors: InlineEditor<AffineTextAttributes>[]
-  ) => { textStyle: AffineTextAttributes } | boolean | void
-): Chain<InitCommandCtx & { textStyle: AffineTextAttributes }> {
+    inlineEditors: InlineEditor<YunkeTextAttributes>[]
+  ) => { textStyle: YunkeTextAttributes } | boolean | void
+): Chain<InitCommandCtx & { textStyle: YunkeTextAttributes }> {
   return chain.try(chain => [
     // text selection, corresponding to `formatText` command
     chain
@@ -162,7 +162,7 @@ function handleCurrentSelection(
           }
           return false;
         })
-        .map((el): AffineInlineEditor => el.inlineEditor);
+        .map((el): YunkeInlineEditor => el.inlineEditor);
 
       const result = handler('native', selectedInlineEditors);
       if (!result) return false;

@@ -175,10 +175,10 @@ export const paragraphBlockHtmlAdapterMatcher: BlockHtmlAdapterMatcher = {
           ) {
             if (
               o.node.properties.className.includes(
-                'affine-paragraph-block-container'
+                'yunke-paragraph-block-container'
               ) ||
               o.node.properties.className.includes(
-                'affine-block-children-container'
+                'yunke-block-children-container'
               ) ||
               o.node.properties.className.includes('indented')
             ) {
@@ -197,7 +197,7 @@ export const paragraphBlockHtmlAdapterMatcher: BlockHtmlAdapterMatcher = {
             o.next.tagName === 'div' &&
             Array.isArray(o.next.properties?.className) &&
             (o.next.properties.className.includes(
-              'affine-block-children-container'
+              'yunke-block-children-container'
             ) ||
               o.next.properties.className.includes('indented'))
           ) {
@@ -224,7 +224,7 @@ export const paragraphBlockHtmlAdapterMatcher: BlockHtmlAdapterMatcher = {
                 type: 'element',
                 tagName: 'div',
                 properties: {
-                  className: ['affine-paragraph-block-container'],
+                  className: ['yunke-paragraph-block-container'],
                 },
                 children: [],
               },
@@ -245,7 +245,7 @@ export const paragraphBlockHtmlAdapterMatcher: BlockHtmlAdapterMatcher = {
                 type: 'element',
                 tagName: 'div',
                 properties: {
-                  className: ['affine-block-children-container'],
+                  className: ['yunke-block-children-container'],
                   style: 'padding-left: 26px;',
                 },
                 children: [],
@@ -266,7 +266,7 @@ export const paragraphBlockHtmlAdapterMatcher: BlockHtmlAdapterMatcher = {
                 type: 'element',
                 tagName: 'div',
                 properties: {
-                  className: ['affine-paragraph-block-container'],
+                  className: ['yunke-paragraph-block-container'],
                 },
                 children: [],
               },
@@ -287,7 +287,7 @@ export const paragraphBlockHtmlAdapterMatcher: BlockHtmlAdapterMatcher = {
                 type: 'element',
                 tagName: 'div',
                 properties: {
-                  className: ['affine-block-children-container'],
+                  className: ['yunke-block-children-container'],
                   style: 'padding-left: 26px;',
                 },
                 children: [],
@@ -303,7 +303,7 @@ export const paragraphBlockHtmlAdapterMatcher: BlockHtmlAdapterMatcher = {
                 type: 'element',
                 tagName: 'div',
                 properties: {
-                  className: ['affine-paragraph-block-container'],
+                  className: ['yunke-paragraph-block-container'],
                 },
                 children: [],
               },
@@ -336,7 +336,7 @@ export const paragraphBlockHtmlAdapterMatcher: BlockHtmlAdapterMatcher = {
                 type: 'element',
                 tagName: 'div',
                 properties: {
-                  className: ['affine-block-children-container'],
+                  className: ['yunke-block-children-container'],
                   style: 'padding-left: 26px;',
                 },
                 children: [],

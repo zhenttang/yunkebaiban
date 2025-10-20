@@ -1,5 +1,5 @@
 import { Scrollable, ThemedImg } from '@yunke/component';
-import { useAsyncCallback } from '@yunke/core/components/hooks/affine-async-hooks';
+import { useAsyncCallback } from '@yunke/core/components/hooks/yunke-async-hooks';
 import { Trans, useI18n } from '@yunke/i18n';
 import { ArrowDownSmallIcon } from '@blocksuite/icons/rc';
 import type { FC, PropsWithChildren, ReactNode } from 'react';
@@ -112,7 +112,7 @@ export const ErrorDetail: FC<ErrorDetailProps> = props => {
               className={styles.actionButton}
             >
               <div className={styles.actionContent}>
-                <span>{t['com.affine.error.hide-error']()}</span>
+                <span>{t['com.yunke.error.hide-error']()}</span>
                 <ArrowDownSmallIcon
                   data-show-stack={showStack}
                   className={styles.arrowIcon}
@@ -126,7 +126,7 @@ export const ErrorDetail: FC<ErrorDetailProps> = props => {
             loading={isBtnLoading}
             variant="primary"
           >
-            {props.buttonText ?? t['com.affine.error.reload']()}
+            {props.buttonText ?? t['com.yunke.error.reload']()}
           </ActionButton>
         </div>
       </div>
@@ -137,12 +137,12 @@ export const ErrorDetail: FC<ErrorDetailProps> = props => {
 export function ContactUS() {
   return (
     <Trans
-      i18nKey="com.affine.error.contact-us"
+      i18nKey="com.yunke.error.contact-us"
       components={{
         1: (
           <a
-            style={{ color: 'var(--affine-primary-color)' }}
-            href="https://community.affine.pro"
+            style={{ color: 'var(--yunke-primary-color)' }}
+            href="https://community.yunke.pro"
             target="__blank"
           />
         ),

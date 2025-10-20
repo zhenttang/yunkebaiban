@@ -65,7 +65,7 @@ export const ConfigModal = ({
                 variant="plain"
                 onClick={onDone}
               >
-                {t['com.affine.done']()}
+                {t['com.yunke.done']()}
               </Button>
             ) : undefined
           }
@@ -89,7 +89,7 @@ export const ConfigModal = ({
               className={styles.bottomDoneButton}
               onClick={onDone}
             >
-              {t['com.affine.done']()}
+              {t['com.yunke.done']()}
             </Button>
           </div>
         ) : null}

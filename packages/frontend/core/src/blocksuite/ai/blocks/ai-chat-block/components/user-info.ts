@@ -6,7 +6,7 @@ import type {
   MessageRole,
   MessageUserInfo,
 } from '../../../components/ai-chat-messages';
-import { AffineAIIcon } from './icon';
+import { YunkeAIIcon } from './icon';
 
 export class UserInfo extends LitElement {
   static override styles = css`
@@ -21,7 +21,7 @@ export class UserInfo extends LitElement {
       .user-avatar-container {
         width: 24px;
         height: 24px;
-        color: var(--affine-brand-color);
+        color: var(--yunke-brand-color);
         display: flex;
         justify-content: center;
         align-items: center;
@@ -40,14 +40,14 @@ export class UserInfo extends LitElement {
 
       .default-avatar,
       .avatar-image {
-        background-color: var(--affine-primary-color);
+        background-color: var(--yunke-primary-color);
       }
 
       .user-name {
-        color: var(--affine-text-primary-color);
+        color: var(--yunke-text-primary-color);
         text-align: justify;
         font-family: ${unsafeCSS(baseTheme.fontSansFamily)};
-        font-size: var(--affine-font-sm);
+        font-size: var(--yunke-font-sm);
         font-style: normal;
         font-weight: 500;
         line-height: 22px;
@@ -109,8 +109,8 @@ export function UserInfoTemplate(
         .avatarUrl=${userInfo.avatarUrl}
       ></user-info>`
     : html`<user-info
-        .userName=${'AFFiNE AI'}
-        .avatarIcon=${AffineAIIcon}
+        .userName=${'YUNKE AI'}
+        .avatarIcon=${YunkeAIIcon}
       ></user-info>`;
 
   return userInfoTemplate;

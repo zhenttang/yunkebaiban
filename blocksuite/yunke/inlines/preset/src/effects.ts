@@ -1,11 +1,11 @@
-import { AffineText } from './nodes/affine-text';
+import { YunkeText } from './nodes/yunke-text';
 
 export function effects() {
-  customElements.define('affine-text', AffineText);
+  customElements.define('yunke-text', YunkeText);
 }
 
 declare global {
   interface HTMLElementTagNameMap {
-    'affine-text': AffineText;
+    'yunke-text': YunkeText;
   }
 }

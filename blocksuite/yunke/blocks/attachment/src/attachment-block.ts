@@ -189,7 +189,7 @@ export class AttachmentBlockComponent extends CaptionedBlockComponent<Attachment
       onOverFileSize,
       () => html`
         <button
-          class="affine-attachment-content-button"
+          class="yunke-attachment-content-button"
           @click=${(event: MouseEvent) => {
             event.stopPropagation();
             onOverFileSize?.();
@@ -230,7 +230,7 @@ export class AttachmentBlockComponent extends CaptionedBlockComponent<Attachment
 
     return html`
       <button
-        class="affine-attachment-content-button"
+        class="yunke-attachment-content-button"
         @click=${(event: MouseEvent) => {
           event.stopPropagation();
           run().catch(console.error);
@@ -270,16 +270,16 @@ export class AttachmentBlockComponent extends CaptionedBlockComponent<Attachment
   ) {
     return html`
       <div class=${classMap(classInfo)}>
-        <div class="affine-attachment-content">
-          <div class="affine-attachment-content-title">
-            <div class="affine-attachment-content-title-icon">${icon}</div>
-            <div class="affine-attachment-content-title-text truncate">
+        <div class="yunke-attachment-content">
+          <div class="yunke-attachment-content-title">
+            <div class="yunke-attachment-content-title-icon">${icon}</div>
+            <div class="yunke-attachment-content-title-text truncate">
               ${title}
             </div>
           </div>
 
-          <div class="affine-attachment-content-description">
-            <div class="affine-attachment-content-info truncate">
+          <div class="yunke-attachment-content-description">
+            <div class="yunke-attachment-content-info truncate">
               ${description}
             </div>
             ${choose(state, [
@@ -289,7 +289,7 @@ export class AttachmentBlockComponent extends CaptionedBlockComponent<Attachment
           </div>
         </div>
 
-        <div class="affine-attachment-banner">${kind}</div>
+        <div class="yunke-attachment-banner">${kind}</div>
       </div>
     `;
   }
@@ -307,20 +307,20 @@ export class AttachmentBlockComponent extends CaptionedBlockComponent<Attachment
   ) {
     return html`
       <div class=${classMap(classInfo)}>
-        <div class="affine-attachment-content">
-          <div class="affine-attachment-content-title">
-            <div class="affine-attachment-content-title-icon">${icon}</div>
-            <div class="affine-attachment-content-title-text truncate">
+        <div class="yunke-attachment-content">
+          <div class="yunke-attachment-content-title">
+            <div class="yunke-attachment-content-title-icon">${icon}</div>
+            <div class="yunke-attachment-content-title-text truncate">
               ${title}
             </div>
           </div>
 
-          <div class="affine-attachment-content-info truncate">
+          <div class="yunke-attachment-content-info truncate">
             ${description}
           </div>
         </div>
 
-        <div class="affine-attachment-banner">
+        <div class="yunke-attachment-banner">
           ${kind}
           ${choose(state, [
             ['error', () => this.renderNormalButton(needUpload)],
@@ -352,7 +352,7 @@ export class AttachmentBlockComponent extends CaptionedBlockComponent<Attachment
     const cardStyle = this.model.props.style$.value ?? AttachmentBlockStyles[1];
 
     const classInfo = {
-      'affine-attachment-card': true,
+      'yunke-attachment-card': true,
       [cardStyle]: true,
       loading: resolvedState.loading,
       error: resolvedState.error,
@@ -378,7 +378,7 @@ export class AttachmentBlockComponent extends CaptionedBlockComponent<Attachment
     const enabled = provider.shouldShowStatus(model);
 
     return html`
-      <div class="affine-attachment-embed-container">
+      <div class="yunke-attachment-embed-container">
         ${guard([this._refreshKey$.value], () => render(model, blobUrl))}
       </div>
       ${when(enabled, () => {
@@ -393,12 +393,12 @@ export class AttachmentBlockComponent extends CaptionedBlockComponent<Attachment
           needUpload ? this.resourceController.upload() : this.reload();
 
         return html`
-          <affine-resource-status
-            class="affine-attachment-embed-status"
+          <yunke-resource-status
+            class="yunke-attachment-embed-status"
             .message=${message}
             .needUpload=${needUpload}
             .action=${action}
-          ></affine-resource-status>
+          ></yunke-resource-status>
         `;
       })}
     `;
@@ -408,19 +408,19 @@ export class AttachmentBlockComponent extends CaptionedBlockComponent<Attachment
     const { name, footnoteIdentifier } = this.model.props;
     const icon = getAttachmentFileIcon(this.filetype);
 
-    return html`<affine-citation-card
+    return html`<yunke-citation-card
       .icon=${icon}
       .citationTitle=${name}
       .citationIdentifier=${footnoteIdentifier}
       .active=${this.selected$.value}
-    ></affine-citation-card>`;
+    ></yunke-citation-card>`;
   };
 
   override renderBlock() {
     return html`
       <div
         class=${classMap({
-          'affine-attachment-container': true,
+          'yunke-attachment-container': true,
           focused: this.selected$.value,
         })}
         style=${this.containerStyleMap}
@@ -441,6 +441,6 @@ export class AttachmentBlockComponent extends CaptionedBlockComponent<Attachment
 
 declare global {
   interface HTMLElementTagNameMap {
-    'affine-attachment': AttachmentBlockComponent;
+    'yunke-attachment': AttachmentBlockComponent;
   }
 }

@@ -20,8 +20,8 @@ export const EmbedGithubViewExtensions: ExtensionType[] = [
   EmbedGithubBlockService,
   BlockViewExtension(flavour, model => {
     return model.parent?.flavour === 'yunke:surface'
-      ? literal`affine-embed-edgeless-github-block`
-      : literal`affine-embed-github-block`;
+      ? literal`yunke-embed-edgeless-github-block`
+      : literal`yunke-embed-github-block`;
   }),
   EmbedGithubBlockOptionConfig,
   EmbedGithubBlockInteraction,

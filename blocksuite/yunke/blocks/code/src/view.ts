@@ -18,18 +18,18 @@ import {
 } from './code-block-inline.js';
 import { CodeBlockHighlighter } from './code-block-service.js';
 import { CodeKeymapExtension } from './code-keymap.js';
-import { AFFINE_CODE_TOOLBAR_WIDGET } from './code-toolbar/index.js';
+import { YUNKE_CODE_TOOLBAR_WIDGET } from './code-toolbar/index.js';
 import { codeSlashMenuConfig } from './configs/slash-menu.js';
 import { effects } from './effects.js';
 
 const codeToolbarWidget = WidgetViewExtension(
   'yunke:code',
-  AFFINE_CODE_TOOLBAR_WIDGET,
-  literal`${unsafeStatic(AFFINE_CODE_TOOLBAR_WIDGET)}`
+  YUNKE_CODE_TOOLBAR_WIDGET,
+  literal`${unsafeStatic(YUNKE_CODE_TOOLBAR_WIDGET)}`
 );
 
 export class CodeBlockViewExtension extends ViewExtensionProvider {
-  override name = 'affine-code-block';
+  override name = 'yunke-code-block';
 
   override effect() {
     super.effect();
@@ -41,7 +41,7 @@ export class CodeBlockViewExtension extends ViewExtensionProvider {
     context.register([
       FlavourExtension('yunke:code'),
       CodeBlockHighlighter,
-      BlockViewExtension('yunke:code', literal`affine-code`),
+      BlockViewExtension('yunke:code', literal`yunke-code`),
       SlashMenuConfigExtension('yunke:code', codeSlashMenuConfig),
       CodeKeymapExtension,
       ...getCodeClipboardExtensions(),

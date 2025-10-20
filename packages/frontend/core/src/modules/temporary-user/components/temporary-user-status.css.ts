@@ -5,9 +5,9 @@ export const container = style({
   flexDirection: 'column',
   gap: '12px',
   padding: '16px',
-  border: '1px solid var(--affine-border-color)',
+  border: '1px solid var(--yunke-border-color)',
   borderRadius: '8px',
-  backgroundColor: 'var(--affine-background-primary-color)',
+  backgroundColor: 'var(--yunke-background-primary-color)',
   position: 'relative',
 });
 
@@ -16,9 +16,9 @@ export const compactContainer = style({
   alignItems: 'center',
   gap: '8px',
   padding: '8px 12px',
-  border: '1px solid var(--affine-border-color)',
+  border: '1px solid var(--yunke-border-color)',
   borderRadius: '6px',
-  backgroundColor: 'var(--affine-background-primary-color)',
+  backgroundColor: 'var(--yunke-background-primary-color)',
   minHeight: '40px',
 });
 
@@ -42,7 +42,7 @@ export const details = style({
 export const userName = style({
   fontSize: '14px',
   fontWeight: 500,
-  color: 'var(--affine-text-primary-color)',
+  color: 'var(--yunke-text-primary-color)',
   lineHeight: '22px',
 });
 
@@ -52,15 +52,15 @@ export const status = style({
 });
 
 export const success = style({
-  color: 'var(--affine-success-color)',
+  color: 'var(--yunke-success-color)',
 });
 
 export const warning = style({
-  color: 'var(--affine-warning-color)',
+  color: 'var(--yunke-warning-color)',
 });
 
 export const error = style({
-  color: 'var(--affine-error-color)',
+  color: 'var(--yunke-error-color)',
 });
 
 export const timeInfo = style({
@@ -71,7 +71,7 @@ export const timeInfo = style({
 });
 
 export const timeLabel = style({
-  color: 'var(--affine-text-secondary-color)',
+  color: 'var(--yunke-text-secondary-color)',
 });
 
 export const timeValue = style({
@@ -82,14 +82,14 @@ export const timeRemaining = style({
   fontSize: '11px',
   padding: '2px 6px',
   borderRadius: '4px',
-  backgroundColor: 'var(--affine-background-secondary-color)',
+  backgroundColor: 'var(--yunke-background-secondary-color)',
   fontWeight: 500,
 });
 
 export const compactName = style({
   fontSize: '13px',
   fontWeight: 500,
-  color: 'var(--affine-text-primary-color)',
+  color: 'var(--yunke-text-primary-color)',
   maxWidth: '120px',
   overflow: 'hidden',
   textOverflow: 'ellipsis',

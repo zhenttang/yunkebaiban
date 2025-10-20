@@ -5,7 +5,7 @@ import { fromPromise, Service } from '@toeverything/infra';
 import type { ServerService } from './server';
 import type { AuthStore } from '../stores/auth';
 
-const logger = new DebugLogger('affine:fetch');
+const logger = new DebugLogger('yunke:fetch');
 
 export type FetchInit = RequestInit & { timeout?: number };
 
@@ -52,7 +52,7 @@ export class FetchService extends Service {
     // 准备headers，包含JWT token
     const headers = {
       ...init?.headers,
-      'x-affine-version': BUILD_CONFIG.appVersion,
+      'x-yunke-version': BUILD_CONFIG.appVersion,
     };
 
     // 如果不是登录接口，尝试添加JWT token
@@ -62,8 +62,8 @@ export class FetchService extends Service {
         let token = null;
         
         // 方法1：从localStorage直接获取（兼容现有逻辑）
-        token = globalThis.localStorage?.getItem('affine-admin-token') || 
-                globalThis.localStorage?.getItem('affine-access-token');
+        token = globalThis.localStorage?.getItem('yunke-admin-token') || 
+                globalThis.localStorage?.getItem('yunke-access-token');
         
         if (token) {
           headers['Authorization'] = `Bearer ${token}`;

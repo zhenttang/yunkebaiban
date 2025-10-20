@@ -53,7 +53,7 @@ function DownloadUpdate({ updateAvailable }: ButtonContentProps) {
       <div className={styles.installLabelNormal}>
         <DownloadIcon className={styles.icon} />
         <span className={styles.ellipsisTextOverflow}>
-          {t['com.affine.appUpdater.downloadUpdate']()}
+          {t['com.yunke.appUpdater.downloadUpdate']()}
         </span>
         <span className={styles.versionLabel}>{updateAvailable?.version}</span>
       </div>
@@ -61,7 +61,7 @@ function DownloadUpdate({ updateAvailable }: ButtonContentProps) {
       <div className={styles.installLabelHover}>
         <DownloadIcon className={styles.icon} />
         <span className={styles.ellipsisTextOverflow}>
-          {t['com.affine.appUpdater.downloadUpdate']()}
+          {t['com.yunke.appUpdater.downloadUpdate']()}
         </span>
       </div>
     </div>
@@ -75,7 +75,7 @@ function UpdateReady({ updateAvailable, appQuitting }: ButtonContentProps) {
       <div className={styles.installLabelNormal}>
         <ResetIcon className={styles.icon} />
         <span className={styles.ellipsisTextOverflow}>
-          {t['com.affine.appUpdater.updateAvailable']()}
+          {t['com.yunke.appUpdater.updateAvailable']()}
         </span>
         <span className={styles.versionLabel}>{updateAvailable?.version}</span>
       </div>
@@ -83,7 +83,7 @@ function UpdateReady({ updateAvailable, appQuitting }: ButtonContentProps) {
       <div className={styles.installLabelHover}>
         <ResetIcon className={styles.icon} />
         <span className={styles.ellipsisTextOverflow}>
-          {t[appQuitting ? 'Loading' : 'com.affine.appUpdater.installUpdate']()}
+          {t[appQuitting ? 'Loading' : 'com.yunke.appUpdater.installUpdate']()}
         </span>
       </div>
     </div>
@@ -99,7 +99,7 @@ function DownloadingUpdate({
     <div className={clsx([styles.updateAvailableWrapper])}>
       <div className={clsx([styles.installLabelNormal])}>
         <span className={styles.ellipsisTextOverflow}>
-          {t['com.affine.appUpdater.downloading']()}
+          {t['com.yunke.appUpdater.downloading']()}
         </span>
         <span className={styles.versionLabel}>{updateAvailable?.version}</span>
       </div>
@@ -121,7 +121,7 @@ function OpenDownloadPage({ updateAvailable }: ButtonContentProps) {
       <div className={styles.installLabelNormal}>
         <DownloadIcon className={styles.icon} />
         <span className={styles.ellipsisTextOverflow}>
-          {t['com.affine.appUpdater.updateAvailable']()}
+          {t['com.yunke.appUpdater.updateAvailable']()}
         </span>
         <span className={styles.versionLabel}>{updateAvailable?.version}</span>
       </div>
@@ -129,7 +129,7 @@ function OpenDownloadPage({ updateAvailable }: ButtonContentProps) {
       <div className={styles.installLabelHover}>
         <DownloadIcon className={styles.icon} />
         <span className={styles.ellipsisTextOverflow}>
-          {t['com.affine.appUpdater.openDownloadPage']()}
+          {t['com.yunke.appUpdater.openDownloadPage']()}
         </span>
       </div>
     </>
@@ -146,7 +146,7 @@ function WhatsNew({ onDismissChangelog }: ButtonContentProps) {
       <div className={clsx([styles.whatsNewLabel])}>
         <NewIcon className={styles.icon} />
         <span className={styles.ellipsisTextOverflow}>
-          {t['com.affine.appUpdater.whatsNew']()}
+          {t['com.yunke.appUpdater.whatsNew']()}
         </span>
       </div>
       <div className={styles.closeIcon} onClick={onClickClose}>

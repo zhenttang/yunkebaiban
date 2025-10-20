@@ -63,7 +63,7 @@ export function setFakeDialogResult(result: FakeDialogResult | undefined) {
   }
 }
 
-const extension = 'affine';
+const extension = 'yunke';
 
 function getDefaultDBFileName(name: string, id: string) {
   const fileName = `${name}_${id}.${extension}`;
@@ -199,10 +199,10 @@ export async function loadDBFile(
           {
             name: 'SQLite数据库',
             // do we want to support other file format?
-            extensions: ['db', 'affine'],
+            extensions: ['db', 'yunke'],
           },
         ],
-        message: '从AFFiNE文件加载工作区',
+        message: '从YUNKE文件加载工作区',
       }));
     const originalPath = ret.filePaths?.[0];
     if (ret.canceled || !originalPath) {

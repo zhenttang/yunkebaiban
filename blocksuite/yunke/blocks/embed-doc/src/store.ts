@@ -11,7 +11,7 @@ import { EmbedLinkedDocBlockAdapterExtensions } from './embed-linked-doc-block/a
 import { EmbedSyncedDocBlockAdapterExtensions } from './embed-synced-doc-block/adapters/extension';
 
 export class EmbedDocStoreExtension extends StoreExtensionProvider {
-  override name = 'affine-embed-doc-block';
+  override name = 'yunke-embed-doc-block';
 
   override setup(context: StoreExtensionContext) {
     super.setup(context);

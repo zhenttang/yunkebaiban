@@ -11,7 +11,7 @@ export default defineConfig({
     coverage: {
       provider: 'istanbul', // or 'c8'
       reporter: ['lcov'],
-      reportsDirectory: '../../../.coverage/affine-shared',
+      reportsDirectory: '../../../.coverage/yunke-shared',
     },
     /**
      * Custom handler for console.log in tests.

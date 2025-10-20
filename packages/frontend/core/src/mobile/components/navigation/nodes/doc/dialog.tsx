@@ -10,8 +10,8 @@ export const DocRenameSubMenu = ({
   const t = useI18n();
   return (
     <RenameSubMenu
-      title={title || t['com.affine.m.explorer.doc.rename']()}
-      text={text || t['com.affine.m.explorer.doc.rename']()}
+      title={title || t['com.yunke.m.explorer.doc.rename']()}
+      text={text || t['com.yunke.m.explorer.doc.rename']()}
       {...props}
     />
   );

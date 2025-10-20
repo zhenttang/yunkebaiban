@@ -27,8 +27,8 @@ export class EmbedIframeErrorCard extends WithDisposable(LitElement) {
       height: 100%;
     }
 
-    .affine-embed-iframe-error-card {
-      container: affine-embed-iframe-error-card / size;
+    .yunke-embed-iframe-error-card {
+      container: yunke-embed-iframe-error-card / size;
       display: flex;
       box-sizing: border-box;
       user-select: none;
@@ -63,7 +63,7 @@ export class EmbedIframeErrorCard extends WithDisposable(LitElement) {
             color: ${unsafeCSSVarV2('text/primary')};
             text-align: justify;
             /* Client/smBold */
-            font-size: var(--affine-font-sm);
+            font-size: var(--yunke-font-sm);
             font-style: normal;
             font-weight: 600;
             line-height: 22px; /* 157.143% */
@@ -83,7 +83,7 @@ export class EmbedIframeErrorCard extends WithDisposable(LitElement) {
             'clig' off;
           text-overflow: ellipsis;
           /* Client/xs */
-          font-size: var(--affine-font-xs);
+          font-size: var(--yunke-font-xs);
           font-style: normal;
           font-weight: 400;
           line-height: 20px; /* 166.667% */
@@ -109,7 +109,7 @@ export class EmbedIframeErrorCard extends WithDisposable(LitElement) {
 
             .text {
               padding: 0px 4px;
-              font-size: var(--affine-font-xs);
+              font-size: var(--yunke-font-xs);
               font-style: normal;
               font-weight: 500;
               line-height: 20px; /* 166.667% */
@@ -127,7 +127,7 @@ export class EmbedIframeErrorCard extends WithDisposable(LitElement) {
       }
     }
 
-    .affine-embed-iframe-error-card.horizontal {
+    .yunke-embed-iframe-error-card.horizontal {
       flex-direction: row;
       align-items: flex-start;
 
@@ -141,14 +141,14 @@ export class EmbedIframeErrorCard extends WithDisposable(LitElement) {
         }
       }
 
-      @container affine-embed-iframe-error-card (width < 480px) {
+      @container yunke-embed-iframe-error-card (width < 480px) {
         .error-banner {
           display: none;
         }
       }
     }
 
-    .affine-embed-iframe-error-card.vertical {
+    .yunke-embed-iframe-error-card.vertical {
       flex-direction: column-reverse;
       align-items: center;
       justify-content: center;
@@ -169,7 +169,7 @@ export class EmbedIframeErrorCard extends WithDisposable(LitElement) {
         }
       }
 
-      @container affine-embed-iframe-error-card (height < 300px) or (width < 300px) {
+      @container yunke-embed-iframe-error-card (height < 300px) or (width < 300px) {
         .error-banner {
           display: none;
         }
@@ -227,7 +227,7 @@ export class EmbedIframeErrorCard extends WithDisposable(LitElement) {
   override render() {
     const { layout, width, height } = this.options;
     const cardClasses = classMap({
-      'affine-embed-iframe-error-card': true,
+      'yunke-embed-iframe-error-card': true,
       horizontal: layout === 'horizontal',
       vertical: layout === 'vertical',
     });

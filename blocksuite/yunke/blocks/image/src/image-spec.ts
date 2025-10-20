@@ -17,10 +17,10 @@ export const ImageBlockSpec: ExtensionType[] = [
     const parent = model.store.getParent(model.id);
 
     if (parent?.flavour === 'yunke:surface') {
-      return literal`affine-edgeless-image`;
+      return literal`yunke-edgeless-image`;
     }
 
-    return literal`affine-image`;
+    return literal`yunke-image`;
   }),
   ImageDropOption,
   ImageEdgelessBlockInteraction,

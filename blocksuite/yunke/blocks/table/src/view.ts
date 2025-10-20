@@ -11,7 +11,7 @@ import { tableSlashMenuConfig } from './configs/slash-menu';
 import { effects } from './effects';
 
 export class TableViewExtension extends ViewExtensionProvider {
-  override name = 'affine-table-block';
+  override name = 'yunke-table-block';
 
   override effect(): void {
     super.effect();
@@ -22,7 +22,7 @@ export class TableViewExtension extends ViewExtensionProvider {
     super.setup(context);
     context.register([
       FlavourExtension(TableModelFlavour),
-      BlockViewExtension(TableModelFlavour, literal`affine-table`),
+      BlockViewExtension(TableModelFlavour, literal`yunke-table`),
       SlashMenuConfigExtension(TableModelFlavour, tableSlashMenuConfig),
     ]);
   }

@@ -9,7 +9,7 @@ import {
 } from './adapter';
 
 export class BrushStoreExtension extends StoreExtensionProvider {
-  override name = 'affine-brush-gfx';
+  override name = 'yunke-brush-gfx';
 
   override setup(context: StoreExtensionContext) {
     super.setup(context);

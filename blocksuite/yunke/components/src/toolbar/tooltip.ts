@@ -16,16 +16,16 @@ import { type StyleInfo, styleMap } from 'lit/directives/style-map.js';
 import { HoverController, type HoverOptions } from '../hover/index.js';
 
 const styles = css`
-  .affine-tooltip {
+  .yunke-tooltip {
     box-sizing: border-box;
     max-width: 280px;
     min-height: 32px;
-    font-family: var(--affine-font-family);
-    font-size: var(--affine-font-sm);
+    font-family: var(--yunke-font-family);
+    font-size: var(--yunke-font-sm);
     border-radius: 4px;
     padding: 6px 12px;
-    color: var(--affine-white);
-    background: var(--affine-tooltip);
+    color: var(--yunke-white);
+    background: var(--yunke-tooltip);
 
     overflow-wrap: anywhere;
     white-space: normal;
@@ -47,25 +47,25 @@ const triangleMap = {
     bottom: '-6px',
     borderStyle: 'solid',
     borderWidth: '6px 5px 0 5px',
-    borderColor: 'var(--affine-tooltip) transparent transparent transparent',
+    borderColor: 'var(--yunke-tooltip) transparent transparent transparent',
   },
   right: {
     left: '-6px',
     borderStyle: 'solid',
     borderWidth: '5px 6px 5px 0',
-    borderColor: 'transparent var(--affine-tooltip) transparent transparent',
+    borderColor: 'transparent var(--yunke-tooltip) transparent transparent',
   },
   bottom: {
     top: '-6px',
     borderStyle: 'solid',
     borderWidth: '0 5px 6px 5px',
-    borderColor: 'transparent transparent var(--affine-tooltip) transparent',
+    borderColor: 'transparent transparent var(--yunke-tooltip) transparent',
   },
   left: {
     right: '-6px',
     borderStyle: 'solid',
     borderWidth: '5px 0 5px 6px',
-    borderColor: 'transparent transparent transparent var(--affine-tooltip)',
+    borderColor: 'transparent transparent transparent var(--yunke-tooltip)',
   },
 };
 
@@ -97,27 +97,27 @@ const updateArrowStyles = ({
  * ```ts
  * // Simple usage
  * html`
- * <affine-tooltip>Content</affine-tooltip>
+ * <yunke-tooltip>Content</yunke-tooltip>
  * `
  * // With placement
  * html`
- * <affine-tooltip tip-position="top">
+ * <yunke-tooltip tip-position="top">
  *   Content
- * </affine-tooltip>
+ * </yunke-tooltip>
  * `
  *
  * // With custom properties
  * html`
- * <affine-tooltip
+ * <yunke-tooltip
  *   .zIndex=${0}
  *   .offset=${4}
  *   .autoFlip=${true}
  *   .arrow=${true}
- *   .tooltipStyle=${css`:host { z-index: 0; --affine-tooltip: #fff; }`}
+ *   .tooltipStyle=${css`:host { z-index: 0; --yunke-tooltip: #fff; }`}
  *   .allowInteractive=${false}
  * >
  *   Content
- * </affine-tooltip>
+ * </yunke-tooltip>
  * `
  * ```
  */
@@ -175,7 +175,7 @@ export class Tooltip extends LitElement {
                 ${this._getStyles()}
               </style>
               <div
-                class="affine-tooltip"
+                class="yunke-tooltip"
                 role="tooltip"
                 style=${styleMap(tooltipStyles)}
               >
@@ -312,11 +312,11 @@ export class Tooltip extends LitElement {
   accessor tooltipStyle: CSSResult = css``;
 
   @property({ attribute: false })
-  accessor zIndex: number | string = 'var(--affine-z-index-popover)';
+  accessor zIndex: number | string = 'var(--yunke-z-index-popover)';
 }
 
 declare global {
   interface HTMLElementTagNameMap {
-    'affine-tooltip': Tooltip;
+    'yunke-tooltip': Tooltip;
   }
 }

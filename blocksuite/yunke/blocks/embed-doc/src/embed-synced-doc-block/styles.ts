@@ -7,16 +7,16 @@ import { unsafeCSSVarV2 } from '@blocksuite/yunke-shared/theme';
 import { css, html } from 'lit';
 
 export const blockStyles = css`
-  affine-embed-synced-doc-block {
+  yunke-embed-synced-doc-block {
     --embed-padding: 24px;
   }
-  affine-embed-synced-doc-block[data-page-mode] {
+  yunke-embed-synced-doc-block[data-page-mode] {
     width: calc(100% + var(--embed-padding) * 2);
     margin-left: calc(-1 * var(--embed-padding));
     margin-right: calc(-1 * var(--embed-padding));
   }
   .edgeless-block-portal-embed
-    > affine-embed-synced-doc-block[data-nested-editor] {
+    > yunke-embed-synced-doc-block[data-nested-editor] {
     position: relative;
     display: block;
     left: 0px;
@@ -26,83 +26,83 @@ export const blockStyles = css`
   }
 
   .edgeless-block-portal-embed
-    .affine-embed-synced-doc-editor
-    .affine-page-root-block-container {
+    .yunke-embed-synced-doc-editor
+    .yunke-page-root-block-container {
     width: 100%;
   }
 
-  .edgeless-block-portal-embed .affine-embed-synced-doc-container.edgeless {
+  .edgeless-block-portal-embed .yunke-embed-synced-doc-container.edgeless {
     display: block;
     padding: 0;
     width: 100%;
     height: calc(${EMBED_CARD_HEIGHT.syncedDoc}px + 36px);
   }
-  .edgeless-block-portal-embed .affine-embed-synced-doc-container.surface {
-    border: 1px solid var(--affine-border-color);
+  .edgeless-block-portal-embed .yunke-embed-synced-doc-container.surface {
+    border: 1px solid var(--yunke-border-color);
   }
 
-  affine-embed-synced-doc-block[data-nested-editor],
-  affine-embed-edgeless-synced-doc-block[data-nested-editor] {
-    .affine-embed-synced-doc-container.page {
+  yunke-embed-synced-doc-block[data-nested-editor],
+  yunke-embed-edgeless-synced-doc-block[data-nested-editor] {
+    .yunke-embed-synced-doc-container.page {
       padding: 0 var(--embed-padding);
     }
   }
 
-  .affine-embed-synced-doc-editor {
+  .yunke-embed-synced-doc-editor {
     pointer-events: none;
   }
 
-  .affine-embed-synced-doc-container {
+  .yunke-embed-synced-doc-container {
     border: 1px solid transparent;
     border-radius: 8px;
     overflow: hidden;
   }
-  .affine-embed-synced-doc-container.show-hover-border:hover {
-    border-color: var(--affine-border-color);
+  .yunke-embed-synced-doc-container.show-hover-border:hover {
+    border-color: var(--yunke-border-color);
   }
-  .affine-embed-synced-doc-container.page {
+  .yunke-embed-synced-doc-container.page {
     display: block;
     width: 100%;
   }
-  .affine-embed-synced-doc-container.edgeless {
+  .yunke-embed-synced-doc-container.edgeless {
     display: block;
     width: 100%;
     height: calc(${EMBED_CARD_HEIGHT.syncedDoc}px + 36px);
   }
-  .affine-embed-synced-doc-header-wrapper {
+  .yunke-embed-synced-doc-header-wrapper {
     position: absolute;
     top: 0;
     left: 0;
     height: 34px;
     width: 100%;
-    background-color: var(--affine-white);
+    background-color: var(--yunke-white);
     opacity: 0;
   }
   @media print {
-    .affine-embed-synced-doc-header-wrapper {
+    .yunke-embed-synced-doc-header-wrapper {
       display: none;
     }
   }
-  .affine-embed-synced-doc-header-wrapper.selected {
+  .yunke-embed-synced-doc-header-wrapper.selected {
     opacity: 1;
     transition: all 0.23s ease;
   }
-  .affine-embed-synced-doc-header {
+  .yunke-embed-synced-doc-header {
     display: flex;
     align-items: center;
     width: 100%;
     height: 100%;
     padding: 0 var(--embed-padding);
-    background-color: var(--affine-hover-color);
+    background-color: var(--yunke-hover-color);
   }
-  .affine-embed-synced-doc-header svg {
+  .yunke-embed-synced-doc-header svg {
     flex-shrink: 0;
   }
-  .affine-embed-synced-doc-icon {
+  .yunke-embed-synced-doc-icon {
     line-height: 0;
     color: ${unsafeCSSVarV2('icon/primary')};
   }
-  .affine-embed-synced-doc-title {
+  .yunke-embed-synced-doc-title {
     font-size: 14px;
     font-weight: 600;
     line-height: 22px;
@@ -112,7 +112,7 @@ export const blockStyles = css`
     overflow: hidden;
     text-overflow: ellipsis;
   }
-  .affine-embed-synced-doc-editor-overlay {
+  .yunke-embed-synced-doc-editor-overlay {
     position: absolute;
     top: 0;
     left: 0;
@@ -122,7 +122,7 @@ export const blockStyles = css`
     cursor: pointer;
   }
 
-  .affine-embed-synced-doc-editor-empty {
+  .yunke-embed-synced-doc-editor-empty {
     display: flex;
     align-items: center;
     width: 100%;
@@ -130,76 +130,76 @@ export const blockStyles = css`
     min-height: 44px;
   }
 
-  .affine-embed-synced-doc-container.surface
-    > .affine-embed-synced-doc-editor
-    > .affine-embed-synced-doc-editor-empty {
+  .yunke-embed-synced-doc-container.surface
+    > .yunke-embed-synced-doc-editor
+    > .yunke-embed-synced-doc-editor-empty {
     left: 0;
     justify-content: center;
   }
 
-  .affine-embed-synced-doc-editor-empty > span {
-    color: var(--affine-placeholder-color);
+  .yunke-embed-synced-doc-editor-empty > span {
+    color: var(--yunke-placeholder-color);
     font-feature-settings:
       'clig' off,
       'liga' off;
-    font-family: var(--affine-font-family);
+    font-family: var(--yunke-font-family);
     font-size: 15px;
     font-style: normal;
     font-weight: 400;
     line-height: 24px;
   }
 
-  .affine-embed-synced-doc-container.surface {
+  .yunke-embed-synced-doc-container.surface {
     border-color: ${unsafeCSSVarV2('layer/insideBorder/border')};
     background: ${unsafeCSSVarV2('layer/background/linkedDocOnEdgeless')};
 
-    affine-preview-root {
+    yunke-preview-root {
       padding: 0 24px;
     }
   }
 
-  .affine-embed-synced-doc-container
-    > .affine-embed-synced-doc-editor.affine-page-viewport {
+  .yunke-embed-synced-doc-container
+    > .yunke-embed-synced-doc-editor.yunke-page-viewport {
     background: transparent;
   }
 
-  .affine-embed-synced-doc-container > .affine-embed-synced-doc-editor {
+  .yunke-embed-synced-doc-container > .yunke-embed-synced-doc-editor {
     width: 100%;
     height: 100%;
   }
 
-  .affine-embed-synced-doc-editor .affine-page-root-block-container {
+  .yunke-embed-synced-doc-editor .yunke-page-root-block-container {
     width: 100%;
     max-width: 100%;
   }
 
   @container (max-width: 640px) {
-    affine-embed-synced-doc-block {
+    yunke-embed-synced-doc-block {
       --embed-padding: 8px;
     }
-    .affine-embed-synced-doc-title {
+    .yunke-embed-synced-doc-title {
       font-weight: 400;
     }
-    .affine-embed-synced-doc-header-wrapper {
+    .yunke-embed-synced-doc-header-wrapper {
       height: 33px;
     }
   }
 `;
 
 export const cardStyles = css`
-  .affine-embed-synced-doc-card {
+  .yunke-embed-synced-doc-card {
     margin: 0 auto;
     box-sizing: border-box;
     display: flex;
     width: 100%;
     height: ${EMBED_CARD_HEIGHT.horizontal}px;
     border-radius: 8px;
-    border: 1px solid var(--affine-background-tertiary-color);
-    background: var(--affine-background-primary-color);
+    border: 1px solid var(--yunke-background-tertiary-color);
+    background: var(--yunke-background-primary-color);
     user-select: none;
   }
 
-  .affine-embed-synced-doc-card-content {
+  .yunke-embed-synced-doc-card-content {
     width: calc(100% - 204px);
     height: 100%;
     display: flex;
@@ -209,7 +209,7 @@ export const cardStyles = css`
     padding: 12px;
   }
 
-  .affine-embed-synced-doc-card-content-title {
+  .yunke-embed-synced-doc-card-content-title {
     display: flex;
     flex-direction: row;
     gap: 8px;
@@ -217,35 +217,35 @@ export const cardStyles = css`
     align-self: stretch;
   }
 
-  .affine-embed-synced-doc-card-content-title-icon {
+  .yunke-embed-synced-doc-card-content-title-icon {
     display: flex;
     width: 16px;
     height: 16px;
     justify-content: center;
     align-items: center;
   }
-  .affine-embed-synced-doc-card-content-title-icon svg {
+  .yunke-embed-synced-doc-card-content-title-icon svg {
     width: 16px;
     height: 16px;
-    fill: var(--affine-background-primary-color);
+    fill: var(--yunke-background-primary-color);
   }
 
-  .affine-embed-synced-doc-card-content-title-text {
+  .yunke-embed-synced-doc-card-content-title-text {
     display: -webkit-box;
     -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
     word-break: break-word;
     overflow: hidden;
     text-overflow: ellipsis;
-    color: var(--affine-text-primary-color);
-    font-family: var(--affine-font-family);
-    font-size: var(--affine-font-sm);
+    color: var(--yunke-text-primary-color);
+    font-family: var(--yunke-font-family);
+    font-size: var(--yunke-font-sm);
     font-style: normal;
     font-weight: 600;
     line-height: 22px;
   }
 
-  .affine-embed-synced-doc-content-note.render {
+  .yunke-embed-synced-doc-content-note.render {
     display: none;
     overflow: hidden;
     pointer-events: none;
@@ -253,7 +253,7 @@ export const cardStyles = css`
 
   ${embedNoteContentStyles}
 
-  .affine-embed-synced-doc-content-note.default {
+  .yunke-embed-synced-doc-content-note.default {
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
@@ -261,16 +261,16 @@ export const cardStyles = css`
     word-break: break-word;
     overflow: hidden;
     text-overflow: ellipsis;
-    color: var(--affine-placeholder-color);
-    font-family: var(--affine-font-family);
-    font-size: var(--affine-font-xs);
+    color: var(--yunke-placeholder-color);
+    font-family: var(--yunke-font-family);
+    font-size: var(--yunke-font-xs);
     font-style: normal;
     font-weight: 400;
     line-height: 20px;
   }
 
-  .affine-embed-synced-doc-card-content-date,
-  .affine-embed-synced-doc-card-content-reload {
+  .yunke-embed-synced-doc-card-content-date,
+  .yunke-embed-synced-doc-card-content-reload {
     display: flex;
     flex-grow: 1;
     align-items: flex-end;
@@ -281,7 +281,7 @@ export const cardStyles = css`
     line-height: 20px;
   }
 
-  .affine-embed-synced-doc-card-content-date > span {
+  .yunke-embed-synced-doc-card-content-date > span {
     display: -webkit-box;
     -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
@@ -289,15 +289,15 @@ export const cardStyles = css`
     white-space: normal;
     overflow: hidden;
     text-overflow: ellipsis;
-    color: var(--affine-text-secondary-color);
-    font-family: var(--affine-font-family);
-    font-size: var(--affine-font-xs);
+    color: var(--yunke-text-secondary-color);
+    font-family: var(--yunke-font-family);
+    font-size: var(--yunke-font-xs);
     font-style: normal;
     font-weight: 400;
     line-height: 20px;
   }
 
-  .affine-embed-synced-doc-card-content-reload-button {
+  .yunke-embed-synced-doc-card-content-reload-button {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -305,11 +305,11 @@ export const cardStyles = css`
     cursor: pointer;
     color: ${unsafeCSSVarV2('button/primary')};
   }
-  .affine-embed-synced-doc-card-content-reload-button svg {
+  .yunke-embed-synced-doc-card-content-reload-button svg {
     width: 12px;
     height: 12px;
   }
-  .affine-embed-synced-doc-card-content-reload-button > span {
+  .yunke-embed-synced-doc-card-content-reload-button > span {
     display: -webkit-box;
     -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
@@ -317,26 +317,26 @@ export const cardStyles = css`
     white-space: normal;
     overflow: hidden;
     text-overflow: ellipsis;
-    font-family: var(--affine-font-family);
-    font-size: var(--affine-font-xs);
+    font-family: var(--yunke-font-family);
+    font-size: var(--yunke-font-xs);
     font-style: normal;
     font-weight: 500;
     line-height: 20px;
   }
 
-  .affine-embed-synced-doc-card-banner {
+  .yunke-embed-synced-doc-card-banner {
     margin: 12px 12px 0px 0px;
     width: 204px;
     max-width: 100%;
     height: 102px;
     pointer-events: none;
   }
-  .affine-embed-synced-doc-card-banner.render {
+  .yunke-embed-synced-doc-card-banner.render {
     display: none;
   }
-  .affine-embed-synced-doc-card-banner img,
-  .affine-embed-synced-doc-card-banner object,
-  .affine-embed-synced-doc-card-banner svg {
+  .yunke-embed-synced-doc-card-banner img,
+  .yunke-embed-synced-doc-card-banner object,
+  .yunke-embed-synced-doc-card-banner svg {
     width: 204px;
     max-width: 100%;
     height: 102px;
@@ -344,91 +344,91 @@ export const cardStyles = css`
     border-radius: 4px;
   }
 
-  .affine-embed-synced-doc-card.loading,
-  .affine-embed-synced-doc-card.deleted,
-  .affine-embed-synced-doc-card.error {
-    .affine-embed-linked-doc-content-note.render {
+  .yunke-embed-synced-doc-card.loading,
+  .yunke-embed-synced-doc-card.deleted,
+  .yunke-embed-synced-doc-card.error {
+    .yunke-embed-linked-doc-content-note.render {
       display: none;
     }
-    .affine-embed-linked-doc-content-note.default {
+    .yunke-embed-linked-doc-content-note.default {
       display: block;
     }
-    .affine-embed-synced-doc-card-banner.render {
+    .yunke-embed-synced-doc-card-banner.render {
       display: none;
     }
-    .affine-embed-synced-doc-card-banner.default {
+    .yunke-embed-synced-doc-card-banner.default {
       display: block;
     }
-    .affine-embed-synced-doc-card-content-date {
+    .yunke-embed-synced-doc-card-content-date {
       display: none;
     }
   }
 
-  .affine-embed-synced-doc-card:not(.loading).deleted,
-  .affine-embed-synced-doc-card:not(.loading).error {
-    background: var(--affine-background-secondary-color);
+  .yunke-embed-synced-doc-card:not(.loading).deleted,
+  .yunke-embed-synced-doc-card:not(.loading).error {
+    background: var(--yunke-background-secondary-color);
   }
-  .affine-embed-synced-doc-card:not(.loading):not(.error):not(
+  .yunke-embed-synced-doc-card:not(.loading):not(.error):not(
       .surface
     ).deleted {
     height: ${EMBED_CARD_HEIGHT.horizontalThin}px;
-    .affine-embed-synced-doc-card-banner {
+    .yunke-embed-synced-doc-card-banner {
       height: 66px;
     }
-    .affine-embed-synced-doc-card-banner img,
-    .affine-embed-synced-doc-card-banner object,
-    .affine-embed-synced-doc-card-banner svg {
+    .yunke-embed-synced-doc-card-banner img,
+    .yunke-embed-synced-doc-card-banner object,
+    .yunke-embed-synced-doc-card-banner svg {
       height: 66px;
     }
-    .affine-embed-synced-doc-card-content {
+    .yunke-embed-synced-doc-card-content {
       gap: 12px;
     }
   }
 
-  .affine-embed-synced-doc-card:not(.loading):not(.error):not(.deleted):not(
+  .yunke-embed-synced-doc-card:not(.loading):not(.error):not(.deleted):not(
       .note-empty
     ).cycle {
-    .affine-embed-synced-doc-content-note.render {
+    .yunke-embed-synced-doc-content-note.render {
       display: block;
     }
-    .affine-embed-synced-doc-content-note.default {
+    .yunke-embed-synced-doc-content-note.default {
       display: none;
     }
   }
 
-  .affine-embed-synced-doc-card:not(.loading):not(.error):not(.deleted):not(
+  .yunke-embed-synced-doc-card:not(.loading):not(.error):not(.deleted):not(
       .banner-empty
     ).cycle {
-    .affine-embed-synced-doc-card-banner.render {
+    .yunke-embed-synced-doc-card-banner.render {
       display: block;
     }
-    .affine-embed-synced-doc-card-banner.default {
+    .yunke-embed-synced-doc-card-banner.default {
       display: none;
     }
   }
-  .affine-embed-synced-doc-card:not(.loading):not(.error):not(
+  .yunke-embed-synced-doc-card:not(.loading):not(.error):not(
       .deleted
     ).cycle.banner-empty {
-    .affine-embed-synced-doc-card-content {
+    .yunke-embed-synced-doc-card-content {
       width: 100%;
       height: 100%;
     }
 
-    .affine-embed-synced-doc-card-banner.render {
+    .yunke-embed-synced-doc-card-banner.render {
       display: none;
     }
 
-    .affine-embed-synced-doc-card-banner.default {
+    .yunke-embed-synced-doc-card-banner.default {
       display: none;
     }
   }
 
-  .affine-embed-synced-doc-card.surface:not(.cycle) {
+  .yunke-embed-synced-doc-card.surface:not(.cycle) {
     width: ${EMBED_CARD_WIDTH.syncedDoc}px;
     height: ${EMBED_CARD_HEIGHT.syncedDoc}px;
     flex-direction: column-reverse;
 
-    .affine-embed-synced-doc-card-banner.default {
+    .yunke-embed-synced-doc-card-banner.default {
       display: flex;
       align-items: flex-end;
       justify-content: center;
@@ -437,14 +437,14 @@ export const cardStyles = css`
       margin-left: 12px;
       flex-shrink: 0;
     }
-    .affine-embed-synced-doc-card-banner img,
-    .affine-embed-synced-doc-card-banner object,
-    .affine-embed-synced-doc-card-banner svg {
+    .yunke-embed-synced-doc-card-banner img,
+    .yunke-embed-synced-doc-card-banner object,
+    .yunke-embed-synced-doc-card-banner svg {
       width: 340px;
       height: 170px;
     }
 
-    .affine-embed-synced-doc-card-content {
+    .yunke-embed-synced-doc-card-content {
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -453,83 +453,83 @@ export const cardStyles = css`
       height: 100%;
     }
 
-    .affine-embed-synced-doc-card-content-title {
+    .yunke-embed-synced-doc-card-content-title {
       margin: 0 auto;
     }
 
-    .affine-embed-synced-doc-card-content-note {
+    .yunke-embed-synced-doc-card-content-note {
       margin: 0 auto;
       flex-grow: 0;
     }
 
-    .affine-embed-synced-doc-card-content-reload {
+    .yunke-embed-synced-doc-card-content-reload {
       flex-grow: 0;
       margin: 0 auto;
     }
   }
 
-  .affine-embed-synced-doc-card.surface:not(.loading):not(.error):not(
+  .yunke-embed-synced-doc-card.surface:not(.loading):not(.error):not(
       .deleted
     ).cycle {
     width: ${EMBED_CARD_WIDTH.vertical}px;
     height: ${EMBED_CARD_HEIGHT.vertical}px;
     flex-direction: column-reverse;
 
-    .affine-embed-synced-doc-card-content {
+    .yunke-embed-synced-doc-card-content {
       width: 100%;
     }
 
-    .affine-embed-synced-doc-card-content-note {
+    .yunke-embed-synced-doc-card-content-note {
       -webkit-line-clamp: 6;
       max-height: 130px;
     }
 
-    .affine-embed-synced-doc-card-content-date {
+    .yunke-embed-synced-doc-card-content-date {
       flex-grow: 1;
       align-items: flex-end;
     }
 
-    .affine-embed-synced-doc-card-banner {
+    .yunke-embed-synced-doc-card-banner {
       width: 340px;
       height: 170px;
       margin-left: 12px;
     }
-    .affine-embed-synced-doc-card-banner img,
-    .affine-embed-synced-doc-card-banner object,
-    .affine-embed-synced-doc-card-banner svg {
+    .yunke-embed-synced-doc-card-banner img,
+    .yunke-embed-synced-doc-card-banner object,
+    .yunke-embed-synced-doc-card-banner svg {
       width: 340px;
       height: 170px;
     }
   }
 
-  .affine-embed-synced-doc-card.surface:not(.loading):not(.error):not(
+  .yunke-embed-synced-doc-card.surface:not(.loading):not(.error):not(
       .deleted
     ).cycle:not(.empty).banner-empty {
-    .affine-embed-synced-doc-card-content {
+    .yunke-embed-synced-doc-card-content {
       width: 100%;
       height: 100%;
     }
 
-    .affine-embed-synced-doc-card-banner.render {
+    .yunke-embed-synced-doc-card-banner.render {
       display: none;
     }
 
-    .affine-embed-synced-doc-card-banner.default {
+    .yunke-embed-synced-doc-card-banner.default {
       display: none;
     }
 
-    .affine-embed-synced-doc-card-content-note {
+    .yunke-embed-synced-doc-card-content-note {
       -webkit-line-clamp: 16;
       max-height: 320px;
     }
 
-    .affine-embed-synced-doc-card-content-date {
+    .yunke-embed-synced-doc-card-content-date {
       flex-grow: unset;
       align-items: center;
     }
   }
 
-  .affine-embed-synced-doc-edgeless-header-wrapper {
+  .yunke-embed-synced-doc-edgeless-header-wrapper {
     position: relative;
     z-index: 2; // Make sure the header is above the overlay
   }

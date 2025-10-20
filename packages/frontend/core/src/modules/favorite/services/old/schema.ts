@@ -74,7 +74,7 @@ export const WorkspaceFavoriteItemSchema = z.object({
 
 export type WorkspaceFavoriteItem = z.infer<typeof WorkspaceFavoriteItemSchema>;
 
-const WorkspaceAffinePropertiesSchemaSchema = z.object({
+const WorkspaceYunkePropertiesSchemaSchema = z.object({
   pageProperties: z.object({
     custom: z.record(PageCustomPropertyMetaSchema),
     system: z.object({
@@ -103,8 +103,8 @@ const WorkspacePagePropertiesSchema = z.object({
   }),
 });
 
-export const WorkspaceAffinePropertiesSchema = z.object({
-  schema: WorkspaceAffinePropertiesSchemaSchema.optional(),
+export const WorkspaceYunkePropertiesSchema = z.object({
+  schema: WorkspaceYunkePropertiesSchemaSchema.optional(),
   favorites: z.record(WorkspaceFavoriteItemSchema).optional(),
   pageProperties: z.record(WorkspacePagePropertiesSchema).optional(),
   favoritesMigrated: z.boolean().optional(),
@@ -114,14 +114,14 @@ export type PageInfoCustomPropertyMeta = z.infer<
   typeof PageCustomPropertyMetaSchema
 >;
 
-export type WorkspaceAffineProperties = z.infer<
-  typeof WorkspaceAffinePropertiesSchema
+export type WorkspaceYunkeProperties = z.infer<
+  typeof WorkspaceYunkePropertiesSchema
 >;
 
 export type PageInfoCustomProperty = z.infer<
   typeof PageInfoCustomPropertyItemSchema
 >;
 
-export type WorkspaceAffinePageProperties = z.infer<
+export type WorkspaceYunkePageProperties = z.infer<
   typeof WorkspacePagePropertiesSchema
 >;

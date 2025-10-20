@@ -1,6 +1,6 @@
 import { Button, notify } from '@yunke/component';
 import { SettingRow } from '@yunke/component/setting-components';
-import { useAsyncCallback } from '@yunke/core/components/hooks/affine-async-hooks';
+import { useAsyncCallback } from '@yunke/core/components/hooks/yunke-async-hooks';
 import { useMutation } from '@yunke/core/components/hooks/use-mutation';
 import { UrlService } from '@yunke/core/modules/url';
 import { UserFriendlyError } from '@yunke/error';
@@ -31,13 +31,13 @@ export const PaymentMethodUpdater = () => {
   return (
     <SettingRow
       className={styles.paymentMethod}
-      name={t['com.affine.payment.billing-setting.payment-method']()}
+      name={t['com.yunke.payment.billing-setting.payment-method']()}
       desc={t[
-        'com.affine.payment.billing-setting.payment-method.description'
+        'com.yunke.payment.billing-setting.payment-method.description'
       ]()}
     >
       <Button onClick={update} loading={isMutating} disabled={isMutating}>
-        {t['com.affine.payment.billing-setting.payment-method.go']()}
+        {t['com.yunke.payment.billing-setting.payment-method.go']()}
       </Button>
     </SettingRow>
   );

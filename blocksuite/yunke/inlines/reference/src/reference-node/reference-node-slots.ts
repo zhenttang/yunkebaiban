@@ -17,7 +17,7 @@ export type RefNodeSlots = {
 };
 
 export const RefNodeSlotsProvider =
-  createIdentifier<RefNodeSlots>('AffineRefNodeSlots');
+  createIdentifier<RefNodeSlots>('YunkeRefNodeSlots');
 
 const slots: RefNodeSlots = {
   docLinkClicked: new Subject(),

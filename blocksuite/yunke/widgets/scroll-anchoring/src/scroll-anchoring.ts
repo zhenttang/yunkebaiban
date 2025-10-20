@@ -14,9 +14,9 @@ type Anchor = {
   mode: DocMode;
 };
 
-export const AFFINE_SCROLL_ANCHORING_WIDGET = 'affine-scroll-anchoring-widget';
+export const YUNKE_SCROLL_ANCHORING_WIDGET = 'yunke-scroll-anchoring-widget';
 
-export class AffineScrollAnchoringWidget extends WidgetComponent {
+export class YunkeScrollAnchoringWidget extends WidgetComponent {
   static override styles = css`
     :host {
       pointer-events: none;
@@ -37,12 +37,12 @@ export class AffineScrollAnchoringWidget extends WidgetComponent {
           border-color: ${unsafeCSS(
             cssVarV2('layer/insideBorder/primaryBorder')
           )};
-          box-shadow: var(--affine-active-shadow);
+          box-shadow: var(--yunke-active-shadow);
         }
 
         &.page {
           border-radius: 5px;
-          background-color: var(--affine-hover-color);
+          background-color: var(--yunke-hover-color);
         }
       }
     }

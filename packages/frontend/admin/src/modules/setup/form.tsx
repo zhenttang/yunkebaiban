@@ -6,12 +6,12 @@ import {
   CarouselItem,
 } from '@yunke/admin/components/ui/carousel';
 import { validateEmailAndPassword } from '@yunke/admin/utils';
-import { useAsyncCallback } from '@yunke/core/components/hooks/affine-async-hooks';
+import { useAsyncCallback } from '@yunke/core/components/hooks/yunke-async-hooks';
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 
-import { affineFetch } from '../../fetch-utils';
+import { yunkeFetch } from '../../fetch-utils';
 import { useRevalidateServerConfig, useServerConfig } from '../common';
 import { CreateAdmin } from './create-admin';
 
@@ -28,10 +28,10 @@ const Welcome = () => {
       style={{ minHeight: '300px' }}
     >
       <h1 className="text-5xl font-extrabold max-lg:text-3xl max-lg:font-bold">
-        欢迎使用 AFFiNE
+        欢迎使用 YUNKE
       </h1>
       <p className="mt-5 font-semibold text-xl max-lg:px-4 max-lg:text-lg">
-        通过几个简单的设置配置您的自托管 AFFiNE。
+        通过几个简单的设置配置您的自托管 YUNKE。
       </p>
     </div>
   );
@@ -47,7 +47,7 @@ const SettingsDone = () => {
         所有设置已完成
       </h1>
       <p className="mt-5 font-semibold text-xl max-lg:px-4 max-lg:text-lg">
-        AFFiNE 已准备就绪。
+        YUNKE 已准备就绪。
       </p>
     </div>
   );
@@ -96,7 +96,7 @@ export const Form = () => {
 
   const createAdmin = useCallback(async () => {
     try {
-      const createResponse = await affineFetch('/api/setup/create-admin-user', {
+      const createResponse = await yunkeFetch('/api/setup/create-admin-user', {
         method: 'POST',
         body: JSON.stringify({
           email: emailValue,
@@ -208,7 +208,7 @@ export const Form = () => {
           </Button>
         )}
         <Button onClick={onNext} disabled={disableContinue}>
-          {current === count ? '打开 AFFiNE' : '继续'}
+          {current === count ? '打开 YUNKE' : '继续'}
         </Button>
       </div>
 

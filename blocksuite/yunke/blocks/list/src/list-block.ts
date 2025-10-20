@@ -56,7 +56,7 @@ export class ListBlockComponent extends CaptionedBlockComponent<ListBlockModel> 
       const checkedPropObj = { checked: !this.model.props.checked };
       this.store.updateBlock(this.model, checkedPropObj);
       if (this.model.props.checked) {
-        const checkEl = this.querySelector('.affine-list-block__todo-prefix');
+        const checkEl = this.querySelector('.yunke-list-block__todo-prefix');
         if (checkEl) {
           playCheckAnimation(checkEl).catch(console.error);
         }
@@ -145,7 +145,7 @@ export class ListBlockComponent extends CaptionedBlockComponent<ListBlockModel> 
     const listIcon = getListIcon(model, !collapsed, _onClickIcon);
 
     const children = html`<div
-      class="affine-block-children-container"
+      class="yunke-block-children-container"
       style=${styleMap({
         paddingLeft: `${BLOCK_CHILDREN_CONTAINER_PADDING_LEFT}px`,
         display: collapsed ? 'none' : undefined,
@@ -155,11 +155,11 @@ export class ListBlockComponent extends CaptionedBlockComponent<ListBlockModel> 
     </div>`;
 
     return html`
-      <div class=${'affine-list-block-container'}>
+      <div class=${'yunke-list-block-container'}>
         <div
           class=${classMap({
-            'affine-list-rich-text-wrapper': true,
-            'affine-list--checked':
+            'yunke-list-rich-text-wrapper': true,
+            'yunke-list--checked':
               this.model.props.type === 'todo' && this.model.props.checked,
             [TOGGLE_BUTTON_PARENT_CLASS]: true,
           })}
@@ -211,6 +211,6 @@ export class ListBlockComponent extends CaptionedBlockComponent<ListBlockModel> 
   private accessor _richTextElement: RichText | null = null;
 
   override accessor blockContainerStyles = {
-    margin: 'var(--affine-list-margin, 10px 0)',
+    margin: 'var(--yunke-list-margin, 10px 0)',
   };
 }

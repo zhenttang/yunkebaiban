@@ -46,9 +46,9 @@ export const ImportPage = ({
     <div className={importPageBodyStyle}>
       <div className="title">导入</div>
       <span>
-        AFFiNE 将逐步支持更多文件类型的导入。&nbsp;
+        YUNKE 将逐步支持更多文件类型的导入。&nbsp;
         <a
-          href="https://community.affine.pro/c/feature-requests/import-export"
+          href="https://community.yunke.pro/c/feature-requests/import-export"
           target="_blank"
           rel="noreferrer"
         >
@@ -72,7 +72,7 @@ export const ImportPage = ({
         title="Notion页面"
         right={
           <Tooltip
-            content={'了解如何将 Notion 页面导入 AFFiNE。'}
+            content={'了解如何将 Notion 页面导入 YUNKE。'}
           >
             <HelpIcon width={20} height={20} />
           </Tooltip>

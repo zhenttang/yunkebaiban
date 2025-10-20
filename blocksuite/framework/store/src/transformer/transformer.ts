@@ -261,7 +261,7 @@ export class Transformer {
       // Create a temporary root snapshot to encompass all content blocks
       const tmpRootSnapshot: BlockSnapshot = {
         id: 'temporary-root',
-        flavour: 'affine:page',
+        flavour: 'yunke:page',
         props: {},
         type: 'block',
         children: content,

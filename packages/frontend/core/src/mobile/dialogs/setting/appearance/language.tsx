@@ -21,7 +21,7 @@ export const LanguageSetting = () => {
   );
 
   return (
-    <RowLayout label={t['com.affine.mobile.setting.appearance.language']()}>
+    <RowLayout label={t['com.yunke.mobile.setting.appearance.language']()}>
       <SettingDropdownSelect
         options={languageOptions}
         value={currentLanguage.key}

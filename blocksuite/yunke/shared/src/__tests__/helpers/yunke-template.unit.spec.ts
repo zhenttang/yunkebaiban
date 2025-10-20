@@ -1,16 +1,16 @@
 import { TextSelection } from '@blocksuite/std';
 import { describe, expect, it } from 'vitest';
 
-import { affine } from './affine-template';
+import { yunke } from './yunke-template';
 
-describe('helpers/affine-template', () => {
+describe('helpers/yunke-template', () => {
   it('should create a basic document structure from template', () => {
-    const host = affine`
-      <affine-page id="page">
-        <affine-note id="note">
-          <affine-paragraph id="paragraph-1">Hello, world</affine-paragraph>
-        </affine-note>
-      </affine-page>
+    const host = yunke`
+      <yunke-page id="page">
+        <yunke-note id="note">
+          <yunke-paragraph id="paragraph-1">Hello, world</yunke-paragraph>
+        </yunke-note>
+      </yunke-page>
     `;
 
     expect(host.store).toBeDefined();
@@ -29,14 +29,14 @@ describe('helpers/affine-template', () => {
   });
 
   it('should handle nested blocks correctly', () => {
-    const host = affine`
-      <affine-page>
-        <affine-note>
-          <affine-paragraph>First paragraph</affine-paragraph>
-          <affine-list>List item</affine-list>
-          <affine-paragraph>Second paragraph</affine-paragraph>
-        </affine-note>
-      </affine-page>
+    const host = yunke`
+      <yunke-page>
+        <yunke-note>
+          <yunke-paragraph>First paragraph</yunke-paragraph>
+          <yunke-list>List item</yunke-list>
+          <yunke-paragraph>Second paragraph</yunke-paragraph>
+        </yunke-note>
+      </yunke-page>
     `;
 
     const noteBlocks = host.store.getBlocksByFlavour('yunke:note');
@@ -58,12 +58,12 @@ describe('helpers/affine-template', () => {
   });
 
   it('should handle empty blocks correctly', () => {
-    const host = affine`
-      <affine-page>
-        <affine-note>
-          <affine-paragraph></affine-paragraph>
-        </affine-note>
-      </affine-page>
+    const host = yunke`
+      <yunke-page>
+        <yunke-note>
+          <yunke-paragraph></yunke-paragraph>
+        </yunke-note>
+      </yunke-page>
     `;
 
     const paragraphBlocks = host.store.getBlocksByFlavour('yunke:paragraph');
@@ -76,20 +76,20 @@ describe('helpers/affine-template', () => {
 
   it('should throw error on invalid template', () => {
     expect(() => {
-      affine`
+      yunke`
         <unknown-tag></unknown-tag>
       `;
     }).toThrow();
   });
 
   it('should handle text selection with anchor and focus', () => {
-    const host = affine`
-      <affine-page id="page">
-        <affine-note id="note">
-          <affine-paragraph id="paragraph-1">Hel<anchor />lo</affine-paragraph>
-          <affine-paragraph id="paragraph-2">Wo<focus />rld</affine-paragraph>
-        </affine-note>
-      </affine-page>
+    const host = yunke`
+      <yunke-page id="page">
+        <yunke-note id="note">
+          <yunke-paragraph id="paragraph-1">Hel<anchor />lo</yunke-paragraph>
+          <yunke-paragraph id="paragraph-2">Wo<focus />rld</yunke-paragraph>
+        </yunke-note>
+      </yunke-page>
     `;
 
     const selection = host.selection.value[0] as TextSelection;
@@ -104,12 +104,12 @@ describe('helpers/affine-template', () => {
   });
 
   it('should handle cursor position', () => {
-    const host = affine`
-      <affine-page id="page">
-        <affine-note id="note">
-          <affine-paragraph id="paragraph-1">Hello<cursor />World</affine-paragraph>
-        </affine-note>
-      </affine-page>
+    const host = yunke`
+      <yunke-page id="page">
+        <yunke-note id="note">
+          <yunke-paragraph id="paragraph-1">Hello<cursor />World</yunke-paragraph>
+        </yunke-note>
+      </yunke-page>
     `;
 
     const selection = host.selection.value[0] as TextSelection;
@@ -122,12 +122,12 @@ describe('helpers/affine-template', () => {
   });
 
   it('should handle selection in empty blocks', () => {
-    const host = affine`
-      <affine-page id="page">
-        <affine-note id="note">
-          <affine-paragraph id="paragraph-1"><cursor /></affine-paragraph>
-        </affine-note>
-      </affine-page>
+    const host = yunke`
+      <yunke-page id="page">
+        <yunke-note id="note">
+          <yunke-paragraph id="paragraph-1"><cursor /></yunke-paragraph>
+        </yunke-note>
+      </yunke-page>
     `;
 
     const selection = host.selection.value[0] as TextSelection;
@@ -140,12 +140,12 @@ describe('helpers/affine-template', () => {
   });
 
   it('should handle single point selection', () => {
-    const host = affine`
-      <affine-page id="page">
-        <affine-note id="note">
-          <affine-paragraph id="paragraph-1">Hello<anchor></anchor>World<focus></focus>Affine</affine-paragraph>
-        </affine-note>
-      </affine-page>
+    const host = yunke`
+      <yunke-page id="page">
+        <yunke-note id="note">
+          <yunke-paragraph id="paragraph-1">Hello<anchor></anchor>World<focus></focus>Yunke</yunke-paragraph>
+        </yunke-note>
+      </yunke-page>
     `;
 
     const selection = host.selection.value[0] as TextSelection;

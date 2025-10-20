@@ -30,11 +30,11 @@ import type { AIItemGroupConfig } from '../../components/ai-item/types.js';
 import { AIProvider } from '../../provider/index.js';
 import { extractSelectedContent } from '../../utils/extract.js';
 import {
-  AFFINE_AI_PANEL_WIDGET,
-  AffineAIPanelWidget,
+  YUNKE_AI_PANEL_WIDGET,
+  YunkeAIPanelWidget,
 } from '../ai-panel/ai-panel.js';
 import { EdgelessCopilotPanel } from '../edgeless-copilot-panel/index.js';
-import { AFFINE_EDGELESS_COPILOT_WIDGET } from './constant.js';
+import { YUNKE_EDGELESS_COPILOT_WIDGET } from './constant.js';
 
 export class EdgelessCopilotWidget extends WidgetComponent<RootBlockModel> {
   static override styles = css`
@@ -42,7 +42,7 @@ export class EdgelessCopilotWidget extends WidgetComponent<RootBlockModel> {
       position: absolute;
       box-sizing: border-box;
       border-radius: 4px;
-      border: 2px dashed var(--affine-brand-color, #1e96eb);
+      border: 2px dashed var(--yunke-brand-color, #1e96eb);
     }
   `;
 
@@ -90,11 +90,11 @@ export class EdgelessCopilotWidget extends WidgetComponent<RootBlockModel> {
       if (!rootBlockId) return;
 
       const input = this.host.view.getWidget(
-        AFFINE_AI_PANEL_WIDGET,
+        YUNKE_AI_PANEL_WIDGET,
         rootBlockId
       );
 
-      if (input instanceof AffineAIPanelWidget) {
+      if (input instanceof YunkeAIPanelWidget) {
         input.setState('input', referenceElement);
         const aiPanel = input;
         // TODO: @xiaojun refactor these scattered config overrides
@@ -301,7 +301,7 @@ export class EdgelessCopilotWidget extends WidgetComponent<RootBlockModel> {
 
     const rect = this._selectionRect;
 
-    return html`<div class="affine-edgeless-ai">
+    return html`<div class="yunke-edgeless-ai">
       <div
         class="copilot-selection-rect"
         style=${styleMap({
@@ -330,14 +330,14 @@ export class EdgelessCopilotWidget extends WidgetComponent<RootBlockModel> {
 }
 
 export const edgelessCopilotWidget = WidgetViewExtension(
-  'affine:page',
-  AFFINE_EDGELESS_COPILOT_WIDGET,
-  literal`${unsafeStatic(AFFINE_EDGELESS_COPILOT_WIDGET)}`
+  'yunke:page',
+  YUNKE_EDGELESS_COPILOT_WIDGET,
+  literal`${unsafeStatic(YUNKE_EDGELESS_COPILOT_WIDGET)}`
 );
 
 declare global {
   interface HTMLElementTagNameMap {
-    [AFFINE_EDGELESS_COPILOT_WIDGET]: EdgelessCopilotWidget;
+    [YUNKE_EDGELESS_COPILOT_WIDGET]: EdgelessCopilotWidget;
   }
 }
 

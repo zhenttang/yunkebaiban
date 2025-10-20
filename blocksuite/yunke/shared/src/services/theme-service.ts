@@ -9,7 +9,7 @@ import { type BlockStdScope, StdIdentifier } from '@blocksuite/std';
 import { Extension } from '@blocksuite/store';
 import { type Signal, signal } from '@preact/signals-core';
 import {
-  type AffineCssVariables,
+  type YunkeCssVariables,
   combinedDarkCssVariables,
   combinedLightCssVariables,
 } from '@toeverything/theme';
@@ -17,7 +17,7 @@ import {
 import { isInsideEdgelessEditor } from '../utils/dom';
 
 export const ThemeExtensionIdentifier = createIdentifier<ThemeExtension>(
-  'AffineThemeExtension'
+  'YunkeThemeExtension'
 );
 
 export interface ThemeExtension {
@@ -26,7 +26,7 @@ export interface ThemeExtension {
 }
 
 export const ThemeProvider = createIdentifier<ThemeService>(
-  'AffineThemeProvider'
+  'YunkeThemeProvider'
 );
 
 export class ThemeService extends Extension {
@@ -79,7 +79,7 @@ export class ThemeService extends Extension {
    * `rgba(255,0,0)`
    * `#fff`
    * `light-dark(#fff, #000)`
-   * `var(--affine-palette-shape-blue)`
+   * `var(--yunke-palette-shape-blue)`
    * ```
    */
   generateColorProperty(
@@ -113,7 +113,7 @@ export class ThemeService extends Extension {
    * ```
    * `rgba(255,0,0)`
    * `#fff`
-   * `--affine-palette-shape-blue`
+   * `--yunke-palette-shape-blue`
    * ```
    */
   getColorValue(
@@ -140,7 +140,7 @@ export class ThemeService extends Extension {
       if (property.endsWith('transparent')) {
         return DefaultTheme.transparent;
       }
-      const key = property as keyof AffineCssVariables;
+      const key = property as keyof YunkeCssVariables;
       // V1 theme
       const color =
         theme === ColorScheme.Dark

@@ -43,8 +43,8 @@ import { AIContext } from './utils/context';
 import { findNoteBlockModel } from './utils/edgeless';
 import { copyTextAnswer } from './utils/editor-actions';
 import { getSelections } from './utils/selection-utils';
-import type { AffineAIPanelWidget } from './widgets/ai-panel/ai-panel';
-import type { AffineAIPanelWidgetConfig } from './widgets/ai-panel/type';
+import type { YunkeAIPanelWidget } from './widgets/ai-panel/ai-panel';
+import type { YunkeAIPanelWidgetConfig } from './widgets/ai-panel/type';
 
 function asCaption<T extends keyof BlockSuitePresets.AIActions>(
   host: EditorHost,
@@ -103,7 +103,7 @@ function createNewNote(host: EditorHost): AIItemConfig {
       doc.transact(() => {
         if (!doc.root || !panel.answer) return;
         const noteBlockId = doc.addBlock(
-          'affine:note',
+          'yunke:note',
           {
             xywh: newBound.serialize(),
             displayMode: NoteDisplayMode.EdgelessOnly,
@@ -140,7 +140,7 @@ function createNewNote(host: EditorHost): AIItemConfig {
 }
 
 function buildPageResponseConfig<T extends keyof BlockSuitePresets.AIActions>(
-  panel: AffineAIPanelWidget,
+  panel: YunkeAIPanelWidget,
   id: T,
   ctx: AIContext
 ) {
@@ -227,7 +227,7 @@ function buildPageResponseConfig<T extends keyof BlockSuitePresets.AIActions>(
   ];
 }
 
-export function buildErrorResponseConfig(panel: AffineAIPanelWidget) {
+export function buildErrorResponseConfig(panel: YunkeAIPanelWidget) {
   return [
     {
       name: '',
@@ -257,7 +257,7 @@ export function buildErrorResponseConfig(panel: AffineAIPanelWidget) {
 }
 
 export function buildFinishConfig<T extends keyof BlockSuitePresets.AIActions>(
-  panel: AffineAIPanelWidget,
+  panel: YunkeAIPanelWidget,
   id: T,
   ctx: AIContext
 ) {
@@ -267,7 +267,7 @@ export function buildFinishConfig<T extends keyof BlockSuitePresets.AIActions>(
   };
 }
 
-export function buildErrorConfig(panel: AffineAIPanelWidget) {
+export function buildErrorConfig(panel: YunkeAIPanelWidget) {
   return {
     upgrade: () => {
       AIProvider.slots.requestUpgradePlan.next({ host: panel.host });
@@ -290,7 +290,7 @@ export function buildGeneratingConfig(generatingIcon?: TemplateResult<1>) {
   };
 }
 
-export function buildCopyConfig(panel: AffineAIPanelWidget) {
+export function buildCopyConfig(panel: YunkeAIPanelWidget) {
   return {
     allowed: true,
     onCopy: () => {
@@ -300,9 +300,9 @@ export function buildCopyConfig(panel: AffineAIPanelWidget) {
 }
 
 export function buildAIPanelConfig(
-  panel: AffineAIPanelWidget,
+  panel: YunkeAIPanelWidget,
   framework: FrameworkProvider
-): AffineAIPanelWidgetConfig {
+): YunkeAIPanelWidgetConfig {
   const ctx = new AIContext();
   const searchService = framework.get(AINetworkSearchService);
   return {

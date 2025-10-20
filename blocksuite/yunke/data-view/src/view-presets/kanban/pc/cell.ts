@@ -17,7 +17,7 @@ import type { KanbanViewSelection } from '../selection';
 import type { KanbanViewUILogic } from './kanban-view-ui-logic.js';
 
 const styles = css`
-  affine-data-view-kanban-cell {
+  yunke-data-view-kanban-cell {
     border-radius: 4px;
     display: flex;
     align-items: center;
@@ -27,11 +27,11 @@ const styles = css`
     box-sizing: border-box;
   }
 
-  affine-data-view-kanban-cell:hover {
-    background-color: var(--affine-hover-color);
+  yunke-data-view-kanban-cell:hover {
+    background-color: var(--yunke-hover-color);
   }
 
-  affine-data-view-kanban-cell .icon {
+  yunke-data-view-kanban-cell .icon {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -40,11 +40,11 @@ const styles = css`
     height: var(--data-view-cell-text-line-height);
   }
 
-  affine-data-view-kanban-cell .icon svg {
+  yunke-data-view-kanban-cell .icon svg {
     width: 16px;
     height: 16px;
-    fill: var(--affine-icon-color);
-    color: var(--affine-icon-color);
+    fill: var(--yunke-icon-color);
+    color: var(--yunke-icon-color);
   }
 
   .kanban-cell {
@@ -134,7 +134,7 @@ export class KanbanCell extends SignalWatcher(
     this.view.lockRows(this.isEditing$.value);
     this.dataset['editing'] = `${this.isEditing$.value}`;
     this.style.border = this.isFocus$.value
-      ? '1px solid var(--affine-primary-color)'
+      ? '1px solid var(--yunke-primary-color)'
       : '';
     this.style.boxShadow = this.isEditing$.value
       ? '0px 0px 0px 2px rgba(30, 150, 235, 0.30)'
@@ -180,6 +180,6 @@ export class KanbanCell extends SignalWatcher(
 
 declare global {
   interface HTMLElementTagNameMap {
-    'affine-data-view-kanban-cell': KanbanCell;
+    'yunke-data-view-kanban-cell': KanbanCell;
   }
 }

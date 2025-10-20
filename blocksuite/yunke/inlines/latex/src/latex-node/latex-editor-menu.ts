@@ -2,7 +2,7 @@ import { ColorScheme } from '@blocksuite/yunke-model';
 import type { RichText } from '@blocksuite/yunke-rich-text';
 import { ThemeProvider } from '@blocksuite/yunke-shared/services';
 import { unsafeCSSVar } from '@blocksuite/yunke-shared/theme';
-import type { AffineTextAttributes } from '@blocksuite/yunke-shared/types';
+import type { YunkeTextAttributes } from '@blocksuite/yunke-shared/types';
 import { SignalWatcher, WithDisposable } from '@blocksuite/global/lit';
 import { noop } from '@blocksuite/global/utils';
 import { DoneIcon } from '@blocksuite/icons/lit';
@@ -17,7 +17,7 @@ import * as Y from 'yjs';
 import { LatexEditorUnitSpecExtension } from '../inline-spec';
 
 export const LatexEditorInlineManagerExtension =
-  InlineManagerExtension<AffineTextAttributes>({
+  InlineManagerExtension<YunkeTextAttributes>({
     id: 'latex-inline-editor',
     enableMarkdown: false,
     specs: [LatexEditorUnitSpecExtension.identifier],

@@ -349,12 +349,12 @@ export function createTextActions<
           }
         };
 
-        return html`<affine-size-dropdown-menu
+        return html`<yunke-size-dropdown-menu
           @select=${onPick}
           .label="${'字体大小'}"
           .sizes=${FONT_SIZE_LIST}
           .size$=${fontSize$}
-        ></affine-size-dropdown-menu>`;
+        ></yunke-size-dropdown-menu>`;
       },
     },
     {

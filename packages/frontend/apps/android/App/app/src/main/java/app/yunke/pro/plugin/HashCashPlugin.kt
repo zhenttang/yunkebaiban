@@ -1,4 +1,4 @@
-package app.affine.pro.plugin
+package app.yunke.pro.plugin
 
 import com.getcapacitor.JSObject
 import com.getcapacitor.Plugin
@@ -7,7 +7,7 @@ import com.getcapacitor.PluginMethod
 import com.getcapacitor.annotation.CapacitorPlugin
 import kotlinx.coroutines.Dispatchers
 import timber.log.Timber
-import uniffi.affine_mobile_native.hashcashMint
+import uniffi.yunke_mobile_native.hashcashMint
 
 @CapacitorPlugin(name = "HashCash")
 class HashCashPlugin : Plugin() {

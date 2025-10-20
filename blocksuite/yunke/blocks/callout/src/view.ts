@@ -11,7 +11,7 @@ import { calloutSlashMenuConfig } from './configs/slash-menu';
 import { effects } from './effects';
 
 export class CalloutViewExtension extends ViewExtensionProvider {
-  override name = 'affine-callout-block';
+  override name = 'yunke-callout-block';
 
   override effect() {
     super.effect();
@@ -22,7 +22,7 @@ export class CalloutViewExtension extends ViewExtensionProvider {
     super.setup(context);
     context.register([
       FlavourExtension('yunke:callout'),
-      BlockViewExtension('yunke:callout', literal`affine-callout`),
+      BlockViewExtension('yunke:callout', literal`yunke-callout`),
       CalloutKeymapExtension,
       SlashMenuConfigExtension('yunke:callout', calloutSlashMenuConfig),
     ]);

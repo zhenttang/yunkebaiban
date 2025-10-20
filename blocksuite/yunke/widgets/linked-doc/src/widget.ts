@@ -26,7 +26,7 @@ import { styleMap } from 'lit/directives/style-map.js';
 import { literal, unsafeStatic } from 'lit/static-html.js';
 
 import {
-  AFFINE_LINKED_DOC_WIDGET,
+  YUNKE_LINKED_DOC_WIDGET,
   getMenus,
   type LinkedDocContext,
   type LinkedWidgetConfig,
@@ -34,7 +34,7 @@ import {
 } from './config.js';
 import { linkedDocWidgetStyles } from './styles.js';
 
-export class AffineLinkedDocWidget extends WidgetComponent<RootBlockModel> {
+export class YunkeLinkedDocWidget extends WidgetComponent<RootBlockModel> {
   static override styles = linkedDocWidgetStyles;
 
   private _context: LinkedDocContext | null = null;
@@ -87,16 +87,16 @@ export class AffineLinkedDocWidget extends WidgetComponent<RootBlockModel> {
   private readonly _renderLinkedDocMenu = () => {
     if (!this.block?.rootComponent) return nothing;
 
-    return html`<affine-mobile-linked-doc-menu
+    return html`<yunke-mobile-linked-doc-menu
       .context=${this._context}
       .rootComponent=${this.block.rootComponent}
-    ></affine-mobile-linked-doc-menu>`;
+    ></yunke-mobile-linked-doc-menu>`;
   };
 
   private readonly _renderLinkedDocPopover = () => {
-    return html`<affine-linked-doc-popover
+    return html`<yunke-linked-doc-popover
       .context=${this._context}
-    ></affine-linked-doc-popover>`;
+    ></yunke-linked-doc-popover>`;
   };
 
   private _renderInputMask() {
@@ -333,12 +333,12 @@ export class AffineLinkedDocWidget extends WidgetComponent<RootBlockModel> {
 
 export const linkedDocWidget = WidgetViewExtension(
   'yunke:page',
-  AFFINE_LINKED_DOC_WIDGET,
-  literal`${unsafeStatic(AFFINE_LINKED_DOC_WIDGET)}`
+  YUNKE_LINKED_DOC_WIDGET,
+  literal`${unsafeStatic(YUNKE_LINKED_DOC_WIDGET)}`
 );
 
 declare global {
   interface HTMLElementTagNameMap {
-    [AFFINE_LINKED_DOC_WIDGET]: AffineLinkedDocWidget;
+    [YUNKE_LINKED_DOC_WIDGET]: YunkeLinkedDocWidget;
   }
 }

@@ -7,16 +7,16 @@ import { css, html, nothing } from 'lit';
 import { state } from 'lit/decorators.js';
 import { literal, unsafeStatic } from 'lit/static-html.js';
 
-export const AFFINE_EDGELESS_ZOOM_TOOLBAR_WIDGET =
-  'affine-edgeless-zoom-toolbar-widget';
+export const YUNKE_EDGELESS_ZOOM_TOOLBAR_WIDGET =
+  'yunke-edgeless-zoom-toolbar-widget';
 
-export class AffineEdgelessZoomToolbarWidget extends WidgetComponent<RootBlockModel> {
+export class YunkeEdgelessZoomToolbarWidget extends WidgetComponent<RootBlockModel> {
   static override styles = css`
     :host {
       position: absolute;
       bottom: 20px;
       left: 12px;
-      z-index: var(--affine-z-index-popover);
+      z-index: var(--yunke-z-index-popover);
       display: flex;
       justify-content: center;
       -webkit-user-select: none;
@@ -89,6 +89,6 @@ export class AffineEdgelessZoomToolbarWidget extends WidgetComponent<RootBlockMo
 
 export const edgelessZoomToolbarWidget = WidgetViewExtension(
   'yunke:page',
-  AFFINE_EDGELESS_ZOOM_TOOLBAR_WIDGET,
-  literal`${unsafeStatic(AFFINE_EDGELESS_ZOOM_TOOLBAR_WIDGET)}`
+  YUNKE_EDGELESS_ZOOM_TOOLBAR_WIDGET,
+  literal`${unsafeStatic(YUNKE_EDGELESS_ZOOM_TOOLBAR_WIDGET)}`
 );

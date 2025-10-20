@@ -19,7 +19,7 @@ export enum OAuthProviderType {
 
 export enum ServerDeploymentType {
   Selfhosted = 'selfhosted',
-  Affine = 'affine',
+  Yunke = 'yunke',
 }
 
 export enum ServerFeature {

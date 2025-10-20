@@ -23,7 +23,7 @@ export class KanbanDragController implements ReactiveController {
       evt.x - offsetLeft,
       evt.y - offsetTop
     );
-    const currentGroup = ele.closest('affine-data-view-kanban-group');
+    const currentGroup = ele.closest('yunke-data-view-kanban-group');
     const drag = startDrag<
       | { type: 'out'; callback: () => void }
       | {
@@ -160,12 +160,12 @@ export class KanbanDragController implements ReactiveController {
           const event = context.get('pointerState').raw;
           const target = event.target;
           if (target instanceof Element) {
-            const cell = target.closest('affine-data-view-kanban-cell');
+            const cell = target.closest('yunke-data-view-kanban-cell');
             if (cell?.isEditing$.value) {
               return;
             }
             cell?.selectCurrentCell(false);
-            const card = target.closest('affine-data-view-kanban-card');
+            const card = target.closest('yunke-data-view-kanban-card');
             if (card) {
               this.dragStart(card, event);
             }
@@ -185,7 +185,7 @@ const createDragPreview = (card: KanbanCard, x: number, y: number) => {
   kanbanCard.cardId = card.cardId;
   kanbanCard.kanbanViewLogic = card.kanbanViewLogic;
   kanbanCard.isFocus$.value = true;
-  kanbanCard.style.backgroundColor = 'var(--affine-background-primary-color)';
+  kanbanCard.style.backgroundColor = 'var(--yunke-background-primary-color)';
   div.append(kanbanCard);
   div.className = 'with-data-view-css-variable';
   div.style.width = `${card.getBoundingClientRect().width}px`;
@@ -211,7 +211,7 @@ const createDropPreview = () => {
   const div = document.createElement('div');
   div.style.height = '2px';
   div.style.borderRadius = '1px';
-  div.style.backgroundColor = 'var(--affine-primary-color)';
+  div.style.backgroundColor = 'var(--yunke-primary-color)';
   div.style.boxShadow = '0px 0px 8px 0px rgba(30, 150, 235, 0.35)';
   return {
     display(
@@ -244,7 +244,7 @@ const getCardByPoint = (
   y: number
 ): KanbanCard | undefined => {
   const cards = Array.from(
-    group.querySelectorAll('affine-data-view-kanban-card')
+    group.querySelectorAll('yunke-data-view-kanban-card')
   );
   const positions = cards.map(v => {
     const rect = v.getBoundingClientRect();

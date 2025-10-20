@@ -365,7 +365,7 @@ export function BlockCommandsSidebar() {
           description: '转换为普通文本段落',
           icon: <div style={{ fontSize: '14px', fontWeight: 'bold' }}>¶</div>,
           group: 'basic',
-          action: () => executeSlashCommand('paragraph', { flavour: 'affine:paragraph', type: 'text' }),
+          action: () => executeSlashCommand('paragraph', { flavour: 'yunke:paragraph', type: 'text' }),
         },
         {
           id: 'heading1',
@@ -373,7 +373,7 @@ export function BlockCommandsSidebar() {
           description: '转换为大号标题',
           icon: <div style={{ fontSize: '12px', fontWeight: 'bold' }}>H1</div>,
           group: 'basic',
-          action: () => executeSlashCommand('heading1', { flavour: 'affine:paragraph', type: 'h1' }),
+          action: () => executeSlashCommand('heading1', { flavour: 'yunke:paragraph', type: 'h1' }),
         },
         {
           id: 'heading2',
@@ -381,7 +381,7 @@ export function BlockCommandsSidebar() {
           description: '转换为中号标题',
           icon: <div style={{ fontSize: '12px', fontWeight: 'bold' }}>H2</div>,
           group: 'basic',
-          action: () => executeSlashCommand('heading2', { flavour: 'affine:paragraph', type: 'h2' }),
+          action: () => executeSlashCommand('heading2', { flavour: 'yunke:paragraph', type: 'h2' }),
         },
         {
           id: 'heading3',
@@ -389,7 +389,7 @@ export function BlockCommandsSidebar() {
           description: '转换为小号标题',
           icon: <div style={{ fontSize: '12px', fontWeight: 'bold' }}>H3</div>,
           group: 'basic',
-          action: () => executeSlashCommand('heading3', { flavour: 'affine:paragraph', type: 'h3' }),
+          action: () => executeSlashCommand('heading3', { flavour: 'yunke:paragraph', type: 'h3' }),
         },
         {
           id: 'bulleted-list',
@@ -397,7 +397,7 @@ export function BlockCommandsSidebar() {
           description: '转换为项目符号列表',
           icon: <div style={{ fontSize: '16px', fontWeight: 'bold' }}>•</div>,
           group: 'basic',
-          action: () => executeSlashCommand('bulleted-list', { flavour: 'affine:list', type: 'bulleted' }),
+          action: () => executeSlashCommand('bulleted-list', { flavour: 'yunke:list', type: 'bulleted' }),
         },
         {
           id: 'numbered-list',
@@ -405,7 +405,7 @@ export function BlockCommandsSidebar() {
           description: '转换为编号列表',
           icon: <div style={{ fontSize: '12px', fontWeight: 'bold' }}>1.</div>,
           group: 'basic',
-          action: () => executeSlashCommand('numbered-list', { flavour: 'affine:list', type: 'numbered' }),
+          action: () => executeSlashCommand('numbered-list', { flavour: 'yunke:list', type: 'numbered' }),
         },
         {
           id: 'quote',
@@ -413,7 +413,7 @@ export function BlockCommandsSidebar() {
           description: '转换为引用块',
           icon: <div style={{ fontSize: '16px', fontWeight: 'bold' }}>"</div>,
           group: 'basic',
-          action: () => executeSlashCommand('quote', { flavour: 'affine:paragraph', type: 'quote' }),
+          action: () => executeSlashCommand('quote', { flavour: 'yunke:paragraph', type: 'quote' }),
         },
         {
           id: 'code',
@@ -421,7 +421,7 @@ export function BlockCommandsSidebar() {
           description: '转换为代码块',
           icon: <CodeIcon />,
           group: 'basic',
-          action: () => executeSlashCommand('code', { flavour: 'affine:code' }),
+          action: () => executeSlashCommand('code', { flavour: 'yunke:code' }),
         },
         {
           id: 'divider',
@@ -429,7 +429,7 @@ export function BlockCommandsSidebar() {
           description: '插入分隔线',
           icon: <div style={{ fontSize: '16px', fontWeight: 'bold' }}>—</div>,
           group: 'basic',
-          action: () => executeSlashCommand('divider', { flavour: 'affine:divider' }),
+          action: () => executeSlashCommand('divider', { flavour: 'yunke:divider' }),
         },
       ],
     },

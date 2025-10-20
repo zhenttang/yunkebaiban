@@ -17,7 +17,7 @@ export const InviteInput = ({ onFocus }: { onFocus: () => void }) => {
         paddingLeft: '0',
         fontSize: cssVar('fontSm'),
       }}
-      placeholder={t['com.affine.share-menu.invite-editor.placeholder']()}
+      placeholder={t['com.yunke.share-menu.invite-editor.placeholder']()}
     />
   );
 };

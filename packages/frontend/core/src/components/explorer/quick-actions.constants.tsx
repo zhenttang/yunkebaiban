@@ -29,33 +29,33 @@ export type QuickActionKey = ExtractPrefixKeys<
 
 const QUICK_ACTION_MAP: Record<QuickActionKey, QuickActionItem> = {
   quickFavorite: {
-    name: 'com.affine.all-docs.quick-action.favorite',
+    name: 'com.yunke.all-docs.quick-action.favorite',
     Component: QuickFavorite,
   },
   quickTrash: {
-    name: 'com.affine.all-docs.quick-action.trash',
+    name: 'com.yunke.all-docs.quick-action.trash',
     Component: QuickDelete,
   },
   quickSplit: {
-    name: 'com.affine.all-docs.quick-action.split',
+    name: 'com.yunke.all-docs.quick-action.split',
     Component: QuickSplit,
     disabled: !BUILD_CONFIG.isElectron,
   },
   quickTab: {
-    name: 'com.affine.all-docs.quick-action.tab',
+    name: 'com.yunke.all-docs.quick-action.tab',
     Component: QuickTab,
   },
   quickSelect: {
-    name: 'com.affine.all-docs.quick-action.select',
+    name: 'com.yunke.all-docs.quick-action.select',
     Component: QuickSelect,
   },
   quickDeletePermanently: {
-    name: 'com.affine.all-docs.quick-action.delete-permanently',
+    name: 'com.yunke.all-docs.quick-action.delete-permanently',
     Component: QuickDeletePermanently,
     disabled: true, // can only be controlled in code
   },
   quickRestore: {
-    name: 'com.affine.all-docs.quick-action.restore',
+    name: 'com.yunke.all-docs.quick-action.restore',
     Component: QuickRestore,
     disabled: true, // can only be controlled in code
   },

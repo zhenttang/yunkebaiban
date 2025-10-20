@@ -13,7 +13,7 @@ export const TagListHeader = ({ onOpen }: { onOpen: () => void }) => {
         onClick={onOpen}
         data-testid="all-tags-new-button"
       >
-        {t['com.affine.tags.empty.new-tag-button']()}
+        {t['com.yunke.tags.empty.new-tag-button']()}
       </Button>
     </div>
   );

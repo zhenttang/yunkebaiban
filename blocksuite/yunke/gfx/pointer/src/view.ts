@@ -10,7 +10,7 @@ import { SnapOverlay } from './snap/snap-overlay';
 import { EmptyTool, PanTool } from './tools';
 
 export class PointerViewExtension extends ViewExtensionProvider {
-  override name = 'affine-pointer-gfx';
+  override name = 'yunke-pointer-gfx';
 
   override effect() {
     super.effect();

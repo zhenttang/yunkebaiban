@@ -17,7 +17,7 @@ import {
 } from '../../../quick-setting-bar/context.js';
 
 const styles = css`
-  .affine-database-filter-button {
+  .yunke-database-filter-button {
     display: flex;
     align-items: center;
     gap: 6px;
@@ -28,12 +28,12 @@ const styles = css`
     font-size: 20px;
   }
 
-  .affine-database-filter-button:hover,
-  .affine-database-filter-button.active {
-    background-color: var(--affine-hover-color);
+  .yunke-database-filter-button:hover,
+  .yunke-database-filter-button.active {
+    background-color: var(--yunke-hover-color);
   }
 
-  .affine-database-filter-button {
+  .yunke-database-filter-button {
   }
 `;
 
@@ -97,7 +97,7 @@ export class DataViewHeaderToolsFilter extends WidgetBase {
     return html` <div
       @click="${this.clickFilter}"
       style="${style}"
-      class="affine-database-filter-button"
+      class="yunke-database-filter-button"
     >
       ${FilterIcon()}
     </div>`;

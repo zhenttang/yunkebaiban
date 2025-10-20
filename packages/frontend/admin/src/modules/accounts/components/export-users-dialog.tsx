@@ -8,7 +8,7 @@ import {
   DialogTitle,
 } from '@yunke/admin/components/ui/dialog';
 import { Label } from '@yunke/admin/components/ui/label';
-import { useAsyncCallback } from '@yunke/core/components/hooks/affine-async-hooks';
+import { useAsyncCallback } from '@yunke/core/components/hooks/yunke-async-hooks';
 import { CopyIcon } from '@blocksuite/icons/rc';
 import { useCallback, useState } from 'react';
 import { toast } from 'sonner';

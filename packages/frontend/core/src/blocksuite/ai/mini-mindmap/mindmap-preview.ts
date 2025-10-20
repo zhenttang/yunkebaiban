@@ -67,14 +67,14 @@ export class MiniMindmapPreview extends WithDisposable(LitElement) {
 
     .template-item {
       box-sizing: border-box;
-      border: 2px solid var(--affine-border-color);
+      border: 2px solid var(--yunke-border-color);
       border-radius: 4px;
       padding: 4px 6px;
     }
 
     .template-item.active,
     .template-item:hover {
-      border-color: var(--affine-brand-color);
+      border-color: var(--yunke-brand-color);
     }
 
     .template-item > svg {
@@ -107,8 +107,8 @@ export class MiniMindmapPreview extends WithDisposable(LitElement) {
     collection.meta.initialize();
     const doc = collection.createDoc('doc:home').getStore();
     doc.load();
-    const rootId = doc.addBlock('affine:page', {});
-    const surfaceId = doc.addBlock('affine:surface', {}, rootId);
+    const rootId = doc.addBlock('yunke:page', {});
+    const surfaceId = doc.addBlock('yunke:surface', {}, rootId);
     const surface = doc.getModelById(surfaceId) as SurfaceBlockModel;
     doc.resetHistory();
 
@@ -174,7 +174,7 @@ export class MiniMindmapPreview extends WithDisposable(LitElement) {
       <div
         style=${styleMap({
           height: this.height + 'px',
-          border: '1px solid var(--affine-border-color)',
+          border: '1px solid var(--yunke-border-color)',
           borderRadius: '4px',
         })}
       >

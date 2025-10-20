@@ -183,8 +183,8 @@ const MemberItem = ({
         if (result) {
           setOpen(false);
           notify.success({
-            title: t['com.affine.payment.member.team.assign.notify.title'](),
-            message: t['com.affine.payment.member.team.assign.notify.message']({
+            title: t['com.yunke.payment.member.team.assign.notify.title'](),
+            message: t['com.yunke.payment.member.team.assign.notify.message']({
               name: member.name || member.email || member.id,
             }),
           });
@@ -273,21 +273,21 @@ const getMemberStatus = (member: Member): I18nString => {
     case WorkspaceMemberStatus.NeedMoreSeatAndReview:
       return 'insufficient-team-seat';
     case WorkspaceMemberStatus.Pending:
-      return 'com.affine.settings.member.status.pending';
+      return 'com.yunke.settings.member.status.pending';
     case WorkspaceMemberStatus.UnderReview:
-      return 'com.affine.settings.member.status.under-review';
+      return 'com.yunke.settings.member.status.under-review';
     case WorkspaceMemberStatus.AllocatingSeat:
-      return 'com.affine.settings.member.status.allocating-seat';
+      return 'com.yunke.settings.member.status.allocating-seat';
     case WorkspaceMemberStatus.Accepted:
       switch (member.permission) {
         case Permission.Owner:
-          return 'com.affine.settings.member.role.owner';
+          return 'com.yunke.settings.member.role.owner';
         case Permission.Admin:
-          return 'com.affine.settings.member.role.admin';
+          return 'com.yunke.settings.member.role.admin';
         case Permission.Collaborator:
-          return 'com.affine.settings.member.role.collaborator';
+          return 'com.yunke.settings.member.role.collaborator';
         default:
-          return 'com.affine.settings.member.role.member';
+          return 'com.yunke.settings.member.role.member';
       }
   }
 };
@@ -315,7 +315,7 @@ export const MemberListFallback = ({
       className={styles.membersFallback}
     >
       <Loading size={20} />
-      <span>{t['com.affine.settings.member.loading']()}</span>
+      <span>{t['com.yunke.settings.member.loading']()}</span>
     </div>
   );
 };

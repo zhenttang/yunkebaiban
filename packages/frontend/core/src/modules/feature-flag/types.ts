@@ -15,7 +15,7 @@ export type FlagInfo = {
   feedbackLink?: string;
 } & (
   | {
-      category: 'affine';
+      category: 'yunke';
     }
   | {
       category: 'blocksuite';

@@ -34,7 +34,7 @@ export class ListLayoutHandlerExtension extends BlockLayoutHandlerExtension<List
 
     // Find the list items within this specific list component
     const listItemSelector =
-      '.affine-list-block-container .affine-list-rich-text-wrapper [data-v-text="true"]';
+      '.yunke-list-block-container .yunke-list-rich-text-wrapper [data-v-text="true"]';
     const listItemNodes = component.querySelectorAll(listItemSelector);
 
     if (listItemNodes.length === 0) return null;
@@ -49,7 +49,7 @@ export class ListLayoutHandlerExtension extends BlockLayoutHandlerExtension<List
 
     listItemNodes.forEach(listItemNode => {
       const listItemWrapper = listItemNode.closest(
-        '.affine-list-rich-text-wrapper'
+        '.yunke-list-rich-text-wrapper'
       );
       if (!listItemWrapper) return;
 
@@ -59,12 +59,12 @@ export class ListLayoutHandlerExtension extends BlockLayoutHandlerExtension<List
       let collapsed = false;
       let prefix = '';
 
-      if (listItemWrapper.classList.contains('affine-list--checked')) {
+      if (listItemWrapper.classList.contains('yunke-list--checked')) {
         checked = true;
       }
 
       const parentListBlock = listItemWrapper.closest(
-        '.affine-list-block-container'
+        '.yunke-list-block-container'
       )?.parentElement;
       if (parentListBlock) {
         if (parentListBlock.dataset.listType === 'numbered') {

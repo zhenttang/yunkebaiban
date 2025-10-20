@@ -46,18 +46,18 @@ export const MembersRow = ({ onClick }: { onClick: () => void }) => {
     }
     switch (grantedUserCount) {
       case 2:
-        return t['com.affine.share-menu.member-management.member-count-2']({
+        return t['com.yunke.share-menu.member-management.member-count-2']({
           member1: topThreeMembers[0].name,
           member2: topThreeMembers[1].name,
         });
       case 3:
-        return t['com.affine.share-menu.member-management.member-count-3']({
+        return t['com.yunke.share-menu.member-management.member-count-3']({
           member1: topThreeMembers[0].name,
           member2: topThreeMembers[1].name,
           member3: topThreeMembers[2].name,
         });
       default:
-        return t['com.affine.share-menu.member-management.member-count-more']({
+        return t['com.yunke.share-menu.member-management.member-count-more']({
           member1: topThreeMembers[0].name,
           member2: topThreeMembers[1].name,
           memberCount: (grantedUserCount - 2).toString(),
@@ -137,7 +137,7 @@ export const MembersRow = ({ onClick }: { onClick: () => void }) => {
           <div className={styles.OwnerStyle}>{t['Owner']()}</div>
         </>
       ) : (
-        <div>{t['com.affine.share-menu.invite-editor.manage-members']()}</div>
+        <div>{t['com.yunke.share-menu.invite-editor.manage-members']()}</div>
       )}
       <div className={styles.IconButtonStyle}>
         <ArrowRightSmallIcon />

@@ -26,7 +26,7 @@ export const FontStyleSetting = () => {
   );
 
   return (
-    <RowLayout label={t['com.affine.mobile.setting.appearance.font']()}>
+    <RowLayout label={t['com.yunke.mobile.setting.appearance.font']()}>
       <SettingDropdownSelect<FontFamily>
         options={options}
         value={fontFamily}

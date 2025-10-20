@@ -52,16 +52,16 @@ import { styleMap } from 'lit/directives/style-map.js';
 })
 export class SurfaceRefBlockComponent extends BlockComponent<SurfaceRefBlockModel> {
   static override styles = css`
-    affine-surface-ref {
+    yunke-surface-ref {
       position: relative;
     }
 
-    affine-surface-ref:not(:hover)
-      affine-surface-ref-toolbar:not([data-open-menu-display='show']) {
+    yunke-surface-ref:not(:hover)
+      yunke-surface-ref-toolbar:not([data-open-menu-display='show']) {
       display: none;
     }
 
-    .affine-surface-ref {
+    .yunke-surface-ref {
       position: relative;
       user-select: none;
       margin: 10px 0;
@@ -72,22 +72,22 @@ export class SurfaceRefBlockComponent extends BlockComponent<SurfaceRefBlockMode
       overflow: hidden;
     }
 
-    .affine-surface-ref.focused {
+    .yunke-surface-ref.focused {
       border-color: ${unsafeCSSVarV2('edgeless/frame/border/active')};
     }
 
     @media print {
-      .affine-surface-ref {
+      .yunke-surface-ref {
         outline: none !important;
       }
     }
 
     .ref-content {
       position: relative;
-      background-color: var(--affine-background-primary-color);
+      background-color: var(--yunke-background-primary-color);
       background: radial-gradient(
-        var(--affine-edgeless-grid-color) 1px,
-        var(--affine-background-primary-color) 1px
+        var(--yunke-edgeless-grid-color) 1px,
+        var(--yunke-background-primary-color) 1px
       );
     }
 
@@ -129,7 +129,7 @@ export class SurfaceRefBlockComponent extends BlockComponent<SurfaceRefBlockMode
     return (
       this.isConnected &&
       // prevent surface-ref from render itself in loop
-      !this.parentComponent?.closest('affine-surface-ref')
+      !this.parentComponent?.closest('yunke-surface-ref')
     );
   }
 
@@ -454,7 +454,7 @@ export class SurfaceRefBlockComponent extends BlockComponent<SurfaceRefBlockMode
     return html`
       <div
         class=${classMap({
-          'affine-surface-ref': true,
+          'yunke-surface-ref': true,
           focused: this.selected$.value,
         })}
         @click=${this._handleClick}
@@ -480,10 +480,10 @@ export class SurfaceRefBlockComponent extends BlockComponent<SurfaceRefBlockMode
     this.std.get(DocModeProvider).setEditorMode('edgeless');
   }
 
-  @query('.affine-surface-ref')
+  @query('.yunke-surface-ref')
   accessor hoverableContainer!: HTMLDivElement;
 
-  @query('affine-surface-ref > block-caption-editor')
+  @query('yunke-surface-ref > block-caption-editor')
   accessor captionElement!: BlockCaptionEditor;
 
   @query('editor-host')
@@ -492,6 +492,6 @@ export class SurfaceRefBlockComponent extends BlockComponent<SurfaceRefBlockMode
 
 declare global {
   interface HTMLElementTagNameMap {
-    'affine-surface-ref': SurfaceRefBlockComponent;
+    'yunke-surface-ref': SurfaceRefBlockComponent;
   }
 }

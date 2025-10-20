@@ -77,7 +77,7 @@ export class EdgelessColorButton extends LitElement {
     }
 
     :host([active])::after {
-      border: 1.5px solid var(--affine-primary-color);
+      border: 1.5px solid var(--yunke-primary-color);
     }
   `;
 
@@ -131,7 +131,7 @@ export class EdgelessColorPanel extends LitElement {
       padding: 0 2px;
       gap: 14px;
       box-sizing: border-box;
-      background: var(--affine-background-overlay-panel-color);
+      background: var(--yunke-background-overlay-panel-color);
     }
 
     :host(.one-way.small) {

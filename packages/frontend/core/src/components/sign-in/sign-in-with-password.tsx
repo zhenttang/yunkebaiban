@@ -7,7 +7,7 @@ import {
   AuthInput,
 } from '@yunke/component/auth-components';
 import { Button } from '@yunke/component/ui/button';
-import { useAsyncCallback } from '@yunke/core/components/hooks/affine-async-hooks';
+import { useAsyncCallback } from '@yunke/core/components/hooks/yunke-async-hooks';
 import { AuthService } from '@yunke/core/modules/cloud';
 import type { AuthSessionStatus } from '@yunke/core/modules/cloud/entities/session';
 import { Unreachable } from '@yunke/env/constant';
@@ -48,8 +48,8 @@ export const SignInWithPasswordStep = ({
   useEffect(() => {
     if (loginStatus === 'authenticated') {
       notify.success({
-        title: t['com.affine.auth.toast.title.signed-in'](),
-        message: t['com.affine.auth.toast.message.signed-in'](),
+        title: t['com.yunke.auth.toast.title.signed-in'](),
+        message: t['com.yunke.auth.toast.message.signed-in'](),
       });
     }
     onAuthenticated?.(loginStatus);
@@ -86,26 +86,26 @@ export const SignInWithPasswordStep = ({
   return (
     <AuthContainer>
       <AuthHeader
-        title={t['com.affine.auth.sign.in']()}
+        title={t['com.yunke.auth.sign.in']()}
       />
 
       <AuthContent>
         <AuthInput
-          label={t['com.affine.settings.email']()}
+          label={t['com.yunke.settings.email']()}
           disabled={true}
           value={email}
         />
         <AuthInput
           autoFocus
           data-testid="password-input"
-          label={t['com.affine.auth.password']()}
+          label={t['com.yunke.auth.password']()}
           value={password}
           type="password"
           onChange={useCallback((value: string) => {
             setPassword(value);
           }, [])}
           error={passwordError}
-          errorHint={t['com.affine.auth.password.error']()}
+          errorHint={t['com.yunke.auth.password.error']()}
           onEnter={onSignIn}
         />
         <div className={styles.passwordButtonRow}>
@@ -114,7 +114,7 @@ export const SignInWithPasswordStep = ({
             className={styles.linkButton}
             onClick={sendMagicLink}
           >
-            {t['com.affine.auth.sign.auth.code.send-email.sign-in']()}
+            {t['com.yunke.auth.sign.auth.code.send-email.sign-in']()}
           </a>
         </div>
         <Button
@@ -125,7 +125,7 @@ export const SignInWithPasswordStep = ({
           disabled={isLoading}
           onClick={onSignIn}
         >
-          {t['com.affine.auth.sign.in']()}
+          {t['com.yunke.auth.sign.in']()}
         </Button>
       </AuthContent>
       <AuthFooter>

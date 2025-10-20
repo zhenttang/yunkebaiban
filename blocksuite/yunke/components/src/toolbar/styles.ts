@@ -1,25 +1,25 @@
 import {
-  type AffineCssVariables,
+  type YunkeCssVariables,
   combinedDarkCssVariables,
   combinedLightCssVariables,
 } from '@toeverything/theme';
 import { unsafeCSS } from 'lit';
 
-const toolbarColorKeys: Array<keyof AffineCssVariables> = [
-  '--affine-background-overlay-panel-color',
-  '--affine-v2-layer-background-overlayPanel' as never,
-  '--affine-v2-layer-insideBorder-blackBorder' as never,
-  '--affine-v2-icon-primary' as never,
-  '--affine-background-error-color',
-  '--affine-background-primary-color',
-  '--affine-background-tertiary-color',
-  '--affine-icon-color',
-  '--affine-icon-secondary',
-  '--affine-border-color',
-  '--affine-divider-color',
-  '--affine-text-primary-color',
-  '--affine-hover-color',
-  '--affine-hover-color-filled',
+const toolbarColorKeys: Array<keyof YunkeCssVariables> = [
+  '--yunke-background-overlay-panel-color',
+  '--yunke-v2-layer-background-overlayPanel' as never,
+  '--yunke-v2-layer-insideBorder-blackBorder' as never,
+  '--yunke-v2-icon-primary' as never,
+  '--yunke-background-error-color',
+  '--yunke-background-primary-color',
+  '--yunke-background-tertiary-color',
+  '--yunke-icon-color',
+  '--yunke-icon-secondary',
+  '--yunke-border-color',
+  '--yunke-divider-color',
+  '--yunke-text-primary-color',
+  '--yunke-hover-color',
+  '--yunke-hover-color-filled',
 ];
 
 export const lightToolbarStyles = (selector: string) => `

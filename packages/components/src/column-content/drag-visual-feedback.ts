@@ -142,7 +142,7 @@ export class DragVisualFeedback {
       transform: rotate(2deg) scale(1.02);
       box-shadow: 
         0 12px 32px rgba(0, 0, 0, 0.2),
-        0 0 0 1px var(--affine-primary-color);
+        0 0 0 1px var(--yunke-primary-color);
       border-radius: 8px;
       pointer-events: none;
       z-index: 9999;
@@ -160,7 +160,7 @@ export class DragVisualFeedback {
       right: -8px;
       width: 24px;
       height: 24px;
-      background: var(--affine-primary-color);
+      background: var(--yunke-primary-color);
       border-radius: 50%;
       display: flex;
       align-items: center;
@@ -190,8 +190,8 @@ export class DragVisualFeedback {
     sourceElement.style.cssText += `
       opacity: 0.4;
       transform: scale(0.98);
-      border: 2px dashed var(--affine-primary-color);
-      background: var(--affine-primary-color-alpha);
+      border: 2px dashed var(--yunke-primary-color);
+      background: var(--yunke-primary-color-alpha);
       transition: all 0.2s ease;
       position: relative;
     `;
@@ -205,7 +205,7 @@ export class DragVisualFeedback {
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      background: var(--affine-primary-color);
+      background: var(--yunke-primary-color);
       color: white;
       padding: 4px 8px;
       border-radius: 4px;
@@ -236,7 +236,7 @@ export class DragVisualFeedback {
           top: 8px;
           left: 50%;
           transform: translateX(-50%);
-          background: var(--affine-primary-color);
+          background: var(--yunke-primary-color);
           color: white;
           padding: 4px 8px;
           border-radius: 4px;
@@ -319,7 +319,7 @@ export class DragVisualFeedback {
         left: -2px;
         right: -2px;
         bottom: -2px;
-        border: 2px solid var(--affine-primary-color);
+        border: 2px solid var(--yunke-primary-color);
         border-radius: 8px;
         pointer-events: none;
         z-index: 1;
@@ -502,8 +502,8 @@ export class DragVisualFeedback {
       
       /* 目标可用状态 */
       .drag-target-available {
-        background: var(--affine-primary-color-alpha);
-        border: 1px dashed var(--affine-primary-color);
+        background: var(--yunke-primary-color-alpha);
+        border: 1px dashed var(--yunke-primary-color);
         border-radius: 8px;
         position: relative;
       }
@@ -512,7 +512,7 @@ export class DragVisualFeedback {
       .drag-over-valid {
         background: linear-gradient(
           135deg,
-          var(--affine-primary-color-alpha) 0%,
+          var(--yunke-primary-color-alpha) 0%,
           transparent 100%
         );
       }
@@ -540,8 +540,8 @@ export class DragVisualFeedback {
         height: 3px;
         background: linear-gradient(90deg, 
           transparent 0%, 
-          var(--affine-primary-color) 20%, 
-          var(--affine-primary-color) 80%, 
+          var(--yunke-primary-color) 20%, 
+          var(--yunke-primary-color) 80%, 
           transparent 100%
         );
         border-radius: 2px;
@@ -554,7 +554,7 @@ export class DragVisualFeedback {
         transform: translate(-50%, -50%);
         width: 8px;
         height: 8px;
-        background: var(--affine-primary-color);
+        background: var(--yunke-primary-color);
         border-radius: 50%;
         border: 2px solid white;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
@@ -565,7 +565,7 @@ export class DragVisualFeedback {
         left: 50%;
         top: -20px;
         transform: translateX(-50%);
-        background: var(--affine-primary-color);
+        background: var(--yunke-primary-color);
         color: white;
         padding: 2px 6px;
         border-radius: 3px;
@@ -647,7 +647,7 @@ export class DragVisualFeedback {
         }
         
         .drop-indicator-enhanced .indicator-line {
-          background: var(--affine-primary-color);
+          background: var(--yunke-primary-color);
           height: 4px;
         }
       }

@@ -15,7 +15,7 @@ import { styleMap } from 'lit/directives/style-map.js';
 
 import type { CodeBlockToolbarContext } from '../context.js';
 
-export class AffineCodeToolbar extends WithDisposable(LitElement) {
+export class YunkeCodeToolbar extends WithDisposable(LitElement) {
   static override styles = css`
     :host {
       position: absolute;
@@ -36,7 +36,7 @@ export class AffineCodeToolbar extends WithDisposable(LitElement) {
     .code-toolbar-button {
       color: ${unsafeCSSVarV2('icon/primary')};
       background-color: ${unsafeCSSVarV2('button/secondary')};
-      box-shadow: var(--affine-shadow-1);
+      box-shadow: var(--yunke-shadow-1);
       border-radius: 4px;
     }
   `;
@@ -97,7 +97,7 @@ export class AffineCodeToolbar extends WithDisposable(LitElement) {
       `,
       // should be greater than block-selection z-index as selection and popover wil share the same stacking context(editor-host)
       portalStyles: {
-        zIndex: 'var(--affine-z-index-popover)',
+        zIndex: 'var(--yunke-z-index-popover)',
       },
       container: this.context.host,
       computePosition: {

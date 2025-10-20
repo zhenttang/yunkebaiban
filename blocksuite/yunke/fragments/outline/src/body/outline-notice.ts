@@ -10,7 +10,7 @@ import { type TocContext, tocContext } from '../config';
 import { getNotesFromStore } from '../utils/query';
 import * as styles from './outline-notice.css';
 
-export const AFFINE_OUTLINE_NOTICE = 'affine-outline-notice';
+export const YUNKE_OUTLINE_NOTICE = 'yunke-outline-notice';
 
 export class OutlineNotice extends SignalWatcher(
   WithDisposable(ShadowlessElement)
@@ -48,7 +48,7 @@ export class OutlineNotice extends SignalWatcher(
     }
 
     return html`
-      <div data-testid=${AFFINE_OUTLINE_NOTICE} class=${styles.outlineNotice}>
+      <div data-testid=${YUNKE_OUTLINE_NOTICE} class=${styles.outlineNotice}>
         <div class=${styles.outlineNoticeHeader}>
           <span class=${styles.outlineNoticeLabel}>SOME CONTENTS HIDDEN</span>
           <span
@@ -89,6 +89,6 @@ export class OutlineNotice extends SignalWatcher(
 
 declare global {
   interface HTMLElementTagNameMap {
-    [AFFINE_OUTLINE_NOTICE]: OutlineNotice;
+    [YUNKE_OUTLINE_NOTICE]: OutlineNotice;
   }
 }

@@ -10,7 +10,7 @@ import {
 } from './index';
 
 export class RemoteSelectionViewExtension extends ViewExtensionProvider {
-  override name = 'affine-remote-selection-widget';
+  override name = 'yunke-remote-selection-widget';
 
   override effect() {
     super.effect();

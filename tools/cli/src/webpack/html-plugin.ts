@@ -28,7 +28,7 @@ export const getPublicPath = (BUILD_CONFIG: BUILD_CONFIG_TYPE) => {
   return '/';
 };
 
-const DESCRIPTION = `There can be more than Notion and Miro. AFFiNE is a next-gen knowledge base that brings planning, sorting and creating all together.`;
+const DESCRIPTION = `There can be more than Notion and Miro. YUNKE is a next-gen knowledge base that brings planning, sorting and creating all together.`;
 
 const gitShortHash = once(() => {
   const { GITHUB_SHA } = process.env;

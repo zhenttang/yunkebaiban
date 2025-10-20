@@ -9,7 +9,7 @@ import {
   StrikeInlineSpecExtension,
   UnderlineInlineSpecExtension,
 } from '@blocksuite/yunke-inline-preset';
-import type { AffineTextAttributes } from '@blocksuite/yunke-shared/types';
+import type { YunkeTextAttributes } from '@blocksuite/yunke-shared/types';
 import {
   InlineManagerExtension,
   InlineSpecExtension,
@@ -18,17 +18,17 @@ import { html } from 'lit';
 import { z } from 'zod';
 
 export const CodeBlockUnitSpecExtension =
-  InlineSpecExtension<AffineTextAttributes>({
+  InlineSpecExtension<YunkeTextAttributes>({
     name: 'code-block-unit',
     schema: z.undefined(),
     match: () => true,
     renderer: ({ delta }) => {
-      return html`<affine-code-unit .delta=${delta}></affine-code-unit>`;
+      return html`<yunke-code-unit .delta=${delta}></yunke-code-unit>`;
     },
   });
 
 export const CodeBlockInlineManagerExtension =
-  InlineManagerExtension<AffineTextAttributes>({
+  InlineManagerExtension<YunkeTextAttributes>({
     id: 'CodeBlockInlineManager',
     enableMarkdown: false,
     specs: [

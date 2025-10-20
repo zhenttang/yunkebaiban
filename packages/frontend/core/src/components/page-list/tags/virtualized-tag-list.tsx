@@ -104,10 +104,10 @@ export const VirtualizedTagList = ({
         open={showFloatingToolbar}
         content={
           <Trans
-            i18nKey="com.affine.tag.toolbar.selected"
+            i18nKey="com.yunke.tag.toolbar.selected"
             count={selectedTagIds.length}
           >
-            <div style={{ color: 'var(--affine-text-secondary-color)' }}>
+            <div style={{ color: 'var(--yunke-text-secondary-color)' }}>
               {{ count: selectedTagIds.length } as any}
             </div>
             selected

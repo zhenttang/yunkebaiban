@@ -1,7 +1,7 @@
 import { notify } from '@yunke/component';
 import { SettingRow } from '@yunke/component/setting-components';
 import { Button } from '@yunke/component/ui/button';
-import { useAsyncCallback } from '@yunke/core/components/hooks/affine-async-hooks';
+import { useAsyncCallback } from '@yunke/core/components/hooks/yunke-async-hooks';
 import { DesktopApiService } from '@yunke/core/modules/desktop-api';
 import type { Workspace } from '@yunke/core/modules/workspace';
 import { useI18n } from '@yunke/i18n';
@@ -70,7 +70,7 @@ export const DesktopExportPanel = ({ workspace }: ExportPanelProps) => {
       >
         <Button
           variant="primary"
-          data-testid="export-affine-backup"
+          data-testid="export-yunke-backup"
           onClick={onExport}
           disabled={saving}
         >
@@ -90,7 +90,7 @@ export const DesktopExportPanel = ({ workspace }: ExportPanelProps) => {
       >
         <Button
           variant="primary"
-          data-testid="export-affine-full-sync"
+          data-testid="export-yunke-full-sync"
           onClick={fullSync}
           loading={fullSyncing}
           disabled={fullSyncing}
@@ -104,7 +104,7 @@ export const DesktopExportPanel = ({ workspace }: ExportPanelProps) => {
         desc={t['Quick Export Description']()}
       >
         <Button
-          data-testid="export-affine-backup"
+          data-testid="export-yunke-backup"
           onClick={onExport}
           disabled={saving}
         >

@@ -182,7 +182,7 @@ export const MobileMenu = ({
                   }}
                   prefixStyle={{ width: 24, height: 24 }}
                 >
-                  {sub.title || t['com.affine.backButton']()}
+                  {sub.title || t['com.yunke.backButton']()}
                 </Button>
                 <Scrollable.Root>
                   <Scrollable.Viewport className={styles.scrollArea}>

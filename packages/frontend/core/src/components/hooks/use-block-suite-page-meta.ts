@@ -3,7 +3,7 @@ import type { DocMeta, Workspace } from '@blocksuite/yunke/store';
 import { useService } from '@toeverything/infra';
 import { useCallback, useMemo } from 'react';
 
-import { useAsyncCallback } from './affine-async-hooks';
+import { useAsyncCallback } from './yunke-async-hooks';
 import { useAllBlockSuiteDocMeta } from './use-all-block-suite-page-meta';
 import { useJournalInfoHelper } from './use-journal';
 

@@ -23,7 +23,7 @@ import {
   scrollToBlockWithHighlight,
 } from './utils/scroll.js';
 
-export const AFFINE_OUTLINE_VIEWER = 'affine-outline-viewer';
+export const YUNKE_OUTLINE_VIEWER = 'yunke-outline-viewer';
 
 @requiredProperties({
   editor: PropTypes.object,
@@ -32,7 +32,7 @@ export class OutlineViewer extends SignalWatcher(
   WithDisposable(ShadowlessElement)
 ) {
   static override styles = css`
-    affine-outline-viewer {
+    yunke-outline-viewer {
       display: flex;
     }
     .outline-viewer-root {
@@ -67,12 +67,12 @@ export class OutlineViewer extends SignalWatcher(
       height: 2px;
       border-radius: 1px;
       overflow: hidden;
-      background: var(--affine-black-10, rgba(0, 0, 0, 0.1));
+      background: var(--yunke-black-10, rgba(0, 0, 0, 0.1));
     }
 
     .outline-viewer-indicator.active {
       width: 24px;
-      background: var(--affine-text-primary-color);
+      background: var(--yunke-text-primary-color);
     }
 
     .outline-viewer-panel {
@@ -87,8 +87,8 @@ export class OutlineViewer extends SignalWatcher(
       border-radius: 8px;
       border-width: 0px;
       border-style: solid;
-      border-color: var(--affine-border-color);
-      background: var(--affine-background-overlay-panel-color);
+      border-color: var(--yunke-border-color);
+      background: var(--yunke-background-overlay-panel-color);
       box-shadow: 0px 6px 16px 0px rgba(0, 0, 0, 0.14);
 
       overflow-y: auto;
@@ -115,10 +115,10 @@ export class OutlineViewer extends SignalWatcher(
       span {
         flex: 1;
         overflow: hidden;
-        color: var(--affine-text-secondary-color);
+        color: var(--yunke-text-secondary-color);
         text-overflow: ellipsis;
 
-        font-family: var(--affine-font-family);
+        font-family: var(--yunke-font-family);
         font-size: 12px;
         font-style: normal;
         font-weight: 500;
@@ -284,7 +284,7 @@ export class OutlineViewer extends SignalWatcher(
                   active: this._activeHeadingId$.value === block.id,
                 })}
               >
-                <affine-outline-block-preview
+                <yunke-outline-block-preview
                   class=${classMap({
                     active: this._activeHeadingId$.value === block.id,
                   })}
@@ -293,7 +293,7 @@ export class OutlineViewer extends SignalWatcher(
                     this._scrollToBlock(block.id).catch(console.error);
                   }}
                 >
-                </affine-outline-block-preview>
+                </yunke-outline-block-preview>
               </div>`;
             }
           )}
@@ -320,6 +320,6 @@ export class OutlineViewer extends SignalWatcher(
 
 declare global {
   interface HTMLElementTagNameMap {
-    [AFFINE_OUTLINE_VIEWER]: OutlineViewer;
+    [YUNKE_OUTLINE_VIEWER]: OutlineViewer;
   }
 }

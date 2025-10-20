@@ -10,7 +10,7 @@ export const root = style({
   backgroundColor: cssVar('backgroundPrimaryColor'),
   backgroundSize: 'cover',
 });
-export const affineLogo = style({
+export const yunkeLogo = style({
   color: 'inherit',
 });
 export const topNav = style({

@@ -20,7 +20,7 @@ export const notFound = style({
   textDecoration: 'line-through',
 });
 
-globalStyle('affine-reference .affine-reference', {
+globalStyle('yunke-reference .yunke-reference', {
   color: 'inherit !important',
   textDecoration: 'none !important',
 });

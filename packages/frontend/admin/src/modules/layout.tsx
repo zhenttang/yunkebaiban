@@ -211,7 +211,7 @@ export function Layout({ children }: PropsWithChildren) {
                     </Button>
                   </SheetTrigger>
                   <SheetHeader className="hidden">
-                    <SheetTitle>AFFiNE</SheetTitle>
+                    <SheetTitle>YUNKE</SheetTitle>
                     <SheetDescription>
                       用于管理账户、AI、配置和设置的管理面板
                     </SheetDescription>
@@ -220,7 +220,7 @@ export function Layout({ children }: PropsWithChildren) {
                     <div className="flex flex-col w-full h-full">
                       <div className="flex h-[60px] items-center gap-2 px-4 text-base font-medium border-b border-slate-200/70">
                         <Logo />
-                        <span className="font-semibold tracking-tight">AFFiNE</span>
+                        <span className="font-semibold tracking-tight">YUNKE</span>
                       </div>
                       <Nav />
                     </div>
@@ -356,7 +356,7 @@ export const LeftPanel = ({
           >
             <Logo />
           </span>
-          {!isCollapsed && <span className="font-semibold tracking-tight">AFFiNE</span>}
+          {!isCollapsed && <span className="font-semibold tracking-tight">YUNKE</span>}
         </div>
         <Nav isCollapsed={isCollapsed} />
       </div>

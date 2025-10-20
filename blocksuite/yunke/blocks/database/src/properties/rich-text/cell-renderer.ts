@@ -5,8 +5,8 @@ import {
   TelemetryProvider,
 } from '@blocksuite/yunke-shared/services';
 import type {
-  AffineInlineEditor,
-  AffineTextAttributes,
+  YunkeInlineEditor,
+  YunkeTextAttributes,
 } from '@blocksuite/yunke-shared/types';
 import {
   getViewportElement,
@@ -33,8 +33,8 @@ import {
 import { richTextPropertyModelConfig } from './define.js';
 
 function toggleStyle(
-  inlineEditor: AffineInlineEditor | null,
-  attrs: AffineTextAttributes
+  inlineEditor: YunkeInlineEditor | null,
+  attrs: YunkeTextAttributes
 ): void {
   if (!inlineEditor) return;
 
@@ -47,7 +47,7 @@ function toggleStyle(
   }
 
   const deltas = inlineEditor.getDeltasByInlineRange(inlineRange);
-  let oldAttributes: AffineTextAttributes = {};
+  let oldAttributes: YunkeTextAttributes = {};
 
   for (const [delta] of deltas) {
     const attributes = delta.attributes;
@@ -93,7 +93,7 @@ export class RichTextCell extends BaseCellRenderer<Text, string> {
 
   get topContenteditableElement() {
     const databaseBlock =
-      this.closest<DatabaseBlockComponent>('affine-database');
+      this.closest<DatabaseBlockComponent>('yunke-database');
     return databaseBlock?.topContenteditableElement;
   }
 
@@ -401,7 +401,7 @@ export class RichTextCell extends BaseCellRenderer<Text, string> {
     return this.view.serviceGet(EditorHostKey)?.std;
   }
 
-  insertDelta = (delta: DeltaInsert<AffineTextAttributes>) => {
+  insertDelta = (delta: DeltaInsert<YunkeTextAttributes>) => {
     const inlineEditor = this.inlineEditor$.value;
     const range = inlineEditor?.getInlineRange();
     if (!range || !delta.insert) {
@@ -417,7 +417,7 @@ export class RichTextCell extends BaseCellRenderer<Text, string> {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'affine-database-rich-text-cell': RichTextCell;
+    'yunke-database-rich-text-cell': RichTextCell;
   }
 }
 

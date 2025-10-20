@@ -7,8 +7,8 @@ import Foundation
 // Depending on the consumer's build setup, the low-level FFI code
 // might be in a separate module, or it might be compiled inline into
 // this module. This is a bit of light hackery to work with both.
-#if canImport(affine_mobile_nativeFFI)
-import affine_mobile_nativeFFI
+#if canImport(yunke_mobile_nativeFFI)
+import yunke_mobile_nativeFFI
 #endif
 
 fileprivate extension RustBuffer {
@@ -25,13 +25,13 @@ fileprivate extension RustBuffer {
     }
 
     static func from(_ ptr: UnsafeBufferPointer<UInt8>) -> RustBuffer {
-        try! rustCall { ffi_affine_mobile_native_rustbuffer_from_bytes(ForeignBytes(bufferPointer: ptr), $0) }
+        try! rustCall { ffi_yunke_mobile_native_rustbuffer_from_bytes(ForeignBytes(bufferPointer: ptr), $0) }
     }
 
     // Frees the buffer in place.
     // The buffer must not be used after this is called.
     func deallocate() {
-        try! rustCall { ffi_affine_mobile_native_rustbuffer_free(self, $0) }
+        try! rustCall { ffi_yunke_mobile_native_rustbuffer_free(self, $0) }
     }
 }
 
@@ -281,7 +281,7 @@ private func makeRustCall<T, E: Swift.Error>(
     _ callback: (UnsafeMutablePointer<RustCallStatus>) -> T,
     errorHandler: ((RustBuffer) throws -> E)?
 ) throws -> T {
-    uniffiEnsureAffineMobileNativeInitialized()
+    uniffiEnsureYunkeMobileNativeInitialized()
     var callStatus = RustCallStatus.init()
     let returnedVal = callback(&callStatus)
     try uniffiCheckCallStatus(callStatus: callStatus, errorHandler: errorHandler)
@@ -596,7 +596,7 @@ open class DocStoragePool: DocStoragePoolProtocol, @unchecked Sendable {
     @_documentation(visibility: private)
 #endif
     public func uniffiClonePointer() -> UnsafeMutableRawPointer {
-        return try! rustCall { uniffi_affine_mobile_native_fn_clone_docstoragepool(self.pointer, $0) }
+        return try! rustCall { uniffi_yunke_mobile_native_fn_clone_docstoragepool(self.pointer, $0) }
     }
     // No primary constructor declared for this class.
 
@@ -605,7 +605,7 @@ open class DocStoragePool: DocStoragePoolProtocol, @unchecked Sendable {
             return
         }
 
-        try! rustCall { uniffi_affine_mobile_native_fn_free_docstoragepool(pointer, $0) }
+        try! rustCall { uniffi_yunke_mobile_native_fn_free_docstoragepool(pointer, $0) }
     }
 
     
@@ -615,14 +615,14 @@ open func clearClocks(universalId: String)async throws   {
     return
         try  await uniffiRustCallAsync(
             rustFutureFunc: {
-                uniffi_affine_mobile_native_fn_method_docstoragepool_clear_clocks(
+                uniffi_yunke_mobile_native_fn_method_docstoragepool_clear_clocks(
                     self.uniffiClonePointer(),
                     FfiConverterString.lower(universalId)
                 )
             },
-            pollFunc: ffi_affine_mobile_native_rust_future_poll_void,
-            completeFunc: ffi_affine_mobile_native_rust_future_complete_void,
-            freeFunc: ffi_affine_mobile_native_rust_future_free_void,
+            pollFunc: ffi_yunke_mobile_native_rust_future_poll_void,
+            completeFunc: ffi_yunke_mobile_native_rust_future_complete_void,
+            freeFunc: ffi_yunke_mobile_native_rust_future_free_void,
             liftFunc: { $0 },
             errorHandler: FfiConverterTypeUniffiError_lift
         )
@@ -635,14 +635,14 @@ open func connect(universalId: String, path: String)async throws   {
     return
         try  await uniffiRustCallAsync(
             rustFutureFunc: {
-                uniffi_affine_mobile_native_fn_method_docstoragepool_connect(
+                uniffi_yunke_mobile_native_fn_method_docstoragepool_connect(
                     self.uniffiClonePointer(),
                     FfiConverterString.lower(universalId),FfiConverterString.lower(path)
                 )
             },
-            pollFunc: ffi_affine_mobile_native_rust_future_poll_void,
-            completeFunc: ffi_affine_mobile_native_rust_future_complete_void,
-            freeFunc: ffi_affine_mobile_native_rust_future_free_void,
+            pollFunc: ffi_yunke_mobile_native_rust_future_poll_void,
+            completeFunc: ffi_yunke_mobile_native_rust_future_complete_void,
+            freeFunc: ffi_yunke_mobile_native_rust_future_free_void,
             liftFunc: { $0 },
             errorHandler: FfiConverterTypeUniffiError_lift
         )
@@ -652,14 +652,14 @@ open func deleteBlob(universalId: String, key: String, permanently: Bool)async t
     return
         try  await uniffiRustCallAsync(
             rustFutureFunc: {
-                uniffi_affine_mobile_native_fn_method_docstoragepool_delete_blob(
+                uniffi_yunke_mobile_native_fn_method_docstoragepool_delete_blob(
                     self.uniffiClonePointer(),
                     FfiConverterString.lower(universalId),FfiConverterString.lower(key),FfiConverterBool.lower(permanently)
                 )
             },
-            pollFunc: ffi_affine_mobile_native_rust_future_poll_void,
-            completeFunc: ffi_affine_mobile_native_rust_future_complete_void,
-            freeFunc: ffi_affine_mobile_native_rust_future_free_void,
+            pollFunc: ffi_yunke_mobile_native_rust_future_poll_void,
+            completeFunc: ffi_yunke_mobile_native_rust_future_complete_void,
+            freeFunc: ffi_yunke_mobile_native_rust_future_free_void,
             liftFunc: { $0 },
             errorHandler: FfiConverterTypeUniffiError_lift
         )
@@ -669,14 +669,14 @@ open func deleteDoc(universalId: String, docId: String)async throws   {
     return
         try  await uniffiRustCallAsync(
             rustFutureFunc: {
-                uniffi_affine_mobile_native_fn_method_docstoragepool_delete_doc(
+                uniffi_yunke_mobile_native_fn_method_docstoragepool_delete_doc(
                     self.uniffiClonePointer(),
                     FfiConverterString.lower(universalId),FfiConverterString.lower(docId)
                 )
             },
-            pollFunc: ffi_affine_mobile_native_rust_future_poll_void,
-            completeFunc: ffi_affine_mobile_native_rust_future_complete_void,
-            freeFunc: ffi_affine_mobile_native_rust_future_free_void,
+            pollFunc: ffi_yunke_mobile_native_rust_future_poll_void,
+            completeFunc: ffi_yunke_mobile_native_rust_future_complete_void,
+            freeFunc: ffi_yunke_mobile_native_rust_future_free_void,
             liftFunc: { $0 },
             errorHandler: FfiConverterTypeUniffiError_lift
         )
@@ -686,14 +686,14 @@ open func disconnect(universalId: String)async throws   {
     return
         try  await uniffiRustCallAsync(
             rustFutureFunc: {
-                uniffi_affine_mobile_native_fn_method_docstoragepool_disconnect(
+                uniffi_yunke_mobile_native_fn_method_docstoragepool_disconnect(
                     self.uniffiClonePointer(),
                     FfiConverterString.lower(universalId)
                 )
             },
-            pollFunc: ffi_affine_mobile_native_rust_future_poll_void,
-            completeFunc: ffi_affine_mobile_native_rust_future_complete_void,
-            freeFunc: ffi_affine_mobile_native_rust_future_free_void,
+            pollFunc: ffi_yunke_mobile_native_rust_future_poll_void,
+            completeFunc: ffi_yunke_mobile_native_rust_future_complete_void,
+            freeFunc: ffi_yunke_mobile_native_rust_future_free_void,
             liftFunc: { $0 },
             errorHandler: FfiConverterTypeUniffiError_lift
         )
@@ -703,14 +703,14 @@ open func getBlob(universalId: String, key: String)async throws  -> Blob?  {
     return
         try  await uniffiRustCallAsync(
             rustFutureFunc: {
-                uniffi_affine_mobile_native_fn_method_docstoragepool_get_blob(
+                uniffi_yunke_mobile_native_fn_method_docstoragepool_get_blob(
                     self.uniffiClonePointer(),
                     FfiConverterString.lower(universalId),FfiConverterString.lower(key)
                 )
             },
-            pollFunc: ffi_affine_mobile_native_rust_future_poll_rust_buffer,
-            completeFunc: ffi_affine_mobile_native_rust_future_complete_rust_buffer,
-            freeFunc: ffi_affine_mobile_native_rust_future_free_rust_buffer,
+            pollFunc: ffi_yunke_mobile_native_rust_future_poll_rust_buffer,
+            completeFunc: ffi_yunke_mobile_native_rust_future_complete_rust_buffer,
+            freeFunc: ffi_yunke_mobile_native_rust_future_free_rust_buffer,
             liftFunc: FfiConverterOptionTypeBlob.lift,
             errorHandler: FfiConverterTypeUniffiError_lift
         )
@@ -720,14 +720,14 @@ open func getBlobUploadedAt(universalId: String, peer: String, blobId: String)as
     return
         try  await uniffiRustCallAsync(
             rustFutureFunc: {
-                uniffi_affine_mobile_native_fn_method_docstoragepool_get_blob_uploaded_at(
+                uniffi_yunke_mobile_native_fn_method_docstoragepool_get_blob_uploaded_at(
                     self.uniffiClonePointer(),
                     FfiConverterString.lower(universalId),FfiConverterString.lower(peer),FfiConverterString.lower(blobId)
                 )
             },
-            pollFunc: ffi_affine_mobile_native_rust_future_poll_rust_buffer,
-            completeFunc: ffi_affine_mobile_native_rust_future_complete_rust_buffer,
-            freeFunc: ffi_affine_mobile_native_rust_future_free_rust_buffer,
+            pollFunc: ffi_yunke_mobile_native_rust_future_poll_rust_buffer,
+            completeFunc: ffi_yunke_mobile_native_rust_future_complete_rust_buffer,
+            freeFunc: ffi_yunke_mobile_native_rust_future_free_rust_buffer,
             liftFunc: FfiConverterOptionInt64.lift,
             errorHandler: FfiConverterTypeUniffiError_lift
         )
@@ -737,14 +737,14 @@ open func getDocClock(universalId: String, docId: String)async throws  -> DocClo
     return
         try  await uniffiRustCallAsync(
             rustFutureFunc: {
-                uniffi_affine_mobile_native_fn_method_docstoragepool_get_doc_clock(
+                uniffi_yunke_mobile_native_fn_method_docstoragepool_get_doc_clock(
                     self.uniffiClonePointer(),
                     FfiConverterString.lower(universalId),FfiConverterString.lower(docId)
                 )
             },
-            pollFunc: ffi_affine_mobile_native_rust_future_poll_rust_buffer,
-            completeFunc: ffi_affine_mobile_native_rust_future_complete_rust_buffer,
-            freeFunc: ffi_affine_mobile_native_rust_future_free_rust_buffer,
+            pollFunc: ffi_yunke_mobile_native_rust_future_poll_rust_buffer,
+            completeFunc: ffi_yunke_mobile_native_rust_future_complete_rust_buffer,
+            freeFunc: ffi_yunke_mobile_native_rust_future_free_rust_buffer,
             liftFunc: FfiConverterOptionTypeDocClock.lift,
             errorHandler: FfiConverterTypeUniffiError_lift
         )
@@ -754,14 +754,14 @@ open func getDocClocks(universalId: String, after: Int64?)async throws  -> [DocC
     return
         try  await uniffiRustCallAsync(
             rustFutureFunc: {
-                uniffi_affine_mobile_native_fn_method_docstoragepool_get_doc_clocks(
+                uniffi_yunke_mobile_native_fn_method_docstoragepool_get_doc_clocks(
                     self.uniffiClonePointer(),
                     FfiConverterString.lower(universalId),FfiConverterOptionInt64.lower(after)
                 )
             },
-            pollFunc: ffi_affine_mobile_native_rust_future_poll_rust_buffer,
-            completeFunc: ffi_affine_mobile_native_rust_future_complete_rust_buffer,
-            freeFunc: ffi_affine_mobile_native_rust_future_free_rust_buffer,
+            pollFunc: ffi_yunke_mobile_native_rust_future_poll_rust_buffer,
+            completeFunc: ffi_yunke_mobile_native_rust_future_complete_rust_buffer,
+            freeFunc: ffi_yunke_mobile_native_rust_future_free_rust_buffer,
             liftFunc: FfiConverterSequenceTypeDocClock.lift,
             errorHandler: FfiConverterTypeUniffiError_lift
         )
@@ -771,14 +771,14 @@ open func getDocSnapshot(universalId: String, docId: String)async throws  -> Doc
     return
         try  await uniffiRustCallAsync(
             rustFutureFunc: {
-                uniffi_affine_mobile_native_fn_method_docstoragepool_get_doc_snapshot(
+                uniffi_yunke_mobile_native_fn_method_docstoragepool_get_doc_snapshot(
                     self.uniffiClonePointer(),
                     FfiConverterString.lower(universalId),FfiConverterString.lower(docId)
                 )
             },
-            pollFunc: ffi_affine_mobile_native_rust_future_poll_rust_buffer,
-            completeFunc: ffi_affine_mobile_native_rust_future_complete_rust_buffer,
-            freeFunc: ffi_affine_mobile_native_rust_future_free_rust_buffer,
+            pollFunc: ffi_yunke_mobile_native_rust_future_poll_rust_buffer,
+            completeFunc: ffi_yunke_mobile_native_rust_future_complete_rust_buffer,
+            freeFunc: ffi_yunke_mobile_native_rust_future_free_rust_buffer,
             liftFunc: FfiConverterOptionTypeDocRecord.lift,
             errorHandler: FfiConverterTypeUniffiError_lift
         )
@@ -788,14 +788,14 @@ open func getDocUpdates(universalId: String, docId: String)async throws  -> [Doc
     return
         try  await uniffiRustCallAsync(
             rustFutureFunc: {
-                uniffi_affine_mobile_native_fn_method_docstoragepool_get_doc_updates(
+                uniffi_yunke_mobile_native_fn_method_docstoragepool_get_doc_updates(
                     self.uniffiClonePointer(),
                     FfiConverterString.lower(universalId),FfiConverterString.lower(docId)
                 )
             },
-            pollFunc: ffi_affine_mobile_native_rust_future_poll_rust_buffer,
-            completeFunc: ffi_affine_mobile_native_rust_future_complete_rust_buffer,
-            freeFunc: ffi_affine_mobile_native_rust_future_free_rust_buffer,
+            pollFunc: ffi_yunke_mobile_native_rust_future_poll_rust_buffer,
+            completeFunc: ffi_yunke_mobile_native_rust_future_complete_rust_buffer,
+            freeFunc: ffi_yunke_mobile_native_rust_future_free_rust_buffer,
             liftFunc: FfiConverterSequenceTypeDocUpdate.lift,
             errorHandler: FfiConverterTypeUniffiError_lift
         )
@@ -805,14 +805,14 @@ open func getPeerPulledRemoteClock(universalId: String, peer: String, docId: Str
     return
         try  await uniffiRustCallAsync(
             rustFutureFunc: {
-                uniffi_affine_mobile_native_fn_method_docstoragepool_get_peer_pulled_remote_clock(
+                uniffi_yunke_mobile_native_fn_method_docstoragepool_get_peer_pulled_remote_clock(
                     self.uniffiClonePointer(),
                     FfiConverterString.lower(universalId),FfiConverterString.lower(peer),FfiConverterString.lower(docId)
                 )
             },
-            pollFunc: ffi_affine_mobile_native_rust_future_poll_rust_buffer,
-            completeFunc: ffi_affine_mobile_native_rust_future_complete_rust_buffer,
-            freeFunc: ffi_affine_mobile_native_rust_future_free_rust_buffer,
+            pollFunc: ffi_yunke_mobile_native_rust_future_poll_rust_buffer,
+            completeFunc: ffi_yunke_mobile_native_rust_future_complete_rust_buffer,
+            freeFunc: ffi_yunke_mobile_native_rust_future_free_rust_buffer,
             liftFunc: FfiConverterOptionTypeDocClock.lift,
             errorHandler: FfiConverterTypeUniffiError_lift
         )
@@ -822,14 +822,14 @@ open func getPeerPulledRemoteClocks(universalId: String, peer: String)async thro
     return
         try  await uniffiRustCallAsync(
             rustFutureFunc: {
-                uniffi_affine_mobile_native_fn_method_docstoragepool_get_peer_pulled_remote_clocks(
+                uniffi_yunke_mobile_native_fn_method_docstoragepool_get_peer_pulled_remote_clocks(
                     self.uniffiClonePointer(),
                     FfiConverterString.lower(universalId),FfiConverterString.lower(peer)
                 )
             },
-            pollFunc: ffi_affine_mobile_native_rust_future_poll_rust_buffer,
-            completeFunc: ffi_affine_mobile_native_rust_future_complete_rust_buffer,
-            freeFunc: ffi_affine_mobile_native_rust_future_free_rust_buffer,
+            pollFunc: ffi_yunke_mobile_native_rust_future_poll_rust_buffer,
+            completeFunc: ffi_yunke_mobile_native_rust_future_complete_rust_buffer,
+            freeFunc: ffi_yunke_mobile_native_rust_future_free_rust_buffer,
             liftFunc: FfiConverterSequenceTypeDocClock.lift,
             errorHandler: FfiConverterTypeUniffiError_lift
         )
@@ -839,14 +839,14 @@ open func getPeerPushedClock(universalId: String, peer: String, docId: String)as
     return
         try  await uniffiRustCallAsync(
             rustFutureFunc: {
-                uniffi_affine_mobile_native_fn_method_docstoragepool_get_peer_pushed_clock(
+                uniffi_yunke_mobile_native_fn_method_docstoragepool_get_peer_pushed_clock(
                     self.uniffiClonePointer(),
                     FfiConverterString.lower(universalId),FfiConverterString.lower(peer),FfiConverterString.lower(docId)
                 )
             },
-            pollFunc: ffi_affine_mobile_native_rust_future_poll_rust_buffer,
-            completeFunc: ffi_affine_mobile_native_rust_future_complete_rust_buffer,
-            freeFunc: ffi_affine_mobile_native_rust_future_free_rust_buffer,
+            pollFunc: ffi_yunke_mobile_native_rust_future_poll_rust_buffer,
+            completeFunc: ffi_yunke_mobile_native_rust_future_complete_rust_buffer,
+            freeFunc: ffi_yunke_mobile_native_rust_future_free_rust_buffer,
             liftFunc: FfiConverterOptionTypeDocClock.lift,
             errorHandler: FfiConverterTypeUniffiError_lift
         )
@@ -856,14 +856,14 @@ open func getPeerPushedClocks(universalId: String, peer: String)async throws  ->
     return
         try  await uniffiRustCallAsync(
             rustFutureFunc: {
-                uniffi_affine_mobile_native_fn_method_docstoragepool_get_peer_pushed_clocks(
+                uniffi_yunke_mobile_native_fn_method_docstoragepool_get_peer_pushed_clocks(
                     self.uniffiClonePointer(),
                     FfiConverterString.lower(universalId),FfiConverterString.lower(peer)
                 )
             },
-            pollFunc: ffi_affine_mobile_native_rust_future_poll_rust_buffer,
-            completeFunc: ffi_affine_mobile_native_rust_future_complete_rust_buffer,
-            freeFunc: ffi_affine_mobile_native_rust_future_free_rust_buffer,
+            pollFunc: ffi_yunke_mobile_native_rust_future_poll_rust_buffer,
+            completeFunc: ffi_yunke_mobile_native_rust_future_complete_rust_buffer,
+            freeFunc: ffi_yunke_mobile_native_rust_future_free_rust_buffer,
             liftFunc: FfiConverterSequenceTypeDocClock.lift,
             errorHandler: FfiConverterTypeUniffiError_lift
         )
@@ -873,14 +873,14 @@ open func getPeerRemoteClock(universalId: String, peer: String, docId: String)as
     return
         try  await uniffiRustCallAsync(
             rustFutureFunc: {
-                uniffi_affine_mobile_native_fn_method_docstoragepool_get_peer_remote_clock(
+                uniffi_yunke_mobile_native_fn_method_docstoragepool_get_peer_remote_clock(
                     self.uniffiClonePointer(),
                     FfiConverterString.lower(universalId),FfiConverterString.lower(peer),FfiConverterString.lower(docId)
                 )
             },
-            pollFunc: ffi_affine_mobile_native_rust_future_poll_rust_buffer,
-            completeFunc: ffi_affine_mobile_native_rust_future_complete_rust_buffer,
-            freeFunc: ffi_affine_mobile_native_rust_future_free_rust_buffer,
+            pollFunc: ffi_yunke_mobile_native_rust_future_poll_rust_buffer,
+            completeFunc: ffi_yunke_mobile_native_rust_future_complete_rust_buffer,
+            freeFunc: ffi_yunke_mobile_native_rust_future_free_rust_buffer,
             liftFunc: FfiConverterOptionTypeDocClock.lift,
             errorHandler: FfiConverterTypeUniffiError_lift
         )
@@ -890,14 +890,14 @@ open func getPeerRemoteClocks(universalId: String, peer: String)async throws  ->
     return
         try  await uniffiRustCallAsync(
             rustFutureFunc: {
-                uniffi_affine_mobile_native_fn_method_docstoragepool_get_peer_remote_clocks(
+                uniffi_yunke_mobile_native_fn_method_docstoragepool_get_peer_remote_clocks(
                     self.uniffiClonePointer(),
                     FfiConverterString.lower(universalId),FfiConverterString.lower(peer)
                 )
             },
-            pollFunc: ffi_affine_mobile_native_rust_future_poll_rust_buffer,
-            completeFunc: ffi_affine_mobile_native_rust_future_complete_rust_buffer,
-            freeFunc: ffi_affine_mobile_native_rust_future_free_rust_buffer,
+            pollFunc: ffi_yunke_mobile_native_rust_future_poll_rust_buffer,
+            completeFunc: ffi_yunke_mobile_native_rust_future_complete_rust_buffer,
+            freeFunc: ffi_yunke_mobile_native_rust_future_free_rust_buffer,
             liftFunc: FfiConverterSequenceTypeDocClock.lift,
             errorHandler: FfiConverterTypeUniffiError_lift
         )
@@ -907,14 +907,14 @@ open func listBlobs(universalId: String)async throws  -> [ListedBlob]  {
     return
         try  await uniffiRustCallAsync(
             rustFutureFunc: {
-                uniffi_affine_mobile_native_fn_method_docstoragepool_list_blobs(
+                uniffi_yunke_mobile_native_fn_method_docstoragepool_list_blobs(
                     self.uniffiClonePointer(),
                     FfiConverterString.lower(universalId)
                 )
             },
-            pollFunc: ffi_affine_mobile_native_rust_future_poll_rust_buffer,
-            completeFunc: ffi_affine_mobile_native_rust_future_complete_rust_buffer,
-            freeFunc: ffi_affine_mobile_native_rust_future_free_rust_buffer,
+            pollFunc: ffi_yunke_mobile_native_rust_future_poll_rust_buffer,
+            completeFunc: ffi_yunke_mobile_native_rust_future_complete_rust_buffer,
+            freeFunc: ffi_yunke_mobile_native_rust_future_free_rust_buffer,
             liftFunc: FfiConverterSequenceTypeListedBlob.lift,
             errorHandler: FfiConverterTypeUniffiError_lift
         )
@@ -924,14 +924,14 @@ open func markUpdatesMerged(universalId: String, docId: String, updates: [Int64]
     return
         try  await uniffiRustCallAsync(
             rustFutureFunc: {
-                uniffi_affine_mobile_native_fn_method_docstoragepool_mark_updates_merged(
+                uniffi_yunke_mobile_native_fn_method_docstoragepool_mark_updates_merged(
                     self.uniffiClonePointer(),
                     FfiConverterString.lower(universalId),FfiConverterString.lower(docId),FfiConverterSequenceInt64.lower(updates)
                 )
             },
-            pollFunc: ffi_affine_mobile_native_rust_future_poll_u32,
-            completeFunc: ffi_affine_mobile_native_rust_future_complete_u32,
-            freeFunc: ffi_affine_mobile_native_rust_future_free_u32,
+            pollFunc: ffi_yunke_mobile_native_rust_future_poll_u32,
+            completeFunc: ffi_yunke_mobile_native_rust_future_complete_u32,
+            freeFunc: ffi_yunke_mobile_native_rust_future_free_u32,
             liftFunc: FfiConverterUInt32.lift,
             errorHandler: FfiConverterTypeUniffiError_lift
         )
@@ -941,14 +941,14 @@ open func pushUpdate(universalId: String, docId: String, update: String)async th
     return
         try  await uniffiRustCallAsync(
             rustFutureFunc: {
-                uniffi_affine_mobile_native_fn_method_docstoragepool_push_update(
+                uniffi_yunke_mobile_native_fn_method_docstoragepool_push_update(
                     self.uniffiClonePointer(),
                     FfiConverterString.lower(universalId),FfiConverterString.lower(docId),FfiConverterString.lower(update)
                 )
             },
-            pollFunc: ffi_affine_mobile_native_rust_future_poll_i64,
-            completeFunc: ffi_affine_mobile_native_rust_future_complete_i64,
-            freeFunc: ffi_affine_mobile_native_rust_future_free_i64,
+            pollFunc: ffi_yunke_mobile_native_rust_future_poll_i64,
+            completeFunc: ffi_yunke_mobile_native_rust_future_complete_i64,
+            freeFunc: ffi_yunke_mobile_native_rust_future_free_i64,
             liftFunc: FfiConverterInt64.lift,
             errorHandler: FfiConverterTypeUniffiError_lift
         )
@@ -958,14 +958,14 @@ open func releaseBlobs(universalId: String)async throws   {
     return
         try  await uniffiRustCallAsync(
             rustFutureFunc: {
-                uniffi_affine_mobile_native_fn_method_docstoragepool_release_blobs(
+                uniffi_yunke_mobile_native_fn_method_docstoragepool_release_blobs(
                     self.uniffiClonePointer(),
                     FfiConverterString.lower(universalId)
                 )
             },
-            pollFunc: ffi_affine_mobile_native_rust_future_poll_void,
-            completeFunc: ffi_affine_mobile_native_rust_future_complete_void,
-            freeFunc: ffi_affine_mobile_native_rust_future_free_void,
+            pollFunc: ffi_yunke_mobile_native_rust_future_poll_void,
+            completeFunc: ffi_yunke_mobile_native_rust_future_complete_void,
+            freeFunc: ffi_yunke_mobile_native_rust_future_free_void,
             liftFunc: { $0 },
             errorHandler: FfiConverterTypeUniffiError_lift
         )
@@ -975,14 +975,14 @@ open func setBlob(universalId: String, blob: SetBlob)async throws   {
     return
         try  await uniffiRustCallAsync(
             rustFutureFunc: {
-                uniffi_affine_mobile_native_fn_method_docstoragepool_set_blob(
+                uniffi_yunke_mobile_native_fn_method_docstoragepool_set_blob(
                     self.uniffiClonePointer(),
                     FfiConverterString.lower(universalId),FfiConverterTypeSetBlob_lower(blob)
                 )
             },
-            pollFunc: ffi_affine_mobile_native_rust_future_poll_void,
-            completeFunc: ffi_affine_mobile_native_rust_future_complete_void,
-            freeFunc: ffi_affine_mobile_native_rust_future_free_void,
+            pollFunc: ffi_yunke_mobile_native_rust_future_poll_void,
+            completeFunc: ffi_yunke_mobile_native_rust_future_complete_void,
+            freeFunc: ffi_yunke_mobile_native_rust_future_free_void,
             liftFunc: { $0 },
             errorHandler: FfiConverterTypeUniffiError_lift
         )
@@ -992,14 +992,14 @@ open func setBlobUploadedAt(universalId: String, peer: String, blobId: String, u
     return
         try  await uniffiRustCallAsync(
             rustFutureFunc: {
-                uniffi_affine_mobile_native_fn_method_docstoragepool_set_blob_uploaded_at(
+                uniffi_yunke_mobile_native_fn_method_docstoragepool_set_blob_uploaded_at(
                     self.uniffiClonePointer(),
                     FfiConverterString.lower(universalId),FfiConverterString.lower(peer),FfiConverterString.lower(blobId),FfiConverterOptionInt64.lower(uploadedAt)
                 )
             },
-            pollFunc: ffi_affine_mobile_native_rust_future_poll_void,
-            completeFunc: ffi_affine_mobile_native_rust_future_complete_void,
-            freeFunc: ffi_affine_mobile_native_rust_future_free_void,
+            pollFunc: ffi_yunke_mobile_native_rust_future_poll_void,
+            completeFunc: ffi_yunke_mobile_native_rust_future_complete_void,
+            freeFunc: ffi_yunke_mobile_native_rust_future_free_void,
             liftFunc: { $0 },
             errorHandler: FfiConverterTypeUniffiError_lift
         )
@@ -1009,14 +1009,14 @@ open func setDocSnapshot(universalId: String, snapshot: DocRecord)async throws  
     return
         try  await uniffiRustCallAsync(
             rustFutureFunc: {
-                uniffi_affine_mobile_native_fn_method_docstoragepool_set_doc_snapshot(
+                uniffi_yunke_mobile_native_fn_method_docstoragepool_set_doc_snapshot(
                     self.uniffiClonePointer(),
                     FfiConverterString.lower(universalId),FfiConverterTypeDocRecord_lower(snapshot)
                 )
             },
-            pollFunc: ffi_affine_mobile_native_rust_future_poll_i8,
-            completeFunc: ffi_affine_mobile_native_rust_future_complete_i8,
-            freeFunc: ffi_affine_mobile_native_rust_future_free_i8,
+            pollFunc: ffi_yunke_mobile_native_rust_future_poll_i8,
+            completeFunc: ffi_yunke_mobile_native_rust_future_complete_i8,
+            freeFunc: ffi_yunke_mobile_native_rust_future_free_i8,
             liftFunc: FfiConverterBool.lift,
             errorHandler: FfiConverterTypeUniffiError_lift
         )
@@ -1026,14 +1026,14 @@ open func setPeerPulledRemoteClock(universalId: String, peer: String, docId: Str
     return
         try  await uniffiRustCallAsync(
             rustFutureFunc: {
-                uniffi_affine_mobile_native_fn_method_docstoragepool_set_peer_pulled_remote_clock(
+                uniffi_yunke_mobile_native_fn_method_docstoragepool_set_peer_pulled_remote_clock(
                     self.uniffiClonePointer(),
                     FfiConverterString.lower(universalId),FfiConverterString.lower(peer),FfiConverterString.lower(docId),FfiConverterInt64.lower(clock)
                 )
             },
-            pollFunc: ffi_affine_mobile_native_rust_future_poll_void,
-            completeFunc: ffi_affine_mobile_native_rust_future_complete_void,
-            freeFunc: ffi_affine_mobile_native_rust_future_free_void,
+            pollFunc: ffi_yunke_mobile_native_rust_future_poll_void,
+            completeFunc: ffi_yunke_mobile_native_rust_future_complete_void,
+            freeFunc: ffi_yunke_mobile_native_rust_future_free_void,
             liftFunc: { $0 },
             errorHandler: FfiConverterTypeUniffiError_lift
         )
@@ -1043,14 +1043,14 @@ open func setPeerPushedClock(universalId: String, peer: String, docId: String, c
     return
         try  await uniffiRustCallAsync(
             rustFutureFunc: {
-                uniffi_affine_mobile_native_fn_method_docstoragepool_set_peer_pushed_clock(
+                uniffi_yunke_mobile_native_fn_method_docstoragepool_set_peer_pushed_clock(
                     self.uniffiClonePointer(),
                     FfiConverterString.lower(universalId),FfiConverterString.lower(peer),FfiConverterString.lower(docId),FfiConverterInt64.lower(clock)
                 )
             },
-            pollFunc: ffi_affine_mobile_native_rust_future_poll_void,
-            completeFunc: ffi_affine_mobile_native_rust_future_complete_void,
-            freeFunc: ffi_affine_mobile_native_rust_future_free_void,
+            pollFunc: ffi_yunke_mobile_native_rust_future_poll_void,
+            completeFunc: ffi_yunke_mobile_native_rust_future_complete_void,
+            freeFunc: ffi_yunke_mobile_native_rust_future_free_void,
             liftFunc: { $0 },
             errorHandler: FfiConverterTypeUniffiError_lift
         )
@@ -1060,14 +1060,14 @@ open func setPeerRemoteClock(universalId: String, peer: String, docId: String, c
     return
         try  await uniffiRustCallAsync(
             rustFutureFunc: {
-                uniffi_affine_mobile_native_fn_method_docstoragepool_set_peer_remote_clock(
+                uniffi_yunke_mobile_native_fn_method_docstoragepool_set_peer_remote_clock(
                     self.uniffiClonePointer(),
                     FfiConverterString.lower(universalId),FfiConverterString.lower(peer),FfiConverterString.lower(docId),FfiConverterInt64.lower(clock)
                 )
             },
-            pollFunc: ffi_affine_mobile_native_rust_future_poll_void,
-            completeFunc: ffi_affine_mobile_native_rust_future_complete_void,
-            freeFunc: ffi_affine_mobile_native_rust_future_free_void,
+            pollFunc: ffi_yunke_mobile_native_rust_future_poll_void,
+            completeFunc: ffi_yunke_mobile_native_rust_future_complete_void,
+            freeFunc: ffi_yunke_mobile_native_rust_future_free_void,
             liftFunc: { $0 },
             errorHandler: FfiConverterTypeUniffiError_lift
         )
@@ -1077,14 +1077,14 @@ open func setSpaceId(universalId: String, spaceId: String)async throws   {
     return
         try  await uniffiRustCallAsync(
             rustFutureFunc: {
-                uniffi_affine_mobile_native_fn_method_docstoragepool_set_space_id(
+                uniffi_yunke_mobile_native_fn_method_docstoragepool_set_space_id(
                     self.uniffiClonePointer(),
                     FfiConverterString.lower(universalId),FfiConverterString.lower(spaceId)
                 )
             },
-            pollFunc: ffi_affine_mobile_native_rust_future_poll_void,
-            completeFunc: ffi_affine_mobile_native_rust_future_complete_void,
-            freeFunc: ffi_affine_mobile_native_rust_future_free_void,
+            pollFunc: ffi_yunke_mobile_native_rust_future_poll_void,
+            completeFunc: ffi_yunke_mobile_native_rust_future_complete_void,
+            freeFunc: ffi_yunke_mobile_native_rust_future_free_void,
             liftFunc: { $0 },
             errorHandler: FfiConverterTypeUniffiError_lift
         )
@@ -1928,7 +1928,7 @@ fileprivate func uniffiRustCallAsync<F, T>(
 ) async throws -> T {
     // Make sure to call the ensure init function since future creation doesn't have a
     // RustCallStatus param, so doesn't use makeRustCall()
-    uniffiEnsureAffineMobileNativeInitialized()
+    uniffiEnsureYunkeMobileNativeInitialized()
     let rustFuture = rustFutureFunc()
     defer {
         freeFunc(rustFuture)
@@ -1961,7 +1961,7 @@ fileprivate func uniffiFutureContinuationCallback(handle: UInt64, pollResult: In
 }
 public func hashcashMint(resource: String, bits: UInt32) -> String  {
     return try!  FfiConverterString.lift(try! rustCall() {
-    uniffi_affine_mobile_native_fn_func_hashcash_mint(
+    uniffi_yunke_mobile_native_fn_func_hashcash_mint(
         FfiConverterString.lower(resource),
         FfiConverterUInt32.lower(bits),$0
     )
@@ -1969,7 +1969,7 @@ public func hashcashMint(resource: String, bits: UInt32) -> String  {
 }
 public func newDocStoragePool() -> DocStoragePool  {
     return try!  FfiConverterTypeDocStoragePool_lift(try! rustCall() {
-    uniffi_affine_mobile_native_fn_func_new_doc_storage_pool($0
+    uniffi_yunke_mobile_native_fn_func_new_doc_storage_pool($0
     )
 })
 }
@@ -1985,98 +1985,98 @@ private let initializationResult: InitializationResult = {
     // Get the bindings contract version from our ComponentInterface
     let bindings_contract_version = 29
     // Get the scaffolding contract version by calling the into the dylib
-    let scaffolding_contract_version = ffi_affine_mobile_native_uniffi_contract_version()
+    let scaffolding_contract_version = ffi_yunke_mobile_native_uniffi_contract_version()
     if bindings_contract_version != scaffolding_contract_version {
         return InitializationResult.contractVersionMismatch
     }
-    if (uniffi_affine_mobile_native_checksum_func_hashcash_mint() != 23633) {
+    if (uniffi_yunke_mobile_native_checksum_func_hashcash_mint() != 23633) {
         return InitializationResult.apiChecksumMismatch
     }
-    if (uniffi_affine_mobile_native_checksum_func_new_doc_storage_pool() != 32882) {
+    if (uniffi_yunke_mobile_native_checksum_func_new_doc_storage_pool() != 32882) {
         return InitializationResult.apiChecksumMismatch
     }
-    if (uniffi_affine_mobile_native_checksum_method_docstoragepool_clear_clocks() != 51151) {
+    if (uniffi_yunke_mobile_native_checksum_method_docstoragepool_clear_clocks() != 51151) {
         return InitializationResult.apiChecksumMismatch
     }
-    if (uniffi_affine_mobile_native_checksum_method_docstoragepool_connect() != 19047) {
+    if (uniffi_yunke_mobile_native_checksum_method_docstoragepool_connect() != 19047) {
         return InitializationResult.apiChecksumMismatch
     }
-    if (uniffi_affine_mobile_native_checksum_method_docstoragepool_delete_blob() != 53695) {
+    if (uniffi_yunke_mobile_native_checksum_method_docstoragepool_delete_blob() != 53695) {
         return InitializationResult.apiChecksumMismatch
     }
-    if (uniffi_affine_mobile_native_checksum_method_docstoragepool_delete_doc() != 4005) {
+    if (uniffi_yunke_mobile_native_checksum_method_docstoragepool_delete_doc() != 4005) {
         return InitializationResult.apiChecksumMismatch
     }
-    if (uniffi_affine_mobile_native_checksum_method_docstoragepool_disconnect() != 20410) {
+    if (uniffi_yunke_mobile_native_checksum_method_docstoragepool_disconnect() != 20410) {
         return InitializationResult.apiChecksumMismatch
     }
-    if (uniffi_affine_mobile_native_checksum_method_docstoragepool_get_blob() != 56927) {
+    if (uniffi_yunke_mobile_native_checksum_method_docstoragepool_get_blob() != 56927) {
         return InitializationResult.apiChecksumMismatch
     }
-    if (uniffi_affine_mobile_native_checksum_method_docstoragepool_get_blob_uploaded_at() != 41270) {
+    if (uniffi_yunke_mobile_native_checksum_method_docstoragepool_get_blob_uploaded_at() != 41270) {
         return InitializationResult.apiChecksumMismatch
     }
-    if (uniffi_affine_mobile_native_checksum_method_docstoragepool_get_doc_clock() != 48394) {
+    if (uniffi_yunke_mobile_native_checksum_method_docstoragepool_get_doc_clock() != 48394) {
         return InitializationResult.apiChecksumMismatch
     }
-    if (uniffi_affine_mobile_native_checksum_method_docstoragepool_get_doc_clocks() != 46082) {
+    if (uniffi_yunke_mobile_native_checksum_method_docstoragepool_get_doc_clocks() != 46082) {
         return InitializationResult.apiChecksumMismatch
     }
-    if (uniffi_affine_mobile_native_checksum_method_docstoragepool_get_doc_snapshot() != 31220) {
+    if (uniffi_yunke_mobile_native_checksum_method_docstoragepool_get_doc_snapshot() != 31220) {
         return InitializationResult.apiChecksumMismatch
     }
-    if (uniffi_affine_mobile_native_checksum_method_docstoragepool_get_doc_updates() != 65430) {
+    if (uniffi_yunke_mobile_native_checksum_method_docstoragepool_get_doc_updates() != 65430) {
         return InitializationResult.apiChecksumMismatch
     }
-    if (uniffi_affine_mobile_native_checksum_method_docstoragepool_get_peer_pulled_remote_clock() != 56577) {
+    if (uniffi_yunke_mobile_native_checksum_method_docstoragepool_get_peer_pulled_remote_clock() != 56577) {
         return InitializationResult.apiChecksumMismatch
     }
-    if (uniffi_affine_mobile_native_checksum_method_docstoragepool_get_peer_pulled_remote_clocks() != 13441) {
+    if (uniffi_yunke_mobile_native_checksum_method_docstoragepool_get_peer_pulled_remote_clocks() != 13441) {
         return InitializationResult.apiChecksumMismatch
     }
-    if (uniffi_affine_mobile_native_checksum_method_docstoragepool_get_peer_pushed_clock() != 34705) {
+    if (uniffi_yunke_mobile_native_checksum_method_docstoragepool_get_peer_pushed_clock() != 34705) {
         return InitializationResult.apiChecksumMismatch
     }
-    if (uniffi_affine_mobile_native_checksum_method_docstoragepool_get_peer_pushed_clocks() != 47148) {
+    if (uniffi_yunke_mobile_native_checksum_method_docstoragepool_get_peer_pushed_clocks() != 47148) {
         return InitializationResult.apiChecksumMismatch
     }
-    if (uniffi_affine_mobile_native_checksum_method_docstoragepool_get_peer_remote_clock() != 47662) {
+    if (uniffi_yunke_mobile_native_checksum_method_docstoragepool_get_peer_remote_clock() != 47662) {
         return InitializationResult.apiChecksumMismatch
     }
-    if (uniffi_affine_mobile_native_checksum_method_docstoragepool_get_peer_remote_clocks() != 14523) {
+    if (uniffi_yunke_mobile_native_checksum_method_docstoragepool_get_peer_remote_clocks() != 14523) {
         return InitializationResult.apiChecksumMismatch
     }
-    if (uniffi_affine_mobile_native_checksum_method_docstoragepool_list_blobs() != 6777) {
+    if (uniffi_yunke_mobile_native_checksum_method_docstoragepool_list_blobs() != 6777) {
         return InitializationResult.apiChecksumMismatch
     }
-    if (uniffi_affine_mobile_native_checksum_method_docstoragepool_mark_updates_merged() != 42713) {
+    if (uniffi_yunke_mobile_native_checksum_method_docstoragepool_mark_updates_merged() != 42713) {
         return InitializationResult.apiChecksumMismatch
     }
-    if (uniffi_affine_mobile_native_checksum_method_docstoragepool_push_update() != 20688) {
+    if (uniffi_yunke_mobile_native_checksum_method_docstoragepool_push_update() != 20688) {
         return InitializationResult.apiChecksumMismatch
     }
-    if (uniffi_affine_mobile_native_checksum_method_docstoragepool_release_blobs() != 2203) {
+    if (uniffi_yunke_mobile_native_checksum_method_docstoragepool_release_blobs() != 2203) {
         return InitializationResult.apiChecksumMismatch
     }
-    if (uniffi_affine_mobile_native_checksum_method_docstoragepool_set_blob() != 31398) {
+    if (uniffi_yunke_mobile_native_checksum_method_docstoragepool_set_blob() != 31398) {
         return InitializationResult.apiChecksumMismatch
     }
-    if (uniffi_affine_mobile_native_checksum_method_docstoragepool_set_blob_uploaded_at() != 7188) {
+    if (uniffi_yunke_mobile_native_checksum_method_docstoragepool_set_blob_uploaded_at() != 7188) {
         return InitializationResult.apiChecksumMismatch
     }
-    if (uniffi_affine_mobile_native_checksum_method_docstoragepool_set_doc_snapshot() != 5287) {
+    if (uniffi_yunke_mobile_native_checksum_method_docstoragepool_set_doc_snapshot() != 5287) {
         return InitializationResult.apiChecksumMismatch
     }
-    if (uniffi_affine_mobile_native_checksum_method_docstoragepool_set_peer_pulled_remote_clock() != 33923) {
+    if (uniffi_yunke_mobile_native_checksum_method_docstoragepool_set_peer_pulled_remote_clock() != 33923) {
         return InitializationResult.apiChecksumMismatch
     }
-    if (uniffi_affine_mobile_native_checksum_method_docstoragepool_set_peer_pushed_clock() != 16565) {
+    if (uniffi_yunke_mobile_native_checksum_method_docstoragepool_set_peer_pushed_clock() != 16565) {
         return InitializationResult.apiChecksumMismatch
     }
-    if (uniffi_affine_mobile_native_checksum_method_docstoragepool_set_peer_remote_clock() != 46506) {
+    if (uniffi_yunke_mobile_native_checksum_method_docstoragepool_set_peer_remote_clock() != 46506) {
         return InitializationResult.apiChecksumMismatch
     }
-    if (uniffi_affine_mobile_native_checksum_method_docstoragepool_set_space_id() != 21955) {
+    if (uniffi_yunke_mobile_native_checksum_method_docstoragepool_set_space_id() != 21955) {
         return InitializationResult.apiChecksumMismatch
     }
 
@@ -2085,7 +2085,7 @@ private let initializationResult: InitializationResult = {
 
 // Make the ensure init function public so that other modules which have external type references to
 // our types can call it.
-public func uniffiEnsureAffineMobileNativeInitialized() {
+public func uniffiEnsureYunkeMobileNativeInitialized() {
     switch initializationResult {
     case .ok:
         break

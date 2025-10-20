@@ -9,5 +9,5 @@ export {
 export { DropIndicator };
 
 export function effects() {
-  customElements.define('affine-drop-indicator', DropIndicator);
+  customElements.define('yunke-drop-indicator', DropIndicator);
 }

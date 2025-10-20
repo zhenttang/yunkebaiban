@@ -1,13 +1,13 @@
 import {
-  AFFINE_FRAME_TITLE_WIDGET,
-  AffineFrameTitleWidget,
-} from './affine-frame-title-widget.js';
+  YUNKE_FRAME_TITLE_WIDGET,
+  YunkeFrameTitleWidget,
+} from './yunke-frame-title-widget.js';
 import { EdgelessFrameTitleEditor } from './edgeless-frame-title-editor.js';
-import { AFFINE_FRAME_TITLE, AffineFrameTitle } from './frame-title.js';
+import { YUNKE_FRAME_TITLE, YunkeFrameTitle } from './frame-title.js';
 
 export function effects() {
-  customElements.define(AFFINE_FRAME_TITLE_WIDGET, AffineFrameTitleWidget);
-  customElements.define(AFFINE_FRAME_TITLE, AffineFrameTitle);
+  customElements.define(YUNKE_FRAME_TITLE_WIDGET, YunkeFrameTitleWidget);
+  customElements.define(YUNKE_FRAME_TITLE, YunkeFrameTitle);
   customElements.define(
     'edgeless-frame-title-editor',
     EdgelessFrameTitleEditor

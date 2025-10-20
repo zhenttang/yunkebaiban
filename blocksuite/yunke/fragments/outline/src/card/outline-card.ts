@@ -16,7 +16,7 @@ import type { SelectEvent } from '../utils/custom-events';
 import type { NoteCardEntity, NoteDropPayload } from '../utils/drag';
 import * as styles from './outline-card.css';
 
-export const AFFINE_OUTLINE_NOTE_CARD = 'affine-outline-note-card';
+export const YUNKE_OUTLINE_NOTE_CARD = 'yunke-outline-note-card';
 
 export class OutlineNoteCard extends SignalWatcher(
   WithDisposable(ShadowlessElement)
@@ -108,7 +108,7 @@ export class OutlineNoteCard extends SignalWatcher(
           noteId: this.note.id,
         }),
         setDragPreview: ({ container, setOffset, location }) => {
-          const preview = document.createElement(AFFINE_OUTLINE_NOTE_CARD);
+          const preview = document.createElement(YUNKE_OUTLINE_NOTE_CARD);
           preview.note = this.note;
           preview.index = this.index;
           preview._context = this._context;
@@ -230,7 +230,7 @@ export class OutlineNoteCard extends SignalWatcher(
         </div>`}
           <div class=${styles.cardContent}>
             ${children.map(block => {
-              return html`<affine-outline-block-preview
+              return html`<yunke-outline-block-preview
                 class=${classMap({ active: this.activeHeadingId === block.id })}
                 .block=${block}
                 .disabledIcon=${invisible}
@@ -238,7 +238,7 @@ export class OutlineNoteCard extends SignalWatcher(
                   if (invisible) return;
                   this._dispatchClickBlockEvent(block);
                 }}
-              ></affine-outline-block-preview>`;
+              ></yunke-outline-block-preview>`;
             })}
             </div>
           </div>
@@ -271,6 +271,6 @@ export class OutlineNoteCard extends SignalWatcher(
 
 declare global {
   interface HTMLElementTagNameMap {
-    [AFFINE_OUTLINE_NOTE_CARD]: OutlineNoteCard;
+    [YUNKE_OUTLINE_NOTE_CARD]: OutlineNoteCard;
   }
 }

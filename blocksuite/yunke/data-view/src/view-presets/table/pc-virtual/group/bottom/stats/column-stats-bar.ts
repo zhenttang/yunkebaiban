@@ -9,7 +9,7 @@ import { LEFT_TOOL_BAR_WIDTH, STATS_BAR_HEIGHT } from '../../../../consts';
 import type { TableSingleView } from '../../../../table-view-manager';
 
 const styles = css`
-  affine-database-virtual-column-stats {
+  yunke-database-virtual-column-stats {
     margin-left: ${LEFT_TOOL_BAR_WIDTH}px;
     height: ${STATS_BAR_HEIGHT}px;
     display: flex;
@@ -28,10 +28,10 @@ export class VirtualDataBaseColumnStats extends SignalWatcher(
         cols,
         col => col.id,
         col => {
-          return html`<affine-database-virtual-column-stats-cell
+          return html`<yunke-database-virtual-column-stats-cell
             .column=${col}
             .group=${this.group}
-          ></affine-database-virtual-column-stats-cell>`;
+          ></yunke-database-virtual-column-stats-cell>`;
         }
       )}
     `;
@@ -46,6 +46,6 @@ export class VirtualDataBaseColumnStats extends SignalWatcher(
 
 declare global {
   interface HTMLElementTagNameMap {
-    'affine-database-virtual-column-stats': VirtualDataBaseColumnStats;
+    'yunke-database-virtual-column-stats': VirtualDataBaseColumnStats;
   }
 }

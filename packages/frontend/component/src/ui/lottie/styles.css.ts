@@ -10,22 +10,22 @@ export const root = style({
 
 // replace primary colors to cssVarV2('icon/primary')
 const iconPrimaryColors = [
-  // legacy "--affine-icon-color"
+  // legacy "--yunke-icon-color"
   'rgb(119,117,125)',
-  // --affine-v2-icon-primary
+  // --yunke-v2-icon-primary
   'rgb(122,122,122)',
 ];
 
 // todo: may need to replace secondary colors & background colors as well?
 
 const backgroundPrimaryColors = [
-  // --affine-v2-background-primary
+  // --yunke-v2-background-primary
   'rgb(255,255,255)',
   '#ffffff',
 ];
 
 const backgroundSecondaryColors = [
-  // --affine-v2-background-secondary
+  // --yunke-v2-background-secondary
   'rgb(245,245,245)',
 ];
 

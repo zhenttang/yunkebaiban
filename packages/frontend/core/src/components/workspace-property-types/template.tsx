@@ -72,9 +72,9 @@ export const TemplateGroupHeader = ({
   const t = useI18n();
   const text =
     groupId === 'true'
-      ? t['com.affine.all-docs.group.is-template']()
+      ? t['com.yunke.all-docs.group.is-template']()
       : groupId === 'false'
-        ? t['com.affine.all-docs.group.is-not-template']()
+        ? t['com.yunke.all-docs.group.is-not-template']()
         : '默认';
 
   return (

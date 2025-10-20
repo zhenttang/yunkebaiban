@@ -22,14 +22,14 @@ export class ChatContentRichText extends WithDisposable(ShadowlessElement) {
   accessor extensions!: ExtensionType[];
 
   @property({ attribute: false })
-  accessor affineFeatureFlagService!: FeatureFlagService;
+  accessor yunkeFeatureFlagService!: FeatureFlagService;
 
   protected override render() {
     const { text, host } = this;
     return html`${createTextRenderer(host, {
       customHeading: true,
       extensions: this.extensions,
-      affineFeatureFlagService: this.affineFeatureFlagService,
+      yunkeFeatureFlagService: this.yunkeFeatureFlagService,
     })(text, this.state)}`;
   }
 }

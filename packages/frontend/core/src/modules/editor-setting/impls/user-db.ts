@@ -19,11 +19,11 @@ export class CurrentUserDBEditorSettingProvider
   ) {
     super();
 
-    const affineCloudServer = this.serversService.server$('affine-cloud').value; // TODO: support multiple servers
-    if (!affineCloudServer) {
-      throw new Error('affine-cloud 服务器未找到');
+    const yunkeCloudServer = this.serversService.server$('yunke-cloud').value; // TODO: support multiple servers
+    if (!yunkeCloudServer) {
+      throw new Error('yunke-cloud 服务器未找到');
     }
-    const userDBService = affineCloudServer.scope.get(UserDBService);
+    const userDBService = yunkeCloudServer.scope.get(UserDBService);
     this.currentUserDB$ = userDBService.currentUserDB.db$;
   }
 

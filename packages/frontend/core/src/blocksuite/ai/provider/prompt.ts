@@ -2,8 +2,8 @@
 // TODO(@Peng): automate this
 export const promptKeys = [
   // text actions
-  '与 AFFiNE AI 对话',
-  '使用 AFFiNE AI 搜索',
+  '与 YUNKE AI 对话',
+  '使用 YUNKE AI 搜索',
   '总结',
   '生成标题摘要',
   '生成说明文字',

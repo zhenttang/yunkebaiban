@@ -1,7 +1,7 @@
 import type { FrameBlockComponent } from '@blocksuite/yunke/blocks/frame';
 import type { EdgelessRootBlockComponent } from '@blocksuite/yunke/blocks/root';
 import type { FrameBlockModel } from '@blocksuite/yunke/model';
-import type { AffineFrameTitleWidget } from '@blocksuite/yunke/widgets/frame-title';
+import type { YunkeFrameTitleWidget } from '@blocksuite/yunke/widgets/frame-title';
 import { assertType } from '@blocksuite/global/utils';
 import { Text } from '@blocksuite/store';
 import { beforeEach, describe, expect, test } from 'vitest';
@@ -22,7 +22,7 @@ describe('frame', () => {
 
   test('frame should have title', async () => {
     const frame = service.doc.addBlock(
-      'affine:frame',
+      'yunke:frame',
       {
         xywh: '[0,0,300,300]',
         title: new Text('Frame 1'),
@@ -33,10 +33,10 @@ describe('frame', () => {
 
     const getFrameTitle = (frameId: string) => {
       const frameTitleWidget = service.std.view.getWidget(
-        'affine-frame-title-widget',
+        'yunke-frame-title-widget',
         frameId
-      ) as AffineFrameTitleWidget | null;
-      return frameTitleWidget?.shadowRoot?.querySelector('affine-frame-title');
+      ) as YunkeFrameTitleWidget | null;
+      return frameTitleWidget?.shadowRoot?.querySelector('yunke-frame-title');
     };
 
     const frameTitle = getFrameTitle(frame);
@@ -52,7 +52,7 @@ describe('frame', () => {
     expect(titleY).toBeLessThan(0);
 
     const nestedFrame = service.doc.addBlock(
-      'affine:frame',
+      'yunke:frame',
       {
         xywh: '[20,20,200,200]',
         title: new Text('Frame 2'),
@@ -77,7 +77,7 @@ describe('frame', () => {
 
   test('frame should have externalXYWH after moving viewport to contains frame', async () => {
     const frameId = service.doc.addBlock(
-      'affine:frame',
+      'yunke:frame',
       {
         xywh: '[1800,1800,200,200]',
         title: new Text('Frame 1'),
@@ -98,7 +98,7 @@ describe('frame', () => {
   test('descendant of frame should not contain itself', async () => {
     const frameIds = [1, 2, 3].map(i => {
       return service.doc.addBlock(
-        'affine:frame',
+        'yunke:frame',
         {
           xywh: '[0,0,300,300]',
           title: new Text(`Frame ${i}`),

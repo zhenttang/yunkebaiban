@@ -1,5 +1,5 @@
 import { ReferenceInfoSchema } from '@blocksuite/yunke-model';
-import type { AffineTextAttributes } from '@blocksuite/yunke-shared/types';
+import type { YunkeTextAttributes } from '@blocksuite/yunke-shared/types';
 import { StdIdentifier } from '@blocksuite/std';
 import { InlineSpecExtension } from '@blocksuite/std/inline';
 import { html } from 'lit';
@@ -11,7 +11,7 @@ import {
 } from './reference-node/reference-config';
 
 export const ReferenceInlineSpecExtension =
-  InlineSpecExtension<AffineTextAttributes>('reference', provider => {
+  InlineSpecExtension<YunkeTextAttributes>('reference', provider => {
     const std = provider.get(StdIdentifier);
     const configProvider = new ReferenceNodeConfigProvider(std);
     const config =
@@ -43,12 +43,12 @@ export const ReferenceInlineSpecExtension =
         return !!delta.attributes?.reference;
       },
       renderer: ({ delta, selected }) => {
-        return html`<affine-reference
+        return html`<yunke-reference
           .std=${std}
           .delta=${delta}
           .selected=${selected}
           .config=${configProvider}
-        ></affine-reference>`;
+        ></yunke-reference>`;
       },
       embed: true,
     };

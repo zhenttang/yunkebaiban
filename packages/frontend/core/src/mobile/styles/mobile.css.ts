@@ -17,13 +17,13 @@ globalStyle('body', {
   minHeight: '100dvh',
   overflowY: 'unset',
 });
-globalStyle('body:has(>#app-tabs):not(:has(affine-keyboard-toolbar))', {
+globalStyle('body:has(>#app-tabs):not(:has(yunke-keyboard-toolbar))', {
   paddingBottom: globalVars.appTabSafeArea,
 });
-globalStyle('body:has(affine-keyboard-toolbar)', {
+globalStyle('body:has(yunke-keyboard-toolbar)', {
   paddingBottom: `calc(${globalVars.appKeyboardStaticHeight} + 46px)`,
 });
-globalStyle('body:has(>#app-tabs) affine-keyboard-tool-panel', {
+globalStyle('body:has(>#app-tabs) yunke-keyboard-tool-panel', {
   paddingBottom: `calc(${globalVars.appTabSafeArea} + 8px)`,
 });
 globalStyle('body:has(>#app-tabs) edgeless-toolbar-widget', {

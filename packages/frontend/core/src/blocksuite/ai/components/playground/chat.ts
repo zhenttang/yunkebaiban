@@ -48,7 +48,7 @@ export class PlaygroundChat extends SignalWatcher(
       }
 
       .chat-panel-title {
-        background: var(--affine-background-primary-color);
+        background: var(--yunke-background-primary-color);
         position: relative;
         padding: 8px 0px;
         width: 100%;
@@ -61,13 +61,13 @@ export class PlaygroundChat extends SignalWatcher(
         .chat-panel-title-text {
           font-size: 14px;
           font-weight: 500;
-          color: var(--affine-text-secondary-color);
+          color: var(--yunke-text-secondary-color);
         }
 
         svg {
           width: 18px;
           height: 18px;
-          color: var(--affine-text-secondary-color);
+          color: var(--yunke-text-secondary-color);
         }
       }
 
@@ -80,18 +80,18 @@ export class PlaygroundChat extends SignalWatcher(
         margin: 0 4px;
         padding: 8px 12px;
         border-radius: 8px;
-        border: 1px solid var(--affine-border-color);
+        border: 1px solid var(--yunke-border-color);
         font-size: 14px;
         font-weight: 500;
         cursor: pointer;
       }
 
       .chat-panel-hints :first-child {
-        color: var(--affine-text-primary-color);
+        color: var(--yunke-text-primary-color);
       }
 
       .chat-panel-hints :nth-child(2) {
-        color: var(--affine-text-secondary-color);
+        color: var(--yunke-text-secondary-color);
       }
 
       .chat-panel-add,
@@ -148,7 +148,7 @@ export class PlaygroundChat extends SignalWatcher(
   accessor extensions!: ExtensionType[];
 
   @property({ attribute: false })
-  accessor affineFeatureFlagService!: FeatureFlagService;
+  accessor yunkeFeatureFlagService!: FeatureFlagService;
 
   @property({ attribute: false })
   accessor session: CopilotSessionType | undefined = undefined;
@@ -275,11 +275,11 @@ export class PlaygroundChat extends SignalWatcher(
             ? html`<span data-testid="chat-panel-embedding-progress"
                 >嵌入中 ${done}/${total}</span
               >`
-            : 'AFFiNE AI'}
+            : 'YUNKE AI'}
         </div>
         <div class="chat-panel-add" @click=${this.addChat}>
           ${NewPageIcon()}
-          <affine-tooltip>添加聊天</affine-tooltip>
+          <yunke-tooltip>添加聊天</yunke-tooltip>
         </div>
         <ai-history-clear
           .host=${this.host}
@@ -299,7 +299,7 @@ export class PlaygroundChat extends SignalWatcher(
         .host=${this.host}
         .isLoading=${this.isLoading}
         .extensions=${this.extensions}
-        .affineFeatureFlagService=${this.affineFeatureFlagService}
+        .yunkeFeatureFlagService=${this.yunkeFeatureFlagService}
       ></chat-panel-messages>
       <ai-chat-composer
         .host=${this.host}

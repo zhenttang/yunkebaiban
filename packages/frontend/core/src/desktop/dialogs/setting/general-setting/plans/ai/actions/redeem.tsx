@@ -1,5 +1,5 @@
 import { Button, type ButtonProps } from '@yunke/component';
-import { generateSubscriptionCallbackLink } from '@yunke/core/components/hooks/affine/use-subscription-notify';
+import { generateSubscriptionCallbackLink } from '@yunke/core/components/hooks/yunke/use-subscription-notify';
 import { AuthService } from '@yunke/core/modules/cloud';
 //import {
 //   SubscriptionPlan,
@@ -65,7 +65,7 @@ export const AIRedeemCodeButton = (btnProps: ButtonProps) => {
       checkoutOptions={checkoutOptions}
       renderer={props => (
         <Button variant="primary" {...btnProps} {...props}>
-          {t['com.affine.payment.redeem-code']()}
+          {t['com.yunke.payment.redeem-code']()}
         </Button>
       )}
     />

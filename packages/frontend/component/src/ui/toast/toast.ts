@@ -43,7 +43,7 @@ const createToastContainer = (portal?: HTMLElement) => {
   `;
   const template = html`<div
     style="${styles}"
-    data-testid="affine-toast-container"
+    data-testid="yunke-toast-container"
   ></div>`;
   const element = htmlToElement<HTMLDivElement>(template);
   portal.append(element);
@@ -74,13 +74,13 @@ const createAndShowNewToast = (
     bottom: 0;
     max-width: 480px;
     text-align: center;
-    font-family: var(--affine-font-family);
-    font-size: var(--affine-font-sm);
+    font-family: var(--yunke-font-family);
+    font-size: var(--yunke-font-sm);
     padding: 10px 16px;
     margin: 0;
-    color: var(--affine-white);
-    background: var(--affine-tooltip);
-    box-shadow: var(--affine-float-button-shadow);
+    color: var(--yunke-white);
+    background: var(--yunke-tooltip);
+    box-shadow: var(--yunke-float-button-shadow);
     border-radius: 8px;
     opacity: 0;
     transform: translateY(100%);
@@ -91,7 +91,7 @@ const createAndShowNewToast = (
 
   const toastTemplate = html`<div
     style="${toastStyles}"
-    data-testid="affine-toast"
+    data-testid="yunke-toast"
   >
     ${message}
   </div>`;
@@ -101,7 +101,7 @@ const createAndShowNewToast = (
   ToastContainer.append(toastElement);
   logger.debug(`Showing toast message: "${message}"`);
   window.dispatchEvent(
-    new CustomEvent('affine-toast:emit', { detail: message })
+    new CustomEvent('yunke-toast:emit', { detail: message })
   );
 
   setTimeout(() => {

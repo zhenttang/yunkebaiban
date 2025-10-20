@@ -57,7 +57,7 @@ export class DatabaseNumberFormatBar extends WithDisposable(LitElement) {
       background-color: transparent;
       border: none;
       border-radius: 4px;
-      color: var(--affine-icon-color);
+      color: var(--yunke-icon-color);
       cursor: pointer;
       display: flex;
       align-items: center;
@@ -74,12 +74,12 @@ export class DatabaseNumberFormatBar extends WithDisposable(LitElement) {
     }
 
     .number-formatting-sample {
-      font-size: var(--affine-font-xs);
-      color: var(--affine-icon-color);
+      font-size: var(--yunke-font-xs);
+      color: var(--yunke-icon-color);
       margin-left: auto;
     }
     .number-format-toolbar-button:hover {
-      background-color: var(--affine-hover-color);
+      background-color: var(--yunke-hover-color);
     }
     .divider {
       width: 100%;

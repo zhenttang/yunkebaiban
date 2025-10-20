@@ -1,5 +1,5 @@
 import { Menu, MenuItem, MenuTrigger, notify } from '@yunke/component';
-import { useAsyncCallback } from '@yunke/core/components/hooks/affine-async-hooks';
+import { useAsyncCallback } from '@yunke/core/components/hooks/yunke-async-hooks';
 import { ShareInfoService } from '@yunke/core/modules/share-doc';
 import { UserFriendlyError } from '@yunke/error';
 import type { PublicDocMode } from '@yunke/core/modules/share-doc/types';
@@ -37,22 +37,22 @@ export const PublicDoc = ({ disabled }: { disabled?: boolean }) => {
       notify.error({
         title:
           t[
-            'com.affine.share-menu.disable-publish-link.notification.success.title'
+            'com.yunke.share-menu.disable-publish-link.notification.success.title'
           ](),
         message:
           t[
-            'com.affine.share-menu.disable-publish-link.notification.success.message'
+            'com.yunke.share-menu.disable-publish-link.notification.success.message'
           ](),
       });
     } catch (err) {
       notify.error({
         title:
           t[
-            'com.affine.share-menu.disable-publish-link.notification.fail.title'
+            'com.yunke.share-menu.disable-publish-link.notification.fail.title'
           ](),
         message:
           t[
-            'com.affine.share-menu.disable-publish-link.notification.fail.message'
+            'com.yunke.share-menu.disable-publish-link.notification.fail.message'
           ](),
       });
       console.log(err);
@@ -69,11 +69,11 @@ export const PublicDoc = ({ disabled }: { disabled?: boolean }) => {
       notify.success({
         title:
           t[
-            'com.affine.share-menu.create-public-link.notification.success.title'
+            'com.yunke.share-menu.create-public-link.notification.success.title'
           ](),
         message:
           t[
-            'com.affine.share-menu.create-public-link.notification.success.message'
+            'com.yunke.share-menu.create-public-link.notification.success.message'
           ](),
         style: 'normal',
         icon: <SingleSelectCheckSolidIcon color={cssVar('primaryColor')} />,
@@ -95,8 +95,8 @@ export const PublicDoc = ({ disabled }: { disabled?: boolean }) => {
       await shareInfoService.shareInfo.enableShare('append-only');
       track.$.sharePanel.$.createShareLink();
       notify.success({
-        title: t['com.affine.share-menu.create-append-only-link.notification.success.title'](),
-        message: t['com.affine.share-menu.create-append-only-link.notification.success.message'](),
+        title: t['com.yunke.share-menu.create-append-only-link.notification.success.title'](),
+        message: t['com.yunke.share-menu.create-append-only-link.notification.success.message'](),
         style: 'normal',
         icon: <SingleSelectCheckSolidIcon color={cssVar('primaryColor')} />,
       });
@@ -111,21 +111,21 @@ export const PublicDoc = ({ disabled }: { disabled?: boolean }) => {
 
   const getCurrentModeText = () => {
     if (!isSharedPage) {
-      return t['com.affine.share-menu.option.link.no-access']();
+      return t['com.yunke.share-menu.option.link.no-access']();
     }
     switch (sharedMode) {
       case 'append-only':
-        return t['com.affine.share-menu.option.link.append-only']();
+        return t['com.yunke.share-menu.option.link.append-only']();
       case 'page':
       default:
-        return t['com.affine.share-menu.option.link.readonly']();
+        return t['com.yunke.share-menu.option.link.readonly']();
     }
   };
 
   return (
     <div className={styles.rowContainerStyle}>
       <div className={styles.labelStyle}>
-        {t['com.affine.share-menu.option.link.label']()}
+        {t['com.yunke.share-menu.option.link.label']()}
       </div>
       {disabled ? (
         <div className={clsx(styles.menuTriggerStyle, 'disable')}>
@@ -147,7 +147,7 @@ export const PublicDoc = ({ disabled }: { disabled?: boolean }) => {
               >
                 <div className={styles.publicItemRowStyle}>
                   <div>
-                    {t['com.affine.share-menu.option.link.no-access']()}
+                    {t['com.yunke.share-menu.option.link.no-access']()}
                   </div>
                 </div>
               </MenuItem>
@@ -158,7 +158,7 @@ export const PublicDoc = ({ disabled }: { disabled?: boolean }) => {
                 selected={isSharedPage && sharedMode === 'page'}
               >
                 <div className={styles.publicItemRowStyle}>
-                  <div>{t['com.affine.share-menu.option.link.readonly']()}</div>
+                  <div>{t['com.yunke.share-menu.option.link.readonly']()}</div>
                 </div>
               </MenuItem>
               <MenuItem
@@ -168,7 +168,7 @@ export const PublicDoc = ({ disabled }: { disabled?: boolean }) => {
                 selected={isSharedPage && sharedMode === 'append-only'}
               >
                 <div className={styles.publicItemRowStyle}>
-                  <div>{t['com.affine.share-menu.option.link.append-only']()}</div>
+                  <div>{t['com.yunke.share-menu.option.link.append-only']()}</div>
                 </div>
               </MenuItem>
             </>

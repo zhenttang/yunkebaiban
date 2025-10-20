@@ -13,7 +13,7 @@
     "blocks": {
       "type": "block",
       "id": "block:wKkJVqs2Uh",
-      "flavour": "affine:page",
+      "flavour": "yunke:page",
       "props": {
         "title": {
           "$blocksuite:internal:text$": true,
@@ -28,7 +28,7 @@
         {
           "type": "block",
           "id": "block:9obeHwvQlc",
-          "flavour": "affine:surface",
+          "flavour": "yunke:surface",
           "props": {
             "elements": {
               "G8sDm7LjU9": {
@@ -39,15 +39,15 @@
                 "shapeStyle": "General",
                 "radius": 0,
                 "filled": true,
-                "fillColor": "--affine-palette-shape-blue",
+                "fillColor": "--yunke-palette-shape-blue",
                 "strokeWidth": 4,
-                "strokeColor": "--affine-palette-transparent",
+                "strokeColor": "--yunke-palette-transparent",
                 "strokeStyle": "none",
                 "roughness": 1.4,
                 "id": "G8sDm7LjU9",
                 "index": "a1",
                 "seed": 571658708,
-                "color": "--affine-palette-line-black"
+                "color": "--yunke-palette-line-black"
               },
               "hbRQlS-CgA": {
                 "type": "shape",
@@ -57,15 +57,15 @@
                 "shapeStyle": "General",
                 "radius": 0,
                 "filled": true,
-                "fillColor": "--affine-palette-shape-green",
+                "fillColor": "--yunke-palette-shape-green",
                 "strokeWidth": 4,
-                "strokeColor": "--affine-palette-line-black",
+                "strokeColor": "--yunke-palette-line-black",
                 "strokeStyle": "none",
                 "roughness": 1.4,
                 "id": "hbRQlS-CgA",
                 "index": "a0",
                 "seed": 1793267126,
-                "color": "--affine-palette-line-black"
+                "color": "--yunke-palette-line-black"
               },
               "n8wq78w2AW": {
                 "type": "shape",
@@ -75,15 +75,15 @@
                 "shapeStyle": "General",
                 "radius": 0,
                 "filled": true,
-                "fillColor": "--affine-palette-shape-yellow",
+                "fillColor": "--yunke-palette-shape-yellow",
                 "strokeWidth": 4,
-                "strokeColor": "--affine-palette-transparent",
+                "strokeColor": "--yunke-palette-transparent",
                 "strokeStyle": "none",
                 "roughness": 1.4,
                 "id": "n8wq78w2AW",
                 "index": "Zz",
                 "seed": 549546192,
-                "color": "--affine-palette-line-black"
+                "color": "--yunke-palette-line-black"
               },
               "pckcetI3H2": {
                 "type": "shape",
@@ -93,17 +93,17 @@
                 "shapeStyle": "General",
                 "radius": 0,
                 "filled": true,
-                "fillColor": "--affine-palette-shape-tangerine",
+                "fillColor": "--yunke-palette-shape-tangerine",
                 "strokeWidth": 12,
-                "strokeColor": "--affine-palette-line-tangerine",
+                "strokeColor": "--yunke-palette-line-tangerine",
                 "strokeStyle": "none",
                 "roughness": 1.4,
                 "id": "pckcetI3H2",
                 "index": "Zy",
                 "seed": 2034782310,
-                "color": "--affine-palette-line-black",
+                "color": "--yunke-palette-line-black",
                 "text": {
-                  "affine:surface:text": true,
+                  "yunke:surface:text": true,
                   "delta": []
                 },
                 "fontFamily": "blocksuite:surface:Inter"
@@ -113,14 +113,14 @@
                 "xywh": "[-263.92954192315847,-499.2355323811801,241.47195434570312,105]",
                 "rotate": 0,
                 "text": {
-                  "affine:surface:text": true,
+                  "yunke:surface:text": true,
                   "delta": [
                     {
                       "insert": "Product"
                     }
                   ]
                 },
-                "color": "--affine-palette-line-blue",
+                "color": "--yunke-palette-line-blue",
                 "fontSize": 88,
                 "fontFamily": "blocksuite:surface:BebasNeue",
                 "fontWeight": "400",
@@ -135,14 +135,14 @@
                 "xywh": "[1742.3329219139223,-499.7355323811801,153,105]",
                 "rotate": 0,
                 "text": {
-                  "affine:surface:text": true,
+                  "yunke:surface:text": true,
                   "delta": [
                     {
                       "insert": "PrICE"
                     }
                   ]
                 },
-                "color": "--affine-palette-line-navy",
+                "color": "--yunke-palette-line-navy",
                 "fontSize": 88,
                 "fontFamily": "blocksuite:surface:BebasNeue",
                 "fontWeight": "400",
@@ -157,14 +157,14 @@
                 "xywh": "[1730.6756596208468,884.5632875897456,166,106]",
                 "rotate": 0,
                 "text": {
-                  "affine:surface:text": true,
+                  "yunke:surface:text": true,
                   "delta": [
                     {
                       "insert": "PLACE"
                     }
                   ]
                 },
-                "color": "--affine-palette-line-red",
+                "color": "--yunke-palette-line-red",
                 "fontSize": 88,
                 "fontFamily": "blocksuite:surface:BebasNeue",
                 "fontWeight": "400",
@@ -179,14 +179,14 @@
                 "xywh": "[-275.586804216234,885.0632875897456,310,106]",
                 "rotate": 0,
                 "text": {
-                  "affine:surface:text": true,
+                  "yunke:surface:text": true,
                   "delta": [
                     {
                       "insert": "ProMOTION"
                     }
                   ]
                 },
-                "color": "--affine-palette-line-tangerine",
+                "color": "--yunke-palette-line-tangerine",
                 "fontSize": 88,
                 "fontFamily": "blocksuite:surface:BebasNeue",
                 "fontWeight": "400",
@@ -201,14 +201,14 @@
                 "xywh": "[-1545.6298523435441,-308.51674361350143,732.9849149269639,504]",
                 "rotate": 0,
                 "text": {
-                  "affine:surface:text": true,
+                  "yunke:surface:text": true,
                   "delta": [
                     {
                       "insert": "A 4P Marketing Matrix template organizes key marketing strategies around four elements: Product, Price, Place, and Promotion. \n\nIt provides a structured approach to define and analyze each aspect, ensuring a comprehensive marketing plan."
                     }
                   ]
                 },
-                "color": "--affine-palette-line-black",
+                "color": "--yunke-palette-line-black",
                 "fontSize": 40,
                 "fontFamily": "blocksuite:surface:Poppins",
                 "fontWeight": "600",
@@ -224,14 +224,14 @@
                 "xywh": "[-1545.6298523435441,-437.4272826856303,651.4558715820312,89]",
                 "rotate": 0,
                 "text": {
-                  "affine:surface:text": true,
+                  "yunke:surface:text": true,
                   "delta": [
                     {
                       "insert": "4P Marketing Matrix"
                     }
                   ]
                 },
-                "color": "--affine-palette-line-black",
+                "color": "--yunke-palette-line-black",
                 "fontSize": 64,
                 "fontFamily": "blocksuite:surface:Poppins",
                 "fontWeight": "600",
@@ -244,7 +244,7 @@
               "LNDgtMxSx2": {
                 "type": "group",
                 "children": {
-                  "affine:surface:ymap": true,
+                  "yunke:surface:ymap": true,
                   "json": {
                     "pckcetI3H2": true,
                     "n8wq78w2AW": true,
@@ -257,7 +257,7 @@
                   }
                 },
                 "title": {
-                  "affine:surface:text": true,
+                  "yunke:surface:text": true,
                   "delta": [
                     {
                       "insert": "Group 1"
@@ -276,12 +276,12 @@
                 "shapeStyle": "General",
                 "radius": 0.1,
                 "filled": true,
-                "fillColor": "--affine-palette-shape-white",
+                "fillColor": "--yunke-palette-shape-white",
                 "strokeWidth": 12,
-                "strokeColor": "--affine-palette-line-black",
+                "strokeColor": "--yunke-palette-line-black",
                 "strokeStyle": "solid",
                 "roughness": 1.4,
-                "color": "--affine-palette-line-black",
+                "color": "--yunke-palette-line-black",
                 "id": "UDIFiRbLEx",
                 "index": "aF",
                 "seed": 499378524
@@ -293,10 +293,10 @@
         {
           "type": "block",
           "id": "block:uStvHzbo_0",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[-47.65483438164483,-152.35566874448068,364,350.42578125]",
-            "background": "--affine-tag-blue",
+            "background": "--yunke-tag-blue",
             "index": "aR",
             "displayMode": "edgeless",
             "hidden": false,
@@ -305,7 +305,7 @@
                 "borderRadius": 0,
                 "borderSize": 4,
                 "borderStyle": "none",
-                "shadowType": "--affine-note-shadow-sticker"
+                "shadowType": "--yunke-note-shadow-sticker"
               },
               "collapse": true
             }
@@ -314,7 +314,7 @@
             {
               "type": "block",
               "id": "block:IGcP0YepF2",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
@@ -329,10 +329,10 @@
         {
           "type": "block",
           "id": "block:yI5JejXYkO",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[352.32566504563056,64.19414482024047,364,350.42578125]",
-            "background": "--affine-tag-blue",
+            "background": "--yunke-tag-blue",
             "index": "aS",
             "displayMode": "edgeless",
             "hidden": false,
@@ -341,7 +341,7 @@
                 "borderRadius": 0,
                 "borderSize": 4,
                 "borderStyle": "none",
-                "shadowType": "--affine-note-shadow-sticker"
+                "shadowType": "--yunke-note-shadow-sticker"
               },
               "collapse": true
             }
@@ -350,7 +350,7 @@
             {
               "type": "block",
               "id": "block:Owf1ifVNz1",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
@@ -365,10 +365,10 @@
         {
           "type": "block",
           "id": "block:DIjSAufGEL",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[892.912994588858,-165.18985185378477,364,350.42578125]",
-            "background": "--affine-tag-blue",
+            "background": "--yunke-tag-blue",
             "index": "aT",
             "displayMode": "edgeless",
             "hidden": false,
@@ -377,7 +377,7 @@
                 "borderRadius": 0,
                 "borderSize": 4,
                 "borderStyle": "none",
-                "shadowType": "--affine-note-shadow-sticker"
+                "shadowType": "--yunke-note-shadow-sticker"
               },
               "collapse": true
             }
@@ -386,7 +386,7 @@
             {
               "type": "block",
               "id": "block:62lqOBsxvb",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
@@ -401,10 +401,10 @@
         {
           "type": "block",
           "id": "block:DWK6GhYlBY",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[2152.3785001752194,-45.780025366743075,364,350.42578125]",
-            "background": "--affine-tag-green",
+            "background": "--yunke-tag-green",
             "index": "aU",
             "displayMode": "edgeless",
             "hidden": false,
@@ -413,7 +413,7 @@
                 "borderRadius": 0,
                 "borderSize": 4,
                 "borderStyle": "none",
-                "shadowType": "--affine-note-shadow-sticker"
+                "shadowType": "--yunke-note-shadow-sticker"
               },
               "collapse": true
             }
@@ -422,7 +422,7 @@
             {
               "type": "block",
               "id": "block:1g2EsVeGlP",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
@@ -437,10 +437,10 @@
         {
           "type": "block",
           "id": "block:EnlV_5bR5H",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[2657.263549538395,-227.09494996130474,364,350.42578125]",
-            "background": "--affine-tag-green",
+            "background": "--yunke-tag-green",
             "index": "aV",
             "displayMode": "edgeless",
             "hidden": false,
@@ -449,7 +449,7 @@
                 "borderRadius": 0,
                 "borderSize": 4,
                 "borderStyle": "none",
-                "shadowType": "--affine-note-shadow-sticker"
+                "shadowType": "--yunke-note-shadow-sticker"
               },
               "collapse": true
             }
@@ -458,7 +458,7 @@
             {
               "type": "block",
               "id": "block:R3v_ruiteR",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
@@ -473,10 +473,10 @@
         {
           "type": "block",
           "id": "block:DcxuiQm8fX",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[-11.674334954369453,1205.4178310224202,364,350.42578125]",
-            "background": "--affine-tag-yellow",
+            "background": "--yunke-tag-yellow",
             "index": "aW",
             "displayMode": "edgeless",
             "hidden": false,
@@ -485,7 +485,7 @@
                 "borderRadius": 0,
                 "borderSize": 4,
                 "borderStyle": "none",
-                "shadowType": "--affine-note-shadow-sticker"
+                "shadowType": "--yunke-note-shadow-sticker"
               },
               "collapse": true
             }
@@ -494,7 +494,7 @@
             {
               "type": "block",
               "id": "block:mWyJ-m7iam",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
@@ -509,10 +509,10 @@
         {
           "type": "block",
           "id": "block:JVsfHdO3yZ",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[590.2686764639566,1461.5599669243923,364,350.42578125]",
-            "background": "--affine-tag-yellow",
+            "background": "--yunke-tag-yellow",
             "index": "aX",
             "displayMode": "edgeless",
             "hidden": false,
@@ -521,7 +521,7 @@
                 "borderRadius": 0,
                 "borderSize": 4,
                 "borderStyle": "none",
-                "shadowType": "--affine-note-shadow-sticker"
+                "shadowType": "--yunke-note-shadow-sticker"
               },
               "collapse": true
             }
@@ -530,7 +530,7 @@
             {
               "type": "block",
               "id": "block:fkj3dYM-5u",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
@@ -545,10 +545,10 @@
         {
           "type": "block",
           "id": "block:1XO8CVBjRS",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[2006.4604780976342,1247.0200381308277,364,350.42578125]",
-            "background": "--affine-tag-orange",
+            "background": "--yunke-tag-orange",
             "index": "aY",
             "displayMode": "edgeless",
             "hidden": false,
@@ -557,7 +557,7 @@
                 "borderRadius": 0,
                 "borderSize": 4,
                 "borderStyle": "none",
-                "shadowType": "--affine-note-shadow-sticker"
+                "shadowType": "--yunke-note-shadow-sticker"
               },
               "collapse": true
             }
@@ -566,7 +566,7 @@
             {
               "type": "block",
               "id": "block:1-Vf5hZEwC",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
@@ -581,10 +581,10 @@
         {
           "type": "block",
           "id": "block:bOaMGO9IvG",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[2628.9752347495414,1205.4178310224202,364,350.42578125]",
-            "background": "--affine-tag-orange",
+            "background": "--yunke-tag-orange",
             "index": "aZ",
             "displayMode": "edgeless",
             "hidden": false,
@@ -593,7 +593,7 @@
                 "borderRadius": 0,
                 "borderSize": 4,
                 "borderStyle": "none",
-                "shadowType": "--affine-note-shadow-sticker"
+                "shadowType": "--yunke-note-shadow-sticker"
               },
               "collapse": true
             }
@@ -602,7 +602,7 @@
             {
               "type": "block",
               "id": "block:448i6V2K0y",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
@@ -617,10 +617,10 @@
         {
           "type": "block",
           "id": "block:MTn83hg25G",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[3078.4659279251755,1259.3587141642702,364,350.42578125]",
-            "background": "--affine-tag-orange",
+            "background": "--yunke-tag-orange",
             "index": "aa",
             "displayMode": "edgeless",
             "hidden": false,
@@ -629,7 +629,7 @@
                 "borderRadius": 0,
                 "borderSize": 4,
                 "borderStyle": "none",
-                "shadowType": "--affine-note-shadow-sticker"
+                "shadowType": "--yunke-note-shadow-sticker"
               },
               "collapse": true
             }
@@ -638,7 +638,7 @@
             {
               "type": "block",
               "id": "block:6ZPjzctxeh",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {

@@ -12,7 +12,7 @@ export class EditorIconButton extends LitElement {
     :host(:disabled) {
       pointer-events: none;
       cursor: not-allowed;
-      color: var(--affine-text-disable-color);
+      color: var(--yunke-text-disable-color);
     }
 
     .icon-container {
@@ -32,20 +32,20 @@ export class EditorIconButton extends LitElement {
     }
 
     :host([active]) .icon-container.active-mode-color {
-      color: var(--affine-primary-color);
+      color: var(--yunke-primary-color);
     }
 
     :host([active]) .icon-container.active-mode-border {
-      border: 1px solid var(--affine-brand-color);
+      border: 1px solid var(--yunke-brand-color);
     }
 
     :host([active]) .icon-container.active-mode-background {
-      background: var(--affine-hover-color);
+      background: var(--yunke-hover-color);
     }
 
     .icon-container[coming] {
       cursor: not-allowed;
-      color: var(--affine-text-disable-color);
+      color: var(--yunke-text-disable-color);
     }
 
     ::slotted(svg) {
@@ -73,7 +73,7 @@ export class EditorIconButton extends LitElement {
     .icon-container[with-hover]::before {
       content: '';
       display: block;
-      background: var(--affine-hover-color);
+      background: var(--yunke-hover-color);
       position: absolute;
       width: 100%;
       height: 100%;
@@ -134,7 +134,7 @@ export class EditorIconButton extends LitElement {
       <style>
         .icon-container:hover,
         .icon-container.hovered {
-          background: ${this.hover ? `var(--affine-hover-color)` : 'inherit'};
+          background: ${this.hover ? `var(--yunke-hover-color)` : 'inherit'};
         }
       </style>
       <div
@@ -146,11 +146,11 @@ export class EditorIconButton extends LitElement {
         <slot></slot>
         ${cache(
           this.showTooltip && tooltip
-            ? html`<affine-tooltip
+            ? html`<yunke-tooltip
                 tip-position=${this.tipPosition}
                 .arrow=${this.arrow}
                 .offset=${this.tooltipOffset}
-                >${tooltip}</affine-tooltip
+                >${tooltip}</yunke-tooltip
               >`
             : nothing
         )}

@@ -1,5 +1,5 @@
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
-import { useAppSettingHelper } from '@yunke/core/components/hooks/affine/use-app-setting-helper';
+import { useAppSettingHelper } from '@yunke/core/components/hooks/yunke/use-app-setting-helper';
 import { WindowsAppControls } from '@yunke/core/components/pure/header/windows-app-controls';
 import { ThemeProvider } from '@yunke/core/components/theme-provider';
 import { configureElectronStateStorageImpls } from '@yunke/core/desktop/storage';

@@ -106,10 +106,10 @@ export function patchQuickSearchService(framework: FrameworkProvider) {
           },
           {
             label: {
-              i18nKey: 'com.affine.cmdk.insert-links',
+              i18nKey: 'com.yunke.cmdk.insert-links',
             },
             placeholder: {
-              i18nKey: 'com.affine.cmdk.docs.placeholder',
+              i18nKey: 'com.yunke.cmdk.docs.placeholder',
             },
           }
         )
@@ -157,12 +157,12 @@ export function patchQuickSearchService(framework: FrameworkProvider) {
                 const flavour = type?.flavour;
                 if (!flavour) return;
 
-                if (flavour === 'affine:bookmark') {
+                if (flavour === 'yunke:bookmark') {
                   track.doc.editor.slashMenu.bookmark();
                   return;
                 }
 
-                if (flavour === 'affine:embed-linked-doc') {
+                if (flavour === 'yunke:embed-linked-doc') {
                   track.doc.editor.slashMenu.linkDoc({
                     control: 'linkDoc',
                   });

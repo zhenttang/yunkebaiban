@@ -124,7 +124,7 @@ export class FilterableListComponent<Props = unknown> extends WithDisposable(
 
     return html`
       <div
-        class=${classMap({ 'affine-filterable-list': true, flipped: isFlip })}
+        class=${classMap({ 'yunke-filterable-list': true, flipped: isFlip })}
       >
         <div class="input-wrapper">
           ${SearchIcon()}
@@ -253,6 +253,6 @@ export function showPopFilterableList({
 
 declare global {
   interface HTMLElementTagNameMap {
-    'affine-filterable-list': FilterableListComponent;
+    'yunke-filterable-list': FilterableListComponent;
   }
 }

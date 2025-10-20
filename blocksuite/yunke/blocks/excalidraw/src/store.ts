@@ -6,7 +6,7 @@ import {
 import { ExcalidrawBlockSchemaExtension } from './excalidraw-model.js';
 
 export class ExcalidrawStoreExtension extends StoreExtensionProvider {
-  override name = 'affine-excalidraw-block';
+  override name = 'yunke-excalidraw-block';
 
   override setup(context: StoreExtensionContext) {
     super.setup(context);

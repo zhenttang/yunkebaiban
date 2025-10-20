@@ -16,7 +16,7 @@ const BLOCK_META_THROTTLE_TIME = 30 * 1000;
  * - updatedBy: The user who updated the block.
  */
 export class BlockMetaService extends StoreExtension {
-  static override key = 'affine-block-meta-service';
+  static override key = 'yunke-block-meta-service';
 
   get isBlockMetaEnabled() {
     const flagService = this.store.get(FeatureFlagService);

@@ -14,7 +14,7 @@ export const FootNoteReferenceTypes = ['doc', 'attachment', 'url'] as const;
  *
  * Supports the following blocks:
  *
- * 1. Inline View: `AffineReference` - title
+ * 1. Inline View: `YunkeReference` - title
  * 2. Card View: `EmbedLinkedDocBlock` - title & description
  * 3. Embed View: `EmbedSyncedDocBlock` - title
  */

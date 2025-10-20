@@ -103,7 +103,7 @@ export class FootNoteNodeConfigProvider {
 }
 
 export const FootNoteNodeConfigIdentifier =
-  createIdentifier<FootNoteNodeConfigProvider>('AffineFootNoteNodeConfig');
+  createIdentifier<FootNoteNodeConfigProvider>('YunkeFootNoteNodeConfig');
 
 export function FootNoteNodeConfigExtension(
   config: FootNoteNodeConfig

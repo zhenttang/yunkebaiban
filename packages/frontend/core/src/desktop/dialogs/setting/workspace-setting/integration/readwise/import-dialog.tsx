@@ -76,7 +76,7 @@ export const ImportDialog = ({ onClose }: { onClose: () => void }) => {
 
       const startTime = Date.now();
       readwise
-        .highlightsToAffineDocs(selectedHighlights.reverse(), books, {
+        .highlightsToYunkeDocs(selectedHighlights.reverse(), books, {
           signal,
           onProgress: setImportProgress,
           onComplete: () => {
@@ -100,10 +100,10 @@ export const ImportDialog = ({ onClose }: { onClose: () => void }) => {
               alignMessage: 'icon',
               title:
                 t[
-                  'com.affine.integration.readwise.import.abort-notify-title'
+                  'com.yunke.integration.readwise.import.abort-notify-title'
                 ](),
               message: t.t(
-                'com.affine.integration.readwise.import.abort-notify-desc',
+                'com.yunke.integration.readwise.import.abort-notify-desc',
                 { finished }
               ),
             });
@@ -227,12 +227,12 @@ const SelectStage = ({
     <>
       <header>
         <h3 className={styles.title}>
-          {t['com.affine.integration.readwise.import.title']()}
+          {t['com.yunke.integration.readwise.import.title']()}
         </h3>
         <div className={styles.desc}>
           {lastImportedAt ? (
             <Trans
-              i18nKey="com.affine.integration.readwise.import.desc-from-last"
+              i18nKey="com.yunke.integration.readwise.import.desc-from-last"
               values={{
                 lastImportedAt: i18nTime(lastImportedAt, {
                   absolute: { accuracy: 'second' },
@@ -249,7 +249,7 @@ const SelectStage = ({
               }}
             ></Trans>
           ) : (
-            t['com.affine.integration.readwise.import.desc-from-start']()
+            t['com.yunke.integration.readwise.import.desc-from-start']()
           )}
         </div>
         <Divider size="thinner" />
@@ -259,7 +259,7 @@ const SelectStage = ({
         {loading ? (
           <div className={styles.loading}>
             <Loading />
-            {t['com.affine.loading']()}
+            {t['com.yunke.loading']()}
           </div>
         ) : highlights.length > 0 ? (
           <HighlightTable
@@ -275,7 +275,7 @@ const SelectStage = ({
       <footer>
         <Divider size="thinner" className={styles.footerDivider} />
         <div className={styles.actions}>
-          <Button onClick={onClose}>{t['com.affine.confirmModal.button.cancel']()}</Button>
+          <Button onClick={onClose}>{t['com.yunke.confirmModal.button.cancel']()}</Button>
           <Button
             disabled={
               loading || (selected.length === 0 && highlights.length !== 0)
@@ -283,7 +283,7 @@ const SelectStage = ({
             variant="primary"
             onClick={handleConfirmImport}
           >
-            {t['com.affine.confirmModal.button.confirm']()}
+            {t['com.yunke.confirmModal.button.confirm']()}
           </Button>
         </div>
       </footer>
@@ -361,13 +361,13 @@ const HighlightTable = ({
           />
         </div>
         <div className={styles.tableCellTitle}>
-          {t['com.affine.integration.readwise.import.cell-h-content']()}
+          {t['com.yunke.integration.readwise.import.cell-h-content']()}
         </div>
         <div className={styles.tableCellTodo}>
-          {t['com.affine.integration.readwise.import.cell-h-todo']()}
+          {t['com.yunke.integration.readwise.import.cell-h-todo']()}
         </div>
         <div className={styles.tableCellTime}>
-          {t['com.affine.integration.readwise.import.cell-h-time']()}
+          {t['com.yunke.integration.readwise.import.cell-h-time']()}
         </div>
       </div>
       <Virtuoso
@@ -415,15 +415,15 @@ const HighlightTable = ({
               <div className={styles.tableCellTodo}>
                 {action === 'new' ? (
                   <span className={styles.todoNew}>
-                    {t['com.affine.integration.readwise.import.todo-new']()}
+                    {t['com.yunke.integration.readwise.import.todo-new']()}
                   </span>
                 ) : action === 'skip' ? (
                   <span className={styles.todoSkip}>
-                    {t['com.affine.integration.readwise.import.todo-skip']()}
+                    {t['com.yunke.integration.readwise.import.todo-skip']()}
                   </span>
                 ) : (
                   <span className={styles.todoUpdate}>
-                    {t['com.affine.integration.readwise.import.todo-update']()}
+                    {t['com.yunke.integration.readwise.import.todo-update']()}
                   </span>
                 )}
               </div>
@@ -444,7 +444,7 @@ const HighlightEmpty = () => {
   const t = useI18n();
   return (
     <div className={styles.empty}>
-      {t['com.affine.integration.readwise.import.empty']()}
+      {t['com.yunke.integration.readwise.import.empty']()}
     </div>
   );
 };
@@ -468,17 +468,17 @@ const WritingStage = ({
           strokeWidth={3}
         />
         <h3 className={styles.importingTitle}>
-          {t['com.affine.integration.readwise.import.importing']()}
+          {t['com.yunke.integration.readwise.import.importing']()}
         </h3>
       </header>
 
       <main className={styles.importingDesc}>
-        {t['com.affine.integration.readwise.import.importing-desc']()}
+        {t['com.yunke.integration.readwise.import.importing-desc']()}
       </main>
 
       <footer className={styles.importingFooter}>
         <Button variant="error" onClick={onStop}>
-          {t['com.affine.integration.readwise.import.importing-stop']()}
+          {t['com.yunke.integration.readwise.import.importing-stop']()}
         </Button>
       </footer>
     </>

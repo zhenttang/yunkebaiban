@@ -4,7 +4,7 @@ import { useLiveData, useService } from '@toeverything/infra';
 import clsx from 'clsx';
 import React, { useEffect, useState, useCallback } from 'react';
 
-import type { AffineEditorContainer } from '../blocksuite/block-suite-editor';
+import type { YunkeEditorContainer } from '../blocksuite/block-suite-editor';
 import { BlockSuiteEditor } from '../blocksuite/block-suite-editor';
 import { DocService } from '../modules/doc';
 import { EditorService } from '../modules/editor';
@@ -119,7 +119,7 @@ const SimpleDeckModal: React.FC<{
         {/* iframe */}
         <div style={{ flex: 1, position: 'relative' }}>
           <iframe
-            src="/affine_whiteboard.html?whiteboard=true"
+            src="/yunke_whiteboard.html?whiteboard=true"
             style={{
               width: '100%',
               height: '100%',
@@ -136,11 +136,11 @@ const SimpleDeckModal: React.FC<{
 
 declare global {
   // oxlint-disable-next-line no-var 禁用no-var规则
-  var currentEditor: AffineEditorContainer | undefined;
+  var currentEditor: YunkeEditorContainer | undefined;
 }
 
 export type OnLoadEditor = (
-  editor: AffineEditorContainer
+  editor: YunkeEditorContainer
 ) => (() => void) | void;
 
 export interface PageDetailEditorProps {
@@ -239,7 +239,7 @@ export const PageDetailEditor = ({
           console.log('🎯 检测到Edgeless模式：插入到无限白板');
           
           // 使用正确的API获取surface
-          const surfaces = blockSuiteDoc.getBlocksByFlavour('affine:surface');
+          const surfaces = blockSuiteDoc.getBlocksByFlavour('yunke:surface');
           console.log('找到的surface数量:', surfaces.length);
           
           if (surfaces.length === 0) {
@@ -253,9 +253,9 @@ export const PageDetailEditor = ({
 
           // 在surface中添加图片块（注意：图片是block，不是element）
           try {
-            // 修复：使用 addBlock 添加 affine:image 块到 surface 中
+            // 修复：使用 addBlock 添加 yunke:image 块到 surface 中
             const imageId = blockSuiteDoc.addBlock(
-              'affine:image',
+              'yunke:image',
               {
                 sourceId: sourceId,
                 xywh: '[100,100,200,150]', // [x,y,width,height]
@@ -324,7 +324,7 @@ export const PageDetailEditor = ({
     
     // 在根块的末尾添加图片块
     const imageBlockId = doc.addBlock(
-      'affine:image',
+      'yunke:image',
       {
         sourceId: sourceId,
         caption: `Decker绘图 - ${metadata.filename}`,

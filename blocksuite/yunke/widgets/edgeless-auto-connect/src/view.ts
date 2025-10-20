@@ -7,7 +7,7 @@ import { autoConnectWidget } from '.';
 import { effects } from './effects';
 
 export class EdgelessAutoConnectViewExtension extends ViewExtensionProvider {
-  override name = 'affine-edgeless-auto-connect-widget';
+  override name = 'yunke-edgeless-auto-connect-widget';
 
   override effect() {
     super.effect();

@@ -111,7 +111,7 @@ export class DetailSelection {
   }
 
   focusFirstCell() {
-    const firstId = this.viewEle.querySelector('affine-data-view-record-field')
+    const firstId = this.viewEle.querySelector('yunke-data-view-record-field')
       ?.column.id;
     if (firstId) {
       this.selection = {
@@ -138,7 +138,7 @@ export class DetailSelection {
 
   getFocusCellContainer(selection: DetailViewSelection) {
     return this.viewEle.querySelector(
-      `affine-data-view-record-field[data-column-id="${selection.propertyId}"]`
+      `yunke-data-view-record-field[data-column-id="${selection.propertyId}"]`
     ) as RecordField | undefined;
   }
 
@@ -146,9 +146,9 @@ export class DetailSelection {
     const { groupKey, cardId } = selection.cards[0];
 
     return this.viewEle
-      .querySelector(`affine-data-view-kanban-group[data-key="${groupKey}"]`)
+      .querySelector(`yunke-data-view-kanban-group[data-key="${groupKey}"]`)
       ?.querySelector(
-        `affine-data-view-kanban-card[data-card-id="${cardId}"]`
+        `yunke-data-view-kanban-card[data-card-id="${cardId}"]`
       ) as KanbanCard | undefined;
   }
 }

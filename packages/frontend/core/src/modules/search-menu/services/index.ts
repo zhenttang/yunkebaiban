@@ -67,7 +67,7 @@ export class SearchMenuService extends Service {
     const rawMetas = currentWorkspace.docCollection.meta.docMetas;
     const recentDocs = this.recentDocsService.getRecentDocs();
     return {
-      name: I18n.t('com.affine.editor.at-menu.recent-docs'),
+      name: I18n.t('com.yunke.editor.at-menu.recent-docs'),
       items: recentDocs
         .map(doc => {
           const meta = rawMetas.find(meta => meta.id === doc.id);
@@ -116,7 +116,7 @@ export class SearchMenuService extends Service {
 
     const overflowText = computed(() => {
       const overflowCount = docsSignal.value.length - MAX_DOCS;
-      return I18n.t('com.affine.editor.at-menu.more-docs-hint', {
+      return I18n.t('com.yunke.editor.at-menu.more-docs-hint', {
         count: overflowCount > 100 ? '100+' : overflowCount,
       });
     });
@@ -126,7 +126,7 @@ export class SearchMenuService extends Service {
     });
 
     return {
-      name: I18n.t('com.affine.editor.at-menu.link-to-doc', {
+      name: I18n.t('com.yunke.editor.at-menu.link-to-doc', {
         query,
       }),
       items: docsSignal,
@@ -238,7 +238,7 @@ export class SearchMenuService extends Service {
     const tags: TagMeta[] = this.tagService.tagList.tagMetas$.value;
     if (query.trim().length === 0) {
       return {
-        name: I18n.t('com.affine.editor.at-menu.tags', {
+        name: I18n.t('com.yunke.editor.at-menu.tags', {
           query,
         }),
         items: tags.map(tag => this.toTagMenuItem(tag, action)),
@@ -255,7 +255,7 @@ export class SearchMenuService extends Service {
     const result = fuse.search(query);
 
     return {
-      name: I18n.t('com.affine.editor.at-menu.link-to-doc', {
+      name: I18n.t('com.yunke.editor.at-menu.link-to-doc', {
         query,
       }),
       items: result.map(item => {
@@ -298,7 +298,7 @@ export class SearchMenuService extends Service {
     const collections = this.collectionService.collectionMetas$.value;
     if (query.trim().length === 0) {
       return {
-        name: I18n.t('com.affine.editor.at-menu.collections', {
+        name: I18n.t('com.yunke.editor.at-menu.collections', {
           query,
         }),
         items: collections.map(collection =>
@@ -323,7 +323,7 @@ export class SearchMenuService extends Service {
     const result = fuse.search(query);
 
     return {
-      name: I18n.t('com.affine.editor.at-menu.link-to-doc', {
+      name: I18n.t('com.yunke.editor.at-menu.link-to-doc', {
         query,
       }),
       items: result.map(item => {

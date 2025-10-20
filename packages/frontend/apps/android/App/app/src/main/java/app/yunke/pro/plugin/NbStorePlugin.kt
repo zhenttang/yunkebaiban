@@ -1,4 +1,4 @@
-package app.affine.pro.plugin
+package app.yunke.pro.plugin
 
 import com.getcapacitor.JSArray
 import com.getcapacitor.JSObject
@@ -9,9 +9,9 @@ import com.getcapacitor.annotation.CapacitorPlugin
 import kotlinx.coroutines.Dispatchers
 import timber.log.Timber
 // 恢复原生库导入
-import uniffi.affine_mobile_native.DocRecord
-import uniffi.affine_mobile_native.SetBlob
-import uniffi.affine_mobile_native.newDocStoragePool
+import uniffi.yunke_mobile_native.DocRecord
+import uniffi.yunke_mobile_native.SetBlob
+import uniffi.yunke_mobile_native.newDocStoragePool
 
 @CapacitorPlugin(name = "NbStoreDocStorage")
 class NbStorePlugin : Plugin() {
@@ -24,7 +24,7 @@ class NbStorePlugin : Plugin() {
         launch(Dispatchers.IO) {
             try {
                 val spaceId = call.getString("spaceId") ?: ""
-                val path = call.getString("path") ?: "/data/data/app.affine.pro/files/nbstore"
+                val path = call.getString("path") ?: "/data/data/app.yunke.pro/files/nbstore"
                 docStoragePool.connect(spaceId, path)
                 Timber.i("NbStore connect() - 已连接到原生SQLite数据库: $spaceId")
                 call.resolve()

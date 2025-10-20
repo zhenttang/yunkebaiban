@@ -42,10 +42,10 @@ export class AddContentButton extends LitElement {
       width: 100%;
       padding: 12px 16px;
       margin: 8px 0;
-      border: 2px dashed var(--affine-border-color);
+      border: 2px dashed var(--yunke-border-color);
       border-radius: 8px;
       background: transparent;
-      color: var(--affine-text-secondary-color);
+      color: var(--yunke-text-secondary-color);
       cursor: pointer;
       transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
       font-size: 14px;
@@ -55,9 +55,9 @@ export class AddContentButton extends LitElement {
     }
     
     .add-content-button:hover {
-      border-color: var(--affine-primary-color);
-      background: var(--affine-primary-color-alpha);
-      color: var(--affine-primary-color);
+      border-color: var(--yunke-primary-color);
+      background: var(--yunke-primary-color-alpha);
+      color: var(--yunke-primary-color);
       transform: translateY(-1px);
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     }
@@ -74,16 +74,16 @@ export class AddContentButton extends LitElement {
     }
     
     .add-content-button:disabled:hover {
-      border-color: var(--affine-border-color);
+      border-color: var(--yunke-border-color);
       background: transparent;
-      color: var(--affine-text-secondary-color);
+      color: var(--yunke-text-secondary-color);
       transform: none;
       box-shadow: none;
     }
     
     /* 键盘焦点样式 */
     .add-content-button:focus-visible {
-      outline: 2px solid var(--affine-primary-color);
+      outline: 2px solid var(--yunke-primary-color);
       outline-offset: 2px;
     }
     
@@ -110,7 +110,7 @@ export class AddContentButton extends LitElement {
     .ripple {
       position: absolute;
       border-radius: 50%;
-      background: var(--affine-primary-color-alpha);
+      background: var(--yunke-primary-color-alpha);
       transform: scale(0);
       animation: ripple-animation 0.6s linear;
       pointer-events: none;
@@ -135,7 +135,7 @@ export class AddContentButton extends LitElement {
     /* 不同状态的提示文本 */
     .hint-text {
       font-size: 12px;
-      color: var(--affine-text-tertiary-color);
+      color: var(--yunke-text-tertiary-color);
       margin-top: 4px;
       text-align: center;
       opacity: 0;
@@ -150,7 +150,7 @@ export class AddContentButton extends LitElement {
     :host([empty]) .add-content-button {
       border-style: solid;
       border-width: 1px;
-      background: var(--affine-background-secondary-color);
+      background: var(--yunke-background-secondary-color);
       min-height: 120px;
       flex-direction: column;
       gap: 12px;
@@ -200,7 +200,7 @@ export class AddContentButton extends LitElement {
   
   render() {
     const buttonStyles = {
-      borderColor: this.isHovered ? 'var(--affine-primary-color)' : undefined,
+      borderColor: this.isHovered ? 'var(--yunke-primary-color)' : undefined,
       transform: this.isPressed ? 'scale(0.98)' : undefined
     };
     

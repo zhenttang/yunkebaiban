@@ -5,9 +5,9 @@ import { ImportIcon, PlusIcon } from '@blocksuite/icons/rc';
 
 import type { usePageHelper } from '../blocksuite/block-suite-page-list/utils';
 import type { GlobalDialogService } from '../modules/dialogs';
-import { registerAffineCommand } from './registry';
+import { registerYunkeCommand } from './registry';
 
-export function registerAffineCreationCommands({
+export function registerYunkeCreationCommands({
   pageHelper,
   t,
   globalDialogService,
@@ -18,10 +18,10 @@ export function registerAffineCreationCommands({
 }) {
   const unsubs: Array<() => void> = [];
   unsubs.push(
-    registerAffineCommand({
-      id: 'affine:new-page',
-      category: 'affine:creation',
-      label: t['com.affine.cmdk.affine.new-page'](),
+    registerYunkeCommand({
+      id: 'yunke:new-page',
+      category: 'yunke:creation',
+      label: t['com.yunke.cmdk.yunke.new-page'](),
       icon: <PlusIcon />,
       keyBinding: BUILD_CONFIG.isElectron
         ? {
@@ -38,11 +38,11 @@ export function registerAffineCreationCommands({
   );
 
   unsubs.push(
-    registerAffineCommand({
-      id: 'affine:new-edgeless-page',
-      category: 'affine:creation',
+    registerYunkeCommand({
+      id: 'yunke:new-edgeless-page',
+      category: 'yunke:creation',
       icon: <PlusIcon />,
-      label: t['com.affine.cmdk.affine.new-edgeless-page'](),
+      label: t['com.yunke.cmdk.yunke.new-edgeless-page'](),
       run() {
         track.$.cmdk.creation.createDoc({
           mode: 'edgeless',
@@ -54,11 +54,11 @@ export function registerAffineCreationCommands({
   );
 
   unsubs.push(
-    registerAffineCommand({
-      id: 'affine:new-workspace',
-      category: 'affine:creation',
+    registerYunkeCommand({
+      id: 'yunke:new-workspace',
+      category: 'yunke:creation',
       icon: <PlusIcon />,
-      label: t['com.affine.cmdk.affine.new-workspace'](),
+      label: t['com.yunke.cmdk.yunke.new-workspace'](),
       run() {
         track.$.cmdk.workspace.createWorkspace();
 
@@ -67,11 +67,11 @@ export function registerAffineCreationCommands({
     })
   );
   unsubs.push(
-    registerAffineCommand({
-      id: 'affine:import-workspace',
-      category: 'affine:creation',
+    registerYunkeCommand({
+      id: 'yunke:import-workspace',
+      category: 'yunke:creation',
       icon: <ImportIcon />,
-      label: t['com.affine.cmdk.affine.import-workspace'](),
+      label: t['com.yunke.cmdk.yunke.import-workspace'](),
       preconditionStrategy: () => {
         return BUILD_CONFIG.isElectron;
       },

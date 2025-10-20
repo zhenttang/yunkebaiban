@@ -53,11 +53,11 @@ export function Auth() {
         if (result.success) {
           // 保存令牌到localStorage（与统一认证系统兼容）
           if (result.token) {
-            localStorage.setItem('affine-admin-token', result.token);
+            localStorage.setItem('yunke-admin-token', result.token);
             console.log('令牌已保存到localStorage');
             
             if (result.refreshToken) {
-              localStorage.setItem('affine-admin-refresh-token', result.refreshToken);
+              localStorage.setItem('yunke-admin-refresh-token', result.refreshToken);
               console.log('刷新令牌已保存到localStorage');
             }
           }

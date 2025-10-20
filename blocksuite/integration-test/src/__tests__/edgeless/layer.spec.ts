@@ -227,7 +227,7 @@ test('blocks should rerender when their z-index changed', async () => {
   const assertBlocksContent = () => {
     const blocks = Array.from(
       document.querySelectorAll(
-        'affine-edgeless-root gfx-viewport > [data-block-id]'
+        'yunke-edgeless-root gfx-viewport > [data-block-id]'
       )
     );
 
@@ -471,7 +471,7 @@ describe('group related functionality', () => {
     ).toBe(0);
 
     const topCanvas = edgeless.querySelector(
-      'affine-surface canvas'
+      'yunke-surface canvas'
     ) as HTMLCanvasElement;
 
     expect(
@@ -846,7 +846,7 @@ test('the actual rendering z-index should satisfy the logic order of their index
   expect(blocks.length).toBe(indexes.length + 1);
 
   blocks
-    .filter(block => block.flavour !== 'affine:surface')
+    .filter(block => block.flavour !== 'yunke:surface')
     .forEach((block, index) => {
       if (index === blocks.length - 1) return;
 

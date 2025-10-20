@@ -23,15 +23,15 @@ const getThemeOptions = (t: ReturnType<typeof useI18n>) =>
   [
     {
       value: 'system',
-      label: t['com.affine.themeSettings.auto'](),
+      label: t['com.yunke.themeSettings.auto'](),
     },
     {
       value: 'light',
-      label: t['com.affine.themeSettings.light'](),
+      label: t['com.yunke.themeSettings.light'](),
     },
     {
       value: 'dark',
-      label: t['com.affine.themeSettings.dark'](),
+      label: t['com.yunke.themeSettings.dark'](),
     },
   ] satisfies RadioItem[];
 
@@ -77,10 +77,10 @@ export const EdgelessThemeDocListProperty = ({ doc }: { doc: DocRecord }) => {
   return (
     <StackProperty icon={<EdgelessIcon />}>
       {edgelessTheme === 'system' || !edgelessTheme
-        ? t['com.affine.themeSettings.auto']()
+        ? t['com.yunke.themeSettings.auto']()
         : edgelessTheme === 'light'
-          ? t['com.affine.themeSettings.light']()
-          : t['com.affine.themeSettings.dark']()}
+          ? t['com.yunke.themeSettings.light']()
+          : t['com.yunke.themeSettings.dark']()}
     </StackProperty>
   );
 };
@@ -122,7 +122,7 @@ export const EdgelessThemeFilterValue = ({
             }}
             selected={filter.value === 'system'}
           >
-            {t['com.affine.themeSettings.auto']()}
+            {t['com.yunke.themeSettings.auto']()}
           </MenuItem>
           <MenuItem
             onClick={() => {
@@ -133,7 +133,7 @@ export const EdgelessThemeFilterValue = ({
             }}
             selected={filter.value === 'light'}
           >
-            {t['com.affine.themeSettings.light']()}
+            {t['com.yunke.themeSettings.light']()}
           </MenuItem>
           <MenuItem
             onClick={() => {
@@ -144,17 +144,17 @@ export const EdgelessThemeFilterValue = ({
             }}
             selected={filter.value === 'dark'}
           >
-            {t['com.affine.themeSettings.dark']()}
+            {t['com.yunke.themeSettings.dark']()}
           </MenuItem>
         </>
       }
     >
       <span>
         {filter.value === 'system'
-          ? t['com.affine.themeSettings.auto']()
+          ? t['com.yunke.themeSettings.auto']()
           : filter.value === 'light'
-            ? t['com.affine.themeSettings.light']()
-            : t['com.affine.themeSettings.dark']()}
+            ? t['com.yunke.themeSettings.light']()
+            : t['com.yunke.themeSettings.dark']()}
       </span>
     </Menu>
   );
@@ -167,11 +167,11 @@ export const EdgelessThemeGroupHeader = ({
   const t = useI18n();
   const text =
     groupId === 'light'
-      ? t['com.affine.themeSettings.light']()
+      ? t['com.yunke.themeSettings.light']()
       : groupId === 'dark'
-        ? t['com.affine.themeSettings.dark']()
+        ? t['com.yunke.themeSettings.dark']()
         : groupId === 'system'
-          ? t['com.affine.themeSettings.auto']()
+          ? t['com.yunke.themeSettings.auto']()
           : '默认';
 
   return (

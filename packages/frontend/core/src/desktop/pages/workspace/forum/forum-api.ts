@@ -38,8 +38,8 @@ import { mockDB, paginate, nextPostId, nextReplyId, nextDraftId, nextAttachmentI
 async function request<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
   const url = `${API_BASE_URL}${endpoint}`;
   const token =
-    globalThis.localStorage?.getItem('affine-admin-token') ||
-    globalThis.localStorage?.getItem('affine-access-token');
+    globalThis.localStorage?.getItem('yunke-admin-token') ||
+    globalThis.localStorage?.getItem('yunke-access-token');
 
   const headers: Record<string, string> = {
     ...(options.headers as Record<string, string> | undefined),
@@ -616,8 +616,8 @@ export async function uploadAttachment(postId: string, file: File): Promise<Atta
   const form = new FormData();
   form.append('file', file);
   const token =
-    globalThis.localStorage?.getItem('affine-admin-token') ||
-    globalThis.localStorage?.getItem('affine-access-token');
+    globalThis.localStorage?.getItem('yunke-admin-token') ||
+    globalThis.localStorage?.getItem('yunke-access-token');
   const headers: Record<string, string> = {};
   if (token) headers.Authorization = `Bearer ${token}`;
   const response = await fetch(url, { method: 'POST', headers, body: form });

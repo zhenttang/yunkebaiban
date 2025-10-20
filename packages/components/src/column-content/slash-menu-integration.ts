@@ -73,8 +73,8 @@ export class SlashMenuIntegration {
       top: ${position.y}px;
       z-index: 1000;
       min-width: ${Math.max(position.width || 200, 200)}px;
-      background: var(--affine-background-overlay-panel-color);
-      border: 1px solid var(--affine-border-color);
+      background: var(--yunke-background-overlay-panel-color);
+      border: 1px solid var(--yunke-border-color);
       border-radius: 8px;
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
       padding: 8px 0;
@@ -112,77 +112,77 @@ export class SlashMenuIntegration {
         name: '段落',
         description: '添加普通文本段落',
         icon: '📝',
-        action: () => this.insertBlock('affine:paragraph', {})
+        action: () => this.insertBlock('yunke:paragraph', {})
       },
       {
         id: 'heading1',
         name: '标题 1',
         description: '大标题',
         icon: 'H1',
-        action: () => this.insertBlock('affine:paragraph', { type: 'h1' })
+        action: () => this.insertBlock('yunke:paragraph', { type: 'h1' })
       },
       {
         id: 'heading2', 
         name: '标题 2',
         description: '中标题',
         icon: 'H2',
-        action: () => this.insertBlock('affine:paragraph', { type: 'h2' })
+        action: () => this.insertBlock('yunke:paragraph', { type: 'h2' })
       },
       {
         id: 'heading3',
         name: '标题 3', 
         description: '小标题',
         icon: 'H3',
-        action: () => this.insertBlock('affine:paragraph', { type: 'h3' })
+        action: () => this.insertBlock('yunke:paragraph', { type: 'h3' })
       },
       {
         id: 'list',
         name: '无序列表',
         description: '创建项目列表',
         icon: '•',
-        action: () => this.insertBlock('affine:list', { type: 'bulleted' })
+        action: () => this.insertBlock('yunke:list', { type: 'bulleted' })
       },
       {
         id: 'numbered-list',
         name: '有序列表',
         description: '创建编号列表',
         icon: '1.',
-        action: () => this.insertBlock('affine:list', { type: 'numbered' })
+        action: () => this.insertBlock('yunke:list', { type: 'numbered' })
       },
       {
         id: 'todo',
         name: '待办事项',
         description: '创建任务清单',
         icon: '☐',
-        action: () => this.insertBlock('affine:list', { type: 'todo' })
+        action: () => this.insertBlock('yunke:list', { type: 'todo' })
       },
       {
         id: 'divider',
         name: '分割线',
         description: '添加分割线',
         icon: '―',
-        action: () => this.insertBlock('affine:divider', {})
+        action: () => this.insertBlock('yunke:divider', {})
       },
       {
         id: 'code',
         name: '代码块',
         description: '插入代码片段',
         icon: '</>', 
-        action: () => this.insertBlock('affine:code', {})
+        action: () => this.insertBlock('yunke:code', {})
       },
       {
         id: 'image',
         name: '图片',
         description: '上传或插入图片',
         icon: '🖼️',
-        action: () => this.insertBlock('affine:image', {})
+        action: () => this.insertBlock('yunke:image', {})
       },
       {
         id: 'callout',
         name: '标注',
         description: '突出显示的信息框',
         icon: '💡',
-        action: () => this.insertBlock('affine:callout', {})
+        action: () => this.insertBlock('yunke:callout', {})
       }
     ];
   }
@@ -212,11 +212,11 @@ export class SlashMenuIntegration {
       <div class="menu-content" style="flex: 1;">
         <div class="menu-name" style="
           font-weight: 500;
-          color: var(--affine-text-primary-color);
+          color: var(--yunke-text-primary-color);
         ">${item.name}</div>
         <div class="menu-description" style="
           font-size: 12px;
-          color: var(--affine-text-secondary-color);
+          color: var(--yunke-text-secondary-color);
           margin-top: 2px;
         ">${item.description}</div>
       </div>
@@ -224,7 +224,7 @@ export class SlashMenuIntegration {
     
     // 添加交互效果
     menuItem.addEventListener('mouseenter', () => {
-      menuItem.style.background = 'var(--affine-hover-color)';
+      menuItem.style.background = 'var(--yunke-hover-color)';
     });
     
     menuItem.addEventListener('mouseleave', () => {
@@ -402,12 +402,12 @@ export class SlashMenuIntegration {
   
   private showCreationFeedback(flavour: string) {
     const typeMap: Record<string, string> = {
-      'affine:paragraph': '段落',
-      'affine:list': '列表',
-      'affine:code': '代码块',
-      'affine:image': '图片',
-      'affine:callout': '标注',
-      'affine:divider': '分割线'
+      'yunke:paragraph': '段落',
+      'yunke:list': '列表',
+      'yunke:code': '代码块',
+      'yunke:image': '图片',
+      'yunke:callout': '标注',
+      'yunke:divider': '分割线'
     };
     
     const typeName = typeMap[flavour] || '内容';

@@ -4,13 +4,13 @@ import axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } f
  */
 export const tokenManager = {
     get: () => {
-        return localStorage.getItem('affine-admin-token') || null;
+        return localStorage.getItem('yunke-admin-token') || null;
     },
     set: (token) => {
-        localStorage.setItem('affine-admin-token', token);
+        localStorage.setItem('yunke-admin-token', token);
     },
     remove: () => {
-        localStorage.removeItem('affine-admin-token');
+        localStorage.removeItem('yunke-admin-token');
     }
 };
 /**
@@ -115,7 +115,7 @@ export const setupResponseInterceptors = (instance) => {
             // 防止无限循环刷新
             if (originalRequest.url?.includes('/api/auth/refresh')) {
                 tokenManager.remove();
-                localStorage.removeItem('affine-admin-refresh-token');
+                localStorage.removeItem('yunke-admin-refresh-token');
                 return Promise.reject({
                     code: 'AUTH_EXPIRED',
                     message: '登录已过期，请重新登录',
@@ -138,7 +138,7 @@ export const setupResponseInterceptors = (instance) => {
             // 开始刷新令牌
             isRefreshing = true;
             try {
-                const refreshToken = localStorage.getItem('affine-admin-refresh-token');
+                const refreshToken = localStorage.getItem('yunke-admin-refresh-token');
                 if (!refreshToken) {
                     throw new Error('No refresh token available');
                 }
@@ -150,7 +150,7 @@ export const setupResponseInterceptors = (instance) => {
                     const newToken = response.data.token;
                     tokenManager.set(newToken);
                     if (response.data.refreshToken) {
-                        localStorage.setItem('affine-admin-refresh-token', response.data.refreshToken);
+                        localStorage.setItem('yunke-admin-refresh-token', response.data.refreshToken);
                     }
                     // 处理队列中的请求
                     processQueue(null, newToken);
@@ -169,7 +169,7 @@ export const setupResponseInterceptors = (instance) => {
                 // 刷新令牌失败
                 processQueue(refreshError, null);
                 tokenManager.remove();
-                localStorage.removeItem('affine-admin-refresh-token');
+                localStorage.removeItem('yunke-admin-refresh-token');
                 isRefreshing = false;
                 // 不要自动跳转，让组件处理
                 return Promise.reject({

@@ -60,7 +60,7 @@ export const SelectorLayout = ({
       <footer className={styles.footer}>
         <div className={styles.footerInfo}>
           <div className={styles.selectedCount}>
-            <span>{t['com.affine.selectPage.selected']()}</span>
+            <span>{t['com.yunke.selectPage.selected']()}</span>
             <span className={styles.selectedNum}>{selectedCount ?? 0}</span>
           </div>
           <Button
@@ -68,7 +68,7 @@ export const SelectorLayout = ({
             className={styles.clearButton}
             onClick={onClear}
           >
-            {t['com.affine.editCollection.pages.clear']()}
+            {t['com.yunke.editCollection.pages.clear']()}
           </Button>
         </div>
 

@@ -12,7 +12,7 @@ import { property, query, state } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { debounce } from 'lodash-es';
 
-import { AffineIcon } from '../_common/icons';
+import { YunkeIcon } from '../_common/icons';
 import {
   type ChatMessage,
   isChatAction,
@@ -48,8 +48,8 @@ export class ChatPanelMessages extends WithDisposable(ShadowlessElement) {
       align-items: center;
       gap: 10px;
       margin-bottom: 4px;
-      color: var(--affine-text-primary-color);
-      font-size: var(--affine-font-sm);
+      color: var(--yunke-text-primary-color);
+      font-size: var(--yunke-font-sm);
       font-weight: 500;
       user-select: none;
     }
@@ -70,12 +70,12 @@ export class ChatPanelMessages extends WithDisposable(ShadowlessElement) {
     .messages-placeholder-title {
       font-size: 18px;
       font-weight: 600;
-      color: var(--affine-text-primary-color);
+      color: var(--yunke-text-primary-color);
     }
 
     .messages-placeholder-title[data-loading='true'] {
-      font-size: var(--affine-font-sm);
-      color: var(--affine-text-secondary-color);
+      font-size: var(--yunke-font-sm);
+      color: var(--yunke-text-secondary-color);
     }
 
     .onboarding-wrapper {
@@ -99,13 +99,13 @@ export class ChatPanelMessages extends WithDisposable(ShadowlessElement) {
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
-      color: var(--affine-text-secondary-color);
+      color: var(--yunke-text-secondary-color);
     }
 
     .onboarding-item-text {
-      font-size: var(--affine-font-xs);
+      font-size: var(--yunke-font-xs);
       font-weight: 400;
-      color: var(--affine-text-primary-color);
+      color: var(--yunke-text-primary-color);
       white-space: nowrap;
     }
 
@@ -118,9 +118,9 @@ export class ChatPanelMessages extends WithDisposable(ShadowlessElement) {
       border-radius: 50%;
       width: 32px;
       height: 32px;
-      border: 0.5px solid var(--affine-border-color);
-      background-color: var(--affine-background-primary-color);
-      box-shadow: var(--affine-shadow-2);
+      border: 0.5px solid var(--yunke-border-color);
+      background-color: var(--yunke-background-primary-color);
+      box-shadow: var(--yunke-shadow-2);
       display: flex;
       justify-content: center;
       align-items: center;
@@ -162,7 +162,7 @@ export class ChatPanelMessages extends WithDisposable(ShadowlessElement) {
   accessor extensions!: ExtensionType[];
 
   @property({ attribute: false })
-  accessor affineFeatureFlagService!: FeatureFlagService;
+  accessor yunkeFeatureFlagService!: FeatureFlagService;
 
   @query('.chat-panel-messages-container')
   accessor messagesContainer: HTMLDivElement | null = null;
@@ -244,15 +244,15 @@ export class ChatPanelMessages extends WithDisposable(ShadowlessElement) {
               class="messages-placeholder"
               data-testid="chat-panel-messages-placeholder"
             >
-              ${AffineIcon(
+              ${YunkeIcon(
                 isLoading
-                  ? 'var(--affine-icon-secondary)'
-                  : 'var(--affine-primary-color)'
+                  ? 'var(--yunke-icon-secondary)'
+                  : 'var(--yunke-primary-color)'
               )}
               <div class="messages-placeholder-title" data-loading=${isLoading}>
                 ${this.isLoading
                   ? html`<span data-testid="chat-panel-loading-state"
-                      >AFFiNE AI 正在加载历史记录...</span
+                      >YUNKE AI 正在加载历史记录...</span
                     >`
                   : html`<span data-testid="chat-panel-empty-state"
                       >我能为您做些什么？</span
@@ -277,7 +277,7 @@ export class ChatPanelMessages extends WithDisposable(ShadowlessElement) {
                     .status=${isLast ? status : 'idle'}
                     .error=${isLast ? error : null}
                     .extensions=${this.extensions}
-                    .affineFeatureFlagService=${this.affineFeatureFlagService}
+                    .yunkeFeatureFlagService=${this.yunkeFeatureFlagService}
                     .getSessionId=${this.getSessionId}
                     .retry=${() => this.retry()}
                   ></chat-message-assistant>`;
@@ -471,7 +471,7 @@ export class ChatPanelMessages extends WithDisposable(ShadowlessElement) {
       for await (const event of stream) {
         console.log(`[AI_DEBUG] retry收到流式事件:`, event);
         
-        // 修复: event是AffineTextEvent对象，需要获取data字段
+        // 修复: event是YunkeTextEvent对象，需要获取data字段
         const text = event.data;
         console.log(`[AI_DEBUG] retry提取的文本内容:`, JSON.stringify(text));
         

@@ -13,7 +13,7 @@
     "blocks": {
       "type": "block",
       "id": "block:XJG3g0crM0",
-      "flavour": "affine:page",
+      "flavour": "yunke:page",
       "props": {
         "title": {
           "$blocksuite:internal:text$": true,
@@ -28,10 +28,10 @@
         {
           "type": "block",
           "id": "block:Ys1dLyLtVs",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[104.20642280085835,36.41497938399458,364,120.33491224963538]",
-            "background": "--affine-tag-purple",
+            "background": "--yunke-tag-purple",
             "index": "a0",
             "hidden": false,
             "edgeless": {
@@ -39,7 +39,7 @@
                 "borderRadius": 8,
                 "borderSize": 4,
                 "borderStyle": "none",
-                "shadowType": "--affine-note-shadow-film"
+                "shadowType": "--yunke-note-shadow-film"
               },
               "collapse": true
             }
@@ -48,7 +48,7 @@
             {
               "type": "block",
               "id": "block:cdT1Z1H3V3",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
@@ -63,10 +63,10 @@
         {
           "type": "block",
           "id": "block:hcIt0DSubr",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[540.0907535312044,36.41497938399458,364,120.33491224963538]",
-            "background": "--affine-tag-purple",
+            "background": "--yunke-tag-purple",
             "index": "aF",
             "hidden": false,
             "edgeless": {
@@ -74,7 +74,7 @@
                 "borderRadius": 8,
                 "borderSize": 4,
                 "borderStyle": "none",
-                "shadowType": "--affine-note-shadow-film"
+                "shadowType": "--yunke-note-shadow-film"
               },
               "collapse": true
             }
@@ -83,7 +83,7 @@
             {
               "type": "block",
               "id": "block:jT5LZ8Gpbt",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
@@ -98,10 +98,10 @@
         {
           "type": "block",
           "id": "block:XoNINzBusV",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[1593.5720447261835,36.41497938399458,364,120.33491224963538]",
-            "background": "--affine-tag-orange",
+            "background": "--yunke-tag-orange",
             "index": "aFzzV",
             "hidden": false,
             "edgeless": {
@@ -109,7 +109,7 @@
                 "borderRadius": 8,
                 "borderSize": 4,
                 "borderStyle": "none",
-                "shadowType": "--affine-note-shadow-film"
+                "shadowType": "--yunke-note-shadow-film"
               },
               "collapse": true
             }
@@ -118,7 +118,7 @@
             {
               "type": "block",
               "id": "block:zut6xbKyyC",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
@@ -133,10 +133,10 @@
         {
           "type": "block",
           "id": "block:ch3yv4Wmfl",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[2027.852209918067,36.41497938399458,364,120.33491224963538]",
-            "background": "--affine-tag-orange",
+            "background": "--yunke-tag-orange",
             "index": "aFzzl",
             "hidden": false,
             "edgeless": {
@@ -144,7 +144,7 @@
                 "borderRadius": 8,
                 "borderSize": 4,
                 "borderStyle": "none",
-                "shadowType": "--affine-note-shadow-film"
+                "shadowType": "--yunke-note-shadow-film"
               },
               "collapse": true
             }
@@ -153,7 +153,7 @@
             {
               "type": "block",
               "id": "block:M3qWBdRQrR",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
@@ -168,10 +168,10 @@
         {
           "type": "block",
           "id": "block:BcbPqq706m",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[104.20642280085835,1113.121613125235,364,120.33491224963538]",
-            "background": "--affine-tag-blue",
+            "background": "--yunke-tag-blue",
             "index": "aA",
             "hidden": false,
             "edgeless": {
@@ -179,7 +179,7 @@
                 "borderRadius": 8,
                 "borderSize": 4,
                 "borderStyle": "none",
-                "shadowType": "--affine-note-shadow-film"
+                "shadowType": "--yunke-note-shadow-film"
               },
               "collapse": true
             }
@@ -188,7 +188,7 @@
             {
               "type": "block",
               "id": "block:9WqlGKis0N",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
@@ -203,10 +203,10 @@
         {
           "type": "block",
           "id": "block:jQLjKC3ZtX",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[540.0907535312044,1113.121613125235,364,120.33491224963538]",
-            "background": "--affine-tag-blue",
+            "background": "--yunke-tag-blue",
             "index": "aC",
             "hidden": false,
             "edgeless": {
@@ -214,7 +214,7 @@
                 "borderRadius": 8,
                 "borderSize": 4,
                 "borderStyle": "none",
-                "shadowType": "--affine-note-shadow-film"
+                "shadowType": "--yunke-note-shadow-film"
               },
               "collapse": true
             }
@@ -223,7 +223,7 @@
             {
               "type": "block",
               "id": "block:A0YX6tRxG_",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
@@ -238,10 +238,10 @@
         {
           "type": "block",
           "id": "block:Azc2kKkF6L",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[975.9750842615504,1113.121613125235,364,120.33491224963538]",
-            "background": "--affine-tag-blue",
+            "background": "--yunke-tag-blue",
             "index": "aE",
             "hidden": false,
             "edgeless": {
@@ -249,7 +249,7 @@
                 "borderRadius": 8,
                 "borderSize": 4,
                 "borderStyle": "none",
-                "shadowType": "--affine-note-shadow-film"
+                "shadowType": "--yunke-note-shadow-film"
               },
               "collapse": true
             }
@@ -258,7 +258,7 @@
             {
               "type": "block",
               "id": "block:FNsna4MwrN",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
@@ -273,10 +273,10 @@
         {
           "type": "block",
           "id": "block:8lGmaOtyFm",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[104.20642280085835,1306.476033361273,364,120.33491224963538]",
-            "background": "--affine-tag-blue",
+            "background": "--yunke-tag-blue",
             "index": "aB",
             "hidden": false,
             "edgeless": {
@@ -284,7 +284,7 @@
                 "borderRadius": 8,
                 "borderSize": 4,
                 "borderStyle": "none",
-                "shadowType": "--affine-note-shadow-film"
+                "shadowType": "--yunke-note-shadow-film"
               },
               "collapse": true
             }
@@ -293,7 +293,7 @@
             {
               "type": "block",
               "id": "block:ZzervYLjI1",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
@@ -308,10 +308,10 @@
         {
           "type": "block",
           "id": "block:ytVMUAbhDq",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[1593.5720447261835,1113.121613125235,364,120.33491224963538]",
-            "background": "--affine-tag-green",
+            "background": "--yunke-tag-green",
             "index": "aFzzt",
             "hidden": false,
             "edgeless": {
@@ -319,7 +319,7 @@
                 "borderRadius": 8,
                 "borderSize": 4,
                 "borderStyle": "none",
-                "shadowType": "--affine-note-shadow-film"
+                "shadowType": "--yunke-note-shadow-film"
               },
               "collapse": true
             }
@@ -328,7 +328,7 @@
             {
               "type": "block",
               "id": "block:do6mz3X3eX",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
@@ -343,10 +343,10 @@
         {
           "type": "block",
           "id": "block:-u5dzmIRre",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[-1303.2781652236258,537.3571973817948,364,107.86257662960821]",
-            "background": "--affine-tag-red",
+            "background": "--yunke-tag-red",
             "index": "aFV",
             "hidden": false,
             "edgeless": {
@@ -354,7 +354,7 @@
                 "borderRadius": 8,
                 "borderSize": 4,
                 "borderStyle": "none",
-                "shadowType": "--affine-note-shadow-film"
+                "shadowType": "--yunke-note-shadow-film"
               },
               "collapse": true
             }
@@ -363,7 +363,7 @@
             {
               "type": "block",
               "id": "block:DDM2RHHIm5",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
@@ -378,10 +378,10 @@
         {
           "type": "block",
           "id": "block:mDX5KI7WsT",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[-826.3375982612002,537.3571973817948,364,107.86257662960821]",
-            "background": "--affine-tag-red",
+            "background": "--yunke-tag-red",
             "index": "aFl",
             "hidden": false,
             "edgeless": {
@@ -389,7 +389,7 @@
                 "borderRadius": 8,
                 "borderSize": 4,
                 "borderStyle": "none",
-                "shadowType": "--affine-note-shadow-film"
+                "shadowType": "--yunke-note-shadow-film"
               },
               "collapse": true
             }
@@ -398,7 +398,7 @@
             {
               "type": "block",
               "id": "block:juCO_85m3y",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
@@ -413,10 +413,10 @@
         {
           "type": "block",
           "id": "block:XtkyIWaYco",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[-1303.2781652236258,718.2585862310601,364,107.86257662960821]",
-            "background": "--affine-tag-red",
+            "background": "--yunke-tag-red",
             "index": "aFx",
             "hidden": false,
             "edgeless": {
@@ -424,7 +424,7 @@
                 "borderRadius": 8,
                 "borderSize": 4,
                 "borderStyle": "none",
-                "shadowType": "--affine-note-shadow-film"
+                "shadowType": "--yunke-note-shadow-film"
               },
               "collapse": true
             }
@@ -433,7 +433,7 @@
             {
               "type": "block",
               "id": "block:pF6alvFRLM",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
@@ -448,10 +448,10 @@
         {
           "type": "block",
           "id": "block:RfqcGvTIe1",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[-826.3375982612002,718.2585862310601,364,107.86257662960821]",
-            "background": "--affine-tag-red",
+            "background": "--yunke-tag-red",
             "index": "aFt",
             "hidden": false,
             "edgeless": {
@@ -459,7 +459,7 @@
                 "borderRadius": 8,
                 "borderSize": 4,
                 "borderStyle": "none",
-                "shadowType": "--affine-note-shadow-film"
+                "shadowType": "--yunke-note-shadow-film"
               },
               "collapse": true
             }
@@ -468,7 +468,7 @@
             {
               "type": "block",
               "id": "block:TgFSiJZP8F",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
@@ -483,10 +483,10 @@
         {
           "type": "block",
           "id": "block:vpQWR9ejtG",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[-1303.2781652236258,899.1599750803255,364,107.86257662960821]",
-            "background": "--affine-tag-red",
+            "background": "--yunke-tag-red",
             "index": "aFzV",
             "hidden": false,
             "edgeless": {
@@ -494,7 +494,7 @@
                 "borderRadius": 8,
                 "borderSize": 4,
                 "borderStyle": "none",
-                "shadowType": "--affine-note-shadow-film"
+                "shadowType": "--yunke-note-shadow-film"
               },
               "collapse": true
             }
@@ -503,7 +503,7 @@
             {
               "type": "block",
               "id": "block:VGzswNRvU5",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
@@ -518,10 +518,10 @@
         {
           "type": "block",
           "id": "block:7HG8ZiBdLY",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[-826.3375982612002,899.1599750803255,364,107.86257662960821]",
-            "background": "--affine-tag-red",
+            "background": "--yunke-tag-red",
             "index": "aFz",
             "hidden": false,
             "edgeless": {
@@ -529,7 +529,7 @@
                 "borderRadius": 8,
                 "borderSize": 4,
                 "borderStyle": "none",
-                "shadowType": "--affine-note-shadow-film"
+                "shadowType": "--yunke-note-shadow-film"
               },
               "collapse": true
             }
@@ -538,7 +538,7 @@
             {
               "type": "block",
               "id": "block:ET3sYURtZP",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
@@ -553,10 +553,10 @@
         {
           "type": "block",
           "id": "block:5nJ_Jxe707",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[-1303.2781652236258,1080.061363929591,364,107.86257662960821]",
-            "background": "--affine-tag-red",
+            "background": "--yunke-tag-red",
             "index": "aFzt",
             "hidden": false,
             "edgeless": {
@@ -564,7 +564,7 @@
                 "borderRadius": 8,
                 "borderSize": 4,
                 "borderStyle": "none",
-                "shadowType": "--affine-note-shadow-film"
+                "shadowType": "--yunke-note-shadow-film"
               },
               "collapse": true
             }
@@ -573,7 +573,7 @@
             {
               "type": "block",
               "id": "block:3OrCaImZZ8",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
@@ -588,10 +588,10 @@
         {
           "type": "block",
           "id": "block:iEOMpZHYB5",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[-826.3375982612002,1080.061363929591,364,107.86257662960821]",
-            "background": "--affine-tag-red",
+            "background": "--yunke-tag-red",
             "index": "aFzl",
             "hidden": false,
             "edgeless": {
@@ -599,7 +599,7 @@
                 "borderRadius": 8,
                 "borderSize": 4,
                 "borderStyle": "none",
-                "shadowType": "--affine-note-shadow-film"
+                "shadowType": "--yunke-note-shadow-film"
               },
               "collapse": true
             }
@@ -608,7 +608,7 @@
             {
               "type": "block",
               "id": "block:TkwpqzUvID",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
@@ -623,10 +623,10 @@
         {
           "type": "block",
           "id": "block:Fh93TF_Vrl",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[-1303.2781652236258,1260.9627527788562,364,107.86257662960821]",
-            "background": "--affine-tag-red",
+            "background": "--yunke-tag-red",
             "index": "aFzz",
             "hidden": false,
             "edgeless": {
@@ -634,7 +634,7 @@
                 "borderRadius": 8,
                 "borderSize": 4,
                 "borderStyle": "none",
-                "shadowType": "--affine-note-shadow-film"
+                "shadowType": "--yunke-note-shadow-film"
               },
               "collapse": true
             }
@@ -643,7 +643,7 @@
             {
               "type": "block",
               "id": "block:mbxtuGqiYx",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
@@ -658,10 +658,10 @@
         {
           "type": "block",
           "id": "block:3UXDuyEgrP",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[-826.3375982612002,1260.9627527788562,364,107.86257662960821]",
-            "background": "--affine-tag-red",
+            "background": "--yunke-tag-red",
             "index": "aFzx",
             "hidden": false,
             "edgeless": {
@@ -669,7 +669,7 @@
                 "borderRadius": 8,
                 "borderSize": 4,
                 "borderStyle": "none",
-                "shadowType": "--affine-note-shadow-film"
+                "shadowType": "--yunke-note-shadow-film"
               },
               "collapse": true
             }
@@ -678,7 +678,7 @@
             {
               "type": "block",
               "id": "block:sVKSZM7dj2",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
@@ -693,10 +693,10 @@
         {
           "type": "block",
           "id": "block:CM5izJUlOj",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[-826.3375982612002,1441.8641416281214,364,107.86257662960821]",
-            "background": "--affine-tag-red",
+            "background": "--yunke-tag-red",
             "index": "aI-",
             "hidden": false,
             "edgeless": {
@@ -704,7 +704,7 @@
                 "borderRadius": 8,
                 "borderSize": 4,
                 "borderStyle": "none",
-                "shadowType": "--affine-note-shadow-film"
+                "shadowType": "--yunke-note-shadow-film"
               },
               "collapse": true
             }
@@ -713,7 +713,7 @@
             {
               "type": "block",
               "id": "block:h8eL6Kzywv",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
@@ -728,10 +728,10 @@
         {
           "type": "block",
           "id": "block:5A8wrl23P5",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[-1303.2781652236258,1441.8641416281214,364,107.86257662960821]",
-            "background": "--affine-tag-red",
+            "background": "--yunke-tag-red",
             "index": "aJ",
             "hidden": false,
             "edgeless": {
@@ -739,7 +739,7 @@
                 "borderRadius": 8,
                 "borderSize": 4,
                 "borderStyle": "none",
-                "shadowType": "--affine-note-shadow-film"
+                "shadowType": "--yunke-note-shadow-film"
               },
               "collapse": true
             }
@@ -748,7 +748,7 @@
             {
               "type": "block",
               "id": "block:c7NMzg_oVB",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
@@ -763,7 +763,7 @@
         {
           "type": "block",
           "id": "block:EiSd9Ulfpv",
-          "flavour": "affine:surface",
+          "flavour": "yunke:surface",
           "props": {
             "elements": {
               "VGTzNCC5Fz": {
@@ -774,15 +774,15 @@
                 "shapeStyle": "General",
                 "radius": 0.1,
                 "filled": false,
-                "fillColor": "--affine-palette-transparent",
+                "fillColor": "--yunke-palette-transparent",
                 "strokeWidth": 12,
-                "strokeColor": "--affine-palette-line-purple",
+                "strokeColor": "--yunke-palette-line-purple",
                 "strokeStyle": "solid",
                 "roughness": 1.4,
                 "id": "VGTzNCC5Fz",
                 "index": "Zy8",
                 "seed": 706656404,
-                "color": "--affine-palette-line-black"
+                "color": "--yunke-palette-line-black"
               },
               "lCw7JKEkO1": {
                 "type": "shape",
@@ -792,29 +792,29 @@
                 "shapeStyle": "General",
                 "radius": 0.1,
                 "filled": false,
-                "fillColor": "--affine-palette-transparent",
+                "fillColor": "--yunke-palette-transparent",
                 "strokeWidth": 12,
-                "strokeColor": "--affine-palette-line-tangerine",
+                "strokeColor": "--yunke-palette-line-tangerine",
                 "strokeStyle": "solid",
                 "roughness": 1.4,
                 "id": "lCw7JKEkO1",
                 "index": "ZyG",
                 "seed": 612881967,
-                "color": "--affine-palette-line-black"
+                "color": "--yunke-palette-line-black"
               },
               "EcU00IR0rZ": {
                 "type": "text",
                 "xywh": "[104.20642280085835,-100.782786380897,244.9375,65]",
                 "rotate": 0,
                 "text": {
-                  "affine:surface:text": true,
+                  "yunke:surface:text": true,
                   "delta": [
                     {
                       "insert": "Strength"
                     }
                   ]
                 },
-                "color": "--affine-palette-line-purple",
+                "color": "--yunke-palette-line-purple",
                 "fontSize": 64,
                 "fontFamily": "blocksuite:surface:OrelegaOne",
                 "fontWeight": "400",
@@ -832,15 +832,15 @@
                 "shapeStyle": "General",
                 "radius": 0.1,
                 "filled": false,
-                "fillColor": "--affine-palette-transparent",
+                "fillColor": "--yunke-palette-transparent",
                 "strokeWidth": 12,
-                "strokeColor": "--affine-palette-line-blue",
+                "strokeColor": "--yunke-palette-line-blue",
                 "strokeStyle": "solid",
                 "roughness": 1.4,
                 "id": "Cpq0PiikAB",
                 "index": "Zyl",
                 "seed": 1181577381,
-                "color": "--affine-palette-line-black"
+                "color": "--yunke-palette-line-black"
               },
               "dXssFz4xxJ": {
                 "type": "shape",
@@ -850,29 +850,29 @@
                 "shapeStyle": "General",
                 "radius": 0.1,
                 "filled": false,
-                "fillColor": "--affine-palette-transparent",
+                "fillColor": "--yunke-palette-transparent",
                 "strokeWidth": 12,
-                "strokeColor": "--affine-palette-line-green",
+                "strokeColor": "--yunke-palette-line-green",
                 "strokeStyle": "solid",
                 "roughness": 1.4,
                 "id": "dXssFz4xxJ",
                 "index": "Zz",
                 "seed": 286363176,
-                "color": "--affine-palette-line-black"
+                "color": "--yunke-palette-line-black"
               },
               "9aWKOLMEhz": {
                 "type": "text",
                 "xywh": "[1593.5720447261835,-103.282786380897,286,70]",
                 "rotate": 0,
                 "text": {
-                  "affine:surface:text": true,
+                  "yunke:surface:text": true,
                   "delta": [
                     {
                       "insert": "Weakness"
                     }
                   ]
                 },
-                "color": "--affine-palette-line-tangerine",
+                "color": "--yunke-palette-line-tangerine",
                 "fontSize": 64,
                 "fontFamily": "blocksuite:surface:OrelegaOne",
                 "fontWeight": "400",
@@ -887,14 +887,14 @@
                 "xywh": "[1593.5720447261835,952.2483286080625,192,70]",
                 "rotate": 0,
                 "text": {
-                  "affine:surface:text": true,
+                  "yunke:surface:text": true,
                   "delta": [
                     {
                       "insert": "Threat"
                     }
                   ]
                 },
-                "color": "--affine-palette-line-green",
+                "color": "--yunke-palette-line-green",
                 "fontSize": 64,
                 "fontFamily": "blocksuite:surface:OrelegaOne",
                 "fontWeight": "400",
@@ -909,14 +909,14 @@
                 "xywh": "[104.20642280085835,954.7483286080625,393,65]",
                 "rotate": 0,
                 "text": {
-                  "affine:surface:text": true,
+                  "yunke:surface:text": true,
                   "delta": [
                     {
                       "insert": "Opportunities"
                     }
                   ]
                 },
-                "color": "--affine-palette-line-blue",
+                "color": "--yunke-palette-line-blue",
                 "fontSize": 64,
                 "fontFamily": "blocksuite:surface:OrelegaOne",
                 "fontWeight": "400",
@@ -931,14 +931,14 @@
                 "xywh": "[-1303.2781652236258,48.69953712130048,864.2887971838588,405]",
                 "rotate": 0,
                 "text": {
-                  "affine:surface:text": true,
+                  "yunke:surface:text": true,
                   "delta": [
                     {
                       "insert": "A SWOT template is a framework used to analyze Strengths, Weaknesses, Opportunities, and Threats related to a business or project. \n\nIt typically consists of four quadrants, each dedicated to one of these aspects, providing a structured approach for evaluating internal and external factors that can impact success."
                     }
                   ]
                 },
-                "color": "--affine-palette-line-magenta",
+                "color": "--yunke-palette-line-magenta",
                 "fontSize": 36,
                 "fontFamily": "blocksuite:surface:Poppins",
                 "fontWeight": "600",
@@ -954,14 +954,14 @@
                 "xywh": "[-1055.820788252562,1658.905189784744,400.55209982655776,88]",
                 "rotate": 0,
                 "text": {
-                  "affine:surface:text": true,
+                  "yunke:surface:text": true,
                   "delta": [
                     {
                       "insert": "Move the elements into the SWOT Matrix"
                     }
                   ]
                 },
-                "color": "--affine-palette-line-magenta",
+                "color": "--yunke-palette-line-magenta",
                 "fontSize": 44,
                 "fontFamily": "blocksuite:surface:Kalam",
                 "fontWeight": "400",
@@ -980,12 +980,12 @@
                 "shapeStyle": "General",
                 "radius": 0.1,
                 "filled": false,
-                "fillColor": "--affine-palette-transparent",
+                "fillColor": "--yunke-palette-transparent",
                 "strokeWidth": 12,
-                "strokeColor": "--affine-palette-line-magenta",
+                "strokeColor": "--yunke-palette-line-magenta",
                 "strokeStyle": "dash",
                 "roughness": 1.4,
-                "color": "--affine-palette-line-black",
+                "color": "--yunke-palette-line-black",
                 "id": "otta6raZl1",
                 "index": "Zy",
                 "seed": 1856337153
@@ -995,14 +995,14 @@
                 "xywh": "[-1303.2781652236258,-59.965085337670956,294.6369595466522,76.44444444444444]",
                 "rotate": 0,
                 "text": {
-                  "affine:surface:text": true,
+                  "yunke:surface:text": true,
                   "delta": [
                     {
                       "insert": "SWOT"
                     }
                   ]
                 },
-                "color": "--affine-palette-line-magenta",
+                "color": "--yunke-palette-line-magenta",
                 "fontSize": 64,
                 "fontFamily": "blocksuite:surface:Inter",
                 "fontWeight": "600",
@@ -1575,7 +1575,7 @@
                     113.42367719260604
                   ]
                 ],
-                "color": "--affine-palette-line-magenta",
+                "color": "--yunke-palette-line-magenta",
                 "lineWidth": 4,
                 "id": "uNRKppDZi5",
                 "index": "aL",
@@ -2147,7 +2147,7 @@
                     96.43515170883127
                   ]
                 ],
-                "color": "--affine-palette-line-magenta",
+                "color": "--yunke-palette-line-magenta",
                 "lineWidth": 4,
                 "id": "SShISUOcXf",
                 "index": "aM",
@@ -2163,7 +2163,7 @@
                     1750.7814999824
                   ]
                 ],
-                "color": "--affine-palette-line-magenta",
+                "color": "--yunke-palette-line-magenta",
                 "lineWidth": 4,
                 "id": "oH3qBC25mh",
                 "index": "aN",
@@ -2179,7 +2179,7 @@
                     1751.7156006421897
                   ]
                 ],
-                "color": "--affine-palette-line-magenta",
+                "color": "--yunke-palette-line-magenta",
                 "lineWidth": 4,
                 "id": "_XCQVoVjux",
                 "index": "aO",
@@ -2871,7 +2871,7 @@
                     36.65225988325532
                   ]
                 ],
-                "color": "--affine-palette-line-magenta",
+                "color": "--yunke-palette-line-magenta",
                 "lineWidth": 4,
                 "id": "9O5iyJmh0U",
                 "index": "aP",
@@ -2880,7 +2880,7 @@
               "PN3zAdsYEa": {
                 "type": "group",
                 "children": {
-                  "affine:surface:ymap": true,
+                  "yunke:surface:ymap": true,
                   "json": {
                     "uNRKppDZi5": true,
                     "SShISUOcXf": true,
@@ -2888,7 +2888,7 @@
                   }
                 },
                 "title": {
-                  "affine:surface:text": true,
+                  "yunke:surface:text": true,
                   "delta": [
                     {
                       "insert": "Arrow"

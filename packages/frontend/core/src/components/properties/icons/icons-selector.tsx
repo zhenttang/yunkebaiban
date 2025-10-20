@@ -28,7 +28,7 @@ const IconsSelectorPanel = ({
   return (
     <Scrollable.Root>
       <div role="heading" className={styles.menuHeader}>
-        {t['com.affine.page-properties.icons']()}
+        {t['com.yunke.page-properties.icons']()}
       </div>
       <Scrollable.Viewport className={styles.iconsContainerScrollable}>
         <div className={styles.iconsContainer}>

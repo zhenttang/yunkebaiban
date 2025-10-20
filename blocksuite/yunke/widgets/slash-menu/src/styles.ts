@@ -11,7 +11,7 @@ export const styles = css`
     left: 0;
     width: 100vw;
     height: 100vh;
-    z-index: var(--affine-z-index-popover);
+    z-index: var(--yunke-z-index-popover);
   }
 
   .slash-menu {
@@ -28,7 +28,7 @@ export const styles = css`
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
     border-radius: 12px;
     border: 1px solid #F3F4F6;
-    z-index: var(--affine-z-index-popover);
+    z-index: var(--yunke-z-index-popover);
     user-select: none;
     transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
   }
@@ -42,7 +42,7 @@ export const styles = css`
 
     font-size: 11px;
     font-weight: 600;
-    line-height: var(--affine-line-height);
+    line-height: var(--yunke-line-height);
     text-align: left;
     color: #6B7280;
     text-transform: uppercase;
@@ -89,7 +89,7 @@ export const styles = css`
     padding: 8px;
     border: 1px solid #F3F4F6;
     border-radius: 6px;
-    color: var(--affine-icon-color);
+    color: var(--yunke-icon-color);
     background: #F8F9FB;
     transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
 
@@ -116,15 +116,15 @@ export const styles = css`
   }
 
   .slash-menu-item.ask-ai {
-    color: var(--affine-brand-color);
+    color: var(--yunke-brand-color);
   }
   .slash-menu-item.github .github-icon {
-    color: var(--affine-black);
+    color: var(--yunke-black);
   }
 `;
 
 export const slashItemToolTipStyle = css`
-  .affine-tooltip {
+  .yunke-tooltip {
     display: flex;
     padding: 4px 4px 2px 4px;
     flex-direction: column;
@@ -142,8 +142,8 @@ export const slashItemToolTipStyle = css`
       --light-textColor-textSecondaryColor,
       var(--textColor-textSecondaryColor, #8e8d91)
     );
-    font-family: var(--affine-font-family);
-    font-size: var(--affine-font-xs);
-    line-height: var(--affine-line-height);
+    font-family: var(--yunke-font-family);
+    font-size: var(--yunke-font-xs);
+    line-height: var(--yunke-line-height);
   }
 `;

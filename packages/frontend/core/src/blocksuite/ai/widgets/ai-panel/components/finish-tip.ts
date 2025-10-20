@@ -27,7 +27,7 @@ export class AIFinishTip extends WithDisposable(LitElement) {
       padding: 0 12px;
       gap: 4px;
 
-      color: var(--affine-text-secondary-color);
+      color: var(--yunke-text-secondary-color);
 
       .text {
         display: flex;
@@ -35,7 +35,7 @@ export class AIFinishTip extends WithDisposable(LitElement) {
         flex: 1 0 0;
 
         /* light/xs */
-        font-size: var(--affine-font-xs);
+        font-size: var(--yunke-font-xs);
         font-style: normal;
         font-weight: 400;
         line-height: 20px; /* 166.667% */
@@ -56,12 +56,12 @@ export class AIFinishTip extends WithDisposable(LitElement) {
           user-select: none;
         }
         .copy:hover {
-          color: var(--affine-icon-color);
-          background: var(--affine-hover-color);
+          color: var(--yunke-icon-color);
+          background: var(--yunke-hover-color);
           cursor: pointer;
         }
         .copied {
-          color: var(--affine-brand-color);
+          color: var(--yunke-brand-color);
         }
       }
     }
@@ -90,7 +90,7 @@ export class AIFinishTip extends WithDisposable(LitElement) {
                   }}
                 >
                   ${CopyIcon}
-                  <affine-tooltip>复制</affine-tooltip>
+                  <yunke-tooltip>复制</yunke-tooltip>
                 </div>`}
           </div>`
         : nothing}

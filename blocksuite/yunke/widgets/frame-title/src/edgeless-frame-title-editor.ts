@@ -11,10 +11,10 @@ import { property, query } from 'lit/decorators.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
 import {
-  AFFINE_FRAME_TITLE_WIDGET,
-  type AffineFrameTitleWidget,
-} from './affine-frame-title-widget';
-import type { AffineFrameTitle } from './frame-title';
+  YUNKE_FRAME_TITLE_WIDGET,
+  type YunkeFrameTitleWidget,
+} from './yunke-frame-title-widget';
+import type { YunkeFrameTitle } from './frame-title';
 import { frameTitleStyleVars } from './styles';
 
 export class EdgelessFrameTitleEditor extends WithDisposable(
@@ -30,10 +30,10 @@ export class EdgelessFrameTitleEditor extends WithDisposable(
       padding: 0 4px;
       outline: none;
       z-index: 1;
-      border: 1px solid var(--affine-primary-color);
+      border: 1px solid var(--yunke-primary-color);
       box-shadow: 0px 0px 0px 2px rgba(30, 150, 235, 0.3);
       overflow: hidden;
-      font-family: var(--affine-font-family);
+      font-family: var(--yunke-font-family);
     }
   `;
 
@@ -135,18 +135,18 @@ export class EdgelessFrameTitleEditor extends WithDisposable(
     );
 
     const frameTitleWidget = this.edgeless.std.view.getWidget(
-      AFFINE_FRAME_TITLE_WIDGET,
+      YUNKE_FRAME_TITLE_WIDGET,
       this.frameModel.id
-    ) as AffineFrameTitleWidget | null;
+    ) as YunkeFrameTitleWidget | null;
 
     if (!frameTitleWidget) return nothing;
 
     const frameTitle =
-      frameTitleWidget.querySelector<AffineFrameTitle>('affine-frame-title');
+      frameTitleWidget.querySelector<YunkeFrameTitle>('yunke-frame-title');
 
     const colors = frameTitle?.colors ?? {
       background: cssVarV2('edgeless/frame/background/white'),
-      text: 'var(--affine-text-primary-color)',
+      text: 'var(--yunke-text-primary-color)',
     };
 
     const inlineEditorStyle = styleMap({

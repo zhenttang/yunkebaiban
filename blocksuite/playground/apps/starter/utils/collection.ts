@@ -1,5 +1,5 @@
 import type { StoreExtensionManager } from '@blocksuite/yunke/ext-loader';
-import { AffineSchemas } from '@blocksuite/yunke/schemas';
+import { YunkeSchemas } from '@blocksuite/yunke/schemas';
 import { nanoid, Schema, Transformer } from '@blocksuite/yunke/store';
 import {
   createAutoIncrementIdGenerator,
@@ -28,7 +28,7 @@ export function createStarterDocCollection(
 ) {
   const collectionId = room ?? 'starter';
   const schema = new Schema();
-  schema.register(AffineSchemas);
+  schema.register(YunkeSchemas);
   const idGenerator = isE2E ? createAutoIncrementIdGenerator() : nanoid;
 
   let docSources: DocCollectionOptions['docSources'];
@@ -63,7 +63,7 @@ export function createStarterDocCollection(
 
   // debug info
   window.collection = collection;
-  window.blockSchemas = AffineSchemas;
+  window.blockSchemas = YunkeSchemas;
   window.job = new Transformer({
     schema,
     blobCRUD: collection.blobSync,

@@ -30,7 +30,7 @@ import {
 import type { ImageBlockComponent } from './image-block';
 import type { ImageEdgelessBlockComponent } from './image-edgeless-block';
 
-const DEFAULT_ATTACHMENT_NAME = 'affine-attachment';
+const DEFAULT_ATTACHMENT_NAME = 'yunke-attachment';
 
 async function getImageBlob(model: ImageBlockModel) {
   const sourceId = model.props.sourceId$.peek();

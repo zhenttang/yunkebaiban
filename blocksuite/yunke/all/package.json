@@ -1,6 +1,6 @@
 {
   "name": "@blocksuite/yunke",
-  "description": "BlockSuite for Affine",
+  "description": "BlockSuite for Yunke",
   "type": "module",
   "scripts": {
     "build": "tsc --build --verbose"

@@ -18,11 +18,11 @@ import { combineLatest, map } from 'rxjs';
 export function getThemeExtension(
   framework: FrameworkProvider
 ): typeof LifeCycleWatcher {
-  class AffineThemeExtension
+  class YunkeThemeExtension
     extends LifeCycleWatcher
     implements ThemeExtension
   {
-    static override readonly key = 'affine-theme';
+    static override readonly key = 'yunke-theme';
 
     private readonly themes: Map<string, Signal<ColorScheme>> = new Map();
 
@@ -30,7 +30,7 @@ export function getThemeExtension(
 
     static override setup(di: Container) {
       super.setup(di);
-      di.override(ThemeExtensionIdentifier, AffineThemeExtension, [
+      di.override(ThemeExtensionIdentifier, YunkeThemeExtension, [
         StdIdentifier,
       ]);
     }
@@ -83,5 +83,5 @@ export function getThemeExtension(
     }
   }
 
-  return AffineThemeExtension;
+  return YunkeThemeExtension;
 }

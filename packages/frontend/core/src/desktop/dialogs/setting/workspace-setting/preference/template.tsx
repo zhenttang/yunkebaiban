@@ -49,10 +49,10 @@ export const TemplateDocSetting = () => {
   );
 
   return (
-    <SettingWrapper title={t['com.affine.settings.workspace.template.title']()}>
+    <SettingWrapper title={t['com.yunke.settings.workspace.template.title']()}>
       <SettingRow
-        name={t['com.affine.settings.workspace.template.journal']()}
-        desc={t['com.affine.settings.workspace.template.journal-desc']()}
+        name={t['com.yunke.settings.workspace.template.journal']()}
+        desc={t['com.yunke.settings.workspace.template.journal-desc']()}
       >
         <TemplateSelector
           testId="journal-template-selector"
@@ -61,8 +61,8 @@ export const TemplateDocSetting = () => {
         />
       </SettingRow>
       <SettingRow
-        name={t['com.affine.settings.workspace.template.page']()}
-        desc={t['com.affine.settings.workspace.template.page-desc']()}
+        name={t['com.yunke.settings.workspace.template.page']()}
+        desc={t['com.yunke.settings.workspace.template.page-desc']()}
       >
         <Switch
           data-testid="page-template-switch"
@@ -72,7 +72,7 @@ export const TemplateDocSetting = () => {
       </SettingRow>
       {enablePageTemplate ? (
         <SettingRow
-          name={t['com.affine.settings.workspace.template.page-select']()}
+          name={t['com.yunke.settings.workspace.template.page-select']()}
           desc={null}
         >
           <TemplateSelector
@@ -116,14 +116,14 @@ const TemplateSelector = ({
             type="danger"
             data-testid="template-doc-item-remove"
           >
-            {t['com.affine.settings.workspace.template.remove']()}
+            {t['com.yunke.settings.workspace.template.remove']()}
           </MenuItem>
         </>
       }
     >
       <MenuTrigger className={styles.menuTrigger} data-testid={testId}>
         {/* TODO: in trash design */}
-        {title ?? t['com.affine.settings.workspace.template.keep-empty']()}
+        {title ?? t['com.yunke.settings.workspace.template.keep-empty']()}
       </MenuTrigger>
     </TemplateListMenu>
   );

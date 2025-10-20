@@ -27,7 +27,7 @@ export const FrameSettings = () => {
     DefaultTheme.transparent
   );
 
-  const { background } = settings['affine:frame'];
+  const { background } = settings['yunke:frame'];
   const currentColor = useMemo(() => {
     return getCurrentColor(background);
   }, [getCurrentColor, background]);
@@ -35,7 +35,7 @@ export const FrameSettings = () => {
   const colorItems = useMemo(() => {
     return palettes.map(({ key, value, resolvedValue }) => {
       const handler = () => {
-        editorSetting.set('affine:frame', { background: value });
+        editorSetting.set('yunke:frame', { background: value });
       };
       const isSelected = isEqual(background, value);
       return (
@@ -52,20 +52,20 @@ export const FrameSettings = () => {
   }, [editorSetting, background, palettes]);
 
   const getElements = useCallback((doc: Store) => {
-    return doc.getBlocksByFlavour('affine:frame') || [];
+    return doc.getBlocksByFlavour('yunke:frame') || [];
   }, []);
 
   return (
     <>
       <EdgelessSnapshot
-        title={t['com.affine.settings.editorSettings.edgeless.frame']()}
+        title={t['com.yunke.settings.editorSettings.edgeless.frame']()}
         docName="frame"
-        keyName="affine:frame"
+        keyName="yunke:frame"
         getElements={getElements}
       />
       <SettingRow
         name={t[
-          'com.affine.settings.editorSettings.edgeless.frame.background'
+          'com.yunke.settings.editorSettings.edgeless.frame.background'
         ]()}
         desc={''}
       >

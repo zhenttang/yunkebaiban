@@ -51,7 +51,7 @@ export interface NotificationService {
 }
 
 export const NotificationProvider = createIdentifier<NotificationService>(
-  'AffineNotificationService'
+  'YunkeNotificationService'
 );
 
 export function NotificationExtension(

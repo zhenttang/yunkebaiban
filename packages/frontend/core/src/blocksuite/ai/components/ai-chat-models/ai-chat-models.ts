@@ -62,7 +62,7 @@ export class AIChatModels extends WithDisposable(ShadowlessElement) {
             cursor: pointer;
           }
           .ai-model-item:hover {
-            background: var(--affine-hover-color);
+            background: var(--yunke-hover-color);
           }
         </style>
         <div class="ai-model-list">
@@ -80,7 +80,7 @@ export class AIChatModels extends WithDisposable(ShadowlessElement) {
           )}
         </div>`,
       portalStyles: {
-        zIndex: 'var(--affine-z-index-popover)',
+        zIndex: 'var(--yunke-z-index-popover)',
       },
       container: document.body,
       computePosition: {

@@ -6,7 +6,7 @@ import * as globalUtils from '@blocksuite/yunke/global/utils';
 import * as services from '@blocksuite/yunke/shared/services';
 import * as blockStd from '@blocksuite/yunke/std';
 import * as store from '@blocksuite/yunke/store';
-import * as affineModel from '@blocksuite/yunke-model';
+import * as yunkeModel from '@blocksuite/yunke-model';
 import * as editor from '@blocksuite/integration-test';
 import { effects as itEffects } from '@blocksuite/integration-test/effects';
 import { getTestStoreManager } from '@blocksuite/integration-test/store';
@@ -46,7 +46,7 @@ async function main() {
         services,
         editor,
         blockStd: blockStd,
-        affineModel: affineModel,
+        yunkeModel: yunkeModel,
       }),
     });
     await prepareTestApp(collection);

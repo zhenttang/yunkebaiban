@@ -17,13 +17,13 @@ export interface DocDBSchema extends DBSchema {
 
 export class DocIDBConnection extends AutoReconnectConnection<IDBPDatabase<DocDBSchema> | null> {
   override get shareId() {
-    return 'idb(old):affine-local';
+    return 'idb(old):yunke-local';
   }
 
   override async doConnect() {
     const dbs = await indexedDB.databases();
-    if (dbs.some(d => d.name === 'affine-local')) {
-      return openDB<DocDBSchema>('affine-local', 1, {
+    if (dbs.some(d => d.name === 'yunke-local')) {
+      return openDB<DocDBSchema>('yunke-local', 1, {
         upgrade: db => {
           db.createObjectStore('workspace', { keyPath: 'id' });
         },

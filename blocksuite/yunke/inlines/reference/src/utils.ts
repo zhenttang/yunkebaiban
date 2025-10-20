@@ -1,11 +1,11 @@
 import { REFERENCE_NODE } from '@blocksuite/yunke-shared/consts';
-import type { AffineInlineEditor } from '@blocksuite/yunke-shared/types';
+import type { YunkeInlineEditor } from '@blocksuite/yunke-shared/types';
 
 export function insertLinkedNode({
   inlineEditor,
   docId,
 }: {
-  inlineEditor: AffineInlineEditor;
+  inlineEditor: YunkeInlineEditor;
   docId: string;
 }) {
   if (!inlineEditor) return;

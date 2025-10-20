@@ -2,11 +2,11 @@ import {
   DocModeProvider,
   TelemetryProvider,
 } from '@blocksuite/yunke-shared/services';
-import type { AffineTextAttributes } from '@blocksuite/yunke-shared/types';
+import type { YunkeTextAttributes } from '@blocksuite/yunke-shared/types';
 import type { BlockComponent } from '@blocksuite/std';
 import { InlineMarkdownExtension } from '@blocksuite/std/inline';
 
-export const LatexExtension = InlineMarkdownExtension<AffineTextAttributes>({
+export const LatexExtension = InlineMarkdownExtension<YunkeTextAttributes>({
   name: 'latex',
 
   pattern:
@@ -30,7 +30,7 @@ export const LatexExtension = InlineMarkdownExtension<AffineTextAttributes>({
     const index = parentComponent.model.children.indexOf(blockComponent.model);
     if (index === -1) return;
     const mode = std.get(DocModeProvider).getEditorMode() ?? 'page';
-    const ifEdgelessText = blockComponent.closest('affine-edgeless-text');
+    const ifEdgelessText = blockComponent.closest('yunke-edgeless-text');
 
     if (blockPrefix === '$$$$') {
       inlineEditor.insertText(
@@ -134,7 +134,7 @@ export const LatexExtension = InlineMarkdownExtension<AffineTextAttributes>({
           if (!textPoint) return;
 
           const [text] = textPoint;
-          const latexNode = text.parentElement?.closest('affine-latex-node');
+          const latexNode = text.parentElement?.closest('yunke-latex-node');
           if (!latexNode) return;
 
           latexNode.toggleEditor();

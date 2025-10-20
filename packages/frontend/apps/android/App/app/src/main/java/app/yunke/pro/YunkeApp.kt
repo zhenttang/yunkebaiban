@@ -1,11 +1,11 @@
-package app.affine.pro
+package app.yunke.pro
 
 import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
-import app.affine.pro.utils.logger.AffineDebugTree
-// import app.affine.pro.utils.logger.CrashlyticsTree  // 禁用Firebase
-// import app.affine.pro.utils.logger.FileTree  // 禁用Firebase
+import app.yunke.pro.utils.logger.YunkeDebugTree
+// import app.yunke.pro.utils.logger.CrashlyticsTree  // 禁用Firebase
+// import app.yunke.pro.utils.logger.FileTree  // 禁用Firebase
 // import com.google.firebase.crashlytics.ktx.crashlytics
 // import com.google.firebase.crashlytics.setCustomKeys
 // import com.google.firebase.ktx.Firebase
@@ -13,16 +13,16 @@ import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 
 @HiltAndroidApp
-class AFFiNEApp : Application() {
+class YUNKEApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
         _context = applicationContext
         // init logger
         if (BuildConfig.DEBUG) {
-            Timber.plant(AffineDebugTree())
+            Timber.plant(YunkeDebugTree())
         } else {
-            Timber.plant(AffineDebugTree())  // 临时使用调试树替代Firebase依赖
+            Timber.plant(YunkeDebugTree())  // 临时使用调试树替代Firebase依赖
             // Timber.plant(CrashlyticsTree(), FileTree(applicationContext))  // 禁用Firebase
         }
         Timber.i("Application started.")
@@ -30,7 +30,7 @@ class AFFiNEApp : Application() {
         CapacitorConfig.init(baseContext)
         // init crashlytics - 已禁用Firebase
         // Firebase.crashlytics.setCustomKeys {
-        //     key("affine_version", CapacitorConfig.getAffineVersion())
+        //     key("yunke_version", CapacitorConfig.getYunkeVersion())
         // }
     }
 

@@ -1,6 +1,6 @@
 import { BrowserWindow, WebContentsView } from 'electron';
 
-import { AFFINE_EVENT_CHANNEL_NAME } from '../shared/type';
+import { YUNKE_EVENT_CHANNEL_NAME } from '../shared/type';
 import { applicationMenuEvents } from './application-menu';
 import { beforeAppQuit } from './cleanup';
 import { logger } from './logger';
@@ -46,14 +46,14 @@ export function registerEvents() {
             return;
           }
           // .webContents could be undefined if the window is destroyed
-          win.webContents?.send(AFFINE_EVENT_CHANNEL_NAME, chan, ...args);
+          win.webContents?.send(YUNKE_EVENT_CHANNEL_NAME, chan, ...args);
           win.contentView.children.forEach(child => {
             if (
               child instanceof WebContentsView &&
               child.webContents &&
               !child.webContents.isDestroyed()
             ) {
-              child.webContents?.send(AFFINE_EVENT_CHANNEL_NAME, chan, ...args);
+              child.webContents?.send(YUNKE_EVENT_CHANNEL_NAME, chan, ...args);
             }
           });
         });

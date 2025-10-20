@@ -44,28 +44,28 @@ export const TeamCard = () => {
   const description = useMemo(() => {
     if (recurring === SubscriptionRecurring.Yearly) {
       return t[
-        'com.affine.settings.workspace.billing.team-workspace.description.billed.annually'
+        'com.yunke.settings.workspace.billing.team-workspace.description.billed.annually'
       ]();
     }
     if (recurring === SubscriptionRecurring.Monthly) {
       return t[
-        'com.affine.settings.workspace.billing.team-workspace.description.billed.monthly'
+        'com.yunke.settings.workspace.billing.team-workspace.description.billed.monthly'
       ]();
     }
-    return t['com.affine.payment.billing-setting.free-trial']();
+    return t['com.yunke.payment.billing-setting.free-trial']();
   }, [recurring, t]);
 
   const expirationDate = useMemo(() => {
     if (expiration && endDate) {
       return t[
-        'com.affine.settings.workspace.billing.team-workspace.not-renewed'
+        'com.yunke.settings.workspace.billing.team-workspace.not-renewed'
       ]({
         date: new Date(endDate).toLocaleDateString(),
       });
     }
     if (nextBillingDate && endDate) {
       return t[
-        'com.affine.settings.workspace.billing.team-workspace.next-billing-date'
+        'com.yunke.settings.workspace.billing.team-workspace.next-billing-date'
       ]({
         date: new Date(endDate).toLocaleDateString(),
       });
@@ -99,7 +99,7 @@ export const TeamCard = () => {
           name={
             <CardNameLabelRow
               cardName={t[
-                'com.affine.settings.workspace.billing.team-workspace'
+                'com.yunke.settings.workspace.billing.team-workspace'
               ]()}
               status={teamSubscription?.status}
             />
@@ -121,7 +121,7 @@ export const TeamCard = () => {
             onClick={handleClick}
           >
             {t[
-              'com.affine.settings.workspace.billing.team-workspace.cancel-plan'
+              'com.yunke.settings.workspace.billing.team-workspace.cancel-plan'
             ]()}
           </Button>
         </CancelTeamAction>
@@ -131,8 +131,8 @@ export const TeamCard = () => {
         <span className={styles.billingFrequency}>
           /
           {teamSubscription?.recurring === SubscriptionRecurring.Monthly
-            ? t['com.affine.payment.billing-setting.month']()
-            : t['com.affine.payment.billing-setting.year']()}
+            ? t['com.yunke.payment.billing-setting.month']()
+            : t['com.yunke.payment.billing-setting.year']()}
         </span>
       </p>
     </div>

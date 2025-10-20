@@ -128,7 +128,7 @@ export const PDFPageRenderer = ({
       <PageRendererInner
         img={img}
         ref={canvasRef}
-        err={error ? t['com.affine.pdf.page.render.error']() : null}
+        err={error ? t['com.yunke.pdf.page.render.error']() : null}
       />
     </div>
   );

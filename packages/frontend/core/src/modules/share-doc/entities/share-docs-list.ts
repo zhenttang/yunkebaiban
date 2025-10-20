@@ -19,7 +19,7 @@ import type { ShareDocsStore } from '../stores/share-docs';
 
 type ShareDocListType = GetWorkspacePublicPagesQuery['workspace']['publicDocs'];
 
-export const logger = new DebugLogger('affine:share-doc-list');
+export const logger = new DebugLogger('yunke:share-doc-list');
 
 export class ShareDocsList extends Entity {
   list$ = LiveData.from(

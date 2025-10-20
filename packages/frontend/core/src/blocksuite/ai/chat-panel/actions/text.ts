@@ -15,7 +15,7 @@ export class ActionText extends WithDisposable(LitElement) {
     .original-text {
       border-radius: 4px;
       margin-bottom: 12px;
-      font-size: var(--affine-font-sm);
+      font-size: var(--yunke-font-sm);
       line-height: 22px;
       max-height: 200px;
       overflow-y: auto;
@@ -52,7 +52,7 @@ export class ActionText extends WithDisposable(LitElement) {
       <div
         style=${styleMap({
           padding: isCode ? '0' : '10px 16px',
-          border: isCode ? 'none' : '1px solid var(--affine-border-color)',
+          border: isCode ? 'none' : '1px solid var(--yunke-border-color)',
         })}
         class="original-text"
         data-testid="original-text"

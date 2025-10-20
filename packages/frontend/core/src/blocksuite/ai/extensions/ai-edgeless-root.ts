@@ -4,7 +4,7 @@ import type { FrameworkProvider } from '@toeverything/infra';
 import { buildAIPanelConfig } from '../ai-panel';
 import { setupEdgelessCopilot } from '../entries/edgeless/index';
 import { setupSpaceAIEntry } from '../entries/space/setup-space';
-import { AffineAIPanelWidget } from '../widgets/ai-panel/ai-panel';
+import { YunkeAIPanelWidget } from '../widgets/ai-panel/ai-panel';
 import { EdgelessCopilotWidget } from '../widgets/edgeless-copilot';
 
 export function getAIEdgelessRootWatcher(framework: FrameworkProvider) {
@@ -19,7 +19,7 @@ export function getAIEdgelessRootWatcher(framework: FrameworkProvider) {
           return;
         }
         const component = payload.view;
-        if (component instanceof AffineAIPanelWidget) {
+        if (component instanceof YunkeAIPanelWidget) {
           component.style.width = '430px';
           component.config = buildAIPanelConfig(component, framework);
           setupSpaceAIEntry(component);

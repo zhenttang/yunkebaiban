@@ -6,7 +6,7 @@ import type { FC } from 'react';
 import { useCallback, useMemo } from 'react';
 import { useRouteError } from 'react-router-dom';
 
-import * as styles from './affine-error-fallback.css';
+import * as styles from './yunke-error-fallback.css';
 import { ErrorDetail } from './error-basic/error-detail';
 import type { FallbackProps } from './error-basic/fallback-creator';
 import { ERROR_REFLECT_KEY } from './error-basic/fallback-creator';
@@ -31,12 +31,12 @@ function getErrorFallbackComponent(error: any): FC<FallbackProps> {
   return AnyErrorFallback;
 }
 
-export interface AffineErrorFallbackProps extends FallbackProps {
+export interface YunkeErrorFallbackProps extends FallbackProps {
   height?: number | string;
   className?: string;
 }
 
-export const AffineErrorFallback: FC<AffineErrorFallbackProps> = props => {
+export const YunkeErrorFallback: FC<YunkeErrorFallbackProps> = props => {
   const { error, resetError, height } = props;
   const Component = useMemo(() => getErrorFallbackComponent(error), [error]);
 
@@ -50,7 +50,7 @@ export const AffineErrorFallback: FC<AffineErrorFallbackProps> = props => {
   );
 };
 
-export const AffineErrorComponent = () => {
+export const YunkeErrorComponent = () => {
   const error = useRouteError() as Error;
 
   const t = useI18n();
@@ -61,9 +61,9 @@ export const AffineErrorComponent = () => {
 
   return (
     <ErrorDetail
-      title={t['com.affine.error.unexpected-error.title']()}
+      title={t['com.yunke.error.unexpected-error.title']()}
       resetError={reloadPage}
-      buttonText={t['com.affine.error.reload']()}
+      buttonText={t['com.yunke.error.reload']()}
       description={
         'message' in (error as Error) ? (error as Error).message : `${error}`
       }

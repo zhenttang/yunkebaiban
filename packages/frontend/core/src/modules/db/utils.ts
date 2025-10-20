@@ -1,8 +1,8 @@
 import type { DocStorage } from '@yunke/nbstore';
 
 import {
-  AFFiNE_WORKSPACE_DB_SCHEMA,
-  AFFiNE_WORKSPACE_USERDATA_DB_SCHEMA,
+  YUNKE_WORKSPACE_DB_SCHEMA,
+  YUNKE_WORKSPACE_USERDATA_DB_SCHEMA,
 } from './schema';
 
 export async function transformWorkspaceDBLocalToCloud(
@@ -30,7 +30,7 @@ export async function transformWorkspaceDBLocalToCloud(
     console.warn('[transformWorkspaceDBLocalToCloud] 等待云端存储连接时出错:', (e as Error).message);
   }
 
-  for (const tableName of Object.keys(AFFiNE_WORKSPACE_DB_SCHEMA)) {
+  for (const tableName of Object.keys(YUNKE_WORKSPACE_DB_SCHEMA)) {
     const localDocName = `db$${tableName}`;
     console.log('[DB] 迁移表(工作区):', tableName, '=>', localDocName);
     const localDoc = await localDocStorage.getDoc(localDocName);
@@ -46,7 +46,7 @@ export async function transformWorkspaceDBLocalToCloud(
     }
   }
 
-  for (const tableName of Object.keys(AFFiNE_WORKSPACE_USERDATA_DB_SCHEMA)) {
+  for (const tableName of Object.keys(YUNKE_WORKSPACE_USERDATA_DB_SCHEMA)) {
     const localDocName = `userdata$__local__$${tableName}`;
     console.log('[DB] 迁移表(用户数据):', tableName, '=>', localDocName);
     const localDoc = await localDocStorage.getDoc(localDocName);

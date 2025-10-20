@@ -97,7 +97,7 @@ export class SortRootView extends SignalWatcher(
           if (!variable) {
             content = html`
               <data-view-component-button
-                style="color: var(--affine-error-color);border-color: color: var(--affine-error-color)"
+                style="color: var(--yunke-error-color);border-color: color: var(--yunke-error-color)"
                 @click="${deleteRule}"
                 .text="${html`This rule is invalid, click to delete`}"
               ></data-view-component-button>

@@ -12,7 +12,7 @@ import type { QuickSearchItem } from '../types/item';
 const group: QuickSearchGroup = {
   id: 'journals',
   label: {
-    i18nKey: 'com.affine.cmdk.affine.category.affine.journal',
+    i18nKey: 'com.yunke.cmdk.yunke.category.yunke.journal',
   },
   score: 0,
 };
@@ -55,7 +55,7 @@ export class JournalsQuickSearchSession
         source: 'date-picker',
         group: group,
         label: {
-          title: I18n.t('com.affine.cmdk.affine.category.affine.date-picker'),
+          title: I18n.t('com.yunke.cmdk.yunke.category.yunke.date-picker'),
         },
         score: 0,
         payload: {

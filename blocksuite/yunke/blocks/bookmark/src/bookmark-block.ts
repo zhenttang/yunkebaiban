@@ -146,7 +146,7 @@ export class BookmarkBlockComponent extends CaptionedBlockComponent<BookmarkBloc
     const { icon, title, description } = this.linkPreview$.value;
     const iconSrc = icon ? this.imageProxyService.buildUrl(icon) : undefined;
     return html`
-      <affine-citation-card
+      <yunke-citation-card
         .icon=${iconSrc}
         .citationTitle=${title || url}
         .citationContent=${description}
@@ -154,7 +154,7 @@ export class BookmarkBlockComponent extends CaptionedBlockComponent<BookmarkBloc
         .onClickCallback=${this.handleClick}
         .onDoubleClickCallback=${this.handleDoubleClick}
         .active=${this.selected$.value}
-      ></affine-citation-card>
+      ></yunke-citation-card>
     `;
   };
 
@@ -215,7 +215,7 @@ export class BookmarkBlockComponent extends CaptionedBlockComponent<BookmarkBloc
       <div
         draggable="${this.blockDraggable ? 'true' : 'false'}"
         class=${classMap({
-          'affine-bookmark-container': true,
+          'yunke-bookmark-container': true,
           ...this.selectedStyle$?.value,
         })}
         style=${this.containerStyleMap}
@@ -247,6 +247,6 @@ export class BookmarkBlockComponent extends CaptionedBlockComponent<BookmarkBloc
 
 declare global {
   interface HTMLElementTagNameMap {
-    'affine-bookmark': BookmarkBlockComponent;
+    'yunke-bookmark': BookmarkBlockComponent;
   }
 }

@@ -42,12 +42,12 @@ interface UpdateProviderOptions {
   channel: typeof buildType;
 }
 
-export class AFFiNEUpdateProvider extends Provider<GithubUpdateInfo> {
+export class YUNKEUpdateProvider extends Provider<GithubUpdateInfo> {
   static configFeed(options: UpdateProviderOptions): CustomPublishOptions {
     return {
       provider: 'custom',
-      feedUrl: 'https://affine.pro/api/worker/releases',
-      updateProvider: AFFiNEUpdateProvider,
+      feedUrl: 'https://yunke.pro/api/worker/releases',
+      updateProvider: YUNKEUpdateProvider,
       ...options,
     };
   }
@@ -177,9 +177,9 @@ type VersionDistribution = 'canary' | 'beta' | 'stable';
 type VersionPlatform = 'windows' | 'macos' | 'linux';
 type VersionArch = 'x64' | 'arm64';
 type FileParts =
-  | ['affine', string, VersionDistribution, VersionPlatform, VersionArch]
+  | ['yunke', string, VersionDistribution, VersionPlatform, VersionArch]
   | [
-      'affine',
+      'yunke',
       string,
       `${'canary' | 'beta'}.${number}`,
       VersionDistribution,
@@ -201,7 +201,7 @@ export function availableForMyPlatformAndInstaller(
   const imLinux = platform === 'linux';
 
   //  in form of:
-  //   affine-${build}-${buildSuffix}-${distribution}-${platform}-${arch}.${installer}
+  //   yunke-${build}-${buildSuffix}-${distribution}-${platform}-${arch}.${installer}
   //          ^ 1.0.0    ^canary.1    ^ canary        ^windows    ^ x64  ^.nsis.exe
   const filename = file.split('/').pop();
 

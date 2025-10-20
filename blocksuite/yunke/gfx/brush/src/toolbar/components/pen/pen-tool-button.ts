@@ -178,10 +178,10 @@ export class EdgelessPenToolButton extends EdgelessToolbarToolMixin(
           this.popper,
           () => nothing,
           () =>
-            html`<affine-tooltip-content-with-shortcut
+            html`<yunke-tooltip-content-with-shortcut
               data-tip="${tip}"
               data-shortcut="${shortcut}"
-            ></affine-tooltip-content-with-shortcut>`
+            ></yunke-tooltip-content-with-shortcut>`
         )}
         .tooltipOffset=${4}
         .active=${active}

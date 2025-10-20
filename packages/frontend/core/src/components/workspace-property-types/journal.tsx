@@ -134,9 +134,9 @@ export const JournalValue = ({ readonly }: PropertyValueProps) => {
             }}
             items={
               <DatePicker
-                weekDays={t['com.affine.calendar-date-picker.week-days']()}
-                monthNames={t['com.affine.calendar-date-picker.month-names']()}
-                todayLabel={t['com.affine.calendar-date-picker.today']()}
+                weekDays={t['com.yunke.calendar-date-picker.week-days']()}
+                monthNames={t['com.yunke.calendar-date-picker.month-names']()}
+                todayLabel={t['com.yunke.calendar-date-picker.today']()}
                 value={selectedDate}
                 onChange={handleDateSelect}
               />
@@ -163,7 +163,7 @@ export const JournalValue = ({ readonly }: PropertyValueProps) => {
                 className={styles.duplicateTag}
                 onClick={stopPropagation}
               >
-                {t['com.affine.page-properties.property.journal-duplicated']()}
+                {t['com.yunke.page-properties.property.journal-duplicated']()}
               </div>
             </Menu>
           ) : (
@@ -172,7 +172,7 @@ export const JournalValue = ({ readonly }: PropertyValueProps) => {
               className={styles.duplicateTag}
               onClick={handleOpenDuplicate}
             >
-              {t['com.affine.page-properties.property.journal-duplicated']()}
+              {t['com.yunke.page-properties.property.journal-duplicated']()}
             </div>
           )
         ) : null}
@@ -257,8 +257,8 @@ export const JournalGroupHeader = ({ groupId, docCount }: GroupHeaderProps) => {
   const t = useI18n();
   const text =
     groupId === 'true'
-      ? t['com.affine.all-docs.group.is-journal']()
-      : t['com.affine.all-docs.group.is-not-journal']();
+      ? t['com.yunke.all-docs.group.is-journal']()
+      : t['com.yunke.all-docs.group.is-not-journal']();
   return (
     <PlainTextDocGroupHeader groupId={groupId} docCount={docCount}>
       {text}

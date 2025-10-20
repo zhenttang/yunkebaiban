@@ -1,11 +1,11 @@
 import {
-  AFFINE_PAGE_DRAGGING_AREA_WIDGET,
-  AffinePageDraggingAreaWidget,
+  YUNKE_PAGE_DRAGGING_AREA_WIDGET,
+  YunkePageDraggingAreaWidget,
 } from './index';
 
 export function effects() {
   customElements.define(
-    AFFINE_PAGE_DRAGGING_AREA_WIDGET,
-    AffinePageDraggingAreaWidget
+    YUNKE_PAGE_DRAGGING_AREA_WIDGET,
+    YunkePageDraggingAreaWidget
   );
 }

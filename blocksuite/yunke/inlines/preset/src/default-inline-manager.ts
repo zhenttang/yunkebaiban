@@ -3,7 +3,7 @@ import { LatexInlineSpecExtension } from '@blocksuite/yunke-inline-latex';
 import { LinkInlineSpecExtension } from '@blocksuite/yunke-inline-link';
 import { MentionInlineSpecExtension } from '@blocksuite/yunke-inline-mention';
 import { ReferenceInlineSpecExtension } from '@blocksuite/yunke-inline-reference';
-import type { AffineTextAttributes } from '@blocksuite/yunke-shared/types';
+import type { YunkeTextAttributes } from '@blocksuite/yunke-shared/types';
 import { InlineManagerExtension } from '@blocksuite/std/inline';
 
 import {
@@ -17,7 +17,7 @@ import {
 } from './inline-spec';
 
 export const DefaultInlineManagerExtension =
-  InlineManagerExtension<AffineTextAttributes>({
+  InlineManagerExtension<YunkeTextAttributes>({
     id: 'DefaultInlineManager',
     specs: [
       BoldInlineSpecExtension.identifier,

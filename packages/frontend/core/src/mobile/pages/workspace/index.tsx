@@ -1,5 +1,5 @@
-import { AffineErrorBoundary } from '@yunke/core/components/affine/affine-error-boundary';
-import { AffineErrorComponent } from '@yunke/core/components/affine/affine-error-boundary/affine-error-fallback';
+import { YunkeErrorBoundary } from '@yunke/core/components/yunke/yunke-error-boundary';
+import { YunkeErrorComponent } from '@yunke/core/components/yunke/yunke-error-boundary/yunke-error-fallback';
 import { PageNotFound } from '@yunke/core/desktop/pages/404';
 import { SharePage } from '@yunke/core/desktop/pages/workspace/share/share-page';
 import { workbenchRoutes } from '@yunke/core/mobile/workbench-router';
@@ -31,11 +31,11 @@ type Route = { Component: React.ComponentType };
  **/
 const MobileRouteContainer = ({ route }: { route: Route }) => {
   return (
-    <AffineErrorBoundary>
+    <YunkeErrorBoundary>
       <Suspense>
         <route.Component />
       </Suspense>
-    </AffineErrorBoundary>
+    </YunkeErrorBoundary>
   );
 };
 
@@ -60,7 +60,7 @@ const warpedRoutes = workbenchRoutes.map((originalRoute: RouteObject) => {
     Component: () => {
       return <MobileRouteContainer route={route} />;
     },
-    errorElement: <AffineErrorComponent />,
+    errorElement: <YunkeErrorComponent />,
   };
 });
 

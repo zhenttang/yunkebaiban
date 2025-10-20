@@ -1,4 +1,4 @@
-import type { AffineTextAttributes } from '@blocksuite/yunke-shared/types';
+import type { YunkeTextAttributes } from '@blocksuite/yunke-shared/types';
 import { ShadowlessElement } from '@blocksuite/std';
 import { ZERO_WIDTH_FOR_EMPTY_LINE } from '@blocksuite/std/inline';
 import type { DeltaInsert } from '@blocksuite/store';
@@ -49,7 +49,7 @@ export class LatexEditorUnit extends ShadowlessElement {
   }
 
   @property({ attribute: false })
-  accessor delta: DeltaInsert<AffineTextAttributes> = {
+  accessor delta: DeltaInsert<YunkeTextAttributes> = {
     insert: ZERO_WIDTH_FOR_EMPTY_LINE,
   };
 }

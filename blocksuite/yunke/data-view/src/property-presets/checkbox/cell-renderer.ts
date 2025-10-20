@@ -13,7 +13,7 @@ const playCheckAnimation = async (
   { left = 0, size = 20 }: { left?: number; size?: number } = {}
 ) => {
   const sparkingEl = document.createElement('div');
-  sparkingEl.classList.add('affine-check-animation');
+  sparkingEl.classList.add('yunke-check-animation');
   if (size < 20) {
     console.warn('If the size is less than 20, the animation may be abnormal.');
   }
@@ -50,17 +50,17 @@ const playCheckAnimation = async (
 
 export class CheckboxCell extends BaseCellRenderer<boolean> {
   static override styles = css`
-    affine-database-checkbox-cell {
+    yunke-database-checkbox-cell {
       display: block;
       width: 100%;
       cursor: pointer;
     }
 
-    .affine-database-checkbox-container {
+    .yunke-database-checkbox-container {
       height: 100%;
     }
 
-    .affine-database-checkbox {
+    .yunke-database-checkbox {
       display: flex;
       align-items: center;
       height: var(--data-view-cell-text-line-height);
@@ -99,16 +99,16 @@ export class CheckboxCell extends BaseCellRenderer<boolean> {
     const icon = checked
       ? CheckBoxCheckSolidIcon({ style: `color:#1E96EB` })
       : CheckBoxUnIcon();
-    return html` <div class="affine-database-checkbox-container">
+    return html` <div class="yunke-database-checkbox-container">
       <div
-        class="affine-database-checkbox checkbox ${checked ? 'checked' : ''}"
+        class="yunke-database-checkbox checkbox ${checked ? 'checked' : ''}"
       >
         ${icon}
       </div>
     </div>`;
   }
 
-  @query('.affine-database-checkbox')
+  @query('.yunke-database-checkbox')
   private accessor _checkbox!: HTMLDivElement;
 }
 

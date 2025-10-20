@@ -8,7 +8,7 @@ import {
   CopilotClient,
   setupAIProvider,
 } from '@yunke/core/blocksuite/ai';
-import { useRegisterFindInPageCommands } from '@yunke/core/components/hooks/affine/use-register-find-in-page-commands';
+import { useRegisterFindInPageCommands } from '@yunke/core/components/hooks/yunke/use-register-find-in-page-commands';
 import { useRegisterWorkspaceCommands } from '@yunke/core/components/hooks/use-register-workspace-commands';
 import { OverCapacityNotification } from '@yunke/core/components/over-capacity';
 import {
@@ -26,7 +26,7 @@ import { useRegisterNavigationCommands } from '@yunke/core/modules/navigation/vi
 import { QuickSearchContainer } from '@yunke/core/modules/quicksearch';
 import { WorkbenchService } from '@yunke/core/modules/workbench';
 import {
-  getAFFiNEWorkspaceSchema,
+  getYUNKEWorkspaceSchema,
   WorkspaceService,
 } from '@yunke/core/modules/workspace';
 import { useI18n } from '@yunke/i18n';
@@ -70,7 +70,7 @@ export const WorkspaceSideEffects = () => {
           throwIfAborted(abort);
           const [doc] = await ZipTransformer.importDocs(
             currentWorkspace.docCollection,
-            getAFFiNEWorkspaceSchema(),
+            getYUNKEWorkspaceSchema(),
             templateBlob
           );
           if (doc) {
@@ -93,7 +93,7 @@ export const WorkspaceSideEffects = () => {
           }),
           catchError(err => {
             console.error(err);
-            toast(t['com.affine.ai.template-insert.failed']());
+            toast(t['com.yunke.ai.template-insert.failed']());
             return EMPTY;
           }),
           finalize(() => {

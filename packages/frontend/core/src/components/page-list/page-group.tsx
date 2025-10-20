@@ -94,8 +94,8 @@ export const ItemGroupHeader = memo(function ItemGroupHeader<
       <button className={styles.selectAllButton} onClick={onSelectAll}>
         {t[
           allSelected
-            ? 'com.affine.page.group-header.clear'
-            : 'com.affine.page.group-header.select-all'
+            ? 'com.yunke.page.group-header.clear'
+            : 'com.yunke.page.group-header.select-all'
         ]()}
       </button>
     </div>

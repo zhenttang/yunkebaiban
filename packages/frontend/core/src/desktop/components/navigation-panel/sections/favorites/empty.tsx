@@ -3,7 +3,7 @@ import {
   Skeleton,
   useDropTarget,
 } from '@yunke/component';
-import type { AffineDNDData } from '@yunke/core/types/dnd';
+import type { YunkeDNDData } from '@yunke/core/types/dnd';
 import { useI18n } from '@yunke/i18n';
 import { FavoriteIcon } from '@blocksuite/icons/rc';
 
@@ -12,7 +12,7 @@ import { DropEffect } from '../../tree';
 import { favoriteRootCanDrop, favoriteRootDropEffect } from './dnd';
 
 interface RootEmptyProps {
-  onDrop?: (data: DropTargetDropEvent<AffineDNDData>) => void;
+  onDrop?: (data: DropTargetDropEvent<YunkeDNDData>) => void;
   isLoading?: boolean;
 }
 
@@ -23,7 +23,7 @@ const RootEmptyReady = ({ onDrop }: Omit<RootEmptyProps, 'isLoading'>) => {
   const t = useI18n();
 
   const { dropTargetRef, draggedOverDraggable, draggedOverPosition } =
-    useDropTarget<AffineDNDData>(
+    useDropTarget<YunkeDNDData>(
       () => ({
         data: {
           at: 'navigation-panel:favorite:root',
@@ -39,7 +39,7 @@ const RootEmptyReady = ({ onDrop }: Omit<RootEmptyProps, 'isLoading'>) => {
     <NavigationPanelEmptySection
       ref={dropTargetRef}
       icon={FavoriteIcon}
-      message={t['com.affine.rootAppSidebar.favorites.empty']()}
+      message={t['com.yunke.rootAppSidebar.favorites.empty']()}
       messageTestId="slider-bar-favorites-empty-message"
     >
       {draggedOverDraggable && (

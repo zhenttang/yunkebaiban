@@ -34,10 +34,10 @@ export interface AINetworkSearchConfig {
   setEnabled: (state: boolean) => void;
 }
 
-export interface AffineAIPanelWidgetConfig {
+export interface YunkeAIPanelWidgetConfig {
   answerRenderer: (
     answer: string,
-    state?: AffineAIPanelState
+    state?: YunkeAIPanelState
   ) => TemplateResult<1> | typeof nothing;
   generateAnswer?: (props: {
     input: string;
@@ -57,7 +57,7 @@ export interface AffineAIPanelWidgetConfig {
   copy?: CopyConfig;
 }
 
-export type AffineAIPanelState =
+export type YunkeAIPanelState =
   | 'hidden'
   | 'input'
   | 'generating'

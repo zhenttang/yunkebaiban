@@ -43,7 +43,7 @@ export const useSignOut = ({
 
   const getDefaultText = useCallback(
     (key: SignOutConfirmModalI18NKeys) => {
-      return t[`com.affine.auth.sign-out.confirm-modal.${key}`]();
+      return t[`com.yunke.auth.sign-out.confirm-modal.${key}`]();
     },
     [t]
   );

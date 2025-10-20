@@ -1,7 +1,7 @@
 import { useThemeColorV2 } from '@yunke/component';
 import { PageDetailLoading } from '@yunke/component/page-detail-skeleton';
-import type { AffineEditorContainer } from '@yunke/core/blocksuite/block-suite-editor';
-import { AffineErrorBoundary } from '@yunke/core/components/affine/affine-error-boundary';
+import type { YunkeEditorContainer } from '@yunke/core/blocksuite/block-suite-editor';
+import { YunkeErrorBoundary } from '@yunke/core/components/yunke/yunke-error-boundary';
 import { useGuard } from '@yunke/core/components/guard';
 import { useActiveBlocksuiteEditor } from '@yunke/core/components/hooks/use-block-suite-editor';
 import { useNavigateHelper } from '@yunke/core/components/hooks/use-navigate-helper';
@@ -158,7 +158,7 @@ const DetailPageImpl = () => {
   const server = useService(ServerService).server;
 
   const onLoad = useCallback(
-    (editorContainer: AffineEditorContainer) => {
+    (editorContainer: YunkeEditorContainer) => {
       // provide image proxy endpoint to blocksuite
       const imageProxyUrl = new URL(
         BUILD_CONFIG.imageProxyUrl,
@@ -223,15 +223,15 @@ const DetailPageImpl = () => {
           data-mode={mode}
           ref={scrollViewportRef}
           className={clsx(
-            'affine-page-viewport',
-            styles.affineDocViewport,
+            'yunke-page-viewport',
+            styles.yunkeDocViewport,
             styles.editorContainer
           )}
         >
           {/* Add a key to force rerender when page changed, to avoid error boundary persisting. */}
-          <AffineErrorBoundary key={doc.id} className={styles.errorBoundary}>
+          <YunkeErrorBoundary key={doc.id} className={styles.errorBoundary}>
             <PageDetailEditor onLoad={onLoad} readonly={readonly} />
-          </AffineErrorBoundary>
+          </YunkeErrorBoundary>
         </div>
         
         {/* 触控笔状态指示器 - 仅在白板模式下显示 */}

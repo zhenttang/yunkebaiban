@@ -27,7 +27,7 @@ const contentOptions: Dialog.DialogContentProps = {
     if (
       el.closest('[data-peek-view-wrapper]') ||
       // 斜杠菜单点击外部问题的解决方案
-      el.closest('affine-slash-menu')
+      el.closest('yunke-slash-menu')
     ) {
       e.preventDefault();
     }

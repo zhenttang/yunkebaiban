@@ -11,19 +11,19 @@ import { IconCell } from './properties/title/icon';
 import { HeaderAreaTextCell } from './properties/title/text';
 
 export function effects() {
-  customElements.define('affine-database-title', DatabaseTitle);
+  customElements.define('yunke-database-title', DatabaseTitle);
   customElements.define('data-view-header-area-icon', IconCell);
-  customElements.define('affine-database-link-cell', LinkCell);
+  customElements.define('yunke-database-link-cell', LinkCell);
   customElements.define('data-view-header-area-text', HeaderAreaTextCell);
-  customElements.define('affine-database-rich-text-cell', RichTextCell);
-  customElements.define('affine-database-created-time-cell', CreatedTimeCell);
+  customElements.define('yunke-database-rich-text-cell', RichTextCell);
+  customElements.define('yunke-database-created-time-cell', CreatedTimeCell);
   customElements.define('center-peek', CenterPeek);
   customElements.define('database-datasource-note-renderer', NoteRenderer);
   customElements.define('database-datasource-block-renderer', BlockRenderer);
-  customElements.define('affine-database', DatabaseBlockComponent);
+  customElements.define('yunke-database', DatabaseBlockComponent);
 
   customElements.define(
-    'affine-dnd-preview-database',
+    'yunke-dnd-preview-database',
     DatabaseDndPreviewBlockComponent
   );
 }

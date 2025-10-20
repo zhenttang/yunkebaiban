@@ -16,7 +16,7 @@ enum Prompt: String {
     case debug_action_fal_face_to_sticker = "debug:action:fal-face-to-sticker"
   #endif
 
-  case general_Chat_With_AFFiNE_AI = "Chat With AFFiNE AI"
+  case general_Chat_With_YUNKE_AI = "Chat With YUNKE AI"
   case general_Summary = "Summary"
   case general_Generate_a_caption = "Generate a caption"
   case general_Summary_the_webpage = "Summary the webpage"

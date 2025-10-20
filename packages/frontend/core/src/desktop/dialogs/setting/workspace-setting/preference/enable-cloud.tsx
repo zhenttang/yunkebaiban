@@ -1,6 +1,6 @@
 import { SettingRow } from '@yunke/component/setting-components';
 import { Button } from '@yunke/component/ui/button';
-import { useEnableCloud } from '@yunke/core/components/hooks/affine/use-enable-cloud';
+import { useEnableCloud } from '@yunke/core/components/hooks/yunke/use-enable-cloud';
 import {
   type Workspace,
   WorkspaceService,
@@ -51,12 +51,12 @@ export const EnableCloudPanel = ({
       className={style.enableCloudRow}
     >
       <Button
-        data-testid="publish-enable-affine-cloud-button"
+        data-testid="publish-enable-yunke-cloud-button"
         variant="primary"
         onClick={confirmEnableCloudAndClose}
         style={{ alignSelf: 'flex-start' }}
       >
-        {t['Enable AFFiNE Cloud']()}
+        {t['Enable YUNKE Cloud']()}
       </Button>
     </SettingRow>
   );

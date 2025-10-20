@@ -39,7 +39,7 @@ export class AIErrorWrapper extends SignalWatcher(WithDisposable(LitElement)) {
           'clig' off,
           'liga' off;
         /* light/sm */
-        font-size: var(--affine-font-sm);
+        font-size: var(--yunke-font-sm);
         font-style: normal;
         font-weight: 400;
         line-height: 22px; /* 157.143% */
@@ -100,7 +100,7 @@ export class AIErrorWrapper extends SignalWatcher(WithDisposable(LitElement)) {
         border-radius: 8px;
         border: 1px solid ${unsafeCSSVarV2('button/innerBlackBorder')};
         padding: 4px 12px;
-        font-size: var(--affine-font-xs);
+        font-size: var(--yunke-font-xs);
         font-style: normal;
         font-weight: 500;
         line-height: 20px;
@@ -155,8 +155,8 @@ export class AIErrorWrapper extends SignalWatcher(WithDisposable(LitElement)) {
         >
           ${this.actionText}
           ${this.actionTooltip
-            ? html`<affine-tooltip tip-position="top"
-                >${this.actionTooltip}</affine-tooltip
+            ? html`<yunke-tooltip tip-position="top"
+                >${this.actionTooltip}</yunke-tooltip
               >`
             : nothing}
         </span>
@@ -188,7 +188,7 @@ export class AIErrorWrapper extends SignalWatcher(WithDisposable(LitElement)) {
 
 const PaymentRequiredErrorRenderer = (host: EditorHost) => html`
   <ai-error-wrapper
-    .text=${"您已达到 AFFiNE AI 的当前使用限额。您可以订阅 AFFiNE AI（免费试用7天）以继续AI体验！"}
+    .text=${"您已达到 YUNKE AI 的当前使用限额。您可以订阅 YUNKE AI（免费试用7天）以继续AI体验！"}
     .actionText=${'升级'}
     .onClick=${() => AIProvider.slots.requestUpgradePlan.next({ host })}
   ></ai-error-wrapper>
@@ -196,7 +196,7 @@ const PaymentRequiredErrorRenderer = (host: EditorHost) => html`
 
 const LoginRequiredErrorRenderer = (host: EditorHost) => html`
   <ai-error-wrapper
-    .text=${'您需要登录 AFFiNE 云端才能继续使用 AFFiNE AI。'}
+    .text=${'您需要登录 YUNKE 云端才能继续使用 YUNKE AI。'}
     .actionText=${'登录'}
     .onClick=${() => AIProvider.slots.requestLogin.next({ host })}
   ></ai-error-wrapper>

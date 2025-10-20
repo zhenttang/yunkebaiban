@@ -61,7 +61,7 @@ export class ColumnResizer extends LitElement implements IColumnResizer {
       width: 4px;
       height: 40px;
       margin: -20px 0 0 -2px;
-      background: var(--affine-primary-color, #1e96eb);
+      background: var(--yunke-primary-color, #1e96eb);
       border-radius: 2px;
       opacity: 0;
       transition: all 0.2s ease;
@@ -85,7 +85,7 @@ export class ColumnResizer extends LitElement implements IColumnResizer {
       top: 0;
       bottom: 0;
       width: 2px;
-      background: var(--affine-primary-color, #1e96eb);
+      background: var(--yunke-primary-color, #1e96eb);
       opacity: 0;
       z-index: 1000;
       pointer-events: none;
@@ -94,7 +94,7 @@ export class ColumnResizer extends LitElement implements IColumnResizer {
 
     .resize-guide-line.active {
       opacity: 0.8;
-      box-shadow: 0 0 4px var(--affine-primary-color, #1e96eb);
+      box-shadow: 0 0 4px var(--yunke-primary-color, #1e96eb);
     }
 
     .resize-tooltip {
@@ -102,8 +102,8 @@ export class ColumnResizer extends LitElement implements IColumnResizer {
       top: var(--tooltip-y, 0);
       left: var(--tooltip-x, 0);
       padding: 4px 8px;
-      background: var(--affine-background-overlay-panel-color, rgba(0, 0, 0, 0.8));
-      color: var(--affine-text-primary-color, white);
+      background: var(--yunke-background-overlay-panel-color, rgba(0, 0, 0, 0.8));
+      color: var(--yunke-text-primary-color, white);
       border-radius: 4px;
       font-size: 12px;
       white-space: nowrap;
@@ -124,7 +124,7 @@ export class ColumnResizer extends LitElement implements IColumnResizer {
       left: 50%;
       margin-left: -4px;
       border: 4px solid transparent;
-      border-top-color: var(--affine-background-overlay-panel-color, rgba(0, 0, 0, 0.8));
+      border-top-color: var(--yunke-background-overlay-panel-color, rgba(0, 0, 0, 0.8));
     }
 
     /* 移动端适配 */

@@ -1,6 +1,6 @@
 import { Divider, Loading, toast } from '@yunke/component';
 import { Button, IconButton } from '@yunke/component/ui/button';
-import { useAsyncCallback } from '@yunke/core/components/hooks/affine-async-hooks';
+import { useAsyncCallback } from '@yunke/core/components/hooks/yunke-async-hooks';
 import type { ImageBlockModel } from '@blocksuite/yunke/model';
 import type { BlockModel, Workspace } from '@blocksuite/yunke/store';
 import {
@@ -424,7 +424,7 @@ const ImagePreviewModalImpl = ({
 };
 
 const filterImageBlock = (block: BlockModel): block is ImageBlockModel => {
-  return block.flavour === 'affine:image';
+  return block.flavour === 'yunke:image';
 };
 
 export const ImagePreviewPeekView = (

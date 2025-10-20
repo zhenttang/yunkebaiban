@@ -34,7 +34,7 @@ export const QuickMenuButton = memo(() => {
         className={styles.quickMenuButton}
         onClick={handleToggle}
         data-active={isOpen}
-        title={t['com.affine.quick-menu.title']?.() || 'Quick Menu'}
+        title={t['com.yunke.quick-menu.title']?.() || 'Quick Menu'}
         role="button"
         tabIndex={0}
         onKeyDown={(e) => {

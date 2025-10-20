@@ -3,11 +3,11 @@ import {
   ViewExtensionProvider,
 } from '@blocksuite/yunke-ext-loader';
 
-import { frameTitleWidget } from './affine-frame-title-widget';
+import { frameTitleWidget } from './yunke-frame-title-widget';
 import { effects } from './effects';
 
 export class FrameTitleViewExtension extends ViewExtensionProvider {
-  override name = 'affine-frame-title-widget';
+  override name = 'yunke-frame-title-widget';
 
   override effect() {
     super.effect();

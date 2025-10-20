@@ -1,6 +1,6 @@
 import { createLitPortal } from '@blocksuite/yunke-components/portal';
 import { unsafeCSSVar, unsafeCSSVarV2 } from '@blocksuite/yunke-shared/theme';
-import type { AffineTextAttributes } from '@blocksuite/yunke-shared/types';
+import type { YunkeTextAttributes } from '@blocksuite/yunke-shared/types';
 import { SignalWatcher, WithDisposable } from '@blocksuite/global/lit';
 import {
   type BlockComponent,
@@ -18,19 +18,19 @@ import katex from 'katex';
 import { css, html, render } from 'lit';
 import { property } from 'lit/decorators.js';
 
-export class AffineLatexNode extends SignalWatcher(
+export class YunkeLatexNode extends SignalWatcher(
   WithDisposable(ShadowlessElement)
 ) {
   static override styles = css`
-    affine-latex-node {
+    yunke-latex-node {
       display: inline-block;
     }
 
-    affine-latex-node .affine-latex {
+    yunke-latex-node .yunke-latex {
       white-space: nowrap;
       word-break: break-word;
       color: ${unsafeCSSVar('textPrimaryColor')};
-      fill: var(--affine-icon-color);
+      fill: var(--yunke-icon-color);
       border-radius: 4px;
       text-decoration: none;
       cursor: pointer;
@@ -42,14 +42,14 @@ export class AffineLatexNode extends SignalWatcher(
       padding: 0 4px;
       margin: 0 2px;
     }
-    affine-latex-node .affine-latex:hover {
+    yunke-latex-node .yunke-latex:hover {
       background: ${unsafeCSSVar('hoverColor')};
     }
-    affine-latex-node .affine-latex[data-selected='true'] {
+    yunke-latex-node .yunke-latex[data-selected='true'] {
       background: ${unsafeCSSVar('hoverColor')};
     }
 
-    affine-latex-node .error-placeholder {
+    yunke-latex-node .error-placeholder {
       display: flex;
       padding: 2px 4px;
       justify-content: center;
@@ -66,7 +66,7 @@ export class AffineLatexNode extends SignalWatcher(
       line-height: normal;
     }
 
-    affine-latex-node .placeholder {
+    yunke-latex-node .placeholder {
       display: flex;
       padding: 2px 4px;
       justify-content: center;
@@ -175,7 +175,7 @@ export class AffineLatexNode extends SignalWatcher(
   }
 
   override render() {
-    return html`<span class="affine-latex" data-selected=${this.selected}
+    return html`<span class="yunke-latex" data-selected=${this.selected}
       ><div class="latex-container"></div>
       <v-text .str=${ZERO_WIDTH_FOR_EMBED_NODE}></v-text
     ></span>`;
@@ -208,7 +208,7 @@ export class AffineLatexNode extends SignalWatcher(
       abortController: this._editorAbortController,
       shadowDom: false,
       portalStyles: {
-        zIndex: 'var(--affine-z-index-popover)',
+        zIndex: 'var(--yunke-z-index-popover)',
       },
     });
 
@@ -244,12 +244,12 @@ export class AffineLatexNode extends SignalWatcher(
   }
 
   @property({ attribute: false })
-  accessor delta: DeltaInsert<AffineTextAttributes> = {
+  accessor delta: DeltaInsert<YunkeTextAttributes> = {
     insert: ZERO_WIDTH_FOR_EMPTY_LINE,
   };
 
   @property({ attribute: false })
-  accessor editor!: InlineEditor<AffineTextAttributes>;
+  accessor editor!: InlineEditor<YunkeTextAttributes>;
 
   @property({ attribute: false })
   accessor endOffset!: number;

@@ -1,5 +1,5 @@
 import { FlexWrapper } from '@yunke/component';
-import { EmptyCollectionDetail } from '@yunke/core/components/affine/empty/collection-detail';
+import { EmptyCollectionDetail } from '@yunke/core/components/yunke/empty/collection-detail';
 import {
   createDocExplorerContext,
   DocExplorerContext,
@@ -192,7 +192,7 @@ const Placeholder = ({ collection }: { collection: Collection }) => {
             display: 'flex',
             alignItems: 'center',
             gap: 8,
-            fontSize: 'var(--affine-font-xs)',
+            fontSize: 'var(--yunke-font-xs)',
           }}
         >
           <div
@@ -201,23 +201,23 @@ const Placeholder = ({ collection }: { collection: Collection }) => {
               alignItems: 'center',
               gap: 4,
               cursor: 'pointer',
-              color: 'var(--affine-text-secondary-color)',
+              color: 'var(--yunke-text-secondary-color)',
               ['WebkitAppRegion' as string]: 'no-drag',
             }}
             onClick={handleJumpToCollections}
           >
             <ViewLayersIcon
-              style={{ color: 'var(--affine-icon-color)' }}
+              style={{ color: 'var(--yunke-icon-color)' }}
               fontSize={14}
             />
-            {t['com.affine.collection.allCollections']()}
+            {t['com.yunke.collection.allCollections']()}
             <div>/</div>
           </div>
           <div
             data-testid="collection-name"
             style={{
               fontWeight: 600,
-              color: 'var(--affine-text-primary-color)',
+              color: 'var(--yunke-text-primary-color)',
               ['WebkitAppRegion' as string]: 'no-drag',
             }}
           >

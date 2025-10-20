@@ -16,7 +16,7 @@ import type { WorkspaceFlavoursService } from '../services/flavours';
 import type { WorkspaceProfileCacheStore } from '../stores/profile-cache';
 import type { Workspace } from './workspace';
 
-const logger = new DebugLogger('affine:workspace-profile');
+const logger = new DebugLogger('yunke:workspace-profile');
 
 export interface WorkspaceProfileInfo {
   avatar?: string;

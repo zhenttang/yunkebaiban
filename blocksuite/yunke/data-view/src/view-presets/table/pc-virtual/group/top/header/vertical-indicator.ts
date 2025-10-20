@@ -34,7 +34,7 @@ export class TableVerticalIndicator extends WithDisposable(ShadowlessElement) {
       height: 100%;
       content: '';
       right: 0;
-      background-color: var(--affine-primary-color);
+      background-color: var(--yunke-primary-color);
       border-radius: 1px;
     }
 
@@ -80,17 +80,17 @@ declare global {
 }
 
 export const getTableGroupRect = (ele: HTMLElement) => {
-  const group = ele.closest('affine-data-view-virtual-table-group');
+  const group = ele.closest('yunke-data-view-virtual-table-group');
   if (!group) {
     return;
   }
   const groupRect = group?.getBoundingClientRect();
   const top =
     group
-      .querySelector('.affine-database-column-header')
+      .querySelector('.yunke-database-column-header')
       ?.getBoundingClientRect().top ?? groupRect.top;
   const bottom =
-    group.querySelector('.affine-database-block-rows')?.getBoundingClientRect()
+    group.querySelector('.yunke-database-block-rows')?.getBoundingClientRect()
       .bottom ?? groupRect.bottom;
   return {
     top: top,

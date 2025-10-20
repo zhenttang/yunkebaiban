@@ -59,16 +59,16 @@ export class EmbedIframeLinkInputPopup extends EmbedIframeLinkInputBase {
       justify-content: center;
       align-items: center;
       cursor: pointer;
-      color: var(--affine-icon-color);
+      color: var(--yunke-icon-color);
       border-radius: 4px;
     }
     .popup-close-button:hover {
-      background-color: var(--affine-hover-color);
+      background-color: var(--yunke-hover-color);
     }
 
     .title {
       /* Client/h6 */
-      font-size: var(--affine-font-base);
+      font-size: var(--yunke-font-base);
       font-style: normal;
       font-weight: 500;
       line-height: 24px;
@@ -80,7 +80,7 @@ export class EmbedIframeLinkInputPopup extends EmbedIframeLinkInputBase {
       font-feature-settings:
         'liga' off,
         'clig' off;
-      font-size: var(--affine-font-sm);
+      font-size: var(--yunke-font-sm);
       font-style: normal;
       font-weight: 400;
       line-height: 22px;
@@ -102,8 +102,8 @@ export class EmbedIframeLinkInputPopup extends EmbedIframeLinkInputBase {
       }
 
       .link-input:focus {
-        border-color: var(--affine-blue-700);
-        box-shadow: var(--affine-active-shadow);
+        border-color: var(--yunke-blue-700);
+        box-shadow: var(--yunke-active-shadow);
         outline: none;
       }
       .link-input::placeholder {

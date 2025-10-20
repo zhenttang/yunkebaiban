@@ -29,10 +29,10 @@ export const DropEffect = ({
         <LinkIcon className={styles.icon} />
       )}
       {dropEffect === 'copy'
-        ? t['com.affine.rootAppSidebar.explorer.drop-effect.copy']()
+        ? t['com.yunke.rootAppSidebar.explorer.drop-effect.copy']()
         : dropEffect === 'move'
-          ? t['com.affine.rootAppSidebar.explorer.drop-effect.move']()
-          : t['com.affine.rootAppSidebar.explorer.drop-effect.link']()}
+          ? t['com.yunke.rootAppSidebar.explorer.drop-effect.move']()
+          : t['com.yunke.rootAppSidebar.explorer.drop-effect.link']()}
     </div>,
     document.body
   );

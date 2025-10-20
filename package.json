@@ -185,6 +185,8 @@
     "yjs": "13.6.21"
   },
   "dependencies": {
+    "@babel/parser": "^7.26.3",
+    "@babel/types": "^7.26.3",
     "@types/qrcode": "^1.5.5",
     "dompurify": "^3.2.7",
     "localforage": "^1.10.0",

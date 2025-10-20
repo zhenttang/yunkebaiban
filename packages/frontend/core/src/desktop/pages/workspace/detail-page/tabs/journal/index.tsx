@@ -80,7 +80,7 @@ const PageItem = ({
         {title}
         {duplicate ? (
           <div className={styles.duplicateTag}>
-            {i18n['com.affine.page-properties.property.journal-duplicated']()}
+            {i18n['com.yunke.page-properties.property.journal-duplicated']()}
           </div>
         ) : null}
       </div>
@@ -154,9 +154,9 @@ export const EditorJournalPanel = () => {
     >
       <div data-mobile={mobile} className={styles.calendar}>
         <DatePicker
-          weekDays={t['com.affine.calendar-date-picker.week-days']()}
-          monthNames={t['com.affine.calendar-date-picker.month-names']()}
-          todayLabel={t['com.affine.calendar-date-picker.today']()}
+          weekDays={t['com.yunke.calendar-date-picker.week-days']()}
+          monthNames={t['com.yunke.calendar-date-picker.month-names']()}
+          todayLabel={t['com.yunke.calendar-date-picker.today']()}
           customDayRenderer={customDayRenderer}
           value={journalDate?.format('YYYY-MM-DD')}
           onChange={onDateSelect}
@@ -197,8 +197,8 @@ const DailyCountEmptyFallback = ({ name }: { name: NavItemName }) => {
   return (
     <div className={styles.dailyCountEmpty}>
       {name === 'createdToday'
-        ? t['com.affine.journal.daily-count-created-empty-tips']()
-        : t['com.affine.journal.daily-count-updated-empty-tips']()}
+        ? t['com.yunke.journal.daily-count-created-empty-tips']()
+        : t['com.yunke.journal.daily-count-updated-empty-tips']()}
     </div>
   );
 };
@@ -235,12 +235,12 @@ const JournalDailyCountBlock = ({ date }: JournalBlockProps) => {
     () => [
       {
         name: 'createdToday',
-        label: t['com.affine.journal.created-today'](),
+        label: t['com.yunke.journal.created-today'](),
         count: createdToday.length,
       },
       {
         name: 'updatedToday',
-        label: t['com.affine.journal.updated-today'](),
+        label: t['com.yunke.journal.updated-today'](),
         count: updatedToday.length,
       },
     ],
@@ -325,11 +325,11 @@ const ConflictList = ({
   const handleOpenTrashModal = useCallback(
     (docRecord: DocRecord) => {
       openConfirmModal({
-        title: t['com.affine.moveToTrash.confirmModal.title'](),
-        description: t['com.affine.moveToTrash.confirmModal.description']({
+        title: t['com.yunke.moveToTrash.confirmModal.title'](),
+        description: t['com.yunke.moveToTrash.confirmModal.description']({
           title: docRecord.title$.value || t['Untitled'](),
         }),
-        cancelText: t['com.affine.confirmModal.button.cancel'](),
+        cancelText: t['com.yunke.confirmModal.button.cancel'](),
         confirmButtonOptions: {
           variant: 'error',
         },
@@ -384,7 +384,7 @@ const ConflictList = ({
                           disabled={!canEdit}
                         >
                           {t[
-                            'com.affine.page-properties.property.journal-remove'
+                            'com.yunke.page-properties.property.journal-remove'
                           ]()}
                         </MenuItem>
                       )}
@@ -447,7 +447,7 @@ const JournalConflictBlock = ({ date }: JournalBlockProps) => {
           }
         >
           <div className={styles.journalConflictMoreTrigger}>
-            {t['com.affine.journal.conflict-show-more']({
+            {t['com.yunke.journal.conflict-show-more']({
               count: (docRecords.length - MAX_CONFLICT_COUNT).toFixed(0),
             })}
           </div>

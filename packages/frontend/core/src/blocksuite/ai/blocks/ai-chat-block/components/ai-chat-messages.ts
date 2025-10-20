@@ -1,5 +1,5 @@
 import type { TextRendererOptions } from '@yunke/core/blocksuite/ai/components/text-renderer';
-import type { AffineAIPanelState } from '@yunke/core/blocksuite/ai/widgets/ai-panel/type';
+import type { YunkeAIPanelState } from '@yunke/core/blocksuite/ai/widgets/ai-panel/type';
 import type { EditorHost } from '@blocksuite/yunke/std';
 import { css, html, LitElement } from 'lit';
 import { property } from 'lit/decorators.js';
@@ -83,7 +83,7 @@ export class AIChatMessage extends LitElement {
   accessor messageRole: MessageRole | undefined = undefined;
 
   @property({ attribute: false })
-  accessor state: AffineAIPanelState = 'finished';
+  accessor state: YunkeAIPanelState = 'finished';
 
   @property({ attribute: false })
   accessor textRendererOptions: TextRendererOptions = {};

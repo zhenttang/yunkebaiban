@@ -32,7 +32,7 @@ function createStoreManagerClient() {
   window.addEventListener('message', handleMessage);
 
   // oxlint-disable-next-line no-non-null-assertion
-  apis!.worker.connectWorker('affine-shared-worker', portId).catch(err => {
+  apis!.worker.connectWorker('yunke-shared-worker', portId).catch(err => {
     console.error('连接worker失败', err);
   });
 

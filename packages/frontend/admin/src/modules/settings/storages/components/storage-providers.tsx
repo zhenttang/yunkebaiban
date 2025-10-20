@@ -68,7 +68,7 @@ const PROVIDER_FIELDS: Record<StorageProvider, ProviderField[]> = {
     {
       id: 'bucket',
       label: '存储路径',
-      placeholder: '/var/lib/affine/storage',
+      placeholder: '/var/lib/yunke/storage',
       required: true,
     },
   ],
@@ -88,7 +88,7 @@ const PROVIDER_FIELDS: Record<StorageProvider, ProviderField[]> = {
     {
       id: 'bucket',
       label: 'Bucket',
-      placeholder: 'affine-storage',
+      placeholder: 'yunke-storage',
       required: true,
     },
     {
@@ -114,7 +114,7 @@ const PROVIDER_FIELDS: Record<StorageProvider, ProviderField[]> = {
     {
       id: 'bucket',
       label: 'Bucket',
-      placeholder: 'affine-storage',
+      placeholder: 'yunke-storage',
       required: true,
     },
     {
@@ -140,7 +140,7 @@ const PROVIDER_FIELDS: Record<StorageProvider, ProviderField[]> = {
     {
       id: 'bucket',
       label: 'Bucket',
-      placeholder: 'affine-storage-1250000000',
+      placeholder: 'yunke-storage-1250000000',
       required: true,
     },
     {

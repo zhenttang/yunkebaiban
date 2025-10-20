@@ -2,7 +2,7 @@ import { Button, Menu, MenuItem, MenuTrigger } from '@yunke/component';
 import {
   getSelectedNodes,
   useSharingUrl,
-} from '@yunke/core/components/hooks/affine/use-share-url';
+} from '@yunke/core/components/hooks/yunke/use-share-url';
 import { EditorService } from '@yunke/core/modules/editor';
 import { useI18n } from '@yunke/i18n';
 import type { DocMode } from '@blocksuite/yunke/model';
@@ -64,7 +64,7 @@ export const CopyLinkButton = ({
             secondary: secondary,
           })}
         >
-          {t['com.affine.share-menu.copy']()}
+          {t['com.yunke.share-menu.copy']()}
         </span>
         {BUILD_CONFIG.isDesktopEdition && (
           <span
@@ -87,21 +87,21 @@ export const CopyLinkButton = ({
               onSelect={onCopyPageLink}
               data-testid="share-link-menu-copy-page"
             >
-              {t['com.affine.share-menu.copy.page']()}
+              {t['com.yunke.share-menu.copy.page']()}
             </MenuItem>
             <MenuItem
               prefixIcon={<EdgelessIcon />}
               onSelect={onCopyEdgelessLink}
               data-testid="share-link-menu-copy-edgeless"
             >
-              {t['com.affine.share-menu.copy.edgeless']()}
+              {t['com.yunke.share-menu.copy.edgeless']()}
             </MenuItem>
             <MenuItem
               prefixIcon={<BlockIcon />}
               onSelect={onCopyBlockLink}
               disabled={blockIds.length + elementIds.length === 0}
             >
-              {t['com.affine.share-menu.copy.block']()}
+              {t['com.yunke.share-menu.copy.block']()}
             </MenuItem>
           </>
         }

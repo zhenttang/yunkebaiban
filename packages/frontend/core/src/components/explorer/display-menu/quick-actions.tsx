@@ -41,7 +41,7 @@ export const QuickActionsConfig = ({
         );
       })}
     >
-      {t['com.affine.all-docs.quick-actions']()}
+      {t['com.yunke.all-docs.quick-actions']()}
     </MenuSub>
   );
 };

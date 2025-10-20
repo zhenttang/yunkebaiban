@@ -300,7 +300,7 @@ export class TemporaryUserStore extends Store {
   static getOrCreateClientId(): string {
     if (typeof window === 'undefined') return this.generateClientId();
     
-    const storageKey = 'affine-temp-user-client-id';
+    const storageKey = 'yunke-temp-user-client-id';
     let clientId = localStorage.getItem(storageKey);
     
     if (!clientId) {

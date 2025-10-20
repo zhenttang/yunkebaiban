@@ -20,7 +20,7 @@ function blockToTemplate(block: BlockModel, indent: string = ''): string {
     .map(child => blockToTemplate(child, indent + '  '))
     .join('\n');
 
-  const tagName = `affine-${block.flavour}`;
+  const tagName = `yunke-${block.flavour}`;
   const propsStr = props ? ` ${props}` : '';
   const content = text
     ? `>${text}</${tagName}>`

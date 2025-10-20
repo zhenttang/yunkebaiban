@@ -57,21 +57,21 @@ export const MindMapSettings = () => {
         value: LayoutType.LEFT as any,
         label:
           t[
-            'com.affine.settings.editorSettings.edgeless.mind-map.layout.left'
+            'com.yunke.settings.editorSettings.edgeless.mind-map.layout.left'
           ](),
       },
       {
         value: LayoutType.BALANCE as any,
         label:
           t[
-            'com.affine.settings.editorSettings.edgeless.mind-map.layout.radial'
+            'com.yunke.settings.editorSettings.edgeless.mind-map.layout.radial'
           ](),
       },
       {
         value: LayoutType.RIGHT as any,
         label:
           t[
-            'com.affine.settings.editorSettings.edgeless.mind-map.layout.right'
+            'com.yunke.settings.editorSettings.edgeless.mind-map.layout.right'
           ](),
       },
     ],
@@ -101,14 +101,14 @@ export const MindMapSettings = () => {
   return (
     <>
       <EdgelessSnapshot
-        title={t['com.affine.settings.editorSettings.edgeless.mind-map']()}
+        title={t['com.yunke.settings.editorSettings.edgeless.mind-map']()}
         docName="mindmap"
         keyName={'mindmap' as any}
         getElements={getElements}
         height={320}
       />
       <SettingRow
-        name={t['com.affine.settings.editorSettings.edgeless.style']()}
+        name={t['com.yunke.settings.editorSettings.edgeless.style']()}
         desc={''}
       >
         <DropdownMenu
@@ -122,7 +122,7 @@ export const MindMapSettings = () => {
       </SettingRow>
       <SettingRow
         name={t[
-          'com.affine.settings.editorSettings.edgeless.mind-map.layout'
+          'com.yunke.settings.editorSettings.edgeless.mind-map.layout'
         ]()}
         desc={''}
       >

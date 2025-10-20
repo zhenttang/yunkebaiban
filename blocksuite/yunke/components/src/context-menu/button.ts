@@ -25,7 +25,7 @@ export type MenuButtonData = {
 
 export class MenuButton extends MenuFocusable {
   static override styles = css`
-    .affine-menu-button {
+    .yunke-menu-button {
       display: flex;
       width: 100%;
       font-size: 20px;
@@ -34,32 +34,32 @@ export class MenuButton extends MenuFocusable {
       padding: 4px;
       gap: 8px;
       border-radius: 4px;
-      color: var(--affine-icon-color);
+      color: var(--yunke-icon-color);
     }
 
-    .affine-menu-button:hover,
-    affine-menu-button.active .affine-menu-button {
-      background-color: var(--affine-hover-color);
+    .yunke-menu-button:hover,
+    yunke-menu-button.active .yunke-menu-button {
+      background-color: var(--yunke-hover-color);
     }
 
-    .affine-menu-button .affine-menu-action-text {
+    .yunke-menu-button .yunke-menu-action-text {
       flex: 1;
       font-size: 14px;
       line-height: 22px;
-      color: var(--affine-text-primary-color);
+      color: var(--yunke-text-primary-color);
     }
 
-    .affine-menu-button.focused {
+    .yunke-menu-button.focused {
       outline: 1px solid ${unsafeCSS(cssVarV2.layer.insideBorder.primaryBorder)};
     }
 
-    .affine-menu-button.delete-item:hover {
-      background-color: var(--affine-background-error-color);
-      color: var(--affine-error-color);
+    .yunke-menu-button.delete-item:hover {
+      background-color: var(--yunke-background-error-color);
+      color: var(--yunke-error-color);
     }
 
-    .affine-menu-button.delete-item:hover .affine-menu-action-text {
-      color: var(--affine-error-color);
+    .yunke-menu-button.delete-item:hover .yunke-menu-action-text {
+      color: var(--yunke-error-color);
     }
   `;
 
@@ -93,7 +93,7 @@ export class MenuButton extends MenuFocusable {
 
   protected override render(): unknown {
     const classString = classMap({
-      'affine-menu-button': true,
+      'yunke-menu-button': true,
       focused: this.isFocused$.value,
       ...this.data.class,
     });
@@ -115,22 +115,22 @@ export class MobileMenuButton extends MenuFocusable {
       padding: 11px 8px;
       gap: 8px;
       border-radius: 4px;
-      color: var(--affine-icon-color);
+      color: var(--yunke-icon-color);
     }
 
-    .mobile-menu-button .affine-menu-action-text {
+    .mobile-menu-button .yunke-menu-action-text {
       flex: 1;
-      color: var(--affine-text-primary-color);
+      color: var(--yunke-text-primary-color);
       font-size: 17px;
       line-height: 22px;
     }
 
     .mobile-menu-button.delete-item {
-      color: var(--affine-error-color);
+      color: var(--yunke-error-color);
     }
 
     .mobile-menu-button.delete-item .mobile-menu-action-text {
-      color: var(--affine-error-color);
+      color: var(--yunke-error-color);
     }
   `;
 
@@ -171,10 +171,10 @@ const renderButton = (data: MenuButtonData, menu: Menu) => {
       .menu="${menu}"
     ></mobile-menu-button>`;
   }
-  return html`<affine-menu-button
+  return html`<yunke-menu-button
     .data="${data}"
     .menu="${menu}"
-  ></affine-menu-button>`;
+  ></yunke-menu-button>`;
 };
 export const menuButtonItems = {
   action:
@@ -197,7 +197,7 @@ export const menuButtonItems = {
         content: () => {
           return html`
             ${config.prefix}
-            <div class="affine-menu-action-text">
+            <div class="yunke-menu-action-text">
               ${config.label?.() ?? config.name}
             </div>
             ${config.postfix ?? (config.isSelected ? DoneIcon() : undefined)}
@@ -230,7 +230,7 @@ export const menuButtonItems = {
           ${config.checked.value
             ? CheckBoxCheckSolidIcon({ style: `color:#1E96EB` })
             : CheckBoxUnIcon()}
-          <div class="affine-menu-action-text">
+          <div class="yunke-menu-action-text">
             ${config.label?.() ?? config.name}
           </div>
           ${config.postfix}
@@ -262,7 +262,7 @@ export const menuButtonItems = {
 
       const data: MenuButtonData = {
         content: () => html`
-          <div class="affine-menu-action-text">
+          <div class="yunke-menu-action-text">
             ${config.label?.() ?? config.name}
           </div>
           <toggle-switch

@@ -6,7 +6,7 @@ import {
   DRAG_HANDLE_CONTAINER_WIDTH,
   DRAG_HOVER_RECT_PADDING,
 } from '../config.js';
-import type { AffineDragHandleWidget } from '../drag-handle.js';
+import type { YunkeDragHandleWidget } from '../drag-handle.js';
 import {
   containBlock,
   getDragHandleLeftPadding,
@@ -91,5 +91,5 @@ export class RectHelper {
     return new Rect(left, top, right, bottom);
   };
 
-  constructor(readonly widget: AffineDragHandleWidget) {}
+  constructor(readonly widget: YunkeDragHandleWidget) {}
 }

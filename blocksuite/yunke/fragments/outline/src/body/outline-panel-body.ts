@@ -44,7 +44,7 @@ import {
 } from '../utils/scroll';
 import * as styles from './outline-panel-body.css';
 
-export const AFFINE_OUTLINE_PANEL_BODY = 'affine-outline-panel-body';
+export const YUNKE_OUTLINE_PANEL_BODY = 'yunke-outline-panel-body';
 
 export class OutlinePanelBody extends SignalWatcher(
   WithDisposable(ShadowlessElement)
@@ -393,13 +393,13 @@ export class OutlinePanelBody extends SignalWatcher(
     const rootId = this.store.root.id;
     const active = rootId === this._activeHeadingId$.value;
 
-    return html`<affine-outline-block-preview
+    return html`<yunke-outline-block-preview
       class=${classMap({ active: active })}
       .block=${this.store.root}
       @click=${() => {
         this._scrollToBlock(rootId).catch(console.error);
       }}
-    ></affine-outline-block-preview>`;
+    ></yunke-outline-block-preview>`;
   }
 
   private _renderNoteCards(notes: NoteBlockModel[]) {
@@ -407,7 +407,7 @@ export class OutlinePanelBody extends SignalWatcher(
       notes,
       ({ id }) => id,
       (note, index) =>
-        html`<affine-outline-note-card
+        html`<yunke-outline-note-card
           data-note-id=${note.id}
           index=${index}
           .note=${note}
@@ -423,7 +423,7 @@ export class OutlinePanelBody extends SignalWatcher(
           @clickblock=${(e: ClickBlockEvent) => {
             this._scrollToBlock(e.detail.blockId).catch(console.error);
           }}
-        ></affine-outline-note-card>`
+        ></yunke-outline-note-card>`
     );
   }
 
@@ -476,6 +476,6 @@ export class OutlinePanelBody extends SignalWatcher(
 
 declare global {
   interface HTMLElementTagNameMap {
-    [AFFINE_OUTLINE_PANEL_BODY]: OutlinePanelBody;
+    [YUNKE_OUTLINE_PANEL_BODY]: OutlinePanelBody;
   }
 }

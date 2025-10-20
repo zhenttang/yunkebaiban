@@ -74,7 +74,7 @@ export const ScrollableLayout = ({
         <div className={styles.linkGroup}>
           <a
             className={styles.link}
-            href="https://affine.pro/terms"
+            href="https://yunke.pro/terms"
             target="_blank"
             rel="noreferrer"
           >
@@ -83,7 +83,7 @@ export const ScrollableLayout = ({
           <Divider orientation="vertical" />
           <a
             className={styles.link}
-            href="https://affine.pro/privacy"
+            href="https://yunke.pro/privacy"
             target="_blank"
             rel="noreferrer"
           >
@@ -97,10 +97,10 @@ export const ScrollableLayout = ({
 
 export const OnboardingPage = ({
   user,
-  onOpenAffine,
+  onOpenYunke,
 }: {
   user: User;
-  onOpenAffine: () => void;
+  onOpenYunke: () => void;
 }) => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -259,14 +259,14 @@ export const OnboardingPage = ({
           我们将根据您的反馈持续改进我们的产品。再次感谢您的支持。
         </p>
         <Button
-          className={clsx(styles.button, styles.openAFFiNEButton)}
+          className={clsx(styles.button, styles.openYUNKEButton)}
           variant="primary"
           size="extraLarge"
           onClick={() => {
             if (callbackUrl) {
               navigate(callbackUrl);
             } else {
-              onOpenAffine();
+              onOpenYunke();
             }
           }}
           suffix={<ArrowRightSmallIcon />}

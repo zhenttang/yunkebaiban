@@ -52,8 +52,8 @@ export class DocumentStructureVisualization extends WithDisposable(ShadowlessEle
   static override styles = css`
     .structure-container {
       position: relative;
-      background: var(--affine-background-primary-color);
-      border: 1px solid var(--affine-border-color);
+      background: var(--yunke-background-primary-color);
+      border: 1px solid var(--yunke-border-color);
       border-radius: 8px;
       overflow: hidden;
       min-height: 400px;
@@ -64,14 +64,14 @@ export class DocumentStructureVisualization extends WithDisposable(ShadowlessEle
       align-items: center;
       justify-content: space-between;
       padding: 12px 16px;
-      background: var(--affine-background-secondary-color);
-      border-bottom: 1px solid var(--affine-border-color);
+      background: var(--yunke-background-secondary-color);
+      border-bottom: 1px solid var(--yunke-border-color);
     }
 
     .structure-title {
       font-size: 14px;
       font-weight: 600;
-      color: var(--affine-text-primary-color);
+      color: var(--yunke-text-primary-color);
       display: flex;
       align-items: center;
       gap: 8px;
@@ -85,23 +85,23 @@ export class DocumentStructureVisualization extends WithDisposable(ShadowlessEle
     .toolbar-btn {
       padding: 4px 8px;
       background: transparent;
-      border: 1px solid var(--affine-border-color);
+      border: 1px solid var(--yunke-border-color);
       border-radius: 4px;
       cursor: pointer;
       font-size: 12px;
       transition: all 0.2s ease;
-      color: var(--affine-text-secondary-color);
+      color: var(--yunke-text-secondary-color);
     }
 
     .toolbar-btn:hover {
-      background: var(--affine-hover-color);
-      color: var(--affine-text-primary-color);
+      background: var(--yunke-hover-color);
+      color: var(--yunke-text-primary-color);
     }
 
     .toolbar-btn.active {
-      background: var(--affine-primary-color);
+      background: var(--yunke-primary-color);
       color: white;
-      border-color: var(--affine-primary-color);
+      border-color: var(--yunke-primary-color);
     }
 
     .structure-controls {
@@ -109,8 +109,8 @@ export class DocumentStructureVisualization extends WithDisposable(ShadowlessEle
       align-items: center;
       gap: 12px;
       padding: 8px 16px;
-      background: var(--affine-background-secondary-color);
-      border-bottom: 1px solid var(--affine-border-color);
+      background: var(--yunke-background-secondary-color);
+      border-bottom: 1px solid var(--yunke-border-color);
     }
 
     .view-mode-selector {
@@ -121,23 +121,23 @@ export class DocumentStructureVisualization extends WithDisposable(ShadowlessEle
     .view-mode-btn {
       padding: 6px 12px;
       background: transparent;
-      border: 1px solid var(--affine-border-color);
+      border: 1px solid var(--yunke-border-color);
       border-radius: 4px;
       cursor: pointer;
       font-size: 11px;
       transition: all 0.2s ease;
-      color: var(--affine-text-secondary-color);
+      color: var(--yunke-text-secondary-color);
     }
 
     .view-mode-btn:hover {
-      background: var(--affine-hover-color);
-      color: var(--affine-text-primary-color);
+      background: var(--yunke-hover-color);
+      color: var(--yunke-text-primary-color);
     }
 
     .view-mode-btn.active {
-      background: var(--affine-primary-color);
+      background: var(--yunke-primary-color);
       color: white;
-      border-color: var(--affine-primary-color);
+      border-color: var(--yunke-primary-color);
     }
 
     .search-box {
@@ -149,7 +149,7 @@ export class DocumentStructureVisualization extends WithDisposable(ShadowlessEle
     .search-input {
       width: 100%;
       padding: 4px 8px;
-      border: 1px solid var(--affine-border-color);
+      border: 1px solid var(--yunke-border-color);
       border-radius: 4px;
       font-size: 12px;
       outline: none;
@@ -157,7 +157,7 @@ export class DocumentStructureVisualization extends WithDisposable(ShadowlessEle
     }
 
     .search-input:focus {
-      border-color: var(--affine-primary-color);
+      border-color: var(--yunke-primary-color);
     }
 
     .filter-controls {
@@ -168,7 +168,7 @@ export class DocumentStructureVisualization extends WithDisposable(ShadowlessEle
 
     .filter-select {
       padding: 4px 8px;
-      border: 1px solid var(--affine-border-color);
+      border: 1px solid var(--yunke-border-color);
       border-radius: 4px;
       font-size: 11px;
       background: white;
@@ -198,7 +198,7 @@ export class DocumentStructureVisualization extends WithDisposable(ShadowlessEle
       gap: 8px;
       padding: 8px 12px;
       background: white;
-      border: 1px solid var(--affine-border-color);
+      border: 1px solid var(--yunke-border-color);
       border-radius: 6px;
       cursor: pointer;
       transition: all 0.2s ease;
@@ -206,8 +206,8 @@ export class DocumentStructureVisualization extends WithDisposable(ShadowlessEle
     }
 
     .tree-node-content:hover {
-      background: var(--affine-hover-color);
-      border-color: var(--affine-primary-color);
+      background: var(--yunke-hover-color);
+      border-color: var(--yunke-primary-color);
       transform: translateX(4px);
     }
 
@@ -226,12 +226,12 @@ export class DocumentStructureVisualization extends WithDisposable(ShadowlessEle
       border-radius: 2px;
       transition: all 0.2s ease;
       font-size: 10px;
-      color: var(--affine-text-secondary-color);
+      color: var(--yunke-text-secondary-color);
     }
 
     .tree-node-toggle:hover {
-      background: var(--affine-hover-color);
-      color: var(--affine-text-primary-color);
+      background: var(--yunke-hover-color);
+      color: var(--yunke-text-primary-color);
     }
 
     .tree-node-toggle.expanded {
@@ -245,7 +245,7 @@ export class DocumentStructureVisualization extends WithDisposable(ShadowlessEle
       align-items: center;
       justify-content: center;
       font-size: 14px;
-      color: var(--affine-icon-color);
+      color: var(--yunke-icon-color);
     }
 
     .tree-node-info {
@@ -256,7 +256,7 @@ export class DocumentStructureVisualization extends WithDisposable(ShadowlessEle
     .tree-node-title {
       font-size: 13px;
       font-weight: 500;
-      color: var(--affine-text-primary-color);
+      color: var(--yunke-text-primary-color);
       margin-bottom: 2px;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -268,13 +268,13 @@ export class DocumentStructureVisualization extends WithDisposable(ShadowlessEle
       align-items: center;
       gap: 8px;
       font-size: 10px;
-      color: var(--affine-text-secondary-color);
+      color: var(--yunke-text-secondary-color);
     }
 
     .tree-node-children {
       margin-left: 24px;
       margin-top: 8px;
-      border-left: 2px solid var(--affine-border-color);
+      border-left: 2px solid var(--yunke-border-color);
       padding-left: 16px;
       transition: all 0.3s ease;
     }
@@ -300,7 +300,7 @@ export class DocumentStructureVisualization extends WithDisposable(ShadowlessEle
     .mindmap-node {
       position: absolute;
       background: white;
-      border: 2px solid var(--affine-border-color);
+      border: 2px solid var(--yunke-border-color);
       border-radius: 8px;
       padding: 8px 12px;
       cursor: pointer;
@@ -345,7 +345,7 @@ export class DocumentStructureVisualization extends WithDisposable(ShadowlessEle
     }
 
     .mindmap-line {
-      stroke: var(--affine-border-color);
+      stroke: var(--yunke-border-color);
       stroke-width: 2;
       fill: none;
     }
@@ -366,7 +366,7 @@ export class DocumentStructureVisualization extends WithDisposable(ShadowlessEle
       top: 0;
       bottom: 0;
       width: 2px;
-      background: var(--affine-border-color);
+      background: var(--yunke-border-color);
     }
 
     .timeline-item {
@@ -380,15 +380,15 @@ export class DocumentStructureVisualization extends WithDisposable(ShadowlessEle
       top: 8px;
       width: 12px;
       height: 12px;
-      background: var(--affine-primary-color);
+      background: var(--yunke-primary-color);
       border: 2px solid white;
       border-radius: 50%;
-      box-shadow: 0 0 0 2px var(--affine-primary-color);
+      box-shadow: 0 0 0 2px var(--yunke-primary-color);
     }
 
     .timeline-content {
       background: white;
-      border: 1px solid var(--affine-border-color);
+      border: 1px solid var(--yunke-border-color);
       border-radius: 6px;
       padding: 12px;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
@@ -404,17 +404,17 @@ export class DocumentStructureVisualization extends WithDisposable(ShadowlessEle
     .timeline-title {
       font-size: 14px;
       font-weight: 600;
-      color: var(--affine-text-primary-color);
+      color: var(--yunke-text-primary-color);
     }
 
     .timeline-time {
       font-size: 11px;
-      color: var(--affine-text-secondary-color);
+      color: var(--yunke-text-secondary-color);
     }
 
     .timeline-preview {
       font-size: 12px;
-      color: var(--affine-text-secondary-color);
+      color: var(--yunke-text-secondary-color);
       line-height: 1.4;
     }
 
@@ -435,7 +435,7 @@ export class DocumentStructureVisualization extends WithDisposable(ShadowlessEle
     }
 
     .outline-item:hover {
-      background: var(--affine-hover-color);
+      background: var(--yunke-hover-color);
     }
 
     .outline-item.active {
@@ -446,14 +446,14 @@ export class DocumentStructureVisualization extends WithDisposable(ShadowlessEle
     .outline-level-indicator {
       width: 4px;
       height: 4px;
-      background: var(--affine-primary-color);
+      background: var(--yunke-primary-color);
       border-radius: 50%;
       margin-left: var(--outline-indent, 0);
     }
 
     .outline-title {
       font-size: 13px;
-      color: var(--affine-text-primary-color);
+      color: var(--yunke-text-primary-color);
       flex: 1;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -462,7 +462,7 @@ export class DocumentStructureVisualization extends WithDisposable(ShadowlessEle
 
     .outline-meta {
       font-size: 10px;
-      color: var(--affine-text-secondary-color);
+      color: var(--yunke-text-secondary-color);
     }
 
     /* 统计信息 */
@@ -470,10 +470,10 @@ export class DocumentStructureVisualization extends WithDisposable(ShadowlessEle
       display: flex;
       gap: 16px;
       padding: 8px 16px;
-      background: var(--affine-background-secondary-color);
-      border-top: 1px solid var(--affine-border-color);
+      background: var(--yunke-background-secondary-color);
+      border-top: 1px solid var(--yunke-border-color);
       font-size: 11px;
-      color: var(--affine-text-secondary-color);
+      color: var(--yunke-text-secondary-color);
     }
 
     .stat-item {
@@ -484,7 +484,7 @@ export class DocumentStructureVisualization extends WithDisposable(ShadowlessEle
 
     .stat-value {
       font-weight: 600;
-      color: var(--affine-text-primary-color);
+      color: var(--yunke-text-primary-color);
     }
 
     /* 导出按钮 */
@@ -493,7 +493,7 @@ export class DocumentStructureVisualization extends WithDisposable(ShadowlessEle
       top: 100%;
       right: 0;
       background: white;
-      border: 1px solid var(--affine-border-color);
+      border: 1px solid var(--yunke-border-color);
       border-radius: 6px;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
       z-index: 1000;
@@ -509,12 +509,12 @@ export class DocumentStructureVisualization extends WithDisposable(ShadowlessEle
       cursor: pointer;
       transition: all 0.2s ease;
       font-size: 12px;
-      color: var(--affine-text-primary-color);
-      border-bottom: 1px solid var(--affine-border-color);
+      color: var(--yunke-text-primary-color);
+      border-bottom: 1px solid var(--yunke-border-color);
     }
 
     .export-item:hover {
-      background: var(--affine-hover-color);
+      background: var(--yunke-hover-color);
     }
 
     .export-item:last-child {
@@ -541,7 +541,7 @@ export class DocumentStructureVisualization extends WithDisposable(ShadowlessEle
       align-items: center;
       justify-content: center;
       height: 200px;
-      color: var(--affine-text-secondary-color);
+      color: var(--yunke-text-secondary-color);
       font-size: 14px;
     }
 
@@ -549,8 +549,8 @@ export class DocumentStructureVisualization extends WithDisposable(ShadowlessEle
       content: '';
       width: 16px;
       height: 16px;
-      border: 2px solid var(--affine-border-color);
-      border-top: 2px solid var(--affine-primary-color);
+      border: 2px solid var(--yunke-border-color);
+      border-top: 2px solid var(--yunke-primary-color);
       border-radius: 50%;
       animation: spin 1s linear infinite;
       margin-left: 8px;
@@ -568,7 +568,7 @@ export class DocumentStructureVisualization extends WithDisposable(ShadowlessEle
       align-items: center;
       justify-content: center;
       height: 200px;
-      color: var(--affine-text-secondary-color);
+      color: var(--yunke-text-secondary-color);
       font-size: 14px;
     }
 
@@ -731,14 +731,14 @@ export class DocumentStructureVisualization extends WithDisposable(ShadowlessEle
   }
 
   private _getBlockContent(block: BlockModel): string {
-    if (block.flavour === 'affine:paragraph' || block.flavour === 'affine:list') {
+    if (block.flavour === 'yunke:paragraph' || block.flavour === 'yunke:list') {
       return (block as any).text?.toString() || '';
     }
     return '';
   }
 
   private _getBlockTitle(block: BlockModel): string {
-    if (block.flavour === 'affine:paragraph') {
+    if (block.flavour === 'yunke:paragraph') {
       const type = (block as any).type;
       if (type && type.startsWith('h')) {
         return (block as any).text?.toString() || '';
@@ -748,7 +748,7 @@ export class DocumentStructureVisualization extends WithDisposable(ShadowlessEle
   }
 
   private _getBlockType(block: BlockModel): DocumentNode['type'] {
-    if (block.flavour === 'affine:paragraph') {
+    if (block.flavour === 'yunke:paragraph') {
       const type = (block as any).type;
       if (type && type.startsWith('h')) {
         return 'heading';
@@ -758,15 +758,15 @@ export class DocumentStructureVisualization extends WithDisposable(ShadowlessEle
       }
     }
     
-    if (block.flavour === 'affine:list') {
+    if (block.flavour === 'yunke:list') {
       return 'list';
     }
     
-    if (block.flavour === 'affine:code') {
+    if (block.flavour === 'yunke:code') {
       return 'code';
     }
     
-    if (block.flavour === 'affine:divider') {
+    if (block.flavour === 'yunke:divider') {
       return 'divider';
     }
     

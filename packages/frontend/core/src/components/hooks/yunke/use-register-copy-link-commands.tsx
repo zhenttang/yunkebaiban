@@ -1,8 +1,8 @@
 import {
   PreconditionStrategy,
-  registerAffineCommand,
+  registerYunkeCommand,
 } from '@yunke/core/commands';
-import { useSharingUrl } from '@yunke/core/components/hooks/affine/use-share-url';
+import { useSharingUrl } from '@yunke/core/components/hooks/yunke/use-share-url';
 import { useIsActiveView } from '@yunke/core/modules/workbench';
 import type { WorkspaceMetadata } from '@yunke/core/modules/workspace';
 import { track } from '@yunke/track';
@@ -31,9 +31,9 @@ export function useRegisterCopyLinkCommands({
     const unsubs: Array<() => void> = [];
 
     unsubs.push(
-      registerAffineCommand({
-        id: `affine:share-private-link:${docId}`,
-        category: 'affine:general',
+      registerYunkeCommand({
+        id: `yunke:share-private-link:${docId}`,
+        category: 'yunke:general',
         preconditionStrategy: PreconditionStrategy.Never,
         keyBinding: {
           binding: '$mod+Shift+c',

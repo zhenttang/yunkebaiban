@@ -36,7 +36,7 @@ const useParsedDate = (value: string) => {
     parsedValue,
     displayValue:
       displayValue ??
-      t['com.affine.page-properties.property-value-placeholder'](),
+      t['com.yunke.page-properties.property-value-placeholder'](),
   };
 };
 
@@ -134,7 +134,7 @@ const DateSelectorMenu = ({
         <span>{value}</span>
       ) : (
         <span style={{ color: cssVarV2('text/placeholder') }}>
-          {t['com.affine.filter.empty']()}
+          {t['com.yunke.filter.empty']()}
         </span>
       )}
     </Menu>

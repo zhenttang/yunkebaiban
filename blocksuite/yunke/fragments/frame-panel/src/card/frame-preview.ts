@@ -54,14 +54,14 @@ const styles = css`
 
   .frame-preview-viewport
     > editor-host
-    > affine-edgeless-root-preview
+    > yunke-edgeless-root-preview
     > .edgeless-background {
     background-color: transparent;
     background-image: none;
   }
 `;
 
-export const AFFINE_FRAME_PREVIEW = 'frame-preview';
+export const YUNKE_FRAME_PREVIEW = 'frame-preview';
 
 export class FramePreview extends WithDisposable(ShadowlessElement) {
   static override styles = styles;

@@ -21,7 +21,7 @@ import {
   getSelections,
   selectAboveBlocks,
 } from '../utils/selection-utils';
-import type { AffineAIPanelWidget } from '../widgets/ai-panel/ai-panel';
+import type { YunkeAIPanelWidget } from '../widgets/ai-panel/ai-panel';
 import type { AINetworkSearchConfig } from '../widgets/ai-panel/type';
 import { actionToAnswerRenderer } from './answer-renderer';
 
@@ -162,7 +162,7 @@ function actionToGenerateAnswer<T extends keyof BlockSuitePresets.AIActions>(
  * Currently, only support text action
  */
 function updateAIPanelConfig<T extends keyof BlockSuitePresets.AIActions>(
-  aiPanel: AffineAIPanelWidget,
+  aiPanel: YunkeAIPanelWidget,
   id: T,
   generatingIcon: TemplateResult<1>,
   variants?: Omit<

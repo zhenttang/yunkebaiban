@@ -89,10 +89,10 @@ export const VirtualizedCollectionList = ({
         open={showFloatingToolbar}
         content={
           <Trans
-            i18nKey="com.affine.collection.toolbar.selected"
+            i18nKey="com.yunke.collection.toolbar.selected"
             count={selectedCollectionIds.length}
           >
-            <div style={{ color: 'var(--affine-text-secondary-color)' }}>
+            <div style={{ color: 'var(--yunke-text-secondary-color)' }}>
               {{ count: selectedCollectionIds.length } as any}
             </div>
             selected

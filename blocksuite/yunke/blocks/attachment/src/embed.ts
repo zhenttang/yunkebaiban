@@ -60,7 +60,7 @@ export type AttachmentEmbedConfig = {
 // Single embed config.
 export const AttachmentEmbedConfigIdentifier =
   createIdentifier<AttachmentEmbedConfig>(
-    'AffineAttachmentEmbedConfigIdentifier'
+    'YunkeAttachmentEmbedConfigIdentifier'
   );
 
 export function AttachmentEmbedConfigExtension(
@@ -78,10 +78,10 @@ export function AttachmentEmbedConfigExtension(
 // A embed config map.
 export const AttachmentEmbedConfigMapIdentifier = createIdentifier<
   Map<string, AttachmentEmbedConfig>
->('AffineAttachmentEmbedConfigMapIdentifier');
+>('YunkeAttachmentEmbedConfigMapIdentifier');
 
 export const AttachmentEmbedProvider = createIdentifier<AttachmentEmbedService>(
-  'AffineAttachmentEmbedProvider'
+  'YunkeAttachmentEmbedProvider'
 );
 
 export class AttachmentEmbedService extends Extension {
@@ -205,7 +205,7 @@ const embedConfig: AttachmentEmbedConfig[] = [
           type="application/pdf"
           credentialless
         ></iframe>
-        <div class="affine-attachment-embed-event-mask"></div>
+        <div class="yunke-attachment-embed-event-mask"></div>
       `;
     },
   },

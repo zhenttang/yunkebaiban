@@ -33,18 +33,18 @@ export const AllCollection = () => {
 
   const handleCreateCollection = useCallback(() => {
     openPromptModal({
-      title: t['com.affine.editCollection.saveCollection'](),
-      label: t['com.affine.editCollectionName.name'](),
+      title: t['com.yunke.editCollection.saveCollection'](),
+      label: t['com.yunke.editCollectionName.name'](),
       inputOptions: {
-        placeholder: t['com.affine.editCollectionName.name.placeholder'](),
+        placeholder: t['com.yunke.editCollectionName.name.placeholder'](),
       },
       children: (
         <div className={styles.createTips}>
-          {t['com.affine.editCollectionName.createTips']()}
+          {t['com.yunke.editCollectionName.createTips']()}
         </div>
       ),
-      confirmText: t['com.affine.editCollection.save'](),
-      cancelText: t['com.affine.editCollection.button.cancel'](),
+      confirmText: t['com.yunke.editCollection.save'](),
+      cancelText: t['com.yunke.editCollection.button.cancel'](),
       confirmButtonOptions: {
         variant: 'primary',
       },

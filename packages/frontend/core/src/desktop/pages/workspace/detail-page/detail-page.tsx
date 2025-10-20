@@ -2,16 +2,16 @@ import { Scrollable } from '@yunke/component';
 import { PageDetailLoading } from '@yunke/component/page-detail-skeleton';
 import type { ChatPanel } from '@yunke/core/blocksuite/ai';
 import { AIProvider } from '@yunke/core/blocksuite/ai';
-import type { AffineEditorContainer } from '@yunke/core/blocksuite/block-suite-editor';
+import type { YunkeEditorContainer } from '@yunke/core/blocksuite/block-suite-editor';
 import { EditorOutlineViewer } from '@yunke/core/blocksuite/outline-viewer';
-import { AffineErrorBoundary } from '@yunke/core/components/affine/affine-error-boundary';
-// import { PageAIOnboarding } from '@yunke/core/components/affine/ai-onboarding';
+import { YunkeErrorBoundary } from '@yunke/core/components/yunke/yunke-error-boundary';
+// import { PageAIOnboarding } from '@yunke/core/components/yunke/ai-onboarding';
 import { BlockCommandsSidebar } from '@yunke/core/components/block-commands-sidebar';
-import { GlobalPageHistoryModal } from '@yunke/core/components/affine/page-history-modal';
+import { GlobalPageHistoryModal } from '@yunke/core/components/yunke/page-history-modal';
 import { useGuard } from '@yunke/core/components/guard';
-import { useAppSettingHelper } from '@yunke/core/components/hooks/affine/use-app-setting-helper';
-import { useEnableAI } from '@yunke/core/components/hooks/affine/use-enable-ai';
-import { useRegisterBlocksuiteEditorCommands } from '@yunke/core/components/hooks/affine/use-register-blocksuite-editor-commands';
+import { useAppSettingHelper } from '@yunke/core/components/hooks/yunke/use-app-setting-helper';
+import { useEnableAI } from '@yunke/core/components/hooks/yunke/use-enable-ai';
+import { useRegisterBlocksuiteEditorCommands } from '@yunke/core/components/hooks/yunke/use-register-blocksuite-editor-commands';
 import { useActiveBlocksuiteEditor } from '@yunke/core/components/hooks/use-block-suite-editor';
 import { PageDetailEditor } from '@yunke/core/components/page-detail-editor';
 import { WorkspacePropertySidebar } from '@yunke/core/components/properties/sidebar';
@@ -172,14 +172,14 @@ const DetailPageImpl = memo(function DetailPageImpl() {
   useRegisterBlocksuiteEditorCommands(editor, isActiveView);
 
   const onLoad = useCallback(
-    (editorContainer: AffineEditorContainer) => {
+    (editorContainer: YunkeEditorContainer) => {
       const std = editorContainer.std;
       const disposable = new DisposableGroup();
       if (std) {
         const refNodeSlots = std.getOptional(RefNodeSlotsProvider);
         if (refNodeSlots) {
           disposable.add(
-            // 该事件不应由 AffineReference 发出
+            // 该事件不应由 YunkeReference 发出
             refNodeSlots.docLinkClicked.subscribe(
               ({ pageId, params, openMode, event, host }) => {
                 if (host !== editorContainer.host) {
@@ -293,7 +293,7 @@ const DetailPageImpl = memo(function DetailPageImpl() {
           data-has-scroll-top={hasScrollTop}
         >
           {/* Add a key to force rerender when page changed, to avoid error boundary persisting. */}
-          <AffineErrorBoundary key={doc.id}>
+          <YunkeErrorBoundary key={doc.id}>
             <TopTip pageId={doc.id} workspace={workspace} />
             {/* 云存储状态指示器 - 只在文档编辑页面显示 */}
             <SaveStatusIndicator />
@@ -303,8 +303,8 @@ const DetailPageImpl = memo(function DetailPageImpl() {
                 ref={scrollViewportRef}
                 data-dragging={dragging}
                 className={clsx(
-                  'affine-page-viewport',
-                  styles.affineDocViewport,
+                  'yunke-page-viewport',
+                  styles.yunkeDocViewport,
                   styles.editorContainer
                 )}
               >
@@ -322,7 +322,7 @@ const DetailPageImpl = memo(function DetailPageImpl() {
               openOutlinePanel={openOutlinePanel}
             />
             {mode === 'page' && <BlockCommandsSidebar />}
-          </AffineErrorBoundary>
+          </YunkeErrorBoundary>
           {isInTrash ? <TrashPageFooter /> : null}
         </div>
       </ViewBody>

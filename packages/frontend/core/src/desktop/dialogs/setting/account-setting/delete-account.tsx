@@ -33,10 +33,10 @@ export const DeleteAccount = () => {
       <SettingRow
         name={
           <span style={{ color: cssVarV2('status/error') }}>
-            {t['com.affine.setting.account.delete']()}
+            {t['com.yunke.setting.account.delete']()}
           </span>
         }
-        desc={t['com.affine.setting.account.delete.message']()}
+        desc={t['com.yunke.setting.account.delete.message']()}
         style={{ cursor: 'pointer' }}
         onClick={openModal}
         data-testid="delete-account-button"
@@ -67,9 +67,9 @@ const TeamOwnerWarningModal = ({
     <ConfirmModal
       open={open}
       onOpenChange={onOpenChange}
-      title={t['com.affine.setting.account.delete.team-warning-title']()}
+      title={t['com.yunke.setting.account.delete.team-warning-title']()}
       description={t[
-        'com.affine.setting.account.delete.team-warning-description'
+        'com.yunke.setting.account.delete.team-warning-description'
       ]()}
       confirmText={t['Confirm']()}
       confirmButtonOptions={{
@@ -124,14 +124,14 @@ const DeleteAccountModal = ({
   return (
     <ConfirmModal
       open={open}
-      cancelText={t['com.affine.confirmModal.button.cancel']()}
+      cancelText={t['com.yunke.confirmModal.button.cancel']()}
       onConfirm={onDeleteAccountConfirm}
       onOpenChange={onOpenChange}
-      title={t['com.affine.setting.account.delete.confirm-title']()}
+      title={t['com.yunke.setting.account.delete.confirm-title']()}
       description={t[
-        'com.affine.setting.account.delete.confirm-description-1'
+        'com.yunke.setting.account.delete.confirm-description-1'
       ]()}
-      confirmText={t['com.affine.setting.account.delete.confirm-button']()}
+      confirmText={t['com.yunke.setting.account.delete.confirm-button']()}
       confirmButtonOptions={{
         variant: 'error',
         disabled: email !== account.email,
@@ -140,14 +140,14 @@ const DeleteAccountModal = ({
       childrenContentClassName={styles.confirmContent}
     >
       <Trans
-        i18nKey="com.affine.setting.account.delete.confirm-description-2"
+        i18nKey="com.yunke.setting.account.delete.confirm-description-2"
         components={{
           1: <strong />,
         }}
       />
       <Input
         type="text"
-        placeholder={t['com.affine.setting.account.delete.input-placeholder']()}
+        placeholder={t['com.yunke.setting.account.delete.input-placeholder']()}
         value={email}
         onChange={setEmail}
         className={styles.inputWrapper}

@@ -61,7 +61,7 @@ export const PrintMenuItems = ({
       className={className}
       type="pdf"
       icon={<PrinterIcon />}
-      label={t['com.affine.export.print']()}
+      label={t['com.yunke.export.print']()}
     />
   );
 };
@@ -79,7 +79,7 @@ export const ExportMenuItems = ({
         className={className}
         type="html"
         icon={<ExportToHtmlIcon />}
-        label={t['com.affine.export.html']()}
+        label={t['com.yunke.export.html']()}
       />
       {pageMode !== 'edgeless' && (
         <ExportMenuItem
@@ -87,7 +87,7 @@ export const ExportMenuItems = ({
           className={className}
           type="png"
           icon={<ExportToPngIcon />}
-          label={t['com.affine.export.png']()}
+          label={t['com.yunke.export.png']()}
         />
       )}
       <ExportMenuItem
@@ -95,14 +95,14 @@ export const ExportMenuItems = ({
         className={className}
         type="markdown"
         icon={<ExportToMarkdownIcon />}
-        label={t['com.affine.export.markdown']()}
+        label={t['com.yunke.export.markdown']()}
       />
       <ExportMenuItem
         onSelect={() => exportHandler('snapshot')}
         className={className}
         type="snapshot"
         icon={<PageIcon />}
-        label={t['com.affine.export.snapshot']()}
+        label={t['com.yunke.export.snapshot']()}
       />
     </>
   );

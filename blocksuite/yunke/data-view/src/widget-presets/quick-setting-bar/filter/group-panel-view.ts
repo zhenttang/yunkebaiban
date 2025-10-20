@@ -79,7 +79,7 @@ export class FilterGroupView extends SignalWatcher(ShadowlessElement) {
       font-style: normal;
       font-weight: 400;
       line-height: 22px;
-      color: var(--affine-text-primary-color);
+      color: var(--yunke-text-primary-color);
     }
 
     .filter-group-op-clickable {
@@ -88,7 +88,7 @@ export class FilterGroupView extends SignalWatcher(ShadowlessElement) {
     }
 
     .filter-group-op-clickable:hover {
-      background-color: var(--affine-hover-color);
+      background-color: var(--yunke-hover-color);
     }
 
     .filter-group-container {
@@ -106,24 +106,24 @@ export class FilterGroupView extends SignalWatcher(ShadowlessElement) {
       line-height: 22px;
       border-radius: 4px;
       cursor: pointer;
-      color: var(--affine-text-secondary-color);
+      color: var(--yunke-text-secondary-color);
     }
 
     .filter-group-button svg {
-      fill: var(--affine-text-secondary-color);
-      color: var(--affine-text-secondary-color);
+      fill: var(--yunke-text-secondary-color);
+      color: var(--yunke-text-secondary-color);
       width: 20px;
       height: 20px;
     }
 
     .filter-group-button:hover {
-      background-color: var(--affine-hover-color);
-      color: var(--affine-text-primary-color);
+      background-color: var(--yunke-hover-color);
+      color: var(--yunke-text-primary-color);
     }
 
     .filter-group-button:hover svg {
-      fill: var(--affine-text-primary-color);
-      color: var(--affine-text-primary-color);
+      fill: var(--yunke-text-primary-color);
+      color: var(--yunke-text-primary-color);
     }
 
     .filter-group-item {
@@ -143,23 +143,23 @@ export class FilterGroupView extends SignalWatcher(ShadowlessElement) {
     }
 
     .filter-group-item-ops:hover {
-      background-color: var(--affine-hover-color);
+      background-color: var(--yunke-hover-color);
     }
 
     .filter-group-item-ops svg {
-      fill: var(--affine-text-secondary-color);
-      color: var(--affine-text-secondary-color);
+      fill: var(--yunke-text-secondary-color);
+      color: var(--yunke-text-secondary-color);
       width: 18px;
       height: 18px;
     }
 
     .filter-group-item-ops:hover svg {
-      fill: var(--affine-text-primary-color);
-      color: var(--affine-text-primary-color);
+      fill: var(--yunke-text-primary-color);
+      color: var(--yunke-text-primary-color);
     }
 
     .delete-style {
-      background-color: var(--affine-background-error-color);
+      background-color: var(--yunke-background-error-color);
     }
 
     .filter-group-border {
@@ -167,21 +167,21 @@ export class FilterGroupView extends SignalWatcher(ShadowlessElement) {
     }
 
     .filter-group-bg-1 {
-      background-color: var(--affine-background-secondary-color);
+      background-color: var(--yunke-background-secondary-color);
       border: 1px solid ${unsafeCSS(cssVarV2.layer.insideBorder.border)};
     }
 
     .filter-group-bg-2 {
-      background-color: var(--affine-background-tertiary-color);
+      background-color: var(--yunke-background-tertiary-color);
       border: 1px solid ${unsafeCSS(cssVarV2.layer.insideBorder.border)};
     }
 
     .hover-style {
-      background-color: var(--affine-hover-color);
+      background-color: var(--yunke-hover-color);
     }
 
     .delete-style {
-      background-color: var(--affine-background-error-color);
+      background-color: var(--yunke-background-error-color);
     }
   `;
 

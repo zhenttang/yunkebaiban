@@ -321,7 +321,7 @@ export function createHTMLTargetConfig(
         new WebpackS3Plugin(),
       !buildConfig.debug &&
         process.env.PERFSEE_TOKEN &&
-        new PerfseePlugin({ project: 'affine-toeverything' }),
+        new PerfseePlugin({ project: 'yunke-toeverything' }),
       process.env.SENTRY_AUTH_TOKEN &&
         process.env.SENTRY_ORG &&
         process.env.SENTRY_PROJECT &&

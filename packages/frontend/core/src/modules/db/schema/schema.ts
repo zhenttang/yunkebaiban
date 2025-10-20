@@ -11,7 +11,7 @@ import type { WorkspacePropertyType } from '../../workspace-property';
 
 const integrationType = f.enum('readwise', 'zotero');
 
-export const AFFiNE_WORKSPACE_DB_SCHEMA = {
+export const YUNKE_WORKSPACE_DB_SCHEMA = {
   folders: {
     id: f.string().primaryKey().optional().default(nanoid),
     parentId: f.string().optional(),
@@ -47,14 +47,14 @@ export const AFFiNE_WORKSPACE_DB_SCHEMA = {
     index: f.string(),
   },
 } as const satisfies DBSchemaBuilder;
-export type AFFiNEWorkspaceDbSchema = typeof AFFiNE_WORKSPACE_DB_SCHEMA;
+export type YUNKEWorkspaceDbSchema = typeof YUNKE_WORKSPACE_DB_SCHEMA;
 
-export type DocProperties = ORMEntity<AFFiNEWorkspaceDbSchema['docProperties']>;
+export type DocProperties = ORMEntity<YUNKEWorkspaceDbSchema['docProperties']>;
 export type DocCustomPropertyInfo = ORMEntity<
-  AFFiNEWorkspaceDbSchema['docCustomPropertyInfo']
+  YUNKEWorkspaceDbSchema['docCustomPropertyInfo']
 >;
 
-export const AFFiNE_WORKSPACE_USERDATA_DB_SCHEMA = {
+export const YUNKE_WORKSPACE_USERDATA_DB_SCHEMA = {
   favorite: {
     key: f.string().primaryKey(),
     index: f.string(),
@@ -68,15 +68,15 @@ export const AFFiNE_WORKSPACE_USERDATA_DB_SCHEMA = {
     id: f.string().primaryKey(),
     type: integrationType,
     /**
-     * Identify **affine user** and **integration type** and **integration account**
+     * Identify **yunke user** and **integration type** and **integration account**
      * Used to quickly find user's all integrations
      */
     integrationId: f.string(),
     refMeta: f.json(),
   },
 } as const satisfies DBSchemaBuilder;
-export type AFFiNEWorkspaceUserdataDbSchema =
-  typeof AFFiNE_WORKSPACE_USERDATA_DB_SCHEMA;
+export type YUNKEWorkspaceUserdataDbSchema =
+  typeof YUNKE_WORKSPACE_USERDATA_DB_SCHEMA;
 export type DocIntegrationRef = ORMEntity<
-  AFFiNEWorkspaceUserdataDbSchema['docIntegrationRef']
+  YUNKEWorkspaceUserdataDbSchema['docIntegrationRef']
 >;

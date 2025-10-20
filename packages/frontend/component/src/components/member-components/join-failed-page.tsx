@@ -21,12 +21,12 @@ export const JoinFailedPage = ({
   const t = useI18n();
   return (
     <AuthPageContainer
-      title={t['com.affine.fail-to-join-workspace.title']()}
+      title={t['com.yunke.fail-to-join-workspace.title']()}
       subtitle={
         userFriendlyError.name === ErrorNames.MEMBER_QUOTA_EXCEEDED ? (
           <div className={styles.lineHeight}>
             <Trans
-              i18nKey={'com.affine.fail-to-join-workspace.description-1'}
+              i18nKey={'com.yunke.fail-to-join-workspace.description-1'}
               components={{
                 1: (
                   <div className={styles.avatarWrapper}>
@@ -44,7 +44,7 @@ export const JoinFailedPage = ({
                 workspaceName: inviteInfo?.workspace.name,
               }}
             />
-            <div>{t['com.affine.fail-to-join-workspace.description-2']()}</div>
+            <div>{t['com.yunke.fail-to-join-workspace.description-2']()}</div>
           </div>
         ) : (
           <div>

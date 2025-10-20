@@ -107,7 +107,7 @@ export const EdgelessSnapshot = (props: Props) => {
       if (
         payload.type !== 'block' ||
         payload.method !== 'add' ||
-        payload.view.model.flavour !== 'affine:page'
+        payload.view.model.flavour !== 'yunke:page'
       ) {
         return;
       }

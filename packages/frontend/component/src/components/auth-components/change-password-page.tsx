@@ -11,8 +11,8 @@ import { SetPassword } from './set-password';
 export const ChangePasswordPage: FC<{
   passwordLimits: PasswordLimitsFragment;
   onSetPassword: (password: string) => Promise<void>;
-  onOpenAffine: () => void;
-}> = ({ passwordLimits, onSetPassword: propsOnSetPassword, onOpenAffine }) => {
+  onOpenYunke: () => void;
+}> = ({ passwordLimits, onSetPassword: propsOnSetPassword, onOpenYunke }) => {
   const t = useI18n();
   const [hasSetUp, setHasSetUp] = useState(false);
 
@@ -22,7 +22,7 @@ export const ChangePasswordPage: FC<{
         .then(() => setHasSetUp(true))
         .catch(e =>
           notify.error({
-            title: t['com.affine.auth.password.set-failed'](),
+            title: t['com.yunke.auth.password.set-failed'](),
             message: String(e),
           })
         );
@@ -34,21 +34,21 @@ export const ChangePasswordPage: FC<{
     <AuthPageContainer
       title={
         hasSetUp
-          ? t['com.affine.auth.reset.password.page.success']()
-          : t['com.affine.auth.reset.password.page.title']()
+          ? t['com.yunke.auth.reset.password.page.success']()
+          : t['com.yunke.auth.reset.password.page.title']()
       }
       subtitle={
         hasSetUp
-          ? t['com.affine.auth.sent.reset.password.success.message']()
-          : t['com.affine.auth.page.sent.email.subtitle']({
+          ? t['com.yunke.auth.sent.reset.password.success.message']()
+          : t['com.yunke.auth.page.sent.email.subtitle']({
               min: String(passwordLimits.minLength),
               max: String(passwordLimits.maxLength),
             })
       }
     >
       {hasSetUp ? (
-        <Button variant="primary" size="large" onClick={onOpenAffine}>
-          {t['com.affine.auth.open.affine']()}
+        <Button variant="primary" size="large" onClick={onOpenYunke}>
+          {t['com.yunke.auth.open.yunke']()}
         </Button>
       ) : (
         <SetPassword

@@ -14,7 +14,7 @@ import { property } from 'lit/decorators.js';
  *     }
  *
  *   render() {
- *      return html`<affine-block-selection></affine-block-selection>
+ *      return html`<yunke-block-selection></yunke-block-selection>
  *   };
  * }
  * ```
@@ -29,7 +29,7 @@ export class BlockSelection extends SignalWatcher(LitElement) {
       width: 100%;
       height: 100%;
       pointer-events: none;
-      background-color: var(--affine-hover-color);
+      background-color: var(--yunke-hover-color);
       border-color: transparent;
       border-style: solid;
     }
@@ -64,6 +64,6 @@ export class BlockSelection extends SignalWatcher(LitElement) {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'affine-block-selection': BlockSelection;
+    'yunke-block-selection': BlockSelection;
   }
 }

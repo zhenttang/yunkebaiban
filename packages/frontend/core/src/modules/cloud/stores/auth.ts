@@ -54,7 +54,7 @@ export class AuthStore extends Store {
   getStoredToken(): string | null {
     // 优先从GlobalState获取，如果没有则从localStorage获取（兼容管理员模块）
     return this.globalState.get<string>(`${this.serverService.server.id}-auth-token`) ||
-           localStorage.getItem('affine-admin-token');
+           localStorage.getItem('yunke-admin-token');
   }
 
   getStoredRefreshToken(): string | null {
@@ -67,8 +67,8 @@ export class AuthStore extends Store {
     this.globalState.set(`${this.serverService.server.id}-auth-refresh-token`, refreshToken);
     
     // 同时存储到localStorage（兼容管理员模块）
-    localStorage.setItem('affine-admin-token', token);
-    localStorage.setItem('affine-admin-refresh-token', refreshToken);
+    localStorage.setItem('yunke-admin-token', token);
+    localStorage.setItem('yunke-admin-refresh-token', refreshToken);
   }
 
   clearStoredTokens() {
@@ -77,8 +77,8 @@ export class AuthStore extends Store {
     this.globalState.set(`${this.serverService.server.id}-auth-refresh-token`, null);
     
     // 清除localStorage（兼容管理员模块）
-    localStorage.removeItem('affine-admin-token');
-    localStorage.removeItem('affine-admin-refresh-token');
+    localStorage.removeItem('yunke-admin-token');
+    localStorage.removeItem('yunke-admin-refresh-token');
   }
 
   async fetchSession() {

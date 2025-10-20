@@ -7,14 +7,14 @@ import { AccountIcon, AdminIcon, SignOutIcon } from '@blocksuite/icons/rc';
 import { useLiveData, useService } from '@toeverything/infra';
 import { useCallback, useEffect } from 'react';
 
-import { useSignOut } from '../../hooks/affine/use-sign-out';
+import { useSignOut } from '../../hooks/yunke/use-sign-out';
 
 export const AccountMenu = () => {
   const workspaceDialogService = useService(WorkspaceDialogService);
   const openSignOutModal = useSignOut();
   const serverService = useService(ServerService);
   const userFeatureService = useService(UserFeatureService);
-  const isAFFiNEAdmin = useLiveData(userFeatureService.userFeature.isAdmin$);
+  const isYUNKEAdmin = useLiveData(userFeatureService.userFeature.isAdmin$);
 
   const onOpenAccountSetting = useCallback(() => {
     track.$.navigationPanel.profileAndBadge.openSettings({ to: 'account' });
@@ -40,15 +40,15 @@ export const AccountMenu = () => {
         data-testid="workspace-modal-account-settings-option"
         onClick={onOpenAccountSetting}
       >
-        {t['com.affine.workspace.cloud.account.settings']()}
+        {t['com.yunke.workspace.cloud.account.settings']()}
       </MenuItem>
-      {isAFFiNEAdmin ? (
+      {isYUNKEAdmin ? (
         <MenuItem
           prefixIcon={<AdminIcon />}
           data-testid="workspace-modal-account-admin-option"
           onClick={onOpenAdminPanel}
         >
-          {t['com.affine.workspace.cloud.account.admin']()}
+          {t['com.yunke.workspace.cloud.account.admin']()}
         </MenuItem>
       ) : null}
       <MenuItem
@@ -56,7 +56,7 @@ export const AccountMenu = () => {
         data-testid="workspace-modal-sign-out-option"
         onClick={openSignOutModal}
       >
-        {t['com.affine.workspace.cloud.account.logout']()}
+        {t['com.yunke.workspace.cloud.account.logout']()}
       </MenuItem>
     </>
   );

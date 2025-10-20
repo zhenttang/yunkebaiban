@@ -7,16 +7,16 @@ export type FontFamily = 'Sans' | 'Serif' | 'Mono' | 'Custom';
 export type EdgelessDefaultTheme = 'auto' | 'dark' | 'light' | 'specified';
 
 export const fontStyleOptions = [
-  { key: 'Sans', value: 'var(--affine-font-sans-family)' },
-  { key: 'Serif', value: 'var(--affine-font-serif-family)' },
-  { key: 'Mono', value: 'var(--affine-font-mono-family)' },
-  { key: 'Custom', value: 'var(--affine-font-sans-family)' },
+  { key: 'Sans', value: 'var(--yunke-font-sans-family)' },
+  { key: 'Serif', value: 'var(--yunke-font-serif-family)' },
+  { key: 'Mono', value: 'var(--yunke-font-mono-family)' },
+  { key: 'Custom', value: 'var(--yunke-font-sans-family)' },
 ] satisfies {
   key: FontFamily;
   value: string;
 }[];
 
-const AffineEditorSettingSchema = z.object({
+const YunkeEditorSettingSchema = z.object({
   fontFamily: z.enum(['Sans', 'Serif', 'Mono', 'Custom']).default('Sans'),
   customFontFamily: z.string().default(''),
   newDocDefaultMode: z.enum(['edgeless', 'page', 'ask']).default('page'),
@@ -39,7 +39,7 @@ const AffineEditorSettingSchema = z.object({
 });
 
 export const EditorSettingSchema = BSEditorSettingSchema.merge(
-  AffineEditorSettingSchema
+  YunkeEditorSettingSchema
 );
 
 // oxlint-disable-next-line no-redeclare

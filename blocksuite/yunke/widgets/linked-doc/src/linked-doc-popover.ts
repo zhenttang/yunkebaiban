@@ -292,14 +292,14 @@ export class LinkedDocPopover extends SignalWatcher(
             <div class="group" style=${group.styles ?? ''}>
               ${group.items.map(({ key, name, icon, action }) => {
                 const tooltip = this._showTooltip
-                  ? html`<affine-tooltip
+                  ? html`<yunke-tooltip
                       tip-position=${'right'}
                       .tooltipStyle=${css`
                         * {
                           color: ${unsafeCSSVar('white')} !important;
                         }
                       `}
-                      >${name}</affine-tooltip
+                      >${name}</yunke-tooltip
                     >`
                   : nothing;
                 return html`<icon-button

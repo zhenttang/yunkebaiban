@@ -1,6 +1,6 @@
 import {
-  type AffineCommand,
-  AffineCommandRegistry,
+  type YunkeCommand,
+  YunkeCommandRegistry,
   type CommandCategory,
   PreconditionStrategy,
 } from '@yunke/core/commands';
@@ -15,83 +15,83 @@ import type { QuickSearchItem } from '../types/item';
 import { highlighter } from '../utils/highlighter';
 
 const categories = {
-  'affine:recent': {
-    id: 'command:affine:recent',
-    label: { i18nKey: 'com.affine.cmdk.affine.category.affine.recent' },
+  'yunke:recent': {
+    id: 'command:yunke:recent',
+    label: { i18nKey: 'com.yunke.cmdk.yunke.category.yunke.recent' },
     score: 10,
   },
-  'affine:navigation': {
-    id: 'command:affine:navigation',
+  'yunke:navigation': {
+    id: 'command:yunke:navigation',
     label: {
-      i18nKey: 'com.affine.cmdk.affine.category.affine.navigation',
+      i18nKey: 'com.yunke.cmdk.yunke.category.yunke.navigation',
     },
     score: 10,
   },
-  'affine:creation': {
-    id: 'command:affine:creation',
-    label: { i18nKey: 'com.affine.cmdk.affine.category.affine.creation' },
+  'yunke:creation': {
+    id: 'command:yunke:creation',
+    label: { i18nKey: 'com.yunke.cmdk.yunke.category.yunke.creation' },
     score: 10,
   },
-  'affine:general': {
-    id: 'command:affine:general',
-    label: { i18nKey: 'com.affine.cmdk.affine.category.affine.general' },
+  'yunke:general': {
+    id: 'command:yunke:general',
+    label: { i18nKey: 'com.yunke.cmdk.yunke.category.yunke.general' },
     score: 10,
   },
-  'affine:layout': {
-    id: 'command:affine:layout',
-    label: { i18nKey: 'com.affine.cmdk.affine.category.affine.layout' },
+  'yunke:layout': {
+    id: 'command:yunke:layout',
+    label: { i18nKey: 'com.yunke.cmdk.yunke.category.yunke.layout' },
     score: 10,
   },
-  'affine:pages': {
-    id: 'command:affine:pages',
-    label: { i18nKey: 'com.affine.cmdk.affine.category.affine.pages' },
+  'yunke:pages': {
+    id: 'command:yunke:pages',
+    label: { i18nKey: 'com.yunke.cmdk.yunke.category.yunke.pages' },
     score: 10,
   },
-  'affine:edgeless': {
-    id: 'command:affine:edgeless',
-    label: { i18nKey: 'com.affine.cmdk.affine.category.affine.edgeless' },
+  'yunke:edgeless': {
+    id: 'command:yunke:edgeless',
+    label: { i18nKey: 'com.yunke.cmdk.yunke.category.yunke.edgeless' },
     score: 10,
   },
-  'affine:collections': {
-    id: 'command:affine:collections',
+  'yunke:collections': {
+    id: 'command:yunke:collections',
     label: {
-      i18nKey: 'com.affine.cmdk.affine.category.affine.collections',
+      i18nKey: 'com.yunke.cmdk.yunke.category.yunke.collections',
     },
     score: 10,
   },
-  'affine:settings': {
-    id: 'command:affine:settings',
-    label: { i18nKey: 'com.affine.cmdk.affine.category.affine.settings' },
+  'yunke:settings': {
+    id: 'command:yunke:settings',
+    label: { i18nKey: 'com.yunke.cmdk.yunke.category.yunke.settings' },
     score: 10,
   },
-  'affine:updates': {
-    id: 'command:affine:updates',
-    label: { i18nKey: 'com.affine.cmdk.affine.category.affine.updates' },
+  'yunke:updates': {
+    id: 'command:yunke:updates',
+    label: { i18nKey: 'com.yunke.cmdk.yunke.category.yunke.updates' },
     score: 10,
   },
-  'affine:help': {
-    id: 'command:affine:help',
-    label: { i18nKey: 'com.affine.cmdk.affine.category.affine.help' },
+  'yunke:help': {
+    id: 'command:yunke:help',
+    label: { i18nKey: 'com.yunke.cmdk.yunke.category.yunke.help' },
     score: 10,
   },
   'editor:edgeless': {
     id: 'command:editor:edgeless',
-    label: { i18nKey: 'com.affine.cmdk.affine.category.editor.edgeless' },
+    label: { i18nKey: 'com.yunke.cmdk.yunke.category.editor.edgeless' },
     score: 10,
   },
   'editor:insert-object': {
     id: 'command:editor:insert-object',
-    label: { i18nKey: 'com.affine.cmdk.affine.category.editor.insert-object' },
+    label: { i18nKey: 'com.yunke.cmdk.yunke.category.editor.insert-object' },
     score: 10,
   },
   'editor:page': {
     id: 'command:editor:page',
-    label: { i18nKey: 'com.affine.cmdk.affine.category.editor.page' },
+    label: { i18nKey: 'com.yunke.cmdk.yunke.category.editor.page' },
     score: 10,
   },
-  'affine:results': {
-    id: 'command:affine:results',
-    label: { i18nKey: 'com.affine.cmdk.affine.category.results' },
+  'yunke:results': {
+    id: 'command:yunke:results',
+    label: { i18nKey: 'com.yunke.cmdk.yunke.category.results' },
     score: 10,
   },
 } satisfies Required<{
@@ -99,7 +99,7 @@ const categories = {
 }>;
 
 function filterCommandByContext(
-  command: AffineCommand,
+  command: YunkeCommand,
   context: {
     docMode: DocMode | undefined;
   }
@@ -126,7 +126,7 @@ function filterCommandByContext(
 }
 
 function getAllCommand(context: { docMode: DocMode | undefined }) {
-  const commands = AffineCommandRegistry.getAll();
+  const commands = YunkeCommandRegistry.getAll();
   return commands.filter(command => {
     return filterCommandByContext(command, context);
   });
@@ -134,7 +134,7 @@ function getAllCommand(context: { docMode: DocMode | undefined }) {
 
 export class CommandsQuickSearchSession
   extends Entity
-  implements QuickSearchSession<'commands', AffineCommand>
+  implements QuickSearchSession<'commands', YunkeCommand>
 {
   constructor(private readonly contextService: GlobalContextService) {
     super();
@@ -160,7 +160,7 @@ export class CommandsQuickSearchSession
       ? fuse.search(query)
       : commands.map(item => ({ item, matches: [], score: 0 }));
 
-    return result.map<QuickSearchItem<'commands', AffineCommand>>(
+    return result.map<QuickSearchItem<'commands', YunkeCommand>>(
       ({ item, matches, score = 1 }) => {
         const normalizedRange = ([start, end]: [number, number]) =>
           [

@@ -14,15 +14,15 @@ import { pageAIGroups } from '../_common/config';
 import { handleInlineAskAIAction } from '../actions/doc-handler';
 import type { AIItemConfig } from '../components/ai-item/types';
 import {
-  AFFINE_AI_PANEL_WIDGET,
-  type AffineAIPanelWidget,
+  YUNKE_AI_PANEL_WIDGET,
+  type YunkeAIPanelWidget,
 } from '../widgets/ai-panel/ai-panel';
 
 export function AiSlashMenuConfigExtension() {
   const AIItems = pageAIGroups.map(group => group.items).flat();
 
   const iconWrapper = (icon: AIItemConfig['icon']) => {
-    return html`<div style="color: var(--affine-primary-color)">
+    return html`<div style="color: var(--yunke-primary-color)">
       ${typeof icon === 'function' ? html`${icon()}` : icon}
     </div>`;
   };
@@ -32,11 +32,11 @@ export function AiSlashMenuConfigExtension() {
     ({ std }: SlashMenuContext) => {
       const root = std.host.store.root;
       if (!root) return false;
-      const affineAIPanelWidget = std.view.getWidget(
-        AFFINE_AI_PANEL_WIDGET,
+      const yunkeAIPanelWidget = std.view.getWidget(
+        YUNKE_AI_PANEL_WIDGET,
         root.id
       );
-      if (affineAIPanelWidget === null) return false;
+      if (yunkeAIPanelWidget === null) return false;
 
       const chain = std.host.command.chain();
       const docModeService = std.get(DocModeProvider);
@@ -82,11 +82,11 @@ export function AiSlashMenuConfigExtension() {
       action: ({ std }) => {
         const root = std.host.store.root;
         if (!root) return;
-        const affineAIPanelWidget = std.view.getWidget(
-          AFFINE_AI_PANEL_WIDGET,
+        const yunkeAIPanelWidget = std.view.getWidget(
+          YUNKE_AI_PANEL_WIDGET,
           root.id
-        ) as AffineAIPanelWidget;
-        handleInlineAskAIAction(affineAIPanelWidget.host);
+        ) as YunkeAIPanelWidget;
+        handleInlineAskAIAction(yunkeAIPanelWidget.host);
       },
     },
     ...AIItems.filter(({ name }) =>
@@ -94,20 +94,20 @@ export function AiSlashMenuConfigExtension() {
     ).map<SlashMenuActionItem>(item => ({
       ...actionItemWrapper(item),
       name: `${item.name} 以上内容`,
-      group: `1_AFFiNE AI@${index++}`,
+      group: `1_YUNKE AI@${index++}`,
     })),
 
     ...AIItems.filter(({ name }) =>
       ['Summarize', 'Continue writing'].includes(name)
     ).map<SlashMenuActionItem>(item => ({
       ...actionItemWrapper(item),
-      group: `1_AFFiNE AI@${index++}`,
+      group: `1_YUNKE AI@${index++}`,
     })),
 
     {
       name: '对以上内容执行操作',
       icon: iconWrapper(MoreHorizontalIcon({ width: '24px', height: '24px' })),
-      group: `1_AFFiNE AI@${index++}`,
+      group: `1_YUNKE AI@${index++}`,
       subMenu: [
         ...AIItems.filter(({ name }) =>
           ['Translate to', 'Change tone to'].includes(name)

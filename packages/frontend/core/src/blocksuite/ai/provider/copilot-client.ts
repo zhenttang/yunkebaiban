@@ -1,4 +1,4 @@
-import { showAILoginRequiredAtom } from '@yunke/core/components/affine/auth/ai-login-required';
+import { showAILoginRequiredAtom } from '@yunke/core/components/yunke/auth/ai-login-required';
 import type { UserFriendlyError } from '@yunke/error';
 import { getCurrentStore } from '@toeverything/infra';
 

@@ -45,7 +45,7 @@ function AccountPage() {
   console.log('当前用户:', currentUser);
   console.log('是否管理员:', currentUser ? isAdmin(currentUser) : 'user is null/undefined');
   console.log('用户features:', currentUser?.features);
-  console.log('localStorage token:', localStorage.getItem('affine-admin-token') ? 'exists' : 'not found');
+  console.log('localStorage token:', localStorage.getItem('yunke-admin-token') ? 'exists' : 'not found');
   console.log('API错误:', error);
 
   if (error) {
@@ -62,7 +62,7 @@ function AccountPage() {
               <div>当前用户: {currentUser ? currentUser.email : '未登录'}</div>
               <div>是否管理员: {currentUser ? (isAdmin(currentUser) ? '是' : '否') : '未知'}</div>
               <div>用户权限: {currentUser?.features?.join(', ') || '无'}</div>
-              <div>认证令牌: {localStorage.getItem('affine-admin-token') ? '存在' : '不存在'}</div>
+              <div>认证令牌: {localStorage.getItem('yunke-admin-token') ? '存在' : '不存在'}</div>
             </div>
             
             <div className="space-y-2">

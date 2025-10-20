@@ -13,7 +13,7 @@
     "blocks": {
       "type": "block",
       "id": "block:wj7klMQtij",
-      "flavour": "affine:page",
+      "flavour": "yunke:page",
       "props": {
         "title": {
           "$blocksuite:internal:text$": true,
@@ -28,7 +28,7 @@
         {
           "type": "block",
           "id": "block:ezRclaviND",
-          "flavour": "affine:surface",
+          "flavour": "yunke:surface",
           "props": {
             "elements": {
               "mTjoQDamRB": {
@@ -39,17 +39,17 @@
                 "shapeStyle": "General",
                 "radius": 0.1,
                 "filled": true,
-                "fillColor": "--affine-palette-shape-red",
+                "fillColor": "--yunke-palette-shape-red",
                 "strokeWidth": 4,
-                "strokeColor": "--affine-palette-line-yellow",
+                "strokeColor": "--yunke-palette-line-yellow",
                 "strokeStyle": "none",
                 "roughness": 1.4,
                 "id": "mTjoQDamRB",
                 "index": "a0",
                 "seed": 1178553904,
-                "color": "--affine-palette-line-black",
+                "color": "--yunke-palette-line-black",
                 "text": {
-                  "affine:surface:text": true,
+                  "yunke:surface:text": true,
                   "delta": [
                     {
                       "insert": "Concept A"
@@ -69,19 +69,19 @@
                 "shapeStyle": "General",
                 "radius": 0.1,
                 "filled": true,
-                "fillColor": "--affine-palette-shape-green",
+                "fillColor": "--yunke-palette-shape-green",
                 "strokeWidth": 4,
-                "strokeColor": "--affine-palette-line-yellow",
+                "strokeColor": "--yunke-palette-line-yellow",
                 "strokeStyle": "none",
                 "roughness": 1.4,
                 "id": "SGSCCszcKe",
                 "index": "a1",
                 "seed": 604664369,
                 "text": {
-                  "affine:surface:text": true,
+                  "yunke:surface:text": true,
                   "delta": []
                 },
-                "color": "--affine-palette-line-black"
+                "color": "--yunke-palette-line-black"
               },
               "SZUjV-BNMn": {
                 "type": "shape",
@@ -91,19 +91,19 @@
                 "shapeStyle": "General",
                 "radius": 0.1,
                 "filled": true,
-                "fillColor": "--affine-palette-shape-green",
+                "fillColor": "--yunke-palette-shape-green",
                 "strokeWidth": 4,
-                "strokeColor": "--affine-palette-line-yellow",
+                "strokeColor": "--yunke-palette-line-yellow",
                 "strokeStyle": "none",
                 "roughness": 1.4,
                 "id": "SZUjV-BNMn",
                 "index": "a3",
                 "seed": 300090528,
                 "text": {
-                  "affine:surface:text": true,
+                  "yunke:surface:text": true,
                   "delta": []
                 },
-                "color": "--affine-palette-line-black"
+                "color": "--yunke-palette-line-black"
               },
               "jmNI55N8zH": {
                 "type": "shape",
@@ -113,17 +113,17 @@
                 "shapeStyle": "General",
                 "radius": 0.1,
                 "filled": true,
-                "fillColor": "--affine-palette-shape-yellow",
+                "fillColor": "--yunke-palette-shape-yellow",
                 "strokeWidth": 4,
-                "strokeColor": "--affine-palette-line-yellow",
+                "strokeColor": "--yunke-palette-line-yellow",
                 "strokeStyle": "none",
                 "roughness": 1.4,
                 "id": "jmNI55N8zH",
                 "index": "a5",
                 "seed": 692989575,
-                "color": "--affine-palette-line-black",
+                "color": "--yunke-palette-line-black",
                 "text": {
-                  "affine:surface:text": true,
+                  "yunke:surface:text": true,
                   "delta": []
                 }
               },
@@ -135,17 +135,17 @@
                 "shapeStyle": "General",
                 "radius": 0.1,
                 "filled": true,
-                "fillColor": "--affine-palette-shape-tangerine",
+                "fillColor": "--yunke-palette-shape-tangerine",
                 "strokeWidth": 4,
-                "strokeColor": "--affine-palette-line-yellow",
+                "strokeColor": "--yunke-palette-line-yellow",
                 "strokeStyle": "none",
                 "roughness": 1.4,
                 "id": "VQ9seqIlll",
                 "index": "a7",
                 "seed": 211273728,
-                "color": "--affine-palette-line-black",
+                "color": "--yunke-palette-line-black",
                 "text": {
-                  "affine:surface:text": true,
+                  "yunke:surface:text": true,
                   "delta": []
                 }
               },
@@ -157,17 +157,17 @@
                 "shapeStyle": "General",
                 "radius": 0.1,
                 "filled": true,
-                "fillColor": "--affine-palette-shape-tangerine",
+                "fillColor": "--yunke-palette-shape-tangerine",
                 "strokeWidth": 4,
-                "strokeColor": "--affine-palette-line-yellow",
+                "strokeColor": "--yunke-palette-line-yellow",
                 "strokeStyle": "none",
                 "roughness": 1.4,
                 "id": "ozcEtD_GQ-",
                 "index": "a9",
                 "seed": 470221421,
-                "color": "--affine-palette-line-black",
+                "color": "--yunke-palette-line-black",
                 "text": {
-                  "affine:surface:text": true,
+                  "yunke:surface:text": true,
                   "delta": []
                 }
               },
@@ -179,17 +179,17 @@
                 "shapeStyle": "General",
                 "radius": 0.1,
                 "filled": true,
-                "fillColor": "--affine-palette-shape-tangerine",
+                "fillColor": "--yunke-palette-shape-tangerine",
                 "strokeWidth": 4,
-                "strokeColor": "--affine-palette-line-yellow",
+                "strokeColor": "--yunke-palette-line-yellow",
                 "strokeStyle": "none",
                 "roughness": 1.4,
                 "id": "YuI1nofjYX",
                 "index": "aB",
                 "seed": 1494756941,
-                "color": "--affine-palette-line-black",
+                "color": "--yunke-palette-line-black",
                 "text": {
-                  "affine:surface:text": true,
+                  "yunke:surface:text": true,
                   "delta": []
                 }
               },
@@ -201,17 +201,17 @@
                 "shapeStyle": "General",
                 "radius": 0.1,
                 "filled": true,
-                "fillColor": "--affine-palette-shape-yellow",
+                "fillColor": "--yunke-palette-shape-yellow",
                 "strokeWidth": 4,
-                "strokeColor": "--affine-palette-line-yellow",
+                "strokeColor": "--yunke-palette-line-yellow",
                 "strokeStyle": "none",
                 "roughness": 1.4,
                 "id": "nCzRhOGFQw",
                 "index": "aD",
                 "seed": 1290515361,
-                "color": "--affine-palette-line-black",
+                "color": "--yunke-palette-line-black",
                 "text": {
-                  "affine:surface:text": true,
+                  "yunke:surface:text": true,
                   "delta": []
                 }
               },
@@ -223,17 +223,17 @@
                 "shapeStyle": "General",
                 "radius": 0.1,
                 "filled": true,
-                "fillColor": "--affine-palette-shape-yellow",
+                "fillColor": "--yunke-palette-shape-yellow",
                 "strokeWidth": 4,
-                "strokeColor": "--affine-palette-line-yellow",
+                "strokeColor": "--yunke-palette-line-yellow",
                 "strokeStyle": "none",
                 "roughness": 1.4,
                 "id": "swGKsqzFUp",
                 "index": "aF",
                 "seed": 986102426,
-                "color": "--affine-palette-line-black",
+                "color": "--yunke-palette-line-black",
                 "text": {
-                  "affine:surface:text": true,
+                  "yunke:surface:text": true,
                   "delta": []
                 }
               },
@@ -245,17 +245,17 @@
                 "shapeStyle": "General",
                 "radius": 0.1,
                 "filled": true,
-                "fillColor": "--affine-palette-shape-purple",
+                "fillColor": "--yunke-palette-shape-purple",
                 "strokeWidth": 4,
-                "strokeColor": "--affine-palette-line-yellow",
+                "strokeColor": "--yunke-palette-line-yellow",
                 "strokeStyle": "none",
                 "roughness": 1.4,
                 "id": "YVJg5ST2Vv",
                 "index": "aI",
                 "seed": 425969247,
-                "color": "--affine-palette-line-black",
+                "color": "--yunke-palette-line-black",
                 "text": {
-                  "affine:surface:text": true,
+                  "yunke:surface:text": true,
                   "delta": [
                     {
                       "insert": "Concept B"
@@ -275,15 +275,15 @@
                 "shapeStyle": "General",
                 "radius": 0.1,
                 "filled": true,
-                "fillColor": "--affine-palette-shape-blue",
+                "fillColor": "--yunke-palette-shape-blue",
                 "strokeWidth": 4,
-                "strokeColor": "--affine-palette-line-yellow",
+                "strokeColor": "--yunke-palette-line-yellow",
                 "strokeStyle": "none",
                 "roughness": 1.4,
                 "id": "BVunxuU2mp",
                 "index": "aJ",
                 "seed": 492532568,
-                "color": "--affine-palette-line-black"
+                "color": "--yunke-palette-line-black"
               },
               "8qfgrUc8IO": {
                 "type": "shape",
@@ -293,17 +293,17 @@
                 "shapeStyle": "General",
                 "radius": 0.1,
                 "filled": true,
-                "fillColor": "--affine-palette-shape-navy",
+                "fillColor": "--yunke-palette-shape-navy",
                 "strokeWidth": 4,
-                "strokeColor": "--affine-palette-line-yellow",
+                "strokeColor": "--yunke-palette-line-yellow",
                 "strokeStyle": "none",
                 "roughness": 1.4,
                 "id": "8qfgrUc8IO",
                 "index": "aK",
                 "seed": 437989101,
-                "color": "--affine-palette-line-black",
+                "color": "--yunke-palette-line-black",
                 "text": {
-                  "affine:surface:text": true,
+                  "yunke:surface:text": true,
                   "delta": []
                 }
               },
@@ -315,17 +315,17 @@
                 "shapeStyle": "General",
                 "radius": 0.1,
                 "filled": true,
-                "fillColor": "--affine-palette-shape-blue",
+                "fillColor": "--yunke-palette-shape-blue",
                 "strokeWidth": 4,
-                "strokeColor": "--affine-palette-line-yellow",
+                "strokeColor": "--yunke-palette-line-yellow",
                 "strokeStyle": "none",
                 "roughness": 1.4,
                 "id": "j8CZJ7J4PI",
                 "index": "aM",
                 "seed": 992649697,
-                "color": "--affine-palette-line-black",
+                "color": "--yunke-palette-line-black",
                 "text": {
-                  "affine:surface:text": true,
+                  "yunke:surface:text": true,
                   "delta": []
                 }
               },
@@ -337,17 +337,17 @@
                 "shapeStyle": "General",
                 "radius": 0.1,
                 "filled": true,
-                "fillColor": "--affine-palette-shape-navy",
+                "fillColor": "--yunke-palette-shape-navy",
                 "strokeWidth": 4,
-                "strokeColor": "--affine-palette-line-yellow",
+                "strokeColor": "--yunke-palette-line-yellow",
                 "strokeStyle": "none",
                 "roughness": 1.4,
                 "id": "oMTM9xCt10",
                 "index": "aV",
                 "seed": 795723578,
-                "color": "--affine-palette-line-black",
+                "color": "--yunke-palette-line-black",
                 "text": {
-                  "affine:surface:text": true,
+                  "yunke:surface:text": true,
                   "delta": []
                 }
               },
@@ -359,17 +359,17 @@
                 "shapeStyle": "General",
                 "radius": 0.1,
                 "filled": true,
-                "fillColor": "--affine-palette-shape-navy",
+                "fillColor": "--yunke-palette-shape-navy",
                 "strokeWidth": 4,
-                "strokeColor": "--affine-palette-line-yellow",
+                "strokeColor": "--yunke-palette-line-yellow",
                 "strokeStyle": "none",
                 "roughness": 1.4,
                 "id": "X6ZsT1ZXq6",
                 "index": "aY",
                 "seed": 494783000,
-                "color": "--affine-palette-line-black",
+                "color": "--yunke-palette-line-black",
                 "text": {
-                  "affine:surface:text": true,
+                  "yunke:surface:text": true,
                   "delta": []
                 }
               },
@@ -381,17 +381,17 @@
                 "shapeStyle": "General",
                 "radius": 0.1,
                 "filled": true,
-                "fillColor": "--affine-palette-shape-blue",
+                "fillColor": "--yunke-palette-shape-blue",
                 "strokeWidth": 4,
-                "strokeColor": "--affine-palette-line-yellow",
+                "strokeColor": "--yunke-palette-line-yellow",
                 "strokeStyle": "none",
                 "roughness": 1.4,
                 "id": "NKi2l1VoN7",
                 "index": "ab",
                 "seed": 1625007549,
-                "color": "--affine-palette-line-black",
+                "color": "--yunke-palette-line-black",
                 "text": {
-                  "affine:surface:text": true,
+                  "yunke:surface:text": true,
                   "delta": []
                 }
               },
@@ -403,15 +403,15 @@
                 "shapeStyle": "General",
                 "radius": 0.1,
                 "filled": true,
-                "fillColor": "--affine-palette-shape-magenta",
+                "fillColor": "--yunke-palette-shape-magenta",
                 "strokeWidth": 4,
-                "strokeColor": "--affine-palette-line-yellow",
+                "strokeColor": "--yunke-palette-line-yellow",
                 "strokeStyle": "none",
                 "roughness": 1.4,
                 "id": "qatNTg24jO",
                 "index": "ad",
                 "seed": 644339416,
-                "color": "--affine-palette-line-black"
+                "color": "--yunke-palette-line-black"
               },
               "W79Lf6Fjvj": {
                 "type": "shape",
@@ -421,17 +421,17 @@
                 "shapeStyle": "General",
                 "radius": 0.1,
                 "filled": true,
-                "fillColor": "--affine-palette-shape-magenta",
+                "fillColor": "--yunke-palette-shape-magenta",
                 "strokeWidth": 4,
-                "strokeColor": "--affine-palette-line-yellow",
+                "strokeColor": "--yunke-palette-line-yellow",
                 "strokeStyle": "none",
                 "roughness": 1.4,
                 "id": "W79Lf6Fjvj",
                 "index": "af",
                 "seed": 13175154,
-                "color": "--affine-palette-line-black",
+                "color": "--yunke-palette-line-black",
                 "text": {
-                  "affine:surface:text": true,
+                  "yunke:surface:text": true,
                   "delta": []
                 }
               },
@@ -443,17 +443,17 @@
                 "shapeStyle": "General",
                 "radius": 0.1,
                 "filled": true,
-                "fillColor": "--affine-palette-shape-magenta",
+                "fillColor": "--yunke-palette-shape-magenta",
                 "strokeWidth": 4,
-                "strokeColor": "--affine-palette-line-yellow",
+                "strokeColor": "--yunke-palette-line-yellow",
                 "strokeStyle": "none",
                 "roughness": 1.4,
                 "id": "EG7cFYZDkp",
                 "index": "ah",
                 "seed": 424956776,
-                "color": "--affine-palette-line-black",
+                "color": "--yunke-palette-line-black",
                 "text": {
-                  "affine:surface:text": true,
+                  "yunke:surface:text": true,
                   "delta": []
                 }
               },
@@ -462,14 +462,14 @@
                 "xywh": "[-1934.65859614145,223.5203912885661,901.4624291423331,674.6666666666666]",
                 "rotate": 0,
                 "text": {
-                  "affine:surface:text": true,
+                  "yunke:surface:text": true,
                   "delta": [
                     {
                       "insert": "A concept map template is a visual framework designed to help organize and structure information. \n\nIt typically includes blank nodes or boxes for key concepts and connecting lines or arrows to show relationships. \n\nThis template aids in mapping out ideas, facilitating understanding and analysis of complex topics."
                     }
                   ]
                 },
-                "color": "--affine-palette-line-magenta",
+                "color": "--yunke-palette-line-magenta",
                 "fontSize": 48,
                 "fontFamily": "blocksuite:surface:Lora",
                 "fontWeight": "600",
@@ -485,14 +485,14 @@
                 "xywh": "[-1934.6585961414498,96.70150944204761,401.1519470214844,82]",
                 "rotate": 0,
                 "text": {
-                  "affine:surface:text": true,
+                  "yunke:surface:text": true,
                   "delta": [
                     {
                       "insert": "Concept map"
                     }
                   ]
                 },
-                "color": "--affine-palette-line-magenta",
+                "color": "--yunke-palette-line-magenta",
                 "fontSize": 64,
                 "fontFamily": "blocksuite:surface:Lora",
                 "fontWeight": "600",
@@ -506,7 +506,7 @@
                 "type": "connector",
                 "mode": 2,
                 "strokeWidth": 6,
-                "stroke": "--affine-palette-line-red",
+                "stroke": "--yunke-palette-line-red",
                 "strokeStyle": "solid",
                 "roughness": 1.4,
                 "source": {
@@ -531,7 +531,7 @@
                 "type": "connector",
                 "mode": 1,
                 "strokeWidth": 6,
-                "stroke": "--affine-palette-line-green",
+                "stroke": "--yunke-palette-line-green",
                 "strokeStyle": "solid",
                 "roughness": 1.4,
                 "source": {
@@ -556,7 +556,7 @@
                 "type": "connector",
                 "mode": 2,
                 "strokeWidth": 6,
-                "stroke": "--affine-palette-line-red",
+                "stroke": "--yunke-palette-line-red",
                 "strokeStyle": "solid",
                 "roughness": 1.4,
                 "source": {
@@ -581,7 +581,7 @@
                 "type": "connector",
                 "mode": 2,
                 "strokeWidth": 6,
-                "stroke": "--affine-palette-line-yellow",
+                "stroke": "--yunke-palette-line-yellow",
                 "strokeStyle": "solid",
                 "roughness": 1.4,
                 "source": {
@@ -606,7 +606,7 @@
                 "type": "connector",
                 "mode": 2,
                 "strokeWidth": 6,
-                "stroke": "--affine-palette-line-tangerine",
+                "stroke": "--yunke-palette-line-tangerine",
                 "strokeStyle": "solid",
                 "roughness": 1.4,
                 "source": {
@@ -631,7 +631,7 @@
                 "type": "connector",
                 "mode": 2,
                 "strokeWidth": 6,
-                "stroke": "--affine-palette-line-tangerine",
+                "stroke": "--yunke-palette-line-tangerine",
                 "strokeStyle": "solid",
                 "roughness": 1.4,
                 "source": {
@@ -656,7 +656,7 @@
                 "type": "connector",
                 "mode": 2,
                 "strokeWidth": 6,
-                "stroke": "--affine-palette-line-yellow",
+                "stroke": "--yunke-palette-line-yellow",
                 "strokeStyle": "solid",
                 "roughness": 1.4,
                 "source": {
@@ -681,7 +681,7 @@
                 "type": "connector",
                 "mode": 2,
                 "strokeWidth": 6,
-                "stroke": "--affine-palette-line-yellow",
+                "stroke": "--yunke-palette-line-yellow",
                 "strokeStyle": "solid",
                 "roughness": 1.4,
                 "source": {
@@ -706,7 +706,7 @@
                 "type": "connector",
                 "mode": 2,
                 "strokeWidth": 6,
-                "stroke": "--affine-palette-line-tangerine",
+                "stroke": "--yunke-palette-line-tangerine",
                 "strokeStyle": "dash",
                 "roughness": 1.4,
                 "source": {
@@ -731,7 +731,7 @@
                 "type": "connector",
                 "mode": 2,
                 "strokeWidth": 6,
-                "stroke": "--affine-palette-line-blue",
+                "stroke": "--yunke-palette-line-blue",
                 "strokeStyle": "solid",
                 "roughness": 1.4,
                 "source": {
@@ -756,7 +756,7 @@
                 "type": "connector",
                 "mode": 2,
                 "strokeWidth": 6,
-                "stroke": "--affine-palette-line-blue",
+                "stroke": "--yunke-palette-line-blue",
                 "strokeStyle": "solid",
                 "roughness": 1.4,
                 "source": {
@@ -777,7 +777,7 @@
                 "type": "connector",
                 "mode": 2,
                 "strokeWidth": 6,
-                "stroke": "--affine-palette-line-navy",
+                "stroke": "--yunke-palette-line-navy",
                 "strokeStyle": "solid",
                 "roughness": 1.4,
                 "source": {
@@ -802,7 +802,7 @@
                 "type": "connector",
                 "mode": 2,
                 "strokeWidth": 6,
-                "stroke": "--affine-palette-line-navy",
+                "stroke": "--yunke-palette-line-navy",
                 "strokeStyle": "solid",
                 "roughness": 1.4,
                 "source": {
@@ -827,7 +827,7 @@
                 "type": "connector",
                 "mode": 2,
                 "strokeWidth": 6,
-                "stroke": "--affine-palette-line-purple",
+                "stroke": "--yunke-palette-line-purple",
                 "strokeStyle": "solid",
                 "roughness": 1.4,
                 "source": {
@@ -848,7 +848,7 @@
                 "type": "connector",
                 "mode": 2,
                 "strokeWidth": 8,
-                "stroke": "--affine-palette-line-blue",
+                "stroke": "--yunke-palette-line-blue",
                 "strokeStyle": "dash",
                 "roughness": 1.4,
                 "source": {
@@ -873,7 +873,7 @@
                 "type": "connector",
                 "mode": 2,
                 "strokeWidth": 6,
-                "stroke": "--affine-palette-line-blue",
+                "stroke": "--yunke-palette-line-blue",
                 "strokeStyle": "solid",
                 "roughness": 1.4,
                 "source": {
@@ -898,7 +898,7 @@
                 "type": "connector",
                 "mode": 2,
                 "strokeWidth": 6,
-                "stroke": "--affine-palette-line-purple",
+                "stroke": "--yunke-palette-line-purple",
                 "strokeStyle": "solid",
                 "roughness": 1.4,
                 "source": {
@@ -923,7 +923,7 @@
                 "type": "connector",
                 "mode": 2,
                 "strokeWidth": 6,
-                "stroke": "--affine-palette-line-magenta",
+                "stroke": "--yunke-palette-line-magenta",
                 "strokeStyle": "solid",
                 "roughness": 1.4,
                 "source": {
@@ -944,7 +944,7 @@
                 "type": "connector",
                 "mode": 2,
                 "strokeWidth": 6,
-                "stroke": "--affine-palette-line-magenta",
+                "stroke": "--yunke-palette-line-magenta",
                 "strokeStyle": "solid",
                 "roughness": 1.4,
                 "source": {
@@ -971,7 +971,7 @@
             {
               "type": "block",
               "id": "block:iiXnbBQ2he",
-              "flavour": "affine:frame",
+              "flavour": "yunke:frame",
               "props": {
                 "title": {
                   "$blocksuite:internal:text$": true,
@@ -981,7 +981,7 @@
                     }
                   ]
                 },
-                "background": "--affine-palette-transparent",
+                "background": "--yunke-palette-transparent",
                 "xywh": "[-768.6029765827916,43.70150944204761,3295.713316143743,2334.3611703783336]",
                 "index": "a0"
               },
@@ -990,7 +990,7 @@
             {
               "type": "block",
               "id": "block:LkK6aQf432",
-              "flavour": "affine:frame",
+              "flavour": "yunke:frame",
               "props": {
                 "title": {
                   "$blocksuite:internal:text$": true,
@@ -1000,7 +1000,7 @@
                     }
                   ]
                 },
-                "background": "--affine-palette-transparent",
+                "background": "--yunke-palette-transparent",
                 "xywh": "[2707.182201462316,43.70150944204761,3311.385057107737,2333.3478230012192]",
                 "index": "a1"
               },
@@ -1009,7 +1009,7 @@
             {
               "type": "block",
               "id": "block:o4_xMBOuQW",
-              "flavour": "affine:frame",
+              "flavour": "yunke:frame",
               "props": {
                 "title": {
                   "$blocksuite:internal:text$": true,
@@ -1019,7 +1019,7 @@
                     }
                   ]
                 },
-                "background": "--affine-palette-transparent",
+                "background": "--yunke-palette-transparent",
                 "xywh": "[-2007.5294984863951,43.70150944204761,1030.5005569560913,953.2916987542585]",
                 "index": "Zz"
               },

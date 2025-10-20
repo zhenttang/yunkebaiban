@@ -1,6 +1,6 @@
 import { useMemo, useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { AffineOtherPageLayout } from '@yunke/component/affine-other-page-layout';
+import { YunkeOtherPageLayout } from '@yunke/component/yunke-other-page-layout';
 import { Button } from '@yunke/component';
 import { ArrowLeftSmallIcon } from '@blocksuite/icons/rc';
 import { DocumentCard } from '@yunke/core/components/community-ui';
@@ -60,7 +60,7 @@ const StandaloneCommunityList = ({ workspaceId }: { workspaceId: string }) => {
       >
         <div>
           <h1 style={{ margin: '0 0 8px 0', fontSize: '28px', fontWeight: 700 }}>社区</h1>
-          <p style={{ margin: 0, color: 'var(--affine-text-secondary-color)', fontSize: '14px' }}>
+          <p style={{ margin: 0, color: 'var(--yunke-text-secondary-color)', fontSize: '14px' }}>
             浏览和发现社区分享的文档
           </p>
         </div>
@@ -69,9 +69,9 @@ const StandaloneCommunityList = ({ workspaceId }: { workspaceId: string }) => {
             width: '260px',
             padding: '10px 14px',
             borderRadius: '8px',
-            border: '1px solid var(--affine-border-color)',
-            backgroundColor: 'var(--affine-background-secondary-color)',
-            color: 'var(--affine-text-primary-color)',
+            border: '1px solid var(--yunke-border-color)',
+            backgroundColor: 'var(--yunke-background-secondary-color)',
+            color: 'var(--yunke-text-primary-color)',
           }}
           placeholder="搜索文档标题..."
           value={search}
@@ -80,20 +80,20 @@ const StandaloneCommunityList = ({ workspaceId }: { workspaceId: string }) => {
       </div>
 
       {loading && documents.length === 0 && (
-        <div style={{ padding: '48px 0', textAlign: 'center', color: 'var(--affine-text-secondary-color)' }}>
+        <div style={{ padding: '48px 0', textAlign: 'center', color: 'var(--yunke-text-secondary-color)' }}>
           加载中...
         </div>
       )}
 
       {error && (
-        <div style={{ padding: '48px 0', textAlign: 'center', color: 'var(--affine-error-color)' }}>
+        <div style={{ padding: '48px 0', textAlign: 'center', color: 'var(--yunke-error-color)' }}>
           <div style={{ marginBottom: '12px' }}>加载社区内容失败：{error}</div>
           <Button onClick={() => refresh()}>重试</Button>
         </div>
       )}
 
       {!loading && !error && documents.length === 0 && (
-        <div style={{ padding: '48px 0', textAlign: 'center', color: 'var(--affine-text-secondary-color)' }}>
+        <div style={{ padding: '48px 0', textAlign: 'center', color: 'var(--yunke-text-secondary-color)' }}>
           暂无社区文档
         </div>
       )}
@@ -123,7 +123,7 @@ const StandaloneCommunityList = ({ workspaceId }: { workspaceId: string }) => {
           <Button disabled={page === 0} onClick={() => setPage(prev => Math.max(prev - 1, 0))}>
             上一页
           </Button>
-          <span style={{ color: 'var(--affine-text-secondary-color)', fontSize: '14px' }}>
+          <span style={{ color: 'var(--yunke-text-secondary-color)', fontSize: '14px' }}>
             第 {page + 1} / {totalPages} 页 · 共 {total} 篇文档
           </span>
           <Button
@@ -161,20 +161,20 @@ const StandaloneCommunityDetail = ({ workspaceId, docId }: { workspaceId: string
       </Button>
 
       {loading && (
-        <div style={{ padding: '48px 0', textAlign: 'center', color: 'var(--affine-text-secondary-color)' }}>
+        <div style={{ padding: '48px 0', textAlign: 'center', color: 'var(--yunke-text-secondary-color)' }}>
           文档加载中...
         </div>
       )}
 
       {error && (
-        <div style={{ padding: '48px 0', textAlign: 'center', color: 'var(--affine-error-color)' }}>
+        <div style={{ padding: '48px 0', textAlign: 'center', color: 'var(--yunke-error-color)' }}>
           <div style={{ marginBottom: '12px' }}>加载失败：{error}</div>
           <Button onClick={() => refresh()}>重试</Button>
         </div>
       )}
 
       {!loading && !error && !uiDoc && (
-        <div style={{ padding: '48px 0', textAlign: 'center', color: 'var(--affine-text-secondary-color)' }}>
+        <div style={{ padding: '48px 0', textAlign: 'center', color: 'var(--yunke-text-secondary-color)' }}>
           未找到该社区文档
         </div>
       )}
@@ -194,22 +194,22 @@ export const StandaloneCommunityPage = () => {
 
   if (!workspaceId) {
     return (
-      <AffineOtherPageLayout>
+      <YunkeOtherPageLayout>
         <div style={{ textAlign: 'center', padding: '40px' }}>
           <h2 style={{ marginBottom: '16px' }}>工作空间ID不存在</h2>
           <Button onClick={() => navigate('/')}>返回首页</Button>
         </div>
-      </AffineOtherPageLayout>
+      </YunkeOtherPageLayout>
     );
   }
 
   return (
-    <AffineOtherPageLayout>
+    <YunkeOtherPageLayout>
       {docId ? (
         <StandaloneCommunityDetail workspaceId={workspaceId} docId={docId} />
       ) : (
         <StandaloneCommunityList workspaceId={workspaceId} />
       )}
-    </AffineOtherPageLayout>
+    </YunkeOtherPageLayout>
   );
 };

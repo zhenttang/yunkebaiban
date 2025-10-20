@@ -5,7 +5,7 @@ import type { DocTitle } from './doc-title';
 export function getDocTitleByEditorHost(
   editorHost: EditorHost
 ): DocTitle | null {
-  const docViewport = editorHost.closest('.affine-page-viewport');
+  const docViewport = editorHost.closest('.yunke-page-viewport');
   if (!docViewport) return null;
   return docViewport.querySelector('doc-title');
 }

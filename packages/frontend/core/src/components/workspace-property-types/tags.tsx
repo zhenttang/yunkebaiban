@@ -39,7 +39,7 @@ export const TagsValue = ({ readonly }: PropertyValueProps) => {
       <TagsInlineEditor
         className={styles.tagInlineEditor}
         placeholder={t[
-          'com.affine.page-properties.property-value-placeholder'
+          'com.yunke.page-properties.property-value-placeholder'
         ]()}
         pageId={doc.id}
         onChange={() => {}}
@@ -112,7 +112,7 @@ export const TagsFilterValue = ({
     <WorkspaceTagsInlineEditor
       placeholder={
         <span style={{ color: cssVarV2('text/placeholder') }}>
-          {t['com.affine.filter.empty']()}
+          {t['com.yunke.filter.empty']()}
         </span>
       }
       selectedTags={selectedTags}
@@ -246,7 +246,7 @@ export const TagsGroupHeader = ({ groupId, docCount }: GroupHeaderProps) => {
           />
         }
       >
-        {t['com.affine.page.display.grouping.group-by-tag.untagged']()}
+        {t['com.yunke.page.display.grouping.group-by-tag.untagged']()}
       </PlainTextDocGroupHeader>
     );
   }

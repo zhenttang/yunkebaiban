@@ -625,7 +625,7 @@ export const DetailPageWrapper = ({
                 const rect = blockElement.getBoundingClientRect();
                 
                 // 获取编辑器容器的边界矩形，用于坐标转换
-                const editorContainer = host.closest('.affine-editor-container') || host;
+                const editorContainer = host.closest('.yunke-editor-container') || host;
                 const containerRect = editorContainer.getBoundingClientRect();
                 
                 // 计算相对于编辑器的坐标

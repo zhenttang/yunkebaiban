@@ -10,11 +10,11 @@ export function AppContainer({
   fallback = false 
 }: PropsWithChildren<AppContainerProps>) {
   if (fallback) {
-    return <div className="affine-app-loading">Loading...</div>;
+    return <div className="yunke-app-loading">Loading...</div>;
   }
 
   return (
-    <div className="affine-app" data-platform="web">
+    <div className="yunke-app" data-platform="web">
       {children}
       <SocketIOTestButton />
     </div>

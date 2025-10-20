@@ -1,6 +1,6 @@
 {
   "name": "@blocksuite/yunke-ext-loader",
-  "description": "Extension loader for affine",
+  "description": "Extension loader for yunke",
   "type": "module",
   "scripts": {
     "build": "tsc"

@@ -82,7 +82,7 @@ export function configureWorkspaceProvider(framework: Framework) {
         console.log('创建工作空间请求参数:', request);
         console.log('当前页面URL:', window.location.href);
         console.log('当前Cookie:', document.cookie);
-        console.log('localStorage中的token:', localStorage.getItem('affine-admin-token'));
+        console.log('localStorage中的token:', localStorage.getItem('yunke-admin-token'));
         
         console.log('开始创建工作空间请求', {
           url: '/api/workspaces',

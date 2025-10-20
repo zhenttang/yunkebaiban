@@ -22,7 +22,7 @@ import type {
 } from '../types';
 
 /**
- * Yjs Adapter for AFFiNE ORM
+ * Yjs Adapter for YUNKE ORM
  *
  * Structure:
  *

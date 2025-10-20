@@ -126,6 +126,6 @@ export class OpenDocDropdownMenu extends SignalWatcher(
 
 declare global {
   interface HTMLElementTagNameMap {
-    'affine-open-doc-dropdown-menu': OpenDocDropdownMenu;
+    'yunke-open-doc-dropdown-menu': OpenDocDropdownMenu;
   }
 }

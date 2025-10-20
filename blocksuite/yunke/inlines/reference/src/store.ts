@@ -10,7 +10,7 @@ import {
 } from './adapters';
 
 export class ReferenceStoreExtension extends StoreExtensionProvider {
-  override name = 'affine-reference-inline';
+  override name = 'yunke-reference-inline';
 
   override setup(context: StoreExtensionContext) {
     super.setup(context);

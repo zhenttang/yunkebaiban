@@ -112,9 +112,9 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
             <div style={{
               marginBottom: '24px',
               padding: '20px 24px',
-              border: `1px solid var(--affine-border-color)`,
+              border: `1px solid var(--yunke-border-color)`,
               borderRadius: '8px',
-              backgroundColor: 'var(--affine-background-secondary-color)',
+              backgroundColor: 'var(--yunke-background-secondary-color)',
               width: '100%',
               boxSizing: 'border-box'
             }}>
@@ -128,7 +128,7 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
                 <h3 style={{
                   fontSize: '16px',
                   fontWeight: '500',
-                  color: 'var(--affine-text-primary-color)',
+                  color: 'var(--yunke-text-primary-color)',
                   margin: 0,
                   lineHeight: '1.5',
                   flex: 1,
@@ -138,7 +138,7 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
                 <span style={{
                   fontSize: '20px',
                   fontWeight: '600',
-                  color: 'var(--affine-text-primary-color)',
+                  color: 'var(--yunke-text-primary-color)',
                   lineHeight: '1.5',
                   whiteSpace: 'nowrap',
                   flexShrink: 0
@@ -146,7 +146,7 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
               </div>
               <p style={{
                 fontSize: '14px',
-                color: 'var(--affine-text-secondary-color)',
+                color: 'var(--yunke-text-secondary-color)',
                 margin: 0,
                 lineHeight: '1.5',
                 wordBreak: 'break-word'
@@ -158,7 +158,7 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
               <h4 style={{
                 fontSize: '15px',
                 fontWeight: '500',
-                color: 'var(--affine-text-primary-color)',
+                color: 'var(--yunke-text-primary-color)',
                 margin: '0 0 12px 0',
                 lineHeight: '1.5'
               }}>选择支付方式</h4>
@@ -176,10 +176,10 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
                       display: 'flex',
                       alignItems: 'center',
                       padding: '14px 16px',
-                      border: `2px solid ${paymentMethod === method.value ? 'var(--affine-brand-color)' : 'var(--affine-border-color)'}`,
+                      border: `2px solid ${paymentMethod === method.value ? 'var(--yunke-brand-color)' : 'var(--yunke-border-color)'}`,
                       borderRadius: '6px',
                       cursor: 'pointer',
-                      backgroundColor: paymentMethod === method.value ? 'var(--affine-background-secondary-color)' : 'var(--affine-background-primary-color)',
+                      backgroundColor: paymentMethod === method.value ? 'var(--yunke-background-secondary-color)' : 'var(--yunke-background-primary-color)',
                       transition: 'all 0.2s ease',
                       width: '100%',
                       boxSizing: 'border-box'
@@ -193,7 +193,7 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
                       onChange={(e) => setPaymentMethod(e.target.value as 'WECHAT' | 'ALIPAY')}
                       style={{
                         marginRight: '12px',
-                        accentColor: 'var(--affine-brand-color)'
+                        accentColor: 'var(--yunke-brand-color)'
                       }}
                     />
                     <div style={{
@@ -217,7 +217,7 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
                     </div>
                     <span style={{
                       fontSize: '15px',
-                      color: 'var(--affine-text-primary-color)',
+                      color: 'var(--yunke-text-primary-color)',
                       fontWeight: '400',
                       lineHeight: '1.4'
                     }}>{method.label}</span>
@@ -232,9 +232,9 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
               alignItems: 'center',
               gap: '8px',
               padding: '12px 16px',
-              backgroundColor: 'var(--affine-background-tertiary-color)',
+              backgroundColor: 'var(--yunke-background-tertiary-color)',
               borderRadius: '6px',
-              border: `1px solid var(--affine-border-color)`,
+              border: `1px solid var(--yunke-border-color)`,
               width: '100%',
               boxSizing: 'border-box'
             }}>
@@ -244,7 +244,7 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
               }}>🔒</span>
               <span style={{
                 fontSize: '13px',
-                color: 'var(--affine-text-secondary-color)',
+                color: 'var(--yunke-text-secondary-color)',
                 lineHeight: '1.4'
               }}>安全支付由支付宝/微信官方保障</span>
             </div>
@@ -262,14 +262,14 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
           }}>
             <Loading size={24} style={{ marginBottom: '16px' }} />
             <h3 style={{
-              fontSize: 'var(--affine-font-base)',
+              fontSize: 'var(--yunke-font-base)',
               fontWeight: '500',
-              color: 'var(--affine-text-primary-color)',
+              color: 'var(--yunke-text-primary-color)',
               margin: '0 0 8px 0'
             }}>正在生成支付订单</h3>
             <p style={{
-              fontSize: 'var(--affine-font-sm)',
-              color: 'var(--affine-text-secondary-color)',
+              fontSize: 'var(--yunke-font-sm)',
+              color: 'var(--yunke-text-secondary-color)',
               margin: 0
             }}>请稍候...</p>
           </div>
@@ -283,7 +283,7 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
               display: 'inline-block',
               padding: '20px',
               backgroundColor: '#fff',
-              border: `1px solid var(--affine-border-color)`,
+              border: `1px solid var(--yunke-border-color)`,
               borderRadius: '8px',
               marginBottom: '20px'
             }}>
@@ -306,15 +306,15 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
             </div>
             
             <h3 style={{
-              fontSize: 'var(--affine-font-base)',
+              fontSize: 'var(--yunke-font-base)',
               fontWeight: '500',
-              color: 'var(--affine-text-primary-color)',
+              color: 'var(--yunke-text-primary-color)',
               margin: '0 0 8px 0'
             }}>使用{paymentMethod === 'WECHAT' ? '微信' : '支付宝'}扫码支付</h3>
             
             <p style={{
-              fontSize: 'var(--affine-font-sm)',
-              color: 'var(--affine-text-secondary-color)',
+              fontSize: 'var(--yunke-font-sm)',
+              color: 'var(--yunke-text-secondary-color)',
               margin: '0 0 16px 0'
             }}>打开{paymentMethod === 'WECHAT' ? '微信' : '支付宝'}App扫描二维码</p>
             
@@ -323,10 +323,10 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
               alignItems: 'center',
               gap: '6px',
               padding: '6px 12px',
-              backgroundColor: 'var(--affine-background-tertiary-color)',
+              backgroundColor: 'var(--yunke-background-tertiary-color)',
               borderRadius: '4px',
-              fontSize: 'var(--affine-font-xs)',
-              color: 'var(--affine-text-secondary-color)'
+              fontSize: 'var(--yunke-font-xs)',
+              color: 'var(--yunke-text-secondary-color)'
             }}>
               <span style={{
                 width: '6px',
@@ -341,21 +341,21 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
             <div style={{
               marginTop: '24px',
               padding: '16px',
-              backgroundColor: 'var(--affine-background-secondary-color)',
+              backgroundColor: 'var(--yunke-background-secondary-color)',
               borderRadius: '6px',
               textAlign: 'left'
             }}>
               <h4 style={{
-                fontSize: 'var(--affine-font-sm)',
+                fontSize: 'var(--yunke-font-sm)',
                 fontWeight: '500',
-                color: 'var(--affine-text-primary-color)',
+                color: 'var(--yunke-text-primary-color)',
                 margin: '0 0 8px 0'
               }}>订单信息</h4>
               <div style={{
                 display: 'flex',
                 justifyContent: 'space-between',
-                fontSize: 'var(--affine-font-xs)',
-                color: 'var(--affine-text-secondary-color)',
+                fontSize: 'var(--yunke-font-xs)',
+                color: 'var(--yunke-text-secondary-color)',
                 marginBottom: '4px'
               }}>
                 <span>商品</span>
@@ -364,8 +364,8 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
               <div style={{
                 display: 'flex',
                 justifyContent: 'space-between',
-                fontSize: 'var(--affine-font-xs)',
-                color: 'var(--affine-text-secondary-color)',
+                fontSize: 'var(--yunke-font-xs)',
+                color: 'var(--yunke-text-secondary-color)',
                 marginBottom: '4px'
               }}>
                 <span>订单号</span>
@@ -374,8 +374,8 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
               <div style={{
                 display: 'flex',
                 justifyContent: 'space-between',
-                fontSize: 'var(--affine-font-xs)',
-                color: 'var(--affine-text-secondary-color)'
+                fontSize: 'var(--yunke-font-xs)',
+                color: 'var(--yunke-text-secondary-color)'
               }}>
                 <span>支付方式</span>
                 <span>{paymentMethod === 'WECHAT' ? '微信支付' : '支付宝'}</span>
@@ -406,14 +406,14 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
               <span style={{ fontSize: '24px', color: '#fff' }}>✓</span>
             </div>
             <h3 style={{
-              fontSize: 'var(--affine-font-h5)',
+              fontSize: 'var(--yunke-font-h5)',
               fontWeight: '600',
-              color: 'var(--affine-text-primary-color)',
+              color: 'var(--yunke-text-primary-color)',
               margin: '0 0 8px 0'
             }}>支付成功</h3>
             <p style={{
-              fontSize: 'var(--affine-font-sm)',
-              color: 'var(--affine-text-secondary-color)',
+              fontSize: 'var(--yunke-font-sm)',
+              color: 'var(--yunke-text-secondary-color)',
               margin: 0
             }}>内容已解锁，感谢您的购买</p>
           </div>
@@ -432,7 +432,7 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
               width: '48px',
               height: '48px',
               borderRadius: '50%',
-              backgroundColor: 'var(--affine-error-color)',
+              backgroundColor: 'var(--yunke-error-color)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -441,14 +441,14 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
               <span style={{ fontSize: '24px', color: '#fff' }}>✕</span>
             </div>
             <h3 style={{
-              fontSize: 'var(--affine-font-base)',
+              fontSize: 'var(--yunke-font-base)',
               fontWeight: '500',
-              color: 'var(--affine-text-primary-color)',
+              color: 'var(--yunke-text-primary-color)',
               margin: '0 0 8px 0'
             }}>支付失败</h3>
             <p style={{
-              fontSize: 'var(--affine-font-sm)',
-              color: 'var(--affine-text-secondary-color)',
+              fontSize: 'var(--yunke-font-sm)',
+              color: 'var(--yunke-text-secondary-color)',
               margin: 0,
               maxWidth: '280px'
             }}>{error || '支付过程中出现问题，请重试'}</p>
@@ -486,11 +486,11 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
             </Button>
             <div style={{
               padding: '8px 16px',
-              fontSize: 'var(--affine-font-sm)',
-              color: 'var(--affine-text-secondary-color)',
-              backgroundColor: 'var(--affine-background-tertiary-color)',
+              fontSize: 'var(--yunke-font-sm)',
+              color: 'var(--yunke-text-secondary-color)',
+              backgroundColor: 'var(--yunke-background-tertiary-color)',
               borderRadius: '4px',
-              border: `1px solid var(--affine-border-color)`
+              border: `1px solid var(--yunke-border-color)`
             }}>
               等待支付中...
             </div>
@@ -527,7 +527,7 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
           font-size: 18px !important;
           font-weight: 600 !important;
           line-height: 1.4 !important;
-          color: var(--affine-text-primary-color) !important;
+          color: var(--yunke-text-primary-color) !important;
         }
       `}</style>
       <Modal
@@ -560,8 +560,8 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
         justifyContent: 'flex-end',
         alignItems: 'center',
         padding: '20px 28px',
-        borderTop: `1px solid var(--affine-border-color)`,
-        backgroundColor: 'var(--affine-background-secondary-color)',
+        borderTop: `1px solid var(--yunke-border-color)`,
+        backgroundColor: 'var(--yunke-background-secondary-color)',
         minHeight: '72px',
         boxSizing: 'border-box'
       }}>

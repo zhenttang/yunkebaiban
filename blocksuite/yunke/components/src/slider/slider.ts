@@ -152,7 +152,7 @@ export class Slider extends WithDisposable(LitElement) {
       <div class="bottom-line"></div>
       <div class="slider-selected-overlay"></div>
       ${this.tooltip
-        ? html`<affine-tooltip .offset=${8}>${this.tooltip}</affine-tooltip>`
+        ? html`<yunke-tooltip .offset=${8}>${this.tooltip}</yunke-tooltip>`
         : nothing}
     </div>`;
   }

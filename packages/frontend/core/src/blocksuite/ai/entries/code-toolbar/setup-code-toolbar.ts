@@ -8,13 +8,13 @@ const buttonOptions: AskAIButtonOptions = {
   panelWidth: 240,
 };
 
-import type { AffineCodeToolbarWidget } from '@blocksuite/yunke/blocks/code';
+import type { YunkeCodeToolbarWidget } from '@blocksuite/yunke/blocks/code';
 import { BlockSelection } from '@blocksuite/yunke/std';
 
 import { buildAICodeItemGroups } from '../../_common/config';
 import type { AskAIButtonOptions } from '../../components/ask-ai-button';
 
-export function setupCodeToolbarAIEntry(codeToolbar: AffineCodeToolbarWidget) {
+export function setupCodeToolbarAIEntry(codeToolbar: YunkeCodeToolbarWidget) {
   codeToolbar.addPrimaryItems(
     [
       {

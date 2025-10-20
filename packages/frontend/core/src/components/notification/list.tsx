@@ -106,7 +106,7 @@ export const NotificationList = () => {
           ref={loadMoreIndicatorRef}
           className={hasMore ? styles.loadMoreIndicator : ''}
         >
-          {hasMore ? t['com.affine.notification.loading-more']() : null}
+          {hasMore ? t['com.yunke.notification.loading-more']() : null}
         </div>
       </Scrollable.Viewport>
       <Scrollable.Scrollbar />
@@ -122,10 +122,10 @@ const NotificationListEmpty = () => {
         <NotificationIcon width={24} height={24} />
       </div>
       <div className={styles.listEmptyTitle}>
-        {t['com.affine.notification.empty']()}
+        {t['com.yunke.notification.empty']()}
       </div>
       <div className={styles.listEmptyDescription}>
-        {t['com.affine.notification.empty.description']()}
+        {t['com.yunke.notification.empty.description']()}
       </div>
     </div>
   );
@@ -172,7 +172,7 @@ const NotificationItem = ({ notification }: { notification: Notification }) => {
     <div className={styles.itemContainer}>
       <Avatar size={22} />
       <div className={styles.itemNotSupported}>
-        {t['com.affine.notification.unsupported']()} ({type})
+        {t['com.yunke.notification.unsupported']()} ({type})
       </div>
       <DeleteButton notification={notification} />
     </div>
@@ -220,7 +220,7 @@ const MentionNotificationItem = ({
       <div className={styles.itemMain}>
         <span>
           <Trans
-            i18nKey={'com.affine.notification.mention'}
+            i18nKey={'com.yunke.notification.mention'}
             components={{
               1: (
                 <b
@@ -232,7 +232,7 @@ const MentionNotificationItem = ({
             }}
             values={{
               username:
-                body.createdByUser?.name ?? t['com.affine.inactive-member'](),
+                body.createdByUser?.name ?? t['com.yunke.inactive-member'](),
               docTitle: body.doc.title || t['Untitled'](),
             }}
           />
@@ -283,7 +283,7 @@ const InvitationReviewRequestNotificationItem = ({
       <div className={styles.itemMain}>
         <span>
           <Trans
-            i18nKey={'com.affine.notification.invitation-review-request'}
+            i18nKey={'com.yunke.notification.invitation-review-request'}
             components={{
               1: (
                 <b
@@ -295,9 +295,9 @@ const InvitationReviewRequestNotificationItem = ({
             }}
             values={{
               username:
-                body.createdByUser?.name ?? t['com.affine.inactive-member'](),
+                body.createdByUser?.name ?? t['com.yunke.inactive-member'](),
               workspaceName:
-                body.workspace?.name ?? t['com.affine.inactive-workspace'](),
+                body.workspace?.name ?? t['com.yunke.inactive-workspace'](),
             }}
           />
         </span>
@@ -333,7 +333,7 @@ const InvitationReviewDeclinedNotificationItem = ({
       <div className={styles.itemMain}>
         <span>
           <Trans
-            i18nKey={'com.affine.notification.invitation-review-declined'}
+            i18nKey={'com.yunke.notification.invitation-review-declined'}
             components={{
               1: (
                 <b
@@ -345,9 +345,9 @@ const InvitationReviewDeclinedNotificationItem = ({
             }}
             values={{
               username:
-                body.createdByUser?.name ?? t['com.affine.inactive-member'](),
+                body.createdByUser?.name ?? t['com.yunke.inactive-member'](),
               workspaceName:
-                body.workspace?.name ?? t['com.affine.inactive-workspace'](),
+                body.workspace?.name ?? t['com.yunke.inactive-workspace'](),
             }}
           />
         </span>
@@ -400,7 +400,7 @@ const InvitationReviewApprovedNotificationItem = ({
       <div className={styles.itemMain}>
         <span>
           <Trans
-            i18nKey={'com.affine.notification.invitation-review-approved'}
+            i18nKey={'com.yunke.notification.invitation-review-approved'}
             components={{
               1: (
                 <b
@@ -412,9 +412,9 @@ const InvitationReviewApprovedNotificationItem = ({
             }}
             values={{
               username:
-                body.createdByUser?.name ?? t['com.affine.inactive-member'](),
+                body.createdByUser?.name ?? t['com.yunke.inactive-member'](),
               workspaceName:
-                body.workspace?.name ?? t['com.affine.inactive-workspace'](),
+                body.workspace?.name ?? t['com.yunke.inactive-workspace'](),
             }}
           />
         </span>
@@ -425,7 +425,7 @@ const InvitationReviewApprovedNotificationItem = ({
             onClick={handleClick}
           >
             {t[
-              'com.affine.notification.invitation-review-approved.open-workspace'
+              'com.yunke.notification.invitation-review-approved.open-workspace'
             ]()}
           </Button>
         )}
@@ -475,13 +475,13 @@ const InvitationAcceptedNotificationItem = ({
       <div className={styles.itemMain}>
         <span>
           <Trans
-            i18nKey={'com.affine.notification.invitation-accepted'}
+            i18nKey={'com.yunke.notification.invitation-accepted'}
             components={{
               1: <WorkspaceNameWithIcon data-inactived={memberInactived} />,
             }}
             values={{
               username:
-                body.createdByUser?.name ?? t['com.affine.inactive-member'](),
+                body.createdByUser?.name ?? t['com.yunke.inactive-member'](),
             }}
           />
         </span>
@@ -527,7 +527,7 @@ const InvitationBlockedNotificationItem = ({
       <div className={styles.itemMain}>
         <span>
           <Trans
-            i18nKey={'com.affine.notification.invitation-blocked'}
+            i18nKey={'com.yunke.notification.invitation-blocked'}
             components={{
               1: (
                 <b
@@ -538,7 +538,7 @@ const InvitationBlockedNotificationItem = ({
             }}
             values={{
               workspaceName:
-                body.workspace?.name ?? t['com.affine.inactive-workspace'](),
+                body.workspace?.name ?? t['com.yunke.inactive-workspace'](),
             }}
           />
         </span>
@@ -601,8 +601,8 @@ const InvitationNotificationItem = ({
         if (value === false) {
           // invite is expired
           notify.error({
-            title: t['com.affine.expired.page.title'](),
-            message: t['com.affine.expired.page.new-subtitle'](),
+            title: t['com.yunke.expired.page.title'](),
+            message: t['com.yunke.expired.page.new-subtitle'](),
           });
           notificationListService
             .readNotification(notification.id)
@@ -643,7 +643,7 @@ const InvitationNotificationItem = ({
       <div className={styles.itemMain}>
         <span>
           <Trans
-            i18nKey={'com.affine.notification.invitation'}
+            i18nKey={'com.yunke.notification.invitation'}
             components={{
               1: (
                 <b
@@ -655,9 +655,9 @@ const InvitationNotificationItem = ({
             }}
             values={{
               username:
-                body.createdByUser?.name ?? t['com.affine.inactive-member'](),
+                body.createdByUser?.name ?? t['com.yunke.inactive-member'](),
               workspaceName:
-                body.workspace?.name ?? t['com.affine.inactive-workspace'](),
+                body.workspace?.name ?? t['com.yunke.inactive-workspace'](),
             }}
           />
         </span>
@@ -668,7 +668,7 @@ const InvitationNotificationItem = ({
             onClick={handleAcceptInvite}
             loading={isAccepting}
           >
-            {t['com.affine.notification.invitation.accept']()}
+            {t['com.yunke.notification.invitation.accept']()}
           </Button>
         )}
         <div className={styles.itemDate}>

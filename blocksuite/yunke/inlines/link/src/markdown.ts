@@ -1,7 +1,7 @@
-import type { AffineTextAttributes } from '@blocksuite/yunke-shared/types';
+import type { YunkeTextAttributes } from '@blocksuite/yunke-shared/types';
 import { InlineMarkdownExtension } from '@blocksuite/std/inline';
 
-export const LinkExtension = InlineMarkdownExtension<AffineTextAttributes>({
+export const LinkExtension = InlineMarkdownExtension<YunkeTextAttributes>({
   name: 'link',
   pattern: /.*\[(.+?)\]\((.+?)\)$/,
   action: ({ inlineEditor, prefixText, inlineRange, pattern, undoManager }) => {

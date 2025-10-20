@@ -13,7 +13,7 @@ import { TextSettings } from './text';
 export const Edgeless = () => {
   const t = useI18n();
   return (
-    <SettingWrapper title={t['com.affine.settings.editorSettings.edgeless']()}>
+    <SettingWrapper title={t['com.yunke.settings.editorSettings.edgeless']()}>
       <GeneralEdgelessSetting />
       <NoteSettings />
       <TextSettings />

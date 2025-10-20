@@ -56,7 +56,7 @@ export interface TelemetryService {
 }
 
 export const TelemetryProvider = createIdentifier<TelemetryService>(
-  'AffineTelemetryService'
+  'YunkeTelemetryService'
 );
 
 export const TelemetryExtension = (

@@ -145,7 +145,7 @@ if (typeof window !== 'undefined') {
 }
 
 import { getStoreManager } from '@yunke/core/blocksuite/manager/store';
-import { AffineContext } from '@yunke/core/components/context';
+import { YunkeContext } from '@yunke/core/components/context';
 import { AppFallback } from '@yunke/core/mobile/components/app-fallback';
 import { configureMobileModules } from '@yunke/core/mobile/modules';
 import { VirtualKeyboardProvider } from '@yunke/core/mobile/modules/virtual-keyboard';
@@ -201,7 +201,7 @@ import { useTheme } from 'next-themes';
 import { Suspense, useEffect } from 'react';
 import { RouterProvider } from 'react-router-dom';
 
-import { AffineTheme } from './plugins/affine-theme';
+import { YunkeTheme } from './plugins/yunke-theme';
 import { AIButton } from './plugins/ai-button';
 import { Auth } from './plugins/auth';
 import { HashCash } from './plugins/hashcash';
@@ -318,7 +318,7 @@ try {
   if ((window as any).BUILD_CONFIG?.isAndroid) {
     try {
       const serversService = frameworkProvider.get(ServersService);
-      const server = serversService.server$('affine-cloud').value;
+      const server = serversService.server$('yunke-cloud').value;
       
       if (server) {
         const newBaseUrl = 'http://192.168.2.4:8080';
@@ -348,7 +348,7 @@ try {
         console.log('  验证baseUrl:', server.baseUrl);
         console.log('  验证serverMetadata.baseUrl:', server.serverMetadata?.baseUrl);
       } else {
-        console.error('❌ [Android配置] 未找到affine-cloud服务器');
+        console.error('❌ [Android配置] 未找到yunke-cloud服务器');
       }
     } catch (error) {
       console.error('❌ [Android配置] 修改服务器配置失败:', error);
@@ -463,7 +463,7 @@ framework.impl(PopupWindowProvider, {
 
 framework.impl(ClientSchemeProvider, {
   getClientScheme() {
-    return 'affine';
+    return 'yunke';
   },
 });
 
@@ -490,14 +490,14 @@ framework.impl(VirtualKeyboardProvider, {
           // 添加平台检查，只在原生平台执行
           if (Capacitor.isNativePlatform()) {
             try {
-              const navBarHeight = (await AffineTheme.getSystemNavBarHeight())
+              const navBarHeight = (await YunkeTheme.getSystemNavBarHeight())
                 .height;
               callback({
                 visible: true,
                 height: info.keyboardHeight - navBarHeight,
               });
             } catch (error) {
-              console.warn('AffineTheme.getSystemNavBarHeight failed:', error);
+              console.warn('YunkeTheme.getSystemNavBarHeight failed:', error);
               callback({
                 visible: true,
                 height: info.keyboardHeight,
@@ -733,12 +733,12 @@ if (typeof window !== 'undefined' && (window as any).BUILD_CONFIG?.isAndroid) {
 }
 
 // Android专用：监听原生JWT认证初始化事件
-window.addEventListener('affine-auth-initialized', (event: any) => {
+window.addEventListener('yunke-auth-initialized', (event: any) => {
   console.log('🔥 收到原生JWT认证初始化事件:', event.detail);
   const { token, server } = event.detail;
   
   // 验证Token是否已正确注入
-  const storedToken = localStorage.getItem('affine-admin-token');
+  const storedToken = localStorage.getItem('yunke-admin-token');
   console.log('🔍 验证localStorage中的Token:', storedToken?.substring(0, 30) + '...');
   
   if (storedToken && storedToken === token) {
@@ -965,8 +965,8 @@ setTimeout(() => {
     
     // 检查认证token
     console.log('=== 🔐 关键：Token检查 ===');
-    const adminToken = localStorage.getItem('affine-admin-token');
-    const accessToken = localStorage.getItem('affine-access-token');
+    const adminToken = localStorage.getItem('yunke-admin-token');
+    const accessToken = localStorage.getItem('yunke-access-token');
     
     if (adminToken) {
       console.log('✅ Admin Token存在:', adminToken.substring(0, 20) + '...');
@@ -1216,7 +1216,7 @@ const ThemeProvider = () => {
   const { resolvedTheme } = useTheme();
 
   useEffect(() => {
-    // 添加平台检查，只在原生平台执行StatusBar和AffineTheme操作
+    // 添加平台检查，只在原生平台执行StatusBar和YunkeTheme操作
     if (Capacitor.isNativePlatform()) {
       StatusBar.setStyle({
         style:
@@ -1227,11 +1227,11 @@ const ThemeProvider = () => {
               : Style.Default,
       }).catch(console.error);
       
-      AffineTheme.onThemeChanged({
+      YunkeTheme.onThemeChanged({
         darkMode: resolvedTheme === 'dark',
       }).catch(console.error);
     } else {
-      console.log('Web环境：跳过原生插件调用 (StatusBar, AffineTheme)');
+      console.log('Web环境：跳过原生插件调用 (StatusBar, YunkeTheme)');
     }
   }, [resolvedTheme]);
   return null;
@@ -1253,14 +1253,14 @@ export function App() {
     <Suspense>
       <FrameworkRoot framework={frameworkProvider}>
         <I18nProvider>
-          <AffineContext store={getCurrentStore()}>
+          <YunkeContext store={getCurrentStore()}>
             <ThemeProvider />
             <RouterProvider
               fallbackElement={<AppFallback />}
               router={router}
               future={future}
             />
-          </AffineContext>
+          </YunkeContext>
         </I18nProvider>
       </FrameworkRoot>
     </Suspense>

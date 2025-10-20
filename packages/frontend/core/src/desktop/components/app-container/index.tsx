@@ -1,4 +1,4 @@
-import { useAppSettingHelper } from '@yunke/core/components/hooks/affine/use-app-setting-helper';
+import { useAppSettingHelper } from '@yunke/core/components/hooks/yunke/use-app-setting-helper';
 import { RootAppSidebar } from '@yunke/core/components/root-app-sidebar';
 import { AppSidebarService } from '@yunke/core/modules/app-sidebar';
 import {

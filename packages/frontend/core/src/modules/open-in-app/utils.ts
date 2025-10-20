@@ -3,7 +3,7 @@ import { DebugLogger } from '@yunke/debug';
 
 const logger = new DebugLogger('open-in-app');
 
-// return an AFFiNE app's url to be opened in desktop app
+// return an YUNKE app's url to be opened in desktop app
 export const getOpenUrlInDesktopAppLink = (
   url: string,
   newTab = true,

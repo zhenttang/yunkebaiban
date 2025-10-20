@@ -15,20 +15,20 @@ const getThemeOptions = (
     value: 'specified' as EdgelessDefaultTheme,
     label:
       t[
-        'com.affine.settings.editorSettings.page.edgeless-default-theme.specified'
+        'com.yunke.settings.editorSettings.page.edgeless-default-theme.specified'
       ](),
   },
   {
     value: 'dark' as EdgelessDefaultTheme,
-    label: t['com.affine.themeSettings.dark'](),
+    label: t['com.yunke.themeSettings.dark'](),
   },
   {
     value: 'light' as EdgelessDefaultTheme,
-    label: t['com.affine.themeSettings.light'](),
+    label: t['com.yunke.themeSettings.light'](),
   },
   {
     value: 'auto' as EdgelessDefaultTheme,
-    label: t['com.affine.themeSettings.auto'](),
+    label: t['com.yunke.themeSettings.auto'](),
   },
 ];
 
@@ -38,14 +38,14 @@ const getThemeValue = (
 ) => {
   switch (theme) {
     case 'dark':
-      return t['com.affine.themeSettings.dark']();
+      return t['com.yunke.themeSettings.dark']();
     case 'light':
-      return t['com.affine.themeSettings.light']();
+      return t['com.yunke.themeSettings.light']();
     case 'auto':
-      return t['com.affine.themeSettings.auto']();
+      return t['com.yunke.themeSettings.auto']();
     case 'specified':
       return t[
-        'com.affine.settings.editorSettings.page.edgeless-default-theme.specified'
+        'com.yunke.settings.editorSettings.page.edgeless-default-theme.specified'
       ]();
     default:
       return '';
@@ -89,10 +89,10 @@ export const GeneralEdgelessSetting = () => {
     <>
       <SettingRow
         name={t[
-          'com.affine.settings.editorSettings.page.edgeless-default-theme.title'
+          'com.yunke.settings.editorSettings.page.edgeless-default-theme.title'
         ]()}
         desc={t[
-          'com.affine.settings.editorSettings.page.edgeless-default-theme.description'
+          'com.yunke.settings.editorSettings.page.edgeless-default-theme.description'
         ]()}
       >
         <Menu
@@ -112,10 +112,10 @@ export const GeneralEdgelessSetting = () => {
       </SettingRow>
       <SettingRow
         name={t[
-          'com.affine.settings.editorSettings.page.edgeless-scroll-wheel-zoom.title'
+          'com.yunke.settings.editorSettings.page.edgeless-scroll-wheel-zoom.title'
         ]()}
         desc={t[
-          'com.affine.settings.editorSettings.page.edgeless-scroll-wheel-zoom.description'
+          'com.yunke.settings.editorSettings.page.edgeless-scroll-wheel-zoom.description'
         ]()}
       >
         <Switch

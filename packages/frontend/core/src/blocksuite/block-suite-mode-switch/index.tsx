@@ -1,5 +1,5 @@
 import { RadioGroup, type RadioItem } from '@yunke/component';
-import { registerAffineCommand } from '@yunke/core/commands';
+import { registerYunkeCommand } from '@yunke/core/commands';
 import { EditorService } from '@yunke/core/modules/editor';
 import { ViewService, WorkbenchService } from '@yunke/core/modules/workbench';
 import { useI18n } from '@yunke/i18n';
@@ -75,13 +75,13 @@ export const EditorModeSwitch = () => {
   useEffect(() => {
     if (trash || isSharedMode || currentMode === undefined || !isActiveView)
       return;
-    return registerAffineCommand({
-      id: 'affine:doc-mode-switch',
+    return registerYunkeCommand({
+      id: 'yunke:doc-mode-switch',
       category: 'editor:page',
       label:
         currentMode === 'page'
-          ? t['com.affine.cmdk.switch-to-edgeless']()
-          : t['com.affine.cmdk.switch-to-page'](),
+          ? t['com.yunke.cmdk.switch-to-edgeless']()
+          : t['com.yunke.cmdk.switch-to-page'](),
       icon: currentMode === 'page' ? <EdgelessIcon /> : <PageIcon />,
       keyBinding: {
         binding: 'Alt+KeyS',

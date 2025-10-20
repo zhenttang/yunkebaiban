@@ -1,7 +1,7 @@
 import { OverlayModal } from '@yunke/component';
 import { useI18n } from '@yunke/i18n';
 
-export const StarAFFiNEModal = ({
+export const StarYUNKEModal = ({
   open,
   setOpen,
 }: {
@@ -23,15 +23,15 @@ export const StarAFFiNEModal = ({
           loop
         />
       }
-      title={t['com.affine.star-affine.title']()}
+      title={t['com.yunke.star-yunke.title']()}
       onOpenChange={setOpen}
-      description={t['com.affine.star-affine.description']()}
-      cancelText={t['com.affine.star-affine.cancel']()}
+      description={t['com.yunke.star-yunke.description']()}
+      cancelText={t['com.yunke.star-yunke.cancel']()}
       to={BUILD_CONFIG.githubUrl}
       confirmButtonOptions={{
         variant: 'primary',
       }}
-      confirmText={t['com.affine.star-affine.confirm']()}
+      confirmText={t['com.yunke.star-yunke.confirm']()}
       external
     />
   );

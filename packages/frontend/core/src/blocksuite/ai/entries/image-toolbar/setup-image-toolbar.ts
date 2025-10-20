@@ -15,7 +15,7 @@ import type { AskAIButtonOptions } from '../../components/ask-ai-button';
 const AIImageItemGroups = buildAIImageItemGroups();
 const buttonOptions: AskAIButtonOptions = {
   size: 'small',
-  backgroundColor: 'var(--affine-white)',
+  backgroundColor: 'var(--yunke-white)',
   panelWidth: 300,
 };
 

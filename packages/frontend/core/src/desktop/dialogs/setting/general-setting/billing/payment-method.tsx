@@ -5,7 +5,7 @@ import {
   type ButtonProps,
   IconButton,
 } from '@yunke/component/ui/button';
-import { useAsyncCallback } from '@yunke/core/components/hooks/affine-async-hooks';
+import { useAsyncCallback } from '@yunke/core/components/hooks/yunke-async-hooks';
 import { SubscriptionService } from '@yunke/core/modules/cloud';
 import { UrlService } from '@yunke/core/modules/url';
 import { UserFriendlyError } from '@yunke/error';
@@ -36,9 +36,9 @@ export const PaymentMethod = () => {
     <>
       <SettingRow
         className={styles.paymentMethod}
-        name={t['com.affine.payment.billing-setting.payment-method']()}
+        name={t['com.yunke.payment.billing-setting.payment-method']()}
         desc={t[
-          'com.affine.payment.billing-setting.payment-method.description'
+          'com.yunke.payment.billing-setting.payment-method.description'
         ]()}
       >
         <PaymentMethodUpdater />
@@ -46,9 +46,9 @@ export const PaymentMethod = () => {
       {isBeliever || isOnetime ? null : proSubscription?.end &&
         proSubscription?.canceledAt ? (
         <SettingRow
-          name={t['com.affine.payment.billing-setting.expiration-date']()}
+          name={t['com.yunke.payment.billing-setting.expiration-date']()}
           desc={t[
-            'com.affine.payment.billing-setting.expiration-date.description'
+            'com.yunke.payment.billing-setting.expiration-date.description'
           ]({
             expirationDate: new Date(proSubscription.end).toLocaleDateString(),
           })}
@@ -63,9 +63,9 @@ export const PaymentMethod = () => {
               setOpenCancelModal(true);
             }}
             className="dangerous-setting"
-            name={t['com.affine.payment.billing-setting.cancel-subscription']()}
+            name={t['com.yunke.payment.billing-setting.cancel-subscription']()}
             desc={t[
-              'com.affine.payment.billing-setting.cancel-subscription.description'
+              'com.yunke.payment.billing-setting.cancel-subscription.description'
             ]()}
           >
             <CancelSubscription />
@@ -111,8 +111,8 @@ export const PaymentMethodUpdater = ({
       variant={variant}
     >
       {inCardView
-        ? t['com.affine.payment.billing-setting.payment-method']()
-        : t['com.affine.payment.billing-setting.payment-method.go']()}
+        ? t['com.yunke.payment.billing-setting.payment-method']()
+        : t['com.yunke.payment.billing-setting.payment-method.go']()}
     </Button>
   );
 };
@@ -133,7 +133,7 @@ const ResumeSubscription = () => {
         data-event-args-type={subscription.pro$.value?.plan}
         data-event-args-category={subscription.pro$.value?.recurring}
       >
-        {t['com.affine.payment.billing-setting.resume-subscription']()}
+        {t['com.yunke.payment.billing-setting.resume-subscription']()}
       </Button>
     </ResumeAction>
   );

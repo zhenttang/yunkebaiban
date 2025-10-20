@@ -12,7 +12,7 @@ export class EdgelessToolIconButton extends LitElement {
       display: flex;
       align-items: center;
       padding: var(--icon-container-padding);
-      color: var(--affine-icon-color);
+      color: var(--yunke-icon-color);
       border-radius: 4px;
       cursor: pointer;
       white-space: nowrap;
@@ -22,22 +22,22 @@ export class EdgelessToolIconButton extends LitElement {
     }
 
     .icon-container.active-mode-color[active] {
-      color: var(--affine-primary-color);
+      color: var(--yunke-primary-color);
     }
 
     .icon-container.active-mode-background[active] {
-      background: var(--affine-hover-color);
+      background: var(--yunke-hover-color);
     }
 
     .icon-container[disabled] {
       pointer-events: none;
       cursor: not-allowed;
-      color: var(--affine-text-disable-color);
+      color: var(--yunke-text-disable-color);
     }
 
     .icon-container[coming] {
       cursor: not-allowed;
-      color: var(--affine-text-disable-color);
+      color: var(--yunke-text-disable-color);
     }
 
     ::slotted(svg) {
@@ -66,7 +66,7 @@ export class EdgelessToolIconButton extends LitElement {
     .icon-container[with-hover]::before {
       content: '';
       display: block;
-      background: var(--affine-hover-color);
+      background: var(--yunke-hover-color);
       position: absolute;
       width: 100%;
       height: 100%;
@@ -114,7 +114,7 @@ export class EdgelessToolIconButton extends LitElement {
       <style>
         .icon-container:hover,
         .icon-container.hovered {
-          background: ${this.hover ? `var(--affine-hover-color)` : 'inherit'};
+          background: ${this.hover ? `var(--yunke-hover-color)` : 'inherit'};
         }
       </style>
       <div
@@ -127,11 +127,11 @@ export class EdgelessToolIconButton extends LitElement {
         <slot></slot>
         ${cache(
           this.showTooltip && tooltip
-            ? html`<affine-tooltip
+            ? html`<yunke-tooltip
                 tip-position=${this.tipPosition}
                 .arrow=${this.arrow}
                 .offset=${this.tooltipOffset}
-                >${tooltip}</affine-tooltip
+                >${tooltip}</yunke-tooltip
               >`
             : nothing
         )}

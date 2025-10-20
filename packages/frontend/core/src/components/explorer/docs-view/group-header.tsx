@@ -91,8 +91,8 @@ export const DocGroupHeader = ({
       >
         {t[
           isGroupAllSelected
-            ? 'com.affine.page.group-header.clear'
-            : 'com.affine.page.group-header.select-all'
+            ? 'com.yunke.page.group-header.clear'
+            : 'com.yunke.page.group-header.select-all'
         ]()}
       </Button>
     </div>

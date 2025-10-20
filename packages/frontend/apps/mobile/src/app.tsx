@@ -1,4 +1,4 @@
-import { AffineContext } from '@yunke/core/components/context';
+import { YunkeContext } from '@yunke/core/components/context';
 import { AppFallback } from '@yunke/core/mobile/components/app-fallback';
 import { configureMobileModules } from '@yunke/core/mobile/modules';
 import { HapticProvider } from '@yunke/core/mobile/modules/haptics';
@@ -25,7 +25,7 @@ let storeManagerClient: StoreManagerClient;
 
 const workerUrl = getWorkerUrl('nbstore');
 if (window.SharedWorker) {
-  const worker = new SharedWorker(workerUrl, { name: 'affine-shared-worker' });
+  const worker = new SharedWorker(workerUrl, { name: 'yunke-shared-worker' });
   storeManagerClient = new StoreManagerClient(new OpClient(worker.port));
 } else {
   const worker = new Worker(workerUrl);
@@ -148,13 +148,13 @@ export function App() {
     <Suspense>
       <FrameworkRoot framework={frameworkProvider}>
         <I18nProvider>
-          <AffineContext store={getCurrentStore()}>
+          <YunkeContext store={getCurrentStore()}>
             <RouterProvider
               fallbackElement={<AppFallback />}
               router={router}
               future={future}
             />
-          </AffineContext>
+          </YunkeContext>
         </I18nProvider>
       </FrameworkRoot>
     </Suspense>

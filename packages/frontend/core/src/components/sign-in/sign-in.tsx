@@ -6,8 +6,8 @@ import {
   AuthHeader,
   AuthInput,
 } from '@yunke/component/auth-components';
-import { OAuth } from '@yunke/core/components/affine/auth/oauth';
-import { useAsyncCallback } from '@yunke/core/components/hooks/affine-async-hooks';
+import { OAuth } from '@yunke/core/components/yunke/auth/oauth';
+import { useAsyncCallback } from '@yunke/core/components/hooks/yunke-async-hooks';
 import { AuthService, ServerService } from '@yunke/core/modules/cloud';
 import type { AuthSessionStatus } from '@yunke/core/modules/cloud/entities/session';
 // import { ServerDeploymentType } from '@yunke/graphql';
@@ -72,8 +72,8 @@ export const SignInStep = ({
   useEffect(() => {
     if (loginStatus === 'authenticated') {
       notify.success({
-        title: t['com.affine.auth.toast.title.signed-in'](),
-        message: t['com.affine.auth.toast.message.signed-in'](),
+        title: t['com.yunke.auth.toast.title.signed-in'](),
+        message: t['com.yunke.auth.toast.message.signed-in'](),
       });
     }
     onAuthenticated?.(loginStatus);
@@ -129,7 +129,7 @@ export const SignInStep = ({
   return (
     <AuthContainer>
       <AuthHeader
-        title={t['com.affine.auth.sign.in']()}
+        title={t['com.yunke.auth.sign.in']()}
         subTitle={serverName}
       />
 
@@ -138,12 +138,12 @@ export const SignInStep = ({
 
         <AuthInput
           className={style.authInput}
-          label={t['com.affine.settings.email']()}
-          placeholder={t['com.affine.auth.sign.email.placeholder']()}
+          label={t['com.yunke.settings.email']()}
+          placeholder={t['com.yunke.auth.sign.email.placeholder']()}
           onChange={setEmail}
           error={!isValidEmail}
           errorHint={
-            isValidEmail ? '' : t['com.affine.auth.sign.email.error']()
+            isValidEmail ? '' : t['com.yunke.auth.sign.email.error']()
           }
           onEnter={onContinue}
         />
@@ -158,19 +158,19 @@ export const SignInStep = ({
           suffixStyle={{ width: 20, height: 20, color: cssVar('blue') }}
           onClick={onContinue}
         >
-          {t['com.affine.auth.sign.email.continue']()}
+          {t['com.yunke.auth.sign.email.continue']()}
         </Button>
 
         <>
           <div className={style.authMessage}>
             {/*prettier-ignore*/}
-            <Trans i18nKey="com.affine.auth.sign.message">
-              By clicking &quot;Continue&quot; above, you acknowledge that you agree to AFFiNE's
-              <a href="https://affine.pro/terms" target="_blank" rel="noreferrer">
+            <Trans i18nKey="com.yunke.auth.sign.message">
+              By clicking &quot;Continue&quot; above, you acknowledge that you agree to YUNKE's
+              <a href="https://yunke.pro/terms" target="_blank" rel="noreferrer">
                 Terms of Conditions
               </a>{' '}
               and
-              <a href="https://affine.pro/privacy" target="_blank" rel="noreferrer">
+              <a href="https://yunke.pro/privacy" target="_blank" rel="noreferrer">
                 Privacy Policy
               </a>
               .
@@ -191,11 +191,11 @@ export const SignInStep = ({
                 }
                 onClick={onAddSelfhosted}
               >
-                {t['com.affine.auth.sign.add-selfhosted']()}
+                {t['com.yunke.auth.sign.add-selfhosted']()}
               </Button>
             ) : (
               <div className={style.skipText}>
-                {t['com.affine.mobile.sign-in.skip.hint']()}
+                {t['com.yunke.mobile.sign-in.skip.hint']()}
               </div>
             )}
             <Button
@@ -204,7 +204,7 @@ export const SignInStep = ({
               className={style.skipLink}
               prefix={<LocalWorkspaceIcon className={style.skipLinkIcon} />}
             >
-              {t['com.affine.mobile.sign-in.skip.link']()}
+              {t['com.yunke.mobile.sign-in.skip.link']()}
             </Button>
           </div>
         </>

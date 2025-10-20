@@ -3,7 +3,7 @@ import {
   type DropTargetOptions,
   useDropTarget,
 } from '@yunke/component';
-import type { AffineDNDData } from '@yunke/core/types/dnd';
+import type { YunkeDNDData } from '@yunke/core/types/dnd';
 import { useI18n } from '@yunke/i18n';
 
 import { EmptyNodeChildren } from '../../layouts/empty-node-children';
@@ -13,8 +13,8 @@ export const FolderEmpty = ({
   canDrop,
   onDrop,
 }: {
-  onDrop?: (data: DropTargetDropEvent<AffineDNDData>) => void;
-  canDrop?: DropTargetOptions<AffineDNDData>['canDrop'];
+  onDrop?: (data: DropTargetDropEvent<YunkeDNDData>) => void;
+  canDrop?: DropTargetOptions<YunkeDNDData>['canDrop'];
 }) => {
   const { dropTargetRef } = useDropTarget(
     () => ({
@@ -27,7 +27,7 @@ export const FolderEmpty = ({
   const t = useI18n();
   return (
     <EmptyNodeChildren ref={dropTargetRef} className={draggedOverHighlight}>
-      {t['com.affine.rootAppSidebar.organize.empty-folder']()}
+      {t['com.yunke.rootAppSidebar.organize.empty-folder']()}
     </EmptyNodeChildren>
   );
 };

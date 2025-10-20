@@ -35,8 +35,8 @@ export class EdgelessTextBlockComponent extends GfxBlockComponent<EdgelessTextBl
       text-wrap: nowrap !important;
     }
 
-    .edgeless-text-block-container affine-paragraph,
-    affine-list {
+    .edgeless-text-block-container yunke-paragraph,
+    yunke-list {
       color: var(--edgeless-text-color);
       font-family: var(--edgeless-text-font-family);
       font-style: var(--edgeless-text-font-style);
@@ -286,12 +286,12 @@ export class EdgelessTextBlockComponent extends GfxBlockComponent<EdgelessTextBl
     const containerStyle: StyleInfo = {
       transform: `rotate(${rotate}deg)`,
       transformOrigin: 'center',
-      border: `1px solid ${editing ? 'var(--affine—primary—color, #1e96eb)' : 'transparent'}`,
+      border: `1px solid ${editing ? 'var(--yunke—primary—color, #1e96eb)' : 'transparent'}`,
       borderRadius: '4px',
       boxSizing: 'border-box',
       boxShadow: editing ? '0px 0px 0px 2px rgba(30, 150, 235, 0.3)' : 'none',
       fontWeight: '400',
-      lineHeight: 'var(--affine-line-height)',
+      lineHeight: 'var(--yunke-line-height)',
       minWidth: !hasMaxWidth ? '220px' : undefined,
     };
 
@@ -331,13 +331,13 @@ export class EdgelessTextBlockComponent extends GfxBlockComponent<EdgelessTextBl
       '--edgeless-text-font-style': fontStyle,
       '--edgeless-text-font-weight': fontWeight,
       '--edgeless-text-text-align': textAlign,
-      '--affine-list-margin': '0',
-      '--affine-paragraph-margin': '0',
-      '--affine-paragraph-min-height': '1em',
+      '--yunke-list-margin': '0',
+      '--yunke-paragraph-margin': '0',
+      '--yunke-paragraph-min-height': '1em',
     });
 
     return html`
-      <div style=${style} class="affine-block-children-container">
+      <div style=${style} class="yunke-block-children-container">
         ${this.renderChildren(this.model)}
       </div>
     `;
@@ -345,7 +345,7 @@ export class EdgelessTextBlockComponent extends GfxBlockComponent<EdgelessTextBl
 
   tryFocusEnd() {
     const paragraphOrLists = Array.from(
-      this.querySelectorAll<BlockComponent>('affine-paragraph, affine-list')
+      this.querySelectorAll<BlockComponent>('yunke-paragraph, yunke-list')
     );
     const last = paragraphOrLists.at(-1);
     if (last) {
@@ -368,13 +368,13 @@ export class EdgelessTextBlockComponent extends GfxBlockComponent<EdgelessTextBl
   @query('.edgeless-text-block-container')
   private accessor _textContainer!: HTMLDivElement;
 
-  @query('.affine-block-children-container')
+  @query('.yunke-block-children-container')
   accessor childrenContainer!: HTMLDivElement;
 }
 
 declare global {
   interface HTMLElementTagNameMap {
-    'affine-edgeless-text': EdgelessTextBlockComponent;
+    'yunke-edgeless-text': EdgelessTextBlockComponent;
   }
 }
 
@@ -480,7 +480,7 @@ export const EdgelessTextInteraction =
                     }
                   } else {
                     const rect = view
-                      .querySelector('.affine-block-children-container')
+                      .querySelector('.yunke-block-children-container')
                       ?.getBoundingClientRect();
 
                     if (rect) {

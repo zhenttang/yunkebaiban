@@ -7,7 +7,7 @@ import {
   useNavigate,
 } from 'react-router-dom';
 
-import { AffineErrorComponent } from '../components/affine/affine-error-boundary/affine-error-fallback';
+import { YunkeErrorComponent } from '../components/yunke/yunke-error-boundary/yunke-error-fallback';
 import { NavigateContext } from '../components/hooks/use-navigate-helper';
 import { RootWrapper } from './pages/root';
 
@@ -31,7 +31,7 @@ export function RootRouter() {
 export const topLevelRoutes = [
   {
     element: <RootRouter />,
-    errorElement: <AffineErrorComponent />,
+    errorElement: <YunkeErrorComponent />,
     children: [
       // ✅ Clipper 路由优先，避免被 workspace 通配符拦截
       {

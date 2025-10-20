@@ -36,7 +36,7 @@ export class ParagraphHeadingIcon extends SignalWatcher(
   WithDisposable(ShadowlessElement)
 ) {
   static override styles = css`
-    affine-paragraph-heading-icon .heading-icon {
+    yunke-paragraph-heading-icon .heading-icon {
       display: flex;
       align-items: start;
       margin-top: 0.3em;
@@ -82,11 +82,11 @@ export class ParagraphHeadingIcon extends SignalWatcher(
 }
 
 export function effects() {
-  customElements.define('affine-paragraph-heading-icon', ParagraphHeadingIcon);
+  customElements.define('yunke-paragraph-heading-icon', ParagraphHeadingIcon);
 }
 
 declare global {
   interface HTMLElementTagNameMap {
-    'affine-paragraph-heading-icon': ParagraphHeadingIcon;
+    'yunke-paragraph-heading-icon': ParagraphHeadingIcon;
   }
 }

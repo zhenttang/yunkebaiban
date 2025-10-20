@@ -1,68 +1,68 @@
 import { css } from 'lit';
 
 export const listPrefix = css`
-  .affine-list-block__prefix {
+  .yunke-list-block__prefix {
     display: flex;
-    color: var(--affine-blue-700);
-    font-size: var(--affine-font-sm);
+    color: var(--yunke-blue-700);
+    font-size: var(--yunke-font-sm);
     user-select: none;
     position: relative;
   }
 
-  .affine-list-block__numbered {
+  .yunke-list-block__numbered {
     min-width: 22px;
     height: 24px;
     margin-left: 2px;
   }
 
-  .affine-list-block__todo-prefix {
+  .yunke-list-block__todo-prefix {
     display: flex;
     align-items: center;
     cursor: pointer;
     width: 24px;
     height: 24px;
-    color: var(--affine-icon-color);
+    color: var(--yunke-icon-color);
   }
 
-  .affine-list-block__todo-prefix.readonly {
+  .yunke-list-block__todo-prefix.readonly {
     cursor: default;
   }
 
-  .affine-list-block__todo-prefix > svg {
+  .yunke-list-block__todo-prefix > svg {
     width: 20px;
     height: 20px;
   }
 `;
 
 export const listBlockStyles = css`
-  affine-list {
+  yunke-list {
     display: block;
-    font-size: var(--affine-font-base);
+    font-size: var(--yunke-font-base);
   }
 
-  affine-list code {
-    font-size: calc(var(--affine-font-base) - 3px);
+  yunke-list code {
+    font-size: calc(var(--yunke-font-base) - 3px);
     padding: 0px 4px 2px;
   }
 
-  .affine-list-block-container {
+  .yunke-list-block-container {
     box-sizing: border-box;
     border-radius: 4px;
     position: relative;
   }
-  .affine-list-block-container .affine-list-block-container {
+  .yunke-list-block-container .yunke-list-block-container {
     margin-top: 0;
   }
-  .affine-list-rich-text-wrapper {
+  .yunke-list-rich-text-wrapper {
     position: relative;
     display: flex;
   }
-  .affine-list-rich-text-wrapper rich-text {
+  .yunke-list-rich-text-wrapper rich-text {
     flex: 1;
   }
 
-  .affine-list--checked {
-    color: var(--affine-text-secondary-color);
+  .yunke-list--checked {
+    color: var(--yunke-text-secondary-color);
   }
 
   ${listPrefix}

@@ -60,7 +60,7 @@ export const NotificationButton = () => {
         postfixDisplay="always"
       >
         <span data-testid="notification-button">
-          {t['com.affine.rootAppSidebar.notifications']()}
+          {t['com.yunke.rootAppSidebar.notifications']()}
         </span>
       </MenuItem>
     </Menu>

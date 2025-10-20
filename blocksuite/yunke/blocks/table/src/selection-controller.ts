@@ -324,7 +324,7 @@ export class SelectionController implements ReactiveController {
             ${row
               .map(
                 cell => `
-              <td style="border: 1px solid var(--affine-border-color); padding: 8px 12px; min-width: ${DefaultColumnWidth}px; min-height: 22px;">${cell}</td>
+              <td style="border: 1px solid var(--yunke-border-color); padding: 8px 12px; min-width: ${DefaultColumnWidth}px; min-height: 22px;">${cell}</td>
             `
               )
               .join('')}
@@ -461,14 +461,14 @@ export class SelectionController implements ReactiveController {
     const startX = event.clientX;
     const startY = event.clientY;
     let selected = false;
-    const initCell = target.closest('affine-table-cell');
+    const initCell = target.closest('yunke-table-cell');
     if (!initCell) {
       selected = true;
     }
     const onMove = (event: MouseEvent) => {
       const target = event.target;
       if (target instanceof HTMLElement) {
-        const cell = target.closest('affine-table-cell');
+        const cell = target.closest('yunke-table-cell');
         if (!selected && initCell === cell) {
           return;
         }

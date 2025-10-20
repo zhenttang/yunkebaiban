@@ -49,7 +49,7 @@ export const CustomPermissionPanel = ({
           onChange={(_, checked) => update(item.flag, checked)}
           disabled={disabled}
           label={
-            t[`com.affine.share-menu.permission.${item.key}`]() || item.key
+            t[`com.yunke.share-menu.permission.${item.key}`]() || item.key
           }
         />
       ))}

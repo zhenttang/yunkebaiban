@@ -39,7 +39,7 @@ export class MobileTableRow extends SignalWatcher(
       right: 8px;
     }
 
-    .affine-database-block-row:has([data-editing='true']) .mobile-row-ops {
+    .yunke-database-block-row:has([data-editing='true']) .mobile-row-ops {
       visibility: hidden;
       opacity: 0;
     }
@@ -49,7 +49,7 @@ export class MobileTableRow extends SignalWatcher(
       padding: 4px;
       border-radius: 4px;
       box-shadow: 0px 0px 4px 0px rgba(66, 65, 73, 0.14);
-      background-color: var(--affine-background-primary-color);
+      background-color: var(--yunke-background-primary-color);
       position: relative;
       font-size: 16px;
       color: ${unsafeCSSVarV2('icon/primary')};
@@ -57,7 +57,7 @@ export class MobileTableRow extends SignalWatcher(
   `;
 
   get groupKey() {
-    return this.closest('affine-data-view-table-group')?.group?.key;
+    return this.closest('yunke-data-view-table-group')?.group?.key;
   }
 
   override connectedCallback() {

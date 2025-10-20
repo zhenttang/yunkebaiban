@@ -11,7 +11,7 @@ import { TextTool } from './tool';
 import { textToolbarExtension } from './toolbar';
 
 export class TextViewExtension extends ViewExtensionProvider {
-  override name = 'affine-text-gfx';
+  override name = 'yunke-text-gfx';
 
   override effect(): void {
     super.effect();

@@ -36,7 +36,7 @@ const optionsSchema = z.object({
 export class ParagraphViewExtension extends ViewExtensionProvider<
   z.infer<typeof optionsSchema>
 > {
-  override name = 'affine-paragraph-block';
+  override name = 'yunke-paragraph-block';
 
   override schema = optionsSchema;
 
@@ -55,7 +55,7 @@ export class ParagraphViewExtension extends ViewExtensionProvider<
 
     context.register([
       FlavourExtension('yunke:paragraph'),
-      BlockViewExtension('yunke:paragraph', literal`affine-paragraph`),
+      BlockViewExtension('yunke:paragraph', literal`yunke-paragraph`),
       ParagraphTextKeymapExtension,
       ParagraphKeymapExtension,
       ParagraphBlockConfigExtension({

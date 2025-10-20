@@ -8,7 +8,7 @@ import {
 import { DocsService } from '@yunke/core/modules/doc';
 import { DocDisplayMetaService } from '@yunke/core/modules/doc-display-meta';
 import { WorkbenchLink } from '@yunke/core/modules/workbench';
-import type { AffineDNDData } from '@yunke/core/types/dnd';
+import type { YunkeDNDData } from '@yunke/core/types/dnd';
 import { useI18n } from '@yunke/i18n';
 import track from '@yunke/track';
 import {
@@ -148,7 +148,7 @@ export const DocListItem = ({ ...props }: DocListItemProps) => {
     [contextValue, handleMultiSelect, prevCheckAnchorId, props, selectMode]
   );
 
-  const { dragRef, CustomDragPreview } = useDraggable<AffineDNDData>(
+  const { dragRef, CustomDragPreview } = useDraggable<YunkeDNDData>(
     () => ({
       canDrag: true,
       data: {

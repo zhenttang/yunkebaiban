@@ -1,4 +1,4 @@
-package app.affine.pro
+package app.yunke.pro
 
 enum class Prompt(val value: String) {
     Summary("Summary"),
@@ -16,6 +16,6 @@ enum class Prompt(val value: String) {
     MakeItLonger("Make it longer"),
     MakeItShorter("Make it shorter"),
     ContinueWriting("Continue writing"),
-    ChatWithAFFiNEAI("Chat With AFFiNE AI"),
-    SearchWithAFFiNEAI("Search With AFFiNE AI"),
+    ChatWithYUNKEAI("Chat With YUNKE AI"),
+    SearchWithYUNKEAI("Search With YUNKE AI"),
 }

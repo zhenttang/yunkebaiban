@@ -1,8 +1,8 @@
 import { css, html, LitElement } from 'lit';
 
-export class AffineTemplateLoading extends LitElement {
+export class YunkeTemplateLoading extends LitElement {
   static override styles = css`
-    @keyframes affine-template-block-rotate {
+    @keyframes yunke-template-block-rotate {
       from {
         rotate: 0deg;
       }
@@ -11,13 +11,13 @@ export class AffineTemplateLoading extends LitElement {
       }
     }
 
-    .affine-template-block-container {
+    .yunke-template-block-container {
       width: 20px;
       height: 20px;
       overflow: hidden;
     }
 
-    .affine-template-block-loading {
+    .yunke-template-block-loading {
       display: inline-block;
       width: 20px;
       height: 20px;
@@ -27,10 +27,10 @@ export class AffineTemplateLoading extends LitElement {
         rgba(0, 0, 0, 0.1) 90deg 360deg
       );
       border-radius: 50%;
-      animation: affine-template-block-rotate 1s infinite ease-in;
+      animation: yunke-template-block-rotate 1s infinite ease-in;
     }
 
-    .affine-template-block-loading::before {
+    .yunke-template-block-loading::before {
       content: '';
       width: 14px;
       height: 14px;
@@ -43,8 +43,8 @@ export class AffineTemplateLoading extends LitElement {
   `;
 
   override render() {
-    return html`<div class="affine-template-block-container">
-      <div class="affine-template-block-loading"></div>
+    return html`<div class="yunke-template-block-container">
+      <div class="yunke-template-block-loading"></div>
     </div>`;
   }
 }

@@ -16,8 +16,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "504EC3031FED79650016851F"
-               BuildableName = "AFFiNE.app"
-               BlueprintName = "AFFiNE"
+               BuildableName = "YUNKE.app"
+               BlueprintName = "YUNKE"
                ReferencedContainer = "container:App.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -45,8 +45,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "504EC3031FED79650016851F"
-            BuildableName = "AFFiNE.app"
-            BlueprintName = "AFFiNE"
+            BuildableName = "YUNKE.app"
+            BlueprintName = "YUNKE"
             ReferencedContainer = "container:App.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -62,8 +62,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "504EC3031FED79650016851F"
-            BuildableName = "AFFiNE.app"
-            BlueprintName = "AFFiNE"
+            BuildableName = "YUNKE.app"
+            BlueprintName = "YUNKE"
             ReferencedContainer = "container:App.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

@@ -59,9 +59,9 @@ export const DateSelectorDialog = ({
       }
       items={
         <DatePicker
-          weekDays={t['com.affine.calendar-date-picker.week-days']()}
-          monthNames={t['com.affine.calendar-date-picker.month-names']()}
-          todayLabel={t['com.affine.calendar-date-picker.today']()}
+          weekDays={t['com.yunke.calendar-date-picker.week-days']()}
+          monthNames={t['com.yunke.calendar-date-picker.month-names']()}
+          todayLabel={t['com.yunke.calendar-date-picker.today']()}
           value={selectedDate}
           onChange={handleSelect}
         />

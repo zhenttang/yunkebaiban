@@ -150,14 +150,14 @@ export class EmbeddedContentIndexService extends Service {
   private extractEmbeddedContent(block: any, docId: string): EmbeddedContentItem | null {
     // 检查块类型是否为嵌入类型
     const embedTypes = [
-      'affine:embed-iframe',
-      'affine:embed-figma', 
-      'affine:embed-youtube',
-      'affine:embed-github',
-      'affine:embed-loom',
-      'affine:embed-html',
-      'affine:embed-linked-doc',
-      'affine:embed-synced-doc'
+      'yunke:embed-iframe',
+      'yunke:embed-figma', 
+      'yunke:embed-youtube',
+      'yunke:embed-github',
+      'yunke:embed-loom',
+      'yunke:embed-html',
+      'yunke:embed-linked-doc',
+      'yunke:embed-synced-doc'
     ];
 
     if (!block.flavour || !embedTypes.includes(block.flavour)) {
@@ -186,14 +186,14 @@ export class EmbeddedContentIndexService extends Service {
 
   private getEmbedType(flavour: string): EmbeddedContentType {
     const typeMap: Record<string, EmbeddedContentType> = {
-      'affine:embed-iframe': 'iframe',
-      'affine:embed-figma': 'figma',
-      'affine:embed-youtube': 'youtube', 
-      'affine:embed-github': 'github',
-      'affine:embed-loom': 'loom',
-      'affine:embed-html': 'html',
-      'affine:embed-linked-doc': 'linked-doc',
-      'affine:embed-synced-doc': 'synced-doc',
+      'yunke:embed-iframe': 'iframe',
+      'yunke:embed-figma': 'figma',
+      'yunke:embed-youtube': 'youtube', 
+      'yunke:embed-github': 'github',
+      'yunke:embed-loom': 'loom',
+      'yunke:embed-html': 'html',
+      'yunke:embed-linked-doc': 'linked-doc',
+      'yunke:embed-synced-doc': 'synced-doc',
     };
 
     return typeMap[flavour] || 'iframe';

@@ -32,7 +32,7 @@ export class ParagraphLayoutHandlerExtension extends BlockLayoutHandlerExtension
     ) as GfxBlockComponent | null;
     if (!component) return null;
     const paragraphSelector =
-      '.affine-paragraph-rich-text-wrapper [data-v-text="true"]';
+      '.yunke-paragraph-rich-text-wrapper [data-v-text="true"]';
     const paragraphNode = component.querySelector(paragraphSelector);
     if (!paragraphNode) return null;
 

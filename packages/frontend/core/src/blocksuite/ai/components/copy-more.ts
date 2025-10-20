@@ -36,7 +36,7 @@ export class ChatCopyMore extends WithDisposable(LitElement) {
       }
 
       div:hover {
-        background-color: var(--affine-hover-color);
+        background-color: var(--yunke-hover-color);
       }
 
       .button {
@@ -53,8 +53,8 @@ export class ChatCopyMore extends WithDisposable(LitElement) {
     .more-menu {
       width: 226px;
       border-radius: 8px;
-      background-color: var(--affine-background-overlay-panel-color);
-      box-shadow: var(--affine-menu-shadow);
+      background-color: var(--yunke-background-overlay-panel-color);
+      box-shadow: var(--yunke-menu-shadow);
       display: flex;
       flex-direction: column;
       gap: 4px;
@@ -75,7 +75,7 @@ export class ChatCopyMore extends WithDisposable(LitElement) {
       }
 
       > div:hover {
-        background-color: var(--affine-hover-color);
+        background-color: var(--yunke-hover-color);
       }
     }
   `;
@@ -185,7 +185,7 @@ export class ChatCopyMore extends WithDisposable(LitElement) {
               data-testid="action-copy-button"
             >
               ${CopyIcon({ width: '20px', height: '20px' })}
-              <affine-tooltip>复制</affine-tooltip>
+              <yunke-tooltip>复制</yunke-tooltip>
             </div>`
           : nothing}
         ${isLast
@@ -195,7 +195,7 @@ export class ChatCopyMore extends WithDisposable(LitElement) {
               data-testid="action-retry-button"
             >
               ${ResetIcon({ width: '20px', height: '20px' })}
-              <affine-tooltip .autoShift=${true}>重试</affine-tooltip>
+              <yunke-tooltip .autoShift=${true}>重试</yunke-tooltip>
             </div>`
           : nothing}
         ${isLast

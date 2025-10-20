@@ -55,10 +55,10 @@ export class EdgelessConnectorToolButton extends QuickToolMixin(
         class="edgeless-connector-button"
         .tooltip=${this.popper
           ? ''
-          : html`<affine-tooltip-content-with-shortcut
+          : html`<yunke-tooltip-content-with-shortcut
               data-tip="${getConnectorModeName(mode)}"
               data-shortcut="${'C'}"
-            ></affine-tooltip-content-with-shortcut>`}
+            ></yunke-tooltip-content-with-shortcut>`}
         .tooltipOffset=${17}
         .active=${active}
         .iconContainerPadding=${6}

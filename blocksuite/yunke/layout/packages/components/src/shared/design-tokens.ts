@@ -8,37 +8,37 @@ export const DesignTokens = {
   // 颜色系统
   colors: {
     // 主色调
-    primary: 'var(--affine-primary-color)',
-    primaryAlpha: 'var(--affine-primary-color-alpha, rgba(30, 150, 235, 0.1))',
+    primary: 'var(--yunke-primary-color)',
+    primaryAlpha: 'var(--yunke-primary-color-alpha, rgba(30, 150, 235, 0.1))',
     
     // 背景色
-    backgroundPrimary: 'var(--affine-background-primary-color)',
-    backgroundSecondary: 'var(--affine-background-secondary-color)',
-    backgroundTertiary: 'var(--affine-background-tertiary-color)',
-    backgroundOverlay: 'var(--affine-background-overlay-panel-color)',
-    backgroundDisabled: 'var(--affine-background-disabled-color, #f4f4f5)',
+    backgroundPrimary: 'var(--yunke-background-primary-color)',
+    backgroundSecondary: 'var(--yunke-background-secondary-color)',
+    backgroundTertiary: 'var(--yunke-background-tertiary-color)',
+    backgroundOverlay: 'var(--yunke-background-overlay-panel-color)',
+    backgroundDisabled: 'var(--yunke-background-disabled-color, #f4f4f5)',
     
     // 文本色
-    textPrimary: 'var(--affine-text-primary-color)',
-    textSecondary: 'var(--affine-text-secondary-color)',
-    textDisabled: 'var(--affine-text-disable-color)',
-    textEmphasis: 'var(--affine-text-emphasis-color)',
+    textPrimary: 'var(--yunke-text-primary-color)',
+    textSecondary: 'var(--yunke-text-secondary-color)',
+    textDisabled: 'var(--yunke-text-disable-color)',
+    textEmphasis: 'var(--yunke-text-emphasis-color)',
     
     // 边框色
-    border: 'var(--affine-border-color)',
-    borderHover: 'var(--affine-divider-color)',
+    border: 'var(--yunke-border-color)',
+    borderHover: 'var(--yunke-divider-color)',
     
     // 交互色
-    hover: 'var(--affine-hover-color)',
-    selected: 'var(--affine-primary-color-alpha)',
-    error: 'var(--affine-error-color)',
-    warning: 'var(--affine-warning-color)',
-    success: 'var(--affine-success-color)',
+    hover: 'var(--yunke-hover-color)',
+    selected: 'var(--yunke-primary-color-alpha)',
+    error: 'var(--yunke-error-color)',
+    warning: 'var(--yunke-warning-color)',
+    success: 'var(--yunke-success-color)',
     
     // 图标色
-    icon: 'var(--affine-icon-color)',
-    iconHover: 'var(--affine-icon-hover-color)',
-    iconSecondary: 'var(--affine-icon-secondary-color)'
+    icon: 'var(--yunke-icon-color)',
+    iconHover: 'var(--yunke-icon-hover-color)',
+    iconSecondary: 'var(--yunke-icon-secondary-color)'
   },
   
   // 间距系统 (基于8px网格)

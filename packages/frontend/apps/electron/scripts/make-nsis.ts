@@ -16,7 +16,7 @@ import {
   ROOT,
 } from './make-env.js';
 
-const log = debug('affine:make-nsis');
+const log = debug('yunke:make-nsis');
 
 async function make() {
   const appName = productName;

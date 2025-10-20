@@ -92,18 +92,18 @@ export const CreateOrEditTag = ({
         tag => tag.name === tagName.trim() && tag.id !== tagMeta?.id
       )
     ) {
-      return toast(t['com.affine.tags.create-tag.toast.exist']());
+      return toast(t['com.yunke.tags.create-tag.toast.exist']());
     }
     if (!tagMeta) {
       tagList.createTag(tagName.trim(), tagIcon);
-      toast(t['com.affine.tags.create-tag.toast.success']());
+      toast(t['com.yunke.tags.create-tag.toast.success']());
       onClose();
       return;
     }
     tag?.rename(tagName.trim());
     tag?.changeColor(tagIcon);
 
-    toast(t['com.affine.tags.edit-tag.toast.success']());
+    toast(t['com.yunke.tags.edit-tag.toast.success']());
     onClose();
     return;
   }, [onClose, t, tag, tagIcon, tagMeta, tagName, tagOptions, tagList]);
@@ -159,8 +159,8 @@ export const CreateOrEditTag = ({
       </Menu>
 
       <Input
-        placeholder={t['com.affine.tags.create-tag.placeholder']()}
-        inputStyle={{ fontSize: 'var(--affine-font-xs)' }}
+        placeholder={t['com.yunke.tags.create-tag.placeholder']()}
+        inputStyle={{ fontSize: 'var(--yunke-font-xs)' }}
         onEnter={onConfirm}
         value={tagName}
         onChange={handleChangeName}

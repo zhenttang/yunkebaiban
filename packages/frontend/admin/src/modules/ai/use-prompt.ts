@@ -3,7 +3,7 @@ import {
   useMutation,
 } from '@yunke/admin/use-mutation';
 import { useQuery } from '@yunke/admin/use-query';
-import { useAsyncCallback } from '@yunke/core/components/hooks/affine-async-hooks';
+import { useAsyncCallback } from '@yunke/core/components/hooks/yunke-async-hooks';
 // import { getPromptsQuery, updatePromptMutation } from '@yunke/graphql';
 
 // Temporary placeholders to replace @yunke/graphql imports

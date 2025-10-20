@@ -5,16 +5,16 @@ import { Button } from '../../ui/button';
 import { AuthPageContainer } from './auth-page-container';
 
 export const SignInSuccessPage: FC<{
-  onOpenAffine: () => void;
-}> = ({ onOpenAffine }) => {
+  onOpenYunke: () => void;
+}> = ({ onOpenYunke }) => {
   const t = useI18n();
   return (
     <AuthPageContainer
-      title={t['com.affine.auth.signed.success.title']()}
-      subtitle={t['com.affine.auth.signed.success.subtitle']()}
+      title={t['com.yunke.auth.signed.success.title']()}
+      subtitle={t['com.yunke.auth.signed.success.subtitle']()}
     >
-      <Button variant="primary" size="large" onClick={onOpenAffine}>
-        {t['com.affine.auth.open.affine']()}
+      <Button variant="primary" size="large" onClick={onOpenYunke}>
+        {t['com.yunke.auth.open.yunke']()}
       </Button>
     </AuthPageContainer>
   );

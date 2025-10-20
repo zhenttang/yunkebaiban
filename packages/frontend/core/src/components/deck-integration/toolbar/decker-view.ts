@@ -6,7 +6,7 @@ import {
 import { deckerSeniorTool } from './decker-senior-tool';
 
 export class DeckViewExtension extends ViewExtensionProvider {
-  override name = 'affine-deck-integration';
+  override name = 'yunke-deck-integration';
 
   override effect(): void {
     super.effect();

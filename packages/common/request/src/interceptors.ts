@@ -5,13 +5,13 @@ import axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } f
  */
 export const tokenManager = {
   get: (): string | null => {
-    return localStorage.getItem('affine-admin-token') || null;
+    return localStorage.getItem('yunke-admin-token') || null;
   },
   set: (token: string): void => {
-    localStorage.setItem('affine-admin-token', token);
+    localStorage.setItem('yunke-admin-token', token);
   },
   remove: (): void => {
-    localStorage.removeItem('affine-admin-token');
+    localStorage.removeItem('yunke-admin-token');
   }
 };
 
@@ -136,7 +136,7 @@ export const setupResponseInterceptors = (instance: AxiosInstance): void => {
         // 防止无限循环刷新
         if (originalRequest.url?.includes('/api/auth/refresh')) {
           tokenManager.remove();
-          localStorage.removeItem('affine-admin-refresh-token');
+          localStorage.removeItem('yunke-admin-refresh-token');
           
           return Promise.reject({
             code: 'AUTH_EXPIRED',
@@ -163,7 +163,7 @@ export const setupResponseInterceptors = (instance: AxiosInstance): void => {
         isRefreshing = true;
 
         try {
-          const refreshToken = localStorage.getItem('affine-admin-refresh-token');
+          const refreshToken = localStorage.getItem('yunke-admin-refresh-token');
           if (!refreshToken) {
             throw new Error('No refresh token available');
           }
@@ -178,7 +178,7 @@ export const setupResponseInterceptors = (instance: AxiosInstance): void => {
             tokenManager.set(newToken);
             
             if (response.data.refreshToken) {
-              localStorage.setItem('affine-admin-refresh-token', response.data.refreshToken);
+              localStorage.setItem('yunke-admin-refresh-token', response.data.refreshToken);
             }
             
             // 处理队列中的请求
@@ -198,7 +198,7 @@ export const setupResponseInterceptors = (instance: AxiosInstance): void => {
           // 刷新令牌失败
           processQueue(refreshError, null);
           tokenManager.remove();
-          localStorage.removeItem('affine-admin-refresh-token');
+          localStorage.removeItem('yunke-admin-refresh-token');
           isRefreshing = false;
           
           // 不要自动跳转，让组件处理

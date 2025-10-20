@@ -7,7 +7,7 @@ import { effects } from './effects';
 import { viewportOverlayWidget } from './index';
 
 export class ViewportOverlayViewExtension extends ViewExtensionProvider {
-  override name = 'affine-viewport-overlay-widget';
+  override name = 'yunke-viewport-overlay-widget';
 
   override effect() {
     super.effect();

@@ -1,7 +1,7 @@
 import { toast, useConfirmModal } from '@yunke/component';
 import {
   PreconditionStrategy,
-  registerAffineCommand,
+  registerYunkeCommand,
 } from '@yunke/core/commands';
 import { WorkspaceDialogService } from '@yunke/core/modules/dialogs';
 import { DocService } from '@yunke/core/modules/doc';
@@ -71,11 +71,11 @@ export function useRegisterBlocksuiteEditorCommands(
   const { openConfirmModal } = useConfirmModal();
   const onClickDelete = useCallback(() => {
     openConfirmModal({
-      title: t['com.affine.moveToTrash.confirmModal.title'](),
-      description: t['com.affine.moveToTrash.confirmModal.description']({
+      title: t['com.yunke.moveToTrash.confirmModal.title'](),
+      description: t['com.yunke.moveToTrash.confirmModal.description']({
         title: doc.title$.value || t['Untitled'](),
       }),
-      cancelText: t['com.affine.confirmModal.button.cancel'](),
+      cancelText: t['com.yunke.confirmModal.button.cancel'](),
       confirmButtonOptions: {
         variant: 'error',
       },
@@ -84,7 +84,7 @@ export function useRegisterBlocksuiteEditorCommands(
         try {
           const canTrash = await guardService.can('Doc_Trash', docId);
           if (!canTrash) {
-            toast(t['com.affine.no-permission']());
+            toast(t['com.yunke.no-permission']());
             return;
           }
           doc.moveToTrash();
@@ -114,12 +114,12 @@ export function useRegisterBlocksuiteEditorCommands(
 
     // this is pretty hack and easy to break. need a better way to communicate with blocksuite editor
     // unsubs.push(
-    //   registerAffineCommand({
+    //   registerYunkeCommand({
     //     id: 'editor:edgeless-presentation-start',
     //     preconditionStrategy: () => PreconditionStrategy.InEdgeless && !trash,
     //     category: 'editor:edgeless',
     //     icon: <EdgelessIcon />,
-    //     label: t['com.affine.cmdk.affine.editor.edgeless.presentation-start'](),
+    //     label: t['com.yunke.cmdk.yunke.editor.edgeless.presentation-start'](),
     //     run() {
     //       document
     //         .querySelector<HTMLElement>('edgeless-toolbar')
@@ -132,13 +132,13 @@ export function useRegisterBlocksuiteEditorCommands(
     // );
 
     unsubs.push(
-      registerAffineCommand({
+      registerYunkeCommand({
         id: `editor:${mode}-view-info`,
         preconditionStrategy: () =>
           PreconditionStrategy.InPaperOrEdgeless && !trash,
         category: `editor:${mode}`,
         icon: mode === 'page' ? <PageIcon /> : <EdgelessIcon />,
-        label: t['com.affine.page-properties.page-info.view'](),
+        label: t['com.yunke.page-properties.page-info.view'](),
         run() {
           track.$.cmdk.docInfo.open();
 
@@ -148,29 +148,29 @@ export function useRegisterBlocksuiteEditorCommands(
     );
 
     unsubs.push(
-      registerAffineCommand({
+      registerYunkeCommand({
         id: `editor:${mode}-${favorite ? 'remove-from' : 'add-to'}-favourites`,
         preconditionStrategy,
         category: `editor:${mode}`,
         icon: mode === 'page' ? <PageIcon /> : <EdgelessIcon />,
         label: favorite
-          ? t['com.affine.favoritePageOperation.remove']()
-          : t['com.affine.favoritePageOperation.add'](),
+          ? t['com.yunke.favoritePageOperation.remove']()
+          : t['com.yunke.favoritePageOperation.add'](),
         run() {
           favAdapter.toggle(docId, 'doc');
           track.$.cmdk.editor.toggleFavorite();
 
           toast(
             favorite
-              ? t['com.affine.cmdk.affine.editor.remove-from-favourites']()
-              : t['com.affine.cmdk.affine.editor.add-to-favourites']()
+              ? t['com.yunke.cmdk.yunke.editor.remove-from-favourites']()
+              : t['com.yunke.cmdk.yunke.editor.add-to-favourites']()
           );
         },
       })
     );
 
     unsubs.push(
-      registerAffineCommand({
+      registerYunkeCommand({
         id: `editor:${mode}-convert-to-${
           mode === 'page' ? 'edgeless' : 'page'
         }`,
@@ -179,8 +179,8 @@ export function useRegisterBlocksuiteEditorCommands(
         icon: mode === 'page' ? <PageIcon /> : <EdgelessIcon />,
         label: `${t['Convert to ']()}${
           mode === 'page'
-            ? t['com.affine.pageMode.edgeless']()
-            : t['com.affine.pageMode.page']()
+            ? t['com.yunke.pageMode.edgeless']()
+            : t['com.yunke.pageMode.page']()
         }`,
         run() {
           track.$.cmdk.editor.switchPageMode({
@@ -190,26 +190,26 @@ export function useRegisterBlocksuiteEditorCommands(
           editor.toggleMode();
           toast(
             mode === 'page'
-              ? t['com.affine.toastMessage.edgelessMode']()
-              : t['com.affine.toastMessage.pageMode']()
+              ? t['com.yunke.toastMessage.edgelessMode']()
+              : t['com.yunke.toastMessage.pageMode']()
           );
         },
       })
     );
 
     unsubs.push(
-      registerAffineCommand({
+      registerYunkeCommand({
         id: `editor:page-set-width`,
         preconditionStrategy: () => mode === 'page',
         category: `editor:page`,
         icon: <PageIcon />,
         label: checked
-          ? t['com.affine.cmdk.affine.current-page-width-layout.standard']()
-          : t['com.affine.cmdk.affine.current-page-width-layout.full-width'](),
+          ? t['com.yunke.cmdk.yunke.current-page-width-layout.standard']()
+          : t['com.yunke.cmdk.yunke.current-page-width-layout.full-width'](),
         async run() {
           const canEdit = await guardService.can('Doc_Update', docId);
           if (!canEdit) {
-            toast(t['com.affine.no-permission']());
+            toast(t['com.yunke.no-permission']());
             return;
           }
           doc.record.setProperty(
@@ -222,12 +222,12 @@ export function useRegisterBlocksuiteEditorCommands(
 
     // TODO(@Peng): should not show duplicate for journal
     unsubs.push(
-      registerAffineCommand({
+      registerYunkeCommand({
         id: `editor:${mode}-duplicate`,
         preconditionStrategy,
         category: `editor:${mode}`,
         icon: mode === 'page' ? <PageIcon /> : <EdgelessIcon />,
-        label: t['com.affine.header.option.duplicate'](),
+        label: t['com.yunke.header.option.duplicate'](),
         run() {
           duplicate(docId);
           track.$.cmdk.editor.createDoc({
@@ -238,7 +238,7 @@ export function useRegisterBlocksuiteEditorCommands(
     );
 
     unsubs.push(
-      registerAffineCommand({
+      registerYunkeCommand({
         id: `editor:${mode}-export-to-html`,
         preconditionStrategy,
         category: `editor:${mode}`,
@@ -255,7 +255,7 @@ export function useRegisterBlocksuiteEditorCommands(
     );
 
     unsubs.push(
-      registerAffineCommand({
+      registerYunkeCommand({
         id: `editor:${mode}-export-to-png`,
         preconditionStrategy: () => mode === 'page' && !trash,
         category: `editor:${mode}`,
@@ -272,7 +272,7 @@ export function useRegisterBlocksuiteEditorCommands(
     );
 
     unsubs.push(
-      registerAffineCommand({
+      registerYunkeCommand({
         id: `editor:${mode}-export-to-markdown`,
         preconditionStrategy,
         category: `editor:${mode}`,
@@ -289,7 +289,7 @@ export function useRegisterBlocksuiteEditorCommands(
     );
 
     unsubs.push(
-      registerAffineCommand({
+      registerYunkeCommand({
         id: `editor:${mode}-export-to-snapshot`,
         preconditionStrategy,
         category: `editor:${mode}`,
@@ -306,12 +306,12 @@ export function useRegisterBlocksuiteEditorCommands(
     );
 
     unsubs.push(
-      registerAffineCommand({
+      registerYunkeCommand({
         id: `editor:${mode}-move-to-trash`,
         preconditionStrategy,
         category: `editor:${mode}`,
         icon: mode === 'page' ? <PageIcon /> : <EdgelessIcon />,
-        label: t['com.affine.moveToTrash.title'](),
+        label: t['com.yunke.moveToTrash.title'](),
         run() {
           track.$.cmdk.editor.deleteDoc();
 
@@ -321,17 +321,17 @@ export function useRegisterBlocksuiteEditorCommands(
     );
 
     unsubs.push(
-      registerAffineCommand({
+      registerYunkeCommand({
         id: `editor:${mode}-restore-from-trash`,
         preconditionStrategy: () =>
           PreconditionStrategy.InPaperOrEdgeless && trash,
         category: `editor:${mode}`,
         icon: mode === 'page' ? <PageIcon /> : <EdgelessIcon />,
-        label: t['com.affine.cmdk.affine.editor.restore-from-trash'](),
+        label: t['com.yunke.cmdk.yunke.editor.restore-from-trash'](),
         async run() {
           const canRestore = await guardService.can('Doc_Restore', docId);
           if (!canRestore) {
-            toast(t['com.affine.no-permission']());
+            toast(t['com.yunke.no-permission']());
             return;
           }
           track.$.cmdk.editor.restoreDoc();
@@ -343,11 +343,11 @@ export function useRegisterBlocksuiteEditorCommands(
 
     if (isCloudWorkspace) {
       unsubs.push(
-        registerAffineCommand({
+        registerYunkeCommand({
           id: `editor:${mode}-page-history`,
           category: `editor:${mode}`,
           icon: <HistoryIcon />,
-          label: t['com.affine.cmdk.affine.editor.reveal-page-history-modal'](),
+          label: t['com.yunke.cmdk.yunke.editor.reveal-page-history-modal'](),
           run() {
             track.$.cmdk.docHistory.open();
 
@@ -359,11 +359,11 @@ export function useRegisterBlocksuiteEditorCommands(
 
     if (isCloudWorkspace && BUILD_CONFIG.isWeb) {
       unsubs.push(
-        registerAffineCommand({
+        registerYunkeCommand({
           id: 'editor:open-in-app',
           category: `editor:${mode}`,
           icon: <LocalWorkspaceIcon />,
-          label: t['com.affine.header.option.open-in-desktop'](),
+          label: t['com.yunke.header.option.open-in-desktop'](),
           run() {
             openInAppService?.showOpenInAppPage();
           },
@@ -372,9 +372,9 @@ export function useRegisterBlocksuiteEditorCommands(
     }
 
     unsubs.push(
-      registerAffineCommand({
+      registerYunkeCommand({
         id: 'alert-ctrl-s',
-        category: 'affine:general',
+        category: 'yunke:general',
         preconditionStrategy: PreconditionStrategy.Never,
         keyBinding: {
           binding: '$mod+s',

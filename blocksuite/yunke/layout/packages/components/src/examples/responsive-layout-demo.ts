@@ -50,20 +50,20 @@ export class ResponsiveLayoutDemo extends LitElement {
     .demo-header {
       margin-bottom: 20px;
       padding: 16px;
-      background: var(--affine-background-secondary-color);
+      background: var(--yunke-background-secondary-color);
       border-radius: 8px;
-      border: 1px solid var(--affine-border-color);
+      border: 1px solid var(--yunke-border-color);
     }
 
     .demo-title {
       font-size: 24px;
       font-weight: 600;
       margin: 0 0 8px 0;
-      color: var(--affine-text-primary-color);
+      color: var(--yunke-text-primary-color);
     }
 
     .demo-description {
-      color: var(--affine-text-secondary-color);
+      color: var(--yunke-text-secondary-color);
       line-height: 1.5;
       margin: 0;
     }
@@ -74,24 +74,24 @@ export class ResponsiveLayoutDemo extends LitElement {
       gap: 16px;
       margin-bottom: 20px;
       padding: 12px;
-      background: var(--affine-background-primary-color);
-      border: 1px solid var(--affine-border-color);
+      background: var(--yunke-background-primary-color);
+      border: 1px solid var(--yunke-border-color);
       border-radius: 8px;
     }
 
     .control-label {
       font-weight: 500;
-      color: var(--affine-text-primary-color);
+      color: var(--yunke-text-primary-color);
     }
 
     .layout-container {
       display: grid;
       gap: 16px;
       min-height: 400px;
-      border: 1px solid var(--affine-border-color);
+      border: 1px solid var(--yunke-border-color);
       border-radius: 8px;
       padding: 16px;
-      background: var(--affine-background-primary-color);
+      background: var(--yunke-background-primary-color);
       container-type: inline-size;
       container-name: layout-container;
     }
@@ -135,10 +135,10 @@ export class ResponsiveLayoutDemo extends LitElement {
     .demo-footer {
       margin-top: 20px;
       padding: 12px;
-      background: var(--affine-background-secondary-color);
+      background: var(--yunke-background-secondary-color);
       border-radius: 8px;
       font-size: 14px;
-      color: var(--affine-text-secondary-color);
+      color: var(--yunke-text-secondary-color);
       text-align: center;
     }
 

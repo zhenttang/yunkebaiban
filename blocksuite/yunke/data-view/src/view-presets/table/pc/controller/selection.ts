@@ -393,7 +393,7 @@ export class TableSelectionController implements ReactiveController {
     const row = cell.closest('data-view-table-row');
     const rows = Array.from(
       row
-        ?.closest('.affine-database-table-container')
+        ?.closest('.yunke-database-table-container')
         ?.querySelectorAll('data-view-table-row') ?? []
     );
     const cells = Array.from(
@@ -455,7 +455,7 @@ export class TableSelectionController implements ReactiveController {
     const container =
       groupKey != null
         ? this.tableContainer?.querySelector(
-            `affine-data-view-table-group[data-group-key="${groupKey}"]`
+            `yunke-data-view-table-group[data-group-key="${groupKey}"]`
           )
         : this.tableContainer;
     return container ?? null;
@@ -608,7 +608,7 @@ export class TableSelectionController implements ReactiveController {
     const container =
       groupKey != null
         ? this.tableContainer?.querySelector(
-            `affine-data-view-table-group[data-group-key="${groupKey}"]`
+            `yunke-data-view-table-group[data-group-key="${groupKey}"]`
           )
         : this.tableContainer;
     return container?.querySelectorAll('data-view-table-row');
@@ -816,7 +816,7 @@ export class TableSelectionController implements ReactiveController {
     cell: TableViewCellContainer,
     fillValues?: boolean
   ) {
-    const groupKey = cell.closest<TableGroup>('affine-data-view-table-group')
+    const groupKey = cell.closest<TableGroup>('yunke-data-view-table-group')
       ?.group?.key;
     const table = this.tableContainer;
     const scrollContainer = table?.parentElement;
@@ -940,7 +940,7 @@ export class SelectionElement extends WithDisposable(ShadowlessElement) {
       position: absolute;
       z-index: 2;
       box-sizing: border-box;
-      background: var(--affine-primary-color-04);
+      background: var(--yunke-primary-color-04);
       pointer-events: none;
       display: none;
     }
@@ -950,7 +950,7 @@ export class SelectionElement extends WithDisposable(ShadowlessElement) {
       width: 100%;
       z-index: 2;
       box-sizing: border-box;
-      border: 1px solid var(--affine-primary-color);
+      border: 1px solid var(--yunke-primary-color);
       border-radius: 2px;
       pointer-events: none;
       display: none;
@@ -1160,7 +1160,7 @@ export class SelectionElement extends WithDisposable(ShadowlessElement) {
     div.style.top = `${y}px`;
     div.style.width = `${w}px`;
     div.style.height = `${h}px`;
-    div.style.borderColor = 'var(--affine-primary-color)';
+    div.style.borderColor = 'var(--yunke-primary-color)';
     div.style.borderStyle = this.controller.__dragToFillElement.dragging
       ? 'dashed'
       : 'solid';

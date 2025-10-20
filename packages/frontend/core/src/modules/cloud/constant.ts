@@ -80,7 +80,7 @@ enum OAuthProviderType {
 
 enum ServerDeploymentType {
   Selfhosted = 'selfhosted',
-  Affine = 'affine',
+  Yunke = 'yunke',
 }
 
 enum ServerFeature {
@@ -110,7 +110,7 @@ function getBuildInServers(): (ServerMetadata & { config: ServerConfig })[] {
   
   _cachedServers = [
     {
-      id: 'affine-cloud',
+      id: 'yunke-cloud',
       baseUrl: baseUrl,  // ← 运行时动态获取
       config: {
         serverName: '云科 Local Java Backend',
@@ -121,7 +121,7 @@ function getBuildInServers(): (ServerMetadata & { config: ServerConfig })[] {
           ServerFeature.Payment,
         ],
         oauthProviders: [OAuthProviderType.Google],
-        type: ServerDeploymentType.Affine,
+        type: ServerDeploymentType.Yunke,
         credentialsRequirement: {
           password: {
             minLength: 8,

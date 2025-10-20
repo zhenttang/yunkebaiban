@@ -17,7 +17,7 @@ export type QuickSearchResult =
   | null;
 
 export const QuickSearchProvider = createIdentifier<QuickSearchService>(
-  'AffineQuickSearchService'
+  'YunkeQuickSearchService'
 );
 
 export function QuickSearchExtension(

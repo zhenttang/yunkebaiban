@@ -27,7 +27,7 @@ export interface EditorSettingService {
 }
 
 export const EditorSettingProvider = createIdentifier<EditorSettingService>(
-  'AffineEditorSettingProvider'
+  'YunkeEditorSettingProvider'
 );
 
 export function EditorSettingExtension(

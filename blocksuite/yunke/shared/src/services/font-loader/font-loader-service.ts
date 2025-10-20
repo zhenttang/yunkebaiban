@@ -51,7 +51,7 @@ export class FontLoaderService extends LifeCycleWatcher {
 }
 
 export const FontConfigIdentifier =
-  createIdentifier<FontConfig[]>('AffineFontConfig');
+  createIdentifier<FontConfig[]>('YunkeFontConfig');
 
 export const FontConfigExtension = (
   fontConfig: FontConfig[]

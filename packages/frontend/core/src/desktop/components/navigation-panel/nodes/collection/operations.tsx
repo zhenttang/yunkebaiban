@@ -74,8 +74,8 @@ export const useNavigationPanelCollectionNodeOperations = (
 
   const handleAddDocToCollection = useCallback(() => {
     openConfirmModal({
-      title: t['com.affine.collection.add-doc.confirm.title'](),
-      description: t['com.affine.collection.add-doc.confirm.description'](),
+      title: t['com.yunke.collection.add-doc.confirm.title'](),
+      description: t['com.yunke.collection.add-doc.confirm.description'](),
       cancelText: t['Cancel'](),
       confirmText: t['Confirm'](),
       confirmButtonOptions: {
@@ -120,7 +120,7 @@ export const useNavigationPanelCollectionNodeOperations = (
             data-testid="collection-add-doc-button"
             onClick={handleAddDocToCollection}
             tooltip={t[
-              'com.affine.rootAppSidebar.explorer.collection-add-tooltip'
+              'com.yunke.rootAppSidebar.explorer.collection-add-tooltip'
             ]()}
           >
             <PlusIcon />
@@ -131,7 +131,7 @@ export const useNavigationPanelCollectionNodeOperations = (
         index: 99,
         view: (
           <MenuItem prefixIcon={<FilterIcon />} onClick={handleShowEdit}>
-            {t['com.affine.collection.menu.edit']()}
+            {t['com.yunke.collection.menu.edit']()}
           </MenuItem>
         ),
       },
@@ -154,8 +154,8 @@ export const useNavigationPanelCollectionNodeOperations = (
             onClick={handleToggleFavoriteCollection}
           >
             {favorite
-              ? t['com.affine.favoritePageOperation.remove']()
-              : t['com.affine.favoritePageOperation.add']()}
+              ? t['com.yunke.favoritePageOperation.remove']()
+              : t['com.yunke.favoritePageOperation.add']()}
           </MenuItem>
         ),
       },
@@ -163,7 +163,7 @@ export const useNavigationPanelCollectionNodeOperations = (
         index: 99,
         view: (
           <MenuItem prefixIcon={<OpenInNewIcon />} onClick={handleOpenInNewTab}>
-            {t['com.affine.workbench.tab.page-menu-open']()}
+            {t['com.yunke.workbench.tab.page-menu-open']()}
           </MenuItem>
         ),
       },
@@ -176,7 +176,7 @@ export const useNavigationPanelCollectionNodeOperations = (
                   prefixIcon={<SplitViewIcon />}
                   onClick={handleOpenInSplitView}
                 >
-                  {t['com.affine.workbench.split-view.page-menu-open']()}
+                  {t['com.yunke.workbench.split-view.page-menu-open']()}
                 </MenuItem>
               ),
             },

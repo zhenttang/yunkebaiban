@@ -25,7 +25,7 @@ const styles = css`
     cursor: pointer;
     transition: opacity 230ms ease;
     font-size: 12px;
-    color: var(--affine-text-secondary-color);
+    color: var(--yunke-text-secondary-color);
     display: flex;
     opacity: 0;
     justify-content: flex-end;
@@ -34,14 +34,14 @@ const styles = css`
     user-select: none;
   }
 
-  affine-database-virtual-column-stats:hover .stats-cell {
+  yunke-database-virtual-column-stats:hover .stats-cell {
     opacity: 1;
   }
 
   .stats-cell:hover,
-  affine-database-virtual-column-stats-cell.active .stats-cell {
+  yunke-database-virtual-column-stats-cell.active .stats-cell {
     opacity: 1;
-    background-color: var(--affine-hover-color);
+    background-color: var(--yunke-hover-color);
     cursor: pointer;
   }
 
@@ -59,11 +59,11 @@ const styles = css`
 
   .label {
     text-transform: uppercase;
-    color: var(--affine-text-secondary-color);
+    color: var(--yunke-text-secondary-color);
   }
 
   .value {
-    color: var(--affine-text-primary-color);
+    color: var(--yunke-text-primary-color);
   }
 `;
 
@@ -241,6 +241,6 @@ export class VirtualDatabaseColumnStatsCell extends SignalWatcher(
 
 declare global {
   interface HTMLElementTagNameMap {
-    'affine-database-virtual-column-stats-cell': VirtualDatabaseColumnStatsCell;
+    'yunke-database-virtual-column-stats-cell': VirtualDatabaseColumnStatsCell;
   }
 }

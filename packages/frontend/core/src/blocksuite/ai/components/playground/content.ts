@@ -34,9 +34,9 @@ export class PlaygroundContent extends SignalWatcher(
       .playground-chat-item {
         flex: 1;
         min-width: 0;
-        border: 1px solid var(--affine-border-color);
+        border: 1px solid var(--yunke-border-color);
         border-radius: 8px;
-        background: var(--affine-background-primary-color);
+        background: var(--yunke-background-primary-color);
         overflow: hidden;
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
         transition: box-shadow 0.2s ease;
@@ -81,7 +81,7 @@ export class PlaygroundContent extends SignalWatcher(
   accessor extensions!: ExtensionType[];
 
   @property({ attribute: false })
-  accessor affineFeatureFlagService!: FeatureFlagService;
+  accessor yunkeFeatureFlagService!: FeatureFlagService;
 
   @state()
   accessor sessions: CopilotSessionType[] = [];
@@ -110,7 +110,7 @@ export class PlaygroundContent extends SignalWatcher(
       const rootSessionId = await AIProvider.session?.createSession({
         docId: this.doc.id,
         workspaceId: this.doc.workspace.id,
-        promptName: '与 AFFiNE AI 对话',
+        promptName: '与 YUNKE AI 对话',
       });
       if (rootSessionId) {
         this.rootSessionId = rootSessionId;
@@ -336,7 +336,7 @@ export class PlaygroundContent extends SignalWatcher(
                 .searchMenuConfig=${this.searchMenuConfig}
                 .docDisplayConfig=${this.docDisplayConfig}
                 .extensions=${this.extensions}
-                .affineFeatureFlagService=${this.affineFeatureFlagService}
+                .yunkeFeatureFlagService=${this.yunkeFeatureFlagService}
                 .session=${session}
                 .addChat=${this.addChat}
               ></playground-chat>

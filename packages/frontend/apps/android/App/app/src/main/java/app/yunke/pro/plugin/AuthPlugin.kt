@@ -1,8 +1,8 @@
-package app.affine.pro.plugin
+package app.yunke.pro.plugin
 
 import android.annotation.SuppressLint
-import app.affine.pro.service.CookieStore
-import app.affine.pro.service.OkHttp
+import app.yunke.pro.service.CookieStore
+import app.yunke.pro.service.OkHttp
 import com.getcapacitor.JSObject
 import com.getcapacitor.Plugin
 import com.getcapacitor.PluginCall
@@ -56,7 +56,7 @@ class AuthPlugin : Plugin() {
                     // 🔥 新增：清除JWT认证信息
                     try {
                         val serverHost = endpoint.toHttpUrl().host
-                        app.affine.pro.AuthInitializer.clearJwtAuth(serverHost)
+                        app.yunke.pro.AuthInitializer.clearJwtAuth(serverHost)
                         android.util.Log.d("AuthPlugin", "JWT认证信息已清除")
                     } catch (e: Exception) {
                         android.util.Log.w("AuthPlugin", "清除JWT认证信息失败: ${e.message}", e)
@@ -246,7 +246,7 @@ class AuthPlugin : Plugin() {
                         // 🔥 新增：保存JWT认证信息到DataStore
                         try {
                             val serverHost = endpoint.toHttpUrl().host
-                            app.affine.pro.AuthInitializer.saveJwtAuth(
+                            app.yunke.pro.AuthInitializer.saveJwtAuth(
                                 serverHost = serverHost,
                                 jwtToken = token,
                                 refreshToken = if (refreshToken.isNotEmpty()) refreshToken else null,

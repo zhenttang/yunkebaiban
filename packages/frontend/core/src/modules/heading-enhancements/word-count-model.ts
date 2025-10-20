@@ -30,7 +30,7 @@ export interface WordCountProps {
 }
 
 export const WordCountBlockSchema = defineBlockSchema({
-  flavour: 'affine:word-count',
+  flavour: 'yunke:word-count',
   props: (internal): WordCountProps => ({
     targetBlocks: [],
     countType: 'words',
@@ -48,9 +48,9 @@ export const WordCountBlockSchema = defineBlockSchema({
     version: 1,
     role: 'content',
     parent: [
-      'affine:note',
-      'affine:paragraph',
-      'affine:list',
+      'yunke:note',
+      'yunke:paragraph',
+      'yunke:list',
     ],
   },
   toModel: () => new WordCountBlockModel(),
@@ -208,16 +208,16 @@ export class WordCountBlockModel extends BlockModel<WordCountProps> {
    */
   private getBlockContent(block: BlockModel): string {
     // 跳过字数统计块本身
-    if (block.flavour === 'affine:word-count') {
+    if (block.flavour === 'yunke:word-count') {
       return '';
     }
 
-    if (block.flavour === 'affine:paragraph') {
+    if (block.flavour === 'yunke:paragraph') {
       const text = (block as any).text;
       return text ? text.toString() : '';
     }
 
-    if (block.flavour === 'affine:list') {
+    if (block.flavour === 'yunke:list') {
       const text = (block as any).text;
       return text ? text.toString() : '';
     }
@@ -230,7 +230,7 @@ export class WordCountBlockModel extends BlockModel<WordCountProps> {
    * 检查是否是标题块
    */
   private isHeadingBlock(block: BlockModel): boolean {
-    return block.flavour === 'affine:paragraph' && 
+    return block.flavour === 'yunke:paragraph' && 
            (block as any).type?.startsWith('h');
   }
 
@@ -238,7 +238,7 @@ export class WordCountBlockModel extends BlockModel<WordCountProps> {
    * 检查是否是引用块
    */
   private isQuoteBlock(block: BlockModel): boolean {
-    return block.flavour === 'affine:paragraph' && 
+    return block.flavour === 'yunke:paragraph' && 
            (block as any).type === 'quote';
   }
 

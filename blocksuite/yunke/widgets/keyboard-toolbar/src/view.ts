@@ -8,7 +8,7 @@ import { effects } from './effects';
 import { keyboardToolbarWidget } from './widget';
 
 export class KeyboardToolbarViewExtension extends ViewExtensionProvider {
-  override name = 'affine-keyboard-toolbar-widget';
+  override name = 'yunke-keyboard-toolbar-widget';
 
   override effect() {
     super.effect();

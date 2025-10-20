@@ -18,10 +18,10 @@ export const tableContainer = css({
   },
   '&:hover::-webkit-scrollbar-thumb:horizontal': {
     borderRadius: '4px',
-    backgroundColor: 'var(--affine-black-30)',
+    backgroundColor: 'var(--yunke-black-30)',
   },
   '&:hover::-webkit-scrollbar-track:horizontal': {
-    backgroundColor: 'var(--affine-hover-color)',
+    backgroundColor: 'var(--yunke-hover-color)',
     height: '8px',
   },
 });

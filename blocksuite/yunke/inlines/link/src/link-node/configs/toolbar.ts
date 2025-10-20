@@ -18,7 +18,7 @@ import { signal } from '@preact/signals-core';
 import { html } from 'lit-html';
 import { keyed } from 'lit-html/directives/keyed.js';
 
-import { AffineLink } from '../affine-link';
+import { YunkeLink } from '../yunke-link';
 import { toggleLinkPopup } from '../link-popup/toggle-link-popup';
 
 const trackBaseProps = {
@@ -35,12 +35,12 @@ export const builtinInlineLinkToolbarConfig = {
       id: 'a.preview',
       content(cx) {
         const target = cx.message$.peek()?.element;
-        if (!(target instanceof AffineLink)) return null;
+        if (!(target instanceof YunkeLink)) return null;
 
         const { link } = target;
         if (!link) return null;
 
-        return html`<affine-link-preview .url=${link}></affine-link-preview>`;
+        return html`<yunke-link-preview .url=${link}></yunke-link-preview>`;
       },
     },
     {
@@ -52,7 +52,7 @@ export const builtinInlineLinkToolbarConfig = {
           icon: CopyIcon(),
           run(ctx) {
             const target = ctx.message$.peek()?.element;
-            if (!(target instanceof AffineLink)) return;
+            if (!(target instanceof YunkeLink)) return;
 
             const { link } = target;
 
@@ -76,7 +76,7 @@ export const builtinInlineLinkToolbarConfig = {
           icon: EditIcon(),
           run(ctx) {
             const target = ctx.message$.peek()?.element;
-            if (!(target instanceof AffineLink)) return;
+            if (!(target instanceof YunkeLink)) return;
 
             const { inlineEditor, selfInlineRange } = target;
 
@@ -113,7 +113,7 @@ export const builtinInlineLinkToolbarConfig = {
           label: '卡片视图',
           run(ctx) {
             const target = ctx.message$.peek()?.element;
-            if (!(target instanceof AffineLink)) return;
+            if (!(target instanceof YunkeLink)) return;
             if (!target.block) return;
 
             const url = target.link;
@@ -180,7 +180,7 @@ export const builtinInlineLinkToolbarConfig = {
           label: '嵌入视图',
           when(ctx) {
             const target = ctx.message$.peek()?.element;
-            if (!(target instanceof AffineLink)) return false;
+            if (!(target instanceof YunkeLink)) return false;
             if (!target.block) return false;
 
             const url = target.link;
@@ -206,7 +206,7 @@ export const builtinInlineLinkToolbarConfig = {
           },
           run(ctx) {
             const target = ctx.message$.peek()?.element;
-            if (!(target instanceof AffineLink)) return;
+            if (!(target instanceof YunkeLink)) return;
             if (!target.block) return;
 
             const url = target.link;
@@ -271,7 +271,7 @@ export const builtinInlineLinkToolbarConfig = {
       ],
       content(ctx) {
         const target = ctx.message$.peek()?.element;
-        if (!(target instanceof AffineLink)) return null;
+        if (!(target instanceof YunkeLink)) return null;
 
         const actions = this.actions.map(action => ({ ...action }));
         const viewType$ = signal(actions[0].label);
@@ -287,23 +287,23 @@ export const builtinInlineLinkToolbarConfig = {
 
         return html`${keyed(
           target,
-          html`<affine-view-dropdown-menu
+          html`<yunke-view-dropdown-menu
             .actions=${actions}
             .context=${ctx}
             .onToggle=${onToggle}
             .viewType$=${viewType$}
-          ></affine-view-dropdown-menu>`
+          ></yunke-view-dropdown-menu>`
         )}`;
       },
       when(ctx) {
         const target = ctx.message$.peek()?.element;
-        if (!(target instanceof AffineLink)) return false;
+        if (!(target instanceof YunkeLink)) return false;
         if (!target.block) return false;
 
         if (ctx.flags.isNative()) return false;
         if (
-          target.block.closest('affine-database') ||
-          target.block.closest('affine-table')
+          target.block.closest('yunke-database') ||
+          target.block.closest('yunke-table')
         )
           return false;
 
@@ -336,7 +336,7 @@ export const builtinInlineLinkToolbarConfig = {
       icon: UnlinkIcon(),
       run(ctx) {
         const target = ctx.message$.peek()?.element;
-        if (!(target instanceof AffineLink)) return;
+        if (!(target instanceof YunkeLink)) return;
 
         const { inlineEditor, selfInlineRange } = target;
         if (!inlineEditor || !selfInlineRange) return;
@@ -354,7 +354,7 @@ export const builtinInlineLinkToolbarConfig = {
       variant: 'destructive',
       run(ctx) {
         const target = ctx.message$.peek()?.element;
-        if (!(target instanceof AffineLink)) return;
+        if (!(target instanceof YunkeLink)) return;
 
         const { inlineEditor, selfInlineRange } = target;
         if (!inlineEditor || !selfInlineRange) return;

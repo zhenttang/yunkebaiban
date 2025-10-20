@@ -5,7 +5,7 @@ import {
   notify,
   Tooltip,
 } from '@yunke/component';
-import { useAsyncCallback } from '@yunke/core/components/hooks/affine-async-hooks';
+import { useAsyncCallback } from '@yunke/core/components/hooks/yunke-async-hooks';
 import { DocGrantedUsersService } from '@yunke/core/modules/permissions';
 import { ShareInfoService } from '@yunke/core/modules/share-doc';
 import { UserFriendlyError } from '@yunke/error';
@@ -26,13 +26,13 @@ import * as styles from './styles.css';
 const getRoleName = (t: ReturnType<typeof useI18n>, role?: DocRole) => {
   switch (role) {
     case DocRole.Manager:
-      return t['com.affine.share-menu.option.permission.can-manage']();
+      return t['com.yunke.share-menu.option.permission.can-manage']();
     case DocRole.Editor:
-      return t['com.affine.share-menu.option.permission.can-edit']();
+      return t['com.yunke.share-menu.option.permission.can-edit']();
     case DocRole.Reader:
-      return t['com.affine.share-menu.option.permission.can-read']();
+      return t['com.yunke.share-menu.option.permission.can-read']();
     case DocRole.None:
-      return t['com.affine.share-menu.option.permission.no-access']();
+      return t['com.yunke.share-menu.option.permission.no-access']();
     default:
       return '';
   }
@@ -141,7 +141,7 @@ export const MembersPermission = ({
   return (
     <div className={styles.rowContainerStyle}>
       <div className={styles.labelStyle}>
-        {t['com.affine.share-menu.option.permission.label']()}
+        {t['com.yunke.share-menu.option.permission.label']()}
       </div>
       {disabled ? (
         <div className={clsx(styles.menuTriggerStyle, 'disable')}>
@@ -161,7 +161,7 @@ export const MembersPermission = ({
                 selected={docDefaultRole === DocRole.Manager}
               >
                 <div className={styles.publicItemRowStyle}>
-                  {t['com.affine.share-menu.option.permission.can-manage']()}
+                  {t['com.yunke.share-menu.option.permission.can-manage']()}
                 </div>
               </MenuItem>
               <MenuItem onSelect={() => {}} selected={false}>
@@ -185,7 +185,7 @@ export const MembersPermission = ({
               >
                 <div className={styles.publicItemRowStyle}>
                   <div className={styles.tagContainerStyle}>
-                    {t['com.affine.share-menu.option.permission.can-edit']()}
+                    {t['com.yunke.share-menu.option.permission.can-edit']()}
                     {hittingPaywall ? <PlanTag /> : null}
                   </div>
                 </div>
@@ -196,7 +196,7 @@ export const MembersPermission = ({
               >
                 <div className={styles.publicItemRowStyle}>
                   <div className={styles.tagContainerStyle}>
-                    {t['com.affine.share-menu.option.permission.can-read']()}
+                    {t['com.yunke.share-menu.option.permission.can-read']()}
                     {hittingPaywall ? <PlanTag /> : null}
                   </div>
                 </div>
@@ -207,7 +207,7 @@ export const MembersPermission = ({
               >
                 <div className={styles.publicItemRowStyle}>
                   <div className={styles.tagContainerStyle}>
-                    {t['com.affine.share-menu.option.permission.no-access']()}
+                    {t['com.yunke.share-menu.option.permission.no-access']()}
                     {hittingPaywall ? <PlanTag /> : null}
                   </div>
                 </div>
@@ -236,7 +236,7 @@ export const Tips = ({ disable }: { disable?: boolean }) => {
   const t = useI18n();
 
   return (
-    <Tooltip content={t['com.affine.share-menu.option.permission.tips']()}>
+    <Tooltip content={t['com.yunke.share-menu.option.permission.tips']()}>
       <InformationIcon
         className={clsx(styles.informationIcon, {
           disable: disable,

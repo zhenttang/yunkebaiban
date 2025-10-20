@@ -9,7 +9,7 @@ import { matchModels } from '../model/checker.js';
 
 const ATTR_SELECTOR = `[${BLOCK_ID_ATTR}]`;
 
-// margin-top: calc(var(--affine-paragraph-space) + 24px);
+// margin-top: calc(var(--yunke-paragraph-space) + 24px);
 // h1.margin-top = 8px + 24px = 32px;
 const MAX_SPACE = 32;
 const STEPS = MAX_SPACE / 2 / 2;
@@ -47,11 +47,11 @@ function isBlock(element: BlockComponent) {
 }
 
 function isImage({ tagName }: Element) {
-  return tagName === 'AFFINE-IMAGE';
+  return tagName === 'YUNKE-IMAGE';
 }
 
 function isDatabase({ tagName }: Element) {
-  return tagName === 'AFFINE-DATABASE';
+  return tagName === 'YUNKE-DATABASE';
 }
 
 /**
@@ -150,7 +150,7 @@ export function getClosestBlockComponentByPoint(
       bounds = getRectByBlockComponent(element);
       // Indented paragraphs or list
       childBounds = element
-        .querySelector('.affine-block-children-container')
+        .querySelector('.yunke-block-children-container')
         ?.firstElementChild?.getBoundingClientRect();
 
       if (childBounds && childBounds.height) {
@@ -304,7 +304,7 @@ export function getBlockComponentsExcludeSubtrees(
 
 /**
  * Find block element from an `Element[]`.
- * In Chrome/Safari, `document.elementsFromPoint` does not include `affine-image`.
+ * In Chrome/Safari, `document.elementsFromPoint` does not include `yunke-image`.
  */
 function findBlockComponent(elements: Element[], parent?: Element) {
   const len = elements.length;
@@ -330,5 +330,5 @@ function findBlockComponent(elements: Element[], parent?: Element) {
  * Gets the rows of the database.
  */
 function getDatabaseBlockRowsElement(element: Element) {
-  return element.querySelector('.affine-database-block-rows');
+  return element.querySelector('.yunke-database-block-rows');
 }

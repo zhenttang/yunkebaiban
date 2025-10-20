@@ -6,7 +6,7 @@ import {
   useConfirmModal,
   usePromptModal,
 } from '@yunke/component';
-import { useBlockSuiteMetaHelper } from '@yunke/core/components/hooks/affine/use-block-suite-meta-helper';
+import { useBlockSuiteMetaHelper } from '@yunke/core/components/hooks/yunke/use-block-suite-meta-helper';
 import { useCatchEventCallback } from '@yunke/core/components/hooks/use-catch-event-hook';
 import { WorkspaceDialogService } from '@yunke/core/modules/dialogs';
 import { DocsService } from '@yunke/core/modules/doc';
@@ -107,11 +107,11 @@ const PageOperationCellMenuItem = ({
     track.allDocs.list.docMenu.deleteDoc();
 
     openConfirmModal({
-      title: t['com.affine.moveToTrash.confirmModal.title'](),
-      description: t['com.affine.moveToTrash.confirmModal.description']({
+      title: t['com.yunke.moveToTrash.confirmModal.title'](),
+      description: t['com.yunke.moveToTrash.confirmModal.description']({
         title: docRecord.title$.value || t['Untitled'](),
       }),
-      cancelText: t['com.affine.confirmModal.button.cancel'](),
+      cancelText: t['com.yunke.confirmModal.button.cancel'](),
       confirmText: t.Delete(),
       confirmButtonOptions: {
         variant: 'error',
@@ -137,8 +137,8 @@ const PageOperationCellMenuItem = ({
     favAdapter.toggle(page.id, 'doc');
     toast(
       status
-        ? t['com.affine.toastMessage.removedFavorites']()
-        : t['com.affine.toastMessage.addedFavorites']()
+        ? t['com.yunke.toastMessage.removedFavorites']()
+        : t['com.yunke.toastMessage.addedFavorites']()
     );
   }, [page.id, favAdapter, t]);
 
@@ -183,23 +183,23 @@ const PageOperationCellMenuItem = ({
         prefixIcon={<IsFavoriteIcon favorite={favourite} />}
       >
         {favourite
-          ? t['com.affine.favoritePageOperation.remove']()
-          : t['com.affine.favoritePageOperation.add']()}
+          ? t['com.yunke.favoritePageOperation.remove']()
+          : t['com.yunke.favoritePageOperation.add']()}
       </MenuItem>
       <MenuItem onClick={onOpenInfoModal} prefixIcon={<InformationIcon />}>
-        {t['com.affine.page-properties.page-info.view']()}
+        {t['com.yunke.page-properties.page-info.view']()}
       </MenuItem>
       <MenuItem onClick={onOpenInNewTab} prefixIcon={<OpenInNewIcon />}>
-        {t['com.affine.workbench.tab.page-menu-open']()}
+        {t['com.yunke.workbench.tab.page-menu-open']()}
       </MenuItem>
       {BUILD_CONFIG.isElectron ? (
         <MenuItem onClick={onOpenInSplitView} prefixIcon={<SplitViewIcon />}>
-          {t['com.affine.workbench.split-view.page-menu-open']()}
+          {t['com.yunke.workbench.split-view.page-menu-open']()}
         </MenuItem>
       ) : null}
 
       <MenuItem prefixIcon={<DuplicateIcon />} onSelect={onDuplicate}>
-        {t['com.affine.header.option.duplicate']()}
+        {t['com.yunke.header.option.duplicate']()}
       </MenuItem>
 
       <MoveToTrash
@@ -228,8 +228,8 @@ export const PageOperationCell = ({
     favAdapter.toggle(page.id, 'doc');
     toast(
       status
-        ? t['com.affine.toastMessage.removedFavorites']()
-        : t['com.affine.toastMessage.addedFavorites']()
+        ? t['com.yunke.toastMessage.removedFavorites']()
+        : t['com.yunke.toastMessage.addedFavorites']()
     );
   }, [page.id, favAdapter, t]);
   return (
@@ -280,10 +280,10 @@ export const TrashOperationCell = ({
     e => {
       e.preventDefault();
       openConfirmModal({
-        title: `${t['com.affine.trashOperation.deletePermanently']()}?`,
-        description: t['com.affine.trashOperation.deleteDescription'](),
-        cancelText: t['com.affine.confirmModal.button.cancel'](),
-        confirmText: t['com.affine.trashOperation.delete'](),
+        title: `${t['com.yunke.trashOperation.deletePermanently']()}?`,
+        description: t['com.yunke.trashOperation.deleteDescription'](),
+        cancelText: t['com.yunke.confirmModal.button.cancel'](),
+        confirmText: t['com.yunke.trashOperation.delete'](),
         confirmButtonOptions: {
           variant: 'error',
         },
@@ -304,7 +304,7 @@ export const TrashOperationCell = ({
   return (
     <ColWrapper flex={1}>
       <IconButton
-        tooltip={t['com.affine.trashOperation.restoreIt']()}
+        tooltip={t['com.yunke.trashOperation.restoreIt']()}
         tooltipOptions={tooltipSideTop}
         data-testid="restore-page-button"
         style={{ marginRight: '12px' }}
@@ -314,7 +314,7 @@ export const TrashOperationCell = ({
         <ResetIcon />
       </IconButton>
       <IconButton
-        tooltip={t['com.affine.trashOperation.deletePermanently']()}
+        tooltip={t['com.yunke.trashOperation.deletePermanently']()}
         tooltipOptions={tooltipSideTopAlignEnd}
         data-testid="delete-page-button"
         onClick={onConfirmPermanentlyDelete}
@@ -364,13 +364,13 @@ export const CollectionOperationCell = ({
     (event: MouseEvent) => {
       handlePropagation(event);
       openPromptModal({
-        title: t['com.affine.editCollection.renameCollection'](),
-        label: t['com.affine.editCollectionName.name'](),
+        title: t['com.yunke.editCollection.renameCollection'](),
+        label: t['com.yunke.editCollectionName.name'](),
         inputOptions: {
-          placeholder: t['com.affine.editCollectionName.name.placeholder'](),
+          placeholder: t['com.yunke.editCollectionName.name.placeholder'](),
         },
-        confirmText: t['com.affine.editCollection.save'](),
-        cancelText: t['com.affine.editCollection.button.cancel'](),
+        confirmText: t['com.yunke.editCollection.save'](),
+        cancelText: t['com.yunke.editCollection.button.cancel'](),
         confirmButtonOptions: {
           variant: 'primary',
         },
@@ -403,8 +403,8 @@ export const CollectionOperationCell = ({
     favAdapter.toggle(collectionId, 'collection');
     toast(
       status
-        ? t['com.affine.toastMessage.removedFavorites']()
-        : t['com.affine.toastMessage.addedFavorites']()
+        ? t['com.yunke.toastMessage.removedFavorites']()
+        : t['com.yunke.toastMessage.addedFavorites']()
     );
   }, [favAdapter, collectionId, t]);
 
@@ -415,10 +415,10 @@ export const CollectionOperationCell = ({
 
   const onConfirmAddDocToCollection = useCallback(() => {
     openConfirmModal({
-      title: t['com.affine.collection.add-doc.confirm.title'](),
-      description: t['com.affine.collection.add-doc.confirm.description'](),
-      cancelText: t['com.affine.confirmModal.button.cancel'](),
-      confirmText: t['com.affine.confirmModal.button.confirm'](),
+      title: t['com.yunke.collection.add-doc.confirm.title'](),
+      description: t['com.yunke.collection.add-doc.confirm.description'](),
+      cancelText: t['com.yunke.confirmModal.button.cancel'](),
+      confirmText: t['com.yunke.confirmModal.button.confirm'](),
       confirmButtonOptions: {
         variant: 'primary',
       },
@@ -438,14 +438,14 @@ export const CollectionOperationCell = ({
       </ColWrapper>
       <IconButton
         onClick={handleEditName}
-        tooltip={t['com.affine.collection.menu.rename']()}
+        tooltip={t['com.yunke.collection.menu.rename']()}
         tooltipOptions={tooltipSideTop}
       >
         <EditIcon />
       </IconButton>
       <IconButton
         onClick={handleEdit}
-        tooltip={t['com.affine.collection.menu.edit']()}
+        tooltip={t['com.yunke.collection.menu.edit']()}
         tooltipOptions={tooltipSideTop}
       >
         <FilterIcon />
@@ -459,14 +459,14 @@ export const CollectionOperationCell = ({
                 prefixIcon={<IsFavoriteIcon favorite={favourite} />}
               >
                 {favourite
-                  ? t['com.affine.favoritePageOperation.remove']()
-                  : t['com.affine.favoritePageOperation.add']()}
+                  ? t['com.yunke.favoritePageOperation.remove']()
+                  : t['com.yunke.favoritePageOperation.add']()}
               </MenuItem>
               <MenuItem
                 onClick={onConfirmAddDocToCollection}
                 prefixIcon={<PlusIcon />}
               >
-                {t['com.affine.new.page-mode']()}
+                {t['com.yunke.new.page-mode']()}
               </MenuItem>
               <MenuItem
                 onClick={handleDelete}
@@ -474,7 +474,7 @@ export const CollectionOperationCell = ({
                 type="danger"
                 data-testid="delete-collection"
               >
-                {t['com.affine.delete']()}
+                {t['com.yunke.delete']()}
               </MenuItem>
             </>
           }

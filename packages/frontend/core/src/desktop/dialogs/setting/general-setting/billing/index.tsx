@@ -29,15 +29,15 @@ export const BillingSettings = ({
   return (
     <>
       <SettingHeader
-        title={t['com.affine.payment.billing-setting.title']()}
-        subtitle={t['com.affine.payment.billing-setting.subtitle']()}
+        title={t['com.yunke.payment.billing-setting.title']()}
+        subtitle={t['com.yunke.payment.billing-setting.subtitle']()}
       />
       <SettingWrapper
-        title={t['com.affine.payment.billing-setting.information']()}
+        title={t['com.yunke.payment.billing-setting.information']()}
       >
         <SubscriptionSettings onChangeSettingState={onChangeSettingState} />
       </SettingWrapper>
-      <SettingWrapper title={t['com.affine.payment.billing-setting.history']()}>
+      <SettingWrapper title={t['com.yunke.payment.billing-setting.history']()}>
         <BillingHistory />
       </SettingWrapper>
     </>
@@ -108,7 +108,7 @@ const SubscriptionSettingSkeleton = () => {
   const t = useI18n();
   return (
     <SettingWrapper
-      title={t['com.affine.payment.billing-setting.information']()}
+      title={t['com.yunke.payment.billing-setting.information']()}
     >
       <div className={styles.subscriptionSettingSkeleton}>
         <Skeleton variant="rounded" height="104px" />

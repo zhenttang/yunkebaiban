@@ -16,15 +16,15 @@ export class DateTime extends LitElement {
     .line {
       flex-grow: 1;
       height: 0.5px;
-      background-color: var(--affine-border-color);
+      background-color: var(--yunke-border-color);
     }
     .date-time {
       padding: 0 8px;
-      font-size: var(--affine-font-xs);
+      font-size: var(--yunke-font-xs);
       font-weight: 400;
       line-height: 22px;
       text-align: center;
-      color: var(--affine-text-secondary-color);
+      color: var(--yunke-text-secondary-color);
     }
   `;
 

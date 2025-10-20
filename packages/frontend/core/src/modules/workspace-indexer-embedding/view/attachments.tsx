@@ -104,11 +104,11 @@ const AttachmentItem: React.FC<AttachmentItemProps> = ({
     openConfirmModal({
       title:
         t[
-          'com.affine.settings.workspace.indexer-embedding.embedding.additional-attachments.remove-attachment.title'
+          'com.yunke.settings.workspace.indexer-embedding.embedding.additional-attachments.remove-attachment.title'
         ](),
       description:
         t[
-          'com.affine.settings.workspace.indexer-embedding.embedding.additional-attachments.remove-attachment.description'
+          'com.yunke.settings.workspace.indexer-embedding.embedding.additional-attachments.remove-attachment.description'
         ](),
       confirmText: t['Confirm'](),
       confirmButtonOptions: {
@@ -138,7 +138,7 @@ const AttachmentItem: React.FC<AttachmentItemProps> = ({
         <div className={attachmentOperation}>
           <Tooltip
             content={t[
-              'com.affine.settings.workspace.indexer-embedding.embedding.additional-attachments.remove-attachment.tooltip'
+              'com.yunke.settings.workspace.indexer-embedding.embedding.additional-attachments.remove-attachment.tooltip'
             ]()}
           >
             <CloseIcon

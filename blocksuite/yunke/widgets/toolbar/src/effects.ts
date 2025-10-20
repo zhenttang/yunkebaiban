@@ -1,11 +1,11 @@
-import { AFFINE_TOOLBAR_WIDGET, AffineToolbarWidget } from './toolbar';
+import { YUNKE_TOOLBAR_WIDGET, YunkeToolbarWidget } from './toolbar';
 
 export function effects() {
-  customElements.define(AFFINE_TOOLBAR_WIDGET, AffineToolbarWidget);
+  customElements.define(YUNKE_TOOLBAR_WIDGET, YunkeToolbarWidget);
 }
 
 declare global {
   interface HTMLElementTagNameMap {
-    [AFFINE_TOOLBAR_WIDGET]: AffineToolbarWidget;
+    [YUNKE_TOOLBAR_WIDGET]: YunkeToolbarWidget;
   }
 }

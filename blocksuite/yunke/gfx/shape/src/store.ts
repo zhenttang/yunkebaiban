@@ -9,7 +9,7 @@ import {
 } from './adapter';
 
 export class ShapeStoreExtension extends StoreExtensionProvider {
-  override name = 'affine-shape-gfx';
+  override name = 'yunke-shape-gfx';
 
   override setup(context: StoreExtensionContext) {
     super.setup(context);

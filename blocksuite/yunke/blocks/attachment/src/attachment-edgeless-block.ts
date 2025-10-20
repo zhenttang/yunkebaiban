@@ -49,7 +49,7 @@ export class AttachmentEdgelessBlockComponent extends toGfxBlockComponent(
 
 declare global {
   interface HTMLElementTagNameMap {
-    'affine-edgeless-attachment': AttachmentEdgelessBlockComponent;
+    'yunke-edgeless-attachment': AttachmentEdgelessBlockComponent;
   }
 }
 

@@ -54,7 +54,7 @@ export const insertLatexBlockCommand: Command<
           blockComponent.toggleEditor();
 
           const mode = std.get(DocModeProvider).getEditorMode() ?? 'page';
-          const ifEdgelessText = blockComponent.closest('affine-edgeless-text');
+          const ifEdgelessText = blockComponent.closest('yunke-edgeless-text');
           std.getOptional(TelemetryProvider)?.track('Latex', {
             from:
               mode === 'page'

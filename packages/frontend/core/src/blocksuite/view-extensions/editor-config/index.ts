@@ -10,16 +10,16 @@ const optionsSchema = z.object({
   framework: z.instanceof(FrameworkProvider).optional(),
 });
 
-type AffineEditorConfigViewOptions = z.infer<typeof optionsSchema>;
+type YunkeEditorConfigViewOptions = z.infer<typeof optionsSchema>;
 
-export class AffineEditorConfigViewExtension extends ViewExtensionProvider<AffineEditorConfigViewOptions> {
-  override name = 'affine-view-editor-config';
+export class YunkeEditorConfigViewExtension extends ViewExtensionProvider<YunkeEditorConfigViewOptions> {
+  override name = 'yunke-view-editor-config';
 
   override schema = optionsSchema;
 
   override setup(
     context: ViewExtensionContext,
-    options?: AffineEditorConfigViewOptions
+    options?: YunkeEditorConfigViewOptions
   ) {
     super.setup(context, options);
     const framework = options?.framework;

@@ -19,7 +19,7 @@ export const JournalTodayButton = () => {
       onClick={onToday}
       style={{ height: 32, padding: '0px 8px' }}
     >
-      {t['com.affine.today']()}
+      {t['com.yunke.today']()}
     </Button>
   );
 };

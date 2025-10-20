@@ -86,7 +86,7 @@ interface CanvasExportOptions {
 }
 
 export class EdgelessClipboardController extends PageClipboard {
-  static override key = 'affine-edgeless-clipboard';
+  static override key = 'yunke-edgeless-clipboard';
 
   private readonly _initEdgelessClipboard = () => {
     this.std.event.add('copy', ctx => {
@@ -233,7 +233,7 @@ export class EdgelessClipboardController extends PageClipboard {
       const url = data.getData('text/plain');
       const { x, y } = this.toolManager.lastMousePos$.peek();
 
-      // try to interpret url as affine doc url
+      // try to interpret url as yunke doc url
       const parseDocUrlService = this.std.getOptional(ParseDocUrlProvider);
       const docUrlInfo = parseDocUrlService?.parseDocUrl(url);
       const options: Record<string, unknown> = {};
@@ -434,7 +434,7 @@ export class EdgelessClipboardController extends PageClipboard {
       onclone: async function (documentClone: Document, element: HTMLElement) {
         // html2canvas can't support transform feature
         element.style.setProperty('transform', 'none');
-        const layer = documentClone.querySelector('.affine-edgeless-layer');
+        const layer = documentClone.querySelector('.yunke-edgeless-layer');
         if (layer && layer instanceof HTMLElement) {
           layer.style.setProperty('transform', 'none');
         }

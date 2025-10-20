@@ -1,7 +1,7 @@
 import { useMutation } from '@yunke/admin/use-mutation';
 import { useQuery } from '@yunke/admin/use-query';
 import { notify } from '@yunke/component';
-import { useAsyncCallback } from '@yunke/core/components/hooks/affine-async-hooks';
+import { useAsyncCallback } from '@yunke/core/components/hooks/yunke-async-hooks';
 import { UserFriendlyError } from '@yunke/error';
 // import {
 //   appConfigQuery,
@@ -41,7 +41,7 @@ export const useAppConfig = () => {
   // 临时使用模拟数据，避免API调用失败
   const mockAppConfig: AppConfig = {
     server: {
-      name: 'AFFiNE Self-hosted Server',
+      name: 'YUNKE Self-hosted Server',
       externalUrl: 'http://localhost:3010',
       https: false,
       host: 'localhost',

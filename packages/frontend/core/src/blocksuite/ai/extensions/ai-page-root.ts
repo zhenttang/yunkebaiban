@@ -3,7 +3,7 @@ import type { FrameworkProvider } from '@toeverything/infra';
 
 import { buildAIPanelConfig } from '../ai-panel';
 import { setupSpaceAIEntry } from '../entries/space/setup-space';
-import { AffineAIPanelWidget } from '../widgets/ai-panel/ai-panel';
+import { YunkeAIPanelWidget } from '../widgets/ai-panel/ai-panel';
 
 export function getAIPageRootWatcher(framework: FrameworkProvider) {
   class AIPageRootWatcher extends LifeCycleWatcher {
@@ -17,7 +17,7 @@ export function getAIPageRootWatcher(framework: FrameworkProvider) {
           return;
         }
         const component = payload.view;
-        if (component instanceof AffineAIPanelWidget) {
+        if (component instanceof YunkeAIPanelWidget) {
           component.style.width = '630px';
           component.config = buildAIPanelConfig(component, framework);
           setupSpaceAIEntry(component);

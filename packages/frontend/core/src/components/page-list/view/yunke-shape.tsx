@@ -1,6 +1,6 @@
 import type React from 'react';
 
-export const AffineShapeIcon = (props: React.SVGProps<SVGSVGElement>) => (
+export const YunkeShapeIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 800 695"

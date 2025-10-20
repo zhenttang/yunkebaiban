@@ -18,7 +18,7 @@ export const SignOutModal = ({ ...props }: ConfirmModalProps) => {
 
   const defaultTexts = useMemo(() => {
     const getDefaultText = (key: SignOutConfirmModalI18NKeys) => {
-      return t[`com.affine.auth.sign-out.confirm-modal.${key}`]();
+      return t[`com.yunke.auth.sign-out.confirm-modal.${key}`]();
     };
     return {
       title: getDefaultText('title'),

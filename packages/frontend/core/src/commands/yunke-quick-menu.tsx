@@ -4,9 +4,9 @@ import { MoreHorizontalIcon } from '@blocksuite/icons/rc';
 import type { Store } from 'jotai';
 
 import { quickMenuOpenAtom } from '../components/atoms';
-import { registerAffineCommand } from './registry';
+import { registerYunkeCommand } from './registry';
 
-export function registerAffineQuickMenuCommands({
+export function registerYunkeQuickMenuCommands({
   t,
   store,
 }: {
@@ -16,11 +16,11 @@ export function registerAffineQuickMenuCommands({
   const unsubs: Array<() => void> = [];
 
   unsubs.push(
-    registerAffineCommand({
-      id: 'affine:toggle-quick-menu',
-      category: 'affine:navigation',
+    registerYunkeCommand({
+      id: 'yunke:toggle-quick-menu',
+      category: 'yunke:navigation',
       icon: <MoreHorizontalIcon />,
-      label: t['com.affine.cmdk.affine.quick-menu.toggle']?.() || 'Toggle Quick Menu',
+      label: t['com.yunke.cmdk.yunke.quick-menu.toggle']?.() || 'Toggle Quick Menu',
       keyBinding: '$mod+Shift+M',
       run() {
         track.$.cmdk.navigation.navigate({

@@ -85,7 +85,7 @@ export class DocsSearchService extends Service {
                   query: {
                     type: 'match',
                     field: 'flavour',
-                    match: 'affine:page',
+                    match: 'yunke:page',
                   },
                 },
               ],
@@ -120,7 +120,7 @@ export class DocsSearchService extends Service {
 
           for (const bucket of buckets) {
             const firstMatchFlavour = bucket.hits.nodes[0]?.fields.flavour;
-            if (firstMatchFlavour === 'affine:page') {
+            if (firstMatchFlavour === 'yunke:page') {
               // 是标题匹配
               const blockContent = bucket.hits.nodes[1]?.highlights.content[0]; // 尝试获取块内容
               result.push({
@@ -357,7 +357,7 @@ export class DocsSearchService extends Service {
             {
               type: 'match',
               field: 'parentFlavour',
-              match: 'affine:database',
+              match: 'yunke:database',
             },
             // 忽略如果是指向当前文档的链接。
             {

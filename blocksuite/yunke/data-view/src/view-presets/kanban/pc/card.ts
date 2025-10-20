@@ -15,7 +15,7 @@ import type { KanbanViewUILogic } from './kanban-view-ui-logic.js';
 import { openDetail, popCardMenu } from './menu.js';
 
 const styles = css`
-  affine-data-view-kanban-card {
+  yunke-data-view-kanban-card {
     display: flex;
     position: relative;
     flex-direction: column;
@@ -23,21 +23,21 @@ const styles = css`
     box-shadow: 0px 2px 3px 0px rgba(0, 0, 0, 0.05);
     border-radius: 8px;
     transition: background-color 100ms ease-in-out;
-    background-color: var(--affine-background-kanban-card-color);
+    background-color: var(--yunke-background-kanban-card-color);
   }
 
-  affine-data-view-kanban-card:hover {
-    background-color: var(--affine-hover-color);
+  yunke-data-view-kanban-card:hover {
+    background-color: var(--yunke-hover-color);
   }
 
-  affine-data-view-kanban-card .card-header {
+  yunke-data-view-kanban-card .card-header {
     padding: 8px;
     display: flex;
     flex-direction: column;
     gap: 8px;
   }
 
-  affine-data-view-kanban-card .card-header-title uni-lit {
+  yunke-data-view-kanban-card .card-header-title uni-lit {
     width: 100%;
   }
 
@@ -45,42 +45,42 @@ const styles = css`
     border-bottom: 0.5px solid ${unsafeCSS(cssVarV2.layer.insideBorder.border)};
   }
 
-  affine-data-view-kanban-card .card-header-title {
+  yunke-data-view-kanban-card .card-header-title {
     font-size: var(--data-view-cell-text-size);
     line-height: var(--data-view-cell-text-line-height);
   }
 
-  affine-data-view-kanban-card .card-header-icon {
+  yunke-data-view-kanban-card .card-header-icon {
     padding: 4px;
-    background-color: var(--affine-background-secondary-color);
+    background-color: var(--yunke-background-secondary-color);
     display: flex;
     align-items: center;
     border-radius: 4px;
     width: max-content;
   }
 
-  affine-data-view-kanban-card .card-header-icon svg {
+  yunke-data-view-kanban-card .card-header-icon svg {
     width: 16px;
     height: 16px;
-    fill: var(--affine-icon-color);
-    color: var(--affine-icon-color);
+    fill: var(--yunke-icon-color);
+    color: var(--yunke-icon-color);
   }
 
-  affine-data-view-kanban-card .card-body {
+  yunke-data-view-kanban-card .card-body {
     display: flex;
     flex-direction: column;
     padding: 8px;
     gap: 4px;
   }
 
-  affine-data-view-kanban-card:hover .card-ops {
+  yunke-data-view-kanban-card:hover .card-ops {
     visibility: visible;
   }
-  affine-data-view-kanban-card:has(.active) .card-ops {
+  yunke-data-view-kanban-card:has(.active) .card-ops {
     visibility: visible;
   }
 
-  affine-data-view-kanban-card:has([data-editing='true']) .card-ops {
+  yunke-data-view-kanban-card:has([data-editing='true']) .card-ops {
     visibility: hidden;
   }
 
@@ -100,7 +100,7 @@ const styles = css`
     padding: 4px;
     border-radius: 4px;
     box-shadow: 0px 0px 4px 0px rgba(66, 65, 73, 0.14);
-    background-color: var(--affine-background-primary-color);
+    background-color: var(--yunke-background-primary-color);
   }
 
   .card-op:hover:before {
@@ -111,12 +111,12 @@ const styles = css`
     right: 0;
     top: 0;
     bottom: 0;
-    background-color: var(--affine-hover-color);
+    background-color: var(--yunke-hover-color);
   }
 
   .card-op svg {
-    fill: var(--affine-icon-color);
-    color: var(--affine-icon-color);
+    fill: var(--yunke-icon-color);
+    color: var(--yunke-icon-color);
     width: 16px;
     height: 16px;
   }
@@ -173,7 +173,7 @@ export class KanbanCard extends SignalWatcher(
         ],
       };
       const target = e.target as HTMLElement;
-      const ref = target.closest('affine-data-view-kanban-cell') ?? this;
+      const ref = target.closest('yunke-data-view-kanban-cell') ?? this;
       popCardMenu(
         this.kanbanViewLogic,
         popupTargetFromElement(ref),
@@ -199,14 +199,14 @@ export class KanbanCard extends SignalWatcher(
           if (this.view.isInHeader(column.id)) {
             return '';
           }
-          return html` <affine-data-view-kanban-cell
+          return html` <yunke-data-view-kanban-cell
             .contentOnly="${false}"
             data-column-id="${column.id}"
             .groupKey="${this.groupKey}"
             .column="${column}"
             .cardId="${this.cardId}"
             .kanbanViewLogic="${this.kanbanViewLogic}"
-          ></affine-data-view-kanban-cell>`;
+          ></yunke-data-view-kanban-cell>`;
         }
       )}
     </div>`;
@@ -257,14 +257,14 @@ export class KanbanCard extends SignalWatcher(
       return;
     }
     return html` <div class="card-header-title">
-      <affine-data-view-kanban-cell
+      <yunke-data-view-kanban-cell
         .contentOnly="${true}"
         data-column-id="${title.id}"
         .kanbanViewLogic="${this.kanbanViewLogic}"
         .groupKey="${this.groupKey}"
         .column="${title}"
         .cardId="${this.cardId}"
-      ></affine-data-view-kanban-cell>
+      ></yunke-data-view-kanban-cell>
     </div>`;
   }
 
@@ -306,7 +306,7 @@ export class KanbanCard extends SignalWatcher(
       v => !this.view.isInHeader(v.id)
     );
     this.style.border = this.isFocus$.value
-      ? '1px solid var(--affine-primary-color)'
+      ? '1px solid var(--yunke-primary-color)'
       : '';
     return html`
       ${this.renderHeader(columns)} ${this.renderBody(columns)}
@@ -332,6 +332,6 @@ export class KanbanCard extends SignalWatcher(
 
 declare global {
   interface HTMLElementTagNameMap {
-    'affine-data-view-kanban-card': KanbanCard;
+    'yunke-data-view-kanban-card': KanbanCard;
   }
 }

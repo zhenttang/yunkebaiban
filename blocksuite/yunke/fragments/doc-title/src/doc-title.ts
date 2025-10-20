@@ -21,10 +21,10 @@ export class DocTitle extends WithDisposable(ShadowlessElement) {
   static override styles = css`
     .doc-title-container {
       box-sizing: border-box;
-      font-family: var(--affine-font-family);
-      font-size: var(--affine-font-base);
-      line-height: var(--affine-line-height);
-      color: var(--affine-text-primary-color);
+      font-family: var(--yunke-font-family);
+      font-size: var(--yunke-font-base);
+      line-height: var(--yunke-line-height);
+      color: var(--yunke-text-primary-color);
       font-size: 40px;
       line-height: 50px;
       font-weight: 700;
@@ -32,17 +32,17 @@ export class DocTitle extends WithDisposable(ShadowlessElement) {
       resize: none;
       border: 0;
       width: 100%;
-      max-width: var(--affine-editor-width);
+      max-width: var(--yunke-editor-width);
       margin-left: auto;
       margin-right: auto;
       padding: 38px 0;
 
       padding-left: var(
-        --affine-editor-side-padding,
+        --yunke-editor-side-padding,
         ${DOC_BLOCK_CHILD_PADDING}px
       );
       padding-right: var(
-        --affine-editor-side-padding,
+        --yunke-editor-side-padding,
         ${DOC_BLOCK_CHILD_PADDING}px
       );
     }
@@ -57,7 +57,7 @@ export class DocTitle extends WithDisposable(ShadowlessElement) {
 
     .doc-title-container-empty::before {
       content: 'Title';
-      color: var(--affine-placeholder-color);
+      color: var(--yunke-placeholder-color);
       position: absolute;
       opacity: 0.5;
       pointer-events: none;
@@ -147,8 +147,8 @@ export class DocTitle extends WithDisposable(ShadowlessElement) {
 
   private get _viewport() {
     return (
-      this.closest<HTMLElement>('.affine-page-viewport') ??
-      this.closest<HTMLElement>('.affine-edgeless-viewport')
+      this.closest<HTMLElement>('.yunke-page-viewport') ??
+      this.closest<HTMLElement>('.yunke-edgeless-viewport')
     );
   }
 

@@ -473,8 +473,8 @@ import stickerCover234 from './stickers/Cheeky Piggies/Cover/Thumbs Up.svg';
 import stickerContent234 from './stickers/Cheeky Piggies/Content/Thumbs Up.svg';
 import stickerCover235 from './stickers/Cheeky Piggies/Cover/What_.svg';
 import stickerContent235 from './stickers/Cheeky Piggies/Content/What_.svg';
-import stickerCover236 from './stickers/Contorted Stickers/Cover/AFFiNE.svg';
-import stickerContent236 from './stickers/Contorted Stickers/Content/AFFiNE.svg';
+import stickerCover236 from './stickers/Contorted Stickers/Cover/YUNKE.svg';
+import stickerContent236 from './stickers/Contorted Stickers/Content/YUNKE.svg';
 import stickerCover237 from './stickers/Contorted Stickers/Cover/AI.svg';
 import stickerContent237 from './stickers/Contorted Stickers/Content/AI.svg';
 import stickerCover238 from './stickers/Contorted Stickers/Cover/Cat.svg';
@@ -759,8 +759,8 @@ import stickerCover377 from './stickers/Paper/Cover/+1.svg';
 import stickerContent377 from './stickers/Paper/Content/+1.svg';
 import stickerCover378 from './stickers/Paper/Cover/A lot of question.svg';
 import stickerContent378 from './stickers/Paper/Content/A lot of question.svg';
-import stickerCover379 from './stickers/Paper/Cover/AFFiNE AI.svg';
-import stickerContent379 from './stickers/Paper/Content/AFFiNE AI.svg';
+import stickerCover379 from './stickers/Paper/Cover/YUNKE AI.svg';
+import stickerContent379 from './stickers/Paper/Content/YUNKE AI.svg';
 import stickerCover380 from './stickers/Paper/Cover/Arrow.svg';
 import stickerContent380 from './stickers/Paper/Content/Arrow.svg';
 import stickerCover381 from './stickers/Paper/Cover/Atention.svg';
@@ -805,7 +805,7 @@ function buildStickerTemplate(data) {
       blocks: {
         type: 'block',
         id: 'block:1VxnfD_8xb',
-        flavour: 'affine:page',
+        flavour: 'yunke:page',
         props: {
           title: {
             '$blocksuite:internal:text$': true,
@@ -820,7 +820,7 @@ function buildStickerTemplate(data) {
           {
             type: 'block',
             id: 'block:pcmYJQ63hX',
-            flavour: 'affine:surface',
+            flavour: 'yunke:surface',
             props: {
               elements: {},
             },
@@ -828,7 +828,7 @@ function buildStickerTemplate(data) {
               {
                 type: 'block',
                 id: 'block:N24al1Qgl7',
-                flavour: 'affine:image',
+                flavour: 'yunke:image',
                 props: {
                   caption: '',
                   sourceId: data.hash,
@@ -2284,7 +2284,7 @@ const templates = {
         hash: "JqWfcP9Q0kGE4wDuVZCi4lW2U7O15trpL--fdNrRJvQ=",
       }),],
 "扭曲贴纸": [     buildStickerTemplate({
-        name: "AFFiNE",
+        name: "YUNKE",
         cover: stickerCover236,
         content: stickerContent236,
         hash: "i3piAMnoD4STQnEjTrAe_ZRdwHcD34n-sJZY8IN1blg=",
@@ -3142,7 +3142,7 @@ const templates = {
         hash: "yKPa7vqOxC6rh-e0SVdlp0RwMWQ9mzDKTtE5g2UnHGk=",
       }),
      buildStickerTemplate({
-        name: "AFFiNE人工智能",
+        name: "YUNKE人工智能",
         cover: stickerCover379,
         content: stickerContent379,
         hash: "FwBs2WApEGkiFmu1XR4fHZ_7fOlSsSBdYEyGs2lDeLk=",

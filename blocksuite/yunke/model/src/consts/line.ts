@@ -32,17 +32,17 @@ export const DEFAULT_HIGHLIGHTER_LINE_WIDTH = 22;
  * @deprecated
  */
 export enum LineColor {
-  Black = '--affine-palette-line-black',
-  Blue = '--affine-palette-line-blue',
-  Green = '--affine-palette-line-green',
-  Grey = '--affine-palette-line-grey',
-  Magenta = '--affine-palette-line-magenta',
-  Orange = '--affine-palette-line-orange',
-  Purple = '--affine-palette-line-purple',
-  Red = '--affine-palette-line-red',
-  Teal = '--affine-palette-line-teal',
-  White = '--affine-palette-line-white',
-  Yellow = '--affine-palette-line-yellow',
+  Black = '--yunke-palette-line-black',
+  Blue = '--yunke-palette-line-blue',
+  Green = '--yunke-palette-line-green',
+  Grey = '--yunke-palette-line-grey',
+  Magenta = '--yunke-palette-line-magenta',
+  Orange = '--yunke-palette-line-orange',
+  Purple = '--yunke-palette-line-purple',
+  Red = '--yunke-palette-line-red',
+  Teal = '--yunke-palette-line-teal',
+  White = '--yunke-palette-line-white',
+  Yellow = '--yunke-palette-line-yellow',
 }
 
 export const LineColorMap = createEnumMap(LineColor);

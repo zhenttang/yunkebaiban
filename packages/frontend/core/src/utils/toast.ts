@@ -15,7 +15,7 @@ export const toast = (message: string, options?: ToastOptions) => {
 declare global {
   // 全局事件
   interface WindowEventMap {
-    'affine-toast:emit': CustomEvent<{
+    'yunke-toast:emit': CustomEvent<{
       message: string;
     }>;
   }

@@ -5,7 +5,7 @@ import { css, html, unsafeCSS } from 'lit';
 import { property } from 'lit/decorators.js';
 
 const styles = css`
-  affine-frame-panel {
+  yunke-frame-panel {
     flex-grow: 1;
   }
 
@@ -16,7 +16,7 @@ const styles = css`
   }
 
   .frame-panel-container {
-    background-color: var(--affine-background-primary-color);
+    background-color: var(--yunke-background-primary-color);
     box-sizing: border-box;
 
     display: flex;
@@ -48,7 +48,7 @@ const styles = css`
   }
 
   .frame-panel-body:hover::-webkit-scrollbar-thumb {
-    background-color: var(--affine-black-30);
+    background-color: var(--yunke-black-30);
   }
 
   .frame-panel-body::-webkit-scrollbar-track {
@@ -60,21 +60,21 @@ const styles = css`
   }
 `;
 
-export const AFFINE_FRAME_PANEL = 'affine-frame-panel';
+export const YUNKE_FRAME_PANEL = 'yunke-frame-panel';
 
 export class FramePanel extends WithDisposable(ShadowlessElement) {
   static override styles = styles;
 
   override render() {
     return html`<div class="frame-panel-container">
-      <affine-frame-panel-header
+      <yunke-frame-panel-header
         .editorHost=${this.host}
-      ></affine-frame-panel-header>
-      <affine-frame-panel-body
+      ></yunke-frame-panel-header>
+      <yunke-frame-panel-body
         class="frame-panel-body"
         .editorHost=${this.host}
         .fitPadding=${this.fitPadding}
-      ></affine-frame-panel-body>
+      ></yunke-frame-panel-body>
     </div>`;
   }
 
@@ -87,6 +87,6 @@ export class FramePanel extends WithDisposable(ShadowlessElement) {
 
 declare global {
   interface HTMLElementTagNameMap {
-    [AFFINE_FRAME_PANEL]: FramePanel;
+    [YUNKE_FRAME_PANEL]: FramePanel;
   }
 }

@@ -33,7 +33,7 @@ export class GanttTaskBar extends LitElement {
       position: absolute;
       top: -40px;
       left: 0;
-      background: var(--affine-tooltip-color);
+      background: var(--yunke-tooltip-color);
       color: white;
       padding: 4px 8px;
       border-radius: 4px;
@@ -57,7 +57,7 @@ export class GanttTaskBar extends LitElement {
       top: 100%;
       left: 12px;
       border: 4px solid transparent;
-      border-top-color: var(--affine-tooltip-color);
+      border-top-color: var(--yunke-tooltip-color);
     }
 
     .task-drag-preview {
@@ -77,7 +77,7 @@ export class GanttTaskBar extends LitElement {
       left: -2px;
       right: -2px;
       bottom: -2px;
-      border: 2px solid var(--affine-primary-color);
+      border: 2px solid var(--yunke-primary-color);
       border-radius: calc(var(--gantt-task-bar-radius, 4px) + 2px);
       pointer-events: none;
       opacity: 0;
@@ -106,8 +106,8 @@ export class GanttTaskBar extends LitElement {
 
     :host(:focus-visible) .task-selection-box {
       opacity: 1;
-      border-color: var(--affine-primary-color);
-      box-shadow: 0 0 0 2px var(--affine-primary-color-04);
+      border-color: var(--yunke-primary-color);
+      box-shadow: 0 0 0 2px var(--yunke-primary-color-04);
     }
   `;
 

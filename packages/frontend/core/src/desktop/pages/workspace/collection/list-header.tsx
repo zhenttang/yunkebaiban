@@ -54,8 +54,8 @@ export const CollectionListHeader = ({
   const onConfirmAddDocument = useCallback(
     (createDocumentFn: () => DocRecord) => {
       openConfirmModal({
-        title: t['com.affine.collection.add-doc.confirm.title'](),
-        description: t['com.affine.collection.add-doc.confirm.description'](),
+        title: t['com.yunke.collection.add-doc.confirm.title'](),
+        description: t['com.yunke.collection.add-doc.confirm.description'](),
         cancelText: t['Cancel'](),
         confirmText: t['Confirm'](),
         confirmButtonOptions: {
@@ -88,7 +88,7 @@ export const CollectionListHeader = ({
       <div className={styles.breadcrumb}>
         <div className={styles.breadcrumbItem}>
           <WorkbenchLink to="/collection" className={styles.breadcrumbLink}>
-            {t['com.affine.collections.header']()}
+            {t['com.yunke.collections.header']()}
           </WorkbenchLink>
         </div>
         <div className={styles.breadcrumbSeparator}>/</div>

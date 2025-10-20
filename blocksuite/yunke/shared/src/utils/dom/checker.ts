@@ -2,7 +2,7 @@ import type { EditorHost } from '@blocksuite/std';
 
 export function isInsidePageEditor(host: EditorHost) {
   return Array.from(host.children).some(
-    v => v.tagName.toLowerCase() === 'affine-page-root'
+    v => v.tagName.toLowerCase() === 'yunke-page-root'
   );
 }
 
@@ -11,7 +11,7 @@ export function isInsideEdgelessEditor(host: EditorHost) {
 
   return Array.from(host.children).some(
     v =>
-      v.tagName.toLowerCase() === 'affine-edgeless-root' ||
-      v.tagName.toLowerCase() === 'affine-edgeless-root-preview'
+      v.tagName.toLowerCase() === 'yunke-edgeless-root' ||
+      v.tagName.toLowerCase() === 'yunke-edgeless-root-preview'
   );
 }

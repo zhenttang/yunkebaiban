@@ -11,7 +11,7 @@ import {
 } from '@yunke/core/modules/collection';
 import { WorkspaceDialogService } from '@yunke/core/modules/dialogs';
 import { GlobalContextService } from '@yunke/core/modules/global-context';
-import type { AffineDNDData } from '@yunke/core/types/dnd';
+import type { YunkeDNDData } from '@yunke/core/types/dnd';
 import { useI18n } from '@yunke/i18n';
 import { track } from '@yunke/track';
 import { FilterMinusIcon } from '@blocksuite/icons/rc';
@@ -76,7 +76,7 @@ export const NavigationPanelCollectionNode = ({
       dropTarget: {
         at: 'navigation-panel:doc',
       },
-    } satisfies AffineDNDData;
+    } satisfies YunkeDNDData;
   }, [collectionId, location]);
 
   const handleRename = useCallback(
@@ -89,7 +89,7 @@ export const NavigationPanelCollectionNode = ({
         track.$.navigationPanel.organize.renameOrganizeItem({
           type: 'collection',
         });
-        toast(t['com.affine.toastMessage.rename']());
+        toast(t['com.yunke.toastMessage.rename']());
       }
     },
     [collection, collectionId, collectionService, t]
@@ -101,7 +101,7 @@ export const NavigationPanelCollectionNode = ({
         return;
       }
       if (collection.allowList$.value.includes(docId)) {
-        toast(t['com.affine.collection.addPage.alreadyExists']());
+        toast(t['com.yunke.collection.addPage.alreadyExists']());
       } else {
         collectionService.addDocToCollection(collection.id, docId);
       }
@@ -110,7 +110,7 @@ export const NavigationPanelCollectionNode = ({
   );
 
   const handleDropOnCollection = useCallback(
-    (data: DropTargetDropEvent<AffineDNDData>) => {
+    (data: DropTargetDropEvent<YunkeDNDData>) => {
       if (collection && data.treeInstruction?.type === 'make-child') {
         if (data.source.data.entity?.type === 'doc') {
           handleAddDocToCollection(data.source.data.entity.id);
@@ -146,7 +146,7 @@ export const NavigationPanelCollectionNode = ({
     );
 
   const handleDropOnPlaceholder = useCallback(
-    (data: DropTargetDropEvent<AffineDNDData>) => {
+    (data: DropTargetDropEvent<YunkeDNDData>) => {
       if (collection && data.source.data.entity?.type === 'doc') {
         handleAddDocToCollection(data.source.data.entity.id);
         track.$.navigationPanel.organize.createOrganizeItem({
@@ -184,7 +184,7 @@ export const NavigationPanelCollectionNode = ({
     return collectionOperations;
   }, [collectionOperations, additionalOperations]);
 
-  const handleCanDrop = useMemo<DropTargetOptions<AffineDNDData>['canDrop']>(
+  const handleCanDrop = useMemo<DropTargetOptions<YunkeDNDData>['canDrop']>(
     () => args => {
       const entityType = args.source.data.entity?.type;
       return args.treeInstruction?.type !== 'make-child'
@@ -240,7 +240,7 @@ const NavigationPanelCollectionNodeChildren = ({
     (id: string) => {
       track.$.navigationPanel.collections.removeOrganizeItem({ type: 'doc' });
       collectionService.removeDocFromCollection(collection.id, id);
-      toast(t['com.affine.collection.removePage.success']());
+      toast(t['com.yunke.collection.removePage.success']());
     },
     [collection.id, collectionService, t]
   );

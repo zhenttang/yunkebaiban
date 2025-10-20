@@ -24,7 +24,7 @@ import {
 import { DefaultColumnWidth, DefaultRowHeight } from './consts';
 import type { TableDataManager } from './table-data-manager';
 
-export const AddButtonComponentName = 'affine-table-add-button';
+export const AddButtonComponentName = 'yunke-table-add-button';
 export class AddButton extends SignalWatcher(
   WithDisposable(ShadowlessElement)
 ) {

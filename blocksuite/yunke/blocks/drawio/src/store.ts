@@ -6,7 +6,7 @@ import {
 import { DrawioBlockSchemaExtension } from './drawio-model.js';
 
 export class DrawioStoreExtension extends StoreExtensionProvider {
-  override name = 'affine-drawio-block';
+  override name = 'yunke-drawio-block';
 
   override setup(context: StoreExtensionContext) {
     super.setup(context);

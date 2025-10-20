@@ -6,15 +6,15 @@ globalStyle('*', {
 });
 
 globalStyle('body', {
-  color: 'var(--affine-text-primary-color)',
-  fontFamily: 'var(--affine-font-family)',
-  fontSize: 'var(--affine-font-base)',
-  lineHeight: 'var(--affine-font-height)',
-  backgroundColor: 'var(--affine-background-primary-color)',
+  color: 'var(--yunke-text-primary-color)',
+  fontFamily: 'var(--yunke-font-family)',
+  fontSize: 'var(--yunke-font-base)',
+  lineHeight: 'var(--yunke-font-height)',
+  backgroundColor: 'var(--yunke-background-primary-color)',
 });
 
 globalStyle('.docs-story', {
-  backgroundColor: 'var(--affine-background-primary-color)',
+  backgroundColor: 'var(--yunke-background-primary-color)',
 });
 
 globalStyle('body.sb-main-fullscreen', {

@@ -21,10 +21,10 @@ export class GanttView extends LitElement {
       display: flex;
       flex-direction: column;
       height: 100%;
-      background: var(--affine-background-primary-color);
-      font-family: var(--affine-font-family);
+      background: var(--yunke-background-primary-color);
+      font-family: var(--yunke-font-family);
       font-size: 14px;
-      color: var(--affine-text-primary-color);
+      color: var(--yunke-text-primary-color);
       overflow: hidden;
     }
 
@@ -33,8 +33,8 @@ export class GanttView extends LitElement {
       align-items: center;
       justify-content: space-between;
       padding: 12px 16px;
-      border-bottom: 1px solid var(--affine-border-color);
-      background: var(--affine-background-primary-color);
+      border-bottom: 1px solid var(--yunke-border-color);
+      background: var(--yunke-background-primary-color);
       min-height: 48px;
       flex-shrink: 0;
     }
@@ -42,7 +42,7 @@ export class GanttView extends LitElement {
     .gantt-title {
       font-size: 16px;
       font-weight: 600;
-      color: var(--affine-text-primary-color);
+      color: var(--yunke-text-primary-color);
     }
 
     .gantt-actions {
@@ -53,26 +53,26 @@ export class GanttView extends LitElement {
 
     .gantt-button {
       padding: 6px 12px;
-      border: 1px solid var(--affine-border-color);
+      border: 1px solid var(--yunke-border-color);
       border-radius: 6px;
-      background: var(--affine-background-primary-color);
-      color: var(--affine-text-primary-color);
+      background: var(--yunke-background-primary-color);
+      color: var(--yunke-text-primary-color);
       font-size: 12px;
       cursor: pointer;
       transition: all 0.2s ease;
       
       &:hover {
-        background: var(--affine-hover-color);
-        border-color: var(--affine-primary-color);
+        background: var(--yunke-hover-color);
+        border-color: var(--yunke-primary-color);
       }
       
       &.primary {
-        background: var(--affine-primary-color);
+        background: var(--yunke-primary-color);
         color: white;
-        border-color: var(--affine-primary-color);
+        border-color: var(--yunke-primary-color);
         
         &:hover {
-          background: var(--affine-primary-color-hover);
+          background: var(--yunke-primary-color-hover);
         }
       }
     }
@@ -82,7 +82,7 @@ export class GanttView extends LitElement {
       overflow: hidden;
       display: flex;
       flex-direction: column;
-      background: var(--affine-background-primary-color);
+      background: var(--yunke-background-primary-color);
     }
 
     /* 甘特图主体 - 专业甘特图布局 */
@@ -96,8 +96,8 @@ export class GanttView extends LitElement {
     .task-list-column {
       width: 300px;
       flex-shrink: 0;
-      border-right: 2px solid var(--affine-border-color);
-      background: var(--affine-background-secondary-color);
+      border-right: 2px solid var(--yunke-border-color);
+      background: var(--yunke-background-secondary-color);
       display: flex;
       flex-direction: column;
     }
@@ -106,11 +106,11 @@ export class GanttView extends LitElement {
       height: 50px;
       padding: 12px 16px;
       font-weight: 600;
-      color: var(--affine-text-primary-color);
-      border-bottom: 1px solid var(--affine-border-color);
+      color: var(--yunke-text-primary-color);
+      border-bottom: 1px solid var(--yunke-border-color);
       display: flex;
       align-items: center;
-      background: var(--affine-background-primary-color);
+      background: var(--yunke-background-primary-color);
     }
 
     .task-list-body {
@@ -121,24 +121,24 @@ export class GanttView extends LitElement {
     .task-row {
       height: 28px; /* 从32px进一步减少到28px */
       padding: 4px 16px; /* 从6px减少到4px */
-      border-bottom: 1px solid var(--affine-border-color);
+      border-bottom: 1px solid var(--yunke-border-color);
       display: flex;
       align-items: center;
-      background: var(--affine-background-primary-color);
+      background: var(--yunke-background-primary-color);
       
       &:hover {
-        background: var(--affine-hover-color);
+        background: var(--yunke-hover-color);
       }
     }
 
     .task-name-display {
       font-size: 14px;
-      color: var(--affine-text-primary-color);
+      color: var(--yunke-text-primary-color);
       cursor: pointer;
       width: 100%;
       
       &:hover {
-        color: var(--affine-primary-color);
+        color: var(--yunke-primary-color);
       }
     }
 
@@ -154,8 +154,8 @@ export class GanttView extends LitElement {
     /* 时间轴头部 - 恢复正常滚动 */
     .timeline-header {
       height: 50px;
-      border-bottom: 2px solid var(--affine-border-color);
-      background: var(--affine-background-primary-color);
+      border-bottom: 2px solid var(--yunke-border-color);
+      background: var(--yunke-background-primary-color);
       display: flex;
       overflow-x: auto; /* 恢复水平滚动 */
       overflow-y: hidden;
@@ -171,22 +171,22 @@ export class GanttView extends LitElement {
 
     .timeline-unit {
       height: 100%;
-      border-right: 1px solid var(--affine-border-color);
-      background: var(--affine-background-primary-color);
+      border-right: 1px solid var(--yunke-border-color);
+      background: var(--yunke-background-primary-color);
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 12px;
       font-weight: 500;
-      color: var(--affine-text-primary-color);
+      color: var(--yunke-text-primary-color);
       flex-shrink: 0;
       
       &:hover {
-        background: var(--affine-hover-color);
+        background: var(--yunke-hover-color);
       }
       
       &.today {
-        background: var(--affine-primary-color);
+        background: var(--yunke-primary-color);
         color: white;
         font-weight: 600;
       }
@@ -197,7 +197,7 @@ export class GanttView extends LitElement {
       flex: 1;
       overflow: auto;
       position: relative;
-      background: var(--affine-background-primary-color);
+      background: var(--yunke-background-primary-color);
       /* 同步滚动样式 */
       scrollbar-width: thin;
     }
@@ -223,7 +223,7 @@ export class GanttView extends LitElement {
       top: 0;
       bottom: 0;
       width: 1px;
-      background: var(--affine-border-color);
+      background: var(--yunke-border-color);
       opacity: 0.5;
     }
 
@@ -234,7 +234,7 @@ export class GanttView extends LitElement {
       width: 100%;
       
       &:hover {
-        background: var(--affine-hover-color-02);
+        background: var(--yunke-hover-color-02);
       }
     }
 
@@ -244,7 +244,7 @@ export class GanttView extends LitElement {
       top: 2px; /* 从4px减少到2px，适应更小的行高 */
       height: 24px; /* 保持24px高度 */
       border-radius: 4px;
-      background: var(--affine-primary-color);
+      background: var(--yunke-primary-color);
       border: 1px solid rgba(0, 0, 0, 0.1);
       display: flex;
       align-items: center;
@@ -416,7 +416,7 @@ export class GanttView extends LitElement {
       align-items: center;
       justify-content: center;
       height: 300px;
-      color: var(--affine-text-secondary-color);
+      color: var(--yunke-text-secondary-color);
       font-size: 14px;
       max-width: 600px;
       margin: 0 auto;
@@ -446,12 +446,12 @@ export class GanttView extends LitElement {
 
     .usage-step li {
       margin-bottom: 4px;
-      color: var(--affine-text-primary-color);
+      color: var(--yunke-text-primary-color);
     }
 
     .highlight {
-      background: var(--affine-primary-color-04);
-      color: var(--affine-primary-color);
+      background: var(--yunke-primary-color-04);
+      color: var(--yunke-primary-color);
       padding: 2px 6px;
       border-radius: 3px;
       font-weight: 600;
@@ -1402,7 +1402,7 @@ export class GanttView extends LitElement {
       }
       
       .task-config-content {
-        background: var(--affine-background-primary-color, white) !important;
+        background: var(--yunke-background-primary-color, white) !important;
         border-radius: 12px !important;
         box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15) !important;
         max-width: 500px !important;
@@ -1417,18 +1417,18 @@ export class GanttView extends LitElement {
       
       .task-config-header {
         padding: 20px 24px 16px !important;
-        border-bottom: 1px solid var(--affine-border-color, #e0e0e0) !important;
+        border-bottom: 1px solid var(--yunke-border-color, #e0e0e0) !important;
         display: flex !important;
         align-items: center !important;
         justify-content: space-between !important;
-        background: var(--affine-background-secondary-color, #f9f9f9) !important;
+        background: var(--yunke-background-secondary-color, #f9f9f9) !important;
       }
       
       .task-config-header h3 {
         margin: 0 !important;
         font-size: 18px !important;
         font-weight: 600 !important;
-        color: var(--affine-text-primary-color, #333) !important;
+        color: var(--yunke-text-primary-color, #333) !important;
       }
       
       .task-config-close {
@@ -1436,7 +1436,7 @@ export class GanttView extends LitElement {
         border: none !important;
         font-size: 24px !important;
         cursor: pointer !important;
-        color: var(--affine-text-secondary-color, #666) !important;
+        color: var(--yunke-text-secondary-color, #666) !important;
         width: 32px !important;
         height: 32px !important;
         display: flex !important;
@@ -1447,7 +1447,7 @@ export class GanttView extends LitElement {
       }
       
       .task-config-close:hover {
-        background: var(--affine-hover-color, #f0f0f0) !important;
+        background: var(--yunke-hover-color, #f0f0f0) !important;
       }
       
       .task-config-body {
@@ -1465,23 +1465,23 @@ export class GanttView extends LitElement {
       
       .config-row label {
         font-weight: 500 !important;
-        color: var(--affine-text-primary-color, #333) !important;
+        color: var(--yunke-text-primary-color, #333) !important;
         font-size: 14px !important;
       }
       
       .config-row input, .config-row select {
         padding: 8px 12px !important;
-        border: 1px solid var(--affine-border-color, #e0e0e0) !important;
+        border: 1px solid var(--yunke-border-color, #e0e0e0) !important;
         border-radius: 6px !important;
         font-size: 14px !important;
-        background: var(--affine-background-primary-color, white) !important;
-        color: var(--affine-text-primary-color, #333) !important;
+        background: var(--yunke-background-primary-color, white) !important;
+        color: var(--yunke-text-primary-color, #333) !important;
         transition: border-color 0.2s !important;
       }
       
       .config-row input:focus, .config-row select:focus {
         outline: none !important;
-        border-color: var(--affine-primary-color, #007bff) !important;
+        border-color: var(--yunke-primary-color, #007bff) !important;
         box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25) !important;
       }
       
@@ -1492,7 +1492,7 @@ export class GanttView extends LitElement {
       
       .progress-display {
         font-weight: 600 !important;
-        color: var(--affine-primary-color, #007bff) !important;
+        color: var(--yunke-primary-color, #007bff) !important;
         min-width: 40px !important;
       }
       
@@ -1517,16 +1517,16 @@ export class GanttView extends LitElement {
       
       .task-config-footer {
         padding: 16px 24px !important;
-        border-top: 1px solid var(--affine-border-color, #e0e0e0) !important;
+        border-top: 1px solid var(--yunke-border-color, #e0e0e0) !important;
         display: flex !important;
         gap: 12px !important;
         justify-content: flex-end !important;
-        background: var(--affine-background-secondary-color, #f9f9f9) !important;
+        background: var(--yunke-background-secondary-color, #f9f9f9) !important;
       }
       
       .config-btn {
         padding: 8px 16px !important;
-        border: 1px solid var(--affine-border-color, #e0e0e0) !important;
+        border: 1px solid var(--yunke-border-color, #e0e0e0) !important;
         border-radius: 6px !important;
         font-size: 14px !important;
         font-weight: 500 !important;
@@ -1535,22 +1535,22 @@ export class GanttView extends LitElement {
       }
       
       .cancel-btn {
-        background: var(--affine-background-primary-color, white) !important;
-        color: var(--affine-text-secondary-color, #666) !important;
+        background: var(--yunke-background-primary-color, white) !important;
+        color: var(--yunke-text-secondary-color, #666) !important;
       }
       
       .cancel-btn:hover {
-        background: var(--affine-hover-color, #f0f0f0) !important;
+        background: var(--yunke-hover-color, #f0f0f0) !important;
       }
       
       .save-btn {
-        background: var(--affine-primary-color, #007bff) !important;
+        background: var(--yunke-primary-color, #007bff) !important;
         color: white !important;
-        border-color: var(--affine-primary-color, #007bff) !important;
+        border-color: var(--yunke-primary-color, #007bff) !important;
       }
       
       .save-btn:hover {
-        background: var(--affine-primary-color-hover, #0056b3) !important;
+        background: var(--yunke-primary-color-hover, #0056b3) !important;
       }
       
       .delete-btn {
@@ -1983,8 +1983,8 @@ export class GanttView extends LitElement {
     style.textContent = `
       .task-context-menu {
         position: fixed !important;
-        background: var(--affine-background-primary-color, white) !important;
-        border: 1px solid var(--affine-border-color, #e0e0e0) !important;
+        background: var(--yunke-background-primary-color, white) !important;
+        border: 1px solid var(--yunke-border-color, #e0e0e0) !important;
         border-radius: 8px !important;
         box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15) !important;
         z-index: 999999 !important;
@@ -2001,11 +2001,11 @@ export class GanttView extends LitElement {
         display: flex !important;
         align-items: center !important;
         gap: 8px !important;
-        color: var(--affine-text-primary-color, #333) !important;
+        color: var(--yunke-text-primary-color, #333) !important;
       }
       
       .context-menu-item:hover {
-        background: var(--affine-hover-color, #f0f0f0) !important;
+        background: var(--yunke-hover-color, #f0f0f0) !important;
       }
       
       .context-menu-item.delete-item:hover {
@@ -2075,7 +2075,7 @@ export class GanttView extends LitElement {
             class="gantt-button"
             @click=${this.handleAddTask}
             title="添加新任务"
-            style="background: var(--affine-primary-color); color: white; font-weight: 600;"
+            style="background: var(--yunke-primary-color); color: white; font-weight: 600;"
           >
             + 添加任务
           </button>
@@ -2172,7 +2172,7 @@ export class GanttView extends LitElement {
             <div class="task-list-header">任务名称</div>
             <div class="task-list-body">
               ${tasks.map((task, index) => html`
-                <div class="task-row" style="border-bottom: 1px solid var(--affine-border-color);">
+                <div class="task-row" style="border-bottom: 1px solid var(--yunke-border-color);">
                   <div class="task-name-display" 
                        @click=${() => this.openTaskConfigPanel(task)}
                        @contextmenu=${(e: MouseEvent) => this.handleTaskRightClick(task, e)}
@@ -3398,7 +3398,7 @@ export class GanttView extends LitElement {
           </div>
         </div>
         
-        <div style="margin-top: 16px; padding: 12px; background: var(--affine-background-warning-color); border-radius: 6px; color: var(--affine-text-primary-color); font-size: 13px;">
+        <div style="margin-top: 16px; padding: 12px; background: var(--yunke-background-warning-color); border-radius: 6px; color: var(--yunke-text-primary-color); font-size: 13px;">
           <strong>💡 关键操作：</strong><br>
           • <strong>设置时间</strong>：双击任务条 → 配置面板 → 设置开始/结束时间<br>
           • <strong>删除任务</strong>：双击任务条 → 配置面板 → 点击"删除任务"<br>

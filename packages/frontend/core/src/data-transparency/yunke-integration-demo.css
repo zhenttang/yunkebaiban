@@ -1,7 +1,7 @@
-/* AFFiNE 数据透明化集成演示样式 */
+/* YUNKE 数据透明化集成演示样式 */
 
 /* 演示容器 */
-.affine-app {
+.yunke-app {
   display: flex;
   height: 100vh;
   background: #f5f5f5;
@@ -455,7 +455,7 @@
 }
 
 @media (max-width: 768px) {
-  .affine-app {
+  .yunke-app {
     flex-direction: column;
   }
   

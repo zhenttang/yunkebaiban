@@ -7,7 +7,7 @@ import { effects } from './effects';
 import { FootNoteInlineSpecExtension } from './inline-spec';
 
 export class FootnoteViewExtension extends ViewExtensionProvider {
-  override name = 'affine-footnote-inline';
+  override name = 'yunke-footnote-inline';
 
   override effect(): void {
     super.effect();

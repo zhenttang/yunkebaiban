@@ -97,7 +97,7 @@ export function patchNotificationService({
         throw new Error('无效的通知强调色');
       }
 
-      const toAffineNotificationActions = (
+      const toYunkeNotificationActions = (
         actions: (typeof notification)['actions']
       ): Notification['actions'] => {
         if (!actions) return undefined;
@@ -115,7 +115,7 @@ export function patchNotificationService({
         {
           title: toReactNode(notification.title),
           message: toReactNode(notification.message),
-          actions: toAffineNotificationActions(notification.actions),
+          actions: toYunkeNotificationActions(notification.actions),
           onDismiss: notification.onClose,
         },
         {

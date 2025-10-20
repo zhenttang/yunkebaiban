@@ -1,5 +1,5 @@
 import { FootNoteSchema } from '@blocksuite/yunke-model';
-import type { AffineTextAttributes } from '@blocksuite/yunke-shared/types';
+import type { YunkeTextAttributes } from '@blocksuite/yunke-shared/types';
 import { StdIdentifier } from '@blocksuite/std';
 import { InlineSpecExtension } from '@blocksuite/std/inline';
 import { html } from 'lit';
@@ -7,7 +7,7 @@ import { html } from 'lit';
 import { FootNoteNodeConfigIdentifier } from './footnote-node/footnote-config';
 
 export const FootNoteInlineSpecExtension =
-  InlineSpecExtension<AffineTextAttributes>('footnote', provider => {
+  InlineSpecExtension<YunkeTextAttributes>('footnote', provider => {
     const std = provider.get(StdIdentifier);
     const config =
       provider.getOptional(FootNoteNodeConfigIdentifier) ?? undefined;
@@ -18,11 +18,11 @@ export const FootNoteInlineSpecExtension =
         return !!delta.attributes?.footnote;
       },
       renderer: ({ delta }) => {
-        return html`<affine-footnote-node
+        return html`<yunke-footnote-node
           .delta=${delta}
           .std=${std}
           .config=${config}
-        ></affine-footnote-node>`;
+        ></yunke-footnote-node>`;
       },
       embed: true,
     };

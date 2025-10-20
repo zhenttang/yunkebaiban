@@ -1,8 +1,8 @@
 import { registerPlugin } from '@capacitor/core';
 
-import type { AffineThemePlugin } from './definitions';
+import type { YunkeThemePlugin } from './definitions';
 
-const AffineTheme = registerPlugin<AffineThemePlugin>('AffineTheme');
+const YunkeTheme = registerPlugin<YunkeThemePlugin>('YunkeTheme');
 
 export * from './definitions';
-export { AffineTheme };
+export { YunkeTheme };

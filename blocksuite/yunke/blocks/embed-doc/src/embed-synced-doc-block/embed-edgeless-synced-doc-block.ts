@@ -27,10 +27,10 @@ import { EmbedSyncedDocBlockComponent } from './embed-synced-doc-block';
 export class EmbedEdgelessSyncedDocBlockComponent extends toEdgelessEmbedBlock(
   EmbedSyncedDocBlockComponent
 ) {
-  @query('.affine-embed-synced-doc-edgeless-header-wrapper')
+  @query('.yunke-embed-synced-doc-edgeless-header-wrapper')
   accessor headerWrapper: HTMLDivElement | null = null;
 
-  @query('affine-preview-root')
+  @query('yunke-preview-root')
   accessor contentElement: BlockComponent | null = null;
 
   protected override _renderSyncedView = () => {
@@ -75,7 +75,7 @@ export class EmbedEdgelessSyncedDocBlockComponent extends toEdgelessEmbedBlock(
         [
           'page',
           () => html`
-            <div class="affine-page-viewport" data-theme=${appTheme}>
+            <div class="yunke-page-viewport" data-theme=${appTheme}>
               ${new BlockStdScope({
                 store: syncedDoc,
                 extensions: this._buildPreviewSpec('preview-page'),
@@ -86,7 +86,7 @@ export class EmbedEdgelessSyncedDocBlockComponent extends toEdgelessEmbedBlock(
         [
           'edgeless',
           () => html`
-            <div class="affine-edgeless-viewport" data-theme=${edgelessTheme}>
+            <div class="yunke-edgeless-viewport" data-theme=${edgelessTheme}>
               ${new BlockStdScope({
                 store: syncedDoc,
                 extensions: this._buildPreviewSpec('preview-edgeless'),
@@ -109,7 +109,7 @@ export class EmbedEdgelessSyncedDocBlockComponent extends toEdgelessEmbedBlock(
       () => html`
         <div
           class=${classMap({
-            'affine-embed-synced-doc-container': true,
+            'yunke-embed-synced-doc-container': true,
             [editorMode]: true,
             [theme]: true,
             surface: true,
@@ -119,13 +119,13 @@ export class EmbedEdgelessSyncedDocBlockComponent extends toEdgelessEmbedBlock(
           style=${containerStyleMap}
           ?data-scale=${scale}
         >
-          <div class="affine-embed-synced-doc-edgeless-header-wrapper">
+          <div class="yunke-embed-synced-doc-edgeless-header-wrapper">
             ${header}
           </div>
-          <div class="affine-embed-synced-doc-editor">
+          <div class="yunke-embed-synced-doc-editor">
             ${this.isPageMode && this._isEmptySyncedDoc
               ? html`
-                  <div class="affine-embed-synced-doc-editor-empty">
+                  <div class="yunke-embed-synced-doc-editor-empty">
                     <span>
                       This is a linked doc, you can add content here.
                     </span>
@@ -133,7 +133,7 @@ export class EmbedEdgelessSyncedDocBlockComponent extends toEdgelessEmbedBlock(
                 `
               : guard([editorMode, syncedDoc], renderEditor)}
           </div>
-          <div class="affine-embed-synced-doc-editor-overlay"></div>
+          <div class="yunke-embed-synced-doc-editor-overlay"></div>
         </div>
       `
     );

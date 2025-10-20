@@ -1,5 +1,5 @@
 import { Wrapper } from '@yunke/component';
-import { EmptyDocs } from '@yunke/core/components/affine/empty';
+import { EmptyDocs } from '@yunke/core/components/yunke/empty';
 import {
   createDocExplorerContext,
   DocExplorerContext,

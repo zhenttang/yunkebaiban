@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# AFFiNE 依赖优化脚本
+# YUNKE 依赖优化脚本
 # 此脚本提供了一系列工具来分析和优化项目依赖
 
 set -e  # 遇到错误时退出
@@ -212,7 +212,7 @@ check_optimization_opportunities() {
 
 # 主菜单
 show_menu() {
-    echo -e "\n${BLUE}=== AFFiNE 依赖优化工具 ===${NC}\n"
+    echo -e "\n${BLUE}=== YUNKE 依赖优化工具 ===${NC}\n"
     echo "1. 安装必要工具"
     echo "2. 分析依赖大小" 
     echo "3. 检查未使用的依赖"

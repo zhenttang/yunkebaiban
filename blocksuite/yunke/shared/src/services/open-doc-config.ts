@@ -26,7 +26,7 @@ export interface OpenDocService {
 }
 
 export const OpenDocExtensionIdentifier = createIdentifier<OpenDocService>(
-  'AffineOpenDocExtension'
+  'YunkeOpenDocExtension'
 );
 
 const defaultConfig: OpenDocConfig = {

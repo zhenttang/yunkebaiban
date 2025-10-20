@@ -96,7 +96,7 @@ export class FrameBlockComponent extends GfxBlockComponent<FrameBlockModel> {
 
     return html`
       <div
-        class="affine-frame-container"
+        class="yunke-frame-container"
         style=${styleMap({
           zIndex: `${frameIndex}`,
           backgroundColor,
@@ -119,7 +119,7 @@ export class FrameBlockComponent extends GfxBlockComponent<FrameBlockModel> {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'affine-frame': FrameBlockComponent;
+    'yunke-frame': FrameBlockComponent;
   }
 }
 

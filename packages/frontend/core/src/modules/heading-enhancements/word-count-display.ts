@@ -14,10 +14,10 @@ export class WordCountDisplay extends WithDisposable(ShadowlessElement) {
       flex-direction: column;
       gap: 8px;
       padding: 12px;
-      background: var(--affine-background-secondary-color);
-      border: 1px solid var(--affine-border-color);
+      background: var(--yunke-background-secondary-color);
+      border: 1px solid var(--yunke-border-color);
       border-radius: 8px;
-      font-family: var(--affine-font-family);
+      font-family: var(--yunke-font-family);
       font-size: 14px;
       line-height: 1.4;
       user-select: none;
@@ -44,7 +44,7 @@ export class WordCountDisplay extends WithDisposable(ShadowlessElement) {
 
     .word-count-title {
       font-weight: 600;
-      color: var(--affine-text-primary-color);
+      color: var(--yunke-text-primary-color);
       display: flex;
       align-items: center;
       gap: 6px;
@@ -62,7 +62,7 @@ export class WordCountDisplay extends WithDisposable(ShadowlessElement) {
     .action-btn {
       padding: 4px 6px;
       background: transparent;
-      border: 1px solid var(--affine-border-color);
+      border: 1px solid var(--yunke-border-color);
       border-radius: 4px;
       cursor: pointer;
       font-size: 12px;
@@ -70,13 +70,13 @@ export class WordCountDisplay extends WithDisposable(ShadowlessElement) {
     }
 
     .action-btn:hover {
-      background: var(--affine-hover-color);
+      background: var(--yunke-hover-color);
     }
 
     .action-btn.active {
-      background: var(--affine-primary-color);
+      background: var(--yunke-primary-color);
       color: white;
-      border-color: var(--affine-primary-color);
+      border-color: var(--yunke-primary-color);
     }
 
     .word-count-main {
@@ -94,12 +94,12 @@ export class WordCountDisplay extends WithDisposable(ShadowlessElement) {
     .count-number {
       font-size: 24px;
       font-weight: 700;
-      color: var(--affine-primary-color);
+      color: var(--yunke-primary-color);
     }
 
     .count-label {
       font-size: 12px;
-      color: var(--affine-text-secondary-color);
+      color: var(--yunke-text-secondary-color);
       font-weight: 500;
     }
 
@@ -109,7 +109,7 @@ export class WordCountDisplay extends WithDisposable(ShadowlessElement) {
 
     .count-secondary {
       font-size: 11px;
-      color: var(--affine-text-secondary-color);
+      color: var(--yunke-text-secondary-color);
     }
 
     .word-count-details {
@@ -137,12 +137,12 @@ export class WordCountDisplay extends WithDisposable(ShadowlessElement) {
 
     .detail-value {
       font-weight: 600;
-      color: var(--affine-text-primary-color);
+      color: var(--yunke-text-primary-color);
     }
 
     .detail-label {
       font-size: 11px;
-      color: var(--affine-text-secondary-color);
+      color: var(--yunke-text-secondary-color);
     }
 
     .word-count-progress {
@@ -160,25 +160,25 @@ export class WordCountDisplay extends WithDisposable(ShadowlessElement) {
 
     .progress-bar {
       height: 6px;
-      background: var(--affine-border-color);
+      background: var(--yunke-border-color);
       border-radius: 3px;
       overflow: hidden;
     }
 
     .progress-fill {
       height: 100%;
-      background: linear-gradient(90deg, var(--affine-primary-color), var(--affine-success-color));
+      background: linear-gradient(90deg, var(--yunke-primary-color), var(--yunke-success-color));
       transition: width 0.3s ease;
       border-radius: 3px;
     }
 
     .progress-fill.over-goal {
-      background: linear-gradient(90deg, var(--affine-success-color), var(--affine-warning-color));
+      background: linear-gradient(90deg, var(--yunke-success-color), var(--yunke-warning-color));
     }
 
     .progress-text {
       font-size: 11px;
-      color: var(--affine-text-secondary-color);
+      color: var(--yunke-text-secondary-color);
     }
 
     .word-count-footer {
@@ -186,8 +186,8 @@ export class WordCountDisplay extends WithDisposable(ShadowlessElement) {
       justify-content: space-between;
       align-items: center;
       font-size: 10px;
-      color: var(--affine-text-secondary-color);
-      border-top: 1px solid var(--affine-border-color);
+      color: var(--yunke-text-secondary-color);
+      border-top: 1px solid var(--yunke-border-color);
       padding-top: 6px;
       margin-top: 4px;
     }
@@ -206,11 +206,11 @@ export class WordCountDisplay extends WithDisposable(ShadowlessElement) {
       width: 6px;
       height: 6px;
       border-radius: 50%;
-      background: var(--affine-success-color);
+      background: var(--yunke-success-color);
     }
 
     .update-indicator.updating {
-      background: var(--affine-warning-color);
+      background: var(--yunke-warning-color);
       animation: pulse 1s infinite;
     }
 
@@ -229,14 +229,14 @@ export class WordCountDisplay extends WithDisposable(ShadowlessElement) {
     .goal-input input {
       width: 60px;
       padding: 2px 4px;
-      border: 1px solid var(--affine-border-color);
+      border: 1px solid var(--yunke-border-color);
       border-radius: 3px;
       font-size: 11px;
     }
 
     .goal-input button {
       padding: 2px 6px;
-      background: var(--affine-primary-color);
+      background: var(--yunke-primary-color);
       color: white;
       border: none;
       border-radius: 3px;
@@ -495,7 +495,7 @@ export class WordCountDisplay extends WithDisposable(ShadowlessElement) {
         </div>
         <div class="progress-text">
           ${progress.toFixed(1)}% 完成
-          ${isOverGoal ? html`<span style="color: var(--affine-success-color)">🎉 已达成目标!</span>` : nothing}
+          ${isOverGoal ? html`<span style="color: var(--yunke-success-color)">🎉 已达成目标!</span>` : nothing}
         </div>
       </div>
     `;

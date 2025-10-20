@@ -8,7 +8,7 @@ import {
   DocModeProvider,
   TelemetryProvider,
 } from '@blocksuite/yunke-shared/services';
-import type { AffineInlineEditor } from '@blocksuite/yunke-shared/types';
+import type { YunkeInlineEditor } from '@blocksuite/yunke-shared/types';
 import {
   createKeydownObserver,
   getCurrentNativeRange,
@@ -29,9 +29,9 @@ import groupBy from 'lodash-es/groupBy';
 import throttle from 'lodash-es/throttle';
 
 import {
-  AFFINE_SLASH_MENU_MAX_HEIGHT,
-  AFFINE_SLASH_MENU_TOOLTIP_TIMEOUT,
-  AFFINE_SLASH_MENU_TRIGGER_KEY,
+  YUNKE_SLASH_MENU_MAX_HEIGHT,
+  YUNKE_SLASH_MENU_TOOLTIP_TIMEOUT,
+  YUNKE_SLASH_MENU_TRIGGER_KEY,
 } from './consts.js';
 import { slashItemToolTipStyle, styles } from './styles.js';
 import type {
@@ -69,7 +69,7 @@ export class SlashMenu extends WithDisposable(LitElement) {
     cleanSpecifiedTail(
       this.context.std,
       this.context.model,
-      AFFINE_SLASH_MENU_TRIGGER_KEY + (this._query || '')
+      YUNKE_SLASH_MENU_TRIGGER_KEY + (this._query || '')
     );
     this.inlineEditor
       .waitForUpdate()
@@ -175,7 +175,7 @@ export class SlashMenu extends WithDisposable(LitElement) {
   }
 
   constructor(
-    private readonly inlineEditor: AffineInlineEditor,
+    private readonly inlineEditor: YunkeInlineEditor,
     private readonly abortController = new AbortController()
   ) {
     super();
@@ -218,7 +218,7 @@ export class SlashMenu extends WithDisposable(LitElement) {
       signal: this.abortController.signal,
       interceptor: (event, next) => {
         const { key, isComposing, code } = event;
-        if (key === AFFINE_SLASH_MENU_TRIGGER_KEY) {
+        if (key === YUNKE_SLASH_MENU_TRIGGER_KEY) {
           // Can not stopPropagation here,
           // otherwise the rich text will not be able to trigger a new the slash menu
           return;
@@ -313,7 +313,7 @@ export class SlashMenu extends WithDisposable(LitElement) {
     const slashMenuStyles = this._position
       ? {
           transform: `translate(${this._position.x}, ${this._position.y})`,
-          maxHeight: `${Math.min(this._position.height, AFFINE_SLASH_MENU_MAX_HEIGHT)}px`,
+          maxHeight: `${Math.min(this._position.height, YUNKE_SLASH_MENU_MAX_HEIGHT)}px`,
         }
       : {
           visibility: 'hidden',
@@ -401,7 +401,7 @@ export class InnerSlashMenu extends WithDisposable(LitElement) {
       abortController: this._subMenuAbortController,
     });
 
-    subMenuElement.style.zIndex = `calc(var(--affine-z-index-popover) + ${this.depth})`;
+    subMenuElement.style.zIndex = `calc(var(--yunke-z-index-popover) + ${this.depth})`;
     subMenuElement.focus();
   };
 
@@ -426,18 +426,18 @@ export class InnerSlashMenu extends WithDisposable(LitElement) {
     >
       ${icon && html`<div class="slash-menu-item-icon">${icon}</div>`}
       ${tooltip &&
-      html`<affine-tooltip
+      html`<yunke-tooltip
         tip-position="right"
         .offset=${22}
         .tooltipStyle=${slashItemToolTipStyle}
         .hoverOptions=${{
-          enterDelay: AFFINE_SLASH_MENU_TOOLTIP_TIMEOUT,
+          enterDelay: YUNKE_SLASH_MENU_TOOLTIP_TIMEOUT,
           allowMultiple: false,
         }}
       >
         <div class="tooltip-figure">${tooltip.figure}</div>
         <div class="tooltip-caption">${tooltip.caption}</div>
-      </affine-tooltip>`}
+      </yunke-tooltip>`}
     </icon-button>`;
   };
 

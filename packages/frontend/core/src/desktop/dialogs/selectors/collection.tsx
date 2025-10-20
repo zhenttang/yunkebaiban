@@ -32,8 +32,8 @@ const FavoriteOperation = ({ collection }: { collection: ListItem }) => {
     favAdapter.toggle(collection.id, 'collection');
     toast(
       isFavorite
-        ? t['com.affine.toastMessage.removedFavorites']()
-        : t['com.affine.toastMessage.addedFavorites']()
+        ? t['com.yunke.toastMessage.removedFavorites']()
+        : t['com.yunke.toastMessage.addedFavorites']()
     );
   }, [collection.id, favAdapter, isFavorite, t]);
 
@@ -95,7 +95,7 @@ export const CollectionSelectorDialog = ({
     >
       <SelectorLayout
         searchPlaceholder={t[
-          'com.affine.selector-collection.search.placeholder'
+          'com.yunke.selector-collection.search.placeholder'
         ]()}
         selectedCount={selection.length}
         onSearch={setKeyword}

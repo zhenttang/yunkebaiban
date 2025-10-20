@@ -8,7 +8,7 @@
     "url": "https://gitcode.com/xiaoleixiaolei",
     "type": "git"
   },
-  "description": "AFFiNE Desktop App",
+  "description": "YUNKE Desktop App",
   "homepage": "https://gitcode.com/xiaoleixiaolei",
   "exports": {
     "./helper/exposed": "./src/helper/exposed.ts",
@@ -86,9 +86,9 @@
   "build": {
     "protocols": [
       {
-        "name": "affine",
+        "name": "yunke",
         "schemes": [
-          "affine"
+          "yunke"
         ]
       }
     ]

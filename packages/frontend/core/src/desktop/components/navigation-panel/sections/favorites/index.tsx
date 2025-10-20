@@ -11,7 +11,7 @@ import {
 } from '@yunke/core/modules/favorite';
 import { NavigationPanelService } from '@yunke/core/modules/navigation-panel';
 import { WorkspaceService } from '@yunke/core/modules/workspace';
-import type { AffineDNDData } from '@yunke/core/types/dnd';
+import type { YunkeDNDData } from '@yunke/core/types/dnd';
 import { inferOpenMode } from '@yunke/core/utils';
 import { useI18n } from '@yunke/i18n';
 import { track } from '@yunke/track';
@@ -54,7 +54,7 @@ export const NavigationPanelFavorites = () => {
   );
 
   const handleDrop = useCallback(
-    (data: DropTargetDropEvent<AffineDNDData>) => {
+    (data: DropTargetDropEvent<YunkeDNDData>) => {
       if (
         data.source.data.entity?.type &&
         isFavoriteSupportType(data.source.data.entity.type)
@@ -93,7 +93,7 @@ export const NavigationPanelFavorites = () => {
   const handleOnChildrenDrop = useCallback(
     (
       favorite: { id: string; type: FavoriteSupportTypeUnion },
-      data: DropTargetDropEvent<AffineDNDData>
+      data: DropTargetDropEvent<YunkeDNDData>
     ) => {
       if (
         data.treeInstruction?.type === 'reorder-above' ||
@@ -148,7 +148,7 @@ export const NavigationPanelFavorites = () => {
   );
 
   const { dropTargetRef, draggedOverDraggable, draggedOverPosition } =
-    useDropTarget<AffineDNDData>(
+    useDropTarget<YunkeDNDData>(
       () => ({
         data: {
           at: 'navigation-panel:favorite:root',
@@ -163,7 +163,7 @@ export const NavigationPanelFavorites = () => {
   return (
     <CollapsibleSection
       name="favorites"
-      title={t['com.affine.rootAppSidebar.favorites']()}
+      title={t['com.yunke.rootAppSidebar.favorites']()}
       headerRef={dropTargetRef}
       testId="navigation-panel-favorites"
       headerTestId="navigation-panel-favorite-category-divider"
@@ -177,7 +177,7 @@ export const NavigationPanelFavorites = () => {
             onAuxClick={handleCreateNewFavoriteDoc}
             size="16"
             tooltip={t[
-              'com.affine.rootAppSidebar.explorer.fav-section-add-tooltip'
+              'com.yunke.rootAppSidebar.explorer.fav-section-add-tooltip'
             ]()}
           >
             <PlusIcon />
@@ -225,11 +225,11 @@ const NavigationPanelFavoriteNode = ({
       id: string;
       type: FavoriteSupportTypeUnion;
     },
-    data: DropTargetDropEvent<AffineDNDData>
+    data: DropTargetDropEvent<YunkeDNDData>
   ) => void;
 }) => {
   const handleOnChildrenDrop = useCallback(
-    (data: DropTargetDropEvent<AffineDNDData>) => {
+    (data: DropTargetDropEvent<YunkeDNDData>) => {
       onDrop(favorite, data);
     },
     [favorite, onDrop]

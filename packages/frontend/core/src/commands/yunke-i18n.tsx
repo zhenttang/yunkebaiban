@@ -3,9 +3,9 @@ import type { useI18n } from '@yunke/i18n';
 import { track } from '@yunke/track';
 import { SettingsIcon } from '@blocksuite/icons/rc';
 
-import { registerAffineCommand } from './registry';
+import { registerYunkeCommand } from './registry';
 
-export function registerAffineLanguageCommands({
+export function registerYunkeLanguageCommands({
   i18n,
   t,
 }: {
@@ -14,12 +14,12 @@ export function registerAffineLanguageCommands({
 }) {
   // Display Language
   const disposables = i18n.languageList.map(language => {
-    return registerAffineCommand({
-      id: `affine:change-display-language-to-${language.name}`,
-      label: `${t['com.affine.cmdk.affine.display-language.to']()} ${
+    return registerYunkeCommand({
+      id: `yunke:change-display-language-to-${language.name}`,
+      label: `${t['com.yunke.cmdk.yunke.display-language.to']()} ${
         language.originalName
       }`,
-      category: 'affine:settings',
+      category: 'yunke:settings',
       icon: <SettingsIcon />,
       preconditionStrategy: () =>
         i18n.currentLanguage$.value.key !== language.key,

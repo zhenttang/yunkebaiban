@@ -1,6 +1,6 @@
 import { DocModeProvider } from '@blocksuite/yunke/shared/services';
 import type { Workspace } from '@blocksuite/yunke/store';
-import { TestAffineEditorContainer } from '@blocksuite/integration-test';
+import { TestYunkeEditorContainer } from '@blocksuite/integration-test';
 
 import {
   getDocFromUrlParams,
@@ -27,7 +27,7 @@ export async function mountDefaultDocEditor(collection: Workspace) {
   const init = params.get('init');
   if (init && init.startsWith('multiple-editor')) {
     app.childNodes.forEach(node => {
-      if (node instanceof TestAffineEditorContainer) {
+      if (node instanceof TestYunkeEditorContainer) {
         node.style.flex = '1';
         if (init === 'multiple-editor-vertical') {
           node.style.overflow = 'auto';

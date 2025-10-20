@@ -21,7 +21,7 @@ import {
 import { useLiveData, useService } from '@toeverything/infra';
 import { forwardRef, memo, useCallback, useContext } from 'react';
 
-import { useBlockSuiteMetaHelper } from '../../hooks/affine/use-block-suite-meta-helper';
+import { useBlockSuiteMetaHelper } from '../../hooks/yunke/use-block-suite-meta-helper';
 import { IsFavoriteIcon } from '../../pure/icons';
 import { DocExplorerContext } from '../context';
 
@@ -160,11 +160,11 @@ export const QuickDelete = memo(
 
         track.allDocs.list.docMenu.deleteDoc();
         openConfirmModal({
-          title: t['com.affine.moveToTrash.confirmModal.title'](),
-          description: t['com.affine.moveToTrash.confirmModal.description']({
+          title: t['com.yunke.moveToTrash.confirmModal.title'](),
+          description: t['com.yunke.moveToTrash.confirmModal.description']({
             title: doc.title$.value || t['Untitled'](),
           }),
-          cancelText: t['com.affine.confirmModal.button.cancel'](),
+          cancelText: t['com.yunke.confirmModal.button.cancel'](),
           confirmText: t.Delete(),
           confirmButtonOptions: {
             variant: 'error',
@@ -173,7 +173,7 @@ export const QuickDelete = memo(
             try {
               const canTrash = await guardService.can('Doc_Trash', doc.id);
               if (!canTrash) {
-                toast(t['com.affine.no-permission']());
+                toast(t['com.yunke.no-permission']());
                 return;
               }
               doc.moveToTrash();
@@ -265,9 +265,9 @@ export const QuickDeletePermanently = memo(function QuickDeletePermanently({
       .then(can => {
         if (can) {
           permanentlyDeletePage(doc.id);
-          toast(t['com.affine.toastMessage.permanentlyDeleted']());
+          toast(t['com.yunke.toastMessage.permanentlyDeleted']());
         } else {
-          toast(t['com.affine.no-permission']());
+          toast(t['com.yunke.no-permission']());
         }
       })
       .catch(e => {
@@ -281,10 +281,10 @@ export const QuickDeletePermanently = memo(function QuickDeletePermanently({
       e.stopPropagation();
       e.preventDefault();
       openConfirmModal({
-        title: `${t['com.affine.trashOperation.deletePermanently']()}?`,
-        description: t['com.affine.trashOperation.deleteDescription'](),
-        cancelText: t['com.affine.confirmModal.button.cancel'](),
-        confirmText: t['com.affine.trashOperation.delete'](),
+        title: `${t['com.yunke.trashOperation.deletePermanently']()}?`,
+        description: t['com.yunke.trashOperation.deleteDescription'](),
+        cancelText: t['com.yunke.confirmModal.button.cancel'](),
+        confirmText: t['com.yunke.trashOperation.delete'](),
         confirmButtonOptions: {
           variant: 'error',
         },
@@ -331,12 +331,12 @@ export const QuickRestore = memo(function QuickRestore({
           if (can) {
             restoreFromTrash(doc.id);
             toast(
-              t['com.affine.toastMessage.restored']({
+              t['com.yunke.toastMessage.restored']({
                 title: doc.title$.value || '未命名',
               })
             );
           } else {
-            toast(t['com.affine.no-permission']());
+            toast(t['com.yunke.no-permission']());
           }
         })
         .catch(e => {

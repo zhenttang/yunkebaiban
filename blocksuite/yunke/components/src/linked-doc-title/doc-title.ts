@@ -18,12 +18,12 @@ export class DocTitle extends LitElement {
       white-space: nowrap;
       user-select: none;
       cursor: pointer;
-      color: var(--affine-link-color);
+      color: var(--yunke-link-color);
       font-feature-settings:
         'clig' off,
         'liga' off;
-      font-family: var(--affine-font-family);
-      font-size: var(--affine-font-sm);
+      font-family: var(--yunke-font-family);
+      font-size: var(--yunke-font-sm);
       font-style: normal;
       font-weight: 400;
       text-decoration: none;
@@ -56,6 +56,6 @@ export class DocTitle extends LitElement {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'affine-linked-doc-title': DocTitle;
+    'yunke-linked-doc-title': DocTitle;
   }
 }

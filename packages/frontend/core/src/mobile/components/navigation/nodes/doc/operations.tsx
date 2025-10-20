@@ -7,8 +7,8 @@ import {
 } from '@yunke/component';
 import { usePageHelper } from '@yunke/core/blocksuite/block-suite-page-list/utils';
 import { Guard } from '@yunke/core/components/guard';
-import { useBlockSuiteMetaHelper } from '@yunke/core/components/hooks/affine/use-block-suite-meta-helper';
-import { useAsyncCallback } from '@yunke/core/components/hooks/affine-async-hooks';
+import { useBlockSuiteMetaHelper } from '@yunke/core/components/hooks/yunke/use-block-suite-meta-helper';
+import { useAsyncCallback } from '@yunke/core/components/hooks/yunke-async-hooks';
 import { IsFavoriteIcon } from '@yunke/core/components/pure/icons';
 import type { NodeOperation } from '@yunke/core/desktop/components/navigation-panel';
 import { DocsService } from '@yunke/core/modules/doc';
@@ -75,12 +75,12 @@ export const useNavigationPanelDocNodeOperations = (
       return;
     }
     openConfirmModal({
-      title: t['com.affine.moveToTrash.title'](),
-      description: t['com.affine.moveToTrash.confirmModal.description']({
+      title: t['com.yunke.moveToTrash.title'](),
+      description: t['com.yunke.moveToTrash.confirmModal.description']({
         title: docRecord.title$.value,
       }),
-      confirmText: t['com.affine.moveToTrash.confirmModal.confirm'](),
-      cancelText: t['com.affine.moveToTrash.confirmModal.cancel'](),
+      confirmText: t['com.yunke.moveToTrash.confirmModal.confirm'](),
+      cancelText: t['com.yunke.moveToTrash.confirmModal.cancel'](),
       confirmButtonOptions: {
         variant: 'error',
       },
@@ -89,7 +89,7 @@ export const useNavigationPanelDocNodeOperations = (
         track.$.navigationPanel.docs.deleteDoc({
           control: 'button',
         });
-        toast(t['com.affine.toastMessage.movedTrash']());
+        toast(t['com.yunke.toastMessage.movedTrash']());
       },
     });
   }, [docRecord, openConfirmModal, t]);
@@ -217,7 +217,7 @@ export const useNavigationPanelDocNodeOperationsMenu = (
               </DocFrameScope>
             }
           >
-            <span>{t['com.affine.page-properties.page-info.view']()}</span>
+            <span>{t['com.yunke.page-properties.page-info.view']()}</span>
           </MenuSub>
         ),
       },
@@ -231,7 +231,7 @@ export const useNavigationPanelDocNodeOperationsMenu = (
                 onClick={handleAddLinkedPage}
                 disabled={!canEdit}
               >
-                {t['com.affine.page-operation.add-linked-page']()}
+                {t['com.yunke.page-operation.add-linked-page']()}
               </MenuItem>
             )}
           </Guard>
@@ -241,7 +241,7 @@ export const useNavigationPanelDocNodeOperationsMenu = (
         index: 98,
         view: (
           <MenuItem prefixIcon={<DuplicateIcon />} onClick={handleDuplicate}>
-            {t['com.affine.header.option.duplicate']()}
+            {t['com.yunke.header.option.duplicate']()}
           </MenuItem>
         ),
       },
@@ -249,7 +249,7 @@ export const useNavigationPanelDocNodeOperationsMenu = (
         index: 99,
         view: (
           <MenuItem prefixIcon={<OpenInNewIcon />} onClick={handleOpenInNewTab}>
-            {t['com.affine.workbench.tab.page-menu-open']()}
+            {t['com.yunke.workbench.tab.page-menu-open']()}
           </MenuItem>
         ),
       },
@@ -261,8 +261,8 @@ export const useNavigationPanelDocNodeOperationsMenu = (
             onClick={handleToggleFavoriteDoc}
           >
             {favorite
-              ? t['com.affine.favoritePageOperation.remove']()
-              : t['com.affine.favoritePageOperation.add']()}
+              ? t['com.yunke.favoritePageOperation.remove']()
+              : t['com.yunke.favoritePageOperation.add']()}
           </MenuItem>
         ),
       },
@@ -281,7 +281,7 @@ export const useNavigationPanelDocNodeOperationsMenu = (
                 onClick={handleMoveToTrash}
                 disabled={!canMoveToTrash}
               >
-                {t['com.affine.moveToTrash.title']()}
+                {t['com.yunke.moveToTrash.title']()}
               </MenuItem>
             )}
           </Guard>

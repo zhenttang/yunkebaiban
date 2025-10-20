@@ -3,7 +3,7 @@ import { type EditorHost, TextSelection } from '@blocksuite/yunke/std';
 
 import { handleInlineAskAIAction } from '../../actions/doc-handler';
 import { AIProvider } from '../../provider';
-import type { AffineAIPanelWidget } from '../../widgets/ai-panel/ai-panel';
+import type { YunkeAIPanelWidget } from '../../widgets/ai-panel/ai-panel';
 
 function isSpaceEvent(event: KeyboardEvent) {
   return event.key === ' ' && event.which === 32 && !event.isComposing;
@@ -29,11 +29,11 @@ function insertSpace(host: EditorHost) {
   );
 }
 
-export function setupSpaceAIEntry(panel: AffineAIPanelWidget) {
+export function setupSpaceAIEntry(panel: YunkeAIPanelWidget) {
   // Background: The keydown event triggered by a space may originate from:
   // 1. Normal space insertion
   // 2. Space triggered by input method confirming candidate words
-  // In scenarios like (2), some browsers (see [ISSUE](https://github.com/toeverything/AFFiNE/issues/11541))
+  // In scenarios like (2), some browsers (see [ISSUE](https://github.com/toeverything/YUNKE/issues/11541))
   // and input method callbacks produce events identical to scenario (1),
   // making it impossible to distinguish between the two.
   //
@@ -63,7 +63,7 @@ export function setupSpaceAIEntry(panel: AffineAIPanelWidget) {
         if (
           !block?.model?.text ||
           block.model.text?.length > 0 ||
-          block.model.flavour !== 'affine:paragraph'
+          block.model.flavour !== 'yunke:paragraph'
         )
           return;
 

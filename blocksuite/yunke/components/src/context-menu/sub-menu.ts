@@ -90,7 +90,7 @@ export class MenuSubMenu extends MenuFocusable {
   protected override render(): unknown {
     const classString = classMap({
       [this.data.class ?? '']: true,
-      'affine-menu-button': true,
+      'yunke-menu-button': true,
       focused: this.isFocused$.value,
     });
     return html` <div class="${classString}">${this.data.content()}</div>`;
@@ -154,10 +154,10 @@ export const renderSubMenu = (data: MenuSubMenuData, menu: Menu) => {
       .menu="${menu}"
     ></mobile-sub-menu>`;
   }
-  return html` <affine-menu-sub-menu
+  return html` <yunke-menu-sub-menu
     .data="${data}"
     .menu="${menu}"
-  ></affine-menu-sub-menu>`;
+  ></yunke-menu-sub-menu>`;
 };
 
 export const subMenuItems = {
@@ -181,7 +181,7 @@ export const subMenuItems = {
       const data: MenuSubMenuData = {
         content: () =>
           html`${config.prefix}
-            <div class="affine-menu-action-text">
+            <div class="yunke-menu-action-text">
               ${config.label?.() ?? config.name}
             </div>
             ${config.postfix}

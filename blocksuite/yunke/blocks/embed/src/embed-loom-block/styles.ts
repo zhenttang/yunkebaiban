@@ -1,7 +1,7 @@
 import { css, html } from 'lit';
 
 export const styles = css`
-  .affine-embed-loom-block {
+  .yunke-embed-loom-block {
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
@@ -12,38 +12,38 @@ export const styles = css`
     height: 100%;
 
     border-radius: 8px;
-    border: 1px solid var(--affine-background-tertiary-color);
+    border: 1px solid var(--yunke-background-tertiary-color);
 
-    background: var(--affine-background-primary-color);
+    background: var(--yunke-background-primary-color);
     user-select: none;
   }
 
-  .affine-embed-loom-video {
+  .yunke-embed-loom-video {
     flex-grow: 1;
     width: 100%;
   }
 
-  .affine-embed-loom-video img,
-  .affine-embed-loom-video object,
-  .affine-embed-loom-video svg {
+  .yunke-embed-loom-video img,
+  .yunke-embed-loom-video object,
+  .yunke-embed-loom-video svg {
     width: 100%;
     height: 100%;
     object-fit: cover;
     border-radius: 4px;
   }
 
-  .affine-embed-loom-video-iframe-container {
+  .yunke-embed-loom-video-iframe-container {
     position: relative;
     height: 100%;
   }
 
-  .affine-embed-loom-video-iframe-container > iframe {
+  .yunke-embed-loom-video-iframe-container > iframe {
     width: 100%;
     height: 100%;
     border-radius: 4px;
   }
 
-  .affine-embed-loom-video-iframe-overlay {
+  .yunke-embed-loom-video-iframe-overlay {
     position: absolute;
     top: 0;
     left: 0;
@@ -51,18 +51,18 @@ export const styles = css`
     height: 100%;
   }
 
-  .affine-embed-loom-video-iframe-overlay.hide {
+  .yunke-embed-loom-video-iframe-overlay.hide {
     display: none;
   }
 
-  .affine-embed-loom-content {
+  .yunke-embed-loom-content {
     display: flex;
     flex-direction: column;
     width: 100%;
     height: fit-content;
   }
 
-  .affine-embed-loom-content-header {
+  .yunke-embed-loom-content-header {
     display: flex;
     flex-direction: row;
     gap: 8px;
@@ -71,7 +71,7 @@ export const styles = css`
     align-self: stretch;
   }
 
-  .affine-embed-loom-content-title-icon {
+  .yunke-embed-loom-content-title-icon {
     display: flex;
     width: 20px;
     height: 20px;
@@ -79,15 +79,15 @@ export const styles = css`
     align-items: center;
   }
 
-  .affine-embed-loom-content-title-icon img,
-  .affine-embed-loom-content-title-icon object,
-  .affine-embed-loom-content-title-icon svg {
+  .yunke-embed-loom-content-title-icon img,
+  .yunke-embed-loom-content-title-icon object,
+  .yunke-embed-loom-content-title-icon svg {
     width: 20px;
     height: 20px;
-    fill: var(--affine-background-primary-color);
+    fill: var(--yunke-background-primary-color);
   }
 
-  .affine-embed-loom-content-title-text {
+  .yunke-embed-loom-content-title-text {
     flex: 1 0 0;
 
     display: -webkit-box;
@@ -97,16 +97,16 @@ export const styles = css`
     word-break: break-word;
     overflow: hidden;
     text-overflow: ellipsis;
-    color: var(--affine-text-primary-color);
+    color: var(--yunke-text-primary-color);
 
-    font-family: var(--affine-font-family);
-    font-size: var(--affine-font-sm);
+    font-family: var(--yunke-font-family);
+    font-size: var(--yunke-font-sm);
     font-style: normal;
     font-weight: 600;
     line-height: 22px;
   }
 
-  .affine-embed-loom-content-description {
+  .yunke-embed-loom-content-description {
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
@@ -118,16 +118,16 @@ export const styles = css`
     white-space: normal;
     overflow: hidden;
     text-overflow: ellipsis;
-    color: var(--affine-text-primary-color);
+    color: var(--yunke-text-primary-color);
 
-    font-family: var(--affine-font-family);
-    font-size: var(--affine-font-xs);
+    font-family: var(--yunke-font-family);
+    font-size: var(--yunke-font-xs);
     font-style: normal;
     font-weight: 400;
     line-height: 20px;
   }
 
-  .affine-embed-loom-content-url {
+  .yunke-embed-loom-content-url {
     display: flex;
     align-items: center;
     justify-content: flex-start;
@@ -136,7 +136,7 @@ export const styles = css`
     max-width: 100%;
     cursor: pointer;
   }
-  .affine-embed-loom-content-url > span {
+  .yunke-embed-loom-content-url > span {
     display: -webkit-box;
     -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
@@ -145,46 +145,46 @@ export const styles = css`
     white-space: normal;
     overflow: hidden;
     text-overflow: ellipsis;
-    color: var(--affine-text-secondary-color);
+    color: var(--yunke-text-secondary-color);
 
-    font-family: var(--affine-font-family);
-    font-size: var(--affine-font-xs);
+    font-family: var(--yunke-font-family);
+    font-size: var(--yunke-font-xs);
     font-style: normal;
     font-weight: 400;
     line-height: 20px;
   }
-  .affine-embed-loom-content-url:hover > span {
-    color: var(--affine-link-color);
+  .yunke-embed-loom-content-url:hover > span {
+    color: var(--yunke-link-color);
   }
-  .affine-embed-loom-content-url:hover .open-icon {
-    fill: var(--affine-link-color);
+  .yunke-embed-loom-content-url:hover .open-icon {
+    fill: var(--yunke-link-color);
   }
 
-  .affine-embed-loom-content-url-icon {
+  .yunke-embed-loom-content-url-icon {
     display: flex;
     align-items: center;
     justify-content: center;
     width: 12px;
     height: 12px;
   }
-  .affine-embed-loom-content-url-icon .open-icon {
+  .yunke-embed-loom-content-url-icon .open-icon {
     height: 12px;
     width: 12px;
-    fill: var(--affine-text-secondary-color);
+    fill: var(--yunke-text-secondary-color);
   }
 
-  .affine-embed-loom-block.loading {
-    .affine-embed-loom-content-title-text {
-      color: var(--affine-placeholder-color);
+  .yunke-embed-loom-block.loading {
+    .yunke-embed-loom-content-title-text {
+      color: var(--yunke-placeholder-color);
     }
   }
 
-  .affine-embed-loom-block.selected {
-    .affine-embed-loom-content-url > span {
-      color: var(--affine-link-color);
+  .yunke-embed-loom-block.selected {
+    .yunke-embed-loom-content-url > span {
+      color: var(--yunke-link-color);
     }
-    .affine-embed-loom-content-url .open-icon {
-      fill: var(--affine-link-color);
+    .yunke-embed-loom-content-url .open-icon {
+      fill: var(--yunke-link-color);
     }
   }
 `;

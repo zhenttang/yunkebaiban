@@ -207,7 +207,7 @@ const messageHead =
 
 - [${DEPLOYED_URL}](${DEPLOYED_URL})
 `
-    : `# AFFiNE Client ${FLAVOR} released`;
+    : `# YUNKE Client ${FLAVOR} released`;
 
 let changelogMessage = `${messageHead}
 

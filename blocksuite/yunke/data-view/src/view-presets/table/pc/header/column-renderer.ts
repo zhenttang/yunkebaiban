@@ -19,11 +19,11 @@ export class DataViewColumnPreview extends SignalWatcher(
   WithDisposable(ShadowlessElement)
 ) {
   static override styles = css`
-    affine-data-view-column-preview {
+    yunke-data-view-column-preview {
       pointer-events: none;
       display: block;
       position: fixed;
-      font-family: var(--affine-font-family);
+      font-family: var(--yunke-font-family);
     }
   `;
 
@@ -35,14 +35,14 @@ export class DataViewColumnPreview extends SignalWatcher(
     const columnIndex = this.column.index$.value;
     return html`
       <div
-        style="background-color: var(--affine-background-primary-color);border-top: 1px solid ${unsafeCSS(
+        style="background-color: var(--yunke-background-primary-color);border-top: 1px solid ${unsafeCSS(
           cssVarV2.layer.insideBorder.border
-        )};box-shadow: var(--affine-shadow-2);"
+        )};box-shadow: var(--yunke-shadow-2);"
       >
-        <affine-database-header-column
+        <yunke-database-header-column
           .tableViewLogic="${this.tableViewLogic}"
           .column="${this.column}"
-        ></affine-database-header-column>
+        ></yunke-database-header-column>
         ${repeat(rows, (id, index) => {
           const height = this.container.querySelector(
             `dv-table-view-cell-container[data-row-id="${id}"]`
@@ -93,6 +93,6 @@ export class DataViewColumnPreview extends SignalWatcher(
 
 declare global {
   interface HTMLElementTagNameMap {
-    'affine-data-view-column-preview': DataViewColumnPreview;
+    'yunke-data-view-column-preview': DataViewColumnPreview;
   }
 }

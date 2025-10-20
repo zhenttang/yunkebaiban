@@ -13,7 +13,7 @@ import { groupTraitKey } from '../../../core/group-by/trait.js';
 import type { SingleView } from '../../../core/index.js';
 
 const styles = css`
-  affine-data-view-kanban-header {
+  yunke-data-view-kanban-header {
     display: flex;
     justify-content: space-between;
     padding: 4px;
@@ -26,7 +26,7 @@ const styles = css`
   }
 
   .select-group:hover {
-    background-color: var(--affine-hover-color);
+    background-color: var(--yunke-hover-color);
   }
 `;
 
@@ -71,6 +71,6 @@ export class KanbanHeader extends SignalWatcher(
 
 declare global {
   interface HTMLElementTagNameMap {
-    'affine-data-view-kanban-header': KanbanHeader;
+    'yunke-data-view-kanban-header': KanbanHeader;
   }
 }

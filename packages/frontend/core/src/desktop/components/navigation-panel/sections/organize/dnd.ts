@@ -1,6 +1,6 @@
 import type { DropTargetOptions } from '@yunke/component';
 import { isOrganizeSupportType } from '@yunke/core/modules/organize/constants';
-import type { AffineDNDData } from '@yunke/core/types/dnd';
+import type { YunkeDNDData } from '@yunke/core/types/dnd';
 
 import type { NavigationPanelTreeNodeDropEffect } from '../../tree';
 
@@ -31,7 +31,7 @@ export const organizeEmptyDropEffect: NavigationPanelTreeNodeDropEffect =
 /**
  * Check whether the data can be dropped on the empty state of the organize section
  */
-export const organizeEmptyRootCanDrop: DropTargetOptions<AffineDNDData>['canDrop'] =
+export const organizeEmptyRootCanDrop: DropTargetOptions<YunkeDNDData>['canDrop'] =
   data => {
     const type = data.source.data.entity?.type;
     return !!type && isOrganizeSupportType(type);

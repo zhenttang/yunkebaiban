@@ -3,7 +3,7 @@ import {
   handleInlineAskAIAction,
   pageAIGroups,
 } from '@yunke/core/blocksuite/ai';
-import { useEnableAI } from '@yunke/core/components/hooks/affine/use-enable-ai';
+import { useEnableAI } from '@yunke/core/components/hooks/yunke/use-enable-ai';
 import { DocsService } from '@yunke/core/modules/doc';
 import { EditorService } from '@yunke/core/modules/editor';
 import { TemplateDocService } from '@yunke/core/modules/template-doc';
@@ -31,7 +31,7 @@ import {
   useState,
 } from 'react';
 
-import { useAsyncCallback } from '../../components/hooks/affine-async-hooks';
+import { useAsyncCallback } from '../../components/hooks/yunke-async-hooks';
 import * as styles from './starter-bar.css';
 
 const Badge = forwardRef<
@@ -122,13 +122,13 @@ const StarterBarNotEmpty = ({ doc }: { doc: Store }) => {
 
   return (
     <div className={styles.root} data-testid="starter-bar">
-      {t['com.affine.page-starter-bar.start']()}
+      {t['com.yunke.page-starter-bar.start']()}
       <ul className={styles.badges}>
         {enableAI ? (
           <Badge
             data-testid="start-with-ai-badge"
             icon={<AiIcon className={styles.aiIcon} />}
-            text={t['com.affine.page-starter-bar.ai']()}
+            text={t['com.yunke.page-starter-bar.ai']()}
             onClick={startWithAI}
           />
         ) : null}
@@ -150,7 +150,7 @@ const StarterBarNotEmpty = ({ doc }: { doc: Store }) => {
             <Badge
               data-testid="template-docs-badge"
               icon={<TemplateColoredIcon />}
-              text={t['com.affine.page-starter-bar.template']()}
+              text={t['com.yunke.page-starter-bar.template']()}
               active={templateMenuOpen}
             />
           </TemplateListMenu>
@@ -158,7 +158,7 @@ const StarterBarNotEmpty = ({ doc }: { doc: Store }) => {
 
         <Badge
           icon={<EdgelessIcon />}
-          text={t['com.affine.page-starter-bar.edgeless']()}
+          text={t['com.yunke.page-starter-bar.edgeless']()}
           onClick={startWithEdgeless}
         />
       </ul>

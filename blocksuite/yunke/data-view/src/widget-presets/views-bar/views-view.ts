@@ -41,7 +41,7 @@ export class DataViewHeaderViews extends WidgetBase {
       display: flex;
       align-items: center;
       justify-content: center;
-      color: var(--affine-text-secondary-color);
+      color: var(--yunke-text-secondary-color);
       white-space: nowrap;
       max-width: 200px;
       min-width: 28px;
@@ -69,8 +69,8 @@ export class DataViewHeaderViews extends WidgetBase {
     }
 
     .database-view-button.selected {
-      color: var(--affine-text-primary-color);
-      background-color: var(--affine-hover-color-filled);
+      color: var(--yunke-text-primary-color);
+      background-color: var(--yunke-hover-color-filled);
     }
   `;
 
@@ -181,7 +181,7 @@ export class DataViewHeaderViews extends WidgetBase {
                 name: '编辑视图',
                 prefix: InfoIcon(),
                 select: () => {
-                  this.closest('affine-data-view-renderer')
+                  this.closest('yunke-data-view-renderer')
                     ?.querySelector('data-view-header-tools-view-options')
                     ?.openMoreAction(target);
                 },

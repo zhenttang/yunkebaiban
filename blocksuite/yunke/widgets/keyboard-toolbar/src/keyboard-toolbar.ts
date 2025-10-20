@@ -30,13 +30,13 @@ import {
   isKeyboardToolPanelConfig,
 } from './utils';
 
-export const AFFINE_KEYBOARD_TOOLBAR = 'affine-keyboard-toolbar';
+export const YUNKE_KEYBOARD_TOOLBAR = 'yunke-keyboard-toolbar';
 
 @requiredProperties({
   config: PropTypes.object,
   rootComponent: PropTypes.instanceOf(BlockComponent),
 })
-export class AffineKeyboardToolbar extends SignalWatcher(
+export class YunkeKeyboardToolbar extends SignalWatcher(
   WithDisposable(ShadowlessElement)
 ) {
   static override styles = keyboardToolbarStyles;
@@ -328,11 +328,11 @@ export class AffineKeyboardToolbar extends SignalWatcher(
         <div class="divider"></div>
         ${this._renderKeyboardButton()}
       </div>
-      <affine-keyboard-tool-panel
+      <yunke-keyboard-tool-panel
         .config=${this._currentPanelConfig}
         .context=${this._context}
         .height=${this.panelHeight$.value}
-      ></affine-keyboard-tool-panel>
+      ></yunke-keyboard-tool-panel>
     `;
   }
 

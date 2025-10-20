@@ -5,7 +5,7 @@ import {
 import type { DeltaInsert, ExtensionType } from '@blocksuite/store';
 import isEqual from 'lodash-es/isEqual';
 
-import type { AffineTextAttributes } from '../../types/index.js';
+import type { YunkeTextAttributes } from '../../types/index.js';
 import {
   type ASTToDeltaMatcher,
   DeltaASTConverter,
@@ -37,7 +37,7 @@ export function NotionHtmlASTToDeltaExtension(
 }
 
 export class NotionHtmlDeltaConverter extends DeltaASTConverter<
-  AffineTextAttributes,
+  YunkeTextAttributes,
   HtmlAST
 > {
   constructor(
@@ -51,7 +51,7 @@ export class NotionHtmlDeltaConverter extends DeltaASTConverter<
   private _spreadAstToDelta(
     ast: HtmlAST,
     options: DeltaASTConverterOptions = Object.create(null)
-  ): DeltaInsert<AffineTextAttributes>[] {
+  ): DeltaInsert<YunkeTextAttributes>[] {
     const context = {
       configs: this.configs,
       options,
@@ -81,7 +81,7 @@ export class NotionHtmlDeltaConverter extends DeltaASTConverter<
   astToDelta(
     ast: HtmlAST,
     options: DeltaASTConverterOptions = Object.create(null)
-  ): DeltaInsert<AffineTextAttributes>[] {
+  ): DeltaInsert<YunkeTextAttributes>[] {
     return this._spreadAstToDelta(ast, options).reduce((acc, cur) => {
       if (acc.length === 0) {
         return [cur];
@@ -96,10 +96,10 @@ export class NotionHtmlDeltaConverter extends DeltaASTConverter<
         return acc;
       }
       return [...acc, cur];
-    }, [] as DeltaInsert<AffineTextAttributes>[]);
+    }, [] as DeltaInsert<YunkeTextAttributes>[]);
   }
 
-  deltaToAST(_: DeltaInsert<AffineTextAttributes>[]): InlineHtmlAST[] {
+  deltaToAST(_: DeltaInsert<YunkeTextAttributes>[]): InlineHtmlAST[] {
     return [];
   }
 }

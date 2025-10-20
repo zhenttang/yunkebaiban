@@ -10,7 +10,7 @@ import { query } from 'lit/decorators.js';
 import { type TocContext, tocContext } from '../config';
 import * as styles from './outline-panel-header.css';
 
-export const AFFINE_OUTLINE_PANEL_HEADER = 'affine-outline-panel-header';
+export const YUNKE_OUTLINE_PANEL_HEADER = 'yunke-outline-panel-header';
 
 export class OutlinePanelHeader extends SignalWatcher(
   WithDisposable(ShadowlessElement)
@@ -69,7 +69,7 @@ export class OutlinePanelHeader extends SignalWatcher(
         </edgeless-tool-icon-button>
       </div>
       <div class=${styles.notePreviewSettingContainer}>
-        <affine-outline-note-preview-setting-menu></affine-outline-note-preview-setting-menu>
+        <yunke-outline-note-preview-setting-menu></yunke-outline-note-preview-setting-menu>
       </div>`;
   }
 
@@ -85,6 +85,6 @@ export class OutlinePanelHeader extends SignalWatcher(
 
 declare global {
   interface HTMLElementTagNameMap {
-    [AFFINE_OUTLINE_PANEL_HEADER]: OutlinePanelHeader;
+    [YUNKE_OUTLINE_PANEL_HEADER]: OutlinePanelHeader;
   }
 }

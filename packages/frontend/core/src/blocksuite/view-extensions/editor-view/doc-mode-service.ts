@@ -13,7 +13,7 @@ export function patchDocModeService(
   editorService: EditorService
 ): ExtensionType {
   const DEFAULT_MODE = 'page';
-  class AffineDocModeService implements DocModeProvider {
+  class YunkeDocModeService implements DocModeProvider {
     setEditorMode = (mode: DocMode) => {
       editorService.editor.setMode(mode);
     };
@@ -48,7 +48,7 @@ export function patchDocModeService(
     };
   }
 
-  const docModeExtension = DocModeExtension(new AffineDocModeService());
+  const docModeExtension = DocModeExtension(new YunkeDocModeService());
 
   return docModeExtension;
 }

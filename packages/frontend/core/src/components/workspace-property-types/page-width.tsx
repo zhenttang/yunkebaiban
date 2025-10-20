@@ -36,7 +36,7 @@ export const PageWidthValue = ({ readonly }: PropertyValueProps) => {
         value: 'standard',
         label:
           t[
-            'com.affine.settings.editorSettings.page.default-page-width.standard'
+            'com.yunke.settings.editorSettings.page.default-page-width.standard'
           ](),
         testId: 'standard-width-trigger',
       },
@@ -44,7 +44,7 @@ export const PageWidthValue = ({ readonly }: PropertyValueProps) => {
         value: 'fullWidth',
         label:
           t[
-            'com.affine.settings.editorSettings.page.default-page-width.full-width'
+            'com.yunke.settings.editorSettings.page.default-page-width.full-width'
           ](),
         testId: 'full-width-trigger',
       },
@@ -78,10 +78,10 @@ export const PageWidthDocListProperty = ({ doc }: { doc: DocRecord }) => {
     <StackProperty icon={<LongerIcon />}>
       {pageWidth === 'standard' || !pageWidth
         ? t[
-            'com.affine.settings.editorSettings.page.default-page-width.standard'
+            'com.yunke.settings.editorSettings.page.default-page-width.standard'
           ]()
         : t[
-            'com.affine.settings.editorSettings.page.default-page-width.full-width'
+            'com.yunke.settings.editorSettings.page.default-page-width.full-width'
           ]()}
     </StackProperty>
   );
@@ -125,7 +125,7 @@ export const PageWidthFilterValue = ({
             selected={filter.value === 'fullWidth'}
           >
             {t[
-              'com.affine.settings.editorSettings.page.default-page-width.full-width'
+              'com.yunke.settings.editorSettings.page.default-page-width.full-width'
             ]()}
           </MenuItem>
           <MenuItem
@@ -138,7 +138,7 @@ export const PageWidthFilterValue = ({
             selected={filter.value !== 'fullWidth'}
           >
             {t[
-              'com.affine.settings.editorSettings.page.default-page-width.standard'
+              'com.yunke.settings.editorSettings.page.default-page-width.standard'
             ]()}
           </MenuItem>
         </>
@@ -147,10 +147,10 @@ export const PageWidthFilterValue = ({
       <span>
         {filter.value === 'fullWidth'
           ? t[
-              'com.affine.settings.editorSettings.page.default-page-width.full-width'
+              'com.yunke.settings.editorSettings.page.default-page-width.full-width'
             ]()
           : t[
-              'com.affine.settings.editorSettings.page.default-page-width.standard'
+              'com.yunke.settings.editorSettings.page.default-page-width.standard'
             ]()}
       </span>
     </Menu>
@@ -165,11 +165,11 @@ export const PageWidthGroupHeader = ({
   const text =
     groupId === 'fullWidth'
       ? t[
-          'com.affine.settings.editorSettings.page.default-page-width.full-width'
+          'com.yunke.settings.editorSettings.page.default-page-width.full-width'
         ]()
       : groupId === 'standard'
         ? t[
-            'com.affine.settings.editorSettings.page.default-page-width.standard'
+            'com.yunke.settings.editorSettings.page.default-page-width.standard'
           ]()
         : '默认';
 

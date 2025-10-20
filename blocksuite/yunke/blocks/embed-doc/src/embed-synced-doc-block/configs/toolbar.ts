@@ -25,7 +25,7 @@ import {
   type ToolbarModuleConfig,
   ToolbarModuleExtension,
 } from '@blocksuite/yunke-shared/services';
-import type { AffineTextAttributes } from '@blocksuite/yunke-shared/types';
+import type { YunkeTextAttributes } from '@blocksuite/yunke-shared/types';
 import { getBlockProps, matchModels } from '@blocksuite/yunke-shared/utils';
 import { Bound } from '@blocksuite/global/gfx';
 import {
@@ -195,12 +195,12 @@ const conversionsActionGroup = {
 
     return html`${keyed(
       model,
-      html`<affine-view-dropdown-menu
+      html`<yunke-view-dropdown-menu
         @toggle=${onToggle}
         .actions=${actions}
         .context=${ctx}
         .viewType$=${viewType$}
-      ></affine-view-dropdown-menu>`
+      ></yunke-view-dropdown-menu>`
     )}`;
   },
 } as const satisfies ToolbarActionGroup<ToolbarAction>;
@@ -382,7 +382,7 @@ const builtinSurfaceToolbarConfig = {
               std.store.addBlock(
                 'yunke:paragraph',
                 {
-                  text: new Text<AffineTextAttributes>([
+                  text: new Text<YunkeTextAttributes>([
                     {
                       insert: REFERENCE_NODE,
                       attributes: {
@@ -462,12 +462,12 @@ const builtinSurfaceToolbarConfig = {
 
         return html`${keyed(
           model,
-          html`<affine-size-dropdown-menu
+          html`<yunke-size-dropdown-menu
             @select=${onSelect}
             @toggle=${onToggle}
             .format=${format}
             .size$=${scale$}
-          ></affine-size-dropdown-menu>`
+          ></yunke-size-dropdown-menu>`
         )}`;
       },
     },

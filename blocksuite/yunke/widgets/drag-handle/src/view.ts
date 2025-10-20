@@ -7,7 +7,7 @@ import { dragHandleWidget } from '.';
 import { effects } from './effects';
 
 export class DragHandleViewExtension extends ViewExtensionProvider {
-  override name = 'affine-drag-handle-widget';
+  override name = 'yunke-drag-handle-widget';
 
   override effect() {
     super.effect();

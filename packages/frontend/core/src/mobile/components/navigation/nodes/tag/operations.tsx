@@ -76,7 +76,7 @@ export const useNavigationPanelTagNodeOperations = (
   const handleMoveToTrash = useCallback(() => {
     tagService.tagList.deleteTag(tagId);
     track.$.navigationPanel.organize.deleteOrganizeItem({ type: 'tag' });
-    toast(t['com.affine.tags.delete-tags.toast']());
+    toast(t['com.yunke.tags.delete-tags.toast']());
   }, [t, tagId, tagService.tagList]);
 
   const handleOpenInSplitView = useCallback(() => {
@@ -145,13 +145,13 @@ export const useNavigationPanelTagNodeOperations = (
             ) !== true
           ) {
             openConfirmModal({
-              title: t['com.affine.m.selector.remove-warning.title'](),
-              description: t['com.affine.m.selector.remove-warning.message']({
-                type: t['com.affine.m.selector.type-doc'](),
-                where: t['com.affine.m.selector.where-tag'](),
+              title: t['com.yunke.m.selector.remove-warning.title'](),
+              description: t['com.yunke.m.selector.remove-warning.message']({
+                type: t['com.yunke.m.selector.type-doc'](),
+                where: t['com.yunke.m.selector.where-tag'](),
               }),
-              cancelText: t['com.affine.m.selector.remove-warning.cancel'](),
-              confirmText: t['com.affine.m.selector.remove-warning.confirm'](),
+              cancelText: t['com.yunke.m.selector.remove-warning.cancel'](),
+              confirmText: t['com.yunke.m.selector.remove-warning.confirm'](),
               reverseFooter: true,
               onConfirm: () => {
                 globalCacheService.globalCache.set(
@@ -257,7 +257,7 @@ export const useNavigationPanelTagNodeOperationsMenu = (
         index: 12,
         view: (
           <MenuItem prefixIcon={<FolderIcon />} onClick={handleOpenDocSelector}>
-            {t['com.affine.m.explorer.tag.manage-docs']()}
+            {t['com.yunke.m.explorer.tag.manage-docs']()}
           </MenuItem>
         ),
       },
@@ -270,7 +270,7 @@ export const useNavigationPanelTagNodeOperationsMenu = (
                   prefixIcon={<SplitViewIcon />}
                   onClick={handleOpenInSplitView}
                 >
-                  {t['com.affine.workbench.split-view.page-menu-open']()}
+                  {t['com.yunke.workbench.split-view.page-menu-open']()}
                 </MenuItem>
               ),
             },
@@ -284,8 +284,8 @@ export const useNavigationPanelTagNodeOperationsMenu = (
             onClick={handleToggleFavoriteTag}
           >
             {favorite
-              ? t['com.affine.favoritePageOperation.remove']()
-              : t['com.affine.favoritePageOperation.add']()}
+              ? t['com.yunke.favoritePageOperation.remove']()
+              : t['com.yunke.favoritePageOperation.add']()}
           </MenuItem>
         ),
       },

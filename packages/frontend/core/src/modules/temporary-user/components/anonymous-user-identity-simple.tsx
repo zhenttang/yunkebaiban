@@ -67,17 +67,17 @@ export const AnonymousUserIdentity = ({
       });
 
       if (result.success) {
-        toast(t['com.affine.share.temporary-user.identity-created']());
+        toast(t['com.yunke.share.temporary-user.identity-created']());
         onIdentityCreated?.(true);
       } else {
-        const errorMessage = result.reason || t['com.affine.share.temporary-user.identity-creation-failed']();
+        const errorMessage = result.reason || t['com.yunke.share.temporary-user.identity-creation-failed']();
         toast(errorMessage);
         onIdentityCreated?.(false);
         setShowCreateButton(true);
       }
     } catch (error) {
       console.error('创建临时用户身份失败:', error);
-      toast(t['com.affine.share.temporary-user.identity-creation-failed']());
+      toast(t['com.yunke.share.temporary-user.identity-creation-failed']());
       onIdentityCreated?.(false);
       setShowCreateButton(true);
     } finally {
@@ -111,8 +111,8 @@ export const AnonymousUserIdentity = ({
         gap: '12px',
         padding: '16px',
         borderRadius: '8px',
-        backgroundColor: 'var(--affine-background-secondary-color)',
-        border: '1px solid var(--affine-border-color)',
+        backgroundColor: 'var(--yunke-background-secondary-color)',
+        border: '1px solid var(--yunke-border-color)',
         fontSize: '14px',
       }}
     >
@@ -124,19 +124,19 @@ export const AnonymousUserIdentity = ({
             alignItems: 'center',
             gap: '8px',
             padding: '12px',
-            backgroundColor: 'var(--affine-background-primary-color)',
+            backgroundColor: 'var(--yunke-background-primary-color)',
             borderRadius: '6px',
-            border: '1px solid var(--affine-border-color)',
+            border: '1px solid var(--yunke-border-color)',
           }}
         >
           <Loading size={16} />
           <span 
             style={{
               fontSize: '13px',
-              color: 'var(--affine-text-secondary-color)',
+              color: 'var(--yunke-text-secondary-color)',
             }}
           >
-            {t['com.affine.share.temporary-user.creating-identity']()}
+            {t['com.yunke.share.temporary-user.creating-identity']()}
           </span>
         </div>
       )}
@@ -149,25 +149,25 @@ export const AnonymousUserIdentity = ({
             flexDirection: 'column',
             gap: '8px',
             padding: '12px',
-            backgroundColor: 'var(--affine-background-primary-color)',
+            backgroundColor: 'var(--yunke-background-primary-color)',
             borderRadius: '6px',
-            border: '1px solid var(--affine-border-color)',
+            border: '1px solid var(--yunke-border-color)',
           }}
         >
           <div 
             style={{
               fontSize: '13px',
-              color: 'var(--affine-text-primary-color)',
+              color: 'var(--yunke-text-primary-color)',
               lineHeight: '1.4',
             }}
           >
-            {t['com.affine.share.temporary-user.create-identity-prompt']()}
+            {t['com.yunke.share.temporary-user.create-identity-prompt']()}
           </div>
           <Button
             onClick={handleRetryCreate}
             disabled={isCreating}
           >
-            {t['com.affine.share.temporary-user.create-identity']()}
+            {t['com.yunke.share.temporary-user.create-identity']()}
           </Button>
         </div>
       )}
@@ -178,11 +178,11 @@ export const AnonymousUserIdentity = ({
           <div 
             style={{
               fontSize: '13px',
-              color: 'var(--affine-text-primary-color)',
+              color: 'var(--yunke-text-primary-color)',
               fontWeight: 500,
             }}
           >
-            {t['com.affine.share.temporary-user.welcome-message']()}
+            {t['com.yunke.share.temporary-user.welcome-message']()}
           </div>
           <TemporaryUserStatus 
             compact={true}
@@ -196,15 +196,15 @@ export const AnonymousUserIdentity = ({
         <div 
           style={{
             fontSize: '12px',
-            color: 'var(--affine-text-secondary-color)',
+            color: 'var(--yunke-text-secondary-color)',
             padding: '8px',
-            backgroundColor: 'var(--affine-background-success-color)',
+            backgroundColor: 'var(--yunke-background-success-color)',
             borderRadius: '4px',
-            border: '1px solid var(--affine-success-color)',
+            border: '1px solid var(--yunke-success-color)',
             lineHeight: '1.3',
           }}
         >
-          {t['com.affine.share.temporary-user.edit-hint']()}
+          {t['com.yunke.share.temporary-user.edit-hint']()}
         </div>
       )}
     </div>

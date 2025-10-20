@@ -1,6 +1,6 @@
 import { Avatar } from '@yunke/component/ui/avatar';
 import { Menu, MenuItem, MenuSeparator } from '@yunke/component/ui/menu';
-import { useAsyncCallback } from '@yunke/core/components/hooks/affine-async-hooks';
+import { useAsyncCallback } from '@yunke/core/components/hooks/yunke-async-hooks';
 import { useI18n } from '@yunke/i18n';
 import { SignOutIcon } from '@blocksuite/icons/rc';
 import { useLiveData, useService } from '@toeverything/infra';
@@ -65,7 +65,7 @@ export const PublishPageUserAvatar = () => {
           data-testid="share-page-sign-out-option"
           onClick={handleSignOut}
         >
-          {t['com.affine.workspace.cloud.account.logout']()}
+          {t['com.yunke.workspace.cloud.account.logout']()}
         </MenuItem>
       </>
     );

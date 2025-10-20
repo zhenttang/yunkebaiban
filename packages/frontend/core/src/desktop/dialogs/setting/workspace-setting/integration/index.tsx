@@ -35,12 +35,12 @@ export const IntegrationSetting = () => {
   return (
     <>
       <SettingHeader
-        title={t['com.affine.integration.integrations']()}
+        title={t['com.yunke.integration.integrations']()}
         subtitle={
           <>
-            {t['com.affine.integration.setting.description']()}
+            {t['com.yunke.integration.setting.description']()}
             {/* <br /> */}
-            {/* <a>{t['Learn how to develop a integration for AFFiNE']()}</a> */}
+            {/* <a>{t['Learn how to develop a integration for YUNKE']()}</a> */}
           </>
         }
       />
@@ -98,7 +98,7 @@ const IntegrationSettingPage = ({
 
   return (
     <SubPageProvider
-      backText={t['com.affine.integration.integrations']()}
+      backText={t['com.yunke.integration.integrations']()}
       island={island}
       open={open}
       onClose={onClose}

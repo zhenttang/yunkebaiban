@@ -9,7 +9,7 @@ import {
   useConfirmModal,
 } from '@yunke/component';
 import { useGuard } from '@yunke/core/components/guard';
-import { useAsyncCallback } from '@yunke/core/components/hooks/affine-async-hooks';
+import { useAsyncCallback } from '@yunke/core/components/hooks/yunke-async-hooks';
 import { DocService } from '@yunke/core/modules/doc';
 import {
   DocGrantedUsersService,
@@ -153,11 +153,11 @@ const Options = ({
         if (res) {
           notify.success({
             title:
-              t['com.affine.share-menu.member-management.update-success'](),
+              t['com.yunke.share-menu.member-management.update-success'](),
           });
         } else {
           notify.error({
-            title: t['com.affine.share-menu.member-management.update-fail'](),
+            title: t['com.yunke.share-menu.member-management.update-fail'](),
           });
         }
       } catch (error) {
@@ -198,18 +198,18 @@ const Options = ({
     openConfirmModal({
       title:
         t[
-          'com.affine.share-menu.member-management.set-as-owner.confirm.title'
+          'com.yunke.share-menu.member-management.set-as-owner.confirm.title'
         ](),
       description:
         t[
-          'com.affine.share-menu.member-management.set-as-owner.confirm.description'
+          'com.yunke.share-menu.member-management.set-as-owner.confirm.description'
         ](),
       onConfirm: changeToOwner,
-      confirmText: t['com.affine.confirmModal.button.confirm']() || '确认',
+      confirmText: t['com.yunke.confirmModal.button.confirm']() || '确认',
       confirmButtonOptions: {
         variant: 'primary',
       },
-      cancelText: t['com.affine.confirmModal.button.cancel']() || '取消',
+      cancelText: t['com.yunke.confirmModal.button.cancel']() || '取消',
     });
   }, [changeToOwner, openConfirmModal, t]);
 
@@ -229,18 +229,18 @@ const Options = ({
   const operationButtonInfo = useMemo(() => {
     return [
       {
-        label: t['com.affine.share-menu.option.permission.can-manage'](),
+        label: t['com.yunke.share-menu.option.permission.can-manage'](),
         onClick: changeToManager,
         role: DocRole.Manager,
       },
       {
-        label: t['com.affine.share-menu.option.permission.can-edit'](),
+        label: t['com.yunke.share-menu.option.permission.can-edit'](),
         onClick: changeToEditor,
         role: DocRole.Editor,
         showPlanTag: hittingPaywall,
       },
       {
-        label: t['com.affine.share-menu.option.permission.can-read'](),
+        label: t['com.yunke.share-menu.option.permission.can-read'](),
         onClick: changeToReader,
         role: DocRole.Reader,
         showPlanTag: hittingPaywall,
@@ -285,7 +285,7 @@ const Options = ({
         />
       </MenuItem>
       <MenuItem onSelect={openTransferOwnerModal} disabled={!canTransferOwner}>
-        {t['com.affine.share-menu.member-management.set-as-owner']()}
+        {t['com.yunke.share-menu.member-management.set-as-owner']()}
       </MenuItem>
       <MenuSeparator />
       <MenuItem
@@ -294,7 +294,7 @@ const Options = ({
         className={styles.remove}
         disabled={!canManageUsers}
       >
-        {t['com.affine.share-menu.member-management.remove']()}
+        {t['com.yunke.share-menu.member-management.remove']()}
       </MenuItem>
     </>
   );

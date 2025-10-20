@@ -2,7 +2,7 @@ import { notify } from '@yunke/component';
 import {
   generateUrl,
   type UseSharingUrl,
-} from '@yunke/core/components/hooks/affine/use-share-url';
+} from '@yunke/core/components/hooks/yunke/use-share-url';
 import { WorkspaceServerService } from '@yunke/core/modules/cloud';
 import { EditorService } from '@yunke/core/modules/editor';
 import type { EditorSettingExt } from '@yunke/core/modules/editor-setting/entities/editor-setting';
@@ -37,7 +37,7 @@ import {
 } from '@blocksuite/yunke/components/toolbar';
 import { watch } from '@blocksuite/yunke/global/lit';
 import {
-  AffineReference,
+  YunkeReference,
   toggleReferencePopup,
 } from '@blocksuite/yunke/inlines/reference';
 import {
@@ -376,7 +376,7 @@ function createToolbarMoreMenuConfigV2(baseUrl?: string) {
                 return value.name;
               });
               const user = computed(() => {
-                return I18n.t('com.affine.page.toolbar.created_by', {
+                return I18n.t('com.yunke.page.toolbar.created_by', {
                   name: name.value,
                 });
               });
@@ -486,7 +486,7 @@ function createOpenDocActions(
   target:
     | EmbedLinkedDocBlockComponent
     | EmbedSyncedDocBlockComponent
-    | AffineReference
+    | YunkeReference
     | SurfaceRefBlockComponent,
   isSameDoc: boolean,
   actions = openDocActions.map(
@@ -599,7 +599,7 @@ function createSurfaceRefToolbarConfig(baseUrl?: string): ToolbarModuleConfig {
             .map(action => {
               if (action.id.endsWith('open-in-active-view')) {
                 action.label =
-                  I18n['com.affine.peek-view-controls.open-doc-in-edgeless']();
+                  I18n['com.yunke.peek-view-controls.open-doc-in-edgeless']();
               }
               return action;
             });
@@ -711,7 +711,7 @@ function renderOpenDocMenu(
   target:
     | EmbedLinkedDocBlockComponent
     | EmbedSyncedDocBlockComponent
-    | AffineReference,
+    | YunkeReference,
   isSameDoc: boolean
 ) {
   const actions = createOpenDocActions(ctx, target, isSameDoc).map(action => ({
@@ -729,13 +729,13 @@ function renderOpenDocMenu(
   return html`${keyed(
     target,
     html`
-      <affine-open-doc-dropdown-menu
+      <yunke-open-doc-dropdown-menu
         .actions=${actions}
         .context=${ctx}
         .openDocMode$=${openDocMode}
         .updateOpenDocMode=${updateOpenDocMode}
       >
-      </affine-open-doc-dropdown-menu>
+      </yunke-open-doc-dropdown-menu>
     `
   )}`;
 }
@@ -907,7 +907,7 @@ const inlineReferenceToolbarConfig = {
           icon: CopyIcon(),
           run(ctx) {
             const target = ctx.message$.peek()?.element;
-            if (!(target instanceof AffineReference)) return;
+            if (!(target instanceof YunkeReference)) return;
 
             const { pageId, params } = target.referenceInfo;
 
@@ -936,7 +936,7 @@ const inlineReferenceToolbarConfig = {
           icon: EditIcon(),
           run(ctx) {
             const target = ctx.message$.peek()?.element;
-            if (!(target instanceof AffineReference)) return;
+            if (!(target instanceof YunkeReference)) return;
 
             // Clears
             ctx.reset();
@@ -1014,62 +1014,62 @@ export const createCustomToolbarExtension = (
 ): ExtensionType[] => {
   return [
     ToolbarModuleExtension({
-      id: BlockFlavourIdentifier('custom:affine:*'),
+      id: BlockFlavourIdentifier('custom:yunke:*'),
       config: createToolbarMoreMenuConfigV2(baseUrl),
     }),
 
     ToolbarModuleExtension({
-      id: BlockFlavourIdentifier('custom:affine:bookmark'),
+      id: BlockFlavourIdentifier('custom:yunke:bookmark'),
       config: createExternalLinkableToolbarConfig(BookmarkBlockComponent),
     }),
 
     ToolbarModuleExtension({
-      id: BlockFlavourIdentifier('custom:affine:surface:bookmark'),
+      id: BlockFlavourIdentifier('custom:yunke:surface:bookmark'),
       config: createExternalLinkableToolbarConfig(BookmarkBlockComponent),
     }),
 
     ToolbarModuleExtension({
-      id: BlockFlavourIdentifier('custom:affine:embed-figma'),
+      id: BlockFlavourIdentifier('custom:yunke:embed-figma'),
       config: createExternalLinkableToolbarConfig(EmbedFigmaBlockComponent),
     }),
 
     ToolbarModuleExtension({
-      id: BlockFlavourIdentifier('custom:affine:surface:embed-figma'),
+      id: BlockFlavourIdentifier('custom:yunke:surface:embed-figma'),
       config: createExternalLinkableToolbarConfig(BookmarkBlockComponent),
     }),
 
     ToolbarModuleExtension({
-      id: BlockFlavourIdentifier('custom:affine:embed-github'),
+      id: BlockFlavourIdentifier('custom:yunke:embed-github'),
       config: createExternalLinkableToolbarConfig(EmbedGithubBlockComponent),
     }),
 
     ToolbarModuleExtension({
-      id: BlockFlavourIdentifier('custom:affine:surface:embed-github'),
+      id: BlockFlavourIdentifier('custom:yunke:surface:embed-github'),
       config: createExternalLinkableToolbarConfig(BookmarkBlockComponent),
     }),
 
     ToolbarModuleExtension({
-      id: BlockFlavourIdentifier('custom:affine:embed-loom'),
+      id: BlockFlavourIdentifier('custom:yunke:embed-loom'),
       config: createExternalLinkableToolbarConfig(EmbedLoomBlockComponent),
     }),
 
     ToolbarModuleExtension({
-      id: BlockFlavourIdentifier('custom:affine:surface:embed-loom'),
+      id: BlockFlavourIdentifier('custom:yunke:surface:embed-loom'),
       config: createExternalLinkableToolbarConfig(BookmarkBlockComponent),
     }),
 
     ToolbarModuleExtension({
-      id: BlockFlavourIdentifier('custom:affine:embed-youtube'),
+      id: BlockFlavourIdentifier('custom:yunke:embed-youtube'),
       config: createExternalLinkableToolbarConfig(EmbedYoutubeBlockComponent),
     }),
 
     ToolbarModuleExtension({
-      id: BlockFlavourIdentifier('custom:affine:surface:embed-youtube'),
+      id: BlockFlavourIdentifier('custom:yunke:surface:embed-youtube'),
       config: createExternalLinkableToolbarConfig(BookmarkBlockComponent),
     }),
 
     ToolbarModuleExtension({
-      id: BlockFlavourIdentifier('custom:affine:embed-linked-doc'),
+      id: BlockFlavourIdentifier('custom:yunke:embed-linked-doc'),
       config: {
         actions: [
           embedLinkedDocToolbarConfig.actions,
@@ -1079,7 +1079,7 @@ export const createCustomToolbarExtension = (
     }),
 
     ToolbarModuleExtension({
-      id: BlockFlavourIdentifier('custom:affine:surface:embed-linked-doc'),
+      id: BlockFlavourIdentifier('custom:yunke:surface:embed-linked-doc'),
       config: {
         actions: [
           embedLinkedDocToolbarConfig.actions,
@@ -1092,7 +1092,7 @@ export const createCustomToolbarExtension = (
     }),
 
     ToolbarModuleExtension({
-      id: BlockFlavourIdentifier('custom:affine:embed-synced-doc'),
+      id: BlockFlavourIdentifier('custom:yunke:embed-synced-doc'),
       config: {
         actions: [
           embedSyncedDocToolbarConfig.actions,
@@ -1102,7 +1102,7 @@ export const createCustomToolbarExtension = (
     }),
 
     ToolbarModuleExtension({
-      id: BlockFlavourIdentifier('custom:affine:surface:embed-synced-doc'),
+      id: BlockFlavourIdentifier('custom:yunke:surface:embed-synced-doc'),
       config: {
         actions: [
           // the open actions are provided by the header of embed-edgeless-synced-doc-block
@@ -1115,7 +1115,7 @@ export const createCustomToolbarExtension = (
     }),
 
     ToolbarModuleExtension({
-      id: BlockFlavourIdentifier('custom:affine:reference'),
+      id: BlockFlavourIdentifier('custom:yunke:reference'),
       config: {
         actions: [
           {
@@ -1123,7 +1123,7 @@ export const createCustomToolbarExtension = (
             id: 'A.open-doc',
             content(ctx) {
               const target = ctx.message$.peek()?.element;
-              if (!(target instanceof AffineReference)) return null;
+              if (!(target instanceof YunkeReference)) return null;
 
               return renderOpenDocMenu(
                 settings,
@@ -1139,12 +1139,12 @@ export const createCustomToolbarExtension = (
     }),
 
     ToolbarModuleExtension({
-      id: BlockFlavourIdentifier('custom:affine:embed-iframe'),
+      id: BlockFlavourIdentifier('custom:yunke:embed-iframe'),
       config: embedIframeToolbarConfig,
     }),
 
     ToolbarModuleExtension({
-      id: BlockFlavourIdentifier('custom:affine:surface:embed-iframe'),
+      id: BlockFlavourIdentifier('custom:yunke:surface:embed-iframe'),
       config: {
         actions: [embedIframeToolbarConfig.actions].flat(),
 

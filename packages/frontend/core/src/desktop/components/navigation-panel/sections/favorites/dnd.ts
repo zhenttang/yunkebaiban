@@ -1,6 +1,6 @@
 import type { DropTargetOptions } from '@yunke/component';
 import { isFavoriteSupportType } from '@yunke/core/modules/favorite';
-import type { AffineDNDData } from '@yunke/core/types/dnd';
+import type { YunkeDNDData } from '@yunke/core/types/dnd';
 
 import type { NavigationPanelTreeNodeDropEffect } from '../../tree';
 
@@ -35,13 +35,13 @@ export const favoriteRootDropEffect: NavigationPanelTreeNodeDropEffect =
     return;
   };
 
-export const favoriteRootCanDrop: DropTargetOptions<AffineDNDData>['canDrop'] =
+export const favoriteRootCanDrop: DropTargetOptions<YunkeDNDData>['canDrop'] =
   data => {
     return data.source.data.entity?.type
       ? isFavoriteSupportType(data.source.data.entity.type)
       : false;
   };
 
-export const favoriteChildrenCanDrop: DropTargetOptions<AffineDNDData>['canDrop'] =
+export const favoriteChildrenCanDrop: DropTargetOptions<YunkeDNDData>['canDrop'] =
   // Same as favoriteRootCanDrop
   data => favoriteRootCanDrop(data);

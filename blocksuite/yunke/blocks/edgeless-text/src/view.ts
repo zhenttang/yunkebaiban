@@ -11,7 +11,7 @@ import { edgelessTextToolbarExtension } from './edgeless-toolbar';
 import { effects } from './effects';
 
 export class EdgelessTextViewExtension extends ViewExtensionProvider {
-  override name = 'affine-edgeless-text-block';
+  override name = 'yunke-edgeless-text-block';
 
   override effect() {
     super.effect();
@@ -26,7 +26,7 @@ export class EdgelessTextViewExtension extends ViewExtensionProvider {
       context.register([
         BlockViewExtension(
           'yunke:edgeless-text',
-          literal`affine-edgeless-text`
+          literal`yunke-edgeless-text`
         ),
       ]);
       context.register(edgelessTextToolbarExtension);

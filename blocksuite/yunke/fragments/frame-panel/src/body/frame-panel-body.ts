@@ -62,7 +62,7 @@ const styles = css`
     align-self: center;
     width: 230px;
     height: 48px;
-    color: var(--affine-text-secondary-color, #8e8d91);
+    color: var(--yunke-text-secondary-color, #8e8d91);
     text-align: center;
 
     /* light/base */
@@ -75,7 +75,7 @@ const styles = css`
   .insert-indicator {
     height: 2px;
     border-radius: 1px;
-    background-color: var(--affine-blue-600);
+    background-color: var(--yunke-blue-600);
     position: absolute;
     contain: layout size;
     width: 284px;
@@ -83,7 +83,7 @@ const styles = css`
   }
 `;
 
-export const AFFINE_FRAME_PANEL_BODY = 'affine-frame-panel-body';
+export const YUNKE_FRAME_PANEL_BODY = 'yunke-frame-panel-body';
 
 export class FramePanelBody extends SignalWatcher(
   WithDisposable(ShadowlessElement)
@@ -262,7 +262,7 @@ export class FramePanelBody extends SignalWatcher(
       const { frame, frameIndex, cardIndex } = frameItem;
       return keyed(
         frame,
-        html`<affine-frame-card
+        html`<yunke-frame-card
           data-frame-id=${frame.id}
           .frame=${frame}
           .std=${this.editorHost.std}
@@ -276,7 +276,7 @@ export class FramePanelBody extends SignalWatcher(
           @select=${this._selectFrame}
           @fitview=${this._fitToElement}
           @drag=${this._drag}
-        ></affine-frame-card>`
+        ></yunke-frame-card>`
       );
     })}`;
 
@@ -431,6 +431,6 @@ export class FramePanelBody extends SignalWatcher(
 
 declare global {
   interface HTMLElementTagNameMap {
-    [AFFINE_FRAME_PANEL_BODY]: FramePanelBody;
+    [YUNKE_FRAME_PANEL_BODY]: FramePanelBody;
   }
 }

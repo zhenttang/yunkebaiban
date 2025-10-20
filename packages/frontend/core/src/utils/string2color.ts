@@ -1,5 +1,5 @@
 export function stringToColour(str: string) {
-  str = str || 'affine';
+  str = str || 'yunke';
   let colour = '#';
   let hash = 0;
   // str 转换为 hash

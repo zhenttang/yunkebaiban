@@ -29,8 +29,8 @@ export class ChatMessageAssistant extends WithDisposable(ShadowlessElement) {
     }
     
     .message-info {
-      color: var(--affine-placeholder-color);
-      font-size: var(--affine-font-xs);
+      color: var(--yunke-placeholder-color);
+      font-size: var(--yunke-font-xs);
       font-weight: 400;
     }
     
@@ -58,7 +58,7 @@ export class ChatMessageAssistant extends WithDisposable(ShadowlessElement) {
   accessor extensions!: ExtensionType[];
 
   @property({ attribute: false })
-  accessor affineFeatureFlagService!: FeatureFlagService;
+  accessor yunkeFeatureFlagService!: FeatureFlagService;
 
   @property({ attribute: false })
   accessor getSessionId!: () => Promise<string | undefined>;
@@ -105,7 +105,7 @@ export class ChatMessageAssistant extends WithDisposable(ShadowlessElement) {
         .text=${item.content}
         .state=${state}
         .extensions=${this.extensions}
-        .affineFeatureFlagService=${this.affineFeatureFlagService}
+        .yunkeFeatureFlagService=${this.yunkeFeatureFlagService}
       ></chat-content-rich-text>
       ${shouldRenderError ? AIChatErrorRenderer(host, error) : nothing}
       ${this.renderEditorActions()}

@@ -9,14 +9,14 @@ import {
 } from '../../consts.js';
 
 export const styles = css`
-    affine-database-column-header {
+    yunke-database-column-header {
         display: block;
-        background-color: var(--affine-background-primary-color);
+        background-color: var(--yunke-background-primary-color);
         position: relative;
         z-index: 2;
     }
 
-    .affine-database-column-header {
+    .yunke-database-column-header {
         position: relative;
         display: flex;
         flex-direction: row;
@@ -24,10 +24,10 @@ export const styles = css`
         border-top: 1px solid ${unsafeCSS(cssVarV2.layer.insideBorder.border)};
         box-sizing: border-box;
         user-select: none;
-        background-color: var(--affine-background-primary-color);
+        background-color: var(--yunke-background-primary-color);
     }
 
-    .affine-database-column {
+    .yunke-database-column {
         cursor: pointer;
     }
 
@@ -43,7 +43,7 @@ export const styles = css`
         align-items: center;
     }
 
-    .affine-database-column-content {
+    .yunke-database-column-content {
         display: flex;
         align-items: center;
         gap: 6px;
@@ -54,28 +54,28 @@ export const styles = css`
         position: relative;
     }
 
-    .affine-database-column-content:hover,
-    .affine-database-column-content.edit {
-        background: var(--affine-hover-color);
+    .yunke-database-column-content:hover,
+    .yunke-database-column-content.edit {
+        background: var(--yunke-hover-color);
     }
 
-    .affine-database-column-content.edit .affine-database-column-text-icon {
+    .yunke-database-column-content.edit .yunke-database-column-text-icon {
         opacity: 1;
     }
 
-    .affine-database-column-text {
+    .yunke-database-column-text {
         flex: 1;
         display: flex;
         align-items: center;
         gap: 6px;
         /* https://stackoverflow.com/a/36247448/15443637 */
         overflow: hidden;
-        color: var(--affine-text-secondary-color);
+        color: var(--yunke-text-secondary-color);
         font-size: 14px;
         position: relative;
     }
 
-    .affine-database-column-type-icon {
+    .yunke-database-column-type-icon {
         display: flex;
         align-items: center;
         border-radius: 4px;
@@ -84,18 +84,18 @@ export const styles = css`
         color: ${unsafeCSSVarV2('database/textSecondary')};
     }
 
-    .affine-database-column-text-content {
+    .yunke-database-column-text-content {
         flex: 1;
         display: flex;
         align-items: center;
         overflow: hidden;
     }
 
-    .affine-database-column-content:hover .affine-database-column-text-icon {
+    .yunke-database-column-content:hover .yunke-database-column-text-icon {
         opacity: 1;
     }
 
-    .affine-database-column-text-input {
+    .yunke-database-column-text-input {
         flex: 1;
         white-space: nowrap;
         overflow: hidden;
@@ -103,37 +103,37 @@ export const styles = css`
         font-weight: 500;
     }
 
-    .affine-database-column-text-icon {
+    .yunke-database-column-text-icon {
         display: flex;
         align-items: center;
         width: 16px;
         height: 16px;
-        background: var(--affine-white);
+        background: var(--yunke-white);
         border: 1px solid ${unsafeCSS(cssVarV2.layer.insideBorder.border)};
         border-radius: 4px;
         opacity: 0;
     }
 
-    .affine-database-column-text-save-icon {
+    .yunke-database-column-text-save-icon {
         display: flex;
         align-items: center;
         width: 16px;
         height: 16px;
         border: 1px solid transparent;
         border-radius: 4px;
-        fill: var(--affine-icon-color);
+        fill: var(--yunke-icon-color);
     }
 
-    .affine-database-column-text-save-icon:hover {
-        background: var(--affine-white);
+    .yunke-database-column-text-save-icon:hover {
+        background: var(--yunke-white);
         border-color: ${unsafeCSS(cssVarV2.layer.insideBorder.border)};
     }
 
-    .affine-database-column-text-icon svg {
-        fill: var(--affine-icon-color);
+    .yunke-database-column-text-icon svg {
+        fill: var(--yunke-icon-color);
     }
 
-    .affine-database-column-input {
+    .yunke-database-column-input {
         width: 100%;
         height: 24px;
         padding: 0;
@@ -145,28 +145,28 @@ export const styles = css`
         background: transparent;
     }
 
-    .affine-database-column-input:focus {
+    .yunke-database-column-input:focus {
         outline: none;
     }
 
-    .affine-database-column-move {
+    .yunke-database-column-move {
         display: flex;
         align-items: center;
     }
 
-    .affine-database-column-move svg {
+    .yunke-database-column-move svg {
         width: 10px;
         height: 14px;
-        color: var(--affine-black-10);
+        color: var(--yunke-black-10);
         cursor: grab;
         opacity: 0;
     }
 
-    .affine-database-column-content:hover svg {
+    .yunke-database-column-content:hover svg {
         opacity: 1;
     }
 
-    .affine-database-add-column-button {
+    .yunke-database-add-column-button {
         position: sticky;
         right: 0;
         display: flex;
@@ -179,7 +179,7 @@ export const styles = css`
 
     .header-add-column-button {
         height: ${DEFAULT_COLUMN_TITLE_HEIGHT}px;
-        background-color: var(--affine-background-primary-color);
+        background-color: var(--yunke-background-primary-color);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -195,31 +195,31 @@ export const styles = css`
         }
     }
 
-    .affine-database-column-type-menu-icon {
+    .yunke-database-column-type-menu-icon {
         border: 1px solid ${unsafeCSS(cssVarV2.layer.insideBorder.border)};
         border-radius: 4px;
         padding: 5px;
-        background-color: var(--affine-background-secondary-color);
+        background-color: var(--yunke-background-secondary-color);
     }
 
-    .affine-database-column-type-menu-icon svg {
-        color: var(--affine-text-secondary-color);
+    .yunke-database-column-type-menu-icon svg {
+        color: var(--yunke-text-secondary-color);
         width: 20px;
         height: 20px;
 
     }
 
-    .affine-database-column-move-preview {
+    .yunke-database-column-move-preview {
         position: fixed;
         z-index: 100;
         width: 100px;
         height: 100px;
-        background: var(--affine-text-emphasis-color);
+        background: var(--yunke-text-emphasis-color);
     }
 
-    .affine-database-column-move {
-        --color: var(--affine-placeholder-color);
-        --active: var(--affine-black-10);
+    .yunke-database-column-move {
+        --color: var(--yunke-placeholder-color);
+        --active: var(--yunke-black-10);
         --bw: 1px;
         --bw2: -1px;
         cursor: grab;
@@ -230,12 +230,12 @@ export const styles = css`
         inset: 0;
     }
 
-    .affine-database-column-move .control-l::before,
-    .affine-database-column-move .control-h::before,
-    .affine-database-column-move .control-l::after,
-    .affine-database-column-move .control-h::after,
-    .affine-database-column-move .control-r,
-    .affine-database-column-move .hover-trigger {
+    .yunke-database-column-move .control-l::before,
+    .yunke-database-column-move .control-h::before,
+    .yunke-database-column-move .control-l::after,
+    .yunke-database-column-move .control-h::after,
+    .yunke-database-column-move .control-r,
+    .yunke-database-column-move .hover-trigger {
         --delay: 0s;
         --delay-opacity: 0s;
         content: '';
@@ -244,7 +244,7 @@ export const styles = css`
         opacity 0.2s ease var(--delay-opacity);
     }
 
-    .affine-database-column-move .control-r {
+    .yunke-database-column-move .control-r {
         --delay: 0s;
         --delay-opacity: 0.6s;
         width: 4px;
@@ -258,7 +258,7 @@ export const styles = css`
         pointer-events: none;
     }
 
-    .affine-database-column-move .hover-trigger {
+    .yunke-database-column-move .hover-trigger {
         width: 12px;
         height: 80%;
         right: 3px;
@@ -268,12 +268,12 @@ export const styles = css`
         opacity: 1;
     }
 
-    .affine-database-column-move:hover .control-r {
+    .yunke-database-column-move:hover .control-r {
         opacity: 1;
     }
 
-    .affine-database-column-move .control-h::before,
-    .affine-database-column-move .control-h::after {
+    .yunke-database-column-move .control-h::before,
+    .yunke-database-column-move .control-h::after {
         --delay: 0.2s;
         width: calc(100% - var(--bw2) * 2);
         opacity: 0;
@@ -282,15 +282,15 @@ export const styles = css`
         background: var(--active);
     }
 
-    .affine-database-column-move .control-h::before {
+    .yunke-database-column-move .control-h::before {
         top: var(--bw2);
     }
 
-    .affine-database-column-move .control-h::after {
+    .yunke-database-column-move .control-h::after {
         bottom: var(--bw2);
     }
 
-    .affine-database-column-move .control-l::before {
+    .yunke-database-column-move .control-l::before {
         --delay: 0s;
         width: var(--bw);
         height: 100%;
@@ -299,24 +299,24 @@ export const styles = css`
         left: var(--bw2);
     }
 
-    .affine-database-column-move .control-l::before {
+    .yunke-database-column-move .control-l::before {
         top: 0;
     }
 
-    .affine-database-column-move .control-l::after {
+    .yunke-database-column-move .control-l::after {
         bottom: 0;
     }
 
     /* handle--active style */
 
-    .affine-database-column-move:hover .control-r {
+    .yunke-database-column-move:hover .control-r {
         --delay-opacity: 0s;
         opacity: 1;
     }
 
-    .affine-database-column-move:active .control-r,
+    .yunke-database-column-move:active .control-r,
     .hover-trigger:hover ~ .control-r,
-    .grabbing.affine-database-column-move .control-r {
+    .grabbing.yunke-database-column-move .control-r {
         opacity: 1;
         --delay: 0s;
         --delay-opacity: 0s;
@@ -326,23 +326,23 @@ export const styles = css`
         background: var(--active);
     }
 
-    .affine-database-column-move:active .control-h::before,
-    .affine-database-column-move:active .control-h::after,
+    .yunke-database-column-move:active .control-h::before,
+    .yunke-database-column-move:active .control-h::after,
     .hover-trigger:hover ~ .control-h::before,
     .hover-trigger:hover ~ .control-h::after,
-    .grabbing.affine-database-column-move .control-h::before,
-    .grabbing.affine-database-column-move .control-h::after {
+    .grabbing.yunke-database-column-move .control-h::before,
+    .grabbing.yunke-database-column-move .control-h::after {
         --delay: 0.2s;
         width: calc(100% - var(--bw2) * 2);
         opacity: 1;
     }
 
-    .affine-database-column-move:active .control-l::before,
-    .affine-database-column-move:active .control-l::after,
+    .yunke-database-column-move:active .control-l::before,
+    .yunke-database-column-move:active .control-l::after,
     .hover-trigger:hover ~ .control-l::before,
     .hover-trigger:hover ~ .control-l::after,
-    .grabbing.affine-database-column-move .control-l::before,
-    .grabbing.affine-database-column-move .control-l::after {
+    .grabbing.yunke-database-column-move .control-l::before,
+    .grabbing.yunke-database-column-move .control-l::after {
         --delay: 0.4s;
         opacity: 1;
     }

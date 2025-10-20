@@ -56,7 +56,7 @@ export const NumberValue = ({
         onBlur={handleBlur}
         data-empty={!tempValue}
         placeholder={t[
-          'com.affine.page-properties.property-value-placeholder'
+          'com.yunke.page-properties.property-value-placeholder'
         ]()}
         disabled={readonly}
       />
@@ -160,7 +160,7 @@ export const NumberFilterValue = ({
         <span>{filter.value}</span>
       ) : (
         <span style={{ color: cssVarV2('text/placeholder') }}>
-          {t['com.affine.filter.empty']()}
+          {t['com.yunke.filter.empty']()}
         </span>
       )}
     </Menu>
@@ -177,7 +177,7 @@ export const NumberDocListProperty = ({ value }: { value: number }) => {
 
 export const NumberGroupHeader = ({ groupId, docCount }: GroupHeaderProps) => {
   const t = useI18n();
-  const number = groupId || t['com.affine.filter.empty']();
+  const number = groupId || t['com.yunke.filter.empty']();
   return (
     <PlainTextDocGroupHeader groupId={groupId} docCount={docCount}>
       {number}

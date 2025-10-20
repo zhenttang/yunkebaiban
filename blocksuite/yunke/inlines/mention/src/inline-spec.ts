@@ -1,11 +1,11 @@
-import type { AffineTextAttributes } from '@blocksuite/yunke-shared/types';
+import type { YunkeTextAttributes } from '@blocksuite/yunke-shared/types';
 import { StdIdentifier } from '@blocksuite/std';
 import { InlineSpecExtension } from '@blocksuite/std/inline';
 import { html } from 'lit';
 import { z } from 'zod';
 
 export const MentionInlineSpecExtension =
-  InlineSpecExtension<AffineTextAttributes>('mention', provider => {
+  InlineSpecExtension<YunkeTextAttributes>('mention', provider => {
     const std = provider.get(StdIdentifier);
     return {
       name: 'mention',
@@ -21,11 +21,11 @@ export const MentionInlineSpecExtension =
         return !!delta.attributes?.mention?.member;
       },
       renderer: ({ delta, selected }) => {
-        return html`<affine-mention
+        return html`<yunke-mention
           .delta=${delta}
           .std=${std}
           .selected=${selected}
-        ></affine-mention>`;
+        ></yunke-mention>`;
       },
       embed: true,
     };

@@ -72,8 +72,8 @@ export const DocSizePanel = () => {
     return (
       <div className={styles.docSizeContainer}>
         <div className={styles.docSizeName}>
-          {t['com.affine.settings.workspace.storage.doc-sizes']
-            ? t['com.affine.settings.workspace.storage.doc-sizes']()
+          {t['com.yunke.settings.workspace.storage.doc-sizes']
+            ? t['com.yunke.settings.workspace.storage.doc-sizes']()
             : '文档列表'}
         </div>
         <div className={styles.docSizeLoadingContainer}>
@@ -87,14 +87,14 @@ export const DocSizePanel = () => {
     return (
       <div className={styles.docSizeContainer}>
         <div className={styles.docSizeName}>
-          {t['com.affine.settings.workspace.storage.doc-sizes']
-            ? t['com.affine.settings.workspace.storage.doc-sizes']()
+          {t['com.yunke.settings.workspace.storage.doc-sizes']
+            ? t['com.yunke.settings.workspace.storage.doc-sizes']()
             : '文档列表'}
         </div>
         <div className={styles.docSizeLoadingContainer}>
           <ErrorMessage>
-            {t['com.affine.settings.workspace.storage.load-error']
-              ? t['com.affine.settings.workspace.storage.load-error']()
+            {t['com.yunke.settings.workspace.storage.load-error']
+              ? t['com.yunke.settings.workspace.storage.load-error']()
               : '加载失败，请稍后重试'}
           </ErrorMessage>
         </div>
@@ -105,8 +105,8 @@ export const DocSizePanel = () => {
   return (
     <>
       <div className={styles.docSizeName}>
-        {t['com.affine.settings.workspace.storage.doc-sizes']
-          ? t['com.affine.settings.workspace.storage.doc-sizes']()
+        {t['com.yunke.settings.workspace.storage.doc-sizes']
+          ? t['com.yunke.settings.workspace.storage.doc-sizes']()
           : '文档列表'}
         {` (${docList.length})`}
         <div className={styles.docSizeNote}>
@@ -116,8 +116,8 @@ export const DocSizePanel = () => {
       </div>
       {docList.length === 0 ? (
         <div className={styles.empty}>
-          {t['com.affine.settings.workspace.storage.no-docs']
-            ? t['com.affine.settings.workspace.storage.no-docs']()
+          {t['com.yunke.settings.workspace.storage.no-docs']
+            ? t['com.yunke.settings.workspace.storage.no-docs']()
             : '没有文档'}
         </div>
       ) : (
@@ -125,13 +125,13 @@ export const DocSizePanel = () => {
           <div className={styles.docSizeTable}>
             <div className={styles.docSizeTableHeader}>
               <div className={styles.docSizeTableCell}>
-                {t['com.affine.settings.workspace.storage.doc-name']
-                  ? t['com.affine.settings.workspace.storage.doc-name']()
+                {t['com.yunke.settings.workspace.storage.doc-name']
+                  ? t['com.yunke.settings.workspace.storage.doc-name']()
                   : '文档名称'}
               </div>
               <div className={styles.docSizeTableCell}>
-                {t['com.affine.settings.workspace.storage.doc-updated']
-                  ? t['com.affine.settings.workspace.storage.doc-updated']()
+                {t['com.yunke.settings.workspace.storage.doc-updated']
+                  ? t['com.yunke.settings.workspace.storage.doc-updated']()
                   : '更新时间'}
               </div>
             </div>

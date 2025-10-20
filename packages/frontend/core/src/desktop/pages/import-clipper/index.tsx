@@ -1,6 +1,6 @@
 import { Button } from '@yunke/component';
 import { AuthHeader } from '@yunke/component/auth-components';
-import { useAsyncCallback } from '@yunke/core/components/hooks/affine-async-hooks';
+import { useAsyncCallback } from '@yunke/core/components/hooks/yunke-async-hooks';
 import { useWorkspaceName } from '@yunke/core/components/hooks/use-workspace-info';
 import { WorkspaceSelector } from '@yunke/core/components/workspace-selector';
 import { AuthService, ServerService } from '@yunke/core/modules/cloud';
@@ -54,9 +54,9 @@ window.addEventListener('message', event => {
   if (
     typeof event.data === 'object' &&
     event.data !== null &&
-    event.data.type === 'affine-clipper:import'
+    event.data.type === 'yunke-clipper:import'
   ) {
-    console.log('✅✅✅ 匹配到 affine-clipper:import 类型！');
+    console.log('✅✅✅ 匹配到 yunke-clipper:import 类型！');
     console.log('🔵 payload:', event.data.payload);
     
     clipperInput$.value = event.data.payload;
@@ -70,7 +70,7 @@ window.addEventListener('message', event => {
     console.log('❌ - 判断条件:');
     console.log('  - typeof event.data === "object"?', typeof event.data === 'object');
     console.log('  - event.data !== null?', event.data !== null);
-    console.log('  - event.data.type === "affine-clipper:import"?', event.data?.type === 'affine-clipper:import');
+    console.log('  - event.data.type === "yunke-clipper:import"?', event.data?.type === 'yunke-clipper:import');
   }
 });
 
@@ -144,7 +144,7 @@ export const Component = () => {
   );
 
   const handleSuccess = useCallback(() => {
-    const arg = { type: 'affine-clipper:import:success' };
+    const arg = { type: 'yunke-clipper:import:success' };
     const port = port$.value;
     track.clipper.$.$.createDoc();
     if (port) {
@@ -186,7 +186,7 @@ export const Component = () => {
     setImporting(true);
     try {
       await importClipperService.importToNewWorkspace(
-        'affine-cloud',
+        'yunke-cloud',
         'Workspace',
         clipperInputSnapshot
       );
@@ -257,7 +257,7 @@ export const Component = () => {
   //     <div className={styles.container}>
   //       <AuthHeader
   //         className={styles.authHeader}
-  //         title={t['com.affine.auth.sign.in']()}
+  //         title={t['com.yunke.auth.sign.in']()}
   //         subTitle={serverConfig.serverName}
   //       />
   //       <Button
@@ -265,7 +265,7 @@ export const Component = () => {
   //         variant="primary"
   //         onClick={handleClickSignIn}
   //       >
-  //         {t['com.affine.auth.sign.in']()}
+  //         {t['com.yunke.auth.sign.in']()}
   //       </Button>
   //     </div>
   //   );
@@ -277,7 +277,7 @@ export const Component = () => {
     <div className={styles.container}>
       <AllDocsIcon className={styles.mainIcon} />
       <h6 className={styles.mainTitle}>
-        {t['com.affine.import-clipper.dialog.createDocFromClipper']()}
+        {t['com.yunke.import-clipper.dialog.createDocFromClipper']()}
       </h6>
       {noWorkspace ? (
         <p className={styles.desc}>A new workspace will be created.</p>
@@ -305,12 +305,12 @@ export const Component = () => {
       <div className={styles.buttonContainer}>
         {importingError && (
           <span style={{ color: cssVar('warningColor') }}>
-            {t['com.affine.import-clipper.dialog.errorImport']()}
+            {t['com.yunke.import-clipper.dialog.errorImport']()}
           </span>
         )}
         {isMissingInput ? (
           <span style={{ color: cssVar('warningColor') }}>
-            {t['com.affine.import-clipper.dialog.errorLoad']()}
+            {t['com.yunke.import-clipper.dialog.errorLoad']()}
           </span>
         ) : selectedWorkspace ? (
           <Button
@@ -322,7 +322,7 @@ export const Component = () => {
             data-testid="import-clipper-to-workspace-btn"
           >
             {selectedWorkspaceName &&
-              t['com.affine.import-clipper.dialog.createDocToWorkspace']({
+              t['com.yunke.import-clipper.dialog.createDocToWorkspace']({
                 workspace: selectedWorkspaceName,
               })}
           </Button>
@@ -334,7 +334,7 @@ export const Component = () => {
             disabled={disabled}
             onClick={handleImportToNewWorkspace}
           >
-            {t['com.affine.import-clipper.dialog.createDocToNewWorkspace']()}
+            {t['com.yunke.import-clipper.dialog.createDocToNewWorkspace']()}
           </Button>
         )}
       </div>

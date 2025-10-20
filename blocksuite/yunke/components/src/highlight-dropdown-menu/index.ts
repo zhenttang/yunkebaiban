@@ -8,9 +8,9 @@ export * from './text-duotone-icon';
 
 export function effects() {
   customElements.define(
-    'affine-highlight-dropdown-menu',
+    'yunke-highlight-dropdown-menu',
     HighlightDropdownMenu
   );
-  customElements.define('affine-highlight-duotone-icon', HighlightDuotoneIcon);
-  customElements.define('affine-text-duotone-icon', TextDuotoneIcon);
+  customElements.define('yunke-highlight-duotone-icon', HighlightDuotoneIcon);
+  customElements.define('yunke-text-duotone-icon', TextDuotoneIcon);
 }

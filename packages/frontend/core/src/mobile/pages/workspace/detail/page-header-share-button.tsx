@@ -1,5 +1,5 @@
 import { IconButton, MobileMenu } from '@yunke/component';
-import { useEnableCloud } from '@yunke/core/components/hooks/affine/use-enable-cloud';
+import { useEnableCloud } from '@yunke/core/components/hooks/yunke/use-enable-cloud';
 import { DocService } from '@yunke/core/modules/doc';
 import { ShareMenuContent } from '@yunke/core/modules/share-menu';
 import { WorkspaceService } from '@yunke/core/modules/workspace';
@@ -28,7 +28,7 @@ export const PageHeaderShareButton = () => {
           <ShareMenuContent
             workspaceMetadata={workspace.meta}
             currentPage={doc}
-            onEnableAffineCloud={() =>
+            onEnableYunkeCloud={() =>
               confirmEnableCloud(workspace, {
                 openPageId: doc.id,
               })

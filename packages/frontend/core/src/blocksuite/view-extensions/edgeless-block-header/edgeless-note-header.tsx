@@ -87,7 +87,7 @@ const EdgelessNoteToggleButton = ({ note }: { note: NoteBlockModel }) => {
       <IconButton
         className={styles.button}
         size={styles.iconSize}
-        tooltip={t['com.affine.editor.edgeless-note-header.fold-page-block']()}
+        tooltip={t['com.yunke.editor.edgeless-note-header.fold-page-block']()}
         data-testid="edgeless-note-toggle-button"
         onClick={toggle}
       >
@@ -118,7 +118,7 @@ const OpenInPageButton = () => {
     <IconButton
       className={styles.button}
       size={styles.iconSize}
-      tooltip={t['com.affine.editor.edgeless-note-header.open-in-page']()}
+      tooltip={t['com.yunke.editor.edgeless-note-header.open-in-page']()}
       data-testid="edgeless-note-view-in-page-button"
       onClick={openInPage}
     >

@@ -77,8 +77,8 @@ export const InviteTeamMemberModal = ({
       width={480}
       open={open}
       onOpenChange={setOpen}
-      title={t['com.affine.payment.member.team.invite.title']()}
-      cancelText={t['com.affine.inviteModal.button.cancel']()}
+      title={t['com.yunke.payment.member.team.invite.title']()}
+      cancelText={t['com.yunke.inviteModal.button.cancel']()}
       cancelButtonOptions={{
         variant: 'secondary',
       }}
@@ -90,8 +90,8 @@ export const InviteTeamMemberModal = ({
       }}
       confirmText={
         inviteMethod === 'email'
-          ? t['com.affine.payment.member.team.invite.send-invites']()
-          : t['com.affine.payment.member.team.invite.done']()
+          ? t['com.yunke.payment.member.team.invite.send-invites']()
+          : t['com.yunke.payment.member.team.invite.done']()
       }
       confirmButtonOptions={{
         loading: isMutating,

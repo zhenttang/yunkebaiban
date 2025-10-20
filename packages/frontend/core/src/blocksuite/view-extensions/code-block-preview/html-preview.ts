@@ -121,7 +121,7 @@ export class HTMLPreview extends SignalWatcher(WithDisposable(LitElement)) {
             'fallback',
             () =>
               html`<div class="html-preview-fallback">
-                您的浏览器不支持此功能。请下载 AFFiNE 桌面应用程序以使用它。
+                您的浏览器不支持此功能。请下载 YUNKE 桌面应用程序以使用它。
               </div>`,
           ],
         ])}

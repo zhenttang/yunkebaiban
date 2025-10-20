@@ -21,7 +21,7 @@ import {
 } from './table-block-css';
 import { TableDataManager } from './table-data-manager';
 
-export const TableBlockComponentName = 'affine-table';
+export const TableBlockComponentName = 'yunke-table';
 export class TableBlockComponent extends CaptionedBlockComponent<TableBlockModel> {
   private _dataManager: TableDataManager | null = null;
 
@@ -164,7 +164,7 @@ export class TableBlockComponent extends CaptionedBlockComponent<TableBlockModel
                             column.columnId
                           );
                           return html`
-                            <affine-table-cell
+                            <yunke-table-cell
                               style="display: contents;"
                               .rowIndex=${rowIndex}
                               .columnIndex=${columnIndex}
@@ -173,7 +173,7 @@ export class TableBlockComponent extends CaptionedBlockComponent<TableBlockModel
                               .text=${cell?.text}
                               .dataManager=${this.dataManager}
                               .selectionController=${this.selectionController}
-                            ></affine-table-cell>
+                            ></yunke-table-cell>
                           `;
                         }
                       )}
@@ -184,17 +184,17 @@ export class TableBlockComponent extends CaptionedBlockComponent<TableBlockModel
             </tbody>
             ${IS_MOBILE || this.dataManager.readonly$.value
               ? nothing
-              : html`<affine-table-add-button
+              : html`<yunke-table-add-button
                   style="display: contents;"
                   .dataManager=${this.dataManager}
-                ></affine-table-add-button>`}
-            ${html`<affine-table-selection-layer
+                ></yunke-table-add-button>`}
+            ${html`<yunke-table-selection-layer
               style="display: contents;"
               .selectionController=${this.selectionController}
               .getRowRect=${this.getRowRect}
               .getColumnRect=${this.getColumnRect}
               .getAreaRect=${this.getAreaRect}
-            ></affine-table-selection-layer>`}
+            ></yunke-table-selection-layer>`}
           </table>
         </div>
       </div>

@@ -29,7 +29,7 @@ import { isCanvasElement } from '../edgeless/utils/query';
 
 export class EdgelessRootPreviewBlockComponent extends BlockComponent<RootBlockModel> {
   static override styles = css`
-    affine-edgeless-root-preview {
+    yunke-edgeless-root-preview {
       pointer-events: none;
       -webkit-user-select: none;
       user-select: none;
@@ -37,7 +37,7 @@ export class EdgelessRootPreviewBlockComponent extends BlockComponent<RootBlockM
       height: 100%;
     }
 
-    affine-edgeless-root-preview .widgets-container {
+    yunke-edgeless-root-preview .widgets-container {
       position: absolute;
       left: 0;
       top: 0;
@@ -46,12 +46,12 @@ export class EdgelessRootPreviewBlockComponent extends BlockComponent<RootBlockM
       height: 100%;
     }
 
-    affine-edgeless-root-preview .edgeless-background {
+    yunke-edgeless-root-preview .edgeless-background {
       height: 100%;
-      background-color: var(--affine-background-primary-color);
+      background-color: var(--yunke-background-primary-color);
       background-image: radial-gradient(
-        var(--affine-edgeless-grid-color) 1px,
-        var(--affine-background-primary-color) 1px
+        var(--yunke-edgeless-grid-color) 1px,
+        var(--yunke-background-primary-color) 1px
       );
     }
 
@@ -257,6 +257,6 @@ export class EdgelessRootPreviewBlockComponent extends BlockComponent<RootBlockM
   @query('gfx-viewport')
   accessor gfxViewportElm!: GfxViewportElement;
 
-  @query('affine-surface')
+  @query('yunke-surface')
   accessor surface!: SurfaceBlockComponent;
 }

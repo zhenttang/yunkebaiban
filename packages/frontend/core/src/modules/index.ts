@@ -26,6 +26,7 @@ import { configureEditorModule } from './editor';
 import { configureEditorSettingModule } from './editor-setting';
 import { configureFavoriteModule } from './favorite';
 import { configureFeatureFlagModule } from './feature-flag';
+import { configureFlowchartModule } from './flowchart';
 import { configureGlobalContextModule } from './global-context';
 import { configureI18nModule } from './i18n';
 import { configureImportClipperModule } from './import-clipper';
@@ -122,4 +123,5 @@ export function configureCommonModules(framework: Framework) {
   configureIndexerEmbeddingModule(framework);
   configureTemporaryUserModule(framework);
   configureConsoleHomepageModule(framework);
+  configureFlowchartModule(framework);
 }

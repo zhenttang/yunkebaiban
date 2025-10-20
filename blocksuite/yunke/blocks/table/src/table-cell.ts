@@ -59,7 +59,7 @@ import {
   threePointerIconStyle,
 } from './table-cell-css';
 import type { TableDataManager } from './table-data-manager';
-export const TableCellComponentName = 'affine-table-cell';
+export const TableCellComponentName = 'yunke-table-cell';
 export class TableCell extends SignalWatcher(
   WithDisposable(ShadowlessElement)
 ) {
@@ -101,13 +101,13 @@ export class TableCell extends SignalWatcher(
     return this.dataManager.hoverRowIndex$;
   }
   get inlineManager() {
-    return this.closest<TableBlockComponent>('affine-table')?.std.get(
+    return this.closest<TableBlockComponent>('yunke-table')?.std.get(
       DefaultInlineManagerExtension.identifier
     );
   }
 
   get topContenteditableElement() {
-    return this.closest<TableBlockComponent>('affine-table')
+    return this.closest<TableBlockComponent>('yunke-table')
       ?.topContenteditableElement;
   }
 

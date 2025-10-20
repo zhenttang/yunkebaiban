@@ -2,7 +2,7 @@ import { Wrapper } from '@yunke/component';
 import {
   EmptyCollectionDetail,
   EmptyDocs,
-} from '@yunke/core/components/affine/empty';
+} from '@yunke/core/components/yunke/empty';
 import {
   createDocExplorerContext,
   DocExplorerContext,

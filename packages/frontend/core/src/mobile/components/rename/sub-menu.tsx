@@ -49,7 +49,7 @@ export const RenameSubMenu = ({
       title={title}
       {...otherMenuProps}
     >
-      {text ?? t['com.affine.m.explorer.folder.rename']()}
+      {text ?? t['com.yunke.m.explorer.folder.rename']()}
     </MobileMenuSub>
   );
 };

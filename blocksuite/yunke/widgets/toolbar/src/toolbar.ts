@@ -48,9 +48,9 @@ import toPairs from 'lodash-es/toPairs';
 
 import { autoUpdatePosition, renderToolbar, sideMap } from './utils';
 
-export const AFFINE_TOOLBAR_WIDGET = 'affine-toolbar-widget';
+export const YUNKE_TOOLBAR_WIDGET = 'yunke-toolbar-widget';
 
-export class AffineToolbarWidget extends WidgetComponent {
+export class YunkeToolbarWidget extends WidgetComponent {
   static override styles = css`
     editor-toolbar {
       position: absolute;
@@ -61,7 +61,7 @@ export class AffineToolbarWidget extends WidgetComponent {
       width: max-content;
       touch-action: none;
       backface-visibility: hidden;
-      z-index: var(--affine-z-index-popover);
+      z-index: var(--yunke-z-index-popover);
 
       will-change: opacity, overlay, display, transform;
       transition-property: opacity, overlay, display;

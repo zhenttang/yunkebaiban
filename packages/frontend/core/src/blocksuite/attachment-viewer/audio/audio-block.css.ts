@@ -51,7 +51,7 @@ export const reloadButtonIcon = style({
 });
 
 /** Render our own border for audio block  */
-globalStyle(`.affine-attachment-container:has(${root})`, {
+globalStyle(`.yunke-attachment-container:has(${root})`, {
   border: 'none',
   overflow: 'visible',
 });

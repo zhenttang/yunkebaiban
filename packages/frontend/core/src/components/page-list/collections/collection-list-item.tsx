@@ -1,6 +1,6 @@
 import { Checkbox, useDraggable } from '@yunke/component';
 import { WorkbenchLink } from '@yunke/core/modules/workbench';
-import type { AffineDNDData } from '@yunke/core/types/dnd';
+import type { YunkeDNDData } from '@yunke/core/types/dnd';
 import { stopPropagation } from '@yunke/core/utils';
 import { useI18n } from '@yunke/i18n';
 import type { ForwardedRef, PropsWithChildren } from 'react';
@@ -105,7 +105,7 @@ export const CollectionListItem = (props: CollectionListItemProps) => {
     props.title,
   ]);
 
-  const { dragRef, dragging, CustomDragPreview } = useDraggable<AffineDNDData>(
+  const { dragRef, dragging, CustomDragPreview } = useDraggable<YunkeDNDData>(
     () => ({
       data: {
         entity: {

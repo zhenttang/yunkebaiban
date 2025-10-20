@@ -87,7 +87,7 @@ export const TemporaryUserCursor = ({
           className={styles.avatar}
           style={{
             backgroundImage: user.avatarUrl ? `url(${user.avatarUrl})` : undefined,
-            backgroundColor: user.id ? TemporaryUserCollaboration.generateUserColor(user.id) : 'var(--affine-brand-color)',
+            backgroundColor: user.id ? TemporaryUserCollaboration.generateUserColor(user.id) : 'var(--yunke-brand-color)',
           }}
         >
           {!user.avatarUrl && user.name.charAt(0).toUpperCase()}

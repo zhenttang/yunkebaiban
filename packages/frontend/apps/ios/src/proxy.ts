@@ -40,7 +40,7 @@ globalThis.XMLHttpRequest = class extends rawXMLHttpRequest {
 export async function readEndpointToken(
   endpoint: string
 ): Promise<string | null> {
-  const idb = await openDB('affine-token', 1, {
+  const idb = await openDB('yunke-token', 1, {
     upgrade(db) {
       if (!db.objectStoreNames.contains('tokens')) {
         db.createObjectStore('tokens', { keyPath: 'endpoint' });
@@ -53,7 +53,7 @@ export async function readEndpointToken(
 }
 
 export async function writeEndpointToken(endpoint: string, token: string) {
-  const db = await openDB('affine-token', 1, {
+  const db = await openDB('yunke-token', 1, {
     upgrade(db) {
       if (!db.objectStoreNames.contains('tokens')) {
         db.createObjectStore('tokens', { keyPath: 'endpoint' });

@@ -1,4 +1,4 @@
-import type { AffineTextAttributes } from '@blocksuite/yunke-shared/types';
+import type { YunkeTextAttributes } from '@blocksuite/yunke-shared/types';
 import { isStrictUrl } from '@blocksuite/yunke-shared/utils';
 import type {
   BeforeinputHookCtx,
@@ -9,7 +9,7 @@ import type {
 const EDGE_IGNORED_ATTRIBUTES = ['code', 'link'] as const;
 const GLOBAL_IGNORED_ATTRIBUTES = [] as const;
 
-const autoIdentifyLink = (ctx: HookContext<AffineTextAttributes>) => {
+const autoIdentifyLink = (ctx: HookContext<YunkeTextAttributes>) => {
   // auto identify link only on pressing space
   if (ctx.data !== ' ') {
     return;
@@ -60,8 +60,8 @@ const autoIdentifyLink = (ctx: HookContext<AffineTextAttributes>) => {
 
 function handleExtendedAttributes(
   ctx:
-    | BeforeinputHookCtx<AffineTextAttributes>
-    | CompositionEndHookCtx<AffineTextAttributes>
+    | BeforeinputHookCtx<YunkeTextAttributes>
+    | CompositionEndHookCtx<YunkeTextAttributes>
 ) {
   const { data, inlineEditor, inlineRange } = ctx;
   const deltas = inlineEditor.getDeltasByInlineRange(inlineRange);
@@ -103,14 +103,14 @@ function handleExtendedAttributes(
 }
 
 export const onVBeforeinput = (
-  ctx: BeforeinputHookCtx<AffineTextAttributes>
+  ctx: BeforeinputHookCtx<YunkeTextAttributes>
 ) => {
   handleExtendedAttributes(ctx);
   autoIdentifyLink(ctx);
 };
 
 export const onVCompositionEnd = (
-  ctx: CompositionEndHookCtx<AffineTextAttributes>
+  ctx: CompositionEndHookCtx<YunkeTextAttributes>
 ) => {
   handleExtendedAttributes(ctx);
 };

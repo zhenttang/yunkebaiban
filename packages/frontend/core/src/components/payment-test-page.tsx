@@ -1,4 +1,4 @@
-// 支付功能测试页面 - 使用AFFiNE设计系统
+// 支付功能测试页面 - 使用YUNKE设计系统
 import React, { useState } from 'react';
 import { Button } from '@yunke/component';
 import { PaymentModal } from '../components/community-ui/payment-modal';
@@ -8,11 +8,11 @@ import * as styles from './payment-test-page.css';
 // 模拟测试文档数据
 const mockDocument: CommunityDocument = {
   id: 'test-doc-' + Date.now(),
-  title: 'AFFiNE Pro功能详解',
-  description: '了解AFFiNE Pro的所有高级功能，包括无限存储、高级协作工具等',
+  title: 'YUNKE Pro功能详解',
+  description: '了解YUNKE Pro的所有高级功能，包括无限存储、高级协作工具等',
   author: {
     id: 'author-1',
-    name: 'AFFiNE团队',
+    name: 'YUNKE团队',
     avatar: '',
   },
   category: {
@@ -61,7 +61,7 @@ export const PaymentTestPage: React.FC = () => {
     <div className={styles.container}>
       <div className={styles.header}>
         <h1 className={styles.title}>支付功能测试</h1>
-        <p className={styles.subtitle}>测试AFFiNE支付宝沙箱环境集成</p>
+        <p className={styles.subtitle}>测试YUNKE支付宝沙箱环境集成</p>
       </div>
       
       <div className={styles.content}>

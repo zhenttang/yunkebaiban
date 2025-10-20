@@ -37,30 +37,30 @@ export class SizeDropdownMenu extends SignalWatcher(
 
     editor-menu-action {
       justify-content: space-between;
-      color: var(--affine-icon-color);
+      color: var(--yunke-icon-color);
     }
 
     :host([data-type='check']) editor-menu-action[data-selected] {
-      color: var(--affine-primary-color);
+      color: var(--yunke-primary-color);
       background-color: unset;
     }
 
     input {
       display: flex;
       align-self: stretch;
-      border: 0.5px solid var(--affine-border-color);
+      border: 0.5px solid var(--yunke-border-color);
       border-radius: 8px;
       padding: 4px 8px;
       box-sizing: border-box;
     }
 
     input:focus {
-      outline-color: var(--affine-primary-color);
+      outline-color: var(--yunke-primary-color);
       outline-width: 0.5px;
     }
 
     input::placeholder {
-      color: var(--affine-placeholder-color);
+      color: var(--yunke-placeholder-color);
     }
   `;
 
@@ -206,6 +206,6 @@ export class SizeDropdownMenu extends SignalWatcher(
 
 declare global {
   interface HTMLElementTagNameMap {
-    'affine-size-dropdown-menu': SizeDropdownMenu;
+    'yunke-size-dropdown-menu': SizeDropdownMenu;
   }
 }

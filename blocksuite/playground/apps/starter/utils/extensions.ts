@@ -8,7 +8,7 @@ import {
   ParseDocUrlExtension,
 } from '@blocksuite/yunke/shared/services';
 import type { ExtensionType, Store, Workspace } from '@blocksuite/yunke/store';
-import { type TestAffineEditorContainer } from '@blocksuite/integration-test';
+import { type TestYunkeEditorContainer } from '@blocksuite/integration-test';
 import { getTestViewManager } from '@blocksuite/integration-test/view';
 
 import {
@@ -20,7 +20,7 @@ import {
 const viewManager = getTestViewManager();
 
 export function getTestCommonExtensions(
-  editor: TestAffineEditorContainer
+  editor: TestYunkeEditorContainer
 ): ExtensionType[] {
   return [
     FontConfigExtension(CommunityCanvasTextFonts),
@@ -41,7 +41,7 @@ export function createTestEditor(store: Store, workspace: Workspace) {
     .get(FeatureFlagService)
     .setFlag('enable_advanced_block_visibility', true);
 
-  const editor = document.createElement('affine-editor-container');
+  const editor = document.createElement('yunke-editor-container');
 
   editor.autofocus = true;
   editor.doc = store;

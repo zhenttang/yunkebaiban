@@ -24,8 +24,8 @@ export class BlockRenderer
       gap: 16px;
       margin-bottom: 12px;
       border-bottom: 1px solid ${unsafeCSS(cssVarV2.layer.insideBorder.border)};
-      font-size: var(--affine-font-base);
-      line-height: var(--affine-line-height);
+      font-size: var(--yunke-font-base);
+      line-height: var(--yunke-line-height);
     }
 
     database-datasource-block-renderer .tips-placeholder {
@@ -40,7 +40,7 @@ export class BlockRenderer
     database-datasource-block-renderer.empty rich-text::before {
       content: 'Untitled';
       position: absolute;
-      color: var(--affine-text-disable-color);
+      color: var(--yunke-text-disable-color);
       font-size: 15px;
       line-height: 24px;
       user-select: none;
@@ -52,7 +52,7 @@ export class BlockRenderer
       height: 20px;
       padding: 2px;
       border-radius: 4px;
-      background-color: var(--affine-background-secondary-color);
+      background-color: var(--yunke-background-secondary-color);
     }
 
     .database-block-detail-header-icon svg {

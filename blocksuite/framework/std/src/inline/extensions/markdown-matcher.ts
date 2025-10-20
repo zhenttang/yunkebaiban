@@ -7,7 +7,7 @@ import type { BaseTextAttributes, ExtensionType } from '@blocksuite/store';
 import type { InlineMarkdownMatch } from './type.js';
 
 export const MarkdownMatcherIdentifier = createIdentifier<unknown>(
-  'AffineMarkdownMatcher'
+  'YunkeMarkdownMatcher'
 );
 
 export function InlineMarkdownExtension<

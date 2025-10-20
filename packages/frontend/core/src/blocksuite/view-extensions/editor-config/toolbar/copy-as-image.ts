@@ -17,7 +17,7 @@ import { CopyAsImgaeIcon } from '@blocksuite/icons/lit';
 import type { FrameworkProvider } from '@toeverything/infra';
 
 const snapshotStyle = `
-  affine-edgeless-root .widgets-container,
+  yunke-edgeless-root .widgets-container,
   .copy-as-image-transparent {
     opacity: 0;
   }
@@ -29,7 +29,7 @@ const snapshotStyle = `
 function getSelectedRect() {
   const selected = document
     .querySelector('edgeless-selected-rect')
-    ?.shadowRoot?.querySelector('.affine-edgeless-selected-rect');
+    ?.shadowRoot?.querySelector('.yunke-edgeless-selected-rect');
   if (!selected) {
     throw new Error('缺少无边界选择矩形');
   }
@@ -107,14 +107,14 @@ const MARGIN = 20;
 export function copyAsImage(std: BlockStdScope) {
   if (!apis) {
     notify.error({
-      title: I18n.t('com.affine.copy.asImage.notAvailable.title'),
-      message: I18n.t('com.affine.copy.asImage.notAvailable.message'),
+      title: I18n.t('com.yunke.copy.asImage.notAvailable.title'),
+      message: I18n.t('com.yunke.copy.asImage.notAvailable.message'),
       actions: [
         {
           key: 'download',
-          label: I18n.t('com.affine.copy.asImage.notAvailable.action'),
+          label: I18n.t('com.yunke.copy.asImage.notAvailable.action'),
           onClick: () => {
-            window.open('https://affine.pro/download');
+            window.open('https://yunke.pro/download');
           },
         },
       ],
@@ -178,7 +178,7 @@ export function copyAsImage(std: BlockStdScope) {
       const { zoom } = gfx.viewport;
       const isFrameSelected =
         selected.length === 1 &&
-        (selected[0] as GfxBlockElementModel).flavour === 'affine:frame';
+        (selected[0] as GfxBlockElementModel).flavour === 'yunke:frame';
       const margin = isFrameSelected ? -2 : MARGIN * zoom;
 
       gfx.selection.clear();
@@ -192,12 +192,12 @@ export function copyAsImage(std: BlockStdScope) {
         })
         .then(() => {
           notify.success({
-            title: I18n.t('com.affine.copy.asImage.success'),
+            title: I18n.t('com.yunke.copy.asImage.success'),
           });
         })
         .catch(e => {
           notify.error({
-            title: I18n.t('com.affine.copy.asImage.failed'),
+            title: I18n.t('com.yunke.copy.asImage.failed'),
             message: String(e),
           });
         })
@@ -209,7 +209,7 @@ export function copyAsImage(std: BlockStdScope) {
       styleEle.remove();
       showEdgelessElements(overlapElements, std);
       notify.error({
-        title: I18n.t('com.affine.copy.asImage.failed'),
+        title: I18n.t('com.yunke.copy.asImage.failed'),
         message: String(e),
       });
     }

@@ -44,14 +44,14 @@ export const useEnableCloud = () => {
         const { id: newId } = await workspacesService.transformLocalToCloud(
           ws,
           account.id,
-          'affine-cloud'
+          'yunke-cloud'
         );
         jumpToPage(newId, options?.openPageId || 'all');
         options?.onSuccess?.();
       } catch (e) {
         console.error(e);
         notify.error({
-          title: t['com.affine.workspace.enable-cloud.failed'](),
+          title: t['com.yunke.workspace.enable-cloud.failed'](),
         });
       }
     },
@@ -100,16 +100,16 @@ export const useEnableCloud = () => {
 
       openConfirmModal(
         {
-          title: t['Enable AFFiNE Cloud'](),
-          description: t['Enable AFFiNE Cloud Description'](),
-          cancelText: t['com.affine.enableAffineCloudModal.button.cancel'](),
+          title: t['Enable YUNKE Cloud'](),
+          description: t['Enable YUNKE Cloud Description'](),
+          cancelText: t['com.yunke.enableYunkeCloudModal.button.cancel'](),
           confirmText:
             loginStatus === 'authenticated'
               ? t['Enable']()
               : t['Sign in and Enable'](),
           confirmButtonOptions: {
             variant: 'primary',
-            ['data-testid' as string]: 'confirm-enable-affine-cloud-button',
+            ['data-testid' as string]: 'confirm-enable-yunke-cloud-button',
           },
           onConfirm: async () =>
             await signInOrEnableCloud(ws, {

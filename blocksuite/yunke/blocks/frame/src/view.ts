@@ -15,7 +15,7 @@ import { edgelessNavigatorBgWidget } from './present/navigator-bg-widget';
 import { PresentTool } from './present-tool';
 
 export class FrameViewExtension extends ViewExtensionProvider {
-  override name = 'affine-frame-block';
+  override name = 'yunke-frame-block';
 
   override effect(): void {
     super.effect();

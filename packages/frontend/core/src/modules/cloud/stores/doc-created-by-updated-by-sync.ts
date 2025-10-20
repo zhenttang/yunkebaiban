@@ -32,7 +32,7 @@ export class DocCreatedByUpdatedBySyncStore extends Store {
   watchDocCreatedByUpdatedBySynced() {
     const rootYDoc = this.workspaceService.workspace.rootYDoc;
     return yjsGetPath(
-      rootYDoc.getMap('affine:workspace-properties'),
+      rootYDoc.getMap('yunke:workspace-properties'),
       'docCreatedByUpdatedBySynced'
     ) as Observable<boolean>;
   }
@@ -40,7 +40,7 @@ export class DocCreatedByUpdatedBySyncStore extends Store {
   setDocCreatedByUpdatedBySynced(synced: boolean) {
     const rootYDoc = this.workspaceService.workspace.rootYDoc;
     rootYDoc
-      .getMap('affine:workspace-properties')
+      .getMap('yunke:workspace-properties')
       .set('docCreatedByUpdatedBySynced', synced);
   }
 }

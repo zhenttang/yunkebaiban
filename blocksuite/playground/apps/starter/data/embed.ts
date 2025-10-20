@@ -9,26 +9,26 @@ export const embed: InitFn = (collection: Workspace, id: string) => {
 
   doc.load(() => {
     // Add root block and surface block at root level
-    const rootId = store.addBlock('affine:page', {
+    const rootId = store.addBlock('yunke:page', {
       title: new Text(),
     });
 
-    const surfaceId = store.addBlock('affine:surface', {}, rootId);
+    const surfaceId = store.addBlock('yunke:surface', {}, rootId);
 
     // Add note block inside root block
-    const noteId = store.addBlock('affine:note', {}, rootId);
+    const noteId = store.addBlock('yunke:note', {}, rootId);
     // Add paragraph block inside note block
-    store.addBlock('affine:paragraph', {}, noteId);
+    store.addBlock('yunke:paragraph', {}, noteId);
 
     store.addBlock(
-      'affine:embed-github',
+      'yunke:embed-github',
       {
-        url: 'https://github.com/toeverything/AFFiNE/pull/5453',
+        url: 'https://github.com/toeverything/YUNKE/pull/5453',
       },
       noteId
     );
     store.addBlock(
-      'affine:embed-github',
+      'yunke:embed-github',
       {
         url: 'https://www.github.com/toeverything/blocksuite/pull/5927',
         style: 'vertical',
@@ -37,14 +37,14 @@ export const embed: InitFn = (collection: Workspace, id: string) => {
       surfaceId
     );
     store.addBlock(
-      'affine:embed-github',
+      'yunke:embed-github',
       {
         url: 'https://github.com/Milkdown/milkdown/pull/1215',
         xywh: '[500, 400, 752, 116]',
       },
       surfaceId
     );
-    store.addBlock('affine:paragraph', {}, noteId);
+    store.addBlock('yunke:paragraph', {}, noteId);
   });
 
   store.resetHistory();

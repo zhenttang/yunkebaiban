@@ -1,6 +1,6 @@
 {
   "name": "@blocksuite/yunke-widget-toolbar",
-  "description": "Affine toolbar widget.",
+  "description": "Yunke toolbar widget.",
   "type": "module",
   "scripts": {
     "build": "tsc"

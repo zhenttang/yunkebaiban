@@ -32,8 +32,8 @@ const FavoriteOperation = ({ tag }: { tag: ListItem }) => {
     favoriteService.favoriteList.toggle('tag', tag.id);
     toast(
       isFavorite
-        ? t['com.affine.toastMessage.removedFavorites']()
-        : t['com.affine.toastMessage.addedFavorites']()
+        ? t['com.yunke.toastMessage.removedFavorites']()
+        : t['com.yunke.toastMessage.addedFavorites']()
     );
   }, [favoriteService.favoriteList, tag.id, isFavorite, t]);
 
@@ -94,7 +94,7 @@ export const TagSelectorDialog = ({
       }}
     >
       <SelectorLayout
-        searchPlaceholder={t['com.affine.selector-tag.search.placeholder']()}
+        searchPlaceholder={t['com.yunke.selector-tag.search.placeholder']()}
         selectedCount={selection.length}
         onSearch={setKeyword}
         onConfirm={() => close(selection)}

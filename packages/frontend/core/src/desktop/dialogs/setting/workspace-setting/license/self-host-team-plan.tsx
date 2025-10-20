@@ -29,48 +29,48 @@ export const SelfHostTeamPlan = () => {
     <div className={styles.pricingPlan}>
       <div className={styles.planCardHeader}>
         <div className={styles.planCardTitle}>
-          {t['com.affine.settings.workspace.license.benefit.team.title']()}
+          {t['com.yunke.settings.workspace.license.benefit.team.title']()}
         </div>
         <div className={styles.planCardSubtitle}>
-          {t['com.affine.settings.workspace.license.benefit.team.subtitle']()}
+          {t['com.yunke.settings.workspace.license.benefit.team.subtitle']()}
         </div>
       </div>
 
       <div className={styles.benefitItems}>
         <div className={styles.benefitItem}>
           <DoneIcon className={styles.doneIconStyle} />
-          {t['com.affine.settings.workspace.license.benefit.team.g1']()}
+          {t['com.yunke.settings.workspace.license.benefit.team.g1']()}
         </div>
         <div className={styles.benefitItem}>
           <DoneIcon className={styles.doneIconStyle} />
-          {t['com.affine.settings.workspace.license.benefit.team.g2']({
+          {t['com.yunke.settings.workspace.license.benefit.team.g2']({
             initialQuota,
             quotaPerSeat,
           })}
         </div>
         <div className={styles.benefitItem}>
           <DoneIcon className={styles.doneIconStyle} />
-          {t['com.affine.settings.workspace.license.benefit.team.g3']({
+          {t['com.yunke.settings.workspace.license.benefit.team.g3']({
             quota: maxFileSize,
           })}
         </div>
         <div className={styles.benefitItem}>
           <DoneIcon className={styles.doneIconStyle} />
-          {t['com.affine.settings.workspace.license.benefit.team.g4']()}
+          {t['com.yunke.settings.workspace.license.benefit.team.g4']()}
         </div>
         <div className={styles.benefitItem}>
           <DoneIcon className={styles.doneIconStyle} />
-          {t['com.affine.settings.workspace.license.benefit.team.g5']()}
+          {t['com.yunke.settings.workspace.license.benefit.team.g5']()}
         </div>
         <div className={styles.benefitItem}>
           <DoneIcon className={styles.doneIconStyle} />
-          {t['com.affine.settings.workspace.license.benefit.team.g6']()}
+          {t['com.yunke.settings.workspace.license.benefit.team.g6']()}
         </div>
       </div>
 
       <div className={styles.leanMoreButtonContainer}>
         <Button onClick={handleClick}>
-          {t['com.affine.settings.workspace.license.lean-more']()}
+          {t['com.yunke.settings.workspace.license.lean-more']()}
         </Button>
       </div>
     </div>

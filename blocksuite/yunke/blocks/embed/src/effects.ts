@@ -19,14 +19,14 @@ import { EmbedEdgelessYoutubeBlockComponent } from './embed-youtube-block/embed-
 
 export function effects() {
   customElements.define(
-    'affine-embed-edgeless-figma-block',
+    'yunke-embed-edgeless-figma-block',
     EmbedEdgelessBlockComponent
   );
-  customElements.define('affine-embed-figma-block', EmbedFigmaBlockComponent);
+  customElements.define('yunke-embed-figma-block', EmbedFigmaBlockComponent);
 
-  customElements.define('affine-embed-html-block', EmbedHtmlBlockComponent);
+  customElements.define('yunke-embed-html-block', EmbedHtmlBlockComponent);
   customElements.define(
-    'affine-embed-edgeless-html-block',
+    'yunke-embed-edgeless-html-block',
     EmbedEdgelessHtmlBlockComponent
   );
 
@@ -35,31 +35,31 @@ export function effects() {
     EmbedHtmlFullscreenToolbar
   );
   customElements.define(
-    'affine-embed-edgeless-github-block',
+    'yunke-embed-edgeless-github-block',
     EmbedEdgelessGithubBlockComponent
   );
-  customElements.define('affine-embed-github-block', EmbedGithubBlockComponent);
+  customElements.define('yunke-embed-github-block', EmbedGithubBlockComponent);
 
   customElements.define(
-    'affine-embed-edgeless-youtube-block',
+    'yunke-embed-edgeless-youtube-block',
     EmbedEdgelessYoutubeBlockComponent
   );
   customElements.define(
-    'affine-embed-youtube-block',
+    'yunke-embed-youtube-block',
     EmbedYoutubeBlockComponent
   );
 
   customElements.define(
-    'affine-embed-edgeless-loom-block',
+    'yunke-embed-edgeless-loom-block',
     EmbedEdgelessLoomBlockComponent
   );
-  customElements.define('affine-embed-loom-block', EmbedLoomBlockComponent);
+  customElements.define('yunke-embed-loom-block', EmbedLoomBlockComponent);
 
   customElements.define(
-    'affine-embed-edgeless-iframe-block',
+    'yunke-embed-edgeless-iframe-block',
     EmbedEdgelessIframeBlockComponent
   );
-  customElements.define('affine-embed-iframe-block', EmbedIframeBlockComponent);
+  customElements.define('yunke-embed-iframe-block', EmbedIframeBlockComponent);
   customElements.define(
     'embed-iframe-link-input-popup',
     EmbedIframeLinkInputPopup
@@ -75,18 +75,18 @@ export function effects() {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'affine-embed-figma-block': EmbedFigmaBlockComponent;
-    'affine-embed-edgeless-figma-block': EmbedEdgelessBlockComponent;
-    'affine-embed-github-block': EmbedGithubBlockComponent;
-    'affine-embed-edgeless-github-block': EmbedEdgelessGithubBlockComponent;
-    'affine-embed-html-block': EmbedHtmlBlockComponent;
-    'affine-embed-edgeless-html-block': EmbedEdgelessHtmlBlockComponent;
+    'yunke-embed-figma-block': EmbedFigmaBlockComponent;
+    'yunke-embed-edgeless-figma-block': EmbedEdgelessBlockComponent;
+    'yunke-embed-github-block': EmbedGithubBlockComponent;
+    'yunke-embed-edgeless-github-block': EmbedEdgelessGithubBlockComponent;
+    'yunke-embed-html-block': EmbedHtmlBlockComponent;
+    'yunke-embed-edgeless-html-block': EmbedEdgelessHtmlBlockComponent;
     'embed-html-fullscreen-toolbar': EmbedHtmlFullscreenToolbar;
-    'affine-embed-edgeless-loom-block': EmbedEdgelessLoomBlockComponent;
-    'affine-embed-loom-block': EmbedLoomBlockComponent;
-    'affine-embed-youtube-block': EmbedYoutubeBlockComponent;
-    'affine-embed-edgeless-youtube-block': EmbedEdgelessYoutubeBlockComponent;
-    'affine-embed-iframe-block': EmbedIframeBlockComponent;
+    'yunke-embed-edgeless-loom-block': EmbedEdgelessLoomBlockComponent;
+    'yunke-embed-loom-block': EmbedLoomBlockComponent;
+    'yunke-embed-youtube-block': EmbedYoutubeBlockComponent;
+    'yunke-embed-edgeless-youtube-block': EmbedEdgelessYoutubeBlockComponent;
+    'yunke-embed-iframe-block': EmbedIframeBlockComponent;
     'embed-iframe-link-input-popup': EmbedIframeLinkInputPopup;
     'embed-iframe-loading-card': EmbedIframeLoadingCard;
     'embed-iframe-error-card': EmbedIframeErrorCard;

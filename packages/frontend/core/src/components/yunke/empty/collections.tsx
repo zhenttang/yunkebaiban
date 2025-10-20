@@ -25,14 +25,14 @@ export const EmptyCollections = (props: UniversalEmptyProps) => {
 
   const handleCreateCollection = useCallback(() => {
     openPromptModal({
-      title: t['com.affine.editCollection.saveCollection'](),
-      label: t['com.affine.editCollectionName.name'](),
+      title: t['com.yunke.editCollection.saveCollection'](),
+      label: t['com.yunke.editCollectionName.name'](),
       inputOptions: {
-        placeholder: t['com.affine.editCollectionName.name.placeholder'](),
+        placeholder: t['com.yunke.editCollectionName.name.placeholder'](),
       },
-      children: t['com.affine.editCollectionName.createTips'](),
-      confirmText: t['com.affine.editCollection.save'](),
-      cancelText: t['com.affine.editCollection.button.cancel'](),
+      children: t['com.yunke.editCollectionName.createTips'](),
+      confirmText: t['com.yunke.editCollection.save'](),
+      cancelText: t['com.yunke.editCollection.button.cancel'](),
       confirmButtonOptions: {
         variant: 'primary',
       },
@@ -53,15 +53,15 @@ export const EmptyCollections = (props: UniversalEmptyProps) => {
     <EmptyLayout
       illustrationLight={collectionListLight}
       illustrationDark={collectionListDark}
-      title={t['com.affine.empty.collections.title']()}
-      description={t['com.affine.empty.collections.description']()}
+      title={t['com.yunke.empty.collections.title']()}
+      description={t['com.yunke.empty.collections.description']()}
       action={
         showAction ? (
           <ActionButton
             prefix={<ViewLayersIcon />}
             onClick={handleCreateCollection}
           >
-            {t['com.affine.empty.collections.action.new-collection']()}
+            {t['com.yunke.empty.collections.action.new-collection']()}
           </ActionButton>
         ) : null
       }

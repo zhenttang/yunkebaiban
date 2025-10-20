@@ -35,15 +35,15 @@ const dateRangeCellStyle = css`
     cursor: pointer;
     user-select: none;
     font-size: var(--data-view-cell-text-size, 14px);
-    color: var(--affine-text-primary-color);
+    color: var(--yunke-text-primary-color);
     
     &:hover {
-      background-color: var(--affine-hover-color);
+      background-color: var(--yunke-hover-color);
     }
     
     &.editing {
-      background-color: var(--affine-primary-color-04);
-      border: 1px solid var(--affine-primary-color);
+      background-color: var(--yunke-primary-color-04);
+      border: 1px solid var(--yunke-primary-color);
     }
   }
   
@@ -55,7 +55,7 @@ const dateRangeCellStyle = css`
   }
   
   .date-range-empty {
-    color: var(--affine-text-secondary-color);
+    color: var(--yunke-text-secondary-color);
     font-style: italic;
   }
   
@@ -64,8 +64,8 @@ const dateRangeCellStyle = css`
     align-items: center;
     gap: 2px;
     font-size: 10px;
-    color: var(--affine-text-secondary-color);
-    background: var(--affine-background-secondary-color);
+    color: var(--yunke-text-secondary-color);
+    background: var(--yunke-background-secondary-color);
     padding: 2px 4px;
     border-radius: 2px;
   }
@@ -77,9 +77,9 @@ const dateRangeCellStyle = css`
 const dateRangeEditorStyle = css`
   .date-range-editor {
     padding: 12px;
-    background: var(--affine-background-primary-color);
+    background: var(--yunke-background-primary-color);
     border-radius: 8px;
-    box-shadow: var(--affine-shadow-2);
+    box-shadow: var(--yunke-shadow-2);
     min-width: 320px;
   }
   
@@ -95,7 +95,7 @@ const dateRangeEditorStyle = css`
   
   .date-label {
     font-size: 12px;
-    color: var(--affine-text-secondary-color);
+    color: var(--yunke-text-secondary-color);
     margin-bottom: 4px;
   }
   
@@ -105,18 +105,18 @@ const dateRangeEditorStyle = css`
     justify-content: center;
     width: 20px;
     font-size: 12px;
-    color: var(--affine-text-secondary-color);
+    color: var(--yunke-text-secondary-color);
   }
   
   .working-days-section {
-    border-top: 1px solid var(--affine-border-color);
+    border-top: 1px solid var(--yunke-border-color);
     padding-top: 12px;
   }
   
   .working-days-title {
     font-size: 12px;
     font-weight: 500;
-    color: var(--affine-text-primary-color);
+    color: var(--yunke-text-primary-color);
     margin-bottom: 8px;
   }
   
@@ -132,21 +132,21 @@ const dateRangeEditorStyle = css`
     justify-content: center;
     width: 32px;
     height: 24px;
-    border: 1px solid var(--affine-border-color);
+    border: 1px solid var(--yunke-border-color);
     border-radius: 4px;
-    background: var(--affine-background-primary-color);
+    background: var(--yunke-background-primary-color);
     font-size: 11px;
     cursor: pointer;
     transition: all 0.2s ease;
     
     &:hover {
-      border-color: var(--affine-primary-color);
+      border-color: var(--yunke-primary-color);
     }
     
     &.active {
-      background: var(--affine-primary-color);
+      background: var(--yunke-primary-color);
       color: white;
-      border-color: var(--affine-primary-color);
+      border-color: var(--yunke-primary-color);
     }
   }
   
@@ -156,29 +156,29 @@ const dateRangeEditorStyle = css`
     gap: 8px;
     margin-top: 12px;
     padding-top: 12px;
-    border-top: 1px solid var(--affine-border-color);
+    border-top: 1px solid var(--yunke-border-color);
   }
   
   .editor-button {
     padding: 6px 12px;
-    border: 1px solid var(--affine-border-color);
+    border: 1px solid var(--yunke-border-color);
     border-radius: 4px;
-    background: var(--affine-background-primary-color);
+    background: var(--yunke-background-primary-color);
     font-size: 12px;
     cursor: pointer;
     transition: all 0.2s ease;
     
     &:hover {
-      background: var(--affine-hover-color);
+      background: var(--yunke-hover-color);
     }
     
     &.primary {
-      background: var(--affine-primary-color);
+      background: var(--yunke-primary-color);
       color: white;
-      border-color: var(--affine-primary-color);
+      border-color: var(--yunke-primary-color);
       
       &:hover {
-        background: var(--affine-primary-color-hover);
+        background: var(--yunke-primary-color-hover);
       }
     }
   }

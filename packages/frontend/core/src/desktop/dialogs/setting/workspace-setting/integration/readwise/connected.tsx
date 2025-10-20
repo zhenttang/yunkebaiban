@@ -1,5 +1,5 @@
 import { Button, Modal } from '@yunke/component';
-import { useAsyncCallback } from '@yunke/core/components/hooks/affine-async-hooks';
+import { useAsyncCallback } from '@yunke/core/components/hooks/yunke-async-hooks';
 import { IntegrationService } from '@yunke/core/modules/integration';
 import { useI18n } from '@yunke/i18n';
 import { useService } from '@toeverything/infra';
@@ -43,19 +43,19 @@ export const ReadwiseDisconnectDialog = ({
       contentOptions={{ className: styles.connectDialog }}
     >
       <div className={styles.connectDialogTitle}>
-        {t['com.affine.integration.readwise.disconnect.title']()}
+        {t['com.yunke.integration.readwise.disconnect.title']()}
       </div>
       <div className={styles.connectDialogDesc}>
-        {t['com.affine.integration.readwise.disconnect.desc']()}
+        {t['com.yunke.integration.readwise.disconnect.desc']()}
       </div>
       <footer className={styles.footer}>
         <Button onClick={handleCancel}>{t['Cancel']()}</Button>
         <div className={styles.actions}>
           <Button variant="error" onClick={handleDelete}>
-            {t['com.affine.integration.readwise.disconnect.delete']()}
+            {t['com.yunke.integration.readwise.disconnect.delete']()}
           </Button>
           <Button variant="primary" onClick={handleKeep}>
-            {t['com.affine.integration.readwise.disconnect.keep']()}
+            {t['com.yunke.integration.readwise.disconnect.keep']()}
           </Button>
         </div>
       </footer>
@@ -78,7 +78,7 @@ export const ReadwiseDisconnectButton = () => {
         className={actionButton}
         onClick={() => setShowDisconnectDialog(true)}
       >
-        {t['com.affine.integration.readwise.disconnect']()}
+        {t['com.yunke.integration.readwise.disconnect']()}
       </Button>
     </>
   );
