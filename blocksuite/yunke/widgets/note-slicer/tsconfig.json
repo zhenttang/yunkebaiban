@@ -15,6 +15,7 @@
     { "path": "../../ext-loader" },
     { "path": "../../model" },
     { "path": "../../shared" },
-    { "path": "../edgeless-selected-rect" }
+    { "path": "../edgeless-selected-rect" },
+    { "path": "../../../../packages/theme" }
   ]
 }

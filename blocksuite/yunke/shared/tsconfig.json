@@ -10,6 +10,7 @@
     { "path": "../../framework/global" },
     { "path": "../../framework/std" },
     { "path": "../../framework/store" },
-    { "path": "../model" }
+    { "path": "../model" },
+    { "path": "../../../packages/theme" }
   ]
 }

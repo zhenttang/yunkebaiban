@@ -10,6 +10,7 @@
   "references": [
     { "path": "../../../../blocksuite/yunke/all" },
     { "path": "../../../common/infra" },
+    { "path": "../../../theme" },
     { "path": "../../component" },
     { "path": "../../core" },
     { "path": "../../../common/debug" },

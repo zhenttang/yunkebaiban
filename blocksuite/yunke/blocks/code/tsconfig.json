@@ -19,6 +19,7 @@
     { "path": "../../model" },
     { "path": "../../rich-text" },
     { "path": "../../shared" },
-    { "path": "../../widgets/slash-menu" }
+    { "path": "../../widgets/slash-menu" },
+    { "path": "../../../../packages/theme" }
   ]
 }

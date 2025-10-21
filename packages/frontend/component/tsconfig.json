@@ -12,6 +12,7 @@
     "tsBuildInfoFile": "./dist/tsconfig.tsbuildinfo"
   },
   "references": [
+    { "path": "../../theme" },
     { "path": "../../common/debug" },
     { "path": "../electron-api" },
     { "path": "../../common/error" },

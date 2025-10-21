@@ -10,6 +10,7 @@
     { "path": "../../../blocksuite/framework/std" },
     { "path": "../../../blocksuite/yunke/all" },
     { "path": "../../common/infra" },
+    { "path": "../../theme" },
     { "path": "../component" },
     { "path": "../../common/debug" },
     { "path": "../electron-api" },

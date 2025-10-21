@@ -19,6 +19,7 @@
     "packages/frontend/*",
     "packages/frontend/apps/*",
     "packages/frontend/native-mock",
+    "packages/theme",
     "tools/@types/*",
     "tools/changelog",
     "tools/cli",
@@ -73,6 +74,7 @@
     "@swc/core": "1.13.5",
     "@taplo/cli": "^0.7.0",
     "@toeverything/infra": "workspace:*",
+    "@toeverything/theme": "workspace:packages/theme",
     "@types/eslint": "^9.6.1",
     "@types/node": "^22.0.0",
     "@typescript-eslint/parser": "^8.18.0",
@@ -182,7 +184,8 @@
     "set-function-length": "npm:@nolyfill/set-function-length@^1",
     "string.prototype.repeat": "npm:@nolyfill/string.prototype.repeat@^1",
     "typedarray": "npm:@nolyfill/typedarray@^1",
-    "yjs": "13.6.21"
+    "yjs": "13.6.21",
+    "@toeverything/theme": "workspace:packages/theme"
   },
   "dependencies": {
     "@babel/parser": "^7.26.3",

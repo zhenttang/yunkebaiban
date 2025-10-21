@@ -39,7 +39,7 @@
     "@radix-ui/react-toast": "^1.2.3",
     "@radix-ui/react-tooltip": "^1.1.5",
     "@radix-ui/react-visually-hidden": "^1.1.1",
-    "@toeverything/theme": "^1.1.15",
+    "@toeverything/theme": "workspace:packages/theme",
     "@vanilla-extract/dynamic": "^2.1.2",
     "@yunke/debug": "workspace:*",
     "@yunke/electron-api": "workspace:*",

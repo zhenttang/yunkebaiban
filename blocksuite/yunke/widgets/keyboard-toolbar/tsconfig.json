@@ -30,6 +30,7 @@
     { "path": "../../inlines/reference" },
     { "path": "../../model" },
     { "path": "../../rich-text" },
-    { "path": "../../shared" }
+    { "path": "../../shared" },
+    { "path": "../../../../packages/theme" }
   ]
 }

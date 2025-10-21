@@ -13,7 +13,7 @@
     "blocks": {
       "type": "block",
       "id": "block:ry7fOc5q1B",
-      "flavour": "yunke:page",
+      "flavour": "affine:page",
       "props": {
         "title": {
           "$blocksuite:internal:text$": true,
@@ -24,7 +24,7 @@
         {
           "type": "block",
           "id": "block:oc7MvZJnlu",
-          "flavour": "yunke:surface",
+          "flavour": "affine:surface",
           "props": {
             "elements": {
               "LKe6ss-KRX": {
@@ -35,23 +35,23 @@
                 "shapeStyle": "General",
                 "radius": 0.1,
                 "filled": true,
-                "fillColor": "--yunke-palette-shape-white",
+                "fillColor": "--affine-palette-shape-white",
                 "strokeWidth": 8,
-                "strokeColor": "--yunke-palette-line-red",
+                "strokeColor": "--affine-palette-line-red",
                 "strokeStyle": "solid",
                 "roughness": 1.4,
                 "id": "LKe6ss-KRX",
                 "index": "b0CV",
                 "seed": 87895933,
                 "text": {
-                  "yunke:surface:text": true,
+                  "affine:surface:text": true,
                   "delta": [
                     {
                       "insert": "location "
                     }
                   ]
                 },
-                "color": "--yunke-palette-line-black",
+                "color": "--affine-palette-line-black",
                 "fontFamily": "blocksuite:surface:Inter",
                 "fontWeight": "600",
                 "fontStyle": "italic",
@@ -66,23 +66,23 @@
                 "shapeStyle": "General",
                 "radius": 0.1,
                 "filled": true,
-                "fillColor": "--yunke-palette-shape-white",
+                "fillColor": "--affine-palette-shape-white",
                 "strokeWidth": 8,
-                "strokeColor": "--yunke-palette-line-tangerine",
+                "strokeColor": "--affine-palette-line-tangerine",
                 "strokeStyle": "solid",
                 "roughness": 1.4,
                 "id": "3_GuBH1ZcQ",
                 "index": "b0U",
                 "seed": 2103709835,
                 "text": {
-                  "yunke:surface:text": true,
+                  "affine:surface:text": true,
                   "delta": [
                     {
                       "insert": "Time "
                     }
                   ]
                 },
-                "color": "--yunke-palette-line-black",
+                "color": "--affine-palette-line-black",
                 "fontFamily": "blocksuite:surface:Inter",
                 "fontWeight": "600",
                 "fontStyle": "italic",
@@ -97,23 +97,23 @@
                 "shapeStyle": "General",
                 "radius": 0.1,
                 "filled": true,
-                "fillColor": "--yunke-palette-shape-white",
+                "fillColor": "--affine-palette-shape-white",
                 "strokeWidth": 8,
-                "strokeColor": "--yunke-palette-line-green",
+                "strokeColor": "--affine-palette-line-green",
                 "strokeStyle": "solid",
                 "roughness": 1.4,
                 "id": "lkUoWVRRjy",
                 "index": "b0GV",
                 "seed": 581338850,
                 "text": {
-                  "yunke:surface:text": true,
+                  "affine:surface:text": true,
                   "delta": [
                     {
                       "insert": "Contacts "
                     }
                   ]
                 },
-                "color": "--yunke-palette-line-black",
+                "color": "--affine-palette-line-black",
                 "fontFamily": "blocksuite:surface:Inter",
                 "fontWeight": "600",
                 "fontStyle": "italic",
@@ -128,23 +128,23 @@
                 "shapeStyle": "General",
                 "radius": 0.1,
                 "filled": true,
-                "fillColor": "--yunke-palette-shape-white",
+                "fillColor": "--affine-palette-shape-white",
                 "strokeWidth": 8,
-                "strokeColor": "--yunke-palette-line-blue",
+                "strokeColor": "--affine-palette-line-blue",
                 "strokeStyle": "solid",
                 "roughness": 1.4,
                 "id": "HUb2-jVy2I",
                 "index": "b0LV",
                 "seed": 678411172,
                 "text": {
-                  "yunke:surface:text": true,
+                  "affine:surface:text": true,
                   "delta": [
                     {
                       "insert": "Weather "
                     }
                   ]
                 },
-                "color": "--yunke-palette-line-black",
+                "color": "--affine-palette-line-black",
                 "fontFamily": "blocksuite:surface:Inter",
                 "fontWeight": "600",
                 "fontStyle": "italic",
@@ -159,23 +159,23 @@
                 "shapeStyle": "General",
                 "radius": 0.1,
                 "filled": true,
-                "fillColor": "--yunke-palette-shape-white",
+                "fillColor": "--affine-palette-shape-white",
                 "strokeWidth": 8,
-                "strokeColor": "--yunke-palette-line-purple",
+                "strokeColor": "--affine-palette-line-purple",
                 "strokeStyle": "solid",
                 "roughness": 1.4,
                 "id": "HrbOwhAJdm",
                 "index": "b0SV",
                 "seed": 736786412,
                 "text": {
-                  "yunke:surface:text": true,
+                  "affine:surface:text": true,
                   "delta": [
                     {
                       "insert": "Travel "
                     }
                   ]
                 },
-                "color": "--yunke-palette-line-black",
+                "color": "--affine-palette-line-black",
                 "fontFamily": "blocksuite:surface:Inter",
                 "fontWeight": "600",
                 "fontStyle": "italic",
@@ -190,23 +190,23 @@
                 "shapeStyle": "General",
                 "radius": 0.1,
                 "filled": true,
-                "fillColor": "--yunke-palette-shape-white",
+                "fillColor": "--affine-palette-shape-white",
                 "strokeWidth": 8,
-                "strokeColor": "--yunke-palette-line-green",
+                "strokeColor": "--affine-palette-line-green",
                 "strokeStyle": "solid",
                 "roughness": 1.4,
                 "id": "oBp5qAMymP",
                 "index": "b0X",
                 "seed": 414751887,
                 "text": {
-                  "yunke:surface:text": true,
+                  "affine:surface:text": true,
                   "delta": [
                     {
                       "insert": "Cost"
                     }
                   ]
                 },
-                "color": "--yunke-palette-line-black",
+                "color": "--affine-palette-line-black",
                 "fontFamily": "blocksuite:surface:Inter",
                 "fontWeight": "600",
                 "fontStyle": "italic",
@@ -218,14 +218,14 @@
                 "xywh": "[-3268.4482933732884,-669.0312776692125,137.7599639892578,48]",
                 "rotate": 0,
                 "text": {
-                  "yunke:surface:text": true,
+                  "affine:surface:text": true,
                   "delta": [
                     {
                       "insert": "Reminders"
                     }
                   ]
                 },
-                "color": "--yunke-palette-line-black",
+                "color": "--affine-palette-line-black",
                 "fontSize": 32,
                 "fontFamily": "blocksuite:surface:Kalam",
                 "fontWeight": "400",
@@ -240,14 +240,14 @@
                 "xywh": "[-3755.6205947775097,-1157.7715364066828,834.2004820069537,418]",
                 "rotate": 0,
                 "text": {
-                  "yunke:surface:text": true,
+                  "affine:surface:text": true,
                   "delta": [
                     {
                       "insert": "A Monthly Calendar template provides a grid or layout representing the days of a month, typically organized by weeks. \n\nIt's designed for scheduling, planning events, tracking tasks, and managing appointments. \n\nThis template is customizable for different months and years, and often includes space for notes and reminders.\n\nDrag the tags and notes below into the right table and edit it to create your personal calendar."
                     }
                   ]
                 },
-                "color": "--yunke-palette-line-black",
+                "color": "--affine-palette-line-black",
                 "fontSize": 28,
                 "fontFamily": "blocksuite:surface:Satoshi",
                 "fontWeight": "400",
@@ -263,14 +263,14 @@
                 "xywh": "[-3754.5467566409907,-1241.2758788599979,329.7598876953125,50.625]",
                 "rotate": 0,
                 "text": {
-                  "yunke:surface:text": true,
+                  "affine:surface:text": true,
                   "delta": [
                     {
                       "insert": "Monthly Calendar"
                     }
                   ]
                 },
-                "color": "--yunke-palette-line-black",
+                "color": "--affine-palette-line-black",
                 "fontSize": 36,
                 "fontFamily": "blocksuite:surface:Poppins",
                 "fontWeight": "600",
@@ -285,14 +285,14 @@
                 "xywh": "[-3755.6205947775097,-670.5140965946811,143.23191833496094,48]",
                 "rotate": 0,
                 "text": {
-                  "yunke:surface:text": true,
+                  "affine:surface:text": true,
                   "delta": [
                     {
                       "insert": "Quick Tags"
                     }
                   ]
                 },
-                "color": "--yunke-palette-line-black",
+                "color": "--affine-palette-line-black",
                 "fontSize": 32,
                 "fontFamily": "blocksuite:surface:Kalam",
                 "fontWeight": "400",
@@ -310,23 +310,23 @@
                 "shapeStyle": "General",
                 "radius": 0.1,
                 "filled": true,
-                "fillColor": "--yunke-palette-shape-white",
+                "fillColor": "--affine-palette-shape-white",
                 "strokeWidth": 8,
-                "strokeColor": "--yunke-palette-line-blue",
+                "strokeColor": "--affine-palette-line-blue",
                 "strokeStyle": "solid",
                 "roughness": 1.4,
                 "id": "Q0HgqbqOLE",
                 "index": "ap",
                 "seed": 1525798825,
                 "text": {
-                  "yunke:surface:text": true,
+                  "affine:surface:text": true,
                   "delta": [
                     {
                       "insert": "Weather "
                     }
                   ]
                 },
-                "color": "--yunke-palette-line-black",
+                "color": "--affine-palette-line-black",
                 "fontFamily": "blocksuite:surface:Inter",
                 "fontWeight": "600",
                 "fontStyle": "italic",
@@ -341,23 +341,23 @@
                 "shapeStyle": "General",
                 "radius": 0.1,
                 "filled": true,
-                "fillColor": "--yunke-palette-shape-white",
+                "fillColor": "--affine-palette-shape-white",
                 "strokeWidth": 8,
-                "strokeColor": "--yunke-palette-line-red",
+                "strokeColor": "--affine-palette-line-red",
                 "strokeStyle": "solid",
                 "roughness": 1.4,
                 "id": "NKgwgTkS9f",
                 "index": "b0f",
                 "seed": 1847525765,
                 "text": {
-                  "yunke:surface:text": true,
+                  "affine:surface:text": true,
                   "delta": [
                     {
                       "insert": "location "
                     }
                   ]
                 },
-                "color": "--yunke-palette-line-black",
+                "color": "--affine-palette-line-black",
                 "fontFamily": "blocksuite:surface:Inter",
                 "fontWeight": "600",
                 "fontStyle": "italic",
@@ -367,14 +367,14 @@
               "iCgZC3b_PA": {
                 "type": "group",
                 "children": {
-                  "yunke:surface:ymap": true,
+                  "affine:surface:ymap": true,
                   "json": {
                     "LKe6ss-KRX": true,
                     "block:K38AVAef-Q": true
                   }
                 },
                 "title": {
-                  "yunke:surface:text": true,
+                  "affine:surface:text": true,
                   "delta": [
                     {
                       "insert": "Group 2"
@@ -389,14 +389,14 @@
               "XZ-WQJN5VW": {
                 "type": "group",
                 "children": {
-                  "yunke:surface:ymap": true,
+                  "affine:surface:ymap": true,
                   "json": {
                     "3_GuBH1ZcQ": true,
                     "block:dpkc5nl4Ay": true
                   }
                 },
                 "title": {
-                  "yunke:surface:text": true,
+                  "affine:surface:text": true,
                   "delta": [
                     {
                       "insert": "Group 3"
@@ -411,14 +411,14 @@
               "2Mob050M6n": {
                 "type": "group",
                 "children": {
-                  "yunke:surface:ymap": true,
+                  "affine:surface:ymap": true,
                   "json": {
                     "lkUoWVRRjy": true,
                     "block:NTr5CI0_pE": true
                   }
                 },
                 "title": {
-                  "yunke:surface:text": true,
+                  "affine:surface:text": true,
                   "delta": [
                     {
                       "insert": "Group 4"
@@ -433,14 +433,14 @@
               "JZyHNJCXvW": {
                 "type": "group",
                 "children": {
-                  "yunke:surface:ymap": true,
+                  "affine:surface:ymap": true,
                   "json": {
                     "HUb2-jVy2I": true,
                     "block:5Quuq5fxRh": true
                   }
                 },
                 "title": {
-                  "yunke:surface:text": true,
+                  "affine:surface:text": true,
                   "delta": [
                     {
                       "insert": "Group 5"
@@ -455,14 +455,14 @@
               "4nKoUEG_xQ": {
                 "type": "group",
                 "children": {
-                  "yunke:surface:ymap": true,
+                  "affine:surface:ymap": true,
                   "json": {
                     "HrbOwhAJdm": true,
                     "block:eTXxrlpvAx": true
                   }
                 },
                 "title": {
-                  "yunke:surface:text": true,
+                  "affine:surface:text": true,
                   "delta": [
                     {
                       "insert": "Group 6"
@@ -478,7 +478,7 @@
                 "type": "connector",
                 "mode": 1,
                 "strokeWidth": 2,
-                "stroke": "--yunke-palette-line-grey",
+                "stroke": "--affine-palette-line-grey",
                 "strokeStyle": "dash",
                 "roughness": 1.4,
                 "source": {
@@ -505,14 +505,14 @@
               "GynDTU9mH9": {
                 "type": "group",
                 "children": {
-                  "yunke:surface:ymap": true,
+                  "affine:surface:ymap": true,
                   "json": {
                     "Q0HgqbqOLE": true,
                     "block:nC4zjpol4i": true
                   }
                 },
                 "title": {
-                  "yunke:surface:text": true,
+                  "affine:surface:text": true,
                   "delta": [
                     {
                       "insert": "Group 5"
@@ -527,14 +527,14 @@
               "XXxj7Bnfjs": {
                 "type": "group",
                 "children": {
-                  "yunke:surface:ymap": true,
+                  "affine:surface:ymap": true,
                   "json": {
                     "block:eqi0PFezx9": true,
                     "oBp5qAMymP": true
                   }
                 },
                 "title": {
-                  "yunke:surface:text": true,
+                  "affine:surface:text": true,
                   "delta": [
                     {
                       "insert": "Group 8"
@@ -548,14 +548,14 @@
               "dTpUxHK17q": {
                 "type": "group",
                 "children": {
-                  "yunke:surface:ymap": true,
+                  "affine:surface:ymap": true,
                   "json": {
                     "NKgwgTkS9f": true,
                     "block:N8jB5iMPeP": true
                   }
                 },
                 "title": {
-                  "yunke:surface:text": true,
+                  "affine:surface:text": true,
                   "delta": [
                     {
                       "insert": "Group 8"
@@ -574,12 +574,12 @@
                 "shapeStyle": "General",
                 "radius": 0,
                 "filled": true,
-                "fillColor": "--yunke-palette-shape-white",
+                "fillColor": "--affine-palette-shape-white",
                 "strokeWidth": 10,
-                "strokeColor": "--yunke-palette-line-white",
+                "strokeColor": "--affine-palette-line-white",
                 "strokeStyle": "none",
                 "roughness": 1.4,
-                "color": "--yunke-palette-line-black",
+                "color": "--affine-palette-line-black",
                 "fontSize": 36,
                 "fontFamily": "blocksuite:surface:Poppins",
                 "fontWeight": "600",
@@ -594,7 +594,7 @@
             {
               "type": "block",
               "id": "block:K38AVAef-Q",
-              "flavour": "yunke:image",
+              "flavour": "affine:image",
               "props": {
                 "caption": "",
                 "sourceId": "/static/templates/bj5CO1PAn9WoCcikLfC-I7y1meYfcQYGiH4ssS73wBM=.png",
@@ -610,7 +610,7 @@
             {
               "type": "block",
               "id": "block:5Quuq5fxRh",
-              "flavour": "yunke:image",
+              "flavour": "affine:image",
               "props": {
                 "caption": "",
                 "sourceId": "/static/templates/drvxbiVuSxmtX2JHqbsR28u-irFo2y7FetDWdSofGBQ=.png",
@@ -626,7 +626,7 @@
             {
               "type": "block",
               "id": "block:dpkc5nl4Ay",
-              "flavour": "yunke:image",
+              "flavour": "affine:image",
               "props": {
                 "caption": "",
                 "sourceId": "/static/templates/pfRNuE2FYppI-IZnJj28Vbj7wAJraa6cPtlz-xDgqgk=.png",
@@ -642,7 +642,7 @@
             {
               "type": "block",
               "id": "block:NTr5CI0_pE",
-              "flavour": "yunke:image",
+              "flavour": "affine:image",
               "props": {
                 "caption": "",
                 "sourceId": "/static/templates/4O1wLjFf9P0VHP1Gou2jNtqNzfV5BCaUqN1rOxjkl_A=.png",
@@ -658,7 +658,7 @@
             {
               "type": "block",
               "id": "block:eTXxrlpvAx",
-              "flavour": "yunke:image",
+              "flavour": "affine:image",
               "props": {
                 "caption": "",
                 "sourceId": "/static/templates/OBZvFNxrfRCCrUvwgt9tsIx0dbBOwz2NIahP3OgpwHE=.png",
@@ -674,7 +674,7 @@
             {
               "type": "block",
               "id": "block:eqi0PFezx9",
-              "flavour": "yunke:image",
+              "flavour": "affine:image",
               "props": {
                 "caption": "",
                 "sourceId": "/static/templates/efvD5QWAVJ2fi3xSQuns2JMLudwvpJxAUcSGPLtCvv8=.png",
@@ -690,7 +690,7 @@
             {
               "type": "block",
               "id": "block:D-Kc3MG1Ku",
-              "flavour": "yunke:frame",
+              "flavour": "affine:frame",
               "props": {
                 "title": {
                   "$blocksuite:internal:text$": true,
@@ -700,7 +700,7 @@
                     }
                   ]
                 },
-                "background": "--yunke-palette-transparent",
+                "background": "--affine-palette-transparent",
                 "xywh": "[-3835.055953475866,-1307.2482746915841,1000.4146680362642,1675.5038965266067]",
                 "index": "a0"
               },
@@ -709,7 +709,7 @@
             {
               "type": "block",
               "id": "block:nC4zjpol4i",
-              "flavour": "yunke:image",
+              "flavour": "affine:image",
               "props": {
                 "caption": "",
                 "sourceId": "/static/templates/drvxbiVuSxmtX2JHqbsR28u-irFo2y7FetDWdSofGBQ=.png",
@@ -725,7 +725,7 @@
             {
               "type": "block",
               "id": "block:8LTTXZyQvD",
-              "flavour": "yunke:image",
+              "flavour": "affine:image",
               "props": {
                 "caption": "",
                 "sourceId": "/static/templates/WHCOR8R09TJ7Awru1kxZBvb3A7aAZdNN2JvUkW0P_VY=.png",
@@ -741,7 +741,7 @@
             {
               "type": "block",
               "id": "block:N8jB5iMPeP",
-              "flavour": "yunke:image",
+              "flavour": "affine:image",
               "props": {
                 "caption": "",
                 "sourceId": "/static/templates/bj5CO1PAn9WoCcikLfC-I7y1meYfcQYGiH4ssS73wBM=.png",
@@ -759,10 +759,10 @@
         {
           "type": "block",
           "id": "block:rO1ldTc-ti",
-          "flavour": "yunke:note",
+          "flavour": "affine:note",
           "props": {
             "xywh": "[-3279.960268129672,-582.195293663286,364,187.5747734376902]",
-            "background": "--yunke-tag-yellow",
+            "background": "--affine-tag-yellow",
             "index": "ar",
             "displayMode": "edgeless",
             "hidden": false,
@@ -771,7 +771,7 @@
                 "borderRadius": 0,
                 "borderSize": 4,
                 "borderStyle": "none",
-                "shadowType": "--yunke-note-shadow-sticker"
+                "shadowType": "--affine-note-shadow-sticker"
               },
               "collapse": true
             }
@@ -780,7 +780,7 @@
             {
               "type": "block",
               "id": "block:iCylUPGSB6",
-              "flavour": "yunke:paragraph",
+              "flavour": "affine:paragraph",
               "props": {
                 "type": "h2",
                 "text": {
@@ -789,7 +789,7 @@
                     {
                       "insert": "Work",
                       "attributes": {
-                        "color": "var(--yunke-text-highlight-foreground-orange)"
+                        "color": "var(--affine-text-highlight-foreground-orange)"
                       }
                     }
                   ]
@@ -800,7 +800,7 @@
             {
               "type": "block",
               "id": "block:2TJEr2qtzn",
-              "flavour": "yunke:paragraph",
+              "flavour": "affine:paragraph",
               "props": {
                 "type": "text",
                 "text": {
@@ -813,7 +813,7 @@
             {
               "type": "block",
               "id": "block:wOkQ8sOdCS",
-              "flavour": "yunke:paragraph",
+              "flavour": "affine:paragraph",
               "props": {
                 "type": "text",
                 "text": {
@@ -828,10 +828,10 @@
         {
           "type": "block",
           "id": "block:n0ZTN8Km4q",
-          "flavour": "yunke:note",
+          "flavour": "affine:note",
           "props": {
             "xywh": "[-3279.9602681296724,-357.0056774119224,364,187.5747734376902]",
-            "background": "--yunke-tag-purple",
+            "background": "--affine-tag-purple",
             "index": "as",
             "displayMode": "edgeless",
             "hidden": false,
@@ -840,7 +840,7 @@
                 "borderRadius": 0,
                 "borderSize": 4,
                 "borderStyle": "none",
-                "shadowType": "--yunke-note-shadow-sticker"
+                "shadowType": "--affine-note-shadow-sticker"
               },
               "collapse": true
             }
@@ -849,7 +849,7 @@
             {
               "type": "block",
               "id": "block:ETKNimHEdQ",
-              "flavour": "yunke:paragraph",
+              "flavour": "affine:paragraph",
               "props": {
                 "type": "h2",
                 "text": {
@@ -858,7 +858,7 @@
                     {
                       "insert": "Personal",
                       "attributes": {
-                        "color": "var(--yunke-text-highlight-foreground-purple)"
+                        "color": "var(--affine-text-highlight-foreground-purple)"
                       }
                     }
                   ]
@@ -869,7 +869,7 @@
             {
               "type": "block",
               "id": "block:aK3kWdZShr",
-              "flavour": "yunke:paragraph",
+              "flavour": "affine:paragraph",
               "props": {
                 "type": "text",
                 "text": {
@@ -882,7 +882,7 @@
             {
               "type": "block",
               "id": "block:VLkjykRvQH",
-              "flavour": "yunke:paragraph",
+              "flavour": "affine:paragraph",
               "props": {
                 "type": "text",
                 "text": {
@@ -895,7 +895,7 @@
             {
               "type": "block",
               "id": "block:lIanLbTbAQ",
-              "flavour": "yunke:paragraph",
+              "flavour": "affine:paragraph",
               "props": {
                 "type": "text",
                 "text": {
@@ -908,7 +908,7 @@
             {
               "type": "block",
               "id": "block:cKG8gW-QLP",
-              "flavour": "yunke:paragraph",
+              "flavour": "affine:paragraph",
               "props": {
                 "type": "text",
                 "text": {
@@ -923,10 +923,10 @@
         {
           "type": "block",
           "id": "block:f435KhXhrT",
-          "flavour": "yunke:note",
+          "flavour": "affine:note",
           "props": {
             "xywh": "[-3279.9602681296724,-131.81606116055892,364,187.5747734376902]",
-            "background": "--yunke-tag-blue",
+            "background": "--affine-tag-blue",
             "index": "at",
             "displayMode": "edgeless",
             "hidden": false,
@@ -935,7 +935,7 @@
                 "borderRadius": 0,
                 "borderSize": 4,
                 "borderStyle": "none",
-                "shadowType": "--yunke-note-shadow-sticker"
+                "shadowType": "--affine-note-shadow-sticker"
               },
               "collapse": true
             }
@@ -944,7 +944,7 @@
             {
               "type": "block",
               "id": "block:am6nOXvIWH",
-              "flavour": "yunke:paragraph",
+              "flavour": "affine:paragraph",
               "props": {
                 "type": "h2",
                 "text": {
@@ -953,7 +953,7 @@
                     {
                       "insert": "Health",
                       "attributes": {
-                        "color": "var(--yunke-text-highlight-foreground-blue)"
+                        "color": "var(--affine-text-highlight-foreground-blue)"
                       }
                     }
                   ]
@@ -964,7 +964,7 @@
             {
               "type": "block",
               "id": "block:gqsndEwOjL",
-              "flavour": "yunke:paragraph",
+              "flavour": "affine:paragraph",
               "props": {
                 "type": "text",
                 "text": {
@@ -977,7 +977,7 @@
             {
               "type": "block",
               "id": "block:op-FvsEuyr",
-              "flavour": "yunke:paragraph",
+              "flavour": "affine:paragraph",
               "props": {
                 "type": "text",
                 "text": {
@@ -990,7 +990,7 @@
             {
               "type": "block",
               "id": "block:ETz8S_E_Nd",
-              "flavour": "yunke:paragraph",
+              "flavour": "affine:paragraph",
               "props": {
                 "type": "text",
                 "text": {
@@ -1003,7 +1003,7 @@
             {
               "type": "block",
               "id": "block:UdHBOCJOja",
-              "flavour": "yunke:paragraph",
+              "flavour": "affine:paragraph",
               "props": {
                 "type": "text",
                 "text": {
@@ -1018,10 +1018,10 @@
         {
           "type": "block",
           "id": "block:giplaqgRMM",
-          "flavour": "yunke:note",
+          "flavour": "affine:note",
           "props": {
             "xywh": "[-3279.9602681296724,93.37355509080464,364,187.5747734376902]",
-            "background": "--yunke-tag-green",
+            "background": "--affine-tag-green",
             "index": "au",
             "displayMode": "edgeless",
             "hidden": false,
@@ -1030,7 +1030,7 @@
                 "borderRadius": 0,
                 "borderSize": 4,
                 "borderStyle": "none",
-                "shadowType": "--yunke-note-shadow-sticker"
+                "shadowType": "--affine-note-shadow-sticker"
               },
               "collapse": true
             }
@@ -1039,7 +1039,7 @@
             {
               "type": "block",
               "id": "block:MQtttCP5Ed",
-              "flavour": "yunke:paragraph",
+              "flavour": "affine:paragraph",
               "props": {
                 "type": "h2",
                 "text": {
@@ -1048,7 +1048,7 @@
                     {
                       "insert": "Leisure",
                       "attributes": {
-                        "color": "var(--yunke-text-highlight-foreground-green)"
+                        "color": "var(--affine-text-highlight-foreground-green)"
                       }
                     }
                   ]
@@ -1059,7 +1059,7 @@
             {
               "type": "block",
               "id": "block:sR3FwmiDJe",
-              "flavour": "yunke:paragraph",
+              "flavour": "affine:paragraph",
               "props": {
                 "type": "text",
                 "text": {
@@ -1072,7 +1072,7 @@
             {
               "type": "block",
               "id": "block:pL2P5Q73RC",
-              "flavour": "yunke:paragraph",
+              "flavour": "affine:paragraph",
               "props": {
                 "type": "text",
                 "text": {
@@ -1085,7 +1085,7 @@
             {
               "type": "block",
               "id": "block:opg68FzxzM",
-              "flavour": "yunke:paragraph",
+              "flavour": "affine:paragraph",
               "props": {
                 "type": "text",
                 "text": {
@@ -1098,7 +1098,7 @@
             {
               "type": "block",
               "id": "block:ZtZ_pnpX6g",
-              "flavour": "yunke:paragraph",
+              "flavour": "affine:paragraph",
               "props": {
                 "type": "text",
                 "text": {
@@ -1113,10 +1113,10 @@
         {
           "type": "block",
           "id": "block:y2gG5dvg58",
-          "flavour": "yunke:note",
+          "flavour": "affine:note",
           "props": {
             "xywh": "[-1588.2917100465877,-1062.6691790295056,364,187.5747734376902]",
-            "background": "--yunke-tag-yellow",
+            "background": "--affine-tag-yellow",
             "index": "b0f",
             "displayMode": "edgeless",
             "hidden": false,
@@ -1125,7 +1125,7 @@
                 "borderRadius": 0,
                 "borderSize": 4,
                 "borderStyle": "none",
-                "shadowType": "--yunke-note-shadow-sticker"
+                "shadowType": "--affine-note-shadow-sticker"
               },
               "collapse": true
             }
@@ -1134,7 +1134,7 @@
             {
               "type": "block",
               "id": "block:eHzestRFYf",
-              "flavour": "yunke:paragraph",
+              "flavour": "affine:paragraph",
               "props": {
                 "type": "h2",
                 "text": {
@@ -1143,7 +1143,7 @@
                     {
                       "insert": "Work",
                       "attributes": {
-                        "color": "var(--yunke-text-highlight-foreground-orange)"
+                        "color": "var(--affine-text-highlight-foreground-orange)"
                       }
                     }
                   ]
@@ -1154,7 +1154,7 @@
             {
               "type": "block",
               "id": "block:uIoU1kyxQ2",
-              "flavour": "yunke:paragraph",
+              "flavour": "affine:paragraph",
               "props": {
                 "type": "text",
                 "text": {
@@ -1167,7 +1167,7 @@
             {
               "type": "block",
               "id": "block:UNMKSgNCME",
-              "flavour": "yunke:paragraph",
+              "flavour": "affine:paragraph",
               "props": {
                 "type": "text",
                 "text": {
@@ -1180,7 +1180,7 @@
             {
               "type": "block",
               "id": "block:rFWNL6wGA1",
-              "flavour": "yunke:paragraph",
+              "flavour": "affine:paragraph",
               "props": {
                 "type": "text",
                 "text": {
@@ -1193,7 +1193,7 @@
             {
               "type": "block",
               "id": "block:F2i0NwYyBv",
-              "flavour": "yunke:paragraph",
+              "flavour": "affine:paragraph",
               "props": {
                 "type": "text",
                 "text": {
@@ -1206,7 +1206,7 @@
             {
               "type": "block",
               "id": "block:39dRmWt7rO",
-              "flavour": "yunke:paragraph",
+              "flavour": "affine:paragraph",
               "props": {
                 "type": "text",
                 "text": {
@@ -1219,7 +1219,7 @@
             {
               "type": "block",
               "id": "block:O-Wvpipu7D",
-              "flavour": "yunke:paragraph",
+              "flavour": "affine:paragraph",
               "props": {
                 "type": "text",
                 "text": {
@@ -1232,7 +1232,7 @@
             {
               "type": "block",
               "id": "block:4Zn9OMAhN_",
-              "flavour": "yunke:paragraph",
+              "flavour": "affine:paragraph",
               "props": {
                 "type": "text",
                 "text": {
@@ -1245,7 +1245,7 @@
             {
               "type": "block",
               "id": "block:cS582dXdI3",
-              "flavour": "yunke:paragraph",
+              "flavour": "affine:paragraph",
               "props": {
                 "type": "text",
                 "text": {
@@ -1260,10 +1260,10 @@
         {
           "type": "block",
           "id": "block:oO8282xoAH",
-          "flavour": "yunke:note",
+          "flavour": "affine:note",
           "props": {
             "xywh": "[-2083.4026303752685,-180.88235683150273,364,187.5747734376902]",
-            "background": "--yunke-tag-green",
+            "background": "--affine-tag-green",
             "index": "b0g",
             "displayMode": "edgeless",
             "hidden": false,
@@ -1272,7 +1272,7 @@
                 "borderRadius": 0,
                 "borderSize": 4,
                 "borderStyle": "none",
-                "shadowType": "--yunke-note-shadow-sticker"
+                "shadowType": "--affine-note-shadow-sticker"
               },
               "collapse": true
             }
@@ -1281,7 +1281,7 @@
             {
               "type": "block",
               "id": "block:Xye-mMAfwe",
-              "flavour": "yunke:paragraph",
+              "flavour": "affine:paragraph",
               "props": {
                 "type": "h2",
                 "text": {
@@ -1290,7 +1290,7 @@
                     {
                       "insert": "Leisure",
                       "attributes": {
-                        "color": "var(--yunke-text-highlight-foreground-green)"
+                        "color": "var(--affine-text-highlight-foreground-green)"
                       }
                     }
                   ]
@@ -1301,7 +1301,7 @@
             {
               "type": "block",
               "id": "block:VPOd2DtQVq",
-              "flavour": "yunke:paragraph",
+              "flavour": "affine:paragraph",
               "props": {
                 "type": "text",
                 "text": {
@@ -1314,7 +1314,7 @@
             {
               "type": "block",
               "id": "block:rPp05W9cng",
-              "flavour": "yunke:paragraph",
+              "flavour": "affine:paragraph",
               "props": {
                 "type": "text",
                 "text": {
@@ -1327,7 +1327,7 @@
             {
               "type": "block",
               "id": "block:WukQG4ZXa4",
-              "flavour": "yunke:paragraph",
+              "flavour": "affine:paragraph",
               "props": {
                 "type": "text",
                 "text": {
@@ -1342,10 +1342,10 @@
         {
           "type": "block",
           "id": "block:NI-xGat6SV",
-          "flavour": "yunke:note",
+          "flavour": "affine:note",
           "props": {
             "xywh": "[-475.8354955988748,-507.3195484279251,364,187.5747734376902]",
-            "background": "--yunke-tag-purple",
+            "background": "--affine-tag-purple",
             "index": "b0fV",
             "displayMode": "edgeless",
             "hidden": false,
@@ -1354,7 +1354,7 @@
                 "borderRadius": 0,
                 "borderSize": 4,
                 "borderStyle": "none",
-                "shadowType": "--yunke-note-shadow-sticker"
+                "shadowType": "--affine-note-shadow-sticker"
               },
               "collapse": true
             }
@@ -1363,7 +1363,7 @@
             {
               "type": "block",
               "id": "block:lol7hcSEnT",
-              "flavour": "yunke:paragraph",
+              "flavour": "affine:paragraph",
               "props": {
                 "type": "h2",
                 "text": {
@@ -1372,7 +1372,7 @@
                     {
                       "insert": "Personal",
                       "attributes": {
-                        "color": "var(--yunke-text-highlight-foreground-purple)"
+                        "color": "var(--affine-text-highlight-foreground-purple)"
                       }
                     }
                   ]
@@ -1383,7 +1383,7 @@
             {
               "type": "block",
               "id": "block:cy_nGYjmzN",
-              "flavour": "yunke:paragraph",
+              "flavour": "affine:paragraph",
               "props": {
                 "type": "text",
                 "text": {
@@ -1396,7 +1396,7 @@
             {
               "type": "block",
               "id": "block:8l06M4ubiu",
-              "flavour": "yunke:paragraph",
+              "flavour": "affine:paragraph",
               "props": {
                 "type": "text",
                 "text": {
@@ -1409,7 +1409,7 @@
             {
               "type": "block",
               "id": "block:9HslzhDKya",
-              "flavour": "yunke:paragraph",
+              "flavour": "affine:paragraph",
               "props": {
                 "type": "text",
                 "text": {
@@ -1422,7 +1422,7 @@
             {
               "type": "block",
               "id": "block:YyBelXprCx",
-              "flavour": "yunke:paragraph",
+              "flavour": "affine:paragraph",
               "props": {
                 "type": "text",
                 "text": {
@@ -1437,10 +1437,10 @@
         {
           "type": "block",
           "id": "block:JC1RP9RbKg",
-          "flavour": "yunke:note",
+          "flavour": "affine:note",
           "props": {
             "xywh": "[-605.9563737325682,-431.5844719323763,364,187.5747734376902]",
-            "background": "--yunke-tag-blue",
+            "background": "--affine-tag-blue",
             "index": "b0i",
             "displayMode": "edgeless",
             "hidden": false,
@@ -1449,7 +1449,7 @@
                 "borderRadius": 0,
                 "borderSize": 4,
                 "borderStyle": "none",
-                "shadowType": "--yunke-note-shadow-sticker"
+                "shadowType": "--affine-note-shadow-sticker"
               },
               "collapse": true
             }
@@ -1458,7 +1458,7 @@
             {
               "type": "block",
               "id": "block:viFH54lcch",
-              "flavour": "yunke:paragraph",
+              "flavour": "affine:paragraph",
               "props": {
                 "type": "h2",
                 "text": {
@@ -1467,7 +1467,7 @@
                     {
                       "insert": "Health",
                       "attributes": {
-                        "color": "var(--yunke-text-highlight-foreground-blue)"
+                        "color": "var(--affine-text-highlight-foreground-blue)"
                       }
                     }
                   ]
@@ -1478,7 +1478,7 @@
             {
               "type": "block",
               "id": "block:Hu1o9U569U",
-              "flavour": "yunke:paragraph",
+              "flavour": "affine:paragraph",
               "props": {
                 "type": "text",
                 "text": {
@@ -1491,7 +1491,7 @@
             {
               "type": "block",
               "id": "block:FM3iTWMEwe",
-              "flavour": "yunke:paragraph",
+              "flavour": "affine:paragraph",
               "props": {
                 "type": "text",
                 "text": {
@@ -1504,7 +1504,7 @@
             {
               "type": "block",
               "id": "block:41A1PJ6PhV",
-              "flavour": "yunke:paragraph",
+              "flavour": "affine:paragraph",
               "props": {
                 "type": "text",
                 "text": {
@@ -1517,7 +1517,7 @@
             {
               "type": "block",
               "id": "block:WKMGIdEKkU",
-              "flavour": "yunke:paragraph",
+              "flavour": "affine:paragraph",
               "props": {
                 "type": "text",
                 "text": {
@@ -1530,7 +1530,7 @@
             {
               "type": "block",
               "id": "block:u8XbiBajVB",
-              "flavour": "yunke:paragraph",
+              "flavour": "affine:paragraph",
               "props": {
                 "type": "text",
                 "text": {
@@ -1543,7 +1543,7 @@
             {
               "type": "block",
               "id": "block:cb9dXJDC64",
-              "flavour": "yunke:paragraph",
+              "flavour": "affine:paragraph",
               "props": {
                 "type": "text",
                 "text": {
@@ -1556,7 +1556,7 @@
             {
               "type": "block",
               "id": "block:cI4raqrnMQ",
-              "flavour": "yunke:paragraph",
+              "flavour": "affine:paragraph",
               "props": {
                 "type": "text",
                 "text": {

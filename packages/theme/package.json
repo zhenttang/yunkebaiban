@@ -1,0 +1,56 @@
+{
+  "name": "@toeverything/theme",
+  "version": "1.1.16",
+  "type": "module",
+  "repository": "toeverything/design",
+  "scripts": {
+    "build": "vite build"
+  },
+  "main": "./src/index.ts",
+  "module": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./style.css": "./dist/style.css",
+    "./v2": "./src/v2/index.ts",
+    "./typography": "./src/presets/typography.css.ts",
+    "./fonts/*": "./fonts/*",
+    "./fonts.css": "./fonts/fonts.css"
+  },
+  "files": [
+    "dist",
+    "fonts"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "main": "dist/index.cjs",
+    "module": "dist/index.js",
+    "exports": {
+      ".": {
+        "types": "./dist/index.d.ts",
+        "import": "./dist/index.js",
+        "require": "./dist/index.cjs"
+      },
+      "./style.css": "./dist/style.css",
+      "./v2": {
+        "types": "./dist/v2/index.d.ts",
+        "import": "./dist/v2/index.js",
+        "require": "./dist/v2/index.cjs"
+      },
+      "./typography": {
+        "types": "./dist/presets/typography.css.d.ts",
+        "import": "./dist/presets/typography.js",
+        "require": "./dist/presets/typography.cjs"
+      },
+      "./fonts": "./fonts",
+      "./fonts.css": "./fonts/fonts.css"
+    },
+    "types": "./dist/index.d.ts"
+  },
+  "devDependencies": {
+    "@vanilla-extract/css": "^1.11.1",
+    "@vanilla-extract/vite-plugin": "^3.8.2",
+    "dts-bundle-generator": "^9.5.1",
+    "vite": "^4.3.9",
+    "vite-plugin-dts": "^2.3.0"
+  }
+}

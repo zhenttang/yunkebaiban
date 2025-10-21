@@ -18,6 +18,7 @@
     { "path": "../../gfx/shape" },
     { "path": "../../gfx/text" },
     { "path": "../../model" },
-    { "path": "../../shared" }
+    { "path": "../../shared" },
+    { "path": "../../../../packages/theme" }
   ]
 }

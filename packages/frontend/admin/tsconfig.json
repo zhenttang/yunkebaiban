@@ -9,6 +9,7 @@
   },
   "references": [
     { "path": "../../common/infra" },
+    { "path": "../../theme" },
     { "path": "../component" },
     { "path": "../core" },
     { "path": "../../common/error" },

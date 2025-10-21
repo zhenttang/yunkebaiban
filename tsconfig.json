@@ -20,8 +20,8 @@
     "typeRoots": ["./tools/@types", "./node_modules/@types"],
 
     // 编译输出
-    "lib": ["ES2024"],
-    "target": "ES2024",
+    "lib": ["ES2023", "DOM"],
+    "target": "ES2020",
     "useDefineForClassFields": false,
     "declaration": true,
     "declarationMap": true,
@@ -35,7 +35,6 @@
     // 互操作约束
     "forceConsistentCasingInFileNames": true,
     "allowSyntheticDefaultImports": true,
-    "isolatedModules": true,
 
     // 组合项目
     "composite": true,
@@ -150,6 +149,7 @@
     { "path": "./packages/frontend/i18n" },
     { "path": "./packages/frontend/routes" },
     { "path": "./packages/frontend/track" },
+    { "path": "./packages/theme" },
     { "path": "./tools/cli" },
     { "path": "./tools/playstore-auto-bump" },
     { "path": "./tools/utils" }

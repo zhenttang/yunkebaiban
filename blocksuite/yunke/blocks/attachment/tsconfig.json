@@ -15,6 +15,7 @@
     { "path": "../../ext-loader" },
     { "path": "../../model" },
     { "path": "../../shared" },
-    { "path": "../../widgets/slash-menu" }
+    { "path": "../../widgets/slash-menu" },
+    { "path": "../../../../packages/theme" }
   ]
 }

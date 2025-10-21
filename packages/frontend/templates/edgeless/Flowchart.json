@@ -13,7 +13,7 @@
     "blocks": {
       "type": "block",
       "id": "block:Hc9yj632_p",
-      "flavour": "yunke:page",
+      "flavour": "affine:page",
       "props": {
         "title": {
           "$blocksuite:internal:text$": true,
@@ -24,7 +24,7 @@
         {
           "type": "block",
           "id": "block:LikSMu0QGE",
-          "flavour": "yunke:surface",
+          "flavour": "affine:surface",
           "props": {
             "elements": {
               "bldCaJ4T2K": {
@@ -35,23 +35,23 @@
                 "shapeStyle": "General",
                 "radius": 0.1,
                 "filled": true,
-                "fillColor": "--yunke-palette-shape-blue",
+                "fillColor": "--affine-palette-shape-blue",
                 "strokeWidth": 4,
-                "strokeColor": "--yunke-palette-line-black",
+                "strokeColor": "--affine-palette-line-black",
                 "strokeStyle": "solid",
                 "roughness": 1.4,
                 "id": "bldCaJ4T2K",
                 "index": "a0",
                 "seed": 1302801432,
                 "text": {
-                  "yunke:surface:text": true,
+                  "affine:surface:text": true,
                   "delta": [
                     {
                       "insert": "Action"
                     }
                   ]
                 },
-                "color": "--yunke-palette-line-black",
+                "color": "--affine-palette-line-black",
                 "fontFamily": "blocksuite:surface:Inter",
                 "fontWeight": "600",
                 "fontStyle": "normal"
@@ -64,23 +64,23 @@
                 "shapeStyle": "General",
                 "radius": 0,
                 "filled": true,
-                "fillColor": "--yunke-palette-shape-purple",
+                "fillColor": "--affine-palette-shape-purple",
                 "strokeWidth": 4,
-                "strokeColor": "--yunke-palette-line-black",
+                "strokeColor": "--affine-palette-line-black",
                 "strokeStyle": "solid",
                 "roughness": 1.4,
                 "id": "u8wCHplYGx",
                 "index": "a1",
                 "seed": 932975567,
                 "text": {
-                  "yunke:surface:text": true,
+                  "affine:surface:text": true,
                   "delta": [
                     {
                       "insert": "Start"
                     }
                   ]
                 },
-                "color": "--yunke-palette-line-black",
+                "color": "--affine-palette-line-black",
                 "fontFamily": "blocksuite:surface:Inter",
                 "fontWeight": "600",
                 "fontStyle": "normal"
@@ -93,17 +93,17 @@
                 "shapeStyle": "General",
                 "radius": 0,
                 "filled": true,
-                "fillColor": "--yunke-palette-shape-yellow",
+                "fillColor": "--affine-palette-shape-yellow",
                 "strokeWidth": 4,
-                "strokeColor": "--yunke-palette-line-black",
+                "strokeColor": "--affine-palette-line-black",
                 "strokeStyle": "solid",
                 "roughness": 1.4,
                 "id": "FfJ7c8mY4q",
                 "index": "a2",
                 "seed": 1937946925,
-                "color": "--yunke-palette-line-black",
+                "color": "--affine-palette-line-black",
                 "text": {
-                  "yunke:surface:text": true,
+                  "affine:surface:text": true,
                   "delta": [
                     {
                       "insert": "Yes\nor\nNo"
@@ -122,23 +122,23 @@
                 "shapeStyle": "General",
                 "radius": 0.1,
                 "filled": true,
-                "fillColor": "--yunke-palette-shape-blue",
+                "fillColor": "--affine-palette-shape-blue",
                 "strokeWidth": 4,
-                "strokeColor": "--yunke-palette-line-black",
+                "strokeColor": "--affine-palette-line-black",
                 "strokeStyle": "solid",
                 "roughness": 1.4,
                 "id": "ne53js08AU",
                 "index": "a3",
                 "seed": 34577438,
                 "text": {
-                  "yunke:surface:text": true,
+                  "affine:surface:text": true,
                   "delta": [
                     {
                       "insert": "Action"
                     }
                   ]
                 },
-                "color": "--yunke-palette-line-black",
+                "color": "--affine-palette-line-black",
                 "fontFamily": "blocksuite:surface:Inter",
                 "fontWeight": "600",
                 "fontStyle": "normal"
@@ -151,23 +151,23 @@
                 "shapeStyle": "General",
                 "radius": 0.1,
                 "filled": true,
-                "fillColor": "--yunke-palette-shape-blue",
+                "fillColor": "--affine-palette-shape-blue",
                 "strokeWidth": 4,
-                "strokeColor": "--yunke-palette-line-black",
+                "strokeColor": "--affine-palette-line-black",
                 "strokeStyle": "solid",
                 "roughness": 1.4,
                 "id": "eiGh_ZVw2J",
                 "index": "a4",
                 "seed": 991259797,
                 "text": {
-                  "yunke:surface:text": true,
+                  "affine:surface:text": true,
                   "delta": [
                     {
                       "insert": "Action"
                     }
                   ]
                 },
-                "color": "--yunke-palette-line-black",
+                "color": "--affine-palette-line-black",
                 "fontFamily": "blocksuite:surface:Inter",
                 "fontWeight": "600",
                 "fontStyle": "normal"
@@ -180,23 +180,23 @@
                 "shapeStyle": "General",
                 "radius": 0.1,
                 "filled": true,
-                "fillColor": "--yunke-palette-shape-blue",
+                "fillColor": "--affine-palette-shape-blue",
                 "strokeWidth": 4,
-                "strokeColor": "--yunke-palette-line-black",
+                "strokeColor": "--affine-palette-line-black",
                 "strokeStyle": "solid",
                 "roughness": 1.4,
                 "id": "MIIUypg24P",
                 "index": "a5",
                 "seed": 2045093249,
                 "text": {
-                  "yunke:surface:text": true,
+                  "affine:surface:text": true,
                   "delta": [
                     {
                       "insert": "Action"
                     }
                   ]
                 },
-                "color": "--yunke-palette-line-black",
+                "color": "--affine-palette-line-black",
                 "fontFamily": "blocksuite:surface:Inter",
                 "fontWeight": "600",
                 "fontStyle": "normal"
@@ -209,17 +209,17 @@
                 "shapeStyle": "General",
                 "radius": 0,
                 "filled": true,
-                "fillColor": "--yunke-palette-shape-yellow",
+                "fillColor": "--affine-palette-shape-yellow",
                 "strokeWidth": 4,
-                "strokeColor": "--yunke-palette-line-black",
+                "strokeColor": "--affine-palette-line-black",
                 "strokeStyle": "solid",
                 "roughness": 1.4,
                 "id": "B-DNxUXfMm",
                 "index": "a6",
                 "seed": 257218715,
-                "color": "--yunke-palette-line-black",
+                "color": "--affine-palette-line-black",
                 "text": {
-                  "yunke:surface:text": true,
+                  "affine:surface:text": true,
                   "delta": [
                     {
                       "insert": "Yes\nor\nNo"
@@ -238,23 +238,23 @@
                 "shapeStyle": "General",
                 "radius": 0.1,
                 "filled": true,
-                "fillColor": "--yunke-palette-shape-blue",
+                "fillColor": "--affine-palette-shape-blue",
                 "strokeWidth": 4,
-                "strokeColor": "--yunke-palette-line-black",
+                "strokeColor": "--affine-palette-line-black",
                 "strokeStyle": "solid",
                 "roughness": 1.4,
                 "id": "0Df9PYMept",
                 "index": "a7",
                 "seed": 1474556994,
                 "text": {
-                  "yunke:surface:text": true,
+                  "affine:surface:text": true,
                   "delta": [
                     {
                       "insert": "Action"
                     }
                   ]
                 },
-                "color": "--yunke-palette-line-black",
+                "color": "--affine-palette-line-black",
                 "fontFamily": "blocksuite:surface:Inter",
                 "fontWeight": "600",
                 "fontStyle": "normal"
@@ -267,23 +267,23 @@
                 "shapeStyle": "General",
                 "radius": 0.1,
                 "filled": true,
-                "fillColor": "--yunke-palette-shape-blue",
+                "fillColor": "--affine-palette-shape-blue",
                 "strokeWidth": 4,
-                "strokeColor": "--yunke-palette-line-black",
+                "strokeColor": "--affine-palette-line-black",
                 "strokeStyle": "solid",
                 "roughness": 1.4,
                 "id": "R6F22uVVo2",
                 "index": "a8",
                 "seed": 1352046864,
                 "text": {
-                  "yunke:surface:text": true,
+                  "affine:surface:text": true,
                   "delta": [
                     {
                       "insert": "Action"
                     }
                   ]
                 },
-                "color": "--yunke-palette-line-black",
+                "color": "--affine-palette-line-black",
                 "fontFamily": "blocksuite:surface:Inter",
                 "fontWeight": "600",
                 "fontStyle": "normal"
@@ -293,14 +293,14 @@
                 "xywh": "[525.5525784058001,157.41,41.88067626953125,28.5]",
                 "rotate": 0,
                 "text": {
-                  "yunke:surface:text": true,
+                  "affine:surface:text": true,
                   "delta": [
                     {
                       "insert": "Yes"
                     }
                   ]
                 },
-                "color": "--yunke-palette-line-black",
+                "color": "--affine-palette-line-black",
                 "fontSize": 24,
                 "fontFamily": "blocksuite:surface:Inter",
                 "fontWeight": "600",
@@ -315,14 +315,14 @@
                 "xywh": "[807.8080465225494,310.0815517259986,33,29]",
                 "rotate": 0,
                 "text": {
-                  "yunke:surface:text": true,
+                  "affine:surface:text": true,
                   "delta": [
                     {
                       "insert": "No"
                     }
                   ]
                 },
-                "color": "--yunke-palette-line-black",
+                "color": "--affine-palette-line-black",
                 "fontSize": 24,
                 "fontFamily": "blocksuite:surface:Inter",
                 "fontWeight": "600",
@@ -340,17 +340,17 @@
                 "shapeStyle": "General",
                 "radius": 0,
                 "filled": true,
-                "fillColor": "--yunke-palette-shape-yellow",
+                "fillColor": "--affine-palette-shape-yellow",
                 "strokeWidth": 4,
-                "strokeColor": "--yunke-palette-line-black",
+                "strokeColor": "--affine-palette-line-black",
                 "strokeStyle": "solid",
                 "roughness": 1.4,
                 "id": "m_iuR3lNew",
                 "index": "aP",
                 "seed": 640115209,
-                "color": "--yunke-palette-line-black",
+                "color": "--affine-palette-line-black",
                 "text": {
-                  "yunke:surface:text": true,
+                  "affine:surface:text": true,
                   "delta": [
                     {
                       "insert": "Yes\nor\nNo"
@@ -366,14 +366,14 @@
                 "xywh": "[807.8080465225494,684.6786831998384,33,29]",
                 "rotate": 0,
                 "text": {
-                  "yunke:surface:text": true,
+                  "affine:surface:text": true,
                   "delta": [
                     {
                       "insert": "No"
                     }
                   ]
                 },
-                "color": "--yunke-palette-line-black",
+                "color": "--affine-palette-line-black",
                 "fontSize": 24,
                 "fontFamily": "blocksuite:surface:Inter",
                 "fontWeight": "600",
@@ -391,23 +391,23 @@
                 "shapeStyle": "General",
                 "radius": 0.1,
                 "filled": true,
-                "fillColor": "--yunke-palette-shape-blue",
+                "fillColor": "--affine-palette-shape-blue",
                 "strokeWidth": 4,
-                "strokeColor": "--yunke-palette-line-black",
+                "strokeColor": "--affine-palette-line-black",
                 "strokeStyle": "solid",
                 "roughness": 1.4,
                 "id": "urEe30btsH",
                 "index": "aT",
                 "seed": 1559703065,
                 "text": {
-                  "yunke:surface:text": true,
+                  "affine:surface:text": true,
                   "delta": [
                     {
                       "insert": "Action"
                     }
                   ]
                 },
-                "color": "--yunke-palette-line-black",
+                "color": "--affine-palette-line-black",
                 "fontFamily": "blocksuite:surface:Inter",
                 "fontWeight": "600",
                 "fontStyle": "normal"
@@ -417,14 +417,14 @@
                 "xywh": "[802.8080465225494,889.6284572778808,43,29]",
                 "rotate": 0,
                 "text": {
-                  "yunke:surface:text": true,
+                  "affine:surface:text": true,
                   "delta": [
                     {
                       "insert": "Yes"
                     }
                   ]
                 },
-                "color": "--yunke-palette-line-black",
+                "color": "--affine-palette-line-black",
                 "fontSize": 24,
                 "fontFamily": "blocksuite:surface:Inter",
                 "fontWeight": "600",
@@ -442,17 +442,17 @@
                 "shapeStyle": "General",
                 "radius": 0,
                 "filled": true,
-                "fillColor": "--yunke-palette-shape-yellow",
+                "fillColor": "--affine-palette-shape-yellow",
                 "strokeWidth": 4,
-                "strokeColor": "--yunke-palette-line-black",
+                "strokeColor": "--affine-palette-line-black",
                 "strokeStyle": "solid",
                 "roughness": 1.4,
                 "id": "RauUny1Hv9",
                 "index": "aW",
                 "seed": 1967354475,
-                "color": "--yunke-palette-line-black",
+                "color": "--affine-palette-line-black",
                 "text": {
-                  "yunke:surface:text": true,
+                  "affine:surface:text": true,
                   "delta": [
                     {
                       "insert": "Yes\nor\nNo"
@@ -471,23 +471,23 @@
                 "shapeStyle": "General",
                 "radius": 0.1,
                 "filled": true,
-                "fillColor": "--yunke-palette-shape-blue",
+                "fillColor": "--affine-palette-shape-blue",
                 "strokeWidth": 4,
-                "strokeColor": "--yunke-palette-line-black",
+                "strokeColor": "--affine-palette-line-black",
                 "strokeStyle": "solid",
                 "roughness": 1.4,
                 "id": "4yEQ1rI4vz",
                 "index": "aY",
                 "seed": 686892262,
                 "text": {
-                  "yunke:surface:text": true,
+                  "affine:surface:text": true,
                   "delta": [
                     {
                       "insert": "Action"
                     }
                   ]
                 },
-                "color": "--yunke-palette-line-black",
+                "color": "--affine-palette-line-black",
                 "fontFamily": "blocksuite:surface:Inter",
                 "fontWeight": "600",
                 "fontStyle": "normal"
@@ -500,23 +500,23 @@
                 "shapeStyle": "General",
                 "radius": 0,
                 "filled": true,
-                "fillColor": "--yunke-palette-shape-purple",
+                "fillColor": "--affine-palette-shape-purple",
                 "strokeWidth": 4,
-                "strokeColor": "--yunke-palette-line-black",
+                "strokeColor": "--affine-palette-line-black",
                 "strokeStyle": "solid",
                 "roughness": 1.4,
                 "id": "Z1roozGtej",
                 "index": "aa",
                 "seed": 1936488363,
                 "text": {
-                  "yunke:surface:text": true,
+                  "affine:surface:text": true,
                   "delta": [
                     {
                       "insert": "Result"
                     }
                   ]
                 },
-                "color": "--yunke-palette-line-black",
+                "color": "--affine-palette-line-black",
                 "fontFamily": "blocksuite:surface:Inter",
                 "fontWeight": "600",
                 "fontStyle": "normal"
@@ -526,14 +526,14 @@
                 "xywh": "[-247.48,1301.3200000000002,33,29]",
                 "rotate": 0,
                 "text": {
-                  "yunke:surface:text": true,
+                  "affine:surface:text": true,
                   "delta": [
                     {
                       "insert": "No"
                     }
                   ]
                 },
-                "color": "--yunke-palette-line-black",
+                "color": "--affine-palette-line-black",
                 "fontSize": 24,
                 "fontFamily": "blocksuite:surface:Inter",
                 "fontWeight": "600",
@@ -548,14 +548,14 @@
                 "xywh": "[-377.54477971118376,584.77,41.88067626953125,28.5]",
                 "rotate": 0,
                 "text": {
-                  "yunke:surface:text": true,
+                  "affine:surface:text": true,
                   "delta": [
                     {
                       "insert": "Yes"
                     }
                   ]
                 },
-                "color": "--yunke-palette-line-black",
+                "color": "--affine-palette-line-black",
                 "fontSize": 24,
                 "fontFamily": "blocksuite:surface:Inter",
                 "fontWeight": "600",
@@ -570,14 +570,14 @@
                 "xywh": "[-1674.7616998752906,174.2267456377304,707,490]",
                 "rotate": 0,
                 "text": {
-                  "yunke:surface:text": true,
+                  "affine:surface:text": true,
                   "delta": [
                     {
                       "insert": "A Flowchart template is a diagrammatic tool used to visually represent a process or workflow. \n\nIt typically consists of various shapes like rectangles, diamonds, and arrows that denote steps, decisions, and the flow direction, helping to map out and understand complex processes systematically.\n\nPress “S” to quickly place shapes onto the canvas. Other shapes can be selected from the toolbar or swapped from the shape menu.\n\nPress \"C\" to quickly select the Connector tool. You can draw magnetic between objects on the canvas. The blue handles will let you adjust their exact path.\n\n"
                     }
                   ]
                 },
-                "color": "--yunke-palette-line-black",
+                "color": "--affine-palette-line-black",
                 "fontSize": 24.00324631953685,
                 "fontFamily": "blocksuite:surface:Inter",
                 "fontWeight": "600",
@@ -593,14 +593,14 @@
                 "xywh": "[-1674.7616998752906,55.191220917381656,309.5908508300781,76.5]",
                 "rotate": 0,
                 "text": {
-                  "yunke:surface:text": true,
+                  "affine:surface:text": true,
                   "delta": [
                     {
                       "insert": "Flowchart"
                     }
                   ]
                 },
-                "color": "--yunke-palette-line-black",
+                "color": "--affine-palette-line-black",
                 "fontSize": 64,
                 "fontFamily": "blocksuite:surface:Inter",
                 "fontWeight": "600",
@@ -614,7 +614,7 @@
                 "type": "connector",
                 "mode": 1,
                 "strokeWidth": 4,
-                "stroke": "--yunke-palette-line-black",
+                "stroke": "--affine-palette-line-black",
                 "strokeStyle": "solid",
                 "roughness": 1.4,
                 "source": {
@@ -639,7 +639,7 @@
                 "type": "connector",
                 "mode": 1,
                 "strokeWidth": 2,
-                "stroke": "--yunke-palette-transparent",
+                "stroke": "--affine-palette-transparent",
                 "strokeStyle": "solid",
                 "roughness": 1.4,
                 "source": {
@@ -664,7 +664,7 @@
                 "type": "connector",
                 "mode": 1,
                 "strokeWidth": 2,
-                "stroke": "--yunke-palette-transparent",
+                "stroke": "--affine-palette-transparent",
                 "strokeStyle": "solid",
                 "roughness": 1.4,
                 "source": {
@@ -689,7 +689,7 @@
                 "type": "connector",
                 "mode": 1,
                 "strokeWidth": 2,
-                "stroke": "--yunke-palette-transparent",
+                "stroke": "--affine-palette-transparent",
                 "strokeStyle": "solid",
                 "roughness": 1.4,
                 "source": {
@@ -714,7 +714,7 @@
                 "type": "connector",
                 "mode": 1,
                 "strokeWidth": 2,
-                "stroke": "--yunke-palette-transparent",
+                "stroke": "--affine-palette-transparent",
                 "strokeStyle": "solid",
                 "roughness": 1.4,
                 "source": {
@@ -738,7 +738,7 @@
                 "type": "connector",
                 "mode": 1,
                 "strokeWidth": 4,
-                "stroke": "--yunke-palette-line-black",
+                "stroke": "--affine-palette-line-black",
                 "strokeStyle": "solid",
                 "roughness": 1.4,
                 "source": {
@@ -759,7 +759,7 @@
                 "type": "connector",
                 "mode": 1,
                 "strokeWidth": 4,
-                "stroke": "--yunke-palette-line-black",
+                "stroke": "--affine-palette-line-black",
                 "strokeStyle": "solid",
                 "roughness": 1.4,
                 "source": {
@@ -780,7 +780,7 @@
                 "type": "connector",
                 "mode": 1,
                 "strokeWidth": 4,
-                "stroke": "--yunke-palette-line-black",
+                "stroke": "--affine-palette-line-black",
                 "strokeStyle": "solid",
                 "roughness": 1.4,
                 "source": {
@@ -805,7 +805,7 @@
                 "type": "connector",
                 "mode": 1,
                 "strokeWidth": 4,
-                "stroke": "--yunke-palette-line-black",
+                "stroke": "--affine-palette-line-black",
                 "strokeStyle": "solid",
                 "roughness": 1.4,
                 "source": {
@@ -826,7 +826,7 @@
                 "type": "connector",
                 "mode": 1,
                 "strokeWidth": 4,
-                "stroke": "--yunke-palette-line-black",
+                "stroke": "--affine-palette-line-black",
                 "strokeStyle": "solid",
                 "roughness": 1.4,
                 "source": {
@@ -851,7 +851,7 @@
                 "type": "connector",
                 "mode": 1,
                 "strokeWidth": 4,
-                "stroke": "--yunke-palette-line-black",
+                "stroke": "--affine-palette-line-black",
                 "strokeStyle": "solid",
                 "roughness": 1.4,
                 "source": {
@@ -876,7 +876,7 @@
                 "type": "connector",
                 "mode": 1,
                 "strokeWidth": 4,
-                "stroke": "--yunke-palette-line-black",
+                "stroke": "--affine-palette-line-black",
                 "strokeStyle": "solid",
                 "roughness": 1.4,
                 "source": {
@@ -901,7 +901,7 @@
                 "type": "connector",
                 "mode": 1,
                 "strokeWidth": 4,
-                "stroke": "--yunke-palette-line-black",
+                "stroke": "--affine-palette-line-black",
                 "strokeStyle": "solid",
                 "roughness": 1.4,
                 "source": {
@@ -926,7 +926,7 @@
                 "type": "connector",
                 "mode": 1,
                 "strokeWidth": 4,
-                "stroke": "--yunke-palette-line-black",
+                "stroke": "--affine-palette-line-black",
                 "strokeStyle": "solid",
                 "roughness": 1.4,
                 "source": {
@@ -951,7 +951,7 @@
                 "type": "connector",
                 "mode": 1,
                 "strokeWidth": 4,
-                "stroke": "--yunke-palette-line-black",
+                "stroke": "--affine-palette-line-black",
                 "strokeStyle": "solid",
                 "roughness": 1.4,
                 "source": {
@@ -978,7 +978,7 @@
                 "type": "connector",
                 "mode": 1,
                 "strokeWidth": 4,
-                "stroke": "--yunke-palette-line-black",
+                "stroke": "--affine-palette-line-black",
                 "strokeStyle": "solid",
                 "roughness": 1.4,
                 "source": {
@@ -1003,7 +1003,7 @@
                 "type": "connector",
                 "mode": 1,
                 "strokeWidth": 4,
-                "stroke": "--yunke-palette-line-black",
+                "stroke": "--affine-palette-line-black",
                 "strokeStyle": "solid",
                 "roughness": 1.4,
                 "source": {
@@ -1029,7 +1029,7 @@
                 "type": "connector",
                 "mode": 1,
                 "strokeWidth": 4,
-                "stroke": "--yunke-palette-line-black",
+                "stroke": "--affine-palette-line-black",
                 "strokeStyle": "solid",
                 "roughness": 1.4,
                 "source": {
@@ -1056,7 +1056,7 @@
             {
               "type": "block",
               "id": "block:SfQ1rtzYnP",
-              "flavour": "yunke:frame",
+              "flavour": "affine:frame",
               "props": {
                 "title": {
                   "$blocksuite:internal:text$": true,
@@ -1066,7 +1066,7 @@
                     }
                   ]
                 },
-                "background": "--yunke-tag-yellow",
+                "background": "--affine-tag-yellow",
                 "xywh": "[-1722.2966061071616,891.8252315025118,811.2479982635791,333.36808035828614]",
                 "index": "a0"
               },
@@ -1075,7 +1075,7 @@
             {
               "type": "block",
               "id": "block:iicyNW5caO",
-              "flavour": "yunke:frame",
+              "flavour": "affine:frame",
               "props": {
                 "title": {
                   "$blocksuite:internal:text$": true,
@@ -1085,7 +1085,7 @@
                     }
                   ]
                 },
-                "background": "--yunke-tag-yellow",
+                "background": "--affine-tag-yellow",
                 "xywh": "[-1722.2966061071616,9.79000000000002,812.1232681309107,670.3495707874188]",
                 "index": "a1"
               },

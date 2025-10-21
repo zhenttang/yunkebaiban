@@ -15,6 +15,7 @@
     { "path": "../components" },
     { "path": "../ext-loader" },
     { "path": "../rich-text" },
-    { "path": "../shared" }
+    { "path": "../shared" },
+    { "path": "../../../packages/theme" }
   ]
 }

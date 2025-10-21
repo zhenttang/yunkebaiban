@@ -20,7 +20,7 @@
     "@blocksuite/yunke-model": "workspace:*",
     "@blocksuite/yunke-shared": "workspace:*",
     "@preact/signals-core": "^1.8.0",
-    "@toeverything/theme": "^1.1.15",
+    "@toeverything/theme": "workspace:packages/theme",
     "lit": "^3.2.0",
     "rxjs": "^7.8.1"
   },

@@ -12,6 +12,7 @@
     { "path": "../../framework/std" },
     { "path": "../../framework/store" },
     { "path": "../components" },
-    { "path": "../shared" }
+    { "path": "../shared" },
+    { "path": "../../../packages/theme" }
   ]
 }

@@ -29,7 +29,7 @@
     "@sentry/react": "^9.2.0",
     "@toeverything/infra": "workspace:*",
     "@toeverything/pdf-viewer": "^0.1.1",
-    "@toeverything/theme": "^1.1.15",
+    "@toeverything/theme": "workspace:packages/theme",
     "@vanilla-extract/dynamic": "^2.1.2",
     "@webcontainer/api": "^1.6.1",
     "@yunke/component": "workspace:*",

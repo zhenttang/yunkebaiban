@@ -16,6 +16,7 @@
     { "path": "../doc-title" },
     { "path": "../../model" },
     { "path": "../../rich-text" },
-    { "path": "../../shared" }
+    { "path": "../../shared" },
+    { "path": "../../../../packages/theme" }
   ]
 }

@@ -13,7 +13,7 @@
     "blocks": {
       "type": "block",
       "id": "0nD2bOKoHR",
-      "flavour": "yunke:page",
+      "flavour": "affine:page",
       "version": 2,
       "props": {
         "title": {
@@ -25,7 +25,7 @@
         {
           "type": "block",
           "id": "XpOQkxpZq3",
-          "flavour": "yunke:surface",
+          "flavour": "affine:surface",
           "version": 5,
           "props": {
             "elements": {
@@ -37,18 +37,18 @@
                 "shapeStyle": "General",
                 "radius": 0,
                 "filled": true,
-                "fillColor": "--yunke-palette-shape-magenta",
+                "fillColor": "--affine-palette-shape-magenta",
                 "strokeWidth": 4,
-                "strokeColor": "--yunke-palette-transparent",
+                "strokeColor": "--affine-palette-transparent",
                 "strokeStyle": "solid",
                 "roughness": 1.4,
                 "id": "ie0zKxASUr",
                 "index": "a0",
                 "seed": 1351664447,
-                "color": "--yunke-palette-line-black",
+                "color": "--affine-palette-line-black",
                 "fontFamily": "blocksuite:surface:Kalam",
                 "text": {
-                  "yunke:surface:text": true,
+                  "affine:surface:text": true,
                   "delta": [
                     {
                       "insert": "This question seeks to identify the people involved or affected by the subject at hand."
@@ -65,14 +65,14 @@
                 "xywh": "[-1870.5611777619597,-328.23971884954483,806.9774660073865,459]",
                 "rotate": 0,
                 "text": {
-                  "yunke:surface:text": true,
+                  "affine:surface:text": true,
                   "delta": [
                     {
                       "insert": "The 5W2H template is a structured format for problem-solving and analysis, focusing on two \"Hows\" (How, How Much) and five \"Whys\" (Why, Who, Where, When, What). \n\nThis template guides a thorough exploration of a situation or problem, facilitating comprehensive understanding and effective decision-making."
                     }
                   ]
                 },
-                "color": "--yunke-palette-line-black",
+                "color": "--affine-palette-line-black",
                 "fontSize": 36,
                 "fontFamily": "blocksuite:surface:Poppins",
                 "fontWeight": "400",
@@ -91,18 +91,18 @@
                 "shapeStyle": "General",
                 "radius": 0,
                 "filled": true,
-                "fillColor": "--yunke-palette-shape-purple",
+                "fillColor": "--affine-palette-shape-purple",
                 "strokeWidth": 4,
-                "strokeColor": "--yunke-palette-transparent",
+                "strokeColor": "--affine-palette-transparent",
                 "strokeStyle": "solid",
                 "roughness": 1.4,
                 "id": "kJbf6vKSKd",
                 "index": "a1",
                 "seed": 987237184,
-                "color": "--yunke-palette-line-black",
+                "color": "--affine-palette-line-black",
                 "fontFamily": "blocksuite:surface:Kalam",
                 "text": {
-                  "yunke:surface:text": true,
+                  "affine:surface:text": true,
                   "delta": [
                     {
                       "insert": "This question aims to define the subject, event, or issue being discussed or analyzed."
@@ -122,18 +122,18 @@
                 "shapeStyle": "General",
                 "radius": 0,
                 "filled": true,
-                "fillColor": "--yunke-palette-shape-tangerine",
+                "fillColor": "--affine-palette-shape-tangerine",
                 "strokeWidth": 4,
-                "strokeColor": "--yunke-palette-transparent",
+                "strokeColor": "--affine-palette-transparent",
                 "strokeStyle": "solid",
                 "roughness": 1.4,
                 "id": "aLbgwU5XSI",
                 "index": "a2",
                 "seed": 1442831124,
-                "color": "--yunke-palette-line-black",
+                "color": "--affine-palette-line-black",
                 "fontFamily": "blocksuite:surface:Kalam",
                 "text": {
-                  "yunke:surface:text": true,
+                  "affine:surface:text": true,
                   "delta": [
                     {
                       "insert": "This addresses the location or context in which the subject or issue exists or occurs. "
@@ -153,18 +153,18 @@
                 "shapeStyle": "General",
                 "radius": 0,
                 "filled": true,
-                "fillColor": "--yunke-palette-shape-green",
+                "fillColor": "--affine-palette-shape-green",
                 "strokeWidth": 4,
-                "strokeColor": "--yunke-palette-transparent",
+                "strokeColor": "--affine-palette-transparent",
                 "strokeStyle": "solid",
                 "roughness": 1.4,
                 "id": "o1q2dGH7ka",
                 "index": "a3",
                 "seed": 526447072,
-                "color": "--yunke-palette-line-black",
+                "color": "--affine-palette-line-black",
                 "fontFamily": "blocksuite:surface:Kalam",
                 "text": {
-                  "yunke:surface:text": true,
+                  "affine:surface:text": true,
                   "delta": [
                     {
                       "insert": "This question is about timing. It covers the duration, frequency, historical context, or future dates related to the topic."
@@ -181,14 +181,14 @@
                 "xywh": "[-492.14417902997377,-464.54023324806656,225.53598022460938,128]",
                 "rotate": 0,
                 "text": {
-                  "yunke:surface:text": true,
+                  "affine:surface:text": true,
                   "delta": [
                     {
                       "insert": "Who"
                     }
                   ]
                 },
-                "color": "--yunke-palette-line-magenta",
+                "color": "--affine-palette-line-magenta",
                 "fontSize": 128,
                 "fontFamily": "blocksuite:surface:Kalam",
                 "fontWeight": "600",
@@ -203,14 +203,14 @@
                 "xywh": "[-547.1841875748956,-186.7855110836895,280.57598876953125,128]",
                 "rotate": 0,
                 "text": {
-                  "yunke:surface:text": true,
+                  "affine:surface:text": true,
                   "delta": [
                     {
                       "insert": "What"
                     }
                   ]
                 },
-                "color": "--yunke-palette-line-purple",
+                "color": "--affine-palette-line-purple",
                 "fontSize": 128,
                 "fontFamily": "blocksuite:surface:Kalam",
                 "fontWeight": "600",
@@ -225,14 +225,14 @@
                 "xywh": "[-581.4882036881769,90.9692110806876,314.8800048828125,128]",
                 "rotate": 0,
                 "text": {
-                  "yunke:surface:text": true,
+                  "affine:surface:text": true,
                   "delta": [
                     {
                       "insert": "where"
                     }
                   ]
                 },
-                "color": "--yunke-palette-line-tangerine",
+                "color": "--affine-palette-line-tangerine",
                 "fontSize": 128,
                 "fontFamily": "blocksuite:surface:Kalam",
                 "fontWeight": "600",
@@ -247,14 +247,14 @@
                 "xywh": "[-562.2881914811456,368.7239332450647,295.67999267578125,128]",
                 "rotate": 0,
                 "text": {
-                  "yunke:surface:text": true,
+                  "affine:surface:text": true,
                   "delta": [
                     {
                       "insert": "When"
                     }
                   ]
                 },
-                "color": "--yunke-palette-line-green",
+                "color": "--affine-palette-line-green",
                 "fontSize": 128,
                 "fontFamily": "blocksuite:surface:Kalam",
                 "fontWeight": "600",
@@ -269,14 +269,14 @@
                 "xywh": "[-500.8481890397394,646.4786554094418,234.239990234375,128]",
                 "rotate": 0,
                 "text": {
-                  "yunke:surface:text": true,
+                  "affine:surface:text": true,
                   "delta": [
                     {
                       "insert": "Why"
                     }
                   ]
                 },
-                "color": "--yunke-palette-line-yellow",
+                "color": "--affine-palette-line-yellow",
                 "fontSize": 128,
                 "fontFamily": "blocksuite:surface:Kalam",
                 "fontWeight": "600",
@@ -291,14 +291,14 @@
                 "xywh": "[-491.7601763444269,924.2333775738189,225.1519775390625,128]",
                 "rotate": 0,
                 "text": {
-                  "yunke:surface:text": true,
+                  "affine:surface:text": true,
                   "delta": [
                     {
                       "insert": "How"
                     }
                   ]
                 },
-                "color": "--yunke-palette-line-orange",
+                "color": "--affine-palette-line-orange",
                 "fontSize": 128,
                 "fontFamily": "blocksuite:surface:Kalam",
                 "fontWeight": "600",
@@ -313,14 +313,14 @@
                 "xywh": "[-828.2721392350519,1201.9880997381958,561.6639404296875,128]",
                 "rotate": 0,
                 "text": {
-                  "yunke:surface:text": true,
+                  "affine:surface:text": true,
                   "delta": [
                     {
                       "insert": "How much"
                     }
                   ]
                 },
-                "color": "--yunke-palette-line-blue",
+                "color": "--affine-palette-line-blue",
                 "fontSize": 128,
                 "fontFamily": "blocksuite:surface:Kalam",
                 "fontWeight": "600",
@@ -338,18 +338,18 @@
                 "shapeStyle": "General",
                 "radius": 0,
                 "filled": true,
-                "fillColor": "--yunke-palette-shape-yellow",
+                "fillColor": "--affine-palette-shape-yellow",
                 "strokeWidth": 4,
-                "strokeColor": "--yunke-palette-transparent",
+                "strokeColor": "--affine-palette-transparent",
                 "strokeStyle": "solid",
                 "roughness": 1.4,
                 "id": "_PbYsVPQHK",
                 "index": "aB",
                 "seed": 1772724211,
-                "color": "--yunke-palette-line-black",
+                "color": "--affine-palette-line-black",
                 "fontFamily": "blocksuite:surface:Kalam",
                 "text": {
-                  "yunke:surface:text": true,
+                  "affine:surface:text": true,
                   "delta": [
                     {
                       "insert": "This seeks to uncover reasons, motivations, causes, or purposes behind the subject."
@@ -369,18 +369,18 @@
                 "shapeStyle": "General",
                 "radius": 0,
                 "filled": true,
-                "fillColor": "--yunke-palette-shape-orange",
+                "fillColor": "--affine-palette-shape-orange",
                 "strokeWidth": 4,
-                "strokeColor": "--yunke-palette-transparent",
+                "strokeColor": "--affine-palette-transparent",
                 "strokeStyle": "solid",
                 "roughness": 1.4,
                 "id": "6jRBr8toxw",
                 "index": "aC",
                 "seed": 1757735583,
-                "color": "--yunke-palette-line-black",
+                "color": "--affine-palette-line-black",
                 "fontFamily": "blocksuite:surface:Kalam",
                 "text": {
-                  "yunke:surface:text": true,
+                  "affine:surface:text": true,
                   "delta": [
                     {
                       "insert": "This is about the method, process, or manner in which something happens or is done."
@@ -400,18 +400,18 @@
                 "shapeStyle": "General",
                 "radius": 0,
                 "filled": true,
-                "fillColor": "--yunke-palette-shape-blue",
+                "fillColor": "--affine-palette-shape-blue",
                 "strokeWidth": 4,
-                "strokeColor": "--yunke-palette-transparent",
+                "strokeColor": "--affine-palette-transparent",
                 "strokeStyle": "solid",
                 "roughness": 1.4,
                 "id": "rg8p86mFfk",
                 "index": "aD",
                 "seed": 1910023393,
-                "color": "--yunke-palette-line-black",
+                "color": "--affine-palette-line-black",
                 "fontFamily": "blocksuite:surface:Kalam",
                 "text": {
-                  "yunke:surface:text": true,
+                  "affine:surface:text": true,
                   "delta": [
                     {
                       "insert": "This question deals with quantities, volumes, extents, or degrees. "
@@ -428,14 +428,14 @@
                 "xywh": "[-1870.5611777619597,-444.09579979896205,803.6478881835938,90.66666666666666]",
                 "rotate": 0,
                 "text": {
-                  "yunke:surface:text": true,
+                  "affine:surface:text": true,
                   "delta": [
                     {
                       "insert": "5W2H Critical Questions "
                     }
                   ]
                 },
-                "color": "--yunke-palette-line-black",
+                "color": "--affine-palette-line-black",
                 "fontSize": 64,
                 "fontFamily": "blocksuite:surface:Poppins",
                 "fontWeight": "600",
@@ -453,21 +453,21 @@
                 "shapeType": "rect",
                 "radius": 0,
                 "filled": true,
-                "fillColor": "--yunke-palette-shape-white",
+                "fillColor": "--affine-palette-shape-white",
                 "strokeWidth": 2,
-                "strokeColor": "--yunke-palette-line-yellow",
+                "strokeColor": "--affine-palette-line-yellow",
                 "strokeStyle": "none",
                 "shapeStyle": "General",
                 "roughness": 1.4,
                 "type": "shape",
                 "id": "-NN4F35LT1",
-                "color": "--yunke-palette-line-black"
+                "color": "--affine-palette-line-black"
               },
               "98TqLsRx_Z": {
                 "index": "a0",
                 "seed": 1051258893,
                 "children": {
-                  "yunke:surface:ymap": true,
+                  "affine:surface:ymap": true,
                   "json": {
                     "-NN4F35LT1": true,
                     "Q6wE-ZBsBj": true,
@@ -475,7 +475,7 @@
                   }
                 },
                 "title": {
-                  "yunke:surface:text": true,
+                  "affine:surface:text": true,
                   "delta": [
                     {
                       "insert": "Explanation"

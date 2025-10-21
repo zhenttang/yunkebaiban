@@ -12,6 +12,7 @@
     { "path": "../../framework/store" },
     { "path": "../components" },
     { "path": "../model" },
-    { "path": "../shared" }
+    { "path": "../shared" },
+    { "path": "../../../packages/theme" }
   ]
 }

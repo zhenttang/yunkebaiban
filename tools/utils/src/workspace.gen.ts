@@ -30,7 +30,7 @@ export const PackageList = [
   {
     location: 'blocksuite/integration-test',
     name: '@blocksuite/integration-test',
-    workspaceDependencies: ['blocksuite/yunke/all'],
+    workspaceDependencies: ['blocksuite/yunke/all', 'packages/theme'],
   },
   {
     location: 'blocksuite/playground',
@@ -131,6 +131,7 @@ export const PackageList = [
       'blocksuite/yunke/model',
       'blocksuite/yunke/shared',
       'blocksuite/yunke/widgets/slash-menu',
+      'packages/theme',
     ],
   },
   {
@@ -148,6 +149,7 @@ export const PackageList = [
       'blocksuite/yunke/model',
       'blocksuite/yunke/shared',
       'blocksuite/yunke/widgets/slash-menu',
+      'packages/theme',
     ],
   },
   {
@@ -164,6 +166,7 @@ export const PackageList = [
       'blocksuite/yunke/rich-text',
       'blocksuite/yunke/shared',
       'blocksuite/yunke/widgets/slash-menu',
+      'packages/theme',
     ],
   },
   {
@@ -183,6 +186,7 @@ export const PackageList = [
       'blocksuite/yunke/rich-text',
       'blocksuite/yunke/shared',
       'blocksuite/yunke/widgets/slash-menu',
+      'packages/theme',
     ],
   },
   {
@@ -199,6 +203,7 @@ export const PackageList = [
       'blocksuite/yunke/model',
       'blocksuite/yunke/shared',
       'blocksuite/yunke/widgets/slash-menu',
+      'packages/theme',
     ],
   },
   {
@@ -218,6 +223,7 @@ export const PackageList = [
       'blocksuite/yunke/shared',
       'blocksuite/yunke/widgets/drag-handle',
       'blocksuite/yunke/widgets/slash-menu',
+      'packages/theme',
     ],
   },
   {
@@ -231,6 +237,7 @@ export const PackageList = [
       'blocksuite/yunke/ext-loader',
       'blocksuite/yunke/model',
       'blocksuite/yunke/shared',
+      'packages/theme',
     ],
   },
   {
@@ -263,6 +270,7 @@ export const PackageList = [
       'blocksuite/yunke/rich-text',
       'blocksuite/yunke/shared',
       'blocksuite/yunke/widgets/edgeless-toolbar',
+      'packages/theme',
     ],
   },
   {
@@ -281,6 +289,7 @@ export const PackageList = [
       'blocksuite/yunke/rich-text',
       'blocksuite/yunke/shared',
       'blocksuite/yunke/widgets/slash-menu',
+      'packages/theme',
     ],
   },
   {
@@ -299,6 +308,7 @@ export const PackageList = [
       'blocksuite/yunke/rich-text',
       'blocksuite/yunke/shared',
       'blocksuite/yunke/widgets/slash-menu',
+      'packages/theme',
     ],
   },
   {
@@ -330,6 +340,7 @@ export const PackageList = [
       'blocksuite/yunke/shared',
       'blocksuite/yunke/widgets/edgeless-toolbar',
       'blocksuite/yunke/widgets/frame-title',
+      'packages/theme',
     ],
   },
   {
@@ -347,6 +358,7 @@ export const PackageList = [
       'blocksuite/yunke/model',
       'blocksuite/yunke/shared',
       'blocksuite/yunke/widgets/slash-menu',
+      'packages/theme',
     ],
   },
   {
@@ -364,6 +376,7 @@ export const PackageList = [
       'blocksuite/yunke/rich-text',
       'blocksuite/yunke/shared',
       'blocksuite/yunke/widgets/slash-menu',
+      'packages/theme',
     ],
   },
   {
@@ -380,6 +393,7 @@ export const PackageList = [
       'blocksuite/yunke/model',
       'blocksuite/yunke/rich-text',
       'blocksuite/yunke/shared',
+      'packages/theme',
     ],
   },
   {
@@ -414,6 +428,7 @@ export const PackageList = [
       'blocksuite/yunke/rich-text',
       'blocksuite/yunke/shared',
       'blocksuite/yunke/widgets/slash-menu',
+      'packages/theme',
     ],
   },
   {
@@ -430,6 +445,7 @@ export const PackageList = [
       'blocksuite/yunke/model',
       'blocksuite/yunke/rich-text',
       'blocksuite/yunke/shared',
+      'packages/theme',
     ],
   },
   {
@@ -466,6 +482,7 @@ export const PackageList = [
       'blocksuite/yunke/shared',
       'blocksuite/yunke/widgets/edgeless-selected-rect',
       'blocksuite/yunke/widgets/edgeless-toolbar',
+      'packages/theme',
     ],
   },
   {
@@ -480,6 +497,7 @@ export const PackageList = [
       'blocksuite/yunke/model',
       'blocksuite/yunke/rich-text',
       'blocksuite/yunke/shared',
+      'packages/theme',
     ],
   },
   {
@@ -497,6 +515,7 @@ export const PackageList = [
       'blocksuite/yunke/model',
       'blocksuite/yunke/shared',
       'blocksuite/yunke/widgets/slash-menu',
+      'packages/theme',
     ],
   },
   {
@@ -526,6 +545,7 @@ export const PackageList = [
       'blocksuite/framework/sync',
       'blocksuite/yunke/model',
       'blocksuite/yunke/shared',
+      'packages/theme',
     ],
   },
   {
@@ -537,6 +557,7 @@ export const PackageList = [
       'blocksuite/framework/store',
       'blocksuite/yunke/components',
       'blocksuite/yunke/shared',
+      'packages/theme',
     ],
   },
   {
@@ -559,6 +580,7 @@ export const PackageList = [
       'blocksuite/yunke/ext-loader',
       'blocksuite/yunke/rich-text',
       'blocksuite/yunke/shared',
+      'packages/theme',
     ],
   },
   {
@@ -572,6 +594,7 @@ export const PackageList = [
       'blocksuite/yunke/ext-loader',
       'blocksuite/yunke/model',
       'blocksuite/yunke/shared',
+      'packages/theme',
     ],
   },
   {
@@ -588,6 +611,7 @@ export const PackageList = [
       'blocksuite/yunke/model',
       'blocksuite/yunke/rich-text',
       'blocksuite/yunke/shared',
+      'packages/theme',
     ],
   },
   {
@@ -604,6 +628,7 @@ export const PackageList = [
       'blocksuite/yunke/model',
       'blocksuite/yunke/rich-text',
       'blocksuite/yunke/shared',
+      'packages/theme',
     ],
   },
   {
@@ -620,6 +645,7 @@ export const PackageList = [
       'blocksuite/yunke/model',
       'blocksuite/yunke/rich-text',
       'blocksuite/yunke/shared',
+      'packages/theme',
     ],
   },
   {
@@ -636,6 +662,7 @@ export const PackageList = [
       'blocksuite/yunke/rich-text',
       'blocksuite/yunke/shared',
       'blocksuite/yunke/widgets/edgeless-toolbar',
+      'packages/theme',
     ],
   },
   {
@@ -653,6 +680,7 @@ export const PackageList = [
       'blocksuite/yunke/rich-text',
       'blocksuite/yunke/shared',
       'blocksuite/yunke/widgets/edgeless-toolbar',
+      'packages/theme',
     ],
   },
   {
@@ -670,6 +698,7 @@ export const PackageList = [
       'blocksuite/yunke/rich-text',
       'blocksuite/yunke/shared',
       'blocksuite/yunke/widgets/edgeless-toolbar',
+      'packages/theme',
     ],
   },
   {
@@ -689,6 +718,7 @@ export const PackageList = [
       'blocksuite/yunke/rich-text',
       'blocksuite/yunke/shared',
       'blocksuite/yunke/widgets/edgeless-toolbar',
+      'packages/theme',
     ],
   },
   {
@@ -712,6 +742,7 @@ export const PackageList = [
       'blocksuite/yunke/rich-text',
       'blocksuite/yunke/shared',
       'blocksuite/yunke/widgets/edgeless-toolbar',
+      'packages/theme',
     ],
   },
   {
@@ -731,6 +762,7 @@ export const PackageList = [
       'blocksuite/yunke/rich-text',
       'blocksuite/yunke/shared',
       'blocksuite/yunke/widgets/edgeless-toolbar',
+      'packages/theme',
     ],
   },
   {
@@ -747,6 +779,7 @@ export const PackageList = [
       'blocksuite/yunke/rich-text',
       'blocksuite/yunke/shared',
       'blocksuite/yunke/widgets/edgeless-toolbar',
+      'packages/theme',
     ],
   },
   {
@@ -764,6 +797,7 @@ export const PackageList = [
       'blocksuite/yunke/rich-text',
       'blocksuite/yunke/shared',
       'blocksuite/yunke/widgets/edgeless-toolbar',
+      'packages/theme',
     ],
   },
   {
@@ -781,6 +815,7 @@ export const PackageList = [
       'blocksuite/yunke/rich-text',
       'blocksuite/yunke/shared',
       'blocksuite/yunke/widgets/edgeless-toolbar',
+      'packages/theme',
     ],
   },
   {
@@ -797,6 +832,7 @@ export const PackageList = [
       'blocksuite/yunke/rich-text',
       'blocksuite/yunke/shared',
       'blocksuite/yunke/widgets/edgeless-toolbar',
+      'packages/theme',
     ],
   },
   {
@@ -820,6 +856,7 @@ export const PackageList = [
       'blocksuite/yunke/inlines/reference',
       'blocksuite/yunke/model',
       'blocksuite/yunke/shared',
+      'packages/theme',
     ],
   },
   {
@@ -835,6 +872,7 @@ export const PackageList = [
       'blocksuite/yunke/model',
       'blocksuite/yunke/rich-text',
       'blocksuite/yunke/shared',
+      'packages/theme',
     ],
   },
   {
@@ -849,6 +887,7 @@ export const PackageList = [
       'blocksuite/yunke/inlines/reference',
       'blocksuite/yunke/model',
       'blocksuite/yunke/shared',
+      'packages/theme',
     ],
   },
   {
@@ -862,6 +901,7 @@ export const PackageList = [
       'blocksuite/yunke/ext-loader',
       'blocksuite/yunke/model',
       'blocksuite/yunke/shared',
+      'packages/theme',
     ],
   },
   {
@@ -881,6 +921,7 @@ export const PackageList = [
       'blocksuite/yunke/model',
       'blocksuite/yunke/rich-text',
       'blocksuite/yunke/shared',
+      'packages/theme',
     ],
   },
   {
@@ -894,6 +935,7 @@ export const PackageList = [
       'blocksuite/yunke/ext-loader',
       'blocksuite/yunke/model',
       'blocksuite/yunke/shared',
+      'packages/theme',
     ],
   },
   {
@@ -903,6 +945,7 @@ export const PackageList = [
       'blocksuite/framework/global',
       'blocksuite/framework/std',
       'blocksuite/framework/store',
+      'packages/theme',
     ],
   },
   {
@@ -915,6 +958,7 @@ export const PackageList = [
       'blocksuite/yunke/components',
       'blocksuite/yunke/model',
       'blocksuite/yunke/shared',
+      'packages/theme',
     ],
   },
   {
@@ -925,6 +969,7 @@ export const PackageList = [
       'blocksuite/framework/std',
       'blocksuite/framework/store',
       'blocksuite/yunke/model',
+      'packages/theme',
     ],
   },
   {
@@ -944,6 +989,7 @@ export const PackageList = [
       'blocksuite/yunke/ext-loader',
       'blocksuite/yunke/model',
       'blocksuite/yunke/shared',
+      'packages/theme',
     ],
   },
   {
@@ -958,6 +1004,7 @@ export const PackageList = [
       'blocksuite/yunke/ext-loader',
       'blocksuite/yunke/model',
       'blocksuite/yunke/shared',
+      'packages/theme',
     ],
   },
   {
@@ -972,6 +1019,7 @@ export const PackageList = [
       'blocksuite/yunke/ext-loader',
       'blocksuite/yunke/model',
       'blocksuite/yunke/shared',
+      'packages/theme',
     ],
   },
   {
@@ -990,6 +1038,7 @@ export const PackageList = [
       'blocksuite/yunke/gfx/text',
       'blocksuite/yunke/model',
       'blocksuite/yunke/shared',
+      'packages/theme',
     ],
   },
   {
@@ -1004,6 +1053,7 @@ export const PackageList = [
       'blocksuite/yunke/model',
       'blocksuite/yunke/rich-text',
       'blocksuite/yunke/shared',
+      'packages/theme',
     ],
   },
   {
@@ -1017,6 +1067,7 @@ export const PackageList = [
       'blocksuite/yunke/ext-loader',
       'blocksuite/yunke/model',
       'blocksuite/yunke/shared',
+      'packages/theme',
     ],
   },
   {
@@ -1031,6 +1082,7 @@ export const PackageList = [
       'blocksuite/yunke/model',
       'blocksuite/yunke/rich-text',
       'blocksuite/yunke/shared',
+      'packages/theme',
     ],
   },
   {
@@ -1061,6 +1113,7 @@ export const PackageList = [
       'blocksuite/yunke/model',
       'blocksuite/yunke/rich-text',
       'blocksuite/yunke/shared',
+      'packages/theme',
     ],
   },
   {
@@ -1077,6 +1130,7 @@ export const PackageList = [
       'blocksuite/yunke/model',
       'blocksuite/yunke/rich-text',
       'blocksuite/yunke/shared',
+      'packages/theme',
     ],
   },
   {
@@ -1092,6 +1146,7 @@ export const PackageList = [
       'blocksuite/yunke/model',
       'blocksuite/yunke/shared',
       'blocksuite/yunke/widgets/edgeless-selected-rect',
+      'packages/theme',
     ],
   },
   {
@@ -1105,6 +1160,7 @@ export const PackageList = [
       'blocksuite/yunke/ext-loader',
       'blocksuite/yunke/model',
       'blocksuite/yunke/shared',
+      'packages/theme',
     ],
   },
   {
@@ -1118,6 +1174,7 @@ export const PackageList = [
       'blocksuite/yunke/ext-loader',
       'blocksuite/yunke/model',
       'blocksuite/yunke/shared',
+      'packages/theme',
     ],
   },
   {
@@ -1129,6 +1186,7 @@ export const PackageList = [
       'blocksuite/yunke/ext-loader',
       'blocksuite/yunke/model',
       'blocksuite/yunke/shared',
+      'packages/theme',
     ],
   },
   {
@@ -1142,6 +1200,7 @@ export const PackageList = [
       'blocksuite/yunke/ext-loader',
       'blocksuite/yunke/rich-text',
       'blocksuite/yunke/shared',
+      'packages/theme',
     ],
   },
   {
@@ -1157,6 +1216,7 @@ export const PackageList = [
       'blocksuite/yunke/ext-loader',
       'blocksuite/yunke/model',
       'blocksuite/yunke/shared',
+      'packages/theme',
     ],
   },
   {
@@ -1169,6 +1229,7 @@ export const PackageList = [
       'blocksuite/yunke/ext-loader',
       'blocksuite/yunke/model',
       'blocksuite/yunke/shared',
+      'packages/theme',
     ],
   },
   {
@@ -1231,6 +1292,7 @@ export const PackageList = [
     name: '@yunke/admin',
     workspaceDependencies: [
       'packages/common/infra',
+      'packages/theme',
       'packages/frontend/component',
       'packages/frontend/core',
       'packages/common/error',
@@ -1266,6 +1328,7 @@ export const PackageList = [
     workspaceDependencies: [
       'blocksuite/yunke/all',
       'packages/common/infra',
+      'packages/theme',
       'packages/frontend/component',
       'packages/frontend/core',
       'packages/common/debug',
@@ -1321,6 +1384,7 @@ export const PackageList = [
     location: 'packages/frontend/component',
     name: '@yunke/component',
     workspaceDependencies: [
+      'packages/theme',
       'packages/common/debug',
       'packages/frontend/electron-api',
       'packages/common/error',
@@ -1336,6 +1400,7 @@ export const PackageList = [
       'blocksuite/framework/std',
       'blocksuite/yunke/all',
       'packages/common/infra',
+      'packages/theme',
       'packages/frontend/component',
       'packages/common/debug',
       'packages/frontend/electron-api',
@@ -1380,6 +1445,11 @@ export const PackageList = [
     location: 'packages/frontend/track',
     name: '@yunke/track',
     workspaceDependencies: ['packages/common/debug'],
+  },
+  {
+    location: 'packages/theme',
+    name: '@toeverything/theme',
+    workspaceDependencies: [],
   },
   {
     location: 'tools/@types/build-config',
@@ -1521,6 +1591,7 @@ export type PackageName =
   | '@yunke/routes'
   | '@yunke/templates'
   | '@yunke/track'
+  | '@toeverything/theme'
   | '@types/build-config'
   | '@types/yunke__env'
   | '@yunke/changelog'

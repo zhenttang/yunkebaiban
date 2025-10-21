@@ -35,7 +35,7 @@
     "@sentry/react": "^9.2.0",
     "@tanstack/react-table": "^8.20.5",
     "@toeverything/infra": "workspace:*",
-    "@toeverything/theme": "^1.1.15",
+    "@toeverything/theme": "workspace:packages/theme",
     "@yunke/component": "workspace:*",
     "@yunke/core": "workspace:*",
     "@yunke/error": "workspace:*",

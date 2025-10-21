@@ -36,6 +36,7 @@
     { "path": "../../rich-text" },
     { "path": "../../shared" },
     { "path": "../../widgets/edgeless-selected-rect" },
-    { "path": "../../widgets/edgeless-toolbar" }
+    { "path": "../../widgets/edgeless-toolbar" },
+    { "path": "../../../../packages/theme" }
   ]
 }

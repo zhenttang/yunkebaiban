@@ -17,6 +17,7 @@
     { "path": "../../model" },
     { "path": "../../shared" },
     { "path": "../../widgets/edgeless-toolbar" },
-    { "path": "../../widgets/frame-title" }
+    { "path": "../../widgets/frame-title" },
+    { "path": "../../../../packages/theme" }
   ]
 }

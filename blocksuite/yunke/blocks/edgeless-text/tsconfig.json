@@ -18,6 +18,7 @@
     { "path": "../../model" },
     { "path": "../../rich-text" },
     { "path": "../../shared" },
-    { "path": "../../widgets/edgeless-toolbar" }
+    { "path": "../../widgets/edgeless-toolbar" },
+    { "path": "../../../../packages/theme" }
   ]
 }
