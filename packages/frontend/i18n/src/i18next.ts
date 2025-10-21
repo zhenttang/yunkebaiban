@@ -9,11 +9,14 @@ import { SUPPORTED_LANGUAGES } from './resources';
 
 const logger = new DebugLogger('i18n');
 
-const defaultLng: Language = 'en';
+const defaultLng: Language = 'zh-Hans';
+
+console.log('[i18n Debug] defaultLng 设置为:', defaultLng);
 
 let _instance: i18n | null = null;
 export const getOrCreateI18n = (): i18n => {
   if (!_instance) {
+    console.log('[i18n Debug] 创建 i18next 实例，默认语言:', defaultLng);
     _instance = i18next.createInstance();
     _instance
       .use(initReactI18next)
@@ -21,18 +24,22 @@ export const getOrCreateI18n = (): i18n => {
         type: 'backend',
         init: () => {},
         read: (lng: Language, _ns: string, callback) => {
+          console.log('[i18n Debug] 加载语言资源:', lng);
           const resource = SUPPORTED_LANGUAGES[lng].resource;
           if (typeof resource === 'function') {
             resource()
               .then(data => {
                 logger.info(`Loaded i18n ${lng} resource`);
+                console.log('[i18n Debug] 成功加载语言资源:', lng);
                 callback(null, data.default);
               })
               .catch(err => {
                 logger.error(`Failed to load i18n ${lng} resource`, err);
+                console.error('[i18n Debug] 加载语言资源失败:', lng, err);
                 callback(null, null);
               });
           } else {
+            console.log('[i18n Debug] 使用同步语言资源:', lng);
             callback(null, resource);
           }
         },
@@ -40,7 +47,7 @@ export const getOrCreateI18n = (): i18n => {
       .init({
         lng: defaultLng,
         fallbackLng: code => {
-          // 总是回退到英语
+          // 总是回退到中文简体
           const fallbacks: string[] = [defaultLng];
           const langPart = code.split('-')[0];
 
@@ -60,19 +67,18 @@ export const getOrCreateI18n = (): i18n => {
         supportedLngs: Object.keys(SUPPORTED_LANGUAGES),
         debug: false,
         partialBundledLanguages: true,
-        resources: {
-          [defaultLng]: {
-            translation: SUPPORTED_LANGUAGES[defaultLng].resource,
-          },
-        },
+        resources: {},
         interpolation: {
           escapeValue: false, // React默认已转义，不需要
         },
       })
       .then(() => {
+        console.log('[i18n Debug] i18next 初始化完成，当前语言:', _instance?.language);
         logger.info('i18n已初始化');
       })
-      .catch(() => {});
+      .catch(err => {
+        console.error('[i18n Debug] i18next 初始化失败:', err);
+      });
   }
 
   return _instance;

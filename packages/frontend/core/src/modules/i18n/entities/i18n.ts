@@ -54,18 +54,25 @@ export class I18n extends Entity {
   constructor(private readonly cache: GlobalCache) {
     super();
     this.i18n.on('languageChanged', (language: Language) => {
+      console.log('[i18n Debug] 语言已更改为:', language);
       document.documentElement.lang = language;
       this.cache.set('i18n_lng', language);
     });
   }
 
   init() {
-    this.changeLanguage(this.currentLanguageKey$.value ?? 'en');
+    const cachedLang = this.currentLanguageKey$.value;
+    const finalLang = cachedLang ?? 'zh-Hans';
+    console.log('[i18n Debug] I18n.init() 调用');
+    console.log('[i18n Debug] 缓存的语言:', cachedLang);
+    console.log('[i18n Debug] 最终使用语言:', finalLang);
+    this.changeLanguage(finalLang);
   }
 
   changeLanguage = effect(
-    exhaustMap((language: string) =>
-      fromPromise(() => this.i18n.changeLanguage(language)).pipe(
+    exhaustMap((language: string) => {
+      console.log('[i18n Debug] changeLanguage 被调用，目标语言:', language);
+      return fromPromise(() => this.i18n.changeLanguage(language)).pipe(
         catchError(error => {
           notify({
             theme: 'error',
@@ -74,10 +81,11 @@ export class I18n extends Entity {
           });
 
           logger.error('更改语言失败', error);
+          console.error('[i18n Debug] 更改语言失败:', language, error);
 
           return EMPTY;
         })
-      )
-    )
+      );
+    })
   );
 }
