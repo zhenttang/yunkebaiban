@@ -309,22 +309,48 @@ export class FlowchartEditorDialog extends WithDisposable(LitElement) {
 
   private _updatePreview() {
     try {
-      // 动态导入解析和渲染模块
-      import('../dsl-parser.js').then(({ parseDSL }) => {
-        return import('../svg-renderer.js').then(({ renderDiagramToSVG }) => {
-          const diagram = parseDSL(this._code);
-          const result = renderDiagramToSVG(diagram);
-          this._previewSvg = result.svg;
-          this._stats = {
-            nodes: result.nodeCount,
-            edges: result.edgeCount,
-          };
-          this._error = '';
+      // 检测是否使用新图表系统
+      const isNewSystem = this._code.includes('type "layered"') || 
+                         this._code.includes('type "tree"') ||
+                         this._code.includes('layer ') ||
+                         this._code.includes('root "');
+      
+      if (isNewSystem) {
+        // 使用新的图表系统
+        import('../diagram-system.js').then(({ DiagramEngine }) => {
+          DiagramEngine.generate(this._code).then(result => {
+            this._previewSvg = result.render.content as string;
+            this._stats = {
+              nodes: result.model.elements.filter(e => e.type === 'node').length,
+              edges: result.model.relationships.length,
+            };
+            this._error = '';
+          }).catch(err => {
+            this._error = err.message || '渲染失败';
+            this._previewSvg = '';
+          });
+        }).catch(err => {
+          this._error = err.message || '导入失败';
+          this._previewSvg = '';
         });
-      }).catch(err => {
-        this._error = err.message || '解析失败';
-        this._previewSvg = '';
-      });
+      } else {
+        // 使用旧系统（向后兼容）
+        import('../dsl-parser.js').then(({ parseDSL }) => {
+          return import('../svg-renderer.js').then(({ renderDiagramToSVG }) => {
+            const diagram = parseDSL(this._code);
+            const result = renderDiagramToSVG(diagram);
+            this._previewSvg = result.svg;
+            this._stats = {
+              nodes: result.nodeCount,
+              edges: result.edgeCount,
+            };
+            this._error = '';
+          });
+        }).catch(err => {
+          this._error = err.message || '解析失败';
+          this._previewSvg = '';
+        });
+      }
     } catch (err) {
       this._error = err instanceof Error ? err.message : '未知错误';
       this._previewSvg = '';
@@ -337,25 +363,60 @@ export class FlowchartEditorDialog extends WithDisposable(LitElement) {
       return;
     }
 
-    // 生成到白板
-    import('../element-generator.js').then(({ generateFlowchartAt }) => {
-      const service = this.edgeless.service;
-      const surface = service.surface;
-      const viewport = service.viewport;
-      
-      const x = viewport.centerX;
-      const y = viewport.centerY;
-      
-      return generateFlowchartAt(surface, this._code, x, y, service);
-    }).then(result => {
-      console.log('✅ 流程图已生成:', {
-        节点数: result.nodeIds.size,
-        连线数: result.edgeIds.length,
+    const service = this.edgeless.service;
+    const surface = service.surface;
+    const viewport = service.viewport;
+    
+    const centerX = viewport.centerX;
+    const centerY = viewport.centerY;
+
+    // 检测是否使用新图表系统
+    const isNewSystem = this._code.includes('type "layered"') || 
+                       this._code.includes('type "tree"') ||
+                       this._code.includes('layer ') ||
+                       this._code.includes('root "');
+    
+    if (isNewSystem) {
+      // 使用新图表系统生成
+      Promise.all([
+        import('../diagram-system.js'),
+        import('../renderers/edgeless-renderer.js')
+      ]).then(([{ DiagramEngine }, { generateDiagramToEdgeless }]) => {
+        // 1. 解析DSL
+        const model = DiagramEngine.parse(this._code);
+        
+        // 2. 计算布局
+        return import('../core/base-layout.js').then(({ LayoutRegistry }) => {
+          const layout = LayoutRegistry.layoutAuto(model);
+          
+          // 3. 生成到白板
+          return generateDiagramToEdgeless(surface, layout, centerX, centerY, service);
+        });
+      }).then(result => {
+        console.log('✅ 图表已生成到白板:', {
+          层数: result.layerIds.length,
+          节点数: result.nodeIds.length,
+          连线数: result.edgeIds.length,
+        });
+        this.hide();
+      }).catch(err => {
+        console.error('生成失败:', err);
+        this._error = '生成失败: ' + (err.message || err);
       });
-      this.hide();
-    }).catch(err => {
-      this._error = '生成失败: ' + (err.message || err);
-    });
+    } else {
+      // 使用旧系统（流程图）
+      import('../element-generator.js').then(({ generateFlowchartAt }) => {
+        return generateFlowchartAt(surface, this._code, centerX, centerY, service);
+      }).then(result => {
+        console.log('✅ 流程图已生成:', {
+          节点数: result.nodeIds.size,
+          连线数: result.edgeIds.length,
+        });
+        this.hide();
+      }).catch(err => {
+        this._error = '生成失败: ' + (err.message || err);
+      });
+    }
   }
 
   private _handleOverlayClick(e: MouseEvent) {
