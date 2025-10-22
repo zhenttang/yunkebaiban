@@ -9,12 +9,12 @@ const styleElementId = 'yunke-theme-css-variables';
 
 const formatVariables = (variables: VariableRecord) => {
   const entries = Object.entries(variables);
-  console.log('[DEBUG] Total variables:', entries.length);
-  console.log('[DEBUG] First 5 variable names:', entries.slice(0, 5).map(([name]) => name));
+  // console.log('[DEBUG] Total variables:', entries.length);
+  // console.log('[DEBUG] First 5 variable names:', entries.slice(0, 5).map(([name]) => name));
   
   const filtered = entries.filter(([name]) => name.startsWith('--yunke-'));
-  console.log('[DEBUG] Filtered yunke- variables:', filtered.length);
-  console.log('[DEBUG] First 5 filtered:', filtered.slice(0, 5).map(([name]) => name));
+  // console.log('[DEBUG] Filtered yunke- variables:', filtered.length);
+  // console.log('[DEBUG] First 5 filtered:', filtered.slice(0, 5).map(([name]) => name));
   
   return filtered
     .map(([name, value]) => `  ${name}: ${value};`)

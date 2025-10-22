@@ -108,36 +108,36 @@ export abstract class DocStorageBase<Opts = {}> implements DocStorage {
   constructor(protected readonly options: Opts & DocStorageOptions) {}
 
   async getDoc(docId: string) {
-    console.log('📦 [DocStorageBase] 开始获取文档:', {
-      docId: docId,
-      isReadonly: this.isReadonly,
-      spaceId: this.spaceId,
-      storageType: this.constructor.name,
-      timestamp: new Date().toISOString()
-    });
+    // console.log('📦 [DocStorageBase] 开始获取文档:', {
+    //   docId: docId,
+    //   isReadonly: this.isReadonly,
+    //   spaceId: this.spaceId,
+    //   storageType: this.constructor.name,
+    //   timestamp: new Date().toISOString()
+    // });
 
     await using _lock = this.isReadonly
       ? undefined
       : await this.lockDocForUpdate(docId);
 
-    console.log('📦 [DocStorageBase] 获取文档快照...');
+    // console.log('📦 [DocStorageBase] 获取文档快照...');
     const snapshot = await this.getDocSnapshot(docId);
-    console.log('📦 [DocStorageBase] 快照结果:', {
-      docId: docId,
-      hasSnapshot: !!snapshot,
-      snapshotSize: snapshot?.bin?.length || 0
-    });
+    // console.log('📦 [DocStorageBase] 快照结果:', {
+    //   docId: docId,
+    //   hasSnapshot: !!snapshot,
+    //   snapshotSize: snapshot?.bin?.length || 0
+    // });
 
-    console.log('📦 [DocStorageBase] 获取文档更新...');
+    // console.log('📦 [DocStorageBase] 获取文档更新...');
     const updates = await this.getDocUpdates(docId);
-    console.log('📦 [DocStorageBase] 更新结果:', {
-      docId: docId,
-      updatesCount: updates.length,
-      totalUpdatesSize: updates.reduce((sum, u) => sum + (u.bin?.length || 0), 0)
-    });
+    // console.log('📦 [DocStorageBase] 更新结果:', {
+    //   docId: docId,
+    //   updatesCount: updates.length,
+    //   totalUpdatesSize: updates.reduce((sum, u) => sum + (u.bin?.length || 0), 0)
+    // });
 
     if (updates.length) {
-      console.log('📦 [DocStorageBase] 需要合并更新，开始squash...');
+      // console.log('📦 [DocStorageBase] 需要合并更新，开始squash...');
       const { timestamp, bin, editor } = await this.squash(
         snapshot ? [snapshot, ...updates] : updates
       );
@@ -152,26 +152,26 @@ export abstract class DocStorageBase<Opts = {}> implements DocStorage {
 
       // 如果是只读模式，我们不会设置新快照
       if (!this.isReadonly) {
-        console.log('📦 [DocStorageBase] 保存新快照...');
+        // console.log('📦 [DocStorageBase] 保存新快照...');
         await this.setDocSnapshot(newSnapshot, snapshot);
 
         // 除非抛出异常，否则总是标记更新已合并
         await this.markUpdatesMerged(docId, updates);
       }
 
-      console.log('✅ [DocStorageBase] 返回合并后的文档:', {
-        docId: docId,
-        finalSize: bin.length,
-        timestamp: timestamp
-      });
+      // console.log('✅ [DocStorageBase] 返回合并后的文档:', {
+      //   docId: docId,
+      //   finalSize: bin.length,
+      //   timestamp: timestamp
+      // });
       return newSnapshot;
     }
 
-    console.log('📦 [DocStorageBase] 无需合并，返回快照:', {
-      docId: docId,
-      hasSnapshot: !!snapshot,
-      snapshotSize: snapshot?.bin?.length || 0
-    });
+    // console.log('📦 [DocStorageBase] 无需合并，返回快照:', {
+    //   docId: docId,
+    //   hasSnapshot: !!snapshot,
+    //   snapshotSize: snapshot?.bin?.length || 0
+    // });
     return snapshot;
   }
 

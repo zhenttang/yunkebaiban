@@ -2,6 +2,7 @@ import { Store } from '@toeverything/infra';
 
 /**
  * 获取配置的基础URL
+ * 🔥 性能优化：自动适配当前端口，避免跨域CORS预检请求
  */
 function getConfiguredBaseUrl(): string {
   // 优先使用环境变量
@@ -18,6 +19,9 @@ function getConfiguredBaseUrl(): string {
     }
     
     const hostname = window.location.hostname;
+    const port = window.location.port;
+    const protocol = window.location.protocol;
+    
     // 检测局域网IP（Android开发环境）
     if (hostname.match(/^192\.168\.\d+\.\d+$/) || 
         hostname.match(/^10\.\d+\.\d+\.\d+$/) ||
@@ -25,16 +29,16 @@ function getConfiguredBaseUrl(): string {
       return 'http://192.168.2.4:8080';
     }
     
-    // 生产环境
-    if (hostname !== 'localhost' && 
-        hostname !== '127.0.0.1' &&
-        !hostname.includes('192.168.') &&
-        !hostname.includes('10.0.') &&
-        !hostname.includes('172.')) {
-      return 'https://your-domain.com:443';
+    // 🔥 开发环境：自动使用当前访问的端口（避免8080/8081跨域问题）
+    if (hostname === 'localhost' || hostname === '127.0.0.1') {
+      return port ? `${protocol}//${hostname}:${port}` : `${protocol}//${hostname}`;
     }
+    
+    // 生产环境：使用 window.location.origin 自动适配
+    return window.location.origin;
   }
   
+  // 后备方案（SSR或Node环境）
   return 'http://localhost:8080';
 }
 

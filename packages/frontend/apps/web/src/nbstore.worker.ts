@@ -1,4 +1,6 @@
-import '@yunke/core/bootstrap/browser';
+// 🔥 性能优化：使用轻量级Worker Bootstrap替代完整浏览器Bootstrap
+// 原因：完整bootstrap导致Worker文件膨胀到8.98MB
+import '@yunke/core/bootstrap/worker';
 
 import { broadcastChannelStorages } from '@yunke/nbstore/broadcast-channel';
 // ⚠️ 移除 cloudStorages - Worker 不应该直接处理云存储

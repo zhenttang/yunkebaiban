@@ -9,6 +9,7 @@
 /**
  * 获取配置的基础URL
  * 统一的配置获取逻辑，支持环境变量覆盖
+ * 🔥 性能优化：自动适配当前端口，避免跨域CORS预检请求
  */
 function getConfiguredBaseUrl(): string {
   // 优先使用环境变量
@@ -26,6 +27,9 @@ function getConfiguredBaseUrl(): string {
     }
     
     const hostname = window.location.hostname;
+    const port = window.location.port;
+    const protocol = window.location.protocol;
+    
     // 检测局域网IP（Android开发环境）
     if (hostname.match(/^192\.168\.\d+\.\d+$/) || 
         hostname.match(/^10\.\d+\.\d+\.\d+$/) ||
@@ -33,16 +37,17 @@ function getConfiguredBaseUrl(): string {
       return 'http://192.168.2.4:8080';
     }
     
-    // 生产环境
-    if (hostname !== 'localhost' && 
-        hostname !== '127.0.0.1' &&
-        !hostname.includes('192.168.') &&
-        !hostname.includes('10.0.') &&
-        !hostname.includes('172.')) {
-      return 'https://your-domain.com:443';
+    // 🔥 开发环境：自动使用当前访问的端口（避免8080/8081跨域问题）
+    if (hostname === 'localhost' || hostname === '127.0.0.1') {
+      // 使用当前端口，避免跨域
+      return port ? `${protocol}//${hostname}:${port}` : `${protocol}//${hostname}`;
     }
+    
+    // 生产环境：使用 window.location.origin 自动适配
+    return window.location.origin;
   }
   
+  // 后备方案（SSR或Node环境）
   return 'http://localhost:8080';
 }
 
@@ -104,9 +109,9 @@ function getBuildInServers(): (ServerMetadata & { config: ServerConfig })[] {
   }
   
   const baseUrl = getConfiguredBaseUrl();
-  console.log('📍 [BUILD_IN_SERVERS] 首次动态获取baseUrl:', baseUrl);
-  console.log('📍 [BUILD_IN_SERVERS] BUILD_CONFIG:', (globalThis as any).BUILD_CONFIG);
-  console.log('📍 [BUILD_IN_SERVERS] window.BUILD_CONFIG:', typeof window !== 'undefined' ? (window as any).BUILD_CONFIG : 'window未定义');
+  // console.log('📍 [BUILD_IN_SERVERS] 首次动态获取baseUrl:', baseUrl);
+  // console.log('📍 [BUILD_IN_SERVERS] BUILD_CONFIG:', (globalThis as any).BUILD_CONFIG);
+  // console.log('📍 [BUILD_IN_SERVERS] window.BUILD_CONFIG:', typeof window !== 'undefined' ? (window as any).BUILD_CONFIG : 'window未定义');
   
   _cachedServers = [
     {

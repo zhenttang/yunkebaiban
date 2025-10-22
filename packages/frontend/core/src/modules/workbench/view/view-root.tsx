@@ -22,26 +22,26 @@ export const ViewRoot = ({
   const location = useLiveData(view.location$);
 
   // 添加调试日志
-  console.log('[ViewRoot] Component rendered with:', {
-    viewId: view.id,
-    location: location,
-    pathname: location.pathname,
-    search: location.search
-  });
+  // console.log('[ViewRoot] Component rendered with:', {
+  //   viewId: view.id,
+  //   location: location,
+  //   pathname: location.pathname,
+  //   search: location.search
+  // });
 
   useLayoutEffect(() => {
-    console.log('[ViewRoot] location changed, navigating to:', {
-      location,
-      pathname: location.pathname,
-      search: location.search,
-      viewId: view.id
-    });
+    // console.log('[ViewRoot] location changed, navigating to:', {
+    //   location,
+    //   pathname: location.pathname,
+    //   search: location.search,
+    //   viewId: view.id
+    // });
     
     viewRouter.navigate(location).catch(err => {
       console.error('[ViewRoot] 导航错误', err);
     });
     
-    console.log('[ViewRoot] navigate called successfully');
+    // console.log('[ViewRoot] navigate called successfully');
   }, [location, view, viewRouter]);
 
   // https://github.com/remix-run/react-router/issues/7375#issuecomment-975431736

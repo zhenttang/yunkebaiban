@@ -170,8 +170,9 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
         headers['Authorization'] = `Bearer ${token}`;
       }
       
-      // 确保使用完整的URL，特别是在桌面端
-      const apiBaseUrl = import.meta.env?.VITE_API_BASE_URL || 'http://localhost:8080';
+      // 🔥 性能优化：确保使用完整的URL，自动适配当前端口避免跨域
+      const apiBaseUrl = import.meta.env?.VITE_API_BASE_URL || 
+        (typeof window !== 'undefined' ? window.location.origin : 'http://localhost:8080');
       const fullUrl = url.startsWith('http') ? url : `${apiBaseUrl}${url}`;
       
       return await fetch(fullUrl, {
@@ -659,10 +660,10 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
 
           // 使用带认证的REST API替代GraphQL查询
           try {
-            console.log('☁️ [CloudWorkspace] 开始获取云端工作区列表:', {
-              accountId,
-              serverId: this.server.id
-            });
+            // console.log('☁️ [CloudWorkspace] 开始获取云端工作区列表:', {
+            //   accountId,
+            //   serverId: this.server.id
+            // });
             
             const response = await this.fetchWithAuth('/api/workspaces', {
               method: 'GET',
@@ -672,10 +673,10 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
               signal,
             });
             
-            console.log('☁️ [CloudWorkspace] API响应状态:', {
-              ok: response.ok,
-              status: response.status
-            });
+            // console.log('☁️ [CloudWorkspace] API响应状态:', {
+            //   ok: response.ok,
+            //   status: response.status
+            // });
             
             if (!response.ok) {
               throw new Error(`获取工作区列表失败: ${response.status}`);
@@ -683,11 +684,11 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
             
             const data = await response.json();
             
-            console.log('☁️ [CloudWorkspace] API响应数据:', {
-              hasWorkspaces: !!data.workspaces,
-              workspacesCount: data.workspaces?.length || 0,
-              workspaceIds: data.workspaces?.map((item: any) => (item.workspace || item).id) || []
-            });
+            // console.log('☁️ [CloudWorkspace] API响应数据:', {
+            //   hasWorkspaces: !!data.workspaces,
+            //   workspacesCount: data.workspaces?.length || 0,
+            //   workspaceIds: data.workspaces?.map((item: any) => (item.workspace || item).id) || []
+            // });
             
             if (!data.workspaces) {
               return {
@@ -1296,7 +1297,9 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
     };
     
     const serverConfig = getServerConfig();
-    const serverBaseUrl = this.server.serverMetadata?.baseUrl || 'http://localhost:8080';
+    // 🔥 性能优化：自动适配当前端口避免跨域
+    const serverBaseUrl = this.server.serverMetadata?.baseUrl || 
+      (typeof window !== 'undefined' ? window.location.origin : 'http://localhost:8080');
     
     // Android环境下的特殊处理
     if ((window as any).BUILD_CONFIG?.isAndroid) {

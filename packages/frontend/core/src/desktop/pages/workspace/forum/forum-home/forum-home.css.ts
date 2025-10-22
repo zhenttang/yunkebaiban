@@ -5,6 +5,7 @@ export const page = style({
   display: 'flex',
   flexDirection: 'column',
   height: '100%',
+  width: '100%', // 🔥 修复：确保占据父容器全宽
 });
 
 export const content = style({
@@ -44,22 +45,19 @@ export const header = style({
   alignItems: 'center',
   justifyContent: 'space-between',
   gap: '24px',
-  padding: '24px',
-  borderRadius: 12,
-  background: cssVarV2('layer/background/secondary'),
-  border: `1px solid ${cssVarV2('layer/insideBorder/border')}`,
-  boxShadow: 'none',
+  padding: '0 0 24px 0',
   marginBottom: '20px',
+  borderBottom: `1px solid ${cssVarV2('layer/insideBorder/border')}`,
   '@media': {
     '(max-width: 1023px)': {
-      padding: '20px',
+      padding: '0 0 20px 0',
       gap: '16px',
     },
     '(max-width: 767px)': {
       flexDirection: 'column',
-      alignItems: 'stretch',
-      padding: '16px',
-      gap: '16px',
+      alignItems: 'flex-start',
+      padding: '0 0 16px 0',
+      gap: '12px',
     },
   },
 });
@@ -89,13 +87,13 @@ export const titleGroup = style({
 });
 
 export const title = style({
-  fontSize: '28px',
-  fontWeight: 700,
+  fontSize: '24px',
+  fontWeight: 600,
   color: cssVarV2('text/primary'),
   margin: 0,
   '@media': {
     '(max-width: 1023px)': {
-      fontSize: '24px',
+      fontSize: '22px',
     },
     '(max-width: 767px)': {
       fontSize: '20px',
@@ -202,18 +200,18 @@ export const collapsePlaceholder = style({
 });
 
 export const forumIcon = style({
-  fontSize: '24px',
+  fontSize: '20px',
   lineHeight: 1,
   flexShrink: 0,
   width: 28,
   textAlign: 'center',
   '@media': {
     '(max-width: 1023px)': {
-      fontSize: '22px',
+      fontSize: '18px',
       width: 24,
     },
     '(max-width: 767px)': {
-      fontSize: '20px',
+      fontSize: '18px',
       width: 22,
     },
   },
@@ -228,7 +226,7 @@ export const forumInfo = style({
 });
 
 export const forumName = style({
-  fontSize: '15px',
+  fontSize: '14px',
   fontWeight: 600,
   color: cssVarV2('text/primary'),
   margin: 0,
@@ -271,19 +269,17 @@ export const forumDesc = style({
 export const forumRow = style({
   display: 'flex',
   alignItems: 'center',
-  padding: '16px 20px',
-  gap: '16px',
+  padding: '14px 20px',
+  gap: '12px',
   cursor: 'pointer',
   transition: 'background-color 0.15s ease',
-  selectors: {
-    '&:hover': {
-      backgroundColor: cssVarV2('layer/background/hoverOverlay'),
-    },
+  ':hover': {
+    backgroundColor: cssVarV2('layer/background/hoverOverlay'),
   },
   '@media': {
     '(max-width: 1023px)': {
-      padding: '14px 16px',
-      gap: '12px',
+      padding: '12px 16px',
+      gap: '10px',
     },
     '(max-width: 767px)': {
       padding: '12px',
@@ -420,11 +416,9 @@ export const forumChildren = style({
 export const forumList = style({
   display: 'flex',
   flexDirection: 'column',
-  gap: '0',
-  border: `1px solid ${cssVarV2('layer/outline/floating')}`,
-  borderRadius: 12,
+  border: `1px solid ${cssVarV2('layer/insideBorder/border')}`,
+  borderRadius: 8,
   backgroundColor: cssVarV2('layer/background/secondary'),
-  boxShadow: 'none',
   overflow: 'hidden',
 });
 
@@ -652,16 +646,19 @@ export const skeletonBlock = style({
 
 export const search = style({
   width: '320px',
-  padding: '10px 12px',
-  borderRadius: 10,
-  border: `1px solid ${cssVarV2('layer/outline/floating')}`,
+  padding: '8px 12px 8px 40px',
+  borderRadius: 8,
+  border: `1px solid ${cssVarV2('layer/insideBorder/border')}`,
   backgroundColor: cssVarV2('layer/background/primary'),
   color: cssVarV2('text/primary'),
+  fontSize: '14px',
   outline: 'none',
-  transition: 'box-shadow .15s ease, border-color .15s ease',
+  transition: 'border-color 0.15s ease',
+  '::placeholder': {
+    color: cssVarV2('text/tertiary'),
+  },
   ':focus': {
     borderColor: cssVarV2('layer/outline/floating'),
-    boxShadow: 'none',
   },
   '@media': {
     '(max-width: 1023px)': {

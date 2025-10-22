@@ -245,96 +245,28 @@ export const QuickSelect = memo(
   })
 );
 
-export const QuickDeletePermanently = memo(function QuickDeletePermanently({
-  doc,
-  onClick,
-  ...iconButtonProps
-}: QuickActionProps) {
-  const t = useI18n();
-  const guardService = useService(GuardService);
-  const contextValue = useContext(DocExplorerContext);
-  const { permanentlyDeletePage } = useBlockSuiteMetaHelper();
-  const quickDeletePermanently = useLiveData(
-    contextValue.quickDeletePermanently$
-  );
-  const { openConfirmModal } = useConfirmModal();
+// 🔥 Bug修复：添加 forwardRef 以支持 Radix UI Tooltip
+export const QuickDeletePermanently = memo(
+  forwardRef<HTMLButtonElement, QuickActionProps>(function QuickDeletePermanently(
+    { doc, onClick, ...iconButtonProps },
+    ref
+  ) {
+    const t = useI18n();
+    const guardService = useService(GuardService);
+    const contextValue = useContext(DocExplorerContext);
+    const { permanentlyDeletePage } = useBlockSuiteMetaHelper();
+    const quickDeletePermanently = useLiveData(
+      contextValue.quickDeletePermanently$
+    );
+    const { openConfirmModal } = useConfirmModal();
 
-  const handleDeletePermanently = useCallback(() => {
-    guardService
-      .can('Doc_Delete', doc.id)
-      .then(can => {
-        if (can) {
-          permanentlyDeletePage(doc.id);
-          toast(t['com.yunke.toastMessage.permanentlyDeleted']());
-        } else {
-          toast(t['com.yunke.no-permission']());
-        }
-      })
-      .catch(e => {
-        console.error(e);
-      });
-  }, [doc.id, guardService, permanentlyDeletePage, t]);
-
-  const handleConfirmDeletePermanently = useCallback(
-    (e: React.MouseEvent<HTMLButtonElement>) => {
-      onClick?.(e);
-      e.stopPropagation();
-      e.preventDefault();
-      openConfirmModal({
-        title: `${t['com.yunke.trashOperation.deletePermanently']()}?`,
-        description: t['com.yunke.trashOperation.deleteDescription'](),
-        cancelText: t['com.yunke.confirmModal.button.cancel'](),
-        confirmText: t['com.yunke.trashOperation.delete'](),
-        confirmButtonOptions: {
-          variant: 'error',
-        },
-        onConfirm: handleDeletePermanently,
-      });
-    },
-    [handleDeletePermanently, onClick, openConfirmModal, t]
-  );
-
-  if (!quickDeletePermanently) {
-    return null;
-  }
-
-  return (
-    <IconButton
-      data-testid="delete-page-button"
-      onClick={handleConfirmDeletePermanently}
-      icon={<DeleteIcon />}
-      variant="danger"
-      {...iconButtonProps}
-    />
-  );
-});
-
-export const QuickRestore = memo(function QuickRestore({
-  doc,
-  onClick,
-  ...iconButtonProps
-}: QuickActionProps) {
-  const t = useI18n();
-  const contextValue = useContext(DocExplorerContext);
-  const quickRestore = useLiveData(contextValue.quickRestore$);
-  const { restoreFromTrash } = useBlockSuiteMetaHelper();
-  const guardService = useService(GuardService);
-
-  const handleRestore = useCallback(
-    (e: React.MouseEvent<HTMLButtonElement>) => {
-      onClick?.(e);
-      e.stopPropagation();
-      e.preventDefault();
+    const handleDeletePermanently = useCallback(() => {
       guardService
         .can('Doc_Delete', doc.id)
         .then(can => {
           if (can) {
-            restoreFromTrash(doc.id);
-            toast(
-              t['com.yunke.toastMessage.restored']({
-                title: doc.title$.value || '未命名',
-              })
-            );
+            permanentlyDeletePage(doc.id);
+            toast(t['com.yunke.toastMessage.permanentlyDeleted']());
           } else {
             toast(t['com.yunke.no-permission']());
           }
@@ -342,20 +274,94 @@ export const QuickRestore = memo(function QuickRestore({
         .catch(e => {
           console.error(e);
         });
-    },
-    [doc.id, doc.title$, guardService, onClick, restoreFromTrash, t]
-  );
+    }, [doc.id, guardService, permanentlyDeletePage, t]);
 
-  if (!quickRestore) {
-    return null;
-  }
+    const handleConfirmDeletePermanently = useCallback(
+      (e: React.MouseEvent<HTMLButtonElement>) => {
+        onClick?.(e);
+        e.stopPropagation();
+        e.preventDefault();
+        openConfirmModal({
+          title: `${t['com.yunke.trashOperation.deletePermanently']()}?`,
+          description: t['com.yunke.trashOperation.deleteDescription'](),
+          cancelText: t['com.yunke.confirmModal.button.cancel'](),
+          confirmText: t['com.yunke.trashOperation.delete'](),
+          confirmButtonOptions: {
+            variant: 'error',
+          },
+          onConfirm: handleDeletePermanently,
+        });
+      },
+      [handleDeletePermanently, onClick, openConfirmModal, t]
+    );
 
-  return (
-    <IconButton
-      data-testid="restore-page-button"
-      onClick={handleRestore}
-      icon={<ResetIcon />}
-      {...iconButtonProps}
-    />
-  );
-});
+    if (!quickDeletePermanently) {
+      return null;
+    }
+
+    return (
+      <IconButton
+        ref={ref}
+        data-testid="delete-page-button"
+        onClick={handleConfirmDeletePermanently}
+        icon={<DeleteIcon />}
+        variant="danger"
+        {...iconButtonProps}
+      />
+    );
+  })
+);
+
+// 🔥 Bug修复：添加 forwardRef 以支持 Radix UI Tooltip
+export const QuickRestore = memo(
+  forwardRef<HTMLButtonElement, QuickActionProps>(function QuickRestore(
+    { doc, onClick, ...iconButtonProps },
+    ref
+  ) {
+    const t = useI18n();
+    const contextValue = useContext(DocExplorerContext);
+    const quickRestore = useLiveData(contextValue.quickRestore$);
+    const { restoreFromTrash } = useBlockSuiteMetaHelper();
+    const guardService = useService(GuardService);
+
+    const handleRestore = useCallback(
+      (e: React.MouseEvent<HTMLButtonElement>) => {
+        onClick?.(e);
+        e.stopPropagation();
+        e.preventDefault();
+        guardService
+          .can('Doc_Delete', doc.id)
+          .then(can => {
+            if (can) {
+              restoreFromTrash(doc.id);
+              toast(
+                t['com.yunke.toastMessage.restored']({
+                  title: doc.title$.value || '未命名',
+                })
+              );
+            } else {
+              toast(t['com.yunke.no-permission']());
+            }
+          })
+          .catch(e => {
+            console.error(e);
+          });
+      },
+      [doc.id, doc.title$, guardService, onClick, restoreFromTrash, t]
+    );
+
+    if (!quickRestore) {
+      return null;
+    }
+
+    return (
+      <IconButton
+        ref={ref}
+        data-testid="restore-page-button"
+        onClick={handleRestore}
+        icon={<ResetIcon />}
+        {...iconButtonProps}
+      />
+    );
+  })
+);

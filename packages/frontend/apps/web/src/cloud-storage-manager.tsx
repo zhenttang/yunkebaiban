@@ -314,50 +314,50 @@ export const CloudStorageProvider = ({
     // console.log(`  🔗 当前状态: workspaceId=${currentWorkspaceId}, online=${isOnline}, socketConnected=${socket?.connected}, isConnected=${isConnected}`);
     
     // 详细分析前端发送的原始数据
-    console.log(`  📦 原始数据类型: ${update.constructor.name}`);
-    console.log(`  📊 数据长度: ${update.length}字节`);
-    console.log(`  🔢 前20字节数值: [${Array.from(update.slice(0, 20)).join(', ')}]`);
-    console.log(`  🔤 前20字节十六进制: ${Array.from(update.slice(0, 20)).map(b => b.toString(16).padStart(2, '0')).join(' ')}`);
+    // console.log(`  📦 原始数据类型: ${update.constructor.name}`);
+    // console.log(`  📊 数据长度: ${update.length}字节`);
+    // console.log(`  🔢 前20字节数值: [${Array.from(update.slice(0, 20)).join(', ')}]`);
+    // console.log(`  🔤 前20字节十六进制: ${Array.from(update.slice(0, 20)).map(b => b.toString(16).padStart(2, '0')).join(' ')}`);
     
     // 尝试将数据解读为不同格式
-    try {
-      const asString = new TextDecoder('utf-8', { fatal: false }).decode(update.slice(0, 100));
-      console.log(`  📝 UTF-8解码尝试(前100字节): "${asString}"`);
-    } catch (e) {
-      console.log(`  ⚠️ UTF-8解码失败: ${e.message}`);
-    }
+    // try {
+    //   const asString = new TextDecoder('utf-8', { fatal: false }).decode(update.slice(0, 100));
+    //   console.log(`  📝 UTF-8解码尝试(前100字节): "${asString}"`);
+    // } catch (e) {
+    //   console.log(`  ⚠️ UTF-8解码失败: ${e.message}`);
+    // }
     
     // 查找可能的文本内容模式
-    const dataView = new DataView(update.buffer, update.byteOffset, update.byteLength);
-    console.log(`  🧮 DataView长度: ${dataView.byteLength}`);
+    // const dataView = new DataView(update.buffer, update.byteOffset, update.byteLength);
+    // console.log(`  🧮 DataView长度: ${dataView.byteLength}`);
     
     // 扫描数据中的可打印字符
-    let printableChars = '';
-    for (let i = 0; i < Math.min(200, update.length); i++) {
-      const byte = update[i];
-      if (byte >= 32 && byte <= 126) { // ASCII可打印字符
-        printableChars += String.fromCharCode(byte);
-      } else if (printableChars.length > 0) {
-        printableChars += '.';
-      }
-    }
-    if (printableChars.length > 0) {
-      console.log(`  📄 可打印字符序列: "${printableChars}"`);
-    }
+    // let printableChars = '';
+    // for (let i = 0; i < Math.min(200, update.length); i++) {
+    //   const byte = update[i];
+    //   if (byte >= 32 && byte <= 126) { // ASCII可打印字符
+    //     printableChars += String.fromCharCode(byte);
+    //   } else if (printableChars.length > 0) {
+    //     printableChars += '.';
+    //   }
+    // }
+    // if (printableChars.length > 0) {
+    //   console.log(`  📄 可打印字符序列: "${printableChars}"`);
+    // }
     
     // 检查是否包含中文字符
-    const chineseRegex = /[\u4e00-\u9fff]/g;
-    const fullString = new TextDecoder('utf-8', { fatal: false }).decode(update);
-    const chineseMatches = fullString.match(chineseRegex);
-    if (chineseMatches) {
-      console.log(`  🈳 发现中文字符: ${chineseMatches.slice(0, 10).join('')}${chineseMatches.length > 10 ? '...' : ''} (共${chineseMatches.length}个)`);
-    }
+    // const chineseRegex = /[\u4e00-\u9fff]/g;
+    // const fullString = new TextDecoder('utf-8', { fatal: false }).decode(update);
+    // const chineseMatches = fullString.match(chineseRegex);
+    // if (chineseMatches) {
+    //   console.log(`  🈳 发现中文字符: ${chineseMatches.slice(0, 10).join('')}${chineseMatches.length > 10 ? '...' : ''} (共${chineseMatches.length}个)`);
+    // }
     
     // 查找重复字符模式
-    const repeatedPattern = fullString.match(/([1-9])\1{10,}/g);
-    if (repeatedPattern) {
-      console.log(`  🔁 发现重复字符模式: ${repeatedPattern.slice(0, 3).map(p => `"${p.substring(0, 20)}..."`).join(', ')}`);
-    }
+    // const repeatedPattern = fullString.match(/([1-9])\1{10,}/g);
+    // if (repeatedPattern) {
+    //   console.log(`  🔁 发现重复字符模式: ${repeatedPattern.slice(0, 3).map(p => `"${p.substring(0, 20)}..."`).join(', ')}`);
+    // }
     
     if (!currentWorkspaceId) {
       const error = 'No current workspace available';

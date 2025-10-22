@@ -133,7 +133,7 @@ const defaultDevServerConfig: DevServerConfiguration = {
       return {};
     }
 
-    return {
+    const headers: Record<string, string | string[]> = {
       'Cross-Origin-Opener-Policy': 'same-origin',
       'Cross-Origin-Embedder-Policy': 'require-corp',
       // 添加权限策略允许剪贴板访问（修复局域网访问复制粘贴问题）
@@ -141,6 +141,22 @@ const defaultDevServerConfig: DevServerConfiguration = {
       // 强制标记为安全上下文（开发环境专用）
       'Sec-Fetch-Site': 'same-origin'
     };
+
+    // 🔥 性能优化：添加静态资源缓存
+    const isStaticAsset = /\.(js|css|woff2?|ttf|png|jpg|jpeg|gif|svg|webp|ico)$/i.test(req.path);
+    const hasHash = /\.[a-f0-9]{8,}\./i.test(req.path); // 检测是否有contenthash
+    
+    if (isStaticAsset) {
+      if (hasHash) {
+        // 有hash的资源：长期缓存（1年）
+        headers['Cache-Control'] = 'public, max-age=31536000, immutable';
+      } else {
+        // 无hash的资源（如index.html）：协商缓存
+        headers['Cache-Control'] = 'no-cache, must-revalidate';
+      }
+    }
+
+    return headers;
   },
   proxy: [
     {

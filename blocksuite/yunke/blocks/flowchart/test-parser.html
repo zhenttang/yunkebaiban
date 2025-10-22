@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Flowchart Parser Test</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    textarea {
+      width: 100%;
+      height: 400px;
+      font-family: monospace;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    button {
+      padding: 10px 20px;
+      background: #1e96ed;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+      margin: 10px 0;
+    }
+    button:hover {
+      background: #1565c0;
+    }
+    #output {
+      border: 1px solid #ccc;
+      padding: 10px;
+      min-height: 400px;
+      background: white;
+      overflow: auto;
+    }
+    .error {
+      color: red;
+      padding: 10px;
+      background: #fee;
+      border-radius: 4px;
+    }
+    h2 {
+      margin-top: 0;
+    }
+  </style>
+</head>
+<body>
+  <h1>🔀 Yunke Flow DSL 解析器测试</h1>
+  
+  <div class="container">
+    <div>
+      <h2>输入 DSL 代码</h2>
+      <textarea id="input" placeholder="输入您的 DSL 代码...">diagram "测试图表" {
+  node frontend label "前端"
+  node backend label "后端"
+  node db label "数据库"
+  
+  frontend -> backend : "请求"
+  backend -> db : "查询"
+}</textarea>
+      <button onclick="testParse()">解析并渲染</button>
+    </div>
+    
+    <div>
+      <h2>渲染结果</h2>
+      <div id="output"></div>
+    </div>
+  </div>
+
+  <script type="module">
+    // 简化版解析器（用于测试）
+    function parseDSL(dslCode) {
+      const lines = dslCode.split('\n');
+      const nodes = [];
+      const edges = [];
+      const groups = new Map();
+      
+      let diagramName = '未命名图表';
+      let currentGroup = undefined;
+      let braceLevel = 0;
+      
+      for (let i = 0; i < lines.length; i++) {
+        const line = lines[i].trim();
+        
+        if (!line || line.startsWith('//') || line.startsWith('#')) {
+          continue;
+        }
+        
+        const diagramMatch = line.match(/^diagram\s+"([^"]+)"\s*\{/);
+        if (diagramMatch) {
+          diagramName = diagramMatch[1];
+          braceLevel++;
+          continue;
+        }
+        
+        const groupMatch = line.match(/^group\s+(\w+)\s+label\s+"([^"]+)"\s*\{/);
+        if (groupMatch) {
+          const groupId = groupMatch[1];
+          const groupLabel = groupMatch[2];
+          currentGroup = groupId;
+          groups.set(groupId, { label: groupLabel, nodeIds: [] });
+          braceLevel++;
+          continue;
+        }
+        
+        if (line === '}') {
+          braceLevel--;
+          if (currentGroup && braceLevel === 1) {
+            currentGroup = undefined;
+          }
+          continue;
+        }
+        
+        const nodeLabelMatch = line.match(/^node\s+(\w+)\s+label\s+"([^"]+)"/);
+        if (nodeLabelMatch) {
+          const nodeId = nodeLabelMatch[1];
+          const nodeLabel = nodeLabelMatch[2];
+          const fullId = currentGroup ? `${currentGroup}.${nodeId}` : nodeId;
+          nodes.push({ id: fullId, label: nodeLabel, group: currentGroup });
+          if (currentGroup) {
+            groups.get(currentGroup)?.nodeIds.push(nodeId);
+          }
+          continue;
+        }
+        
+        const edgeLabelMatch = line.match(/^([\w.]+)\s*(?:->|=>|~>)\s*([\w.]+)\s*:\s*"([^"]+)"/);
+        if (edgeLabelMatch) {
+          edges.push({
+            from: edgeLabelMatch[1],
+            to: edgeLabelMatch[2],
+            label: edgeLabelMatch[3],
+          });
+          continue;
+        }
+        
+        const edgeMatch = line.match(/^([\w.]+)\s*(?:->|=>|~>)\s*([\w.]+)\s*$/);
+        if (edgeMatch) {
+          edges.push({
+            from: edgeMatch[1],
+            to: edgeMatch[2],
+          });
+          continue;
+        }
+      }
+      
+      return { name: diagramName, nodes, edges, groups };
+    }
+
+    // 简化版渲染器
+    function renderToSVG(diagram) {
+      if (diagram.nodes.length === 0) {
+        throw new Error('未找到任何节点定义');
+      }
+
+      const NODE_WIDTH = 180;
+      const NODE_HEIGHT = 80;
+      const H_GAP = 120;
+      const V_GAP = 80;
+
+      // 计算层级
+      const levels = new Map();
+      const inDegree = new Map();
+      
+      diagram.nodes.forEach(node => inDegree.set(node.id, 0));
+      diagram.edges.forEach(edge => {
+        inDegree.set(edge.to, (inDegree.get(edge.to) || 0) + 1);
+      });
+
+      const queue = [];
+      inDegree.forEach((degree, id) => {
+        if (degree === 0) {
+          levels.set(id, 0);
+          queue.push(id);
+        }
+      });
+
+      while (queue.length > 0) {
+        const current = queue.shift();
+        const currentLevel = levels.get(current) || 0;
+        
+        diagram.edges.forEach(edge => {
+          if (edge.from === current) {
+            const newLevel = Math.max(levels.get(edge.to) || 0, currentLevel + 1);
+            levels.set(edge.to, newLevel);
+            const newDegree = (inDegree.get(edge.to) || 0) - 1;
+            inDegree.set(edge.to, newDegree);
+            if (newDegree === 0 && !queue.includes(edge.to)) {
+              queue.push(edge.to);
+            }
+          }
+        });
+      }
+
+      diagram.nodes.forEach(node => {
+        if (!levels.has(node.id)) levels.set(node.id, 0);
+      });
+
+      // 计算位置
+      const levelGroups = new Map();
+      levels.forEach((level, id) => {
+        if (!levelGroups.has(level)) levelGroups.set(level, []);
+        levelGroups.get(level).push(id);
+      });
+
+      const positions = new Map();
+      levelGroups.forEach((ids, level) => {
+        ids.forEach((id, index) => {
+          positions.set(id, {
+            x: level * (NODE_WIDTH + H_GAP) + 20,
+            y: index * (NODE_HEIGHT + V_GAP) + 20,
+          });
+        });
+      });
+
+      // 计算画布大小
+      let maxX = 0, maxY = 0;
+      positions.forEach(pos => {
+        maxX = Math.max(maxX, pos.x + NODE_WIDTH);
+        maxY = Math.max(maxY, pos.y + NODE_HEIGHT);
+      });
+
+      const width = maxX + 40;
+      const height = maxY + 40;
+
+      // 生成SVG
+      let svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">`;
+      svg += `<style>
+        .node-rect { fill: #1e96ed; stroke: #1565c0; stroke-width: 2; }
+        .node-text { fill: white; font-family: sans-serif; font-size: 14px; text-anchor: middle; dominant-baseline: middle; }
+        .edge-line { stroke: #666; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+        .edge-label { fill: #666; font-family: sans-serif; font-size: 12px; text-anchor: middle; }
+      </style>`;
+      
+      svg += `<defs>
+        <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+          <polygon points="0 0, 10 3, 0 6" fill="#666" />
+        </marker>
+      </defs>`;
+
+      // 绘制边
+      diagram.edges.forEach(edge => {
+        const fromPos = positions.get(edge.from);
+        const toPos = positions.get(edge.to);
+        
+        if (fromPos && toPos) {
+          const x1 = fromPos.x + NODE_WIDTH;
+          const y1 = fromPos.y + NODE_HEIGHT / 2;
+          const x2 = toPos.x;
+          const y2 = toPos.y + NODE_HEIGHT / 2;
+          
+          svg += `<line class="edge-line" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" />`;
+          
+          if (edge.label) {
+            const midX = (x1 + x2) / 2;
+            const midY = (y1 + y2) / 2;
+            const labelWidth = edge.label.length * 7;
+            svg += `<rect x="${midX - labelWidth/2}" y="${midY - 10}" width="${labelWidth}" height="20" fill="white" />`;
+            svg += `<text class="edge-label" x="${midX}" y="${midY + 4}">${edge.label}</text>`;
+          }
+        }
+      });
+
+      // 绘制节点
+      diagram.nodes.forEach(node => {
+        const pos = positions.get(node.id);
+        if (pos) {
+          svg += `<rect class="node-rect" x="${pos.x}" y="${pos.y}" width="${NODE_WIDTH}" height="${NODE_HEIGHT}" rx="8" />`;
+          svg += `<text class="node-text" x="${pos.x + NODE_WIDTH/2}" y="${pos.y + NODE_HEIGHT/2}">${node.label}</text>`;
+        }
+      });
+
+      svg += '</svg>';
+      return svg;
+    }
+
+    window.testParse = function() {
+      const input = document.getElementById('input').value;
+      const output = document.getElementById('output');
+      
+      try {
+        const diagram = parseDSL(input);
+        console.log('解析结果:', diagram);
+        
+        const svg = renderToSVG(diagram);
+        output.innerHTML = `
+          <div style="margin-bottom: 10px; color: green;">
+            ✅ 解析成功！找到 ${diagram.nodes.length} 个节点，${diagram.edges.length} 条连线
+          </div>
+          ${svg}
+        `;
+      } catch (error) {
+        console.error('解析错误:', error);
+        output.innerHTML = `<div class="error">❌ ${error.message}</div>`;
+      }
+    };
+
+    // 页面加载时自动测试
+    window.addEventListener('load', () => {
+      window.testParse();
+    });
+  </script>
+</body>
+</html>
+

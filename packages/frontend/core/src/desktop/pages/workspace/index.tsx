@@ -334,8 +334,23 @@ export const Component = (): ReactElement => {
       </FrameworkScope>
     );
   }
+  
+  // 🔥 Bug修复：区分加载中和找不到workspace的情况
   if (!effectiveMeta) {
-    return <AppContainer fallback />;
+    // 如果workspace列表正在加载，显示加载状态
+    if (listLoading) {
+      return <AppContainer fallback />;
+    }
+    
+    // 如果加载完成但找不到workspace，显示404
+    // 注意：这里不应该显示fallback，因为那会让用户以为还在加载
+    return (
+      <FrameworkScope scope={server?.scope}>
+        <YunkeOtherPageLayout>
+          <PageNotFound noPermission />
+        </YunkeOtherPageLayout>
+      </FrameworkScope>
+    );
   }
 
   return (
@@ -366,44 +381,44 @@ const WorkspacePage = ({ meta }: { meta: WorkspaceMetadata }) => {
 
   const [workspace, setWorkspace] = useState<Workspace | null>(null);
 
-  console.log('🏗️ [WorkspacePage] 开始渲染，meta:', meta);
+  // console.log('🏗️ [WorkspacePage] 开始渲染，meta:', meta);
 
   useLayoutEffect(() => {
-    console.log('🏗️ [WorkspacePage] useLayoutEffect 开始，打开工作空间:', meta.id);
-    console.log('🔍 [WorkspacePage] 工作空间元数据:', {
-      id: meta.id,
-      flavour: meta.flavour,
-      initialized: meta.initialized
-    });
+    // console.log('🏗️ [WorkspacePage] useLayoutEffect 开始，打开工作空间:', meta.id);
+    // console.log('🔍 [WorkspacePage] 工作空间元数据:', {
+    //   id: meta.id,
+    //   flavour: meta.flavour,
+    //   initialized: meta.initialized
+    // });
     
     try {
       const ref = workspacesService.open({ metadata: meta });
-      console.log('🏗️ [WorkspacePage] 工作空间引用创建成功:', ref);
+      // console.log('🏗️ [WorkspacePage] 工作空间引用创建成功:', ref);
       
       if (ref.workspace) {
-        console.log('✅ [WorkspacePage] 工作空间对象已就绪:', {
-          id: ref.workspace.id,
-          flavour: ref.workspace.flavour,
-          initialized: ref.workspace.meta?.initialized,
-          engine: !!ref.workspace.engine,
-          docCollection: !!ref.workspace.docCollection
-        });
+        // console.log('✅ [WorkspacePage] 工作空间对象已就绪:', {
+        //   id: ref.workspace.id,
+        //   flavour: ref.workspace.flavour,
+        //   initialized: ref.workspace.meta?.initialized,
+        //   engine: !!ref.workspace.engine,
+        //   docCollection: !!ref.workspace.docCollection
+        // });
         
         // 添加根文档状态监听
         const docStateSub = ref.workspace.engine.doc
           .docState$(ref.workspace.id)
           .subscribe((state) => {
-            console.log('📄 [WorkspacePage] 根文档状态监听器:', {
-              workspaceId: ref.workspace.id,
-              ready: state.ready,
-              syncing: state.syncing
-            });
+            // console.log('📄 [WorkspacePage] 根文档状态监听器:', {
+            //   workspaceId: ref.workspace.id,
+            //   ready: state.ready,
+            //   syncing: state.syncing
+            // });
           });
         
         setWorkspace(ref.workspace);
         
         return () => {
-          console.log('🧹 [WorkspacePage] 清理工作空间引用');
+          // console.log('🧹 [WorkspacePage] 清理工作空间引用');
           docStateSub.unsubscribe();
           ref.dispose();
         };
@@ -422,17 +437,17 @@ const WorkspacePage = ({ meta }: { meta: WorkspaceMetadata }) => {
       useMemo(
         () => {
           if (!workspace) {
-            console.warn('⚠️ [WorkspacePage] workspace为空，无法检查根文档状态');
+            // console.warn('⚠️ [WorkspacePage] workspace为空，无法检查根文档状态');
             return null;
           }
           
-          console.log('📄 [WorkspacePage] 检查根文档状态，工作空间ID:', workspace.id);
+          // console.log('📄 [WorkspacePage] 检查根文档状态，工作空间ID:', workspace.id);
           
           return LiveData.from(
             workspace.engine.doc
               .docState$(workspace.id)
               .pipe(map(v => {
-                console.log('📄 [WorkspacePage] 根文档状态更新:', { ready: v.ready, workspaceId: workspace.id });
+                // console.log('📄 [WorkspacePage] 根文档状态更新:', { ready: v.ready, workspaceId: workspace.id });
                 return v.ready;
               })),
             false
@@ -442,12 +457,12 @@ const WorkspacePage = ({ meta }: { meta: WorkspaceMetadata }) => {
       )
     ) ?? false;
 
-  console.log('🏗️ [WorkspacePage] 渲染状态:', {
-    hasWorkspace: !!workspace,
-    workspaceId: workspace?.id,
-    isRootDocReady,
-    meta: meta
-  });
+  // console.log('🏗️ [WorkspacePage] 渲染状态:', {
+  //   hasWorkspace: !!workspace,
+  //   workspaceId: workspace?.id,
+  //   isRootDocReady,
+  //   meta: meta
+  // });
 
   useEffect(() => {
     if (workspace) {

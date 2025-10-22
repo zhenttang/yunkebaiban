@@ -39,14 +39,14 @@ export class PerformanceMonitor {
     });
 
     this.observer.observe({ entryTypes: ['measure'] });
-    console.log('🔍 [Performance Monitor] 已启动性能监控');
+    // console.log('🔍 [Performance Monitor] 已启动性能监控');
   }
 
   static destroy() {
     if (this.observer) {
       this.observer.disconnect();
       this.observer = null;
-      console.log('🔍 [Performance Monitor] 已停止性能监控');
+      // console.log('🔍 [Performance Monitor] 已停止性能监控');
     }
   }
 
@@ -54,11 +54,11 @@ export class PerformanceMonitor {
     const measures = performance.getEntriesByType('measure') as PerformanceMeasure[];
 
     if (measures.length === 0) {
-      console.log('📊 [Performance Report] 暂无性能数据');
+      // console.log('📊 [Performance Report] 暂无性能数据');
       return;
     }
 
-    console.group('📊 [Performance Report] 性能分析报告');
+    // console.group('📊 [Performance Report] 性能分析报告');
 
     const grouped = new Map<string, number[]>();
     measures.forEach(m => {
@@ -67,27 +67,27 @@ export class PerformanceMonitor {
       grouped.set(m.name, existing);
     });
 
-    grouped.forEach((durations, name) => {
-      const avg = durations.reduce((a, b) => a + b, 0) / durations.length;
-      const max = Math.max(...durations);
-      const min = Math.min(...durations);
+    // grouped.forEach((durations, name) => {
+    //   const avg = durations.reduce((a, b) => a + b, 0) / durations.length;
+    //   const max = Math.max(...durations);
+    //   const min = Math.min(...durations);
 
-      console.log(
-        `${name}:\n` +
-        `  调用次数: ${durations.length}\n` +
-        `  平均: ${avg.toFixed(2)}ms\n` +
-        `  最大: ${max.toFixed(2)}ms\n` +
-        `  最小: ${min.toFixed(2)}ms`
-      );
-    });
+    //   console.log(
+    //     `${name}:\n` +
+    //     `  调用次数: ${durations.length}\n` +
+    //     `  平均: ${avg.toFixed(2)}ms\n` +
+    //     `  最大: ${max.toFixed(2)}ms\n` +
+    //     `  最小: ${min.toFixed(2)}ms`
+    //   );
+    // });
 
-    console.groupEnd();
+    // console.groupEnd();
   }
 
   static clear() {
     performance.clearMarks();
     performance.clearMeasures();
-    console.log('🧹 [Performance Monitor] 已清除所有性能数据');
+    // console.log('🧹 [Performance Monitor] 已清除所有性能数据');
   }
 }
 

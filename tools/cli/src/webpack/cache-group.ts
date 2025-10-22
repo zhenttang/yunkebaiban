@@ -33,6 +33,28 @@ export const productionCacheGroups = {
     priority: Number.MAX_SAFE_INTEGER,
     chunks: 'async' as const,
   },
+  // 🔥 新增：拆分大型模块
+  cloudModule: {
+    name: 'cloud-module',
+    test: /[\\/]packages[\\/]frontend[\\/]core[\\/]src[\\/]modules[\\/]cloud[\\/]/,
+    priority: 210,
+    enforce: true,
+    minSize: 50000, // 50KB以上才拆分
+  },
+  workspaceEngine: {
+    name: 'workspace-engine',
+    test: /[\\/]packages[\\/]frontend[\\/]core[\\/]src[\\/]modules[\\/]workspace-engine[\\/]/,
+    priority: 210,
+    enforce: true,
+    minSize: 50000,
+  },
+  collectionRules: {
+    name: 'collection-rules',
+    test: /[\\/]packages[\\/]frontend[\\/]core[\\/]src[\\/]modules[\\/]collection-rules[\\/]/,
+    priority: 210,
+    enforce: true,
+    minSize: 50000,
+  },
   blocksuite: {
     name: `npm-blocksuite`,
     test: testPackageName(/[\\/]node_modules[\\/](@blocksuite)[\\/]/),

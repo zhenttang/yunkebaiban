@@ -1,4 +1,5 @@
-import '@yunke/core/bootstrap/browser';
+// 🔥 性能优化：使用轻量级Worker Bootstrap
+import '@yunke/core/bootstrap/worker';
 
 import { broadcastChannelStorages } from '@yunke/nbstore/broadcast-channel';
 import { cloudStorages } from '@yunke/nbstore/cloud';

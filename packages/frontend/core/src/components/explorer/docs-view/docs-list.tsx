@@ -228,24 +228,38 @@ export const DocsExplorer = ({
     []
   );
 
+  // 🔥 Bug修复：检查是否有文档数据，如果为空显示空状态UI
+  const hasDocuments = groups.some(group => group.items && group.items.length > 0);
+
   return (
     <>
-      <Masonry
-        className={className}
-        items={masonryItems}
-        gapY={BUILD_CONFIG.isMobileEdition ? 12 : view === 'list' ? 12 : 24}
-        gapX={BUILD_CONFIG.isMobileEdition ? 12 : 24}
-        groupsGap={12}
-        groupHeaderGapWithItems={12}
-        columns={view === 'list' ? 1 : undefined}
-        itemWidthMin={masonryItemWidthMin ?? 220}
-        preloadHeight={100}
-        itemWidth={'stretch'}
-        virtualScroll
-        collapsedGroups={collapsedGroups}
-        paddingY={BUILD_CONFIG.isMobileEdition ? 12 : 0}
-        paddingX={BUILD_CONFIG.isMobileEdition ? 16 : responsivePaddingX}
-      />
+      {hasDocuments ? (
+        <Masonry
+          className={className}
+          items={masonryItems}
+          gapY={BUILD_CONFIG.isMobileEdition ? 12 : view === 'list' ? 12 : 24}
+          gapX={BUILD_CONFIG.isMobileEdition ? 12 : 24}
+          groupsGap={12}
+          groupHeaderGapWithItems={12}
+          columns={view === 'list' ? 1 : undefined}
+          itemWidthMin={masonryItemWidthMin ?? 220}
+          preloadHeight={100}
+          itemWidth={'stretch'}
+          virtualScroll
+          collapsedGroups={collapsedGroups}
+          paddingY={BUILD_CONFIG.isMobileEdition ? 12 : 0}
+          paddingX={BUILD_CONFIG.isMobileEdition ? 16 : responsivePaddingX}
+        />
+      ) : (
+        <div className={styles.emptyState}>
+          <div>
+            <div className={styles.emptyStateTitle}>
+              {onRestore ? t['com.yunke.emptyDesc.trash']() : t['com.yunke.emptyDesc']()}
+            </div>
+            <div>{onRestore ? t['com.yunke.emptyDesc.trash.hint']() : t['com.yunke.emptyDesc.hint']()}</div>
+          </div>
+        </div>
+      )}
       {!disableMultiSelectToolbar || onRestore ? (
         <ListFloatingToolbar
           open={!!selectMode}

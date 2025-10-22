@@ -15,6 +15,7 @@ import { ImageStoreExtension } from '@blocksuite/yunke-block-image/store';
 import { LatexStoreExtension } from '@blocksuite/yunke-block-latex/store';
 import { ListStoreExtension } from '@blocksuite/yunke-block-list/store';
 import { MermaidStoreExtension } from '@blocksuite/yunke-block-mermaid/store';
+import { FlowchartStoreExtension } from '@blocksuite/yunke-block-flowchart/store';
 import { NoteStoreExtension } from '@blocksuite/yunke-block-note/store';
 import { ParagraphStoreExtension } from '@blocksuite/yunke-block-paragraph/store';
 import { RootStoreExtension } from '@blocksuite/yunke-block-root/store';
@@ -55,6 +56,7 @@ export function getInternalStoreExtensions() {
     LatexStoreExtension,
     ListStoreExtension,
     MermaidStoreExtension,
+    FlowchartStoreExtension,
     NoteStoreExtension,
     ParagraphStoreExtension,
     SurfaceRefStoreExtension,

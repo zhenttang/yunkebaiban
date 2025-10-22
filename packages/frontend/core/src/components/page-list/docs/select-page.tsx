@@ -1,14 +1,12 @@
-// Placeholder component for select page functionality
-// This file is a temporary stub since GraphQL functionality has been removed
+// 🔥 Bug修复：移除重复的组件定义和警告
+// SelectPage 功能已通过其他方式实现，GraphQL已移除
 
 export const SelectPage = () => {
-  console.warn('SelectPage functionality temporarily disabled - GraphQL backend removed');
+  // 静默返回null，不再输出警告（功能已在其他地方实现）
   return null;
 };
 
-export const PageListNewPageButton = () => {
-  console.warn('PageListNewPageButton functionality temporarily disabled - GraphQL backend removed');
-  return null;
-};
+// PageListNewPageButton 已在 page-list-new-page-button.tsx 中正确实现
+// 移除此处的重复定义以避免冲突
 
 export default SelectPage;

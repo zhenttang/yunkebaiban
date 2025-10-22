@@ -21,6 +21,7 @@ import { TableViewExtension } from '@blocksuite/yunke-block-table/view';
 import { MermaidViewExtension } from '@blocksuite/yunke-block-mermaid/view';
 import { DrawioViewExtension } from '@blocksuite/yunke-block-drawio/view';
 import { ExcalidrawViewExtension } from '@blocksuite/yunke-block-excalidraw/view';
+import { FlowchartViewExtension } from '@blocksuite/yunke-block-flowchart/view';
 import { FoundationViewExtension } from '@blocksuite/yunke-foundation/view';
 import { AdapterPanelViewExtension } from '@blocksuite/yunke-fragment-adapter-panel/view';
 import { DocTitleViewExtension } from '@blocksuite/yunke-fragment-doc-title/view';
@@ -97,6 +98,7 @@ export function getInternalViewExtensions() {
     MermaidViewExtension,
     DrawioViewExtension,
     ExcalidrawViewExtension,
+    FlowchartViewExtension,
     SurfaceViewExtension,
     RootViewExtension,
 

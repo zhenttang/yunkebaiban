@@ -179,6 +179,60 @@ const CorsPlugin = {
   },
 };
 
+// 🔥 性能优化：添加资源预加载和defer
+const PerformanceOptimizationPlugin = {
+  apply(compiler: Compiler) {
+    compiler.hooks.compilation.tap('performance-optimization-plugin', compilation => {
+      HTMLPlugin.getHooks(compilation).alterAssetTags.tap(
+        'performance-optimization-plugin',
+        options => {
+          // 1. 为所有script添加defer属性（非阻塞加载）
+          options.assetTags.scripts.forEach(script => {
+            // 保持global-error-handler同步加载
+            if (!script.attributes.src?.toString().includes('global-error-handler')) {
+              script.attributes.defer = true;
+            }
+          });
+
+          // 2. 添加关键字体的preload
+          const fontPreloads = [
+            '/Inter-VariableFont_slnt,wght.aadb65ac.ttf'
+          ];
+          
+          const preloadTags = fontPreloads.map(href => ({
+            tagName: 'link',
+            voidTag: true,
+            attributes: {
+              rel: 'preload',
+              href,
+              as: 'font',
+              type: 'font/ttf',
+              crossorigin: 'anonymous'
+            }
+          }));
+
+          // 3. 添加DNS预解析（如果有外部资源）
+          // options.assetTags.meta.push({
+          //   tagName: 'link',
+          //   voidTag: true,
+          //   attributes: {
+          //     rel: 'dns-prefetch',
+          //     href: '//your-cdn.com'
+          //   }
+          // });
+
+          // 将preload标签插入head
+          if (options.assetTags.meta) {
+            options.assetTags.meta.push(...preloadTags);
+          }
+
+          return options;
+        }
+      );
+    });
+  },
+};
+
 export function createHTMLPlugins(
   BUILD_CONFIG: BUILD_CONFIG_TYPE,
   config: CreateHTMLPluginConfig
@@ -233,6 +287,11 @@ export function createHTMLPlugins(
 
   if (!BUILD_CONFIG.isElectron) {
     plugins.push(CorsPlugin);
+  }
+
+  // 🔥 性能优化：启用资源预加载和defer
+  if (!BUILD_CONFIG.debug) {
+    plugins.push(PerformanceOptimizationPlugin);
   }
 
   if (config.emitAssetsManifest) {

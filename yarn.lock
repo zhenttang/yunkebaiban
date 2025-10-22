@@ -1508,7 +1508,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@blocksuite/yunke-block-drawio@workspace:blocksuite/yunke/blocks/drawio":
+"@blocksuite/yunke-block-drawio@workspace:*, @blocksuite/yunke-block-drawio@workspace:blocksuite/yunke/blocks/drawio":
   version: 0.0.0-use.local
   resolution: "@blocksuite/yunke-block-drawio@workspace:blocksuite/yunke/blocks/drawio"
   dependencies:
@@ -1622,7 +1622,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@blocksuite/yunke-block-excalidraw@workspace:blocksuite/yunke/blocks/excalidraw":
+"@blocksuite/yunke-block-excalidraw@workspace:*, @blocksuite/yunke-block-excalidraw@workspace:blocksuite/yunke/blocks/excalidraw":
   version: 0.0.0-use.local
   resolution: "@blocksuite/yunke-block-excalidraw@workspace:blocksuite/yunke/blocks/excalidraw"
   dependencies:
@@ -1641,6 +1641,27 @@ __metadata:
     nanoid: "npm:^5.0.4"
     react: "npm:^18.2.0"
     react-dom: "npm:^18.2.0"
+  languageName: unknown
+  linkType: soft
+
+"@blocksuite/yunke-block-flowchart@workspace:*, @blocksuite/yunke-block-flowchart@workspace:blocksuite/yunke/blocks/flowchart":
+  version: 0.0.0-use.local
+  resolution: "@blocksuite/yunke-block-flowchart@workspace:blocksuite/yunke/blocks/flowchart"
+  dependencies:
+    "@blocksuite/global": "workspace:*"
+    "@blocksuite/icons": "npm:^2.2.12"
+    "@blocksuite/std": "workspace:*"
+    "@blocksuite/store": "workspace:*"
+    "@blocksuite/yunke-components": "workspace:*"
+    "@blocksuite/yunke-ext-loader": "workspace:*"
+    "@blocksuite/yunke-model": "workspace:*"
+    "@blocksuite/yunke-shared": "workspace:*"
+    "@blocksuite/yunke-widget-slash-menu": "workspace:*"
+    "@types/dompurify": "npm:^3.0.5"
+    "@types/uuid": "npm:^9.0.0"
+    lit: "npm:^3.0.0"
+    typescript: "npm:^5.0.0"
+    uuid: "npm:^9.0.0"
   languageName: unknown
   linkType: soft
 
@@ -1763,7 +1784,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@blocksuite/yunke-block-mermaid@workspace:blocksuite/yunke/blocks/mermaid":
+"@blocksuite/yunke-block-mermaid@workspace:*, @blocksuite/yunke-block-mermaid@workspace:blocksuite/yunke/blocks/mermaid":
   version: 0.0.0-use.local
   resolution: "@blocksuite/yunke-block-mermaid@workspace:blocksuite/yunke/blocks/mermaid"
   dependencies:
@@ -3146,13 +3167,17 @@ __metadata:
     "@blocksuite/yunke-block-data-view": "workspace:*"
     "@blocksuite/yunke-block-database": "workspace:*"
     "@blocksuite/yunke-block-divider": "workspace:*"
+    "@blocksuite/yunke-block-drawio": "workspace:*"
     "@blocksuite/yunke-block-edgeless-text": "workspace:*"
     "@blocksuite/yunke-block-embed": "workspace:*"
     "@blocksuite/yunke-block-embed-doc": "workspace:*"
+    "@blocksuite/yunke-block-excalidraw": "workspace:*"
+    "@blocksuite/yunke-block-flowchart": "workspace:*"
     "@blocksuite/yunke-block-frame": "workspace:*"
     "@blocksuite/yunke-block-image": "workspace:*"
     "@blocksuite/yunke-block-latex": "workspace:*"
     "@blocksuite/yunke-block-list": "workspace:*"
+    "@blocksuite/yunke-block-mermaid": "workspace:*"
     "@blocksuite/yunke-block-note": "workspace:*"
     "@blocksuite/yunke-block-paragraph": "workspace:*"
     "@blocksuite/yunke-block-root": "workspace:*"
@@ -11763,6 +11788,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/dompurify@npm:^3.0.5":
+  version: 3.0.5
+  resolution: "@types/dompurify@npm:3.0.5"
+  dependencies:
+    "@types/trusted-types": "npm:*"
+  checksum: 10/e544b3ce53c41215cabff3d89256ff707c7ee8e0c9a1b5034b22014725d288b16e6942cdcdeeb4221c578c3421a6a4721aa0676431f55d7abd18c07368855c5e
+  languageName: node
+  linkType: hard
+
 "@types/dompurify@npm:^3.2.0":
   version: 3.2.0
   resolution: "@types/dompurify@npm:3.2.0"
@@ -12370,7 +12404,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/trusted-types@npm:^2.0.2, @types/trusted-types@npm:^2.0.7":
+"@types/trusted-types@npm:*, @types/trusted-types@npm:^2.0.2, @types/trusted-types@npm:^2.0.7":
   version: 2.0.7
   resolution: "@types/trusted-types@npm:2.0.7"
   checksum: 10/8e4202766a65877efcf5d5a41b7dd458480b36195e580a3b1085ad21e948bc417d55d6f8af1fd2a7ad008015d4117d5fdfe432731157da3c68678487174e4ba3

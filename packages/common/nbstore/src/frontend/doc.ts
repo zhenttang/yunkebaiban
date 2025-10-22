@@ -234,18 +234,18 @@ export class DocFrontend {
   }
 
   private async mainLoop(signal?: AbortSignal) {
-    console.log('[DocFrontend Debug] mainLoop 开始');
+    // console.log('[DocFrontend Debug] mainLoop 开始');
 
-    console.log('[DocFrontend Debug] 等待 storage 连接（第一次）...');
+    // console.log('[DocFrontend Debug] 等待 storage 连接（第一次）...');
     await this.storage.connection.waitForConnected(signal);
-    console.log('[DocFrontend Debug] storage 连接成功（第一次）');
+    // console.log('[DocFrontend Debug] storage 连接成功（第一次）');
 
     const dispose = this.storage.subscribeDocUpdate((record, origin) => {
       this.event.onStorageUpdate(record, origin);
     });
 
     try {
-      console.log('[DocFrontend Debug] 等待 storage 连接（第二次）...');
+      // console.log('[DocFrontend Debug] 等待 storage 连接（第二次）...');
       // wait for storage to connect
       await Promise.race([
         this.storage.connection.waitForConnected(signal),
@@ -255,32 +255,32 @@ export class DocFrontend {
           });
         }),
       ]);
-      console.log('[DocFrontend Debug] storage 连接成功（第二次），开始主循环');
+      // console.log('[DocFrontend Debug] storage 连接成功（第二次），开始主循环');
 
 
       while (true) {
         throwIfAborted(signal);
 
-        console.log('[DocFrontend Debug] 等待队列中的下一个文档...');
+        // console.log('[DocFrontend Debug] 等待队列中的下一个文档...');
         const docId = await this.status.jobDocQueue.asyncPop(signal);
-        console.log('[DocFrontend Debug] 从队列获取文档:', { docId });
+        // console.log('[DocFrontend Debug] 从队列获取文档:', { docId });
 
         const jobs = this.status.jobMap.get(docId);
         this.status.jobMap.delete(docId);
 
         if (!jobs) {
-          console.warn('⚠️ [DocFrontend.mainLoop] 作业列表为空，跳过:', {
-            docId
-          });
+          // console.warn('⚠️ [DocFrontend.mainLoop] 作业列表为空，跳过:', {
+          //   docId
+          // });
           this.statusUpdatedSubject$.next(docId);
           continue;
         }
 
-        console.log('[DocFrontend Debug] 开始处理文档作业:', {
-          docId,
-          jobsCount: jobs.length,
-          jobTypes: jobs.map(j => j.type)
-        });
+        // console.log('[DocFrontend Debug] 开始处理文档作业:', {
+        //   docId,
+        //   jobsCount: jobs.length,
+        //   jobTypes: jobs.map(j => j.type)
+        // });
 
         this.status.currentJob = { docId, jobs };
         this.statusUpdatedSubject$.next(docId);
@@ -290,26 +290,26 @@ export class DocFrontend {
         };
 
         if (load?.length) {
-          console.log('[DocFrontend Debug] 执行 load 作业...');
+          // console.log('[DocFrontend Debug] 执行 load 作业...');
           await this.jobs.load(load[0] as any, signal);
-          console.log('[DocFrontend Debug] load 作业完成');
+          // console.log('[DocFrontend Debug] load 作业完成');
         }
 
         if (apply?.length) {
-          console.log('[DocFrontend Debug] 执行 apply 作业...', { count: apply.length });
+          // console.log('[DocFrontend Debug] 执行 apply 作业...', { count: apply.length });
           for (const applyJob of apply) {
             await this.jobs.apply(applyJob as any, signal);
           }
-          console.log('[DocFrontend Debug] apply 作业完成');
+          // console.log('[DocFrontend Debug] apply 作业完成');
         }
 
         if (save?.length) {
-          console.log('[DocFrontend Debug] 执行 save 作业...', { count: save.length });
+          // console.log('[DocFrontend Debug] 执行 save 作业...', { count: save.length });
           await this.jobs.save(docId, save as any, signal);
-          console.log('[DocFrontend Debug] save 作业完成');
+          // console.log('[DocFrontend Debug] save 作业完成');
         }
 
-        console.log('[DocFrontend Debug] 文档作业全部完成:', { docId });
+        // console.log('[DocFrontend Debug] 文档作业全部完成:', { docId });
         this.status.currentJob = null;
         this.statusUpdatedSubject$.next(docId);
       }
@@ -335,23 +335,23 @@ export class DocFrontend {
 
   readonly jobs = {
     load: async (job: Job & { type: 'load' }, signal?: AbortSignal) => {
-      console.log('[DocFrontend.load] 开始加载文档:', { docId: job.docId });
+      // console.log('[DocFrontend.load] 开始加载文档:', { docId: job.docId });
       
       const doc = this.status.docs.get(job.docId);
       if (!doc) {
-        console.warn('[DocFrontend.load] 文档不在 docs Map 中，跳过');
+        // console.warn('[DocFrontend.load] 文档不在 docs Map 中，跳过');
         return;
       }
       
       const existingData = encodeStateAsUpdate(doc);
-      console.log('[DocFrontend.load] 编码当前文档状态:', {
-        docId: job.docId,
-        existingDataSize: existingData.byteLength,
-        isEmpty: isEmptyUpdate(existingData)
-      });
+      // console.log('[DocFrontend.load] 编码当前文档状态:', {
+      //   docId: job.docId,
+      //   existingDataSize: existingData.byteLength,
+      //   isEmpty: isEmptyUpdate(existingData)
+      // });
 
       if (!isEmptyUpdate(existingData)) {
-        console.log('[DocFrontend.load] 当前文档有数据，调度 save 作业');
+        // console.log('[DocFrontend.load] 当前文档有数据，调度 save 作业');
         this.schedule({
           type: 'save',
           docId: doc.guid,
@@ -361,35 +361,35 @@ export class DocFrontend {
 
       // mark doc as loaded
       doc.emit('sync', [true, doc]);
-      console.log('[DocFrontend.load] 触发文档 sync 事件');
+      // console.log('[DocFrontend.load] 触发文档 sync 事件');
 
-      console.log('[DocFrontend.load] 从 storage 读取文档数据...');
+      // console.log('[DocFrontend.load] 从 storage 读取文档数据...');
       const docRecord = await this.storage.getDoc(job.docId);
-      console.log('[DocFrontend.load] storage.getDoc 完成:', {
-        hasRecord: !!docRecord,
-        binSize: docRecord?.bin?.length || 0
-      });
+      // console.log('[DocFrontend.load] storage.getDoc 完成:', {
+      //   hasRecord: !!docRecord,
+      //   binSize: docRecord?.bin?.length || 0
+      // });
       
       throwIfAborted(signal);
 
       if (docRecord && !isEmptyUpdate(docRecord.bin)) {
-        console.log('[DocFrontend.load] 应用文档更新...');
+        // console.log('[DocFrontend.load] 应用文档更新...');
         this.applyUpdate(job.docId, docRecord.bin);
         this.status.readyDocs.add(job.docId);
-        console.log('[DocFrontend.load] 文档标记为 ready（有数据）');
+        // console.log('[DocFrontend.load] 文档标记为 ready（有数据）');
       } else {
-        console.warn('⚠️ [DocFrontend.load] 文档数据为空，但仍标记为ready以允许初始化:', {
-          docId: job.docId,
-          hasDocRecord: !!docRecord,
-          binSize: docRecord?.bin?.length || 0,
-          reason: !docRecord ? 'no-doc-record' : 'empty-update'
-        });
+        // console.warn('⚠️ [DocFrontend.load] 文档数据为空，但仍标记为ready以允许初始化:', {
+        //   docId: job.docId,
+        //   hasDocRecord: !!docRecord,
+        //   binSize: docRecord?.bin?.length || 0,
+        //   reason: !docRecord ? 'no-doc-record' : 'empty-update'
+        // });
         // 即使文档为空，也标记为 ready，允许应用层初始化默认内容
         this.status.readyDocs.add(job.docId);
-        console.log('[DocFrontend.load] 空文档标记为 ready（允许初始化）');
+        // console.log('[DocFrontend.load] 空文档标记为 ready（允许初始化）');
       }
 
-      console.log('[DocFrontend.load] 添加到 connectedDocs，文档加载完成');
+      // console.log('[DocFrontend.load] 添加到 connectedDocs，文档加载完成');
       this.status.connectedDocs.add(job.docId);
       this.statusUpdatedSubject$.next(job.docId);
     },
@@ -553,33 +553,33 @@ export class DocFrontend {
     const doc = this.status.docs.get(docId);
     if (doc && !isEmptyUpdate(update)) {
       // 数据验证和详细日志
-      const firstBytes = Array.from(update.slice(0, 10))
-        .map(b => b.toString(16).padStart(2, '0'))
-        .join(' ');
+      // const firstBytes = Array.from(update.slice(0, 10))
+      //   .map(b => b.toString(16).padStart(2, '0'))
+      //   .join(' ');
       
       const isEmpty = update.byteLength === 0 || 
         (update.byteLength === 2 && update[0] === 0 && update[1] === 0);
       
       // Y.js 更新数据通常以 0x00 或 0x01 开始
-      const looksLikeYjsUpdate = update[0] === 0x00 || update[0] === 0x01;
+      // const looksLikeYjsUpdate = update[0] === 0x00 || update[0] === 0x01;
       
-      console.log('[isEmptyUpdate] Y.js二进制数据检查:', {
-        byteLength: update.byteLength,
-        isEmpty,
-        firstBytes,
-        isEmptyPattern: isEmpty,
-        looksLikeYjsUpdate
-      });
+      // console.log('[isEmptyUpdate] Y.js二进制数据检查:', {
+      //   byteLength: update.byteLength,
+      //   isEmpty,
+      //   firstBytes,
+      //   isEmptyPattern: isEmpty,
+      //   looksLikeYjsUpdate
+      // });
       
       // 如果数据看起来不像 Y.js 更新，记录警告
-      if (!looksLikeYjsUpdate) {
-        console.warn('⚠️ [applyUpdate] 数据格式可能不正确，不是标准的 Y.js 更新格式', {
-          docId,
-          firstByte: update[0],
-          expectedFirstByte: '0x00 或 0x01',
-          dataPreview: firstBytes
-        });
-      }
+      // if (!looksLikeYjsUpdate) {
+      //   console.warn('⚠️ [applyUpdate] 数据格式可能不正确，不是标准的 Y.js 更新格式', {
+      //     docId,
+      //     firstByte: update[0],
+      //     expectedFirstByte: '0x00 或 0x01',
+      //     dataPreview: firstBytes
+      //   });
+      // }
       
       try {
         this.isApplyingUpdate = true;

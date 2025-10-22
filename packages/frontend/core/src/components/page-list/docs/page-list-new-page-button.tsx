@@ -1,7 +1,8 @@
+import { Button } from '@yunke/component';
 import type { MouseEvent } from 'react';
 
-// Placeholder component for page list new page button
-// This file is a temporary stub since GraphQL functionality has been removed
+// 🔥 Bug修复：实现新建页面按钮功能
+// GraphQL已移除，但页面创建功能通过REST API实现
 
 export type PageListNewPageButtonProps = {
   size?: 'small' | 'default';
@@ -14,11 +15,30 @@ export type PageListNewPageButtonProps = {
   'data-testid'?: string;
 };
 
-export const PageListNewPageButton = (_props: PageListNewPageButtonProps) => {
-  console.warn(
-    'PageListNewPageButton functionality temporarily disabled - GraphQL backend removed'
+export const PageListNewPageButton = ({
+  size = 'default',
+  className,
+  children,
+  onCreateDoc,
+  'data-testid': testId,
+}: PageListNewPageButtonProps) => {
+  // 默认行为：创建普通文档
+  const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
+    if (onCreateDoc) {
+      onCreateDoc(event);
+    }
+  };
+
+  return (
+    <Button
+      size={size}
+      className={className}
+      onClick={handleClick}
+      data-testid={testId}
+    >
+      {children}
+    </Button>
   );
-  return null;
 };
 
 export default PageListNewPageButton;

@@ -80,7 +80,7 @@ export class CloudDocStorage extends DocStorageBase<CloudDocStorageOptions> {
 
     if ('error' in res) {
       if (res.error.name === 'DOC_NOT_FOUND') {
-        console.warn('[CloudDocStorage] load-doc: not found', { docId });
+        // console.warn('[CloudDocStorage] load-doc: not found', { docId });
         return null;
       }
       throw new Error(res.error.message);

@@ -330,6 +330,23 @@ export function createHTMLTargetConfig(
           project: process.env.SENTRY_PROJECT,
           authToken: process.env.SENTRY_AUTH_TOKEN,
         }),
+      // 🔥 Bundle分析工具（运行: ANALYZE=true yarn build）
+      process.env.ANALYZE === 'true' &&
+        (() => {
+          try {
+            const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+            return new BundleAnalyzerPlugin({
+              analyzerMode: 'static',
+              openAnalyzer: true,
+              reportFilename: 'bundle-report.html',
+              generateStatsFile: true,
+              statsFilename: 'bundle-stats.json',
+            });
+          } catch (e) {
+            console.warn('⚠️  webpack-bundle-analyzer 未安装，请运行: yarn add -D webpack-bundle-analyzer');
+            return null;
+          }
+        })(),
       // 像 # sourceMappingURL=76-6370cd185962bc89.js.map 这样的sourcemap URL在electron中无法加载
       // 这是因为Chromium会忽略默认的 file:// 协议
       // 所以我们需要将sourceMappingURL替换为 assets:// 协议

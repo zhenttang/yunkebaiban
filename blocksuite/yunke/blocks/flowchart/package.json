@@ -1,0 +1,60 @@
+{
+  "name": "@blocksuite/yunke-block-flowchart",
+  "version": "0.21.0",
+  "description": "Yunke Flow DSL diagram block for BlockSuite",
+  "type": "module",
+  "repository": "yunke/yunkebaiban",
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest",
+    "test:coverage": "vitest --coverage"
+  },
+  "keywords": [],
+  "author": "yunke",
+  "license": "MPL-2.0",
+  "dependencies": {
+    "@blocksuite/global": "workspace:*",
+    "@blocksuite/icons": "^2.2.12",
+    "@blocksuite/std": "workspace:*",
+    "@blocksuite/store": "workspace:*",
+    "@blocksuite/yunke-components": "workspace:*",
+    "@blocksuite/yunke-ext-loader": "workspace:*",
+    "@blocksuite/yunke-model": "workspace:*",
+    "@blocksuite/yunke-shared": "workspace:*",
+    "@blocksuite/yunke-widget-slash-menu": "workspace:*",
+    "lit": "^3.0.0",
+    "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "@types/dompurify": "^3.0.5",
+    "@types/uuid": "^9.0.0",
+    "typescript": "^5.0.0"
+  },
+  "exports": {
+    ".": "./src/index.ts",
+    "./view": "./src/view.ts",
+    "./store": "./src/store.ts",
+    "./effects": "./src/effects.ts"
+  },
+  "publishConfig": {
+    "access": "public",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "exports": {
+      ".": {
+        "import": "./dist/index.js",
+        "types": "./dist/index.d.ts"
+      },
+      "./effects": {
+        "import": "./dist/effects.js",
+        "types": "./dist/effects.d.ts"
+      }
+    }
+  },
+  "files": [
+    "src",
+    "dist",
+    "!src/__tests__",
+    "!dist/__tests__"
+  ]
+}

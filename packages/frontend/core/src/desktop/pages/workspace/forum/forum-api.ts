@@ -75,9 +75,13 @@ async function request<T>(endpoint: string, options: RequestInit = {}): Promise<
 
 export async function listForums(): Promise<ForumDTO[]> {
   if (USE_FORUM_MOCK) {
+    console.log('📋 [Forum API] 使用Mock数据，板块数量:', mockDB.forums.length);
     // Return deep copy to avoid accidental mutation
-    return JSON.parse(JSON.stringify(mockDB.forums));
+    const result = JSON.parse(JSON.stringify(mockDB.forums));
+    console.log('📋 [Forum API] Mock数据已返回');
+    return result;
   }
+  console.log('🌐 [Forum API] 请求后端API');
   return request<ForumDTO[]>('/forums');
 }
 

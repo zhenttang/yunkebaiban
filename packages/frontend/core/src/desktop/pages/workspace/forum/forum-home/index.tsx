@@ -131,13 +131,31 @@ export function Component() {
   // const navigate = useNavigate(); // 暂时不需要
 
   useEffect(() => {
+    console.log('🏛️ [论坛主页] 开始加载板块列表...');
+    
+    // 添加超时控制
+    const timeout = setTimeout(() => {
+      console.error('❌ [论坛主页] 加载超时');
+      setError('加载超时，请检查网络连接或刷新页面');
+      setLoading(false);
+    }, 10000); // 10秒超时
+
     listForums()
-      .then(setForums)
-      .catch(err => {
-        console.error('加载板块失败:', err);
-        setError(err instanceof Error ? err.message : String(err));
+      .then(data => {
+        console.log('✅ [论坛主页] 板块列表加载成功:', data?.length, '个板块');
+        setForums(data);
+        clearTimeout(timeout);
       })
-      .finally(() => setLoading(false));
+      .catch(err => {
+        console.error('❌ [论坛主页] 加载板块失败:', err);
+        setError(err instanceof Error ? err.message : String(err));
+        clearTimeout(timeout);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+
+    return () => clearTimeout(timeout);
   }, []);
 
   // Ctrl/Cmd + K 聚焦搜索
