@@ -186,22 +186,31 @@ function calculateCanvasBounds(
   positions: Map<string, NodePosition>,
   groupBounds: Map<string, GroupBounds>
 ): { width: number; height: number } {
+  let minX = Infinity;
+  let minY = Infinity;
   let maxX = 0;
   let maxY = 0;
   
   positions.forEach(pos => {
+    minX = Math.min(minX, pos.x);
+    minY = Math.min(minY, pos.y);
     maxX = Math.max(maxX, pos.x + pos.width);
     maxY = Math.max(maxY, pos.y + pos.height);
   });
   
   groupBounds.forEach(bounds => {
+    minX = Math.min(minX, bounds.x);
+    minY = Math.min(minY, bounds.y);
     maxX = Math.max(maxX, bounds.x + bounds.width);
     maxY = Math.max(maxY, bounds.y + bounds.height);
   });
   
+  // 添加足够的内边距，确保边缘不被裁剪
+  const padding = 40;
+  
   return {
-    width: maxX + 20,
-    height: maxY + 20,
+    width: maxX + padding,
+    height: maxY + padding,
   };
 }
 
@@ -211,16 +220,16 @@ function generateSVG(
   groupBounds: Map<string, GroupBounds>,
   bounds: { width: number; height: number }
 ): string {
-  let svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${bounds.width}" height="${bounds.height}" viewBox="0 0 ${bounds.width} ${bounds.height}">`;
+  let svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${bounds.width}" height="${bounds.height}" viewBox="0 0 ${bounds.width} ${bounds.height}" preserveAspectRatio="xMidYMid meet">`;
   
   // 样式
   svg += `<style>
     .node-rect { fill: #1e96ed; stroke: #1565c0; stroke-width: 2; }
-    .node-text { fill: white; font-family: sans-serif; font-size: 14px; text-anchor: middle; dominant-baseline: middle; }
+    .node-text { fill: white; font-family: sans-serif; font-size: 14px; text-anchor: middle; dominant-baseline: middle; user-select: none; }
     .edge-line { stroke: #666; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
-    .edge-label { fill: #666; font-family: sans-serif; font-size: 12px; text-anchor: middle; background: white; }
+    .edge-label { fill: #666; font-family: sans-serif; font-size: 12px; text-anchor: middle; user-select: none; }
     .group-rect { fill: #f5f5f5; stroke: #999; stroke-width: 2; stroke-dasharray: 5,5; }
-    .group-label { fill: #333; font-family: sans-serif; font-size: 16px; font-weight: bold; }
+    .group-label { fill: #333; font-family: sans-serif; font-size: 16px; font-weight: bold; user-select: none; }
   </style>`;
   
   // 箭头定义

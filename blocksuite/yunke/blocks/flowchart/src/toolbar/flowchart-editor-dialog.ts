@@ -8,7 +8,7 @@ import { LitElement, html, css } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import type { EdgelessRootBlockComponent } from '@blocksuite/yunke-block-root';
 
-import { DSL_EXAMPLES, type DslExample } from '../examples.js';
+import { DSL_EXAMPLES } from '../examples.js';
 
 @customElement('flowchart-editor-dialog')
 export class FlowchartEditorDialog extends WithDisposable(LitElement) {
@@ -18,40 +18,44 @@ export class FlowchartEditorDialog extends WithDisposable(LitElement) {
       position: fixed;
       top: 0;
       left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 9999;
+      width: 100vw;
+      height: 100vh;
+      z-index: 99999;
+      pointer-events: none;
     }
 
     :host([open]) {
       display: block;
+      pointer-events: auto;
     }
 
     .overlay {
-      position: absolute;
+      position: fixed;
       top: 0;
       left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.5);
-      backdrop-filter: blur(4px);
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
     }
 
     .dialog {
-      position: absolute;
+      position: fixed;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
       width: 90%;
       max-width: 1200px;
-      height: 80%;
+      height: 85%;
       max-height: 800px;
-      background: var(--affine-background-primary-color);
+      background: var(--affine-background-primary-color, #ffffff);
       border-radius: 12px;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
       display: flex;
       flex-direction: column;
       overflow: hidden;
+      z-index: 1;
     }
 
     .header {
@@ -59,7 +63,8 @@ export class FlowchartEditorDialog extends WithDisposable(LitElement) {
       align-items: center;
       justify-content: space-between;
       padding: 16px 24px;
-      border-bottom: 1px solid var(--affine-border-color);
+      background: var(--affine-background-primary-color, #ffffff);
+      border-bottom: 1px solid var(--affine-border-color, #e3e2e4);
     }
 
     .header h2 {
@@ -69,6 +74,7 @@ export class FlowchartEditorDialog extends WithDisposable(LitElement) {
       display: flex;
       align-items: center;
       gap: 8px;
+      color: var(--affine-text-primary-color, #1e1e1e);
     }
 
     .header-buttons {
@@ -78,8 +84,8 @@ export class FlowchartEditorDialog extends WithDisposable(LitElement) {
 
     .template-selector {
       padding: 12px 24px;
-      background: var(--affine-background-secondary-color);
-      border-bottom: 1px solid var(--affine-border-color);
+      background: var(--affine-background-secondary-color, #f8f9fa);
+      border-bottom: 1px solid var(--affine-border-color, #e3e2e4);
       display: flex;
       align-items: center;
       gap: 12px;
@@ -87,18 +93,30 @@ export class FlowchartEditorDialog extends WithDisposable(LitElement) {
 
     .template-selector label {
       font-size: 14px;
-      color: var(--affine-text-primary-color);
+      color: var(--affine-text-primary-color, #1e1e1e);
+      white-space: nowrap;
     }
 
     .template-selector select {
       flex: 1;
       max-width: 300px;
       padding: 6px 12px;
-      border: 1px solid var(--affine-border-color);
-      border-radius: 4px;
-      background: var(--affine-background-primary-color);
-      color: var(--affine-text-primary-color);
+      border: 1px solid var(--affine-border-color, #e3e2e4);
+      border-radius: 6px;
+      background: var(--affine-background-primary-color, #ffffff);
+      color: var(--affine-text-primary-color, #1e1e1e);
       font-size: 14px;
+      cursor: pointer;
+      outline: none;
+    }
+
+    .template-selector select:hover {
+      border-color: var(--affine-primary-color, #1e96eb);
+    }
+
+    .template-selector select:focus {
+      border-color: var(--affine-primary-color, #1e96eb);
+      box-shadow: 0 0 0 2px rgba(30, 150, 235, 0.1);
     }
 
     .content {
@@ -112,7 +130,7 @@ export class FlowchartEditorDialog extends WithDisposable(LitElement) {
 
     .editor-panel,
     .preview-panel {
-      background: var(--affine-background-primary-color);
+      background: var(--affine-background-primary-color, #ffffff);
       display: flex;
       flex-direction: column;
       overflow: hidden;
@@ -122,8 +140,9 @@ export class FlowchartEditorDialog extends WithDisposable(LitElement) {
       padding: 12px 16px;
       font-size: 14px;
       font-weight: 500;
-      color: var(--affine-text-secondary-color);
-      border-bottom: 1px solid var(--affine-border-color);
+      color: var(--affine-text-secondary-color, #8e8d91);
+      background: var(--affine-background-secondary-color, #f8f9fa);
+      border-bottom: 1px solid var(--affine-border-color, #e3e2e4);
     }
 
     .editor-textarea {
@@ -131,76 +150,114 @@ export class FlowchartEditorDialog extends WithDisposable(LitElement) {
       padding: 16px;
       border: none;
       resize: none;
-      font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
+      font-family: 'Monaco', 'Menlo', 'Consolas', 'Courier New', monospace;
       font-size: 14px;
       line-height: 1.6;
-      background: var(--affine-background-primary-color);
-      color: var(--affine-text-primary-color);
+      background: var(--affine-background-primary-color, #ffffff);
+      color: var(--affine-text-primary-color, #1e1e1e);
       outline: none;
+      tab-size: 2;
     }
 
     .preview-content {
       flex: 1;
-      padding: 16px;
+      padding: 20px;
       overflow: auto;
+      background: var(--affine-background-primary-color, #ffffff);
+    }
+
+    .preview-content > div {
+      width: 100%;
+      min-width: min-content;
+      min-height: 100%;
       display: flex;
       align-items: center;
       justify-content: center;
     }
 
+    .preview-content svg {
+      max-width: 100%;
+      max-height: 100%;
+      width: auto;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+    }
+
     .preview-message {
       color: var(--affine-text-secondary-color);
       font-size: 14px;
+      width: 100%;
+      text-align: center;
+      padding: 40px 20px;
     }
 
     .error-message {
-      color: var(--affine-error-color);
+      color: #d32f2f;
       padding: 12px 16px;
-      background: var(--affine-background-error-color);
+      background: #ffebee;
       margin: 16px;
-      border-radius: 4px;
+      border-radius: 8px;
       font-size: 14px;
+      border-left: 4px solid #d32f2f;
     }
 
     .stats {
-      padding: 8px 16px;
+      padding: 10px 16px;
       font-size: 12px;
-      color: var(--affine-text-secondary-color);
-      border-top: 1px solid var(--affine-border-color);
+      color: var(--affine-text-secondary-color, #8e8d91);
+      background: var(--affine-background-secondary-color, #f8f9fa);
+      border-top: 1px solid var(--affine-border-color, #e3e2e4);
     }
 
     button {
-      padding: 8px 16px;
-      border-radius: 6px;
+      padding: 10px 20px;
+      border-radius: 8px;
       border: none;
       font-size: 14px;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: all 0.2s ease;
+      font-weight: 500;
+      white-space: nowrap;
     }
 
     .primary-button {
-      background: var(--affine-primary-color);
+      background: var(--affine-primary-color, #1e96eb);
       color: white;
-      font-weight: 500;
+      box-shadow: 0 2px 4px rgba(30, 150, 235, 0.2);
     }
 
     .primary-button:hover {
+      background: var(--affine-primary-color, #1e96eb);
       opacity: 0.9;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 8px rgba(30, 150, 235, 0.3);
+    }
+
+    .primary-button:active {
+      transform: translateY(0);
     }
 
     .primary-button:disabled {
       opacity: 0.5;
       cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
     }
 
     .secondary-button {
-      background: transparent;
-      color: var(--affine-text-primary-color);
-      border: 1px solid var(--affine-border-color);
+      background: var(--affine-background-primary-color, #ffffff);
+      color: var(--affine-text-primary-color, #1e1e1e);
+      border: 1px solid var(--affine-border-color, #e3e2e4);
     }
 
     .secondary-button:hover {
-      background: var(--affine-hover-color);
+      background: var(--affine-background-secondary-color, #f8f9fa);
+      border-color: var(--affine-border-color, #d0d0d0);
+    }
+
+    .secondary-button:active {
+      background: var(--affine-background-secondary-color, #e8e9ea);
     }
   `;
 

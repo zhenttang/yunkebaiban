@@ -8,8 +8,9 @@ import { LitElement, html, css } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import type { EdgelessRootBlockComponent } from '@blocksuite/yunke-block-root';
 
-import { generateFlowchartOnEdgeless } from '../flowchart-generator-service.js';
 import { DSL_EXAMPLES } from '../examples.js';
+import './flowchart-editor-dialog.js';
+import type { FlowchartEditorDialog } from './flowchart-editor-dialog.js';
 
 @customElement('flowchart-tool-button')
 export class FlowchartToolButton extends WithDisposable(LitElement) {
@@ -51,36 +52,38 @@ export class FlowchartToolButton extends WithDisposable(LitElement) {
   @property({ attribute: false })
   accessor edgeless!: EdgelessRootBlockComponent;
 
-  private _handleClick = () => {
-    // 使用简单示例生成流程图
-    const exampleCode = DSL_EXAMPLES.simple.code;
-    
-    // 直接从 edgeless 组件获取 service 和 surface
-    const service = this.edgeless.service;
-    if (!service || !service.surface) {
-      console.error('无法获取 Surface');
-      return;
+  private _editorDialog: FlowchartEditorDialog | null = null;
+
+  private _getOrCreateDialog(): FlowchartEditorDialog {
+    // 如果对话框已存在，直接返回
+    if (this._editorDialog && document.body.contains(this._editorDialog)) {
+      return this._editorDialog;
     }
-    
-    const surface = service.surface;
-    const viewport = service.viewport;
-    
-    // 在视口中心生成
-    const x = viewport.centerX;
-    const y = viewport.centerY;
-    
-    // 使用低级 API 直接生成
-    import('../element-generator.js').then(({ generateFlowchartAt }) => {
-      return generateFlowchartAt(surface, exampleCode, x, y, service);
-    }).then(result => {
-      console.log('✅ 流程图已生成:', {
-        节点数: result.nodeIds.size,
-        连线数: result.edgeIds.length,
-      });
-    }).catch(err => {
-      console.error('生成流程图失败:', err);
-    });
+
+    // 创建新的对话框并挂载到 body
+    const dialog = document.createElement('flowchart-editor-dialog') as FlowchartEditorDialog;
+    dialog.edgeless = this.edgeless;
+    document.body.appendChild(dialog);
+    this._editorDialog = dialog;
+
+    return dialog;
+  }
+
+  private _handleClick = () => {
+    // 获取或创建对话框
+    const dialog = this._getOrCreateDialog();
+    // 打开对话框，传入初始代码
+    dialog.show(DSL_EXAMPLES.simple.code);
   };
+
+  override disconnectedCallback() {
+    super.disconnectedCallback();
+    // 清理：移除挂载到 body 的对话框
+    if (this._editorDialog && document.body.contains(this._editorDialog)) {
+      document.body.removeChild(this._editorDialog);
+      this._editorDialog = null;
+    }
+  }
 
   override render() {
     return html`
