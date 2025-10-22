@@ -659,6 +659,11 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
 
           // 使用带认证的REST API替代GraphQL查询
           try {
+            console.log('☁️ [CloudWorkspace] 开始获取云端工作区列表:', {
+              accountId,
+              serverId: this.server.id
+            });
+            
             const response = await this.fetchWithAuth('/api/workspaces', {
               method: 'GET',
               headers: {
@@ -667,11 +672,22 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
               signal,
             });
             
+            console.log('☁️ [CloudWorkspace] API响应状态:', {
+              ok: response.ok,
+              status: response.status
+            });
+            
             if (!response.ok) {
               throw new Error(`获取工作区列表失败: ${response.status}`);
             }
             
             const data = await response.json();
+            
+            console.log('☁️ [CloudWorkspace] API响应数据:', {
+              hasWorkspaces: !!data.workspaces,
+              workspacesCount: data.workspaces?.length || 0,
+              workspaceIds: data.workspaces?.map((item: any) => (item.workspace || item).id) || []
+            });
             
             if (!data.workspaces) {
               return {
@@ -694,12 +710,17 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
               };
             });
             
+            console.log('☁️ [CloudWorkspace] 处理后的工作区列表:', {
+              count: workspaces.length,
+              workspaces: workspaces.map((w: any) => ({ id: w.id, flavour: w.flavour }))
+            });
+            
             return {
               accountId,
               workspaces,
             };
           } catch (error) {
-            console.error('获取工作区列表失败', error);
+            console.error('❌ [CloudWorkspace] 获取工作区列表失败:', error);
             return {
               accountId,
               workspaces: [],
@@ -715,14 +736,26 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
                 if (!b || !b.id) return -1;
                 return a.id.localeCompare(b.id);
               });
+              
+              console.log('☁️ [CloudWorkspace] 更新 workspaces$ LiveData:', {
+                accountId,
+                sortedCount: sorted.length,
+                sortedIds: sorted.map((w: any) => w.id),
+                cacheKey: getCloudWorkspaceCacheKey(this.server.id) + accountId
+              });
+              
               this.globalState.set(
                 getCloudWorkspaceCacheKey(this.server.id) + accountId,
                 sorted
               );
               if (!isEqual(this.workspaces$.value, sorted)) {
+                console.log('☁️ [CloudWorkspace] workspaces$ 值已更新');
                 this.workspaces$.next(sorted);
+              } else {
+                console.log('☁️ [CloudWorkspace] workspaces$ 值未变化，跳过更新');
               }
             } else {
+              console.log('☁️ [CloudWorkspace] 无数据，清空 workspaces$');
               this.workspaces$.next([]);
             }
           }),

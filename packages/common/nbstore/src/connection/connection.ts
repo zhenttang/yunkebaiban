@@ -219,17 +219,29 @@ export abstract class AutoReconnectConnection<T = any>
   }
 
   waitForConnected(signal?: AbortSignal) {
+    console.log('[Connection Debug] waitForConnected 被调用:', {
+      connectionType: this.constructor.name,
+      currentStatus: this.status,
+      hasError: !!this._error,
+      errorMessage: this._error?.message
+    });
 
     return new Promise<void>((resolve, reject) => {
       if (this.status === 'connected') {
+        console.log('[Connection Debug] 已经连接，立即返回');
         resolve();
         return;
       }
 
-
+      console.log('[Connection Debug] 等待连接状态变为 connected...');
       const off = this.onStatusChanged(status => {
+        console.log('[Connection Debug] 连接状态变化:', {
+          newStatus: status,
+          connectionType: this.constructor.name
+        });
 
         if (status === 'connected') {
+          console.log('[Connection Debug] 连接成功！');
           resolve();
           off();
         }

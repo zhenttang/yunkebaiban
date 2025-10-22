@@ -74,7 +74,16 @@ export function setLocalWorkspaceIds(
 }
 
 class LocalWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
-  constructor(private readonly framework: FrameworkProvider) {}
+  constructor(private readonly framework: FrameworkProvider) {
+    console.log('📍 [LocalWorkspace] 存储类型配置:', {
+      BUILD_CONFIG_isWeb: BUILD_CONFIG.isWeb,
+      BUILD_CONFIG_isElectron: BUILD_CONFIG.isElectron,
+      BUILD_CONFIG_isIOS: BUILD_CONFIG.isIOS,
+      BUILD_CONFIG_isAndroid: BUILD_CONFIG.isAndroid,
+      selectedDocStorageType: this.DocStorageType.name || 'IndexedDBDocStorage',
+      selectedBlobStorageType: this.BlobStorageType.name || 'IndexedDBBlobStorage'
+    });
+  }
 
   readonly flavour = 'local';
   readonly notifyChannel = new BroadcastChannel(
@@ -88,6 +97,7 @@ class LocalWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
     : BUILD_CONFIG.isElectron || BUILD_CONFIG.isIOS || BUILD_CONFIG.isAndroid
       ? SqliteDocStorage
       : IndexedDBDocStorage;
+  
   DocStorageV1Type = BUILD_CONFIG.isElectron
     ? SqliteV1DocStorage
     : BUILD_CONFIG.isWeb || BUILD_CONFIG.isMobileWeb
@@ -219,11 +229,28 @@ class LocalWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
     new Observable<WorkspaceMetadata[]>(subscriber => {
       let last: WorkspaceMetadata[] | null = null;
       const emit = () => {
-        const value = getLocalWorkspaceIds().map(id => ({
+        const ids = getLocalWorkspaceIds();
+        console.log('📁 [LocalWorkspace] 读取本地工作区ID列表:', {
+          count: ids.length,
+          ids
+        });
+        
+        const value = ids.map(id => ({
           id,
           flavour: 'local',
         }));
-        if (isEqual(last, value)) return;
+        
+        console.log('📁 [LocalWorkspace] 构造工作区元数据列表:', {
+          count: value.length,
+          workspaces: value.map(w => ({ id: w.id, flavour: w.flavour }))
+        });
+        
+        if (isEqual(last, value)) {
+          console.log('📁 [LocalWorkspace] 工作区列表未变化，跳过发送');
+          return;
+        }
+        
+        console.log('📁 [LocalWorkspace] 工作区列表已变化，发送更新');
         subscriber.next(value);
         last = value;
       };

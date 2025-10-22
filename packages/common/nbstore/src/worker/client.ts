@@ -74,23 +74,56 @@ export class StoreManagerClient {
 
     // 创建云端 DocStorage（延迟初始化，不阻塞）
     let cloudDocStorage: any = undefined;
+    console.log('🔍 [StoreManagerClient] 开始初始化云端存储，检查配置:', {
+      hasOptions: !!options,
+      hasRemotes: !!(options && options.remotes),
+      remotesCount: options?.remotes ? Object.keys(options.remotes).length : 0,
+      remotesKeys: options?.remotes ? Object.keys(options.remotes) : []
+    });
+    
     const cloudDocStoragePromise = (async () => {
       try {
         const remotes = options.remotes || {};
+        console.log('🔍 [StoreManagerClient] 遍历 remotes 配置:', {
+          remotesEntries: Object.entries(remotes).map(([key, val]) => ({
+            key,
+            hasDoc: !!(val as any).doc,
+            docName: (val as any).doc?.name
+          }))
+        });
+        
         for (const [peerId, peerOptions] of Object.entries(remotes)) {
+          console.log('🔍 [StoreManagerClient] 检查 peer:', {
+            peerId,
+            docName: peerOptions.doc?.name,
+            isCloudDocStorage: peerOptions.doc?.name === 'CloudDocStorage'
+          });
+          
           if (peerOptions.doc?.name === 'CloudDocStorage') {
             console.log('🌐 [StoreManagerClient] 检测到云端存储配置，创建CloudDocStorage实例');
             const { CloudDocStorage } = await import('@yunke/nbstore/cloud');
             cloudDocStorage = new CloudDocStorage(peerOptions.doc.opts as any);
+            console.log('🌐 [StoreManagerClient] CloudDocStorage 实例已创建，开始连接...');
             await cloudDocStorage.connection.connect();
+            console.log('🌐 [StoreManagerClient] 连接已启动，等待连接完成...');
             await cloudDocStorage.connection.waitForConnected();
             console.log('✅ [StoreManagerClient] CloudDocStorage初始化成功');
             break;
           }
         }
+        
+        if (!cloudDocStorage) {
+          console.warn('⚠️ [StoreManagerClient] 未找到CloudDocStorage配置，云端存储将不可用');
+        }
       } catch (error) {
         console.error('❌ [StoreManagerClient] 创建CloudDocStorage失败:', error);
       }
+      
+      console.log('🌐 [StoreManagerClient] cloudDocStoragePromise 完成:', {
+        hasCloudStorage: !!cloudDocStorage,
+        cloudStorageType: cloudDocStorage?.constructor?.name
+      });
+      
       return cloudDocStorage;
     })();
 
@@ -171,8 +204,14 @@ export class StoreClient {
     docSync: DocSyncImpl,
     workerDocSyncStorage: WorkerDocSyncStorage
   ): Promise<void> {
+    console.log('🌐 [StoreClient] 开始初始化云端同步...');
     try {
       const cloudDocStorage = await cloudDocStoragePromise;
+      console.log('🌐 [StoreClient] 云端存储Promise resolved:', {
+        hasStorage: !!cloudDocStorage,
+        storageType: cloudDocStorage?.constructor?.name
+      });
+      
       if (cloudDocStorage) {
         console.log('✅ [StoreClient] 云端存储已就绪，添加远程同步 Peer');
         const { DocSyncPeer } = await import('../sync/doc/peer');
@@ -186,6 +225,8 @@ export class StoreClient {
         );
         console.log('🚀 [StoreClient] 启动云端同步 Peer');
         docSync.start();
+      } else {
+        console.warn('⚠️ [StoreClient] 云端存储Promise resolved但值为空');
       }
     } catch (error) {
       console.error('❌ [StoreClient] 云端存储初始化失败:', error);
@@ -256,13 +297,30 @@ class WorkerDocStorage implements DocStorage {
     });
 
     // 如果 Worker 返回 null 且配置了云端存储，尝试从云端拉取
+    console.log('🔍 [WorkerDocStorage] 检查云端存储fallback:', {
+      resultIsNull: result === null,
+      hasCloudStoragePromise: !!this.cloudStoragePromise,
+      shouldTryCloud: result === null && !!this.cloudStoragePromise
+    });
+    
     if (result === null && this.cloudStoragePromise) {
       console.log('🌐 [WorkerDocStorage] Worker返回null，等待云端存储初始化...');
       try {
         const cloudStorage = await this.cloudStoragePromise;
+        console.log('🌐 [WorkerDocStorage] 云端存储Promise已resolve:', {
+          hasCloudStorage: !!cloudStorage,
+          cloudStorageType: cloudStorage?.constructor?.name
+        });
+        
         if (cloudStorage) {
           console.log('🌐 [WorkerDocStorage] 云端存储已就绪，尝试拉取:', { docId });
           const cloudResult = await cloudStorage.getDoc(docId);
+          console.log('🌐 [WorkerDocStorage] 云端getDoc结果:', {
+            hasResult: !!cloudResult,
+            binSize: cloudResult?.bin?.length || 0,
+            timestamp: cloudResult?.timestamp
+          });
+          
           if (cloudResult && cloudResult.bin && cloudResult.bin.length > 2) {
             console.log('✅ [WorkerDocStorage] 从云端拉取成功:', {
               docId,
@@ -278,11 +336,17 @@ class WorkerDocStorage implements DocStorage {
               origin: 'cloud-fallback'
             });
             return cloudResult;
+          } else {
+            console.warn('⚠️ [WorkerDocStorage] 云端返回的数据无效或为空');
           }
+        } else {
+          console.warn('⚠️ [WorkerDocStorage] 云端存储Promise resolved但值为null/undefined');
         }
       } catch (error) {
         console.error('❌ [WorkerDocStorage] 从云端拉取失败:', error);
       }
+    } else if (result === null) {
+      console.warn('⚠️ [WorkerDocStorage] Worker返回null，但没有配置云端存储');
     }
 
     return result;
