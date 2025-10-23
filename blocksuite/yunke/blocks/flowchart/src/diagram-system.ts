@@ -9,10 +9,12 @@ import { ParserRegistry, LayoutRegistry, RendererRegistry } from './core/diagram
 // 导入解析器
 import { LayeredParser } from './parsers/layered-parser.js';
 import { TreeParser } from './parsers/tree-parser.js';
+import { ErParser } from './parsers/er-parser.js';
 
 // 导入布局引擎
 import { LayeredLayoutEngine } from './layouts/layered-layout.js';
 import { TreeLayoutEngine } from './layouts/tree-layout.js';
+import { ErLayoutEngine } from './layouts/er-layout.js';
 
 // 导入渲染器
 import { SVGRendererV2 } from './renderers/svg-renderer-v2.js';
@@ -25,10 +27,12 @@ export function initializeDiagramSystem() {
   // ===== 注册解析器 =====
   ParserRegistry.register(new LayeredParser());
   ParserRegistry.register(new TreeParser());
+  ParserRegistry.register(new ErParser());
   
   // ===== 注册布局引擎 =====
   LayoutRegistry.register(new LayeredLayoutEngine());
   LayoutRegistry.register(new TreeLayoutEngine());
+  LayoutRegistry.register(new ErLayoutEngine());
   
   // ===== 注册渲染器 =====
   RendererRegistry.register(new SVGRendererV2());
@@ -50,8 +54,10 @@ if (typeof window !== 'undefined') {
 export * from './core/diagram-engine.js';
 export { LayeredParser } from './parsers/layered-parser.js';
 export { TreeParser } from './parsers/tree-parser.js';
+export { ErParser } from './parsers/er-parser.js';
 export { LayeredLayoutEngine } from './layouts/layered-layout.js';
 export { TreeLayoutEngine } from './layouts/tree-layout.js';
+export { ErLayoutEngine } from './layouts/er-layout.js';
 export { SVGRendererV2 } from './renderers/svg-renderer-v2.js';
 export { EdgelessRenderer, generateDiagramToEdgeless } from './renderers/edgeless-renderer.js';
 

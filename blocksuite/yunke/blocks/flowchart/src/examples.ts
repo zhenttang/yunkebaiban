@@ -349,5 +349,60 @@ export const DSL_EXAMPLES: Record<string, DslExample> = {
   }
 }`,
   },
-};
 
+  erCampusCard: {
+    name: '校园一卡通 ER',
+    description: '实体关系图示例',
+    code: `diagram "校园一卡通" type "er" {
+  entity student label "学生" column 0 row 1 {
+    attribute name label "姓名" side left
+    attribute major label "班级" side left
+    attribute phone label "手机号" side left
+    attribute dept label "院系" side top
+  }
+
+  entity card label "饭卡" column 1 row 1 {
+    attribute cardNo label "卡号" side top
+  }
+
+  entity canteen label "食堂" column 2 row 0 {
+    attribute code label "编号" side right
+  }
+
+  entity snack label "奶记" column 2 row 1 {
+    attribute shopCode label "编号" side right
+  }
+
+  entity shop label "超市" column 2 row 2 {
+    attribute marketCode label "编号" side right
+  }
+
+  entity office label "办公室" column 1 row 2
+
+  relationship use label "使用" {
+    from student cardinality "1"
+    to card cardinality "n"
+  }
+
+  relationship manage label "管理" {
+    from office cardinality "1"
+    to card cardinality "n"
+  }
+
+  relationship consumeCanteen label "消费" {
+    from card cardinality "n"
+    to canteen cardinality "1"
+  }
+
+  relationship consumeSnack label "消费" {
+    from card cardinality "n"
+    to snack cardinality "1"
+  }
+
+  relationship consumeShop label "消费" {
+    from card cardinality "n"
+    to shop cardinality "1"
+  }
+}`,
+  },
+};

@@ -312,6 +312,7 @@ export class FlowchartEditorDialog extends WithDisposable(LitElement) {
       // 检测是否使用新图表系统
       const isNewSystem = this._code.includes('type "layered"') || 
                          this._code.includes('type "tree"') ||
+                         this._code.includes('type "er"') ||
                          this._code.includes('layer ') ||
                          this._code.includes('root "');
       
@@ -373,6 +374,7 @@ export class FlowchartEditorDialog extends WithDisposable(LitElement) {
     // 检测是否使用新图表系统
     const isNewSystem = this._code.includes('type "layered"') || 
                        this._code.includes('type "tree"') ||
+                       this._code.includes('type "er"') ||
                        this._code.includes('layer ') ||
                        this._code.includes('root "');
     

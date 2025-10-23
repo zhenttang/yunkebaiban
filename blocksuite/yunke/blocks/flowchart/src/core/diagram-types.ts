@@ -25,6 +25,7 @@ export type LayoutType =
   | 'sequence'         // 时序布局
   | 'swimlane'         // 泳道布局
   | 'tree'             // 树形布局
+  | 'er'               // ER 布局
   | 'force'            // 力导向布局
   | 'circular'         // 环形布局
   | 'timeline';        // 时间线布局

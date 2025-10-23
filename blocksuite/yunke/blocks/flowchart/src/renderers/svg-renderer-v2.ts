@@ -174,9 +174,25 @@ export class SVGRendererV2 extends BaseRenderer {
     const pos = elem.position;
     const size = elem.size;
     const style = this.applyTheme('node', elem.style);
-    
+    const role = elem.data?.role as string | undefined;
+
+    if (role === 'entity') {
+      style.fillColor = style.fillColor || '#9ccc65';
+      style.strokeColor = style.strokeColor || '#558b2f';
+      style.strokeWidth = style.strokeWidth || 2;
+      style.radius = style.radius ?? 8;
+    } else if (role === 'attribute') {
+      style.fillColor = style.fillColor || '#ffffff';
+      style.strokeColor = style.strokeColor || '#3f51b5';
+      style.strokeWidth = style.strokeWidth || 2;
+    } else if (role === 'relationship') {
+      style.fillColor = style.fillColor || '#ffffff';
+      style.strokeColor = style.strokeColor || '#3f51b5';
+      style.strokeWidth = style.strokeWidth || 2;
+    }
+
     let svg = '';
-    
+
     // 根据形状类型渲染
     switch (elem.shape) {
       case 'rect':
@@ -332,8 +348,9 @@ export class SVGRendererV2 extends BaseRenderer {
     
     // 树状图连线不显示箭头
     const isTreeEdge = rel.data?.isTreeEdge || rel.data?.edgeType === 'tree-orthogonal';
-    const markerEnd = isTreeEdge ? '' : 'marker-end="url(#arrowhead)"';
-    
+    const isErEdge = rel.data?.edgeType?.startsWith('er-');
+    const markerEnd = isTreeEdge || isErEdge ? '' : 'marker-end="url(#arrowhead)"';
+
     let svg = `<path class="edge-line" 
       d="${path}" 
       stroke="${stroke}" 

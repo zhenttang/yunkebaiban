@@ -6,6 +6,7 @@
 
 import type { SurfaceBlockModel } from '@blocksuite/yunke-block-surface';
 import { ConnectorMode } from '@blocksuite/yunke-model';
+import { ConnectorPathGenerator } from '@blocksuite/yunke-gfx-connector';
 import type { EdgelessRootService } from '@blocksuite/yunke-block-root';
 import * as Y from 'yjs';
 
@@ -171,7 +172,24 @@ export class EdgelessRenderer extends BaseRenderer {
     const h = node.size.height;
     
     const style = this.applyTheme('node', node.style);
-    
+    const role = node.data?.role as string | undefined;
+
+    if (role === 'entity') {
+      style.fillColor = style.fillColor || '#9ccc65';
+      style.strokeColor = style.strokeColor || '#558b2f';
+      style.strokeWidth = style.strokeWidth || 2;
+      style.radius = style.radius ?? 8;
+    } else if (role === 'attribute') {
+      style.fillColor = style.fillColor || '#ffffff';
+      style.strokeColor = style.strokeColor || '#3f51b5';
+      style.strokeWidth = style.strokeWidth || 2;
+    } else if (role === 'relationship') {
+      style.fillColor = style.fillColor || '#ffffff';
+      style.strokeColor = style.strokeColor || '#3f51b5';
+      style.strokeWidth = style.strokeWidth || 2;
+      style.radius = style.radius ?? 6;
+    }
+
     // 根据形状类型选择
     const shapeType = this.mapShapeType(node.shape);
     const fillColor = style.fillColor || '#ffffff';
@@ -179,6 +197,10 @@ export class EdgelessRenderer extends BaseRenderer {
     const strokeWidth = style.strokeWidth || 1;
     const radius = style.radius || 4;
     
+    const textColor = role === 'entity' || role === 'attribute' || role === 'relationship'
+      ? '#1a1a1a'
+      : '#333333';
+
     const nodeId = this.surface.addElement({
       type: 'shape',
       xywh: `[${x},${y},${w},${h}]`,
@@ -198,7 +220,7 @@ export class EdgelessRenderer extends BaseRenderer {
       fontSize: 14,
       fontWeight: '400',
       fontStyle: 'normal',
-      color: '#333333',
+      color: textColor,
       // 阴影效果（如果支持）
       // shadow: true,
     });
@@ -228,12 +250,21 @@ export class EdgelessRenderer extends BaseRenderer {
     
     // 树状图连线使用自定义路径点，其他图使用 Connector 自动路由
     const isTreeEdge = edge.data?.isTreeEdge || edge.data?.edgeType?.startsWith('tree-');
+    const isErEdge = edge.data?.edgeType?.startsWith('er-');
 
-    const endpointStyle = isTreeEdge
+    const endpointStyle = isTreeEdge || isErEdge
       ? 'None'
       : edge.style?.targetArrow === 'arrow'
         ? 'Arrow'
         : 'None';
+
+    const labelText = edge.label
+      ? (() => {
+          const text = new Y.Text();
+          text.insert(0, edge.label);
+          return text;
+        })()
+      : undefined;
 
     const connectorId = this.surface.addElement({
       type: 'connector',
@@ -249,7 +280,8 @@ export class EdgelessRenderer extends BaseRenderer {
       // 如果有标签
       ...(edge.label
         ? {
-            text: new Y.Text(edge.label),
+            text: labelText,
+            labelDisplay: true,
             labelStyle: {
               fontFamily: 'Inter',
               fontSize: 12,
@@ -260,6 +292,15 @@ export class EdgelessRenderer extends BaseRenderer {
           }
         : {}),
     });
+
+    const connector = this.surface.getElementById(connectorId);
+    if (connector) {
+      ConnectorPathGenerator.updatePath(
+        connector as any,
+        null,
+        (id: string) => this.surface.getElementById(id)
+      );
+    }
 
     return connectorId;
   }

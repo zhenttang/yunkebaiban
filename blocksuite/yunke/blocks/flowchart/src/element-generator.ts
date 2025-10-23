@@ -149,6 +149,14 @@ export class FlowchartElementGenerator {
     
     console.log('创建连线:', { from: edge.from, to: edge.to, sourceId, targetId, label: edge.label });
     
+    const labelText = edge.label
+      ? (() => {
+          const text = new Y.Text();
+          text.insert(0, edge.label);
+          return text;
+        })()
+      : undefined;
+
     const connectorId = this.surface.addElement({
       type: 'connector',
       mode: ConnectorMode.Orthogonal,
@@ -162,7 +170,7 @@ export class FlowchartElementGenerator {
       rearEndpointStyle: 'Arrow',
       // 如果有标签，添加文本
       ...(edge.label ? {
-        text: new Y.Text(edge.label),
+        text: labelText,
         labelDisplay: true,
         labelStyle: {
           fontFamily: 'Inter',
