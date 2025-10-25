@@ -314,7 +314,7 @@ const pureDarkTheme = {
   quoteColor: 'rgba(142, 141, 145, 1)',
   listColor: 'rgba(156, 155, 160, 1)',
   linkColor: '#78BEFF',
-  edgelessGridColor: 'rgba(49, 49, 49, 0.35)',
+  edgelessGridColor: 'rgba(114, 114, 114, 0.8)',
   successColor: 'rgb(13, 162, 107)',
   warningColor: 'rgb(188, 54, 42)',
   errorColor: 'rgb(188, 54, 42)',

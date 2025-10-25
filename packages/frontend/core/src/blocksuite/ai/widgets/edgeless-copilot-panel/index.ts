@@ -47,7 +47,12 @@ export class EdgelessCopilotPanel extends WithDisposable(LitElement) {
     }
 
     .edgeless-copilot-panel[data-app-theme='dark'] ai-item {
-      background: blue;
+      background: ${unsafeCSS(darkCssVariables['--yunke-background-overlay-panel-color'])};
+      color: ${unsafeCSS(darkCssVariables['--yunke-text-primary-color'])};
+    }
+
+    .edgeless-copilot-panel[data-app-theme='dark'] ai-item:hover {
+      background: ${unsafeCSS(darkCssVariables['--yunke-hover-color'])};
     }
 
     ${scrollbarStyle('.edgeless-copilot-panel')}

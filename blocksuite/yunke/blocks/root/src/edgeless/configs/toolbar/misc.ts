@@ -452,13 +452,13 @@ export const builtinLockedToolbarConfig = {
               align-items: center;
               gap: 10px;
               padding: 6px 12px;
-              background: rgba(255, 255, 255, 0.95);
-              border: 1px solid rgba(0, 0, 0, 0.1);
+              background: var(--yunke-background-overlay-panel-color);
+              border: 1px solid var(--yunke-border-color);
               border-radius: 20px;
               cursor: pointer;
               user-select: none;
               backdrop-filter: blur(8px);
-              box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+              box-shadow: var(--yunke-shadow-2);
               transition: all 0.2s ease;
               min-width: 100px;
             "
@@ -511,7 +511,7 @@ export const builtinLockedToolbarConfig = {
               <div style="
                 width: 100%;
                 height: 4px;
-                background: rgba(0, 0, 0, 0.08);
+                background: var(--yunke-border-color);
                 border-radius: 2px;
                 overflow: hidden;
                 position: relative;

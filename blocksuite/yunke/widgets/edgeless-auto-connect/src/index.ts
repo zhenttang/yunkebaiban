@@ -141,9 +141,9 @@ export class EdgelessAutoConnectWidget extends WidgetComponent<RootBlockModel> {
       width: 48px;
       padding: 4px;
       border-radius: 58px;
-      border: 1px solid rgba(227, 226, 228, 1);
+      border: 1px solid var(--yunke-border-color);
       transition: opacity 0.5s ease-in-out;
-      background: rgba(251, 251, 252, 1);
+      background: var(--yunke-background-overlay-panel-color);
       display: flex;
       align-items: center;
       justify-content: space-between;
