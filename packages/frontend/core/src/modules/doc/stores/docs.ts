@@ -58,6 +58,12 @@ export class DocsStore extends Store {
   createDoc(docId?: string) {
     const id = docId ?? nanoid();
 
+    console.log('📝 [DocsStore.createDoc] 开始创建文档:', {
+      newDocId: id,
+      workspaceId: this.workspaceService.workspace.id,
+      rootYDocGuid: this.workspaceService.workspace.rootYDoc.guid
+    });
+
     transact(
       this.workspaceService.workspace.rootYDoc,
       () => {
@@ -66,9 +72,11 @@ export class DocsStore extends Store {
           .get('pages');
 
         if (!docs || !(docs instanceof YArray)) {
+          console.error('❌ [DocsStore.createDoc] pages YArray 不存在！');
           return;
         }
 
+        console.log('📝 [DocsStore.createDoc] 添加到 pages YArray，当前文档数:', docs.length);
         docs.push([
           new YMap([
             ['id', id],
@@ -77,9 +85,12 @@ export class DocsStore extends Store {
             ['tags', new YArray()],
           ]),
         ]);
+        console.log('✅ [DocsStore.createDoc] 添加成功，新文档数:', docs.length);
       },
       { force: true }
     );
+    
+    console.log('📝 [DocsStore.createDoc] transact 完成，返回 ID:', id);
 
     return id;
   }

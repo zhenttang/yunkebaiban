@@ -4,6 +4,7 @@ import { useI18n } from '@yunke/i18n';
 import { FavoritedIcon, FavoriteIcon } from '@blocksuite/icons/rc';
 import { cssVar } from '@toeverything/theme';
 import Lottie from 'lottie-react';
+import type { MouseEvent } from 'react';
 import { forwardRef, useCallback, useState } from 'react';
 
 import favoritedAnimation from './favorited-animation/data.json';
@@ -17,7 +18,7 @@ export const FavoriteTag = forwardRef<
   const [playAnimation, setPlayAnimation] = useState(false);
   const t = useI18n();
   const handleClick = useCallback(
-    (e: React.MouseEvent<HTMLButtonElement>) => {
+    (e: MouseEvent<HTMLButtonElement>) => {
       e.stopPropagation();
       e.preventDefault();
       onClick?.(e);

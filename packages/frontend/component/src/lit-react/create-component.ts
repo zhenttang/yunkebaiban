@@ -5,7 +5,7 @@
  */
 
 import type { PropertyDeclaration } from 'lit';
-import type React from 'react';
+import React from 'react';
 
 type DistributiveOmit<T, K extends string | number | symbol> = T extends any
   ? K extends keyof T

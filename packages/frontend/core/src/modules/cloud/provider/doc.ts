@@ -22,6 +22,7 @@ export interface DocCollaborator {
 
 export interface CreateDocRequest {
   title?: string;
+  docId?: string;
 }
 
 export interface UpdateDocRequest {

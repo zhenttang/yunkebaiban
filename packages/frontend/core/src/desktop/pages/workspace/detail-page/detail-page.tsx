@@ -318,7 +318,7 @@ const DetailPageImpl = memo(function DetailPageImpl() {
             </Scrollable.Root>
             <EditorOutlineViewer
               editor={editorContainer?.host ?? null}
-              show={mode === 'page' && !isSideBarOpen}
+              show={mode === 'page'}
               openOutlinePanel={openOutlinePanel}
             />
             {mode === 'page' && <BlockCommandsSidebar />}

@@ -1,4 +1,4 @@
-import { NoteDisplayMode } from '@blocksuite/yunke-model';
+import { NoteDisplayMode, type ParagraphBlockModel } from '@blocksuite/yunke-model';
 import { DocModeProvider } from '@blocksuite/yunke-shared/services';
 import { scrollbarStyle } from '@blocksuite/yunke-shared/styles';
 import { SignalWatcher, WithDisposable } from '@blocksuite/global/lit';
@@ -232,12 +232,32 @@ export class OutlineViewer extends SignalWatcher(
       true
     );
 
-    if (headingBlocks.length === 0) return nothing;
+    if (headingBlocks.length === 0) {
+      console.debug('[OutlineViewer] no heading blocks detected', {
+        title: this.editor.store.meta?.title,
+        childCount: this.editor.store.root?.children.length ?? 0,
+      });
+      return nothing;
+    }
 
     const items = [
       ...(this.editor.store.meta?.title !== '' ? [this.editor.store.root] : []),
       ...headingBlocks,
     ];
+
+    const headingDebugInfo = items.map(block => {
+      const propsWithType = (block as ParagraphBlockModel).props as
+        | ParagraphBlockModel['props']
+        | undefined;
+      const typeValue = propsWithType?.type$?.value;
+      return {
+        id: block.id,
+        flavour: block.flavour,
+        type: typeValue ?? (block === this.editor.store.root ? 'root' : 'unknown'),
+      };
+    });
+
+    console.debug('[OutlineViewer] collected headings', headingDebugInfo);
 
     const toggleOutlinePanelButton =
       this.toggleOutlinePanel !== null

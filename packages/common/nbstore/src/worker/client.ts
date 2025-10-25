@@ -257,133 +257,186 @@ class WorkerDocStorage implements DocStorage {
   readonly storageType = 'doc';
   readonly isReadonly = false;
 
+  private async getCloudStorage() {
+    if (!this.cloudStoragePromise) {
+      throw new Error('❌ 云端存储未配置，无法读取文档');
+    }
+    const cloudStorage = await this.cloudStoragePromise;
+    if (!cloudStorage) {
+      throw new Error('❌ 云端存储初始化失败');
+    }
+    return cloudStorage;
+  }
+
   async getDoc(docId: string) {
-    // console.log('🔧 [WorkerDocStorage] Web Worker代理调用:', {
-    //   docId: docId,
-    //   timestamp: new Date().toISOString(),
-    //   workerCall: 'docStorage.getDoc',
-    //   clientExists: !!this.client,
-    //   spaceId: this.spaceId
-    // });
-
-    // 尝试获取 Web Worker 中的存储类型信息
-    try {
-      // console.log('🔧 [WorkerDocStorage] 尝试获取Web Worker存储信息...');
-      const storageInfo = await this.client.call(
-        'docStorage.getStorageInfo' as any
-      );
-      // console.log('🔧 [WorkerDocStorage] Web Worker存储信息:', storageInfo);
-      // 同步 spaceId，确保后续 HTTP 回退使用正确的工作空间ID
-      if (storageInfo?.spaceId && !this.spaceId) {
-        this.spaceId = storageInfo.spaceId;
-        // console.log('🔧 [WorkerDocStorage] 同步spaceId成功:', this.spaceId);
-      }
-    } catch (e) {
-      // console.log('🔧 [WorkerDocStorage] 无法获取存储信息 (正常，方法不存在):', e.message);
-    }
-
-    const result = await this.client.call('docStorage.getDoc', docId);
-
-    // console.log('🔧 [WorkerDocStorage] Web Worker响应结果:', {
-    //   docId: docId,
-    //   hasResult: !!result,
-    //   resultBinSize: result?.bin?.length || 0,
-    //   resultTimestamp: result?.timestamp,
-    //   isNull: result === null,
-    //   isUndefined: result === undefined,
-    //   resultType: typeof result,
-    //   resultHex: result?.bin ?
-    //     Array.from(result.bin.slice(0, 20)).map(b => b.toString(16).padStart(2, '0')).join(' ') : 'null'
-    // });
-
-    // 如果 Worker 返回 null 且配置了云端存储，尝试从云端拉取
-    // console.log('🔍 [WorkerDocStorage] 检查云端存储fallback:', {
-    //   resultIsNull: result === null,
-    //   hasCloudStoragePromise: !!this.cloudStoragePromise,
-    //   shouldTryCloud: result === null && !!this.cloudStoragePromise
-    // });
+    console.log('🌐 [WorkerDocStorage] 直接从云端获取文档（跳过IndexedDB）:', { docId });
     
-    if (result === null && this.cloudStoragePromise) {
-      // console.log('🌐 [WorkerDocStorage] Worker返回null，等待云端存储初始化...');
-      try {
-        const cloudStorage = await this.cloudStoragePromise;
-        // console.log('🌐 [WorkerDocStorage] 云端存储Promise已resolve:', {
-        //   hasCloudStorage: !!cloudStorage,
-        //   cloudStorageType: cloudStorage?.constructor?.name
-        // });
-        
-        if (cloudStorage) {
-          // console.log('🌐 [WorkerDocStorage] 云端存储已就绪，尝试拉取:', { docId });
-          const cloudResult = await cloudStorage.getDoc(docId);
-          // console.log('🌐 [WorkerDocStorage] 云端getDoc结果:', {
-          //   hasResult: !!cloudResult,
-          //   binSize: cloudResult?.bin?.length || 0,
-          //   timestamp: cloudResult?.timestamp
-          // });
-          
-          if (cloudResult && cloudResult.bin && cloudResult.bin.length > 2) {
-            // console.log('✅ [WorkerDocStorage] 从云端拉取成功:', {
-            //   docId,
-            //   binSize: cloudResult.bin.length
-            // });
-            // 将云端数据保存到本地
-            await this.client.call('docStorage.pushDocUpdate', {
-              update: {
-                docId,
-                bin: cloudResult.bin,
-                timestamp: cloudResult.timestamp
-              },
-              origin: 'cloud-fallback'
-            });
-            return cloudResult;
-          } else {
-            // console.warn('⚠️ [WorkerDocStorage] 云端返回的数据无效或为空');
-          }
-        } else {
-          // console.warn('⚠️ [WorkerDocStorage] 云端存储Promise resolved但值为null/undefined');
-        }
-      } catch (error) {
-        console.error('❌ [WorkerDocStorage] 从云端拉取失败:', error);
+    try {
+      const cloudStorage = await this.getCloudStorage();
+      const cloudResult = await cloudStorage.getDoc(docId);
+      
+      if (cloudResult) {
+        console.log('✅ [WorkerDocStorage] 云端获取成功:', {
+          docId,
+          binSize: cloudResult.bin?.length || 0,
+          timestamp: cloudResult.timestamp
+        });
+        return cloudResult;
+      } else {
+        console.log('ℹ️ [WorkerDocStorage] 云端文档不存在:', { docId });
+        return null;
       }
-    } else if (result === null) {
-      // console.warn('⚠️ [WorkerDocStorage] Worker返回null，但没有配置云端存储');
+    } catch (error) {
+      console.error('❌ [WorkerDocStorage] 云端获取失败:', {
+        docId,
+        error: error instanceof Error ? error.message : String(error)
+      });
+      // 不再fallback到IndexedDB，直接返回null
+      return null;
     }
-
-    return result;
   }
 
   async getDocDiff(docId: string, state?: Uint8Array) {
-    return this.client.call('docStorage.getDocDiff', { docId, state });
+    console.log('🌐 [WorkerDocStorage] 直接从云端获取文档差异:', { docId });
+    try {
+      const cloudStorage = await this.getCloudStorage();
+      return await cloudStorage.getDocDiff(docId, state);
+    } catch (error) {
+      console.error('❌ [WorkerDocStorage] 云端获取差异失败:', error);
+      return null;
+    }
   }
 
   async pushDocUpdate(update: DocUpdate, origin?: string) {
-    return this.client.call('docStorage.pushDocUpdate', { update, origin });
+    console.log('🌐 [WorkerDocStorage] 直接推送到云端（跳过IndexedDB）:', {
+      docId: update.docId,
+      binSize: update.bin.length,
+      origin
+    });
+    
+    try {
+      const cloudStorage = await this.getCloudStorage();
+      const result = await cloudStorage.pushDocUpdate(update, origin);
+      
+      console.log('✅ [WorkerDocStorage] 云端保存成功:', {
+        docId: update.docId,
+        timestamp: result
+      });
+      
+      return result;
+    } catch (error) {
+      console.error('❌ [WorkerDocStorage] 云端保存失败:', {
+        docId: update.docId,
+        error: error instanceof Error ? error.message : String(error)
+      });
+      throw error;
+    }
   }
 
   async getDocTimestamp(docId: string) {
-    return this.client.call('docStorage.getDocTimestamp', docId);
+    console.log('🌐 [WorkerDocStorage] 从云端获取文档时间戳:', { docId });
+    try {
+      const cloudStorage = await this.getCloudStorage();
+      return await cloudStorage.getDocTimestamp(docId);
+    } catch (error) {
+      console.error('❌ [WorkerDocStorage] 获取时间戳失败:', error);
+      return null;
+    }
   }
 
   async getDocTimestamps(after?: Date) {
-    return this.client.call('docStorage.getDocTimestamps', after ?? null);
+    console.log('🌐 [WorkerDocStorage] 从云端获取文档时间戳列表');
+    try {
+      const cloudStorage = await this.getCloudStorage();
+      return await cloudStorage.getDocTimestamps(after);
+    } catch (error) {
+      console.error('❌ [WorkerDocStorage] 获取时间戳列表失败:', error);
+      return {};
+    }
   }
 
   async deleteDoc(docId: string) {
-    return this.client.call('docStorage.deleteDoc', docId);
+    console.log('🌐 [WorkerDocStorage] 从云端删除文档:', { docId });
+    try {
+      const cloudStorage = await this.getCloudStorage();
+      return await cloudStorage.deleteDoc(docId);
+    } catch (error) {
+      console.error('❌ [WorkerDocStorage] 删除文档失败:', error);
+      throw error;
+    }
   }
 
   subscribeDocUpdate(callback: (update: DocRecord, origin?: string) => void) {
-    const subscription = this.client
-      .ob$('docStorage.subscribeDocUpdate')
-      .subscribe(value => {
-        callback(value.update, value.origin);
+    console.log('🔔 [WorkerDocStorage] 订阅云端文档更新');
+    
+    // 直接订阅云端存储的更新
+    let unsubscribe: (() => void) | null = null;
+    let isUnsubscribed = false;
+    
+    this.getCloudStorage()
+      .then(async cloudStorage => {
+        if (isUnsubscribed) {
+          console.log('⚠️ [WorkerDocStorage] 订阅已取消，跳过');
+          return;
+        }
+        
+        // 确保连接完成
+        await cloudStorage.connection.waitForConnected();
+        
+        if (isUnsubscribed) {
+          console.log('⚠️ [WorkerDocStorage] 订阅已取消，跳过');
+          return;
+        }
+        
+        console.log('✅ [WorkerDocStorage] 已连接到云端存储订阅');
+        unsubscribe = cloudStorage.subscribeDocUpdate(callback);
+      })
+      .catch(error => {
+        console.error('❌ [WorkerDocStorage] 订阅云端更新失败:', error);
       });
+    
     return () => {
-      subscription.unsubscribe();
+      isUnsubscribed = true;
+      if (unsubscribe) {
+        unsubscribe();
+      }
     };
   }
 
-  connection = new WorkerDocConnection(this.client);
+  connection = new CloudDocConnection(this.cloudStoragePromise);
+}
+
+class CloudDocConnection extends DummyConnection {
+  constructor(private readonly cloudStoragePromise?: Promise<any>) {
+    super();
+  }
+
+  promise: Promise<void> | undefined;
+
+  override async waitForConnected(): Promise<void> {
+    if (this.promise) {
+      return this.promise;
+    }
+    
+    console.log('🔌 [CloudDocConnection] 等待云端存储连接...');
+    
+    this.promise = (async () => {
+      if (!this.cloudStoragePromise) {
+        throw new Error('❌ 云端存储未配置');
+      }
+      
+      const cloudStorage = await this.cloudStoragePromise;
+      if (!cloudStorage) {
+        throw new Error('❌ 云端存储初始化失败');
+      }
+      
+      // 等待云端存储连接
+      await cloudStorage.connection.waitForConnected();
+      console.log('✅ [CloudDocConnection] 云端存储已连接');
+    })();
+    
+    return this.promise;
+  }
 }
 
 class WorkerDocConnection extends DummyConnection {

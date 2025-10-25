@@ -8,6 +8,12 @@ export type XYWH = [number, number, number, number];
  */
 export type SerializedXYWH = `[${number},${number},${number},${number}]`;
 
+const DEFAULT_XYWH: XYWH = [0, 0, 100, 100];
+
+let missingValueWarned = false;
+let nanValueWarned = false;
+let parseErrorWarned = false;
+
 export function serializeXYWH(
   x: number,
   y: number,
@@ -23,12 +29,28 @@ export function serializeXYWH(
   return `[${safeX},${safeY},${safeW},${safeH}]`;
 }
 
-export function deserializeXYWH(xywh: string): XYWH {
+function getFallbackXYWH(): XYWH {
+  // 返回副本，避免上层代码意外修改默认数组
+  return [...DEFAULT_XYWH];
+}
+
+export function deserializeXYWH(xywh: string | null | undefined): XYWH {
+  if (typeof xywh !== 'string' || xywh.length === 0) {
+    if (!missingValueWarned) {
+      console.warn('[XYWH] Missing serialized xywh, using fallback values.');
+      missingValueWarned = true;
+    }
+    return getFallbackXYWH();
+  }
+
   try {
     // 检查是否包含NaN字符串
     if (xywh.includes('NaN')) {
-      console.warn('XYWH contains NaN values, using defaults:', xywh);
-      return [0, 0, 100, 100];
+      if (!nanValueWarned) {
+        console.warn('XYWH contains NaN values, using defaults:', xywh);
+        nanValueWarned = true;
+      }
+      return getFallbackXYWH();
     }
     
     const parsed = JSON.parse(xywh) as XYWH;
@@ -42,9 +64,11 @@ export function deserializeXYWH(xywh: string): XYWH {
       isNaN(h) ? 100 : h
     ];
   } catch (e) {
-    console.error('Failed to deserialize xywh', xywh);
-    console.error(e);
+    if (!parseErrorWarned) {
+      console.error('Failed to deserialize xywh', xywh, e);
+      parseErrorWarned = true;
+    }
 
-    return [0, 0, 100, 100]; // 增加默认宽高
+    return getFallbackXYWH(); // 增加默认宽高
   }
 }

@@ -46,10 +46,20 @@ export async function getIdConverter(
   return {
     newIdToOldId(newId: string) {
       if (newId.startsWith(`db$`)) {
+        const alreadyExpandedPrefix = `db$${spaceId}$`;
+        if (newId.startsWith(alreadyExpandedPrefix)) {
+          return newId;
+        }
         // db$docId -> db$${spaceId}$docId
-        return newId.replace(`db$`, `db$${spaceId}$`);
+        return newId.replace(`db$`, alreadyExpandedPrefix);
       }
       if (newId.startsWith(`userdata$`)) {
+        const alreadyExpandedPattern = new RegExp(
+          `^userdata\\$[\\w-]+\\$${spaceId}\\$`
+        );
+        if (alreadyExpandedPattern.test(newId)) {
+          return newId;
+        }
         // userdata$userId$docId -> userdata$userId$spaceId$docId
         return newId.replace(
           new RegExp(`^(userdata\\$[\\w-]+)\\$([^\\$]+)`),

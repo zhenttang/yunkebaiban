@@ -1,5 +1,6 @@
 import { WriterInfoServiceExtension } from '@blocksuite/yunke/shared/services';
 import { OnEvent, Service } from '@toeverything/infra';
+import { getOrCreateSessionId } from '@yunke/nbstore';
 
 import { type Workspace, WorkspaceInitialized } from '../../workspace';
 import type { DocImpl } from '../../workspace/impls/doc';
@@ -22,8 +23,13 @@ export class BlocksuiteWriterInfoService extends Service {
 
     const setWriterInfo = (doc: DocImpl) => {
       const account = this.workspaceServerService.server?.account$.value;
+      const sessionId = getOrCreateSessionId();
       doc.awarenessStore.awareness.setLocalStateField('user', {
+        id: account?.id,
         name: account?.label,
+        rawName: account?.label,
+        sessionId,
+        clientId: doc.awarenessStore.awareness.doc.clientID,
       });
       
       // 检查是否已有WriterInfo扩展，避免重复添加

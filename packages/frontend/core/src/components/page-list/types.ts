@@ -1,6 +1,12 @@
 import type { CollectionMeta } from '@yunke/core/modules/collection';
 import type { DocMeta, Workspace } from '@blocksuite/yunke/store';
-import type { JSX, PropsWithChildren, ReactNode } from 'react';
+import type {
+  CSSProperties,
+  HTMLAttributes,
+  JSX,
+  PropsWithChildren,
+  ReactNode,
+} from 'react';
 import type { To } from 'react-router-dom';
 
 export type ListItem =
@@ -153,10 +159,10 @@ export type HeaderColDef = {
 export type ColWrapperProps = PropsWithChildren<{
   flex?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
   alignment?: 'start' | 'center' | 'end';
-  styles?: React.CSSProperties;
+  styles?: CSSProperties;
   hideInSmallContainer?: boolean;
 }> &
-  React.HTMLAttributes<Element>;
+  HTMLAttributes<Element>;
 
 export type PageDisplayProperties = {
   bodyNotes: boolean;

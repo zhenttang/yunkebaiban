@@ -1,7 +1,15 @@
-import { useState, useEffect, useRef, createContext, useContext, useMemo } from 'react';
+import { useState, useEffect, useRef, createContext, useContext, useMemo, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import type { Socket } from 'socket.io-client';
-import { uint8ArrayToBase64, base64ToUint8Array, isEmptyUpdate, isValidYjsUpdate, logYjsUpdateInfo } from './utils/yjs-utils';
+import { normalizeDocId } from '@yunke/nbstore/utils/doc-id';
+import {
+  getOrCreateSessionId,
+  emitSessionActivity,
+  NBSTORE_SESSION_ACTIVITY_EVENT,
+  sanitizeSessionIdentifier,
+  type SessionActivityDetail,
+} from '@yunke/nbstore';
+import { uint8ArrayToBase64, isEmptyUpdate, isValidYjsUpdate, logYjsUpdateInfo } from './utils/yjs-utils';
 
 /**
  * 获取Socket.IO连接URL
@@ -50,7 +58,19 @@ interface OfflineOperation {
   timestamp: number;
   spaceId: string; // 使用spaceId而不是workspaceId
   spaceType: 'workspace' | 'userspace'; // 添加空间类型
+  sessionId: string;
+  clientId?: string | null;
 }
+
+interface SessionDisplayInfo {
+  sessionId: string;
+  label: string;
+  clientId: string | null;
+  isLocal: boolean;
+  lastSeen: number;
+}
+
+const SESSION_ACTIVITY_TTL = 5 * 60 * 1000;
 
 export interface CloudStorageStatus {
   isConnected: boolean;
@@ -64,6 +84,9 @@ export interface CloudStorageStatus {
   pendingOperationsCount: number;
   offlineOperationsCount: number;
   syncOfflineOperations: () => Promise<void>;
+  sessionId: string;
+  clientId: string | null;
+  sessions: SessionDisplayInfo[];
 }
 
 const CloudStorageContext = createContext<CloudStorageStatus | null>(null);
@@ -86,6 +109,11 @@ export const CloudStorageProvider = ({
   serverUrl = getSocketIOUrl()  // 使用内联配置管理
 }: CloudStorageProviderProps) => {
   const params = useParams();
+  const sessionId = useMemo(() => getOrCreateSessionId(), []);
+  const normalizedLocalSessionId = useMemo(
+    () => sanitizeSessionIdentifier(sessionId) ?? sessionId,
+    [sessionId]
+  );
   const [isConnected, setIsConnected] = useState(false);
   const [storageMode, setStorageMode] = useState<CloudStorageStatus['storageMode']>('detecting');
   const [lastSync, setLastSync] = useState<Date | null>(null);
@@ -101,20 +129,80 @@ export const CloudStorageProvider = ({
     reject: (reason: any) => void;
   }>>([]);
   const [offlineOperationsCount, setOfflineOperationsCount] = useState(0);
+  const clientIdRef = useRef<string | null>(null);
+  const sessionsRef = useRef<Map<string, SessionDisplayInfo>>(new Map());
+  const sessionAliasRef = useRef<Map<string, number>>(new Map());
+  const sessionAliasCounterRef = useRef(1);
+  const [sessions, setSessions] = useState<SessionDisplayInfo[]>([]);
+
+  const upsertSessionInfo = useCallback(
+    (sessionIdRaw: string | null, clientIdRaw: string | null, source: SessionActivityDetail['source']) => {
+      const sessionIdSanitized = sanitizeSessionIdentifier(sessionIdRaw) ?? null;
+      if (!sessionIdSanitized) {
+        return;
+      }
+
+      const now = Date.now();
+      const isLocal = sessionIdSanitized === normalizedLocalSessionId;
+
+      let label: string;
+      if (isLocal) {
+        label = '当前浏览器';
+      } else {
+        let alias = sessionAliasRef.current.get(sessionIdSanitized);
+        if (!alias) {
+          alias = sessionAliasCounterRef.current++;
+          sessionAliasRef.current.set(sessionIdSanitized, alias);
+        }
+        label = `其它浏览器 ${alias}`;
+      }
+
+      const clientId = sanitizeSessionIdentifier(clientIdRaw) ?? null;
+      const existing = sessionsRef.current.get(sessionIdSanitized);
+      sessionsRef.current.set(sessionIdSanitized, {
+        sessionId: sessionIdSanitized,
+        label,
+        clientId: clientId ?? existing?.clientId ?? null,
+        isLocal,
+        lastSeen: now,
+      });
+
+      // 清理超时的远程会话
+      for (const [id, info] of sessionsRef.current.entries()) {
+        if (!info.isLocal && now - info.lastSeen > SESSION_ACTIVITY_TTL) {
+          sessionsRef.current.delete(id);
+          sessionAliasRef.current.delete(id);
+        }
+      }
+
+      const ordered = Array.from(sessionsRef.current.values()).sort((a, b) => {
+        if (a.isLocal !== b.isLocal) {
+          return a.isLocal ? -1 : 1;
+        }
+        return a.label.localeCompare(b.label, 'zh-Hans');
+      });
+
+      setSessions(ordered);
+    },
+    [normalizedLocalSessionId]
+  );
 
   // 保存离线操作 - 按照YUNKE标准格式
   const saveOfflineOperation = async (docId: string, update: Uint8Array) => {
     if (!currentWorkspaceId) return;
-    
+
+    const normalizedDocId = normalizeDocId(docId);
     const updateBase64 = await uint8ArrayToBase64(update);
-    
+
     const operation: OfflineOperation = {
       id: `${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-      docId,
-      update: updateBase64, // 保存Base64编码的数据
+      docId: normalizedDocId,
+      update: updateBase64,
       timestamp: Date.now(),
-      spaceId: currentWorkspaceId, // 使用spaceId
-      spaceType: 'workspace' // 添加空间类型
+      spaceId: currentWorkspaceId,
+      spaceType: 'workspace',
+      sessionId: sanitizeSessionIdentifier(sessionId) ?? sessionId,
+      clientId: sanitizeSessionIdentifier(clientIdRef.current),
     };
 
     // 从localStorage读取现有操作
@@ -132,7 +220,22 @@ export const CloudStorageProvider = ({
 
   const getOfflineOperations = (): OfflineOperation[] => {
     const existing = localStorage.getItem(OFFLINE_OPERATIONS_KEY);
-    return existing ? JSON.parse(existing) : [];
+    if (!existing) {
+      return [];
+    }
+    try {
+      const parsed: OfflineOperation[] = JSON.parse(existing);
+      return parsed.map(op => ({
+        ...op,
+        docId: normalizeDocId(op.docId),
+        sessionId: sanitizeSessionIdentifier(op.sessionId) ?? sessionId,
+        clientId: sanitizeSessionIdentifier(op.clientId),
+      }));
+    } catch (error) {
+      console.warn('[cloud-storage] 解析离线操作失败，重置缓存', error);
+      localStorage.removeItem(OFFLINE_OPERATIONS_KEY);
+      return [];
+    }
   };
 
   const clearOfflineOperations = () => {
@@ -148,7 +251,7 @@ export const CloudStorageProvider = ({
     }
 
     const operations = getOfflineOperations()
-      .filter(op => op.spaceId === currentWorkspaceId) // 使用spaceId过滤
+      .filter(op => op.spaceId === currentWorkspaceId)
       .sort((a, b) => a.timestamp - b.timestamp); // 按时间顺序排序
 
     if (operations.length === 0) {
@@ -161,11 +264,24 @@ export const CloudStorageProvider = ({
     for (const operation of operations) {
       try {
         // 按照YUNKE标准格式发送
+        emitSessionActivity({
+          sessionId: sanitizeSessionIdentifier(operation.sessionId) ?? normalizedLocalSessionId,
+          clientId:
+            sanitizeSessionIdentifier(operation.clientId) ??
+            sanitizeSessionIdentifier(clientIdRef.current) ??
+            null,
+          source: 'local',
+        });
         const result = await socket.emitWithAck('space:push-doc-update', {
           spaceType: operation.spaceType || 'workspace',
           spaceId: operation.spaceId,
-          docId: operation.docId,
-          update: operation.update // 直接使用Base64字符串
+          docId: normalizeDocId(operation.docId),
+          update: operation.update,
+          sessionId: sanitizeSessionIdentifier(operation.sessionId) ?? sessionId,
+          clientId:
+            sanitizeSessionIdentifier(operation.clientId) ??
+            sanitizeSessionIdentifier(clientIdRef.current) ??
+            undefined,
         });
 
         if ('error' in result) {
@@ -307,175 +423,75 @@ export const CloudStorageProvider = ({
     }
   }, [currentWorkspaceId]);
 
-  // 推送文档更新 - 增强版本支持队列
+  // 推送文档更新（含离线与排队逻辑）
   const pushDocUpdate = async (docId: string, update: Uint8Array): Promise<number> => {
-    // console.log('🚀 [云存储管理器-推送] 开始处理文档更新推送');
-    // console.log(`  📊 请求参数: docId=${docId}, updateSize=${update.length}字节`);
-    // console.log(`  🔗 当前状态: workspaceId=${currentWorkspaceId}, online=${isOnline}, socketConnected=${socket?.connected}, isConnected=${isConnected}`);
-    
-    // 详细分析前端发送的原始数据
-    // console.log(`  📦 原始数据类型: ${update.constructor.name}`);
-    // console.log(`  📊 数据长度: ${update.length}字节`);
-    // console.log(`  🔢 前20字节数值: [${Array.from(update.slice(0, 20)).join(', ')}]`);
-    // console.log(`  🔤 前20字节十六进制: ${Array.from(update.slice(0, 20)).map(b => b.toString(16).padStart(2, '0')).join(' ')}`);
-    
-    // 尝试将数据解读为不同格式
-    // try {
-    //   const asString = new TextDecoder('utf-8', { fatal: false }).decode(update.slice(0, 100));
-    //   console.log(`  📝 UTF-8解码尝试(前100字节): "${asString}"`);
-    // } catch (e) {
-    //   console.log(`  ⚠️ UTF-8解码失败: ${e.message}`);
-    // }
-    
-    // 查找可能的文本内容模式
-    // const dataView = new DataView(update.buffer, update.byteOffset, update.byteLength);
-    // console.log(`  🧮 DataView长度: ${dataView.byteLength}`);
-    
-    // 扫描数据中的可打印字符
-    // let printableChars = '';
-    // for (let i = 0; i < Math.min(200, update.length); i++) {
-    //   const byte = update[i];
-    //   if (byte >= 32 && byte <= 126) { // ASCII可打印字符
-    //     printableChars += String.fromCharCode(byte);
-    //   } else if (printableChars.length > 0) {
-    //     printableChars += '.';
-    //   }
-    // }
-    // if (printableChars.length > 0) {
-    //   console.log(`  📄 可打印字符序列: "${printableChars}"`);
-    // }
-    
-    // 检查是否包含中文字符
-    // const chineseRegex = /[\u4e00-\u9fff]/g;
-    // const fullString = new TextDecoder('utf-8', { fatal: false }).decode(update);
-    // const chineseMatches = fullString.match(chineseRegex);
-    // if (chineseMatches) {
-    //   console.log(`  🈳 发现中文字符: ${chineseMatches.slice(0, 10).join('')}${chineseMatches.length > 10 ? '...' : ''} (共${chineseMatches.length}个)`);
-    // }
-    
-    // 查找重复字符模式
-    // const repeatedPattern = fullString.match(/([1-9])\1{10,}/g);
-    // if (repeatedPattern) {
-    //   console.log(`  🔁 发现重复字符模式: ${repeatedPattern.slice(0, 3).map(p => `"${p.substring(0, 20)}..."`).join(', ')}`);
-    // }
-    
+    const normalizedDocId = normalizeDocId(docId);
+
     if (!currentWorkspaceId) {
-      const error = 'No current workspace available';
-      console.error('❌ [云存储管理器-推送] 错误:', error);
-      throw new Error(error);
+      const error = new Error('No current workspace available');
+      console.error('[cloud-storage] pushDocUpdate failed:', error.message);
+      throw error;
     }
 
-    // 如果网络离线，将操作加入队列
-    if (!isOnline) {
-      saveOfflineOperation(docId, update);
-      return new Promise((resolve, reject) => {
-        pendingOperations.current.push({ docId, update, resolve, reject });
+    if (isEmptyUpdate(update)) {
+      return Date.now();
+    }
+
+    const enqueuePending = () =>
+      new Promise<number>((resolve, reject) => {
+        pendingOperations.current.push({ docId: normalizedDocId, update, resolve, reject });
       });
+
+    if (!isOnline) {
+      await saveOfflineOperation(normalizedDocId, update);
+      return enqueuePending();
     }
 
     if (!socket?.connected || !isConnected) {
-      // 如果Socket未连接但网络在线，尝试重连并将操作加入队列
-      
-      // 异步触发重连
       if (reconnectAttempts.current < maxReconnectAttempts) {
-        // 异步触发重连
         setTimeout(() => connectToSocket(), 0);
-      } else {
-        // 已达到最大重连次数，不再重连
       }
-      
-      return new Promise((resolve, reject) => {
-        pendingOperations.current.push({ docId, update, resolve, reject });
-      });
+      return enqueuePending();
     }
 
-    // 删除重复的Base64编码 - 已在上面的代码中处理
-
     try {
-      console.log('🎯🎯🎯 [云存储管理器-推送] CRITICAL: 开始发送Socket.IO事件!!!');
-      console.log('  🎯 事件名称: space:push-doc-update');
-      console.log('  🎯 Socket状态: connected=' + socket.connected + ', id=' + socket.id);
-      console.log('  📤 发送space:push-doc-update事件...');
-      
-      // 检测空更新并跳过
-      if (isEmptyUpdate(update)) {
-        console.log('  🔄 检测到空更新，跳过发送');
-        return Date.now();
-      }
-      
-      // 按照YUNKE标准格式编码数据
       const updateBase64 = await uint8ArrayToBase64(update);
-      
-      // 验证编码结果
+
       if (!isValidYjsUpdate(updateBase64)) {
-        throw new Error('生成的Base64数据无效');
-      }
-      
-      logYjsUpdateInfo('发送前', update, updateBase64);
-      
-      const requestData = {
-        spaceType: 'workspace' as const,  // 按照YUNKE标准：spaceType
-        spaceId: currentWorkspaceId,      // 按照YUNKE标准：spaceId而不是workspaceId
-        docId: docId,
-        update: updateBase64              // 按照YUNKE标准：update单个Base64字符串
-      };
-      
-      console.log('🎯🎯🎯 [YUNKE-Standard] Socket.IO请求数据:');
-      console.log('  🌟 spaceType:', requestData.spaceType);
-      console.log('  🆔 spaceId:', requestData.spaceId);
-      console.log('  🔍 spaceId格式: 长度=', requestData.spaceId?.length, '包含连字符=', requestData.spaceId?.includes('-'));
-      console.log('  📄 docId:', requestData.docId);
-      console.log('  📊 update类型:', typeof requestData.update);
-      
-      // 详细记录请求数据
-      console.log('  📋 YUNKE标准请求详情:');
-      console.log(`    🌟 spaceType: "${requestData.spaceType}"`);
-      console.log(`    🆔 spaceId: "${requestData.spaceId}"`);
-      console.log(`    📄 docId: "${requestData.docId}"`);
-      console.log(`    📝 update长度: ${requestData.update.length}字符`);
-      console.log(`    🔤 update前50字符: "${requestData.update.substring(0, 50)}..."`);
-      
-      // 记录发送时间
-      const sendTime = performance.now();
-      console.log(`  ⏰ 发送时间戳: ${sendTime}ms`);
-      
-      console.log('🎯🎯🎯 [云存储管理器-推送] 即将调用socket.emitWithAck!!!');
-      console.log('  🎯 最终请求数据:', JSON.stringify(requestData, null, 2));
-      
-      const result = await socket.emitWithAck('space:push-doc-update', requestData);
-      
-      console.log('🎯🎯🎯 [云存储管理器-推送] Socket.IO调用完成, 收到响应!!!', result);
-      
-      // 记录响应时间
-      const responseTime = performance.now();
-      const latency = responseTime - sendTime;
-      console.log(`  ⏱️ 响应延迟: ${latency.toFixed(2)}ms`);
-      
-      console.log('  📥 收到服务器响应:');
-      console.log(`    📊 响应类型: ${typeof result}`);
-      console.log(`    🔍 响应内容: ${JSON.stringify(result, null, 2)}`);
-      
-      // 详细分析响应数据
-      if (result && typeof result === 'object') {
-        console.log('  🔬 响应数据分析:');
-        Object.keys(result).forEach(key => {
-          const value = result[key];
-          console.log(`    ${key}: ${typeof value} = ${JSON.stringify(value)}`);
-        });
+        throw new Error('Invalid Yjs update payload');
       }
 
-      if ('error' in result) {
-        console.error('❌ [云存储管理器-推送] 服务器返回错误:', result.error);
+      logYjsUpdateInfo('发送前', update, updateBase64);
+
+      const requestData = {
+        spaceType: 'workspace' as const,
+        spaceId: currentWorkspaceId,
+        docId: normalizedDocId,
+        update: updateBase64,
+        sessionId: sanitizeSessionIdentifier(sessionId) ?? sessionId,
+        clientId: sanitizeSessionIdentifier(clientIdRef.current) ?? undefined,
+      };
+
+      const start = performance.now();
+      const result = await socket.emitWithAck('space:push-doc-update', requestData);
+
+      if (result && typeof result === 'object' && 'error' in result) {
         throw new Error(result.error.message);
       }
 
-      setLastSync(new Date(result.timestamp));
-      return result.timestamp;
+      const timestamp = typeof result?.timestamp === 'number' ? result.timestamp : Date.now();
+      setLastSync(new Date(timestamp));
+
+      const latency = performance.now() - start;
+      console.debug('[cloud-storage] pushDocUpdate success', {
+        docId: normalizedDocId,
+        latency: Math.round(latency),
+      });
+
+      return timestamp;
     } catch (error) {
-      console.error('❌ [云存储管理器-推送] 文档更新失败:', error);
-      
-      // 保存为离线操作
-      saveOfflineOperation(docId, update);
+      console.warn('[cloud-storage] pushDocUpdate failed, enqueue offline', error);
+      await saveOfflineOperation(normalizedDocId, update);
       throw error;
     }
   };
@@ -545,8 +561,14 @@ export const CloudStorageProvider = ({
             console.error('❌ [云存储管理器] 空间加入失败:', response.error);
             setStorageMode('error');
           } else {
+            clientIdRef.current = sanitizeSessionIdentifier((response as any).clientId);
             setStorageMode('cloud');
             setLastSync(new Date());
+            emitSessionActivity({
+              sessionId: normalizedLocalSessionId,
+              clientId: clientIdRef.current,
+              source: 'local',
+            });
             
             // 处理排队的操作
             if (pendingOperations.current.length > 0) {
@@ -569,6 +591,7 @@ export const CloudStorageProvider = ({
       // 连接断开
       newSocket.on('disconnect', (reason) => {
         setIsConnected(false);
+        clientIdRef.current = null;
         
         // 如果是意外断开，尝试重连
         if (reason !== 'io client disconnect') {
@@ -652,6 +675,29 @@ export const CloudStorageProvider = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [serverUrl, currentWorkspaceId]);
 
+  useEffect(() => {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    const handler = (event: Event) => {
+      const customEvent = event as CustomEvent<SessionActivityDetail>;
+      const detail = customEvent.detail;
+      if (!detail?.sessionId) {
+        return;
+      }
+      upsertSessionInfo(detail.sessionId, detail.clientId ?? null, detail.source);
+    };
+
+    window.addEventListener(NBSTORE_SESSION_ACTIVITY_EVENT, handler as EventListener);
+
+    upsertSessionInfo(normalizedLocalSessionId, clientIdRef.current, 'local');
+
+    return () => {
+      window.removeEventListener(NBSTORE_SESSION_ACTIVITY_EVENT, handler as EventListener);
+    };
+  }, [normalizedLocalSessionId, upsertSessionInfo]);
+
   const value: CloudStorageStatus = {
     isConnected,
     storageMode,
@@ -664,6 +710,9 @@ export const CloudStorageProvider = ({
     pendingOperationsCount: pendingOperations.current.length,
     offlineOperationsCount,
     syncOfflineOperations,
+    sessionId: normalizedLocalSessionId,
+    clientId: sanitizeSessionIdentifier(clientIdRef.current),
+    sessions,
   };
 
   // 将云存储管理器暴露到全局对象，供CloudDocStorage使用
@@ -675,8 +724,85 @@ export const CloudStorageProvider = ({
     };
   }, [value]);
 
+  useEffect(() => {
+    (window as any).__NBSTORE_SESSION_ID__ = normalizedLocalSessionId;
+    return () => {
+      if ((window as any).__NBSTORE_SESSION_ID__ === normalizedLocalSessionId) {
+        delete (window as any).__NBSTORE_SESSION_ID__;
+      }
+    };
+  }, [normalizedLocalSessionId]);
+
+  const sessionOverlay = (() => {
+    const hasRemoteSessions = sessions.some(session => !session.isLocal);
+    if (!hasRemoteSessions) {
+      return null;
+    }
+
+    return (
+      <div
+        style={{
+          position: 'fixed',
+          right: 16,
+          bottom: 72,
+          zIndex: 9999,
+          background: 'rgba(17, 24, 39, 0.86)',
+          color: '#fff',
+          padding: '12px 16px',
+          borderRadius: 12,
+          boxShadow: '0 16px 32px rgba(15, 23, 42, 0.35)',
+          pointerEvents: 'none',
+          maxWidth: 280,
+          fontSize: 12,
+          lineHeight: 1.5,
+        }}
+      >
+        <div
+          style={{
+            fontWeight: 600,
+            fontSize: 13,
+            marginBottom: 6,
+            letterSpacing: '0.02em',
+          }}
+        >
+          实时协作者
+        </div>
+        {sessions.map(session => (
+          <div
+            key={session.sessionId}
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              gap: 12,
+              padding: '4px 0',
+              opacity: session.isLocal ? 0.78 : 1,
+            }}
+          >
+            <span
+              style={{
+                fontWeight: session.isLocal ? 500 : 600,
+              }}
+            >
+              {session.label}
+            </span>
+            <span
+              style={{
+                fontFamily:
+                  'SFMono-Regular, ui-monospace, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
+                opacity: 0.65,
+              }}
+            >
+              {session.sessionId.slice(-6)}
+            </span>
+          </div>
+        ))}
+      </div>
+    );
+  })();
+
   return (
     <CloudStorageContext.Provider value={value}>
+      {sessionOverlay}
       {children}
     </CloudStorageContext.Provider>
   );

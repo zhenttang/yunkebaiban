@@ -11,6 +11,15 @@ export interface CloudStorageStatus {
     pendingOperationsCount: number;
     offlineOperationsCount: number;
     syncOfflineOperations: () => Promise<void>;
+    sessionId: string;
+    clientId: string | null;
+    sessions: Array<{
+        sessionId: string;
+        label: string;
+        clientId: string | null;
+        isLocal: boolean;
+        lastSeen: number;
+    }>;
 }
 export declare const useCloudStorage: () => CloudStorageStatus;
 interface CloudStorageProviderProps {

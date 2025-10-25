@@ -3,7 +3,7 @@ import { WorkbenchLink } from '@yunke/core/modules/workbench';
 import type { YunkeDNDData } from '@yunke/core/types/dnd';
 import { stopPropagation } from '@yunke/core/utils';
 import { useI18n } from '@yunke/i18n';
-import type { ForwardedRef, PropsWithChildren } from 'react';
+import type { ChangeEvent, ForwardedRef, MouseEvent, PropsWithChildren } from 'react';
 import { forwardRef, useCallback, useMemo } from 'react';
 
 import { selectionStateAtom, useAtom } from '../scoped-atoms';
@@ -51,7 +51,7 @@ const TagSelectionCell = ({
   selected,
 }: Pick<TagListItemProps, 'selectable' | 'onSelectedChange' | 'selected'>) => {
   const onSelectionChange = useCallback(
-    (_event: React.ChangeEvent<HTMLInputElement>) => {
+    (_event: ChangeEvent<HTMLInputElement>) => {
       return onSelectedChange?.();
     },
     [onSelectedChange]
@@ -172,7 +172,7 @@ const TagListItemWrapper = forwardRef(
   ) => {
     const [selectionState, setSelectionActive] = useAtom(selectionStateAtom);
     const handleClick = useCallback(
-      (e: React.MouseEvent) => {
+      (e: MouseEvent) => {
         if (!selectionState.selectable) {
           return;
         }

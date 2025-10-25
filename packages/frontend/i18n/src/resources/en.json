@@ -1201,6 +1201,7 @@
   "com.yunke.selectPage.empty.tips": "No doc titles contain <1>{{search}}</1>",
   "com.yunke.selectPage.selected": "Selected",
   "com.yunke.selectPage.title": "Add include doc",
+  "com.yunke.selectPage.search.placeholder": "Search docs...",
   "com.yunke.selector-collection.search.placeholder": "Search collections...",
   "com.yunke.selector-tag.search.placeholder": "Search tags...",
   "com.yunke.setting.notifications": "Notifications",

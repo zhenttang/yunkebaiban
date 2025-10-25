@@ -537,7 +537,7 @@ export const TagOperationCell = ({
         tooltip={t['Rename']()}
         tooltipOptions={tooltipSideTop}
         onClick={useCallback(
-          (e: React.MouseEvent<HTMLButtonElement>) => {
+          (e: MouseEvent<HTMLButtonElement>) => {
             e.preventDefault();
             setOpen(true);
           },

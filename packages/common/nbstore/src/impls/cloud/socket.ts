@@ -28,6 +28,8 @@ interface ServerEvents {
     update: string;
     timestamp: number;
     editor: string;
+    sessionId?: string;
+    clientId?: string;
   };
 
   'space:collect-awareness': {
@@ -79,7 +81,14 @@ interface ClientEvents {
   };
 
   'space:push-doc-update': [
-    { spaceType: string; spaceId: string; docId: string; update: string },
+    {
+      spaceType: string;
+      spaceId: string;
+      docId: string;
+      update: string;
+      sessionId?: string;
+      clientId?: string;
+    },
     { timestamp: number },
   ];
   'space:load-doc-timestamps': [

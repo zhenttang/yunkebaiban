@@ -2,7 +2,7 @@ import 'fake-indexeddb/auto';
 
 import { expect, test, vitest } from 'vitest';
 import { Awareness } from 'y-protocols/awareness.js';
-import { Doc as YDoc } from 'yjs';
+import { Doc as YDoc, encodeStateAsUpdate } from 'yjs';
 
 import { AwarenessFrontend } from '../frontend/awareness';
 import { DocFrontend } from '../frontend/doc';
@@ -54,6 +54,43 @@ test('doc', async () => {
       },
     });
   });
+});
+
+test('doc applies updates with legacy docId format', async () => {
+  const workspaceId = 'legacy-workspace';
+  const docStorage = new IndexedDBDocStorage({
+    id: workspaceId,
+    flavour: 'a',
+    type: 'workspace',
+  });
+
+  docStorage.connection.connect();
+  await docStorage.connection.waitForConnected();
+
+  const frontend = new DocFrontend(docStorage, DocSyncImpl.dummy);
+  frontend.start();
+
+  const doc = new YDoc({ guid: 'db$docProperties' });
+  frontend.connectDoc(doc);
+
+  await new Promise(resolve => {
+    doc.once('sync', resolve);
+  });
+
+  const remoteDoc = new YDoc({ guid: 'db$docProperties' });
+  remoteDoc.getMap('meta').set('foo', 'bar');
+  const update = encodeStateAsUpdate(remoteDoc);
+
+  frontend.event.onStorageUpdate(
+    {
+      docId: `db$${workspaceId}$${workspaceId}$docProperties`,
+      bin: update,
+      timestamp: new Date(),
+    },
+    'remote'
+  );
+
+  await vitest.waitFor(() => doc.getMap('meta').get('foo') === 'bar');
 });
 
 test('awareness', async () => {

@@ -15,6 +15,8 @@ export type DocClocks = Record<string, Date>;
 export interface DocRecord extends DocClock {
   bin: Uint8Array;
   editor?: string;
+  sessionId?: string;
+  clientId?: string;
 }
 
 export interface DocDiff extends DocClock {
@@ -26,6 +28,8 @@ export interface DocUpdate {
   docId: string;
   bin: Uint8Array;
   editor?: string;
+  sessionId?: string;
+  clientId?: string;
 }
 
 export interface Editor {

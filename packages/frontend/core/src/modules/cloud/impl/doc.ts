@@ -81,7 +81,7 @@ export function configureDocProvider(framework: Framework) {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify(request),
+          body: JSON.stringify({ ...request }),
         });
 
         if (!res.ok) {

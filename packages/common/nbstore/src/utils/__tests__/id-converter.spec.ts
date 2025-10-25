@@ -48,4 +48,15 @@ describe('idConverter', async () => {
       ]
     `);
   });
+
+  it('should keep already expanded old id unchanged when converting to old', () => {
+    const alreadyOldIds = [
+      `db$${workspaceId}$docProperties`,
+      `userdata$${userId}$${workspaceId}$favorite`,
+    ];
+
+    expect(alreadyOldIds.map(id => converter.newIdToOldId(id))).toEqual(
+      alreadyOldIds
+    );
+  });
 });

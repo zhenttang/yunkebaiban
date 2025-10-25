@@ -1208,6 +1208,7 @@
   "com.yunke.selectPage.empty.tips": "没有文档标题包含 <1>{{search}}</1>",
   "com.yunke.selectPage.selected": "已选中的文档",
   "com.yunke.selectPage.title": "添加选中的文档",
+  "com.yunke.selectPage.search.placeholder": "搜索文档...",
   "com.yunke.selector-collection.search.placeholder": "搜索精选...",
   "com.yunke.selector-tag.search.placeholder": "搜索标签...",
   "com.yunke.setting.notifications": "通知",

@@ -45,6 +45,9 @@ export class YunkeDocRemoteSelectionWidget extends WidgetComponent {
     }
   `;
 
+  private readonly _sessionAliasMap = new Map<string, number>();
+  private _sessionAliasCounter = 1;
+
   @state()
   private accessor _selections: Array<{
     id: number;
@@ -69,6 +72,32 @@ export class YunkeDocRemoteSelectionWidget extends WidgetComponent {
       }
     );
   });
+
+  private _getUserDisplayName(user?: UserInfo): string | undefined {
+    if (!user) return undefined;
+    const rawName = (user as any)?.rawName ?? user.name ?? '协作者';
+    const sessionId = (user as any)?.sessionId as string | undefined;
+    if (!sessionId) {
+      return rawName;
+    }
+
+    const localState = this.store.awarenessStore
+      .getStates()
+      .get(this.store.awarenessStore.awareness.clientID);
+    const localSessionId = (localState?.user as any)?.sessionId;
+
+    if (localSessionId && sessionId === localSessionId) {
+      return `${rawName} · 当前浏览器`;
+    }
+
+    let alias = this._sessionAliasMap.get(sessionId);
+    if (!alias) {
+      alias = this._sessionAliasCounter++;
+      this._sessionAliasMap.set(sessionId, alias);
+    }
+
+    return `${rawName} · 浏览器 ${alias}`;
+  }
 
   private readonly _resizeObserver: ResizeObserver = new ResizeObserver(() => {
     this.requestUpdate();
@@ -307,11 +336,17 @@ export class YunkeDocRemoteSelectionWidget extends WidgetComponent {
     selections: typeof this._remoteSelections.value
   ) => {
     const remoteUsers = new Set<number>();
+    const activeSessionIds = new Set<string>();
     this._selections = selections.flatMap(({ selections, id, user }) => {
       if (remoteUsers.has(id)) {
         return [];
       } else {
         remoteUsers.add(id);
+      }
+
+      const sessionId = (user as any)?.sessionId as string | undefined;
+      if (sessionId) {
+        activeSessionIds.add(sessionId);
       }
 
       return {
@@ -321,6 +356,14 @@ export class YunkeDocRemoteSelectionWidget extends WidgetComponent {
         user,
       };
     });
+
+    if (activeSessionIds.size > 0) {
+      for (const [sessionId] of this._sessionAliasMap) {
+        if (!activeSessionIds.has(sessionId)) {
+          this._sessionAliasMap.delete(sessionId);
+        }
+      }
+    }
   };
 
   private readonly _updateSelectionsThrottled = throttle(
@@ -380,7 +423,7 @@ export class YunkeDocRemoteSelectionWidget extends WidgetComponent {
                       display: selection.user ? 'block' : 'none',
                     })}"
                   >
-                    ${selection.user?.name}
+                    ${this._getUserDisplayName(selection.user)}
                   </div>
                 </div>
               </div>

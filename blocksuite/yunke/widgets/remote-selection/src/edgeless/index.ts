@@ -78,6 +78,9 @@ export class EdgelessRemoteSelectionWidget extends WidgetComponent<RootBlockMode
 
   private _remoteColorManager: RemoteColorManager | null = null;
 
+  private readonly _sessionAliasMap = new Map<string, number>();
+  private _sessionAliasCounter = 1;
+
   private readonly _updateOnElementChange = (
     element: string | { id: string }
   ) => {
@@ -92,15 +95,31 @@ export class EdgelessRemoteSelectionWidget extends WidgetComponent<RootBlockMode
       new Map();
     const status = this.store.awarenessStore.getStates();
 
+    const activeSessionIds = new Set<string>();
+
     this.selection.remoteCursorSelectionMap.forEach(
       (cursorSelection, clientId) => {
+        const user = status.get(clientId)?.user;
+        const sessionId = (user as any)?.sessionId as string | undefined;
+        if (sessionId) {
+          activeSessionIds.add(sessionId);
+        }
+
         remoteCursors.set(clientId, {
           x: cursorSelection.x,
           y: cursorSelection.y,
-          user: status.get(clientId)?.user,
+          user,
         });
       }
     );
+
+    if (activeSessionIds.size > 0) {
+      for (const [sessionId] of this._sessionAliasMap) {
+        if (!activeSessionIds.has(sessionId)) {
+          this._sessionAliasMap.delete(sessionId);
+        }
+      }
+    }
 
     this._remoteCursors = remoteCursors;
   };
@@ -168,6 +187,32 @@ export class EdgelessRemoteSelectionWidget extends WidgetComponent<RootBlockMode
 
   get selection() {
     return this.gfx.selection;
+  }
+
+  private _getUserDisplayName(user?: UserInfo): string | undefined {
+    if (!user) return undefined;
+    const rawName = (user as any)?.rawName ?? user.name ?? '协作者';
+    const sessionId = (user as any)?.sessionId as string | undefined;
+    if (!sessionId) {
+      return rawName;
+    }
+
+    const localState = this.store.awarenessStore
+      .getStates()
+      .get(this.store.awarenessStore.awareness.clientID);
+    const localSessionId = (localState?.user as any)?.sessionId;
+
+    if (localSessionId && sessionId === localSessionId) {
+      return `${rawName} · 当前浏览器`;
+    }
+
+    let alias = this._sessionAliasMap.get(sessionId);
+    if (!alias) {
+      alias = this._sessionAliasCounter++;
+      this._sessionAliasMap.set(sessionId, alias);
+    }
+
+    return `${rawName} · 浏览器 ${alias}`;
   }
 
   get surface() {
@@ -262,7 +307,7 @@ export class EdgelessRemoteSelectionWidget extends WidgetComponent<RootBlockMode
               backgroundColor: _remoteColorManager.get(id),
             })}
           >
-            ${cursor.user?.name ?? 'Unknown'}
+            ${this._getUserDisplayName(cursor.user) ?? 'Unknown'}
           </div>
         </div>`;
       }

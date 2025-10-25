@@ -8,6 +8,7 @@ import {
   type DocUpdate,
 } from '../../storage';
 import { getIdConverter, type IdConverter } from '../../utils/id-converter';
+import { getOrCreateSessionId } from '../../utils/session-id';
 import type { SpaceType } from '../../utils/universal-id';
 import {
   base64ToUint8Array,
@@ -15,6 +16,10 @@ import {
   SocketConnection,
   uint8ArrayToBase64,
 } from './socket';
+import {
+  emitSessionActivity,
+  sanitizeSessionIdentifier,
+} from '../../utils/session-activity';
 
 /**
  * 将API基础URL转换为Socket.IO URL
@@ -41,6 +46,8 @@ interface CloudDocStorageOptions extends DocStorageOptions {
 export class CloudDocStorage extends DocStorageBase<CloudDocStorageOptions> {
   static readonly identifier = 'CloudDocStorage';
 
+  private readonly sessionId = getOrCreateSessionId();
+
   get socket() {
     return this.connection.inner.socket;
   }
@@ -57,12 +64,26 @@ export class CloudDocStorage extends DocStorageBase<CloudDocStorageOptions> {
       this.spaceType === message.spaceType &&
       this.spaceId === message.spaceId
     ) {
+      const sessionId = sanitizeSessionIdentifier(message.sessionId);
+      const clientId = sanitizeSessionIdentifier(message.clientId);
+      const editorId = sanitizeSessionIdentifier(message.editor);
+
       this.emit('update', {
         docId: this.idConverter.oldIdToNewId(message.docId),
         bin: base64ToUint8Array(message.update),
         timestamp: new Date(message.timestamp),
-        editor: message.editor,
+        editor: sessionId ?? clientId ?? editorId ?? undefined,
+        sessionId: sessionId ?? undefined,
+        clientId: clientId ?? undefined,
       });
+
+      if (sessionId) {
+        emitSessionActivity({
+          sessionId,
+          clientId,
+          source: 'remote',
+        });
+      }
     }
   };
 
@@ -123,6 +144,14 @@ export class CloudDocStorage extends DocStorageBase<CloudDocStorageOptions> {
   }
 
   override async pushDocUpdate(update: DocUpdate) {
+    const normalizedSessionId =
+      sanitizeSessionIdentifier(update.sessionId) ?? this.sessionId;
+    const normalizedClientId =
+      sanitizeSessionIdentifier(update.clientId) ??
+      sanitizeSessionIdentifier(this.connection.clientId ?? undefined) ??
+      undefined;
+    update.sessionId = normalizedSessionId;
+    update.clientId = normalizedClientId ?? undefined;
     const updateBase64 = await uint8ArrayToBase64(update.bin);
     const docId = this.idConverter?.newIdToOldId(update.docId) || update.docId;
 
@@ -144,11 +173,22 @@ export class CloudDocStorage extends DocStorageBase<CloudDocStorageOptions> {
     }
 
     try {
+      const sessionId = sanitizeSessionIdentifier(update.sessionId) ?? this.sessionId;
+      const clientId = sanitizeSessionIdentifier(update.clientId);
+
+      emitSessionActivity({
+        sessionId,
+        clientId,
+        source: 'local',
+      });
+
       const requestData = {
         spaceType: this.options.type,
         spaceId: this.spaceId,
         docId: docId,
-        update: updateBase64
+        update: updateBase64,
+        sessionId,
+        clientId: clientId ?? undefined,
       };
 
       const result = await this.connection.inner.socket.emitWithAck('space:push-doc-update', requestData);
@@ -230,6 +270,8 @@ export class CloudDocStorage extends DocStorageBase<CloudDocStorageOptions> {
 }
 
 class CloudDocStorageConnection extends SocketConnection {
+  public clientId: string | null = null;
+
   constructor(
     private readonly options: CloudDocStorageOptions,
     private readonly onServerUpdate: ServerEventsMap['space:broadcast-doc-update']
@@ -255,6 +297,13 @@ class CloudDocStorageConnection extends SocketConnection {
 
       if ('error' in res) {
         throw new Error(res.error.message);
+      }
+
+      if ('data' in res && res.data) {
+        this.clientId =
+          sanitizeSessionIdentifier((res.data as { clientId?: string }).clientId) ?? null;
+      } else {
+        this.clientId = null;
       }
 
       if (!this.idConverter) {
@@ -290,6 +339,7 @@ class CloudDocStorageConnection extends SocketConnection {
       spaceId: this.options.id,
     });
     socket.off('space:broadcast-doc-update', this.onServerUpdate);
+    this.clientId = null;
     super.doDisconnect({ socket, disconnect });
   }
 

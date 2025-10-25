@@ -15,7 +15,8 @@
     "./sqlite": "./src/impls/sqlite/index.ts",
     "./sqlite/v1": "./src/impls/sqlite/v1/index.ts",
     "./sync": "./src/sync/index.ts",
-    "./frontend": "./src/frontend/index.ts"
+    "./frontend": "./src/frontend/index.ts",
+    "./utils/doc-id": "./src/utils/doc-id.ts"
   },
   "dependencies": {
     "@toeverything/infra": "workspace:*",

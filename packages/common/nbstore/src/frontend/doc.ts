@@ -389,7 +389,10 @@ export class DocFrontend {
         // console.log('[DocFrontend.load] 空文档标记为 ready（允许初始化）');
       }
 
-      // console.log('[DocFrontend.load] 添加到 connectedDocs，文档加载完成');
+      console.log('✅ [DocFrontend.load] 添加到 connectedDocs，文档加载完成:', {
+        docId: job.docId,
+        connectedDocsCount: this.status.connectedDocs.size + 1
+      });
       this.status.connectedDocs.add(job.docId);
       this.statusUpdatedSubject$.next(job.docId);
     },
@@ -409,6 +412,11 @@ export class DocFrontend {
       }
 
       if (this.status.connectedDocs.has(docId)) {
+        console.log('💾 [DocFrontend.save] 开始保存文档:', {
+          docId,
+          jobsCount: jobs.length
+        });
+        
         const updatesList = jobs.map(j => j.update).filter(update => !isEmptyUpdate(update));
 
         const merged = await this.mergeUpdates(updatesList);
@@ -417,6 +425,11 @@ export class DocFrontend {
         throwIfAborted(signal);
 
         try {
+          console.log('💾 [DocFrontend.save] 推送到存储...', {
+            docId,
+            mergedSize: merged.length
+          });
+          
           await this.storage.pushDocUpdate(
             {
               docId,
@@ -424,6 +437,8 @@ export class DocFrontend {
             },
             this.uniqueId
           );
+          
+          console.log('✅ [DocFrontend.save] 保存成功！', { docId });
         } catch (error) {
           console.error('❌ [DocFrontend.save] 推送到存储失败:', {
             docId,
@@ -434,10 +449,11 @@ export class DocFrontend {
           throw error;
         }
       } else {
-        console.warn('⚠️ [DocFrontend.save] 保存跳过 - 文档不在 connectedDocs 中:', {
+        console.error('❌ [DocFrontend.save] 保存跳过 - 文档不在 connectedDocs 中:', {
           docId,
           docsSize: this.status.docs.size,
           connectedDocsSize: this.status.connectedDocs.size,
+          allConnectedDocs: Array.from(this.status.connectedDocs),
           reason: 'load作业可能未完成或失败'
         });
       }
@@ -515,25 +531,37 @@ export class DocFrontend {
   }
 
   private _connectDoc(doc: YDoc) {
+    console.log('🔗 [DocFrontend._connectDoc] 开始连接文档:', {
+      docGuid: doc.guid,
+      alreadyConnected: this.status.docs.has(doc.guid)
+    });
+    
     if (this.status.docs.has(doc.guid)) {
       console.error('❌ [DocFrontend._connectDoc] 文档已连接，抛出错误');
       throw new Error('文档已连接');
     }
 
+    console.log('🔗 [DocFrontend._connectDoc] 调度 load 作业');
     this.schedule({
       type: 'load',
       docId: doc.guid,
     });
 
+    console.log('🔗 [DocFrontend._connectDoc] 添加到 status.docs');
     this.status.docs.set(doc.guid, doc);
     this.statusUpdatedSubject$.next(doc.guid);
 
+    console.log('🔗 [DocFrontend._connectDoc] 监听 update 事件');
     doc.on('update', this.handleDocUpdate);
 
     doc.on('destroy', () => {
       this.disconnectDoc(doc);
     });
 
+    console.log('✅ [DocFrontend._connectDoc] 连接完成:', {
+      docGuid: doc.guid,
+      docsCount: this.status.docs.size
+    });
   }
 
   private schedule(job: Job) {
@@ -634,14 +662,26 @@ ${changedList}
 `);
     }
 
+    console.log('📤 [DocFrontend.handleDocUpdate] 收到更新:', {
+      docGuid: doc.guid,
+      updateSize: update.length,
+      origin,
+      inDocs: this.status.docs.has(doc.guid),
+      inConnectedDocs: this.status.connectedDocs.has(doc.guid),
+      docsCount: this.status.docs.size,
+      connectedDocsCount: this.status.connectedDocs.size
+    });
+
     if (!this.status.docs.has(doc.guid)) {
-      console.warn('⚠️ [DocFrontend.handleDocUpdate] 文档不在 docs 中，跳过:', {
+      console.error('❌ [DocFrontend.handleDocUpdate] 文档不在 docs 中，跳过保存！', {
         docId: doc.guid,
-        docsSize: this.status.docs.size
+        docsSize: this.status.docs.size,
+        allDocsKeys: Array.from(this.status.docs.keys())
       });
       return;
     }
 
+    console.log('✅ [DocFrontend.handleDocUpdate] 调度 save 作业');
     this.schedule({
       type: 'save',
       docId: doc.guid,

@@ -1,5 +1,5 @@
 import { Button } from '@yunke/component';
-import type { MouseEvent } from 'react';
+import type { MouseEvent, ReactNode } from 'react';
 
 // 🔥 Bug修复：实现新建页面按钮功能
 // GraphQL已移除，但页面创建功能通过REST API实现
@@ -7,7 +7,7 @@ import type { MouseEvent } from 'react';
 export type PageListNewPageButtonProps = {
   size?: 'small' | 'default';
   className?: string;
-  children?: React.ReactNode;
+  children?: ReactNode;
   onCreateEdgeless?: (event: MouseEvent<HTMLDivElement | HTMLButtonElement>) => void;
   onCreatePage?: (event: MouseEvent<HTMLDivElement | HTMLButtonElement>) => void;
   onCreateDoc?: (event: MouseEvent<HTMLDivElement | HTMLButtonElement>) => void;

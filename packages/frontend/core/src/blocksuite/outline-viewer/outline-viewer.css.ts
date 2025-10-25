@@ -9,9 +9,4 @@ export const root = style({
   right: 22,
   maxHeight: `calc(100% - ${top}px - ${bottom}px)`,
   display: 'flex',
-  '@container': {
-    '(width <= 640px)': {
-      display: 'none',
-    },
-  },
 });

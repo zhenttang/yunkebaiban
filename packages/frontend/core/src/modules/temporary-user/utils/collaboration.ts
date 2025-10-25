@@ -1,4 +1,5 @@
 import type { Awareness } from 'y-protocols/awareness.js';
+import { getOrCreateSessionId } from '@yunke/nbstore';
 
 import type { TemporaryUserInfo } from '../entities/temporary-user-session';
 
@@ -13,12 +14,15 @@ export class TemporaryUserCollaboration {
     awareness: Awareness,
     user: TemporaryUserInfo
   ): void {
+    const sessionId = getOrCreateSessionId();
     awareness.setLocalStateField('user', {
       name: user.name,
+      rawName: user.name,
       isTemporary: true,
       temporaryId: user.id,
       avatar: user.avatarUrl,
       color: this.generateUserColor(user.id),
+      sessionId,
     });
 
     console.log('[TemporaryUser] Set awareness state for temporary user:', {
@@ -31,11 +35,14 @@ export class TemporaryUserCollaboration {
    * 设置匿名用户状态
    */
   static setAnonymousUserAwareness(awareness: Awareness): void {
+    const sessionId = getOrCreateSessionId();
     awareness.setLocalStateField('user', {
       name: '匿名访客',
+      rawName: '匿名访客',
       isTemporary: false,
       isAnonymous: true,
       color: '#cccccc',
+      sessionId,
     });
 
     console.log('[TemporaryUser] Set awareness state for anonymous user');
