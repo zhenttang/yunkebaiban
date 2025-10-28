@@ -44,6 +44,22 @@ interface ServerEvents {
     docId: string;
     awarenessUpdate: string;
   };
+
+  'space:broadcast-doc-updates': {
+    spaceType: string;
+    spaceId: string;
+    docId: string;
+    updates: Array<{
+      spaceType?: string;
+      spaceId?: string;
+      docId?: string;
+      update: string;
+      timestamp: number;
+      editor?: string;
+      sessionId?: string;
+      clientId?: string;
+    }>;
+  };
 }
 
 interface ClientEvents {

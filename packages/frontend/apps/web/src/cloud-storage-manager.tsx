@@ -116,6 +116,7 @@ export const CloudStorageProvider = ({
   );
   const [isConnected, setIsConnected] = useState(false);
   const [storageMode, setStorageMode] = useState<CloudStorageStatus['storageMode']>('detecting');
+  const lastUpdateBroadcastAt = useRef(0);
   const [lastSync, setLastSync] = useState<Date | null>(null);
   const [socket, setSocket] = useState<Socket | null>(null);
   const reconnectAttempts = useRef(0);
@@ -463,17 +464,17 @@ export const CloudStorageProvider = ({
 
       logYjsUpdateInfo('发送前', update, updateBase64);
 
-      const requestData = {
-        spaceType: 'workspace' as const,
-        spaceId: currentWorkspaceId,
-        docId: normalizedDocId,
-        update: updateBase64,
-        sessionId: sanitizeSessionIdentifier(sessionId) ?? sessionId,
-        clientId: sanitizeSessionIdentifier(clientIdRef.current) ?? undefined,
-      };
+    const requestData = {
+      spaceType: 'workspace' as const,
+      spaceId: currentWorkspaceId,
+      docId: normalizedDocId,
+      update: updateBase64,
+      sessionId: sanitizeSessionIdentifier(sessionId) ?? sessionId,
+      clientId: sanitizeSessionIdentifier(clientIdRef.current) ?? undefined,
+    };
 
-      const start = performance.now();
-      const result = await socket.emitWithAck('space:push-doc-update', requestData);
+    const start = performance.now();
+    const result = await socket.emitWithAck('space:push-doc-update', requestData);
 
       if (result && typeof result === 'object' && 'error' in result) {
         throw new Error(result.error.message);

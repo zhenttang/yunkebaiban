@@ -87,9 +87,30 @@ export class CloudDocStorage extends DocStorageBase<CloudDocStorageOptions> {
     }
   };
 
+  onServerUpdateBatch: ServerEventsMap['space:broadcast-doc-updates'] = message => {
+    if (
+      this.spaceType === message.spaceType &&
+      this.spaceId === message.spaceId
+    ) {
+      message.updates.forEach(update => {
+        this.onServerUpdate({
+          spaceType: update.spaceType ?? message.spaceType,
+          spaceId: update.spaceId ?? message.spaceId,
+          docId: update.docId ?? message.docId,
+          update: update.update,
+          timestamp: update.timestamp,
+          editor: update.editor,
+          sessionId: update.sessionId,
+          clientId: update.clientId,
+        });
+      });
+    }
+  };
+
   readonly connection = new CloudDocStorageConnection(
     this.options,
-    this.onServerUpdate
+    this.onServerUpdate,
+    this.onServerUpdateBatch
   );
 
   override async getDocSnapshot(docId: string) {
@@ -274,7 +295,8 @@ class CloudDocStorageConnection extends SocketConnection {
 
   constructor(
     private readonly options: CloudDocStorageOptions,
-    private readonly onServerUpdate: ServerEventsMap['space:broadcast-doc-update']
+    private readonly onServerUpdate: ServerEventsMap['space:broadcast-doc-update'],
+    private readonly onServerUpdateBatch: ServerEventsMap['space:broadcast-doc-updates']
   ) {
     // 使用统一的端口转换逻辑
     const socketUrl = convertToSocketIOUrl(options.serverBaseUrl);
@@ -319,6 +341,7 @@ class CloudDocStorageConnection extends SocketConnection {
       }
 
       socket.on('space:broadcast-doc-update', this.onServerUpdate);
+      socket.on('space:broadcast-doc-updates', this.onServerUpdateBatch);
 
       return { socket, disconnect };
     } catch (e) {
@@ -339,6 +362,7 @@ class CloudDocStorageConnection extends SocketConnection {
       spaceId: this.options.id,
     });
     socket.off('space:broadcast-doc-update', this.onServerUpdate);
+    socket.off('space:broadcast-doc-updates', this.onServerUpdateBatch);
     this.clientId = null;
     super.doDisconnect({ socket, disconnect });
   }
