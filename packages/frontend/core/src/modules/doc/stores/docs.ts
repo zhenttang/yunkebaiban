@@ -67,13 +67,13 @@ export class DocsStore extends Store {
     transact(
       this.workspaceService.workspace.rootYDoc,
       () => {
-        const docs = this.workspaceService.workspace.rootYDoc
-          .getMap('meta')
-          .get('pages');
+        const meta = this.workspaceService.workspace.rootYDoc.getMap('meta');
+        let docs = meta.get('pages');
 
         if (!docs || !(docs instanceof YArray)) {
-          console.error('❌ [DocsStore.createDoc] pages YArray 不存在！');
-          return;
+          console.warn('❌ [DocsStore.createDoc] pages YArray 不存在，自动创建！');
+          docs = new YArray();
+          meta.set('pages', docs);
         }
 
         console.log('📝 [DocsStore.createDoc] 添加到 pages YArray，当前文档数:', docs.length);

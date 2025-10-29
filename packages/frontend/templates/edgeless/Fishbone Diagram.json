@@ -13,18 +13,17 @@
     "blocks": {
       "type": "block",
       "id": "block:MEJSPV5QSj",
-      "flavour": "affine:page",
+      "flavour": "yunke:page",
       "props": {
         "title": {
-          "$blocksuite:internal:text$": true,
-          "delta": []
+          "ops": []
         }
       },
       "children": [
         {
           "type": "block",
           "id": "block:Q-l66z06cc",
-          "flavour": "affine:surface",
+          "flavour": "yunke:surface",
           "props": {
             "elements": {
               "jffHzBY8z3": {
@@ -45,8 +44,7 @@
                 "seed": 898661492,
                 "color": "--affine-palette-line-white",
                 "text": {
-                  "affine:surface:text": true,
-                  "delta": []
+                  "ops": []
                 },
                 "fontFamily": "blocksuite:surface:Inter",
                 "fontSize": 24
@@ -68,8 +66,7 @@
                 "index": "aj",
                 "seed": 100229520,
                 "text": {
-                  "affine:surface:text": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "Category"
                     }
@@ -98,8 +95,7 @@
                 "index": "ak",
                 "seed": 1774361779,
                 "text": {
-                  "affine:surface:text": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "Item 2"
                     }
@@ -128,8 +124,7 @@
                 "index": "al",
                 "seed": 1975714611,
                 "text": {
-                  "affine:surface:text": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "Item 1"
                     }
@@ -158,8 +153,7 @@
                 "index": "am",
                 "seed": 2028054473,
                 "text": {
-                  "affine:surface:text": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "Item 1"
                     }
@@ -188,8 +182,7 @@
                 "index": "an",
                 "seed": 1101297049,
                 "text": {
-                  "affine:surface:text": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "Item 2"
                     }
@@ -218,8 +211,7 @@
                 "index": "ao",
                 "seed": 96786809,
                 "text": {
-                  "affine:surface:text": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "Category"
                     }
@@ -249,8 +241,7 @@
                 "seed": 77230658,
                 "color": "--affine-palette-line-white",
                 "text": {
-                  "affine:surface:text": true,
-                  "delta": []
+                  "ops": []
                 },
                 "fontFamily": "blocksuite:surface:Inter",
                 "fontSize": 24
@@ -272,8 +263,7 @@
                 "index": "ax",
                 "seed": 1851160611,
                 "text": {
-                  "affine:surface:text": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "Category"
                     }
@@ -302,8 +292,7 @@
                 "index": "ay",
                 "seed": 35879121,
                 "text": {
-                  "affine:surface:text": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "Item 2"
                     }
@@ -332,8 +321,7 @@
                 "index": "az",
                 "seed": 139337416,
                 "text": {
-                  "affine:surface:text": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "Item 1"
                     }
@@ -362,8 +350,7 @@
                 "index": "b00",
                 "seed": 935249019,
                 "text": {
-                  "affine:surface:text": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "Item 1"
                     }
@@ -392,8 +379,7 @@
                 "index": "b01",
                 "seed": 1004110600,
                 "text": {
-                  "affine:surface:text": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "Item 2"
                     }
@@ -422,8 +408,7 @@
                 "index": "b02",
                 "seed": 1132643231,
                 "text": {
-                  "affine:surface:text": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "Category"
                     }
@@ -453,8 +438,7 @@
                 "seed": 267669734,
                 "color": "--affine-palette-line-white",
                 "text": {
-                  "affine:surface:text": true,
-                  "delta": []
+                  "ops": []
                 },
                 "fontFamily": "blocksuite:surface:Inter",
                 "fontSize": 24
@@ -476,8 +460,7 @@
                 "index": "b0B",
                 "seed": 258050253,
                 "text": {
-                  "affine:surface:text": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "Category"
                     }
@@ -506,8 +489,7 @@
                 "index": "b0C",
                 "seed": 7375873,
                 "text": {
-                  "affine:surface:text": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "Item 2"
                     }
@@ -536,8 +518,7 @@
                 "index": "b0D",
                 "seed": 479286311,
                 "text": {
-                  "affine:surface:text": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "Item 1"
                     }
@@ -566,8 +547,7 @@
                 "index": "b0E",
                 "seed": 1454885780,
                 "text": {
-                  "affine:surface:text": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "Item 1"
                     }
@@ -596,8 +576,7 @@
                 "index": "b0F",
                 "seed": 1364763702,
                 "text": {
-                  "affine:surface:text": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "Item 2"
                     }
@@ -626,8 +605,7 @@
                 "index": "b0G",
                 "seed": 1901980653,
                 "text": {
-                  "affine:surface:text": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "Category"
                     }
@@ -657,8 +635,7 @@
                 "seed": 2120642858,
                 "color": "--affine-palette-line-white",
                 "text": {
-                  "affine:surface:text": true,
-                  "delta": []
+                  "ops": []
                 },
                 "fontFamily": "blocksuite:surface:Inter",
                 "fontSize": 24
@@ -668,8 +645,7 @@
                 "xywh": "[-2694.8068698436673,-1508.202085986139,1261.8244195873492,2283.666666666667]",
                 "rotate": 0,
                 "text": {
-                  "affine:surface:text": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "A Fishbone template, also known as an Ishikawa diagram template, is a layout for identifying and categorizing potential causes of a problem. \n\nIt's structured with a central \"problem\" line and branches for different cause categories, aiding in systematic analysis.\n\n\nHere's a step-by-step guide on how to use a fishbone diagram:\n\n1. Begin by clearly defining the problem you want to solve. Write problem statement at the fish 'head' .\n\n2. Decide on Major Categories of Causes.  These categories form the 'bones' of the fish.\n\n3. For each category, brainstorm possible specific causes of the problem. Add each cause under the appropriate category on the diagram.\n \n\n4. Once the diagram is populated, analyze it to identify the most likely root causes of the problem.\n\n5. Based on the analysis, prioritize the causes that are most likely contributing to the problem."
                     }
@@ -691,8 +667,7 @@
                 "xywh": "[-2694.8068698436673,-1785.0527944255136,1199,181]",
                 "rotate": 0,
                 "text": {
-                  "affine:surface:text": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "Fishbone Diagram"
                     }
@@ -1344,7 +1319,7 @@
             {
               "type": "block",
               "id": "block:sCGDUOAQEm",
-              "flavour": "affine:image",
+              "flavour": "yunke:image",
               "props": {
                 "caption": "",
                 "sourceId": "/static/templates/YUo3S6WvBWTO3fcRR1iUKLXVFxnILmP-VTwdM3ai-h0=.png",
@@ -1360,7 +1335,7 @@
             {
               "type": "block",
               "id": "block:5Uralav1Is",
-              "flavour": "affine:image",
+              "flavour": "yunke:image",
               "props": {
                 "caption": "",
                 "sourceId": "/static/templates/lrxxmLPiDeoDlEDUuBQp51JXetfPiG7l7HUzuKzDKuo=.png",

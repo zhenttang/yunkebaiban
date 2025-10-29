@@ -26,6 +26,7 @@ import {
   createStickerMiddleware,
   replaceIdMiddleware,
 } from './template-middlewares';
+import { Text as StoreText, type DeltaOperation } from '@blocksuite/store';
 /**
  * Those block contains other block's id
  * should defer the loading
@@ -78,6 +79,17 @@ export class TemplateJob {
   static middlewares: ((job: TemplateJob) => void)[] = [];
 
   private _template: DocSnapshot | null = null;
+  private _mapLegacyFlavour = (flavour: string) => {
+    if (typeof flavour !== 'string') return flavour;
+    if (flavour.startsWith('affine:')) {
+      const candidate = `yunke:${flavour.substring('affine:'.length)}`;
+      if (this.model.store.schema.flavourSchemaMap.has(candidate)) {
+        return candidate;
+      }
+      return candidate;
+    }
+    return flavour;
+  };
 
   job: Transformer;
 
@@ -349,6 +361,8 @@ export class TemplateJob {
 
     this._template = template;
 
+    this._normalizeTemplateSnapshot(this._template);
+
     const templateBound = this._getTemplateBound();
 
     this.slots.beforeInsert.next({
@@ -378,6 +392,109 @@ export class TemplateJob {
     };
 
     iterate(this._template.blocks, this._template);
+  }
+
+  private _normalizeTemplateSnapshot(template: DocSnapshot) {
+    if (!template?.blocks) {
+      return;
+    }
+    this._normalizeSnapshotTree(template.blocks);
+    if (Array.isArray(template.meta?.tags)) {
+      template.meta.tags = template.meta.tags.filter(tag => !!tag);
+    }
+  }
+
+  private _normalizeSnapshotTree(snapshot: BlockSnapshot) {
+    snapshot.flavour = this._mapLegacyFlavour(snapshot.flavour);
+    snapshot.props = this._normalizeLegacyProps(snapshot.flavour, snapshot.props);
+
+    snapshot.children?.forEach(child => this._normalizeSnapshotTree(child));
+  }
+
+  private _normalizeLegacyProps(
+    flavour: string,
+    props?: Record<string, unknown>
+  ) {
+    const normalized: Record<string, unknown> = props ? { ...props } : {};
+
+    const ensureText = (key: string) => {
+      const value = normalized[key];
+      const normalizedText = this._normalizeTextValue(value);
+      if (normalizedText) {
+        normalized[key] = normalizedText;
+      }
+    };
+
+    switch (flavour) {
+      case 'yunke:page':
+        ensureText('title');
+        break;
+      case 'yunke:paragraph':
+        ensureText('text');
+        if (normalized['type'] == null) {
+          normalized['type'] = 'text';
+        }
+        if (normalized['collapsed'] == null) {
+          normalized['collapsed'] = false;
+        }
+        break;
+      case 'yunke:callout':
+      case 'yunke:list':
+      case 'yunke:code':
+      case 'yunke:mermaid':
+      case 'yunke:latex':
+      case 'yunke:database':
+        ensureText('text');
+        break;
+      case 'yunke:note':
+        if (
+          !normalized['edgeless'] ||
+          typeof normalized['edgeless'] !== 'object'
+        ) {
+          normalized['edgeless'] = { style: {} };
+        }
+        break;
+      case 'yunke:surface':
+        if (
+          !normalized['elements'] ||
+          typeof normalized['elements'] !== 'object'
+        ) {
+          normalized['elements'] = {};
+        }
+        break;
+      default:
+        break;
+    }
+
+    return normalized;
+  }
+
+  private _normalizeTextValue(value: unknown): StoreText | undefined {
+    if (!value) {
+      return undefined;
+    }
+    if (value instanceof StoreText) {
+      return value;
+    }
+    if (typeof value === 'string') {
+      return new StoreText(value);
+    }
+    if (Array.isArray(value)) {
+      return new StoreText(value as DeltaOperation[]);
+    }
+    if (typeof value === 'object') {
+      const record = value as Record<string, unknown>;
+      const delta = record.delta ?? record.ops;
+      if (Array.isArray(delta)) {
+        return new StoreText(delta as DeltaOperation[]);
+      }
+      if ('insert' in record && record.insert) {
+        return new StoreText([
+          { insert: record.insert } as unknown as DeltaOperation,
+        ]);
+      }
+    }
+    return undefined;
   }
 }
 

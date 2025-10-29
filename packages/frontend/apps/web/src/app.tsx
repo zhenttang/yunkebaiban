@@ -81,25 +81,48 @@ const useSharedWorker =
   localStorage.getItem('disableSharedWorker') !== 'true';
 
 console.log(
-  `🚀 开始初始化nbstore Worker...\n` +
+  `🚀 [Worker] 开始初始化nbstore Worker...\n` +
   `  类型: ${useSharedWorker ? 'SharedWorker' : 'Worker'}\n` +
-  `  URL: ${workerUrl}`
+  `  URL: ${workerUrl}\n` +
+  `  支持 SharedWorker: ${!!window.SharedWorker}\n` +
+  `  禁用 SharedWorker: ${localStorage.getItem('disableSharedWorker') === 'true'}`
 );
 
 createWorkerWithTimeout(workerUrl, useSharedWorker)
   .then(worker => {
-    if (useSharedWorker) {
-      storeManagerClient = new StoreManagerClient(
-        new OpClient((worker as SharedWorker).port)
-      );
-    } else {
-      storeManagerClient = new StoreManagerClient(new OpClient(worker as Worker));
+    console.log(`✅ [Worker] Worker创建成功，类型: ${useSharedWorker ? 'SharedWorker' : 'Worker'}`, worker);
+
+    try {
+      if (useSharedWorker) {
+        console.log('🔌 [Worker] 创建 SharedWorker 端口连接');
+        storeManagerClient = new StoreManagerClient(
+          new OpClient((worker as SharedWorker).port)
+        );
+      } else {
+        console.log('🔌 [Worker] 创建 Worker 直接连接');
+        storeManagerClient = new StoreManagerClient(new OpClient(worker as Worker));
+      }
+      console.log('✅ [Worker] StoreManagerClient初始化成功');
+
+      // 测试连接是否正常
+      console.log('🧪 [Worker] 测试 StoreManagerClient 连接...');
+
+    } catch (clientError) {
+      console.error('❌ [Worker] StoreManagerClient 创建失败:', clientError);
+      throw clientError;
     }
-    console.log('✅ StoreManagerClient初始化成功');
   })
   .catch(error => {
-    console.error('❌ Worker初始化失败，应用可能无法正常使用:', error);
-    
+    console.error('❌ [Worker] Worker初始化失败，应用可能无法正常使用:', error);
+    console.error('💥 [Worker] 错误详情:', {
+      message: error?.message,
+      stack: error?.stack,
+      name: error?.name,
+      workerUrl,
+      useSharedWorker,
+      supportsSharedWorker: !!window.SharedWorker
+    });
+
     // 显示用户友好的错误提示
     const errorDiv = document.createElement('div');
     errorDiv.style.cssText = `
@@ -149,62 +172,267 @@ const future = {
   v7_startTransition: true,
 } as const;
 
-const framework = new Framework();
-configureCommonModules(framework);
-configureBrowserWorkbenchModule(framework);
-configureLocalStorageStateStorageImpls(framework);
-configureBrowserWorkspaceFlavours(framework);
-framework.impl(NbstoreProvider, {
-  openStore(key, options) {
-    return storeManagerClient.open(key, options);
-  },
-});
-framework.impl(PopupWindowProvider, {
-  open: (target: string) => {
-    const targetUrl = new URL(target);
+let frameworkProvider: FrameworkProvider | null = null;
 
-    let url: string;
-    // safe to open directly if in the same origin
-    if (targetUrl.origin === location.origin) {
-      url = target;
-    } else {
-      const redirectProxy = location.origin + '/redirect-proxy';
-      const search = new URLSearchParams({
-        redirect_uri: target,
-      });
+try {
+  console.log('🏗️ [Framework] 开始创建 Framework 实例');
+  const framework = new Framework();
+  console.log('✅ [Framework] Framework 实例创建成功');
 
-      url = `${redirectProxy}?${search.toString()}`;
-    }
-    window.open(url, '_blank', 'popup noreferrer noopener');
-  },
-});
-const frameworkProvider = framework.provider();
+  console.log('⚙️ [Framework] 开始配置通用模块');
+  configureCommonModules(framework);
+  console.log('✅ [Framework] 通用模块配置完成');
 
-// setup application lifecycle events, and emit application start event
-window.addEventListener('focus', () => {
-  frameworkProvider.get(LifecycleService).applicationFocus();
-});
-frameworkProvider.get(LifecycleService).applicationStart();
+  console.log('🖥️ [Framework] 开始配置浏览器工作台模块');
+  configureBrowserWorkbenchModule(framework);
+  console.log('✅ [Framework] 浏览器工作台模块配置完成');
+
+  console.log('💾 [Framework] 开始配置本地存储状态实现');
+  configureLocalStorageStateStorageImpls(framework);
+  console.log('✅ [Framework] 本地存储状态实现配置完成');
+
+  console.log('🏢 [Framework] 开始配置浏览器工作空间风格');
+  configureBrowserWorkspaceFlavours(framework);
+  console.log('✅ [Framework] 浏览器工作空间风格配置完成');
+
+  console.log('🔌 [Framework] 开始实现 NbstoreProvider');
+  framework.impl(NbstoreProvider, {
+    openStore(key, options) {
+      console.log(`📂 [NbstoreProvider] 尝试打开存储: ${key}`, { options });
+      if (!storeManagerClient) {
+        console.error('❌ [NbstoreProvider] StoreManagerClient 未初始化');
+        throw new Error('StoreManagerClient not initialized');
+      }
+      try {
+        const store = storeManagerClient.open(key, options);
+        console.log(`✅ [NbstoreProvider] 存储打开成功: ${key}`);
+        return store;
+      } catch (error) {
+        console.error(`❌ [NbstoreProvider] 存储打开失败: ${key}`, error);
+        throw error;
+      }
+    },
+  });
+  console.log('✅ [Framework] NbstoreProvider 实现完成');
+
+  console.log('🪟 [Framework] 开始实现 PopupWindowProvider');
+  framework.impl(PopupWindowProvider, {
+    open: (target: string) => {
+      console.log(`🔗 [PopupWindowProvider] 打开弹窗: ${target}`);
+      const targetUrl = new URL(target);
+
+      let url: string;
+      // safe to open directly if in the same origin
+      if (targetUrl.origin === location.origin) {
+        url = target;
+        console.log(`🔓 [PopupWindowProvider] 同源URL，直接打开: ${url}`);
+      } else {
+        const redirectProxy = location.origin + '/redirect-proxy';
+        const search = new URLSearchParams({
+          redirect_uri: target,
+        });
+
+        url = `${redirectProxy}?${search.toString()}`;
+        console.log(`🔐 [PopupWindowProvider] 跨源URL，使用代理: ${url}`);
+      }
+      const popup = window.open(url, '_blank', 'popup noreferrer noopener');
+      console.log(`✅ [PopupWindowProvider] 弹窗打开结果: ${popup ? '成功' : '失败'}`);
+      return popup;
+    },
+  });
+  console.log('✅ [Framework] PopupWindowProvider 实现完成');
+
+  console.log('📦 [Framework] 创建 FrameworkProvider');
+  frameworkProvider = framework.provider();
+  console.log('✅ [Framework] FrameworkProvider 创建成功');
+
+  // setup application lifecycle events, and emit application start event
+  console.log('🔄 [Framework] 设置应用生命周期事件');
+  window.addEventListener('focus', () => {
+    console.log('🎯 [Framework] 应用获得焦点');
+    frameworkProvider!.get(LifecycleService).applicationFocus();
+  });
+
+  console.log('🚀 [Framework] 启动应用生命周期');
+  frameworkProvider!.get(LifecycleService).applicationStart();
+  console.log('✅ [Framework] 应用生命周期启动完成');
+
+} catch (frameworkError) {
+  console.error('💥 [Framework] 框架初始化失败:', frameworkError);
+  console.error('💥 [Framework] 框架错误详情:', {
+    message: frameworkError?.message,
+    stack: frameworkError?.stack,
+    name: frameworkError?.name
+  });
+
+  // 显示框架初始化失败错误
+  document.body.innerHTML = `
+    <div style="
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      font-family: system-ui, -apple-system, sans-serif;
+      background: #fff3cd;
+      margin: 0;
+      padding: 20px;
+    ">
+      <h2 style="color: #856404; margin-bottom: 16px;">⚠️ 框架初始化失败</h2>
+      <p style="color: #856404; margin-bottom: 20px; text-align: center; max-width: 500px;">
+        应用框架在初始化过程中遇到错误，这通常是由于依赖模块加载失败导致的。
+      </p>
+      <div style="
+        background: #fff;
+        padding: 16px;
+        border-radius: 8px;
+        border-left: 4px solid #ffc107;
+        margin-bottom: 20px;
+        max-width: 600px;
+        width: 100%;
+      ">
+        <h4 style="margin: 0 0 8px 0; color: #856404;">错误详情:</h4>
+        <pre style="
+          margin: 0;
+          padding: 8px;
+          background: #f8f9fa;
+          border-radius: 4px;
+          font-size: 12px;
+          overflow: auto;
+          color: #d63384;
+        ">${frameworkError?.message || String(frameworkError)}</pre>
+      </div>
+      <button onclick="location.reload()" style="
+        padding: 12px 24px;
+        background: #ffc107;
+        color: #000;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 500;
+      ">🔄 刷新页面</button>
+    </div>
+  `;
+
+  throw frameworkError;
+}
 
 export function App() {
+  console.log('🚀 [App] 开始渲染应用组件');
+
+  // 检查框架是否初始化成功
+  if (!frameworkProvider) {
+    console.error('❌ [App] FrameworkProvider 未初始化，无法渲染应用');
+    return (
+      <div style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: '100vh',
+        fontSize: '16px',
+        color: '#e74c3c',
+        fontFamily: 'system-ui, sans-serif'
+      }}>
+        <h2>⚠️ 框架初始化失败</h2>
+        <p>应用框架未能正确初始化，请刷新页面重试</p>
+        <button
+          onClick={() => window.location.reload()}
+          style={{
+            padding: '12px 24px',
+            background: '#e74c3c',
+            color: 'white',
+            border: 'none',
+            borderRadius: '6px',
+            cursor: 'pointer',
+            fontSize: '14px'
+          }}
+        >
+          刷新页面
+        </button>
+      </div>
+    );
+  }
+
   return (
-    <Suspense>
-      <FrameworkRoot framework={frameworkProvider}>
-        <CacheProvider value={cache}>
-          <I18nProvider>
-            <YunkeContext store={getCurrentStore()}>
-              <CloudStorageProvider>
-                <RouterProvider
-                  fallbackElement={<AppContainer fallback />}
-                  router={router}
-                  future={future}
-                />
-                <CloudStorageIndicator />
-              </CloudStorageProvider>
-            </YunkeContext>
-          </I18nProvider>
-        </CacheProvider>
-      </FrameworkRoot>
+    <Suspense fallback={
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: '100vh',
+        fontSize: '16px',
+        color: '#666',
+        flexDirection: 'column',
+        gap: '16px'
+      }}>
+        <div>🔄 应用初始化中...</div>
+        <div style={{ fontSize: '12px', color: '#999' }}>
+          如果长时间停留在此页面，请检查控制台错误信息
+        </div>
+      </div>
+    }>
+      {(() => {
+        console.log('📦 [App] 开始渲染 FrameworkRoot');
+        try {
+          return (
+            <FrameworkRoot framework={frameworkProvider}>
+              {(() => {
+                console.log('🎨 [App] 开始渲染 CacheProvider');
+                return (
+                  <CacheProvider value={cache}>
+                    {(() => {
+                      console.log('🌍 [App] 开始渲染 I18nProvider');
+                      return (
+                        <I18nProvider>
+                          {(() => {
+                            console.log('🏪 [App] 开始渲染 YunkeContext');
+                            try {
+                              const currentStore = getCurrentStore();
+                              console.log('✅ [App] YunkeContext store 获取成功:', currentStore ? '有效' : '无效');
+                              return (
+                                <YunkeContext store={currentStore}>
+                                  {(() => {
+                                    console.log('☁️ [App] 开始渲染 CloudStorageProvider');
+                                    return (
+                                      <CloudStorageProvider>
+                                        {(() => {
+                                          console.log('🛣️ [App] 开始渲染 RouterProvider');
+                                          return (
+                                            <>
+                                              <RouterProvider
+                                                fallbackElement={<AppContainer fallback />}
+                                                router={router}
+                                                future={future}
+                                              />
+                                              <CloudStorageIndicator />
+                                            </>
+                                          );
+                                        })()}
+                                      </CloudStorageProvider>
+                                    );
+                                  })()}
+                                </YunkeContext>
+                              );
+                            } catch (error) {
+                              console.error('❌ [App] YunkeContext 渲染失败:', error);
+                              throw error;
+                            }
+                          })()}
+                        </I18nProvider>
+                      );
+                    })()}
+                  </CacheProvider>
+                );
+              })()}
+            </FrameworkRoot>
+          );
+        } catch (error) {
+          console.error('❌ [App] FrameworkRoot 渲染失败:', error);
+          throw error;
+        }
+      })()}
     </Suspense>
   );
 }

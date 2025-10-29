@@ -13,11 +13,10 @@
     "blocks": {
       "type": "block",
       "id": "block:wj7klMQtij",
-      "flavour": "affine:page",
+      "flavour": "yunke:page",
       "props": {
         "title": {
-          "$blocksuite:internal:text$": true,
-          "delta": [
+          "ops": [
             {
               "insert": "BlockSuite Playground"
             }
@@ -28,7 +27,7 @@
         {
           "type": "block",
           "id": "block:ezRclaviND",
-          "flavour": "affine:surface",
+          "flavour": "yunke:surface",
           "props": {
             "elements": {
               "mTjoQDamRB": {
@@ -49,8 +48,7 @@
                 "seed": 1178553904,
                 "color": "--affine-palette-line-black",
                 "text": {
-                  "affine:surface:text": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "Concept A"
                     }
@@ -78,8 +76,7 @@
                 "index": "a1",
                 "seed": 604664369,
                 "text": {
-                  "affine:surface:text": true,
-                  "delta": []
+                  "ops": []
                 },
                 "color": "--affine-palette-line-black"
               },
@@ -100,8 +97,7 @@
                 "index": "a3",
                 "seed": 300090528,
                 "text": {
-                  "affine:surface:text": true,
-                  "delta": []
+                  "ops": []
                 },
                 "color": "--affine-palette-line-black"
               },
@@ -123,8 +119,7 @@
                 "seed": 692989575,
                 "color": "--affine-palette-line-black",
                 "text": {
-                  "affine:surface:text": true,
-                  "delta": []
+                  "ops": []
                 }
               },
               "VQ9seqIlll": {
@@ -145,8 +140,7 @@
                 "seed": 211273728,
                 "color": "--affine-palette-line-black",
                 "text": {
-                  "affine:surface:text": true,
-                  "delta": []
+                  "ops": []
                 }
               },
               "ozcEtD_GQ-": {
@@ -167,8 +161,7 @@
                 "seed": 470221421,
                 "color": "--affine-palette-line-black",
                 "text": {
-                  "affine:surface:text": true,
-                  "delta": []
+                  "ops": []
                 }
               },
               "YuI1nofjYX": {
@@ -189,8 +182,7 @@
                 "seed": 1494756941,
                 "color": "--affine-palette-line-black",
                 "text": {
-                  "affine:surface:text": true,
-                  "delta": []
+                  "ops": []
                 }
               },
               "nCzRhOGFQw": {
@@ -211,8 +203,7 @@
                 "seed": 1290515361,
                 "color": "--affine-palette-line-black",
                 "text": {
-                  "affine:surface:text": true,
-                  "delta": []
+                  "ops": []
                 }
               },
               "swGKsqzFUp": {
@@ -233,8 +224,7 @@
                 "seed": 986102426,
                 "color": "--affine-palette-line-black",
                 "text": {
-                  "affine:surface:text": true,
-                  "delta": []
+                  "ops": []
                 }
               },
               "YVJg5ST2Vv": {
@@ -255,8 +245,7 @@
                 "seed": 425969247,
                 "color": "--affine-palette-line-black",
                 "text": {
-                  "affine:surface:text": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "Concept B"
                     }
@@ -303,8 +292,7 @@
                 "seed": 437989101,
                 "color": "--affine-palette-line-black",
                 "text": {
-                  "affine:surface:text": true,
-                  "delta": []
+                  "ops": []
                 }
               },
               "j8CZJ7J4PI": {
@@ -325,8 +313,7 @@
                 "seed": 992649697,
                 "color": "--affine-palette-line-black",
                 "text": {
-                  "affine:surface:text": true,
-                  "delta": []
+                  "ops": []
                 }
               },
               "oMTM9xCt10": {
@@ -347,8 +334,7 @@
                 "seed": 795723578,
                 "color": "--affine-palette-line-black",
                 "text": {
-                  "affine:surface:text": true,
-                  "delta": []
+                  "ops": []
                 }
               },
               "X6ZsT1ZXq6": {
@@ -369,8 +355,7 @@
                 "seed": 494783000,
                 "color": "--affine-palette-line-black",
                 "text": {
-                  "affine:surface:text": true,
-                  "delta": []
+                  "ops": []
                 }
               },
               "NKi2l1VoN7": {
@@ -391,8 +376,7 @@
                 "seed": 1625007549,
                 "color": "--affine-palette-line-black",
                 "text": {
-                  "affine:surface:text": true,
-                  "delta": []
+                  "ops": []
                 }
               },
               "qatNTg24jO": {
@@ -431,8 +415,7 @@
                 "seed": 13175154,
                 "color": "--affine-palette-line-black",
                 "text": {
-                  "affine:surface:text": true,
-                  "delta": []
+                  "ops": []
                 }
               },
               "EG7cFYZDkp": {
@@ -453,8 +436,7 @@
                 "seed": 424956776,
                 "color": "--affine-palette-line-black",
                 "text": {
-                  "affine:surface:text": true,
-                  "delta": []
+                  "ops": []
                 }
               },
               "ziVvv9dJdf": {
@@ -462,8 +444,7 @@
                 "xywh": "[-1934.65859614145,223.5203912885661,901.4624291423331,674.6666666666666]",
                 "rotate": 0,
                 "text": {
-                  "affine:surface:text": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "A concept map template is a visual framework designed to help organize and structure information. \n\nIt typically includes blank nodes or boxes for key concepts and connecting lines or arrows to show relationships. \n\nThis template aids in mapping out ideas, facilitating understanding and analysis of complex topics."
                     }
@@ -485,8 +466,7 @@
                 "xywh": "[-1934.6585961414498,96.70150944204761,401.1519470214844,82]",
                 "rotate": 0,
                 "text": {
-                  "affine:surface:text": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "Concept map"
                     }
@@ -971,11 +951,10 @@
             {
               "type": "block",
               "id": "block:iiXnbBQ2he",
-              "flavour": "affine:frame",
+              "flavour": "yunke:frame",
               "props": {
                 "title": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "Concept A"
                     }
@@ -990,11 +969,10 @@
             {
               "type": "block",
               "id": "block:LkK6aQf432",
-              "flavour": "affine:frame",
+              "flavour": "yunke:frame",
               "props": {
                 "title": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "Concept B"
                     }
@@ -1009,11 +987,10 @@
             {
               "type": "block",
               "id": "block:o4_xMBOuQW",
-              "flavour": "affine:frame",
+              "flavour": "yunke:frame",
               "props": {
                 "title": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "Instruction"
                     }

@@ -13,11 +13,10 @@
     "blocks": {
       "type": "block",
       "id": "block:MUiOnioW97",
-      "flavour": "affine:page",
+      "flavour": "yunke:page",
       "props": {
         "title": {
-          "$blocksuite:internal:text$": true,
-          "delta": [
+          "ops": [
             {
               "insert": "BlockSuite Playground"
             }
@@ -28,7 +27,7 @@
         {
           "type": "block",
           "id": "block:QpbcVfCUkq",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[6725.440744142054,-783.3117533478572,792.3260953287408,1290]",
             "background": "--affine-tag-yellow",
@@ -50,351 +49,351 @@
             {
               "type": "block",
               "id": "block:jM75uFLf-R",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "h1",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "User Name："
                     }
                   ]
-                }
+                },
+                "collapsed": false
               },
               "children": []
             },
             {
               "type": "block",
               "id": "block:uM0shiOEY9",
-              "flavour": "affine:divider",
+              "flavour": "yunke:divider",
               "props": {},
               "children": []
             },
             {
               "type": "block",
               "id": "block:alvriDkwvu",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "h1",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "Age:"
                     }
                   ]
-                }
+                },
+                "collapsed": false
               },
               "children": []
             },
             {
               "type": "block",
               "id": "block:fSvQGZDJWf",
-              "flavour": "affine:divider",
+              "flavour": "yunke:divider",
               "props": {},
               "children": []
             },
             {
               "type": "block",
               "id": "block:NwBVsgjABw",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "h1",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "Occupation:"
                     }
                   ]
-                }
+                },
+                "collapsed": false
               },
               "children": []
             },
             {
               "type": "block",
               "id": "block:U5ofWjxVaQ",
-              "flavour": "affine:divider",
+              "flavour": "yunke:divider",
               "props": {},
               "children": []
             },
             {
               "type": "block",
               "id": "block:Kc94rDK7OY",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "h1",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "Location:"
                     }
                   ]
-                }
+                },
+                "collapsed": false
               },
               "children": []
             },
             {
               "type": "block",
               "id": "block:iCWH4QumQe",
-              "flavour": "affine:divider",
+              "flavour": "yunke:divider",
               "props": {},
               "children": []
             },
             {
               "type": "block",
               "id": "block:RT1TBXx9sy",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "h1",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "More info:"
                     }
                   ]
-                }
+                },
+                "collapsed": false
               },
               "children": []
             },
             {
               "type": "block",
               "id": "block:DajFXoDcaW",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": []
-                }
+                  "ops": []
+                },
+                "collapsed": false
               },
               "children": []
             },
             {
               "type": "block",
               "id": "block:9EBcu8DZ9s",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": []
-                }
+                  "ops": []
+                },
+                "collapsed": false
               },
               "children": []
             },
             {
               "type": "block",
               "id": "block:vUkVu1NpOO",
-              "flavour": "affine:divider",
+              "flavour": "yunke:divider",
               "props": {},
               "children": []
             },
             {
               "type": "block",
               "id": "block:TfSDLsjG-W",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "h1",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "User Needs"
                     }
                   ]
-                }
+                },
+                "collapsed": false
               },
               "children": []
             },
             {
               "type": "block",
               "id": "block:NLZWN_yLLB",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "h6",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "What high level needs does the user have that they're looking to fill with your service?"
                     }
                   ]
-                }
+                },
+                "collapsed": false
               },
               "children": []
             },
             {
               "type": "block",
               "id": "block:egGBdl4g8J",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": []
-                }
+                  "ops": []
+                },
+                "collapsed": false
               },
               "children": []
             },
             {
               "type": "block",
               "id": "block:KKNmY2gtEz",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": []
-                }
+                  "ops": []
+                },
+                "collapsed": false
               },
               "children": []
             },
             {
               "type": "block",
               "id": "block:X7UmU2EQfH",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": []
-                }
+                  "ops": []
+                },
+                "collapsed": false
               },
               "children": []
             },
             {
               "type": "block",
               "id": "block:8IbL5N0ZDv",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": []
-                }
+                  "ops": []
+                },
+                "collapsed": false
               },
               "children": []
             },
             {
               "type": "block",
               "id": "block:ltLiNIn2sq",
-              "flavour": "affine:divider",
+              "flavour": "yunke:divider",
               "props": {},
               "children": []
             },
             {
               "type": "block",
               "id": "block:VXY90rfDxM",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": []
-                }
+                  "ops": []
+                },
+                "collapsed": false
               },
               "children": []
             },
             {
               "type": "block",
               "id": "block:KqWtVNs8QJ",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "h1",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "User Mindsets"
                     }
                   ]
-                }
+                },
+                "collapsed": false
               },
               "children": []
             },
             {
               "type": "block",
               "id": "block:SuPlojv41_",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "h6",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "What kind of a mindset is your user in when they're finding or engaging with your service?\n"
                     }
                   ]
-                }
+                },
+                "collapsed": false
               },
               "children": []
             },
             {
               "type": "block",
               "id": "block:dN6M_KJVXn",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": []
-                }
+                  "ops": []
+                },
+                "collapsed": false
               },
               "children": []
             },
             {
               "type": "block",
               "id": "block:B99VHw6Vpo",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": []
-                }
+                  "ops": []
+                },
+                "collapsed": false
               },
               "children": []
             },
             {
               "type": "block",
               "id": "block:Kn-z8EDrwv",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": []
-                }
+                  "ops": []
+                },
+                "collapsed": false
               },
               "children": []
             },
             {
               "type": "block",
               "id": "block:nh0cEb-t5-",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": []
-                }
+                  "ops": []
+                },
+                "collapsed": false
               },
               "children": []
             },
             {
               "type": "block",
               "id": "block:aljKft1iop",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": []
-                }
+                  "ops": []
+                },
+                "collapsed": false
               },
               "children": []
             }
@@ -403,7 +402,7 @@
         {
           "type": "block",
           "id": "block:nsxEkC5bd4",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[8925.177592713977,-465.0642042314213,364,352.9113278529278]",
             "background": "--affine-tag-orange",
@@ -424,13 +423,13 @@
             {
               "type": "block",
               "id": "block:ZpIEV5Tpy4",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": []
-                }
+                  "ops": []
+                },
+                "collapsed": false
               },
               "children": []
             }
@@ -439,7 +438,7 @@
         {
           "type": "block",
           "id": "block:u5QauLTorE",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[9320.170746091882,-465.0642042314213,364,352.9113278529278]",
             "background": "--affine-tag-orange",
@@ -460,13 +459,13 @@
             {
               "type": "block",
               "id": "block:LYoIG6Nyb1",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": []
-                }
+                  "ops": []
+                },
+                "collapsed": false
               },
               "children": []
             }
@@ -475,7 +474,7 @@
         {
           "type": "block",
           "id": "block:vHNEnb_waL",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[10007.761357825666,-465.0642042314213,364,352.9113278529278]",
             "background": "--affine-tag-red",
@@ -496,13 +495,13 @@
             {
               "type": "block",
               "id": "block:-3jwAzgQwr",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": []
-                }
+                  "ops": []
+                },
+                "collapsed": false
               },
               "children": []
             }
@@ -511,7 +510,7 @@
         {
           "type": "block",
           "id": "block:KywiV5CmDR",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[10406.243044450925,-465.0642042314213,364,352.9113278529278]",
             "background": "--affine-tag-red",
@@ -532,13 +531,13 @@
             {
               "type": "block",
               "id": "block:WaYCvqAGr-",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": []
-                }
+                  "ops": []
+                },
+                "collapsed": false
               },
               "children": []
             }
@@ -547,7 +546,7 @@
         {
           "type": "block",
           "id": "block:GgJzKJznNv",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[11068.617179743595,-465.0642042314213,364,352.9113278529278]",
             "background": "--affine-tag-purple",
@@ -568,13 +567,13 @@
             {
               "type": "block",
               "id": "block:RgpyLxvJ9Y",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": []
-                }
+                  "ops": []
+                },
+                "collapsed": false
               },
               "children": []
             }
@@ -583,7 +582,7 @@
         {
           "type": "block",
           "id": "block:-wOlp44oWo",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[11464.680329172072,-465.0642042314213,364,352.9113278529278]",
             "background": "--affine-tag-purple",
@@ -604,13 +603,13 @@
             {
               "type": "block",
               "id": "block:zq7N9et3Ly",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": []
-                }
+                  "ops": []
+                },
+                "collapsed": false
               },
               "children": []
             }
@@ -619,7 +618,7 @@
         {
           "type": "block",
           "id": "block:r4og4NVqM_",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[12139.848708203097,-465.0642042314213,364,352.9113278529278]",
             "background": "--affine-tag-green",
@@ -640,13 +639,13 @@
             {
               "type": "block",
               "id": "block:TU2vT-mFB8",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": []
-                }
+                  "ops": []
+                },
+                "collapsed": false
               },
               "children": []
             }
@@ -655,7 +654,7 @@
         {
           "type": "block",
           "id": "block:y9AH3YW5qG",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[12530.9069935115,-465.0642042314213,364,352.9113278529278]",
             "background": "--affine-tag-green",
@@ -676,13 +675,13 @@
             {
               "type": "block",
               "id": "block:3E30o9uhPo",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": []
-                }
+                  "ops": []
+                },
+                "collapsed": false
               },
               "children": []
             }
@@ -691,7 +690,7 @@
         {
           "type": "block",
           "id": "block:7KJ8mPNg1H",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[13198.85071992075,-465.0642042314213,364,352.9113278529278]",
             "background": "--affine-tag-pink",
@@ -712,13 +711,13 @@
             {
               "type": "block",
               "id": "block:KliyR8IMQi",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": []
-                }
+                  "ops": []
+                },
+                "collapsed": false
               },
               "children": []
             }
@@ -727,7 +726,7 @@
         {
           "type": "block",
           "id": "block:it9iryIRQY",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[13597.13365785093,-465.0642042314213,364,352.9113278529278]",
             "background": "--affine-tag-pink",
@@ -748,13 +747,13 @@
             {
               "type": "block",
               "id": "block:1VKJJ0z5X6",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": []
-                }
+                  "ops": []
+                },
+                "collapsed": false
               },
               "children": []
             }
@@ -763,7 +762,7 @@
         {
           "type": "block",
           "id": "block:2GZ6MBAR_J",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[8932.966972332257,85.08909494527555,364,354.46919055639745]",
             "background": "--affine-tag-orange",
@@ -784,13 +783,13 @@
             {
               "type": "block",
               "id": "block:4OtEcsWSMu",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": []
-                }
+                  "ops": []
+                },
+                "collapsed": false
               },
               "children": []
             }
@@ -799,7 +798,7 @@
         {
           "type": "block",
           "id": "block:5HBScmthOl",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[9327.960125710162,85.08909494527589,364,354.46919055639745]",
             "background": "--affine-tag-orange",
@@ -820,13 +819,13 @@
             {
               "type": "block",
               "id": "block:cYrCnvfdLt",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": []
-                }
+                  "ops": []
+                },
+                "collapsed": false
               },
               "children": []
             }
@@ -835,7 +834,7 @@
         {
           "type": "block",
           "id": "block:nsxuD5tTrh",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[10015.550737443946,85.08909494527555,364,354.46919055639745]",
             "background": "--affine-tag-red",
@@ -856,13 +855,13 @@
             {
               "type": "block",
               "id": "block:scXUOC1YkT",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": []
-                }
+                  "ops": []
+                },
+                "collapsed": false
               },
               "children": []
             }
@@ -871,7 +870,7 @@
         {
           "type": "block",
           "id": "block:aUUv6xR3Nr",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[10414.032424069204,85.08909494527583,364,354.46919055639745]",
             "background": "--affine-tag-red",
@@ -892,13 +891,13 @@
             {
               "type": "block",
               "id": "block:l_CAYgCpma",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": []
-                }
+                  "ops": []
+                },
+                "collapsed": false
               },
               "children": []
             }
@@ -907,7 +906,7 @@
         {
           "type": "block",
           "id": "block:q9ysbznNvC",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[11076.406559361874,85.08909494527555,364,354.46919055639745]",
             "background": "--affine-tag-purple",
@@ -928,13 +927,13 @@
             {
               "type": "block",
               "id": "block:Oy8MXwu2oK",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": []
-                }
+                  "ops": []
+                },
+                "collapsed": false
               },
               "children": []
             }
@@ -943,7 +942,7 @@
         {
           "type": "block",
           "id": "block:Zv1luGOBXs",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[11472.469708790353,85.0890949452756,364,354.46919055639745]",
             "background": "--affine-tag-purple",
@@ -964,13 +963,13 @@
             {
               "type": "block",
               "id": "block:klTTT1H4Wa",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": []
-                }
+                  "ops": []
+                },
+                "collapsed": false
               },
               "children": []
             }
@@ -979,7 +978,7 @@
         {
           "type": "block",
           "id": "block:Y0MLL-lzpl",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[12147.638087821377,85.08909494527555,364,354.46919055639745]",
             "background": "--affine-tag-green",
@@ -1000,13 +999,13 @@
             {
               "type": "block",
               "id": "block:nns-RPjqs9",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": []
-                }
+                  "ops": []
+                },
+                "collapsed": false
               },
               "children": []
             }
@@ -1015,7 +1014,7 @@
         {
           "type": "block",
           "id": "block:pf4-8CZFSK",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[12538.69637312978,85.08909494527572,364,354.46919055639745]",
             "background": "--affine-tag-green",
@@ -1036,13 +1035,13 @@
             {
               "type": "block",
               "id": "block:VzOkt84vqq",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": []
-                }
+                  "ops": []
+                },
+                "collapsed": false
               },
               "children": []
             }
@@ -1051,7 +1050,7 @@
         {
           "type": "block",
           "id": "block:xssaIrcg60",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[13206.64009953903,85.08909494527555,364,354.46919055639745]",
             "background": "--affine-tag-pink",
@@ -1072,13 +1071,13 @@
             {
               "type": "block",
               "id": "block:d-XBH5JzVZ",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": []
-                }
+                  "ops": []
+                },
+                "collapsed": false
               },
               "children": []
             }
@@ -1087,7 +1086,7 @@
         {
           "type": "block",
           "id": "block:mYrV5nT3MX",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[13604.92303746921,85.08909494527589,364,354.46919055639745]",
             "background": "--affine-tag-pink",
@@ -1108,13 +1107,13 @@
             {
               "type": "block",
               "id": "block:s2JSVG-ACn",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": []
-                }
+                  "ops": []
+                },
+                "collapsed": false
               },
               "children": []
             }
@@ -1123,7 +1122,7 @@
         {
           "type": "block",
           "id": "block:PjvWp0snjZ",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[8946.827251614981,649.2933179609103,739.3100589383848,351.2863377237237]",
             "background": "--affine-tag-orange",
@@ -1144,13 +1143,13 @@
             {
               "type": "block",
               "id": "block:oGkTIXA6jh",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": []
-                }
+                  "ops": []
+                },
+                "collapsed": false
               },
               "children": []
             }
@@ -1159,7 +1158,7 @@
         {
           "type": "block",
           "id": "block:IFdDTdfmbb",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[10021.286083571616,543.8876181452731,737.7890700090829,333.0572729738294]",
             "background": "--affine-tag-red",
@@ -1180,13 +1179,13 @@
             {
               "type": "block",
               "id": "block:PwArCYafDD",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": []
-                }
+                  "ops": []
+                },
+                "collapsed": false
               },
               "children": []
             }
@@ -1195,7 +1194,7 @@
         {
           "type": "block",
           "id": "block:IUHeCI30rd",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[11090.363384969822,676.9738770772201,723.1117570744354,321.46345945383007]",
             "background": "--affine-tag-purple",
@@ -1216,13 +1215,13 @@
             {
               "type": "block",
               "id": "block:4767dqABKb",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": []
-                }
+                  "ops": []
+                },
+                "collapsed": false
               },
               "children": []
             }
@@ -1231,7 +1230,7 @@
         {
           "type": "block",
           "id": "block:r-BGsYCXXb",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[12147.638087821377,554.5569049101744,752.9850421649498,343.99592187925]",
             "background": "--affine-tag-green",
@@ -1252,13 +1251,13 @@
             {
               "type": "block",
               "id": "block:K3hU9hlcO1",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": []
-                }
+                  "ops": []
+                },
+                "collapsed": false
               },
               "children": []
             }
@@ -1267,7 +1266,7 @@
         {
           "type": "block",
           "id": "block:NQFseZ-oIO",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[13206.64009953903,674.4410436646788,748.5833627879147,325.37592383192714]",
             "background": "--affine-tag-pink",
@@ -1288,13 +1287,13 @@
             {
               "type": "block",
               "id": "block:05FxaPJBWr",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": []
-                }
+                  "ops": []
+                },
+                "collapsed": false
               },
               "children": []
             }
@@ -1303,7 +1302,7 @@
         {
           "type": "block",
           "id": "block:1fM1m4ZE3F",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[8946.827251614981,1130.0022508784168,364,357.4007455314522]",
             "background": "--affine-tag-orange",
@@ -1324,13 +1323,13 @@
             {
               "type": "block",
               "id": "block:8rBR4g7of0",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": []
-                }
+                  "ops": []
+                },
+                "collapsed": false
               },
               "children": []
             }
@@ -1339,7 +1338,7 @@
         {
           "type": "block",
           "id": "block:aE94TtfWO6",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[9341.820404992885,1130.0022508784168,364,357.4007455314522]",
             "background": "--affine-tag-orange",
@@ -1360,13 +1359,13 @@
             {
               "type": "block",
               "id": "block:h2gQsApwPu",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": []
-                }
+                  "ops": []
+                },
+                "collapsed": false
               },
               "children": []
             }
@@ -1375,7 +1374,7 @@
         {
           "type": "block",
           "id": "block:_9LEPWkbdM",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[10029.41101672667,1130.0022508784168,364,357.4007455314522]",
             "background": "--affine-tag-red",
@@ -1396,13 +1395,13 @@
             {
               "type": "block",
               "id": "block:6GQ7PotcHA",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": []
-                }
+                  "ops": []
+                },
+                "collapsed": false
               },
               "children": []
             }
@@ -1411,7 +1410,7 @@
         {
           "type": "block",
           "id": "block:3Gl0qY674_",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[10427.892703351927,1130.0022508784168,364,357.4007455314522]",
             "background": "--affine-tag-red",
@@ -1432,13 +1431,13 @@
             {
               "type": "block",
               "id": "block:gkP6ThJqGF",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": []
-                }
+                  "ops": []
+                },
+                "collapsed": false
               },
               "children": []
             }
@@ -1447,7 +1446,7 @@
         {
           "type": "block",
           "id": "block:EcHnLjZHZf",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[11090.266838644597,1130.0022508784168,364,357.4007455314522]",
             "background": "--affine-tag-purple",
@@ -1468,13 +1467,13 @@
             {
               "type": "block",
               "id": "block:veZkJCH7qk",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": []
-                }
+                  "ops": []
+                },
+                "collapsed": false
               },
               "children": []
             }
@@ -1483,7 +1482,7 @@
         {
           "type": "block",
           "id": "block:o5xeHKxpcW",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[11486.329988073076,1130.0022508784168,364,357.4007455314522]",
             "background": "--affine-tag-purple",
@@ -1504,13 +1503,13 @@
             {
               "type": "block",
               "id": "block:FPgGgPDIfE",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": []
-                }
+                  "ops": []
+                },
+                "collapsed": false
               },
               "children": []
             }
@@ -1519,7 +1518,7 @@
         {
           "type": "block",
           "id": "block:EG_pltScSc",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[12161.4983671041,1130.0022508784168,364,357.4007455314522]",
             "background": "--affine-tag-green",
@@ -1540,13 +1539,13 @@
             {
               "type": "block",
               "id": "block:F9mZgk178R",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": []
-                }
+                  "ops": []
+                },
+                "collapsed": false
               },
               "children": []
             }
@@ -1555,7 +1554,7 @@
         {
           "type": "block",
           "id": "block:rp8jPaOHXy",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[12552.556652412504,1130.0022508784168,364,357.4007455314522]",
             "background": "--affine-tag-green",
@@ -1576,13 +1575,13 @@
             {
               "type": "block",
               "id": "block:oUE2M9NJFa",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": []
-                }
+                  "ops": []
+                },
+                "collapsed": false
               },
               "children": []
             }
@@ -1591,7 +1590,7 @@
         {
           "type": "block",
           "id": "block:CNgvRlQQUT",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[13220.500378821753,1130.0022508784168,364,357.4007455314522]",
             "background": "--affine-tag-pink",
@@ -1612,13 +1611,13 @@
             {
               "type": "block",
               "id": "block:0IKuOS4Mo6",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": []
-                }
+                  "ops": []
+                },
+                "collapsed": false
               },
               "children": []
             }
@@ -1627,7 +1626,7 @@
         {
           "type": "block",
           "id": "block:wtGIk-Xs-M",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[13618.783316751935,1130.0022508784168,364,357.4007455314522]",
             "background": "--affine-tag-pink",
@@ -1648,13 +1647,13 @@
             {
               "type": "block",
               "id": "block:4VpbF-fN3A",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": []
-                }
+                  "ops": []
+                },
+                "collapsed": false
               },
               "children": []
             }
@@ -1663,7 +1662,7 @@
         {
           "type": "block",
           "id": "block:NVVFA-WddZ",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[8938.702318459927,1656.4152414368796,364,359.1905369899068]",
             "background": "--affine-tag-orange",
@@ -1684,13 +1683,13 @@
             {
               "type": "block",
               "id": "block:PL4edACJyX",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": []
-                }
+                  "ops": []
+                },
+                "collapsed": false
               },
               "children": []
             }
@@ -1699,7 +1698,7 @@
         {
           "type": "block",
           "id": "block:LSert3MXyj",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[9333.695471837831,1656.4152414368796,364,359.1905369899068]",
             "background": "--affine-tag-orange",
@@ -1720,13 +1719,13 @@
             {
               "type": "block",
               "id": "block:dZ3vZ31cJe",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": []
-                }
+                  "ops": []
+                },
+                "collapsed": false
               },
               "children": []
             }
@@ -1735,7 +1734,7 @@
         {
           "type": "block",
           "id": "block:q-4Z4-1XR9",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[10021.286083571616,1656.4152414368796,364,359.1905369899068]",
             "background": "--affine-tag-red",
@@ -1756,13 +1755,13 @@
             {
               "type": "block",
               "id": "block:GdBcB5ghMH",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": []
-                }
+                  "ops": []
+                },
+                "collapsed": false
               },
               "children": []
             }
@@ -1771,7 +1770,7 @@
         {
           "type": "block",
           "id": "block:ek5xcTfOQq",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[10419.767770196873,1656.4152414368796,364,359.1905369899068]",
             "background": "--affine-tag-red",
@@ -1792,13 +1791,13 @@
             {
               "type": "block",
               "id": "block:-8HB29nIL6",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": []
-                }
+                  "ops": []
+                },
+                "collapsed": false
               },
               "children": []
             }
@@ -1807,7 +1806,7 @@
         {
           "type": "block",
           "id": "block:gSeN_SMto1",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[11082.141905489543,1656.4152414368796,364,359.1905369899068]",
             "background": "--affine-tag-purple",
@@ -1828,13 +1827,13 @@
             {
               "type": "block",
               "id": "block:mzsS8MmbL8",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": []
-                }
+                  "ops": []
+                },
+                "collapsed": false
               },
               "children": []
             }
@@ -1843,7 +1842,7 @@
         {
           "type": "block",
           "id": "block:sNipnDLage",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[11478.205054918022,1656.4152414368796,364,359.1905369899068]",
             "background": "--affine-tag-purple",
@@ -1864,13 +1863,13 @@
             {
               "type": "block",
               "id": "block:r9rsJHp83Q",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": []
-                }
+                  "ops": []
+                },
+                "collapsed": false
               },
               "children": []
             }
@@ -1879,7 +1878,7 @@
         {
           "type": "block",
           "id": "block:91unJehqEo",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[12153.373433949047,1656.4152414368796,364,359.1905369899068]",
             "background": "--affine-tag-green",
@@ -1900,13 +1899,13 @@
             {
               "type": "block",
               "id": "block:wVf7vdx7mL",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": []
-                }
+                  "ops": []
+                },
+                "collapsed": false
               },
               "children": []
             }
@@ -1915,7 +1914,7 @@
         {
           "type": "block",
           "id": "block:67G6xIKCuZ",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[12544.43171925745,1656.4152414368796,364,359.1905369899068]",
             "background": "--affine-tag-green",
@@ -1936,13 +1935,13 @@
             {
               "type": "block",
               "id": "block:UT4YrixEI6",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": []
-                }
+                  "ops": []
+                },
+                "collapsed": false
               },
               "children": []
             }
@@ -1951,7 +1950,7 @@
         {
           "type": "block",
           "id": "block:nEJ_rO51ui",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[13212.375445666701,1656.4152414368796,364,359.1905369899068]",
             "background": "--affine-tag-pink",
@@ -1972,13 +1971,13 @@
             {
               "type": "block",
               "id": "block:J5J7F9Vi8l",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": []
-                }
+                  "ops": []
+                },
+                "collapsed": false
               },
               "children": []
             }
@@ -1987,7 +1986,7 @@
         {
           "type": "block",
           "id": "block:nBT30dN5SL",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[13610.658383596881,1656.4152414368796,364,359.1905369899068]",
             "background": "--affine-tag-pink",
@@ -2008,13 +2007,13 @@
             {
               "type": "block",
               "id": "block:ob8bQHWqQs",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": []
-                }
+                  "ops": []
+                },
+                "collapsed": false
               },
               "children": []
             }
@@ -2023,7 +2022,7 @@
         {
           "type": "block",
           "id": "block:I0XRSO4Omb",
-          "flavour": "affine:surface",
+          "flavour": "yunke:surface",
           "props": {
             "elements": {
               "8JsZzcg2cE": {
@@ -2031,8 +2030,7 @@
                 "xywh": "[6719.320452499453,-989.5540907630674,807.5666786139436,165]",
                 "rotate": 0,
                 "text": {
-                  "affine:surface:text": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "User Journey Mapping template is a tool that visualizes a customer's experience with a product or service, from first contact to long-term engagement. It helps businesses understand user needs and pain points, revealing opportunities to improve the user experience and enhance satisfaction."
                     }
@@ -2054,8 +2052,7 @@
                 "xywh": "[6716.320452499453,-1053.2587552634004,294.71990966796875,45]",
                 "rotate": 0,
                 "text": {
-                  "affine:surface:text": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "User Journey Map"
                     }
@@ -2190,7 +2187,7 @@
             {
               "type": "block",
               "id": "block:Izj3Mx-T0G",
-              "flavour": "affine:image",
+              "flavour": "yunke:image",
               "props": {
                 "caption": "",
                 "sourceId": "/static/templates/pmPMoebd5Z2h2cblWB_TxEw4C5VKdVc0r4BDzMu5Jrw=.png",
@@ -2206,7 +2203,7 @@
             {
               "type": "block",
               "id": "block:2XJFbXqVUg",
-              "flavour": "affine:image",
+              "flavour": "yunke:image",
               "props": {
                 "caption": "",
                 "sourceId": "/static/templates/4KbnQ1P38nUux0Tf2fdGqc909fVzGz8PJVuvuSVvnzc=.png",
@@ -2222,7 +2219,7 @@
             {
               "type": "block",
               "id": "block:RqVSJNF03h",
-              "flavour": "affine:image",
+              "flavour": "yunke:image",
               "props": {
                 "caption": "",
                 "sourceId": "/static/templates/jnpiF-qH-9NYu1WEx_asdmPfIBVf_Y5AX64yq-Jvbic=.png",
@@ -2238,7 +2235,7 @@
             {
               "type": "block",
               "id": "block:gtpOFnw862",
-              "flavour": "affine:image",
+              "flavour": "yunke:image",
               "props": {
                 "caption": "",
                 "sourceId": "/static/templates/YuPd_NI22xNMhfm3GHSonetlA9pebkl-z1fsocwM638=.png",
@@ -2254,7 +2251,7 @@
             {
               "type": "block",
               "id": "block:SYIbNUnNcr",
-              "flavour": "affine:image",
+              "flavour": "yunke:image",
               "props": {
                 "caption": "",
                 "sourceId": "/static/templates/JwGgaM_IRE2A9RLtMk8KKbyHAz1rQ3SxnCmNt5CI0Q4=.png",
@@ -2270,7 +2267,7 @@
             {
               "type": "block",
               "id": "block:09YaTz-AFx",
-              "flavour": "affine:image",
+              "flavour": "yunke:image",
               "props": {
                 "caption": "",
                 "sourceId": "/static/templates/GZ_5Nfi_yOnFdewbiXaHBimUOI7RxeVR10AY_R9seUs=.png",
@@ -2286,11 +2283,10 @@
             {
               "type": "block",
               "id": "block:qgkcfdQs62",
-              "flavour": "affine:frame",
+              "flavour": "yunke:frame",
               "props": {
                 "title": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "User profile"
                     }
@@ -2305,11 +2301,10 @@
             {
               "type": "block",
               "id": "block:8fgc9VoZZl",
-              "flavour": "affine:frame",
+              "flavour": "yunke:frame",
               "props": {
                 "title": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "User journey map"
                     }

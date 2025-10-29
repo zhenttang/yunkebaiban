@@ -13,19 +13,18 @@
     "blocks": {
       "type": "block",
       "id": "0nD2bOKoHR",
-      "flavour": "affine:page",
+      "flavour": "yunke:page",
       "version": 2,
       "props": {
         "title": {
-          "$blocksuite:internal:text$": true,
-          "delta": []
+          "ops": []
         }
       },
       "children": [
         {
           "type": "block",
           "id": "XpOQkxpZq3",
-          "flavour": "affine:surface",
+          "flavour": "yunke:surface",
           "version": 5,
           "props": {
             "elements": {
@@ -48,8 +47,7 @@
                 "color": "--affine-palette-line-black",
                 "fontFamily": "blocksuite:surface:Kalam",
                 "text": {
-                  "affine:surface:text": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "This question seeks to identify the people involved or affected by the subject at hand."
                     }
@@ -65,8 +63,7 @@
                 "xywh": "[-1870.5611777619597,-328.23971884954483,806.9774660073865,459]",
                 "rotate": 0,
                 "text": {
-                  "affine:surface:text": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "The 5W2H template is a structured format for problem-solving and analysis, focusing on two \"Hows\" (How, How Much) and five \"Whys\" (Why, Who, Where, When, What). \n\nThis template guides a thorough exploration of a situation or problem, facilitating comprehensive understanding and effective decision-making."
                     }
@@ -102,8 +99,7 @@
                 "color": "--affine-palette-line-black",
                 "fontFamily": "blocksuite:surface:Kalam",
                 "text": {
-                  "affine:surface:text": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "This question aims to define the subject, event, or issue being discussed or analyzed."
                     }
@@ -133,8 +129,7 @@
                 "color": "--affine-palette-line-black",
                 "fontFamily": "blocksuite:surface:Kalam",
                 "text": {
-                  "affine:surface:text": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "This addresses the location or context in which the subject or issue exists or occurs. "
                     }
@@ -164,8 +159,7 @@
                 "color": "--affine-palette-line-black",
                 "fontFamily": "blocksuite:surface:Kalam",
                 "text": {
-                  "affine:surface:text": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "This question is about timing. It covers the duration, frequency, historical context, or future dates related to the topic."
                     }
@@ -181,8 +175,7 @@
                 "xywh": "[-492.14417902997377,-464.54023324806656,225.53598022460938,128]",
                 "rotate": 0,
                 "text": {
-                  "affine:surface:text": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "Who"
                     }
@@ -203,8 +196,7 @@
                 "xywh": "[-547.1841875748956,-186.7855110836895,280.57598876953125,128]",
                 "rotate": 0,
                 "text": {
-                  "affine:surface:text": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "What"
                     }
@@ -225,8 +217,7 @@
                 "xywh": "[-581.4882036881769,90.9692110806876,314.8800048828125,128]",
                 "rotate": 0,
                 "text": {
-                  "affine:surface:text": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "where"
                     }
@@ -247,8 +238,7 @@
                 "xywh": "[-562.2881914811456,368.7239332450647,295.67999267578125,128]",
                 "rotate": 0,
                 "text": {
-                  "affine:surface:text": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "When"
                     }
@@ -269,8 +259,7 @@
                 "xywh": "[-500.8481890397394,646.4786554094418,234.239990234375,128]",
                 "rotate": 0,
                 "text": {
-                  "affine:surface:text": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "Why"
                     }
@@ -291,8 +280,7 @@
                 "xywh": "[-491.7601763444269,924.2333775738189,225.1519775390625,128]",
                 "rotate": 0,
                 "text": {
-                  "affine:surface:text": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "How"
                     }
@@ -313,8 +301,7 @@
                 "xywh": "[-828.2721392350519,1201.9880997381958,561.6639404296875,128]",
                 "rotate": 0,
                 "text": {
-                  "affine:surface:text": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "How much"
                     }
@@ -349,8 +336,7 @@
                 "color": "--affine-palette-line-black",
                 "fontFamily": "blocksuite:surface:Kalam",
                 "text": {
-                  "affine:surface:text": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "This seeks to uncover reasons, motivations, causes, or purposes behind the subject."
                     }
@@ -380,8 +366,7 @@
                 "color": "--affine-palette-line-black",
                 "fontFamily": "blocksuite:surface:Kalam",
                 "text": {
-                  "affine:surface:text": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "This is about the method, process, or manner in which something happens or is done."
                     }
@@ -411,8 +396,7 @@
                 "color": "--affine-palette-line-black",
                 "fontFamily": "blocksuite:surface:Kalam",
                 "text": {
-                  "affine:surface:text": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "This question deals with quantities, volumes, extents, or degrees. "
                     }
@@ -428,8 +412,7 @@
                 "xywh": "[-1870.5611777619597,-444.09579979896205,803.6478881835938,90.66666666666666]",
                 "rotate": 0,
                 "text": {
-                  "affine:surface:text": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "5W2H Critical Questions "
                     }

@@ -13,11 +13,10 @@
     "blocks": {
       "type": "block",
       "id": "block:Par8Y5y1do",
-      "flavour": "affine:page",
+      "flavour": "yunke:page",
       "props": {
         "title": {
-          "$blocksuite:internal:text$": true,
-          "delta": [
+          "ops": [
             {
               "insert": "BlockSuite Playground"
             }
@@ -28,7 +27,7 @@
         {
           "type": "block",
           "id": "block:GKoHvxejdO",
-          "flavour": "affine:surface",
+          "flavour": "yunke:surface",
           "props": {
             "elements": {
               "6KDifySDN_": {
@@ -36,8 +35,7 @@
                 "xywh": "[-623.312317566272,-20.125818767528926,102.39999389648438,153.5]",
                 "rotate": 0,
                 "text": {
-                  "affine:surface:text": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "01"
                     }
@@ -76,8 +74,7 @@
                 "xywh": "[333.41774645201497,-20.125818767528898,103,154]",
                 "rotate": 0,
                 "text": {
-                  "affine:surface:text": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "02"
                     }
@@ -116,8 +113,7 @@
                 "xywh": "[1290.1478104703021,-20.12581876752894,103,154]",
                 "rotate": 0,
                 "text": {
-                  "affine:surface:text": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "03"
                     }
@@ -156,8 +152,7 @@
                 "xywh": "[2216.773020328646,-20.12581876752892,103,154]",
                 "rotate": 0,
                 "text": {
-                  "affine:surface:text": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "04"
                     }
@@ -196,8 +191,7 @@
                 "xywh": "[-623.3123175662716,905.8585775910734,103,154]",
                 "rotate": 0,
                 "text": {
-                  "affine:surface:text": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "05"
                     }
@@ -236,8 +230,7 @@
                 "xywh": "[356.09442107741177,905.8585775910734,103,154]",
                 "rotate": 0,
                 "text": {
-                  "affine:surface:text": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "06"
                     }
@@ -276,8 +269,7 @@
                 "xywh": "[1303.8521073764198,905.8585775910734,103,154]",
                 "rotate": 0,
                 "text": {
-                  "affine:surface:text": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "07"
                     }
@@ -316,8 +308,7 @@
                 "xywh": "[2229.2037444382922,905.8585775910734,103,154]",
                 "rotate": 0,
                 "text": {
-                  "affine:surface:text": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "08"
                     }
@@ -356,8 +347,7 @@
                 "xywh": "[-1993.1100096192026,-410.81244318618457,373.71179884147523,180]",
                 "rotate": 0,
                 "text": {
-                  "affine:surface:text": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "A storyboard template is a tool for visualizing a story's narrative with illustrations. \n\nIt's widely used in animation, film, and video game design, and has become essential for businesses in mapping customer experiences.\n\nThis tool is key for team alignment, idea pitching, and understanding customer journeys."
                     }
@@ -379,8 +369,7 @@
                 "xywh": "[-1993.1100096192029,-461.6118632362592,141.86395263671875,32.5]",
                 "rotate": 0,
                 "text": {
-                  "affine:surface:text": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "Storyboard"
                     }
@@ -413,8 +402,7 @@
                 "index": "af",
                 "seed": 1243500994,
                 "text": {
-                  "affine:surface:text": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "Use the pen tool\nto sketch out the scenes\nof the storyboard"
                     }
@@ -444,8 +432,7 @@
                 "index": "aY",
                 "seed": 740967169,
                 "text": {
-                  "affine:surface:text": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "Double click notes to \ndescribe whats happening \nin each scene"
                     }
@@ -463,8 +450,7 @@
                 "xywh": "[-1648.5387887440108,-141.12581876752893,11.583999633789062,47.5]",
                 "rotate": 0,
                 "text": {
-                  "affine:surface:text": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "1"
                     }
@@ -485,8 +471,7 @@
                 "xywh": "[-1652.0912282617626,29.924354861232928,18.367996215820312,47.5]",
                 "rotate": 0,
                 "text": {
-                  "affine:surface:text": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "2"
                     }
@@ -572,11 +557,10 @@
             {
               "type": "block",
               "id": "block:tghd65nbJm",
-              "flavour": "affine:frame",
+              "flavour": "yunke:frame",
               "props": {
                 "title": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "Board title"
                     }
@@ -591,11 +575,10 @@
             {
               "type": "block",
               "id": "block:UNmy2URQvb",
-              "flavour": "affine:frame",
+              "flavour": "yunke:frame",
               "props": {
                 "title": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "Board title"
                     }
@@ -610,11 +593,10 @@
             {
               "type": "block",
               "id": "block:SSa1yjswA0",
-              "flavour": "affine:frame",
+              "flavour": "yunke:frame",
               "props": {
                 "title": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "Board title"
                     }
@@ -629,11 +611,10 @@
             {
               "type": "block",
               "id": "block:y3BJQjWWEu",
-              "flavour": "affine:frame",
+              "flavour": "yunke:frame",
               "props": {
                 "title": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "Board title"
                     }
@@ -648,11 +629,10 @@
             {
               "type": "block",
               "id": "block:XwEVwBWAW8",
-              "flavour": "affine:frame",
+              "flavour": "yunke:frame",
               "props": {
                 "title": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "Board title"
                     }
@@ -667,11 +647,10 @@
             {
               "type": "block",
               "id": "block:Ss3OMScJ7D",
-              "flavour": "affine:frame",
+              "flavour": "yunke:frame",
               "props": {
                 "title": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "Board title"
                     }
@@ -686,11 +665,10 @@
             {
               "type": "block",
               "id": "block:J3NRUMNYCX",
-              "flavour": "affine:frame",
+              "flavour": "yunke:frame",
               "props": {
                 "title": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "Board title"
                     }
@@ -705,11 +683,10 @@
             {
               "type": "block",
               "id": "block:qE6SSv7MiS",
-              "flavour": "affine:frame",
+              "flavour": "yunke:frame",
               "props": {
                 "title": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "Board title"
                     }
@@ -724,7 +701,7 @@
             {
               "type": "block",
               "id": "block:30MpI4b88x",
-              "flavour": "affine:image",
+              "flavour": "yunke:image",
               "props": {
                 "caption": "",
                 "sourceId": "/static/templates/WRka6R7pvS4AKqYQRl5aBeIkQqLGkNOpB_iVroJQKtc=.png",
@@ -740,7 +717,7 @@
             {
               "type": "block",
               "id": "block:YzEUGx48tQ",
-              "flavour": "affine:image",
+              "flavour": "yunke:image",
               "props": {
                 "caption": "",
                 "sourceId": "/static/templates/NuuYD2-GljLA2H_qI0-ipdeB7YHgwkn_e05G--V8F6M=.png",
@@ -758,7 +735,7 @@
         {
           "type": "block",
           "id": "block:wtfJIgxfWp",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[-1517.448637033304,-461.6118632362592,459.84363488846475,617.6786222217071]",
             "background": "--affine-background-secondary-color",
@@ -779,53 +756,52 @@
             {
               "type": "block",
               "id": "block:_OlI2j7mE8",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "h3",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "Storyboard brief"
                     }
                   ]
-                }
+                },
+                "collapsed": false
               },
               "children": []
             },
             {
               "type": "block",
               "id": "block:M90dxbC9DO",
-              "flavour": "affine:divider",
+              "flavour": "yunke:divider",
               "props": {},
               "children": []
             },
             {
               "type": "block",
               "id": "block:VsAkrk4ZK3",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "h6",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "Story summary"
                     }
                   ]
-                }
+                },
+                "collapsed": false
               },
               "children": []
             },
             {
               "type": "block",
               "id": "block:INwadp3jtM",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "Describe the purpose and outcome of the storyboards in paragraph form. Outline any main points.",
                       "attributes": {
@@ -833,43 +809,43 @@
                       }
                     }
                   ]
-                }
+                },
+                "collapsed": false
               },
               "children": []
             },
             {
               "type": "block",
               "id": "block:54fdMJH5k9",
-              "flavour": "affine:divider",
+              "flavour": "yunke:divider",
               "props": {},
               "children": []
             },
             {
               "type": "block",
               "id": "block:-xyFQUo-JB",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "h6",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "Key goals and needs"
                     }
                   ]
-                }
+                },
+                "collapsed": false
               },
               "children": []
             },
             {
               "type": "block",
               "id": "block:SG21WhcwiN",
-              "flavour": "affine:list",
+              "flavour": "yunke:list",
               "props": {
                 "type": "numbered",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "This is item 1"
                     }
@@ -883,12 +859,11 @@
             {
               "type": "block",
               "id": "block:lWNoPo51cd",
-              "flavour": "affine:list",
+              "flavour": "yunke:list",
               "props": {
                 "type": "numbered",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "This is item 2"
                     }
@@ -902,12 +877,11 @@
             {
               "type": "block",
               "id": "block:9JpHiLLvxr",
-              "flavour": "affine:list",
+              "flavour": "yunke:list",
               "props": {
                 "type": "numbered",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "This is item 3"
                     }
@@ -921,36 +895,35 @@
             {
               "type": "block",
               "id": "block:2_IrpXS2wN",
-              "flavour": "affine:divider",
+              "flavour": "yunke:divider",
               "props": {},
               "children": []
             },
             {
               "type": "block",
               "id": "block:4vYvOTcEtN",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "h6",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "Key pains and constraints"
                     }
                   ]
-                }
+                },
+                "collapsed": false
               },
               "children": []
             },
             {
               "type": "block",
               "id": "block:-AJqjdc7Ot",
-              "flavour": "affine:list",
+              "flavour": "yunke:list",
               "props": {
                 "type": "bulleted",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "This is item 1"
                     }
@@ -964,12 +937,11 @@
             {
               "type": "block",
               "id": "block:AtnzgazqBr",
-              "flavour": "affine:list",
+              "flavour": "yunke:list",
               "props": {
                 "type": "bulleted",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "This is item 2"
                     }
@@ -983,12 +955,11 @@
             {
               "type": "block",
               "id": "block:XJqcf3aL9P",
-              "flavour": "affine:list",
+              "flavour": "yunke:list",
               "props": {
                 "type": "bulleted",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "This is item 3"
                     }
@@ -1004,7 +975,7 @@
         {
           "type": "block",
           "id": "block:na5DAuSbJM",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[-230.1873471257049,-79.13555810124546,372.68990428151096,212.50973933371654]",
             "background": "--affine-background-secondary-color",
@@ -1025,30 +996,30 @@
             {
               "type": "block",
               "id": "block:QRd2w6MlYI",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "h6",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "Describe whats happening in the scene"
                     }
                   ]
-                }
+                },
+                "collapsed": false
               },
               "children": []
             },
             {
               "type": "block",
               "id": "block:sWAfJaPGhm",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": []
-                }
+                  "ops": []
+                },
+                "collapsed": false
               },
               "children": []
             }
@@ -1057,7 +1028,7 @@
         {
           "type": "block",
           "id": "block:R4IQOdz4n-",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[730.5968545529315,-85.50413258738763,372.83083297527776,218.87831381985876]",
             "background": "--affine-tag-teal",
@@ -1078,30 +1049,30 @@
             {
               "type": "block",
               "id": "block:JVJVd2T08K",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "h6",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "Describe whats happening in the scene"
                     }
                   ]
-                }
+                },
+                "collapsed": false
               },
               "children": []
             },
             {
               "type": "block",
               "id": "block:9zwcPE4Gtb",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": []
-                }
+                  "ops": []
+                },
+                "collapsed": false
               },
               "children": []
             }
@@ -1110,7 +1081,7 @@
         {
           "type": "block",
           "id": "block:wGzXmtdwUz",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[1678.3545408519394,-77.3784889090899,371.9321020416821,217.1878667538341]",
             "background": "--affine-tag-pink",
@@ -1131,30 +1102,30 @@
             {
               "type": "block",
               "id": "block:HFNNbYkmyW",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "h6",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "Describe whats happening in the scene"
                     }
                   ]
-                }
+                },
+                "collapsed": false
               },
               "children": []
             },
             {
               "type": "block",
               "id": "block:wRv3k9GocD",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": []
-                }
+                  "ops": []
+                },
+                "collapsed": false
               },
               "children": []
             }
@@ -1163,7 +1134,7 @@
         {
           "type": "block",
           "id": "block:6J9ZRouQoM",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[2603.706177913812,-77.37848890908987,373.20567483815285,216.99615367852667]",
             "background": "--affine-tag-yellow",
@@ -1184,30 +1155,30 @@
             {
               "type": "block",
               "id": "block:57U_rP_x-_",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "h6",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "Describe whats happening in the scene"
                     }
                   ]
-                }
+                },
+                "collapsed": false
               },
               "children": []
             },
             {
               "type": "block",
               "id": "block:4EFvMDJOz9",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": []
-                }
+                  "ops": []
+                },
+                "collapsed": false
               },
               "children": []
             }
@@ -1216,7 +1187,7 @@
         {
           "type": "block",
           "id": "block:rlRFu2EZGX",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[-236.37915998110554,848.6059074495124,373.20567483815285,207.95975843368183]",
             "background": "--affine-tag-orange",
@@ -1237,30 +1208,30 @@
             {
               "type": "block",
               "id": "block:LebkPDHpfW",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "h6",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "Describe whats happening in the scene"
                     }
                   ]
-                }
+                },
+                "collapsed": false
               },
               "children": []
             },
             {
               "type": "block",
               "id": "block:FVF0uJ_o1s",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": []
-                }
+                  "ops": []
+                },
+                "collapsed": false
               },
               "children": []
             }
@@ -1269,7 +1240,7 @@
         {
           "type": "block",
           "id": "block:vJMHDVTBOQ",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[743.027578662578,848.6059074495124,373.20567483815296,206.363094177334]",
             "background": "--affine-tag-purple",
@@ -1290,30 +1261,30 @@
             {
               "type": "block",
               "id": "block:LpUpBYAv-h",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "h6",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "Describe whats happening in the scene"
                     }
                   ]
-                }
+                },
+                "collapsed": false
               },
               "children": []
             },
             {
               "type": "block",
               "id": "block:izE6hQPFko",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": []
-                }
+                  "ops": []
+                },
+                "collapsed": false
               },
               "children": []
             }
@@ -1322,7 +1293,7 @@
         {
           "type": "block",
           "id": "block:OLEKoi-Brw",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[1690.785264961586,848.6059074495124,373.2056748381531,210.93935583599136]",
             "background": "--affine-tag-gray",
@@ -1343,30 +1314,30 @@
             {
               "type": "block",
               "id": "block:la0Co-8oiG",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "h6",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "Describe whats happening in the scene"
                     }
                   ]
-                }
+                },
+                "collapsed": false
               },
               "children": []
             },
             {
               "type": "block",
               "id": "block:jhKVvukUqX",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": []
-                }
+                  "ops": []
+                },
+                "collapsed": false
               },
               "children": []
             }
@@ -1375,7 +1346,7 @@
         {
           "type": "block",
           "id": "block:sF6T5YDDV9",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[2616.136902023459,848.6059074495124,373.20567483815285,210.8557329187879]",
             "background": "--affine-tag-blue",
@@ -1396,56 +1367,56 @@
             {
               "type": "block",
               "id": "block:cBG9ognxVp",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "h6",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "Describe whats happening in the scene"
                     }
                   ]
-                }
+                },
+                "collapsed": false
               },
               "children": []
             },
             {
               "type": "block",
               "id": "block:1DVQXzPC--",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": []
-                }
+                  "ops": []
+                },
+                "collapsed": false
               },
               "children": []
             },
             {
               "type": "block",
               "id": "block:1GT7oJS2oQ",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": []
-                }
+                  "ops": []
+                },
+                "collapsed": false
               },
               "children": []
             },
             {
               "type": "block",
               "id": "block:_odDSmUwfn",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": []
-                }
+                  "ops": []
+                },
+                "collapsed": false
               },
               "children": []
             }

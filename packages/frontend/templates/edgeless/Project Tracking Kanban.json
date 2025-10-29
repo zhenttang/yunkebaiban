@@ -13,18 +13,17 @@
     "blocks": {
       "type": "block",
       "id": "block:WiCmFgkKur",
-      "flavour": "affine:page",
+      "flavour": "yunke:page",
       "props": {
         "title": {
-          "$blocksuite:internal:text$": true,
-          "delta": []
+          "ops": []
         }
       },
       "children": [
         {
           "type": "block",
           "id": "block:4RjYTv3Irh",
-          "flavour": "affine:surface",
+          "flavour": "yunke:surface",
           "props": {
             "elements": {
               "xT4fgp2NtV": {
@@ -32,8 +31,7 @@
                 "xywh": "[13.899034754585273,-2559.4600038004746,582.2957763671875,65]",
                 "rotate": 0,
                 "text": {
-                  "affine:surface:text": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "Project tracking Kanban"
                     }
@@ -54,8 +52,7 @@
                 "xywh": "[13.899034754585273,-2448.0761288820563,603,600]",
                 "rotate": 0,
                 "text": {
-                  "affine:surface:text": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "A Kanban template for project tracking typically includes a visual board divided into columns representing different stages of a project, such as \"planned,\" \"ongoing,\" and \"Complete.\"\n\nThis template allows tasks to be added as cards under these columns. As work progresses, cards are moved along the columns, offering a clear, real-time view of the project's progress.\n\nThis template is useful for managing workflow, prioritizing tasks, and ensuring efficient project execution."
                     }
@@ -89,8 +86,7 @@
                 "index": "aM",
                 "seed": 1163884762,
                 "text": {
-                  "affine:surface:text": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "This column shows tasks that are currently in progress."
                     }
@@ -119,8 +115,7 @@
                 "index": "aN",
                 "seed": 502096122,
                 "text": {
-                  "affine:surface:text": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "This column represents tasks that are scheduled but not yet started."
                     }
@@ -149,8 +144,7 @@
                 "index": "aO",
                 "seed": 832931538,
                 "text": {
-                  "affine:surface:text": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "This column shows tasks that are currently in progress."
                     }
@@ -212,11 +206,10 @@
             {
               "type": "block",
               "id": "block:lkN5hk-maV",
-              "flavour": "affine:frame",
+              "flavour": "yunke:frame",
               "props": {
                 "title": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "Planned"
                     }
@@ -231,11 +224,10 @@
             {
               "type": "block",
               "id": "block:jYc3sAF203",
-              "flavour": "affine:frame",
+              "flavour": "yunke:frame",
               "props": {
                 "title": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "Ongoing"
                     }
@@ -250,11 +242,10 @@
             {
               "type": "block",
               "id": "block:pK-c0q3FKT",
-              "flavour": "affine:frame",
+              "flavour": "yunke:frame",
               "props": {
                 "title": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "Complete"
                     }
@@ -271,7 +262,7 @@
         {
           "type": "block",
           "id": "block:ARdbMSGA6F",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[1006.3673687752464,-2396.9441818570995,364,346.0533208983238]",
             "background": "--affine-tag-green",
@@ -293,65 +284,65 @@
             {
               "type": "block",
               "id": "block:i18H4EDVSa",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "h1",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": []
-                }
+                  "ops": []
+                },
+                "collapsed": false
               },
               "children": []
             },
             {
               "type": "block",
               "id": "block:e7jwGFx6h-",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": []
-                }
+                  "ops": []
+                },
+                "collapsed": false
               },
               "children": []
             },
             {
               "type": "block",
               "id": "block:6oN79y-eoz",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": []
-                }
+                  "ops": []
+                },
+                "collapsed": false
               },
               "children": []
             },
             {
               "type": "block",
               "id": "block:i0HG8snTRn",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": []
-                }
+                  "ops": []
+                },
+                "collapsed": false
               },
               "children": []
             },
             {
               "type": "block",
               "id": "block:Qw_oMklmlE",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": []
-                }
+                  "ops": []
+                },
+                "collapsed": false
               },
               "children": []
             }
@@ -360,7 +351,7 @@
         {
           "type": "block",
           "id": "block:9cokXXA85z",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[1469.2382949333223,-2396.9441818570995,364,345.6208786944021]",
             "background": "--affine-tag-green",
@@ -382,13 +373,13 @@
             {
               "type": "block",
               "id": "block:4OI6eiz_C1",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "h1",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": []
-                }
+                  "ops": []
+                },
+                "collapsed": false
               },
               "children": []
             }
@@ -397,7 +388,7 @@
         {
           "type": "block",
           "id": "block:7Qwe7V3lNz",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[2470.356710227984,-2396.9441818570995,364,360.690320348461]",
             "background": "--affine-tag-red",
@@ -419,26 +410,26 @@
             {
               "type": "block",
               "id": "block:B7u9koNnHq",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "h1",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": []
-                }
+                  "ops": []
+                },
+                "collapsed": false
               },
               "children": []
             },
             {
               "type": "block",
               "id": "block:o8lZfMyjG8",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": []
-                }
+                  "ops": []
+                },
+                "collapsed": false
               },
               "children": []
             }
@@ -447,7 +438,7 @@
         {
           "type": "block",
           "id": "block:ABjD3pyR1M",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[2949.7366961478638,-2396.9441818570995,364,362.53729127607653]",
             "background": "--affine-tag-red",
@@ -468,13 +459,13 @@
             {
               "type": "block",
               "id": "block:RCD-sChtHO",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "h1",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": []
-                }
+                  "ops": []
+                },
+                "collapsed": false
               },
               "children": []
             }
@@ -483,7 +474,7 @@
         {
           "type": "block",
           "id": "block:viFUOamIio",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[2470.356710227984,-1875.4049073554643,364,362.53729127607653]",
             "background": "--affine-tag-red",
@@ -504,13 +495,13 @@
             {
               "type": "block",
               "id": "block:tyCZ6vxAnB",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "h3",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": []
-                }
+                  "ops": []
+                },
+                "collapsed": false
               },
               "children": []
             }
@@ -519,7 +510,7 @@
         {
           "type": "block",
           "id": "block:qwk55Z_R6Y",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[3974.3195766719255,-2396.9441818570995,364,360.690320348461]",
             "background": "--affine-tag-yellow",
@@ -541,26 +532,26 @@
             {
               "type": "block",
               "id": "block:qBSewlvzZx",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "h1",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": []
-                }
+                  "ops": []
+                },
+                "collapsed": false
               },
               "children": []
             },
             {
               "type": "block",
               "id": "block:r4zBuxQmSD",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": []
-                }
+                  "ops": []
+                },
+                "collapsed": false
               },
               "children": []
             }
@@ -569,7 +560,7 @@
         {
           "type": "block",
           "id": "block:KsSuGA33Fz",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[4449.409800606875,-2396.9441818570995,364,360.690320348461]",
             "background": "--affine-tag-yellow",
@@ -591,26 +582,26 @@
             {
               "type": "block",
               "id": "block:Wfbucq7AK2",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "h1",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": []
-                }
+                  "ops": []
+                },
+                "collapsed": false
               },
               "children": []
             },
             {
               "type": "block",
               "id": "block:-QvrhoT91b",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": []
-                }
+                  "ops": []
+                },
+                "collapsed": false
               },
               "children": []
             }

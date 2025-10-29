@@ -13,11 +13,10 @@
     "blocks": {
       "type": "block",
       "id": "block:wKkJVqs2Uh",
-      "flavour": "affine:page",
+      "flavour": "yunke:page",
       "props": {
         "title": {
-          "$blocksuite:internal:text$": true,
-          "delta": [
+          "ops": [
             {
               "insert": "BlockSuite Playground"
             }
@@ -28,7 +27,7 @@
         {
           "type": "block",
           "id": "block:9obeHwvQlc",
-          "flavour": "affine:surface",
+          "flavour": "yunke:surface",
           "props": {
             "elements": {
               "G8sDm7LjU9": {
@@ -103,8 +102,7 @@
                 "seed": 2034782310,
                 "color": "--affine-palette-line-black",
                 "text": {
-                  "affine:surface:text": true,
-                  "delta": []
+                  "ops": []
                 },
                 "fontFamily": "blocksuite:surface:Inter"
               },
@@ -113,8 +111,7 @@
                 "xywh": "[-263.92954192315847,-499.2355323811801,241.47195434570312,105]",
                 "rotate": 0,
                 "text": {
-                  "affine:surface:text": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "Product"
                     }
@@ -135,8 +132,7 @@
                 "xywh": "[1742.3329219139223,-499.7355323811801,153,105]",
                 "rotate": 0,
                 "text": {
-                  "affine:surface:text": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "PrICE"
                     }
@@ -157,8 +153,7 @@
                 "xywh": "[1730.6756596208468,884.5632875897456,166,106]",
                 "rotate": 0,
                 "text": {
-                  "affine:surface:text": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "PLACE"
                     }
@@ -179,8 +174,7 @@
                 "xywh": "[-275.586804216234,885.0632875897456,310,106]",
                 "rotate": 0,
                 "text": {
-                  "affine:surface:text": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "ProMOTION"
                     }
@@ -201,8 +195,7 @@
                 "xywh": "[-1545.6298523435441,-308.51674361350143,732.9849149269639,504]",
                 "rotate": 0,
                 "text": {
-                  "affine:surface:text": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "A 4P Marketing Matrix template organizes key marketing strategies around four elements: Product, Price, Place, and Promotion. \n\nIt provides a structured approach to define and analyze each aspect, ensuring a comprehensive marketing plan."
                     }
@@ -224,8 +217,7 @@
                 "xywh": "[-1545.6298523435441,-437.4272826856303,651.4558715820312,89]",
                 "rotate": 0,
                 "text": {
-                  "affine:surface:text": true,
-                  "delta": [
+                  "ops": [
                     {
                       "insert": "4P Marketing Matrix"
                     }
@@ -293,7 +285,7 @@
         {
           "type": "block",
           "id": "block:uStvHzbo_0",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[-47.65483438164483,-152.35566874448068,364,350.42578125]",
             "background": "--affine-tag-blue",
@@ -314,13 +306,13 @@
             {
               "type": "block",
               "id": "block:IGcP0YepF2",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": []
-                }
+                  "ops": []
+                },
+                "collapsed": false
               },
               "children": []
             }
@@ -329,7 +321,7 @@
         {
           "type": "block",
           "id": "block:yI5JejXYkO",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[352.32566504563056,64.19414482024047,364,350.42578125]",
             "background": "--affine-tag-blue",
@@ -350,13 +342,13 @@
             {
               "type": "block",
               "id": "block:Owf1ifVNz1",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": []
-                }
+                  "ops": []
+                },
+                "collapsed": false
               },
               "children": []
             }
@@ -365,7 +357,7 @@
         {
           "type": "block",
           "id": "block:DIjSAufGEL",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[892.912994588858,-165.18985185378477,364,350.42578125]",
             "background": "--affine-tag-blue",
@@ -386,13 +378,13 @@
             {
               "type": "block",
               "id": "block:62lqOBsxvb",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": []
-                }
+                  "ops": []
+                },
+                "collapsed": false
               },
               "children": []
             }
@@ -401,7 +393,7 @@
         {
           "type": "block",
           "id": "block:DWK6GhYlBY",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[2152.3785001752194,-45.780025366743075,364,350.42578125]",
             "background": "--affine-tag-green",
@@ -422,13 +414,13 @@
             {
               "type": "block",
               "id": "block:1g2EsVeGlP",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": []
-                }
+                  "ops": []
+                },
+                "collapsed": false
               },
               "children": []
             }
@@ -437,7 +429,7 @@
         {
           "type": "block",
           "id": "block:EnlV_5bR5H",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[2657.263549538395,-227.09494996130474,364,350.42578125]",
             "background": "--affine-tag-green",
@@ -458,13 +450,13 @@
             {
               "type": "block",
               "id": "block:R3v_ruiteR",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": []
-                }
+                  "ops": []
+                },
+                "collapsed": false
               },
               "children": []
             }
@@ -473,7 +465,7 @@
         {
           "type": "block",
           "id": "block:DcxuiQm8fX",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[-11.674334954369453,1205.4178310224202,364,350.42578125]",
             "background": "--affine-tag-yellow",
@@ -494,13 +486,13 @@
             {
               "type": "block",
               "id": "block:mWyJ-m7iam",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": []
-                }
+                  "ops": []
+                },
+                "collapsed": false
               },
               "children": []
             }
@@ -509,7 +501,7 @@
         {
           "type": "block",
           "id": "block:JVsfHdO3yZ",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[590.2686764639566,1461.5599669243923,364,350.42578125]",
             "background": "--affine-tag-yellow",
@@ -530,13 +522,13 @@
             {
               "type": "block",
               "id": "block:fkj3dYM-5u",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": []
-                }
+                  "ops": []
+                },
+                "collapsed": false
               },
               "children": []
             }
@@ -545,7 +537,7 @@
         {
           "type": "block",
           "id": "block:1XO8CVBjRS",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[2006.4604780976342,1247.0200381308277,364,350.42578125]",
             "background": "--affine-tag-orange",
@@ -566,13 +558,13 @@
             {
               "type": "block",
               "id": "block:1-Vf5hZEwC",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": []
-                }
+                  "ops": []
+                },
+                "collapsed": false
               },
               "children": []
             }
@@ -581,7 +573,7 @@
         {
           "type": "block",
           "id": "block:bOaMGO9IvG",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[2628.9752347495414,1205.4178310224202,364,350.42578125]",
             "background": "--affine-tag-orange",
@@ -602,13 +594,13 @@
             {
               "type": "block",
               "id": "block:448i6V2K0y",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": []
-                }
+                  "ops": []
+                },
+                "collapsed": false
               },
               "children": []
             }
@@ -617,7 +609,7 @@
         {
           "type": "block",
           "id": "block:MTn83hg25G",
-          "flavour": "affine:note",
+          "flavour": "yunke:note",
           "props": {
             "xywh": "[3078.4659279251755,1259.3587141642702,364,350.42578125]",
             "background": "--affine-tag-orange",
@@ -638,13 +630,13 @@
             {
               "type": "block",
               "id": "block:6ZPjzctxeh",
-              "flavour": "affine:paragraph",
+              "flavour": "yunke:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "$blocksuite:internal:text$": true,
-                  "delta": []
-                }
+                  "ops": []
+                },
+                "collapsed": false
               },
               "children": []
             }
