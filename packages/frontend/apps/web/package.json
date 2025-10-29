@@ -5,8 +5,8 @@
   "private": true,
   "browser": "src/index.tsx",
   "scripts": {
-    "build": "yunke bundle",
-    "dev": "yunke bundle --dev"
+    "build": "yunke bundle --package @yunke/web",
+    "dev": "yunke bundle --package @yunke/web --dev"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",

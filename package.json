@@ -49,7 +49,20 @@
     "typecheck": "tsc -b tsconfig.json --verbose",
     "postinstall": "yarn yunke init && yarn husky",
     "yunke": "r yunke.ts",
-    "yk": "r yunke.ts"
+    "yk": "r yunke.ts",
+    "build:android": "yarn workspace @yunke/android build",
+    "build:android:dev": "yarn workspace @yunke/android dev",
+    "sync:android": "yarn workspace @yunke/android sync",
+    "sync:android:dev": "yarn workspace @yunke/android sync:dev",
+    "studio:android": "yarn workspace @yunke/android studio",
+    "build:ios": "yarn workspace @yunke/ios build",
+    "build:ios:dev": "yarn workspace @yunke/ios dev",
+    "sync:ios": "yarn workspace @yunke/ios sync",
+    "xcode:ios": "yarn workspace @yunke/ios xcode",
+    "build:web": "yarn workspace @yunke/web build",
+    "build:web:dev": "yarn workspace @yunke/web dev",
+    "build:mobile": "yarn workspace @yunke/mobile build",
+    "build:mobile:dev": "yarn workspace @yunke/mobile dev"
   },
   "lint-staged": {
     "*": "prettier --write --ignore-unknown --cache",

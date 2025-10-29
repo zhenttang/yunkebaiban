@@ -12,7 +12,7 @@ const loader = join(scriptsFolder, 'register.js');
 const [node, _self, file, ...options] = process.argv;
 
 if (!file) {
-  console.error(`请提供要运行的文件，例如 'run src/index.{js/ts}'`);
+  console.error(`请提供要运行的文件，例如 'r src/index.{js/ts}'`);
   process.exit(1);
 }
 
@@ -45,7 +45,7 @@ for (const location of fileLocationCandidates) {
 
 if (!scriptLocation) {
   console.error(
-    `File ${file} not found, please make sure the first parameter passed to 'run' script is a valid js or ts file.`
+    `File ${file} not found, please make sure the first parameter passed to 'r' script is a valid js or ts file.`
   );
   console.error(`Searched locations: `);
   lookups.forEach(location => {
@@ -65,8 +65,17 @@ if (
   nodeOptions.unshift('--experimental-specifier-resolution=node');
 }
 
-spawn(node, [...nodeOptions, scriptLocation, ...options], {
+const child = spawn(node, [...nodeOptions, scriptLocation, ...options], {
   stdio: 'inherit',
-}).on('exit', code => {
-  process.exit(code);
+  cwd: process.cwd(),
+  env: process.env
+});
+
+child.on('exit', (code) => {
+  process.exit(code || 0);
+});
+
+child.on('error', (err) => {
+  console.error('Failed to run script:', err);
+  process.exit(1);
 });

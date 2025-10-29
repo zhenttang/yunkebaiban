@@ -13680,6 +13680,8 @@ __metadata:
     "@toeverything/infra": "workspace:*"
     "@types/react": "npm:^19.0.1"
     "@types/react-dom": "npm:^19.0.2"
+    "@yunke-tools/cli": "workspace:*"
+    "@yunke-tools/utils": "workspace:*"
     "@yunke/component": "workspace:*"
     "@yunke/core": "workspace:*"
     "@yunke/env": "workspace:*"

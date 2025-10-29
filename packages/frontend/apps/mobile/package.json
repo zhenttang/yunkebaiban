@@ -5,8 +5,8 @@
   "private": true,
   "browser": "src/index.tsx",
   "scripts": {
-    "build": "yunke bundle",
-    "dev": "yunke bundle --dev"
+    "build": "yunke bundle --package @yunke/mobile",
+    "dev": "yunke bundle --package @yunke/mobile --dev"
   },
   "dependencies": {
     "@blocksuite/icons": "^2.2.12",

@@ -6,8 +6,8 @@
   "private": true,
   "browser": "src/index.tsx",
   "scripts": {
-    "build": "yunke bundle",
-    "dev": "yunke bundle --dev",
+    "build": "yunke bundle --package @yunke/ios",
+    "dev": "yunke bundle --package @yunke/ios --dev",
     "sync": "cap sync",
     "sync:dev": "CAP_SERVER_URL=http://localhost:8080 cap sync",
     "xcode": "cap open ios",
