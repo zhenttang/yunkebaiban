@@ -399,6 +399,9 @@ export function App() {
                                       <CloudStorageProvider>
                                         {(() => {
                                           console.log('🛣️ [App] 开始渲染 RouterProvider');
+                                          console.log('🛣️ [App] 当前路径:', window.location.pathname);
+                                          console.log('🛣️ [App] 路由器实例:', router);
+
                                           return (
                                             <>
                                               <RouterProvider

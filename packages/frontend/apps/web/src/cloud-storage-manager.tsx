@@ -122,6 +122,7 @@ export const CloudStorageProvider = ({
   const reconnectAttempts = useRef(0);
   const maxReconnectAttempts = 5; // 增加最大重连次数
   const reconnectTimeout = useRef<NodeJS.Timeout | null>(null);
+  const isConnectingRef = useRef(false);
   const [isOnline, setIsOnline] = useState(navigator.onLine);
   const pendingOperations = useRef<Array<{
     docId: string;
@@ -401,27 +402,45 @@ export const CloudStorageProvider = ({
 
   // 监听workspaceId变化，重新连接
   useEffect(() => {
-    if (currentWorkspaceId) {
-      // 重置连接状态
-      setIsConnected(false);
-      setStorageMode('detecting');
-      reconnectAttempts.current = 0;
-      
-      // 断开旧连接
-      if (socket) {
-        socket.disconnect();
-        setSocket(null);
-      }
-      
-      // 清除旧的重连定时器
-      if (reconnectTimeout.current) {
-        clearTimeout(reconnectTimeout.current);
-        reconnectTimeout.current = null;
-      }
-      
-      // 建立新连接
-      setTimeout(connectToSocket, 100);
+    if (!currentWorkspaceId) return;
+
+    console.log('🔄 [云存储管理器] Workspace ID变化，重新连接:', currentWorkspaceId);
+
+    // 检查是否已经连接到相同的工作空间
+    if (socket?.connected && socket.id) {
+      console.log('✅ [云存储管理器] 已连接到相同工作空间，跳过重连');
+      return;
     }
+
+    // 重置连接状态
+    setIsConnected(false);
+    setStorageMode('detecting');
+    reconnectAttempts.current = 0;
+
+    // 断开旧连接
+    if (socket) {
+      console.log('🔌 [云存储管理器] 断开旧连接:', socket.id);
+      socket.disconnect();
+      setSocket(null);
+    }
+
+    // 清除旧的重连定时器
+    if (reconnectTimeout.current) {
+      clearTimeout(reconnectTimeout.current);
+      reconnectTimeout.current = null;
+    }
+
+    // 重置连接状态，允许新连接
+    isConnectingRef.current = false;
+
+    // 延迟建立新连接，避免竞态条件
+    const connectDelay = 100;
+    console.log(`⏱️ [云存储管理器] 将在${connectDelay}ms后建立新连接`);
+    setTimeout(() => {
+      if (currentWorkspaceId) { // 确保workspaceId没有再次变化
+        connectToSocket();
+      }
+    }, connectDelay);
   }, [currentWorkspaceId]);
 
   // 推送文档更新（含离线与排队逻辑）
@@ -519,15 +538,29 @@ export const CloudStorageProvider = ({
     }
 
     try {
-      // console.log('🔗 [云存储管理器] 开始连接...', { 
-      //   serverUrl, 
-      //   workspaceId: currentWorkspaceId,
-      //   attempt: reconnectAttempts.current + 1
-      // });
+      console.log('🔗 [云存储管理器] 开始连接...', {
+        serverUrl,
+        workspaceId: currentWorkspaceId,
+        attempt: reconnectAttempts.current + 1,
+        isConnecting: isConnectingRef.current
+      });
+
+      // 防止重复连接
+      if (isConnectingRef.current) {
+        console.warn('⚠️ [云存储管理器] 已有连接在进行中，跳过重复连接');
+        return;
+      }
+
+      if (socket?.connected) {
+        console.log('✅ [云存储管理器] Socket已连接，跳过重复连接');
+        return;
+      }
+
+      isConnectingRef.current = true;
       setStorageMode('detecting');
 
       const { io } = await import('socket.io-client');
-      
+
       const newSocket = io(serverUrl, {
         transports: ['websocket', 'polling'],
         timeout: 5000,
@@ -538,6 +571,8 @@ export const CloudStorageProvider = ({
         }
       });
 
+      console.log('🔌 [云存储管理器] Socket实例创建完成:', newSocket.id || 'pending');
+
       // 连接成功
       newSocket.on('connect', () => {
         console.log('🎯🎯🎯 [云存储管理器-连接] Socket.IO连接成功!!!');
@@ -547,6 +582,7 @@ export const CloudStorageProvider = ({
         setIsConnected(true);
         setSocket(newSocket);
         reconnectAttempts.current = 0;
+        isConnectingRef.current = false; // 重置连接状态
         
         // 加入工作空间 - 严格按照YUNKE标准格式
         newSocket.emit('space:join', {
@@ -613,6 +649,7 @@ export const CloudStorageProvider = ({
 
     } catch (error) {
       console.error('❌ [云存储管理器] 初始化失败:', error);
+      isConnectingRef.current = false; // 重置连接状态
       scheduleReconnect();
     }
   };

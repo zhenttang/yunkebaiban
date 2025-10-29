@@ -29,11 +29,29 @@ export const topLevelRoutes = [
     children: [
       {
         path: '/',
-        lazy: () => import('@yunke/core/desktop/pages/index'),
+        lazy: () => {
+          console.log('🔄 [Router] 开始加载首页组件...');
+          return import('@yunke/core/desktop/pages/index').then(module => {
+            console.log('✅ [Router] 首页组件加载成功');
+            return module;
+          }).catch(error => {
+            console.error('❌ [Router] 首页组件加载失败:', error);
+            throw error;
+          });
+        },
       },
       {
         path: '/workspace/:workspaceId/*',
-        lazy: () => import('@yunke/core/desktop/pages/workspace/index'),
+        lazy: () => {
+          console.log('🔄 [Router] 开始加载工作空间页面组件...');
+          return import('@yunke/core/desktop/pages/workspace/index').then(module => {
+            console.log('✅ [Router] 工作空间页面组件加载成功');
+            return module;
+          }).catch(error => {
+            console.error('❌ [Router] 工作空间页面组件加载失败:', error);
+            throw error;
+          });
+        },
       },
       {
         path: '/share/:workspaceId/:pageId',
@@ -240,4 +258,95 @@ export const router = (
   future: {
     v7_normalizeFormMethod: true,
   },
-}); 
+});
+
+// 添加路由加载监控
+console.log('🛣️ [Router] 路由器创建完成，开始监控加载状态');
+console.log('🛣️ [Router] 当前路由配置:', topLevelRoutes.length, '个顶级路由');
+
+// 监控路由状态变化
+let routeLoadStartTime: number | null = null;
+
+router.subscribe(state => {
+  console.log('🛣️ [Router] 路由状态变化:', {
+    pathname: state.location.pathname,
+    state: state.state,
+    isLoading: state.state === 'loading',
+    hasError: !!state.errors,
+    locationKey: state.location.key
+  });
+
+  if (state.state === 'loading' && !routeLoadStartTime) {
+    routeLoadStartTime = Date.now();
+    console.log('🔄 [Router] 开始加载路由:', state.location.pathname);
+  } else if (state.state !== 'loading' && routeLoadStartTime) {
+    const loadTime = Date.now() - routeLoadStartTime;
+    console.log(`✅ [Router] 路由加载完成: ${state.location.pathname} (耗时: ${loadTime}ms)`);
+    routeLoadStartTime = null;
+  }
+
+  if (state.errors) {
+    console.error('❌ [Router] 路由加载错误:', {
+      pathname: state.location.pathname,
+      error: state.errors,
+      timestamp: new Date().toISOString()
+    });
+  }
+});
+
+// 设置路由加载超时检测
+const ROUTE_LOAD_TIMEOUT = 15000; // 15秒超时
+
+const checkRouteTimeout = () => {
+  if (routeLoadStartTime && Date.now() - routeLoadStartTime > ROUTE_LOAD_TIMEOUT) {
+    console.error('⏰ [Router] 路由加载超时!', {
+      timeout: ROUTE_LOAD_TIMEOUT,
+      elapsed: Date.now() - routeLoadStartTime,
+      pathname: window.location.pathname
+    });
+
+    // 显示超时提示
+    const timeoutDiv = document.createElement('div');
+    timeoutDiv.style.cssText = `
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #ff9800;
+      color: white;
+      padding: 16px 20px;
+      border-radius: 8px;
+      z-index: 999999;
+      font-family: system-ui, sans-serif;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      max-width: 400px;
+    `;
+    timeoutDiv.innerHTML = `
+      <h4 style="margin: 0 0 8px 0;">⚠️ 路由加载超时</h4>
+      <p style="margin: 0 0 8px 0;">页面加载时间过长，可能的原因：</p>
+      <ul style="margin: 0 0 8px 0; padding-left: 20px;">
+        <li>网络连接问题</li>
+        <li>服务器响应缓慢</li>
+        <li>JavaScript模块加载失败</li>
+      </ul>
+      <button onclick="this.parentElement.remove(); location.reload()" style="
+        background: white;
+        color: #ff9800;
+        border: none;
+        padding: 6px 12px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: bold;
+      ">刷新页面</button>
+    `;
+    document.body.appendChild(timeoutDiv);
+
+    // 10秒后自动移除提示
+    setTimeout(() => {
+      if (timeoutDiv.parentElement) {
+        timeoutDiv.remove();
+      }
+    }, 10000);
+  }
+};
+
+setInterval(checkRouteTimeout, 1000); 
