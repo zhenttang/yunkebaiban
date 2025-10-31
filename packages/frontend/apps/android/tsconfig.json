@@ -13,6 +13,8 @@
     { "path": "../../core" },
     { "path": "../../../common/env" },
     { "path": "../../i18n" },
-    { "path": "../../../common/nbstore" }
+    { "path": "../../../common/nbstore" },
+    { "path": "../../../../tools/cli" },
+    { "path": "../../../../tools/utils" }
   ]
 }

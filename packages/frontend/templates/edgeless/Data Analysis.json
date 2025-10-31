@@ -1,7 +1,7 @@
 {
   "name": "Data Analysis",
   "type": "template",
-  "preview": "<svg width=\"135\" height=\"80\" viewBox=\"0 0 135 80\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"> <rect width=\"135\" height=\"80\" fill=\"currentColor\"/> <rect x=\"10\" y=\"10\" width=\"53.5\" height=\"26\" rx=\"1\" fill=\"#FFC46B\"/> <rect x=\"15\" y=\"14\" width=\"19\" height=\"1\" rx=\"0.5\" fill=\"#FF8C38\"/> <rect x=\"15\" y=\"18\" width=\"19\" height=\"1\" rx=\"0.5\" fill=\"#FF8C38\"/> <rect x=\"71.5\" y=\"10\" width=\"53.5\" height=\"26\" rx=\"1\" fill=\"#FFC46B\"/> <rect x=\"20\" y=\"28\" width=\"4\" height=\"4\" rx=\"1\" fill=\"#FFEACA\"/> <rect x=\"28\" y=\"25\" width=\"4\" height=\"7\" rx=\"1\" fill=\"#FFEACA\"/> <rect x=\"36\" y=\"22\" width=\"4\" height=\"10\" rx=\"1\" fill=\"#FFEACA\"/> <rect x=\"44\" y=\"18\" width=\"4\" height=\"14\" rx=\"1\" fill=\"#FFEACA\"/> <rect x=\"52\" y=\"14\" width=\"4\" height=\"18\" rx=\"1\" fill=\"#FFEACA\"/> <rect x=\"10\" y=\"44\" width=\"53.5\" height=\"26\" rx=\"1\" fill=\"#FFC46B\"/> <rect x=\"71.5\" y=\"44\" width=\"53.5\" height=\"26\" rx=\"1\" fill=\"#FFC46B\"/> <path d=\"M81 27.25L87.3333 15L93.6667 21.5625L100 22.875L106.333 20.25L112.667 29H119\" stroke=\"#FFEACA\"/> <path d=\"M78 14V32H120\" stroke=\"#FF8C38\"/> <circle cx=\"83.5\" cy=\"58.5\" r=\"6.5\" fill=\"#FFEACA\"/> <circle cx=\"20\" cy=\"61\" r=\"4\" fill=\"#FF8C38\"/> <circle cx=\"43\" cy=\"51\" r=\"4\" fill=\"#FFEACA\"/> <circle cx=\"54\" cy=\"56\" r=\"4\" fill=\"#FFEACA\"/> <circle cx=\"35\" cy=\"63\" r=\"4\" fill=\"#FFEACA\"/> <circle cx=\"33.5\" cy=\"54.5\" r=\"2.5\" fill=\"#FF8C38\"/> <circle cx=\"49.5\" cy=\"64.5\" r=\"2.5\" fill=\"#FF8C38\"/> <circle cx=\"26\" cy=\"51\" r=\"2\" fill=\"#FFEACA\"/> <circle cx=\"17\" cy=\"50\" r=\"2\" fill=\"#FF8C38\"/> <circle cx=\"98.5\" cy=\"58.5\" r=\"6.5\" fill=\"#FFEACA\"/> <circle cx=\"113.5\" cy=\"58.5\" r=\"6.5\" fill=\"#FFEACA\"/> <rect x=\"77\" y=\"47\" width=\"28\" height=\"2\" rx=\"1\" fill=\"#FF8C38\"/> </svg> ",
+  "preview": "<svg width=\"135\" height=\"80\" viewBox=\"0 0 135 80\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><rect width=\"135\" height=\"80\" fill=\"currentColor\"/><rect x=\"10\" y=\"10\" width=\"53.5\" height=\"26\" rx=\"1\" fill=\"#FFC46B\"/><rect x=\"15\" y=\"14\" width=\"19\" height=\"1\" rx=\"0.5\" fill=\"#FF8C38\"/><rect x=\"15\" y=\"18\" width=\"19\" height=\"1\" rx=\"0.5\" fill=\"#FF8C38\"/><rect x=\"71.5\" y=\"10\" width=\"53.5\" height=\"26\" rx=\"1\" fill=\"#FFC46B\"/><rect x=\"20\" y=\"28\" width=\"4\" height=\"4\" rx=\"1\" fill=\"#FFEACA\"/><rect x=\"28\" y=\"25\" width=\"4\" height=\"7\" rx=\"1\" fill=\"#FFEACA\"/><rect x=\"36\" y=\"22\" width=\"4\" height=\"10\" rx=\"1\" fill=\"#FFEACA\"/><rect x=\"44\" y=\"18\" width=\"4\" height=\"14\" rx=\"1\" fill=\"#FFEACA\"/><rect x=\"52\" y=\"14\" width=\"4\" height=\"18\" rx=\"1\" fill=\"#FFEACA\"/><rect x=\"10\" y=\"44\" width=\"53.5\" height=\"26\" rx=\"1\" fill=\"#FFC46B\"/><rect x=\"71.5\" y=\"44\" width=\"53.5\" height=\"26\" rx=\"1\" fill=\"#FFC46B\"/><path d=\"M81 27.25L87.3333 15L93.6667 21.5625L100 22.875L106.333 20.25L112.667 29H119\" stroke=\"#FFEACA\"/><path d=\"M78 14V32H120\" stroke=\"#FF8C38\"/><circle cx=\"83.5\" cy=\"58.5\" r=\"6.5\" fill=\"#FFEACA\"/><circle cx=\"20\" cy=\"61\" r=\"4\" fill=\"#FF8C38\"/><circle cx=\"43\" cy=\"51\" r=\"4\" fill=\"#FFEACA\"/><circle cx=\"54\" cy=\"56\" r=\"4\" fill=\"#FFEACA\"/><circle cx=\"35\" cy=\"63\" r=\"4\" fill=\"#FFEACA\"/><circle cx=\"33.5\" cy=\"54.5\" r=\"2.5\" fill=\"#FF8C38\"/><circle cx=\"49.5\" cy=\"64.5\" r=\"2.5\" fill=\"#FF8C38\"/><circle cx=\"26\" cy=\"51\" r=\"2\" fill=\"#FFEACA\"/><circle cx=\"17\" cy=\"50\" r=\"2\" fill=\"#FF8C38\"/><circle cx=\"98.5\" cy=\"58.5\" r=\"6.5\" fill=\"#FFEACA\"/><circle cx=\"113.5\" cy=\"58.5\" r=\"6.5\" fill=\"#FFEACA\"/><rect x=\"77\" y=\"47\" width=\"28\" height=\"2\" rx=\"1\" fill=\"#FF8C38\"/></svg>",
   "content": {
     "type": "page",
     "meta": {
@@ -13,10 +13,11 @@
     "blocks": {
       "type": "block",
       "id": "block:XLO34e4X44",
-      "flavour": "yunke:page",
+      "flavour": "affine:page",
       "props": {
         "title": {
-          "ops": [
+          "$blocksuite:internal:text$": true,
+          "delta": [
             {
               "insert": "BlockSuite Playground"
             }
@@ -27,7 +28,7 @@
         {
           "type": "block",
           "id": "block:gUdXzC5NJY",
-          "flavour": "yunke:surface",
+          "flavour": "affine:surface",
           "props": {
             "elements": {
               "aDJCoJjL_A": {
@@ -107,7 +108,8 @@
                 "xywh": "[1610.3408866166214,876.4735627757608,65,48]",
                 "rotate": 0,
                 "text": {
-                  "ops": [
+                  "affine:surface:text": true,
+                  "delta": [
                     {
                       "insert": "2020"
                     }
@@ -128,7 +130,8 @@
                 "xywh": "[1804.0589428324365,876.4735627757608,65,48]",
                 "rotate": 0,
                 "text": {
-                  "ops": [
+                  "affine:surface:text": true,
+                  "delta": [
                     {
                       "insert": "2021"
                     }
@@ -149,7 +152,8 @@
                 "xywh": "[1997.7769990482516,876.4735627757608,65,48]",
                 "rotate": 0,
                 "text": {
-                  "ops": [
+                  "affine:surface:text": true,
+                  "delta": [
                     {
                       "insert": "2022"
                     }
@@ -170,7 +174,8 @@
                 "xywh": "[2191.4950552640667,876.4735627757608,65,48]",
                 "rotate": 0,
                 "text": {
-                  "ops": [
+                  "affine:surface:text": true,
+                  "delta": [
                     {
                       "insert": "2023"
                     }
@@ -191,7 +196,8 @@
                 "xywh": "[960.4145528098084,254.3708727763086,539,96]",
                 "rotate": 0,
                 "text": {
-                  "ops": [
+                  "affine:surface:text": true,
+                  "delta": [
                     {
                       "insert": "Supporting Data"
                     }
@@ -212,7 +218,8 @@
                 "xywh": "[960.4145528098084,401.12403018796647,585.9470917571332,87]",
                 "rotate": 0,
                 "text": {
-                  "ops": [
+                  "affine:surface:text": true,
+                  "delta": [
                     {
                       "insert": "Place brief results & impact data here. It should help viewers more quickly understand the data importance."
                     }
@@ -234,7 +241,8 @@
                 "xywh": "[1416.6228304008064,876.4735627757608,65,48]",
                 "rotate": 0,
                 "text": {
-                  "ops": [
+                  "affine:surface:text": true,
+                  "delta": [
                     {
                       "insert": "2019"
                     }
@@ -399,7 +407,8 @@
                 "xywh": "[2704.727092496943,843.9284608710822,21.81485652389979,38.67882780969519]",
                 "rotate": 0,
                 "text": {
-                  "ops": [
+                  "affine:surface:text": true,
+                  "delta": [
                     {
                       "insert": "0"
                     }
@@ -420,7 +429,8 @@
                 "xywh": "[2692.9300529165916,737.4301275377487,34.13018798012501,38.67882780969519]",
                 "rotate": 0,
                 "text": {
-                  "ops": [
+                  "affine:surface:text": true,
+                  "delta": [
                     {
                       "insert": "10"
                     }
@@ -441,7 +451,8 @@
                 "xywh": "[2687.128228783698,630.9317942044153,40.04031239729277,38.67882780969519]",
                 "rotate": 0,
                 "text": {
-                  "ops": [
+                  "affine:surface:text": true,
+                  "delta": [
                     {
                       "insert": "20"
                     }
@@ -462,7 +473,8 @@
                 "xywh": "[2687.12822878789,524.4334608710823,39.421451742529726,38.67882780969519]",
                 "rotate": 0,
                 "text": {
-                  "ops": [
+                  "affine:surface:text": true,
+                  "delta": [
                     {
                       "insert": "30"
                     }
@@ -483,7 +495,8 @@
                 "xywh": "[2685.1942874074643,417.9351275377488,41.8040719030283,38.67882780969519]",
                 "rotate": 0,
                 "text": {
-                  "ops": [
+                  "affine:surface:text": true,
+                  "delta": [
                     {
                       "insert": "40"
                     }
@@ -504,7 +517,8 @@
                 "xywh": "[2686.161258099249,204.93846087108193,40.999551576356154,38.67882780969519]",
                 "rotate": 0,
                 "text": {
-                  "ops": [
+                  "affine:surface:text": true,
+                  "delta": [
                     {
                       "insert": "60"
                     }
@@ -525,7 +539,8 @@
                 "xywh": "[2686.161258099249,311.4367942044154,40.38069092159311,38.67882780969519]",
                 "rotate": 0,
                 "text": {
-                  "ops": [
+                  "affine:surface:text": true,
+                  "delta": [
                     {
                       "insert": "50"
                     }
@@ -546,7 +561,8 @@
                 "xywh": "[2934.7475106276756,882.8938228803385,84.12645048608704,41.57973989542233]",
                 "rotate": 0,
                 "text": {
-                  "ops": [
+                  "affine:surface:text": true,
+                  "delta": [
                     {
                       "insert": "item 1"
                     }
@@ -567,7 +583,8 @@
                 "xywh": "[3114.6394638378765,882.8938228803385,89.92827465754132,41.57973989542233]",
                 "rotate": 0,
                 "text": {
-                  "ops": [
+                  "affine:surface:text": true,
+                  "delta": [
                     {
                       "insert": "item 2"
                     }
@@ -588,7 +605,8 @@
                 "xywh": "[3300.333241180238,882.8938228803385,89.92827465754132,41.57973989542233]",
                 "rotate": 0,
                 "text": {
-                  "ops": [
+                  "affine:surface:text": true,
+                  "delta": [
                     {
                       "insert": "item 3"
                     }
@@ -609,7 +627,8 @@
                 "xywh": "[3486.027018509499,882.8938228803385,91.86221604802608,41.57973989542233]",
                 "rotate": 0,
                 "text": {
-                  "ops": [
+                  "affine:surface:text": true,
+                  "delta": [
                     {
                       "insert": "item 4"
                     }
@@ -630,7 +649,8 @@
                 "xywh": "[3673.6547372226964,882.8938228803385,90.8952453527837,41.57973989542233]",
                 "rotate": 0,
                 "text": {
-                  "ops": [
+                  "affine:surface:text": true,
+                  "delta": [
                     {
                       "insert": "item 5"
                     }
@@ -705,7 +725,8 @@
                 "xywh": "[2665.1888294652713,1258.0575307607105,85.51995849609375,56]",
                 "rotate": 0,
                 "text": {
-                  "ops": [
+                  "affine:surface:text": true,
+                  "delta": [
                     {
                       "insert": "Title"
                     }
@@ -726,7 +747,8 @@
                 "xywh": "[983.507130788842,1734.3137809757518,47.207977294921875,30]",
                 "rotate": 0,
                 "text": {
-                  "ops": [
+                  "affine:surface:text": true,
+                  "delta": [
                     {
                       "insert": "$2m"
                     }
@@ -747,7 +769,8 @@
                 "xywh": "[983.3631335964592,1652.4616093305222,47.35197448730469,30]",
                 "rotate": 0,
                 "text": {
-                  "ops": [
+                  "affine:surface:text": true,
+                  "delta": [
                     {
                       "insert": "$3m"
                     }
@@ -768,7 +791,8 @@
                 "xywh": "[981.9471332302483,1570.6094376852925,48.767974853515625,30]",
                 "rotate": 0,
                 "text": {
-                  "ops": [
+                  "affine:surface:text": true,
+                  "delta": [
                     {
                       "insert": "$4m"
                     }
@@ -789,7 +813,8 @@
                 "xywh": "[983.0031329861076,1488.757266040062,47.71197509765625,30]",
                 "rotate": 0,
                 "text": {
-                  "ops": [
+                  "affine:surface:text": true,
+                  "delta": [
                     {
                       "insert": "$5m"
                     }
@@ -810,7 +835,8 @@
                 "xywh": "[982.5231219997795,1406.9050943948323,48.191986083984375,30]",
                 "rotate": 0,
                 "text": {
-                  "ops": [
+                  "affine:surface:text": true,
+                  "delta": [
                     {
                       "insert": "$6m"
                     }
@@ -831,7 +857,8 @@
                 "xywh": "[984.8991290798576,1325.0529227496027,45.81597900390625,30]",
                 "rotate": 0,
                 "text": {
-                  "ops": [
+                  "affine:surface:text": true,
+                  "delta": [
                     {
                       "insert": "$7m"
                     }
@@ -852,7 +879,8 @@
                 "xywh": "[982.3071338405998,1243.200751104372,49,33]",
                 "rotate": 0,
                 "text": {
-                  "ops": [
+                  "affine:surface:text": true,
+                  "delta": [
                     {
                       "insert": "$8m"
                     }
@@ -873,7 +901,8 @@
                 "xywh": "[1185.6147033065918,1937.9043104170496,58.12797546386719,30]",
                 "rotate": 0,
                 "text": {
-                  "ops": [
+                  "affine:surface:text": true,
+                  "delta": [
                     {
                       "insert": "$10m"
                     }
@@ -894,7 +923,8 @@
                 "xywh": "[1325.7591332387092,1937.9043104170496,63.5999755859375,30]",
                 "rotate": 0,
                 "text": {
-                  "ops": [
+                  "affine:surface:text": true,
+                  "delta": [
                     {
                       "insert": "$20m"
                     }
@@ -915,7 +945,8 @@
                 "xywh": "[1470.9035631708257,1937.9043104170496,63.82366943359375,30]",
                 "rotate": 0,
                 "text": {
-                  "ops": [
+                  "affine:surface:text": true,
+                  "delta": [
                     {
                       "insert": "$30m"
                     }
@@ -936,7 +967,8 @@
                 "xywh": "[1615.047993102943,1937.9043104170496,65.15997314453125,30]",
                 "rotate": 0,
                 "text": {
-                  "ops": [
+                  "affine:surface:text": true,
+                  "delta": [
                     {
                       "insert": "$40m"
                     }
@@ -957,7 +989,8 @@
                 "xywh": "[1761.1924230350605,1937.9043104170496,64.10397338867188,30]",
                 "rotate": 0,
                 "text": {
-                  "ops": [
+                  "affine:surface:text": true,
+                  "delta": [
                     {
                       "insert": "$50m"
                     }
@@ -978,7 +1011,8 @@
                 "xywh": "[1906.336852967178,1937.9043104170496,64.583984375,30]",
                 "rotate": 0,
                 "text": {
-                  "ops": [
+                  "affine:surface:text": true,
+                  "delta": [
                     {
                       "insert": "$60m"
                     }
@@ -999,7 +1033,8 @@
                 "xywh": "[988.9791309109123,1816.1659526209814,41.73597717285156,30]",
                 "rotate": 0,
                 "text": {
-                  "ops": [
+                  "affine:surface:text": true,
+                  "delta": [
                     {
                       "insert": "$1m"
                     }
@@ -1105,7 +1140,8 @@
                 "seed": 1323878626,
                 "color": "--affine-palette-line-black",
                 "text": {
-                  "ops": []
+                  "affine:surface:text": true,
+                  "delta": []
                 },
                 "fontFamily": "blocksuite:surface:Inter"
               },
@@ -1258,7 +1294,8 @@
                 "xywh": "[2100.399436656542,1642.8738937193502,220,33]",
                 "rotate": 0,
                 "text": {
-                  "ops": [
+                  "affine:surface:text": true,
+                  "delta": [
                     {
                       "insert": "Department Involved"
                     }
@@ -1279,7 +1316,8 @@
                 "xywh": "[2100.399436656542,1291.3998969936938,199,33]",
                 "rotate": 0,
                 "text": {
-                  "ops": [
+                  "affine:surface:text": true,
+                  "delta": [
                     {
                       "insert": "Chance of success"
                     }
@@ -1336,7 +1374,8 @@
                 "xywh": "[2181.839211476273,1504.0509525993566,43.327972412109375,20]",
                 "rotate": 0,
                 "text": {
-                  "ops": [
+                  "affine:surface:text": true,
+                  "delta": [
                     {
                       "insert": ">25%"
                     }
@@ -1375,7 +1414,8 @@
                 "xywh": "[2173.6472253922884,1432.7168209816682,59.711944580078125,20]",
                 "rotate": 0,
                 "text": {
-                  "ops": [
+                  "affine:surface:text": true,
+                  "delta": [
                     {
                       "insert": "25-50%"
                     }
@@ -1396,7 +1436,8 @@
                 "xywh": "[2169.607224476761,1368.5583589876805,67.79194641113281,20]",
                 "rotate": 0,
                 "text": {
-                  "ops": [
+                  "affine:surface:text": true,
+                  "delta": [
                     {
                       "insert": "50-100%"
                     }
@@ -1434,7 +1475,8 @@
                 "xywh": "[2161.5031976823284,1712.7108853834343,104.4239501953125,30]",
                 "rotate": 0,
                 "text": {
-                  "ops": [
+                  "affine:surface:text": true,
+                  "delta": [
                     {
                       "insert": "Marketing"
                     }
@@ -1473,7 +1515,8 @@
                 "xywh": "[2161.5031976823275,1779.5478770475174,84,33]",
                 "rotate": 0,
                 "text": {
-                  "ops": [
+                  "affine:surface:text": true,
+                  "delta": [
                     {
                       "insert": "Product"
                     }
@@ -1512,7 +1555,8 @@
                 "xywh": "[2161.5031976823275,1849.3848687116015,55,33]",
                 "rotate": 0,
                 "text": {
-                  "ops": [
+                  "affine:surface:text": true,
+                  "delta": [
                     {
                       "insert": "Sales"
                     }
@@ -2363,10 +2407,11 @@
             {
               "type": "block",
               "id": "block:dDVohM8qX6",
-              "flavour": "yunke:frame",
+              "flavour": "affine:frame",
               "props": {
                 "title": {
-                  "ops": [
+                  "$blocksuite:internal:text$": true,
+                  "delta": [
                     {
                       "insert": "Bar chart"
                     }
@@ -2381,10 +2426,11 @@
             {
               "type": "block",
               "id": "block:twOZrNfP1V",
-              "flavour": "yunke:frame",
+              "flavour": "affine:frame",
               "props": {
                 "title": {
-                  "ops": [
+                  "$blocksuite:internal:text$": true,
+                  "delta": [
                     {
                       "insert": "Line chart"
                     }
@@ -2399,10 +2445,11 @@
             {
               "type": "block",
               "id": "block:tgg1vBAgyg",
-              "flavour": "yunke:frame",
+              "flavour": "affine:frame",
               "props": {
                 "title": {
-                  "ops": [
+                  "$blocksuite:internal:text$": true,
+                  "delta": [
                     {
                       "insert": "User"
                     }
@@ -2417,7 +2464,7 @@
             {
               "type": "block",
               "id": "block:6WnaA2LjUq",
-              "flavour": "yunke:image",
+              "flavour": "affine:image",
               "props": {
                 "caption": "",
                 "sourceId": "/static/templates/h3n8VMwxAvsSBVIu7zElTaEzsLJY6F6mGPK6Zym3cBQ=.png",
@@ -2433,7 +2480,7 @@
             {
               "type": "block",
               "id": "block:_IVTT_POud",
-              "flavour": "yunke:image",
+              "flavour": "affine:image",
               "props": {
                 "caption": "",
                 "sourceId": "/static/templates/h3n8VMwxAvsSBVIu7zElTaEzsLJY6F6mGPK6Zym3cBQ=.png",
@@ -2449,7 +2496,7 @@
             {
               "type": "block",
               "id": "block:jgIP7eHFgi",
-              "flavour": "yunke:image",
+              "flavour": "affine:image",
               "props": {
                 "caption": "",
                 "sourceId": "/static/templates/h3n8VMwxAvsSBVIu7zElTaEzsLJY6F6mGPK6Zym3cBQ=.png",
@@ -2465,10 +2512,11 @@
             {
               "type": "block",
               "id": "block:e9E0lU_Md4",
-              "flavour": "yunke:frame",
+              "flavour": "affine:frame",
               "props": {
                 "title": {
-                  "ops": [
+                  "$blocksuite:internal:text$": true,
+                  "delta": [
                     {
                       "insert": "Bubble chart"
                     }

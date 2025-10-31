@@ -6,6 +6,15 @@
     "rootDir": "src"
   },
   "include": ["src"],
-  "exclude": ["src/__tests__"]
+  "exclude": ["src/__tests__"],
+  "references": [
+    { "path": "../../../framework/global" },
+    { "path": "../../../framework/std" },
+    { "path": "../../../framework/store" },
+    { "path": "../../components" },
+    { "path": "../../ext-loader" },
+    { "path": "../../model" },
+    { "path": "../../shared" },
+    { "path": "../../widgets/slash-menu" }
+  ]
 }
-

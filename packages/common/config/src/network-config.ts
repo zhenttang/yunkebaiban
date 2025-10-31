@@ -15,7 +15,8 @@ export interface NetworkEndpoints {
 export interface NetworkConfig {
   host: string;
   port: number;
-  socketioPort: number; // 添加Socket.IO专用端口
+  socketioPort: number; // Socket.IO专用端口
+  devServerPort?: number; // 前端开发服务器端口（Webpack Dev Server）
   protocol: 'http' | 'https';
   endpoints: NetworkEndpoints;
 }
@@ -26,63 +27,121 @@ export interface Environment {
   description: string;
 }
 
-// 环境配置定义
-const environments: Record<string, Environment> = {
-  development: {
-    name: 'development',
-    description: '本地开发环境',
-    config: {
-      host: 'localhost',
-      port: 8080,
-      socketioPort: 9092,
-      protocol: 'http',
-      endpoints: {
-        api: '/api',
-        websocket: '/ws',
-        socketio: '',
-        auth: '/api/auth',
-        uploads: '/api/uploads',
-        static: '/static'
-      }
-    }
-  },
-  production: {
-    name: 'production', 
-    description: '生产环境',
-    config: {
-      host: 'your-domain.com',
-      port: 443,
-      socketioPort: 9092,
-      protocol: 'https',
-      endpoints: {
-        api: '/api',
-        websocket: '/ws', 
-        socketio: '',
-        auth: '/api/auth',
-        uploads: '/api/uploads',
-        static: '/static'
-      }
-    }
-  },
-  android: {
-    name: 'android',
-    description: 'Android应用环境',
-    config: {
-      host: '192.168.2.4',  // 使用实际开发服务器IP
-      port: 8080,            // 后端API端口
-      socketioPort: 9092,    // Socket.IO服务端口
-      protocol: 'http',
-      endpoints: {
-        api: '/api',
-        websocket: '/ws',
-        socketio: '/socket.io', 
-        auth: '/api/auth',
-        uploads: '/api/uploads',
-        static: '/static'
-      }
+/**
+ * 从环境变量获取配置值
+ * 支持运行时环境变量和构建时环境变量
+ */
+function getEnvValue(key: string, defaultValue: string): string {
+  // 优先使用构建时环境变量
+  const buildTimeValue = import.meta.env?.[key];
+  if (buildTimeValue && buildTimeValue.trim() !== '') {
+    return buildTimeValue.trim();
+  }
+  
+  // 尝试从 window 获取运行时环境变量（Android 原生注入）
+  if (typeof window !== 'undefined') {
+    const windowEnv = (window as any).__ENV__?.[key];
+    if (windowEnv && windowEnv.trim() !== '') {
+      return windowEnv.trim();
     }
   }
-};
+  
+  return defaultValue;
+}
+
+/**
+ * 解析 URL 并提取主机、端口和协议
+ */
+function parseBaseUrl(baseUrl: string): { host: string; port: number; protocol: 'http' | 'https' } {
+  try {
+    const url = new URL(baseUrl);
+    return {
+      host: url.hostname,
+      port: url.port ? parseInt(url.port) : (url.protocol === 'https:' ? 443 : 80),
+      protocol: url.protocol === 'https:' ? 'https' : 'http'
+    };
+  } catch (error) {
+    console.error('解析 BASE_URL 失败:', error);
+    // 返回默认本地开发配置
+    return {
+      host: 'localhost',
+      port: 8080,
+      protocol: 'http'
+    };
+  }
+}
+
+// 环境配置定义
+function createEnvironments(): Record<string, Environment> {
+  // 从环境变量获取基础配置
+  const apiBaseUrl = getEnvValue('VITE_API_BASE_URL', 'http://localhost:8080');
+  const socketioPort = parseInt(getEnvValue('VITE_SOCKETIO_PORT', '9092'));
+  const devServerPort = parseInt(getEnvValue('VITE_DEV_SERVER_PORT', '8082'));
+  
+  const parsed = parseBaseUrl(apiBaseUrl);
+  
+  return {
+    development: {
+      name: 'development',
+      description: '本地开发环境',
+      config: {
+        host: 'localhost',
+        port: 8080,
+        socketioPort: 9092,
+        devServerPort: 8082,
+        protocol: 'http',
+        endpoints: {
+          api: '/api',
+          websocket: '/ws',
+          socketio: '',
+          auth: '/api/auth',
+          uploads: '/api/uploads',
+          static: '/static'
+        }
+      }
+    },
+    production: {
+      name: 'production', 
+      description: '生产环境',
+      config: {
+        host: parsed.host,
+        port: parsed.port,
+        socketioPort: socketioPort,
+        devServerPort: devServerPort,
+        protocol: parsed.protocol,
+        endpoints: {
+          api: '/api',
+          websocket: '/ws', 
+          socketio: '',
+          auth: '/api/auth',
+          uploads: '/api/uploads',
+          static: '/static'
+        }
+      }
+    },
+    android: {
+      name: 'android',
+      description: 'Android应用环境',
+      config: {
+        host: parsed.host,
+        port: parsed.port,
+        socketioPort: socketioPort,
+        devServerPort: devServerPort,
+        protocol: parsed.protocol,
+        endpoints: {
+          api: '/api',
+          websocket: '/ws',
+          socketio: '/socket.io', 
+          auth: '/api/auth',
+          uploads: '/api/uploads',
+          static: '/static'
+        }
+      }
+    }
+  };
+}
+
+const environments = createEnvironments();
 
 class NetworkConfigManager {
   private currentEnvironment: string = 'development';
@@ -233,6 +292,23 @@ class NetworkConfigManager {
   }
 
   /**
+   * 获取前端开发服务器URL（用于Capacitor等）
+   */
+  getDevServerUrl(): string {
+    const config = this.getCurrentConfig();
+    const port = config.devServerPort || config.port;
+    return `${config.protocol}://${config.host}:${port}`;
+  }
+
+  /**
+   * 获取前端开发服务器端口
+   */
+  getDevServerPort(): number {
+    const config = this.getCurrentConfig();
+    return config.devServerPort || config.port;
+  }
+
+  /**
    * 根据基础URL生成Socket.IO URL
    * 用于兼容现有代码中的URL转换逻辑
    */
@@ -253,6 +329,7 @@ class NetworkConfigManager {
     console.log('基础URL:', this.getBaseUrl());
     console.log('API URL:', this.getApiBaseUrl());
     console.log('Socket.IO URL:', this.getSocketIOUrl());
+    console.log('开发服务器URL:', this.getDevServerUrl());
   }
 }
 
@@ -290,6 +367,14 @@ export function getStaticUrl(): string {
 
 export function getSocketIOPort(): number {
   return networkConfig.getSocketIOPort();
+}
+
+export function getDevServerUrl(): string {
+  return networkConfig.getDevServerUrl();
+}
+
+export function getDevServerPort(): number {
+  return networkConfig.getDevServerPort();
 }
 
 export function convertToSocketIOUrl(baseUrl: string): string {

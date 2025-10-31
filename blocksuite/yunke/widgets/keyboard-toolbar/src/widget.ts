@@ -30,6 +30,12 @@ export class YunkeKeyboardToolbarWidget extends WidgetComponent<RootBlockModel> 
       }
     }
     this._show$.value = false;
+    
+    // 🔧 修复Android输入法问题：关闭工具栏时恢复inputMode
+    const rootComponent = this.block?.rootComponent;
+    if (rootComponent) {
+      rootComponent.inputMode = this._initialInputMode || 'text';
+    }
   };
 
   private readonly _show$ = signal(false);
@@ -38,20 +44,41 @@ export class YunkeKeyboardToolbarWidget extends WidgetComponent<RootBlockModel> 
 
   get keyboard(): VirtualKeyboardProviderWithAction & { fallback?: boolean } {
     const provider = this.std.get(VirtualKeyboardProvider);
-    if (isVirtualKeyboardProviderWithAction(provider)) return provider;
+    if (isVirtualKeyboardProviderWithAction(provider)) {
+      return {
+        ...provider,
+        show: () => {
+          const rootComponent = this.block?.rootComponent;
+          if (rootComponent && rootComponent === document.activeElement) {
+            rootComponent.inputMode = this._initialInputMode || 'text';
+          }
+          provider.show();
+        },
+        hide: () => {
+          const rootComponent = this.block?.rootComponent;
+          if (rootComponent && rootComponent === document.activeElement) {
+            rootComponent.inputMode = this._initialInputMode || 'text';
+          }
+          provider.hide();
+        },
+      };
+    }
 
     return {
       // fallback keyboard actions
       show: () => {
         const rootComponent = this.block?.rootComponent;
         if (rootComponent && rootComponent === document.activeElement) {
-          rootComponent.inputMode = this._initialInputMode;
+          // 🔧 修复：确保恢复为text而不是空字符串
+          rootComponent.inputMode = this._initialInputMode || 'text';
         }
       },
       hide: () => {
         const rootComponent = this.block?.rootComponent;
         if (rootComponent && rootComponent === document.activeElement) {
-          rootComponent.inputMode = 'none';
+          // 🔧 修复Android输入法问题：不要设置为'none'
+          // Android上设置为'none'会导致只能输入数字，无法输入中文
+          rootComponent.inputMode = this._initialInputMode || 'text';
         }
       },
       ...provider,
@@ -80,21 +107,19 @@ export class YunkeKeyboardToolbarWidget extends WidgetComponent<RootBlockModel> 
       this.disposables.addFromEvent(rootComponent, 'blur', () => {
         this._show$.value = false;
       });
-
-      if (this.keyboard.fallback) {
-        this._initialInputMode = rootComponent.inputMode;
-        this.disposables.add(() => {
-          rootComponent.inputMode = this._initialInputMode;
-        });
-        this.disposables.add(
-          effect(() => {
-            // recover input mode when keyboard toolbar is hidden
-            if (!this._show$.value) {
-              rootComponent.inputMode = this._initialInputMode;
-            }
-          })
-        );
-      }
+      // 🔧 确保记录初始 inputMode 并在隐藏时恢复
+      this._initialInputMode = rootComponent.inputMode || 'text';
+      this.disposables.add(() => {
+        rootComponent.inputMode = this._initialInputMode;
+      });
+      this.disposables.add(
+        effect(() => {
+          // recover input mode when keyboard toolbar is hidden
+          if (!this._show$.value) {
+            rootComponent.inputMode = this._initialInputMode || 'text';
+          }
+        })
+      );
     }
 
     if (this._docTitle) {

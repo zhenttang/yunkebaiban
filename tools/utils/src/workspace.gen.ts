@@ -60,13 +60,17 @@ export const PackageList = [
       'blocksuite/yunke/blocks/data-view',
       'blocksuite/yunke/blocks/database',
       'blocksuite/yunke/blocks/divider',
+      'blocksuite/yunke/blocks/drawio',
       'blocksuite/yunke/blocks/edgeless-text',
       'blocksuite/yunke/blocks/embed',
       'blocksuite/yunke/blocks/embed-doc',
+      'blocksuite/yunke/blocks/excalidraw',
+      'blocksuite/yunke/blocks/flowchart',
       'blocksuite/yunke/blocks/frame',
       'blocksuite/yunke/blocks/image',
       'blocksuite/yunke/blocks/latex',
       'blocksuite/yunke/blocks/list',
+      'blocksuite/yunke/blocks/mermaid',
       'blocksuite/yunke/blocks/note',
       'blocksuite/yunke/blocks/paragraph',
       'blocksuite/yunke/blocks/root',
@@ -314,6 +318,20 @@ export const PackageList = [
   {
     location: 'blocksuite/yunke/blocks/excalidraw',
     name: '@blocksuite/yunke-block-excalidraw',
+    workspaceDependencies: [
+      'blocksuite/framework/global',
+      'blocksuite/framework/std',
+      'blocksuite/framework/store',
+      'blocksuite/yunke/components',
+      'blocksuite/yunke/ext-loader',
+      'blocksuite/yunke/model',
+      'blocksuite/yunke/shared',
+      'blocksuite/yunke/widgets/slash-menu',
+    ],
+  },
+  {
+    location: 'blocksuite/yunke/blocks/flowchart',
+    name: '@blocksuite/yunke-block-flowchart',
     workspaceDependencies: [
       'blocksuite/framework/global',
       'blocksuite/framework/std',
@@ -1310,6 +1328,8 @@ export const PackageList = [
       'packages/common/env',
       'packages/frontend/i18n',
       'packages/common/nbstore',
+      'tools/cli',
+      'tools/utils',
     ],
   },
   {
@@ -1512,6 +1532,7 @@ export type PackageName =
   | '@blocksuite/yunke-block-embed'
   | '@blocksuite/yunke-block-embed-doc'
   | '@blocksuite/yunke-block-excalidraw'
+  | '@blocksuite/yunke-block-flowchart'
   | '@blocksuite/yunke-block-frame'
   | '@blocksuite/yunke-block-image'
   | '@blocksuite/yunke-block-latex'

@@ -5,50 +5,23 @@
 //} from '@yunke/graphql';
 
 // import { environment } from '@yunke/env/constant';
+import { getBaseUrl } from '@yunke/config';
 
 /**
  * 获取配置的基础URL
- * 统一的配置获取逻辑，支持环境变量覆盖
- * 🔥 性能优化：自动适配当前端口，避免跨域CORS预检请求
+ * 使用@yunke/config统一管理网络配置
+ * 支持环境变量覆盖
  */
 function getConfiguredBaseUrl(): string {
-  // 优先使用环境变量
+  // 优先使用环境变量（但允许空值以使用自动检测）
   const envApiUrl = import.meta.env?.VITE_API_BASE_URL;
-  if (envApiUrl) {
+  if (envApiUrl && envApiUrl.trim() !== '') {
+    console.log('🔧 [API BaseURL] 使用环境变量:', envApiUrl);
     return envApiUrl;
   }
 
-  // 根据环境自动检测
-  if (typeof window !== 'undefined') {
-    const buildConfig = (window as any).BUILD_CONFIG;
-    if (buildConfig?.isAndroid || buildConfig?.platform === 'android') {
-      // Android环境：使用实际开发服务器地址
-      return 'http://192.168.2.4:8080';
-    }
-    
-    const hostname = window.location.hostname;
-    const port = window.location.port;
-    const protocol = window.location.protocol;
-    
-    // 检测局域网IP（Android开发环境）
-    if (hostname.match(/^192\.168\.\d+\.\d+$/) || 
-        hostname.match(/^10\.\d+\.\d+\.\d+$/) ||
-        hostname.match(/^172\.(1[6-9]|2[0-9]|3[01])\.\d+\.\d+$/)) {
-      return 'http://192.168.2.4:8080';
-    }
-    
-    // 🔥 开发环境：自动使用当前访问的端口（避免8080/8081跨域问题）
-    if (hostname === 'localhost' || hostname === '127.0.0.1') {
-      // 使用当前端口，避免跨域
-      return port ? `${protocol}//${hostname}:${port}` : `${protocol}//${hostname}`;
-    }
-    
-    // 生产环境：使用 window.location.origin 自动适配
-    return window.location.origin;
-  }
-  
-  // 后备方案（SSR或Node环境）
-  return 'http://localhost:8080';
+  // 使用统一的网络配置管理
+  return getBaseUrl();
 }
 
 // 使用全局的 environment 变量
@@ -100,18 +73,25 @@ import type {
   ServerMetadata
 } from './types';
 
-// 🔧 延迟初始化：第一次访问时才获取baseUrl
+// 🔧 延迟初始化：每次都重新获取baseUrl（不缓存，确保生产环境正确）
 let _cachedServers: (ServerMetadata & { config: ServerConfig })[] | null = null;
 
 function getBuildInServers(): (ServerMetadata & { config: ServerConfig })[] {
-  if (_cachedServers) {
+  // 🔥 禁用缓存：生产环境每次都重新获取baseUrl
+  // 这样可以确保部署到服务器后使用正确的域名
+  const isProduction = typeof window !== 'undefined' && 
+                      window.location.hostname !== 'localhost' && 
+                      window.location.hostname !== '127.0.0.1';
+  
+  if (_cachedServers && !isProduction) {
+    // 只在开发环境使用缓存
     return _cachedServers;
   }
   
   const baseUrl = getConfiguredBaseUrl();
-  // console.log('📍 [BUILD_IN_SERVERS] 首次动态获取baseUrl:', baseUrl);
-  // console.log('📍 [BUILD_IN_SERVERS] BUILD_CONFIG:', (globalThis as any).BUILD_CONFIG);
-  // console.log('📍 [BUILD_IN_SERVERS] window.BUILD_CONFIG:', typeof window !== 'undefined' ? (window as any).BUILD_CONFIG : 'window未定义');
+  console.log('📍 [BUILD_IN_SERVERS] 动态获取baseUrl:', baseUrl);
+  console.log('📍 [BUILD_IN_SERVERS] hostname:', typeof window !== 'undefined' ? window.location.hostname : 'N/A');
+  console.log('📍 [BUILD_IN_SERVERS] isProduction:', isProduction);
   
   _cachedServers = [
     {

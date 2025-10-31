@@ -1,12 +1,13 @@
 /*
  * Inter (Variable)
+ * 注：Inter 字体文件缺失，暂时使用系统字体
  */
-@font-face {
+/* @font-face {
   font-family: 'Inter';
   font-display: swap;
   src: url(../fonts/inter/Inter-VariableFont_slnt,wght.ttf);
   font-weight: 1 999;
-}
+} */
 
 /*
  * Source Code Pro (Variable)
@@ -18,11 +19,12 @@
   src: url(../fonts/source-code-pro/SourceCodePro-VariableFont_wght.ttf);
 }
 
+/* 注：Italic 版本缺失，Variable 字体应该支持 italic */
 @font-face {
   font-family: 'Source Code Pro';
   font-style: italic;
   font-display: swap;
-  src: url(../fonts/source-code-pro/SourceCodePro-Italic-VariableFont_wght.ttf);
+  src: url(../fonts/source-code-pro/SourceCodePro-VariableFont_wght.ttf);
 }
 
 /*
@@ -36,12 +38,13 @@
   src: url(../fonts/kalam/Kalam-Regular.ttf);
 }
 
+/* 注：Light 版本缺失，使用 Regular 代替 */
 @font-face {
   font-family: 'Kalam';
   font-style: normal;
   font-weight: 300;
   font-display: swap;
-  src: url(../fonts/kalam/Kalam-Light.ttf);
+  src: url(../fonts/kalam/Kalam-Regular.ttf);
 }
 
 @font-face {
@@ -71,12 +74,13 @@
   src: url(../fonts/source-serif-4/SourceSerif4-Italic.ttf);
 }
 
+/* 注：Medium 版本缺失，使用 Regular 代替 */
 @font-face {
   font-family: 'Source Serif 4';
   font-style: normal;
   font-weight: 500;
   font-display: swap;
-  src: url(../fonts/source-serif-4/SourceSerif4-Medium.ttf);
+  src: url(../fonts/source-serif-4/SourceSerif4-Regular.ttf);
 }
 
 @font-face {
@@ -111,23 +115,25 @@
   src: url(../fonts/source-serif-4/SourceSerif4-Bold.ttf);
 }
 
+/* 注：BoldItalic 版本缺失，使用 Bold 代替 */
 @font-face {
   font-family: 'Source Serif 4';
   font-style: italic;
   font-weight: 700;
   font-display: swap;
-  src: url(../fonts/source-serif-4/SourceSerif4-BoldItalic.ttf);
+  src: url(../fonts/source-serif-4/SourceSerif4-Bold.ttf);
 }
 
 /*
   * Space Mono
   */
+/* 注：Regular 版本缺失，使用 Italic 代替 */
 @font-face {
   font-family: 'Space Mono';
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url(../fonts/space-mono/SpaceMono-Regular.ttf);
+  src: url(../fonts/space-mono/SpaceMono-Italic.ttf);
 }
 
 @font-face {
@@ -138,12 +144,13 @@
   src: url(../fonts/space-mono/SpaceMono-Italic.ttf);
 }
 
+/* 注：Bold 版本缺失，使用 BoldItalic 代替 */
 @font-face {
   font-family: 'Space Mono';
   font-style: normal;
   font-weight: 700;
   font-display: swap;
-  src: url(../fonts/space-mono/SpaceMono-Bold.ttf);
+  src: url(../fonts/space-mono/SpaceMono-BoldItalic.ttf);
 }
 
 @font-face {

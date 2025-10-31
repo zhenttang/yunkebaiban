@@ -29,7 +29,7 @@ kotlinx-datetime = "0.6.2"
 kotlinx-serialization-json = "1.8.1"
 ksp = "2.1.20-2.0.1"
 # @keep
-minSdk = "22"
+minSdk = "24"
 mozilla-rust-android = "0.9.6"
 okhttp-bom = "5.0.0-alpha.14"
 richtext = "1.0.0-alpha02"

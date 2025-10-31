@@ -1,7 +1,7 @@
 {
   "name": "Gantt Chart",
   "type": "template",
-  "preview": "<svg width=\"135\" height=\"80\" viewBox=\"0 0 135 80\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"> <rect width=\"135\" height=\"80\" fill=\"currentColor\"/> <rect x=\"28\" y=\"7\" width=\"19\" height=\"10\" fill=\"#FFDE6B\" stroke=\"white\"/> <rect x=\"47\" y=\"7\" width=\"20\" height=\"10\" fill=\"#FFDE6B\" stroke=\"white\"/> <rect x=\"67\" y=\"7\" width=\"20\" height=\"10\" fill=\"#FFDE6B\" stroke=\"white\"/> <rect x=\"87\" y=\"7\" width=\"19\" height=\"10\" fill=\"#FFDE6B\" stroke=\"white\"/> <rect x=\"106\" y=\"7\" width=\"20\" height=\"10\" fill=\"#FFDE6B\" stroke=\"white\"/> <rect x=\"8\" y=\"7\" width=\"20\" height=\"10\" fill=\"#FFDE6B\" stroke=\"white\"/> <rect x=\"8\" y=\"17\" width=\"20\" height=\"14\" fill=\"#FFC46B\" stroke=\"white\"/> <rect x=\"28\" y=\"17\" width=\"98\" height=\"14\" fill=\"#FFC46B\" stroke=\"white\"/> <rect x=\"8\" y=\"31\" width=\"20\" height=\"14\" fill=\"#937EE7\" stroke=\"white\"/> <rect x=\"28\" y=\"31\" width=\"98\" height=\"14\" fill=\"#937EE7\" stroke=\"white\"/> <rect x=\"8\" y=\"45\" width=\"20\" height=\"14\" fill=\"#B8E3FF\" stroke=\"white\"/> <rect x=\"28\" y=\"45\" width=\"98\" height=\"14\" fill=\"#B8E3FF\" stroke=\"white\"/> <rect x=\"8\" y=\"59\" width=\"20\" height=\"14\" fill=\"#9DD194\" stroke=\"white\"/> <rect x=\"28\" y=\"59\" width=\"98\" height=\"14\" fill=\"#9DD194\" stroke=\"white\"/> <rect x=\"30\" y=\"19\" width=\"18\" height=\"4\" fill=\"#FFEACA\"/> <rect x=\"30.05\" y=\"19.05\" width=\"17.9\" height=\"3.9\" stroke=\"black\" stroke-opacity=\"0.1\" stroke-width=\"0.1\"/> <rect x=\"48\" y=\"33\" width=\"18\" height=\"4\" fill=\"#F3F0FF\"/> <rect x=\"48.05\" y=\"33.05\" width=\"17.9\" height=\"3.9\" stroke=\"black\" stroke-opacity=\"0.1\" stroke-width=\"0.1\"/> <rect x=\"55\" y=\"39\" width=\"34\" height=\"4\" fill=\"#F3F0FF\"/> <rect x=\"55.05\" y=\"39.05\" width=\"33.9\" height=\"3.9\" stroke=\"black\" stroke-opacity=\"0.1\" stroke-width=\"0.1\"/> <rect x=\"87\" y=\"49\" width=\"34\" height=\"4\" fill=\"#E1EFFF\"/> <rect x=\"87.05\" y=\"49.05\" width=\"33.9\" height=\"3.9\" stroke=\"black\" stroke-opacity=\"0.1\" stroke-width=\"0.1\"/> <rect x=\"40\" y=\"62\" width=\"28\" height=\"4\" fill=\"#DFF4E8\"/> <rect x=\"40.05\" y=\"62.05\" width=\"27.9\" height=\"3.9\" stroke=\"black\" stroke-opacity=\"0.1\" stroke-width=\"0.1\"/> <rect x=\"40\" y=\"67\" width=\"28\" height=\"4\" fill=\"#DFF4E8\"/> <rect x=\"40.05\" y=\"67.05\" width=\"27.9\" height=\"3.9\" stroke=\"black\" stroke-opacity=\"0.1\" stroke-width=\"0.1\"/> </svg> ",
+  "preview": "<svg width=\"135\" height=\"80\" viewBox=\"0 0 135 80\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><rect width=\"135\" height=\"80\" fill=\"currentColor\"/><rect x=\"28\" y=\"7\" width=\"19\" height=\"10\" fill=\"#FFDE6B\" stroke=\"white\"/><rect x=\"47\" y=\"7\" width=\"20\" height=\"10\" fill=\"#FFDE6B\" stroke=\"white\"/><rect x=\"67\" y=\"7\" width=\"20\" height=\"10\" fill=\"#FFDE6B\" stroke=\"white\"/><rect x=\"87\" y=\"7\" width=\"19\" height=\"10\" fill=\"#FFDE6B\" stroke=\"white\"/><rect x=\"106\" y=\"7\" width=\"20\" height=\"10\" fill=\"#FFDE6B\" stroke=\"white\"/><rect x=\"8\" y=\"7\" width=\"20\" height=\"10\" fill=\"#FFDE6B\" stroke=\"white\"/><rect x=\"8\" y=\"17\" width=\"20\" height=\"14\" fill=\"#FFC46B\" stroke=\"white\"/><rect x=\"28\" y=\"17\" width=\"98\" height=\"14\" fill=\"#FFC46B\" stroke=\"white\"/><rect x=\"8\" y=\"31\" width=\"20\" height=\"14\" fill=\"#937EE7\" stroke=\"white\"/><rect x=\"28\" y=\"31\" width=\"98\" height=\"14\" fill=\"#937EE7\" stroke=\"white\"/><rect x=\"8\" y=\"45\" width=\"20\" height=\"14\" fill=\"#B8E3FF\" stroke=\"white\"/><rect x=\"28\" y=\"45\" width=\"98\" height=\"14\" fill=\"#B8E3FF\" stroke=\"white\"/><rect x=\"8\" y=\"59\" width=\"20\" height=\"14\" fill=\"#9DD194\" stroke=\"white\"/><rect x=\"28\" y=\"59\" width=\"98\" height=\"14\" fill=\"#9DD194\" stroke=\"white\"/><rect x=\"30\" y=\"19\" width=\"18\" height=\"4\" fill=\"#FFEACA\"/><rect x=\"30.05\" y=\"19.05\" width=\"17.9\" height=\"3.9\" stroke=\"black\" stroke-opacity=\"0.1\" stroke-width=\"0.1\"/><rect x=\"48\" y=\"33\" width=\"18\" height=\"4\" fill=\"#F3F0FF\"/><rect x=\"48.05\" y=\"33.05\" width=\"17.9\" height=\"3.9\" stroke=\"black\" stroke-opacity=\"0.1\" stroke-width=\"0.1\"/><rect x=\"55\" y=\"39\" width=\"34\" height=\"4\" fill=\"#F3F0FF\"/><rect x=\"55.05\" y=\"39.05\" width=\"33.9\" height=\"3.9\" stroke=\"black\" stroke-opacity=\"0.1\" stroke-width=\"0.1\"/><rect x=\"87\" y=\"49\" width=\"34\" height=\"4\" fill=\"#E1EFFF\"/><rect x=\"87.05\" y=\"49.05\" width=\"33.9\" height=\"3.9\" stroke=\"black\" stroke-opacity=\"0.1\" stroke-width=\"0.1\"/><rect x=\"40\" y=\"62\" width=\"28\" height=\"4\" fill=\"#DFF4E8\"/><rect x=\"40.05\" y=\"62.05\" width=\"27.9\" height=\"3.9\" stroke=\"black\" stroke-opacity=\"0.1\" stroke-width=\"0.1\"/><rect x=\"40\" y=\"67\" width=\"28\" height=\"4\" fill=\"#DFF4E8\"/><rect x=\"40.05\" y=\"67.05\" width=\"27.9\" height=\"3.9\" stroke=\"black\" stroke-opacity=\"0.1\" stroke-width=\"0.1\"/></svg>",
   "content": {
     "type": "page",
     "meta": {
@@ -13,10 +13,11 @@
     "blocks": {
       "type": "block",
       "id": "block:dFHfZ7DK2T",
-      "flavour": "yunke:page",
+      "flavour": "affine:page",
       "props": {
         "title": {
-          "ops": [
+          "$blocksuite:internal:text$": true,
+          "delta": [
             {
               "insert": "BlockSuite Playground"
             }
@@ -27,7 +28,7 @@
         {
           "type": "block",
           "id": "block:fhGeqvBWaH",
-          "flavour": "yunke:note",
+          "flavour": "affine:note",
           "props": {
             "xywh": "[316.9434255755823,-388.5999870023072,956.5023831485366,102]",
             "background": "--affine-tag-orange",
@@ -49,17 +50,17 @@
             {
               "type": "block",
               "id": "block:kxRZmc6G8Y",
-              "flavour": "yunke:paragraph",
+              "flavour": "affine:paragraph",
               "props": {
                 "type": "h4",
                 "text": {
-                  "ops": [
+                  "$blocksuite:internal:text$": true,
+                  "delta": [
                     {
                       "insert": "Product Team Task 1..."
                     }
                   ]
-                },
-                "collapsed": false
+                }
               },
               "children": []
             }
@@ -68,7 +69,7 @@
         {
           "type": "block",
           "id": "block:hMqqdDTMJ4",
-          "flavour": "yunke:note",
+          "flavour": "affine:note",
           "props": {
             "xywh": "[2349.4085591451085,-286.5999870023072,454.45160923865933,102]",
             "background": "--affine-tag-orange",
@@ -90,17 +91,17 @@
             {
               "type": "block",
               "id": "block:nKC90e88Yh",
-              "flavour": "yunke:paragraph",
+              "flavour": "affine:paragraph",
               "props": {
                 "type": "h4",
                 "text": {
-                  "ops": [
+                  "$blocksuite:internal:text$": true,
+                  "delta": [
                     {
                       "insert": "Product Team Task 2..."
                     }
                   ]
-                },
-                "collapsed": false
+                }
               },
               "children": []
             }
@@ -109,7 +110,7 @@
         {
           "type": "block",
           "id": "block:Bzo3q6tLyy",
-          "flavour": "yunke:note",
+          "flavour": "affine:note",
           "props": {
             "xywh": "[775.7257472299925,-67.22559886985249,512.2848801152704,102]",
             "background": "--affine-tag-pink",
@@ -131,17 +132,17 @@
             {
               "type": "block",
               "id": "block:pHtEdy769F",
-              "flavour": "yunke:paragraph",
+              "flavour": "affine:paragraph",
               "props": {
                 "type": "h4",
                 "text": {
-                  "ops": [
+                  "$blocksuite:internal:text$": true,
+                  "delta": [
                     {
                       "insert": "Design Team Task 1..."
                     }
                   ]
-                },
-                "collapsed": false
+                }
               },
               "children": []
             }
@@ -150,7 +151,7 @@
         {
           "type": "block",
           "id": "block:tgCuRPo22k",
-          "flavour": "yunke:note",
+          "flavour": "affine:note",
           "props": {
             "xywh": "[963.8184872780671,56.095071913649605,807.9424593814309,102]",
             "background": "--affine-tag-pink",
@@ -171,17 +172,17 @@
             {
               "type": "block",
               "id": "block:2tKR3RDcA7",
-              "flavour": "yunke:paragraph",
+              "flavour": "affine:paragraph",
               "props": {
                 "type": "h4",
                 "text": {
-                  "ops": [
+                  "$blocksuite:internal:text$": true,
+                  "delta": [
                     {
                       "insert": "Design Team Task 2..."
                     }
                   ]
-                },
-                "collapsed": false
+                }
               },
               "children": []
             }
@@ -190,7 +191,7 @@
         {
           "type": "block",
           "id": "block:DD0a6qLPUo",
-          "flavour": "yunke:note",
+          "flavour": "affine:note",
           "props": {
             "xywh": "[963.8184872780671,242.86308190668998,512.2848801152704,102]",
             "background": "--affine-tag-blue",
@@ -211,17 +212,17 @@
             {
               "type": "block",
               "id": "block:6nOYOsIuDM",
-              "flavour": "yunke:paragraph",
+              "flavour": "affine:paragraph",
               "props": {
                 "type": "h4",
                 "text": {
-                  "ops": [
+                  "$blocksuite:internal:text$": true,
+                  "delta": [
                     {
                       "insert": "Development Team Task 1..."
                     }
                   ]
-                },
-                "collapsed": false
+                }
               },
               "children": []
             }
@@ -230,7 +231,7 @@
         {
           "type": "block",
           "id": "block:nJSzr7pJQp",
-          "flavour": "yunke:note",
+          "flavour": "affine:note",
           "props": {
             "xywh": "[1795.969378325836,242.86308190669,760.1443117093463,102.00000000000003]",
             "background": "--affine-tag-blue",
@@ -251,17 +252,17 @@
             {
               "type": "block",
               "id": "block:qXv7hmmumu",
-              "flavour": "yunke:paragraph",
+              "flavour": "affine:paragraph",
               "props": {
                 "type": "h4",
                 "text": {
-                  "ops": [
+                  "$blocksuite:internal:text$": true,
+                  "delta": [
                     {
                       "insert": "Development Team Task 2..."
                     }
                   ]
-                },
-                "collapsed": false
+                }
               },
               "children": []
             }
@@ -270,7 +271,7 @@
         {
           "type": "block",
           "id": "block:J_sXgMZbDS",
-          "flavour": "yunke:note",
+          "flavour": "affine:note",
           "props": {
             "xywh": "[1795.969378325836,365.0437621455573,1463.4164242767897,102]",
             "background": "--affine-tag-blue",
@@ -291,17 +292,17 @@
             {
               "type": "block",
               "id": "block:_14glRQv1o",
-              "flavour": "yunke:paragraph",
+              "flavour": "affine:paragraph",
               "props": {
                 "type": "h4",
                 "text": {
-                  "ops": [
+                  "$blocksuite:internal:text$": true,
+                  "delta": [
                     {
                       "insert": "Development Team Task 3..."
                     }
                   ]
-                },
-                "collapsed": false
+                }
               },
               "children": []
             }
@@ -310,7 +311,7 @@
         {
           "type": "block",
           "id": "block:17pPTk7Hxz",
-          "flavour": "yunke:note",
+          "flavour": "affine:note",
           "props": {
             "xywh": "[354.3509961388838,589.2444991125155,433.12456861620115,102]",
             "background": "--affine-tag-green",
@@ -331,17 +332,17 @@
             {
               "type": "block",
               "id": "block:EZgznRqcyu",
-              "flavour": "yunke:paragraph",
+              "flavour": "affine:paragraph",
               "props": {
                 "type": "h4",
                 "text": {
-                  "ops": [
+                  "$blocksuite:internal:text$": true,
+                  "delta": [
                     {
                       "insert": "Operation Team Task 1..."
                     }
                   ]
-                },
-                "collapsed": false
+                }
               },
               "children": []
             }
@@ -350,7 +351,7 @@
         {
           "type": "block",
           "id": "block:nJ9Ea2z4VD",
-          "flavour": "yunke:note",
+          "flavour": "affine:note",
           "props": {
             "xywh": "[2349.4085591451085,690.5099711329365,917.5646433088205,102]",
             "background": "--affine-tag-green",
@@ -371,17 +372,17 @@
             {
               "type": "block",
               "id": "block:_XP76JLaKs",
-              "flavour": "yunke:paragraph",
+              "flavour": "affine:paragraph",
               "props": {
                 "type": "h4",
                 "text": {
-                  "ops": [
+                  "$blocksuite:internal:text$": true,
+                  "delta": [
                     {
                       "insert": "Operation Team Task 2..."
                     }
                   ]
-                },
-                "collapsed": false
+                }
               },
               "children": []
             }
@@ -390,7 +391,7 @@
         {
           "type": "block",
           "id": "block:Yf6OGamTb8",
-          "flavour": "yunke:surface",
+          "flavour": "affine:surface",
           "props": {
             "elements": {
               "QBu5Lifhoz": {
@@ -410,7 +411,8 @@
                 "index": "a0",
                 "seed": 104302524,
                 "text": {
-                  "ops": [
+                  "affine:surface:text": true,
+                  "delta": [
                     {
                       "insert": "Project name"
                     }
@@ -440,7 +442,8 @@
                 "seed": 1385846865,
                 "color": "--affine-palette-line-black",
                 "text": {
-                  "ops": [
+                  "affine:surface:text": true,
+                  "delta": [
                     {
                       "insert": "Product Team"
                     }
@@ -470,7 +473,8 @@
                 "seed": 1024566422,
                 "color": "--affine-palette-line-black",
                 "text": {
-                  "ops": [
+                  "affine:surface:text": true,
+                  "delta": [
                     {
                       "insert": "Design Team"
                     }
@@ -500,7 +504,8 @@
                 "seed": 1725109778,
                 "color": "--affine-palette-line-black",
                 "text": {
-                  "ops": [
+                  "affine:surface:text": true,
+                  "delta": [
                     {
                       "insert": "Development Team"
                     }
@@ -530,7 +535,8 @@
                 "seed": 443669891,
                 "color": "--affine-palette-line-black",
                 "text": {
-                  "ops": [
+                  "affine:surface:text": true,
+                  "delta": [
                     {
                       "insert": "Operations Team"
                     }
@@ -560,7 +566,8 @@
                 "seed": 1446871931,
                 "color": "--affine-palette-line-black",
                 "text": {
-                  "ops": [
+                  "affine:surface:text": true,
+                  "delta": [
                     {
                       "insert": "Team"
                     }
@@ -590,7 +597,8 @@
                 "seed": 1562786805,
                 "color": "--affine-palette-line-black",
                 "text": {
-                  "ops": [
+                  "affine:surface:text": true,
+                  "delta": [
                     {
                       "insert": "Week 1"
                     }
@@ -620,7 +628,8 @@
                 "seed": 369041213,
                 "color": "--affine-palette-line-black",
                 "text": {
-                  "ops": [
+                  "affine:surface:text": true,
+                  "delta": [
                     {
                       "insert": "Week 2"
                     }
@@ -650,7 +659,8 @@
                 "seed": 1889247856,
                 "color": "--affine-palette-line-black",
                 "text": {
-                  "ops": [
+                  "affine:surface:text": true,
+                  "delta": [
                     {
                       "insert": "Week 3"
                     }
@@ -680,7 +690,8 @@
                 "seed": 706323358,
                 "color": "--affine-palette-line-black",
                 "text": {
-                  "ops": [
+                  "affine:surface:text": true,
+                  "delta": [
                     {
                       "insert": "Week 4"
                     }
@@ -710,7 +721,8 @@
                 "seed": 1512922881,
                 "color": "--affine-palette-line-black",
                 "text": {
-                  "ops": [
+                  "affine:surface:text": true,
+                  "delta": [
                     {
                       "insert": "Week 5"
                     }
@@ -740,7 +752,8 @@
                 "seed": 1447411329,
                 "color": "--affine-palette-line-black",
                 "text": {
-                  "ops": [
+                  "affine:surface:text": true,
+                  "delta": [
                     {
                       "insert": "Week 6"
                     }
@@ -788,7 +801,8 @@
                 "seed": 507545410,
                 "color": "--affine-palette-line-black",
                 "text": {
-                  "ops": []
+                  "affine:surface:text": true,
+                  "delta": []
                 },
                 "fontFamily": "blocksuite:surface:Poppins",
                 "textAlign": "center",
@@ -814,7 +828,8 @@
                 "seed": 271186894,
                 "color": "--affine-palette-line-black",
                 "text": {
-                  "ops": []
+                  "affine:surface:text": true,
+                  "delta": []
                 },
                 "fontFamily": "blocksuite:surface:Poppins",
                 "textAlign": "center",
@@ -840,7 +855,8 @@
                 "seed": 1227614862,
                 "color": "--affine-palette-line-black",
                 "text": {
-                  "ops": []
+                  "affine:surface:text": true,
+                  "delta": []
                 },
                 "fontFamily": "blocksuite:surface:Poppins",
                 "textAlign": "center",
@@ -853,7 +869,8 @@
                 "xywh": "[-1275.4919764936606,-788.8353316096283,387.199951171875,89.60000000000001]",
                 "rotate": 0,
                 "text": {
-                  "ops": [
+                  "affine:surface:text": true,
+                  "delta": [
                     {
                       "insert": "Gantt Chart"
                     }
@@ -874,7 +891,8 @@
                 "xywh": "[-1275.4919764936606,-672.1641803723196,773,618]",
                 "rotate": 0,
                 "text": {
-                  "ops": [
+                  "affine:surface:text": true,
+                  "delta": [
                     {
                       "insert": "A Gantt Chart template is a tool for scheduling and tracking project tasks, featuring horizontal bars representing each task's duration against a timeline.\n \nThis template helps in planning, coordinating, and tracking the progress of different tasks within a project.\n\nTo use this Gantt chart, list all project tasks with Note tool, showing dependencies and progress to effectively plan and monitor the project's schedule."
                     }

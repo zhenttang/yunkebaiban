@@ -7,6 +7,7 @@
     "build": "yunke bundle --package @yunke/android",
     "dev": "yunke bundle --package @yunke/android --dev",
     "sync": "cap sync",
+    "_comment_sync_dev": "⚠️ IP地址和端口配置在 packages/common/config/src/network-config.ts 的 android.devServerPort",
     "sync:dev": "CAP_SERVER_URL=http://192.168.2.4:8082 cap sync",
     "studio": "cap open android"
   },

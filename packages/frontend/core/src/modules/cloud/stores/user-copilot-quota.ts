@@ -1,45 +1,21 @@
 import { Store } from '@toeverything/infra';
+import { getBaseUrl } from '@yunke/config';
 
 /**
  * 获取配置的基础URL
- * 🔥 性能优化：自动适配当前端口，避免跨域CORS预检请求
+ * 使用@yunke/config统一管理网络配置
+ * 支持环境变量覆盖
  */
 function getConfiguredBaseUrl(): string {
   // 优先使用环境变量
   const envApiUrl = import.meta.env?.VITE_API_BASE_URL;
-  if (envApiUrl) {
+  if (envApiUrl && envApiUrl.trim() !== '') {
+    console.log('🔧 [API BaseURL] 使用环境变量:', envApiUrl);
     return envApiUrl;
   }
 
-  // 根据环境自动检测
-  if (typeof window !== 'undefined') {
-    const buildConfig = (window as any).BUILD_CONFIG;
-    if (buildConfig?.isAndroid || buildConfig?.platform === 'android') {
-      return 'http://192.168.2.4:8080';
-    }
-    
-    const hostname = window.location.hostname;
-    const port = window.location.port;
-    const protocol = window.location.protocol;
-    
-    // 检测局域网IP（Android开发环境）
-    if (hostname.match(/^192\.168\.\d+\.\d+$/) || 
-        hostname.match(/^10\.\d+\.\d+\.\d+$/) ||
-        hostname.match(/^172\.(1[6-9]|2[0-9]|3[01])\.\d+\.\d+$/)) {
-      return 'http://192.168.2.4:8080';
-    }
-    
-    // 🔥 开发环境：自动使用当前访问的端口（避免8080/8081跨域问题）
-    if (hostname === 'localhost' || hostname === '127.0.0.1') {
-      return port ? `${protocol}//${hostname}:${port}` : `${protocol}//${hostname}`;
-    }
-    
-    // 生产环境：使用 window.location.origin 自动适配
-    return window.location.origin;
-  }
-  
-  // 后备方案（SSR或Node环境）
-  return 'http://localhost:8080';
+  // 使用统一的网络配置管理
+  return getBaseUrl();
 }
 
 // Copilot配额数据结构

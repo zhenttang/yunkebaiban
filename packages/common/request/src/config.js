@@ -1,37 +1,18 @@
 import { ApiEndpoints, EnvironmentConfig, EnvironmentType, RequestConfig, RetryConfig, TimeoutConfig } from './types';
+import { getBaseUrl } from '@yunke/config';
 /**
  * 获取配置的基础URL
- * 统一的配置获取逻辑，支持环境变量覆盖
+ * 使用统一的网络配置管理，支持环境变量覆盖
  */
 function getConfiguredBaseUrl() {
-    // 优先使用环境变量
+    // 优先使用环境变量（但允许空值以使用自动检测）
     const envApiUrl = import.meta.env?.VITE_API_BASE_URL;
-    if (envApiUrl) {
+    if (envApiUrl && envApiUrl.trim() !== '') {
+        console.log('🔧 [API BaseURL] 使用环境变量:', envApiUrl);
         return envApiUrl;
     }
-    // 根据环境自动检测
-    if (typeof window !== 'undefined') {
-        const buildConfig = window.BUILD_CONFIG;
-        if (buildConfig?.isAndroid || buildConfig?.platform === 'android') {
-            return 'http://192.168.2.4:8080';
-        }
-        const hostname = window.location.hostname;
-        // 检测局域网IP（Android开发环境）
-        if (hostname.match(/^192\.168\.\d+\.\d+$/) || 
-            hostname.match(/^10\.\d+\.\d+\.\d+$/) ||
-            hostname.match(/^172\.(1[6-9]|2[0-9]|3[01])\.\d+\.\d+$/)) {
-            return 'http://192.168.2.4:8080';
-        }
-        // 生产环境
-        if (hostname !== 'localhost' &&
-            hostname !== '127.0.0.1' &&
-            !hostname.includes('192.168.') &&
-            !hostname.includes('10.0.') &&
-            !hostname.includes('172.')) {
-            return 'https://your-domain.com:443';
-        }
-    }
-    return 'http://localhost:8080';
+    // 使用统一的网络配置管理
+    return getBaseUrl();
 }
 /**
  * 默认超时配置

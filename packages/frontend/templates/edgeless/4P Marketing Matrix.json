@@ -1,7 +1,7 @@
 {
   "name": "4P Marketing Matrix",
   "type": "template",
-  "preview": "<svg width=\"135\" height=\"80\" viewBox=\"0 0 135 80\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"> <rect width=\"135\" height=\"80\" fill=\"currentColor\"/> <rect x=\"6\" y=\"7\" width=\"56\" height=\"30\" rx=\"1\" fill=\"#DFF4E8\"/> <rect x=\"72\" y=\"7\" width=\"56\" height=\"30\" rx=\"1\" fill=\"#E1EFFF\"/> <rect x=\"6\" y=\"44\" width=\"56\" height=\"30\" rx=\"1\" fill=\"#FFEACA\"/> <rect x=\"72\" y=\"44\" width=\"56\" height=\"30\" rx=\"1\" fill=\"#FFE1E1\"/> <rect x=\"9\" y=\"11\" width=\"10\" height=\"9\" fill=\"#9DD194\"/> <rect x=\"9.05\" y=\"11.05\" width=\"9.9\" height=\"8.9\" stroke=\"black\" stroke-opacity=\"0.1\" stroke-width=\"0.1\"/> <rect x=\"9\" y=\"24\" width=\"10\" height=\"9\" fill=\"#9DD194\"/> <rect x=\"9.05\" y=\"24.05\" width=\"9.9\" height=\"8.9\" stroke=\"black\" stroke-opacity=\"0.1\" stroke-width=\"0.1\"/> <rect x=\"22\" y=\"11\" width=\"10\" height=\"9\" fill=\"#9DD194\"/> <rect x=\"22.05\" y=\"11.05\" width=\"9.9\" height=\"8.9\" stroke=\"black\" stroke-opacity=\"0.1\" stroke-width=\"0.1\"/> <rect x=\"84\" y=\"17\" width=\"10\" height=\"11\" fill=\"#84CFFF\"/> <rect x=\"84.05\" y=\"17.05\" width=\"9.9\" height=\"10.9\" stroke=\"black\" stroke-opacity=\"0.1\" stroke-width=\"0.1\"/> <rect x=\"99\" y=\"17\" width=\"10\" height=\"11\" fill=\"#84CFFF\"/> <rect x=\"99.05\" y=\"17.05\" width=\"9.9\" height=\"10.9\" stroke=\"black\" stroke-opacity=\"0.1\" stroke-width=\"0.1\"/> <rect x=\"113\" y=\"17\" width=\"10\" height=\"11\" fill=\"#84CFFF\"/> <rect x=\"113.05\" y=\"17.05\" width=\"9.9\" height=\"10.9\" stroke=\"black\" stroke-opacity=\"0.1\" stroke-width=\"0.1\"/> <rect x=\"76\" y=\"47\" width=\"10\" height=\"8\" fill=\"#F16F6F\"/> <rect x=\"76.05\" y=\"47.05\" width=\"9.9\" height=\"7.9\" stroke=\"black\" stroke-opacity=\"0.1\" stroke-width=\"0.1\"/> <rect x=\"89\" y=\"47\" width=\"10\" height=\"8\" fill=\"#F16F6F\"/> <rect x=\"89.05\" y=\"47.05\" width=\"9.9\" height=\"7.9\" stroke=\"black\" stroke-opacity=\"0.1\" stroke-width=\"0.1\"/> <rect x=\"102\" y=\"47\" width=\"10\" height=\"8\" fill=\"#F16F6F\"/> <rect x=\"102.05\" y=\"47.05\" width=\"9.9\" height=\"7.9\" stroke=\"black\" stroke-opacity=\"0.1\" stroke-width=\"0.1\"/> <rect x=\"115\" y=\"47\" width=\"10\" height=\"8\" fill=\"#F16F6F\"/> <rect x=\"115.05\" y=\"47.05\" width=\"9.9\" height=\"7.9\" stroke=\"black\" stroke-opacity=\"0.1\" stroke-width=\"0.1\"/> <rect x=\"115\" y=\"57\" width=\"10\" height=\"8\" fill=\"#F16F6F\"/> <rect x=\"115.05\" y=\"57.05\" width=\"9.9\" height=\"7.9\" stroke=\"black\" stroke-opacity=\"0.1\" stroke-width=\"0.1\"/> <rect x=\"102\" y=\"57\" width=\"10\" height=\"8\" fill=\"#F16F6F\"/> <rect x=\"102.05\" y=\"57.05\" width=\"9.9\" height=\"7.9\" stroke=\"black\" stroke-opacity=\"0.1\" stroke-width=\"0.1\"/> <rect x=\"89\" y=\"57\" width=\"10\" height=\"8\" fill=\"#F16F6F\"/> <rect x=\"89.05\" y=\"57.05\" width=\"9.9\" height=\"7.9\" stroke=\"black\" stroke-opacity=\"0.1\" stroke-width=\"0.1\"/> <rect x=\"76\" y=\"57\" width=\"10\" height=\"8\" fill=\"#F16F6F\"/> <rect x=\"76.05\" y=\"57.05\" width=\"9.9\" height=\"7.9\" stroke=\"black\" stroke-opacity=\"0.1\" stroke-width=\"0.1\"/> <rect x=\"35\" y=\"11\" width=\"10\" height=\"9\" fill=\"#9DD194\"/> <rect x=\"35.05\" y=\"11.05\" width=\"9.9\" height=\"8.9\" stroke=\"black\" stroke-opacity=\"0.1\" stroke-width=\"0.1\"/> <line x1=\"6\" y1=\"40.85\" x2=\"128\" y2=\"40.85\" stroke=\"#E3E2E4\" stroke-width=\"0.3\"/> <line x1=\"67.15\" y1=\"7\" x2=\"67.15\" y2=\"74\" stroke=\"#E3E2E4\" stroke-width=\"0.3\"/> <rect x=\"9\" y=\"48\" width=\"10\" height=\"10\" fill=\"#FFC46B\"/> <rect x=\"9.05\" y=\"48.05\" width=\"9.9\" height=\"9.9\" stroke=\"black\" stroke-opacity=\"0.1\" stroke-width=\"0.1\"/> <rect x=\"22\" y=\"55\" width=\"10\" height=\"10\" fill=\"#FFC46B\"/> <rect x=\"22.05\" y=\"55.05\" width=\"9.9\" height=\"9.9\" stroke=\"black\" stroke-opacity=\"0.1\" stroke-width=\"0.1\"/> <rect x=\"35\" y=\"50\" width=\"10\" height=\"10\" fill=\"#FFC46B\"/> <rect x=\"35.05\" y=\"50.05\" width=\"9.9\" height=\"9.9\" stroke=\"black\" stroke-opacity=\"0.1\" stroke-width=\"0.1\"/> </svg> ",
+  "preview": "<svg width=\"135\" height=\"80\" viewBox=\"0 0 135 80\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><rect width=\"135\" height=\"80\" fill=\"currentColor\"/><rect x=\"6\" y=\"7\" width=\"56\" height=\"30\" rx=\"1\" fill=\"#DFF4E8\"/><rect x=\"72\" y=\"7\" width=\"56\" height=\"30\" rx=\"1\" fill=\"#E1EFFF\"/><rect x=\"6\" y=\"44\" width=\"56\" height=\"30\" rx=\"1\" fill=\"#FFEACA\"/><rect x=\"72\" y=\"44\" width=\"56\" height=\"30\" rx=\"1\" fill=\"#FFE1E1\"/><rect x=\"9\" y=\"11\" width=\"10\" height=\"9\" fill=\"#9DD194\"/><rect x=\"9.05\" y=\"11.05\" width=\"9.9\" height=\"8.9\" stroke=\"black\" stroke-opacity=\"0.1\" stroke-width=\"0.1\"/><rect x=\"9\" y=\"24\" width=\"10\" height=\"9\" fill=\"#9DD194\"/><rect x=\"9.05\" y=\"24.05\" width=\"9.9\" height=\"8.9\" stroke=\"black\" stroke-opacity=\"0.1\" stroke-width=\"0.1\"/><rect x=\"22\" y=\"11\" width=\"10\" height=\"9\" fill=\"#9DD194\"/><rect x=\"22.05\" y=\"11.05\" width=\"9.9\" height=\"8.9\" stroke=\"black\" stroke-opacity=\"0.1\" stroke-width=\"0.1\"/><rect x=\"84\" y=\"17\" width=\"10\" height=\"11\" fill=\"#84CFFF\"/><rect x=\"84.05\" y=\"17.05\" width=\"9.9\" height=\"10.9\" stroke=\"black\" stroke-opacity=\"0.1\" stroke-width=\"0.1\"/><rect x=\"99\" y=\"17\" width=\"10\" height=\"11\" fill=\"#84CFFF\"/><rect x=\"99.05\" y=\"17.05\" width=\"9.9\" height=\"10.9\" stroke=\"black\" stroke-opacity=\"0.1\" stroke-width=\"0.1\"/><rect x=\"113\" y=\"17\" width=\"10\" height=\"11\" fill=\"#84CFFF\"/><rect x=\"113.05\" y=\"17.05\" width=\"9.9\" height=\"10.9\" stroke=\"black\" stroke-opacity=\"0.1\" stroke-width=\"0.1\"/><rect x=\"76\" y=\"47\" width=\"10\" height=\"8\" fill=\"#F16F6F\"/><rect x=\"76.05\" y=\"47.05\" width=\"9.9\" height=\"7.9\" stroke=\"black\" stroke-opacity=\"0.1\" stroke-width=\"0.1\"/><rect x=\"89\" y=\"47\" width=\"10\" height=\"8\" fill=\"#F16F6F\"/><rect x=\"89.05\" y=\"47.05\" width=\"9.9\" height=\"7.9\" stroke=\"black\" stroke-opacity=\"0.1\" stroke-width=\"0.1\"/><rect x=\"102\" y=\"47\" width=\"10\" height=\"8\" fill=\"#F16F6F\"/><rect x=\"102.05\" y=\"47.05\" width=\"9.9\" height=\"7.9\" stroke=\"black\" stroke-opacity=\"0.1\" stroke-width=\"0.1\"/><rect x=\"115\" y=\"47\" width=\"10\" height=\"8\" fill=\"#F16F6F\"/><rect x=\"115.05\" y=\"47.05\" width=\"9.9\" height=\"7.9\" stroke=\"black\" stroke-opacity=\"0.1\" stroke-width=\"0.1\"/><rect x=\"115\" y=\"57\" width=\"10\" height=\"8\" fill=\"#F16F6F\"/><rect x=\"115.05\" y=\"57.05\" width=\"9.9\" height=\"7.9\" stroke=\"black\" stroke-opacity=\"0.1\" stroke-width=\"0.1\"/><rect x=\"102\" y=\"57\" width=\"10\" height=\"8\" fill=\"#F16F6F\"/><rect x=\"102.05\" y=\"57.05\" width=\"9.9\" height=\"7.9\" stroke=\"black\" stroke-opacity=\"0.1\" stroke-width=\"0.1\"/><rect x=\"89\" y=\"57\" width=\"10\" height=\"8\" fill=\"#F16F6F\"/><rect x=\"89.05\" y=\"57.05\" width=\"9.9\" height=\"7.9\" stroke=\"black\" stroke-opacity=\"0.1\" stroke-width=\"0.1\"/><rect x=\"76\" y=\"57\" width=\"10\" height=\"8\" fill=\"#F16F6F\"/><rect x=\"76.05\" y=\"57.05\" width=\"9.9\" height=\"7.9\" stroke=\"black\" stroke-opacity=\"0.1\" stroke-width=\"0.1\"/><rect x=\"35\" y=\"11\" width=\"10\" height=\"9\" fill=\"#9DD194\"/><rect x=\"35.05\" y=\"11.05\" width=\"9.9\" height=\"8.9\" stroke=\"black\" stroke-opacity=\"0.1\" stroke-width=\"0.1\"/><line x1=\"6\" y1=\"40.85\" x2=\"128\" y2=\"40.85\" stroke=\"#E3E2E4\" stroke-width=\"0.3\"/><line x1=\"67.15\" y1=\"7\" x2=\"67.15\" y2=\"74\" stroke=\"#E3E2E4\" stroke-width=\"0.3\"/><rect x=\"9\" y=\"48\" width=\"10\" height=\"10\" fill=\"#FFC46B\"/><rect x=\"9.05\" y=\"48.05\" width=\"9.9\" height=\"9.9\" stroke=\"black\" stroke-opacity=\"0.1\" stroke-width=\"0.1\"/><rect x=\"22\" y=\"55\" width=\"10\" height=\"10\" fill=\"#FFC46B\"/><rect x=\"22.05\" y=\"55.05\" width=\"9.9\" height=\"9.9\" stroke=\"black\" stroke-opacity=\"0.1\" stroke-width=\"0.1\"/><rect x=\"35\" y=\"50\" width=\"10\" height=\"10\" fill=\"#FFC46B\"/><rect x=\"35.05\" y=\"50.05\" width=\"9.9\" height=\"9.9\" stroke=\"black\" stroke-opacity=\"0.1\" stroke-width=\"0.1\"/></svg>",
   "content": {
     "type": "page",
     "meta": {
@@ -13,10 +13,11 @@
     "blocks": {
       "type": "block",
       "id": "block:wKkJVqs2Uh",
-      "flavour": "yunke:page",
+      "flavour": "affine:page",
       "props": {
         "title": {
-          "ops": [
+          "$blocksuite:internal:text$": true,
+          "delta": [
             {
               "insert": "BlockSuite Playground"
             }
@@ -27,7 +28,7 @@
         {
           "type": "block",
           "id": "block:9obeHwvQlc",
-          "flavour": "yunke:surface",
+          "flavour": "affine:surface",
           "props": {
             "elements": {
               "G8sDm7LjU9": {
@@ -102,7 +103,8 @@
                 "seed": 2034782310,
                 "color": "--affine-palette-line-black",
                 "text": {
-                  "ops": []
+                  "affine:surface:text": true,
+                  "delta": []
                 },
                 "fontFamily": "blocksuite:surface:Inter"
               },
@@ -111,7 +113,8 @@
                 "xywh": "[-263.92954192315847,-499.2355323811801,241.47195434570312,105]",
                 "rotate": 0,
                 "text": {
-                  "ops": [
+                  "affine:surface:text": true,
+                  "delta": [
                     {
                       "insert": "Product"
                     }
@@ -132,7 +135,8 @@
                 "xywh": "[1742.3329219139223,-499.7355323811801,153,105]",
                 "rotate": 0,
                 "text": {
-                  "ops": [
+                  "affine:surface:text": true,
+                  "delta": [
                     {
                       "insert": "PrICE"
                     }
@@ -153,7 +157,8 @@
                 "xywh": "[1730.6756596208468,884.5632875897456,166,106]",
                 "rotate": 0,
                 "text": {
-                  "ops": [
+                  "affine:surface:text": true,
+                  "delta": [
                     {
                       "insert": "PLACE"
                     }
@@ -174,7 +179,8 @@
                 "xywh": "[-275.586804216234,885.0632875897456,310,106]",
                 "rotate": 0,
                 "text": {
-                  "ops": [
+                  "affine:surface:text": true,
+                  "delta": [
                     {
                       "insert": "ProMOTION"
                     }
@@ -195,7 +201,8 @@
                 "xywh": "[-1545.6298523435441,-308.51674361350143,732.9849149269639,504]",
                 "rotate": 0,
                 "text": {
-                  "ops": [
+                  "affine:surface:text": true,
+                  "delta": [
                     {
                       "insert": "A 4P Marketing Matrix template organizes key marketing strategies around four elements: Product, Price, Place, and Promotion. \n\nIt provides a structured approach to define and analyze each aspect, ensuring a comprehensive marketing plan."
                     }
@@ -217,7 +224,8 @@
                 "xywh": "[-1545.6298523435441,-437.4272826856303,651.4558715820312,89]",
                 "rotate": 0,
                 "text": {
-                  "ops": [
+                  "affine:surface:text": true,
+                  "delta": [
                     {
                       "insert": "4P Marketing Matrix"
                     }
@@ -285,7 +293,7 @@
         {
           "type": "block",
           "id": "block:uStvHzbo_0",
-          "flavour": "yunke:note",
+          "flavour": "affine:note",
           "props": {
             "xywh": "[-47.65483438164483,-152.35566874448068,364,350.42578125]",
             "background": "--affine-tag-blue",
@@ -306,13 +314,13 @@
             {
               "type": "block",
               "id": "block:IGcP0YepF2",
-              "flavour": "yunke:paragraph",
+              "flavour": "affine:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "ops": []
-                },
-                "collapsed": false
+                  "$blocksuite:internal:text$": true,
+                  "delta": []
+                }
               },
               "children": []
             }
@@ -321,7 +329,7 @@
         {
           "type": "block",
           "id": "block:yI5JejXYkO",
-          "flavour": "yunke:note",
+          "flavour": "affine:note",
           "props": {
             "xywh": "[352.32566504563056,64.19414482024047,364,350.42578125]",
             "background": "--affine-tag-blue",
@@ -342,13 +350,13 @@
             {
               "type": "block",
               "id": "block:Owf1ifVNz1",
-              "flavour": "yunke:paragraph",
+              "flavour": "affine:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "ops": []
-                },
-                "collapsed": false
+                  "$blocksuite:internal:text$": true,
+                  "delta": []
+                }
               },
               "children": []
             }
@@ -357,7 +365,7 @@
         {
           "type": "block",
           "id": "block:DIjSAufGEL",
-          "flavour": "yunke:note",
+          "flavour": "affine:note",
           "props": {
             "xywh": "[892.912994588858,-165.18985185378477,364,350.42578125]",
             "background": "--affine-tag-blue",
@@ -378,13 +386,13 @@
             {
               "type": "block",
               "id": "block:62lqOBsxvb",
-              "flavour": "yunke:paragraph",
+              "flavour": "affine:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "ops": []
-                },
-                "collapsed": false
+                  "$blocksuite:internal:text$": true,
+                  "delta": []
+                }
               },
               "children": []
             }
@@ -393,7 +401,7 @@
         {
           "type": "block",
           "id": "block:DWK6GhYlBY",
-          "flavour": "yunke:note",
+          "flavour": "affine:note",
           "props": {
             "xywh": "[2152.3785001752194,-45.780025366743075,364,350.42578125]",
             "background": "--affine-tag-green",
@@ -414,13 +422,13 @@
             {
               "type": "block",
               "id": "block:1g2EsVeGlP",
-              "flavour": "yunke:paragraph",
+              "flavour": "affine:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "ops": []
-                },
-                "collapsed": false
+                  "$blocksuite:internal:text$": true,
+                  "delta": []
+                }
               },
               "children": []
             }
@@ -429,7 +437,7 @@
         {
           "type": "block",
           "id": "block:EnlV_5bR5H",
-          "flavour": "yunke:note",
+          "flavour": "affine:note",
           "props": {
             "xywh": "[2657.263549538395,-227.09494996130474,364,350.42578125]",
             "background": "--affine-tag-green",
@@ -450,13 +458,13 @@
             {
               "type": "block",
               "id": "block:R3v_ruiteR",
-              "flavour": "yunke:paragraph",
+              "flavour": "affine:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "ops": []
-                },
-                "collapsed": false
+                  "$blocksuite:internal:text$": true,
+                  "delta": []
+                }
               },
               "children": []
             }
@@ -465,7 +473,7 @@
         {
           "type": "block",
           "id": "block:DcxuiQm8fX",
-          "flavour": "yunke:note",
+          "flavour": "affine:note",
           "props": {
             "xywh": "[-11.674334954369453,1205.4178310224202,364,350.42578125]",
             "background": "--affine-tag-yellow",
@@ -486,13 +494,13 @@
             {
               "type": "block",
               "id": "block:mWyJ-m7iam",
-              "flavour": "yunke:paragraph",
+              "flavour": "affine:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "ops": []
-                },
-                "collapsed": false
+                  "$blocksuite:internal:text$": true,
+                  "delta": []
+                }
               },
               "children": []
             }
@@ -501,7 +509,7 @@
         {
           "type": "block",
           "id": "block:JVsfHdO3yZ",
-          "flavour": "yunke:note",
+          "flavour": "affine:note",
           "props": {
             "xywh": "[590.2686764639566,1461.5599669243923,364,350.42578125]",
             "background": "--affine-tag-yellow",
@@ -522,13 +530,13 @@
             {
               "type": "block",
               "id": "block:fkj3dYM-5u",
-              "flavour": "yunke:paragraph",
+              "flavour": "affine:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "ops": []
-                },
-                "collapsed": false
+                  "$blocksuite:internal:text$": true,
+                  "delta": []
+                }
               },
               "children": []
             }
@@ -537,7 +545,7 @@
         {
           "type": "block",
           "id": "block:1XO8CVBjRS",
-          "flavour": "yunke:note",
+          "flavour": "affine:note",
           "props": {
             "xywh": "[2006.4604780976342,1247.0200381308277,364,350.42578125]",
             "background": "--affine-tag-orange",
@@ -558,13 +566,13 @@
             {
               "type": "block",
               "id": "block:1-Vf5hZEwC",
-              "flavour": "yunke:paragraph",
+              "flavour": "affine:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "ops": []
-                },
-                "collapsed": false
+                  "$blocksuite:internal:text$": true,
+                  "delta": []
+                }
               },
               "children": []
             }
@@ -573,7 +581,7 @@
         {
           "type": "block",
           "id": "block:bOaMGO9IvG",
-          "flavour": "yunke:note",
+          "flavour": "affine:note",
           "props": {
             "xywh": "[2628.9752347495414,1205.4178310224202,364,350.42578125]",
             "background": "--affine-tag-orange",
@@ -594,13 +602,13 @@
             {
               "type": "block",
               "id": "block:448i6V2K0y",
-              "flavour": "yunke:paragraph",
+              "flavour": "affine:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "ops": []
-                },
-                "collapsed": false
+                  "$blocksuite:internal:text$": true,
+                  "delta": []
+                }
               },
               "children": []
             }
@@ -609,7 +617,7 @@
         {
           "type": "block",
           "id": "block:MTn83hg25G",
-          "flavour": "yunke:note",
+          "flavour": "affine:note",
           "props": {
             "xywh": "[3078.4659279251755,1259.3587141642702,364,350.42578125]",
             "background": "--affine-tag-orange",
@@ -630,13 +638,13 @@
             {
               "type": "block",
               "id": "block:6ZPjzctxeh",
-              "flavour": "yunke:paragraph",
+              "flavour": "affine:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "ops": []
-                },
-                "collapsed": false
+                  "$blocksuite:internal:text$": true,
+                  "delta": []
+                }
               },
               "children": []
             }

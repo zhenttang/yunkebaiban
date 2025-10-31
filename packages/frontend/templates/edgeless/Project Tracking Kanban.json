@@ -1,7 +1,7 @@
 {
   "name": "Project Tracking Kanban",
   "type": "template",
-  "preview": "<svg width=\"135\" height=\"80\" viewBox=\"0 0 135 80\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"> <rect width=\"135\" height=\"80\" fill=\"currentColor\"/> <rect x=\"8\" y=\"15\" width=\"36\" height=\"57\" rx=\"1\" fill=\"#F3F0FF\"/> <rect x=\"49\" y=\"15\" width=\"37\" height=\"57\" rx=\"1\" fill=\"#FFF4D8\"/> <rect x=\"91\" y=\"15\" width=\"36\" height=\"57\" rx=\"1\" fill=\"#F5F5F5\"/> <rect x=\"13\" y=\"19\" width=\"11\" height=\"10\" fill=\"#937EE7\"/> <rect x=\"13.05\" y=\"19.05\" width=\"10.9\" height=\"9.9\" stroke=\"black\" stroke-opacity=\"0.1\" stroke-width=\"0.1\"/> <rect x=\"55\" y=\"19\" width=\"11\" height=\"10\" fill=\"#FFC46B\"/> <rect x=\"55.05\" y=\"19.05\" width=\"10.9\" height=\"9.9\" stroke=\"black\" stroke-opacity=\"0.1\" stroke-width=\"0.1\"/> <rect x=\"27\" y=\"19\" width=\"11\" height=\"10\" fill=\"#937EE7\"/> <rect x=\"27.05\" y=\"19.05\" width=\"10.9\" height=\"9.9\" stroke=\"black\" stroke-opacity=\"0.1\" stroke-width=\"0.1\"/> <rect x=\"69\" y=\"19\" width=\"11\" height=\"10\" fill=\"#FFC46B\"/> <rect x=\"69.05\" y=\"19.05\" width=\"10.9\" height=\"9.9\" stroke=\"black\" stroke-opacity=\"0.1\" stroke-width=\"0.1\"/> <rect x=\"96\" y=\"19\" width=\"11\" height=\"10\" fill=\"#B8E3FF\"/> <rect x=\"96.05\" y=\"19.05\" width=\"10.9\" height=\"9.9\" stroke=\"black\" stroke-opacity=\"0.1\" stroke-width=\"0.1\"/> <rect x=\"96\" y=\"34\" width=\"11\" height=\"10\" fill=\"#B8E3FF\"/> <rect x=\"96.05\" y=\"34.05\" width=\"10.9\" height=\"9.9\" stroke=\"black\" stroke-opacity=\"0.1\" stroke-width=\"0.1\"/> <rect x=\"112\" y=\"26\" width=\"11\" height=\"10\" fill=\"#B8E3FF\"/> <rect x=\"112.05\" y=\"26.05\" width=\"10.9\" height=\"9.9\" stroke=\"black\" stroke-opacity=\"0.1\" stroke-width=\"0.1\"/> <rect x=\"13\" y=\"32\" width=\"11\" height=\"10\" fill=\"#937EE7\"/> <rect x=\"13.05\" y=\"32.05\" width=\"10.9\" height=\"9.9\" stroke=\"black\" stroke-opacity=\"0.1\" stroke-width=\"0.1\"/> <rect x=\"8\" y=\"7\" width=\"15\" height=\"4\" rx=\"2\" fill=\"#937EE7\"/> <rect x=\"49\" y=\"7\" width=\"15\" height=\"4\" rx=\"2\" fill=\"#FFC46B\"/> <rect x=\"91\" y=\"7\" width=\"15\" height=\"4\" rx=\"2\" fill=\"#B8E3FF\"/> </svg> ",
+  "preview": "<svg width=\"135\" height=\"80\" viewBox=\"0 0 135 80\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><rect width=\"135\" height=\"80\" fill=\"currentColor\"/><rect x=\"8\" y=\"15\" width=\"36\" height=\"57\" rx=\"1\" fill=\"#F3F0FF\"/><rect x=\"49\" y=\"15\" width=\"37\" height=\"57\" rx=\"1\" fill=\"#FFF4D8\"/><rect x=\"91\" y=\"15\" width=\"36\" height=\"57\" rx=\"1\" fill=\"#F5F5F5\"/><rect x=\"13\" y=\"19\" width=\"11\" height=\"10\" fill=\"#937EE7\"/><rect x=\"13.05\" y=\"19.05\" width=\"10.9\" height=\"9.9\" stroke=\"black\" stroke-opacity=\"0.1\" stroke-width=\"0.1\"/><rect x=\"55\" y=\"19\" width=\"11\" height=\"10\" fill=\"#FFC46B\"/><rect x=\"55.05\" y=\"19.05\" width=\"10.9\" height=\"9.9\" stroke=\"black\" stroke-opacity=\"0.1\" stroke-width=\"0.1\"/><rect x=\"27\" y=\"19\" width=\"11\" height=\"10\" fill=\"#937EE7\"/><rect x=\"27.05\" y=\"19.05\" width=\"10.9\" height=\"9.9\" stroke=\"black\" stroke-opacity=\"0.1\" stroke-width=\"0.1\"/><rect x=\"69\" y=\"19\" width=\"11\" height=\"10\" fill=\"#FFC46B\"/><rect x=\"69.05\" y=\"19.05\" width=\"10.9\" height=\"9.9\" stroke=\"black\" stroke-opacity=\"0.1\" stroke-width=\"0.1\"/><rect x=\"96\" y=\"19\" width=\"11\" height=\"10\" fill=\"#B8E3FF\"/><rect x=\"96.05\" y=\"19.05\" width=\"10.9\" height=\"9.9\" stroke=\"black\" stroke-opacity=\"0.1\" stroke-width=\"0.1\"/><rect x=\"96\" y=\"34\" width=\"11\" height=\"10\" fill=\"#B8E3FF\"/><rect x=\"96.05\" y=\"34.05\" width=\"10.9\" height=\"9.9\" stroke=\"black\" stroke-opacity=\"0.1\" stroke-width=\"0.1\"/><rect x=\"112\" y=\"26\" width=\"11\" height=\"10\" fill=\"#B8E3FF\"/><rect x=\"112.05\" y=\"26.05\" width=\"10.9\" height=\"9.9\" stroke=\"black\" stroke-opacity=\"0.1\" stroke-width=\"0.1\"/><rect x=\"13\" y=\"32\" width=\"11\" height=\"10\" fill=\"#937EE7\"/><rect x=\"13.05\" y=\"32.05\" width=\"10.9\" height=\"9.9\" stroke=\"black\" stroke-opacity=\"0.1\" stroke-width=\"0.1\"/><rect x=\"8\" y=\"7\" width=\"15\" height=\"4\" rx=\"2\" fill=\"#937EE7\"/><rect x=\"49\" y=\"7\" width=\"15\" height=\"4\" rx=\"2\" fill=\"#FFC46B\"/><rect x=\"91\" y=\"7\" width=\"15\" height=\"4\" rx=\"2\" fill=\"#B8E3FF\"/></svg>",
   "content": {
     "type": "page",
     "meta": {
@@ -13,17 +13,18 @@
     "blocks": {
       "type": "block",
       "id": "block:WiCmFgkKur",
-      "flavour": "yunke:page",
+      "flavour": "affine:page",
       "props": {
         "title": {
-          "ops": []
+          "$blocksuite:internal:text$": true,
+          "delta": []
         }
       },
       "children": [
         {
           "type": "block",
           "id": "block:4RjYTv3Irh",
-          "flavour": "yunke:surface",
+          "flavour": "affine:surface",
           "props": {
             "elements": {
               "xT4fgp2NtV": {
@@ -31,7 +32,8 @@
                 "xywh": "[13.899034754585273,-2559.4600038004746,582.2957763671875,65]",
                 "rotate": 0,
                 "text": {
-                  "ops": [
+                  "affine:surface:text": true,
+                  "delta": [
                     {
                       "insert": "Project tracking Kanban"
                     }
@@ -52,7 +54,8 @@
                 "xywh": "[13.899034754585273,-2448.0761288820563,603,600]",
                 "rotate": 0,
                 "text": {
-                  "ops": [
+                  "affine:surface:text": true,
+                  "delta": [
                     {
                       "insert": "A Kanban template for project tracking typically includes a visual board divided into columns representing different stages of a project, such as \"planned,\" \"ongoing,\" and \"Complete.\"\n\nThis template allows tasks to be added as cards under these columns. As work progresses, cards are moved along the columns, offering a clear, real-time view of the project's progress.\n\nThis template is useful for managing workflow, prioritizing tasks, and ensuring efficient project execution."
                     }
@@ -86,7 +89,8 @@
                 "index": "aM",
                 "seed": 1163884762,
                 "text": {
-                  "ops": [
+                  "affine:surface:text": true,
+                  "delta": [
                     {
                       "insert": "This column shows tasks that are currently in progress."
                     }
@@ -115,7 +119,8 @@
                 "index": "aN",
                 "seed": 502096122,
                 "text": {
-                  "ops": [
+                  "affine:surface:text": true,
+                  "delta": [
                     {
                       "insert": "This column represents tasks that are scheduled but not yet started."
                     }
@@ -144,7 +149,8 @@
                 "index": "aO",
                 "seed": 832931538,
                 "text": {
-                  "ops": [
+                  "affine:surface:text": true,
+                  "delta": [
                     {
                       "insert": "This column shows tasks that are currently in progress."
                     }
@@ -206,10 +212,11 @@
             {
               "type": "block",
               "id": "block:lkN5hk-maV",
-              "flavour": "yunke:frame",
+              "flavour": "affine:frame",
               "props": {
                 "title": {
-                  "ops": [
+                  "$blocksuite:internal:text$": true,
+                  "delta": [
                     {
                       "insert": "Planned"
                     }
@@ -224,10 +231,11 @@
             {
               "type": "block",
               "id": "block:jYc3sAF203",
-              "flavour": "yunke:frame",
+              "flavour": "affine:frame",
               "props": {
                 "title": {
-                  "ops": [
+                  "$blocksuite:internal:text$": true,
+                  "delta": [
                     {
                       "insert": "Ongoing"
                     }
@@ -242,10 +250,11 @@
             {
               "type": "block",
               "id": "block:pK-c0q3FKT",
-              "flavour": "yunke:frame",
+              "flavour": "affine:frame",
               "props": {
                 "title": {
-                  "ops": [
+                  "$blocksuite:internal:text$": true,
+                  "delta": [
                     {
                       "insert": "Complete"
                     }
@@ -262,7 +271,7 @@
         {
           "type": "block",
           "id": "block:ARdbMSGA6F",
-          "flavour": "yunke:note",
+          "flavour": "affine:note",
           "props": {
             "xywh": "[1006.3673687752464,-2396.9441818570995,364,346.0533208983238]",
             "background": "--affine-tag-green",
@@ -284,65 +293,65 @@
             {
               "type": "block",
               "id": "block:i18H4EDVSa",
-              "flavour": "yunke:paragraph",
+              "flavour": "affine:paragraph",
               "props": {
                 "type": "h1",
                 "text": {
-                  "ops": []
-                },
-                "collapsed": false
+                  "$blocksuite:internal:text$": true,
+                  "delta": []
+                }
               },
               "children": []
             },
             {
               "type": "block",
               "id": "block:e7jwGFx6h-",
-              "flavour": "yunke:paragraph",
+              "flavour": "affine:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "ops": []
-                },
-                "collapsed": false
+                  "$blocksuite:internal:text$": true,
+                  "delta": []
+                }
               },
               "children": []
             },
             {
               "type": "block",
               "id": "block:6oN79y-eoz",
-              "flavour": "yunke:paragraph",
+              "flavour": "affine:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "ops": []
-                },
-                "collapsed": false
+                  "$blocksuite:internal:text$": true,
+                  "delta": []
+                }
               },
               "children": []
             },
             {
               "type": "block",
               "id": "block:i0HG8snTRn",
-              "flavour": "yunke:paragraph",
+              "flavour": "affine:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "ops": []
-                },
-                "collapsed": false
+                  "$blocksuite:internal:text$": true,
+                  "delta": []
+                }
               },
               "children": []
             },
             {
               "type": "block",
               "id": "block:Qw_oMklmlE",
-              "flavour": "yunke:paragraph",
+              "flavour": "affine:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "ops": []
-                },
-                "collapsed": false
+                  "$blocksuite:internal:text$": true,
+                  "delta": []
+                }
               },
               "children": []
             }
@@ -351,7 +360,7 @@
         {
           "type": "block",
           "id": "block:9cokXXA85z",
-          "flavour": "yunke:note",
+          "flavour": "affine:note",
           "props": {
             "xywh": "[1469.2382949333223,-2396.9441818570995,364,345.6208786944021]",
             "background": "--affine-tag-green",
@@ -373,13 +382,13 @@
             {
               "type": "block",
               "id": "block:4OI6eiz_C1",
-              "flavour": "yunke:paragraph",
+              "flavour": "affine:paragraph",
               "props": {
                 "type": "h1",
                 "text": {
-                  "ops": []
-                },
-                "collapsed": false
+                  "$blocksuite:internal:text$": true,
+                  "delta": []
+                }
               },
               "children": []
             }
@@ -388,7 +397,7 @@
         {
           "type": "block",
           "id": "block:7Qwe7V3lNz",
-          "flavour": "yunke:note",
+          "flavour": "affine:note",
           "props": {
             "xywh": "[2470.356710227984,-2396.9441818570995,364,360.690320348461]",
             "background": "--affine-tag-red",
@@ -410,26 +419,26 @@
             {
               "type": "block",
               "id": "block:B7u9koNnHq",
-              "flavour": "yunke:paragraph",
+              "flavour": "affine:paragraph",
               "props": {
                 "type": "h1",
                 "text": {
-                  "ops": []
-                },
-                "collapsed": false
+                  "$blocksuite:internal:text$": true,
+                  "delta": []
+                }
               },
               "children": []
             },
             {
               "type": "block",
               "id": "block:o8lZfMyjG8",
-              "flavour": "yunke:paragraph",
+              "flavour": "affine:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "ops": []
-                },
-                "collapsed": false
+                  "$blocksuite:internal:text$": true,
+                  "delta": []
+                }
               },
               "children": []
             }
@@ -438,7 +447,7 @@
         {
           "type": "block",
           "id": "block:ABjD3pyR1M",
-          "flavour": "yunke:note",
+          "flavour": "affine:note",
           "props": {
             "xywh": "[2949.7366961478638,-2396.9441818570995,364,362.53729127607653]",
             "background": "--affine-tag-red",
@@ -459,13 +468,13 @@
             {
               "type": "block",
               "id": "block:RCD-sChtHO",
-              "flavour": "yunke:paragraph",
+              "flavour": "affine:paragraph",
               "props": {
                 "type": "h1",
                 "text": {
-                  "ops": []
-                },
-                "collapsed": false
+                  "$blocksuite:internal:text$": true,
+                  "delta": []
+                }
               },
               "children": []
             }
@@ -474,7 +483,7 @@
         {
           "type": "block",
           "id": "block:viFUOamIio",
-          "flavour": "yunke:note",
+          "flavour": "affine:note",
           "props": {
             "xywh": "[2470.356710227984,-1875.4049073554643,364,362.53729127607653]",
             "background": "--affine-tag-red",
@@ -495,13 +504,13 @@
             {
               "type": "block",
               "id": "block:tyCZ6vxAnB",
-              "flavour": "yunke:paragraph",
+              "flavour": "affine:paragraph",
               "props": {
                 "type": "h3",
                 "text": {
-                  "ops": []
-                },
-                "collapsed": false
+                  "$blocksuite:internal:text$": true,
+                  "delta": []
+                }
               },
               "children": []
             }
@@ -510,7 +519,7 @@
         {
           "type": "block",
           "id": "block:qwk55Z_R6Y",
-          "flavour": "yunke:note",
+          "flavour": "affine:note",
           "props": {
             "xywh": "[3974.3195766719255,-2396.9441818570995,364,360.690320348461]",
             "background": "--affine-tag-yellow",
@@ -532,26 +541,26 @@
             {
               "type": "block",
               "id": "block:qBSewlvzZx",
-              "flavour": "yunke:paragraph",
+              "flavour": "affine:paragraph",
               "props": {
                 "type": "h1",
                 "text": {
-                  "ops": []
-                },
-                "collapsed": false
+                  "$blocksuite:internal:text$": true,
+                  "delta": []
+                }
               },
               "children": []
             },
             {
               "type": "block",
               "id": "block:r4zBuxQmSD",
-              "flavour": "yunke:paragraph",
+              "flavour": "affine:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "ops": []
-                },
-                "collapsed": false
+                  "$blocksuite:internal:text$": true,
+                  "delta": []
+                }
               },
               "children": []
             }
@@ -560,7 +569,7 @@
         {
           "type": "block",
           "id": "block:KsSuGA33Fz",
-          "flavour": "yunke:note",
+          "flavour": "affine:note",
           "props": {
             "xywh": "[4449.409800606875,-2396.9441818570995,364,360.690320348461]",
             "background": "--affine-tag-yellow",
@@ -582,26 +591,26 @@
             {
               "type": "block",
               "id": "block:Wfbucq7AK2",
-              "flavour": "yunke:paragraph",
+              "flavour": "affine:paragraph",
               "props": {
                 "type": "h1",
                 "text": {
-                  "ops": []
-                },
-                "collapsed": false
+                  "$blocksuite:internal:text$": true,
+                  "delta": []
+                }
               },
               "children": []
             },
             {
               "type": "block",
               "id": "block:-QvrhoT91b",
-              "flavour": "yunke:paragraph",
+              "flavour": "affine:paragraph",
               "props": {
                 "type": "text",
                 "text": {
-                  "ops": []
-                },
-                "collapsed": false
+                  "$blocksuite:internal:text$": true,
+                  "delta": []
+                }
               },
               "children": []
             }

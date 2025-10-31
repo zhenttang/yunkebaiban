@@ -314,44 +314,22 @@ try {
   frameworkProvider = framework.provider();
   console.log('✅ Framework provider 创建成功');
   
-  // 🔧 Android专用：强制修改服务器配置为开发服务器地址
+  // 🔧 Android配置验证：检查服务器配置是否正确
   if ((window as any).BUILD_CONFIG?.isAndroid) {
     try {
       const serversService = frameworkProvider.get(ServersService);
       const server = serversService.server$('yunke-cloud').value;
       
       if (server) {
-        const newBaseUrl = 'http://192.168.2.4:8080';
-        console.log('🔧 [Android配置] 强制修改服务器baseUrl');
-        console.log('  原始baseUrl:', server.baseUrl);
-        console.log('  新baseUrl:', newBaseUrl);
-        
-        // 直接修改服务器的baseUrl
-        Object.defineProperty(server, 'baseUrl', {
-          value: newBaseUrl,
-          writable: true,
-          configurable: true,
-          enumerable: true
-        });
-        
-        // 同时修改serverMetadata中的baseUrl（如果存在）
-        if (server.serverMetadata) {
-          Object.defineProperty(server.serverMetadata, 'baseUrl', {
-            value: newBaseUrl,
-            writable: true,
-            configurable: true,
-            enumerable: true
-          });
-        }
-        
-        console.log('✅ [Android配置] 服务器配置已强制修改');
-        console.log('  验证baseUrl:', server.baseUrl);
-        console.log('  验证serverMetadata.baseUrl:', server.serverMetadata?.baseUrl);
+        console.log('🔧 [Android配置] 服务器配置信息');
+        console.log('  当前baseUrl:', server.baseUrl);
+        console.log('  serverMetadata.baseUrl:', server.serverMetadata?.baseUrl);
+        console.log('  环境变量 VITE_API_BASE_URL:', import.meta.env?.VITE_API_BASE_URL);
       } else {
         console.error('❌ [Android配置] 未找到yunke-cloud服务器');
       }
     } catch (error) {
-      console.error('❌ [Android配置] 修改服务器配置失败:', error);
+      console.error('❌ [Android配置] 获取服务器配置失败:', error);
     }
   }
   
@@ -759,10 +737,7 @@ window.addEventListener('yunke-auth-initialized', (event: any) => {
   }
 });
 
-// Android专用：全局替换localhost为实际服务器地址
-const ANDROID_SERVER_HOST = '192.168.2.4:8082';
-
-// 最关键：拦截所有网络请求，查看是否到达服务器
+// Android专用：拦截所有网络请求进行调试和监控
 const originalFetch = window.fetch;
 window.fetch = function(...args) {
   let [input, init] = args;
@@ -770,19 +745,6 @@ window.fetch = function(...args) {
   // 使用Request构造函数来规范化所有类型的input（字符串、URL对象、Request对象）
   const request = new Request(input, init);
   let url = request.url;
-  
-  // Android专用：将所有localhost请求替换为实际服务器地址
-  // 处理所有可能的localhost变体
-  url = url.replace(/localhost:8080/g, ANDROID_SERVER_HOST);  // 替换8080端口
-  url = url.replace(/localhost:8082/g, ANDROID_SERVER_HOST);  // 替换8082端口
-  url = url.replace(/localhost\/api/g, `${ANDROID_SERVER_HOST}/api`);  // 替换无端口的API路径
-  url = url.replace(/127\.0\.0\.1:8080/g, ANDROID_SERVER_HOST);  // 替换127.0.0.1:8080
-  url = url.replace(/127\.0\.0\.1:8082/g, ANDROID_SERVER_HOST);  // 替换127.0.0.1:8082
-  
-  // 兜底：替换剩余的localhost（带http://）
-  if (url.includes('localhost')) {
-    url = url.replace(/http:\/\/localhost/g, `http://${ANDROID_SERVER_HOST.split(':')[0]}`);
-  }
   
   // 🔧 创建新的Request对象，并强制使用HTTP/1.1
   const originalHeaders = {};
@@ -889,11 +851,12 @@ setTimeout(() => {
     // 关键检查：确认实际使用的baseUrl
     const actualBaseUrl = currentServer?.serverMetadata?.baseUrl || currentServer?.baseUrl;
     console.log('🎯 实际使用的BaseURL:', actualBaseUrl);
+    console.log('🎯 环境变量 VITE_API_BASE_URL:', import.meta.env?.VITE_API_BASE_URL);
     
-    if (actualBaseUrl && !actualBaseUrl.includes('192.168.2.4:8080')) {
-      console.error('❌ BaseURL配置错误! 期望包含192.168.2.4:8080，实际:', actualBaseUrl);
+    if (actualBaseUrl) {
+      console.log('✅ BaseURL已配置:', actualBaseUrl);
     } else {
-      console.log('✅ BaseURL配置正确');
+      console.error('❌ BaseURL未配置！');
     }
     
     // 检查Android存储策略
