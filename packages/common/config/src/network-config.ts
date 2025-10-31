@@ -65,7 +65,7 @@ function parseBaseUrl(baseUrl: string): { host: string; port: number; protocol: 
     // 返回默认本地开发配置
     return {
       host: 'localhost',
-      port: 8080,
+      port: 80,
       protocol: 'http'
     };
   }
@@ -74,7 +74,7 @@ function parseBaseUrl(baseUrl: string): { host: string; port: number; protocol: 
 // 环境配置定义
 function createEnvironments(): Record<string, Environment> {
   // 从环境变量获取基础配置
-  const apiBaseUrl = getEnvValue('VITE_API_BASE_URL', 'http://localhost:8080');
+  const apiBaseUrl = getEnvValue('VITE_API_BASE_URL', 'http://ykbaiban.yckeji0316.cn');
   const socketioPort = parseInt(getEnvValue('VITE_SOCKETIO_PORT', '9092'));
   const devServerPort = parseInt(getEnvValue('VITE_DEV_SERVER_PORT', '8082'));
   

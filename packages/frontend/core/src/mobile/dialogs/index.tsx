@@ -13,9 +13,10 @@ import { DocSelectorDialog } from './selectors/doc-selector';
 import { TagSelectorDialog } from './selectors/tag-selector';
 import { SettingDialog } from './setting';
 import { SignInDialog } from './sign-in';
+import { CreateWorkspaceDialog } from '@yunke/core/desktop/dialogs/create-workspace';
 
 const GLOBAL_DIALOGS = {
-  //   'create-workspace': CreateWorkspaceDialog,
+  'create-workspace': CreateWorkspaceDialog,
   //   'import-workspace': ImportWorkspaceDialog,
   //   'import-template': ImportTemplateDialog,
   //   import: ImportDialog,
