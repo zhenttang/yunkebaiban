@@ -87,7 +87,10 @@ export const config = (): BuildOptions => {
     bundle: true,
     target: `node${NODE_MAJOR_VERSION}`,
     platform: 'node',
-    external: ['electron', 'electron-updater', 'yjs', 'semver'],
+    // Only keep 'electron' external as it's provided by the Electron runtime.
+    // Bundle all other dependencies (electron-updater, yjs, semver, etc.) so they're
+    // available inside app.asar without needing node_modules at runtime.
+    external: ['electron'],
     format: 'cjs',
     loader: {
       '.node': 'copy',

@@ -18,6 +18,7 @@
     { "path": "../../i18n" },
     { "path": "../../../common/nbstore" },
     { "path": "../../track" },
+    { "path": "../../../../tools/cli" },
     { "path": "../../../../tools/utils" }
   ]
 }

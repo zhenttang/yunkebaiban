@@ -1,5 +1,5 @@
 import cp from 'node:child_process';
-import { existsSync, lstatSync, rmSync } from 'node:fs';
+import { existsSync, lstatSync } from 'node:fs';
 import { rm, symlink } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -174,10 +174,8 @@ export default {
         }
       : undefined,
     // We need the following line for updater
-    // Also include web-static outside of asar so Electron can load HTML files
     extraResource: [
       './resources/app-update.yml',
-      './resources/web-static',
       ...(platform === 'linux' ? ['./resources/yunke.metainfo.xml'] : []),
     ],
     protocols: [
@@ -191,33 +189,16 @@ export default {
       unpack: '**/*.node'
     },
     ignore: (filePath) => {
-      // IMPORTANT: Since electron-updater and other deps are bundled in dist/main.js,
-      // we DON'T need to package node_modules. This avoids conflicts.
-      
-      // Include the dist directory (contains bundled code)
+      // Include node_modules - this is critical!
+      if (filePath.includes('node_modules')) return false;
+      // Include dist (compiled output)
       if (filePath.includes('/dist/')) return false;
-      
-      // EXCLUDE resources/web-static from asar (it's added via extraResource)
-      // This allows Electron to load HTML files directly
-      if (filePath.includes('/resources/web-static')) return true;
-      
-      // Include other resources (like app-update.yml)
-      if (filePath.includes('/resources/')) return false;
-      
-      // Exclude everything else: node_modules, source files, etc.
-      if (filePath.includes('node_modules')) return true;
-      if (filePath.includes('/src/')) return true;
-      if (filePath.includes('/scripts/')) return true;
+      // Exclude source files and dev dependencies
       if (filePath.match(/\.(ts|tsx|map|spec\.(js|ts))$/)) return true;
       if (filePath.includes('/.git/')) return true;
       if (filePath.includes('/.husky/')) return true;
       if (filePath.includes('/docs/')) return true;
       if (filePath.includes('/.claude/')) return true;
-      if (filePath.includes('/test/')) return true;
-      
-      // For root level, include package.json
-      if (filePath === '/package.json') return false;
-      
       return false;
     },
     extendInfo: {
@@ -234,64 +215,33 @@ export default {
       packageJson.productName = productName;
     },
     prePackage: async () => {
-      // Clean up old output directory to avoid EBUSY errors on Windows
-      const outDir = path.join(__dirname, 'out', buildType);
-      if (existsSync(outDir)) {
-        console.log('Cleaning old output directory...');
-        try {
-          // Use synchronous rmSync with maxRetries for better handling of locked files on Windows
-          rmSync(outDir, { 
-            recursive: true, 
-            force: true,
-            maxRetries: 3,
-            retryDelay: 1000
-          });
-          console.log('✓ Old output directory cleaned');
-        } catch (err) {
-          console.warn('Warning: Could not fully clean output directory:', err.message);
-          console.warn('If you see EBUSY errors, please close any running Electron apps and try again.');
-        }
-      }
-
-      // Ensure web assets are generated and copied to resources/web-static
-      console.log('Generating assets (frontend HTML/JS/CSS + electron build)...');
-      cp.spawnSync('yarn', ['generate-assets'], { stdio: 'inherit', cwd: __dirname });
-
-      // Verify dist directory exists with bundled code
-      const distPath = path.join(__dirname, 'dist', 'main.js');
-      if (!existsSync(distPath)) {
-        throw new Error(
-          'dist/main.js not found! Please run "yarn build" before packaging.\n' +
-          'The main.js file should contain bundled electron-updater and other dependencies.'
-        );
-      }
-      
-      // Verify web-static directory exists with frontend resources
-      const webStaticPath = path.join(__dirname, 'resources', 'web-static', 'shell.html');
-      if (!existsSync(webStaticPath)) {
-        throw new Error(
-          'resources/web-static/shell.html not found!\n' +
-          'Frontend resources were not copied. Please check electron-renderer build output.'
-        );
-      }
-      
-      console.log('✓ dist/main.js exists - dependencies are bundled');
-      console.log('✓ resources/web-static exists - frontend resources ready');
-      
-      // Since all dependencies are bundled in dist/main.js, we don't need node_modules
-      // Remove any existing node_modules symlink to avoid confusion
+      // Verify that node_modules symlink/directory exists and points to root node_modules
       const nodeModulesPath = path.join(__dirname, 'node_modules');
+      const rootNodeModules = path.join(__dirname, '..', '..', '..', '..', 'node_modules');
+      
+      // Check if root node_modules exists
+      if (!existsSync(rootNodeModules)) {
+        throw new Error(`Root node_modules not found at: ${rootNodeModules}\nPlease run 'yarn install' from the workspace root.`);
+      }
+
+      // If local node_modules already exists and is correct, keep it
       if (existsSync(nodeModulesPath)) {
         const stats = lstatSync(nodeModulesPath);
-        if (stats.isSymbolicLink()) {
-          console.log('Removing node_modules symlink (not needed for bundled app)...');
-          try {
-            rmSync(nodeModulesPath, { force: true });
-            console.log('✓ node_modules symlink removed');
-          } catch (err) {
-            console.warn('Could not remove node_modules symlink:', err.message);
-          }
+        if (stats.isSymbolicLink() || stats.isDirectory()) {
+          console.log('✓ node_modules already exists');
+          return;
         }
+      }
+
+      console.log('Creating node_modules link for packaging...');
+      try {
+        // Use junction on Windows, symlink on Unix
+        const linkType = process.platform === 'win32' ? 'junction' : 'dir';
+        await symlink(rootNodeModules, nodeModulesPath, linkType);
+        console.log('✓ Successfully created node_modules link');
+      } catch (err) {
+        // If symlink fails, it's okay - electron-packager will still find dependencies
+        console.warn('Could not create local node_modules link (this is OK):', err.message);
       }
     },
     generateAssets: async (_, platform, arch) => {

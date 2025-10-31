@@ -45,7 +45,9 @@ export class MessageEventChannel implements EventBasedChannel {
   }
 }
 
-export const resourcesPath = join(__dirname, `../resources`);
+// Use process.resourcesPath in production (provided by Electron)
+// In development, __dirname will be in src/shared, so we go up to find resources
+export const resourcesPath = process.resourcesPath || join(__dirname, `../resources`);
 
 // credit: https://github.com/facebook/fbjs/blob/main/packages/fbjs/src/core/shallowEqual.js
 export function shallowEqual<T>(objA: T, objB: T) {

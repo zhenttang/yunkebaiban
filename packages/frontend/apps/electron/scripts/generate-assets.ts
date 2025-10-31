@@ -45,21 +45,23 @@ const cwd = repoRootDir;
 
 // step 1: build web dist
 if (!process.env.SKIP_WEB_BUILD) {
-  spawnSync('yarn', ['yunke', '@yunke/electron-renderer', 'build'], {
+  spawnSync('yarn', ['workspace', '@yunke/electron-renderer', 'build'], {
     stdio: 'inherit',
     env: process.env,
     cwd,
     shell: true,
   });
 
-  spawnSync('yarn', ['yunke', '@yunke/electron', 'build'], {
+  spawnSync('yarn', ['workspace', '@yunke/electron', 'build'], {
     stdio: 'inherit',
     env: process.env,
     cwd,
     shell: true,
   });
 
-  await fs.move(yunkeWebOutDir, publicYunkeOutDir, { overwrite: true });
+  // Use copy instead of move so source files remain for future builds
+  await fs.copy(yunkeWebOutDir, publicYunkeOutDir, { overwrite: true });
+  console.log(`✓ Copied frontend resources from ${yunkeWebOutDir} to ${publicYunkeOutDir}`);
 }
 
 // step 2: update app-updater.yml content with build type in resources folder

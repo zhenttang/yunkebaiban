@@ -66,3 +66,4 @@ next-env.d.ts
 
 # System files
 Thumbs.db
+packages/frontend/apps/electron/out/

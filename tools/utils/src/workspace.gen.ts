@@ -1356,6 +1356,7 @@ export const PackageList = [
       'packages/frontend/i18n',
       'packages/common/nbstore',
       'packages/frontend/track',
+      'tools/cli',
       'tools/utils',
     ],
   },

@@ -75,10 +75,12 @@ function parseBaseUrl(baseUrl: string): { host: string; port: number; protocol: 
 function createEnvironments(): Record<string, Environment> {
   // 从环境变量获取基础配置
   const apiBaseUrl = getEnvValue('VITE_API_BASE_URL', 'http://ykbaiban.yckeji0316.cn');
-  const socketioPort = parseInt(getEnvValue('VITE_SOCKETIO_PORT', '9092'));
   const devServerPort = parseInt(getEnvValue('VITE_DEV_SERVER_PORT', '8082'));
   
   const parsed = parseBaseUrl(apiBaseUrl);
+  
+  // Socket.IO 端口：如果未设置，默认使用与API相同的端口
+  const socketioPort = parseInt(getEnvValue('VITE_SOCKETIO_PORT', parsed.port.toString()));
   
   return {
     development: {
@@ -246,6 +248,11 @@ class NetworkConfigManager {
    */
   getSocketIOUrl(): string {
     const config = this.getCurrentConfig();
+    // 生产环境和 Android 环境不拼接端口号（通过 Nginx 反向代理）
+    if (this.currentEnvironment === 'production' || this.currentEnvironment === 'android') {
+      return `${config.protocol}://${config.host}`;
+    }
+    // 开发环境使用独立的 Socket.IO 端口
     return `${config.protocol}://${config.host}:${config.socketioPort}`;
   }
 
