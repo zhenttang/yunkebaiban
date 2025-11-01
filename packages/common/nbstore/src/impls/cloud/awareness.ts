@@ -8,21 +8,15 @@ import {
   SocketConnection,
   uint8ArrayToBase64,
 } from './socket';
+import { getSocketIOUrl } from '@yunke/config';
 
 /**
  * 将API基础URL转换为Socket.IO URL
- * 统一的端口转换逻辑，避免硬编码
+ * 使用统一的网络配置管理，不再硬编码端口
  */
-function convertToSocketIOUrl(baseUrl: string): string {
-  try {
-    const url = new URL(baseUrl);
-    // 所有环境：Socket.IO统一使用9092端口
-    url.port = '9092';
-    return url.toString();
-  } catch {
-    // 如果URL解析失败，使用简单的字符串替换作为后备
-    return baseUrl.replace(':8080', ':9092').replace(':8082', ':9092');
-  }
+function convertToSocketIOUrl(_baseUrl: string): string {
+  // 直接使用统一的网络配置管理
+  return getSocketIOUrl();
 }
 
 interface CloudAwarenessStorageOptions {

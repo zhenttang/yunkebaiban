@@ -154,9 +154,17 @@ class NetworkConfigManager {
   }
 
   private detectEnvironment(): void {
-    // 检测Android环境
     if (typeof window !== 'undefined') {
       const buildConfig = (window as any).BUILD_CONFIG;
+      
+      // 优先检测 Electron 环境
+      if (buildConfig?.isElectron || window.location.protocol === 'file:') {
+        this.currentEnvironment = 'production';
+        console.log('🔧 [NetworkConfig] 检测到Electron环境，判定为生产环境');
+        return;
+      }
+      
+      // 检测Android环境
       if (buildConfig?.isAndroid || buildConfig?.platform === 'android') {
         this.currentEnvironment = 'android';
         console.log('🔧 [NetworkConfig] 检测到Android环境');
