@@ -1,5 +1,6 @@
 import { Button } from '@yunke/component';
 import { useState } from 'react';
+import { getApiBaseUrl } from '@yunke/common/config';
 
 interface ImageUploadProps {
   type?: 'avatar' | 'cover' | 'image';
@@ -47,14 +48,12 @@ export const ImageUpload = ({
       const formData = new FormData();
       formData.append('file', file);
 
-      const response = await fetch(
-        `http://172.24.48.1:8080/api/files/upload/${type}`,
-        {
-          method: 'POST',
-          body: formData,
-          credentials: 'include',
-        }
-      );
+      const uploadUrl = `${getApiBaseUrl()}/api/files/upload/${type}`;
+      const response = await fetch(uploadUrl, {
+        method: 'POST',
+        body: formData,
+        credentials: 'include',
+      });
 
       if (!response.ok) {
         throw new Error('上传失败');

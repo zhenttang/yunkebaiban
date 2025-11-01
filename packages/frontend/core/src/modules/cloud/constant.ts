@@ -8,19 +8,13 @@
 import { getBaseUrl } from '@yunke/config';
 
 /**
- * 获取配置的基础URL
+ * 获取配置的基础URL（不含 /api 路径）
  * 使用@yunke/config统一管理网络配置
  * 支持环境变量覆盖
  */
 function getConfiguredBaseUrl(): string {
-  // 优先使用环境变量（但允许空值以使用自动检测）
-  const envApiUrl = import.meta.env?.VITE_API_BASE_URL;
-  if (envApiUrl && envApiUrl.trim() !== '') {
-    console.log('🔧 [API BaseURL] 使用环境变量:', envApiUrl);
-    return envApiUrl;
-  }
-
-  // 使用统一的网络配置管理
+  // 使用 getBaseUrl() 获取不带 /api 的基础 URL
+  // 避免在 server.baseUrl 中重复添加 /api 路径
   return getBaseUrl();
 }
 

@@ -112,9 +112,10 @@ export const setupResponseInterceptors = (instance: AxiosInstance): void => {
         console.log('是否网络不可达:', error.code === 'ENOTFOUND');
         
         // 网络错误或请求被取消
+        const errorMessage = error?.message || error?.toString() || String(error) || '网络连接失败';
         return Promise.reject({
           code: 'NETWORK_ERROR',
-          message: `网络错误: ${error.message}`,
+          message: `网络错误: ${errorMessage}`,
           details: error,
           networkError: true
         });

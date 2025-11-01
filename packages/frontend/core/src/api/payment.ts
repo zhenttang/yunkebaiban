@@ -4,9 +4,10 @@ import type {
   PaymentOrderResponse,
   ApiResponse,
 } from '../components/community-ui/types';
+import { getPaymentApiBase } from '@yunke/config';
 
-// 支付后端服务地址
-const PAYMENT_API_BASE = 'http://172.24.48.1:8080';
+// 支付后端服务地址 - 从统一配置模块获取
+const PAYMENT_API_BASE = getPaymentApiBase();
 
 interface PaymentCreateRequest {
   planType: string;

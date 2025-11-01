@@ -23,36 +23,66 @@ import { WebpackS3Plugin } from './s3-plugin.js';
 const require = createRequire(import.meta.url);
 const cssnano = require('cssnano');
 
-// 手动读取.env文件
+// 手动读取.env文件（支持多环境文件）
 import { readFileSync, existsSync } from 'node:fs';
 
-// 手动解析.env文件
-const envPath = ProjectRoot.join('.env').value;
-const envVars: Record<string, string> = {};
-
-if (existsSync(envPath)) {
-  try {
-    const envContent = readFileSync(envPath, 'utf-8');
-    const lines = envContent.split('\n');
-    
-    for (const line of lines) {
-      const trimmedLine = line.trim();
-      if (trimmedLine && !trimmedLine.startsWith('#')) {
-        const [key, ...valueParts] = trimmedLine.split('=');
-        if (key && valueParts.length > 0) {
-          const value = valueParts.join('=').trim();
-          // 移除引号
-          const cleanValue = value.replace(/^["']|["']$/g, '');
-          envVars[key.trim()] = cleanValue;
-          // 也设置到process.env中
-          if (!process.env[key.trim()]) {
-            process.env[key.trim()] = cleanValue;
-          }
-        }
+/**
+ * 解析.env文件内容
+ */
+function parseEnvFile(content: string): Record<string, string> {
+  const envVars: Record<string, string> = {};
+  const lines = content.split('\n');
+  
+  for (const line of lines) {
+    const trimmedLine = line.trim();
+    if (trimmedLine && !trimmedLine.startsWith('#')) {
+      const [key, ...valueParts] = trimmedLine.split('=');
+      if (key && valueParts.length > 0) {
+        const value = valueParts.join('=').trim();
+        // 移除引号
+        const cleanValue = value.replace(/^["']|["']$/g, '');
+        envVars[key.trim()] = cleanValue;
       }
     }
-  } catch (error) {
-    // 静默处理.env文件读取失败
+  }
+  
+  return envVars;
+}
+
+/**
+ * 读取.env文件（如果存在）
+ */
+function loadEnvFile(filePath: string): Record<string, string> {
+  if (existsSync(filePath)) {
+    try {
+      const content = readFileSync(filePath, 'utf-8');
+      return parseEnvFile(content);
+    } catch (error) {
+      // 静默处理.env文件读取失败
+    }
+  }
+  return {};
+}
+
+// 确定当前环境模式
+const mode = process.env.NODE_ENV === 'production' ? 'production' : 'development';
+
+// 按照优先级读取环境变量文件（后面的会覆盖前面的）
+// 1. .env（基础配置，所有环境共享）
+// 2. .env.local（本地覆盖，优先级更高，不应提交到git）
+// 3. .env.[mode]（环境特定配置，如.env.development或.env.production）
+// 4. .env.[mode].local（环境特定的本地覆盖）
+const envVars: Record<string, string> = {
+  ...loadEnvFile(ProjectRoot.join('.env').value),
+  ...loadEnvFile(ProjectRoot.join('.env.local').value),
+  ...loadEnvFile(ProjectRoot.join(`.env.${mode}`).value),
+  ...loadEnvFile(ProjectRoot.join(`.env.${mode}.local`).value),
+};
+
+// 将环境变量设置到process.env中（如果process.env中还没有）
+for (const [key, value] of Object.entries(envVars)) {
+  if (!process.env[key]) {
+    process.env[key] = value;
   }
 }
 
@@ -515,15 +545,26 @@ export function createWorkerTargetConfig(
       ],
     },
     plugins: compact([
-      new webpack.DefinePlugin(
-        Object.entries(buildConfig).reduce(
+      // 注入构建配置与环境变量（供 worker 中使用 import.meta.env 与 BUILD_CONFIG）
+      new webpack.DefinePlugin({
+        // 兼容 import.meta.env 风格
+        'import.meta.env.VITE_API_BASE_URL': JSON.stringify(process.env.VITE_API_BASE_URL || envVars.VITE_API_BASE_URL || ''),
+        'import.meta.env.VITE_DRAWIO_URL': JSON.stringify(process.env.VITE_DRAWIO_URL || envVars.VITE_DRAWIO_URL || ''),
+        'import.meta.env.MODE': JSON.stringify(buildConfig.debug ? 'development' : 'production'),
+        'import.meta.env': JSON.stringify({
+          VITE_API_BASE_URL: process.env.VITE_API_BASE_URL || envVars.VITE_API_BASE_URL || '',
+          VITE_DRAWIO_URL: process.env.VITE_DRAWIO_URL || envVars.VITE_DRAWIO_URL || '',
+          MODE: buildConfig.debug ? 'development' : 'production',
+        }),
+        // 注入 BUILD_CONFIG
+        ...Object.entries(buildConfig).reduce(
           (def, [k, v]) => {
             def[`BUILD_CONFIG.${k}`] = JSON.stringify(v);
             return def;
           },
           {} as Record<string, string>
-        )
-      ),
+        ),
+      }),
       new webpack.optimize.LimitChunkCountPlugin({ maxChunks: 1 }),
       process.env.SENTRY_AUTH_TOKEN &&
         process.env.SENTRY_ORG &&

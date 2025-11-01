@@ -4,6 +4,7 @@
  */
 
 export * from './network-config';
+export * from './node-env';
 
 // 导出配置管理器实例
 export { networkConfig as default } from './network-config';

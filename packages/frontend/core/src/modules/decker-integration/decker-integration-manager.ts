@@ -3,6 +3,7 @@
 
 import type { BlockSuiteStore } from '@blocksuite/store';
 import type { ImageBlockModel } from '@blocksuite/yunke-model';
+import { getDeckerUrl } from '@yunke/config';
 
 export interface DeckerExportData {
   type: 'DECK_EXPORT_COMPLETE';
@@ -268,12 +269,13 @@ export class DeckerIntegrationManager {
     };
 
     const messageHandler = (event: MessageEvent) => {
-      // 更灵活的origin检查：允许同源或localhost/127.0.0.1
+      // 从统一配置模块获取Decker服务URL
+      const deckerUrl = getDeckerUrl();
+
       const allowedOrigins = [
         window.location.origin,
-        'http://localhost:3010',
-        'http://127.0.0.1:3010',
-        'http://172.24.48.1:3010'
+        deckerUrl,
+        new URL(deckerUrl).origin
       ];
       
       if (!allowedOrigins.includes(event.origin)) {

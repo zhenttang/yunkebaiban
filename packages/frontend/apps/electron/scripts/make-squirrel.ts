@@ -43,9 +43,10 @@ async function make() {
     version: packageJSON.version,
     appDirectory,
     outputDirectory: outPath,
-    iconUrl: iconUrl,
+    // iconUrl: iconUrl, // 注释掉远程 URL，避免网络问题导致安装失败
     setupIcon: icoPath,
     loadingGif: path.resolve(ROOT, './resources/icons/yunke_installing.gif'),
+    signWithParams: undefined, // 禁用代码签名（开发/测试环境）
   };
 
   await createWindowsInstaller(winstallerConfig);

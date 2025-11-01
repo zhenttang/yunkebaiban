@@ -6,6 +6,11 @@ import cookieParser from 'set-cookie-parser';
 import { resourcesPath } from '../shared/utils';
 import { anotherHost, mainHost } from './constants';
 import { logger } from './logger';
+import { 
+  getNodeApiBaseUrl, 
+  getNodeSocketIOUrl, 
+  getNodeElectronDevServerUrl 
+} from '@yunke/config/node-env';
 
 protocol.registerSchemesAsPrivileged([
   {
@@ -41,7 +46,6 @@ async function handleFileRequest(request: Request) {
 
   logger.info(`[Protocol] Handling request: ${request.url}`);
   logger.info(`[Protocol] URL pathname: ${urlObject.pathname}`);
-  logger.info(`[Protocol] DEV_SERVER_URL: ${process.env.DEV_SERVER_URL}`);
 
   if (urlObject.host === anotherHost) {
     urlObject.host = mainHost;
@@ -51,14 +55,13 @@ async function handleFileRequest(request: Request) {
   logger.info(`[Protocol] isAbsolutePath: ${isAbsolutePath}`);
 
   // Redirect to webpack dev server if defined
-  if (process.env.DEV_SERVER_URL && !isAbsolutePath) {
+  const devServerUrl = getNodeElectronDevServerUrl();
+  if (devServerUrl && !isAbsolutePath) {
     // 检查是否是API请求，如果是则转发到Java后端
     if (urlObject.pathname.startsWith('/api') || 
         urlObject.pathname.startsWith('/socket.io')) {
-      const backendUrl = new URL(
-        urlObject.pathname + urlObject.search,
-        'http://localhost:8080'
-      );
+      const backendBase = getNodeApiBaseUrl();
+      const backendUrl = new URL(urlObject.pathname + urlObject.search, backendBase);
       logger.info(`[Protocol] Forwarding API request to backend: ${backendUrl.toString()}`);
       try {
         const response = await net.fetch(backendUrl.toString(), request);
@@ -70,13 +73,13 @@ async function handleFileRequest(request: Request) {
       }
     }
     
-    const devServerUrl = new URL(
+    const devServerUrlObj = new URL(
       urlObject.pathname,
-      process.env.DEV_SERVER_URL
+      devServerUrl
     );
-    logger.info(`[Protocol] Forwarding to dev server: ${devServerUrl.toString()}`);
+    logger.info(`[Protocol] Forwarding to dev server: ${devServerUrlObj.toString()}`);
     try {
-      const response = await net.fetch(devServerUrl.toString(), request);
+      const response = await net.fetch(devServerUrlObj.toString(), request);
       logger.info(`[Protocol] Dev server response status: ${response.status}`);
       return response;
     } catch (error) {
@@ -180,10 +183,11 @@ export function registerProtocol() {
             }
           }
 
-          // 处理来自后端的响应CORS头
-          // 允许列表：8080 (主后端), 9092 (Socket.IO)
-          const isBackendRequest = responseDetails.url.includes('localhost:8080') || 
-                                   responseDetails.url.includes('localhost:9092');
+          // 处理来自后端的响应CORS头（根据环境变量匹配）
+          const apiBase = getNodeApiBaseUrl();
+          const socketBase = getNodeSocketIOUrl();
+          const isBackendRequest = (apiBase && responseDetails.url.startsWith(apiBase)) ||
+                                   (socketBase && responseDetails.url.startsWith(socketBase));
           
           if (isBackendRequest) {
             // 检查后端是否已经设置了CORS头
@@ -192,7 +196,10 @@ export function registerProtocol() {
             
             if (!hasOriginHeader) {
               // 只有在后端没有设置CORS头时才添加
-              responseHeaders['access-control-allow-origin'] = ['http://localhost:8081'];
+              const devServerUrl = getNodeElectronDevServerUrl();
+              if (devServerUrl) {
+                responseHeaders['access-control-allow-origin'] = [devServerUrl];
+              }
               responseHeaders['access-control-allow-credentials'] = ['true'];
               responseHeaders['access-control-allow-methods'] = ['GET, POST, PUT, DELETE, OPTIONS'];
               responseHeaders['access-control-allow-headers'] = ['Content-Type, Authorization, X-Requested-With'];
@@ -228,16 +235,15 @@ export function registerProtocol() {
     logger.info(`[WebRequest] Hostname: ${url.hostname}`);
     logger.info(`[WebRequest] Port: ${url.port}`);
     
-    // 在开发环境下，只对来自8081端口的API请求重定向到Java后端
+    // 在开发环境下，只对来自开发服务器的API请求重定向到Java后端
     // 避免重定向循环
-    if (process.env.DEV_SERVER_URL && 
-        url.hostname === 'localhost' && 
-        url.port === '8081' &&
+    const devServerUrl = getNodeElectronDevServerUrl();
+    if (devServerUrl &&
+        `${url.protocol}//${url.host}` === devServerUrl &&
         (url.pathname.startsWith('/api') || 
          url.pathname.startsWith('/socket.io'))) {
-      
-      const backendUrl = `http://localhost:8080${url.pathname}${url.search}`;
-      logger.info(`[WebRequest] Redirecting API request from 8081 to 8080: ${backendUrl}`);
+      const backendUrl = `${getNodeApiBaseUrl()}${url.pathname}${url.search}`;
+      logger.info(`[WebRequest] Redirecting API request to backend: ${backendUrl}`);
       
       callback({
         cancel: false,

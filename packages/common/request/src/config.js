@@ -2,15 +2,9 @@ import { ApiEndpoints, EnvironmentConfig, EnvironmentType, RequestConfig, RetryC
 import { getBaseUrl } from '@yunke/config';
 /**
  * 获取配置的基础URL
- * 使用统一的网络配置管理，支持环境变量覆盖
+ * 使用统一的网络配置管理，所有配置从env文件读取
  */
 function getConfiguredBaseUrl() {
-    // 优先使用环境变量（但允许空值以使用自动检测）
-    const envApiUrl = import.meta.env?.VITE_API_BASE_URL;
-    if (envApiUrl && envApiUrl.trim() !== '') {
-        console.log('🔧 [API BaseURL] 使用环境变量:', envApiUrl);
-        return envApiUrl;
-    }
     // 使用统一的网络配置管理
     return getBaseUrl();
 }

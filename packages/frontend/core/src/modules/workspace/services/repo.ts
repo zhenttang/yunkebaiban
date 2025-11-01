@@ -1,7 +1,7 @@
 import { DebugLogger } from '@yunke/debug';
 import type { WorkerInitOptions } from '@yunke/nbstore/worker/client';
 import { ObjectPool, Service } from '@toeverything/infra';
-import { getBaseUrl } from '@yunke/config';
+import { getBaseUrl, getApiBaseUrl } from '@yunke/config';
 
 import type { Workspace } from '../entities/workspace';
 import { WorkspaceInitialized } from '../events';

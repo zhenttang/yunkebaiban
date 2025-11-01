@@ -33,13 +33,17 @@ export class HttpConnection extends DummyConnection {
         },
       })
       .catch(err => {
+        // 安全地提取错误信息
+        const errorMessage = err?.message || err?.toString() || String(err) || 'Network connection failed';
+        const errorStack = err?.stack || '';
+        
         throw new UserFriendlyError({
           status: 504,
           code: 'NETWORK_ERROR',
           type: 'NETWORK_ERROR',
           name: 'NETWORK_ERROR',
-          message: `Network error: ${err.message}`,
-          stacktrace: err.stack,
+          message: `Network error: ${errorMessage}`,
+          stacktrace: errorStack,
         });
       });
     clearTimeout(timeoutId);

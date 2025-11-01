@@ -30,6 +30,7 @@ const updateAppConfigMutation = {
 };
 import { cloneDeep, get, merge, set } from 'lodash-es';
 import { useCallback, useState } from 'react';
+import { getBaseUrl } from '@yunke/config';
 
 import type { AppConfig } from './config';
 
@@ -39,14 +40,22 @@ export type AppConfigUpdates = Record<string, { from: any; to: any }>;
 
 export const useAppConfig = () => {
   // 临时使用模拟数据，避免API调用失败
+  // 从统一配置模块获取服务器URL
+  const getServerUrl = () => {
+    return getBaseUrl();
+  };
+
+  const serverUrl = getServerUrl();
+  const url = new URL(serverUrl);
+
   const mockAppConfig: AppConfig = {
     server: {
       name: 'YUNKE Self-hosted Server',
-      externalUrl: 'http://localhost:3010',
-      https: false,
-      host: 'localhost',
-      port: 3010,
-      path: '',
+      externalUrl: serverUrl,
+      https: url.protocol === 'https:',
+      host: url.hostname,
+      port: parseInt(url.port) || (url.protocol === 'https:' ? 443 : 80),
+      path: url.pathname === '/' ? '' : url.pathname,
     },
     auth: {
       allowSignup: true,

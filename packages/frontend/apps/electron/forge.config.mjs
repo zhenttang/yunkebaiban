@@ -194,6 +194,11 @@ export default {
       // IMPORTANT: Since electron-updater and other deps are bundled in dist/main.js,
       // we DON'T need to package node_modules. This avoids conflicts.
       
+      // 排除临时构建目录（最重要！防止打包临时文件导致超过 4GB）
+      if (/\/YUNKE-canary[^/]*$/i.test(filePath)) return true;
+      if (filePath.includes('/temp_asar')) return true;
+      if (filePath.includes('/out/')) return true;
+      
       // Include the dist directory (contains bundled code)
       if (filePath.includes('/dist/')) return false;
       

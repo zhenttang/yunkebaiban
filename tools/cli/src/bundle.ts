@@ -161,12 +161,12 @@ const defaultDevServerConfig: DevServerConfiguration = {
   proxy: [
     {
       context: '/api',
-      target: 'http://localhost:8080',
+      target: process.env.VITE_API_BASE_URL || '',
       logLevel: httpProxyMiddlewareLogLevel,
     },
     {
       context: '/socket.io',
-      target: 'http://localhost:8080',
+      target: process.env.VITE_SOCKETIO_URL || process.env.VITE_API_BASE_URL || '',
       ws: true,
       logLevel: httpProxyMiddlewareLogLevel,
     },

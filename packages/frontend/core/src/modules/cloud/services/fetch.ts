@@ -84,13 +84,17 @@ export class FetchService extends Service {
         }
       );
     } catch (err: any) {
+      // 安全地提取错误信息
+      const errorMessage = err?.message || err?.toString() || String(err) || '网络连接失败';
+      const errorStack = err?.stack || '';
+      
       throw new UserFriendlyError({
         status: 504,
         code: 'NETWORK_ERROR',
         type: 'NETWORK_ERROR',
         name: 'NETWORK_ERROR',
-        message: `网络错误: ${err.message}`,
-        stacktrace: err.stack,
+        message: `网络错误: ${errorMessage}`,
+        stacktrace: errorStack,
       });
     } finally {
       clearTimeout(timeoutId);

@@ -56,7 +56,9 @@ declare type Environment = {
 declare global {
   interface ImportMetaEnv {
     VITE_API_BASE_URL?: string;
+    VITE_DECKER_URL?: string;
     VITE_DRAWIO_URL?: string;
+    VITE_PAYMENT_API_BASE?: string;
     VITE_SOCKETIO_URL?: string;
     MODE?: string;
     [key: string]: string | undefined;

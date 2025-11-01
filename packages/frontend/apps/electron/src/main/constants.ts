@@ -1,9 +1,18 @@
+import { getNodeElectronDevServerUrl } from '@yunke/config/node-env';
+
 export const mainHost = '.';
 export const anotherHost = 'another-host';
 
 // 开发模式下使用web开发服务器
 const isDev = process.env.NODE_ENV === 'development';
-const webDevServer = 'http://localhost:8081';
+
+// 从统一配置模块获取开发服务器地址
+const getWebDevServer = () => {
+  if (!isDev) return '';
+  return getNodeElectronDevServerUrl();
+};
+
+const webDevServer = isDev ? getWebDevServer() : '';
 
 export const mainWindowOrigin = isDev ? webDevServer : `file://${mainHost}`;
 export const anotherOrigin = `file://${anotherHost}`;

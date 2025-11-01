@@ -813,10 +813,13 @@ window.fetch = function(...args) {
       return response;
     })
     .catch(error => {
-      console.error('🔴 网络异常:', error.message, 'URL:', url);
+      // 安全地提取错误信息
+      const errorMessage = error?.message || error?.toString() || String(error) || '未知错误';
+      const errorName = error?.name || 'NetworkError';
+      console.error('🔴 网络异常:', errorMessage, 'URL:', url, '错误类型:', errorName);
       
       // 如果是ERR_H2_OR_QUIC_REQUIRED错误，提供更明确的提示
-      if (error.message && error.message.includes('ERR_H2_OR_QUIC_REQUIRED')) {
+      if (errorMessage.includes('ERR_H2_OR_QUIC_REQUIRED')) {
         console.error('❌ 服务器强制要求HTTP/2，但Android不支持。请检查服务器配置！');
       }
       
@@ -989,7 +992,7 @@ setTimeout(() => {
     try {
       if (!frameworkProvider) {
         console.error('❌ frameworkProvider未初始化');
-        return getBaseUrl(); // 使用统一配置管理
+        return getBaseUrl();
       }
       const globalContextService = frameworkProvider.get(GlobalContextService);
       const currentServerId = globalContextService.globalContext.serverId.get();
@@ -1001,7 +1004,7 @@ setTimeout(() => {
       return currentServer.baseUrl;
     } catch (error) {
       console.error('❌ getCurrentServerBaseUrl错误:', error);
-      return getBaseUrl(); // 使用统一配置管理
+      return getBaseUrl();
     }
   };
   

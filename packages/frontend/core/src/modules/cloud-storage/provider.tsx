@@ -78,13 +78,6 @@ class LogThrottle {
  * 使用@yunke/config统一管理网络配置
  */
 function getSocketIOUrl(): string {
-  // 优先使用环境变量（但允许空值以使用自动检测）
-  const envSocketUrl = import.meta.env?.VITE_SOCKETIO_URL;
-  if (envSocketUrl && envSocketUrl.trim() !== '') {
-    console.log('🔧 [Socket.IO URL] 使用环境变量:', envSocketUrl);
-    return envSocketUrl;
-  }
-
   // 使用统一的网络配置管理
   return getUnifiedSocketIOUrl();
 }

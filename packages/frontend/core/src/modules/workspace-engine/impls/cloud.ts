@@ -155,8 +155,9 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
     if (this.fetchService) {
       // 使用FetchService发送请求，确保包含JWT token
       // 如果URL是相对路径，需要添加API基础URL
-      const apiBaseUrl = import.meta.env?.VITE_API_BASE_URL || '';
-      const fullUrl = url.startsWith('http') ? url : `${apiBaseUrl}${url}`;
+      const { getBaseUrl } = await import('@yunke/config');
+      const baseOrigin = getBaseUrl();
+      const fullUrl = url.startsWith('http') ? url : `${baseOrigin}${url}`;
       return await this.fetchService.fetch(fullUrl, options);
     } else {
       // 回退方案：手动添加JWT token
@@ -171,9 +172,9 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
       }
       
       // 🔥 性能优化：确保使用完整的URL，自动适配当前端口避免跨域
-      const apiBaseUrl = import.meta.env?.VITE_API_BASE_URL || 
-        (typeof window !== 'undefined' ? window.location.origin : 'http://localhost:8080');
-      const fullUrl = url.startsWith('http') ? url : `${apiBaseUrl}${url}`;
+      const { getBaseUrl } = await import('@yunke/config');
+      const baseOrigin = getBaseUrl();
+      const fullUrl = url.startsWith('http') ? url : `${baseOrigin}${url}`;
       
       return await fetch(fullUrl, {
         ...options,
@@ -343,9 +344,9 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
       
       if (this.fetchService) {
         // 使用FetchService发送请求，确保包含JWT token
-        // 获取API基础URL，生产环境使用环境变量，开发环境使用相对路径
-        const apiBaseUrl = import.meta.env?.VITE_API_BASE_URL || '';
-        const apiUrl = `${apiBaseUrl}/api/workspaces`;
+        // 获取基础 Origin，路径拼接由调用方控制
+        const { getBaseUrl } = await import('@yunke/config');
+        const apiUrl = `${getBaseUrl()}/api/workspaces`;
         
         response = await this.fetchService.fetch(apiUrl, {
           method: 'POST',
@@ -370,9 +371,9 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
           console.warn('未找到JWT token');
         }
         
-        // 获取API基础URL，生产环境使用环境变量，开发环境使用相对路径
-        const apiBaseUrl = import.meta.env?.VITE_API_BASE_URL || '';
-        const apiUrl = `${apiBaseUrl}/api/workspaces`;
+        // 获取基础 Origin
+        const { getBaseUrl } = await import('@yunke/config');
+        const apiUrl = `${getBaseUrl()}/api/workspaces`;
         
         response = await fetch(apiUrl, {
           method: 'POST',
@@ -1297,79 +1298,31 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
     };
     
     const serverConfig = getServerConfig();
-    // 🔥 性能优化：自动适配当前端口避免跨域
-    const serverBaseUrl = this.server.serverMetadata?.baseUrl || 
-      (typeof window !== 'undefined' ? window.location.origin : 'http://localhost:8080');
+
+    // 获取服务器baseUrl，如果未配置则抛出错误
+    const serverBaseUrl = this.server.serverMetadata?.baseUrl;
+    if (!serverBaseUrl) {
+      const errorMsg = '❌ 服务器配置缺失：serverMetadata.baseUrl 未设置，请确保在 .env 文件中配置 VITE_API_BASE_URL';
+      console.error(errorMsg);
+      throw new Error(errorMsg);
+    }
     
-    // Android环境下的特殊处理
+    // 🌐 [纯云存储模式] Android环境配置
     if ((window as any).BUILD_CONFIG?.isAndroid) {
-      console.log('🤖 [CloudWorkspaceFlavourProvider] Android环境检测到，使用备用配置');
-      
-      // 如果存储类没有identifier属性，使用备用值
-      const getIdentifier = (type: any, fallback: string) => {
-        if (!type || !type.identifier) {
-          console.warn(`⚠️ [CloudWorkspaceFlavourProvider] ${fallback} 类型缺少identifier属性，使用备用值`);
-          return fallback;
-        }
-        return type.identifier;
-      };
+      console.log('🤖 [CloudWorkspaceFlavourProvider] Android环境 - 使用纯云存储配置（禁用IndexedDB）');
       
       return {
         local: {
-          doc: {
-            name: getIdentifier(this.DocStorageType, 'IndexedDBDocStorage'),
-            opts: {
-              flavour: this.flavour,
-              type: 'workspace',
-              id: workspaceId,
-            },
-          },
-          blob: {
-            name: getIdentifier(this.BlobStorageType, 'IndexedDBBlobStorage'),
-            opts: {
-              flavour: this.flavour,
-              type: 'workspace',
-              id: workspaceId,
-            },
-          },
-          docSync: {
-            name: getIdentifier(this.DocSyncStorageType, 'IndexedDBDocSyncStorage'),
-            opts: {
-              flavour: this.flavour,
-              type: 'workspace',
-              id: workspaceId,
-            },
-          },
-          blobSync: {
-            name: getIdentifier(this.BlobSyncStorageType, 'IndexedDBBlobSyncStorage'),
-            opts: {
-              flavour: this.flavour,
-              type: 'workspace',
-              id: workspaceId,
-            },
-          },
+          // ✅ 只保留浏览器内存通信，不依赖 IndexedDB
           awareness: {
             name: 'BroadcastChannelAwarenessStorage',
             opts: {
               id: `${this.flavour}:${workspaceId}`,
             },
           },
-          indexer: {
-            name: 'IndexedDBIndexerStorage',
-            opts: {
-              flavour: this.flavour,
-              type: 'workspace',
-              id: workspaceId,
-            },
-          },
-          indexerSync: {
-            name: 'IndexedDBIndexerSyncStorage',
-            opts: {
-              flavour: this.flavour,
-              type: 'workspace',
-              id: workspaceId,
-            },
-          },
+          // ❌ 完全移除所有 IndexedDB 相关存储：
+          // - doc, blob, docSync, blobSync (改为由主线程直接访问云存储)
+          // - indexer, indexerSync (搜索索引也走云端)
         },
         remotes: {
           [`cloud:${this.flavour}`]: {
@@ -1399,90 +1352,33 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
               },
             },
           },
-          v1: {}, // Android环境下禁用v1存储
+          // ❌ 移除 v1 存储，不需要迁移旧数据
         },
       };
     }
     
-    // 非Android环境，使用原有逻辑但增加安全检查
-    const getStorageIdentifier = (type: any, fallback: string) => {
-      if (!type) {
-        console.warn(`⚠️ [CloudWorkspaceFlavourProvider] 存储类型为空，使用备用值: ${fallback}`);
-        return fallback;
-      }
-      if (!type.identifier) {
-        console.warn(`⚠️ [CloudWorkspaceFlavourProvider] 存储类型缺少identifier，使用备用值: ${fallback}`);
-        return fallback;
-      }
-      return type.identifier;
-    };
+    // 🌐 [纯云存储模式] 标准浏览器环境配置
+    console.log('🌐 [CloudWorkspaceFlavourProvider] 标准环境 - 使用纯云存储配置（禁用IndexedDB）');
     
     return {
       local: {
-        doc: {
-          name: getStorageIdentifier(this.DocStorageType, 'IndexedDBDocStorage'),
-          opts: {
-            flavour: this.flavour,
-            type: 'workspace',
-            id: workspaceId,
-          },
-        },
-        blob: {
-          name: getStorageIdentifier(this.BlobStorageType, 'IndexedDBBlobStorage'),
-          opts: {
-            flavour: this.flavour,
-            type: 'workspace',
-            id: workspaceId,
-          },
-        },
-        docSync: {
-          name: getStorageIdentifier(this.DocSyncStorageType, 'IndexedDBDocSyncStorage'),
-          opts: {
-            flavour: this.flavour,
-            type: 'workspace',
-            id: workspaceId,
-          },
-        },
-        blobSync: {
-          name: getStorageIdentifier(this.BlobSyncStorageType, 'IndexedDBBlobSyncStorage'),
-          opts: {
-            flavour: this.flavour,
-            type: 'workspace',
-            id: workspaceId,
-          },
-        },
+        // ✅ 只保留浏览器内存通信，不依赖 IndexedDB
         awareness: {
           name: 'BroadcastChannelAwarenessStorage',
           opts: {
             id: `${this.flavour}:${workspaceId}`,
           },
         },
-        indexer: (this.featureFlagService && this.featureFlagService.flags?.enable_cloud_indexer?.value)
-          ? {
-              name: 'CloudIndexerStorage',
-              opts: {
-                flavour: this.flavour,
-                type: 'workspace',
-                id: workspaceId,
-                serverBaseUrl: serverBaseUrl,
-              },
-            }
-          : {
-              name: 'IndexedDBIndexerStorage',
-              opts: {
-                flavour: this.flavour,
-                type: 'workspace',
-                id: workspaceId,
-              },
-            },
-        indexerSync: {
-          name: 'IndexedDBIndexerSyncStorage',
-          opts: {
-            flavour: this.flavour,
-            type: 'workspace',
-            id: workspaceId,
-          },
-        },
+        // ❌ 完全移除所有 IndexedDB 相关存储：
+        // - doc, blob (文档和文件数据直接从云端读写)
+        // - docSync, blobSync (同步存储不再需要)
+        // - indexer, indexerSync (搜索索引走云端或内存)
+        // 
+        // 💡 说明：
+        // 1. Worker 不会创建任何 IDB 存储实例
+        // 2. 不会尝试连接 IndexedDB
+        // 3. 所有数据操作通过主线程的 WorkerDocStorage 直接访问云存储
+        // 4. 避免 "连接 IDBConnection 尚未建立" 错误
       },
       remotes: {
         [`cloud:${this.flavour}`]: {
@@ -1512,26 +1408,7 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
             },
           },
         },
-        v1: {
-          doc: this.DocStorageV1Type
-            ? {
-                name: getStorageIdentifier(this.DocStorageV1Type, 'IndexedDBV1DocStorage'),
-                opts: {
-                  id: workspaceId,
-                  type: 'workspace',
-                },
-              }
-            : undefined,
-          blob: this.BlobStorageV1Type
-            ? {
-                name: getStorageIdentifier(this.BlobStorageV1Type, 'IndexedDBV1BlobStorage'),
-                opts: {
-                  id: workspaceId,
-                  type: 'workspace',
-                },
-              }
-            : undefined,
-        },
+        // ❌ 移除 v1 存储配置，不需要从旧版本迁移数据
       },
     };
   }

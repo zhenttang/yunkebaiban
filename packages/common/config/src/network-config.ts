@@ -28,25 +28,28 @@ export interface Environment {
 }
 
 /**
- * 从环境变量获取配置值
- * 支持运行时环境变量和构建时环境变量
+ * 从环境变量获取配置值（必需项）
+ * 如果未配置则抛出错误
  */
-function getEnvValue(key: string, defaultValue: string): string {
-  // 优先使用构建时环境变量
+function getRequiredEnvValue(key: string): string {
   const buildTimeValue = import.meta.env?.[key];
   if (buildTimeValue && buildTimeValue.trim() !== '') {
     return buildTimeValue.trim();
   }
-  
-  // 尝试从 window 获取运行时环境变量（Android 原生注入）
-  if (typeof window !== 'undefined') {
-    const windowEnv = (window as any).__ENV__?.[key];
-    if (windowEnv && windowEnv.trim() !== '') {
-      return windowEnv.trim();
-    }
+  throw new Error(`❌ 环境变量配置缺失：请在 .env 文件中配置 ${key}`);
+}
+
+/**
+ * 从环境变量获取配置值（必需项）
+ * 如果未配置则抛出错误
+ * 统一要求：所有配置必须从env文件读取，不允许默认值
+ */
+function getRequiredEnvValueOrEmpty(key: string): string {
+  const buildTimeValue = import.meta.env?.[key];
+  if (buildTimeValue && buildTimeValue.trim() !== '') {
+    return buildTimeValue.trim();
   }
-  
-  return defaultValue;
+  return '';
 }
 
 /**
@@ -61,85 +64,39 @@ function parseBaseUrl(baseUrl: string): { host: string; port: number; protocol: 
       protocol: url.protocol === 'https:' ? 'https' : 'http'
     };
   } catch (error) {
-    console.error('解析 BASE_URL 失败:', error);
-    // 返回默认本地开发配置
-    return {
-      host: 'localhost',
-      port: 80,
-      protocol: 'http'
-    };
+    throw new Error(`❌ 解析 VITE_API_BASE_URL 失败: ${String(error)}`);
   }
 }
 
 // 环境配置定义
 function createEnvironments(): Record<string, Environment> {
-  // 从环境变量获取基础配置
-  const apiBaseUrl = getEnvValue('VITE_API_BASE_URL', 'http://ykbaiban.yckeji0316.cn');
-  const devServerPort = parseInt(getEnvValue('VITE_DEV_SERVER_PORT', '8082'));
-  
+  const apiBaseUrl = getRequiredEnvValue('VITE_API_BASE_URL');
+  const devServerPortStr = getRequiredEnvValueOrEmpty('VITE_DEV_SERVER_PORT');
+  const devServerPort = devServerPortStr ? parseInt(devServerPortStr) : undefined;
   const parsed = parseBaseUrl(apiBaseUrl);
-  
-  // Socket.IO 端口：如果未设置，默认使用与API相同的端口
-  const socketioPort = parseInt(getEnvValue('VITE_SOCKETIO_PORT', parsed.port.toString()));
-  
+  const socketioPortStr = getRequiredEnvValueOrEmpty('VITE_SOCKETIO_PORT');
+  const socketioPort = socketioPortStr ? parseInt(socketioPortStr) : parsed.port;
+
+  const common: NetworkConfig = {
+    host: parsed.host,
+    port: parsed.port,
+    socketioPort,
+    devServerPort,
+    protocol: parsed.protocol,
+    endpoints: {
+      api: '/api',
+      websocket: '/ws',
+      socketio: '/socket.io',
+      auth: '/api/auth',
+      uploads: '/api/uploads',
+      static: '/static',
+    },
+  };
+
   return {
-    development: {
-      name: 'development',
-      description: '本地开发环境',
-      config: {
-        host: 'localhost',
-        port: 8080,
-        socketioPort: 9092,
-        devServerPort: 8082,
-        protocol: 'http',
-        endpoints: {
-          api: '/api',
-          websocket: '/ws',
-          socketio: '',
-          auth: '/api/auth',
-          uploads: '/api/uploads',
-          static: '/static'
-        }
-      }
-    },
-    production: {
-      name: 'production', 
-      description: '生产环境',
-      config: {
-        host: parsed.host,
-        port: parsed.port,
-        socketioPort: socketioPort,
-        devServerPort: devServerPort,
-        protocol: parsed.protocol,
-        endpoints: {
-          api: '/api',
-          websocket: '/ws', 
-          socketio: '',
-          auth: '/api/auth',
-          uploads: '/api/uploads',
-          static: '/static'
-        }
-      }
-    },
-    android: {
-      name: 'android',
-      description: 'Android应用环境',
-      config: {
-        host: parsed.host,
-        port: parsed.port,
-        socketioPort: socketioPort,
-        devServerPort: devServerPort,
-        protocol: parsed.protocol,
-        endpoints: {
-          api: '/api',
-          websocket: '/ws',
-          socketio: '/socket.io', 
-          auth: '/api/auth',
-          uploads: '/api/uploads',
-          static: '/static'
-        }
-      }
-    }
+    development: { name: 'development', description: 'env-only', config: common },
+    production: { name: 'production', description: 'env-only', config: common },
+    android: { name: 'android', description: 'env-only', config: common },
   };
 }
 
@@ -154,6 +111,22 @@ class NetworkConfigManager {
   }
 
   private detectEnvironment(): void {
+    // 优先使用编译期 BUILD_CONFIG 常量（在主线程与 Worker 中都可用）
+    try {
+      // @ts-ignore 由 DefinePlugin 注入
+      if (typeof BUILD_CONFIG !== 'undefined' && BUILD_CONFIG.isElectron) {
+        this.currentEnvironment = 'production';
+        console.log('🔧 [NetworkConfig] 检测到Electron环境（BUILD_CONFIG）');
+        return;
+      }
+      // @ts-ignore 由 DefinePlugin 注入
+      if (typeof BUILD_CONFIG !== 'undefined' && BUILD_CONFIG.isAndroid) {
+        this.currentEnvironment = 'android';
+        console.log('🔧 [NetworkConfig] 检测到Android环境（BUILD_CONFIG）');
+        return;
+      }
+    } catch {}
+
     if (typeof window !== 'undefined') {
       const buildConfig = (window as any).BUILD_CONFIG;
       
@@ -194,6 +167,16 @@ class NetworkConfigManager {
       }
     }
     
+    // Worker 环境下的简易检测
+    if (typeof self !== 'undefined' && (self as any).location) {
+      const hostname = (self as any).location.hostname;
+      if (hostname && hostname !== 'localhost' && hostname !== '127.0.0.1') {
+        this.currentEnvironment = 'production';
+        console.log('🔧 [NetworkConfig] Worker环境检测到生产域名');
+        return;
+      }
+    }
+    
     // 默认开发环境
     console.log('🔧 [NetworkConfig] 使用默认开发环境');
     this.currentEnvironment = 'development';
@@ -229,7 +212,12 @@ class NetworkConfigManager {
    */
   getBaseUrl(): string {
     const config = this.getCurrentConfig();
-    const baseUrl = `${config.protocol}://${config.host}:${config.port}`;
+    // 标准端口（80/443）不拼接端口号
+    const isStandardPort = (config.protocol === 'http' && config.port === 80) ||
+                          (config.protocol === 'https' && config.port === 443);
+    const baseUrl = isStandardPort
+      ? `${config.protocol}://${config.host}`
+      : `${config.protocol}://${config.host}:${config.port}`;
     console.log(`📍 [NetworkConfig] getBaseUrl返回: ${baseUrl}, 环境: ${this.currentEnvironment}`);
     return baseUrl;
   }
@@ -238,8 +226,8 @@ class NetworkConfigManager {
    * 获取API基础URL
    */
   getApiBaseUrl(): string {
-    const config = this.getCurrentConfig();
-    return `${config.protocol}://${config.host}:${config.port}${config.endpoints.api}`;
+    const base = this.getBaseUrl();
+    return `${base}${this.getCurrentConfig().endpoints.api}`;
   }
 
   /**
@@ -255,13 +243,39 @@ class NetworkConfigManager {
    * 获取Socket.IO URL
    */
   getSocketIOUrl(): string {
-    const config = this.getCurrentConfig();
-    // 生产环境和 Android 环境不拼接端口号（通过 Nginx 反向代理）
-    if (this.currentEnvironment === 'production' || this.currentEnvironment === 'android') {
-      return `${config.protocol}://${config.host}`;
-    }
-    // 开发环境使用独立的 Socket.IO 端口
-    return `${config.protocol}://${config.host}:${config.socketioPort}`;
+    const envUrl = getRequiredEnvValueOrEmpty('VITE_SOCKETIO_URL');
+    if (envUrl) return envUrl;
+    return this.getBaseUrl();
+  }
+
+  /**
+   * 获取Draw.io服务URL
+   */
+  getDrawioUrl(): string {
+    return getRequiredEnvValue('VITE_DRAWIO_URL');
+  }
+
+  /**
+   * 获取Decker服务URL
+   */
+  getDeckerUrl(): string {
+    return getRequiredEnvValue('VITE_DECKER_URL');
+  }
+
+  /**
+   * 获取支付API基础URL
+   */
+  getPaymentApiBase(): string {
+    const paymentBase = getRequiredEnvValueOrEmpty('VITE_PAYMENT_API_BASE');
+    if (paymentBase) return paymentBase;
+    return getRequiredEnvValue('VITE_API_BASE_URL');
+  }
+
+  /**
+   * 获取Electron开发服务器URL
+   */
+  getElectronDevServerUrl(): string {
+    return getRequiredEnvValue('VITE_DEV_SERVER_URL');
   }
 
   /**
@@ -311,8 +325,10 @@ class NetworkConfigManager {
    */
   getDevServerUrl(): string {
     const config = this.getCurrentConfig();
-    const port = config.devServerPort || config.port;
-    return `${config.protocol}://${config.host}:${port}`;
+    if (!config.devServerPort) {
+      throw new Error('❌ 环境变量配置缺失：请在 .env 文件中配置 VITE_DEV_SERVER_PORT');
+    }
+    return `${config.protocol}://${config.host}:${config.devServerPort}`;
   }
 
   /**
@@ -320,7 +336,10 @@ class NetworkConfigManager {
    */
   getDevServerPort(): number {
     const config = this.getCurrentConfig();
-    return config.devServerPort || config.port;
+    if (!config.devServerPort) {
+      throw new Error('❌ 环境变量配置缺失：请在 .env 文件中配置 VITE_DEV_SERVER_PORT');
+    }
+    return config.devServerPort;
   }
 
   /**
@@ -394,6 +413,22 @@ export function getDevServerPort(): number {
 
 export function convertToSocketIOUrl(baseUrl: string): string {
   return networkConfig.convertToSocketIOUrl(baseUrl);
+}
+
+export function getDrawioUrl(): string {
+  return networkConfig.getDrawioUrl();
+}
+
+export function getDeckerUrl(): string {
+  return networkConfig.getDeckerUrl();
+}
+
+export function getPaymentApiBase(): string {
+  return networkConfig.getPaymentApiBase();
+}
+
+export function getElectronDevServerUrl(): string {
+  return networkConfig.getElectronDevServerUrl();
 }
 
 // 环境检测和配置工具

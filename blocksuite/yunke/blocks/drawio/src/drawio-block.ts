@@ -15,6 +15,7 @@ import { ref, createRef, type Ref } from 'lit/directives/ref.js';
 import type { DrawioBlockModel } from './drawio-model.js';
 import { DrawioBlockService } from './drawio-service.js';
 import { drawioBlockStyles } from './styles.js';
+import { getDrawioUrl } from '@yunke/config';
 
 export class DrawioBlockComponent extends CaptionedBlockComponent<DrawioBlockModel> {
   static override styles = drawioBlockStyles;
@@ -50,9 +51,10 @@ export class DrawioBlockComponent extends CaptionedBlockComponent<DrawioBlockMod
   }
 
   private _getDrawioUrl() {
-    // 生产环境直接使用本地Draw.io服务的绝对URL
-    console.log('🌐 使用本地Draw.io服务: http://localhost:8001');
-    return 'http://localhost:8001';
+    // 从统一配置模块获取Draw.io服务URL
+    const drawioUrl = getDrawioUrl();
+    console.log('🌐 使用Draw.io服务:', drawioUrl);
+    return drawioUrl;
   }
 
   private _openEditor() {

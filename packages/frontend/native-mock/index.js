@@ -1,6 +1,34 @@
 // Mock implementation of @yunke/native that delegates to Java backend APIs
 
-const BASE_URL = 'http://localhost:8080';
+// 统一从配置模块读取基础地址
+// 注意：这个文件在运行时动态加载，需要异步获取配置
+let BASE_URL = '';
+let BASE_URL_PROMISE = null;
+
+function getBaseUrlSync() {
+  // 如果已经初始化，直接返回
+  if (BASE_URL) return BASE_URL;
+  
+  // 如果正在初始化，等待完成
+  if (BASE_URL_PROMISE) {
+    throw new Error('BASE_URL正在初始化中，请稍后重试');
+  }
+  
+  // 首次调用，从环境变量读取（兼容性处理）
+  // 优先尝试从统一配置模块获取
+  if (typeof import !== 'undefined' && typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.VITE_API_BASE_URL) {
+    BASE_URL = import.meta.env.VITE_API_BASE_URL;
+    return BASE_URL;
+  }
+  
+  // 回退到process.env（Node.js环境）
+  if (typeof process !== 'undefined' && process.env && process.env.VITE_API_BASE_URL) {
+    BASE_URL = process.env.VITE_API_BASE_URL;
+    return BASE_URL;
+  }
+  
+  throw new Error('❌ 环境变量配置缺失：请在 .env 文件中配置 VITE_API_BASE_URL');
+}
 
 // 获取JWT token
 function getAuthToken() {
@@ -19,7 +47,8 @@ async function fetchWithAuth(url, options = {}) {
     headers['Authorization'] = `Bearer ${token}`;
   }
   
-  const fullUrl = url.startsWith('http') ? url : `${BASE_URL}${url}`;
+  const baseUrl = getBaseUrlSync();
+  const fullUrl = url.startsWith('http') ? url : `${baseUrl}${url}`;
   
   return fetch(fullUrl, {
     ...options,

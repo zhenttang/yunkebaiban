@@ -18,6 +18,11 @@ import {
 
 const log = debug('yunke:make-nsis');
 
+// 强制禁用代码签名
+process.env.CSC_IDENTITY_AUTO_DISCOVERY = 'false';
+console.log('[make-nsis] 已禁用代码签名');
+console.log('[make-nsis] CSC_IDENTITY_AUTO_DISCOVERY =', process.env.CSC_IDENTITY_AUTO_DISCOVERY);
+
 async function make() {
   const appName = productName;
   const makeDir = path.resolve(ROOT, 'out', buildType, 'make');
@@ -51,6 +56,8 @@ async function make() {
         productName,
         executableName: productName,
         icon: iconPngPath,
+        electronVersion: '36.0.0', // 指定确切的 Electron 版本
+        forceCodeSigning: false, // 禁用代码签名（开发/测试环境）
         extraMetadata: {
           // do not use package.json's name
           name: productName,
@@ -60,15 +67,11 @@ async function make() {
           perMachine: false,
           oneClick: false,
           license: path.resolve(REPO_ROOT, 'LICENSE'),
-          include: path.resolve(ROOT, 'scripts', 'nsis-installer.nsh'),
           installerIcon: icoPath,
           allowToChangeInstallationDirectory: true,
-          installerSidebar: path.resolve(
-            ROOT,
-            'resources',
-            'icons',
-            'nsis-sidebar.bmp'
-          ),
+          // 以下配置为可选，如果文件不存在则忽略
+          // include: path.resolve(ROOT, 'scripts', 'nsis-installer.nsh'),
+          // installerSidebar: path.resolve(ROOT, 'resources', 'icons', 'nsis-sidebar.bmp'),
         },
       },
     }
