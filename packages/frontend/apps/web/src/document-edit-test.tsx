@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useCloudStorage } from './cloud-storage-manager';
+import { useCloudStorage } from '@yunke/core/modules/cloud-storage';
 
 export const DocumentEditTest = () => {
   const { 

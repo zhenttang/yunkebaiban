@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
-import { useCloudStorage } from '../cloud-storage-manager';
+import { useCloudStorage } from '@yunke/core/modules/cloud-storage';
 
 // 保存状态类型
 type SaveStatus = 'saved' | 'unsaved' | 'saving' | 'error';

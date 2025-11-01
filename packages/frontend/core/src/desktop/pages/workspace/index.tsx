@@ -5,6 +5,7 @@ import {
   DefaultServerService,
   ServersService,
 } from '@yunke/core/modules/cloud';
+import { CloudStorageProvider } from '@yunke/core/modules/cloud-storage';
 import { GlobalDialogService } from '@yunke/core/modules/dialogs';
 import { DndService } from '@yunke/core/modules/dnd/services';
 import { GlobalContextService } from '@yunke/core/modules/global-context';
@@ -310,7 +311,9 @@ export const Component = (): ReactElement => {
     if (communityRoute) {
       return (
         <FrameworkScope scope={server?.scope}>
-          <StandaloneCommunityPage />
+          <CloudStorageProvider>
+            <StandaloneCommunityPage />
+          </CloudStorageProvider>
         </FrameworkScope>
       );
     }
@@ -318,19 +321,23 @@ export const Component = (): ReactElement => {
     if (detailDocRoute) {
       return (
         <FrameworkScope scope={server?.scope}>
-          <SharePage
-            docId={detailDocRoute.docId}
-            workspaceId={detailDocRoute.workspaceId}
-          />
+          <CloudStorageProvider>
+            <SharePage
+              docId={detailDocRoute.docId}
+              workspaceId={detailDocRoute.workspaceId}
+            />
+          </CloudStorageProvider>
         </FrameworkScope>
       );
     }
     
     return (
       <FrameworkScope scope={server?.scope}>
-        <YunkeOtherPageLayout>
-          <PageNotFound noPermission />
-        </YunkeOtherPageLayout>
+        <CloudStorageProvider>
+          <YunkeOtherPageLayout>
+            <PageNotFound noPermission />
+          </YunkeOtherPageLayout>
+        </CloudStorageProvider>
       </FrameworkScope>
     );
   }
@@ -346,9 +353,11 @@ export const Component = (): ReactElement => {
     // 注意：这里不应该显示fallback，因为那会让用户以为还在加载
     return (
       <FrameworkScope scope={server?.scope}>
-        <YunkeOtherPageLayout>
-          <PageNotFound noPermission />
-        </YunkeOtherPageLayout>
+        <CloudStorageProvider>
+          <YunkeOtherPageLayout>
+            <PageNotFound noPermission />
+          </YunkeOtherPageLayout>
+        </CloudStorageProvider>
       </FrameworkScope>
     );
   }
@@ -531,26 +540,30 @@ const WorkspacePage = ({ meta }: { meta: WorkspaceMetadata }) => {
   if (!isRootDocReady) {
     return (
       <FrameworkScope scope={workspace.scope}>
-        <DNDContextProvider>
-          <OpenInAppGuard>
-            <AppContainer fallback />
-          </OpenInAppGuard>
-        </DNDContextProvider>
+        <CloudStorageProvider>
+          <DNDContextProvider>
+            <OpenInAppGuard>
+              <AppContainer fallback />
+            </OpenInAppGuard>
+          </DNDContextProvider>
+        </CloudStorageProvider>
       </FrameworkScope>
     );
   }
 
   return (
     <FrameworkScope scope={workspace.scope}>
-      <DNDContextProvider>
-        <OpenInAppGuard>
-          <YunkeErrorBoundary height="100vh">
-            <WorkspaceLayout>
-              <WorkbenchRoot />
-            </WorkspaceLayout>
-          </YunkeErrorBoundary>
-        </OpenInAppGuard>
-      </DNDContextProvider>
+      <CloudStorageProvider>
+        <DNDContextProvider>
+          <OpenInAppGuard>
+            <YunkeErrorBoundary height="100vh">
+              <WorkspaceLayout>
+                <WorkbenchRoot />
+              </WorkspaceLayout>
+            </YunkeErrorBoundary>
+          </OpenInAppGuard>
+        </DNDContextProvider>
+      </CloudStorageProvider>
     </FrameworkScope>
   );
 };

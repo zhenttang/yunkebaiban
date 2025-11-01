@@ -1,5 +1,5 @@
 import React from 'react';
-import { useCloudStorage } from '../cloud-storage-manager';
+import { useCloudStorage } from '@yunke/core/modules/cloud-storage';
 
 interface CloudStorageStatusProps {
   className?: string;

@@ -1,5 +1,4 @@
 import React from 'react';
-import { useCloudStorage } from '@yunke/core/modules/cloud-storage';
 import { IconButton } from '@yunke/component';
 import { CloseIcon } from '@blocksuite/icons/rc';
 import * as styles from './inline-cloud-status.css';
@@ -8,7 +7,7 @@ interface InlineCloudStatusProps {
   className?: string;
 }
 
-// 模拟 useCloudStorage hook（需要根据实际实现调整）
+// 模拟 useCloudStorage hook - 为桌面应用提供假数据
 const useCloudStorageMock = () => {
   return {
     storageMode: 'cloud' as 'cloud' | 'local' | 'detecting' | 'error',

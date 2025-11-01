@@ -6,6 +6,7 @@ import { useNavigateHelper } from '@yunke/core/components/hooks/use-navigate-hel
 import { PageDetailEditor } from '@yunke/core/components/page-detail-editor';
 import { AppContainer } from '@yunke/core/desktop/components/app-container';
 import { AuthService, ServerService } from '@yunke/core/modules/cloud';
+import { CloudStorageProvider } from '@yunke/core/modules/cloud-storage';
 import { type Doc, DocsService } from '@yunke/core/modules/doc';
 import { GlobalDialogService } from '@yunke/core/modules/dialogs';
 import {
@@ -341,55 +342,57 @@ const SharePageInner = ({
 
   return (
     <FrameworkScope scope={workspace.scope}>
-      <FrameworkScope scope={page.scope}>
-        <FrameworkScope scope={editor.scope}>
-          <ViewIcon icon={publishMode === 'page' ? 'doc' : 'edgeless'} />
-          <ViewTitle title={pageTitle ?? t['unnamed']()} />
-          <div className={styles.root}>
-            <div className={styles.mainContainer}>
-              <ShareHeader
-                pageId={page.id}
-                publishMode={publishMode}
-                isTemplate={isTemplate}
-                templateName={templateName}
-                snapshotUrl={templateSnapshotUrl}
-              />
-              
-              {/* 匿名用户身份管理组件 */}
-              <AnonymousUserIdentity
-                workspaceId={workspaceId}
-                docId={docId}
-                mode={isAppendOnlyMode ? 'appendonly' : 'readonly'}
-                autoCreate={true}
-                onIdentityCreated={handleTemporaryIdentityCreated}
-                onIdentityChanged={handleTemporaryIdentityChanged}
-              />
-              
-              <Scrollable.Root>
-                <Scrollable.Viewport
-                  className={clsx(
-                    'yunke-page-viewport',
-                    styles.editorContainer
-                  )}
-                >
-                  <PageDetailEditor onLoad={onEditorLoad} readonly={isReadonly} />
-                  {publishMode === 'page' && !BUILD_CONFIG.isElectron ? (
-                    <ShareFooter />
-                  ) : null}
-                </Scrollable.Viewport>
-                <Scrollable.Scrollbar />
-              </Scrollable.Root>
-              <EditorOutlineViewer
-                editor={editorContainer?.host ?? null}
-                show={publishMode === 'page'}
-              />
-              {!BUILD_CONFIG.isElectron && <SharePageFooter />}
+      <CloudStorageProvider>
+        <FrameworkScope scope={page.scope}>
+          <FrameworkScope scope={editor.scope}>
+            <ViewIcon icon={publishMode === 'page' ? 'doc' : 'edgeless'} />
+            <ViewTitle title={pageTitle ?? t['unnamed']()} />
+            <div className={styles.root}>
+              <div className={styles.mainContainer}>
+                <ShareHeader
+                  pageId={page.id}
+                  publishMode={publishMode}
+                  isTemplate={isTemplate}
+                  templateName={templateName}
+                  snapshotUrl={templateSnapshotUrl}
+                />
+                
+                {/* 匿名用户身份管理组件 */}
+                <AnonymousUserIdentity
+                  workspaceId={workspaceId}
+                  docId={docId}
+                  mode={isAppendOnlyMode ? 'appendonly' : 'readonly'}
+                  autoCreate={true}
+                  onIdentityCreated={handleTemporaryIdentityCreated}
+                  onIdentityChanged={handleTemporaryIdentityChanged}
+                />
+                
+                <Scrollable.Root>
+                  <Scrollable.Viewport
+                    className={clsx(
+                      'yunke-page-viewport',
+                      styles.editorContainer
+                    )}
+                  >
+                    <PageDetailEditor onLoad={onEditorLoad} readonly={isReadonly} />
+                    {publishMode === 'page' && !BUILD_CONFIG.isElectron ? (
+                      <ShareFooter />
+                    ) : null}
+                  </Scrollable.Viewport>
+                  <Scrollable.Scrollbar />
+                </Scrollable.Root>
+                <EditorOutlineViewer
+                  editor={editorContainer?.host ?? null}
+                  show={publishMode === 'page'}
+                />
+                {!BUILD_CONFIG.isElectron && <SharePageFooter />}
+              </div>
             </div>
-          </div>
-          <PeekViewManagerModal />
-          <uniReactRoot.Root />
+            <PeekViewManagerModal />
+            <uniReactRoot.Root />
+          </FrameworkScope>
         </FrameworkScope>
-      </FrameworkScope>
+      </CloudStorageProvider>
     </FrameworkScope>
   );
 };

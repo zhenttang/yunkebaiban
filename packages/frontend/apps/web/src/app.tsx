@@ -20,7 +20,7 @@ import { OpClient } from '@toeverything/infra/op';
 import { Suspense, useEffect } from 'react';
 import { RouterProvider } from 'react-router-dom';
 
-import { CloudStorageProvider } from './cloud-storage-manager';
+import { CloudStorageProvider } from '@yunke/core/modules/cloud-storage';
 import { CloudStorageIndicator } from './components/cloud-storage-indicator';
 import { deckerIntegrationManager } from '@yunke/core/modules/decker-integration/decker-integration-manager';
 

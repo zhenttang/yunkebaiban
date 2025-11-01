@@ -3,6 +3,7 @@ import { WindowsAppControls } from '@yunke/core/components/pure/header/windows-a
 import { AppContainer } from '@yunke/core/desktop/components/app-container';
 import { router } from '@yunke/core/desktop/router';
 import { I18nProvider } from '@yunke/core/modules/i18n';
+import { CloudStorageProvider } from '@yunke/core/modules/cloud-storage';
 import createEmotionCache from '@yunke/core/utils/create-emotion-cache';
 import { CacheProvider } from '@emotion/react';
 import { FrameworkRoot, getCurrentStore } from '@toeverything/infra';
@@ -56,17 +57,19 @@ export function App() {
         <CacheProvider value={cache}>
           <I18nProvider>
             <YunkeContext store={getCurrentStore()}>
-              <DesktopThemeSync />
-              <RouterProvider
-                fallbackElement={<AppContainer fallback />}
-                router={router}
-                future={future}
-              />
-              {environment.isWindows && (
-                <div style={{ position: 'fixed', right: 0, top: 0, zIndex: 5 }}>
-                  <WindowsAppControls />
-                </div>
-              )}
+              <CloudStorageProvider>
+                <DesktopThemeSync />
+                <RouterProvider
+                  fallbackElement={<AppContainer fallback />}
+                  router={router}
+                  future={future}
+                />
+                {environment.isWindows && (
+                  <div style={{ position: 'fixed', right: 0, top: 0, zIndex: 5 }}>
+                    <WindowsAppControls />
+                  </div>
+                )}
+              </CloudStorageProvider>
             </YunkeContext>
           </I18nProvider>
         </CacheProvider>

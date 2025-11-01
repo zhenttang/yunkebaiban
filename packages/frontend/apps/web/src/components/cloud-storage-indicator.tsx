@@ -2,7 +2,7 @@ import { Button } from '@yunke/component';
 import { cssVarV2 } from '@toeverything/theme/v2';
 import { useMemo, useState, useEffect, type CSSProperties } from 'react';
 
-import { useCloudStorage } from '../cloud-storage-manager';
+import { useCloudStorage } from '@yunke/core/modules/cloud-storage';
 
 import * as styles from './cloud-storage-indicator.css';
 

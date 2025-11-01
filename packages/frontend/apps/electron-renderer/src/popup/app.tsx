@@ -1,5 +1,6 @@
 import { ThemeProvider } from '@yunke/core/components/theme-provider';
 import { configureElectronStateStorageImpls } from '@yunke/core/desktop/storage';
+import { CloudStorageProvider } from '@yunke/core/modules/cloud-storage';
 import { configureDesktopApiModule } from '@yunke/core/modules/desktop-api';
 import { configureI18nModule, I18nProvider } from '@yunke/core/modules/i18n';
 import { configureStorageModule } from '@yunke/core/modules/storage';
@@ -25,9 +26,11 @@ export function App() {
     <FrameworkRoot framework={frameworkProvider}>
       <ThemeProvider>
         <I18nProvider>
-          <div className={styles.root}>
-            {mode === 'recording' && <Recording />}
-          </div>
+          <CloudStorageProvider>
+            <div className={styles.root}>
+              {mode === 'recording' && <Recording />}
+            </div>
+          </CloudStorageProvider>
         </I18nProvider>
       </ThemeProvider>
     </FrameworkRoot>

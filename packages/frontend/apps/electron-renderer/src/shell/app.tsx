@@ -8,6 +8,7 @@ import {
   AppTabsHeader,
   configureAppTabsHeaderModule,
 } from '@yunke/core/modules/app-tabs-header';
+import { CloudStorageProvider } from '@yunke/core/modules/cloud-storage';
 import { configureDesktopApiModule } from '@yunke/core/modules/desktop-api';
 import { configureI18nModule, I18nProvider } from '@yunke/core/modules/i18n';
 import { configureStorageModule } from '@yunke/core/modules/storage';
@@ -36,17 +37,19 @@ export function App() {
     <FrameworkRoot framework={frameworkProvider}>
       <ThemeProvider>
         <I18nProvider>
-          <div className={styles.root} data-translucent={translucent}>
-            <AppTabsHeader mode="shell" className={styles.appTabsHeader} />
-            <div className={styles.body}>
-              <ShellAppSidebarFallback />
-            </div>
-            {environment.isWindows && (
-              <div style={{ position: 'fixed', right: 0, top: 0, zIndex: 5 }}>
-                <WindowsAppControls />
+          <CloudStorageProvider>
+            <div className={styles.root} data-translucent={translucent}>
+              <AppTabsHeader mode="shell" className={styles.appTabsHeader} />
+              <div className={styles.body}>
+                <ShellAppSidebarFallback />
               </div>
-            )}
-          </div>
+              {environment.isWindows && (
+                <div style={{ position: 'fixed', right: 0, top: 0, zIndex: 5 }}>
+                  <WindowsAppControls />
+                </div>
+              )}
+            </div>
+          </CloudStorageProvider>
         </I18nProvider>
       </ThemeProvider>
     </FrameworkRoot>
