@@ -249,6 +249,11 @@ export class InlineEditor<
     this._rootElement = inlineRoot;
     this._eventSource = eventSource;
     this._eventSource.style.outline = 'none';
+    // 🔧 修复Android中文输入问题：设置 inputMode 和 inputmode
+    // Android 输入法需要检查此属性才能正确触发 composition 事件
+    this._eventSource.inputMode = 'text';
+    // 同时设置 HTML 属性（小写），确保兼容性
+    this._eventSource.setAttribute('inputmode', 'text');
     this._rootElement.dataset.vRoot = 'true';
     this.setReadonly(isReadonly);
 
@@ -292,6 +297,14 @@ export class InlineEditor<
 
     if (this.rootElement && this.rootElement.contentEditable !== value) {
       this.rootElement.contentEditable = value;
+    }
+
+    // 🔧 修复Android中文输入问题：同时设置 eventSource 的 contentEditable
+    // 如果 eventSource 和 rootElement 是不同的元素，需要确保 eventSource 也是可编辑的
+    if (this._eventSource && this._eventSource !== this.rootElement) {
+      if (this._eventSource.contentEditable !== value) {
+        this._eventSource.contentEditable = value;
+      }
     }
 
     this._isReadonly = isReadonly;

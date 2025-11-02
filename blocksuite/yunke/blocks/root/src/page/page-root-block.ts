@@ -200,6 +200,10 @@ export class PageRootBlockComponent extends BlockComponent<RootBlockModel> {
   override connectedCallback() {
     super.connectedCallback();
 
+    // 🔧 修复Android中文输入问题：设置 inputMode 为 'text'
+    // 必须在元素创建时就设置，Android 输入法才能正确识别
+    this.inputMode = 'text';
+
     this.keyboardManager = new PageKeyboardManager(this);
 
     this.bindHotKey({

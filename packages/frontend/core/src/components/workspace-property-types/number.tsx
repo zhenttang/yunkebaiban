@@ -49,8 +49,8 @@ export const NumberValue = ({
     >
       <input
         className={styles.numberPropertyValueInput}
-        type="number"
-        inputMode="decimal"
+        type="text"
+        inputMode="text"
         value={tempValue || ''}
         onChange={handleOnChange}
         onBlur={handleBlur}
@@ -142,8 +142,8 @@ export const NumberFilterValue = ({
           inputStyle={{
             fontSize: cssVar('fontBase'),
           }}
-          type="number"
-          inputMode="decimal"
+          type="text"
+          inputMode="text"
           autoFocus
           autoSelect
           value={tempValue}

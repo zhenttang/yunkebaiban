@@ -3,14 +3,18 @@ import { style } from '@vanilla-extract/css';
 
 export const wrapper = style({
   display: 'flex',
-  flexDirection: 'column',
-  gap: '12px',
+  flexDirection: 'row',
+  gap: '16px',
+  justifyContent: 'center',
 });
 
 export const placeholderButton = style({
-  width: '100%',
-  justifyContent: 'flex-start',
-  padding: '14px 20px',
+  width: '56px',
+  height: '56px',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  padding: '16px',
   borderRadius: '16px',
   background:
     'linear-gradient(135deg, rgba(59, 130, 246, 0.25), rgba(14, 165, 233, 0.12)) border-box, rgba(255, 255, 255, 0.95) padding-box',

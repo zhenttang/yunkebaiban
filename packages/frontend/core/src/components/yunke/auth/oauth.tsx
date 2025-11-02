@@ -178,15 +178,13 @@ function OAuthProvider({ onContinue, provider }: OauthProviderProps) {
   return (
     <Button
       variant="secondary"
-      block
       size="extraLarge"
       className={oauthStyle.placeholderButton}
       prefix={decoratedIcon}
       onClick={onClick}
       disabled={true}
       data-disabled
-    >
-      使用{label}登录（测试中）
-    </Button>
+      title={`使用${label}登录`}
+    />
   );
 }

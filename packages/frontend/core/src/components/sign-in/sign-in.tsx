@@ -134,7 +134,7 @@ export const SignInStep = ({
     <AuthContainer>
       <AuthHeader
         title={t['com.yunke.auth.sign.in']()}
-        subTitle={serverName}
+        subTitle={t['com.yunke.auth.sign.hero.subtitle']()}
       />
 
       <AuthContent>
@@ -165,54 +165,6 @@ export const SignInStep = ({
         >
           {t['com.yunke.auth.sign.email.continue']()}
         </Button>
-
-        <>
-          <div className={style.authMessage}>
-            {/*prettier-ignore*/}
-            <Trans i18nKey="com.yunke.auth.sign.message">
-              By clicking &quot;Continue&quot; above, you acknowledge that you agree to YUNKE's
-              <a href="https://yunke.pro/terms" target="_blank" rel="noreferrer">
-                Terms of Conditions
-              </a>{' '}
-              and
-              <a href="https://yunke.pro/privacy" target="_blank" rel="noreferrer">
-                Privacy Policy
-              </a>
-              .
-          </Trans>
-          </div>
-          <div className={style.skipDivider}>
-            <div className={style.skipDividerLine} />
-            <span className={style.skipDividerText}>或</span>
-            <div className={style.skipDividerLine} />
-          </div>
-          <div className={style.skipSection}>
-            {BUILD_CONFIG.isNative ? (
-              <Button
-                variant="plain"
-                className={style.addSelfhostedButton}
-                prefix={
-                  <PublishIcon className={style.addSelfhostedButtonPrefix} />
-                }
-                onClick={onAddSelfhosted}
-              >
-                {t['com.yunke.auth.sign.add-selfhosted']()}
-              </Button>
-            ) : (
-              <div className={style.skipText}>
-                {t['com.yunke.mobile.sign-in.skip.hint']()}
-              </div>
-            )}
-            <Button
-              variant="plain"
-              onClick={onSkip}
-              className={style.skipLink}
-              prefix={<LocalWorkspaceIcon className={style.skipLinkIcon} />}
-            >
-              {t['com.yunke.mobile.sign-in.skip.link']()}
-            </Button>
-          </div>
-        </>
       </AuthContent>
       <AuthFooter>
         <Back changeState={changeState} />

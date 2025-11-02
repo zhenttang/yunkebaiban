@@ -29,7 +29,9 @@ const config: CapacitorConfig & AppConfig = {
     // 🔧 WebView存储配置 - 支持IndexedDB
     webContentsDebuggingEnabled: true,  // 启用WebView调试
     allowMixedContent: true,            // 允许混合内容
-    captureInput: true,                 // 捕获输入
+    // 🔧 修复：禁用 captureInput 以支持中文输入法的 composition 事件
+    // captureInput 使用替代的 InputConnection，会干扰 IME 的正常工作
+    captureInput: false,                // 捕获输入（改为 false）
   },
   server: {
     cleartext: true,

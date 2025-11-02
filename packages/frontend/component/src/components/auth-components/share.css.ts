@@ -11,7 +11,7 @@ export const authContainer = style({
 });
 
 export const authHeaderWrapper = style({
-  marginBottom: '24px',
+  marginBottom: '16px',
 });
 globalStyle(`${authHeaderWrapper} .logo`, {
   fontSize: cssVar('fontH3'),
@@ -25,8 +25,8 @@ globalStyle(`${authHeaderWrapper} .logo`, {
 globalStyle(`${authHeaderWrapper} > p:first-of-type`, {
   fontSize: cssVar('fontH5'),
   fontWeight: 600,
-  marginBottom: '6px',
-  lineHeight: '28px',
+  marginBottom: '4px',
+  lineHeight: '24px',
   display: 'flex',
   alignItems: 'center',
   background: 'linear-gradient(135deg, #1e293b 0%, #475569 100%)',
@@ -41,9 +41,9 @@ globalStyle(`[data-theme="dark"] ${authHeaderWrapper} > p:first-of-type`, {
   backgroundClip: 'text',
 });
 globalStyle(`${authHeaderWrapper} > p:last-of-type`, {
-  fontSize: cssVar('fontH4'),
+  fontSize: cssVar('fontSm'),
   fontWeight: 500,
-  lineHeight: '28px',
+  lineHeight: '20px',
   color: cssVar('textSecondaryColor'),
   opacity: 0.85,
 });
@@ -61,7 +61,7 @@ export const authContent = style({
 });
 
 globalStyle(`${authContent} > *:not(:last-child)`, {
-  marginBottom: '20px',
+  marginBottom: '12px',
 });
 
 export const authInputWrapper = style({
@@ -164,7 +164,7 @@ export const signInPageContainer = style({
   alignItems: 'center',
   position: 'relative',
   zIndex: 1,
-  padding: '120px 40px 80px',
+  padding: '60px 40px 40px',
   overflow: 'hidden',
   boxSizing: 'border-box',
   backgroundImage:
@@ -199,7 +199,7 @@ export const signInPageContainer = style({
     'screen and (max-width: 768px)': {
       minHeight: '100vh',
       justifyContent: 'flex-start',
-      padding: '80px 20px 48px',
+      padding: '40px 20px 24px',
     },
   },
 });

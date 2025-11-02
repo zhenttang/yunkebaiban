@@ -614,6 +614,27 @@ export class EventService<TextAttributes extends BaseTextAttributes> {
       }
     };
 
+    // 🔍 添加最早期的事件监听器（在 window 上，捕获阶段）
+    const earliestListener = (event: Event) => {
+      if (['compositionstart', 'compositionend', 'compositionupdate'].includes(event.type)) {
+        console.log('🔥 [Android调试] 最早期事件捕获 [window捕获阶段]', {
+          type: event.type,
+          target: event.target,
+          targetTagName: (event.target as HTMLElement)?.tagName,
+          targetId: (event.target as HTMLElement)?.id,
+          targetContentEditable: (event.target as HTMLElement)?.contentEditable,
+          targetInputMode: (event.target as HTMLElement)?.inputMode,
+          bubbles: event.bubbles,
+          cancelable: event.cancelable,
+          defaultPrevented: event.defaultPrevented,
+          timeStamp: event.timeStamp,
+        });
+      }
+    };
+    window.addEventListener('compositionstart', earliestListener, true);
+    window.addEventListener('compositionend', earliestListener, true);
+    window.addEventListener('compositionupdate', earliestListener, true);
+
     // 在 document 上添加全局监听（捕获阶段）
     document.addEventListener('keydown', globalDebugListener, true);
     document.addEventListener('keypress', globalDebugListener, true);
@@ -624,6 +645,9 @@ export class EventService<TextAttributes extends BaseTextAttributes> {
 
     // 清理函数
     this.editor.disposables.add(() => {
+      window.removeEventListener('compositionstart', earliestListener, true);
+      window.removeEventListener('compositionend', earliestListener, true);
+      window.removeEventListener('compositionupdate', earliestListener, true);
       document.removeEventListener('keydown', globalDebugListener, true);
       document.removeEventListener('keypress', globalDebugListener, true);
       document.removeEventListener('beforeinput', globalDebugListener, true);
