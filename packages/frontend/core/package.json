@@ -39,6 +39,7 @@
     "@yunke/error": "workspace:*",
     "@yunke/i18n": "workspace:*",
     "@yunke/nbstore": "workspace:*",
+    "@yunke/request": "workspace:*",
     "@yunke/templates": "workspace:*",
     "@yunke/track": "workspace:*",
     "animejs": "^4.0.0",

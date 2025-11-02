@@ -1425,6 +1425,13 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
   }
 
   dispose() {
+    // 在真正释放前，等待关键网络请求完成（如 /api/workspaces）
+    try {
+      if ((this as any).fetchService?.waitForCriticalRequests) {
+        // 最多等待5秒，避免卡住退出流程
+        (this as any).fetchService.waitForCriticalRequests({ timeoutMs: 5000 }).catch(() => {});
+      }
+    } catch {}
     this.revalidate.unsubscribe();
     this.unsubscribeAccountChanged();
   }

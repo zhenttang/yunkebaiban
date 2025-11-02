@@ -33,10 +33,21 @@ export class HttpConnection extends DummyConnection {
         },
       })
       .catch(err => {
+        // 识别手动停止
+        const isManualStop = (typeof err === 'string' && err === 'manually-stop') ||
+          (err?.message && err.message.includes('manually-stop'));
+        if (isManualStop) {
+          throw new UserFriendlyError({
+            status: 499,
+            code: 'REQUEST_CANCELED',
+            type: 'REQUEST_CANCELED',
+            name: 'REQUEST_CANCELED',
+            message: 'Request canceled by manual stop',
+          });
+        }
         // 安全地提取错误信息
         const errorMessage = err?.message || err?.toString() || String(err) || 'Network connection failed';
         const errorStack = err?.stack || '';
-        
         throw new UserFriendlyError({
           status: 504,
           code: 'NETWORK_ERROR',

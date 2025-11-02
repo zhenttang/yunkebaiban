@@ -76,7 +76,7 @@ export const ImageUpload = ({
         }
       } else {
         // 回退方案：直接使用fetch（用于不在Framework上下文中的场景）
-        const { getApiBaseUrl } = await import('@yunke/common/config');
+        const { getApiBaseUrl } = await import('@yunke/config');
         const uploadUrl = `${getApiBaseUrl()}/api/files/upload/${type}`;
         const response = await fetch(uploadUrl, {
           method: 'POST',

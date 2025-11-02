@@ -18,6 +18,7 @@
     { "path": "../../common/error" },
     { "path": "../i18n" },
     { "path": "../../common/nbstore" },
+    { "path": "../../common/request" },
     { "path": "../track" }
   ]
 }

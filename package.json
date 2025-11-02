@@ -210,15 +210,15 @@
     "react-easy-crop": "^5.5.0"
   },
   "optionalDependencies": {
-    "@swc/core-darwin-arm64": "1.12.11",
-    "@swc/core-darwin-x64": "1.12.11",
-    "@swc/core-linux-arm-gnueabihf": "1.12.11",
-    "@swc/core-linux-arm64-gnu": "1.12.11",
-    "@swc/core-linux-arm64-musl": "1.12.11",
-    "@swc/core-linux-x64-gnu": "1.12.11",
-    "@swc/core-linux-x64-musl": "1.12.11",
-    "@swc/core-win32-arm64-msvc": "1.12.11",
-    "@swc/core-win32-ia32-msvc": "1.12.11",
-    "@swc/core-win32-x64-msvc": "1.12.11"
+    "@swc/core-darwin-arm64": "1.13.5",
+    "@swc/core-darwin-x64": "1.13.5",
+    "@swc/core-linux-arm-gnueabihf": "1.13.5",
+    "@swc/core-linux-arm64-gnu": "1.13.5",
+    "@swc/core-linux-arm64-musl": "1.13.5",
+    "@swc/core-linux-x64-gnu": "1.13.5",
+    "@swc/core-linux-x64-musl": "1.13.5",
+    "@swc/core-win32-arm64-msvc": "1.13.5",
+    "@swc/core-win32-ia32-msvc": "1.13.5",
+    "@swc/core-win32-x64-msvc": "1.13.5"
   }
 }

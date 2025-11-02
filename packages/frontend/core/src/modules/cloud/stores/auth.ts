@@ -132,30 +132,45 @@ export class AuthStore extends Store {
     console.log('=== AuthStore.signInMagicLink 开始 ===');
     console.log('Magic Link 登录凭据:', { email, token });
     
-    const result = await this.authProvider.signInMagicLink(
-      email,
-      token,
-      this.getClientNonce()
-    );
+    console.log('🔵 AUTH_STORE_STEP1: [AuthStore] 准备调用 authProvider.signInMagicLink');
+    console.log('🔵 AUTH_STORE_STEP1: [AuthStore] authProvider 类型:', typeof this.authProvider);
+    console.log('🔵 AUTH_STORE_STEP1: [AuthStore] authProvider.signInMagicLink 类型:', typeof this.authProvider.signInMagicLink);
     
-    console.log('AuthProvider 返回结果:', result);
+    try {
+      const result = await this.authProvider.signInMagicLink(
+        email,
+        token,
+        this.getClientNonce()
+      );
+      
+      console.log('✅ AUTH_STORE_STEP2: [AuthStore] authProvider.signInMagicLink 返回结果:', result);
+      console.log('AuthProvider 返回结果:', result);
     
-    // 登录成功后，存储JWT token和用户会话信息
-    if (result && result.user) {
-      // 存储JWT tokens
-      this.setStoredTokens(result.token, result.refreshToken);
-      
-      const sessionInfo = {
-        user: result.user,
-        token: result.token,
-        expiresAt: null, // JWT的过期时间在token中
-      };
-      
-      console.log('存储会话信息和JWT token到缓存:', sessionInfo);
-      this.setCachedAuthSession(sessionInfo);
-      console.log('=== AuthStore.signInMagicLink 完成 ===');
-    } else {
-      console.warn('AuthProvider 返回空结果');
+      console.log('✅ AUTH_STORE_STEP3: [AuthStore] 登录成功，存储会话信息');
+      // 登录成功后，存储JWT token和用户会话信息
+      if (result && result.user) {
+        // 存储JWT tokens
+        this.setStoredTokens(result.token, result.refreshToken);
+        
+        const sessionInfo = {
+          user: result.user,
+          token: result.token,
+          expiresAt: null, // JWT的过期时间在token中
+        };
+        
+        console.log('存储会话信息和JWT token到缓存:', sessionInfo);
+        this.setCachedAuthSession(sessionInfo);
+        console.log('=== AuthStore.signInMagicLink 完成 ===');
+      } else {
+        console.warn('AuthProvider 返回空结果');
+      }
+    } catch (error: any) {
+      console.error('❌ AUTH_STORE_ERROR: [AuthStore] signInMagicLink 失败', {
+        error: error.message,
+        errorType: error.name,
+        stack: error.stack?.substring(0, 500)
+      });
+      throw error;
     }
   }
 

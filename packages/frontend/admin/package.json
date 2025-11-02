@@ -39,6 +39,7 @@
     "@yunke/component": "workspace:*",
     "@yunke/core": "workspace:*",
     "@yunke/error": "workspace:*",
+    "@yunke/request": "workspace:*",
     "@yunke/routes": "workspace:*",
     "cmdk": "^1.0.4",
     "embla-carousel-react": "^8.5.1",

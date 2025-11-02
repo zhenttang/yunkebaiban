@@ -5,14 +5,54 @@ import type { ExtensionType } from '@blocksuite/store';
 
 import type { FontConfig } from './config.js';
 
+/**
+ * 检测是否为 Android 环境
+ */
+function isAndroidEnvironment(): boolean {
+  if (typeof window === 'undefined') {
+    return false;
+  }
+  
+  // 检查 BUILD_CONFIG
+  const buildConfig = (window as any).BUILD_CONFIG;
+  if (buildConfig?.isAndroid || buildConfig?.platform === 'android') {
+    return true;
+  }
+  
+  // 检查 Capacitor
+  try {
+    const Capacitor = (window as any).Capacitor;
+    if (Capacitor?.getPlatform?.() === 'android') {
+      return true;
+    }
+  } catch {
+    // Capacitor 可能不可用
+  }
+  
+  return false;
+}
+
+/**
+ * 处理字体 URL
+ * Android 环境下保持使用绝对 URL（CDN），不被 Capacitor 转换
+ */
+function processFontUrl(url: string): string {
+  // Android 环境下，如果已经是绝对 URL（http/https），直接返回
+  // 这样 Capacitor 就不会将其转换为 localhost
+  if (isAndroidEnvironment() && (url.startsWith('http://') || url.startsWith('https://'))) {
+    return url;
+  }
+  return url;
+}
+
 const initFontFace = IS_FIREFOX
   ? ({ font, weight, url, style }: FontConfig) =>
-      new FontFace(`"${font}"`, `url(${url})`, {
+      new FontFace(`"${font}"`, `url(${processFontUrl(url)})`, {
         weight,
         style,
       })
   : ({ font, weight, url, style }: FontConfig) =>
-      new FontFace(font, `url(${url})`, {
+      new FontFace(font, `url(${processFontUrl(url)})`, {
         weight,
         style,
       });

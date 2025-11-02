@@ -233,6 +233,17 @@ export class InlineEditor<
     eventSource: HTMLElement = rootElement,
     isReadonly = false
   ) {
+    console.log('🔍 [Android调试] InlineEditor mount 开始', {
+      rootElementTagName: rootElement.tagName,
+      rootElementId: rootElement.id,
+      rootElementClass: rootElement.className,
+      eventSourceTagName: eventSource.tagName,
+      eventSourceId: eventSource.id,
+      eventSourceClass: eventSource.className,
+      isSameElement: rootElement === eventSource,
+      isReadonly,
+    });
+
     const inlineRoot = rootElement as InlineRootElement<TextAttributes>;
     inlineRoot.inlineEditor = this;
     this._rootElement = inlineRoot;
@@ -240,6 +251,12 @@ export class InlineEditor<
     this._eventSource.style.outline = 'none';
     this._rootElement.dataset.vRoot = 'true';
     this.setReadonly(isReadonly);
+
+    console.log('🔍 [Android调试] InlineEditor mount 设置完成', {
+      rootElementContentEditable: this._rootElement.contentEditable,
+      eventSourceContentEditable: this._eventSource.contentEditable,
+      eventSourceInputMode: this._eventSource.inputMode,
+    });
 
     this._rootElement.replaceChildren();
 
@@ -251,6 +268,8 @@ export class InlineEditor<
 
     this._mounted = true;
     this.slots.mounted.next();
+
+    console.log('✅ [Android调试] InlineEditor mount 完成，准备 render');
 
     this.render();
   }

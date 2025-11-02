@@ -1303,7 +1303,7 @@ export const PackageList = [
   {
     location: 'packages/common/request',
     name: '@yunke/request',
-    workspaceDependencies: [],
+    workspaceDependencies: ['packages/common/config'],
   },
   {
     location: 'packages/frontend/admin',
@@ -1314,6 +1314,7 @@ export const PackageList = [
       'packages/frontend/component',
       'packages/frontend/core',
       'packages/common/error',
+      'packages/common/request',
       'packages/frontend/routes',
     ],
   },
@@ -1429,6 +1430,7 @@ export const PackageList = [
       'packages/common/error',
       'packages/frontend/i18n',
       'packages/common/nbstore',
+      'packages/common/request',
       'packages/frontend/templates',
       'packages/frontend/track',
     ],

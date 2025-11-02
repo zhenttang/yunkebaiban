@@ -67,9 +67,25 @@ export class InlineTextService<TextAttributes extends BaseTextAttributes> {
     text: string,
     attributes: TextAttributes = {} as TextAttributes
   ): void => {
-    if (this.editor.isReadonly) return;
+    console.log('🔍 [Android调试] insertText 调用', {
+      inlineRange,
+      text,
+      textLength: text.length,
+      textCharCodes: Array.from(text).map(c => c.charCodeAt(0)),
+      readonly: this.editor.isReadonly,
+      yTextLengthBefore: this.yText.length,
+      yTextStringBefore: this.yText.toString().substring(0, 50),
+    });
 
-    if (!text || !text.length) return;
+    if (this.editor.isReadonly) {
+      console.warn('⚠️ [Android调试] insertText 跳过：编辑器只读');
+      return;
+    }
+
+    if (!text || !text.length) {
+      console.warn('⚠️ [Android调试] insertText 跳过：文本为空');
+      return;
+    }
 
     if (this.editor.attributeService.marks) {
       attributes = { ...attributes, ...this.editor.attributeService.marks };
@@ -77,9 +93,23 @@ export class InlineTextService<TextAttributes extends BaseTextAttributes> {
     const normalizedAttributes =
       this.editor.attributeService.normalizeAttributes(attributes);
 
+    console.log('🔍 [Android调试] insertText 执行 transact', {
+      deleteIndex: inlineRange.index,
+      deleteLength: inlineRange.length,
+      insertIndex: inlineRange.index,
+      insertText: text,
+      normalizedAttributes,
+    });
+
     this.transact(() => {
       this.yText.delete(inlineRange.index, inlineRange.length);
       this.yText.insert(inlineRange.index, text, normalizedAttributes);
+    });
+
+    console.log('✅ [Android调试] insertText 完成', {
+      yTextLengthAfter: this.yText.length,
+      yTextStringAfter: this.yText.toString().substring(0, 50),
+      textInserted: this.yText.toString().includes(text),
     });
   };
 

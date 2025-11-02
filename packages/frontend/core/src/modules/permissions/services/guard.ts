@@ -65,6 +65,7 @@ export class GuardService extends Service {
     const docId = args[0];
     return LiveData.from(
       new Observable(subscriber => {
+        // 粘性权限：当权限处于“未知/加载中”时，不下发 false/undefined，保持上一次已知值
         let prev: boolean | undefined = undefined;
 
         const subscription = combineLatest([
@@ -77,15 +78,23 @@ export class GuardService extends Service {
           >,
           this.isAdmin$,
         ]).subscribe(([permissions, isAdmin]) => {
-          if (isAdmin) {
-            return subscriber.next(true);
+          if (isAdmin === true) {
+            // 管理员永远允许
+            if (prev !== true) {
+              prev = true;
+              subscriber.next(true);
+            }
+            return;
           }
-          
-          const current = permissions[action] ?? undefined;
-          
-          if (current !== prev) {
-            prev = current;
-            subscriber.next(current);
+          // 当管理员状态未知(null) 或 权限键尚未计算(undefined)时，保持上一次值，避免闪烁为禁用
+          const nextVal = (permissions[action] ?? undefined) as boolean | undefined;
+          if (nextVal === undefined) {
+            // 不推送变化，维持 prev（可能是 true 或 false 或 undefined 初始）
+            return;
+          }
+          if (nextVal !== prev) {
+            prev = nextVal;
+            subscriber.next(nextVal);
           }
         });
 

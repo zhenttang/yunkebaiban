@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { useId, type ReactNode } from 'react';
+import { forwardRef, useId, type ReactNode } from 'react';
 
 import type { InputProps } from '../../ui/input';
 import { Input } from '../../ui/input';
@@ -10,35 +10,40 @@ export type AuthInputProps = InputProps & {
   errorHint?: ReactNode;
   onEnter?: () => void;
 };
-export const AuthInput = ({
-  label,
-  error,
-  errorHint,
-  onEnter,
-  className,
-  ...inputProps
-}: AuthInputProps) => {
-  const generatedId = useId();
-  const inputId = inputProps.id ?? generatedId;
+export const AuthInput = forwardRef<HTMLInputElement, AuthInputProps>(
+  ({
+    label,
+    error,
+    errorHint,
+    onEnter,
+    className,
+    ...inputProps
+  }, ref) => {
+    const generatedId = useId();
+    const inputId = inputProps.id ?? generatedId;
 
-  return (
-    <div
-      className={clsx(styles.authInputWrapper, {
-        'with-hint': !!errorHint,
-      })}
-    >
-      {label ? <label htmlFor={inputId}>{label}</label> : null}
-      <Input
-        className={clsx(className)}
-        size="extraLarge"
-        status={error ? 'error' : 'default'}
-        onEnter={onEnter}
-        id={inputId}
-        {...inputProps}
-      />
-      {error && errorHint ? (
-        <div className={styles.authInputError}>{errorHint}</div>
-      ) : null}
-    </div>
-  );
-};
+    return (
+      <div
+        className={clsx(styles.authInputWrapper, {
+          'with-hint': !!errorHint,
+        })}
+      >
+        {label ? <label htmlFor={inputId}>{label}</label> : null}
+        <Input
+          className={clsx(className)}
+          size="extraLarge"
+          status={error ? 'error' : 'default'}
+          onEnter={onEnter}
+          id={inputId}
+          ref={ref}
+          {...inputProps}
+        />
+        {error && errorHint ? (
+          <div className={styles.authInputError}>{errorHint}</div>
+        ) : null}
+      </div>
+    );
+  }
+);
+
+AuthInput.displayName = 'AuthInput';

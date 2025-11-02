@@ -41,7 +41,7 @@ const config: CapacitorConfig & AppConfig = {
   },
   plugins: {
     CapacitorHttp: {
-      enabled: false, // 🔧 与capacitor.config.json保持一致，使用原生fetch
+      enabled: true, // 启用 CapacitorHttp，绕过 WebView 限制
     },
     CapacitorCookies: {
       enabled: false,

@@ -28,6 +28,18 @@ if (typeof window !== 'undefined') {
   console.log('🔧 验证 window.BUILD_CONFIG:', (window as any).BUILD_CONFIG);
   console.log('🔧 验证 globalThis.BUILD_CONFIG:', (globalThis as any).BUILD_CONFIG);
   
+  // 🔍 Android 调试日志测试 - 确认日志系统工作
+  console.log('✅ [Android调试测试] 应用启动，日志系统正常工作！');
+  console.log('✅ [Android调试测试] 如果你能看到这条日志，说明 Chrome DevTools 连接成功！');
+  console.log('✅ [Android调试测试] 请在 Chrome DevTools Console 中查看输入相关的日志');
+  
+  // 暴露全局测试函数
+  (window as any).__testAndroidInput = () => {
+    console.log('🧪 [Android调试测试] 手动测试函数被调用');
+    console.log('🧪 [Android调试测试] 如果你能看到这条日志，说明可以手动触发日志');
+    return '测试成功！请查看 Chrome DevTools Console';
+  };
+  
   // 设置全局错误处理器
   window.addEventListener('error', (event) => {
     console.error('🔴 全局错误:', event.error);
@@ -252,6 +264,22 @@ const future = {
 } as const;
 
 const framework = new Framework();
+
+// 初始化 CapacitorHttp 插件，确保它被注册到 Capacitor.Plugins
+// Capacitor 7 中 Http 插件是内置的，通过 Capacitor.Plugins.Http 访问
+if (Capacitor.isNativePlatform()) {
+  try {
+    // Capacitor 7 内置的 Http 插件会自动注册到 Capacitor.Plugins.Http
+    // 只需确保插件已启用（在 capacitor.config.ts 中已配置）
+    if (Capacitor.Plugins?.Http) {
+      console.log('✅ CapacitorHttp 插件已可用（内置插件）');
+    } else {
+      console.warn('⚠️ CapacitorHttp 插件不可用，请检查 capacitor.config.ts 配置');
+    }
+  } catch (error) {
+    console.error('❌ 初始化 CapacitorHttp 失败:', error);
+  }
+}
 
 // 配置所有模块
 try {

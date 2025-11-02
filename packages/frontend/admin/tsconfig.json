@@ -13,6 +13,7 @@
     { "path": "../component" },
     { "path": "../core" },
     { "path": "../../common/error" },
+    { "path": "../../common/request" },
     { "path": "../routes" }
   ]
 }

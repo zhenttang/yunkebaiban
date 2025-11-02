@@ -25,6 +25,7 @@ import {
   type SetStateAction,
   useCallback,
   useEffect,
+  useRef,
   useState,
 } from 'react';
 
@@ -64,6 +65,7 @@ export const SignInStep = ({
   const [isMutating, setIsMutating] = useState(false);
 
   const [email, setEmail] = useState('');
+  const emailInputRef = useRef<HTMLInputElement>(null);
 
   const [isValidEmail, setIsValidEmail] = useState(true);
 
@@ -80,7 +82,9 @@ export const SignInStep = ({
   }, [loginStatus, onAuthenticated, t]);
 
   const onContinue = useAsyncCallback(async () => {
-    if (!validateEmail(email)) {
+    const currentEmail = emailInputRef.current?.value || email;
+
+    if (!validateEmail(currentEmail)) {
       setIsValidEmail(false);
       return;
     }
@@ -89,19 +93,19 @@ export const SignInStep = ({
     setIsMutating(true);
 
     try {
-      const { hasPassword } = await authService.checkUserByEmail(email);
+      const { hasPassword } = await authService.checkUserByEmail(currentEmail);
 
       if (hasPassword) {
         changeState(prev => ({
           ...prev,
-          email,
+          email: currentEmail,
           step: 'signInWithPassword',
           hasPassword: true,
         }));
       } else {
         changeState(prev => ({
           ...prev,
-          email,
+          email: currentEmail,
           step: 'signInWithEmail',
           hasPassword: false,
         }));
@@ -137,6 +141,7 @@ export const SignInStep = ({
         <OAuth redirectUrl={state.redirectUrl} />
 
         <AuthInput
+          ref={emailInputRef}
           className={style.authInput}
           label={t['com.yunke.settings.email']()}
           placeholder={t['com.yunke.auth.sign.email.placeholder']()}
