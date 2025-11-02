@@ -160,11 +160,12 @@ export const signInPageContainer = style({
   width: '100%',
   display: 'flex',
   flexDirection: 'column',
-  justifyContent: 'center',
+  // 页面核心内容靠上，但保留更舒适的顶部留白
+  justifyContent: 'flex-start',
   alignItems: 'center',
   position: 'relative',
   zIndex: 1,
-  padding: '60px 40px 40px',
+  padding: '72px 40px 40px',
   overflow: 'hidden',
   boxSizing: 'border-box',
   backgroundImage:
@@ -184,7 +185,8 @@ export const signInPageContainer = style({
       backgroundImage:
         'radial-gradient(rgba(51, 102, 255, 0.12) 1px, transparent 1px)',
       backgroundSize: '3px 3px',
-      opacity: 0.2,
+      // B：降低默认不透明度，减轻干扰
+      opacity: 0.12,
       pointerEvents: 'none',
       mixBlendMode: 'soft-light',
       zIndex: 0,
@@ -192,14 +194,24 @@ export const signInPageContainer = style({
     '[data-theme="dark"] &::before': {
       backgroundImage:
         'radial-gradient(rgba(148, 163, 184, 0.12) 1px, transparent 1px)',
-      opacity: 0.15,
+      opacity: 0.1,
     },
   },
   '@media': {
     'screen and (max-width: 768px)': {
       minHeight: '100vh',
       justifyContent: 'flex-start',
-      padding: '40px 20px 24px',
+      // 小屏也与弹窗版保持相同的顶部留白
+      padding: '72px 20px 24px',
+    },
+    '(prefers-reduced-motion: reduce)': {
+      // C：系统要求减少动态时，移除点阵叠加
+      selectors: {
+        '&::before': {
+          opacity: 0,
+          backgroundImage: 'none',
+        },
+      },
     },
   },
 });

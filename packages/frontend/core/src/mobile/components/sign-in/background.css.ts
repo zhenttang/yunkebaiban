@@ -20,10 +20,12 @@ export const dotBg = style({
   zIndex: -1,
   top: 0,
   left: 0,
-  backgroundImage: `linear-gradient(to bottom, transparent 0%, ${bgColor} 90%),
-     radial-gradient(${dotColor} 2px, transparent 2px),
-     radial-gradient(${dotColor} 2px, transparent 2px)`,
-  backgroundSize: '100% 100%, 20px 20px, 20px 20px',
+  // 更轻量的点阵背景（A+B），缩小点径并降低密度
+  backgroundImage: `linear-gradient(to bottom, transparent 0%, ${bgColor} 88%),
+     radial-gradient(${dotColor} 1.5px, transparent 1.5px),
+     radial-gradient(${dotColor} 1.5px, transparent 1.5px)`,
+  backgroundSize: '100% 100%, 24px 24px, 24px 24px',
+  opacity: 0.5,
 });
 
 export const arts = style({
@@ -31,6 +33,12 @@ export const arts = style({
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
+  '@media': {
+    // A：小屏下不需要额外动画图片
+    '(prefers-reduced-motion: reduce)': {
+      display: 'none',
+    },
+  },
 });
 
 globalStyle(`[data-theme="light"] ${root}`, {

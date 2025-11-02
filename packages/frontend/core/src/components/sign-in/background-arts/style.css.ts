@@ -9,22 +9,36 @@ export const wrapper = style({
   justifyContent: 'center',
   pointerEvents: 'none',
   zIndex: 0,
+  '@media': {
+    // C：系统减少动态时，直接隐藏背景艺术
+    '(prefers-reduced-motion: reduce)': {
+      display: 'none',
+    },
+  },
 });
 
 export const arts = style({
   width: 'min(1200px, 90%)',
   transform: 'translateY(-12%)',
-  opacity: 0.82,
+  // B：降低默认不透明度，减轻视觉噪声
+  opacity: 0.72,
   transition: 'opacity 0.3s ease',
   animation: `${float} 6s ease-in-out infinite`,
   '@media': {
     'screen and (max-width: 960px)': {
+      // A：小屏不再展示动画，进一步降低不透明度
       transform: 'translateY(-6%) scale(0.9)',
-      opacity: 0.7,
+      opacity: 0.5,
+      animation: 'none',
     },
     'screen and (max-width: 640px)': {
       transform: 'translateY(-4%) scale(0.8)',
-      opacity: 0.55,
+      opacity: 0.4,
+      animation: 'none',
+    },
+    '(prefers-reduced-motion: reduce)': {
+      animation: 'none',
+      opacity: 0.0,
     },
   },
 });

@@ -32,6 +32,9 @@ export const layout = style({
       alignItems: 'center',
       gap: '32px',
     },
+    '(prefers-reduced-motion: reduce)': {
+      animation: 'none',
+    },
   },
 });
 
@@ -40,34 +43,44 @@ export const panel = style({
   maxWidth: '420px',
   position: 'relative',
   overflow: 'hidden',
+  // 更轻量的卡片背景，降低绘制成本
   background:
-    'linear-gradient(135deg, rgba(255, 255, 255, 0.82), rgba(255, 255, 255, 0.68)) padding-box, linear-gradient(135deg, rgba(51, 102, 255, 0.35), rgba(139, 92, 246, 0.35)) border-box',
+    'linear-gradient(135deg, rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.86)) padding-box, linear-gradient(135deg, rgba(51, 102, 255, 0.25), rgba(139, 92, 246, 0.25)) border-box',
   borderRadius: '28px',
   padding: '40px 44px',
   boxSizing: 'border-box',
+  // 全局降低阴影强度
   boxShadow:
-    '0 30px 80px rgba(15, 23, 42, 0.18), 0 12px 32px rgba(51, 102, 255, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.32)',
+    '0 16px 40px rgba(15, 23, 42, 0.14), 0 8px 20px rgba(51, 102, 255, 0.10), inset 0 1px 0 rgba(255, 255, 255, 0.24)',
   border: '1px solid transparent',
   backgroundClip: ['padding-box', 'border-box'],
-  backdropFilter: 'blur(24px)',
+  // 全局降级模糊半径
+  backdropFilter: 'blur(12px)',
   animation: `${fadeInUp} 0.8s ease-out 0.3s backwards`,
   selectors: {
     '[data-theme="dark"] &': {
       background:
-        'linear-gradient(135deg, rgba(17, 24, 39, 0.88), rgba(15, 23, 42, 0.72)) padding-box, linear-gradient(135deg, rgba(79, 70, 229, 0.45), rgba(16, 185, 129, 0.28)) border-box',
+        'linear-gradient(135deg, rgba(17, 24, 39, 0.92), rgba(15, 23, 42, 0.82)) padding-box, linear-gradient(135deg, rgba(79, 70, 229, 0.35), rgba(16, 185, 129, 0.22)) border-box',
       backgroundClip: ['padding-box', 'border-box'],
       boxShadow:
-        '0 30px 80px rgba(2, 6, 23, 0.7), 0 12px 32px rgba(79, 70, 229, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.06)',
+        '0 16px 40px rgba(2, 6, 23, 0.55), 0 10px 24px rgba(79, 70, 229, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.06)',
     },
   },
   '@media': {
     'screen and (max-width: 960px)': {
       maxWidth: '480px',
       padding: '32px 28px',
+      // A：小屏进一步减轻效果
+      backdropFilter: 'none',
+      boxShadow:
+        '0 10px 24px rgba(15, 23, 42, 0.12), 0 6px 14px rgba(51, 102, 255, 0.08)',
     },
     'screen and (max-width: 640px)': {
       width: '100%',
       padding: '28px 20px',
+    },
+    '(prefers-reduced-motion: reduce)': {
+      animation: 'none',
     },
   },
 });
@@ -81,10 +94,12 @@ export const hero = style({
   color: cssVar('textPrimaryColor'),
   animation: `${fadeInUp} 0.8s ease-out 0.2s backwards`,
   '@media': {
+    // 小屏时隐藏营销/宣传区域，让布局与弹窗/移动端一致
     'screen and (max-width: 960px)': {
-      alignItems: 'center',
-      textAlign: 'center',
-      maxWidth: '560px',
+      display: 'none',
+    },
+    '(prefers-reduced-motion: reduce)': {
+      animation: 'none',
     },
   },
 });
@@ -167,6 +182,11 @@ export const heroDot = style({
   selectors: {
     '[data-theme="dark"] &': {
       boxShadow: '0 0 0 4px rgba(79, 70, 229, 0.25)',
+    },
+  },
+  '@media': {
+    '(prefers-reduced-motion: reduce)': {
+      animation: 'none',
     },
   },
 });
