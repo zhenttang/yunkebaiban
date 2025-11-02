@@ -1,12 +1,14 @@
 import { Button } from '@yunke/component';
 import { useState } from 'react';
-import { getApiBaseUrl } from '@yunke/common/config';
+import { useService } from '@toeverything/infra';
+import { FetchService } from '@yunke/core/modules/cloud';
 
 interface ImageUploadProps {
   type?: 'avatar' | 'cover' | 'image';
   onUploadSuccess?: (url: string) => void;
   maxSizeMB?: number;
   currentImage?: string;
+  fetchService?: FetchService; // 可选的FetchService，用于不在Framework上下文中的场景
 }
 
 export const ImageUpload = ({
@@ -14,10 +16,17 @@ export const ImageUpload = ({
   onUploadSuccess,
   maxSizeMB = 5,
   currentImage,
+  fetchService: providedFetchService,
 }: ImageUploadProps) => {
   const [uploading, setUploading] = useState(false);
   const [preview, setPreview] = useState<string | null>(currentImage || null);
   const [error, setError] = useState<string | null>(null);
+  
+  // 优先使用传入的fetchService，否则从Framework获取
+  // 注意：组件应该在Framework上下文中使用，如果不在可以通过props传入fetchService
+  // hooks必须在顶层调用，所以直接调用useService
+  const frameworkFetchService = useService(FetchService);
+  const fetchService = providedFetchService || frameworkFetchService;
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -48,22 +57,43 @@ export const ImageUpload = ({
       const formData = new FormData();
       formData.append('file', file);
 
-      const uploadUrl = `${getApiBaseUrl()}/api/files/upload/${type}`;
-      const response = await fetch(uploadUrl, {
-        method: 'POST',
-        body: formData,
-        credentials: 'include',
-      });
+      // 统一使用 FetchService（如果可用），享受重试、超时、JWT token等功能
+      if (fetchService) {
+        const response = await fetchService.fetch(`/api/files/upload/${type}`, {
+          method: 'POST',
+          body: formData,
+        });
 
-      if (!response.ok) {
-        throw new Error('上传失败');
-      }
+        if (!response.ok) {
+          throw new Error('上传失败');
+        }
 
-      const data = await response.json();
-      if (data.url) {
-        onUploadSuccess?.(data.url);
+        const data = await response.json();
+        if (data.url) {
+          onUploadSuccess?.(data.url);
+        } else {
+          throw new Error(data.message || '上传失败');
+        }
       } else {
-        throw new Error(data.message || '上传失败');
+        // 回退方案：直接使用fetch（用于不在Framework上下文中的场景）
+        const { getApiBaseUrl } = await import('@yunke/common/config');
+        const uploadUrl = `${getApiBaseUrl()}/api/files/upload/${type}`;
+        const response = await fetch(uploadUrl, {
+          method: 'POST',
+          body: formData,
+          credentials: 'include',
+        });
+
+        if (!response.ok) {
+          throw new Error('上传失败');
+        }
+
+        const data = await response.json();
+        if (data.url) {
+          onUploadSuccess?.(data.url);
+        } else {
+          throw new Error(data.message || '上传失败');
+        }
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : '上传失败');

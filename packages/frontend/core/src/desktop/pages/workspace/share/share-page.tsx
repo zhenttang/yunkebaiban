@@ -5,7 +5,8 @@ import { useActiveBlocksuiteEditor } from '@yunke/core/components/hooks/use-bloc
 import { useNavigateHelper } from '@yunke/core/components/hooks/use-navigate-helper';
 import { PageDetailEditor } from '@yunke/core/components/page-detail-editor';
 import { AppContainer } from '@yunke/core/desktop/components/app-container';
-import { AuthService, ServerService } from '@yunke/core/modules/cloud';
+import { AuthService } from '@yunke/core/modules/cloud';
+import { getBaseUrl, getApiBaseUrl } from '@yunke/config';
 import { CloudStorageProvider } from '@yunke/core/modules/cloud-storage';
 import { type Doc, DocsService } from '@yunke/core/modules/doc';
 import { GlobalDialogService } from '@yunke/core/modules/dialogs';
@@ -110,7 +111,7 @@ const SharePageInner = ({
   templateName?: string;
   templateSnapshotUrl?: string;
 }) => {
-  const serverService = useService(ServerService);
+  // 不再需要ServerService，统一使用network-config.ts的配置
   const workspacesService = useService(WorkspacesService);
   const [workspace, setWorkspace] = useState<Workspace | null>(null);
   const [page, setPage] = useState<Doc | null>(null);
@@ -138,14 +139,14 @@ const SharePageInner = ({
             name: 'StaticCloudDocStorage',
             opts: {
               id: workspaceId,
-              serverBaseUrl: serverService.server.baseUrl,
+              serverBaseUrl: getBaseUrl(),
             },
           },
           blob: {
             name: 'CloudBlobStorage',
             opts: {
               id: workspaceId,
-              serverBaseUrl: serverService.server.baseUrl,
+              serverBaseUrl: getBaseUrl(),
             },
           },
           awareness: {
@@ -162,7 +163,7 @@ const SharePageInner = ({
               opts: {
                 type: 'workspace',
                 id: workspaceId,
-                serverBaseUrl: serverService.server.baseUrl,
+                serverBaseUrl: getBaseUrl(),
                 isSelfHosted: false,
               },
             },
@@ -170,7 +171,7 @@ const SharePageInner = ({
               name: 'CloudBlobStorage',
               opts: {
                 id: workspaceId,
-                serverBaseUrl: serverService.server.baseUrl,
+                serverBaseUrl: getBaseUrl(),
               },
             },
             awareness: {
@@ -178,7 +179,7 @@ const SharePageInner = ({
               opts: {
                 type: 'workspace',
                 id: workspaceId,
-                serverBaseUrl: serverService.server.baseUrl,
+                serverBaseUrl: getBaseUrl(),
                 isSelfHosted: false,
               },
             },
@@ -198,12 +199,16 @@ const SharePageInner = ({
         // Try to get document mode from server
         try {
           console.log('[AppendOnly Debug] Fetching document mode from server...');
-          console.log('[AppendOnly Debug] Server base URL:', serverService.server.baseUrl);
+          // 统一使用 network-config.ts 的配置
+          const baseUrl = getBaseUrl();
+          const apiBaseUrl = getApiBaseUrl();
+          console.log('[AppendOnly Debug] Server base URL:', baseUrl);
+          console.log('[AppendOnly Debug] API base URL:', apiBaseUrl);
           console.log('[AppendOnly Debug] Workspace ID:', workspaceId);
           console.log('[AppendOnly Debug] Doc ID:', docId);
           
           // Get document headers to determine permission mode
-          const response = await fetch(`${serverService.server.baseUrl}/api/workspaces/${workspaceId}/docs/${docId}`, {
+          const response = await fetch(`${apiBaseUrl}/workspaces/${workspaceId}/docs/${docId}`, {
             method: 'HEAD',
           });
           
@@ -268,8 +273,8 @@ const SharePageInner = ({
     workspacesService,
     publishMode,
     selector,
-    serverService.server.baseUrl,
     hasTemporaryIdentity,
+    // 不再需要serverService.server.baseUrl，统一配置会自动处理
   ]);
 
   const t = useI18n();

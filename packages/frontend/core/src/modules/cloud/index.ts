@@ -134,7 +134,7 @@ export function configureCloudModule(framework: Framework) {
     .store(UserQuotaStore, [FetchService])
     .entity(UserQuota, [AuthService, UserQuotaStore])
     .service(UserCopilotQuotaService)
-    .store(UserCopilotQuotaStore)
+    .store(UserCopilotQuotaStore, [FetchService])
     .entity(UserCopilotQuota, [
       AuthService,
       UserCopilotQuotaStore,

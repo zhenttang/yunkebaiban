@@ -150,28 +150,28 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
 
   /**
    * 发送带JWT token的HTTP请求
+   * 统一使用FetchService（如果可用），享受重试、超时、JWT token等功能
    */
   private async fetchWithAuth(url: string, options: RequestInit = {}): Promise<Response> {
+    // 统一使用FetchService，享受重试、超时、JWT token等功能
+    // FetchService会自动处理URL构建（使用network-config.ts的统一配置）
     if (this.fetchService) {
-      // 使用FetchService发送请求，确保包含JWT token
-      // 如果URL是相对路径，需要添加API基础URL
-      const { getBaseUrl } = await import('@yunke/config');
-      const baseOrigin = getBaseUrl();
-      const fullUrl = url.startsWith('http') ? url : `${baseOrigin}${url}`;
-      return await this.fetchService.fetch(fullUrl, options);
+      // 如果URL已经是完整URL，直接使用；否则使用相对路径，FetchService会自动构建
+      return await this.fetchService.fetch(url, options);
     } else {
-      // 回退方案：手动添加JWT token
+      // 回退方案：手动添加JWT token并使用统一配置
       const headers = {
         ...options.headers,
       } as Record<string, string>;
       
       // 尝试从localStorage获取JWT token
-      const token = localStorage.getItem('yunke-admin-token');
+      const token = localStorage.getItem('yunke-admin-token') || 
+                   localStorage.getItem('yunke-access-token');
       if (token) {
         headers['Authorization'] = `Bearer ${token}`;
       }
       
-      // 🔥 性能优化：确保使用完整的URL，自动适配当前端口避免跨域
+      // 使用统一配置构建URL
       const { getBaseUrl } = await import('@yunke/config');
       const baseOrigin = getBaseUrl();
       const fullUrl = url.startsWith('http') ? url : `${baseOrigin}${url}`;
@@ -342,46 +342,14 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
     try {
       let response: Response;
       
-      if (this.fetchService) {
-        // 使用FetchService发送请求，确保包含JWT token
-        // 获取基础 Origin，路径拼接由调用方控制
-        const { getBaseUrl } = await import('@yunke/config');
-        const apiUrl = `${getBaseUrl()}/api/workspaces`;
-        
-        response = await this.fetchService.fetch(apiUrl, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(requestData),
-        });
-      } else {
-        // 回退方案：手动添加JWT token
-        
-        const headers: Record<string, string> = {
+      // 统一使用fetchWithAuth方法，享受FetchService的所有功能
+      response = await this.fetchWithAuth('/api/workspaces', {
+        method: 'POST',
+        headers: {
           'Content-Type': 'application/json',
-        };
-        
-        // 尝试从localStorage获取JWT token
-        const token = localStorage.getItem('yunke-admin-token');
-        if (token) {
-          headers['Authorization'] = `Bearer ${token}`;
-          console.log('添加JWT token到请求头');
-        } else {
-          console.warn('未找到JWT token');
-        }
-        
-        // 获取基础 Origin
-        const { getBaseUrl } = await import('@yunke/config');
-        const apiUrl = `${getBaseUrl()}/api/workspaces`;
-        
-        response = await fetch(apiUrl, {
-          method: 'POST',
-          headers,
-          body: JSON.stringify(requestData),
-          credentials: 'include',
-        });
-      }
+        },
+        body: JSON.stringify(requestData),
+      });
       
       // 克隆响应以便可以多次读取body
       const responseClone = response.clone();

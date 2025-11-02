@@ -1,4 +1,5 @@
 import { Store } from '@toeverything/infra';
+import { getApiBaseUrl } from '@yunke/config';
 
 import type { GlobalState } from '../../storage';
 import type { TemporaryUserInfo } from '../entities/temporary-user-session';
@@ -67,7 +68,9 @@ export class TemporaryUserStore extends Store {
     name?: string;
   }): Promise<CreateTemporaryUserResponse | null> {
     try {
-      const response = await fetch('/api/temporary-users', {
+      // 统一使用 network-config.ts 的配置
+      const apiBaseUrl = getApiBaseUrl();
+      const response = await fetch(`${apiBaseUrl}/temporary-users`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -194,7 +197,9 @@ export class TemporaryUserStore extends Store {
    */
   async validateSession(): Promise<ValidateSessionResponse> {
     try {
-      const response = await fetch('/api/temporary-users/validate', {
+      // 统一使用 network-config.ts 的配置
+      const apiBaseUrl = getApiBaseUrl();
+      const response = await fetch(`${apiBaseUrl}/temporary-users/validate`, {
         method: 'GET',
         credentials: 'include', // 包含cookies
       });
@@ -216,7 +221,9 @@ export class TemporaryUserStore extends Store {
    */
   async extendSession(userId: string): Promise<ExtendSessionResponse> {
     try {
-      const response = await fetch(`/api/temporary-users/${userId}/extend`, {
+      // 统一使用 network-config.ts 的配置
+      const apiBaseUrl = getApiBaseUrl();
+      const response = await fetch(`${apiBaseUrl}/temporary-users/${userId}/extend`, {
         method: 'POST',
         credentials: 'include', // 包含cookies
       });
@@ -238,7 +245,9 @@ export class TemporaryUserStore extends Store {
    */
   async logout(): Promise<{ success: boolean }> {
     try {
-      const response = await fetch('/api/temporary-users/logout', {
+      // 统一使用 network-config.ts 的配置
+      const apiBaseUrl = getApiBaseUrl();
+      const response = await fetch(`${apiBaseUrl}/temporary-users/logout`, {
         method: 'POST',
         credentials: 'include', // 包含cookies
       });
@@ -260,7 +269,9 @@ export class TemporaryUserStore extends Store {
    */
   async getCurrentUser(): Promise<{ user?: TemporaryUserInfo }> {
     try {
-      const response = await fetch('/api/temporary-users/current', {
+      // 统一使用 network-config.ts 的配置
+      const apiBaseUrl = getApiBaseUrl();
+      const response = await fetch(`${apiBaseUrl}/temporary-users/current`, {
         method: 'GET',
         credentials: 'include', // 包含cookies
       });

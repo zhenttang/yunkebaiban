@@ -737,56 +737,175 @@ window.addEventListener('yunke-auth-initialized', (event: any) => {
   }
 });
 
-// Android专用：拦截所有网络请求进行调试和监控
+// Android专用：优化网络请求拦截器（商用级实现）
 const originalFetch = window.fetch;
-window.fetch = function(...args) {
-  let [input, init] = args;
+
+/**
+ * 安全地克隆Request body（避免body被消费）
+ */
+async function cloneBodyIfNeeded(body: BodyInit | null): Promise<BodyInit | null> {
+  if (!body) return null;
   
-  // 使用Request构造函数来规范化所有类型的input（字符串、URL对象、Request对象）
-  const request = new Request(input, init);
-  let url = request.url;
-  
-  // 🔧 创建新的Request对象，并强制使用HTTP/1.1
-  const originalHeaders = {};
-  if (request.headers) {
-    // 正确复制headers
-    request.headers.forEach((value, key) => {
-      originalHeaders[key] = value;
-    });
+  // 如果是字符串、FormData、URLSearchParams等，直接返回
+  if (typeof body === 'string' || body instanceof FormData || body instanceof URLSearchParams) {
+    return body;
   }
   
-  const modifiedInit = {
-    ...init,
-    headers: {
-      ...originalHeaders,
-      // 强制使用HTTP/1.1协议
-      'Connection': 'close',
-      'Cache-Control': 'no-cache',
+  // 如果是Blob，克隆它
+  if (body instanceof Blob) {
+    return body.slice();
+  }
+  
+  // 如果是ArrayBuffer，克隆它
+  if (body instanceof ArrayBuffer) {
+    return body.slice(0);
+  }
+  
+  // 如果是TypedArray，转换为ArrayBuffer后克隆
+  if (ArrayBuffer.isView(body)) {
+    return body.buffer.slice(body.byteOffset, body.byteOffset + body.byteLength);
+  }
+  
+  // 如果是ReadableStream，读取并转换为Blob（注意：这会消费原始流）
+  if (body instanceof ReadableStream) {
+    const reader = body.getReader();
+    const chunks: Uint8Array[] = [];
+    
+    try {
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        if (value) chunks.push(value);
+      }
+    } finally {
+      reader.releaseLock();
     }
+    
+    // 合并所有chunks
+    const totalLength = chunks.reduce((sum, chunk) => sum + chunk.length, 0);
+    const merged = new Uint8Array(totalLength);
+    let offset = 0;
+    for (const chunk of chunks) {
+      merged.set(chunk, offset);
+      offset += chunk.length;
+    }
+    
+    return merged.buffer;
+  }
+  
+  // 未知类型，尝试转换为字符串
+  return String(body);
+}
+
+window.fetch = async function(...args): Promise<Response> {
+  let [input, init] = args;
+  
+  // 规范化input为字符串URL
+  let url: string;
+  if (typeof input === 'string') {
+    url = input;
+  } else if (input instanceof URL) {
+    url = input.toString();
+  } else if (input instanceof Request) {
+    url = input.url;
+  } else {
+    url = String(input);
+  }
+  
+  // 安全地提取headers和body（避免Request对象消费body）
+  const originalHeaders: Record<string, string> = {};
+  let requestBody: BodyInit | null = null;
+  
+  if (input instanceof Request) {
+    // 从Request对象提取headers
+    input.headers.forEach((value, key) => {
+      originalHeaders[key] = value;
+    });
+    
+    // 安全地克隆body（如果存在）
+    if (input.body) {
+      try {
+        requestBody = await cloneBodyIfNeeded(input.body);
+      } catch (error) {
+        console.warn('⚠️ 克隆Request body失败，使用原始body:', error);
+        // 如果克隆失败，尝试使用原始Request（可能会导致body被消费）
+        requestBody = input.body;
+      }
+    }
+  } else if (init) {
+    // 从init中提取headers
+    if (init.headers) {
+      if (init.headers instanceof Headers) {
+        init.headers.forEach((value, key) => {
+          originalHeaders[key] = value;
+        });
+      } else if (Array.isArray(init.headers)) {
+        init.headers.forEach(([key, value]) => {
+          originalHeaders[key] = value;
+        });
+      } else {
+        Object.assign(originalHeaders, init.headers);
+      }
+    }
+    
+    // 从init中提取body
+    if (init.body) {
+      requestBody = await cloneBodyIfNeeded(init.body);
+    }
+  }
+  
+  // 构建优化的请求配置
+  // 移除Connection: close，使用keep-alive提升性能
+  const optimizedHeaders: Record<string, string> = {
+    ...originalHeaders,
+    'Cache-Control': 'no-cache',
+    // 注意：不设置Connection头，让浏览器自动管理（默认使用keep-alive）
   };
   
-  const modifiedRequest = new Request(url, modifiedInit);
+  // 构建请求配置
+  const fetchInit: RequestInit = {
+    method: init?.method || 'GET',
+    headers: optimizedHeaders,
+    body: requestBody,
+    signal: init?.signal,
+    cache: init?.cache || 'no-cache',
+    credentials: init?.credentials,
+    redirect: init?.redirect,
+    referrer: init?.referrer,
+    referrerPolicy: init?.referrerPolicy,
+    integrity: init?.integrity,
+    keepalive: init?.keepalive,
+    mode: init?.mode,
+  };
   
   // 🔧 只对重要请求输出日志，减少刷屏
   const isImportantRequest = url.includes('/api/auth') || 
                             url.includes('/api/workspaces') ||
                             url.includes('/api/user') ||
-                            modifiedRequest.method !== 'GET';
+                            fetchInit.method !== 'GET';
   
   if (isImportantRequest) {
-    console.log('🌐 重要请求:', modifiedRequest.method, url);
+    console.log('🌐 重要请求:', fetchInit.method, url);
     console.log('🎯 请求Headers:');
-    modifiedRequest.headers.forEach((value, key) => {
-      console.log(`  ${key}: ${value}`);
+    Object.entries(optimizedHeaders).forEach(([key, value]) => {
+      // 隐藏敏感信息
+      if (key.toLowerCase() === 'authorization') {
+        console.log(`  ${key}: Bearer ***`);
+      } else {
+        console.log(`  ${key}: ${value}`);
+      }
     });
     
-    // 检查请求体
-    if (modifiedRequest.body) {
-      console.log('📦 请求Body存在');
+    if (requestBody) {
+      console.log('📦 请求Body存在，大小:', 
+        requestBody instanceof Blob ? requestBody.size :
+        requestBody instanceof ArrayBuffer ? requestBody.byteLength :
+        typeof requestBody === 'string' ? requestBody.length :
+        'unknown'
+      );
     }
     
-    // 检查Authorization头
-    const authHeader = modifiedRequest.headers.get('Authorization');
+    const authHeader = optimizedHeaders['Authorization'] || optimizedHeaders['authorization'];
     if (authHeader) {
       console.log('✅ JWT Token存在');
     } else {
@@ -794,37 +913,55 @@ window.fetch = function(...args) {
     }
   }
   
-  // 使用修改后的Request对象调用原始fetch
-  return originalFetch.call(this, modifiedRequest)
-    .then(response => {
-      if (isImportantRequest || !response.ok) {
-        console.log('📡 响应:', response.status, response.url);
-        
-        if (!response.ok) {
-          console.error('❌ 请求失败 - 状态码:', response.status);
-          if (response.status === 404) {
-            console.error('❌ 404错误 - 接口不存在');
-          } else if (response.status === 401) {
-            console.error('❌ 401错误 - 认证失败');
-          }
+  // 记录请求开始时间（用于性能监控）
+  const startTime = performance.now();
+  
+  try {
+    // 执行原始fetch
+    const response = await originalFetch.call(this, url, fetchInit);
+    
+    // 计算请求耗时
+    const duration = performance.now() - startTime;
+    
+    if (isImportantRequest || !response.ok) {
+      console.log(`📡 响应: ${response.status} ${response.statusText} (${duration.toFixed(0)}ms)`, response.url);
+      
+      if (!response.ok) {
+        console.error(`❌ 请求失败 - 状态码: ${response.status}`);
+        if (response.status === 404) {
+          console.error('❌ 404错误 - 接口不存在');
+        } else if (response.status === 401) {
+          console.error('❌ 401错误 - 认证失败');
+        } else if (response.status >= 500) {
+          console.error('❌ 服务器错误 - 可能需要重试');
         }
+      } else if (duration > 3000) {
+        console.warn(`⚠️ 请求耗时较长: ${duration.toFixed(0)}ms`);
       }
-      
-      return response;
-    })
-    .catch(error => {
-      // 安全地提取错误信息
-      const errorMessage = error?.message || error?.toString() || String(error) || '未知错误';
-      const errorName = error?.name || 'NetworkError';
-      console.error('🔴 网络异常:', errorMessage, 'URL:', url, '错误类型:', errorName);
-      
-      // 如果是ERR_H2_OR_QUIC_REQUIRED错误，提供更明确的提示
-      if (errorMessage.includes('ERR_H2_OR_QUIC_REQUIRED')) {
-        console.error('❌ 服务器强制要求HTTP/2，但Android不支持。请检查服务器配置！');
-      }
-      
-      throw error;
-    });
+    }
+    
+    return response;
+  } catch (error: any) {
+    // 计算请求耗时
+    const duration = performance.now() - startTime;
+    
+    // 安全地提取错误信息
+    const errorMessage = error?.message || error?.toString() || String(error) || '未知错误';
+    const errorName = error?.name || 'NetworkError';
+    
+    console.error(`🔴 网络异常 (${duration.toFixed(0)}ms):`, errorMessage, 'URL:', url, '错误类型:', errorName);
+    
+    // 特定错误类型的处理
+    if (errorMessage.includes('ERR_H2_OR_QUIC_REQUIRED')) {
+      console.error('❌ 服务器强制要求HTTP/2，但Android不支持。请检查服务器配置！');
+    } else if (errorMessage.includes('timeout') || errorName === 'AbortError') {
+      console.error('❌ 请求超时 - 可能需要检查网络连接或增加超时时间');
+    } else if (errorMessage.includes('Failed to fetch') || errorMessage.includes('NetworkError')) {
+      console.error('❌ 网络连接失败 - 请检查网络连接');
+    }
+    
+    throw error;
+  }
 };
 
 // 检查Capacitor配置

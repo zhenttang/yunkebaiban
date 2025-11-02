@@ -1,15 +1,6 @@
 import { Store } from '@toeverything/infra';
-import { getBaseUrl } from '@yunke/config';
 
-/**
- * 获取配置的基础URL
- * 使用@yunke/config统一管理网络配置
- * 支持环境变量覆盖
- */
-function getConfiguredBaseUrl(): string {
-  // 使用统一的网络配置管理（仅返回 Origin）
-  return getBaseUrl();
-}
+import type { FetchService } from '../services/fetch';
 
 // Copilot配额数据结构
 interface CopilotQuotaDto {
@@ -32,20 +23,15 @@ interface CopilotQuotaDto {
 }
 
 export class UserCopilotQuotaStore extends Store {
-  constructor() {
+  constructor(private readonly fetchService: FetchService) {
     super();
   }
 
   async fetchUserCopilotQuota(abortSignal?: AbortSignal) {
     try {
-      const baseUrl = getConfiguredBaseUrl();
-      // 获取用户的所有Copilot配额信息
-      const response = await fetch(`${baseUrl}/api/copilot/quota`, {
+      // 统一使用 FetchService，自动包含重试、超时、JWT token等功能
+      const response = await this.fetchService.fetch('/api/copilot/quota', {
         method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include',
         signal: abortSignal,
       });
 

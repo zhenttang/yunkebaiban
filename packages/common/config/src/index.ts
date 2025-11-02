@@ -4,6 +4,7 @@
  */
 
 export * from './network-config';
+export * from './unified-fetch';
 export * from './node-env';
 
 // 导出配置管理器实例
