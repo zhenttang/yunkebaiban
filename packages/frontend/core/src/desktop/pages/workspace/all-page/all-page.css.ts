@@ -5,6 +5,7 @@ export const body = style({
   display: 'flex',
   flexDirection: 'column',
   flex: 1,
+  minHeight: 0, // 关键：避免 flex 子项无限扩展，确保可以滚动
   height: '100%',
   width: '100%',
   containerName: 'docs-body',
@@ -18,6 +19,8 @@ export const mainContainer = style({
   padding: '0 40px 48px 40px',
   display: 'flex',
   flexDirection: 'column',
+  flex: 1, // 关键：让容器占用可用空间
+  minHeight: 0, // 关键：避免 flex 子项无限扩展
   gap: 24,
   '@container': {
     'docs-body (width <= 1024px)': {
@@ -105,7 +108,11 @@ export const documentsContainer = style([
     background: cssVarV2('layer/background/secondary'),
     border: `1px solid ${cssVarV2('layer/outline/floating')}`,
     padding: '24px',
-    minHeight: 320,
+    display: 'flex',
+    flexDirection: 'column',
+    flex: 1, // 关键：让文档容器占用剩余空间
+    minHeight: 0, // 关键：避免 flex 子项无限扩展，确保可以滚动
+    overflow: 'hidden', // 关键：隐藏溢出，让内部滚动容器处理滚动
     '@container': {
       'docs-body (width <= 768px)': {
         padding: '18px',
@@ -130,5 +137,9 @@ export const scrollArea = style({
 
 export const documentsInner = style({
   width: '100%',
-  height: '100%',
+  display: 'flex',
+  flexDirection: 'column',
+  flex: 1, // 关键：让内部容器占用可用空间
+  minHeight: 0, // 关键：避免 flex 子项无限扩展，确保滚动容器有明确高度
+  overflow: 'hidden', // 关键：隐藏溢出，让 Scrollable 组件处理滚动
 });
