@@ -260,6 +260,11 @@ export const Masonry = ({
                   collapsed={!!collapsed}
                   groupId={groupId}
                   paddingX={calcPX(paddingX, totalWidth)}
+                  style={{
+                    // 当这个 header 变成 sticky 时，隐藏原始 header 避免重叠
+                    ...groupProps.style,
+                    visibility: stickyGroupId === groupId ? 'hidden' : 'visible',
+                  }}
                 />
               )}
               {/* group items */}
