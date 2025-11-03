@@ -15,7 +15,7 @@ import type { FilterParams } from '@yunke/core/modules/collection-rules/types';
 import { WorkspaceLocalState } from '@yunke/core/modules/workspace';
 import { useI18n } from '@yunke/i18n';
 import { useLiveData, useService } from '@toeverything/infra';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import {
   ViewBody,
@@ -181,7 +181,24 @@ export const AllPage = () => {
   const { openPromptModal } = usePromptModal();
 
   const collectionRulesService = useService(CollectionRulesService);
+  // 使用 ref 跟踪订阅，确保在切换时正确清理
+  const subscriptionRef = useRef<{ unsubscribe: () => void } | null>(null);
+  // 使用 ref 保存当前的 groups，用于在切换时保留数据
+  const currentGroupsRef = useRef<Array<{ key: string; items: string[] }>>([]);
+
   useEffect(() => {
+    // 先取消旧的订阅
+    if (subscriptionRef.current) {
+      subscriptionRef.current.unsubscribe();
+      subscriptionRef.current = null;
+    }
+
+    // 保存当前的 groups，以便在切换时保留
+    const savedGroups = explorerContextValue.groups$.value;
+    if (savedGroups && savedGroups.length > 0) {
+      currentGroupsRef.current = savedGroups;
+    }
+
     const subscription = collectionRulesService
       .watch(
         selectedCollectionInfo
@@ -238,14 +255,25 @@ export const AllPage = () => {
       )
       .subscribe({
         next: result => {
-          explorerContextValue.groups$.next(result.groups);
+          // 订阅返回数据时立即更新，确保视图切换时数据及时更新
+          if (result && result.groups !== undefined) {
+            explorerContextValue.groups$.next(result.groups);
+            currentGroupsRef.current = result.groups;
+          }
         },
         error: error => {
           console.error(error);
         },
       });
+
+    subscriptionRef.current = subscription;
+
     return () => {
-      subscription.unsubscribe();
+      // 清理时取消订阅
+      if (subscriptionRef.current) {
+        subscriptionRef.current.unsubscribe();
+        subscriptionRef.current = null;
+      }
     };
   }, [
     collectionRulesService,
