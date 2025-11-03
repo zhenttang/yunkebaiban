@@ -158,6 +158,7 @@ if (typeof window !== 'undefined') {
 
 import { getStoreManager } from '@yunke/core/blocksuite/manager/store';
 import { YunkeContext } from '@yunke/core/components/context';
+import { ModalConfigProvider } from './modal-config';
 import { AppFallback } from '@yunke/core/mobile/components/app-fallback';
 import { configureMobileModules } from '@yunke/core/mobile/modules';
 import { VirtualKeyboardProvider } from '@yunke/core/mobile/modules/virtual-keyboard';
@@ -1384,14 +1385,16 @@ export function App() {
     <Suspense>
       <FrameworkRoot framework={frameworkProvider}>
         <I18nProvider>
-          <YunkeContext store={getCurrentStore()}>
-            <ThemeProvider />
-            <RouterProvider
-              fallbackElement={<AppFallback />}
-              router={router}
-              future={future}
-            />
-          </YunkeContext>
+          <ModalConfigProvider>
+            <YunkeContext store={getCurrentStore()}>
+              <ThemeProvider />
+              <RouterProvider
+                fallbackElement={<AppFallback />}
+                router={router}
+                future={future}
+              />
+            </YunkeContext>
+          </ModalConfigProvider>
         </I18nProvider>
       </FrameworkRoot>
     </Suspense>

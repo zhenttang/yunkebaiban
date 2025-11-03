@@ -27,7 +27,7 @@ import {
 } from '@blocksuite/icons/rc';
 import { FrameworkScope, useLiveData, useService } from '@toeverything/infra';
 import clsx from 'clsx';
-import { type HTMLAttributes, useCallback, useMemo } from 'react';
+import React, { type HTMLAttributes, useCallback, useMemo } from 'react';
 
 import * as styles from './menu.css';
 
@@ -80,14 +80,14 @@ export const WorkspaceList = (props: WorkspaceListProps) => {
 const CloudSignIn = ({ onClick }: { onClick: () => void }) => {
   const t = useI18n();
   return (
-    <li className={styles.wsItem}>
-      <button className={styles.wsCard} onClick={onClick}>
-        <div className={styles.signInIcon}>
+    <div className={styles.signInContainer}>
+      <button className={styles.signInButton} onClick={onClick}>
+        <div className={styles.signInIconLarge}>
           <AccountIcon />
         </div>
-        <div className={styles.wsName}>{t['Sign in']()}</div>
+        <div className={styles.signInText}>{t['Sign in']()}</div>
       </button>
-    </li>
+    </div>
   );
 };
 
@@ -273,6 +273,38 @@ const AddServer = () => {
   return <IconButton onClick={onAddServer} size="24" icon={<SelfhostIcon />} />;
 };
 
+// 简化的登录页面内容组件（在yunke-cloud scope中使用）
+const SimplifiedLoginContent = ({
+  onSignIn,
+  onClose,
+  fallback,
+}: {
+  onSignIn: () => void;
+  onClose?: () => void;
+  fallback?: React.ReactNode;
+}) => {
+  const authService = useService(AuthService);
+  const accountStatus = useLiveData(authService.session.status$);
+  const isUnauthenticated = accountStatus === 'unauthenticated';
+
+  // 只有在未登录时才显示简化登录页面
+  // 如果已登录但没有工作区，显示fallback（完整页面）
+  if (!isUnauthenticated) {
+    return <>{fallback}</>;
+  }
+
+  return (
+    <div className={styles.rootSimplified}>
+      <div className={styles.closeButtonWrapper}>
+        <IconButton onClick={onClose} size="24" icon={<CloseIcon />} />
+      </div>
+      <div className={styles.signInContent}>
+        <CloudSignIn onClick={onSignIn} />
+      </div>
+    </div>
+  );
+};
+
 export const SelectorMenu = ({ onClose }: { onClose?: () => void }) => {
   const workspacesService = useService(WorkspacesService);
   const workspaces = useLiveData(workspacesService.list.workspaces$);
@@ -333,6 +365,60 @@ export const SelectorMenu = ({ onClose }: { onClose?: () => void }) => {
     [onClose, jumpToPage]
   );
 
+  // 检查是否有工作区
+  const hasWorkspaces = workspaces.length > 0;
+
+  // 处理登录
+  const globalDialogService = useService(GlobalDialogService);
+  const handleSignIn = useAsyncCallback(async () => {
+    if (yunkeCloudServer) {
+      globalDialogService.open('sign-in', {
+        server: yunkeCloudServer.baseUrl,
+      });
+    }
+  }, [yunkeCloudServer, globalDialogService]);
+
+  // 如果未登录且没有工作区，显示简化的登录页面
+  // 需要在yunke-cloud scope中检查登录状态
+  if (!hasWorkspaces && yunkeCloudServer) {
+    return (
+      <FrameworkScope scope={yunkeCloudServer.scope}>
+        <SimplifiedLoginContent
+          onSignIn={handleSignIn}
+          onClose={onClose}
+          fallback={
+            // 如果已登录但没有工作区，显示完整页面
+            <div className={styles.root}>
+              <header className={styles.head}>
+                工作区
+                <div className={styles.headActions}>
+                  <AddServer />
+                  <IconButton onClick={onClose} size="24" icon={<CloseIcon />} />
+                </div>
+              </header>
+              <div className={styles.divider} />
+              <main className={styles.body}>
+                <FrameworkScope
+                  key={yunkeCloudServer.id}
+                  scope={yunkeCloudServer.scope}
+                >
+                  <CloudWorkSpaceList
+                    server={yunkeCloudServer}
+                    workspaces={cloudWorkspaces.filter(
+                      ({ flavour }) => flavour === yunkeCloudServer.id
+                    )}
+                    onClickWorkspace={handleClickWorkspace}
+                  />
+                </FrameworkScope>
+              </main>
+            </div>
+          }
+        />
+      </FrameworkScope>
+    );
+  }
+
+  // 原有的完整页面（已登录或有工作区时）
   return (
     <div className={styles.root}>
       <header className={styles.head}>

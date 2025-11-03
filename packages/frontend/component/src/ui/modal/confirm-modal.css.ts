@@ -45,24 +45,25 @@ export const mobileStyles = {
   description: style([
     bodyRegular,
     {
-      padding: '11px 22px',
+      padding: '0 20px 16px 20px',
     },
   ]),
   header: style([
     bodyEmphasized,
     {
-      padding: '10px 16px',
+      padding: '16px 20px 10px 20px',
       marginBottom: '0px !important',
     },
   ]),
   content: style([
     bodyRegular,
     {
-      padding: '11px 22px',
+      padding: '16px 20px',
+      // 确保内容区域有足够的左右 padding，避免贴边
     },
   ]),
   footer: style({
-    padding: '8px 16px',
+    padding: '8px 20px 16px 20px',
     display: 'flex',
     flexDirection: 'column',
     gap: 16,

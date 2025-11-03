@@ -94,7 +94,8 @@ export const modalContentWrapper = style({
   selectors: {
     '&[data-mobile]': {
       alignItems: 'flex-end',
-      paddingBottom: 'env(safe-area-inset-bottom, 20px)',
+      // 增加底部 padding，让对话框更靠上，避免输入法遮挡
+      paddingBottom: 'env(safe-area-inset-bottom, 60px)',
     },
     '&[data-full-screen="true"]': {
       padding: '0 !important',

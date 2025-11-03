@@ -2,12 +2,19 @@ import { cssVar } from '@toeverything/theme';
 import { cssVarV2 } from '@toeverything/theme/v2';
 import { style } from '@vanilla-extract/css';
 
-export const content = style({
-  // to avoid content clipped
-  width: `calc(100% + 20px)`,
-  padding: '10px 10px 20px 10px',
-  marginLeft: '-10px',
-});
+// 移动端：移除导致贴边的样式，使用 ConfirmModal 的默认 padding
+export const content = BUILD_CONFIG.isMobileEdition
+  ? style({
+      width: '100%',
+      marginLeft: '0',
+      padding: '0',
+    })
+  : // 桌面端：保持原有逻辑以避免内容被裁剪
+    style({
+      width: `calc(100% + 20px)`,
+      padding: '10px 10px 20px 10px',
+      marginLeft: '-10px',
+    });
 
 export const section = style({
   display: 'flex',
