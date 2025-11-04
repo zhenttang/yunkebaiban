@@ -60,7 +60,7 @@ export const OpenInAppCard = () => {
           <Trans i18nKey="com.yunke.open-in-app.card.subtitle">
             Don&apos;t have the app?
             <a
-              href="https://yunke.pro/download"
+              href="/download"
               target="_blank"
               rel="noreferrer"
               className={styles.link}

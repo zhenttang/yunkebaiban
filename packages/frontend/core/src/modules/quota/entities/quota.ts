@@ -49,19 +49,19 @@ export class WorkspaceQuota extends Entity {
   used$ = new LiveData<number | null>(null);
   /** Formatted used storage */
   usedFormatted$ = this.used$.map(used =>
-    used !== null ? bytes.format(used) : null
+    used !== null ? bytes.format(used) : '0B'
   );
   /** Maximum storage limit in bytes */
   max$ = this.quota$.map(quota => (quota ? quota.storageQuota : null));
   /** Maximum storage limit formatted */
-  maxFormatted$ = this.max$.map(max => (max ? bytes.format(max) : null));
+  maxFormatted$ = this.max$.map(max => (max !== null ? bytes.format(max) : '0B'));
 
   /** Percentage of storage used */
   percent$ = LiveData.computed(get => {
     const max = get(this.max$);
     const used = get(this.used$);
-    if (max === null || used === null) {
-      return null;
+    if (max === null || used === null || max === 0) {
+      return 0; // 返回0而不是null，避免显示异常
     }
     return Math.min(
       100,

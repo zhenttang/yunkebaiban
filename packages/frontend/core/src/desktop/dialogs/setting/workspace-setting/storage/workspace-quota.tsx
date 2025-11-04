@@ -53,14 +53,14 @@ export const StorageProgress = () => {
         <div className="storage-progress-desc">
           <span>{t['com.yunke.storage.used.hint']()}</span>
           <span>
-            {usedFormatted}/{maxFormatted}
+            {usedFormatted ?? '0B'}/{maxFormatted ?? '0B'}
           </span>
         </div>
         <div className="storage-progress-bar-wrapper">
           <div
             className={styles.storageProgressBar}
             style={{
-              width: `${percent}%`,
+              width: `${percent ?? 0}%`,
               backgroundColor: color ?? cssVarV2('toast/iconState/regular'),
             }}
           ></div>

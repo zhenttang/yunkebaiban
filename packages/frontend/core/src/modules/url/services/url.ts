@@ -45,4 +45,26 @@ export class UrlService extends Service {
       this.popupWindowProvider?.open(url);
     }
   }
+
+  /**
+   * Get the download page URL (site-local by default).
+   * Optionally append a channel query if provided.
+   */
+  getDownloadPageUrl(opts?: { channel?: string }) {
+    let url = BUILD_CONFIG.downloadUrl || '/download';
+    if (opts?.channel) {
+      const sep = url.includes('?') ? '&' : '?';
+      url = `${url}${sep}channel=${opts.channel}`;
+    }
+    return url;
+  }
+
+  openDownloadPage(opts?: { channel?: string }) {
+    const url = this.getDownloadPageUrl(opts);
+    if (/^https?:/i.test(url)) {
+      this.openExternal(url);
+    } else {
+      location.href = url;
+    }
+  }
 }

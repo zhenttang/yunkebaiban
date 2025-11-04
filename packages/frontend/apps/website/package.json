@@ -1,0 +1,19 @@
+{
+  "name": "@yunke/website",
+  "version": "0.21.0",
+  "private": true,
+  "description": "云科官网（React 组件化 + 多页结构）",
+  "scripts": {
+    "build": "yunke bundle --package @yunke/website",
+    "dev": "yunke bundle --package @yunke/website --dev"
+  },
+  "dependencies": {
+    "react": "18.2.0",
+    "react-dom": "18.2.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "typescript": "^5.7.2"
+  }
+}

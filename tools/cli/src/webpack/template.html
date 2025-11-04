@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="<%= typeof HTML_LANG !== 'undefined' ? HTML_LANG : 'zh-CN' %>">
   <head>
     <meta charset="utf-8" />
     <meta
@@ -14,8 +14,12 @@
       content="black-translucent"
     />
 
-    <title>YUNKE</title>
-    <meta name="theme-color" content="#fafafa" />
+    <title><%= typeof HTML_TITLE !== 'undefined' ? HTML_TITLE : 'YUNKE' %></title>
+    <meta name="theme-color" content="<%= typeof THEME_COLOR !== 'undefined' ? THEME_COLOR : '#ffffff' %>" />
+    <meta name="description" content="<%= typeof DESCRIPTION !== 'undefined' ? DESCRIPTION : '' %>" />
+    <% if (typeof KEYWORDS !== 'undefined' && KEYWORDS) { %>
+    <meta name="keywords" content="<%= KEYWORDS %>" />
+    <% } %>
     <%= PRECONNECT %>
     <link rel="manifest" href="/manifest.json" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
@@ -42,9 +46,9 @@
     <meta property="og:image" content="https://yunke.pro/og.jpeg" />
   </head>
 
-  <body>
+  <body data-edge="sticker">
     <div id="app" data-version="<%= GIT_SHORT_SHA %>"></div>
-
+  
   
   </body>
 </html>

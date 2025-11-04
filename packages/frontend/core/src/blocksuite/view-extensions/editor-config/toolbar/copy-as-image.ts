@@ -114,7 +114,7 @@ export function copyAsImage(std: BlockStdScope) {
           key: 'download',
           label: I18n.t('com.yunke.copy.asImage.notAvailable.action'),
           onClick: () => {
-            window.open('https://yunke.pro/download');
+            window.open('/download', '_blank');
           },
         },
       ],

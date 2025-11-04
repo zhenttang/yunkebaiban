@@ -8,6 +8,8 @@ import webpack from 'webpack';
 import WebpackDevServer, {
   type Configuration as DevServerConfiguration,
 } from 'webpack-dev-server';
+import CopyPlugin from 'copy-webpack-plugin';
+import { ProjectRoot } from '@yunke-tools/utils/path';
 
 import { Option, PackageCommand } from './command';
 import {
@@ -41,6 +43,91 @@ function getBaseWorkerConfigs(pkg: Package) {
 
 function getBundleConfigs(pkg: Package) {
   switch (pkg.name) {
+    case '@yunke/website': {
+      // 多入口 + 多页面：React 组件化渲染
+      const entries = {
+        home: pkg.srcPath.join('entries/home.tsx').value,
+        product: pkg.srcPath.join('entries/product.tsx').value,
+        solutions: pkg.srcPath.join('entries/solutions.tsx').value,
+        pricing: pkg.srcPath.join('entries/pricing.tsx').value,
+        download: pkg.srcPath.join('entries/download.tsx').value,
+      } as Record<string, string>;
+
+      const config = createHTMLTargetConfig(
+        pkg,
+        entries,
+        {
+          // 生成多页 HTML
+          pages: [
+            {
+              filename: 'index.html',
+              chunks: ['home'],
+              title: '云科白板 - 企业级知识白板协作平台',
+              description:
+                '基于 YJS CRDT 技术的企业级白板，支持 Windows、macOS、Linux、iOS、Android 多平台实时协作。更快更稳的协作体验。',
+              keywords: '企业白板,协作工具,知识管理,在线白板,实时协作,跨平台白板',
+              themeColor: '#ffffff',
+              lang: 'zh-CN',
+            },
+            {
+              filename: 'product/index.html',
+              chunks: ['product'],
+              title: '产品功能 - 云科白板',
+              description:
+                '了解云科白板的核心功能：实时协作、跨平台同步、企业级安全、离线支持等特性。',
+              themeColor: '#ffffff',
+              lang: 'zh-CN',
+            },
+            {
+              filename: 'solutions/index.html',
+              chunks: ['solutions'],
+              title: '解决方案 - 云科白板',
+              description:
+                '了解云科白板如何为不同行业和场景提供解决方案：团队协作、知识管理、培训教育等。',
+              themeColor: '#ffffff',
+              lang: 'zh-CN',
+            },
+            {
+              filename: 'pricing/index.html',
+              chunks: ['pricing'],
+              title: '定价方案 - 云科白板',
+              description:
+                '选择适合您的云科白板定价方案：免费版、专业版、企业版，满足不同规模团队的需求。',
+              themeColor: '#ffffff',
+              lang: 'zh-CN',
+            },
+            {
+              filename: 'download/index.html',
+              chunks: ['download'],
+              title: '下载 - 云科白板',
+              description:
+                '下载云科白板，支持 Windows、macOS、Linux、iOS、Android 全平台。企业级白板协作工具。',
+              themeColor: '#ffffff',
+              lang: 'zh-CN',
+            },
+          ],
+          additionalEntryForSelfhost: false,
+          injectGlobalErrorHandler: false,
+          emitAssetsManifest: false,
+        }
+      );
+
+      // 复制静态资源（例如 icons.svg、任意附带资源）
+      (config.plugins ||= []).push(
+        new CopyPlugin({
+          patterns: [
+            {
+              // 可选：从应用内 public 目录复制静态资源（如有）
+              from: pkg.join('public').value,
+              to: pkg.distPath.value,
+              noErrorOnMissing: true,
+            },
+          ],
+        })
+      );
+
+      return [config];
+    }
     case '@yunke/admin': {
       return [createHTMLTargetConfig(pkg, pkg.srcPath.join('index.tsx').value)];
     }
@@ -234,8 +321,24 @@ export class BundleCommand extends PackageCommand {
 
     const compiler = webpack(config);
 
+    // 为 website 静态站点禁用 historyApiFallback，确保多页可直接访问
+    const extraDevConfig: DevServerConfiguration | undefined =
+      pkg.name === '@yunke/website'
+        ? {
+            historyApiFallback: {
+              rewrites: [
+                { from: /^\/product$/, to: '/product/index.html' },
+                { from: /^\/solutions$/, to: '/solutions/index.html' },
+                { from: /^\/pricing$/, to: '/pricing/index.html' },
+                { from: /^\/download$/, to: '/download/index.html' },
+              ],
+              index: '/index.html',
+            },
+          }
+        : undefined;
+
     const devServer = new WebpackDevServer(
-      merge({}, defaultDevServerConfig, devServerConfig),
+      merge({}, defaultDevServerConfig, extraDevConfig, devServerConfig),
       compiler
     );
 

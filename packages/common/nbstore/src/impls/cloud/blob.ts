@@ -39,6 +39,26 @@ export class CloudBlobStorage extends BlobStorageBase {
 
   readonly connection = new HttpConnection(this.options.serverBaseUrl);
 
+  /**
+   * 获取包含认证token的请求头
+   */
+  private getAuthHeaders(): Record<string, string> {
+    const headers: Record<string, string> = {
+      'x-yunke-version': BUILD_CONFIG.appVersion,
+    };
+
+    // 尝试从localStorage获取JWT token
+    if (typeof window !== 'undefined' && window.localStorage) {
+      const token = localStorage.getItem('yunke-admin-token') || 
+                   localStorage.getItem('yunke-access-token');
+      if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+      }
+    }
+
+    return headers;
+  }
+
   override async get(key: string, signal?: AbortSignal) {
     const res = await this.connection.fetch(
       '/api/workspaces/' +
@@ -48,9 +68,7 @@ export class CloudBlobStorage extends BlobStorageBase {
         (SHOULD_MANUAL_REDIRECT ? '?redirect=manual' : ''),
       {
         cache: 'default',
-        headers: {
-          'x-yunke-version': BUILD_CONFIG.appVersion,
-        },
+        headers: this.getAuthHeaders(),
         signal,
       }
     );
@@ -72,9 +90,7 @@ export class CloudBlobStorage extends BlobStorageBase {
         if ('url' in json && typeof json.url === 'string') {
           const res = await this.connection.fetch(json.url, {
             cache: 'default',
-            headers: {
-              'x-yunke-version': BUILD_CONFIG.appVersion,
-            },
+            headers: this.getAuthHeaders(),
             signal,
           });
 
@@ -119,9 +135,7 @@ export class CloudBlobStorage extends BlobStorageBase {
         {
           method: 'PUT',
           body: formData,
-          headers: {
-            'x-yunke-version': BUILD_CONFIG.appVersion,
-          },
+          headers: this.getAuthHeaders(),
           signal,
         }
       );
@@ -159,9 +173,7 @@ export class CloudBlobStorage extends BlobStorageBase {
         `/api/workspaces/${this.options.id}/blobs/${key}?permanently=${permanently}`,
         {
           method: 'DELETE',
-          headers: {
-            'x-yunke-version': BUILD_CONFIG.appVersion,
-          },
+          headers: this.getAuthHeaders(),
         }
       );
       
@@ -186,9 +198,7 @@ export class CloudBlobStorage extends BlobStorageBase {
         `/api/workspaces/${this.options.id}/blobs/release`,
         {
           method: 'POST',
-          headers: {
-            'x-yunke-version': BUILD_CONFIG.appVersion,
-          },
+          headers: this.getAuthHeaders(),
         }
       );
       
@@ -213,9 +223,7 @@ export class CloudBlobStorage extends BlobStorageBase {
         `/api/workspaces/${this.options.id}/blobs`,
         {
           method: 'GET',
-          headers: {
-            'x-yunke-version': BUILD_CONFIG.appVersion,
-          },
+          headers: this.getAuthHeaders(),
         }
       );
       

@@ -17,9 +17,7 @@ interface OpenAppProps {
   openHereClicked?: (e: MouseEvent) => void;
   mode?: 'auth' | 'open-doc'; // default to 'auth'
 }
-const channel = BUILD_CONFIG.appBuildType;
-const url =
-  'https://yunke.pro/download' + (channel !== 'stable' ? '/beta-canary' : '');
+const url = '/download';
 
 export const OpenInAppPage = ({
   urlToOpen,

@@ -61,6 +61,24 @@ export interface CreateHTMLPluginConfig {
   additionalEntryForSelfhost?: boolean;
   injectGlobalErrorHandler?: boolean;
   emitAssetsManifest?: boolean;
+  // 允许自定义包含到 HTML 的入口 chunk（默认 ['index']）
+  chunks?: string[];
+  // 多页支持：为每个页面生成对应的 HTML
+  pages?: Array<{
+    filename: string;
+    chunks?: string[];
+    title?: string;
+    description?: string;
+    keywords?: string;
+    themeColor?: string;
+    lang?: string;
+  }>;
+  // 单页情况下的可选元信息
+  title?: string;
+  description?: string;
+  keywords?: string;
+  themeColor?: string;
+  lang?: string;
 }
 
 function getHTMLPluginOptions(BUILD_CONFIG: BUILD_CONFIG_TYPE) {
@@ -241,17 +259,50 @@ export function createHTMLPlugins(
   const htmlPluginOptions = getHTMLPluginOptions(BUILD_CONFIG);
 
   const plugins: WebpackPluginInstance[] = [];
-  plugins.push(
-    new HTMLPlugin({
-      ...htmlPluginOptions,
-      chunks: ['index'],
-      filename: config.filename,
-      publicPath,
-      meta: {
-        'env:publicPath': publicPath,
-      },
-    })
-  );
+
+  if (config.pages && config.pages.length) {
+    for (const p of config.pages) {
+      plugins.push(
+        new HTMLPlugin({
+          ...htmlPluginOptions,
+          chunks: p.chunks ?? config.chunks ?? ['index'],
+          filename: p.filename,
+          publicPath,
+          meta: {
+            'env:publicPath': publicPath,
+          },
+          templateParameters: {
+            ...htmlPluginOptions.templateParameters,
+            HTML_TITLE: p.title ?? config.title ?? 'YUNKE',
+            DESCRIPTION: p.description ?? config.description ?? htmlPluginOptions.templateParameters.DESCRIPTION,
+            KEYWORDS: p.keywords ?? config.keywords ?? '',
+            THEME_COLOR: p.themeColor ?? config.themeColor ?? '#ffffff',
+            HTML_LANG: p.lang ?? config.lang ?? 'zh-CN',
+          },
+        })
+      );
+    }
+  } else {
+    plugins.push(
+      new HTMLPlugin({
+        ...htmlPluginOptions,
+        chunks: config.chunks ?? ['index'],
+        filename: config.filename,
+        publicPath,
+        meta: {
+          'env:publicPath': publicPath,
+        },
+        templateParameters: {
+          ...htmlPluginOptions.templateParameters,
+          HTML_TITLE: config.title ?? 'YUNKE',
+          DESCRIPTION: config.description ?? htmlPluginOptions.templateParameters.DESCRIPTION,
+          KEYWORDS: config.keywords ?? '',
+          THEME_COLOR: config.themeColor ?? '#ffffff',
+          HTML_LANG: config.lang ?? 'zh-CN',
+        },
+      })
+    );
+  }
 
   if (BUILD_CONFIG.isElectron) {
     plugins.push(
@@ -263,6 +314,14 @@ export function createHTMLPlugins(
         meta: {
           'env:publicPath': publicPath,
         },
+        templateParameters: {
+          ...htmlPluginOptions.templateParameters,
+          HTML_TITLE: 'YUNKE',
+          DESCRIPTION: htmlPluginOptions.templateParameters.DESCRIPTION,
+          KEYWORDS: '',
+          THEME_COLOR: '#ffffff',
+          HTML_LANG: 'zh-CN',
+        },
       }),
       new HTMLPlugin({
         ...htmlPluginOptions,
@@ -272,6 +331,14 @@ export function createHTMLPlugins(
         meta: {
           'env:publicPath': publicPath,
         },
+        templateParameters: {
+          ...htmlPluginOptions.templateParameters,
+          HTML_TITLE: 'YUNKE',
+          DESCRIPTION: htmlPluginOptions.templateParameters.DESCRIPTION,
+          KEYWORDS: '',
+          THEME_COLOR: '#ffffff',
+          HTML_LANG: 'zh-CN',
+        },
       }),
       new HTMLPlugin({
         ...htmlPluginOptions,
@@ -280,6 +347,14 @@ export function createHTMLPlugins(
         publicPath,
         meta: {
           'env:publicPath': publicPath,
+        },
+        templateParameters: {
+          ...htmlPluginOptions.templateParameters,
+          HTML_TITLE: 'YUNKE',
+          DESCRIPTION: htmlPluginOptions.templateParameters.DESCRIPTION,
+          KEYWORDS: '',
+          THEME_COLOR: '#ffffff',
+          HTML_LANG: 'zh-CN',
         },
       })
     );
@@ -314,6 +389,11 @@ export function createHTMLPlugins(
         filename: 'selfhost.html',
         templateParameters: {
           ...htmlPluginOptions.templateParameters,
+          HTML_TITLE: (config.title ?? 'YUNKE') + ' (Selfhost)',
+          DESCRIPTION: config.description ?? htmlPluginOptions.templateParameters.DESCRIPTION,
+          KEYWORDS: config.keywords ?? '',
+          THEME_COLOR: config.themeColor ?? '#ffffff',
+          HTML_LANG: config.lang ?? 'zh-CN',
           PRECONNECT: '',
         },
       })

@@ -1403,6 +1403,11 @@ export const PackageList = [
     ],
   },
   {
+    location: 'packages/frontend/apps/website',
+    name: '@yunke/website',
+    workspaceDependencies: [],
+  },
+  {
     location: 'packages/frontend/component',
     name: '@yunke/component',
     workspaceDependencies: [
@@ -1607,6 +1612,7 @@ export type PackageName =
   | '@yunke/ios'
   | '@yunke/mobile'
   | '@yunke/web'
+  | '@yunke/website'
   | '@yunke/component'
   | '@yunke/core'
   | '@yunke/electron-api'

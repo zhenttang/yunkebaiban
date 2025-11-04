@@ -22,8 +22,7 @@ export function AppDownloadButton({
   // TODO(@JimmFly): unify this type of literal value.
   const handleClick = useCallback(() => {
     track.$.navigationPanel.bottomButtons.downloadApp();
-    const url = `https://yunke.pro/download?channel=stable`;
-    open(url, '_blank');
+    open('/download', '_blank');
   }, []);
 
   if (!show) {

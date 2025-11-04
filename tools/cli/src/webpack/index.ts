@@ -112,6 +112,7 @@ export function createHTMLTargetConfig(
   deps?: string[]
 ): webpack.Configuration {
   entry = typeof entry === 'string' ? { index: entry } : entry;
+  const primaryChunk = Object.keys(entry)[0] ?? 'index';
 
   htmlConfig = merge(
     {},
@@ -128,7 +129,7 @@ export function createHTMLTargetConfig(
 
   const config: webpack.Configuration = {
     //#region basic webpack config
-    name: entry['index'],
+    name: primaryChunk,
     dependencies: deps,
     context: ProjectRoot.value,
     experiments: {
@@ -308,7 +309,10 @@ export function createHTMLTargetConfig(
     //#region plugins
     plugins: compact([
       !IN_CI && new webpack.ProgressPlugin({ percentBy: 'entries' }),
-      ...createHTMLPlugins(buildConfig, htmlConfig),
+      ...createHTMLPlugins(
+        buildConfig,
+        merge({ chunks: [primaryChunk] }, htmlConfig)
+      ),
       new webpack.DefinePlugin({
         'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
         // 注入VITE风格的环境变量以支持import.meta.env
