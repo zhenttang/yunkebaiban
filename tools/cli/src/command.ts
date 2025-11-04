@@ -1,4 +1,4 @@
-import { AliasToPackage } from '@yunke-tools/utils/distribution';
+import { AliasToPackage, PackageDescriptions } from '@yunke-tools/utils/distribution';
 import { Logger } from '@yunke-tools/utils/logger';
 import { exec, execAsync, spawn } from '@yunke-tools/utils/process';
 import { type PackageName, Workspace } from '@yunke-tools/utils/workspace';
@@ -118,10 +118,15 @@ export abstract class PackageSelectorCommand extends Command {
           type: 'list',
           name: 'package',
           message: '您想要开发哪个包？',
-          choices: this.availablePackages.map(name => ({
-            name,
-            value: name,
-          })),
+          choices: this.availablePackages.map(name => {
+            const desc = PackageDescriptions.get(name as PackageName);
+            const label = desc ? `${name} — ${desc}` : name;
+            return {
+              name: label,
+              value: name,
+              short: name,
+            };
+          }),
           pageSize: 10,
           default: '@yunke/web',
         },

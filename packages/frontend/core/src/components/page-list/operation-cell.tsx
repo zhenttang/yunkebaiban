@@ -34,6 +34,7 @@ import {
   SplitViewIcon,
 } from '@blocksuite/icons/rc';
 import { useLiveData, useService, useServices } from '@toeverything/infra';
+import React from 'react';
 import type { MouseEvent } from 'react';
 import { useCallback, useState } from 'react';
 

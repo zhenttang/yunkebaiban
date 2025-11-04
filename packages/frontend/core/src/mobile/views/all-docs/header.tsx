@@ -1,4 +1,5 @@
 import { IconButton, MobileMenu, SafeArea } from '@yunke/component';
+import type React from 'react';
 import { MoreHorizontalIcon } from '@blocksuite/icons/rc';
 
 import { header, headerContent, headerSpace } from './style.css';

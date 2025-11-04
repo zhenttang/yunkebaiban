@@ -5,6 +5,7 @@ import {
   WorkspaceDialogService,
 } from '@yunke/core/modules/dialogs';
 import type { WORKSPACE_DIALOG_SCHEMA } from '@yunke/core/modules/dialogs/constant';
+import type React from 'react';
 import { useLiveData, useService } from '@toeverything/infra';
 
 import { CollectionSelectorDialog } from './selectors/collection-selector';

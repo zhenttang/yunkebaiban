@@ -45,7 +45,8 @@ export function getBuildConfig(
         editorVersion: pkg.version,
         githubUrl: 'https://gitcode.com/xiaoleixiaolei',
         changelogUrl: 'https://yunke.pro/what-is-new',
-        downloadUrl: 'https://yunke.pro/download',
+        // 将系统“下载应用”入口指向站内路由，打开本地下载页面
+        downloadUrl: '/download',
         pricingUrl: 'https://yunke.pro/pricing',
         discordUrl: 'https://yunke.pro/redirect/discord',
         requestLicenseUrl: 'https://yunke.pro/redirect/license',

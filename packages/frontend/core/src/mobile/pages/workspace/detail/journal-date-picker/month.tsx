@@ -1,3 +1,4 @@
+import type React from 'react';
 import { SwipeHelper } from '@yunke/core/mobile/utils';
 import { animate, eases } from 'animejs';
 import clsx from 'clsx';

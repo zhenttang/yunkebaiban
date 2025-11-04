@@ -7,7 +7,6 @@ export class DevCommand extends PackageSelectorCommand {
 
   protected override availablePackages: PackageName[] = [
     '@yunke/web',
-    '@yunke/server',
     '@yunke/electron',
     '@yunke/electron-renderer',
     '@yunke/mobile',

@@ -102,6 +102,9 @@ function createEnvironments(): Record<string, Environment> {
 
 const environments = createEnvironments();
 
+// 彻底关闭 NetworkConfig 的控制台输出（需要调试时再改为条件输出）
+function dlog(..._args: any[]) { /* no-op */ }
+
 class NetworkConfigManager {
   private currentEnvironment: string = 'development';
   
@@ -116,13 +119,13 @@ class NetworkConfigManager {
       // @ts-ignore 由 DefinePlugin 注入
       if (typeof BUILD_CONFIG !== 'undefined' && BUILD_CONFIG.isElectron) {
         this.currentEnvironment = 'production';
-        console.log('🔧 [NetworkConfig] 检测到Electron环境（BUILD_CONFIG）');
+        dlog('🔧 [NetworkConfig] 检测到Electron环境（BUILD_CONFIG）');
         return;
       }
       // @ts-ignore 由 DefinePlugin 注入
       if (typeof BUILD_CONFIG !== 'undefined' && BUILD_CONFIG.isAndroid) {
         this.currentEnvironment = 'android';
-        console.log('🔧 [NetworkConfig] 检测到Android环境（BUILD_CONFIG）');
+        dlog('🔧 [NetworkConfig] 检测到Android环境（BUILD_CONFIG）');
         return;
       }
     } catch {}
@@ -133,14 +136,14 @@ class NetworkConfigManager {
       // 优先检测 Electron 环境
       if (buildConfig?.isElectron || window.location.protocol === 'file:') {
         this.currentEnvironment = 'production';
-        console.log('🔧 [NetworkConfig] 检测到Electron环境，判定为生产环境');
+        dlog('🔧 [NetworkConfig] 检测到Electron环境，判定为生产环境');
         return;
       }
       
       // 检测Android环境
       if (buildConfig?.isAndroid || buildConfig?.platform === 'android') {
         this.currentEnvironment = 'android';
-        console.log('🔧 [NetworkConfig] 检测到Android环境');
+        dlog('🔧 [NetworkConfig] 检测到Android环境');
         return;
       }
       
@@ -150,7 +153,7 @@ class NetworkConfigManager {
           hostname.match(/^10\.\d+\.\d+\.\d+$/) ||
           hostname.match(/^172\.(1[6-9]|2[0-9]|3[01])\.\d+\.\d+$/)) {
         // 局域网IP，可能是Android开发环境
-        console.log('🔧 [NetworkConfig] 检测到局域网IP，判定为Android环境');
+        dlog('🔧 [NetworkConfig] 检测到局域网IP，判定为Android环境');
         this.currentEnvironment = 'android';
         return;
       }
@@ -162,7 +165,7 @@ class NetworkConfigManager {
           !hostname.includes('10.0.') &&
           !hostname.includes('172.')) {
         this.currentEnvironment = 'production';
-        console.log('🔧 [NetworkConfig] 检测到生产环境');
+        dlog('🔧 [NetworkConfig] 检测到生产环境');
         return;
       }
     }
@@ -172,13 +175,13 @@ class NetworkConfigManager {
       const hostname = (self as any).location.hostname;
       if (hostname && hostname !== 'localhost' && hostname !== '127.0.0.1') {
         this.currentEnvironment = 'production';
-        console.log('🔧 [NetworkConfig] Worker环境检测到生产域名');
+        dlog('🔧 [NetworkConfig] Worker环境检测到生产域名');
         return;
       }
     }
     
     // 默认开发环境
-    console.log('🔧 [NetworkConfig] 使用默认开发环境');
+    dlog('🔧 [NetworkConfig] 使用默认开发环境');
     this.currentEnvironment = 'development';
   }
 
@@ -218,7 +221,6 @@ class NetworkConfigManager {
     const baseUrl = isStandardPort
       ? `${config.protocol}://${config.host}`
       : `${config.protocol}://${config.host}:${config.port}`;
-    console.log(`📍 [NetworkConfig] getBaseUrl返回: ${baseUrl}, 环境: ${this.currentEnvironment}`);
     return baseUrl;
   }
 
@@ -357,13 +359,13 @@ class NetworkConfigManager {
    * 调试信息
    */
   debug(): void {
-    console.log('=== 网络配置调试信息 ===');
-    console.log('当前环境:', this.currentEnvironment);
-    console.log('环境配置:', environments[this.currentEnvironment]);
-    console.log('基础URL:', this.getBaseUrl());
-    console.log('API URL:', this.getApiBaseUrl());
-    console.log('Socket.IO URL:', this.getSocketIOUrl());
-    console.log('开发服务器URL:', this.getDevServerUrl());
+    dlog('=== 网络配置调试信息 ===');
+    dlog('当前环境:', this.currentEnvironment);
+    dlog('环境配置:', environments[this.currentEnvironment]);
+    dlog('基础URL:', this.getBaseUrl());
+    dlog('API URL:', this.getApiBaseUrl());
+    dlog('Socket.IO URL:', this.getSocketIOUrl());
+    dlog('开发服务器URL:', this.getDevServerUrl());
   }
 }
 

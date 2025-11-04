@@ -3,6 +3,7 @@ import { WorkbenchLink } from '@yunke/core/modules/workbench';
 import type { YunkeDNDData } from '@yunke/core/types/dnd';
 import { stopPropagation } from '@yunke/core/utils';
 import { useI18n } from '@yunke/i18n';
+import React from 'react';
 import type { ChangeEvent, ForwardedRef, MouseEvent, PropsWithChildren } from 'react';
 import { forwardRef, useCallback, useMemo } from 'react';
 

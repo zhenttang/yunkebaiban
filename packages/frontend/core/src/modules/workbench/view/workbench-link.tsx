@@ -4,6 +4,7 @@ import type { YunkeDNDData, YunkeDNDEntity } from '@yunke/core/types/dnd';
 import { inferOpenMode as inferOpenAt } from '@yunke/core/utils';
 import { useLiveData, useServices } from '@toeverything/infra';
 import { type To } from 'history';
+import type React from 'react';
 import { forwardRef, type MouseEvent } from 'react';
 
 import { resolveRouteLinkMeta } from '../../navigation/utils';

@@ -1,4 +1,5 @@
 import { MenuSeparator } from '@yunke/component';
+import type React from 'react';
 import {
   handleInlineAskAIAction,
   pageAIGroups,

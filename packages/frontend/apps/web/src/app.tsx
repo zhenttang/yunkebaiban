@@ -23,6 +23,7 @@ import { RouterProvider } from 'react-router-dom';
 import { CloudStorageProvider } from '@yunke/core/modules/cloud-storage';
 import { CloudStorageIndicator } from './components/cloud-storage-indicator';
 import { deckerIntegrationManager } from '@yunke/core/modules/decker-integration/decker-integration-manager';
+import { AppLoading } from './components/app-loading';
 
 const cache = createEmotionCache();
 
@@ -356,23 +357,7 @@ export function App() {
   }
 
   return (
-    <Suspense fallback={
-      <div style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        height: '100vh',
-        fontSize: '16px',
-        color: '#666',
-        flexDirection: 'column',
-        gap: '16px'
-      }}>
-        <div>🔄 应用初始化中...</div>
-        <div style={{ fontSize: '12px', color: '#999' }}>
-          如果长时间停留在此页面，请检查控制台错误信息
-        </div>
-      </div>
-    }>
+    <Suspense fallback={<AppLoading />}>
       {(() => {
         console.log('📦 [App] 开始渲染 FrameworkRoot');
         try {
@@ -402,6 +387,7 @@ export function App() {
                                           console.log('🛣️ [App] 当前路径:', window.location.pathname);
                                           console.log('🛣️ [App] 路由器实例:', router);
 
+                                          const hideCloudIndicator = /\/download(\-mobile)?(\b|\/)/.test(window.location.pathname);
                                           return (
                                             <>
                                               <RouterProvider
@@ -409,7 +395,7 @@ export function App() {
                                                 router={router}
                                                 future={future}
                                               />
-                                              <CloudStorageIndicator />
+                                              {!hideCloudIndicator && <CloudStorageIndicator />}
                                             </>
                                           );
                                         })()}

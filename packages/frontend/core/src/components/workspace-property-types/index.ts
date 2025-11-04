@@ -1,3 +1,4 @@
+import type React from 'react';
 import type { FilterParams } from '@yunke/core/modules/collection-rules';
 import type {
   WorkspacePropertyFilter,

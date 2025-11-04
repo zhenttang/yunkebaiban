@@ -1,4 +1,5 @@
 import { PropertyValue } from '@yunke/component';
+import type React from 'react';
 import { YunkePageReference } from '@yunke/core/components/yunke/reference-link';
 import { ConfigModal } from '@yunke/core/components/mobile';
 import { resolveLinkToDoc } from '@yunke/core/modules/navigation';

@@ -1,6 +1,7 @@
 import './setup';
 
 import { Telemetry } from '@yunke/core/components/telemetry';
+import React from 'react';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 
@@ -8,6 +9,12 @@ import { App } from './app';
 
 function mountApp() {
   console.log('🚀 [index] 开始挂载应用');
+
+  // 确保 React 全局可用（某些第三方库可能需要）
+  if (typeof window !== 'undefined' && typeof window.React === 'undefined') {
+    (window as any).React = React;
+    console.log('✅ [index] React 已设置为全局变量');
+  }
 
   // oxlint-disable-next-line @typescript-eslint/no-non-null-assertion
   const root = document.getElementById('app')!;

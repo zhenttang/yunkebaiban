@@ -1,3 +1,4 @@
+import type React from 'react';
 import { IconButton } from '@yunke/component';
 import { RightSidebarIcon } from '@blocksuite/icons/rc';
 

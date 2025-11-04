@@ -2,6 +2,7 @@ import { useDropTarget } from '@yunke/component';
 import type { YunkeDNDData } from '@yunke/core/types/dnd';
 import { useLiveData, useService } from '@toeverything/infra';
 import { useAtomValue } from 'jotai';
+import type React from 'react';
 import type { HTMLAttributes } from 'react';
 import { useCallback } from 'react';
 

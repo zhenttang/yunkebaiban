@@ -1,4 +1,5 @@
 import { Skeleton } from '@yunke/component';
+import type React from 'react';
 
 import { AIPlanLayout } from './ai/layout';
 import { CloudPlanLayout, PlanLayout } from './layout';

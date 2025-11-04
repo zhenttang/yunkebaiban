@@ -1,6 +1,7 @@
 import { Scrollable } from '@yunke/component';
 import clsx from 'clsx';
 import { selectAtom } from 'jotai/utils';
+import React from 'react';
 import type { HTMLAttributes, PropsWithChildren } from 'react';
 import { forwardRef, useCallback, useMemo, useState } from 'react';
 import { Virtuoso } from 'react-virtuoso';
@@ -69,6 +70,16 @@ export const VirtualizedList = forwardRef<
   ItemListHandle,
   VirtualizedListProps<ListItem>
 >(function VirtualizedList(props, ref) {
+  // 调试：检查 React 是否可用
+  try {
+    if (typeof React === 'undefined') {
+      console.error('[VirtualizedList] React is not defined in VirtualizedList component');
+    } else {
+      console.log('[VirtualizedList] React is available:', React);
+    }
+  } catch (e) {
+    console.error('[VirtualizedList] Error checking React:', e);
+  }
   return (
     // push pageListProps to the atom so that downstream components can consume it
     // this makes sure pageListPropsAtom is always populated
@@ -181,6 +192,15 @@ const ListInner = ({
   }, [props.heading]);
   const itemContentRenderer = useCallback(
     (_index: number, data: VirtuosoItem<ListItem>) => {
+      // 调试：检查 React 是否可用
+      try {
+        if (typeof React === 'undefined') {
+          console.error('[VirtualizedList] React is not defined in itemContentRenderer');
+          console.error('[VirtualizedList] Data type:', data.type);
+        }
+      } catch (e) {
+        console.error('[VirtualizedList] Error checking React in itemContentRenderer:', e);
+      }
       switch (data.type) {
         case 'sticky-header':
           return props.headerRenderer?.(data.data);

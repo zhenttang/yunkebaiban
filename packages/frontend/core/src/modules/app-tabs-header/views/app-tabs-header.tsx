@@ -1,3 +1,4 @@
+import type React from 'react';
 // credits: tab overlay impl inspired by Figma desktop
 import {
   type DropTargetDropEvent,

@@ -1,4 +1,5 @@
 import { useWorkspace } from '@yunke/core/components/hooks/use-workspace';
+import type React from 'react';
 import { GlobalContextService } from '@yunke/core/modules/global-context';
 import { WorkspacesService } from '@yunke/core/modules/workspace';
 import { FrameworkScope, useLiveData, useService } from '@toeverything/infra';

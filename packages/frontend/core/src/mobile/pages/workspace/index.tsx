@@ -1,3 +1,4 @@
+import type React from 'react';
 import { YunkeErrorBoundary } from '@yunke/core/components/yunke/yunke-error-boundary';
 import { YunkeErrorComponent } from '@yunke/core/components/yunke/yunke-error-boundary/yunke-error-fallback';
 import { PageNotFound } from '@yunke/core/desktop/pages/404';

@@ -41,6 +41,14 @@ export const topLevelRoutes = [
         },
       },
       {
+        path: '/download',
+        lazy: () => import('@yunke/core/desktop/pages/download'),
+      },
+      {
+        path: '/download-mobile',
+        lazy: () => import('@yunke/core/desktop/pages/download/mobile'),
+      },
+      {
         path: '/workspace/:workspaceId/*',
         lazy: () => {
           console.log('🔄 [Router] 开始加载工作空间页面组件...');

@@ -1,0 +1,33 @@
+{
+  "version": "1.12.0",
+  "channel": "stable",
+  "releasedAt": "2025-10-20",
+  "assets": {
+    "windows": {
+      "exe": "https://download.example.com/cloudwhiteboard-setup-x64.exe",
+      "zip": "https://download.example.com/cloudwhiteboard-portable-x64.zip",
+      "sha256": "71b2c...ff9a"
+    },
+    "macos": {
+      "dmg": "https://download.example.com/cloudwhiteboard-universal.dmg",
+      "pkg": "https://download.example.com/cloudwhiteboard-universal.pkg",
+      "sha256": "aa01...99fa"
+    },
+    "linux": {
+      "deb": "https://download.example.com/cloudwhiteboard_1.12.0_amd64.deb",
+      "rpm": "https://download.example.com/cloudwhiteboard-1.12.0.x86_64.rpm",
+      "sha256Deb": "f0c1...e21b",
+      "sha256Rpm": "e33d...9a77"
+    },
+    "ios": {
+      "appStore": "https://apps.apple.com/app/id0000000000",
+      "testFlight": "https://testflight.apple.com/join/xxxxxxxx"
+    },
+    "android": {
+      "play": "https://play.google.com/store/apps/details?id=com.yunke.whiteboard",
+      "apk": "https://download.example.com/cloudwhiteboard-1.12.0.apk",
+      "sha256": "bb22...cc33"
+    }
+  }
+}
+

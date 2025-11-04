@@ -2,6 +2,7 @@ import type { MenuProps } from '@yunke/component';
 import { Menu, Tooltip } from '@yunke/component';
 import { useI18n } from '@yunke/i18n';
 import clsx from 'clsx';
+import type React from 'react';
 import type { HTMLAttributes, MouseEventHandler } from 'react';
 import { forwardRef, memo, useCallback, useMemo, useState } from 'react';
 

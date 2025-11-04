@@ -1,4 +1,5 @@
 import { Loading } from '@yunke/component/ui/loading';
+import type React from 'react';
 import { i18nTime, isI18nString, useI18n } from '@yunke/i18n';
 import clsx from 'clsx';
 import { Command } from 'cmdk';

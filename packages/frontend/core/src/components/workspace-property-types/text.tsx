@@ -1,4 +1,5 @@
 import { Input, Menu, type MenuRef, PropertyValue } from '@yunke/component';
+import type React from 'react';
 import type { FilterParams } from '@yunke/core/modules/collection-rules';
 import { useI18n } from '@yunke/i18n';
 import { TextIcon, TextTypeIcon } from '@blocksuite/icons/rc';

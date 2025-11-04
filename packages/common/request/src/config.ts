@@ -68,11 +68,12 @@ export const API_ENDPOINTS: ApiEndpoints = {
 
 /**
  * 环境配置 - 使用统一配置管理
+ * 注意：baseUrl 使用懒加载，避免在模块加载时频繁调用 getBaseUrl()
  */
 export const environments: Record<EnvironmentType, EnvironmentConfig> = {
   [EnvironmentType.DEV]: {
     env: EnvironmentType.DEV,
-    baseUrl: getConfiguredBaseUrl(),
+    get baseUrl() { return getConfiguredBaseUrl(); },
     apiVersion: 'v1',
     enableLogging: true,
     enableCache: false,
@@ -80,7 +81,7 @@ export const environments: Record<EnvironmentType, EnvironmentConfig> = {
   },
   [EnvironmentType.TEST]: {
     env: EnvironmentType.TEST,
-    baseUrl: getConfiguredBaseUrl(),
+    get baseUrl() { return getConfiguredBaseUrl(); },
     apiVersion: 'v1',
     enableLogging: true,
     enableCache: true,
@@ -88,7 +89,7 @@ export const environments: Record<EnvironmentType, EnvironmentConfig> = {
   },
   [EnvironmentType.PROD]: {
     env: EnvironmentType.PROD,
-    baseUrl: getConfiguredBaseUrl(),
+    get baseUrl() { return getConfiguredBaseUrl(); },
     apiVersion: 'v1',
     enableLogging: false,
     enableCache: true,

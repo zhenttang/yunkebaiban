@@ -1,3 +1,4 @@
+import type React from 'react';
 import type { BaseSyntheticEvent } from 'react';
 
 export function stopPropagation(event: BaseSyntheticEvent) {

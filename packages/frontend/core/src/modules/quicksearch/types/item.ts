@@ -1,3 +1,4 @@
+import type React from 'react';
 import type { I18nString } from '@yunke/i18n';
 
 import type { QuickSearchGroup } from './group';

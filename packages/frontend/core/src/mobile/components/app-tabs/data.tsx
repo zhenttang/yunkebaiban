@@ -1,4 +1,5 @@
 import { AllDocsIcon, HomeIcon } from '@blocksuite/icons/rc';
+import type React from 'react';
 import type { Framework } from '@toeverything/infra';
 
 import { AppTabCreate } from './create';

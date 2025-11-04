@@ -5,6 +5,7 @@ import { useI18n } from '@yunke/i18n';
 import { MultiSelectIcon } from '@blocksuite/icons/rc';
 import clsx from 'clsx';
 import { selectAtom } from 'jotai/utils';
+import React from 'react';
 import type { MouseEventHandler } from 'react';
 import { memo, useCallback } from 'react';
 

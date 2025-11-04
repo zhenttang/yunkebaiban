@@ -1,4 +1,5 @@
 import type { I18nString } from '@yunke/i18n';
+import type React from 'react';
 import {
   CheckBoxCheckLinearIcon,
   DateTimeIcon,

@@ -1,3 +1,4 @@
+import type React from 'react';
 import { Progress } from '@yunke/component';
 import { useI18n } from '@yunke/i18n';
 import { cssVarV2 } from '@toeverything/theme/v2';

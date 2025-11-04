@@ -3,6 +3,7 @@ import { YunkeErrorBoundary } from '@yunke/core/components/yunke/yunke-error-bou
 import { RightSidebarIcon } from '@blocksuite/icons/rc';
 import { useLiveData, useService } from '@toeverything/infra';
 import { Suspense, useCallback } from 'react';
+import type React from 'react';
 import { Outlet } from 'react-router-dom';
 
 import { AppSidebarService } from '../../app-sidebar';

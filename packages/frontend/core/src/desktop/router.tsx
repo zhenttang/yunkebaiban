@@ -43,6 +43,14 @@ export const topLevelRoutes = [
         lazy: () => import('./pages/index'),
       },
       {
+        path: '/download',
+        lazy: () => import('./pages/download'),
+      },
+      {
+        path: '/download-mobile',
+        lazy: () => import('./pages/download/mobile'),
+      },
+      {
         path: '/workspace/:workspaceId/*',
         lazy: () => import('./pages/workspace/index'),
       },

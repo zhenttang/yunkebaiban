@@ -1,4 +1,5 @@
 import { Button, Scrollable } from '@yunke/component';
+import type React from 'react';
 import { FeatureFlagService } from '@yunke/core/modules/feature-flag';
 import { type Island } from '@yunke/core/utils/island';
 import { ArrowLeftBigIcon } from '@blocksuite/icons/rc';

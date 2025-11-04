@@ -17,6 +17,7 @@ import {
 import { useLiveData, useService } from '@toeverything/infra';
 import { assignInlineVars } from '@vanilla-extract/dynamic';
 import { useAtom } from 'jotai';
+import type React from 'react';
 import type { HTMLAttributes, PropsWithChildren } from 'react';
 import { memo, useCallback, useMemo } from 'react';
 

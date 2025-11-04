@@ -32,6 +32,7 @@ import { type DocMode, DocModes } from '@blocksuite/yunke/model';
 import { Logo1Icon } from '@blocksuite/icons/rc';
 import { FrameworkScope, useLiveData, useService } from '@toeverything/infra';
 import clsx from 'clsx';
+import type React from 'react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 

@@ -1,3 +1,4 @@
+import type React from 'react';
 import {
   type DialogComponentProps,
   type GLOBAL_DIALOG_SCHEMA,

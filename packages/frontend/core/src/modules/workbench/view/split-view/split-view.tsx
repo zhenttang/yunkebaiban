@@ -7,6 +7,7 @@ import { useService } from '@toeverything/infra';
 import clsx from 'clsx';
 import { useSetAtom } from 'jotai';
 import { nanoid } from 'nanoid';
+import type React from 'react';
 import type { HTMLAttributes } from 'react';
 import { useCallback, useLayoutEffect, useRef, useState } from 'react';
 
