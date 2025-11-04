@@ -249,10 +249,16 @@ export const cardPreviewContainer = style({
   lineHeight: '20px',
   fontWeight: 400,
   color: cssVarV2.text.primary,
-  minHeight: 20,
+  minHeight: 40, // 增加最小高度，确保内容可见
   flexGrow: 1,
   flexShrink: 1,
   overflow: 'hidden',
+  // 支持多行文本显示和省略
+  display: '-webkit-box',
+  WebkitLineClamp: 3, // 最多显示3行
+  WebkitBoxOrient: 'vertical',
+  wordBreak: 'break-word', // 允许长单词换行
+  textOverflow: 'ellipsis', // 超长文本显示省略号
 });
 export const cardViewCheckbox = style({
   width: 20,

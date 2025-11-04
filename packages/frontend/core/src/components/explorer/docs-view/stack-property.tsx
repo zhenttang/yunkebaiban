@@ -1,11 +1,13 @@
+import type { ReactNode } from 'react';
+
 import * as styles from './properties.css';
 
 export const StackProperty = ({
   icon,
   children,
 }: {
-  icon: React.ReactNode;
-  children: React.ReactNode;
+  icon: ReactNode;
+  children: ReactNode;
 }) => {
   return (
     <div className={styles.stackItem}>

@@ -19,7 +19,13 @@ import {
   SplitViewIcon,
 } from '@blocksuite/icons/rc';
 import { useLiveData, useService } from '@toeverything/infra';
-import { forwardRef, memo, useCallback, useContext } from 'react';
+import {
+  forwardRef,
+  memo,
+  type MouseEvent,
+  useCallback,
+  useContext,
+} from 'react';
 
 import { useBlockSuiteMetaHelper } from '../../hooks/yunke/use-block-suite-meta-helper';
 import { IsFavoriteIcon } from '../../pure/icons';
@@ -41,7 +47,7 @@ export const QuickFavorite = memo(
     const favourite = useLiveData(favAdapter.isFavorite$(doc.id, 'doc'));
 
     const toggleFavorite = useCallback(
-      (e: React.MouseEvent<HTMLButtonElement>) => {
+      (e: MouseEvent<HTMLButtonElement>) => {
         onClick?.(e);
         e.stopPropagation();
         e.preventDefault();
@@ -76,7 +82,7 @@ export const QuickTab = memo(
     const quickTab = useLiveData(contextValue.quickTab$);
     const workbench = useService(WorkbenchService).workbench;
     const onOpenInNewTab = useCallback(
-      (e: React.MouseEvent<HTMLButtonElement>) => {
+      (e: MouseEvent<HTMLButtonElement>) => {
         onClick?.(e);
         e.stopPropagation();
         e.preventDefault();
@@ -112,7 +118,7 @@ export const QuickSplit = memo(
     const workbench = useService(WorkbenchService).workbench;
 
     const onOpenInSplitView = useCallback(
-      (e: React.MouseEvent<HTMLButtonElement>) => {
+      (e: MouseEvent<HTMLButtonElement>) => {
         onClick?.(e);
         e.stopPropagation();
         e.preventDefault();
@@ -150,7 +156,7 @@ export const QuickDelete = memo(
     const quickTrash = useLiveData(contextValue.quickTrash$);
 
     const onMoveToTrash = useCallback(
-      (e: React.MouseEvent<HTMLButtonElement>) => {
+      (e: MouseEvent<HTMLButtonElement>) => {
         onClick?.(e);
         e.stopPropagation();
         e.preventDefault();
@@ -217,7 +223,7 @@ export const QuickSelect = memo(
     const selected = selectedDocIds.includes(doc.id);
 
     const onChange = useCallback(
-      (e: React.MouseEvent<HTMLButtonElement>) => {
+      (e: MouseEvent<HTMLButtonElement>) => {
         onClick?.(e);
         e.stopPropagation();
         e.preventDefault();
@@ -277,7 +283,7 @@ export const QuickDeletePermanently = memo(
     }, [doc.id, guardService, permanentlyDeletePage, t]);
 
     const handleConfirmDeletePermanently = useCallback(
-      (e: React.MouseEvent<HTMLButtonElement>) => {
+      (e: MouseEvent<HTMLButtonElement>) => {
         onClick?.(e);
         e.stopPropagation();
         e.preventDefault();
@@ -325,7 +331,7 @@ export const QuickRestore = memo(
     const guardService = useService(GuardService);
 
     const handleRestore = useCallback(
-      (e: React.MouseEvent<HTMLButtonElement>) => {
+      (e: MouseEvent<HTMLButtonElement>) => {
         onClick?.(e);
         e.stopPropagation();
         e.preventDefault();

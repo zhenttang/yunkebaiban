@@ -20,6 +20,7 @@ import { useLiveData, useService } from '@toeverything/infra';
 import {
   type HTMLProps,
   memo,
+  type MouseEvent,
   type ReactNode,
   type SVGProps,
   useCallback,
@@ -113,7 +114,7 @@ export const DocListItem = ({ ...props }: DocListItemProps) => {
   );
 
   const handleClick = useCallback(
-    (e: React.MouseEvent<Element>) => {
+    (e: MouseEvent<Element>) => {
       const { docId, groupId } = props;
       const currCursor = MixId.create(groupId, docId);
       if (selectMode || e.shiftKey) {
