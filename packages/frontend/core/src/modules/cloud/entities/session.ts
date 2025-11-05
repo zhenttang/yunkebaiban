@@ -10,7 +10,7 @@ import {
   onStart,
 } from '@toeverything/infra';
 import { isEqual } from 'lodash-es';
-import { debounceTime, tap } from 'rxjs';
+import { catchError, debounceTime, EMPTY, tap } from 'rxjs';
 
 import { validateAndReduceImage } from '../../../utils/reduce-image';
 import type { AccountProfile, AuthStore } from '../stores/auth';
@@ -107,6 +107,25 @@ export class AuthSession extends Entity {
         debounceTime(500), // 增加防抖时间到500ms
         backoffRetry({
           count: 3,
+        }),
+        catchError((error: any) => {
+          // 捕获所有错误，包括网络错误（如 HTTP 429）
+          // 避免未捕获的错误导致应用崩溃
+          const userError = UserFriendlyError.fromAny(error);
+          
+          // 对于网络错误或429错误，记录警告但不抛出错误
+          if (UserFriendlyError.isNetworkError(userError) || 
+              error?.message?.includes('429') ||
+              error?.status === 429 ||
+              error?.code === 'NETWORK_ERROR') {
+            console.warn('会话验证失败（网络错误或请求过于频繁）:', error);
+            // 返回 EMPTY，保持当前会话状态，不触发错误
+            return EMPTY;
+          }
+          
+          // 对于其他错误，也记录但不抛出，避免未捕获错误
+          console.error('会话验证失败:', error);
+          return EMPTY;
         }),
         tap(sessionInfo => {
           // 更严格的变化检查，包括深度比较

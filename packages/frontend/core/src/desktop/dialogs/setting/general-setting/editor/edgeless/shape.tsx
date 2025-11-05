@@ -25,6 +25,7 @@ import {
   StrokeStyle,
   TextAlign,
 } from '@blocksuite/yunke/model';
+import { Bound } from '@blocksuite/yunke/global/gfx';
 import type { EditorHost } from '@blocksuite/yunke/std';
 import type { Store } from '@blocksuite/yunke/store';
 import { useFramework, useLiveData } from '@toeverything/infra';
@@ -366,8 +367,36 @@ export const ShapeSettings = () => {
       if (!surface) return;
       const crud = editorHost.std.get(EdgelessCRUDIdentifier);
       doc.readonly = false;
-      surface.getElementsByType('shape').forEach(node => {
+      
+      // 获取当前形状类型对应的图形元素
+      let shapes = surface.getElementsByType('shape').filter(node => {
         const shape = node as ShapeElementModel;
+        const { shapeType, radius } = shape;
+        const shapeName = getShapeName(shapeType, radius);
+        return shapeName === currentShape;
+      });
+      
+      // 如果没有找到对应类型的图形元素，创建一个示例图形
+      if (shapes.length === 0) {
+        const shapeType = currentShape === 'roundedRect' ? ShapeType.Rect : currentShape;
+        const radius = currentShape === 'roundedRect' ? 0.1 : 0;
+        // 计算居中位置：预览区域宽度约 600px，高度 180px
+        // 图形大小 150x100，居中位置 x=225, y=40
+        const shapeId = crud.addElement('shape', {
+          shapeType,
+          radius,
+          xywh: new Bound(225, 40, 150, 100).serialize(),
+        });
+        if (shapeId) {
+          const newShape = crud.getElementById(shapeId) as ShapeElementModel;
+          if (newShape) {
+            shapes = [newShape];
+          }
+        }
+      }
+      
+      // 应用设置到所有匹配的图形元素
+      shapes.forEach(shape => {
         const { shapeType, radius } = shape;
         const shapeName = getShapeName(shapeType, radius);
         const props = editorSetting.get(`shape:${shapeName}`);
@@ -375,7 +404,7 @@ export const ShapeSettings = () => {
       });
       doc.readonly = true;
     },
-    [editorSetting]
+    [editorSetting, currentShape]
   );
 
   const fillColor = useMemo(() => {

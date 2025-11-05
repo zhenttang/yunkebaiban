@@ -1,10 +1,11 @@
 // Edgeless docs functionality - reimplemented without GraphQL dependency
 import { YunkeSchemas } from '@blocksuite/yunke/schemas';
-import { nanoid, Schema } from '@blocksuite/yunke/store';
+import { nanoid, Schema, Text } from '@blocksuite/yunke/store';
 import { type DocCollectionOptions, TestWorkspace } from '@blocksuite/yunke/store/test';
 import { MemoryBlobSource } from '@blocksuite/yunke/sync';
 import { getInternalStoreExtensions } from '@blocksuite/yunke/extensions/store';
 import { StoreExtensionManager } from '@blocksuite/yunke/ext-loader';
+import { Bound } from '@blocksuite/yunke/global/gfx';
 
 export type DocName = 
   | 'note'
@@ -100,7 +101,29 @@ const createTextDoc = async () => {
   
   store.load(() => {
     const pageBlockId = store.addBlock('yunke:page', {});
-    store.addBlock('yunke:surface', {}, pageBlockId);
+    const surfaceBlockId = store.addBlock('yunke:surface', {}, pageBlockId);
+    
+    // 创建示例文本元素用于预览
+    // 使用居中位置，让文本在预览区域中居中显示
+    // 预览区域宽度约 600px，文本宽度 300px，居中位置 x=150
+    const textBlockId = store.addBlock(
+      'yunke:edgeless-text',
+      {
+        xywh: new Bound(150, 50, 300, 80).serialize(),
+        hasMaxWidth: true,
+      },
+      surfaceBlockId
+    );
+    
+    // 添加段落块来设置文本内容
+    store.addBlock(
+      'yunke:paragraph',
+      {
+        type: 'text',
+        text: new Text('文本'),
+      },
+      textBlockId
+    );
   });
   
   return store;

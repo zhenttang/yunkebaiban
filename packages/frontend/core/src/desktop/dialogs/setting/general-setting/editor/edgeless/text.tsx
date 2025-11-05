@@ -20,6 +20,8 @@ import { useFramework, useLiveData } from '@toeverything/infra';
 import { isEqual } from 'lodash-es';
 import { useCallback, useMemo } from 'react';
 
+import { EdgelessCRUDIdentifier } from '@blocksuite/yunke/blocks/surface';
+import type { EditorHost } from '@blocksuite/yunke/std';
 import { DropdownMenu } from '../menu';
 import { menuTrigger, settingWrapper } from '../style.css';
 import { sortedFontWeightEntries, usePalettes } from '../utils';
@@ -147,6 +149,20 @@ export const TextSettings = () => {
     return doc.getBlocksByFlavour('yunke:edgeless-text') || [];
   }, []);
 
+  const firstUpdate = useCallback(
+    (doc: Store, editorHost: EditorHost) => {
+      const crud = editorHost.std.get(EdgelessCRUDIdentifier);
+      const elements = getElements(doc);
+      const props = editorSetting.get('yunke:edgeless-text');
+      doc.readonly = false;
+      elements.forEach(element => {
+        crud.updateElement(element.id, props);
+      });
+      doc.readonly = true;
+    },
+    [editorSetting, getElements]
+  );
+
   return (
     <>
       <EdgelessSnapshot
@@ -154,6 +170,7 @@ export const TextSettings = () => {
         docName="text"
         keyName="yunke:edgeless-text"
         getElements={getElements}
+        firstUpdate={firstUpdate}
       />
       <SettingRow
         name={t['com.yunke.settings.editorSettings.edgeless.text.color']()}

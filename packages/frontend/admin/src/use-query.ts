@@ -29,7 +29,25 @@ const restFetcher = async (options: QueryOptions<any>) => {
   if (method === 'GET') {
     const params = variables ? new URLSearchParams(variables) : undefined;
     const url = params ? `${endpoint}?${params.toString()}` : endpoint;
-    return await httpClient.get(url);
+    
+    try {
+      const data = await httpClient.get(url);
+      // 对于空响应（如 204 No Content），返回一个标记对象表示成功
+      // 这样 SWR 可以正确识别请求成功
+      // 注意：axios 对于 204 响应，data 通常是空字符串或 null
+      if (data === undefined || data === null || data === '') {
+        return { _success: true } as any;
+      }
+      return data;
+    } catch (error: any) {
+      // 如果 httpClient.get 抛出错误，但状态码是 204，应该视为成功
+      // 这种情况通常不会发生，因为 axios 会将 2xx 视为成功
+      // 但为了保险起见，我们检查一下
+      if (error.response?.status === 204) {
+        return { _success: true };
+      }
+      throw error;
+    }
   } else {
     return await httpClient.request(endpoint, {
       method,
@@ -107,7 +125,7 @@ export function useQueryInfinite<Query extends RestApiQuery>(
 
   const { data, setSize, size, error } = useSWRInfinite<
     QueryResponse<Query>,
-    GraphQLError | GraphQLError[]
+    any
   >(
     (pageIndex: number, previousPageData: QueryResponse<Query>) => [
       'rest-api',

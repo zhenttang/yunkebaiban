@@ -105,6 +105,12 @@ export class AuthStore extends Store {
         this.clearStoredTokens();
         return { user: null };
       }
+      if (res.status === 429) {
+        // 请求过于频繁，返回 null 而不是抛出错误
+        // 这样可以避免未捕获的错误，同时保持当前会话状态
+        console.warn('请求过于频繁，暂时跳过会话获取');
+        return { user: null };
+      }
       const errorData = await res.json().catch(() => ({}));
       throw new Error('获取会话失败：' + JSON.stringify(errorData));
     }

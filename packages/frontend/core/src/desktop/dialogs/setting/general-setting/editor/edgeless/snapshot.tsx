@@ -95,14 +95,82 @@ export const EdgelessSnapshot = (props: Props) => {
     editorHostRef.current?.remove();
     editorHostRef.current = editorHost;
 
+    // 先添加到 DOM，让 viewport 可以初始化
+    wrapperRef.current.append(editorHost);
+
+    // 等待 viewport 初始化完成
+    const gfx = editorHost.std.get(GfxControllerIdentifier);
+    
+    // 等待 viewport 准备好
+    await new Promise<void>((resolve) => {
+      let attempts = 0;
+      const maxAttempts = 50; // 最多等待 1 秒 (50 * 20ms)
+      const checkViewport = () => {
+        attempts++;
+        try {
+          if (gfx.viewport.viewportElement) {
+            resolve();
+          } else if (attempts < maxAttempts) {
+            setTimeout(checkViewport, 20);
+          } else {
+            resolve(); // 超时后继续执行
+          }
+        } catch {
+          if (attempts < maxAttempts) {
+            setTimeout(checkViewport, 20);
+          } else {
+            resolve(); // 超时后继续执行
+          }
+        }
+      };
+      checkViewport();
+    });
+
+    // 设置一个默认的 viewport，确保元素在可视区域内
+    // 预览区域宽度约 600px，高度为 height
+    const defaultBound = new Bound(0, 0, 600, height);
+    gfx.viewport.setViewportByBound(defaultBound);
+
+    // 等待一帧，确保 viewport 设置生效
+    await new Promise(resolve => requestAnimationFrame(resolve));
+
+    // 现在 viewport 已经设置好，可以创建和更新元素了
     if (firstUpdate) {
       firstUpdate(doc, editorHost);
     } else {
       updateElements();
     }
 
-    // refresh viewport
-    const gfx = editorHost.std.get(GfxControllerIdentifier);
+    // 等待元素创建完成后再调整 viewport
+    await new Promise(resolve => requestAnimationFrame(resolve));
+
+    // 根据实际元素位置调整 viewport
+    const elements = getElements(doc);
+    if (elements.length > 0) {
+      const bounds = elements
+        .map(el => {
+          if ('xywh' in el) {
+            return Bound.deserialize(el.xywh as string);
+          }
+          return null;
+        })
+        .filter((b): b is Bound => b !== null);
+      
+      if (bounds.length > 0) {
+        const unionBound = bounds.reduce((acc, b) => acc.unite(b), bounds[0]);
+        // 添加一些边距，确保元素完全可见
+        const padding = 50;
+        const viewportBound = new Bound(
+          unionBound.x - padding,
+          unionBound.y - padding,
+          unionBound.w + padding * 2,
+          unionBound.h + padding * 2
+        );
+        gfx.viewport.setViewportByBound(viewportBound);
+      }
+    }
+
+    // 处理 frame 块的删除和 viewport 更新
     const disposable = editorHost.std.view.viewUpdated.subscribe(payload => {
       if (
         payload.type !== 'block' ||
@@ -114,19 +182,23 @@ export const EdgelessSnapshot = (props: Props) => {
       doc.readonly = false;
       const frame = getFrameBlock(doc);
       if (frame && docName !== 'frame') {
-        // docName with value 'frame' shouldn't be deleted, it is a part of frame settings
         boundMap.set(docName, Bound.deserialize(frame.xywh));
         doc.deleteBlock(frame);
       }
       const bound = boundMap.get(docName);
-      bound && gfx.viewport.setViewportByBound(bound);
+      if (bound) {
+        gfx.viewport.setViewportByBound(bound);
+        // 更新元素位置
+        if (firstUpdate) {
+          firstUpdate(doc, editorHost);
+        } else {
+          updateElements();
+        }
+      }
       doc.readonly = true;
       disposable.unsubscribe();
     });
-
-    // append to dom node
-    wrapperRef.current.append(editorHost);
-  }, [docName, extensions, firstUpdate, updateElements]);
+  }, [docName, extensions, firstUpdate, updateElements, getElements, height]);
 
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises

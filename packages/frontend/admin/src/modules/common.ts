@@ -188,8 +188,29 @@ export function useAdminAccess(): {
 
   // 已登录的情况
   if (isLoading) return { checking: true, allowed: null };
-  if (error) return { checking: false, allowed: false, error };
-  if (data) return { checking: false, allowed: true };
+  
+  // 检查错误
+  if (error) {
+    // 403 错误明确表示无权限
+    if (error.code === 'FORBIDDEN' || error.response?.status === 403) {
+      return { checking: false, allowed: false, error };
+    }
+    // 其他错误也视为无权限
+    return { checking: false, allowed: false, error };
+  }
+  
+  // 对于 204 No Content 响应，restFetcher 会返回 { _success: true }
+  // 或者 data 可能是其他值
+  // 只要没有错误，就认为有权限（状态码 204 表示成功）
+  if (data !== undefined) {
+    // 检查是否是成功标记对象（204 No Content 的响应）
+    if ((data as any)?._success === true || data !== null) {
+      return { checking: false, allowed: true };
+    }
+  }
+  
+  // 如果没有错误也没有数据，可能是请求还在进行中或已成功但返回空
+  // 这种情况应该很少发生，但为了安全起见，返回 false
   return { checking: false, allowed: false };
 }
 
