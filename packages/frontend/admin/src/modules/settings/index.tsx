@@ -18,6 +18,7 @@ import { type ConfigInputProps, ConfigRow } from './config-input-row';
 import { useAppConfig } from './use-app-config';
 
 const ServerSettingsPage = lazy(() => import('./server').then(m => ({ default: m.Component })));
+const SecurityMonitoringPage = lazy(() => import('./security').then(m => ({ default: m.SecurityMonitoring })));
 const AuthSettingsPage = lazy(() => import('./auth').then(m => ({ default: m.Component })));
 const OAuthSettingsPage = lazy(() => import('./oauth').then(m => ({ default: m.Component })));
 const StorageSettingsPage = lazy(() => import('./storages').then(m => ({ default: m.Component })));
@@ -94,6 +95,23 @@ export function SettingsPage() {
       <Suspense fallback={<EmptyFallback title="服务器设置" />}>
         <ServerSettingsPage />
       </Suspense>
+    );
+  }
+
+  if (module === 'security') {
+    return (
+      <div className="flex h-screen overflow-hidden bg-slate-50/40">
+        <div className="flex flex-1 flex-col">
+          <Header title="安全监控" subtitle="实时监控恶意攻击、查看安全事件、管理IP封禁" />
+          <div className="flex-1 overflow-auto">
+            <div className="mx-auto max-w-7xl p-6">
+              <Suspense fallback={<EmptyFallback title="安全监控" />}>
+                <SecurityMonitoringPage />
+              </Suspense>
+            </div>
+          </div>
+        </div>
+      </div>
     );
   }
 

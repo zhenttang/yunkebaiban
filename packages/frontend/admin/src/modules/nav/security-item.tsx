@@ -18,6 +18,10 @@ import { useNav } from './context';
 // 安全相关的配置组
 const SECURITY_CONFIG_GROUPS = [
   {
+    name: '安全监控',
+    module: 'security',
+  },
+  {
     name: '认证授权',
     module: 'auth',
   },
