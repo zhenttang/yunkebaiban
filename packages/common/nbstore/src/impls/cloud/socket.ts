@@ -236,13 +236,53 @@ class SocketManager {
       socketId: this.socket.id
     });
 
-    this.refCount++;
-    this.socket.connect();
+    // 🔧 优化：如果已连接且 refCount > 0，只增加引用计数，不重复连接
+    if (this.socket.connected && this.refCount > 0) {
+      console.log('✅ [SocketManager.connect] Socket 已连接，只增加引用计数:', {
+        endpoint: this.socketIOManager.uri,
+        beforeRefCount: this.refCount,
+        socketId: this.socket.id
+      });
+      this.refCount++;
+      return {
+        socket: this.socket,
+        disconnect: () => {
+          if (disconnected) {
+            console.log('⚠️ [SocketManager.disconnect] 已经断开，忽略重复调用');
+            return;
+          }
+          console.log('🔌 [SocketManager.disconnect] 减少引用计数:', {
+            endpoint: this.socketIOManager.uri,
+            beforeRefCount: this.refCount,
+            socketId: this.socket.id
+          });
+          disconnected = true;
+          this.refCount--;
+          if (this.refCount === 0) {
+            console.log('🔌 [SocketManager.disconnect] RefCount 归零，真正断开 Socket:', {
+              endpoint: this.socketIOManager.uri
+            });
+            this.socket.disconnect();
+          }
+        },
+      };
+    }
 
-    console.log('🔌 [SocketManager.connect] socket.connect() 已调用:', {
-      newRefCount: this.refCount,
-      endpoint: this.socketIOManager.uri
-    });
+    this.refCount++;
+    
+    // 🔧 只有在未连接时才调用 connect()
+    if (!this.socket.connected) {
+      this.socket.connect();
+      console.log('🔌 [SocketManager.connect] socket.connect() 已调用:', {
+        newRefCount: this.refCount,
+        endpoint: this.socketIOManager.uri
+      });
+    } else {
+      console.log('✅ [SocketManager.connect] Socket 已连接，跳过 connect() 调用:', {
+        newRefCount: this.refCount,
+        endpoint: this.socketIOManager.uri
+      });
+    }
 
     return {
       socket: this.socket,

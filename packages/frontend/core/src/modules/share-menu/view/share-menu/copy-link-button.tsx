@@ -4,6 +4,7 @@ import {
   useSharingUrl,
 } from '@yunke/core/components/hooks/yunke/use-share-url';
 import { EditorService } from '@yunke/core/modules/editor';
+import { ShareInfoService } from '@yunke/core/modules/share-doc';
 import { useI18n } from '@yunke/i18n';
 import type { DocMode } from '@blocksuite/yunke/model';
 import { BlockIcon, EdgelessIcon, PageIcon } from '@blocksuite/icons/rc';
@@ -23,8 +24,10 @@ export const CopyLinkButton = ({
   const t = useI18n();
 
   const editor = useService(EditorService).editor;
+  const shareInfoService = useService(ShareInfoService);
   const currentMode = useLiveData(editor.mode$);
   const editorContainer = useLiveData(editor.editorContainer$);
+  const isSharedPage = useLiveData(shareInfoService.shareInfo.isShared$);
 
   const { blockIds, elementIds } = useMemo(
     () => getSelectedNodes(editorContainer?.host || null, currentMode),
@@ -33,6 +36,7 @@ export const CopyLinkButton = ({
   const { onClickCopyLink } = useSharingUrl({
     workspaceId,
     pageId: editor.doc.id,
+    isPublic: isSharedPage === true, // 传递文档是否公开的状态
   });
 
   const onCopyPageLink = useCallback(() => {

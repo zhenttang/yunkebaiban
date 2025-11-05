@@ -576,6 +576,10 @@ export class DocFrontend {
   }
 
   private isApplyingUpdate = false;
+  
+  // 🔧 修复无限发送：添加防抖机制，避免短时间内重复保存
+  private readonly lastSaveTime = new Map<string, number>();
+  private static readonly SAVE_DEBOUNCE_MS = 100; // 100ms 防抖
 
   applyUpdate(docId: string, update: Uint8Array) {
     const doc = this.status.docs.get(docId);
@@ -614,6 +618,9 @@ export class DocFrontend {
         applyUpdate(doc, update, NBSTORE_ORIGIN);
       } catch (err: any) {
         console.error('failed to apply update yjs doc', err);
+        const firstBytes = Array.from(update.slice(0, 10))
+          .map(b => b.toString(16).padStart(2, '0'))
+          .join(' ');
         console.error('❌ [applyUpdate] 详细错误信息:', {
           docId,
           errorMessage: err?.message || String(err),
@@ -680,6 +687,19 @@ ${changedList}
       });
       return;
     }
+
+    // 🔧 修复无限发送：添加防抖机制，避免短时间内重复保存相同文档
+    const now = Date.now();
+    const lastSaveTime = this.lastSaveTime.get(doc.guid) || 0;
+    if (now - lastSaveTime < DocFrontend.SAVE_DEBOUNCE_MS) {
+      console.log('⏱️ [DocFrontend.handleDocUpdate] 防抖：跳过短时间内重复保存', {
+        docGuid: doc.guid,
+        timeSinceLastSave: now - lastSaveTime,
+        debounceMs: DocFrontend.SAVE_DEBOUNCE_MS
+      });
+      return;
+    }
+    this.lastSaveTime.set(doc.guid, now);
 
     console.log('✅ [DocFrontend.handleDocUpdate] 调度 save 作业');
     this.schedule({

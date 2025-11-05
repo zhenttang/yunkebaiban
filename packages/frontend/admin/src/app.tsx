@@ -14,7 +14,7 @@ import { toast } from 'sonner';
 import { SWRConfig } from 'swr';
 
 import { TooltipProvider } from './components/ui/tooltip';
-import { isAdmin, useCurrentUser, useServerConfig, useRevalidateCurrentUser } from './modules/common';
+import { useCurrentUser, useServerConfig, useRevalidateCurrentUser, useAdminAccess } from './modules/common';
 import { Layout } from './modules/layout';
 
 interface ErrorBoundaryProps {
@@ -93,18 +93,19 @@ function AuthenticatedRoutes() {
   const revalidateUser = useRevalidateCurrentUser();
   const location = useLocation();
 
-  console.log('AuthenticatedRoutes:', user === undefined ? '加载中' : user === null ? '未登录' : `已登录: ${user.email}, isAdmin: ${isAdmin(user)}`);
+  const { checking, allowed } = useAdminAccess();
+  console.log('AuthenticatedRoutes:', user === undefined ? '加载中' : user === null ? '未登录' : `已登录: ${user.email}`);
   console.log('当前路径:', location.pathname);
 
   useEffect(() => {
-    if (user && !isAdmin(user)) {
-      console.log('用户不是管理员，显示错误提示');
-      toast.error('您不是管理员，请使用管理员账户登录。');
+    if (allowed === false) {
+      console.log('无管理员权限或获取失败');
+      toast.error('您没有管理员权限，请使用管理员账户登录。');
     }
-  }, [user]);
+  }, [allowed]);
 
   // 如果用户数据还在加载中，显示加载状态
-  if (user === undefined) {
+  if (user === undefined || checking) {
     console.log('显示LoadingSpinner');
     return (
       <div className="flex flex-col items-center justify-center h-screen">
@@ -128,8 +129,12 @@ function AuthenticatedRoutes() {
   }
 
   // 如果用户未登录或不是管理员，重定向到登录页
-  if (!user || !isAdmin(user)) {
+  if (!user) {
     console.log('重定向到登录页，当前路径:', location.pathname);
+    return <Navigate to="/admin/auth" replace />;
+  }
+  if (allowed === false) {
+    console.log('无权限访问管理端，重定向到登录页');
     return <Navigate to="/admin/auth" replace />;
   }
 

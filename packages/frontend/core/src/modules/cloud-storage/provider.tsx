@@ -207,6 +207,8 @@ export const CloudStorageProvider = ({
   // 🔧 修复1: 添加连接状态保护，防止重复连接
   const isConnectingRef = useRef(false);
   const logThrottle = useRef(new LogThrottle());
+  const socketRef = useRef<Socket | null>(null); // 🔧 使用 ref 存储 socket，避免 useEffect 依赖
+  const lastWorkspaceIdRef = useRef<string | null>(null); // 🔧 跟踪上次的 workspaceId，避免不必要的重连
 
   const upsertSessionInfo = useCallback(
     (sessionIdRaw: string | null, clientIdRaw: string | null, _source: SessionActivityDetail['source']) => {
@@ -381,7 +383,7 @@ export const CloudStorageProvider = ({
       safeStorage.setItem(OFFLINE_OPERATIONS_KEY, JSON.stringify(remainingOperations));
       setOfflineOperationsCount(remainingOperations.length);
     }
-  }, [currentWorkspaceId, socket, sessionId, normalizedLocalSessionId]);
+  }, [currentWorkspaceId, socket, sessionId, normalizedLocalSessionId]); // 🔧 socket 依赖保留，因为需要在同步时检查连接状态
 
   // 初始化时读取离线操作数量
   useEffect(() => {
@@ -432,86 +434,30 @@ export const CloudStorageProvider = ({
 
   // 🔧 修复1: 已删除重复的useEffect，合并到下方统一的连接管理useEffect中
 
-  // 🔧 修复5: 推送文档更新（含离线与排队逻辑）- 使用useCallback
-  const pushDocUpdate = useCallback(async (docId: string, update: Uint8Array): Promise<number> => {
-    const normalizedDocId = normalizeDocId(docId);
-
-    if (!currentWorkspaceId) {
-      const error = new Error('No current workspace available');
-      console.error('[cloud-storage] pushDocUpdate failed:', error.message);
-      throw error;
-    }
-
-    if (isEmptyUpdate(update)) {
-      return Date.now();
-    }
-
-    const enqueuePending = () =>
-      new Promise<number>((resolve, reject) => {
-        pendingOperations.current.push({ docId: normalizedDocId, update, resolve, reject });
-      });
-
-    if (!isOnline) {
-      await saveOfflineOperation(normalizedDocId, update);
-      return enqueuePending();
-    }
-
-    if (!socket?.connected || !isConnected) {
-      if (reconnectAttempts.current < maxReconnectAttempts) {
-        setTimeout(() => connectToSocket(), 0);
-      }
-      return enqueuePending();
-    }
-
-    try {
-      const updateBase64 = await uint8ArrayToBase64(update);
-
-      if (!isValidYjsUpdate(updateBase64)) {
-        throw new Error('Invalid Yjs update payload');
-      }
-
-      logYjsUpdateInfo('发送前', update, updateBase64);
-
-    const requestData = {
-      spaceType: 'workspace' as const,
-      spaceId: currentWorkspaceId,
-      docId: normalizedDocId,
-      update: updateBase64,
-      sessionId: sanitizeSessionIdentifier(sessionId) ?? sessionId,
-      clientId: sanitizeSessionIdentifier(clientIdRef.current) ?? undefined,
-    };
-
-    const start = performance.now();
-    const result = await socket.emitWithAck('space:push-doc-update', requestData);
-
-      if (result && typeof result === 'object' && 'error' in result) {
-        throw new Error(result.error.message);
-      }
-
-      const timestamp = typeof result?.timestamp === 'number' ? result.timestamp : Date.now();
-      setLastSync(new Date(timestamp));
-
-      const latency = performance.now() - start;
-      console.debug('[cloud-storage] pushDocUpdate success', {
-        docId: normalizedDocId,
-        latency: Math.round(latency),
-      });
-
-      return timestamp;
-    } catch (error) {
-      console.warn('[cloud-storage] pushDocUpdate failed, enqueue offline', error);
-      await saveOfflineOperation(normalizedDocId, update);
-      throw error;
-    }
-  }, [currentWorkspaceId, isOnline, socket, isConnected, sessionId]);
-
   // 🔧 修复2&3&4: 连接Socket.IO - 添加状态保护、闭包修复、日志限流
+  // 🔧 必须定义在 pushDocUpdate 之前，因为 pushDocUpdate 依赖它
   const connectToSocket = useCallback(async (): Promise<void> => {
     // 🔧 防止重复连接
     if (isConnectingRef.current) {
       logThrottle.current.log('duplicate-connect', () => {
         console.warn('⚠️ [云存储管理器] 连接进行中，跳过重复连接');
       });
+      return;
+    }
+
+    // 🔧 检查是否已连接且 workspaceId 未变化
+    const currentSocket = socketRef.current;
+    if (currentSocket?.connected && currentWorkspaceId === lastWorkspaceIdRef.current) {
+      logThrottle.current.log('already-connected', () => {
+        console.log('✅ [云存储管理器] Socket 已连接，跳过重复连接', {
+          socketId: currentSocket.id,
+          workspaceId: currentWorkspaceId
+        });
+      });
+      // 确保状态同步
+      if (!isConnected) {
+        setIsConnected(true);
+      }
       return;
     }
 
@@ -569,6 +515,8 @@ export const CloudStorageProvider = ({
         
         setIsConnected(true);
         setSocket(newSocket);
+        socketRef.current = newSocket; // 🔧 同步更新 ref
+        lastWorkspaceIdRef.current = currentWorkspaceId; // 🔧 记录当前 workspaceId
         reconnectAttempts.current = 0;
         isConnectingRef.current = false; // 🔧 连接成功，重置标记
         
@@ -622,6 +570,11 @@ export const CloudStorageProvider = ({
         clientIdRef.current = null;
         isConnectingRef.current = false; // 🔧 断开连接，重置标记
         
+        // 🔧 清理 ref
+        if (socketRef.current === newSocket) {
+          socketRef.current = null;
+        }
+        
         // 如果是意外断开，尝试重连
         if (reason !== 'io client disconnect') {
           scheduleReconnect();
@@ -648,6 +601,90 @@ export const CloudStorageProvider = ({
       scheduleReconnect();
     }
   }, [currentWorkspaceId, isOnline, serverUrl, normalizedLocalSessionId]);
+
+  // 🔧 修复5: 推送文档更新（含离线与排队逻辑）- 使用useCallback
+  // 🔧 定义在 connectToSocket 之后，因为依赖 connectToSocket
+  const pushDocUpdate = useCallback(async (docId: string, update: Uint8Array): Promise<number> => {
+    const normalizedDocId = normalizeDocId(docId);
+
+    if (!currentWorkspaceId) {
+      const error = new Error('No current workspace available');
+      console.error('[cloud-storage] pushDocUpdate failed:', error.message);
+      throw error;
+    }
+
+    if (isEmptyUpdate(update)) {
+      return Date.now();
+    }
+
+    const enqueuePending = () =>
+      new Promise<number>((resolve, reject) => {
+        pendingOperations.current.push({ docId: normalizedDocId, update, resolve, reject });
+      });
+
+    if (!isOnline) {
+      await saveOfflineOperation(normalizedDocId, update);
+      return enqueuePending();
+    }
+
+    if (!socket?.connected || !isConnected) {
+      const currentSocket = socketRef.current;
+      if (!currentSocket?.connected || !isConnected) {
+        if (reconnectAttempts.current < maxReconnectAttempts) {
+          setTimeout(() => connectToSocket(), 0);
+        }
+        return enqueuePending();
+      }
+      // socket 已连接，继续使用 ref 中的 socket
+    }
+
+    // 🔧 确保使用最新的 socket
+    const currentSocket = socketRef.current || socket;
+    if (!currentSocket?.connected) {
+      return enqueuePending();
+    }
+
+    try {
+      const updateBase64 = await uint8ArrayToBase64(update);
+
+      if (!isValidYjsUpdate(updateBase64)) {
+        throw new Error('Invalid Yjs update payload');
+      }
+
+      logYjsUpdateInfo('发送前', update, updateBase64);
+
+    const requestData = {
+      spaceType: 'workspace' as const,
+      spaceId: currentWorkspaceId,
+      docId: normalizedDocId,
+      update: updateBase64,
+      sessionId: sanitizeSessionIdentifier(sessionId) ?? sessionId,
+      clientId: sanitizeSessionIdentifier(clientIdRef.current) ?? undefined,
+    };
+
+    const start = performance.now();
+    const result = await currentSocket.emitWithAck('space:push-doc-update', requestData);
+
+      if (result && typeof result === 'object' && 'error' in result) {
+        throw new Error(result.error.message);
+      }
+
+      const timestamp = typeof result?.timestamp === 'number' ? result.timestamp : Date.now();
+      setLastSync(new Date(timestamp));
+
+      const latency = performance.now() - start;
+      console.debug('[cloud-storage] pushDocUpdate success', {
+        docId: normalizedDocId,
+        latency: Math.round(latency),
+      });
+
+      return timestamp;
+    } catch (error) {
+      console.warn('[cloud-storage] pushDocUpdate failed, enqueue offline', error);
+      await saveOfflineOperation(normalizedDocId, update);
+      throw error;
+    }
+  }, [currentWorkspaceId, isOnline, isConnected, sessionId, connectToSocket]); // 🔧 移除 socket 依赖，添加 connectToSocket
 
   // 🔧 修复5: 智能重连调度 - 使用useCallback包装
   const scheduleReconnect = useCallback(() => {
@@ -687,24 +724,31 @@ export const CloudStorageProvider = ({
       reconnectTimeout.current = null;
     }
     
-    if (socket) {
-      socket.disconnect();
+    const currentSocket = socketRef.current;
+    if (currentSocket) {
+      currentSocket.disconnect();
       setSocket(null);
+      socketRef.current = null;
     }
     
     isConnectingRef.current = false; // 🔧 重置连接标记
     reconnectAttempts.current = 0;
+    lastWorkspaceIdRef.current = null; // 🔧 重置 workspaceId
     await connectToSocket();
-  }, [socket, connectToSocket]);
+  }, [connectToSocket]); // 🔧 移除 socket 依赖
 
   // 🔧 修复1: 统一的连接管理 - 处理组件挂载、workspaceId变化、serverUrl变化
+  // 🔧 修复：移除 socket 依赖，避免循环依赖，使用 socketRef 替代
   useEffect(() => {
     if (!currentWorkspaceId) {
       // 如果没有workspaceId，清理现有连接
-      if (socket) {
-        socket.disconnect();
+      const currentSocket = socketRef.current;
+      if (currentSocket) {
+        currentSocket.disconnect();
         setSocket(null);
+        socketRef.current = null;
       }
+      lastWorkspaceIdRef.current = null;
       if (reconnectTimeout.current) {
         clearTimeout(reconnectTimeout.current);
         reconnectTimeout.current = null;
@@ -714,10 +758,21 @@ export const CloudStorageProvider = ({
       return;
     }
 
+    // 🔧 检查 workspaceId 是否真的变化了
+    if (currentWorkspaceId === lastWorkspaceIdRef.current) {
+      // workspaceId 未变化，检查连接状态
+      const currentSocket = socketRef.current;
+      if (currentSocket?.connected && isConnected) {
+        // 已连接且 workspaceId 未变化，不需要重连
+        return;
+      }
+    }
+
     // workspaceId或serverUrl变化时，重置并重新连接
     logThrottle.current.log('workspace-change', () => {
       console.log('🔄 [云存储管理器] Workspace变化，重新建立连接', {
         workspaceId: currentWorkspaceId,
+        previousWorkspaceId: lastWorkspaceIdRef.current,
       });
     });
 
@@ -727,10 +782,12 @@ export const CloudStorageProvider = ({
     reconnectAttempts.current = 0;
     isConnectingRef.current = false;
     
-    // 断开旧连接
-    if (socket) {
-      socket.disconnect();
+    // 断开旧连接（如果 workspaceId 变化）
+    const currentSocket = socketRef.current;
+    if (currentSocket && currentWorkspaceId !== lastWorkspaceIdRef.current) {
+      currentSocket.disconnect();
       setSocket(null);
+      socketRef.current = null;
     }
     
     // 清除旧的重连定时器
@@ -751,12 +808,10 @@ export const CloudStorageProvider = ({
         clearTimeout(reconnectTimeout.current);
         reconnectTimeout.current = null;
       }
-      if (socket) {
-        socket.disconnect();
-      }
-      isConnectingRef.current = false;
+      // 🔧 注意：不在这里断开连接，因为可能被新的连接复用
+      // 只在 cleanup 时（组件卸载）才断开
     };
-  }, [serverUrl, currentWorkspaceId, connectToSocket, socket]);
+  }, [serverUrl, currentWorkspaceId, connectToSocket]); // 🔧 移除 socket 依赖
 
   useEffect(() => {
     if (typeof window === 'undefined') {
@@ -781,7 +836,24 @@ export const CloudStorageProvider = ({
     };
   }, [normalizedLocalSessionId, upsertSessionInfo]);
 
-  // 🔧 修复2: 使用useMemo优化value对象，减少不必要的重渲染
+  // 🔧 添加组件卸载时的清理逻辑
+  useEffect(() => {
+    return () => {
+      // 组件卸载时清理连接
+      const currentSocket = socketRef.current;
+      if (currentSocket) {
+        console.log('🧹 [CloudStorageProvider] 组件卸载，清理连接');
+        currentSocket.disconnect();
+        socketRef.current = null;
+      }
+      lastWorkspaceIdRef.current = null;
+      if (reconnectTimeout.current) {
+        clearTimeout(reconnectTimeout.current);
+        reconnectTimeout.current = null;
+      }
+      isConnectingRef.current = false;
+    };
+  }, []); // 只在组件卸载时执行
   const value = useMemo<CloudStorageStatus>(() => ({
     isConnected,
     storageMode,

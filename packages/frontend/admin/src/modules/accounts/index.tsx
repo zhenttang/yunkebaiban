@@ -7,7 +7,7 @@ import { useUserList } from './use-user-list-simple';
 import { DataTable } from './components/data-table';
 import { useColumns } from './components/columns';
 import type { UserType } from './schema';
-import { useCurrentUser, isAdmin } from '../common';
+import { useCurrentUser } from '../common';
 
 function AccountPage() {
   const currentUser = useCurrentUser();
@@ -43,7 +43,7 @@ function AccountPage() {
   // 检查当前用户权限
   console.log('=== Accounts Page Debug ===');
   console.log('当前用户:', currentUser);
-  console.log('是否管理员:', currentUser ? isAdmin(currentUser) : 'user is null/undefined');
+  console.log('用户:', currentUser?.email);
   console.log('用户features:', currentUser?.features);
   console.log('localStorage token:', localStorage.getItem('yunke-admin-token') ? 'exists' : 'not found');
   console.log('API错误:', error);
@@ -60,7 +60,7 @@ function AccountPage() {
             <div className="bg-gray-100 p-4 rounded-lg mb-4 text-left text-sm">
               <div className="font-semibold mb-2">调试信息:</div>
               <div>当前用户: {currentUser ? currentUser.email : '未登录'}</div>
-              <div>是否管理员: {currentUser ? (isAdmin(currentUser) ? '是' : '否') : '未知'}</div>
+              <div>是否管理员: 由后端判定</div>
               <div>用户权限: {currentUser?.features?.join(', ') || '无'}</div>
               <div>认证令牌: {localStorage.getItem('yunke-admin-token') ? '存在' : '不存在'}</div>
             </div>

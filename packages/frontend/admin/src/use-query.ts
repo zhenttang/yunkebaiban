@@ -65,7 +65,7 @@ const createUseQuery =
     const configWithSuspense: SWRConfiguration = useMemo(
       () => ({
         suspense: true,
-        ...config,
+        ...(config || {}), // 确保 config 有默认值，避免 undefined 导致的问题
       }),
       [config]
     );
@@ -100,7 +100,7 @@ export function useQueryInfinite<Query extends RestApiQuery>(
   const configWithSuspense: SWRConfiguration = useMemo(
     () => ({
       suspense: true,
-      ...config,
+      ...(config || {}), // 确保 config 有默认值，避免 undefined 导致的问题
     }),
     [config]
   );

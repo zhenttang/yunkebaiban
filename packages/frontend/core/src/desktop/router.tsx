@@ -56,9 +56,7 @@ export const topLevelRoutes = [
       },
       {
         path: '/share/:workspaceId/:pageId',
-        loader: ({ params }) => {
-          return redirect(`/workspace/${params.workspaceId}/${params.pageId}`);
-        },
+        lazy: () => import('./pages/workspace/share/share-route'),
       },
       {
         path: '/404',

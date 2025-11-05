@@ -66,35 +66,24 @@ export class ShareStore extends Store {
     if (!this.workspaceServerService.server) {
       throw new Error('无服务器');
     }
-    // 1) 设置公开
+    
+    // 统一通过一个接口设置所有字段
+    const publicPermission = docMode === 'append-only' ? 'append-only' : 'read-only';
+    const publicMode = docMode === 'edgeless' ? 'edgeless' : 'page';
+    
     await this.workspaceServerService.server.fetch(
       `/api/workspaces/${workspaceId}/docs/${pageId}/public`,
       {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ isPublic: true }),
+        body: JSON.stringify({
+          isPublic: true,
+          publicPermission,
+          publicMode,
+        }),
         signal,
       }
     );
-
-    // 2) 如果希望仅追加，尝试设置公开权限（后端若未实现将忽略错误）
-    if (docMode === 'append-only') {
-      try {
-        // 优先尝试通用更新接口（若后端接受将生效）
-        await this.workspaceServerService.server.fetch(
-          `/api/workspaces/${workspaceId}/docs/${pageId}`,
-          {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ isPublic: true, publicPermission: 'append-only' }),
-            signal,
-          }
-        );
-      } catch (e) {
-        // 忽略，回退留在只读模式
-        console.warn('设置AppendOnly失败，后端可能未实现该接口', e);
-      }
-    }
   }
 
   async disableSharePage(

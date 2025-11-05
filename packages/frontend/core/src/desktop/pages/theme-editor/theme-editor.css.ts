@@ -20,6 +20,24 @@ export const sidebar = style({
   display: 'flex',
   flexDirection: 'column',
   userSelect: 'none',
+  position: 'relative',
+});
+
+export const sidebarResizer = style({
+  position: 'absolute',
+  top: 0,
+  right: -4,
+  width: 8,
+  height: '100%',
+  cursor: 'col-resize',
+  zIndex: 10,
+  backgroundColor: 'transparent',
+  transition: 'background-color 0.2s',
+  selectors: {
+    '&:hover': {
+      backgroundColor: cssVarV2('layer/background/hoverOverlay'),
+    },
+  },
 });
 export const content = style({
   width: 0,
@@ -82,7 +100,7 @@ globalStyle(`${row} > li`, {
 export const treeNode = style({
   width: '100%',
   display: 'flex',
-  alignItems: 'center',
+  alignItems: 'flex-start',
   gap: 8,
   padding: '8px 16px',
   borderRadius: 8,
@@ -99,6 +117,13 @@ export const treeNode = style({
       textDecoration: 'underline',
     },
   },
+});
+
+globalStyle(`${treeNode} > span`, {
+  flex: 1,
+  minWidth: 0,
+  wordBreak: 'break-word',
+  lineHeight: '1.5',
 });
 export const treeNodeContent = style({
   display: 'flex',
@@ -155,6 +180,13 @@ export const colorCellColor = style({
   height: 16,
   borderRadius: 4,
   position: 'relative',
+  cursor: 'pointer',
+  transition: 'transform 0.1s',
+  selectors: {
+    '&:hover': {
+      transform: 'scale(1.1)',
+    },
+  },
   ':before': {
     width: 16,
     height: 16,

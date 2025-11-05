@@ -1,7 +1,7 @@
 import { IconButton, Input, Menu, MenuItem } from '@yunke/component';
 import { MoreHorizontalIcon } from '@blocksuite/icons/rc';
 import { cssVar } from '@toeverything/theme';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import * as styles from '../theme-editor.css';
 import { SimpleColorPicker } from './simple-color-picker';
@@ -15,7 +15,14 @@ export const ColorCell = ({
   custom?: string;
   onValueChange?: (color?: string) => void;
 }) => {
-  const [inputValue, setInputValue] = useState(value);
+  const [inputValue, setInputValue] = useState(value || '');
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  useEffect(() => {
+    if (value) {
+      setInputValue(value);
+    }
+  }, [value]);
 
   const onInput = useCallback(
     (color: string) => {
@@ -24,27 +31,39 @@ export const ColorCell = ({
     },
     [onValueChange]
   );
+
+  // 直接点击颜色块也可以打开颜色选择器
+  const handleColorClick = useCallback(() => {
+    setIsMenuOpen(true);
+  }, []);
+
   return (
     <div className={styles.colorCell}>
       <div>
         <div data-override={!!custom} className={styles.colorCellRow}>
           <div
             className={styles.colorCellColor}
-            style={{ backgroundColor: value }}
+            style={{ backgroundColor: value || 'transparent' }}
+            onClick={handleColorClick}
+            title="点击选择颜色"
           />
-          <div className={styles.colorCellValue}>{value}</div>
+          <div className={styles.colorCellValue}>{value || '未设置'}</div>
         </div>
 
         <div data-empty={!custom} data-custom className={styles.colorCellRow}>
           <div
             className={styles.colorCellColor}
-            style={{ backgroundColor: custom }}
+            style={{ backgroundColor: custom || 'transparent' }}
+            onClick={handleColorClick}
+            title="点击选择颜色"
           />
-          <div className={styles.colorCellValue}>{custom}</div>
+          <div className={styles.colorCellValue}>{custom || '未设置'}</div>
         </div>
       </div>
 
       <Menu
+        open={isMenuOpen}
+        onOpenChange={setIsMenuOpen}
         contentOptions={{ style: { background: cssVar('white') } }}
         items={
           <ul style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>

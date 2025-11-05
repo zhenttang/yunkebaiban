@@ -61,6 +61,20 @@ export class CloudDocStorage extends DocStorageBase<CloudDocStorageOptions> {
       const sessionId = sanitizeSessionIdentifier(message.sessionId);
       const clientId = sanitizeSessionIdentifier(message.clientId);
       const editorId = sanitizeSessionIdentifier(message.editor);
+      
+      // 🔧 修复：检查是否是自己发送的更新，避免循环
+      const normalizedSessionId = sanitizeSessionIdentifier(this.sessionId);
+      const normalizedClientId = sanitizeSessionIdentifier(this.connection.clientId);
+      
+      // 如果 sessionId 或 clientId 匹配，说明是自己发送的更新，跳过
+      const isOwnUpdate = 
+        (sessionId && normalizedSessionId && sessionId === normalizedSessionId) ||
+        (clientId && normalizedClientId && clientId === normalizedClientId);
+      
+      if (isOwnUpdate) {
+        // 🔧 自己发送的更新，不触发事件，避免循环
+        return;
+      }
 
       this.emit('update', {
         docId: this.idConverter.oldIdToNewId(message.docId),
@@ -86,14 +100,31 @@ export class CloudDocStorage extends DocStorageBase<CloudDocStorageOptions> {
       this.spaceType === message.spaceType &&
       this.spaceId === message.spaceId
     ) {
+      // 🔧 修复：批量更新也检查是否是自己发送的
+      const normalizedSessionId = sanitizeSessionIdentifier(this.sessionId);
+      const normalizedClientId = sanitizeSessionIdentifier(this.connection.clientId);
+      
       message.updates.forEach(update => {
+        const sessionId = sanitizeSessionIdentifier(update.sessionId);
+        const clientId = sanitizeSessionIdentifier(update.clientId);
+        
+        // 如果 sessionId 或 clientId 匹配，说明是自己发送的更新，跳过
+        const isOwnUpdate = 
+          (sessionId && normalizedSessionId && sessionId === normalizedSessionId) ||
+          (clientId && normalizedClientId && clientId === normalizedClientId);
+        
+        if (isOwnUpdate) {
+          // 🔧 自己发送的更新，跳过
+          return;
+        }
+        
         this.onServerUpdate({
           spaceType: update.spaceType ?? message.spaceType,
           spaceId: update.spaceId ?? message.spaceId,
           docId: update.docId ?? message.docId,
           update: update.update,
           timestamp: update.timestamp,
-          editor: update.editor,
+          editor: update.editor ?? '',
           sessionId: update.sessionId,
           clientId: update.clientId,
         });
@@ -176,7 +207,7 @@ export class CloudDocStorage extends DocStorageBase<CloudDocStorageOptions> {
 
       if (cloudStorageManager && cloudStorageManager.isConnected && cloudStorageManager.pushDocUpdate) {
         const timestamp = await cloudStorageManager.pushDocUpdate(docId, update.bin);
-        return { timestamp: new Date(timestamp) };
+        return { docId: update.docId, timestamp: new Date(timestamp) };
       }
     } catch (error) {
       // 降级到 Socket.IO
@@ -212,7 +243,11 @@ export class CloudDocStorage extends DocStorageBase<CloudDocStorageOptions> {
         throw new Error(`Socket.IO error: ${result.error.message}`);
       }
 
-      return { timestamp: new Date(result.timestamp) };
+      const timestamp = typeof result === 'object' && 'timestamp' in result 
+        ? new Date((result as any).timestamp) 
+        : new Date();
+
+      return { docId: update.docId, timestamp };
 
     } catch (error) {
       throw error;

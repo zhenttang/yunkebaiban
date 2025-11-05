@@ -4,6 +4,7 @@ import { useCallback, useState } from 'react';
 
 import { type TreeNode } from '../resource';
 import * as styles from '../theme-editor.css';
+import { getVariableDescription } from '../variable-descriptions';
 
 export const ThemeTreeNode = ({
   node,
@@ -20,6 +21,7 @@ export const ThemeTreeNode = ({
 }) => {
   const isLeaf = !node.children && node.variables;
   const [open, setOpen] = useState(false);
+  const nodeDescription = getVariableDescription(node.id.replace(/^\//, ''), node.id);
 
   const onClick = useCallback(() => {
     if (isLeaf || node.variables?.length) setActive(node);
@@ -34,6 +36,7 @@ export const ThemeTreeNode = ({
         data-customized={isCustomized?.(node)}
         className={styles.treeNode}
         onClick={onClick}
+        title={nodeDescription || undefined}
       >
         <div className={styles.treeNodeIconWrapper}>
           {isLeaf ? (
@@ -47,7 +50,14 @@ export const ThemeTreeNode = ({
             />
           )}
         </div>
-        <span>{node.label}</span>
+        <span>
+          {node.label}
+          {nodeDescription && (
+            <span style={{ color: '#999', fontWeight: 'normal', marginLeft: '4px' }}>
+              ({nodeDescription})
+            </span>
+          )}
+        </span>
       </div>
       <Collapsible.Content className={styles.treeNodeContent}>
         {node.children?.map(child => (

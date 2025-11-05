@@ -10,10 +10,10 @@ export const wrapper = style({
 
 export const input = style({
   position: 'absolute',
-  pointerEvents: 'none',
   width: '100%',
   height: '100%',
   top: 0,
   left: 0,
   opacity: 0,
+  cursor: 'pointer',
 });

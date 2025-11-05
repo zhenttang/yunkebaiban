@@ -47,49 +47,48 @@ import { useQuery } from '../use-query';
 
 export const useServerConfig = () => {
   const user = useCurrentUser();
-  
-  // 总是调用useQuery以避免Hook规则错误
-  const { data, error } = useQuery({
-    query: serverConfigQuery,
-  }, {
-    suspense: false,
-    shouldRetryOnError: false,
-  });
-  
-  // 如果用户未登录或不是管理员，返回默认配置
-  if (!user || !isAdmin(user)) {
-    return {
-      initialized: true, // 改为true以避免重定向到setup页面
-      credentialsRequirement: {
-        password: {
-          minLength: 8,
-          maxLength: 32
-        }
-      }
-    };
-  }
-  
-  if (error) {
+
+  // 仅在“已登录”后才发起管理员配置请求（是否为管理员交由后端判定：成功=有权限，403=无权限）
+  const shouldFetch = !!user; // user: undefined=加载中，null=未登录，object=已登录
+
+  const { data, error } = useQuery(
+    shouldFetch
+      ? { query: serverConfigQuery }
+      : undefined,
+    {
+      suspense: false,
+      shouldRetryOnError: false,
+    }
+  );
+
+  // 未登录：返回安全的默认配置，避免触发管理端接口
+  if (!shouldFetch) {
     return {
       initialized: true,
       credentialsRequirement: {
-        password: {
-          minLength: 8,
-          maxLength: 32
-        }
-      }
-    };
+        password: { minLength: 8, maxLength: 32 },
+      },
+    } satisfies ServerConfigResponse;
   }
-  
-  return data || {
-    initialized: true,
-    credentialsRequirement: {
-      password: {
-        minLength: 8,
-        maxLength: 32
-      }
+
+  if (error) {
+    // 包含 403（FORBIDDEN）等错误场景：统一返回默认配置，由页面自行提示“无权限/请登录”
+    return {
+      initialized: true,
+      credentialsRequirement: {
+        password: { minLength: 8, maxLength: 32 },
+      },
+    } satisfies ServerConfigResponse;
+  }
+
+  return (
+    data || {
+      initialized: true,
+      credentialsRequirement: {
+        password: { minLength: 8, maxLength: 32 },
+      },
     }
-  };
+  );
 };
 
 export const useRevalidateServerConfig = () => {
@@ -158,10 +157,40 @@ export const useCurrentUser = (): NonNullable<GetCurrentUserResponse>['user'] | 
   return result;
 };
 
-export function isAdmin(
-  user: NonNullable<GetCurrentUserResponse>['user'] | null | undefined
-) {
-  return true;
+// 基于 /api/admin/access-check 成功/失败判断是否有管理权限（轻量探测）
+export function useAdminAccess(): {
+  checking: boolean;
+  allowed: boolean | null; // null 表示未知/加载中
+  error?: any;
+} {
+  const user = useCurrentUser();
+
+  // ✅ 始终调用 useQuery，但通过 options 参数控制是否实际请求
+  // 只有在用户已登录时才发起请求
+  const shouldFetch = user !== undefined && user !== null;
+  
+  const accessCheckQuery = { id: 'adminAccess', endpoint: '/api/admin/access-check', method: 'GET' as const };
+  const { data, error, isLoading } = useQuery(
+    shouldFetch
+      ? { query: accessCheckQuery as any }
+      : undefined, // 传入 undefined 会让 SWR 跳过请求
+    { suspense: false, shouldRetryOnError: false }
+  );
+
+  // 用户信息还在加载
+  if (user === undefined) {
+    return { checking: true, allowed: null };
+  }
+  // 未登录
+  if (user === null) {
+    return { checking: false, allowed: false };
+  }
+
+  // 已登录的情况
+  if (isLoading) return { checking: true, allowed: null };
+  if (error) return { checking: false, allowed: false, error };
+  if (data) return { checking: false, allowed: true };
+  return { checking: false, allowed: false };
 }
 
 export function useMediaQuery(query: string) {

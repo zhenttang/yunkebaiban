@@ -24,7 +24,7 @@ export const StringCell = ({
 
   return (
     <div style={{ display: 'flex', gap: 8, flexDirection: 'column' }}>
-      <div className={styles.row}>{value}</div>
+      <div className={styles.row}>{value || '未设置'}</div>
       <Input
         placeholder="输入值以覆盖"
         style={{ width: '100%' }}

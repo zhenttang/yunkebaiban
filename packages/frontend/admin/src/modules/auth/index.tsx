@@ -3,20 +3,22 @@ import { Input } from '@yunke/admin/components/ui/input';
 import { Label } from '@yunke/admin/components/ui/label';
 
 import { useCallback, useRef } from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 import { toast } from 'sonner';
 
 import { httpClient } from '../../../../../common/request/src';
-import { isAdmin, useCurrentUser, useRevalidateCurrentUser } from '../common';
+import { useCurrentUser, useRevalidateCurrentUser, useAdminAccess } from '../common';
 import logo from './logo.svg';
 
 export function Auth() {
   const currentUser = useCurrentUser();
   const revalidate = useRevalidateCurrentUser();
+  const { checking, allowed } = useAdminAccess();
+  const location = useLocation();
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
   
-  console.log('Auth组件渲染:', currentUser === undefined ? '加载中' : currentUser === null ? '未登录' : `已登录: ${currentUser.email}, isAdmin: ${isAdmin(currentUser)}`);
+  console.log('Auth组件渲染:', currentUser === undefined ? '加载中' : currentUser === null ? '未登录' : `已登录: ${currentUser.email}`);
   console.log('当前URL:', window.location.href);
   
   const login = useCallback(
@@ -40,7 +42,7 @@ export function Auth() {
       
       console.log('=== 开始登录流程 ===');
       console.log('登录前 currentUser:', currentUser);
-      console.log('登录前 isAdmin(currentUser):', currentUser ? isAdmin(currentUser) : 'currentUser is null/undefined');
+      console.log('登录前 currentUser:', currentUser ? currentUser.email : 'null/undefined');
       
       try {
         console.log('发送登录请求到:', '/api/auth/sign-in');
@@ -85,10 +87,11 @@ export function Auth() {
     [revalidate, currentUser]
   );
 
-  // if (currentUser && isAdmin(currentUser)) {
-  //   console.log('已登录管理员，重定向到账户页面');
-  //   return <Navigate to="/admin/accounts" replace />;
-  // }
+  // 已登录且后端判定具有管理员权限 => 跳转到管理首页
+  if (currentUser && allowed === true && !checking) {
+    console.log('已登录且具备管理员权限，重定向到 /admin/accounts');
+    return <Navigate to="/admin/accounts" replace state={{ from: location }} />;
+  }
 
   console.log('渲染登录表单');
   return (

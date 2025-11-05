@@ -17,25 +17,55 @@ export const CustomThemeModifier = () => {
   const { resolvedTheme } = useTheme();
 
   useEffect(() => {
-    if (!enableThemeEditor) return;
+    // 清除所有自定义主题变量的辅助函数
+    const clearCustomThemeVars = () => {
+      // 获取所有以 --yunke- 开头的 CSS 变量
+      const customVars: string[] = [];
+      
+      // 遍历所有通过 style 属性设置的 CSS 变量
+      for (let i = 0; i < document.documentElement.style.length; i++) {
+        const prop = document.documentElement.style[i];
+        if (prop.startsWith('--yunke-')) {
+          customVars.push(prop);
+        }
+      }
+      
+      // 清除所有自定义变量
+      customVars.forEach(prop => {
+        document.documentElement.style.removeProperty(prop);
+      });
+    };
+
+    if (!enableThemeEditor) {
+      // 如果 feature flag 关闭，清除之前应用的自定义主题
+      clearCustomThemeVars();
+      return;
+    }
     if (_provided) return;
 
     _provided = true;
 
     const sub = themeEditorService.customTheme$.subscribe(themeObj => {
-      if (!themeObj) return;
+      if (!themeObj) {
+        // 如果没有自定义主题，清除之前应用的样式
+        clearCustomThemeVars();
+        return;
+      }
 
       const mode = resolvedTheme === 'dark' ? 'dark' : 'light';
       const valueMap = themeObj[mode];
 
-      // remove previous style
-      // TOOD(@CatsJuice): find better way to remove previous style
-      document.documentElement.style.cssText = '';
-      // recover color scheme set by next-themes
+      // 清除之前通过 setProperty 设置的自定义变量
+      clearCustomThemeVars();
+
+      // 恢复 color scheme
       document.documentElement.style.colorScheme = mode;
 
+      // 应用新的自定义变量
       Object.entries(valueMap).forEach(([key, value]) => {
-        value && document.documentElement.style.setProperty(key, value);
+        if (value) {
+          document.documentElement.style.setProperty(key, value);
+        }
       });
     });
 

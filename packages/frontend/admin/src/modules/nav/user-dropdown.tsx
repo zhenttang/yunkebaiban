@@ -20,6 +20,8 @@ import { toast } from 'sonner';
 
 import { yunkeFetch } from '../../fetch-utils';
 import { useCurrentUser, useRevalidateCurrentUser } from '../common';
+import { tokenManager } from '../../../../../common/request/src/interceptors';
+import http from '../../../../../common/request/src';
 
 interface UserDropdownProps {
   isCollapsed: boolean;
@@ -63,15 +65,32 @@ export function UserDropdown({ isCollapsed }: UserDropdownProps) {
   const currentUser = useCurrentUser();
   const relative = useRevalidateCurrentUser();
 
-  const handleLogout = useCallback(() => {
-    yunkeFetch('/api/auth/sign-out')
-      .then(() => {
-        toast.success('登出成功');
-        return relative();
-      })
-      .catch(err => {
-        toast.error(`Failed to logout: ${err.message}`);
-      });
+  const handleLogout = useCallback(async () => {
+    try {
+      // 1) 立即清除本地令牌，避免拦截器用 refreshToken 自动续期导致“又登录回来”
+      tokenManager.remove();
+      localStorage.removeItem('yunke-admin-refresh-token');
+
+      // 2) 取消挂起请求，避免并发请求带旧 token
+      http.cancelAll('logout');
+
+      // 3) 通知服务器注销（可选，若服务端用cookie会清cookie）
+      try {
+        await yunkeFetch('/api/auth/sign-out', { method: 'POST' });
+      } catch (_) {
+        // 忽略服务器登出错误，以本地清理为准
+      }
+
+      // 4) 触发用户信息重新获取，更新为未登录态
+      await relative();
+
+      toast.success('已退出登录');
+
+      // 5) 强制跳到登录页，打断可能的页面重试
+      window.location.replace('/admin/auth');
+    } catch (err: any) {
+      toast.error(`退出失败: ${err?.message || '未知错误'}`);
+    }
   }, [relative]);
 
   if (isCollapsed) {

@@ -4,14 +4,18 @@ import {
   lightCssVariablesV2,
 } from '@toeverything/theme/v2';
 
-import { partsToVariableName, variableNameToParts } from './utils';
+import {
+  partsToVariableName,
+  partsToVariableNameV2,
+  variableNameToParts,
+} from './utils';
 
 export type Variable = {
   id: string;
   name: string;
   variableName: string;
-  light: string;
-  dark: string;
+  light: string | undefined;
+  dark: string | undefined;
   ancestors: string[];
 };
 
@@ -45,18 +49,23 @@ const sortTree = (tree: TreeNode[]) => {
 
 const getTree = (
   light: Record<string, string>,
-  dark: Record<string, string>
+  dark: Record<string, string>,
+  isV2: boolean = false
 ): ThemeInfo => {
   const lightKeys = Object.keys(light);
   const darkKeys = Object.keys(dark);
-  const allKeys = Array.from(new Set([...lightKeys, ...darkKeys])).map(name =>
-    variableNameToParts(name)
-  );
+  // 保存原始变量名和解析后的部分
+  const allKeysWithOriginal = Array.from(
+    new Set([...lightKeys, ...darkKeys])
+  ).map(name => ({
+    original: name,
+    parts: variableNameToParts(name),
+  }));
   const rootNodesSet = new Set<TreeNode>();
   const nodeMap = new Map<string, TreeNode>();
   const variableMap = new Map<string, Variable>();
 
-  allKeys.forEach(parts => {
+  allKeysWithOriginal.forEach(({ original: variableName, parts }) => {
     let id = '';
     let node: TreeNode | undefined;
     const ancestors: string[] = [];
@@ -91,7 +100,7 @@ const getTree = (
     });
 
     if (node) {
-      const variableName = partsToVariableName(parts);
+      // 使用原始变量名，而不是重新生成
       // for the case that a node should have both children & variables
       if (!node.variables) {
         node.variables = [];
@@ -99,7 +108,7 @@ const getTree = (
       const variable = {
         id: variableName,
         name: parts[parts.length - 1],
-        variableName,
+        variableName, // 使用原始变量名
         light: light[variableName],
         dark: dark[variableName],
         ancestors,
@@ -117,6 +126,6 @@ const getTree = (
 };
 
 export const yunkeThemes = {
-  v1: getTree(lightCssVariables, darkCssVariables),
-  v2: getTree(lightCssVariablesV2, darkCssVariablesV2),
+  v1: getTree(lightCssVariables, darkCssVariables, false),
+  v2: getTree(lightCssVariablesV2, darkCssVariablesV2, true),
 };

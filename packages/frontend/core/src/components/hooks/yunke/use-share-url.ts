@@ -27,12 +27,14 @@ export type UseSharingUrl = {
   blockIds?: string[];
   elementIds?: string[];
   xywh?: SerializedXYWH; // not needed currently
+  isPublic?: boolean; // 新增：是否为公开文档
 };
 
 /**
  * To generate a url like
  *
- * https://app.yunke.pro/workspace/workspaceId/docId?mode=DocMode&elementIds=seletedElementIds&blockIds=selectedBlockIds
+ * 公开文档: https://app.yunke.pro/share/workspaceId/docId?mode=DocMode&elementIds=seletedElementIds&blockIds=selectedBlockIds
+ * 私有文档: https://app.yunke.pro/workspace/workspaceId/docId?mode=DocMode&elementIds=seletedElementIds&blockIds=selectedBlockIds
  */
 export const generateUrl = ({
   baseUrl,
@@ -42,9 +44,14 @@ export const generateUrl = ({
   elementIds,
   mode,
   xywh, // not needed currently
+  isPublic = false, // 新增：是否为公开文档
 }: UseSharingUrl & { baseUrl: string }) => {
   try {
-    const url = new URL(`/workspace/${workspaceId}/${pageId}`, baseUrl);
+    // 如果是公开文档，使用 /share 路径；否则使用 /workspace 路径
+    const path = isPublic 
+      ? `/share/${workspaceId}/${pageId}`
+      : `/workspace/${workspaceId}/${pageId}`;
+    const url = new URL(path, baseUrl);
     const search = toDocSearchParams({ mode, blockIds, elementIds, xywh });
     if (search?.size) url.search = search.toString();
     return url.toString();
@@ -136,7 +143,7 @@ export const getSelectedNodes = (
   return result;
 };
 
-export const useSharingUrl = ({ workspaceId, pageId }: UseSharingUrl) => {
+export const useSharingUrl = ({ workspaceId, pageId, isPublic = false }: UseSharingUrl) => {
   const t = useI18n();
   const serverService = useService(ServerService);
 
@@ -149,6 +156,7 @@ export const useSharingUrl = ({ workspaceId, pageId }: UseSharingUrl) => {
         blockIds,
         elementIds,
         mode, // if view is not provided, use the current view
+        isPublic, // 传递是否公开的状态
       });
       const type = getShareLinkType({
         mode,
@@ -170,7 +178,7 @@ export const useSharingUrl = ({ workspaceId, pageId }: UseSharingUrl) => {
         notify.error({ title: '网络不可用' });
       }
     },
-    [pageId, serverService, t, workspaceId]
+    [pageId, serverService, t, workspaceId, isPublic]
   );
 
   return {

@@ -14388,6 +14388,18 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@yunke/website@workspace:packages/frontend/apps/website":
+  version: 0.0.0-use.local
+  resolution: "@yunke/website@workspace:packages/frontend/apps/website"
+  dependencies:
+    "@types/react": "npm:^18.2.0"
+    "@types/react-dom": "npm:^18.2.0"
+    react: "npm:18.2.0"
+    react-dom: "npm:18.2.0"
+    typescript: "npm:^5.7.2"
+  languageName: unknown
+  linkType: soft
+
 "@zeit/schemas@npm:2.36.0":
   version: 2.36.0
   resolution: "@zeit/schemas@npm:2.36.0"
