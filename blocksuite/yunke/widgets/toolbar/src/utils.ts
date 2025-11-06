@@ -365,7 +365,9 @@ function renderActionItem(action: ToolbarAction, context: ToolbarContext) {
       ?active=${typeof action.active === 'function'
         ? action.active(context)
         : action.active}
-      ?disabled=${action.disabled}
+      ?disabled=${typeof action.disabled === 'function'
+        ? action.disabled(context)
+        : action.disabled}
       .tooltip=${action.tooltip}
       .iconContainerPadding=${innerToolbar ? 4 : 2}
       .iconSize=${innerToolbar ? '16px' : undefined}
@@ -393,7 +395,9 @@ function renderMenuActionItem(action: ToolbarAction, context: ToolbarContext) {
       ?active=${typeof action.active === 'function'
         ? action.active(context)
         : action.active}
-      ?disabled=${action.disabled}
+      ?disabled=${typeof action.disabled === 'function'
+        ? action.disabled(context)
+        : action.disabled}
       .tooltip=${ifDefined(action.tooltip)}
       .iconContainerPadding=${innerToolbar ? 4 : 2}
       .iconSize=${innerToolbar ? '16px' : undefined}

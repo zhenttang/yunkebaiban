@@ -28,6 +28,7 @@ export const OpenInAppPage = ({
   urlToOpen ??= getOpenUrlInDesktopAppLink(window.location.href, true);
   const workspaceDialogService = useServiceOptional(WorkspaceDialogService);
   const t = useI18n();
+  const channel = BUILD_CONFIG.appBuildType;
 
   const openDownloadLink = useCallback(() => {
     open(url, '_blank');

@@ -1,9 +1,11 @@
 import { EditorLoading } from '@yunke/component/page-detail-skeleton';
+import { toast } from '@yunke/component';
 import type {
   EdgelessEditor,
   PageEditor,
 } from '@yunke/core/blocksuite/editors';
 import { ServerService } from '@yunke/core/modules/cloud';
+import { DocsService } from '@yunke/core/modules/doc';
 import {
   EditorSettingService,
   fontStyleOptions,
@@ -31,6 +33,13 @@ import type { CSSProperties, HTMLAttributes } from 'react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import type { DefaultOpenProperty } from '../../components/properties';
+import {
+  ATTACHMENT_TRASH_CUSTOM_PROPERTY,
+  ATTACHMENT_TRASH_EVENT,
+  ATTACHMENT_TRASH_META_KEY,
+  type AttachmentTrashEventDetail,
+  serializeAttachmentTrashMetadata,
+} from './attachment-trash';
 import { BlocksuiteDocEditor, BlocksuiteEdgelessEditor } from './lit-adaper';
 import * as styles from './styles.css';
 
@@ -75,6 +84,7 @@ const BlockSuiteEditorImpl = ({
   const enableEditorRTL = useLiveData(featureFlags.enable_editor_rtl.$);
   const editorSetting = useService(EditorSettingService).editorSetting;
   const server = useService(ServerService).server;
+  const docsService = useService(DocsService);
 
   const { enableMiddleClickPaste } = useLiveData(
     editorSetting.settings$.selector(s => ({
@@ -199,6 +209,96 @@ const BlockSuiteEditorImpl = ({
     }
     return;
   }, [enableMiddleClickPaste]);
+
+  const createAttachmentTrashDoc = useCallback(
+    async (detail: AttachmentTrashEventDetail) => {
+      try {
+        const attachmentName =
+          (detail.entry.props.name as string | undefined)?.toString() ||
+          '附件';
+        const docRecord = docsService.createDoc({ title: attachmentName });
+        docRecord.setMeta({ title: attachmentName });
+
+        const { doc, release } = docsService.open(docRecord.id);
+        try {
+          await doc.waitForSyncReady();
+          const note =
+            doc.blockSuiteDoc.getModelsByFlavour('yunke:note')[0] ?? null;
+          const attachmentProps = cloneAttachmentProps(detail.entry.props);
+          // Remove id from props as BlockSuite generates its own IDs
+          delete attachmentProps.id;
+
+          doc.blockSuiteDoc.captureSync();
+          doc.blockSuiteDoc.transact(() => {
+            doc.blockSuiteDoc.addBlock(
+              'yunke:attachment',
+              attachmentProps as Record<string, unknown>,
+              note?.id ?? doc.blockSuiteDoc.root?.id ?? undefined
+            );
+          });
+        } finally {
+          release();
+        }
+
+        // Set custom property AFTER doc content is created and synced
+        const serializedMetadata = serializeAttachmentTrashMetadata(detail);
+        docRecord.setCustomProperty(
+          ATTACHMENT_TRASH_META_KEY,
+          serializedMetadata
+        );
+
+        docRecord.moveToTrash();
+        toast('已移至垃圾箱', '附件已移至垃圾箱');
+      } catch (error) {
+        console.error('Failed to move attachment to trash', error);
+        toast('移至垃圾箱失败', '无法将附件移至垃圾箱');
+      }
+    },
+    [docsService]
+  );
+
+  useEffect(() => {
+    const record = docsService.list.doc$(page.id).value;
+    const properties = record?.getProperties() as Record<
+      string,
+      unknown
+    > | null;
+    const isAttachmentTrashDoc = Boolean(
+      properties?.[ATTACHMENT_TRASH_CUSTOM_PROPERTY]
+    );
+    if (isAttachmentTrashDoc) {
+      return;
+    }
+
+    // Listen for the attachment trash event dispatched from the block component
+    const handleAttachmentTrash = (event: Event) => {
+      const customEvent = event as CustomEvent<AttachmentTrashEventDetail>;
+      createAttachmentTrashDoc(customEvent.detail).catch(console.error);
+    };
+
+    // Use a timeout to ensure the editor host is available
+    const timeoutId = setTimeout(() => {
+      const editorHost = yunkeEditorContainerProxy?.host;
+      if (editorHost) {
+        editorHost.addEventListener(
+          ATTACHMENT_TRASH_EVENT as any,
+          handleAttachmentTrash
+        );
+      }
+    }, 100);
+
+    return () => {
+      clearTimeout(timeoutId);
+      const editorHost = yunkeEditorContainerProxy?.host;
+      if (editorHost) {
+        editorHost.removeEventListener(
+          ATTACHMENT_TRASH_EVENT as any,
+          handleAttachmentTrash
+        );
+      }
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [yunkeEditorContainerProxy?.host, createAttachmentTrashDoc, page.id, docsService]);
 
   useEffect(() => {
     const editor = yunkeEditorContainerProxy;
@@ -366,3 +466,14 @@ export const BlockSuiteEditor = (props: EditorProps) => {
     </Slot>
   );
 };
+
+function cloneAttachmentProps(props: Record<string, unknown>) {
+  if (typeof structuredClone === 'function') {
+    try {
+      return structuredClone(props);
+    } catch (error) {
+      console.warn('structuredClone failed for attachment props', error);
+    }
+  }
+  return JSON.parse(JSON.stringify(props));
+}

@@ -40,7 +40,16 @@ import { when } from 'lit/directives/when.js';
 
 import { AttachmentEmbedProvider } from './embed';
 import { styles } from './styles';
-import { downloadAttachmentBlob, refreshData } from './utils';
+import {
+  downloadAttachmentBlob,
+  refreshData,
+  getFileType,
+  isAttachmentEditable,
+} from './utils';
+import { dispatchAttachmentTrashEvent } from './trash';
+import { openAttachmentEditor } from './editor';
+import { openSingleFileWith } from '@blocksuite/yunke-shared/utils';
+import { PeekViewProvider } from '@blocksuite/yunke-components/peek';
 
 type AttachmentResolvedStateInfo = ResolvedStateInfo & {
   kind?: TemplateResult;
@@ -114,6 +123,143 @@ export class AttachmentBlockComponent extends CaptionedBlockComponent<Attachment
     window.open(blobUrl, '_blank');
   };
 
+  openPreview = async () => {
+    const peekView = this.std.getOptional(PeekViewProvider);
+    if (!peekView) {
+      console.warn('PeekViewProvider is not available');
+      toast(this.host, '预览功能不可用');
+      return;
+    }
+    
+    const blobUrl = this.blobUrl;
+    if (!blobUrl) {
+      console.warn('Cannot open preview: blobUrl is not ready');
+      toast(this.host, '文件尚未准备好，请稍后再试');
+      return;
+    }
+    
+    await peekView.peek({
+      docId: this.model.store.id,
+      blockIds: [this.blockId],
+      target: this,
+    });
+  };
+
+  edit = async () => {
+    try {
+      const module = await import('./editor.js');
+      if (module?.openAttachmentEditor) {
+        await module.openAttachmentEditor(this);
+      } else {
+        console.error('Attachment editor module not available');
+        toast(this.host, '编辑器不可用');
+      }
+    } catch (error) {
+      console.error('Failed to open attachment editor:', error);
+      toast(this.host, '打开编辑器失败');
+    }
+  };
+
+  openExternal = async () => {
+    // Check if Electron API is available for opening temp files
+    // This method doesn't require blobUrl, so it works even if blobUrl is not ready
+    if ((window as any).__apis?.file?.openTempFile) {
+      try {
+        console.log('[Attachment] openExternal: Using Electron API');
+        const blob = await this.resourceController.blob();
+        if (blob) {
+          const buffer = new Uint8Array(await blob.arrayBuffer());
+          await (window as any).__apis.file.openTempFile(
+            Array.from(buffer),
+            this.model.props.name$.value
+          );
+          return;
+        } else {
+          console.warn('[Attachment] openExternal: blob is null, trying to refresh');
+          this.refreshData();
+          // Wait a bit and retry
+          await new Promise(resolve => setTimeout(resolve, 500));
+          const retryBlob = await this.resourceController.blob();
+          if (retryBlob) {
+            const buffer = new Uint8Array(await retryBlob.arrayBuffer());
+            await (window as any).__apis.file.openTempFile(
+              Array.from(buffer),
+              this.model.props.name$.value
+            );
+            return;
+          }
+        }
+      } catch (err) {
+        console.error('[Attachment] Failed to open file via Electron API:', err);
+        // Fall through to try blobUrl method
+      }
+    }
+
+    // Fallback to opening blob URL (for web browsers)
+    const blobUrl = this.blobUrl;
+    if (!blobUrl) {
+      console.warn('[Attachment] openExternal: blobUrl not ready, refreshing...');
+      this.refreshData();
+      // Wait for blobUrl to be ready (with timeout)
+      return new Promise<void>((resolve) => {
+        let attempts = 0;
+        const maxAttempts = 30; // 3 seconds max wait
+        const checkInterval = setInterval(() => {
+          attempts++;
+          const currentBlobUrl = this.blobUrl;
+          if (currentBlobUrl || attempts >= maxAttempts) {
+            clearInterval(checkInterval);
+            if (currentBlobUrl) {
+              console.log('[Attachment] openExternal: blobUrl ready, opening');
+              window.open(currentBlobUrl, '_blank');
+            } else {
+              console.error('[Attachment] openExternal: Failed to get blobUrl after waiting');
+            }
+            resolve();
+          }
+        }, 100);
+      });
+    }
+
+    console.log('[Attachment] openExternal: Opening blobUrl');
+    window.open(blobUrl, '_blank');
+  };
+
+  replace = async () => {
+    const state = this.resourceController.state$.peek();
+    if (state.uploading) return;
+
+    const file = await openSingleFileWith();
+    if (!file) return;
+
+    const sourceId = await this.std.store.blobSync.set(file);
+    const type = await getFileType(file);
+    const { name, size } = file;
+
+    let embed = this.model.props.embed$.value ?? false;
+
+    this.std.store.captureSync();
+    this.std.store.transact(() => {
+      this.std.store.updateBlock(this.blockId, {
+        name,
+        size,
+        type,
+        sourceId,
+        embed: false,
+      });
+
+      const provider = this.std.get(AttachmentEmbedProvider);
+      embed &&= provider.embedded(this.model);
+
+      if (embed) {
+        provider.convertTo(this.model);
+      }
+
+      // Reloads
+      this.reload();
+    });
+  };
+
   // Refreshes data.
   refreshData = () => {
     refreshData(this).catch(console.error);
@@ -167,6 +313,7 @@ export class AttachmentBlockComponent extends CaptionedBlockComponent<Attachment
   override firstUpdated() {
     // lazy bindings
     this.disposables.addFromEvent(this, 'click', this.onClick);
+    this.disposables.addFromEvent(this, 'dblclick', this._handleDoubleClick);
   }
 
   protected onClick(event: MouseEvent) {
@@ -179,6 +326,20 @@ export class AttachmentBlockComponent extends CaptionedBlockComponent<Attachment
       this._selectBlock();
     }
   }
+
+  private readonly _handleDoubleClick = (event: MouseEvent) => {
+    event.stopPropagation();
+
+    // Check if the edit dialog is open - if so, don't open preview
+    const editDialogOpen = document.querySelector(
+      'yunke-attachment-editor-dialog'
+    );
+    if (editDialogOpen) {
+      return;
+    }
+
+    this.openPreview().catch(console.error);
+  };
 
   protected renderUpgradeButton = () => {
     if (this.std.store.readonly) return null;

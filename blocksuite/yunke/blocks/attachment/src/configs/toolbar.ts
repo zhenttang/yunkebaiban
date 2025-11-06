@@ -24,6 +24,8 @@ import {
   DownloadIcon,
   DuplicateIcon,
   EditIcon,
+  OpenInNewIcon,
+  ReplaceIcon,
   ResetIcon,
 } from '@blocksuite/icons/lit';
 import { BlockFlavourIdentifier } from '@blocksuite/std';
@@ -36,6 +38,11 @@ import { keyed } from 'lit/directives/keyed.js';
 import { AttachmentBlockComponent } from '../attachment-block';
 import { RenameModal } from '../components/rename-model';
 import { AttachmentEmbedProvider } from '../embed';
+import { isAttachmentEditable } from '../utils';
+import { dispatchAttachmentTrashEvent } from '../trash';
+import { toast } from '@blocksuite/yunke-components/toast';
+
+console.log('[Toolbar] Attachment toolbar config loaded');
 
 const trackBaseProps = {
   category: 'attachment',
@@ -151,15 +158,199 @@ export const attachmentViewDropdownMenu = {
   },
 } as const satisfies ToolbarActionGroup<ToolbarAction>;
 
+const openAction = {
+  id: 'b.open',
+  tooltip: '打开',
+  icon: ResetIcon(), // Using ResetIcon as placeholder, can be replaced with ExpandFullIcon if available
+  disabled(ctx) {
+    console.log('[Toolbar] openAction disabled() called');
+    const block = ctx.getCurrentBlockByType(AttachmentBlockComponent);
+    if (!block) {
+      console.log('[Toolbar] openAction disabled: no block');
+      return true;
+    }
+
+    const state = block.resourceController.state$.value;
+    const { downloading = false, uploading = false } = state;
+    
+    // Only disable if downloading or uploading, let run() handle other cases
+    const isDisabled = downloading || uploading;
+    
+    console.log('[Toolbar] openAction disabled check:', {
+      isDisabled,
+      downloading,
+      uploading,
+      state,
+    });
+    
+    return isDisabled;
+  },
+  run(ctx) {
+    console.log('[Toolbar] ========== openAction RUN called ==========');
+    const block = ctx.getCurrentBlockByType(AttachmentBlockComponent);
+    if (!block) {
+      console.warn('[Toolbar] openAction RUN: no block found');
+      return;
+    }
+    
+    const blobUrl = block.blobUrl;
+    const sourceId = block.model.props.sourceId$.value;
+    
+    console.log('[Toolbar] openAction RUN:', {
+      hasBlobUrl: !!blobUrl,
+      hasSourceId: !!sourceId,
+      blockId: block.blockId,
+    });
+    
+    if (!sourceId) {
+      console.warn('[Toolbar] openAction RUN: no sourceId');
+      toast(block.host, '文件资源不存在');
+      return;
+    }
+    
+    if (!blobUrl) {
+      console.warn('[Toolbar] openAction RUN: blobUrl not ready, state:', block.resourceController.state$.value);
+      toast(block.host, '文件尚未准备好，请稍后再试');
+      // Try to refresh the URL
+      block.refreshData();
+      return;
+    }
+    
+    console.log('[Toolbar] openAction RUN: calling openPreview');
+    block.openPreview().catch((error: Error) => {
+      console.error('[Toolbar] Failed to open preview:', error);
+      toast(block.host, '打开预览失败: ' + (error.message || '未知错误'));
+    });
+  },
+} as const satisfies ToolbarAction;
+
+const openExternalAction = {
+  id: 'b.open-external',
+  tooltip: '在外部应用中打开',
+  icon: OpenInNewIcon(),
+  disabled(ctx) {
+    console.log('[Toolbar] openExternalAction disabled() called');
+    const block = ctx.getCurrentBlockByType(AttachmentBlockComponent);
+    if (!block) {
+      console.log('[Toolbar] openExternalAction disabled: no block');
+      return true;
+    }
+
+    const state = block.resourceController.state$.value;
+    const { downloading = false, uploading = false } = state;
+    
+    // Only disable if downloading or uploading, let run() handle other cases
+    const isDisabled = downloading || uploading;
+    
+    console.log('[Toolbar] openExternalAction disabled check:', {
+      isDisabled,
+      downloading,
+      uploading,
+      state,
+    });
+    
+    return isDisabled;
+  },
+  run(ctx) {
+    console.log('[Toolbar] ========== openExternalAction RUN called ==========');
+    const block = ctx.getCurrentBlockByType(AttachmentBlockComponent);
+    if (!block) {
+      console.warn('[Toolbar] openExternalAction RUN: no block found');
+      return;
+    }
+    
+    const blobUrl = block.blobUrl;
+    const sourceId = block.model.props.sourceId$.value;
+    
+    console.log('[Toolbar] openExternalAction RUN:', {
+      hasBlobUrl: !!blobUrl,
+      hasSourceId: !!sourceId,
+      blockId: block.blockId,
+    });
+    
+    if (!sourceId) {
+      console.warn('[Toolbar] openExternalAction RUN: no sourceId');
+      toast(block.host, '文件资源不存在');
+      return;
+    }
+    
+    console.log('[Toolbar] openExternalAction RUN: calling openExternal');
+    // openExternal will handle blobUrl not ready case, so we can call it directly
+    block.openExternal().catch(error => {
+      console.error('[Toolbar] Failed to open externally:', error);
+      toast(block.host, '打开外部应用失败: ' + (error.message || '未知错误'));
+    });
+  },
+} as const satisfies ToolbarAction;
+
+const editInlineAction = {
+  id: 'b.edit-inline',
+  tooltip: '编辑附件',
+  icon: EditIcon(),
+  disabled(ctx) {
+    const block = ctx.getCurrentBlockByType(AttachmentBlockComponent);
+    if (!block) {
+      console.log('[Toolbar] editInlineAction disabled: no block');
+      return true;
+    }
+    const { downloading = false, uploading = false } =
+      block.resourceController.state$.value;
+    if (downloading || uploading) {
+      console.log('[Toolbar] editInlineAction disabled: downloading/uploading');
+      return true;
+    }
+    const name = block.model.props.name;
+    const type = block.model.props.type;
+    const isEditable = isAttachmentEditable(type, name);
+    if (!isEditable) {
+      console.log('[Toolbar] editInlineAction disabled: not editable', { type, name });
+    } else {
+      console.log('[Toolbar] editInlineAction ENABLED:', { type, name });
+    }
+    return !isEditable;
+  },
+  run(ctx) {
+    console.log('[Toolbar] editInlineAction RUN called');
+    const block = ctx.getCurrentBlockByType(AttachmentBlockComponent);
+    if (!block) {
+      console.error('[Toolbar] editInlineAction RUN: No attachment block found for edit action');
+      return;
+    }
+    console.log('[Toolbar] editInlineAction RUN: calling block.edit()');
+    block.edit().catch(error => {
+      console.error('[Toolbar] Error from edit action:', error);
+      toast(block.host, '编辑失败: ' + (error.message || '未知错误'));
+    });
+  },
+} as const satisfies ToolbarAction;
+
+const replaceAction = {
+  id: 'c.replace',
+  tooltip: '替换附件',
+  icon: ReplaceIcon(),
+  disabled(ctx) {
+    const block = ctx.getCurrentBlockByType(AttachmentBlockComponent);
+    if (!block) return true;
+
+    const { downloading = false, uploading = false } =
+      block.resourceController.state$.value;
+    return downloading || uploading;
+  },
+  run(ctx) {
+    const block = ctx.getCurrentBlockByType(AttachmentBlockComponent);
+    block?.replace().catch(console.error);
+  },
+} as const satisfies ToolbarAction;
+
 const downloadAction = {
-  id: 'c.download',
+  id: 'd.download',
   tooltip: '下载',
   icon: DownloadIcon(),
   run(ctx) {
     const block = ctx.getCurrentBlockByType(AttachmentBlockComponent);
     block?.download();
   },
-  when: ctx => {
+  when(ctx) {
     const model = ctx.getCurrentModelByType(AttachmentBlockModel);
     if (!model) return false;
     // Current citation attachment block does not support download
@@ -168,7 +359,7 @@ const downloadAction = {
 } as const satisfies ToolbarAction;
 
 const captionAction = {
-  id: 'd.caption',
+  id: 'e.caption',
   tooltip: '标题',
   icon: CaptionIcon(),
   run(ctx) {
@@ -181,6 +372,7 @@ const captionAction = {
     });
   },
 } as const satisfies ToolbarAction;
+
 
 const builtinToolbarConfig = {
   actions: [
@@ -220,7 +412,11 @@ const builtinToolbarConfig = {
         `;
       },
     },
+    openAction,
+    openExternalAction,
+    editInlineAction,
     attachmentViewDropdownMenu,
+    replaceAction,
     downloadAction,
     captionAction,
     {
@@ -282,6 +478,12 @@ const builtinToolbarConfig = {
         const model = ctx.getCurrentModel();
         if (!model) return;
 
+        // Dispatch trash event before deletion
+        const block = ctx.getCurrentBlockByType(AttachmentBlockComponent);
+        if (block && model.id && ctx.getCurrentModelByType(AttachmentBlockModel)) {
+          dispatchAttachmentTrashEvent(block);
+        }
+
         ctx.store.deleteBlock(model.id);
 
         // Clears
@@ -295,6 +497,9 @@ const builtinToolbarConfig = {
 const builtinSurfaceToolbarConfig = {
   actions: [
     attachmentViewDropdownMenu,
+    openAction,
+    openExternalAction,
+    editInlineAction,
     {
       id: 'c.style',
       actions: [
@@ -356,11 +561,11 @@ const builtinSurfaceToolbarConfig = {
     } satisfies ToolbarActionGroup<ToolbarAction>,
     {
       ...downloadAction,
-      id: 'd.download',
+      id: 'e.download',
     },
     {
       ...captionAction,
-      id: 'e.caption',
+      id: 'f.caption',
     },
   ],
   when: ctx => ctx.getSurfaceModelsByType(AttachmentBlockModel).length === 1,
