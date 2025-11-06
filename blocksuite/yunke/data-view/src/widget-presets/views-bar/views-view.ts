@@ -19,6 +19,7 @@ import { property } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 
 import { WidgetBase } from '../../core/widget/widget-base.js';
+import { popViewOptions } from '../tools/presets/view-options/view-options.js';
 
 export class DataViewHeaderViews extends WidgetBase {
   static override styles = css`
@@ -165,7 +166,7 @@ export class DataViewHeaderViews extends WidgetBase {
     if (!view) {
       return;
     }
-    popMenu(target, {
+    const menuHandler = popMenu(target, {
       options: {
         items: [
           menu.input({
@@ -180,10 +181,37 @@ export class DataViewHeaderViews extends WidgetBase {
               menu.action({
                 name: '编辑视图',
                 prefix: InfoIcon(),
-                select: () => {
-                  this.closest('yunke-data-view-renderer')
-                    ?.querySelector('data-view-header-tools-view-options')
-                    ?.openMoreAction(target);
+                select: (ele) => {
+                  // Close the parent menu first
+                  try {
+                    menuHandler.close();
+                  } catch (e) {
+                    // Ignore errors during close
+                    console.warn('Error closing menu:', e);
+                  }
+                  // Use requestAnimationFrame to ensure menu is closed before opening new one
+                  // Double RAF ensures the close animation completes
+                  requestAnimationFrame(() => {
+                    requestAnimationFrame(() => {
+                      try {
+                        // Switch to the target view first
+                        if (this.viewManager.currentViewId$.value !== id) {
+                          this.viewManager.setCurrentView(id);
+                        }
+                        // Create a new target from the clicked element to avoid nesting
+                        const newTarget = popupTargetFromElement(ele as HTMLElement);
+                        // Get the current view's logic
+                        const currentLogic = this.dataViewLogic;
+                        if (currentLogic) {
+                          popViewOptions(newTarget, currentLogic);
+                        }
+                      } catch (e) {
+                        console.error('Error opening view options:', e);
+                      }
+                    });
+                  });
+                  // Return false to prevent default behavior
+                  return false;
                 },
               }),
               menu.action({

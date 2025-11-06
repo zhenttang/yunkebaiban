@@ -10,7 +10,7 @@ import {
 } from '@blocksuite/icons/lit';
 
 import { insertDatabaseBlockCommand } from '../commands';
-import { KanbanViewTooltip, TableViewTooltip } from './tooltips';
+import { KanbanViewTooltip, TableViewTooltip, ChartViewTooltip } from './tooltips';
 
 export const databaseSlashMenuConfig: SlashMenuConfig = {
   disableWhen: ({ model }) => model.flavour === 'yunke:database',
@@ -98,6 +98,38 @@ export const databaseSlashMenuConfig: SlashMenuConfig = {
           .pipe(getSelectedModelsCommand)
           .pipe(insertDatabaseBlockCommand, {
             viewType: viewPresets.ganttViewMeta.type,
+            place: 'after',
+            removeEmptyLine: true,
+          })
+          .pipe(({ insertedDatabaseBlockId }) => {
+            if (insertedDatabaseBlockId) {
+              const telemetry = std.getOptional(TelemetryProvider);
+              telemetry?.track('BlockCreated', {
+                blockType: 'yunke:database',
+              });
+            }
+          })
+          .run();
+      },
+    },
+    {
+      name: 'Chart View',
+      description: '以图表格式显示数据。',
+      searchAlias: ['chart', '图表'],
+      icon: DatabaseKanbanViewIcon(),
+      tooltip: {
+        figure: ChartViewTooltip,
+        caption: 'Chart View',
+      },
+      group: '7_Database@4',
+      when: ({ model }) =>
+        !isInsideBlockByFlavour(model.store, model, 'yunke:edgeless-text'),
+      action: ({ std }) => {
+        std.command
+          .chain()
+          .pipe(getSelectedModelsCommand)
+          .pipe(insertDatabaseBlockCommand, {
+            viewType: viewPresets.chartViewMeta.type,
             place: 'after',
             removeEmptyLine: true,
           })

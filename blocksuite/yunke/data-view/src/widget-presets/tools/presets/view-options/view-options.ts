@@ -40,6 +40,9 @@ import { createSortUtils } from '../../../../core/sort/utils.js';
 import { WidgetBase } from '../../../../core/widget/widget-base.js';
 import { popFilterRoot } from '../../../quick-setting-bar/filter/root-panel-view.js';
 import { popSortRoot } from '../../../quick-setting-bar/sort/root-panel.js';
+import type { ChartSingleView } from '../../../../view-presets/chart/chart-view-manager.js';
+
+type ChartType = 'pie' | 'bar' | 'horizontal-bar' | 'stacked-bar' | 'line';
 
 const styles = css`
   .yunke-database-toolbar-item.more-action {
@@ -346,6 +349,299 @@ export const popViewOptions = (
     })
   );
 
+  // Add Chart View specific settings
+  if (view.type === 'chart') {
+    const chartView = view as ChartSingleView;
+    const chartType = chartView.data$.value?.chartType ?? 'pie';
+    const chartTypeLabel = (t: ChartType) =>
+      t === 'pie'
+        ? '饼图'
+        : t === 'bar'
+          ? '垂直柱状图'
+          : t === 'horizontal-bar'
+            ? '水平柱状图'
+            : t === 'stacked-bar'
+              ? '堆叠柱状图'
+              : '折线图';
+
+    items.push(
+      menu.group({
+        items: [
+          menu.subMenu({
+            name: '图表类型',
+            postfix: html`
+              <div
+                style="display:flex;align-items:center;gap:4px;font-size:14px;line-height:20px;color:var(--yunke-text-secondary-color);margin-left:8px;"
+              >
+                ${chartTypeLabel(chartType)}
+              </div>
+            `,
+            options: {
+              items: [
+                menu.group({
+                  items: (
+                    [
+                      ['饼图', 'pie'],
+                      ['垂直柱状图', 'bar'],
+                      ['水平柱状图', 'horizontal-bar'],
+                      ['堆叠柱状图', 'stacked-bar'],
+                      ['折线图', 'line'],
+                    ] as [string, ChartType][]
+                  ).map(([label, type]) =>
+                    menu.action({
+                      name: label,
+                      isSelected: chartType === type,
+                      select: () => {
+                        chartView.dataUpdate(() => ({ chartType: type }));
+                        reopen();
+                      },
+                    })
+                  ),
+                }),
+              ],
+            },
+          }),
+          ...(chartType === 'pie'
+            ? [
+                menu.subMenu({
+                  name: '显示内容',
+                  postfix: html`
+                    <div
+                      style="display:flex;align-items:center;gap:4px;font-size:14px;line-height:20px;color:var(--yunke-text-secondary-color);margin-left:8px;"
+                    >
+                      ${chartView.properties$.value.find(
+                        (p: any) => p.id === chartView.data$.value?.categoryPropertyId
+                      )?.name$.value ?? '无'}
+                    </div>
+                  `,
+                  options: {
+                    items: [
+                      menu.group({
+                        items: chartView.properties$.value.map((prop: any) =>
+                          menu.action({
+                            name: prop.name$.value,
+                            isSelected:
+                              prop.id === chartView.data$.value?.categoryPropertyId,
+                            select: () => {
+                              chartView.dataUpdate(() => ({
+                                categoryPropertyId: prop.id,
+                              }));
+                              reopen();
+                            },
+                          })
+                        ),
+                      }),
+                    ],
+                  },
+                }),
+              ]
+            : []),
+          menu.subMenu({
+            name: '排序',
+            postfix: html`
+              <div
+                style="display:flex;align-items:center;gap:4px;font-size:14px;line-height:20px;color:var(--yunke-text-secondary-color);margin-left:8px;"
+              >
+                ${
+                  {
+                    manual: '手动',
+                    'status-asc': '状态升序',
+                    'status-desc': '状态降序',
+                    'count-low-high': '数量低→高',
+                    'count-high-low': '数量高→低',
+                  }[chartView.data$.value?.sortBy ?? 'count-high-low'] || '数量高→低'
+                }
+              </div>
+            `,
+            options: {
+              items: [
+                menu.group({
+                  items: Object.entries({
+                    manual: '手动',
+                    'status-asc': '状态升序',
+                    'status-desc': '状态降序',
+                    'count-low-high': '数量低→高',
+                    'count-high-low': '数量高→低',
+                  }).map(([key, label]) =>
+                    menu.action({
+                      name: label,
+                      isSelected:
+                        (chartView.data$.value?.sortBy ?? 'count-high-low') === key,
+                      select: () => {
+                        chartView.dataUpdate(() => ({
+                          sortBy: key as 'manual' | 'status-asc' | 'status-desc' | 'count-low-high' | 'count-high-low',
+                        }));
+                        reopen();
+                      },
+                    })
+                  ),
+                }),
+              ],
+            },
+          }),
+          menu.subMenu({
+            name: '颜色',
+            postfix: html`
+              <div
+                style="display:flex;align-items:center;gap:4px;font-size:14px;line-height:20px;color:var(--yunke-text-secondary-color);margin-left:8px;"
+              >
+                ${
+                  [
+                    { id: 'auto', name: '自动' },
+                    { id: 'colorful', name: '彩色' },
+                    { id: 'colorless', name: '无色' },
+                    { id: 'blue', name: '蓝色' },
+                    { id: 'yellow', name: '黄色' },
+                    { id: 'green', name: '绿色' },
+                    { id: 'purple', name: '紫色' },
+                    { id: 'teal', name: '青色' },
+                    { id: 'orange', name: '橙色' },
+                    { id: 'pink', name: '粉色' },
+                    { id: 'red', name: '红色' },
+                  ].find(c => c.id === (chartView.data$.value?.colorScheme ?? 'auto'))
+                    ?.name || '自动'
+                }
+              </div>
+            `,
+            options: {
+              items: [
+                menu.group({
+                  items: [
+                    { id: 'auto', name: '自动' },
+                    { id: 'colorful', name: '彩色' },
+                    { id: 'colorless', name: '无色' },
+                    { id: 'blue', name: '蓝色' },
+                    { id: 'yellow', name: '黄色' },
+                    { id: 'green', name: '绿色' },
+                    { id: 'purple', name: '紫色' },
+                    { id: 'teal', name: '青色' },
+                    { id: 'orange', name: '橙色' },
+                    { id: 'pink', name: '粉色' },
+                    { id: 'red', name: '红色' },
+                  ].map(scheme =>
+                    menu.action({
+                      name: scheme.name,
+                      isSelected:
+                        (chartView.data$.value?.colorScheme ?? 'auto') === scheme.id,
+                      select: () => {
+                        chartView.dataUpdate(() => ({
+                          colorScheme: scheme.id as 'auto' | 'colorful' | 'colorless' | 'blue' | 'yellow' | 'green' | 'purple' | 'teal' | 'orange' | 'pink' | 'red',
+                        }));
+                        reopen();
+                      },
+                    })
+                  ),
+                }),
+              ],
+            },
+          }),
+          menu.subMenu({
+            name: '高度',
+            postfix: html`
+              <div
+                style="display:flex;align-items:center;gap:4px;font-size:14px;line-height:20px;color:var(--yunke-text-secondary-color);margin-left:8px;"
+              >
+                ${
+                  (chartView.data$.value?.height || 'Medium') === 'Small'
+                    ? '小'
+                    : (chartView.data$.value?.height || 'Medium') === 'Large'
+                      ? '大'
+                      : '中'
+                }
+              </div>
+            `,
+            options: {
+              items: [
+                menu.group({
+                  items: (
+                    [
+                      ['小', 'Small'],
+                      ['中', 'Medium'],
+                      ['大', 'Large'],
+                    ] as [string, 'Small' | 'Medium' | 'Large'][]
+                  ).map(([label, size]) =>
+                    menu.action({
+                      name: label,
+                      isSelected: (chartView.data$.value?.height || 'Medium') === size,
+                      select: () => {
+                        chartView.dataUpdate(() => ({ height: size }));
+                        reopen();
+                      },
+                    })
+                  ),
+                }),
+              ],
+            },
+          }),
+          ...(chartType === 'pie'
+            ? [
+                menu.toggleSwitch({
+                  name: '中心显示数值',
+                  on: chartView.data$.value?.showValueInCenter !== false,
+                  onChange: value => {
+                    chartView.dataUpdate(() => ({ showValueInCenter: value }));
+                  },
+                }),
+              ]
+            : []),
+          menu.toggleSwitch({
+            name: '图例',
+            on: chartView.data$.value?.showLegend !== false,
+            onChange: value => {
+              chartView.dataUpdate(() => ({ showLegend: value }));
+            },
+          }),
+          menu.subMenu({
+            name: '数据标签',
+            postfix: html`
+              <div
+                style="display:flex;align-items:center;gap:4px;font-size:14px;line-height:20px;color:var(--yunke-text-secondary-color);margin-left:8px;"
+              >
+                ${
+                  {
+                    None: '无',
+                    Value: '数值',
+                    'Value (%)': '数值 (%)',
+                  }[chartView.data$.value?.dataLabels || 'Value (%)'] || '数值 (%)'
+                }
+              </div>
+            `,
+            options: {
+              items: [
+                menu.group({
+                  items: Object.entries({
+                    None: '无',
+                    Value: '数值',
+                    'Value (%)': '数值 (%)',
+                  }).map(([key, label]) =>
+                    menu.action({
+                      name: label,
+                      isSelected:
+                        (chartView.data$.value?.dataLabels || 'Value (%)') === key,
+                      select: () => {
+                        chartView.dataUpdate(() => ({
+                          dataLabels: key as 'None' | 'Value' | 'Value (%)',
+                        }));
+                        reopen();
+                      },
+                    })
+                  ),
+                }),
+              ],
+            },
+          }),
+          menu.toggleSwitch({
+            name: '标题',
+            on: chartView.data$.value?.showCaption === true,
+            onChange: value => {
+              chartView.dataUpdate(() => ({ showCaption: value }));
+            },
+          }),
+        ],
+      })
+    );
+  }
+
   items.push(
     menu.group({
       items: createSettingMenus(target, dataViewLogic, reopen),
@@ -380,5 +676,6 @@ export const popViewOptions = (
       items,
       onClose: onClose,
     },
+    container: document.body,
   });
 };

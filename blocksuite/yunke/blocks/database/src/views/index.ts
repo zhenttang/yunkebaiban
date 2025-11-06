@@ -5,6 +5,7 @@ export const databaseBlockViews: ViewMeta[] = [
   viewPresets.tableViewMeta,
   viewPresets.kanbanViewMeta,
   viewPresets.ganttViewMeta, // 🆕 添加甘特图视图
+  viewPresets.chartViewMeta, // 🆕 添加图表视图
 ];
 
 export const databaseBlockViewMap = Object.fromEntries(
