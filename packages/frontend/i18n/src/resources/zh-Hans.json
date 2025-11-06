@@ -1342,6 +1342,8 @@
   "com.yunke.settings.editorSettings.general.font-family.custom.title": "自定义字体",
   "com.yunke.settings.editorSettings.general.font-family.description": "选择编辑器使用的字体。",
   "com.yunke.settings.editorSettings.general.font-family.title": "字体",
+  "com.yunke.settings.editorSettings.general.font-size.description": "调整基础字体大小以获得更好的可读性。",
+  "com.yunke.settings.editorSettings.general.font-size.title": "字体大小",
   "com.yunke.settings.editorSettings.general.spell-check.description": "自动检测并纠正拼写错误。",
   "com.yunke.settings.editorSettings.general.spell-check.title": "拼写检查",
   "com.yunke.settings.editorSettings.general.spell-check.restart-hint": "设置已更改；请重新启动应用程序。<1>重新启动</1>",

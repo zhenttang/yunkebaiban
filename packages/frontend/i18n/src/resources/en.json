@@ -1335,6 +1335,8 @@
   "com.yunke.settings.editorSettings.general.font-family.custom.title": "Custom font family",
   "com.yunke.settings.editorSettings.general.font-family.description": "Choose your editor's font family.",
   "com.yunke.settings.editorSettings.general.font-family.title": "Font family",
+  "com.yunke.settings.editorSettings.general.font-size.description": "Adjust the base font size for better readability.",
+  "com.yunke.settings.editorSettings.general.font-size.title": "Font size",
   "com.yunke.settings.editorSettings.general.spell-check.description": "Automatically detect and correct spelling errors.",
   "com.yunke.settings.editorSettings.general.spell-check.title": "Spell check",
   "com.yunke.settings.editorSettings.general.spell-check.restart-hint": "Settings changed; please restart the app. <1>Restart</1>",

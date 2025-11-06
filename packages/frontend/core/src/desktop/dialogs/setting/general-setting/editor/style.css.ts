@@ -163,3 +163,21 @@ export const spellCheckSettingDescriptionButton = style({
   color: cssVarV2('text/link'),
   fontSize: 'inherit',
 });
+
+export const fontSizeContainer = style({
+  display: 'flex',
+  alignItems: 'center',
+  gap: '12px',
+  width: '100%',
+});
+
+export const fontSizeSlider = style({
+  flex: 1,
+});
+
+export const fontSizeValue = style({
+  minWidth: '40px',
+  textAlign: 'right',
+  fontSize: cssVar('fontSm'),
+  color: cssVarV2('text/secondary'),
+});

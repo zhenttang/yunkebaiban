@@ -1,5 +1,6 @@
 import { FeatureFlagService } from '@yunke/core/modules/feature-flag';
 import { ThemeEditorService } from '@yunke/core/modules/theme-editor';
+import { EditorSettingService } from '@yunke/core/modules/editor-setting';
 import { useLiveData, useServices } from '@toeverything/infra';
 import { useTheme } from 'next-themes';
 import { useEffect } from 'react';
@@ -7,13 +8,15 @@ import { useEffect } from 'react';
 let _provided = false;
 
 export const CustomThemeModifier = () => {
-  const { themeEditorService, featureFlagService } = useServices({
+  const { themeEditorService, featureFlagService, editorSettingService } = useServices({
     ThemeEditorService,
     FeatureFlagService,
+    EditorSettingService,
   });
   const enableThemeEditor = useLiveData(
     featureFlagService.flags.enable_theme_editor.$
   );
+  const settings = useLiveData(editorSettingService.editorSetting.settings$);
   const { resolvedTheme } = useTheme();
 
   useEffect(() => {
@@ -74,6 +77,13 @@ export const CustomThemeModifier = () => {
       sub.unsubscribe();
     };
   }, [resolvedTheme, enableThemeEditor, themeEditorService]);
+
+  // Apply font size CSS variable when settings change
+  useEffect(() => {
+    if (settings.fontSize) {
+      document.documentElement.style.setProperty('--yunke-font-base', `${settings.fontSize}px`);
+    }
+  }, [settings.fontSize]);
 
   return null;
 };
