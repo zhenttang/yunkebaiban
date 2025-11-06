@@ -7,11 +7,15 @@ import type {
   SearchDocumentsParams,
   ShareToCommunityRequest,
 } from './types';
+import { getApiBaseUrl } from '@yunke/config';
 
-const API_BASE_URL = '/api/community';
+const API_BASE_PATH = '/api/community';
 
 async function request<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
-  const url = `${API_BASE_URL}${endpoint}`;
+  // 使用统一的网络配置管理，构建完整的 API URL
+  const baseUrl = getApiBaseUrl();
+  const url = `${baseUrl}${API_BASE_PATH}${endpoint}`;
+  
   const token =
     globalThis.localStorage?.getItem('yunke-admin-token') ||
     globalThis.localStorage?.getItem('yunke-access-token');
