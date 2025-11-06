@@ -6,7 +6,7 @@ import {
   type PopupTarget,
 } from '@blocksuite/yunke-components/context-menu';
 import { SignalWatcher, WithDisposable } from '@blocksuite/global/lit';
-import { DeleteIcon } from '@blocksuite/icons/lit';
+import { DeleteIcon, InvisibleIcon, ViewIcon } from '@blocksuite/icons/lit';
 import { ShadowlessElement } from '@blocksuite/std';
 import { computed } from '@preact/signals-core';
 import { css, html, unsafeCSS } from 'lit';
@@ -27,6 +27,24 @@ import { verticalListSortingStrategy } from '../utils/wc-dnd/sort/strategies/ind
 import { getGroupByService } from './matcher.js';
 import type { GroupTrait } from './trait.js';
 import type { GroupRenderProps } from './types.js';
+
+const dateModeLabel = (key?: string) => {
+  switch (key) {
+    case 'date-relative':
+      return '相对日期';
+    case 'date-day':
+      return '按天';
+    case 'date-week-mon':
+    case 'date-week-sun':
+      return '按周';
+    case 'date-month':
+      return '按月';
+    case 'date-year':
+      return '按年';
+    default:
+      return '';
+  }
+};
 
 export class GroupSetting extends SignalWatcher(
   WithDisposable(ShadowlessElement)
@@ -67,7 +85,7 @@ export class GroupSetting extends SignalWatcher(
   accessor groupTrait!: GroupTrait;
 
   groups$ = computed(() => {
-    return this.groupTrait.groupsDataList$.value;
+    return this.groupTrait.groupsDataListAll$.value;
   });
 
   sortContext = createSortContext({
@@ -105,7 +123,7 @@ export class GroupSetting extends SignalWatcher(
     ],
     items: computed(() => {
       return (
-        this.groupTrait.groupsDataList$.value?.map(
+        this.groupTrait.groupsDataListAll$.value?.map(
           v => v?.key ?? 'default key'
         ) ?? []
       );
@@ -121,16 +139,33 @@ export class GroupSetting extends SignalWatcher(
   }
 
   protected override render(): unknown {
-    const groups = this.groupTrait.groupsDataList$.value;
+    const groups = this.groupTrait.groupsDataListAll$.value;
     if (!groups) {
       return;
     }
+    const map = this.groupTrait.groupDataMap$.value;
+    const isAllShowed = map
+      ? Object.keys(map).every(k => !this.groupTrait.isGroupHidden(k))
+      : true;
+    const clickChangeAll = () => {
+      if (!map) return;
+      Object.keys(map).forEach(key => {
+        this.groupTrait.setGroupHide(key, isAllShowed);
+      });
+    };
+
     return html`
       <div style="padding: 7px 0;">
         <div
-          style="padding: 0 4px; font-size: 12px;color: var(--yunke-text-secondary-color);line-height: 20px;"
+          style="padding: 0 4px; font-size: 12px;color: var(--yunke-text-secondary-color);line-height: 20px;display: flex;justify-content: space-between;align-items: center;"
         >
-          分组
+          <span>分组</span>
+          <div
+            style="cursor: pointer;font-size: 12px;color: var(--yunke-text-emphasis-color);"
+            @click="${clickChangeAll}"
+          >
+            ${isAllShowed ? '隐藏全部' : '显示全部'}
+          </div>
         </div>
         <div></div>
       </div>
@@ -148,19 +183,30 @@ export class GroupSetting extends SignalWatcher(
               group,
               readonly: true,
             };
+            const hide = group.hide$.value;
             return html` <div
               ${sortable(group.key)}
               ${dragHandler(group.key)}
               class="dv-hover dv-round-4 group-item"
+              style="${hide ? 'opacity: 0.5;' : ''}"
             >
               <div class="group-item-drag-bar"></div>
               <div
-                style="padding: 0 4px;position:relative;pointer-events: none;max-width: 330px"
+                style="padding: 0 4px;position:relative;pointer-events: none;max-width: 330px;flex: 1;"
               >
                 ${renderUniLit(group.view, props)}
                 <div
                   style="position:absolute;left: 0;top: 0;right: 0;bottom: 0;"
                 ></div>
+              </div>
+              <div
+                style="cursor: pointer;padding: 4px;"
+                @click="${(e: MouseEvent) => {
+                  e.stopPropagation();
+                  group.hideSet(!hide);
+                }}"
+              >
+                ${hide ? InvisibleIcon() : ViewIcon()}
               </div>
             </div>`;
           }
@@ -293,6 +339,151 @@ export const popGroupSetting = (
             }),
           ],
         }),
+        ...(type === 'date'
+          ? [
+              menu.group({
+                items: [
+                  menu.dynamic(() => [
+                    menu.subMenu({
+                      name: '日期分组',
+                      postfix: html`
+                        <div
+                          style="display:flex;align-items:center;gap:4px;font-size:14px;line-height:20px;color:var(--yunke-text-secondary-color);margin-left:30px;"
+                        >
+                          ${dateModeLabel(group.groupInfo$.value?.config.name)}
+                        </div>
+                      `,
+                      options: {
+                        items: [
+                          menu.dynamic(() =>
+                            (
+                              [
+                                ['相对日期', 'date-relative'],
+                                ['按天', 'date-day'],
+                                [
+                                  '按周',
+                                  group.groupInfo$.value?.config.name ===
+                                  'date-week-mon'
+                                    ? 'date-week-mon'
+                                    : 'date-week-sun',
+                                ],
+                                ['按月', 'date-month'],
+                                ['按年', 'date-year'],
+                              ] as [string, string][]
+                            ).map(
+                              ([label, key]): MenuConfig =>
+                                menu.action({
+                                  name: label,
+                                  isSelected:
+                                    group.groupInfo$.value?.config.name === key,
+                                  select: () => {
+                                    group.changeGroupMode(key);
+                                  },
+                                })
+                            )
+                          ),
+                        ],
+                      },
+                    }),
+                  ]),
+                ],
+              }),
+              ...(group.groupInfo$.value?.config.name?.startsWith('date-week')
+                ? [
+                    menu.group({
+                      items: [
+                        menu.dynamic(() => [
+                          menu.subMenu({
+                            name: '周起始日',
+                            postfix: html`
+                              <div
+                                style="display:flex;align-items:center;gap:4px;font-size:14px;line-height:20px;color:var(--yunke-text-secondary-color);margin-left:8px;"
+                              >
+                                ${
+                                  group.groupInfo$.value?.config.name ===
+                                  'date-week-mon'
+                                    ? '周一'
+                                    : '周日'
+                                }
+                              </div>
+                            `,
+                            options: {
+                              items: [
+                                menu.dynamic(() =>
+                                  (
+                                    [
+                                      ['周一', 'date-week-mon'],
+                                      ['周日', 'date-week-sun'],
+                                    ] as [string, string][]
+                                  ).map(([label, key]) =>
+                                    menu.action({
+                                      name: label,
+                                      isSelected:
+                                        group.groupInfo$.value?.config.name ===
+                                        key,
+                                      select: () => {
+                                        group.changeGroupMode(key);
+                                      },
+                                    })
+                                  )
+                                ),
+                              ],
+                            },
+                          }),
+                        ]),
+                      ],
+                    }),
+                  ]
+                : []),
+              menu.group({
+                items: [
+                  menu.dynamic(() => [
+                    menu.subMenu({
+                      name: '排序',
+                      postfix: html`
+                        <div
+                          style="display:flex;align-items:center;gap:4px;font-size:14px;line-height:20px;color:var(--yunke-text-secondary-color);margin-left:8px;"
+                        >
+                          ${group.sortAsc$.value ? '从旧到新' : '从新到旧'}
+                        </div>
+                      `,
+                      options: {
+                        items: [
+                          menu.dynamic(() => [
+                            menu.action({
+                              name: '从旧到新',
+                              isSelected: group.sortAsc$.value,
+                              select: () => {
+                                group.setDateSortOrder(true);
+                              },
+                            }),
+                            menu.action({
+                              name: '从新到旧',
+                              isSelected: !group.sortAsc$.value,
+                              select: () => {
+                                group.setDateSortOrder(false);
+                              },
+                            }),
+                          ]),
+                        ],
+                      },
+                    }),
+                  ]),
+                ],
+              }),
+              menu.group({
+                items: [
+                  menu.action({
+                    name: '隐藏空分组',
+                    isSelected: group.hideEmpty$.value,
+                    select: () => {
+                      group.setHideEmpty(!group.hideEmpty$.value);
+                    },
+                  }),
+                ],
+              }),
+            ]
+          : []),
         menu.group({
           items: [
             menu =>

@@ -7,6 +7,7 @@ import { RecordDetail } from './detail/detail.js';
 import { RecordField } from './detail/field.js';
 import { VariableRefView } from './expression/ref/ref-view.js';
 import { BooleanGroupView } from './group-by/renderer/boolean-group.js';
+import { DateGroupView } from './group-by/renderer/date-group.js';
 import { NumberGroupView } from './group-by/renderer/number-group.js';
 import { SelectGroupView } from './group-by/renderer/select-group.js';
 import { StringGroupView } from './group-by/renderer/string-group.js';
@@ -31,6 +32,7 @@ export function coreEffects() {
   customElements.define('data-view-group-setting', GroupSetting);
   customElements.define('yunke-multi-tag-select', MultiTagSelect);
   customElements.define('data-view-group-title-boolean-view', BooleanGroupView);
+  customElements.define('data-view-date-group-view', DateGroupView);
   customElements.define('yunke-multi-tag-view', MultiTagView);
   customElements.define('uni-lit', UniLit);
   customElements.define('uni-any-render', UniAnyRender);
