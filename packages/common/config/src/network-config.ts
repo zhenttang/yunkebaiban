@@ -246,8 +246,26 @@ class NetworkConfigManager {
    */
   getSocketIOUrl(): string {
     const envUrl = getRequiredEnvValueOrEmpty('VITE_SOCKETIO_URL');
-    if (envUrl) return envUrl;
-    return this.getBaseUrl();
+    if (envUrl) {
+      dlog('🔍 [Socket.IO] 使用环境变量 VITE_SOCKETIO_URL:', envUrl);
+      return envUrl;
+    }
+    
+    // 如果没有配置 VITE_SOCKETIO_URL，使用 socketioPort 构建 URL
+    const config = this.getCurrentConfig();
+    const isStandardPort = (config.protocol === 'http' && config.socketioPort === 80) ||
+                          (config.protocol === 'https' && config.socketioPort === 443);
+    const socketioUrl = isStandardPort
+      ? `${config.protocol}://${config.host}`
+      : `${config.protocol}://${config.host}:${config.socketioPort}`;
+    
+    // 🔍 调试日志：显示实际使用的配置
+    console.log('🔍 [Socket.IO配置] VITE_SOCKETIO_URL 未配置，使用 socketioPort 构建 URL');
+    console.log('🔍 [Socket.IO配置] socketioPort:', config.socketioPort);
+    console.log('🔍 [Socket.IO配置] 构建的 Socket.IO URL:', socketioUrl);
+    console.log('🔍 [Socket.IO配置] 环境变量 VITE_SOCKETIO_PORT:', import.meta.env?.VITE_SOCKETIO_PORT);
+    
+    return socketioUrl;
   }
 
   /**

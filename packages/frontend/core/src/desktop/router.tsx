@@ -50,13 +50,16 @@ export const topLevelRoutes = [
         path: '/download-mobile',
         lazy: () => import('./pages/download/mobile'),
       },
-      {
-        path: '/workspace/:workspaceId/*',
-        lazy: () => import('./pages/workspace/index'),
-      },
+      // ✅ 分享路由必须在 workspace 路由之前，避免被通配符拦截
+      // 虽然 /share 路径不会被 /workspace 匹配（因为不以 /workspace 开头），
+      // 但为了代码清晰性和避免未来问题，明确放在前面
       {
         path: '/share/:workspaceId/:pageId',
         lazy: () => import('./pages/workspace/share/share-route'),
+      },
+      {
+        path: '/workspace/:workspaceId/*',
+        lazy: () => import('./pages/workspace/index'),
       },
       {
         path: '/404',

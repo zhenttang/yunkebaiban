@@ -318,11 +318,15 @@ export function createHTMLTargetConfig(
         // 注入VITE风格的环境变量以支持import.meta.env
         'import.meta.env.VITE_API_BASE_URL': JSON.stringify(process.env.VITE_API_BASE_URL || envVars.VITE_API_BASE_URL || ''),
         'import.meta.env.VITE_DRAWIO_URL': JSON.stringify(process.env.VITE_DRAWIO_URL || envVars.VITE_DRAWIO_URL || ''),
+        'import.meta.env.VITE_SOCKETIO_URL': JSON.stringify(process.env.VITE_SOCKETIO_URL || envVars.VITE_SOCKETIO_URL || ''),
+        'import.meta.env.VITE_SOCKETIO_PORT': JSON.stringify(process.env.VITE_SOCKETIO_PORT || envVars.VITE_SOCKETIO_PORT || ''),
         'import.meta.env.MODE': JSON.stringify(buildConfig.debug ? 'development' : 'production'),
         // 创建完整的import.meta.env对象
         'import.meta.env': JSON.stringify({
           VITE_API_BASE_URL: process.env.VITE_API_BASE_URL || envVars.VITE_API_BASE_URL || '',
           VITE_DRAWIO_URL: process.env.VITE_DRAWIO_URL || envVars.VITE_DRAWIO_URL || '',
+          VITE_SOCKETIO_URL: process.env.VITE_SOCKETIO_URL || envVars.VITE_SOCKETIO_URL || '',
+          VITE_SOCKETIO_PORT: process.env.VITE_SOCKETIO_PORT || envVars.VITE_SOCKETIO_PORT || '',
           MODE: buildConfig.debug ? 'development' : 'production'
         }),
         ...Object.entries(buildConfig).reduce(
@@ -554,10 +558,14 @@ export function createWorkerTargetConfig(
         // 兼容 import.meta.env 风格
         'import.meta.env.VITE_API_BASE_URL': JSON.stringify(process.env.VITE_API_BASE_URL || envVars.VITE_API_BASE_URL || ''),
         'import.meta.env.VITE_DRAWIO_URL': JSON.stringify(process.env.VITE_DRAWIO_URL || envVars.VITE_DRAWIO_URL || ''),
+        'import.meta.env.VITE_SOCKETIO_URL': JSON.stringify(process.env.VITE_SOCKETIO_URL || envVars.VITE_SOCKETIO_URL || ''),
+        'import.meta.env.VITE_SOCKETIO_PORT': JSON.stringify(process.env.VITE_SOCKETIO_PORT || envVars.VITE_SOCKETIO_PORT || ''),
         'import.meta.env.MODE': JSON.stringify(buildConfig.debug ? 'development' : 'production'),
         'import.meta.env': JSON.stringify({
           VITE_API_BASE_URL: process.env.VITE_API_BASE_URL || envVars.VITE_API_BASE_URL || '',
           VITE_DRAWIO_URL: process.env.VITE_DRAWIO_URL || envVars.VITE_DRAWIO_URL || '',
+          VITE_SOCKETIO_URL: process.env.VITE_SOCKETIO_URL || envVars.VITE_SOCKETIO_URL || '',
+          VITE_SOCKETIO_PORT: process.env.VITE_SOCKETIO_PORT || envVars.VITE_SOCKETIO_PORT || '',
           MODE: buildConfig.debug ? 'development' : 'production',
         }),
         // 注入 BUILD_CONFIG

@@ -40,54 +40,28 @@ function isAndroidEnvironment(): boolean {
  */
 function getCapacitorHttp() {
   if (typeof window === 'undefined') {
-    console.log('🔍 getCapacitorHttp: window 未定义');
     return null;
   }
   
   try {
-    console.log('🔍 getCapacitorHttp: 开始获取 CapacitorHttp');
-    
     // 先检查 Capacitor 全局对象
     const Capacitor = (window as any).Capacitor;
     if (!Capacitor) {
-      console.error('❌ getCapacitorHttp: Capacitor 全局对象不存在');
       return null;
     }
     
-    console.log('🔍 getCapacitorHttp: 检测到 Capacitor 全局对象', {
-      hasPlugins: !!Capacitor.Plugins,
-      pluginsKeys: Capacitor.Plugins ? Object.keys(Capacitor.Plugins) : null
-    });
-    
     // 方式1: 从 Capacitor.Plugins 获取（Capacitor 7 内置插件）
     if (Capacitor.Plugins?.Http) {
-      const Http = Capacitor.Plugins.Http;
-      console.log('✅ getCapacitorHttp: 方式1成功，从 Capacitor.Plugins.Http 获取', { 
-        hasHttp: !!Http,
-        hasRequest: typeof Http.request === 'function'
-      });
-      return Http;
+      return Capacitor.Plugins.Http;
     }
     
     // 方式2: 从 Capacitor.Plugins.CapacitorHttp 获取（可能的命名）
     if (Capacitor.Plugins?.CapacitorHttp) {
-      const Http = Capacitor.Plugins.CapacitorHttp;
-      console.log('✅ getCapacitorHttp: 方式2成功，从 Capacitor.Plugins.CapacitorHttp 获取', { 
-        hasHttp: !!Http,
-        hasRequest: typeof Http.request === 'function'
-      });
-      return Http;
+      return Capacitor.Plugins.CapacitorHttp;
     }
     
-    console.warn('⚠️ getCapacitorHttp: 所有方式都失败，返回 null');
-    console.warn('⚠️ getCapacitorHttp: 可用的插件:', Capacitor.Plugins ? Object.keys(Capacitor.Plugins) : 'none');
     return null;
-  } catch (error: any) {
-    console.error('❌ getCapacitorHttp: 获取失败', {
-      error: error.message,
-      errorType: error.name,
-      stack: error.stack?.substring(0, 300)
-    });
+  } catch {
     return null;
   }
 }
@@ -230,20 +204,11 @@ export class FetchService extends Service {
     const timeout = init?.timeout ?? DEFAULT_TIMEOUT.request;
     const isAndroid = isAndroidEnvironment();
     
-    console.log('🔵 EXECUTE_STEP1: [executeFetch] 开始', { url, timeout, isAndroid });
-    
     // Android 环境下强制使用 CapacitorHttp，不允许降级
     if (isAndroid) {
-      console.log('🔵 EXECUTE_STEP2: [executeFetch] 检测到 Android 环境，强制使用 CapacitorHttp');
       const CapacitorHttp = getCapacitorHttp();
-      console.log('🔵 EXECUTE_STEP3: [executeFetch] getCapacitorHttp 结果', { 
-        hasCapacitorHttp: !!CapacitorHttp,
-        CapacitorHttpType: typeof CapacitorHttp,
-        CapacitorHttpValue: CapacitorHttp ? 'exists' : 'null'
-      });
       
       if (!CapacitorHttp) {
-        console.error('❌ EXECUTE_STEP_ERROR: [executeFetch] CapacitorHttp 不可用，Android 环境下必须使用 CapacitorHttp');
         throw new UserFriendlyError({
           status: 500,
           code: 'CAPACITOR_HTTP_UNAVAILABLE',
@@ -252,8 +217,6 @@ export class FetchService extends Service {
           message: 'CapacitorHttp 插件不可用，请确保已安装 @capacitor/http 并正确配置',
         });
       }
-      
-      console.log('🔵 EXECUTE_STEP4: [executeFetch] CapacitorHttp 可用，准备发送请求');
       const headers = this.prepareHeaders(url, init.headers);
       
       // 转换请求方法
@@ -277,20 +240,7 @@ export class FetchService extends Service {
       }
       
       // 使用 Promise.race 实现超时，避免 CapacitorHttp 悬挂
-      console.log('🔵 STEP1: [CapacitorHttp] 准备发送请求', url);
-      
       try {
-        // 先检查 CapacitorHttp 有哪些方法
-        console.log('🔵 STEP1a: [CapacitorHttp] 检查可用方法', {
-          hasGet: typeof CapacitorHttp.get === 'function',
-          hasPost: typeof CapacitorHttp.post === 'function',
-          hasPut: typeof CapacitorHttp.put === 'function',
-          hasDelete: typeof CapacitorHttp.delete === 'function',
-          hasPatch: typeof CapacitorHttp.patch === 'function',
-          hasRequest: typeof CapacitorHttp.request === 'function',
-          allKeys: Object.keys(CapacitorHttp),
-        });
-        
         const requestOptions = { 
           url, 
           headers, 
@@ -298,13 +248,6 @@ export class FetchService extends Service {
           // 指定 dataType 为 json，让 CapacitorHttp 自动解析 JSON 响应
           dataType: 'json' as const
         };
-        
-        console.log('🔵 STEP1b: [CapacitorHttp] 调用参数:', {
-          method,
-          url,
-          hasHeaders: !!headers,
-          hasData: !!data
-        });
         
         // 根据 HTTP 方法选择对应的 CapacitorHttp 方法
         let capPromise: Promise<any>;
@@ -314,7 +257,6 @@ export class FetchService extends Service {
           
           // 检查是否支持 request 方法（通用方法）
           if (typeof CapacitorHttp.request === 'function') {
-            console.log('🔵 STEP1c: [CapacitorHttp] 使用 request() 方法');
             result = CapacitorHttp.request({
               method,
               url,
@@ -365,134 +307,38 @@ export class FetchService extends Service {
             }
           }
           
-          console.log('🔵 STEP1d: [CapacitorHttp] 方法调用完成', {
-            method,
-            resultType: typeof result,
-            isPromise: result instanceof Promise,
-            hasThen: typeof result?.then === 'function',
-            resultValue: result,
-            resultKeys: result && typeof result === 'object' ? Object.keys(result) : null
-          });
-          
           // 如果返回的是 Promise，直接使用
           if (result instanceof Promise) {
-            console.log('🔵 STEP1e: [CapacitorHttp] 返回的是 Promise，直接使用');
             capPromise = result;
           } else {
             // 如果不是 Promise，Capacitor 的桥接调用应该会自动处理
             // 但这里我们需要手动创建一个 Promise 来等待原生回调
-            console.log('⚠️ STEP1f: [CapacitorHttp] 返回的不是 Promise，手动包装');
-            console.log('⚠️ STEP1f: [CapacitorHttp] 返回对象详情:', {
-              type: typeof result,
-              constructor: result?.constructor?.name,
-              toString: result?.toString(),
-            });
-            
             // 直接包装为 Promise，虽然不支持 .then()，但我们可以等待
             // 实际上，Capacitor 的桥接调用是异步的，需要等待原生回调
             // 这里我们只能先 resolve，然后等待实际的响应
             capPromise = Promise.resolve(result);
           }
         } catch (syncError: any) {
-          console.error('❌ STEP1_ERROR: [CapacitorHttp] 同步错误', {
-            error: syncError.message,
-            errorType: syncError.name,
-            stack: syncError.stack?.substring(0, 300)
-          });
           capPromise = Promise.reject(syncError);
         }
         
-        console.log('🔵 STEP1g: [CapacitorHttp] Promise 准备完成');
-        
-        console.log('🔵 STEP2: [CapacitorHttp] 请求已发送，等待响应...');
-        
         const timeoutPromise = new Promise<never>((_, reject) => {
           setTimeout(() => {
-            console.error('⏱️ STEP3: [CapacitorHttp] 请求超时', { url, timeout });
             reject(new Error('请求超时'));
           }, timeout);
         });
         
-        console.log('🔵 STEP4: [CapacitorHttp] 开始 Promise.race...');
-        console.log('🔵 STEP4a: [CapacitorHttp] Promise.race 参数检查', {
-          capPromiseType: typeof capPromise,
-          capPromiseIsPromise: capPromise instanceof Promise,
-          timeoutPromiseType: typeof timeoutPromise,
-          timeoutPromiseIsPromise: timeoutPromise instanceof Promise,
-          timeoutMs: timeout,
-        });
-        
-        // 添加 Promise 状态监听（在 Promise.race 之前）
-        console.log('🔵 STEP4b: [CapacitorHttp] 设置 Promise 状态监听');
-        const promiseState = {
-          resolved: false,
-          rejected: false,
-          resolvedValue: null as any,
-          rejectedError: null as any,
-        };
-        
-        capPromise.then(
-          (result) => {
-            promiseState.resolved = true;
-            promiseState.resolvedValue = result;
-            console.log('✅ STEP4b_PROMISE_RESOLVE: [CapacitorHttp] Promise resolve', {
-              resultType: typeof result,
-              resultKeys: result && typeof result === 'object' ? Object.keys(result) : null,
-              resultStatus: result?.status,
-              resultData: result?.data ? JSON.stringify(result.data).substring(0, 200) : null,
-            });
-          },
-          (error) => {
-            promiseState.rejected = true;
-            promiseState.rejectedError = error;
-            console.error('❌ STEP4b_PROMISE_REJECT: [CapacitorHttp] Promise reject', {
-              error: error.message,
-              errorType: error.name,
-              stack: error.stack?.substring(0, 300),
-            });
-          }
-        );
-        
-        // 添加定期检查 Promise 状态
-        const checkInterval = setInterval(() => {
-          if (promiseState.resolved || promiseState.rejected) {
-            clearInterval(checkInterval);
-            console.log('🔵 STEP4c_CHECK: [CapacitorHttp] Promise 状态已改变，停止检查', {
-              resolved: promiseState.resolved,
-              rejected: promiseState.rejected,
-            });
-          } else {
-            console.log('🔵 STEP4c_CHECK: [CapacitorHttp] Promise 仍在等待...', {
-              elapsed: Date.now(),
-            });
-          }
-        }, 1000);
-        
-        console.log('🔵 STEP4d: [CapacitorHttp] 开始 await Promise.race...');
         const response = await Promise.race([capPromise, timeoutPromise]) as any;
-        clearInterval(checkInterval);
-        
-        console.log('✅ STEP5: [CapacitorHttp] Promise.race 完成，收到响应', {
-          hasResponse: !!response,
-          responseType: typeof response,
-          responseKeys: response ? Object.keys(response) : null,
-          status: response?.status,
-          statusText: response?.statusText,
-        });
         
         // 将 CapacitorHttp 响应转换为标准 Response
         // CapacitorHttp 返回的 data 可能是字符串或对象
-        console.log('🔵 STEP6: [CapacitorHttp] 开始转换响应格式...');
         let responseBody: string;
         if (typeof response.data === 'string') {
           responseBody = response.data;
-          console.log('📝 STEP6a: response.data 是字符串');
         } else if (response.data) {
           responseBody = JSON.stringify(response.data);
-          console.log('📝 STEP6b: response.data 是对象，已转换为字符串', responseBody.substring(0, 200));
         } else {
           responseBody = '';
-          console.log('📝 STEP6c: response.data 为空');
         }
         
         // 确保响应头包含 Content-Type
@@ -500,12 +346,6 @@ export class FetchService extends Service {
           'Content-Type': 'application/json',
           ...(response.headers as Record<string, string> || {}),
         };
-        
-        console.log('🔵 STEP7: [CapacitorHttp] 创建 Response 对象...', {
-          status: response.status,
-          statusText: response.statusText,
-          bodyLength: responseBody.length,
-        });
         
         const standardResponse = new Response(
           responseBody,
@@ -516,15 +356,8 @@ export class FetchService extends Service {
           }
         );
         
-        console.log('✅ STEP8: [CapacitorHttp] Response 对象创建成功，准备返回');
         return standardResponse;
       } catch (httpError: any) {
-        console.error('❌ STEP_ERROR: [CapacitorHttp] 请求失败', { 
-          url, 
-          error: httpError.message, 
-          errorType: httpError.name,
-          stack: httpError.stack?.substring(0, 500)
-        });
         
         // Android 环境下不允许降级，直接抛出错误
         const errorMessage = httpError.message || 'CapacitorHttp 请求失败';
@@ -542,7 +375,6 @@ export class FetchService extends Service {
     }
     
     // 非 Android 环境使用原生 fetch
-    console.log('🔵 EXECUTE_STEP_NATIVE: [executeFetch] 非 Android 环境，使用原生 fetch', { url, timeout });
     
     const timeoutId = setTimeout(() => {
       abortController.abort('timeout');
@@ -585,17 +417,13 @@ export class FetchService extends Service {
    * 商用级网络请求实现，包含重试机制和完整错误处理
    */
   fetch = async (input: string, init?: FetchInit): Promise<Response> => {
-    console.log('🔵 FETCH_ENTRY: [fetch] 方法被调用', { input, method: init?.method, timeout: init?.timeout });
-    
     const externalSignal = init?.signal;
     if (externalSignal?.aborted) {
-      console.error('❌ FETCH_ABORTED: [fetch] 外部信号已取消');
       throw externalSignal.reason;
     }
 
     // 构建完整URL
     const url = this.buildRequestUrl(input);
-    console.log('🔵 FETCH_BUILD_URL: [fetch] URL构建完成', { input, url });
     
     // 配置重试逻辑
     const retryConfig: RetryConfig = {
@@ -616,8 +444,6 @@ export class FetchService extends Service {
     // 重试循环
     for (let attempt = 0; attempt <= retryConfig.maxRetries; attempt++) {
       try {
-        console.log('🔵 FETCH_ATTEMPT: [fetch] 开始尝试', { url, attempt, maxRetries: retryConfig.maxRetries });
-        
         // 如果不是第一次尝试，等待后重试
         if (attempt > 0) {
           const delayMs = retryConfig.retryDelay * Math.pow(2, attempt - 1); // 指数退避
@@ -626,20 +452,12 @@ export class FetchService extends Service {
           
           // 检查是否已被外部取消
           if (externalSignal?.aborted || abortController.signal.aborted) {
-            console.error('❌ FETCH_CANCELED: [fetch] 请求已被取消');
             throw externalSignal?.reason || new Error('请求已取消');
           }
         }
 
         // 执行请求
-        console.log('🔵 FETCH_STEP1: [fetch] 开始执行请求', { url, attempt });
         const response = await this.executeFetch(url, init || {}, abortController);
-        console.log('✅ FETCH_STEP2: [fetch] executeFetch 完成', { 
-          url, 
-          status: response.status, 
-          ok: response.ok,
-          hasHeaders: !!response.headers
-        });
         lastResponse = response;
 
         // 检查响应状态
@@ -690,7 +508,6 @@ export class FetchService extends Service {
         if (attempt > 0) {
           logger.info(`请求重试成功: ${url}`, { attempt });
         }
-        console.log('✅ FETCH_STEP3: [fetch] 请求成功，准备返回 Response', { url, status: response.status });
         return response;
 
       } catch (err: any) {

@@ -26,18 +26,27 @@ export const DesktopMenu = ({
   } = {},
   ref,
 }: MenuProps) => {
-  const [innerOpen, setInnerOpen] = useState(defaultOpen);
-  const finalOpen = open ?? innerOpen;
+  const [innerOpen, setInnerOpen] = useState(defaultOpen ?? false);
+  
+  // 决定是受控还是非受控模式
+  // 如果 open 是 undefined，使用内部状态（非受控）
+  // 如果 open 有值，使用外部状态（受控）
+  const isControlled = open !== undefined;
+  const finalOpen = isControlled ? open : innerOpen;
 
   const handleOpenChange = useCallback(
     (open: boolean) => {
-      setInnerOpen(open);
+      if (!isControlled) {
+        // 非受控模式：更新内部状态
+        setInnerOpen(open);
+      }
+      // 受控和非受控模式都调用外部回调
       onOpenChange?.(open);
       if (!open) {
         onClose?.();
       }
     },
-    [onOpenChange, onClose]
+    [onOpenChange, onClose, isControlled]
   );
 
   useImperativeHandle(
@@ -52,18 +61,25 @@ export const DesktopMenu = ({
   );
 
   const ContentWrapper = noPortal ? React.Fragment : DropdownMenu.Portal;
+  
+  // 构建传递给 Radix UI 的 props
+  // 如果是受控模式，传递 open；如果是非受控模式，不传递 open（使用 defaultOpen）
+  const rootProps = {
+    modal: modal ?? false,
+    onOpenChange: handleOpenChange,
+    ...rootOptions,
+    // 只在受控模式下传递 open
+    ...(isControlled ? { open: finalOpen } : defaultOpen !== undefined ? { defaultOpen } : {}),
+  };
+
   return (
-    <DropdownMenu.Root
-      modal={modal ?? false}
-      open={finalOpen}
-      onOpenChange={handleOpenChange}
-      {...rootOptions}
-    >
+    <DropdownMenu.Root {...rootProps}>
       <DropdownMenu.Trigger
         asChild
         onClick={e => {
+          // 注意：不要阻止默认行为，让Radix UI正常处理点击事件
+          // 阻止默认行为可能导致遮罩层无法正常关闭
           e.stopPropagation();
-          e.preventDefault();
         }}
       >
         {children}

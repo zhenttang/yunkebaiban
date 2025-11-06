@@ -33,7 +33,8 @@ export type UseSharingUrl = {
 /**
  * To generate a url like
  *
- * 公开文档: https://app.yunke.pro/share/workspaceId/docId?mode=DocMode&elementIds=seletedElementIds&blockIds=selectedBlockIds
+ * 公开文档（支持切换模式）: https://app.yunke.pro/share/workspaceId/docId
+ * 公开文档（特定模式）: https://app.yunke.pro/share/workspaceId/docId?mode=DocMode
  * 私有文档: https://app.yunke.pro/workspace/workspaceId/docId?mode=DocMode&elementIds=seletedElementIds&blockIds=selectedBlockIds
  */
 export const generateUrl = ({
@@ -52,7 +53,31 @@ export const generateUrl = ({
       ? `/share/${workspaceId}/${pageId}`
       : `/workspace/${workspaceId}/${pageId}`;
     const url = new URL(path, baseUrl);
-    const search = toDocSearchParams({ mode, blockIds, elementIds, xywh });
+    
+    // 对于公开文档，如果mode为undefined，不包含mode参数（允许自由切换）
+    // 如果需要特定模式（如block链接），则包含mode参数
+    const searchParams: { mode?: DocMode; blockIds?: string[]; elementIds?: string[]; xywh?: SerializedXYWH } = {};
+    
+    // 公开文档：只有在指定了mode、blockIds或elementIds时才包含mode参数
+    // 私有文档：始终包含mode参数（如果提供）
+    if (mode !== undefined) {
+      searchParams.mode = mode;
+    } else if (!isPublic) {
+      // 私有文档：如果没有指定mode，使用当前模式或默认page
+      searchParams.mode = 'page';
+    }
+    
+    if (blockIds && blockIds.length > 0) {
+      searchParams.blockIds = blockIds;
+    }
+    if (elementIds && elementIds.length > 0) {
+      searchParams.elementIds = elementIds;
+    }
+    if (xywh) {
+      searchParams.xywh = xywh;
+    }
+    
+    const search = toDocSearchParams(searchParams);
     if (search?.size) url.search = search.toString();
     return url.toString();
   } catch (err) {

@@ -10,6 +10,8 @@ setTimeout(() => {
 
   try {
     // 异步导入和注册组件
+    // ⚠️ 以下组件因装饰器错误暂时禁用
+    /*
     import('./heading-level-suggestion').then(({ HeadingLevelSuggestion }) => {
       if (!customElements.get('heading-level-suggestion')) {
         console.log('✅ [heading-enhancements] 注册 heading-level-suggestion 组件');
@@ -55,6 +57,9 @@ setTimeout(() => {
     }).catch(error => {
       console.error('❌ [heading-enhancements] document-structure-visualization 组件注册失败:', error);
     });
+    */
+
+    console.log('✅ [heading-enhancements] 标题增强组件注册完成（部分组件已禁用）');
 
   } catch (error) {
     console.error('❌ [heading-enhancements] 标题增强组件注册整体失败:', error);

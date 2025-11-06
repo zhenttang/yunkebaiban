@@ -69,8 +69,8 @@ export const ShareMenuContent = (props: ShareMenuProps) => {
       return false;
     }
     if (quota) {
-      const { name } = quota;
-      return name.toLowerCase() === SubscriptionPlan.Free.toLowerCase();
+      const planName = quota.humanReadable?.name;
+      return planName?.toLowerCase() === SubscriptionPlan.Free.toLowerCase();
     }
     return true;
   }, [isSelfhosted, quota]);
@@ -241,6 +241,10 @@ const DefaultShareButton = forwardRef(function DefaultShareButton(
 });
 
 const LocalShareMenu = (props: ShareMenuProps) => {
+  const handleOpenChange = useCallback((open: boolean) => {
+    props.onOpenShareModal?.(open);
+  }, [props]);
+
   return (
     <Menu
       items={<ShareMenuContent {...props} />}
@@ -251,7 +255,11 @@ const LocalShareMenu = (props: ShareMenuProps) => {
       }}
       rootOptions={{
         modal: false,
-        onOpenChange: props.onOpenShareModal,
+        onOpenChange: handleOpenChange,
+      }}
+      noPortal={false}
+      portalOptions={{
+        // 确保Portal不会导致遮罩层问题
       }}
     >
       <div data-testid="local-share-menu-button">
@@ -262,6 +270,10 @@ const LocalShareMenu = (props: ShareMenuProps) => {
 };
 
 const CloudShareMenu = (props: ShareMenuProps) => {
+  const handleOpenChange = useCallback((open: boolean) => {
+    props.onOpenShareModal?.(open);
+  }, [props]);
+
   return (
     <Menu
       items={<ShareMenuContent {...props} />}
@@ -272,7 +284,11 @@ const CloudShareMenu = (props: ShareMenuProps) => {
       }}
       rootOptions={{
         modal: false,
-        onOpenChange: props.onOpenShareModal,
+        onOpenChange: handleOpenChange,
+      }}
+      noPortal={false}
+      portalOptions={{
+        // 确保Portal不会导致遮罩层问题
       }}
     >
       <div data-testid="cloud-share-menu-button">

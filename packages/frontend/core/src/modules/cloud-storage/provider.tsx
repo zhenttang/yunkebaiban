@@ -79,7 +79,12 @@ class LogThrottle {
  */
 function getSocketIOUrl(): string {
   // 使用统一的网络配置管理
-  return getUnifiedSocketIOUrl();
+  const url = getUnifiedSocketIOUrl();
+  // 🔍 调试日志：显示实际使用的 Socket.IO URL
+  console.log('🔍 [Socket.IO配置] 获取Socket.IO URL:', url);
+  console.log('🔍 [Socket.IO配置] 环境变量 VITE_SOCKETIO_URL:', import.meta.env?.VITE_SOCKETIO_URL);
+  console.log('🔍 [Socket.IO配置] 环境变量 VITE_SOCKETIO_PORT:', import.meta.env?.VITE_SOCKETIO_PORT);
+  return url;
 }
 
 // 本地缓存键

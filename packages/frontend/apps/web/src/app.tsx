@@ -248,15 +248,11 @@ try {
   console.log('✅ [Framework] FrameworkProvider 创建成功');
 
   // setup application lifecycle events, and emit application start event
-  console.log('🔄 [Framework] 设置应用生命周期事件');
   window.addEventListener('focus', () => {
-    console.log('🎯 [Framework] 应用获得焦点');
     frameworkProvider!.get(LifecycleService).applicationFocus();
   });
 
-  console.log('🚀 [Framework] 启动应用生命周期');
   frameworkProvider!.get(LifecycleService).applicationStart();
-  console.log('✅ [Framework] 应用生命周期启动完成');
 
 } catch (frameworkError) {
   console.error('💥 [Framework] 框架初始化失败:', frameworkError);

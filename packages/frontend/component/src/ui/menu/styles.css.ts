@@ -1,10 +1,18 @@
 import { cssVar } from '@toeverything/theme';
 import { cssVarV2 } from '@toeverything/theme/v2';
-import { createVar, style } from '@vanilla-extract/css';
+import { createVar, globalStyle, style } from '@vanilla-extract/css';
 
 export const iconColor = createVar('iconColor');
 export const labelColor = createVar('labelColor');
 export const bgColor = createVar('bgColor');
+
+// 确保在modal={false}时，Radix UI的遮罩层不会显示
+// Radix UI的DropdownMenu在modal={false}时不应该有遮罩层，但添加此样式作为保险
+globalStyle('[data-radix-dropdown-menu-backdrop]', {
+  display: 'none !important',
+  visibility: 'hidden !important',
+  opacity: '0 !important',
+});
 
 export const menuContent = style({
   minWidth: '180px',

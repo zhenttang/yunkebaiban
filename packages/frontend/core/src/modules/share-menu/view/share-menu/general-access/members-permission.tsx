@@ -237,11 +237,13 @@ export const Tips = ({ disable }: { disable?: boolean }) => {
 
   return (
     <Tooltip content={t['com.yunke.share-menu.option.permission.tips']()}>
-      <InformationIcon
-        className={clsx(styles.informationIcon, {
-          disable: disable,
-        })}
-      />
+      <span style={{ display: 'inline-flex', alignItems: 'center' }}>
+        <InformationIcon
+          className={clsx(styles.informationIcon, {
+            disable: disable,
+          })}
+        />
+      </span>
     </Tooltip>
   );
 };

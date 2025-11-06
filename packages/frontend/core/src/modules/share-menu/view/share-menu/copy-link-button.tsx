@@ -50,8 +50,16 @@ export const CopyLinkButton = ({
   }, [onClickCopyLink, currentMode, blockIds, elementIds]);
 
   const onCopyLink = useCallback(() => {
-    onClickCopyLink();
-  }, [onClickCopyLink]);
+    // 对于公开文档，不指定mode参数，让用户可以自由切换模式
+    // 只对私有文档或特定选择（block等）才包含mode参数
+    if (isSharedPage) {
+      // 公开文档：不包含mode参数，允许自由切换
+      onClickCopyLink(undefined);
+    } else {
+      // 私有文档：包含当前模式
+      onClickCopyLink();
+    }
+  }, [onClickCopyLink, isSharedPage]);
 
   return (
     <div
