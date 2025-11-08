@@ -57,18 +57,20 @@ const safeStorage = {
 
 // 日志限流工具
 class LogThrottle {
-  private lastLogTime = 0;
-  private logCount = 0;
+  private lastLogTime = new Map<string, number>();
+  private logCount = new Map<string, number>();
   private readonly throttleMs = 1000; // 1秒内最多1条相同日志
   
-  log(_key: string, logFn: () => void) {
+  log(key: string, logFn: () => void) {
     const now = Date.now();
-    if (now - this.lastLogTime > this.throttleMs) {
+    const lastTime = this.lastLogTime.get(key) || 0;
+    if (now - lastTime > this.throttleMs) {
       logFn();
-      this.lastLogTime = now;
-      this.logCount = 1;
+      this.lastLogTime.set(key, now);
+      this.logCount.set(key, 1);
     } else {
-      this.logCount++;
+      const count = (this.logCount.get(key) || 0) + 1;
+      this.logCount.set(key, count);
     }
   }
 }
@@ -80,10 +82,6 @@ class LogThrottle {
 function getSocketIOUrl(): string {
   // 使用统一的网络配置管理
   const url = getUnifiedSocketIOUrl();
-  // 🔍 调试日志：显示实际使用的 Socket.IO URL
-  console.log('🔍 [Socket.IO配置] 获取Socket.IO URL:', url);
-  console.log('🔍 [Socket.IO配置] 环境变量 VITE_SOCKETIO_URL:', import.meta.env?.VITE_SOCKETIO_URL);
-  console.log('🔍 [Socket.IO配置] 环境变量 VITE_SOCKETIO_PORT:', import.meta.env?.VITE_SOCKETIO_PORT);
   return url;
 }
 
@@ -146,8 +144,12 @@ interface CloudStorageProviderProps {
 
 export const CloudStorageProvider = ({ 
   children, 
-  serverUrl = getSocketIOUrl()  // 使用内联配置管理
+  serverUrl: serverUrlProp
 }: CloudStorageProviderProps) => {
+  // 🔧 修复：将 serverUrl 默认值计算移到组件内部，避免在函数参数中执行副作用
+  const serverUrl = useMemo(() => {
+    return serverUrlProp ?? getSocketIOUrl();
+  }, [serverUrlProp]);
   const params = useParams();
   const sessionId = useMemo(() => getOrCreateSessionId(), []);
   const normalizedLocalSessionId = useMemo(
@@ -214,6 +216,10 @@ export const CloudStorageProvider = ({
   const logThrottle = useRef(new LogThrottle());
   const socketRef = useRef<Socket | null>(null); // 🔧 使用 ref 存储 socket，避免 useEffect 依赖
   const lastWorkspaceIdRef = useRef<string | null>(null); // 🔧 跟踪上次的 workspaceId，避免不必要的重连
+  const lastServerUrlRef = useRef<string | null>(null); // 🔧 跟踪上次的 serverUrl，避免不必要的重连
+  const isOnlineRef = useRef(isOnline); // 🔧 使用 ref 存储 isOnline，避免 connectToSocket 频繁重新创建
+  const serverUrlRef = useRef(serverUrl); // 🔧 使用 ref 存储 serverUrl，避免 connectToSocket 频繁重新创建
+  const connectToSocketRef = useRef<(() => Promise<void>) | null>(null); // 🔧 存储 connectToSocket 引用，用于网络状态监听
 
   const upsertSessionInfo = useCallback(
     (sessionIdRaw: string | null, clientIdRaw: string | null, _source: SessionActivityDetail['source']) => {
@@ -396,19 +402,34 @@ export const CloudStorageProvider = ({
     setOfflineOperationsCount(operations.length);
   }, []);
 
-  // 网络状态监听
+  // 🔧 修复：同步 isOnlineRef 和 serverUrlRef
+  useEffect(() => {
+    isOnlineRef.current = isOnline;
+  }, [isOnline]);
+  
+  useEffect(() => {
+    serverUrlRef.current = serverUrl;
+  }, [serverUrl]);
+
+  // 🔧 修复：网络状态监听 - 使用 ref 避免闭包问题
   useEffect(() => {
     const handleOnline = () => {
       setIsOnline(true);
-      // 网络恢复时立即尝试重连
-      if (!isConnected && currentWorkspaceId) {
+      isOnlineRef.current = true;
+      // 网络恢复时立即尝试重连 - 使用 ref 获取最新值
+      const currentSocket = socketRef.current;
+      if (!currentSocket?.connected && currentWorkspaceId) {
         reconnectAttempts.current = 0;
-        connectToSocket();
+        // 使用 ref 中的 connectToSocket，避免闭包问题
+        if (connectToSocketRef.current) {
+          connectToSocketRef.current();
+        }
       }
     };
 
     const handleOffline = () => {
       setIsOnline(false);
+      isOnlineRef.current = false;
       setStorageMode('local');
     };
 
@@ -419,7 +440,7 @@ export const CloudStorageProvider = ({
       window.removeEventListener('online', handleOnline);
       window.removeEventListener('offline', handleOffline);
     };
-  }, [isConnected, currentWorkspaceId]);
+  }, [currentWorkspaceId]); // 🔧 移除 isConnected 依赖，使用 socketRef 检查连接状态
 
   // 处理排队的操作
   const processPendingOperations = async () => {
@@ -453,15 +474,11 @@ export const CloudStorageProvider = ({
     // 🔧 检查是否已连接且 workspaceId 未变化
     const currentSocket = socketRef.current;
     if (currentSocket?.connected && currentWorkspaceId === lastWorkspaceIdRef.current) {
-      logThrottle.current.log('already-connected', () => {
-        console.log('✅ [云存储管理器] Socket 已连接，跳过重复连接', {
-          socketId: currentSocket.id,
-          workspaceId: currentWorkspaceId
-        });
-      });
-      // 确保状态同步
+      // 🔧 修复：确保状态同步，但避免不必要的状态更新
+      // 只在状态确实不同步时才更新，减少连锁反应
       if (!isConnected) {
-        setIsConnected(true);
+        // 使用 setTimeout 延迟更新，避免在 connectToSocket 执行过程中触发其他 useEffect
+        setTimeout(() => setIsConnected(true), 0);
       }
       return;
     }
@@ -474,8 +491,8 @@ export const CloudStorageProvider = ({
       return;
     }
 
-    // 如果网络离线，不尝试连接
-    if (!isOnline) {
+    // 如果网络离线，不尝试连接 - 使用 ref 获取最新值
+    if (!isOnlineRef.current) {
       logThrottle.current.log('offline', () => {
         console.warn('⚠️ [云存储管理器] 网络离线，跳过连接');
       });
@@ -498,7 +515,9 @@ export const CloudStorageProvider = ({
 
       const { io } = await import('socket.io-client');
       
-      const newSocket = io(serverUrl, {
+      // 🔧 使用 ref 获取最新的 serverUrl，避免闭包问题
+      const currentServerUrl = serverUrlRef.current;
+      const newSocket = io(currentServerUrl, {
         transports: ['websocket', 'polling'],
         timeout: 5000,
         reconnection: false, // 我们手动处理重连
@@ -510,14 +529,6 @@ export const CloudStorageProvider = ({
 
       // 连接成功
       newSocket.on('connect', () => {
-        // 🔧 日志限流，避免刷屏
-        logThrottle.current.log('connect-success', () => {
-          console.log('✅ [云存储管理器] Socket.IO连接成功', {
-            socketId: newSocket.id,
-            workspaceId: currentWorkspaceId,
-          });
-        });
-        
         setIsConnected(true);
         setSocket(newSocket);
         socketRef.current = newSocket; // 🔧 同步更新 ref
@@ -525,35 +536,98 @@ export const CloudStorageProvider = ({
         reconnectAttempts.current = 0;
         isConnectingRef.current = false; // 🔧 连接成功，重置标记
         
-        // 加入工作空间 - 严格按照YUNKE标准格式
-        newSocket.emit('space:join', {
-          spaceType: 'workspace',
-          spaceId: currentWorkspaceId,
-          clientVersion: '1.0.0'  // 添加YUNKE标准要求的clientVersion
-        }, (response: unknown) => {
-          // 修复：检查response是否存在
-          if (!response) {
-            console.error('❌ [云存储管理器] 空间加入失败: 服务器无响应');
-            setStorageMode('error');
-          } else if (typeof response === 'object' && response && 'error' in response) {
-            console.error('❌ [云存储管理器] 空间加入失败:', (response as { error: unknown }).error);
-            setStorageMode('error');
-          } else if (typeof response === 'object' && response && 'clientId' in response) {
-            clientIdRef.current = sanitizeSessionIdentifier((response as { clientId: string | null }).clientId);
-            setStorageMode('cloud');
-            setLastSync(new Date());
-            emitSessionActivity({
-              sessionId: normalizedLocalSessionId,
-              clientId: clientIdRef.current,
-              source: 'local',
+        // 🔧 修复：改用 emitWithAck 确保响应格式一致，并添加超时处理
+        // 使用 emitWithAck 而不是 emit，因为服务器可能返回 { data: { clientId: ... } } 格式
+        (async () => {
+          try {
+            const joinData = {
+              spaceType: 'workspace' as const,
+              spaceId: currentWorkspaceId,
+              clientVersion: '1.0.0'
+            };
+            
+            // 添加超时处理
+            const joinPromise = newSocket.emitWithAck('space:join', joinData);
+            const timeoutPromise = new Promise<never>((_, reject) => {
+              setTimeout(() => reject(new Error('space:join timeout after 10s')), 10000);
             });
             
-            // 处理排队的操作
-            if (pendingOperations.current.length > 0) {
-              processPendingOperations();
+            const response = await Promise.race([joinPromise, timeoutPromise]);
+            
+            // 处理响应 - 兼容多种响应格式
+            if (typeof response === 'object' && response) {
+              // 格式1: { error: ... }
+              if ('error' in response) {
+                console.error('❌ [云存储管理器] 空间加入失败:', response.error);
+                setStorageMode('error');
+                return;
+              }
+              
+              // 格式2: { data: { clientId: ... } } - emitWithAck 标准格式
+              if ('data' in response && response.data) {
+                const data = response.data as { clientId?: string | null };
+                clientIdRef.current = sanitizeSessionIdentifier(data.clientId ?? null);
+                setStorageMode('cloud');
+                setLastSync(new Date());
+                
+                emitSessionActivity({
+                  sessionId: normalizedLocalSessionId,
+                  clientId: clientIdRef.current,
+                  source: 'local',
+                });
+                
+                // 处理排队的操作
+                if (pendingOperations.current.length > 0) {
+                  processPendingOperations();
+                }
+                
+                return;
+              }
+              
+              // 格式3: { clientId: ... } - 直接格式
+              if ('clientId' in response) {
+                clientIdRef.current = sanitizeSessionIdentifier((response as { clientId: string | null }).clientId);
+                setStorageMode('cloud');
+                setLastSync(new Date());
+                
+                emitSessionActivity({
+                  sessionId: normalizedLocalSessionId,
+                  clientId: clientIdRef.current,
+                  source: 'local',
+                });
+                
+                // 处理排队的操作
+                if (pendingOperations.current.length > 0) {
+                  processPendingOperations();
+                }
+                
+                return;
+              }
             }
+            
+            // 未知响应格式 - 但 socket 已连接，设置为 cloud 模式
+            logThrottle.current.log('space-join-unknown-format', () => {
+              console.warn('⚠️ [云存储管理器] space:join 响应格式未知，但 socket 已连接，设置为 cloud 模式', {
+                response,
+                responseType: typeof response,
+                isObject: typeof response === 'object',
+                keys: typeof response === 'object' ? Object.keys(response) : []
+              });
+            });
+            // 🔧 修复：即使响应格式未知，也尝试设置为 cloud 模式，避免一直卡在 detecting
+            // 因为 socket 已连接，只是响应格式可能不同
+            setStorageMode('cloud');
+            setLastSync(new Date());
+            
+          } catch (error) {
+            console.error('❌ [云存储管理器] space:join 失败:', error);
+            // 🔧 修复：连接超时或失败时，设置为 error 状态
+            // 重连逻辑会在 disconnect 事件或 connect_error 事件中处理
+            setStorageMode('error');
+            // 断开连接，触发重连逻辑
+            newSocket.disconnect();
           }
-        });
+        })();
       });
 
       // 连接失败
@@ -605,7 +679,12 @@ export const CloudStorageProvider = ({
       isConnectingRef.current = false; // 🔧 异常，重置标记
       scheduleReconnect();
     }
-  }, [currentWorkspaceId, isOnline, serverUrl, normalizedLocalSessionId]);
+  }, [currentWorkspaceId, normalizedLocalSessionId]); // 🔧 移除 isOnline 和 serverUrl 依赖，使用 ref 获取最新值
+  
+  // 🔧 修复：同步 connectToSocketRef
+  useEffect(() => {
+    connectToSocketRef.current = connectToSocket;
+  }, [connectToSocket]);
 
   // 🔧 修复5: 推送文档更新（含离线与排队逻辑）- 使用useCallback
   // 🔧 定义在 connectToSocket 之后，因为依赖 connectToSocket
@@ -627,25 +706,18 @@ export const CloudStorageProvider = ({
         pendingOperations.current.push({ docId: normalizedDocId, update, resolve, reject });
       });
 
-    if (!isOnline) {
+    // 🔧 修复：优先使用 ref 检查网络状态和连接状态，避免闭包问题
+    if (!isOnlineRef.current) {
       await saveOfflineOperation(normalizedDocId, update);
       return enqueuePending();
     }
 
-    if (!socket?.connected || !isConnected) {
-      const currentSocket = socketRef.current;
-      if (!currentSocket?.connected || !isConnected) {
-        if (reconnectAttempts.current < maxReconnectAttempts) {
-          setTimeout(() => connectToSocket(), 0);
-        }
-        return enqueuePending();
-      }
-      // socket 已连接，继续使用 ref 中的 socket
-    }
-
-    // 🔧 确保使用最新的 socket
-    const currentSocket = socketRef.current || socket;
+    // 🔧 修复：统一使用 socketRef 检查连接状态，避免状态不同步
+    const currentSocket = socketRef.current;
     if (!currentSocket?.connected) {
+      if (reconnectAttempts.current < maxReconnectAttempts) {
+        setTimeout(() => connectToSocket(), 0);
+      }
       return enqueuePending();
     }
 
@@ -689,7 +761,7 @@ export const CloudStorageProvider = ({
       await saveOfflineOperation(normalizedDocId, update);
       throw error;
     }
-  }, [currentWorkspaceId, isOnline, isConnected, sessionId, connectToSocket]); // 🔧 移除 socket 依赖，添加 connectToSocket
+  }, [currentWorkspaceId, sessionId, connectToSocket]); // 🔧 移除 isOnline、isConnected、socket 依赖，使用 ref 获取最新值
 
   // 🔧 修复5: 智能重连调度 - 使用useCallback包装
   const scheduleReconnect = useCallback(() => {
@@ -719,10 +791,6 @@ export const CloudStorageProvider = ({
 
   // 🔧 修复5: 手动重连 - 使用useCallback包装
   const reconnect = useCallback(async (): Promise<void> => {
-    logThrottle.current.log('manual-reconnect', () => {
-      console.log('🔄 [云存储管理器] 手动重连');
-    });
-    
     // 清除重连定时器
     if (reconnectTimeout.current) {
       clearTimeout(reconnectTimeout.current);
@@ -763,37 +831,47 @@ export const CloudStorageProvider = ({
       return;
     }
 
-    // 🔧 检查 workspaceId 是否真的变化了
-    if (currentWorkspaceId === lastWorkspaceIdRef.current) {
-      // workspaceId 未变化，检查连接状态
+    // 🔧 修复：检查 workspaceId 和 serverUrl 是否真的变化了 - 优先使用 socketRef 检查连接状态
+    const workspaceIdChanged = currentWorkspaceId !== lastWorkspaceIdRef.current;
+    const serverUrlChanged = serverUrl !== lastServerUrlRef.current;
+    
+    if (!workspaceIdChanged && !serverUrlChanged) {
+      // workspaceId 和 serverUrl 都未变化，检查连接状态 - 统一使用 socketRef，避免状态不同步
       const currentSocket = socketRef.current;
-      if (currentSocket?.connected && isConnected) {
-        // 已连接且 workspaceId 未变化，不需要重连
+      if (currentSocket?.connected) {
+        // 已连接且 workspaceId/serverUrl 未变化，不需要重连
+        // 🔧 确保状态同步，但避免不必要的更新
+        if (!isConnected) {
+          setTimeout(() => setIsConnected(true), 0);
+        }
+        // 🔧 修复：如果 storageMode 还是 detecting，但 socket 已连接，说明 space:join 可能已经完成但状态没更新
+        // 这种情况下不应该重连，而是等待 space:join 完成
+        if (storageMode === 'detecting') {
+          // 不重连，等待 space:join 完成
+          return;
+        }
         return;
       }
     }
 
-    // workspaceId或serverUrl变化时，重置并重新连接
-    logThrottle.current.log('workspace-change', () => {
-      console.log('🔄 [云存储管理器] Workspace变化，重新建立连接', {
-        workspaceId: currentWorkspaceId,
-        previousWorkspaceId: lastWorkspaceIdRef.current,
-      });
-    });
-
+    // workspaceId 或 serverUrl 变化时，重置并重新连接
     // 重置连接状态
     setIsConnected(false);
     setStorageMode('detecting');
     reconnectAttempts.current = 0;
     isConnectingRef.current = false;
     
-    // 断开旧连接（如果 workspaceId 变化）
+    // 断开旧连接（如果 workspaceId 或 serverUrl 变化）
     const currentSocket = socketRef.current;
-    if (currentSocket && currentWorkspaceId !== lastWorkspaceIdRef.current) {
+    if (currentSocket && (workspaceIdChanged || serverUrlChanged)) {
       currentSocket.disconnect();
       setSocket(null);
       socketRef.current = null;
     }
+    
+    // 🔧 更新 ref，记录当前值
+    lastWorkspaceIdRef.current = currentWorkspaceId;
+    lastServerUrlRef.current = serverUrl;
     
     // 清除旧的重连定时器
     if (reconnectTimeout.current) {
@@ -816,7 +894,7 @@ export const CloudStorageProvider = ({
       // 🔧 注意：不在这里断开连接，因为可能被新的连接复用
       // 只在 cleanup 时（组件卸载）才断开
     };
-  }, [serverUrl, currentWorkspaceId, connectToSocket]); // 🔧 移除 socket 依赖
+  }, [serverUrl, currentWorkspaceId, connectToSocket]); // 🔧 保留 serverUrl 依赖，因为 serverUrl 变化时需要重连
 
   useEffect(() => {
     if (typeof window === 'undefined') {
@@ -847,7 +925,6 @@ export const CloudStorageProvider = ({
       // 组件卸载时清理连接
       const currentSocket = socketRef.current;
       if (currentSocket) {
-        console.log('🧹 [CloudStorageProvider] 组件卸载，清理连接');
         currentSocket.disconnect();
         socketRef.current = null;
       }
@@ -859,11 +936,13 @@ export const CloudStorageProvider = ({
       isConnectingRef.current = false;
     };
   }, []); // 只在组件卸载时执行
+  // 🔧 修复：优化 useMemo 依赖项
+  // 注意：socket 状态仍然保留，因为某些组件可能依赖它，但我们已经减少了不必要的依赖
   const value = useMemo<CloudStorageStatus>(() => ({
     isConnected,
     storageMode,
     lastSync,
-    socket,
+    socket: socketRef.current ?? socket, // 🔧 优先使用 ref，回退到状态
     reconnect,
     pushDocUpdate,
     currentWorkspaceId,
@@ -878,7 +957,7 @@ export const CloudStorageProvider = ({
     isConnected,
     storageMode,
     lastSync,
-    socket,
+    socket, // 🔧 保留 socket 依赖，但通过优先使用 ref 减少不必要的更新
     reconnect,
     pushDocUpdate,
     currentWorkspaceId,

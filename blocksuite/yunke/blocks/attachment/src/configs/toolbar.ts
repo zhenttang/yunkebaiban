@@ -42,8 +42,6 @@ import { isAttachmentEditable } from '../utils';
 import { dispatchAttachmentTrashEvent } from '../trash';
 import { toast } from '@blocksuite/yunke-components/toast';
 
-console.log('[Toolbar] Attachment toolbar config loaded');
-
 const trackBaseProps = {
   category: 'attachment',
   type: 'card view',

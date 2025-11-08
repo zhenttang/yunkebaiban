@@ -495,7 +495,9 @@ export class YunkeAIPanelWidget extends WidgetComponent {
         })
       );
     }
-    this.disposables.addFromEvent(this, 'wheel', stopPropagation);
+    this.disposables.addFromEvent(this, 'wheel', stopPropagation, {
+      passive: true,
+    });
     this.disposables.addFromEvent(this, 'pointerdown', stopPropagation);
     this.disposables.addFromEvent(this, 'pointerup', stopPropagation);
     this.disposables.addFromEvent(this, 'cut', stopPropagation);

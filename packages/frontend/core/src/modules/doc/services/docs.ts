@@ -107,9 +107,15 @@ export class DocsService extends Service {
     
     const blockSuiteDoc = this.store.getBlockSuiteDoc(docId);
     
+    // 严格检查：确保 blockSuiteDoc 不是 null 或 undefined
     if (!blockSuiteDoc) {
-      console.error('❌ [DocsService.open] BlockSuite 文档未找到:', docId);
-      throw new Error('文档未找到');
+      console.error('❌ [DocsService.open] BlockSuite 文档未找到:', {
+        docId,
+        blockSuiteDoc,
+        workspace: !!this.store.workspaceService.workspace,
+        docCollection: !!this.store.workspaceService.workspace?.docCollection,
+      });
+      throw new Error(`文档未找到: ${docId}`);
     }
 
     const exists = this.pool.get(docId);

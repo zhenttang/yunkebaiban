@@ -66,15 +66,8 @@ export class View extends Entity<{
 
   location$ = LiveData.from<Location>(
     new Observable(subscriber => {
-      console.log('[View] location$ observable created, initial location:', this.history.location);
       subscriber.next(this.history.location);
       return this.history.listen(update => {
-        console.log('[View] location$ change detected:', {
-          action: update.action,
-          location: update.location,
-          pathname: update.location.pathname,
-          search: update.location.search
-        });
         subscriber.next(update.location);
       });
     }),

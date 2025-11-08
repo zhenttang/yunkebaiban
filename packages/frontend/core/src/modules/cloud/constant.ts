@@ -83,9 +83,6 @@ function getBuildInServers(): (ServerMetadata & { config: ServerConfig })[] {
   }
   
   const baseUrl = getConfiguredBaseUrl();
-  console.log('📍 [BUILD_IN_SERVERS] 动态获取baseUrl:', baseUrl);
-  console.log('📍 [BUILD_IN_SERVERS] hostname:', typeof window !== 'undefined' ? window.location.hostname : 'N/A');
-  console.log('📍 [BUILD_IN_SERVERS] isProduction:', isProduction);
   
   _cachedServers = [
     {

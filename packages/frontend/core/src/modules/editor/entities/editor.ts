@@ -14,7 +14,7 @@ import { Entity, LiveData } from '@toeverything/infra';
 import { defaults, isEqual, omit } from 'lodash-es';
 import { skip } from 'rxjs';
 
-import type { DocService } from '../../doc';
+import type { Doc, DocService } from '../../doc';
 import { paramsParseOptions, preprocessParams } from '../../navigation/utils';
 import type { WorkbenchView } from '../../workbench';
 import type { WorkspaceService } from '../../workspace';
@@ -28,7 +28,20 @@ export class Editor extends Entity {
 
   readonly mode$ = new LiveData<DocMode>('page');
   readonly selector$ = new LiveData<EditorSelector | undefined>(undefined);
-  readonly doc = this.docService.doc;
+  // ✅ 使用 getter 延迟访问 doc，确保 DocScope 已经初始化
+  // 如果 DocScope 未初始化，返回 null 而不是抛出错误
+  get doc(): Doc | null {
+    try {
+      return this.docService.doc;
+    } catch (error) {
+      // DocScope 未初始化，返回 null
+      // 调用者应该检查 doc 是否为 null
+      if (error instanceof Error && error.message.includes('DocScope')) {
+        return null; // 返回 null，等待 DocScope 初始化
+      }
+      throw error; // 其他错误继续抛出
+    }
+  }
   readonly isSharedMode =
     this.workspaceService.workspace.openOptions.isSharedMode;
   readonly editorContainer$ = new LiveData<YunkeEditorContainer | null>(null);
@@ -116,7 +129,7 @@ export class Editor extends Entity {
       this.scrollPosition.edgeless = savedScrollPosition;
     }
 
-    const stablePrimaryMode = this.doc.getPrimaryMode();
+    const stablePrimaryMode = this.doc?.getPrimaryMode() || null;
 
     const viewParams$ = view
       .queryString$<ReferenceParams & { refreshKey?: string }>(
@@ -221,7 +234,7 @@ export class Editor extends Entity {
         >('rich-text');
         // Only focus on the title when it's empty on mobile edition.
         if (BUILD_CONFIG.isMobileEdition) {
-          const titleText = this.doc.title$.value;
+          const titleText = this.doc?.title$.value;
           if (!titleText?.length) {
             title?.inlineEditor?.focusEnd();
           }

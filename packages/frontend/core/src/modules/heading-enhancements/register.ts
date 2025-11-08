@@ -6,8 +6,6 @@
 
 // 延迟注册组件，避免循环依赖
 setTimeout(() => {
-  console.log('🔧 [heading-enhancements] 开始注册标题增强组件');
-
   try {
     // 异步导入和注册组件
     // ⚠️ 以下组件因装饰器错误暂时禁用
@@ -58,8 +56,6 @@ setTimeout(() => {
       console.error('❌ [heading-enhancements] document-structure-visualization 组件注册失败:', error);
     });
     */
-
-    console.log('✅ [heading-enhancements] 标题增强组件注册完成（部分组件已禁用）');
 
   } catch (error) {
     console.error('❌ [heading-enhancements] 标题增强组件注册整体失败:', error);

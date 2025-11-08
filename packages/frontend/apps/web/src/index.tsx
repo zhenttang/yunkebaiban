@@ -8,31 +8,22 @@ import { createRoot } from 'react-dom/client';
 import { App } from './app';
 
 function mountApp() {
-  console.log('🚀 [index] 开始挂载应用');
-
   // 确保 React 全局可用（某些第三方库可能需要）
   if (typeof window !== 'undefined' && typeof window.React === 'undefined') {
     (window as any).React = React;
-    console.log('✅ [index] React 已设置为全局变量');
   }
 
   // oxlint-disable-next-line @typescript-eslint/no-non-null-assertion
   const root = document.getElementById('app')!;
-  console.log('✅ [index] 找到根元素:', root);
 
   try {
-    console.log('📦 [index] 开始创建 React Root');
     const reactRoot = createRoot(root);
-    console.log('✅ [index] React Root 创建成功');
-
-    console.log('🎨 [index] 开始渲染 Telemetry 和 App 组件');
     reactRoot.render(
       <StrictMode>
         <Telemetry />
         <App />
       </StrictMode>
     );
-    console.log('✅ [index] 应用渲染完成');
   } catch (error) {
     console.error('❌ [index] React 渲染失败:', error);
     throw error;
@@ -40,9 +31,7 @@ function mountApp() {
 }
 
 try {
-  console.log('🎯 [index] 开始启动应用');
   mountApp();
-  console.log('🎉 [index] 应用启动成功');
 } catch (err) {
   console.error('💥 [index] 应用启动失败:', err);
 

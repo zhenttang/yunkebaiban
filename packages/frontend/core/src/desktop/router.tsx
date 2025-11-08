@@ -1,37 +1,41 @@
 import { wrapCreateBrowserRouterV6 } from '@sentry/react';
-import { useEffect, useState } from 'react';
 import type { RouteObject } from 'react-router-dom';
 import {
   createBrowserRouter as reactRouterCreateBrowserRouter,
   redirect,
-  useNavigate,
 } from 'react-router-dom';
 
 import { YunkeErrorComponent } from '../components/yunke/yunke-error-boundary/yunke-error-fallback';
-import { NavigateContext } from '../components/hooks/use-navigate-helper';
-import { RootWrapper } from './pages/root';
+import { RootRouter } from './router-root';
+// 🔧 修复：直接导入 workspace 路由组件，避免 lazy loading 导致的竞态条件
+// 这确保了父路由（RootRouter）总是被渲染，避免功能偶尔不正常的问题
+import { Component as WorkspaceComponent } from './pages/workspace/index';
 
-export function RootRouter() {
-  const navigate = useNavigate();
-  const [ready, setReady] = useState(false);
-  useEffect(() => {
-    // 确保路由就绪的hack方法
-    setReady(true);
-  }, []);
-
-  return (
-    ready && (
-      <NavigateContext.Provider value={navigate}>
-        <RootWrapper />
-      </NavigateContext.Provider>
-    )
-  );
-}
+// 🔧 修复：RootRouter 不使用 lazy loading，直接导入
+// 这样可以避免与子路由的 lazy loading 产生竞态条件
+// RootRouter 是必需的父路由，应该立即可用
 
 export const topLevelRoutes = [
   {
+    // 🔧 修复：直接使用 JSX，让 React Router 在渲染时创建元素
+    // 这样可以确保 React Router 能够正确追踪和渲染 element
+    // 不使用预先创建的元素，因为 React Router 可能需要每次渲染时创建新的元素引用
     element: <RootRouter />,
     errorElement: <YunkeErrorComponent />,
+    // 🔧 修复：添加 loader 确保父路由总是被处理
+    // 这解决了 React Router v6 在处理 lazy loading 子路由时的竞态条件问题
+    // 当子路由使用 lazy() 加载时，如果加载很快，React Router 可能跳过父路由直接渲染子路由
+    // 添加 loader 可以确保父路由的逻辑总是被执行，避免功能偶尔不正常的问题
+    loader: () => {
+      // loader 会在路由匹配时立即执行，即使子路由是 lazy loading
+      // 这确保了父路由（RootRouter）总是被处理，从而确保：
+      // - NavigateContext.Provider 总是被提供
+      // - RootWrapper 总是被渲染（包含 GlobalDialogs、NotificationCenter 等）
+      // - Server 配置重新验证总是执行
+      // - FrameworkScope 总是被提供
+      // 返回一个标记，确保 loader 数据存在
+      return { rootRouterLoaded: true };
+    },
     children: [
       // ✅ Clipper 路由优先，避免被 workspace 通配符拦截
       {
@@ -59,7 +63,11 @@ export const topLevelRoutes = [
       },
       {
         path: '/workspace/:workspaceId/*',
-        lazy: () => import('./pages/workspace/index'),
+        // 🔧 修复：移除 lazy loading，使用直接导入
+        // 这解决了 React Router v6 在处理 lazy loading 子路由时的竞态条件问题
+        // 当子路由使用 lazy() 加载时，如果加载很快，React Router 可能跳过父路由直接渲染子路由
+        // 移除 lazy 可以确保父路由（RootRouter）总是被渲染，避免功能偶尔不正常的问题
+        Component: WorkspaceComponent,
       },
       {
         path: '/404',
@@ -195,10 +203,13 @@ export const topLevelRoutes = [
 const createBrowserRouter = wrapCreateBrowserRouterV6(
   reactRouterCreateBrowserRouter
 );
+
+const basename = (typeof environment !== 'undefined' && environment?.subPath) || '';
+
 export const router = (
   window.SENTRY_RELEASE ? createBrowserRouter : reactRouterCreateBrowserRouter
 )(topLevelRoutes, {
-  basename: environment.subPath,
+  basename: basename,
   future: {
     v7_normalizeFormMethod: true,
   },

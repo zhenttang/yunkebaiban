@@ -347,7 +347,7 @@ export class ChatPanel extends SignalWatcher(
         .then(() => {
           chatMessages.getScrollContainer()?.addEventListener('wheel', () => {
             this._wheelTriggered = true;
-          });
+          }, { passive: true });
         })
         .catch(console.error);
     }

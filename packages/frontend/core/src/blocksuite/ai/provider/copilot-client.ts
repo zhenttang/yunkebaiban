@@ -1018,7 +1018,7 @@ export class CopilotClient {
   // ==================== 不支持的功能 ====================
 
   async getEmbeddingStatus(workspaceId: string): Promise<any> {
-    console.warn('Embedding status not implemented in Java backend');
+    // Embedding status not implemented in Java backend
     return null;
   }
 

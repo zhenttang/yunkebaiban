@@ -233,10 +233,6 @@ export class OutlineViewer extends SignalWatcher(
     );
 
     if (headingBlocks.length === 0) {
-      console.debug('[OutlineViewer] no heading blocks detected', {
-        title: this.editor.store.meta?.title,
-        childCount: this.editor.store.root?.children.length ?? 0,
-      });
       return nothing;
     }
 

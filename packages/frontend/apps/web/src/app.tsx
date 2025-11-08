@@ -18,12 +18,36 @@ import { CacheProvider } from '@emotion/react';
 import { Framework, FrameworkRoot, getCurrentStore } from '@toeverything/infra';
 import { OpClient } from '@toeverything/infra/op';
 import { Suspense, useEffect } from 'react';
-import { RouterProvider } from 'react-router-dom';
+import { RouterProvider, type RouterProviderProps } from 'react-router-dom';
 
 import { CloudStorageProvider } from '@yunke/core/modules/cloud-storage';
 import { CloudStorageIndicator } from './components/cloud-storage-indicator';
 import { deckerIntegrationManager } from '@yunke/core/modules/decker-integration/decker-integration-manager';
 import { AppLoading } from './components/app-loading';
+
+// 🔍 RouterProvider 包装组件，用于监听路由状态
+function RouterProviderWrapper(props: RouterProviderProps) {
+  const { router } = props;
+  
+  useEffect(() => {
+    const checkRouterState = () => {
+      // Router state check logic
+    };
+    
+    checkRouterState();
+    
+    // 监听路由变化
+    const unsubscribe = router?.subscribe?.(checkRouterState);
+    
+    return () => {
+      if (unsubscribe) {
+        unsubscribe();
+      }
+    };
+  }, [router]);
+  
+  return <RouterProvider {...props} />;
+}
 
 const cache = createEmotionCache();
 
@@ -58,7 +82,6 @@ function createWorkerWithTimeout(
         
         // SharedWorker成功创建
         clearTimeout(timeoutId);
-        console.log('✅ SharedWorker创建成功:', url);
         resolve(worker);
       } else {
         const worker = new Worker(url);
@@ -81,32 +104,16 @@ const useSharedWorker =
   window.SharedWorker &&
   localStorage.getItem('disableSharedWorker') !== 'true';
 
-console.log(
-  `🚀 [Worker] 开始初始化nbstore Worker...\n` +
-  `  类型: ${useSharedWorker ? 'SharedWorker' : 'Worker'}\n` +
-  `  URL: ${workerUrl}\n` +
-  `  支持 SharedWorker: ${!!window.SharedWorker}\n` +
-  `  禁用 SharedWorker: ${localStorage.getItem('disableSharedWorker') === 'true'}`
-);
-
 createWorkerWithTimeout(workerUrl, useSharedWorker)
   .then(worker => {
-    console.log(`✅ [Worker] Worker创建成功，类型: ${useSharedWorker ? 'SharedWorker' : 'Worker'}`, worker);
-
     try {
       if (useSharedWorker) {
-        console.log('🔌 [Worker] 创建 SharedWorker 端口连接');
         storeManagerClient = new StoreManagerClient(
           new OpClient((worker as SharedWorker).port)
         );
       } else {
-        console.log('🔌 [Worker] 创建 Worker 直接连接');
         storeManagerClient = new StoreManagerClient(new OpClient(worker as Worker));
       }
-      console.log('✅ [Worker] StoreManagerClient初始化成功');
-
-      // 测试连接是否正常
-      console.log('🧪 [Worker] 测试 StoreManagerClient 连接...');
 
     } catch (clientError) {
       console.error('❌ [Worker] StoreManagerClient 创建失败:', clientError);
@@ -163,6 +170,34 @@ createWorkerWithTimeout(workerUrl, useSharedWorker)
     document.body.appendChild(errorDiv);
   });
 
+// 🔧 修复：添加全局错误处理，捕获未处理的 Promise rejection
+window.addEventListener('unhandledrejection', (event) => {
+  const error = event.reason;
+  const errorMessage = error?.message || String(error);
+  
+  // 检查是否是超时错误
+  if (errorMessage.includes('timeout') || errorMessage.includes('Timeout')) {
+    console.error('⚠️ [全局错误处理] 检测到未处理的超时错误:', {
+      message: errorMessage,
+      error: error,
+      stack: error?.stack
+    });
+    
+    // 如果是 fetch 超时，记录详细信息但不阻止页面渲染
+    if (errorMessage.includes('fetchError') || errorMessage.includes('Request timeout')) {
+      console.warn('⚠️ [全局错误处理] fetch 请求超时，但不应该阻塞页面渲染');
+      // 不阻止默认行为，让应用继续运行
+      // event.preventDefault(); // 如果需要阻止默认错误处理，取消注释
+    }
+  } else {
+    console.error('❌ [全局错误处理] 未处理的 Promise rejection:', {
+      message: errorMessage,
+      error: error,
+      stack: error?.stack
+    });
+  }
+});
+
 window.addEventListener('beforeunload', () => {
   if (storeManagerClient) {
     storeManagerClient.dispose();
@@ -176,57 +211,30 @@ const future = {
 let frameworkProvider: FrameworkProvider | null = null;
 
 try {
-  console.log('🏗️ [Framework] 开始创建 Framework 实例');
   const framework = new Framework();
-  console.log('✅ [Framework] Framework 实例创建成功');
 
-  console.log('⚙️ [Framework] 开始配置通用模块');
   configureCommonModules(framework);
-  console.log('✅ [Framework] 通用模块配置完成');
-
-  console.log('🖥️ [Framework] 开始配置浏览器工作台模块');
   configureBrowserWorkbenchModule(framework);
-  console.log('✅ [Framework] 浏览器工作台模块配置完成');
-
-  console.log('💾 [Framework] 开始配置本地存储状态实现');
   configureLocalStorageStateStorageImpls(framework);
-  console.log('✅ [Framework] 本地存储状态实现配置完成');
-
-  console.log('🏢 [Framework] 开始配置浏览器工作空间风格');
   configureBrowserWorkspaceFlavours(framework);
-  console.log('✅ [Framework] 浏览器工作空间风格配置完成');
 
-  console.log('🔌 [Framework] 开始实现 NbstoreProvider');
   framework.impl(NbstoreProvider, {
     openStore(key, options) {
-      console.log(`📂 [NbstoreProvider] 尝试打开存储: ${key}`, { options });
       if (!storeManagerClient) {
-        console.error('❌ [NbstoreProvider] StoreManagerClient 未初始化');
         throw new Error('StoreManagerClient not initialized');
       }
-      try {
-        const store = storeManagerClient.open(key, options);
-        console.log(`✅ [NbstoreProvider] 存储打开成功: ${key}`);
-        return store;
-      } catch (error) {
-        console.error(`❌ [NbstoreProvider] 存储打开失败: ${key}`, error);
-        throw error;
-      }
+      return storeManagerClient.open(key, options);
     },
   });
-  console.log('✅ [Framework] NbstoreProvider 实现完成');
 
-  console.log('🪟 [Framework] 开始实现 PopupWindowProvider');
   framework.impl(PopupWindowProvider, {
     open: (target: string) => {
-      console.log(`🔗 [PopupWindowProvider] 打开弹窗: ${target}`);
       const targetUrl = new URL(target);
 
       let url: string;
       // safe to open directly if in the same origin
       if (targetUrl.origin === location.origin) {
         url = target;
-        console.log(`🔓 [PopupWindowProvider] 同源URL，直接打开: ${url}`);
       } else {
         const redirectProxy = location.origin + '/redirect-proxy';
         const search = new URLSearchParams({
@@ -234,18 +242,12 @@ try {
         });
 
         url = `${redirectProxy}?${search.toString()}`;
-        console.log(`🔐 [PopupWindowProvider] 跨源URL，使用代理: ${url}`);
       }
-      const popup = window.open(url, '_blank', 'popup noreferrer noopener');
-      console.log(`✅ [PopupWindowProvider] 弹窗打开结果: ${popup ? '成功' : '失败'}`);
-      return popup;
+      return window.open(url, '_blank', 'popup noreferrer noopener');
     },
   });
-  console.log('✅ [Framework] PopupWindowProvider 实现完成');
 
-  console.log('📦 [Framework] 创建 FrameworkProvider');
   frameworkProvider = framework.provider();
-  console.log('✅ [Framework] FrameworkProvider 创建成功');
 
   // setup application lifecycle events, and emit application start event
   window.addEventListener('focus', () => {
@@ -316,7 +318,6 @@ try {
 }
 
 export function App() {
-  console.log('🚀 [App] 开始渲染应用组件');
 
   // 检查框架是否初始化成功
   if (!frameworkProvider) {
@@ -352,72 +353,29 @@ export function App() {
     );
   }
 
+  const currentStore = getCurrentStore();
+  const hideCloudIndicator = /\/download(\-mobile)?(\b|\/)/.test(window.location.pathname);
+
   return (
     <Suspense fallback={<AppLoading />}>
-      {(() => {
-        console.log('📦 [App] 开始渲染 FrameworkRoot');
-        try {
-          return (
-            <FrameworkRoot framework={frameworkProvider}>
-              {(() => {
-                console.log('🎨 [App] 开始渲染 CacheProvider');
-                return (
-                  <CacheProvider value={cache}>
-                    {(() => {
-                      console.log('🌍 [App] 开始渲染 I18nProvider');
-                      return (
-                        <I18nProvider>
-                          {(() => {
-                            console.log('🏪 [App] 开始渲染 YunkeContext');
-                            try {
-                              const currentStore = getCurrentStore();
-                              console.log('✅ [App] YunkeContext store 获取成功:', currentStore ? '有效' : '无效');
-                              return (
-                                <YunkeContext store={currentStore}>
-                                  {(() => {
-                                    console.log('☁️ [App] 开始渲染 CloudStorageProvider');
-                                    return (
-                                      <CloudStorageProvider>
-                                        {(() => {
-                                          console.log('🛣️ [App] 开始渲染 RouterProvider');
-                                          console.log('🛣️ [App] 当前路径:', window.location.pathname);
-                                          console.log('🛣️ [App] 路由器实例:', router);
-
-                                          const hideCloudIndicator = /\/download(\-mobile)?(\b|\/)/.test(window.location.pathname);
-                                          return (
-                                            <>
-                                              <RouterProvider
-                                                fallbackElement={<AppContainer fallback />}
-                                                router={router}
-                                                future={future}
-                                              />
-                                              {!hideCloudIndicator && <CloudStorageIndicator />}
-                                            </>
-                                          );
-                                        })()}
-                                      </CloudStorageProvider>
-                                    );
-                                  })()}
-                                </YunkeContext>
-                              );
-                            } catch (error) {
-                              console.error('❌ [App] YunkeContext 渲染失败:', error);
-                              throw error;
-                            }
-                          })()}
-                        </I18nProvider>
-                      );
-                    })()}
-                  </CacheProvider>
-                );
-              })()}
-            </FrameworkRoot>
-          );
-        } catch (error) {
-          console.error('❌ [App] FrameworkRoot 渲染失败:', error);
-          throw error;
-        }
-      })()}
+      <FrameworkRoot framework={frameworkProvider}>
+        <CacheProvider value={cache}>
+          <I18nProvider>
+            <YunkeContext store={currentStore}>
+              <CloudStorageProvider>
+                <>
+                  <RouterProviderWrapper 
+                    fallbackElement={<AppContainer fallback />}
+                    router={router}
+                    future={future}
+                  />
+                  {!hideCloudIndicator && <CloudStorageIndicator />}
+                </>
+              </CloudStorageProvider>
+            </YunkeContext>
+          </I18nProvider>
+        </CacheProvider>
+      </FrameworkRoot>
     </Suspense>
   );
 }

@@ -43,14 +43,8 @@ export class UserDBEngine extends Entity<{
   ) {
     super();
 
-    // 简洁调试：确认 userspace 远端 CloudDocStorage 配置是否生效
-    try {
-      // 仅打印一行关键信息，避免刷屏
-      // eslint-disable-next-line no-console
-      console.log(
-        `[UserDBEngine] init remotes: CloudDocStorage serverBaseUrl=${serverService.server.baseUrl} type=userspace userId=${this.userId}`
-      );
-    } catch {}
+    const serverBaseUrl = serverService.server.serverMetadata.baseUrl;
+    const isSelfHosted = serverService.server.serverMetadata.type === ServerDeploymentType.Selfhosted;
 
     const { store, dispose } = this.nbstoreService.openStore(
       `userspace:${serverService.server.id},${this.userId}`,
@@ -73,9 +67,20 @@ export class UserDBEngine extends Entity<{
             },
           },
         },
-        // ⚠️ UserDB 不使用云存储 - 用户设置只存本地
-        // 工作空间文档才需要云同步
-        remotes: {},
+        // ✅ UserDB 也使用云端存储
+        remotes: {
+          [`cloud:${serverService.server.id}`]: {
+            doc: {
+              name: 'CloudDocStorage',
+              opts: {
+                type: 'userspace',
+                id: this.userId,
+                serverBaseUrl: serverBaseUrl,
+                isSelfHosted: isSelfHosted,
+              },
+            },
+          },
+        },
       }
     );
     this.client = store;

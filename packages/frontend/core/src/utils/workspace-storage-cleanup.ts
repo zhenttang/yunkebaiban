@@ -18,8 +18,6 @@ export interface ValidWorkspace {
  * 清理localStorage中的无效工作空间数据
  */
 export function cleanupInvalidWorkspaceStorage(validWorkspaces: ValidWorkspace[] = []) {
-  logger.info('🧹 开始清理无效的工作空间存储数据');
-  
   try {
     const validWorkspaceIds = new Set(validWorkspaces.map(ws => ws.id));
     let cleanupCount = 0;
@@ -27,14 +25,12 @@ export function cleanupInvalidWorkspaceStorage(validWorkspaces: ValidWorkspace[]
     // 1. 清理last_workspace_id
     const lastWorkspaceId = localStorage.getItem('last_workspace_id');
     if (lastWorkspaceId && !validWorkspaceIds.has(lastWorkspaceId)) {
-      logger.warn(`🚫 清理无效的last_workspace_id: ${lastWorkspaceId}`);
       localStorage.removeItem('last_workspace_id');
       cleanupCount++;
       
       // 如果有有效工作空间，设置第一个为默认
       if (validWorkspaces.length > 0) {
         localStorage.setItem('last_workspace_id', validWorkspaces[0].id);
-        logger.info(`✅ 设置新的last_workspace_id: ${validWorkspaces[0].id}`);
       }
     }
     
@@ -65,13 +61,12 @@ export function cleanupInvalidWorkspaceStorage(validWorkspaces: ValidWorkspace[]
             const hasInvalidWorkspaceId = checkForInvalidWorkspaceIds(data, validWorkspaceIds);
             
             if (hasInvalidWorkspaceId) {
-              logger.warn(`🚫 清理包含无效工作空间ID的缓存键: ${key}`);
               localStorage.removeItem(key);
               cleanupCount++;
             }
           }
         } catch (error) {
-          logger.error(`💥 检查缓存键时出错: ${key}`, error);
+          // Silent error
         }
       }
     });
@@ -101,34 +96,22 @@ export function cleanupInvalidWorkspaceStorage(validWorkspaces: ValidWorkspace[]
               const hasInvalidWorkspaceId = checkForInvalidWorkspaceIds(data, validWorkspaceIds);
               
               if (hasInvalidWorkspaceId) {
-                logger.warn(`🚫 清理sessionStorage中包含无效工作空间ID的键: ${key}`);
                 sessionStorage.removeItem(key);
                 cleanupCount++;
               }
             }
           } catch (error) {
-            logger.error(`💥 检查sessionStorage键时出错: ${key}`, error);
+            // Silent error
           }
         }
       });
     } catch (error) {
-      logger.error('💥 清理sessionStorage时出错', error);
-    }
-    
-    logger.info(`✅ 工作空间存储数据清理完成，共清理 ${cleanupCount} 项无效数据`);
-    
-    // 4. 记录当前有效的工作空间
-    if (validWorkspaces.length > 0) {
-      logger.info('📋 当前有效的工作空间:', validWorkspaces.map(ws => ({ 
-        id: ws.id, 
-        flavour: ws.flavour 
-      })));
+      // Silent error
     }
     
     return cleanupCount;
     
   } catch (error) {
-    logger.error('💥 清理工作空间存储数据时发生错误', error);
     return 0;
   }
 }
@@ -185,7 +168,7 @@ export function getCurrentStoredWorkspaceId(validWorkspaceIds: Set<string>): str
       return storedId;
     }
   } catch (error) {
-    logger.error('💥 获取存储的工作空间ID时出错', error);
+    // Silent error
   }
   
   return null;
@@ -196,18 +179,15 @@ export function getCurrentStoredWorkspaceId(validWorkspaceIds: Set<string>): str
  */
 export function setValidWorkspaceId(workspaceId: string, validWorkspaceIds: Set<string>): boolean {
   try {
-    if (validWorkspaceIds.has(workspaceId)) {
-      localStorage.setItem('last_workspace_id', workspaceId);
-      logger.info(`✅ 已设置有效的工作空间ID: ${workspaceId}`);
-      return true;
-    } else {
-      logger.warn(`🚫 尝试设置无效的工作空间ID: ${workspaceId}`);
+      if (validWorkspaceIds.has(workspaceId)) {
+        localStorage.setItem('last_workspace_id', workspaceId);
+        return true;
+      } else {
+        return false;
+      }
+    } catch (error) {
       return false;
     }
-  } catch (error) {
-    logger.error('💥 设置工作空间ID时出错', error);
-    return false;
-  }
 }
 
 /**

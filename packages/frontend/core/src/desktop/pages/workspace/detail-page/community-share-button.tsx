@@ -39,7 +39,15 @@ export const CommunityShareButton = ({
         if (cancelled) {
           return;
         }
-        console.warn('获取社区分享状态失败', error);
+        // 检查错误码，如果是权限相关的错误，静默处理
+        const errorCode = (error as any)?.code;
+        const isPermissionError = errorCode === 'COMMUNITY_DOC_ACCESS_DENIED' || 
+                                  errorCode === 'DOC_NOT_SHARED_TO_COMMUNITY' ||
+                                  errorCode === 'FORBIDDEN';
+        
+        if (!isPermissionError) {
+          console.warn('获取社区分享状态失败', error);
+        }
         setIsShared(false);
       }
     };

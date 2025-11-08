@@ -19,9 +19,15 @@ export const RootWrapper = () => {
     const abortController = new AbortController();
     defaultServerService.server
       .waitForConfigRevalidation(abortController.signal)
-      .then(() => setIsServerReady(true))
-      .catch(console.error);
-    return () => abortController.abort();
+      .then(() => {
+        setIsServerReady(true);
+      })
+      .catch((error) => {
+        console.error('❌ [RootWrapper] Server 配置重新验证失败:', error);
+      });
+    return () => {
+      abortController.abort();
+    };
   }, [defaultServerService, isServerReady]);
 
   return (

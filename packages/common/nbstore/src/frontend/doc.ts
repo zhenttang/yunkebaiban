@@ -389,10 +389,6 @@ export class DocFrontend {
         // console.log('[DocFrontend.load] 空文档标记为 ready（允许初始化）');
       }
 
-      console.log('✅ [DocFrontend.load] 添加到 connectedDocs，文档加载完成:', {
-        docId: job.docId,
-        connectedDocsCount: this.status.connectedDocs.size + 1
-      });
       this.status.connectedDocs.add(job.docId);
       this.statusUpdatedSubject$.next(job.docId);
     },
@@ -438,7 +434,6 @@ export class DocFrontend {
             this.uniqueId
           );
           
-          console.log('✅ [DocFrontend.save] 保存成功！', { docId });
         } catch (error) {
           console.error('❌ [DocFrontend.save] 推送到存储失败:', {
             docId,
@@ -531,36 +526,22 @@ export class DocFrontend {
   }
 
   private _connectDoc(doc: YDoc) {
-    console.log('🔗 [DocFrontend._connectDoc] 开始连接文档:', {
-      docGuid: doc.guid,
-      alreadyConnected: this.status.docs.has(doc.guid)
-    });
-    
     if (this.status.docs.has(doc.guid)) {
-      console.error('❌ [DocFrontend._connectDoc] 文档已连接，抛出错误');
       throw new Error('文档已连接');
     }
 
-    console.log('🔗 [DocFrontend._connectDoc] 调度 load 作业');
     this.schedule({
       type: 'load',
       docId: doc.guid,
     });
 
-    console.log('🔗 [DocFrontend._connectDoc] 添加到 status.docs');
     this.status.docs.set(doc.guid, doc);
     this.statusUpdatedSubject$.next(doc.guid);
 
-    console.log('🔗 [DocFrontend._connectDoc] 监听 update 事件');
     doc.on('update', this.handleDocUpdate);
 
     doc.on('destroy', () => {
       this.disconnectDoc(doc);
-    });
-
-    console.log('✅ [DocFrontend._connectDoc] 连接完成:', {
-      docGuid: doc.guid,
-      docsCount: this.status.docs.size
     });
   }
 
@@ -701,7 +682,6 @@ ${changedList}
     }
     this.lastSaveTime.set(doc.guid, now);
 
-    console.log('✅ [DocFrontend.handleDocUpdate] 调度 save 作业');
     this.schedule({
       type: 'save',
       docId: doc.guid,

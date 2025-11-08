@@ -31,6 +31,24 @@ export class ShareStore extends Store {
       
       // 检查状态码：403 或 404 表示文档未公开或不存在
       if (res.status === 403 || res.status === 404) {
+        // 尝试解析错误响应，获取错误码
+        try {
+          const errorBody = await res.clone().json().catch(() => null);
+          const errorCode = errorBody?.code;
+          
+          // 如果是权限相关的错误码，静默处理（这是正常行为）
+          const isPermissionError = errorCode === 'DOC_ACCESS_DENIED' || 
+                                    errorCode === 'DOC_NOT_PUBLIC' ||
+                                    errorCode === 'FORBIDDEN';
+          
+          if (!isPermissionError && res.status === 403) {
+            // 非权限错误才记录日志
+            console.warn('[ShareStore] 文档访问被拒绝:', errorCode || '未知错误码');
+          }
+        } catch (e) {
+          // 解析失败，忽略
+        }
+        
         return {
           public: false,
           mode: 'page' as PublicDocMode,

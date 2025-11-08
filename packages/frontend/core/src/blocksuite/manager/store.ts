@@ -25,15 +25,11 @@ class StoreProvider {
   private readonly _manager: StoreExtensionManager;
 
   constructor() {
-    console.log('📦 [StoreProvider] 初始化 StoreExtensionManager');
-    
     this._manager = new StoreExtensionManager([
       ...getInternalStoreExtensions(),
       AIStoreExtension,
       FeatureFlagStoreExtension,
     ]);
-    
-    console.log('✅ [StoreProvider] StoreExtensionManager 初始化完成');
   }
 
   get config(): Configure {

@@ -219,39 +219,30 @@ export abstract class AutoReconnectConnection<T = any>
   }
 
   waitForConnected(signal?: AbortSignal) {
-    console.log('[Connection Debug] waitForConnected 被调用:', {
-      connectionType: this.constructor.name,
-      currentStatus: this.status,
-      hasError: !!this._error,
-      errorMessage: this._error?.message
-    });
-
     return new Promise<void>((resolve, reject) => {
+      // 立即检查状态，如果已经是 connected，立即 resolve
       if (this.status === 'connected') {
-        console.log('[Connection Debug] 已经连接，立即返回');
         resolve();
         return;
       }
 
-      console.log('[Connection Debug] 等待连接状态变为 connected...');
-      const off = this.onStatusChanged(status => {
-        console.log('[Connection Debug] 连接状态变化:', {
-          newStatus: status,
-          connectionType: this.constructor.name
-        });
+      // 如果状态是 error 或 closed，立即 reject
+      if (this.status === 'error' || this.status === 'closed') {
+        reject(this._error || new Error(`连接状态为 ${this.status}`));
+        return;
+      }
 
+      const off = this.onStatusChanged((status, error) => {
         if (status === 'connected') {
-          console.log('[Connection Debug] 连接成功！');
           resolve();
+          off();
+        } else if (status === 'error' || status === 'closed') {
+          reject(error || new Error(`连接状态变为 ${status}`));
           off();
         }
       });
 
       signal?.addEventListener('abort', reason => {
-        console.warn('⚠️ [AutoReconnectConnection.waitForConnected] 收到中止信号:', {
-          connectionType: this.constructor.name,
-          reason
-        });
         reject(reason);
         off();
       });

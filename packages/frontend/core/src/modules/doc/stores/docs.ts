@@ -265,9 +265,9 @@ export class DocsStore extends Store {
         // 添加超时机制：如果5秒内没有同步完成，仍然允许继续
         timeout(5000),
         catchError(error => {
-          console.warn('📋 [DocsStore.watchDocListReady] 超时或出错，返回 true:', error);
+          // 超时时返回true，允许文档加载继续
           return of(true);
-        }) // 超时时返回true，允许文档加载继续
+        })
       );
   }
 

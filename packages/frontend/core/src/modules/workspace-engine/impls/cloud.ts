@@ -680,11 +680,6 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
               };
             });
             
-            console.log('☁️ [CloudWorkspace] 处理后的工作区列表:', {
-              count: workspaces.length,
-              workspaces: workspaces.map((w: any) => ({ id: w.id, flavour: w.flavour }))
-            });
-            
             return {
               accountId,
               workspaces,
@@ -707,25 +702,14 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
                 return a.id.localeCompare(b.id);
               });
               
-              console.log('☁️ [CloudWorkspace] 更新 workspaces$ LiveData:', {
-                accountId,
-                sortedCount: sorted.length,
-                sortedIds: sorted.map((w: any) => w.id),
-                cacheKey: getCloudWorkspaceCacheKey(this.server.id) + accountId
-              });
-              
               this.globalState.set(
                 getCloudWorkspaceCacheKey(this.server.id) + accountId,
                 sorted
               );
               if (!isEqual(this.workspaces$.value, sorted)) {
-                console.log('☁️ [CloudWorkspace] workspaces$ 值已更新');
                 this.workspaces$.next(sorted);
-              } else {
-                console.log('☁️ [CloudWorkspace] workspaces$ 值未变化，跳过更新');
               }
             } else {
-              console.log('☁️ [CloudWorkspace] 无数据，清空 workspaces$');
               this.workspaces$.next([]);
             }
           }),
@@ -810,14 +794,11 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
     id: string,
     signal?: AbortSignal
   ): Promise<WorkspaceProfileInfo | undefined> {
-    logger.info(`🔍 [CloudWorkspaceFlavourProvider] 获取工作空间资料: ${id}`);
-    
     try {
       let workspaceId = id;
       
       // 1. ID验证 - 检查是否是合理的工作空间ID
       if (!workspaceId || workspaceId.trim().length === 0) {
-        logger.warn('🚫 [CloudWorkspaceFlavourProvider] 工作空间ID为空');
         return this.getDefaultWorkspaceProfile();
       }
       
@@ -825,16 +806,12 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
       
       // 2. 格式验证 - 如果ID格式明显不正确，尝试从当前有效工作空间列表获取
       if (trimmedId.length < 10 || trimmedId.length > 50) {
-        logger.warn(`🚫 [CloudWorkspaceFlavourProvider] 工作空间ID格式可能无效: ${trimmedId}, 长度: ${trimmedId.length}`);
-        
         // 尝试从当前工作空间列表中找到有效的工作空间ID
         const workspaces = this.workspaces$.value;
         if (workspaces && workspaces.length > 0) {
           const validWorkspace = workspaces[0];
-          logger.info(`🔄 [CloudWorkspaceFlavourProvider] 使用列表中的第一个有效工作空间: ${validWorkspace.id}`);
           workspaceId = validWorkspace.id;
         } else {
-          logger.warn('🚫 [CloudWorkspaceFlavourProvider] 没有有效的工作空间列表');
           return this.getDefaultWorkspaceProfile();
         }
       }
@@ -846,25 +823,21 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
         // 检查缓存中的映射是否正确
         if (this.docWorkspaceMapping.has(workspaceId)) {
           const cachedWorkspaceId = this.docWorkspaceMapping.get(workspaceId)!;
-          logger.info(`📋 [CloudWorkspaceFlavourProvider] 缓存中的映射: ${workspaceId} -> ${cachedWorkspaceId}`);
           
           // 验证缓存的工作空间ID是否在有效列表中
           const workspaces = this.workspaces$.value;
           const isCachedIdValid = workspaces.some(ws => ws.id === cachedWorkspaceId);
           
           if (!isCachedIdValid) {
-            logger.warn(`🚫 [CloudWorkspaceFlavourProvider] 缓存的工作空间ID无效，清理缓存: ${cachedWorkspaceId}`);
             this.docWorkspaceMapping.delete(workspaceId);
             
             // 使用原始ID作为工作空间ID
             if (workspaces.some(ws => ws.id === workspaceId)) {
-              logger.info(`✅ [CloudWorkspaceFlavourProvider] 原始ID是有效的工作空间ID: ${workspaceId}`);
               // workspaceId 保持不变
             } else {
               // 使用第一个有效的工作空间ID
               if (workspaces.length > 0) {
                 workspaceId = workspaces[0].id;
-                logger.info(`🔄 [CloudWorkspaceFlavourProvider] 使用第一个有效工作空间: ${workspaceId}`);
               }
             }
           } else {
@@ -873,24 +846,19 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
         } else {
           // 检查原始ID是否就是有效的工作空间ID
           const workspaces = this.workspaces$.value;
-          if (workspaces.some(ws => ws.id === workspaceId)) {
-            logger.info(`✅ [CloudWorkspaceFlavourProvider] 原始ID就是有效的工作空间ID: ${workspaceId}`);
-          } else {
+          if (!workspaces.some(ws => ws.id === workspaceId)) {
             // 尝试从当前工作空间上下文获取工作空间ID
             const currentWorkspaceId = this.getCurrentWorkspaceId();
             if (currentWorkspaceId && currentWorkspaceId !== workspaceId) {
               workspaceId = currentWorkspaceId;
               // 保存到缓存
               this.docWorkspaceMapping.set(id, workspaceId);
-              logger.info(`🔄 [CloudWorkspaceFlavourProvider] 从上下文获取工作空间ID: ${workspaceId}`);
             } else {
               // 使用第一个有效工作空间
               if (workspaces.length > 0) {
                 workspaceId = workspaces[0].id;
                 this.docWorkspaceMapping.set(id, workspaceId);
-                logger.info(`🔄 [CloudWorkspaceFlavourProvider] 使用第一个有效工作空间: ${workspaceId}`);
               } else {
-                logger.error('💥 [CloudWorkspaceFlavourProvider] 没有可用的工作空间');
                 return this.getDefaultWorkspaceProfile();
               }
             }
@@ -899,18 +867,14 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
       }
       
       // 4. 使用确定的工作空间ID获取工作空间信息
-      logger.info(`🌐 [CloudWorkspaceFlavourProvider] 获取工作空间信息: ${workspaceId}`);
       const workspace = await this.getWorkspaceInfo(workspaceId, signal);
       
       if (!workspace) {
-        logger.warn(`🚫 [CloudWorkspaceFlavourProvider] 无法获取工作空间信息: ${workspaceId}`);
-        
         // 如果获取失败，尝试从工作空间列表中获取第一个有效工作空间
         const workspaces = this.workspaces$.value;
         if (workspaces && workspaces.length > 0) {
           const validWorkspace = workspaces.find(ws => ws.id && ws.id !== workspaceId);
           if (validWorkspace) {
-            logger.info(`🔄 [CloudWorkspaceFlavourProvider] 重试获取有效工作空间: ${validWorkspace.id}`);
             const retryWorkspace = await this.getWorkspaceInfo(validWorkspace.id, signal);
             if (retryWorkspace) {
               const profile: WorkspaceProfileInfo = {
@@ -921,7 +885,6 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
                 isTeam: Boolean(retryWorkspace.team),
               };
               
-              logger.info(`✅ [CloudWorkspaceFlavourProvider] 成功获取重试工作空间资料:`, profile);
               return profile;
             }
           }
@@ -940,14 +903,6 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
         isTeam: Boolean(workspace.team),
       };
       
-      logger.info(`🔧 [CRITICAL-DEBUG] 前端角色判断过程:`, {
-        originalRole: workspace.role,
-        normalizedRole: role,
-        isOwner: profile.isOwner,
-        isAdmin: profile.isAdmin
-      });
-      
-      logger.info(`✅ [CloudWorkspaceFlavourProvider] 成功获取工作空间资料:`, profile);
       return profile;
       
     } catch (error) {
@@ -1135,21 +1090,12 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
         if (response.ok) {
           const data = await response.json();
           
-          // 🔧 [CRITICAL-DEBUG] 记录完整的后端响应数据
-          logger.info(`🔧 [CRITICAL-DEBUG] 后端API响应数据:`, data);
-          
           if (data.success || data.workspace || data.id) {
             const workspace = data.workspace || data;
             
             // 🔧 [CRITICAL-FIX] 修复角色获取 - 从正确的位置获取role信息
             // 后端返回结构: { success: true, workspace: {...}, role: "OWNER", isOwner: true, isAdmin: true }
             const role = data.role || workspace.role || 'viewer';
-            
-            logger.info(`🔧 [CRITICAL-DEBUG] 角色获取过程:`, {
-              dataRole: data.role,
-              workspaceRole: workspace.role, 
-              finalRole: role
-            });
             
             return {
               id: workspace.id || workspaceId,
@@ -1326,7 +1272,6 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
     }
     
     // 🌐 [纯云存储模式] 标准浏览器环境配置
-    console.log('🌐 [CloudWorkspaceFlavourProvider] 标准环境 - 使用纯云存储配置（禁用IndexedDB）');
     
     return {
       local: {

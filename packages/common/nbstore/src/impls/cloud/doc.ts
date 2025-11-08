@@ -347,6 +347,7 @@ class CloudDocStorageConnection extends SocketConnection {
       const res = await socket.emitWithAck('space:join', joinData);
 
       if ('error' in res) {
+        console.error('❌ [CloudDocStorageConnection] space:join 失败:', res.error);
         throw new Error(res.error.message);
       }
 
@@ -355,12 +356,14 @@ class CloudDocStorageConnection extends SocketConnection {
           sanitizeSessionIdentifier((res.data as { clientId?: string }).clientId) ?? null;
       } else {
         this.clientId = null;
+        console.warn('⚠️ [CloudDocStorageConnection] space:join 响应中没有 clientId');
       }
 
       if (!this.idConverter) {
         try {
           this.idConverter = await this.getIdConverter(socket);
         } catch (error) {
+          console.warn('⚠️ [CloudDocStorageConnection] idConverter 初始化失败，使用默认值:', error);
           // 使用默认的身份转换器作为后备
           this.idConverter = {
             newIdToOldId: (id: string) => id,
@@ -374,6 +377,10 @@ class CloudDocStorageConnection extends SocketConnection {
 
       return { socket, disconnect };
     } catch (e) {
+      console.error('❌ [CloudDocStorageConnection] doConnect 失败:', {
+        error: e instanceof Error ? e.message : String(e),
+        stack: e instanceof Error ? e.stack : undefined
+      });
       disconnect();
       throw e;
     }

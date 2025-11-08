@@ -17,7 +17,7 @@ import { PageDetailEditor } from '@yunke/core/components/page-detail-editor';
 import { WorkspacePropertySidebar } from '@yunke/core/components/properties/sidebar';
 import { TrashPageFooter } from '@yunke/core/components/pure/trash-page-footer';
 import { TopTip } from '@yunke/core/components/top-tip';
-import { DocService } from '@yunke/core/modules/doc';
+import { type Doc, DocService } from '@yunke/core/modules/doc';
 import { EditorService } from '@yunke/core/modules/editor';
 import { FeatureFlagService } from '@yunke/core/modules/feature-flag';
 import { GlobalContextService } from '@yunke/core/modules/global-context';
@@ -88,7 +88,21 @@ const DetailPageImpl = memo(function DetailPageImpl() {
   const view = viewService.view;
   const workspace = workspaceService.workspace;
   const globalContext = globalContextService.globalContext;
-  const doc = docService.doc;
+  
+  // ✅ 安全地获取 doc：DocScope 可能还未初始化
+  // 使用 try-catch 和可选链，如果 DocScope 未初始化则返回 null
+  let doc: Doc | null = null;
+  try {
+    doc = docService.doc;
+  } catch (error) {
+    // DocScope 未初始化，doc 保持为 null
+    // 组件会在 DocScope 初始化后重新渲染
+  }
+  
+  // ✅ 如果 doc 未初始化，返回加载状态
+  if (!doc) {
+    return null; // 等待 DocScope 初始化
+  }
 
   const mode = useLiveData(editor.mode$);
   const activeSidebarTab = useLiveData(view.activeSidebarTab$);

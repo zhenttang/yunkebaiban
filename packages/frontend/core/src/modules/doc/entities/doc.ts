@@ -16,9 +16,19 @@ export class Doc extends Entity {
   ) {
     super();
 
+    // 防御性检查：确保 scope.props 存在
+    if (!this.scope.props) {
+      throw new Error(`DocScope props is undefined`);
+    }
+
     // 防御性检查：确保blockSuiteDoc存在
     if (!this.scope.props.blockSuiteDoc) {
       throw new Error(`DocScope blockSuiteDoc is undefined for doc ${this.scope.props.docId}`);
+    }
+
+    // 防御性检查：确保record存在
+    if (!this.scope.props.record) {
+      throw new Error(`DocScope record is undefined for doc ${this.scope.props.docId}`);
     }
 
     const handleTransactionThrottled = throttle(
@@ -52,19 +62,68 @@ export class Doc extends Entity {
     return this.scope.props.docId;
   }
 
-  public readonly yDoc = this.scope.props.blockSuiteDoc.spaceDoc;
-  public readonly blockSuiteDoc = this.scope.props.blockSuiteDoc;
-  public readonly record = this.scope.props.record;
+  // 使用 getter 确保在访问时 blockSuiteDoc 已经初始化
+  public get yDoc() {
+    if (!this.scope.props.blockSuiteDoc) {
+      throw new Error(`DocScope blockSuiteDoc is undefined for doc ${this.scope.props.docId}`);
+    }
+    return this.scope.props.blockSuiteDoc.spaceDoc;
+  }
 
-  readonly meta$ = this.record.meta$;
-  readonly properties$ = this.record.properties$;
-  readonly primaryMode$ = this.record.primaryMode$;
-  readonly title$ = this.record.title$;
-  readonly trash$ = this.record.trash$;
-  readonly createdAt$ = this.record.createdAt$;
-  readonly updatedAt$ = this.record.updatedAt$;
-  readonly createdBy$ = this.record.createdBy$;
-  readonly updatedBy$ = this.record.updatedBy$;
+  public get blockSuiteDoc() {
+    if (!this.scope.props.blockSuiteDoc) {
+      throw new Error(`DocScope blockSuiteDoc is undefined for doc ${this.scope.props.docId}`);
+    }
+    return this.scope.props.blockSuiteDoc;
+  }
+
+  // 使用 getter 确保在访问时 record 已经初始化
+  public get record() {
+    if (!this.scope.props) {
+      throw new Error(`DocScope props is undefined for doc ${this.scope.props?.docId || 'unknown'}`);
+    }
+    if (!this.scope.props.record) {
+      throw new Error(`DocScope record is undefined for doc ${this.scope.props.docId}`);
+    }
+    return this.scope.props.record;
+  }
+
+  // 使用 getter 延迟求值，确保 record 已经初始化
+  get meta$() {
+    return this.record.meta$;
+  }
+
+  get properties$() {
+    return this.record.properties$;
+  }
+
+  get primaryMode$() {
+    return this.record.primaryMode$;
+  }
+
+  get title$() {
+    return this.record.title$;
+  }
+
+  get trash$() {
+    return this.record.trash$;
+  }
+
+  get createdAt$() {
+    return this.record.createdAt$;
+  }
+
+  get updatedAt$() {
+    return this.record.updatedAt$;
+  }
+
+  get createdBy$() {
+    return this.record.createdBy$;
+  }
+
+  get updatedBy$() {
+    return this.record.updatedBy$;
+  }
 
   setCreatedAt(createdAt: number) {
     this.record.setMeta({ createDate: createdAt });

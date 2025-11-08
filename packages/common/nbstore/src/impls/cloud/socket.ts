@@ -206,8 +206,11 @@ class SocketManager {
   private readonly socketIOManager: SocketIOManager;
   socket: Socket;
   refCount = 0;
+  private tokenCache: string | null = null;
+  private readonly endpoint: string;
 
   constructor(endpoint: string, isSelfHosted: boolean) {
+    this.endpoint = endpoint;
     this.socketIOManager = new SocketIOManager(endpoint, {
       autoConnect: false,
       // 🔧 Android修复：强制使用polling优先，因为Android Capacitor可能有websocket问题
@@ -216,6 +219,11 @@ class SocketManager {
       // we will handle reconnection by ourselves
       reconnection: false,
     });
+    
+    // ✅ 预先获取 token 用于 URL 参数
+    // 注意：Socket.IO 的 query 选项不支持异步函数，所以需要预先获取
+    this.initializeToken();
+    
     this.socket = this.socketIOManager.socket('/', {
       auth(cb) {
         if (authMethod) {
@@ -224,23 +232,33 @@ class SocketManager {
           cb({});
         }
       },
+      // ✅ 通过 URL 参数传递 token，以便后端能够获取
+      // 注意：query 选项在连接时会被调用，此时 tokenCache 可能还未设置
+      // 但 Socket.IO 会在连接时使用这个值，如果 tokenCache 为 null，则不会传递 token 参数
+      query: () => {
+        return this.tokenCache ? { token: this.tokenCache } : {};
+      },
     });
+  }
+
+  private initializeToken() {
+    if (authMethod) {
+      authMethod(this.endpoint, (authData: any) => {
+        this.tokenCache = authData?.token || null;
+        if (this.tokenCache) {
+          console.log('✅ [SocketManager] Token 已缓存，可用于 URL 参数');
+        }
+      });
+    }
   }
 
   connect() {
     let disconnected = false;
-    console.log('🔌 [SocketManager.connect] 开始连接:', {
-      endpoint: this.socketIOManager.uri,
-      currentRefCount: this.refCount,
-      isSocketConnected: this.socket.connected,
-      socketId: this.socket.id
-    });
 
     // 🔧 优化：如果已连接且 refCount > 0，只增加引用计数，不重复连接
     if (this.socket.connected && this.refCount > 0) {
-      console.log('✅ [SocketManager.connect] Socket 已连接，只增加引用计数:', {
-        endpoint: this.socketIOManager.uri,
-        beforeRefCount: this.refCount,
+      console.log('ℹ️ [SocketManager] Socket 已连接，增加引用计数:', {
+        refCount: this.refCount + 1,
         socketId: this.socket.id
       });
       this.refCount++;
@@ -248,20 +266,11 @@ class SocketManager {
         socket: this.socket,
         disconnect: () => {
           if (disconnected) {
-            console.log('⚠️ [SocketManager.disconnect] 已经断开，忽略重复调用');
             return;
           }
-          console.log('🔌 [SocketManager.disconnect] 减少引用计数:', {
-            endpoint: this.socketIOManager.uri,
-            beforeRefCount: this.refCount,
-            socketId: this.socket.id
-          });
           disconnected = true;
           this.refCount--;
           if (this.refCount === 0) {
-            console.log('🔌 [SocketManager.disconnect] RefCount 归零，真正断开 Socket:', {
-              endpoint: this.socketIOManager.uri
-            });
             this.socket.disconnect();
           }
         },
@@ -273,43 +282,20 @@ class SocketManager {
     // 🔧 只有在未连接时才调用 connect()
     if (!this.socket.connected) {
       this.socket.connect();
-      console.log('🔌 [SocketManager.connect] socket.connect() 已调用:', {
-        newRefCount: this.refCount,
-        endpoint: this.socketIOManager.uri
-      });
-    } else {
-      console.log('✅ [SocketManager.connect] Socket 已连接，跳过 connect() 调用:', {
-        newRefCount: this.refCount,
-        endpoint: this.socketIOManager.uri
-      });
     }
 
     return {
       socket: this.socket,
       disconnect: () => {
         if (disconnected) {
-          console.log('⚠️ [SocketManager.disconnect] 已经断开，忽略重复调用');
           return;
         }
-        console.log('🔌 [SocketManager.disconnect] 断开连接:', {
-          endpoint: this.socketIOManager.uri,
-          beforeRefCount: this.refCount,
-          socketId: this.socket.id
-        });
 
         disconnected = true;
         this.refCount--;
 
         if (this.refCount === 0) {
-          console.log('🔌 [SocketManager.disconnect] RefCount 归零，真正断开 Socket:', {
-            endpoint: this.socketIOManager.uri
-          });
           this.socket.disconnect();
-        } else {
-          console.log('🔌 [SocketManager.disconnect] RefCount 未归零，保持连接:', {
-            endpoint: this.socketIOManager.uri,
-            remainingRefCount: this.refCount
-          });
         }
       },
     };
@@ -340,73 +326,41 @@ export class SocketConnection extends AutoReconnectConnection<{
   }
 
   override async doConnect(signal?: AbortSignal) {
-    console.log('🔌 [SocketConnection.doConnect] 开始连接流程:', {
-      endpoint: this.endpoint,
-      isSelfHosted: this.isSelfHosted,
-      timestamp: new Date().toISOString()
-    });
-
     const { socket, disconnect } = this.manager.connect();
-
-    console.log('🔌 [SocketConnection.doConnect] Manager 返回 socket:', {
-      socketId: socket.id,
-      isConnected: socket.connected,
-      endpoint: this.endpoint
-    });
 
     try {
       throwIfAborted(signal);
 
-      console.log('🔌 [SocketConnection.doConnect] 等待 Socket 连接...');
-
       await Promise.race([
         new Promise<void>((resolve, reject) => {
           if (socket.connected) {
-            console.log('✅ [SocketConnection.doConnect] Socket 已经连接:', {
-              socketId: socket.id
-            });
             resolve();
             return;
           }
 
-          console.log('⏳ [SocketConnection.doConnect] 等待 connect 事件...');
-
           socket.once('connect', () => {
-            console.log('✅ [SocketConnection.doConnect] 收到 connect 事件:', {
-              socketId: socket.id,
-              endpoint: this.endpoint
-            });
             resolve();
           });
 
           socket.once('connect_error', err => {
-            console.error('❌ [SocketConnection.doConnect] 收到 connect_error 事件:', {
-              error: err,
-              errorMessage: err?.message,
-              errorStack: err?.stack,
-              endpoint: this.endpoint
+            console.error('❌ [SocketConnection] Socket 连接错误:', {
+              error: err.message,
+              type: err.type,
+              description: err.description
             });
             reject(err);
           });
         }),
         new Promise<void>((_resolve, reject) => {
           signal?.addEventListener('abort', () => {
-            console.warn('⚠️ [SocketConnection.doConnect] 收到中止信号:', {
-              reason: signal.reason,
-              endpoint: this.endpoint
-            });
             reject(signal.reason);
           });
         }),
       ]);
 
-      console.log('✅ [SocketConnection.doConnect] Socket 连接成功，注册 disconnect 监听器');
-
     } catch (err) {
-      console.error('❌ [SocketConnection.doConnect] 连接失败:', {
-        error: err,
-        errorMessage: err instanceof Error ? err.message : String(err),
-        errorStack: err instanceof Error ? err.stack : undefined,
+      console.error('❌ [SocketConnection] doConnect 失败:', {
+        error: err instanceof Error ? err.message : String(err),
         endpoint: this.endpoint
       });
       disconnect();
@@ -415,8 +369,6 @@ export class SocketConnection extends AutoReconnectConnection<{
 
     socket.on('disconnect', this.handleDisconnect);
 
-    console.log('✅ [SocketConnection.doConnect] doConnect 完成');
-
     return {
       socket,
       disconnect,
@@ -424,14 +376,8 @@ export class SocketConnection extends AutoReconnectConnection<{
   }
 
   override doDisconnect(conn: { socket: Socket; disconnect: () => void }) {
-    console.log('🔌 [SocketConnection.doDisconnect] 执行断开连接:', {
-      socketId: conn.socket.id,
-      isConnected: conn.socket.connected,
-      endpoint: this.endpoint
-    });
     conn.socket.off('disconnect', this.handleDisconnect);
     conn.disconnect();
-    console.log('✅ [SocketConnection.doDisconnect] 断开连接完成');
   }
 
   handleDisconnect = (reason: SocketIO.DisconnectReason) => {

@@ -17,7 +17,6 @@ import {
   EditorsService,
 } from '@yunke/core/modules/editor';
 import { PeekViewManagerModal } from '@yunke/core/modules/peek-view';
-import { ShareInfoService } from '@yunke/core/modules/share-doc';
 import { AnonymousUserIdentity } from '@yunke/core/modules/temporary-user';
 import { ViewIcon, ViewTitle } from '@yunke/core/modules/workbench';
 import {
@@ -31,6 +30,7 @@ import { RefNodeSlotsProvider } from '@blocksuite/yunke/inlines/reference';
 import { type DocMode, DocModes } from '@blocksuite/yunke/model';
 import { Logo1Icon } from '@blocksuite/icons/rc';
 import { FrameworkScope, useLiveData, useService } from '@toeverything/infra';
+import type { Subscription } from 'rxjs';
 import clsx from 'clsx';
 import type React from 'react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
@@ -113,9 +113,8 @@ const SharePageInner = ({
   templateSnapshotUrl?: string;
 }) => {
   const workspacesService = useService(WorkspacesService);
-  const shareInfoService = useService(ShareInfoService);
   const serverService = useService(ServerService);
-  const editorService = useService(EditorService);
+  // const editorService = useService(EditorService); // ✅ 移除未使用的变量
   const [workspace, setWorkspace] = useState<Workspace | null>(null);
   const [page, setPage] = useState<Doc | null>(null);
   const [editor, setEditor] = useState<Editor | null>(null);
@@ -157,20 +156,9 @@ const SharePageInner = ({
       },
       {
         local: {
-          doc: {
-            name: 'StaticCloudDocStorage',
-            opts: {
-              id: workspaceId,
-              serverBaseUrl: getBaseUrl(),
-            },
-          },
-          blob: {
-            name: 'CloudBlobStorage',
-            opts: {
-              id: workspaceId,
-              serverBaseUrl: getBaseUrl(),
-            },
-          },
+          // ✅ 移除 StaticCloudDocStorage，统一使用 CloudDocStorage (Socket.IO)
+          // 这样可以避免重复请求（HTTP GET + Socket.IO）
+          // 只保留 awareness 用于浏览器标签页间通信
           awareness: {
             name: 'BroadcastChannelAwarenessStorage',
             opts: {
@@ -212,7 +200,7 @@ const SharePageInner = ({
 
     setWorkspace(workspace);
     
-    let disposeModeChange: (() => void) | null = null;
+    let disposeModeChange: Subscription | null = null;
 
     workspace.engine.doc
       .waitForDocLoaded(workspace.id)
@@ -220,22 +208,22 @@ const SharePageInner = ({
         const { doc } = workspace.scope.get(DocsService).open(docId);
         doc.blockSuiteDoc.load();
         
-          // 获取文档权限信息
+          // ✅ 优化：获取文档权限信息
+          // 方案：优先使用 HEAD 请求只获取头部信息，避免下载文档内容
+          // 如果 HEAD 不支持，降级到 GET 请求
           try {
-            console.log('[SharePage] 获取文档权限信息: workspaceId:', workspaceId, 'docId:', docId);
-            
             // 使用统一的网络服务获取权限信息
             let permissionMode: string | null = null;
-            let publishModeHeader: string | null = null;
+            // let publishModeHeader: string | null = null; // ✅ 暂时保留，可能将来会用到
             let hasPermission = false;
             
             if (serverService.server) {
-              // 使用GET请求获取权限信息（只读取headers，不读取body）
+              // ✅ 优化：优先使用 HEAD 请求，只获取头部，不下载文档内容
               try {
                 const response = await serverService.server.fetch(
                   `/api/workspaces/${workspaceId}/docs/${docId}`,
                   { 
-                    method: 'GET',
+                    method: 'HEAD',  // ✅ 使用 HEAD 请求，只获取头部
                     headers: { 'Accept': 'application/octet-stream' }
                   }
                 );
@@ -253,12 +241,48 @@ const SharePageInner = ({
                 }
                 
                 permissionMode = response.headers.get('permission-mode');
-                publishModeHeader = response.headers.get('publish-mode');
+                // publishModeHeader = response.headers.get('publish-mode'); // ✅ 暂时保留，可能将来会用到
                 hasPermission = true;
-                console.log('[SharePage] GET请求成功: permission-mode:', permissionMode, 'publish-mode:', publishModeHeader);
-              } catch (getError) {
-                console.error('[SharePage] GET请求失败:', getError);
-                throw getError;
+                
+                console.log('[SharePage] ✅ 权限信息获取成功 (HEAD):', {
+                  permissionMode,
+                  // publishModeHeader,
+                });
+              } catch (headError) {
+                // ⚠️ HEAD 请求可能不被支持，降级到 GET 请求
+                console.warn('[SharePage] HEAD请求失败，降级到GET请求:', headError);
+                try {
+                  const response = await serverService.server.fetch(
+                    `/api/workspaces/${workspaceId}/docs/${docId}`,
+                    { 
+                      method: 'GET',
+                      headers: { 'Accept': 'application/octet-stream' }
+                    }
+                  );
+                  
+                  if (response.status === 404) {
+                    console.error('[SharePage] 文档不存在');
+                    throw new Error('文档不存在');
+                  } else if (response.status === 403) {
+                    console.error('[SharePage] 无权访问文档');
+                    throw new Error('无权访问文档');
+                  } else if (response.status !== 200) {
+                    console.error('[SharePage] 获取文档权限信息失败，状态码:', response.status);
+                    throw new Error(`获取文档权限信息失败: ${response.status}`);
+                  }
+                  
+                  permissionMode = response.headers.get('permission-mode');
+                  // publishModeHeader = response.headers.get('publish-mode'); // ✅ 暂时保留，可能将来会用到
+                  hasPermission = true;
+                  
+                  console.log('[SharePage] ✅ 权限信息获取成功 (GET):', {
+                    permissionMode,
+                    // publishModeHeader,
+                  });
+                } catch (getError) {
+                  console.error('[SharePage] GET请求失败:', getError);
+                  throw getError;
+                }
               }
             }
             
@@ -275,21 +299,17 @@ const SharePageInner = ({
               // AppendOnly模式：需要临时身份才能编辑
               isAppendOnly = true;
               readonly = true; // 先设为只读，等待临时身份创建
-              console.log('[SharePage] AppendOnly模式：等待临时身份');
             } else if (permissionMode === 'read-only') {
               // ReadOnly模式：始终只读，不允许编辑
               isAppendOnly = false;
               readonly = true;
-              console.log('[SharePage] ReadOnly模式：始终只读');
             } else if (permissionMode === 'private') {
               // Private模式：文档未公开，无权访问
-              console.error('[SharePage] Private模式：文档未公开，无权访问');
               throw new Error('文档未公开，无权访问');
             } else {
               // 未设置或未知模式：默认只读
               isAppendOnly = false;
               readonly = true;
-              console.log('[SharePage] 未知权限模式，默认只读:', permissionMode);
             }
           
           setIsAppendOnlyMode(isAppendOnly);
@@ -301,10 +321,8 @@ const SharePageInner = ({
           // Private模式：默认只读
           if (isAppendOnly && !hasTemporaryIdentity) {
             doc.blockSuiteDoc.readonly = true;
-            console.log('[SharePage] AppendOnly模式 + 无临时身份：保持只读');
           } else {
             doc.blockSuiteDoc.readonly = readonly;
-            console.log('[SharePage] 设置文档只读状态:', readonly);
           }
           
         } catch (error) {
@@ -369,14 +387,13 @@ const SharePageInner = ({
     // 清理函数
     return () => {
       if (disposeModeChange) {
-        disposeModeChange();
+        disposeModeChange.unsubscribe();
       }
     };
   }, [
     docId,
     workspaceId,
     workspacesService,
-    shareInfoService,
     serverService,
     selector,
     hasTemporaryIdentity,
@@ -394,24 +411,19 @@ const SharePageInner = ({
     
     // 只有在AppendOnly模式下才允许编辑
     if (isAppendOnlyMode && hasIdentity && page) {
-      console.log('[SharePage] AppendOnly模式 + 临时身份：启用编辑功能');
       page.blockSuiteDoc.readonly = false;
       setIsReadonly(false);
     } else if (isAppendOnlyMode && !hasIdentity && page) {
       // AppendOnly模式但身份丢失：恢复只读
-      console.log('[SharePage] AppendOnly模式 + 临时身份丢失：恢复只读');
       page.blockSuiteDoc.readonly = true;
       setIsReadonly(true);
     }
     // ReadOnly模式：不做任何处理，始终保持只读
   }, [isAppendOnlyMode, page]);
 
-  const handleTemporaryIdentityCreated = useCallback((success: boolean) => {
-    if (success) {
-      console.log('[AppendOnly Debug] Temporary identity created successfully');
-    } else {
-              console.log('[仅追加调试] 创建临时身份失败');
-    }
+  const handleTemporaryIdentityCreated = useCallback(() => {
+    // 临时身份创建回调
+    // success 参数暂时不需要，但保留回调接口以便将来扩展
   }, []);
 
   const onEditorLoad = useCallback(
@@ -516,7 +528,7 @@ const SharePageInner = ({
 };
 
 const SharePageFooter = () => {
-  const t = useI18n();
+  // const t = useI18n(); // ✅ 暂时未使用，但保留以便将来扩展
   const editorService = useService(EditorService);
   const isPresent = useLiveData(editorService.editor.isPresenting$);
   const authService = useService(AuthService);

@@ -77,16 +77,6 @@ export class ShadowlessElement extends LitElement {
       }
     });
     
-    // 🔧 调试日志（仅在开发模式下）
-    if (injectedCount > 0 || skippedCount > 0) {
-      const componentName = this.name || 'Unknown';
-      console.debug(
-        `[ShadowlessElement] ${componentName}: ` +
-        `injected ${injectedCount}, skipped ${skippedCount} duplicate styles. ` +
-        `Total cached: ${this.globalStyleCache.size}`
-      );
-    }
-    
     return elementStyles;
   }
   
@@ -105,13 +95,6 @@ export class ShadowlessElement extends LitElement {
         clearedCount++;
       }
     });
-    
-    if (clearedCount > 0) {
-      console.log(
-        `[ShadowlessElement] Cleared ${clearedCount} unused style references. ` +
-        `Remaining: ${this.globalStyleCache.size}`
-      );
-    }
     
     return clearedCount;
   }

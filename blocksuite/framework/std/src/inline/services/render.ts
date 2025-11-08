@@ -14,12 +14,6 @@ export class RenderService<TextAttributes extends BaseTextAttributes> {
     _: Y.YTextEvent,
     transaction: Y.Transaction
   ) => {
-    console.log('🔍 [Android调试] yText 变化触发', {
-      yTextLength: this.editor.yText.length,
-      yTextString: this.editor.yText.toString().substring(0, 50),
-      isLocal: transaction.local,
-    });
-
     this.editor.slots.textChange.next();
 
     const yText = this.editor.yText;
@@ -31,7 +25,6 @@ export class RenderService<TextAttributes extends BaseTextAttributes> {
       );
     }
 
-    console.log('🔍 [Android调试] 调用 render');
     this.render();
 
     const inlineRange = this.editor.inlineRange$.peek();
@@ -88,31 +81,14 @@ export class RenderService<TextAttributes extends BaseTextAttributes> {
   // render current deltas to VLines
   render = () => {
     if (!this.editor.rootElement) {
-      console.warn('⚠️ [Android调试] render 跳过：rootElement 不存在');
       return;
     }
-
-    console.log('🔍 [Android调试] render 开始', {
-      yTextLength: this.editor.yText.length,
-      yTextString: this.editor.yText.toString().substring(0, 50),
-      rootElementFontFamily: window.getComputedStyle(this.editor.rootElement).fontFamily,
-      rootElementFontSize: window.getComputedStyle(this.editor.rootElement).fontSize,
-    });
 
     this._rendering = true;
 
     const rootElement = this.editor.rootElement;
     const embedDeltas = this.editor.deltaService.embedDeltas;
     const chunks = deltaInsertsToChunks(embedDeltas);
-
-    console.log('🔍 [Android调试] render 处理 chunks', {
-      chunksCount: chunks.length,
-      chunks: chunks.map((chunk, i) => ({
-        lineIndex: i,
-        deltasCount: chunk.length,
-        text: chunk.map(d => d.insert).join('').substring(0, 30),
-      })),
-    });
 
     let deltaIndex = 0;
     // every chunk is a line
@@ -161,11 +137,6 @@ export class RenderService<TextAttributes extends BaseTextAttributes> {
       }
     });
 
-    console.log('🔍 [Android调试] render 准备渲染到 DOM', {
-      linesCount: lines.length,
-      rootElementTagName: rootElement.tagName,
-    });
-
     try {
       render(
         repeat(
@@ -175,31 +146,6 @@ export class RenderService<TextAttributes extends BaseTextAttributes> {
         ),
         rootElement
       );
-
-      // 🔍 渲染后检查 DOM
-      setTimeout(() => {
-        const domText = rootElement.textContent || '';
-        console.log('🔍 [Android调试] render 完成，DOM 检查（延迟50ms）', {
-          domTextLength: domText.length,
-          domText: domText.substring(0, 50),
-          rootElementFontFamily: window.getComputedStyle(rootElement).fontFamily,
-          rootElementFontSize: window.getComputedStyle(rootElement).fontSize,
-          rootElementColor: window.getComputedStyle(rootElement).color,
-          rootElementDisplay: window.getComputedStyle(rootElement).display,
-          rootElementVisibility: window.getComputedStyle(rootElement).visibility,
-        });
-
-        // 检查是否有中文字符
-        const chineseChars = domText.match(/[\u4e00-\u9fff]/g);
-        if (chineseChars) {
-          console.log('✅ [Android调试] DOM 中发现中文字符', {
-            chineseChars: chineseChars.slice(0, 10),
-            count: chineseChars.length,
-          });
-        } else {
-          console.warn('⚠️ [Android调试] DOM 中未发现中文字符');
-        }
-      }, 50);
     } catch (error) {
       console.error('❌ [Android调试] render 失败:', error);
       // Lit may be crashed by IME input and we need to rerender whole editor for it

@@ -30,9 +30,7 @@ export class PerformanceMonitor {
               `⚠️ [Performance] ${entry.name} 耗时过长: ${entry.duration.toFixed(2)}ms (阈值: ${threshold}ms)`
             );
           } else if (entry.duration > 1 && !entry.name.match(/-\d+$/)) {
-            console.log(
-              `✅ [Performance] ${entry.name}: ${entry.duration.toFixed(2)}ms`
-            );
+            // 性能监控日志已禁用
           }
         }
       }

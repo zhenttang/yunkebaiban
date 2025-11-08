@@ -47,18 +47,20 @@ export const EditorModeSwitch = () => {
   const isActiveView = activeView?.id && activeView?.id === view?.id;
 
   const togglePage = useCallback(() => {
-    if (currentMode === 'page' || isSharedMode || trash) return;
+    // ✅ 允许在分享页面中切换模式（移除 isSharedMode 限制）
+    if (currentMode === 'page' || trash) return;
     editor.setMode('page');
     editor.setSelector(undefined);
     track.$.header.actions.switchPageMode({ mode: 'page' });
-  }, [currentMode, editor, isSharedMode, trash]);
+  }, [currentMode, editor, trash]);
 
   const toggleEdgeless = useCallback(() => {
-    if (currentMode === 'edgeless' || isSharedMode || trash) return;
+    // ✅ 允许在分享页面中切换模式（移除 isSharedMode 限制）
+    if (currentMode === 'edgeless' || trash) return;
     editor.setMode('edgeless');
     editor.setSelector(undefined);
     track.$.header.actions.switchPageMode({ mode: 'edgeless' });
-  }, [currentMode, editor, isSharedMode, trash]);
+  }, [currentMode, editor, trash]);
 
   const onModeChange = useCallback(
     (mode: DocMode) => {
@@ -68,12 +70,14 @@ export const EditorModeSwitch = () => {
   );
 
   const shouldHide = useCallback(
-    (mode: DocMode) => (trash || isSharedMode) && currentMode !== mode,
-    [currentMode, isSharedMode, trash]
+    // ✅ 在分享页面中显示两个模式切换按钮（移除 isSharedMode 限制）
+    (mode: DocMode) => trash && currentMode !== mode,
+    [currentMode, trash]
   );
 
   useEffect(() => {
-    if (trash || isSharedMode || currentMode === undefined || !isActiveView)
+    // ✅ 允许在分享页面中使用快捷键切换模式（移除 isSharedMode 限制）
+    if (trash || currentMode === undefined || !isActiveView)
       return;
     return registerYunkeCommand({
       id: 'yunke:doc-mode-switch',
@@ -89,7 +93,7 @@ export const EditorModeSwitch = () => {
       },
       run: () => onModeChange(currentMode === 'edgeless' ? 'page' : 'edgeless'),
     });
-  }, [currentMode, isActiveView, isSharedMode, onModeChange, t, trash]);
+  }, [currentMode, isActiveView, onModeChange, t, trash]);
 
   return (
     <PureEditorModeSwitch

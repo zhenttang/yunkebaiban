@@ -9,7 +9,7 @@ import type {
 } from './types';
 import { getApiBaseUrl } from '@yunke/config';
 
-const API_BASE_PATH = '/api/community';
+const API_BASE_PATH = '/community'; // getApiBaseUrl() 已经包含了 /api 前缀
 
 async function request<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
   // 使用统一的网络配置管理，构建完整的 API URL
@@ -36,8 +36,13 @@ async function request<T>(endpoint: string, options: RequestInit = {}): Promise<
 
   if (!response.ok) {
     const errorBody = await response.json().catch(() => null);
+    const errorCode = errorBody?.code;
     const message = errorBody?.message || errorBody?.error || response.statusText;
-    throw new Error(message || `HTTP ${response.status}`);
+    
+    // 创建错误对象，包含错误码
+    const error = new Error(message || `HTTP ${response.status}`) as Error & { code?: string };
+    error.code = errorCode;
+    throw error;
   }
 
   if (response.status === 204) {

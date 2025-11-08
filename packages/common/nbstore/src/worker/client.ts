@@ -2,6 +2,7 @@ import { OpClient, transfer } from '@toeverything/infra/op';
 import type { Observable } from 'rxjs';
 import { v4 as uuid } from 'uuid';
 
+import { getSocketIOUrl } from '@yunke/config';
 import { DummyConnection } from '../connection';
 import {
   AwarenessFrontend,
@@ -49,6 +50,185 @@ export class StoreManagerClient {
 
   constructor(private readonly client: OpClient<WorkerManagerOps>) {}
 
+  /**
+   * ✅ 等待连接就绪，记录详细的失败原因分析
+   * @param cloudDocStorage 云端存储实例
+   * @param timeout 超时时间（毫秒），默认15秒
+   */
+  private async waitForConnectionWithDiagnostics(
+    cloudDocStorage: any,
+    timeout: number = 15000
+  ): Promise<void> {
+    const startTime = Date.now();
+    const connection = cloudDocStorage.connection;
+    const opts = cloudDocStorage.options;
+    
+    // ✅ 获取 Socket.IO URL（用于诊断）
+    let socketIOUrl: string = '未配置';
+    try {
+      socketIOUrl = getSocketIOUrl();
+    } catch {
+      socketIOUrl = '无法获取';
+    }
+    
+    // ✅ 记录连接初始状态
+    console.log('🔍 [StoreManagerClient] 开始等待连接:', {
+      endpoint: opts?.serverBaseUrl,
+      socketIOUrl: socketIOUrl,
+      initialStatus: connection?.status,
+      spaceType: opts?.type,
+      spaceId: opts?.id,
+      timestamp: new Date().toISOString()
+    });
+    
+    try {
+      const waitPromise = connection.waitForConnected();
+      const waitTimeoutPromise = new Promise<void>((_, reject) => 
+        setTimeout(() => {
+          const elapsed = Date.now() - startTime;
+          reject(new Error(`连接超时（${elapsed}ms）`));
+        }, timeout)
+      );
+      
+      await Promise.race([waitPromise, waitTimeoutPromise]);
+      
+      const elapsed = Date.now() - startTime;
+      console.log(`✅ [StoreManagerClient] 连接成功:`, {
+        elapsed: `${elapsed}ms`,
+        finalStatus: connection?.status,
+        clientId: cloudDocStorage?.connection?.clientId || '未获取',
+        timestamp: new Date().toISOString()
+      });
+      
+    } catch (error) {
+      const elapsed = Date.now() - startTime;
+      const errorObj = error instanceof Error ? error : new Error(String(error));
+      
+      // ✅ 收集详细的诊断信息
+      const diagnostics = {
+        // 基本信息
+        error: errorObj.message,
+        errorStack: errorObj.stack,
+        elapsed: `${elapsed}ms`,
+        timeout: `${timeout}ms`,
+        timestamp: new Date().toISOString(),
+        
+        // 连接状态信息
+        connectionStatus: connection?.status,
+        connectionError: connection?.error ? {
+          message: connection.error.message,
+          stack: connection.error.stack,
+          name: connection.error.name
+        } : null,
+        
+        // 配置信息
+        config: {
+          serverBaseUrl: opts?.serverBaseUrl,
+          socketIOUrl: (() => {
+            try {
+              return getSocketIOUrl();
+            } catch {
+              return '无法获取';
+            }
+          })(),
+          spaceType: opts?.type,
+          spaceId: opts?.id,
+          isSelfHosted: opts?.isSelfHosted
+        },
+        
+        // Socket.IO 连接信息（如果可用）
+        socketInfo: connection?.inner?.socket ? {
+          id: connection.inner.socket.id || '未连接',
+          connected: connection.inner.socket.connected,
+          disconnected: connection.inner.socket.disconnected,
+          transport: connection.inner.socket.io?.engine?.transport?.name || '未知'
+        } : null,
+        
+        // 可能的失败原因分析
+        possibleCauses: this.analyzeFailureCauses(connection, errorObj, elapsed, timeout)
+      };
+      
+      // ✅ 输出详细的失败诊断报告
+      console.error('❌ [StoreManagerClient] 连接失败 - 详细诊断报告:', diagnostics);
+      
+      // ✅ 输出用户友好的错误摘要
+      console.error('📋 [StoreManagerClient] 失败摘要:', {
+        错误信息: errorObj.message,
+        连接状态: connection?.status,
+        耗时: `${elapsed}ms`,
+        可能原因: diagnostics.possibleCauses.join('; ')
+      });
+      
+      throw errorObj;
+    }
+  }
+  
+  /**
+   * ✅ 分析连接失败的可能原因
+   */
+  private analyzeFailureCauses(
+    connection: any,
+    error: Error,
+    elapsed: number,
+    timeout: number
+  ): string[] {
+    const causes: string[] = [];
+    
+    // 1. 超时分析
+    if (elapsed >= timeout) {
+      causes.push(`连接超时（${elapsed}ms >= ${timeout}ms）`);
+      
+      if (connection?.status === 'connecting') {
+        causes.push('Socket.IO 连接一直处于 connecting 状态，可能原因：');
+        causes.push('  - 服务器未响应或不可达');
+        causes.push('  - 网络防火墙阻止了 WebSocket 连接');
+        causes.push('  - Socket.IO 服务器未启动或端口错误');
+      }
+    }
+    
+    // 2. 连接状态分析
+    if (connection?.status === 'error') {
+      causes.push(`连接状态为 error`);
+      
+      if (connection.error) {
+        const errMsg = connection.error.message?.toLowerCase() || '';
+        if (errMsg.includes('timeout')) {
+          causes.push('  - Socket.IO 连接超时');
+        } else if (errMsg.includes('network') || errMsg.includes('fetch')) {
+          causes.push('  - 网络连接问题');
+        } else if (errMsg.includes('401') || errMsg.includes('unauthorized')) {
+          causes.push('  - 认证失败，请检查 JWT token');
+        } else if (errMsg.includes('403') || errMsg.includes('forbidden')) {
+          causes.push('  - 权限不足，请检查用户权限');
+        } else if (errMsg.includes('404') || errMsg.includes('not found')) {
+          causes.push('  - Socket.IO 端点不存在');
+        }
+      }
+    }
+    
+    // 3. Socket.IO 特定错误
+    if (error.message.includes('space:join')) {
+      causes.push('space:join 事件失败，可能原因：');
+      causes.push('  - 工作区不存在或无权访问');
+      causes.push('  - 服务器端处理 space:join 时出错');
+    }
+    
+    // 4. 网络配置问题
+    if (connection?.inner?.socket?.io?.engine?.transport?.name === 'polling') {
+      causes.push('使用 polling 传输，可能影响连接速度');
+    }
+    
+    // 5. 通用建议
+    if (causes.length === 0) {
+      causes.push('未知错误，建议检查：');
+      causes.push('  - 浏览器控制台的网络请求');
+      causes.push('  - 服务器日志');
+      causes.push('  - Socket.IO 服务器状态');
+    }
+    
+    return causes;
+  }
+
   open(key: string, options: StoreInitOptions) {
     const { port1, port2 } = new MessageChannel();
 
@@ -74,58 +254,78 @@ export class StoreManagerClient {
 
     // 创建云端 DocStorage（延迟初始化，不阻塞）
     let cloudDocStorage: any = undefined;
-    console.log('🔍 [StoreManagerClient] 开始初始化云端存储，检查配置:', {
-      hasOptions: !!options,
-      hasRemotes: !!(options && options.remotes),
-      remotesCount: options?.remotes ? Object.keys(options.remotes).length : 0,
-      remotesKeys: options?.remotes ? Object.keys(options.remotes) : []
-    });
     
-    const cloudDocStoragePromise = (async () => {
+    // 检查是否有 CloudDocStorage 配置
+    const remotes = options.remotes || {};
+    let hasCloudDocStorageConfig = false;
+    
+    for (const [, peerOptions] of Object.entries(remotes)) {
+      if (peerOptions.doc?.name === 'CloudDocStorage') {
+        hasCloudDocStorageConfig = true;
+        break;
+      }
+    }
+    
+    // 只有当真正有 CloudDocStorage 配置时才创建 Promise
+    const cloudDocStoragePromise = hasCloudDocStorageConfig ? (async () => {
       try {
-        const remotes = options.remotes || {};
-        console.log('🔍 [StoreManagerClient] 遍历 remotes 配置:', {
-          remotesEntries: Object.entries(remotes).map(([key, val]) => ({
-            key,
-            hasDoc: !!(val as any).doc,
-            docName: (val as any).doc?.name
-          }))
-        });
+        let cloudDocStorageError: Error | null = null;
         
         for (const [peerId, peerOptions] of Object.entries(remotes)) {
-          console.log('🔍 [StoreManagerClient] 检查 peer:', {
-            peerId,
-            docName: peerOptions.doc?.name,
-            isCloudDocStorage: peerOptions.doc?.name === 'CloudDocStorage'
-          });
-          
           if (peerOptions.doc?.name === 'CloudDocStorage') {
-            console.log('🌐 [StoreManagerClient] 检测到云端存储配置，创建CloudDocStorage实例');
-            const { CloudDocStorage } = await import('@yunke/nbstore/cloud');
-            cloudDocStorage = new CloudDocStorage(peerOptions.doc.opts as any);
-            console.log('🌐 [StoreManagerClient] CloudDocStorage 实例已创建，开始连接...');
-            await cloudDocStorage.connection.connect();
-            console.log('🌐 [StoreManagerClient] 连接已启动，等待连接完成...');
-            await cloudDocStorage.connection.waitForConnected();
-            console.log('✅ [StoreManagerClient] CloudDocStorage初始化成功');
-            break;
+            try {
+              const { CloudDocStorage } = await import('@yunke/nbstore/cloud');
+              
+              cloudDocStorage = new CloudDocStorage(peerOptions.doc.opts as any);
+              
+              // 启动连接（connect() 返回 void，只是启动连接过程）
+              cloudDocStorage.connection.connect();
+              
+              // ✅ 等待连接就绪，记录详细的失败原因
+              await this.waitForConnectionWithDiagnostics(cloudDocStorage, 15000);
+              
+              break;
+            } catch (error) {
+              cloudDocStorageError = error instanceof Error ? error : new Error(String(error));
+              console.error('❌ [StoreManagerClient] CloudDocStorage 初始化失败:', {
+                peerId,
+                error: cloudDocStorageError.message,
+                stack: cloudDocStorageError.stack,
+                opts: peerOptions.doc.opts,
+                connectionStatus: cloudDocStorage?.connection?.status,
+                connectionError: cloudDocStorage?.connection?.error
+              });
+              // 继续尝试其他配置，或者抛出错误
+              cloudDocStorage = undefined;
+            }
           }
         }
         
-        if (!cloudDocStorage) {
-          console.warn('⚠️ [StoreManagerClient] 未找到CloudDocStorage配置，云端存储将不可用');
+        // 如果配置了但初始化失败，抛出错误
+        if (!cloudDocStorage && cloudDocStorageError) {
+          const errorMsg = `❌ 云端存储初始化失败: ${cloudDocStorageError.message}`;
+          console.error(errorMsg, {
+            error: cloudDocStorageError,
+            stack: cloudDocStorageError.stack
+          });
+          throw cloudDocStorageError;
         }
+        
+        return cloudDocStorage;
       } catch (error) {
-        console.error('❌ [StoreManagerClient] 创建CloudDocStorage失败:', error);
+        console.error('❌ [StoreManagerClient] 创建CloudDocStorage失败:', {
+          error: error instanceof Error ? error.message : String(error),
+          stack: error instanceof Error ? error.stack : undefined
+        });
+        // 重新抛出错误，不要静默失败
+        throw error;
       }
-      
-      console.log('🌐 [StoreManagerClient] cloudDocStoragePromise 完成:', {
-        hasCloudStorage: !!cloudDocStorage,
-        cloudStorageType: cloudDocStorage?.constructor?.name
-      });
-      
-      return cloudDocStorage;
-    })();
+    })() : undefined;
+    
+    // 如果没有 CloudDocStorage 配置，记录警告但不报错（可能是本地存储模式）
+    if (!hasCloudDocStorageConfig) {
+      // 静默处理，不输出日志
+    }
 
     const connection = {
       store: new StoreClient(client, cloudDocStoragePromise),
@@ -135,11 +335,13 @@ export class StoreManagerClient {
         });
         this.connections.delete(closeKey);
         // 清理云端存储连接
-        cloudDocStoragePromise.then(storage => {
-          if (storage) {
-            storage.connection.disconnect();
-          }
-        });
+        if (cloudDocStoragePromise) {
+          cloudDocStoragePromise.then(storage => {
+            if (storage) {
+              storage.connection.disconnect();
+            }
+          });
+        }
       },
     };
 
@@ -163,10 +365,8 @@ export class StoreClient {
     this.docStorage = new WorkerDocStorage(this.client, cloudDocStoragePromise);
     this.blobStorage = new WorkerBlobStorage(this.client);
 
-    console.log('🔧 [StoreClient] 初始化 DocSync');
 
     if (cloudDocStoragePromise) {
-      console.log('🌐 [StoreClient] 检测到云端存储，创建主线程 DocSync');
       const workerDocSyncStorage = new WorkerDocSyncStorage(this.client);
       this.docSync = new DocSyncImpl(
         {
@@ -179,7 +379,6 @@ export class StoreClient {
 
       this.initializeCloudSync(cloudDocStoragePromise, this.docSync as DocSyncImpl, workerDocSyncStorage);
     } else {
-      console.log('📦 [StoreClient] 使用 Worker DocSync');
       this.docSync = new WorkerDocSync(this.client);
       this.isMainThreadSync = false;
     }
@@ -204,16 +403,10 @@ export class StoreClient {
     docSync: DocSyncImpl,
     workerDocSyncStorage: WorkerDocSyncStorage
   ): Promise<void> {
-    console.log('🌐 [StoreClient] 开始初始化云端同步...');
     try {
       const cloudDocStorage = await cloudDocStoragePromise;
-      console.log('🌐 [StoreClient] 云端存储Promise resolved:', {
-        hasStorage: !!cloudDocStorage,
-        storageType: cloudDocStorage?.constructor?.name
-      });
       
       if (cloudDocStorage) {
-        console.log('✅ [StoreClient] 云端存储已就绪，添加远程同步 Peer');
         const { DocSyncPeer } = await import('../sync/doc/peer');
         (docSync as any).peers.push(
           new DocSyncPeer(
@@ -223,10 +416,7 @@ export class StoreClient {
             cloudDocStorage
           )
         );
-        console.log('🚀 [StoreClient] 启动云端同步 Peer');
         docSync.start();
-      } else {
-        console.warn('⚠️ [StoreClient] 云端存储Promise resolved但值为空');
       }
     } catch (error) {
       console.error('❌ [StoreClient] 云端存储初始化失败:', error);
@@ -259,151 +449,163 @@ class WorkerDocStorage implements DocStorage {
 
   private async getCloudStorage() {
     if (!this.cloudStoragePromise) {
-      throw new Error('❌ 云端存储未配置，无法读取文档');
+      // 云端存储未配置，返回 null（使用 Worker 端本地存储）
+      return null;
     }
-    const cloudStorage = await this.cloudStoragePromise;
-    if (!cloudStorage) {
-      throw new Error('❌ 云端存储初始化失败');
+    try {
+      const cloudStorage = await this.cloudStoragePromise;
+      if (!cloudStorage) {
+        // 云端存储配置了但初始化失败，抛出错误（不允许回退）
+        throw new Error('❌ 云端存储初始化失败，无法使用');
+      }
+      return cloudStorage;
+    } catch (error) {
+      console.error('❌ [WorkerDocStorage] 获取云端存储失败:', {
+        error: error instanceof Error ? error.message : String(error),
+        stack: error instanceof Error ? error.stack : undefined
+      });
+      // 配置了云端存储但失败，抛出错误（不允许回退）
+      throw error;
     }
-    return cloudStorage;
   }
 
   async getDoc(docId: string) {
-    console.log('🌐 [WorkerDocStorage] 直接从云端获取文档（跳过IndexedDB）:', { docId });
-    
-    try {
+    // 如果配置了云端存储，必须使用云端存储
+    if (this.cloudStoragePromise) {
       const cloudStorage = await this.getCloudStorage();
-      const cloudResult = await cloudStorage.getDoc(docId);
-      
-      if (cloudResult) {
-        console.log('✅ [WorkerDocStorage] 云端获取成功:', {
-          docId,
-          binSize: cloudResult.bin?.length || 0,
-          timestamp: cloudResult.timestamp
-        });
-        return cloudResult;
-      } else {
-        console.log('ℹ️ [WorkerDocStorage] 云端文档不存在:', { docId });
-        return null;
+      if (!cloudStorage) {
+        throw new Error('❌ 云端存储未初始化，无法读取文档');
       }
-    } catch (error) {
-      console.error('❌ [WorkerDocStorage] 云端获取失败:', {
-        docId,
-        error: error instanceof Error ? error.message : String(error)
-      });
-      // 不再fallback到IndexedDB，直接返回null
-      return null;
+      return await cloudStorage.getDoc(docId);
     }
+    // 未配置云端存储，使用 Worker 端本地存储
+    return await this.client.call('docStorage.getDoc', docId);
   }
 
   async getDocDiff(docId: string, state?: Uint8Array) {
-    console.log('🌐 [WorkerDocStorage] 直接从云端获取文档差异:', { docId });
-    try {
+    // 如果配置了云端存储，必须使用云端存储
+    if (this.cloudStoragePromise) {
       const cloudStorage = await this.getCloudStorage();
+      if (!cloudStorage) {
+        throw new Error('❌ 云端存储未初始化，无法获取文档差异');
+      }
       return await cloudStorage.getDocDiff(docId, state);
-    } catch (error) {
-      console.error('❌ [WorkerDocStorage] 云端获取差异失败:', error);
-      return null;
     }
+    // 未配置云端存储，使用 Worker 端本地存储
+    return await this.client.call('docStorage.getDocDiff', { docId, state });
   }
 
   async pushDocUpdate(update: DocUpdate, origin?: string) {
-    console.log('🌐 [WorkerDocStorage] 直接推送到云端（跳过IndexedDB）:', {
-      docId: update.docId,
-      binSize: update.bin.length,
-      origin
-    });
-    
-    try {
+    // 如果配置了云端存储，必须使用云端存储
+    if (this.cloudStoragePromise) {
       const cloudStorage = await this.getCloudStorage();
-      const result = await cloudStorage.pushDocUpdate(update, origin);
-      
-      console.log('✅ [WorkerDocStorage] 云端保存成功:', {
-        docId: update.docId,
-        timestamp: result
-      });
-      
-      return result;
-    } catch (error) {
-      console.error('❌ [WorkerDocStorage] 云端保存失败:', {
-        docId: update.docId,
-        error: error instanceof Error ? error.message : String(error)
-      });
-      throw error;
+      if (!cloudStorage) {
+        throw new Error('❌ 云端存储未初始化，无法保存文档');
+      }
+      return await cloudStorage.pushDocUpdate(update, origin);
     }
+    // 未配置云端存储，使用 Worker 端本地存储
+    return await this.client.call('docStorage.pushDocUpdate', { update, origin });
   }
 
   async getDocTimestamp(docId: string) {
-    console.log('🌐 [WorkerDocStorage] 从云端获取文档时间戳:', { docId });
-    try {
+    // 如果配置了云端存储，必须使用云端存储
+    if (this.cloudStoragePromise) {
       const cloudStorage = await this.getCloudStorage();
+      if (!cloudStorage) {
+        throw new Error('❌ 云端存储未初始化，无法获取文档时间戳');
+      }
       return await cloudStorage.getDocTimestamp(docId);
-    } catch (error) {
-      console.error('❌ [WorkerDocStorage] 获取时间戳失败:', error);
-      return null;
     }
+    // 未配置云端存储，使用 Worker 端本地存储
+    return await this.client.call('docStorage.getDocTimestamp', docId);
   }
 
   async getDocTimestamps(after?: Date) {
-    console.log('🌐 [WorkerDocStorage] 从云端获取文档时间戳列表');
-    try {
+    // 如果配置了云端存储，必须使用云端存储
+    if (this.cloudStoragePromise) {
       const cloudStorage = await this.getCloudStorage();
+      if (!cloudStorage) {
+        throw new Error('❌ 云端存储未初始化，无法获取文档时间戳列表');
+      }
       return await cloudStorage.getDocTimestamps(after);
-    } catch (error) {
-      console.error('❌ [WorkerDocStorage] 获取时间戳列表失败:', error);
-      return {};
     }
+    // 未配置云端存储，使用 Worker 端本地存储
+    return await this.client.call('docStorage.getDocTimestamps', after ?? null);
   }
 
   async deleteDoc(docId: string) {
-    console.log('🌐 [WorkerDocStorage] 从云端删除文档:', { docId });
-    try {
+    // 如果配置了云端存储，必须使用云端存储
+    if (this.cloudStoragePromise) {
       const cloudStorage = await this.getCloudStorage();
+      if (!cloudStorage) {
+        throw new Error('❌ 云端存储未初始化，无法删除文档');
+      }
       return await cloudStorage.deleteDoc(docId);
-    } catch (error) {
-      console.error('❌ [WorkerDocStorage] 删除文档失败:', error);
-      throw error;
     }
+    // 未配置云端存储，使用 Worker 端本地存储
+    return await this.client.call('docStorage.deleteDoc', docId);
   }
 
   subscribeDocUpdate(callback: (update: DocRecord, origin?: string) => void) {
-    console.log('🔔 [WorkerDocStorage] 订阅云端文档更新');
-    
-    // 直接订阅云端存储的更新
-    let unsubscribe: (() => void) | null = null;
-    let isUnsubscribed = false;
-    
-    this.getCloudStorage()
-      .then(async cloudStorage => {
-        if (isUnsubscribed) {
-          console.log('⚠️ [WorkerDocStorage] 订阅已取消，跳过');
-          return;
+    // 如果配置了云端存储，必须使用云端存储订阅
+    if (this.cloudStoragePromise) {
+      let unsubscribe: (() => void) | null = null;
+      let isUnsubscribed = false;
+      
+      // 立即尝试获取云端存储，如果失败则抛出错误
+      this.getCloudStorage()
+        .then(async cloudStorage => {
+          if (isUnsubscribed) {
+            return;
+          }
+          
+          if (!cloudStorage) {
+            throw new Error('❌ 云端存储未初始化，无法订阅更新');
+          }
+          
+          // 使用云端存储订阅
+          await cloudStorage.connection.waitForConnected();
+          
+          if (isUnsubscribed) {
+            return;
+          }
+          
+          unsubscribe = cloudStorage.subscribeDocUpdate(callback);
+        })
+        .catch(error => {
+          console.error('❌ [WorkerDocStorage] 订阅云端更新失败:', {
+            error: error instanceof Error ? error.message : String(error),
+            stack: error instanceof Error ? error.stack : undefined
+          });
+          // 配置了云端存储但失败，这里无法抛出错误（因为这是异步回调）
+          // 错误会在 getCloudStorage() 时抛出
+        });
+      
+      return () => {
+        isUnsubscribed = true;
+        if (unsubscribe) {
+          unsubscribe();
         }
-        
-        // 确保连接完成
-        await cloudStorage.connection.waitForConnected();
-        
-        if (isUnsubscribed) {
-          console.log('⚠️ [WorkerDocStorage] 订阅已取消，跳过');
-          return;
-        }
-        
-        console.log('✅ [WorkerDocStorage] 已连接到云端存储订阅');
-        unsubscribe = cloudStorage.subscribeDocUpdate(callback);
-      })
-      .catch(error => {
-        console.error('❌ [WorkerDocStorage] 订阅云端更新失败:', error);
-      });
+      };
+    }
     
-    return () => {
-      isUnsubscribed = true;
-      if (unsubscribe) {
-        unsubscribe();
+    // 未配置云端存储，使用 Worker 端本地存储订阅
+    const subscription = this.client.ob$('docStorage.subscribeDocUpdate').subscribe({
+      next: (value: { update: DocRecord; origin?: string }) => {
+        callback(value.update, value.origin);
+      },
+      error: (error: any) => {
+        console.error('❌ [WorkerDocStorage] 订阅更新失败:', error);
       }
-    };
+    });
+    
+    return () => subscription.unsubscribe();
   }
 
-  connection = new CloudDocConnection(this.cloudStoragePromise);
+  connection = this.cloudStoragePromise 
+    ? new CloudDocConnection(this.cloudStoragePromise)
+    : new WorkerDocConnection(this.client);
 }
 
 class CloudDocConnection extends DummyConnection {
@@ -418,21 +620,34 @@ class CloudDocConnection extends DummyConnection {
       return this.promise;
     }
     
-    console.log('🔌 [CloudDocConnection] 等待云端存储连接...');
     
     this.promise = (async () => {
       if (!this.cloudStoragePromise) {
-        throw new Error('❌ 云端存储未配置');
+        // 云端存储未配置，抛出错误
+        const error = new Error('❌ 云端存储未配置，无法等待连接');
+        console.error(error.message);
+        throw error;
       }
       
-      const cloudStorage = await this.cloudStoragePromise;
-      if (!cloudStorage) {
-        throw new Error('❌ 云端存储初始化失败');
+      try {
+        const cloudStorage = await this.cloudStoragePromise;
+        if (!cloudStorage) {
+          // 云端存储初始化失败，抛出错误
+          const error = new Error('❌ 云端存储初始化失败，无法等待连接');
+          console.error(error.message);
+          throw error;
+        }
+        
+        // 等待云端存储连接
+        await cloudStorage.connection.waitForConnected();
+      } catch (error) {
+        // 连接失败，抛出错误
+        console.error('❌ [WorkerDocConnection] 等待云端存储连接失败:', {
+          error: error instanceof Error ? error.message : String(error),
+          stack: error instanceof Error ? error.stack : undefined
+        });
+        throw error;
       }
-      
-      // 等待云端存储连接
-      await cloudStorage.connection.waitForConnected();
-      console.log('✅ [CloudDocConnection] 云端存储已连接');
     })();
     
     return this.promise;

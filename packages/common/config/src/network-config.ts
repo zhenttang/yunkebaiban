@@ -108,6 +108,11 @@ function dlog(..._args: any[]) { /* no-op */ }
 class NetworkConfigManager {
   private currentEnvironment: string = 'development';
   
+  // ✅ 添加缓存机制，避免重复计算和日志输出
+  private _baseUrlCache: string | null = null;
+  private _apiBaseUrlCache: string | null = null;
+  private _socketIOUrlCache: string | null = null;
+  
   constructor() {
     // 自动检测环境
     this.detectEnvironment();
@@ -201,10 +206,15 @@ class NetworkConfigManager {
 
   /**
    * 手动设置环境
+   * ✅ 清除缓存，确保配置更新生效
    */
   setEnvironment(env: string): void {
     if (environments[env]) {
       this.currentEnvironment = env;
+      // ✅ 清除缓存，确保新环境的配置生效
+      this._baseUrlCache = null;
+      this._apiBaseUrlCache = null;
+      this._socketIOUrlCache = null;
     } else {
       console.warn(`未知环境: ${env}`);
     }
@@ -212,24 +222,39 @@ class NetworkConfigManager {
 
   /**
    * 获取基础URL
+   * ✅ 使用缓存机制，避免重复计算
    */
   getBaseUrl(): string {
+    // ✅ 如果缓存存在，直接返回
+    if (this._baseUrlCache !== null) {
+      return this._baseUrlCache;
+    }
+    
     const config = this.getCurrentConfig();
     // 标准端口（80/443）不拼接端口号
     const isStandardPort = (config.protocol === 'http' && config.port === 80) ||
                           (config.protocol === 'https' && config.port === 443);
-    const baseUrl = isStandardPort
+    this._baseUrlCache = isStandardPort
       ? `${config.protocol}://${config.host}`
       : `${config.protocol}://${config.host}:${config.port}`;
-    return baseUrl;
+    
+    return this._baseUrlCache;
   }
 
   /**
    * 获取API基础URL
+   * ✅ 使用缓存机制，避免重复计算
    */
   getApiBaseUrl(): string {
+    // ✅ 如果缓存存在，直接返回
+    if (this._apiBaseUrlCache !== null) {
+      return this._apiBaseUrlCache;
+    }
+    
     const base = this.getBaseUrl();
-    return `${base}${this.getCurrentConfig().endpoints.api}`;
+    this._apiBaseUrlCache = `${base}${this.getCurrentConfig().endpoints.api}`;
+    
+    return this._apiBaseUrlCache;
   }
 
   /**
@@ -243,29 +268,38 @@ class NetworkConfigManager {
 
   /**
    * 获取Socket.IO URL
+   * ✅ 使用缓存机制，避免重复计算
    */
   getSocketIOUrl(): string {
+    // ✅ 如果缓存存在，直接返回
+    if (this._socketIOUrlCache !== null) {
+      return this._socketIOUrlCache;
+    }
+    
     const envUrl = getRequiredEnvValueOrEmpty('VITE_SOCKETIO_URL');
     if (envUrl) {
       dlog('🔍 [Socket.IO] 使用环境变量 VITE_SOCKETIO_URL:', envUrl);
-      return envUrl;
+      this._socketIOUrlCache = envUrl;
+      return this._socketIOUrlCache;
     }
     
     // 如果没有配置 VITE_SOCKETIO_URL，使用 socketioPort 构建 URL
     const config = this.getCurrentConfig();
     const isStandardPort = (config.protocol === 'http' && config.socketioPort === 80) ||
                           (config.protocol === 'https' && config.socketioPort === 443);
-    const socketioUrl = isStandardPort
+    this._socketIOUrlCache = isStandardPort
       ? `${config.protocol}://${config.host}`
       : `${config.protocol}://${config.host}:${config.socketioPort}`;
     
-    // 🔍 调试日志：显示实际使用的配置
-    console.log('🔍 [Socket.IO配置] VITE_SOCKETIO_URL 未配置，使用 socketioPort 构建 URL');
-    console.log('🔍 [Socket.IO配置] socketioPort:', config.socketioPort);
-    console.log('🔍 [Socket.IO配置] 构建的 Socket.IO URL:', socketioUrl);
-    console.log('🔍 [Socket.IO配置] 环境变量 VITE_SOCKETIO_PORT:', import.meta.env?.VITE_SOCKETIO_PORT);
+    // 🔍 调试日志：仅在开发环境或调试模式下输出，避免生产环境刷屏
+    if (import.meta.env?.DEV || import.meta.env?.MODE === 'development') {
+      dlog('🔍 [Socket.IO配置] VITE_SOCKETIO_URL 未配置，使用 socketioPort 构建 URL');
+      dlog('🔍 [Socket.IO配置] socketioPort:', config.socketioPort);
+      dlog('🔍 [Socket.IO配置] 构建的 Socket.IO URL:', this._socketIOUrlCache);
+      dlog('🔍 [Socket.IO配置] 环境变量 VITE_SOCKETIO_PORT:', import.meta.env?.VITE_SOCKETIO_PORT);
+    }
     
-    return socketioUrl;
+    return this._socketIOUrlCache;
   }
 
   /**

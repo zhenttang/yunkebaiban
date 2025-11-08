@@ -156,7 +156,25 @@ export const PageDetailEditor = ({
   const mode = useLiveData(editor.mode$);
   const defaultOpenProperty = useLiveData(editor.defaultOpenProperty$);
 
-  const doc = useService(DocService).doc;
+  // ✅ 安全地获取 doc：Editor.doc 可能返回 null（如果 DocScope 未初始化）
+  const doc = editor.doc;
+  
+  // ✅ 如果 doc 未初始化，返回加载占位符（而不是 null，避免 Lit 组件更新错误）
+  if (!doc) {
+    return (
+      <div style={{ 
+        width: '100%', 
+        height: '100%', 
+        display: 'flex', 
+        alignItems: 'center', 
+        justifyContent: 'center',
+        color: '#999'
+      }}>
+        加载中...
+      </div>
+    );
+  }
+  
   const pageWidth = useLiveData(doc.properties$.selector(p => p.pageWidth));
 
   const isSharedMode = editor.isSharedMode;
@@ -196,7 +214,7 @@ export const PageDetailEditor = ({
         const gifBlob = new Blob([new Uint8Array(gifData)], { type: 'image/gif' });
         
         // 获取当前文档和编辑器
-        const blockSuiteDoc = editor.doc.blockSuiteDoc;
+        const blockSuiteDoc = editor.doc?.blockSuiteDoc;
         
         if (!blockSuiteDoc || !blockSuiteDoc.blobSync) {
           console.error('无法获取白板存储系统');
@@ -338,6 +356,11 @@ export const PageDetailEditor = ({
   }, []);
 
   useEffect(() => {
+    if (!editor.doc) {
+      console.warn('⚠️ DocScope未初始化，无法设置readonly');
+      return;
+    }
+    
     editor.doc.blockSuiteDoc.readonly = readonly ?? false;
     
     // 设置DeckerIntegrationManager的Store
@@ -347,9 +370,7 @@ export const PageDetailEditor = ({
         // 尝试设置Store，如果有collection属性的话
         if ('collection' in blockSuiteDoc && blockSuiteDoc.collection) {
           deckerIntegrationManager.setStore(blockSuiteDoc.collection);
-          console.log('✅ DeckerIntegrationManager Store已设置');
-        } else {
-          console.log('ℹ️ BlockSuite文档没有collection属性，跳过Store设置');
+          // DeckerIntegrationManager Store已设置
         }
       } catch (storeError) {
         console.warn('⚠️ 设置DeckerIntegrationManager Store失败:', storeError);
@@ -368,7 +389,7 @@ export const PageDetailEditor = ({
         })}
         mode={mode}
         defaultOpenProperty={defaultOpenProperty}
-        page={editor.doc.blockSuiteDoc}
+        page={doc.blockSuiteDoc}
         shared={isSharedMode}
         readonly={readonly}
         onEditorReady={onLoad}
