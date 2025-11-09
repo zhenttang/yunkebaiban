@@ -514,17 +514,21 @@ export const CloudStorageProvider = ({
       setStorageMode('detecting');
 
       const { io } = await import('socket.io-client');
-      
+
       // 🔧 使用 ref 获取最新的 serverUrl，避免闭包问题
       const currentServerUrl = serverUrlRef.current;
+
+      // 🔐 获取真实的JWT token用于Socket.IO认证
+      const authToken = localStorage.getItem('yunke-admin-token') ||
+                        localStorage.getItem('yunke-access-token');
+
       const newSocket = io(currentServerUrl, {
         transports: ['websocket', 'polling'],
         timeout: 5000,
         reconnection: false, // 我们手动处理重连
-        auth: {
-          // 开发环境可以提供一个临时token
-          token: 'dev-token-' + Date.now()
-        }
+        auth: authToken ? { token: authToken } : {},
+        // 同时在query参数中传递token（后端支持从query获取）
+        query: authToken ? { token: authToken } : {}
       });
 
       // 连接成功

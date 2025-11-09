@@ -129,20 +129,22 @@ const SharePageInner = ({
   // 支持在分享页面中切换模式
   const [currentMode, setCurrentMode] = useState<DocMode>(publishMode || 'page');
   
-  // 监听URL参数变化，更新模式
+  // 初始化/URL参数模式同步，仅在 publishMode 或 editor 变化时运行，避免与 mode$ 订阅形成循环
   useEffect(() => {
     const newMode = publishMode || 'page';
-    if (newMode !== currentMode && editor) {
-      // URL参数变化时，更新编辑器模式
-      // 注意：这会触发editor.mode$变化，但我们已经在订阅中处理了URL更新，避免循环
+
+    if (!editor) {
+      if (currentMode !== newMode) {
+        setCurrentMode(newMode);
+      }
+      return;
+    }
+
+    if (currentMode !== newMode) {
       editor.setMode(newMode);
       setCurrentMode(newMode);
-    } else if (newMode !== currentMode && !editor) {
-      // 如果editor还没创建，先更新currentMode状态
-      // editor创建时会使用正确的模式
-      setCurrentMode(newMode);
     }
-  }, [publishMode, editor, currentMode]);
+  }, [publishMode, editor]);
 
   useEffect(() => {
     // create a workspace for share page
