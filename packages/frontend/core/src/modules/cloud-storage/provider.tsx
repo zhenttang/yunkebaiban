@@ -176,6 +176,10 @@ export const CloudStorageProvider = ({
     resolve: (value: number) => void;
     reject: (reason: any) => void;
   }>>([]);
+  const offlineSyncStatsRef = useRef<{ failures: number; nextRetryAt: number }>({
+    failures: 0,
+    nextRetryAt: 0,
+  });
   const [offlineOperationsCount, setOfflineOperationsCount] = useState(0);
   const clientIdRef = useRef<string | null>(null);
   const sessionsRef = useRef<Map<string, SessionDisplayInfo>>(new Map());
@@ -336,20 +340,28 @@ export const CloudStorageProvider = ({
       return;
     }
 
-    const operations = getOfflineOperations()
-      .filter(op => op.spaceId === currentWorkspaceId)
-      .sort((a, b) => a.timestamp - b.timestamp); // 按时间顺序排序
-
-    if (operations.length === 0) {
+    const now = Date.now();
+    if (offlineSyncStatsRef.current.nextRetryAt > now) {
+      const waitMs = offlineSyncStatsRef.current.nextRetryAt - now;
+      logThrottle.current.log('offline-sync-backoff', () => {
+        console.warn('⚠️ [云存储管理器] 离线同步等待退避窗口，剩余(ms):', waitMs);
+      });
       return;
     }
 
-    let successCount = 0;
-    let failureCount = 0;
+    const operations = getOfflineOperations()
+      .filter(op => op.spaceId === currentWorkspaceId)
+      .sort((a, b) => a.timestamp - b.timestamp);
+
+    if (operations.length === 0) {
+      offlineSyncStatsRef.current = { failures: 0, nextRetryAt: 0 };
+      return;
+    }
+
+    const failedOperationIds = new Set<string>();
 
     for (const operation of operations) {
       try {
-        // 按照YUNKE标准格式发送
         emitSessionActivity({
           sessionId: sanitizeSessionIdentifier(operation.sessionId) ?? normalizedLocalSessionId,
           clientId:
@@ -373,28 +385,40 @@ export const CloudStorageProvider = ({
         if ('error' in result) {
           throw new Error(result.error.message);
         }
-
-        successCount++;
-        
       } catch (error) {
-        failureCount++;
+        failedOperationIds.add(operation.id);
         console.error(`❌ [云存储管理器] 离线操作同步失败: ${operation.id}`, error);
-        // 暂时保留失败的操作，下次继续尝试
       }
     }
 
-    if (failureCount === 0) {
-      // 所有操作都成功，清除离线缓存
+    if (failedOperationIds.size === 0) {
       clearOfflineOperations();
       setLastSync(new Date());
-    } else {
-      // 有失败的操作，只移除成功的操作
-      const remainingOperations = getOfflineOperations()
-        .filter(op => !operations.some(syncOp => syncOp.id === op.id) || op.spaceId !== currentWorkspaceId);
-      safeStorage.setItem(OFFLINE_OPERATIONS_KEY, JSON.stringify(remainingOperations));
-      setOfflineOperationsCount(remainingOperations.length);
+      offlineSyncStatsRef.current = { failures: 0, nextRetryAt: 0 };
+      return;
     }
-  }, [currentWorkspaceId, socket, sessionId, normalizedLocalSessionId]); // 🔧 socket 依赖保留，因为需要在同步时检查连接状态
+
+    const attemptedIds = new Set(operations.map(op => op.id));
+    const remainingOperations = getOfflineOperations().filter(op => {
+      const attempted = attemptedIds.has(op.id);
+      const failed = failedOperationIds.has(op.id);
+      return !attempted || failed;
+    });
+
+    safeStorage.setItem(OFFLINE_OPERATIONS_KEY, JSON.stringify(remainingOperations));
+    setOfflineOperationsCount(remainingOperations.length);
+
+    const nextFailures = Math.min(offlineSyncStatsRef.current.failures + 1, 5);
+    const delay = Math.min(30000, Math.pow(2, nextFailures) * 1000);
+    offlineSyncStatsRef.current = {
+      failures: nextFailures,
+      nextRetryAt: Date.now() + delay,
+    };
+
+    logThrottle.current.log('offline-sync-scheduled', () => {
+      console.warn('⚠️ [云存储管理器] 离线同步失败，计划', delay, 'ms后重试');
+    });
+  }, [currentWorkspaceId, socket, sessionId, normalizedLocalSessionId]);
 
   // 初始化时读取离线操作数量
   useEffect(() => {
