@@ -226,18 +226,28 @@ export abstract class AutoReconnectConnection<T = any>
         return;
       }
 
-      // 如果状态是 error 或 closed，立即 reject
-      if (this.status === 'error' || this.status === 'closed') {
-        reject(this._error || new Error(`连接状态为 ${this.status}`));
+      // 🔧 修复：如果状态是 closed，立即 reject
+      // 但如果是 error，等待自动重连（不立即 reject）
+      if (this.status === 'closed') {
+        reject(this._error || new Error(`连接已关闭`));
         return;
+      }
+
+      // 如果状态是 error，记录日志但继续等待重连
+      if (this.status === 'error') {
+        console.log('🔄 [AutoReconnectConnection.waitForConnected] 连接处于 error 状态，等待自动重连', {
+          connectionType: this.constructor.name,
+          retryDelay: this.retryDelay
+        });
       }
 
       const off = this.onStatusChanged((status, error) => {
         if (status === 'connected') {
           resolve();
           off();
-        } else if (status === 'error' || status === 'closed') {
-          reject(error || new Error(`连接状态变为 ${status}`));
+        } else if (status === 'closed') {
+          // 只有 closed 状态才 reject（error 状态会自动重连）
+          reject(error || new Error(`连接已关闭`));
           off();
         }
       });

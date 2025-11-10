@@ -43,12 +43,6 @@ export class CloudDocStorage extends DocStorageBase<CloudDocStorageOptions> {
   private readonly sessionId = getOrCreateSessionId();
 
   get socket() {
-    // 🔧 如果连接断开，记录警告（实际重连逻辑在 pushDocUpdate 中处理）
-    if (!this.connection.inner.socket?.connected) {
-      console.warn('⚠️ [CloudDocStorage.socket] Socket 未连接', {
-        connectionStatus: this.connection.status
-      });
-    }
     return this.connection.inner.socket;
   }
   get idConverter() {
@@ -220,28 +214,8 @@ export class CloudDocStorage extends DocStorageBase<CloudDocStorageOptions> {
     }
 
     // 降级到原始Socket.IO方法
-    // 🔧 修复：如果连接断开，尝试重新连接
     if (!this.connection.inner.socket?.connected) {
-      console.warn('⚠️ [CloudDocStorage.pushDocUpdate] Socket 未连接，尝试重新连接...', {
-        docId: update.docId,
-        connectionStatus: this.connection.status
-      });
-
-      // 如果连接处于 error 或 closed 状态，主动触发连接
-      if (this.connection.status === 'error' || this.connection.status === 'closed' || this.connection.status === 'idle') {
-        console.log('🔄 [CloudDocStorage.pushDocUpdate] 主动触发重连');
-        this.connection.connect();
-      }
-
-      // 等待连接恢复（最多 15 秒）
-      const timeout = AbortSignal.timeout(15000);
-      try {
-        await this.connection.waitForConnected(timeout);
-        console.log('✅ [CloudDocStorage.pushDocUpdate] 重连成功');
-      } catch (err) {
-        console.error('❌ [CloudDocStorage.pushDocUpdate] 重连超时', err);
-        throw new Error('无法连接到服务器，请检查网络连接');
-      }
+      throw new Error('Socket.IO connection not established');
     }
 
     try {
