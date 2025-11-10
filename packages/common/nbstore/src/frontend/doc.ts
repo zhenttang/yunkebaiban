@@ -500,6 +500,30 @@ export class DocFrontend {
    * @param doc - The doc to disconnect
    */
   disconnectDoc(doc: YDoc) {
+    // 🔧 立即保存 pending 的 updates，防止数据丢失
+    const timer = this.saveTimers.get(doc.guid);
+    if (timer) {
+      clearTimeout(timer);
+      this.saveTimers.delete(doc.guid);
+    }
+
+    const pendingUpdates = this.pendingUpdates.get(doc.guid);
+    if (pendingUpdates && pendingUpdates.length > 0) {
+      console.log('💾 [DocFrontend.disconnectDoc] 文档关闭，立即保存 pending updates', {
+        docGuid: doc.guid,
+        updateCount: pendingUpdates.length
+      });
+
+      const mergedUpdate = this.mergeUpdates(pendingUpdates);
+      this.pendingUpdates.delete(doc.guid);
+
+      this.schedule({
+        type: 'save',
+        docId: doc.guid,
+        update: mergedUpdate,
+      });
+    }
+
     this.status.docs.delete(doc.guid);
     this.status.connectedDocs.delete(doc.guid);
     this.status.readyDocs.delete(doc.guid);
@@ -557,10 +581,11 @@ export class DocFrontend {
   }
 
   private isApplyingUpdate = false;
-  
-  // 🔧 修复无限发送：添加防抖机制，避免短时间内重复保存
-  private readonly lastSaveTime = new Map<string, number>();
-  private static readonly SAVE_DEBOUNCE_MS = 100; // 100ms 防抖
+
+  // 🔧 修复数据丢失：改用延迟合并机制，累积 100ms 内的 update 后批量保存
+  private readonly pendingUpdates = new Map<string, Uint8Array[]>();
+  private readonly saveTimers = new Map<string, ReturnType<typeof setTimeout>>();
+  private static readonly SAVE_DEBOUNCE_MS = 100; // 100ms 延迟合并
 
   applyUpdate(docId: string, update: Uint8Array) {
     const doc = this.status.docs.get(docId);
@@ -669,24 +694,52 @@ ${changedList}
       return;
     }
 
-    // 🔧 修复无限发送：添加防抖机制，避免短时间内重复保存相同文档
-    const now = Date.now();
-    const lastSaveTime = this.lastSaveTime.get(doc.guid) || 0;
-    if (now - lastSaveTime < DocFrontend.SAVE_DEBOUNCE_MS) {
-      console.log('⏱️ [DocFrontend.handleDocUpdate] 防抖：跳过短时间内重复保存', {
-        docGuid: doc.guid,
-        timeSinceLastSave: now - lastSaveTime,
-        debounceMs: DocFrontend.SAVE_DEBOUNCE_MS
-      });
-      return;
-    }
-    this.lastSaveTime.set(doc.guid, now);
+    // 🔧 修复数据丢失：累积 update 到队列，延迟合并后保存
+    const existingUpdates = this.pendingUpdates.get(doc.guid) || [];
+    existingUpdates.push(update);
+    this.pendingUpdates.set(doc.guid, existingUpdates);
 
-    this.schedule({
-      type: 'save',
-      docId: doc.guid,
-      update,
+    console.log('📥 [DocFrontend.handleDocUpdate] 累积更新到队列', {
+      docGuid: doc.guid,
+      updateSize: update.length,
+      queueLength: existingUpdates.length
     });
+
+    // 清除之前的定时器
+    const existingTimer = this.saveTimers.get(doc.guid);
+    if (existingTimer) {
+      clearTimeout(existingTimer);
+    }
+
+    // 设置新的定时器：100ms 后合并并保存
+    const timer = setTimeout(() => {
+      const updates = this.pendingUpdates.get(doc.guid);
+      if (!updates || updates.length === 0) {
+        return;
+      }
+
+      console.log('🔄 [DocFrontend.handleDocUpdate] 合并并保存累积的更新', {
+        docGuid: doc.guid,
+        updateCount: updates.length,
+        totalSize: updates.reduce((sum, u) => sum + u.length, 0)
+      });
+
+      // 合并所有 update
+      const mergedUpdate = this.mergeUpdates(updates);
+
+      // 清空队列
+      this.pendingUpdates.delete(doc.guid);
+      this.saveTimers.delete(doc.guid);
+
+      // 调度保存
+      this.schedule({
+        type: 'save',
+        docId: doc.guid,
+        update: mergedUpdate,
+      });
+    }, DocFrontend.SAVE_DEBOUNCE_MS);
+
+    this.saveTimers.set(doc.guid, timer);
   };
 
   protected mergeUpdates(updates: Uint8Array[]) {
