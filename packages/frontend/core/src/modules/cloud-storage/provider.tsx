@@ -543,8 +543,9 @@ export const CloudStorageProvider = ({
       const currentServerUrl = serverUrlRef.current;
 
       // 🔐 获取真实的JWT token用于Socket.IO认证
-      const authToken = localStorage.getItem('yunke-admin-token') ||
-                        localStorage.getItem('yunke-access-token');
+      const authToken =
+        safeStorage.getItem('yunke-admin-token') ??
+        safeStorage.getItem('yunke-access-token');
 
       const newSocket = io(currentServerUrl, {
         transports: ['websocket', 'polling'],
@@ -1088,4 +1089,3 @@ export const CloudStorageProvider = ({
     </CloudStorageContext.Provider>
   );
 };
-
