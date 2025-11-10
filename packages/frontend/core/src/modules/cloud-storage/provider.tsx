@@ -186,6 +186,15 @@ export const CloudStorageProvider = ({
   const sessionAliasRef = useRef<Map<string, number>>(new Map());
   const sessionAliasCounterRef = useRef(1);
   const [sessions, setSessions] = useState<SessionDisplayInfo[]>([]);
+  const updateSessionsState = useCallback(() => {
+    const ordered = Array.from(sessionsRef.current.values()).sort((a, b) => {
+      if (a.isLocal !== b.isLocal) {
+        return a.isLocal ? -1 : 1;
+      }
+      return a.label.localeCompare(b.label, 'zh-Hans');
+    });
+    setSessions(ordered);
+  }, []);
   
   // 动态获取当前workspaceId，需在依赖该值的hook之前定义
   const currentWorkspaceId = useMemo(() => {
@@ -265,16 +274,26 @@ export const CloudStorageProvider = ({
         }
       }
 
-      const ordered = Array.from(sessionsRef.current.values()).sort((a, b) => {
-        if (a.isLocal !== b.isLocal) {
-          return a.isLocal ? -1 : 1;
-        }
-        return a.label.localeCompare(b.label, 'zh-Hans');
-      });
-
-      setSessions(ordered);
+      updateSessionsState();
     },
-    [normalizedLocalSessionId]
+    [normalizedLocalSessionId, updateSessionsState]
+  );
+
+  const removeSessionInfo = useCallback(
+    (sessionIdRaw: string | null) => {
+      const sessionIdSanitized = sanitizeSessionIdentifier(sessionIdRaw) ?? null;
+      if (!sessionIdSanitized) {
+        return;
+      }
+
+      const existed = sessionsRef.current.delete(sessionIdSanitized);
+      sessionAliasRef.current.delete(sessionIdSanitized);
+
+      if (existed) {
+        updateSessionsState();
+      }
+    },
+    [updateSessionsState]
   );
 
   // 保存离线操作 - 按照YUNKE标准格式
@@ -555,6 +574,16 @@ export const CloudStorageProvider = ({
         // 同时在query参数中传递token（后端支持从query获取）
         query: authToken ? { token: authToken } : {}
       });
+      const handleRemoteSessionEnded = (message: { spaceId?: string; sessionId?: string }) => {
+        if (!message?.sessionId) {
+          return;
+        }
+        if (message.spaceId && message.spaceId !== currentWorkspaceId) {
+          return;
+        }
+        removeSessionInfo(message.sessionId);
+      };
+      newSocket.on('space:session-ended', handleRemoteSessionEnded);
 
       // 连接成功
       newSocket.on('connect', () => {
@@ -666,6 +695,7 @@ export const CloudStorageProvider = ({
         });
         setIsConnected(false);
         isConnectingRef.current = false; // 🔧 连接失败，重置标记
+        newSocket.off('space:session-ended', handleRemoteSessionEnded);
         newSocket.disconnect();
         
         // 智能重连：指数退避
@@ -677,6 +707,7 @@ export const CloudStorageProvider = ({
         setIsConnected(false);
         clientIdRef.current = null;
         isConnectingRef.current = false; // 🔧 断开连接，重置标记
+        newSocket.off('space:session-ended', handleRemoteSessionEnded);
         
         // 🔧 清理 ref
         if (socketRef.current === newSocket) {
@@ -708,7 +739,7 @@ export const CloudStorageProvider = ({
       isConnectingRef.current = false; // 🔧 异常，重置标记
       scheduleReconnect();
     }
-  }, [currentWorkspaceId, normalizedLocalSessionId]); // 🔧 移除 isOnline 和 serverUrl 依赖，使用 ref 获取最新值
+  }, [currentWorkspaceId, normalizedLocalSessionId, removeSessionInfo]); // 🔧 移除 isOnline 和 serverUrl 依赖，使用 ref 获取最新值
   
   // 🔧 修复：同步 connectToSocketRef
   useEffect(() => {
