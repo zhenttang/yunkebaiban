@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getPostHistory, getHistoryDetail, getPost } from '../forum-api';
 import type { EditHistoryDTO, PaginatedResponse, PostDTO } from '../types';
+import timelineIllustration from './timeline_2gfy.svg';
 
 export function Component() {
   const { postId } = useParams<{ postId: string }>();
@@ -68,7 +69,26 @@ export function Component() {
       <div style={{ marginTop: 10, color: '#999', fontSize: 14 }}>按时间倒序显示</div>
 
       <div style={{ marginTop: 20 }}>
-        {histories.content.map(h => {
+        {histories.content.length === 0 ? (
+          <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: 60,
+            gap: 20
+          }}>
+            <img
+              src={timelineIllustration}
+              alt="No edit history"
+              style={{ width: 280, height: 'auto' }}
+              draggable={false}
+            />
+            <div style={{ color: '#999', fontSize: 16 }}>暂无编辑历史</div>
+            <div style={{ color: '#bbb', fontSize: 14 }}>此帖子还没有被编辑过</div>
+          </div>
+        ) : (
+          histories.content.map(h => {
           const id = String((h as any).id);
           const time = (h as any).editedAt || (h as any).createdAt;
           const editor = (h as any).editorName || (h as any).editorId;
@@ -129,7 +149,8 @@ export function Component() {
               </div>
             </div>
           );
-        })}
+        })
+        )}
       </div>
 
       {histories.totalPages > 1 && (

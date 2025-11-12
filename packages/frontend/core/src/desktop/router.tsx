@@ -154,7 +154,7 @@ export const topLevelRoutes = [
         lazy: () => import(/* webpackChunkName: "auth" */ './pages/auth/auth'),
       },
       {
-        path: '/sign-In',
+        path: '/sign-in',
         lazy: () =>
           import(/* webpackChunkName: "auth" */ './pages/auth/sign-in'),
       },

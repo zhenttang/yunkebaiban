@@ -10,6 +10,7 @@ import { usePageHelper } from '../../../blocksuite/block-suite-page-list/utils';
 import { ActionButton } from './action-button';
 import docsIllustrationDark from './assets/docs.dark.png';
 import docsIllustrationLight from './assets/docs.light.png';
+import emptyStateIllustration from './assets/empty_4zx0.svg';
 import { EmptyLayout } from './layout';
 import type { UniversalEmptyProps } from './types';
 
@@ -47,8 +48,8 @@ export const EmptyDocs = ({
 
   return (
     <EmptyLayout
-      illustrationLight={docsIllustrationLight}
-      illustrationDark={docsIllustrationDark}
+      illustrationLight={emptyStateIllustration}
+      illustrationDark={emptyStateIllustration}
       title={t['com.yunke.empty.docs.title']()}
       description={
         type === 'trash'

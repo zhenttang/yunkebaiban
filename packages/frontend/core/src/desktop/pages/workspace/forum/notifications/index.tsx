@@ -6,6 +6,7 @@ import {
   markAllAsRead as apiMarkAllAsRead,
 } from '../forum-api';
 import type { NotificationDTO, PaginatedResponse } from '../types';
+import myNotificationsIllustration from './my-notifications_fy5v.svg';
 
 type TabKey = 'ALL' | 'MENTION' | 'REPLY' | 'LIKE' | 'MOD';
 
@@ -147,7 +148,23 @@ export function Component() {
         {loading ? (
           <div style={{ padding: 20 }}>加载中...</div>
         ) : list.length === 0 ? (
-          <div style={{ padding: 20, color: '#999' }}>暂无通知</div>
+          <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: 60,
+            gap: 20
+          }}>
+            <img
+              src={myNotificationsIllustration}
+              alt="No notifications"
+              style={{ width: 280, height: 'auto' }}
+              draggable={false}
+            />
+            <div style={{ color: '#999', fontSize: 16 }}>暂无{activeTab === 'ALL' ? '' : tabLabels[activeTab]}通知</div>
+            <div style={{ color: '#bbb', fontSize: 14 }}>你可以在这里查看与你相关的所有动态</div>
+          </div>
         ) : (
           list.map(n => (
             <div

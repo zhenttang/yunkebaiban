@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import type { PaginatedResponse, PostDTO } from '../types';
 import { getMyCollections, type MyCollectionItemDTO, uncollectPost } from '../forum-api';
+import collectionIllustration from './collection_ly06.svg';
 
 export function Component() {
   const [collections, setCollections] = useState<PaginatedResponse<MyCollectionItemDTO>>({
@@ -53,7 +54,23 @@ export function Component() {
 
       <div style={{ marginTop: 20 }}>
         {collections.content.length === 0 ? (
-          <div style={{ color: '#666' }}>暂无收藏</div>
+          <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginTop: 60,
+            gap: 20
+          }}>
+            <img
+              src={collectionIllustration}
+              alt="No collections"
+              style={{ width: 300, height: 'auto' }}
+              draggable={false}
+            />
+            <div style={{ color: '#999', fontSize: 16 }}>还没有收藏任何内容</div>
+            <div style={{ color: '#bbb', fontSize: 14 }}>浏览帖子时点击收藏按钮吧</div>
+          </div>
         ) : (
           collections.content.map(item => (
             <div

@@ -7,6 +7,8 @@ import { EditorOutlineViewer } from '@yunke/core/blocksuite/outline-viewer';
 import { YunkeErrorBoundary } from '@yunke/core/components/yunke/yunke-error-boundary';
 // import { PageAIOnboarding } from '@yunke/core/components/yunke/ai-onboarding';
 import { BlockCommandsSidebar } from '@yunke/core/components/block-commands-sidebar';
+import { QuickFormatToolbar } from '@yunke/core/components/quick-format-toolbar';
+import { useKeyboardShortcuts } from '@yunke/core/components/keyboard-shortcuts';
 import { GlobalPageHistoryModal } from '@yunke/core/components/yunke/page-history-modal';
 import { useGuard } from '@yunke/core/components/guard';
 import { useAppSettingHelper } from '@yunke/core/components/hooks/yunke/use-app-setting-helper';
@@ -113,6 +115,28 @@ const DetailPageImpl = memo(function DetailPageImpl() {
   const isSideBarOpen = useLiveData(workbench.sidebarOpen$);
   const { appSettings } = useAppSettingHelper();
   const chatPanelRef = useRef<ChatPanel | null>(null);
+
+  // ⌨️ 新功能：快捷键系统（根据设置启用/禁用）
+  useKeyboardShortcuts(appSettings.enableKeyboardShortcuts);
+
+  // 📌 侧边栏控制：从设置中读取默认值，用户可通过快捷键切换
+  const [showCommandSidebar, setShowCommandSidebar] = useState(
+    appSettings.showBlockCommandsSidebarByDefault
+  );
+
+  // 切换侧边栏快捷键 (Ctrl+Shift+/)
+  useEffect(() => {
+    const handleToggleSidebar = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === '/') {
+        e.preventDefault();
+        setShowCommandSidebar((prev) => !prev);
+      }
+    };
+
+    document.addEventListener('keydown', handleToggleSidebar);
+    return () => document.removeEventListener('keydown', handleToggleSidebar);
+  }, []);
+
 
   const peekView = useService(PeekViewService).peekView;
 
@@ -310,7 +334,13 @@ const DetailPageImpl = memo(function DetailPageImpl() {
           <YunkeErrorBoundary key={doc.id}>
             <TopTip pageId={doc.id} workspace={workspace} />
             {/* 云存储状态指示器 - 只在文档编辑页面显示 */}
-            <SaveStatusIndicator />
+            {/* <SaveStatusIndicator /> */}
+
+            {/* 🎯 快捷工具栏 - 根据设置显示常用格式化按钮 */}
+            {mode === 'page' && !isInTrash && appSettings.enableQuickFormatToolbar && (
+              <QuickFormatToolbar />
+            )}
+
             <Scrollable.Root>
               <Scrollable.Viewport
                 onScroll={handleScroll}
@@ -335,7 +365,9 @@ const DetailPageImpl = memo(function DetailPageImpl() {
               show={mode === 'page'}
               openOutlinePanel={openOutlinePanel}
             />
-            {mode === 'page' && <BlockCommandsSidebar />}
+
+            {/* 📌 可选显示的侧边栏 - 默认隐藏，Ctrl+Shift+/ 切换 */}
+            {mode === 'page' && showCommandSidebar && <BlockCommandsSidebar />}
           </YunkeErrorBoundary>
           {isInTrash ? <TrashPageFooter /> : null}
         </div>

@@ -16,6 +16,10 @@ export type AppSetting = {
   autoCheckUpdate: boolean;
   autoDownloadUpdate: boolean;
   enableTelemetry: boolean;
+  // 编辑器功能设置
+  enableQuickFormatToolbar: boolean;
+  enableKeyboardShortcuts: boolean;
+  showBlockCommandsSidebarByDefault: boolean;
 };
 export const windowFrameStyleOptions: AppSetting['windowFrameStyle'][] = [
   'frameless',
@@ -33,6 +37,10 @@ const appSettingBaseAtom = atomWithStorage<AppSetting>(
     autoCheckUpdate: true,
     autoDownloadUpdate: true,
     enableTelemetry: true,
+    // 编辑器功能默认值
+    enableQuickFormatToolbar: true,
+    enableKeyboardShortcuts: true,
+    showBlockCommandsSidebarByDefault: false,
   },
   undefined,
   {

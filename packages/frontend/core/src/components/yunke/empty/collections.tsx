@@ -10,6 +10,7 @@ import { useCallback } from 'react';
 import { ActionButton } from './action-button';
 import collectionListDark from './assets/collection-list.dark.png';
 import collectionListLight from './assets/collection-list.light.png';
+import todoListIllustration from './assets/to-do-list.svg';
 import { EmptyLayout } from './layout';
 import type { UniversalEmptyProps } from './types';
 
@@ -51,8 +52,8 @@ export const EmptyCollections = (props: UniversalEmptyProps) => {
 
   return (
     <EmptyLayout
-      illustrationLight={collectionListLight}
-      illustrationDark={collectionListDark}
+      illustrationLight={todoListIllustration}
+      illustrationDark={todoListIllustration}
       title={t['com.yunke.empty.collections.title']()}
       description={t['com.yunke.empty.collections.description']()}
       action={

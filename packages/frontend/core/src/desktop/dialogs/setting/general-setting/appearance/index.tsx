@@ -175,6 +175,36 @@ export const AppearanceSettings = () => {
       ) : null}
 
       {BUILD_CONFIG.isElectron ? <MenubarSetting /> : null}
+
+      <SettingWrapper title={t['com.yunke.appearanceSettings.editor.title']?.() || '编辑器'}>
+        <SettingRow
+          name={t['com.yunke.appearanceSettings.editor.quickToolbar.title']?.() || '快捷工具栏'}
+          desc={t['com.yunke.appearanceSettings.editor.quickToolbar.description']?.() || '在编辑器顶部显示常用格式化按钮（H1、H2、列表等）'}
+        >
+          <Switch
+            checked={appSettings.enableQuickFormatToolbar}
+            onChange={checked => updateSettings('enableQuickFormatToolbar', checked)}
+          />
+        </SettingRow>
+        <SettingRow
+          name={t['com.yunke.appearanceSettings.editor.keyboardShortcuts.title']?.() || '快捷键'}
+          desc={t['com.yunke.appearanceSettings.editor.keyboardShortcuts.description']?.() || '启用编辑器快捷键（Ctrl+Alt+1~3 标题，Ctrl+Shift+7/8 列表等）'}
+        >
+          <Switch
+            checked={appSettings.enableKeyboardShortcuts}
+            onChange={checked => updateSettings('enableKeyboardShortcuts', checked)}
+          />
+        </SettingRow>
+        <SettingRow
+          name={t['com.yunke.appearanceSettings.editor.commandSidebar.title']?.() || '命令侧边栏'}
+          desc={t['com.yunke.appearanceSettings.editor.commandSidebar.description']?.() || '打开页面时默认显示命令侧边栏（可通过 Ctrl+Shift+/ 切换）'}
+        >
+          <Switch
+            checked={appSettings.showBlockCommandsSidebarByDefault}
+            onChange={checked => updateSettings('showBlockCommandsSidebarByDefault', checked)}
+          />
+        </SettingRow>
+      </SettingWrapper>
     </>
   );
 };

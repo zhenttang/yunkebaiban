@@ -48,6 +48,7 @@ import {
 
 import { useNavigateHelper } from '../hooks/use-navigate-helper';
 import * as styles from './list.style.css';
+import notificationsIllustration from './notifications_bw0p.svg';
 
 export const NotificationList = () => {
   const t = useI18n();

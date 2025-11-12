@@ -8,6 +8,7 @@ import { ThemedImg } from '../../ui/themed-img';
 import { YunkeOtherPageLayout } from '../yunke-other-page-layout';
 import illustrationDark from '../yunke-other-page-layout/assets/other-page.dark.png';
 import illustrationLight from '../yunke-other-page-layout/assets/other-page.light.png';
+import navigationIllustration from '../yunke-other-page-layout/assets/navigation.svg';
 import type { User } from '../auth-components';
 import {
   illustration,
@@ -61,11 +62,11 @@ export const NoPermissionOrNotFound = ({
               </div>
             </div>
             <div className={wrapper}>
-              <ThemedImg
+              <img
+                src={navigationIllustration}
+                alt="404 Navigation"
                 draggable={false}
                 className={illustration}
-                lightSrc={illustrationLight}
-                darkSrc={illustrationDark}
               />
             </div>
           </>
@@ -114,11 +115,11 @@ export const NotFoundPage = ({
           ) : null}
         </div>
         <div className={wrapper}>
-          <ThemedImg
+          <img
+            src={navigationIllustration}
+            alt="404 Navigation"
             draggable={false}
             className={illustration}
-            lightSrc={illustrationLight}
-            darkSrc={illustrationDark}
           />
         </div>
       </div>

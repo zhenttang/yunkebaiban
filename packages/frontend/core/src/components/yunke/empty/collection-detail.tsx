@@ -8,6 +8,7 @@ import { useCallback } from 'react';
 import { ActionButton } from './action-button';
 import collectionDetailDark from './assets/collection-detail.dark.png';
 import collectionDetailLight from './assets/collection-detail.light.png';
+import addContentIllustration from './assets/add-content.svg';
 import { EmptyLayout } from './layout';
 import { actionGroup } from './style.css';
 import type { UniversalEmptyProps } from './types';
@@ -24,8 +25,8 @@ export const EmptyCollectionDetail = ({
 
   return (
     <EmptyLayout
-      illustrationLight={collectionDetailLight}
-      illustrationDark={collectionDetailDark}
+      illustrationLight={addContentIllustration}
+      illustrationDark={addContentIllustration}
       title={t['com.yunke.empty.collection-detail.title']()}
       description={t['com.yunke.empty.collection-detail.description']()}
       action={

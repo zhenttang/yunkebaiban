@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getMyDrafts, deleteDraft, publishDraft } from '../forum-api';
 import type { DraftDTO, PaginatedResponse } from '../types';
+import creationIllustration from './creation_4036.svg';
 
 export function Component() {
   const navigate = useNavigate();
@@ -55,7 +56,23 @@ export function Component() {
       </div>
 
       {drafts.content.length === 0 ? (
-        <div style={{ marginTop: 20, color: '#999' }}>暂无草稿</div>
+        <div style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          marginTop: 60,
+          gap: 20
+        }}>
+          <img
+            src={creationIllustration}
+            alt="No drafts"
+            style={{ width: 300, height: 'auto' }}
+            draggable={false}
+          />
+          <div style={{ color: '#999', fontSize: 16 }}>还没有草稿</div>
+          <div style={{ color: '#bbb', fontSize: 14 }}>开始创作你的第一篇帖子吧</div>
+        </div>
       ) : (
         <div style={{ marginTop: 10 }}>
           {drafts.content.map(draft => (

@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { quickSearch } from '../forum-api';
 import type { SearchResultDTO } from '../types';
+import searchingIllustration from './searching_no1g.svg';
 
 export function Component() {
   const [searchParams] = useSearchParams();
@@ -51,7 +52,23 @@ export function Component() {
       <h2>搜索结果: "{keyword}"</h2>
 
       {empty ? (
-        <div style={{ marginTop: 20, color: '#999' }}>未找到相关内容</div>
+        <div style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          marginTop: 60,
+          gap: 20
+        }}>
+          <img
+            src={searchingIllustration}
+            alt="No search results"
+            style={{ width: 300, height: 'auto' }}
+            draggable={false}
+          />
+          <div style={{ color: '#999', fontSize: 16 }}>未找到与 "{keyword}" 相关的内容</div>
+          <div style={{ color: '#bbb', fontSize: 14 }}>试试其他关键词吧</div>
+        </div>
       ) : (
         <div style={{ marginTop: 10 }}>
           {postResults.length > 0 && (

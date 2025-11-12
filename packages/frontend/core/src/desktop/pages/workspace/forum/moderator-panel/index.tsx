@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useState } from 'react';
 import { getPendingReports, handleReport } from '../forum-api';
 import type { HandleReportRequest, ReportDTO } from '../types';
+import forReviewIllustration from './for-review_coua.svg';
+import wellDoneIllustration from './well-done_kqud.svg';
 
 export function Component() {
   const [reports, setReports] = useState<ReportDTO[]>([]);
@@ -60,7 +62,23 @@ export function Component() {
       {activeTab === 'PENDING' ? (
         <div style={{ marginTop: 16 }}>
           {pending.length === 0 ? (
-            <div style={{ padding: 40, textAlign: 'center', color: '#999' }}>暂无待处理举报</div>
+            <div style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: 60,
+              gap: 20
+            }}>
+              <img
+                src={forReviewIllustration}
+                alt="No pending reports"
+                style={{ width: 280, height: 'auto' }}
+                draggable={false}
+              />
+              <div style={{ color: '#999', fontSize: 16 }}>暂无待处理举报</div>
+              <div style={{ color: '#bbb', fontSize: 14 }}>所有举报都已处理完毕</div>
+            </div>
           ) : (
             pending.map(report => (
               <div key={report.id} style={{ padding: 16, border: '1px solid #eee', borderRadius: 4, marginBottom: 12 }}>
@@ -102,7 +120,23 @@ export function Component() {
       ) : (
         <div style={{ marginTop: 16 }}>
           {processed.length === 0 ? (
-            <div style={{ padding: 40, textAlign: 'center', color: '#999' }}>暂无已处理举报</div>
+            <div style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: 60,
+              gap: 20
+            }}>
+              <img
+                src={wellDoneIllustration}
+                alt="No processed reports"
+                style={{ width: 280, height: 'auto' }}
+                draggable={false}
+              />
+              <div style={{ color: '#999', fontSize: 16 }}>暂无已处理举报</div>
+              <div style={{ color: '#bbb', fontSize: 14 }}>处理过的举报会显示在这里</div>
+            </div>
           ) : (
             processed.map(report => (
               <div key={report.id} style={{ padding: 16, border: '1px solid #eee', borderRadius: 4, marginBottom: 12 }}>
