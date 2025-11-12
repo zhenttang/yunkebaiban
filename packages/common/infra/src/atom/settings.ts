@@ -20,6 +20,7 @@ export type AppSetting = {
   enableQuickFormatToolbar: boolean;
   enableKeyboardShortcuts: boolean;
   showBlockCommandsSidebarByDefault: boolean;
+  enableDocumentStats: boolean;
 };
 export const windowFrameStyleOptions: AppSetting['windowFrameStyle'][] = [
   'frameless',
@@ -41,6 +42,7 @@ const appSettingBaseAtom = atomWithStorage<AppSetting>(
     enableQuickFormatToolbar: true,
     enableKeyboardShortcuts: true,
     showBlockCommandsSidebarByDefault: false,
+    enableDocumentStats: true,
   },
   undefined,
   {

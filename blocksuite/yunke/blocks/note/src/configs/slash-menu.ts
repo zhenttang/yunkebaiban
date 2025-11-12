@@ -9,6 +9,8 @@ import {
 } from '@blocksuite/yunke-rich-text';
 import { isInsideBlockByFlavour } from '@blocksuite/yunke-shared/utils';
 import {
+  getFavoriteItems,
+  getRecentItems,
   type SlashMenuActionItem,
   type SlashMenuConfig,
   SlashMenuConfigExtension,
@@ -20,52 +22,112 @@ import { BlockSelection } from '@blocksuite/std';
 import { updateBlockType } from '../commands';
 import { tooltips } from './tooltips';
 
-let basicIndex = 0;
 const noteSlashMenuConfig: SlashMenuConfig = {
-  items: [
-    ...textConversionConfigs
+  items: ctx => {
+    // 🔥 每次调用重置索引
+    let basicIndex = 0;
+
+    // 🔥 生成基础菜单项映射表（用于查找最近使用的项）
+    const allItems: Record<string, SlashMenuActionItem> = {};
+
+    const basicItems = textConversionConfigs
       .filter(i => i.type && ['h1', 'h2', 'h3', 'text'].includes(i.type))
-      .map(config => createConversionItem(config, `0_Basic@${basicIndex++}`)),
-    {
-      name: '其他标题',
-      icon: HeadingsIcon(),
-      group: `0_Basic@${basicIndex++}`,
-      subMenu: textConversionConfigs
-        .filter(i => i.type && ['h4', 'h5', 'h6'].includes(i.type))
-        .map(config => createConversionItem(config)),
-    },
-    ...textConversionConfigs
+      .map(config => {
+        const item = createConversionItem(config, `1_Basic@${basicIndex++}`);
+        allItems[item.name] = item;
+        return item;
+      });
+
+    const headingsSubmenu = textConversionConfigs
+      .filter(i => i.type && ['h4', 'h5', 'h6'].includes(i.type))
+      .map(config => {
+        const item = createConversionItem(config);
+        allItems[item.name] = item;
+        return item;
+      });
+
+    const codeItems = textConversionConfigs
       .filter(i => i.flavour === 'yunke:code')
-      .map(config => createConversionItem(config, `0_Basic@${basicIndex++}`)),
+      .map(config => {
+        const item = createConversionItem(config, `1_Basic@${basicIndex++}`);
+        allItems[item.name] = item;
+        return item;
+      });
 
-    ...textConversionConfigs
+    const dividerQuoteItems = textConversionConfigs
       .filter(i => i.type && ['divider', 'quote'].includes(i.type))
-      .map(
-        config =>
-          ({
-            ...createConversionItem(config, `0_Basic@${basicIndex++}`),
-            when: ({ model }) =>
-              model.store.schema.flavourSchemaMap.has(config.flavour) &&
-              !isInsideBlockByFlavour(
-                model.store,
-                model,
-                'yunke:edgeless-text'
-              ),
-          }) satisfies SlashMenuActionItem
-      ),
+      .map(config => {
+        const item = {
+          ...createConversionItem(config, `1_Basic@${basicIndex++}`),
+          when: ({ model }) =>
+            model.store.schema.flavourSchemaMap.has(config.flavour) &&
+            !isInsideBlockByFlavour(model.store, model, 'yunke:edgeless-text'),
+        } satisfies SlashMenuActionItem;
+        allItems[item.name] = item;
+        return item;
+      });
 
-    ...textConversionConfigs
+    const listItems = textConversionConfigs
       .filter(i => i.flavour === 'yunke:list')
-      .map((config, index) =>
-        createConversionItem(config, `1_List@${index++}`)
-      ),
+      .map((config, index) => {
+        const item = createConversionItem(config, `2_List@${index++}`);
+        allItems[item.name] = item;
+        return item;
+      });
 
-    ...textFormatConfigs
+    const styleItems = textFormatConfigs
       .filter(i => !['Code', 'Link'].includes(i.name))
-      .map((config, index) =>
-        createTextFormatItem(config, `2_Style@${index++}`)
-      ),
-  ],
+      .map((config, index) => {
+        const item = createTextFormatItem(config, `3_Style@${index++}`);
+        allItems[item.name] = item;
+        return item;
+      });
+
+    // 🔥 生成最近使用组
+    const recentItemsData = getRecentItems();
+    const recentMenuItems: SlashMenuActionItem[] = [];
+
+    for (const recentData of recentItemsData) {
+      const item = allItems[recentData.name];
+      if (item) {
+        // 克隆并修改 group 为最近使用组
+        recentMenuItems.push({
+          ...item,
+          group: `-1_Recent@${recentMenuItems.length}`,
+        });
+      }
+    }
+
+    // 🔥 生成收藏组
+    const favoriteItemNames = getFavoriteItems();
+    const favoriteMenuItems: SlashMenuActionItem[] = [];
+
+    for (const name of favoriteItemNames) {
+      const item = allItems[name];
+      if (item) {
+        favoriteMenuItems.push({
+          ...item,
+          group: `0_Favorites@${favoriteMenuItems.length}`,
+        });
+      }
+    }
+
+    return [
+      ...recentMenuItems,
+      ...favoriteMenuItems,
+      ...basicItems,
+      {
+        name: '其他标题',
+        icon: HeadingsIcon(),
+        group: `1_Basic@${basicIndex++}`,
+        subMenu: headingsSubmenu,
+      },
+      ...codeItems,
+      ...dividerQuoteItems,
+      ...listItems,
+      ...styleItems,
+    ];
+  },
 };
 
 function createConversionItem(

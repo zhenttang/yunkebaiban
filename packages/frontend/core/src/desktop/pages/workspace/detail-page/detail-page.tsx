@@ -9,6 +9,7 @@ import { YunkeErrorBoundary } from '@yunke/core/components/yunke/yunke-error-bou
 import { BlockCommandsSidebar } from '@yunke/core/components/block-commands-sidebar';
 import { QuickFormatToolbar } from '@yunke/core/components/quick-format-toolbar';
 import { useKeyboardShortcuts } from '@yunke/core/components/keyboard-shortcuts';
+import { DocumentStatsStatusBar, DocumentStatsDetailPanel, calculateDocumentStats } from '@yunke/core/components/document-stats';
 import { GlobalPageHistoryModal } from '@yunke/core/components/yunke/page-history-modal';
 import { useGuard } from '@yunke/core/components/guard';
 import { useAppSettingHelper } from '@yunke/core/components/hooks/yunke/use-app-setting-helper';
@@ -123,6 +124,9 @@ const DetailPageImpl = memo(function DetailPageImpl() {
   const [showCommandSidebar, setShowCommandSidebar] = useState(
     appSettings.showBlockCommandsSidebarByDefault
   );
+
+  // 📊 字数统计面板控制
+  const [showStatsDetail, setShowStatsDetail] = useState(false);
 
   // 切换侧边栏快捷键 (Ctrl+Shift+/)
   useEffect(() => {
@@ -368,6 +372,23 @@ const DetailPageImpl = memo(function DetailPageImpl() {
 
             {/* 📌 可选显示的侧边栏 - 默认隐藏，Ctrl+Shift+/ 切换 */}
             {mode === 'page' && showCommandSidebar && <BlockCommandsSidebar />}
+
+            {/* 📊 字数统计状态栏 - 固定在底部 */}
+            {mode === 'page' && !isInTrash && appSettings.enableDocumentStats && (
+              <DocumentStatsStatusBar
+                doc={doc}
+                onToggleDetail={() => setShowStatsDetail(!showStatsDetail)}
+              />
+            )}
+
+            {/* 📊 字数统计详细面板 - 弹出式 */}
+            {mode === 'page' && !isInTrash && appSettings.enableDocumentStats && showStatsDetail && (
+              <DocumentStatsDetailPanel
+                stats={calculateDocumentStats(doc)}
+                isOpen={showStatsDetail}
+                onClose={() => setShowStatsDetail(false)}
+              />
+            )}
           </YunkeErrorBoundary>
           {isInTrash ? <TrashPageFooter /> : null}
         </div>

@@ -204,6 +204,15 @@ export const AppearanceSettings = () => {
             onChange={checked => updateSettings('showBlockCommandsSidebarByDefault', checked)}
           />
         </SettingRow>
+        <SettingRow
+          name={t['com.yunke.appearanceSettings.editor.documentStats.title']?.() || '字数统计'}
+          desc={t['com.yunke.appearanceSettings.editor.documentStats.description']?.() || '在编辑器右下角显示实时字数统计'}
+        >
+          <Switch
+            checked={appSettings.enableDocumentStats}
+            onChange={checked => updateSettings('enableDocumentStats', checked)}
+          />
+        </SettingRow>
       </SettingWrapper>
     </>
   );

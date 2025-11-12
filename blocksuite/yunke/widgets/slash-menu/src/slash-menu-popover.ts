@@ -33,6 +33,7 @@ import {
   YUNKE_SLASH_MENU_TOOLTIP_TIMEOUT,
   YUNKE_SLASH_MENU_TRIGGER_KEY,
 } from './consts.js';
+import { getItemUsageCount, recordItemUsage } from './recent-items.js';
 import { slashItemToolTipStyle, styles } from './styles.js';
 import type {
   SlashMenuActionItem,
@@ -75,6 +76,10 @@ export class SlashMenu extends WithDisposable(LitElement) {
       .waitForUpdate()
       .then(() => {
         item.action(this.context);
+
+        // 🔥 记录使用历史
+        recordItemUsage(item.name);
+
         this._telemetry?.track('SelectSlashMenuItem', {
           page: this._editorMode ?? undefined,
           segment:
@@ -156,10 +161,14 @@ export class SlashMenu extends WithDisposable(LitElement) {
     }
 
     this._filteredItems.sort((a, b) => {
-      return -(
-        substringMatchScore(a.name, searchStr) -
-        substringMatchScore(b.name, searchStr)
-      );
+      const scoreA = substringMatchScore(a.name, searchStr);
+      const scoreB = substringMatchScore(b.name, searchStr);
+
+      // 🔥 最近使用加权：使用次数 * 10
+      const recentBoostA = getItemUsageCount(a.name) * 10;
+      const recentBoostB = getItemUsageCount(b.name) * 10;
+
+      return -((scoreA + recentBoostA) - (scoreB + recentBoostB));
     });
 
     this._queryState = this._filteredItems.length === 0 ? 'no_result' : 'on';
