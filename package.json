@@ -33,9 +33,7 @@
   "scripts": {
     "dev": "yarn yunke dev",
     "build": "yarn yunke build",
-    "build:standalone": "./scripts/build-simple.sh",
-    "build:full": "node scripts/build-standalone.js",
-    "package": "yarn build:standalone",
+    "package": "yarn build",
     "lint:eslint": "cross-env NODE_OPTIONS=\"--max-old-space-size=8192\" eslint --report-unused-disable-directives-severity=off . --cache",
     "lint:eslint:fix": "yarn lint:eslint --fix --fix-type problem,suggestion,layout",
     "lint:prettier": "prettier --ignore-unknown --cache --check .",

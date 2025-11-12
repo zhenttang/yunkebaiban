@@ -47,10 +47,11 @@ export default defineConfig({
   },
   test: {
     setupFiles: [
-      resolve(rootDir, './scripts/setup/polyfill.ts'),
-      resolve(rootDir, './scripts/setup/lit.ts'),
-      resolve(rootDir, './scripts/setup/vi-mock.ts'),
-      resolve(rootDir, './scripts/setup/global.ts'),
+      // TODO: 恢复测试初始化文件
+      // resolve(rootDir, './scripts/setup/polyfill.ts'),
+      // resolve(rootDir, './scripts/setup/lit.ts'),
+      // resolve(rootDir, './scripts/setup/vi-mock.ts'),
+      // resolve(rootDir, './scripts/setup/global.ts'),
     ],
     include: [
       // rootDir在Windows上不能作为模式使用
