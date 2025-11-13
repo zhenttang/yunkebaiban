@@ -398,6 +398,9 @@ async function fetchData<T = unknown>(url: string): Promise<T> {
 }
 ```
 
+**修复状态** (2025-11-13):
+- ✅ `packages/frontend/core/src/modules/cloud/services/fetch.ts` 为 BUILD_CONFIG、CapacitorHttp、重试错误等核心类型补齐接口定义，并用 `unknown` + 类型守卫取代 `any`，同时为错误处理新增 `getErrorMessage`、`isPromiseLike` 等工具以维持类型安全。
+
 ---
 
 ### 7. 竞态条件导致资源泄漏

@@ -6,6 +6,55 @@ import { getBaseUrl, getApiBaseUrl } from '@yunke/config';
 
 import type { ServerService } from './server';
 
+type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
+
+interface WindowBuildConfig {
+  isAndroid?: boolean;
+  platform?: string;
+}
+
+interface CapacitorHttpOptions {
+  url: string;
+  headers?: Record<string, string>;
+  data?: unknown;
+  dataType?: 'json' | 'text';
+}
+
+interface CapacitorHttpRequestOptions extends CapacitorHttpOptions {
+  method: HttpMethod;
+}
+
+interface CapacitorHttpResponse {
+  data?: unknown;
+  headers?: Record<string, string | string[] | undefined>;
+  status: number;
+  statusText?: string;
+}
+
+interface CapacitorHttpPlugin {
+  request?: (options: CapacitorHttpRequestOptions) => Promise<CapacitorHttpResponse>;
+  get?: (options: CapacitorHttpOptions) => Promise<CapacitorHttpResponse>;
+  post?: (options: CapacitorHttpOptions) => Promise<CapacitorHttpResponse>;
+  put?: (options: CapacitorHttpOptions) => Promise<CapacitorHttpResponse>;
+  delete?: (options: CapacitorHttpOptions) => Promise<CapacitorHttpResponse>;
+  patch?: (options: CapacitorHttpOptions) => Promise<CapacitorHttpResponse>;
+}
+
+interface CapacitorGlobal {
+  Plugins?: {
+    Http?: CapacitorHttpPlugin;
+    CapacitorHttp?: CapacitorHttpPlugin;
+  };
+  getPlatform?: () => string;
+}
+
+declare global {
+  interface Window {
+    BUILD_CONFIG?: WindowBuildConfig;
+    Capacitor?: CapacitorGlobal;
+  }
+}
+
 const logger = new DebugLogger('yunke:fetch');
 
 /**
@@ -17,14 +66,14 @@ function isAndroidEnvironment(): boolean {
   }
   
   // 检查 BUILD_CONFIG
-  const buildConfig = (window as any).BUILD_CONFIG;
+  const buildConfig = window.BUILD_CONFIG;
   if (buildConfig?.isAndroid || buildConfig?.platform === 'android') {
     return true;
   }
   
   // 检查 Capacitor
   try {
-    const Capacitor = (window as any).Capacitor;
+    const Capacitor = window.Capacitor;
     if (Capacitor?.getPlatform?.() === 'android') {
       return true;
     }
@@ -38,14 +87,14 @@ function isAndroidEnvironment(): boolean {
 /**
  * 动态导入 CapacitorHttp（如果可用）
  */
-function getCapacitorHttp() {
+function getCapacitorHttp(): CapacitorHttpPlugin | null {
   if (typeof window === 'undefined') {
     return null;
   }
   
   try {
     // 先检查 Capacitor 全局对象
-    const Capacitor = (window as any).Capacitor;
+    const Capacitor = window.Capacitor;
     if (!Capacitor) {
       return null;
     }
@@ -87,11 +136,18 @@ interface RetryConfig {
 /**
  * 判断错误是否可重试
  */
-function isRetryableError(error: any, statusCode?: number): boolean {
-  // 网络错误（超时、连接失败等）可重试
-  if (error?.name === 'AbortError' || error?.code === 'NETWORK_ERROR') {
-    return true;
+function isRetryableError(error: unknown, statusCode?: number): boolean {
+  if (
+    typeof error === 'object' &&
+    error !== null &&
+    ('name' in error || 'code' in error)
+  ) {
+    const typedError = error as { name?: string; code?: string };
+    if (typedError.name === 'AbortError' || typedError.code === 'NETWORK_ERROR') {
+      return true;
+    }
   }
+  // 网络错误（超时、连接失败等）可重试
   
   // 特定状态码可重试
   if (statusCode) {
@@ -107,6 +163,29 @@ function isRetryableError(error: any, statusCode?: number): boolean {
  */
 function delay(ms: number): Promise<void> {
   return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+function getErrorMessage(error: unknown): string {
+  if (typeof error === 'string') {
+    return error;
+  }
+  if (error instanceof Error) {
+    return error.message;
+  }
+  try {
+    return JSON.stringify(error);
+  } catch {
+    return 'Unknown error';
+  }
+}
+
+function isPromiseLike<T>(value: unknown): value is Promise<T> {
+  return (
+    typeof value === 'object' &&
+    value !== null &&
+    'then' in value &&
+    typeof (value as { then?: unknown }).then === 'function'
+  );
 }
 
 export class FetchService extends Service {
@@ -159,7 +238,7 @@ export class FetchService extends Service {
         status: 500,
         code: 'INVALID_URL',
         type: 'INVALID_URL',
-        name: 'NETWORK_ERROR' as any,
+        name: 'NETWORK_ERROR' as const,
         message: `无效的请求URL: ${input}`,
       });
     }
@@ -223,7 +302,7 @@ export class FetchService extends Service {
       const method = (init.method || 'GET').toUpperCase() as 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
       
       // 处理请求体
-      let data: any = undefined;
+      let data: unknown;
       if (init.body) {
         if (typeof init.body === 'string') {
           try {
@@ -241,19 +320,22 @@ export class FetchService extends Service {
       
       // 使用 Promise.race 实现超时，避免 CapacitorHttp 悬挂
       try {
-        const requestOptions = { 
+        const requestOptions: CapacitorHttpOptions = { 
           url, 
           headers, 
-          data: data as any,
+          data,
           // 指定 dataType 为 json，让 CapacitorHttp 自动解析 JSON 响应
           dataType: 'json' as const
         };
         
         // 根据 HTTP 方法选择对应的 CapacitorHttp 方法
-        let capPromise: Promise<any>;
+        let capPromise: Promise<CapacitorHttpResponse>;
         
         try {
-          let result: any;
+          let result:
+            | CapacitorHttpResponse
+            | Promise<CapacitorHttpResponse>
+            | undefined;
           
           // 检查是否支持 request 方法（通用方法）
           if (typeof CapacitorHttp.request === 'function') {
@@ -261,7 +343,7 @@ export class FetchService extends Service {
               method,
               url,
               headers,
-              data: data as any,
+              data,
               dataType: 'json' as const
             });
           } else {
@@ -308,18 +390,24 @@ export class FetchService extends Service {
           }
           
           // 如果返回的是 Promise，直接使用
-          if (result instanceof Promise) {
+          if (isPromiseLike<CapacitorHttpResponse>(result)) {
             capPromise = result;
-          } else {
+          } else if (result) {
             // 如果不是 Promise，Capacitor 的桥接调用应该会自动处理
             // 但这里我们需要手动创建一个 Promise 来等待原生回调
             // 直接包装为 Promise，虽然不支持 .then()，但我们可以等待
             // 实际上，Capacitor 的桥接调用是异步的，需要等待原生回调
             // 这里我们只能先 resolve，然后等待实际的响应
             capPromise = Promise.resolve(result);
+          } else {
+            capPromise = Promise.reject(new Error('CapacitorHttp 返回空结果'));
           }
-        } catch (syncError: any) {
-          capPromise = Promise.reject(syncError);
+        } catch (syncError: unknown) {
+          const normalizedError =
+            syncError instanceof Error
+              ? syncError
+              : new Error(getErrorMessage(syncError));
+          capPromise = Promise.reject(normalizedError);
         }
         
         const timeoutPromise = new Promise<never>((_, reject) => {
@@ -328,24 +416,35 @@ export class FetchService extends Service {
           }, timeout);
         });
         
-        const response = await Promise.race([capPromise, timeoutPromise]) as any;
+        const response = await Promise.race([
+          capPromise,
+          timeoutPromise,
+        ]);
         
         // 将 CapacitorHttp 响应转换为标准 Response
         // CapacitorHttp 返回的 data 可能是字符串或对象
-        let responseBody: string;
+        let responseBody = '';
         if (typeof response.data === 'string') {
           responseBody = response.data;
-        } else if (response.data) {
+        } else if (response.data !== undefined) {
           responseBody = JSON.stringify(response.data);
-        } else {
-          responseBody = '';
         }
         
         // 确保响应头包含 Content-Type
         const responseHeaders: Record<string, string> = {
           'Content-Type': 'application/json',
-          ...(response.headers as Record<string, string> || {}),
         };
+
+        if (response.headers) {
+          for (const [headerKey, value] of Object.entries(response.headers)) {
+            if (value === undefined) {
+              continue;
+            }
+            responseHeaders[headerKey] = Array.isArray(value)
+              ? value.join(', ')
+              : value;
+          }
+        }
         
         const standardResponse = new Response(
           responseBody,
@@ -357,10 +456,13 @@ export class FetchService extends Service {
         );
         
         return standardResponse;
-      } catch (httpError: any) {
+      } catch (httpError: unknown) {
         
         // Android 环境下不允许降级，直接抛出错误
-        const errorMessage = httpError.message || 'CapacitorHttp 请求失败';
+        const errorMessage =
+          httpError instanceof Error
+            ? httpError.message
+            : getErrorMessage(httpError);
         const isTimeout = errorMessage.includes('请求超时') || errorMessage.includes('timeout');
         
         throw new UserFriendlyError({
@@ -391,21 +493,22 @@ export class FetchService extends Service {
 
       clearTimeout(timeoutId);
       return response;
-    } catch (err: any) {
+    } catch (err: unknown) {
       clearTimeout(timeoutId);
       
-      const errorMessage = err?.message || err?.toString() || String(err) || '网络连接失败';
-      const errorStack = err?.stack || '';
+      const errorMessage = getErrorMessage(err) || '网络连接失败';
+      const errorStack =
+        err instanceof Error && err.stack ? err.stack : undefined;
       
       const isTimeout = errorMessage === 'timeout' || 
                        errorMessage.includes('timeout') ||
-                       err?.name === 'AbortError';
+                       (err instanceof Error && err.name === 'AbortError');
       
       throw new UserFriendlyError({
         status: isTimeout ? 504 : 500,
         code: 'NETWORK_ERROR',
         type: 'NETWORK_ERROR',
-        name: 'NETWORK_ERROR',
+        name: 'NETWORK_ERROR' as const,
         message: isTimeout ? `请求超时（${timeout}ms）` : `网络错误: ${errorMessage}`,
         stacktrace: errorStack,
       });
@@ -438,7 +541,7 @@ export class FetchService extends Service {
       abortController.abort(reason);
     });
 
-    let lastError: any;
+    let lastError: unknown;
     let lastResponse: Response | null = null;
 
     // 重试循环
@@ -473,7 +576,7 @@ export class FetchService extends Service {
               status: statusCode,
               code: 'HTTP_ERROR',
               type: 'HTTP_ERROR',
-              name: 'NETWORK_ERROR' as any,
+              name: 'NETWORK_ERROR' as const,
               message: `HTTP ${statusCode}: ${response.statusText}`,
             });
             continue; // 继续重试
@@ -498,7 +601,7 @@ export class FetchService extends Service {
               status: statusCode,
               code: 'HTTP_ERROR',
               type: 'HTTP_ERROR',
-              name: 'NETWORK_ERROR' as any,
+              name: 'NETWORK_ERROR' as const,
               message: response.statusText || `HTTP ${statusCode}`,
             });
           }
@@ -510,7 +613,7 @@ export class FetchService extends Service {
         }
         return response;
 
-      } catch (err: any) {
+      } catch (err: unknown) {
         lastError = err;
         
         // 判断是否可重试
@@ -559,4 +662,3 @@ export class FetchService extends Service {
     return authEndpoints.some(endpoint => url.includes(endpoint));
   }
 }
-
