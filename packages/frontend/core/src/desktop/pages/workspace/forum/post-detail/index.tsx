@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import {
   getPost,
@@ -37,6 +37,7 @@ export function Component() {
     [page, setPage] = useState(0),
     [replyContent, setReplyContent] = useState(''),
     [loading, setLoading] = useState(true),
+    [error, setError] = useState<string | null>(null),
     [replyLikeLoading, setReplyLikeLoading] = useState<Record<number, boolean>>({}),
     [attachments, setAttachments] = useState<AttachmentDTO[]>([]),
     [tags, setTags] = useState<TagDTO[]>([]);
@@ -44,26 +45,52 @@ export function Component() {
   const { hasPermission: canSticky } = usePermission(forumNumericId, 'STICKY');
   const { hasPermission: canEssence } = usePermission(forumNumericId, 'ESSENCE');
   const { hasPermission: canLock } = usePermission(forumNumericId, 'LOCK');
+  const isMountedRef = useRef(true);
 
   useEffect(() => {
-    if (!postId) return;
+    return () => {
+      isMountedRef.current = false;
+    };
+  }, []);
 
+  const loadPostData = useCallback(async () => {
+    if (!postId) return;
     setLoading(true);
-    Promise.all([
-      getPost(postId),
-      getPostReplies(postId, page, 50),
-      getPostAttachments(postId),
-      getPostTags(postId),
-    ])
-      .then(([postData, repliesData, attachData, tagsData]) => {
-        setPost(postData);
-        setReplies(repliesData);
-        setAttachments(attachData || []);
-        setTags(tagsData || []);
-      })
-      .catch(console.error)
-      .finally(() => setLoading(false));
-  }, [postId, page]);
+    setError(null);
+    try {
+      const [postData, repliesData, attachData, tagsData] = await Promise.all([
+        getPost(postId),
+        getPostReplies(postId, page, 50),
+        getPostAttachments(postId),
+        getPostTags(postId),
+      ]);
+
+      if (!isMountedRef.current) {
+        return;
+      }
+
+      setPost(postData);
+      setReplies(repliesData);
+      setAttachments(attachData || []);
+      setTags(tagsData || []);
+    } catch (err) {
+      if (!isMountedRef.current) {
+        return;
+      }
+
+      console.error('加载帖子详情失败:', err);
+      setError(err instanceof Error ? err.message : '加载失败，请稍后重试');
+      showError('加载帖子失败，请稍后重试');
+    } finally {
+      if (isMountedRef.current) {
+        setLoading(false);
+      }
+    }
+  }, [page, postId, showError]);
+
+  useEffect(() => {
+    void loadPostData();
+  }, [loadPostData]);
 
   const handleReply = async () => {
     if (!postId || !replyContent.trim()) return;
@@ -107,6 +134,18 @@ export function Component() {
   };
 
   if (loading) return <div className={styles.loading}>加载中...</div>;
+
+  if (error) {
+    return (
+      <div className={styles.loading}>
+        <p>加载帖子失败：{error}</p>
+        <button onClick={() => void loadPostData()} className={styles.ghostBtn}>
+          重新加载
+        </button>
+      </div>
+    );
+  }
+
   if (!post) return <div className={styles.loading}>帖子不存在</div>;
 
   return (
