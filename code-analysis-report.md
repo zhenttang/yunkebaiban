@@ -613,6 +613,9 @@ logger.error('错误信息');  // 所有环境输出并上报
 
 或者使用已存在的 DebugLogger（代码中已有）统一替换。
 
+**修复状态** (2025-11-13):
+- ✅ `page-detail-editor`、`validate-t7-routes` 等高频输出文件已改用 `DebugLogger` 控制日志级别，生产环境不再有 `console.log` 污染。
+
 ---
 
 # 第二轮深度分析 - 内存泄漏和资源管理

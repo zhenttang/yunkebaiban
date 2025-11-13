@@ -1,6 +1,7 @@
 import './page-detail-editor.css';
 
 import { useLiveData, useService } from '@toeverything/infra';
+import { DebugLogger } from '@yunke/debug';
 import clsx from 'clsx';
 import React, { useEffect, useState, useCallback, useRef } from 'react';
 
@@ -11,6 +12,9 @@ import { EditorService } from '../modules/editor';
 import { EditorSettingService } from '../modules/editor-setting';
 import { deckerIntegrationManager } from '../modules/decker-integration/decker-integration-manager';
 import * as styles from './page-detail-editor.css';
+
+const deckLogger = new DebugLogger('yunke:decker-modal');
+const editorLogger = new DebugLogger('yunke:page-detail-editor');
 
 // 简化版本的Decker集成组件
 const SimpleDeckModal: React.FC<{
@@ -25,7 +29,7 @@ const SimpleDeckModal: React.FC<{
       // 检查消息来源
       if (event.origin !== window.location.origin) return;
       
-      console.log('收到来自Decker的消息:', event.data);
+      deckLogger.debug('收到来自Decker的消息', event.data);
       
       if (event.data?.type === 'DECK_GIF_EXPORT') {
         const { data, filename, timestamp, size } = event.data;
@@ -42,7 +46,7 @@ const SimpleDeckModal: React.FC<{
             source: 'decker'
           };
           
-          console.log('GIF数据接收成功:', metadata);
+          deckLogger.debug('GIF数据接收成功', metadata);
           
           if (onGifReceived) {
             onGifReceived(gifBlob, metadata);
@@ -52,7 +56,7 @@ const SimpleDeckModal: React.FC<{
           onClose();
           
         } catch (error) {
-          console.error('处理GIF数据失败:', error);
+          deckLogger.error('处理GIF数据失败', error as Error);
         }
       }
     };
@@ -200,8 +204,8 @@ export const PageDetailEditor = ({
 
   // 监听来自工具栏的打开事件以及Decker的导出完成事件
   useEffect(() => {
-    const handleOpenDecker = (event: CustomEvent) => {
-      console.log('收到打开Decker事件:', event.detail);
+    const handleOpenDecker = () => {
+      editorLogger.debug('收到打开Decker事件');
       setIsDeckModalOpen(true);
     };
 
@@ -210,7 +214,7 @@ export const PageDetailEditor = ({
       if (event.origin !== window.location.origin) return;
       if (event.data?.type !== 'DECK_EXPORT_COMPLETE') return;
       
-      console.log('收到Decker导出完成消息:', event.data);
+      editorLogger.debug('收到Decker导出完成消息');
       
       try {
         const { gifData, deckData, metadata } = event.data;
@@ -222,25 +226,17 @@ export const PageDetailEditor = ({
         const blockSuiteDoc = editor.doc?.blockSuiteDoc;
         
         if (!blockSuiteDoc || !blockSuiteDoc.blobSync) {
-          console.error('无法获取白板存储系统');
+          editorLogger.error('无法获取白板存储系统');
           alert('上传失败：无法访问白板存储系统');
           return;
         }
-        
-        console.log('开始上传GIF到白板存储系统...');
+
         const currentMode = modeRef.current;
-        console.log('📊 模式检测详情:', {
-          mode: currentMode,
-          modeType: typeof currentMode,
-          isEdgeless: currentMode === 'edgeless',
-          isPage: currentMode === 'page',
-          editorObject: editor,
-          allModes: ['page', 'edgeless']
-        });
+        editorLogger.debug('插入Decker绘图', { mode: currentMode });
         
         // 上传到白板存储系统
         const sourceId = await blockSuiteDoc.blobSync.set(gifBlob);
-        console.log('GIF上传成功，sourceId:', sourceId);
+        editorLogger.info('GIF上传成功', { sourceId });
         
         // 准备自定义数据，包含deck信息用于重新编辑（暂时不使用）
         const customData = JSON.stringify({
@@ -252,28 +248,19 @@ export const PageDetailEditor = ({
             editor: 'decker'
           }
         });
-        console.log('自定义数据已准备，长度:', customData.length);
-        
-        console.log('在页面中插入图片块...');
-        console.log('当前编辑器模式:', currentMode);
         
         // 根据编辑器模式决定插入方式
         if (currentMode === 'edgeless' || currentMode === 'page') {
-          // 在Edgeless模式下，需要作为surface元素插入
-          console.log('🎯 检测到Edgeless模式：插入到无限白板');
-          
           // 使用正确的API获取surface
           const surfaces = blockSuiteDoc.getBlocksByFlavour('yunke:surface');
-          console.log('找到的surface数量:', surfaces.length);
           
           if (surfaces.length === 0) {
-            console.error('未找到surface块');
+            editorLogger.warn('未找到surface块');
             alert('插入失败：无法找到无限白板surface');
             return;
           }
-          
+
           const surface = surfaces[0];
-          console.log('surface块信息:', surface);
 
           // 在surface中添加图片块（注意：图片是block，不是element）
           try {
@@ -292,17 +279,14 @@ export const PageDetailEditor = ({
               surface.id // 添加到 surface 块中
             );
             
-            console.log('✅ Decker绘图已成功插入无限白板！', { imageId, sourceId });
+            editorLogger.info('Decker绘图已插入无限白板', { imageId, sourceId });
           } catch (surfaceError: any) {
-            console.error('Surface插入失败:', surfaceError);
-            console.log('回退到block模式插入...');
+            editorLogger.error('Surface插入失败，改为页面模式', surfaceError);
             // 回退到block模式
             insertAsBlock(blockSuiteDoc, sourceId, metadata);
           }
           
         } else {
-          // 在Page模式下，作为block插入
-          console.log('📄 检测到Page模式：插入到文档页面');
           insertAsBlock(blockSuiteDoc, sourceId, metadata);
         }
         
@@ -313,7 +297,7 @@ export const PageDetailEditor = ({
         alert(`🎉 Decker绘图已成功插入白板！\n文件大小: ${Math.round(gifBlob.size / 1024)}KB`);
         
       } catch (error: any) {
-        console.error('处理Decker导出失败:', error);
+        editorLogger.error('处理Decker导出失败', error);
         alert(`上传失败: ${error?.message || '未知错误'}`);
       }
     };
@@ -333,18 +317,14 @@ export const PageDetailEditor = ({
 
   // 辅助函数：作为block插入到文档页面
   const insertAsBlock = useCallback((blockSuiteDoc: any, sourceId: string, metadata: any) => {
-    console.log('📝 执行block模式插入...');
-    
     const doc = blockSuiteDoc;
     const rootModel = doc.root;
     
     if (!rootModel) {
-      console.error('未找到根模型');
+      editorLogger.error('未找到根模型');
       alert('插入失败：无法找到页面根模型');
       return;
     }
-    
-    console.log('rootModel信息:', rootModel.id);
     
     // 在根块的末尾添加图片块
     const imageBlockId = doc.addBlock(
@@ -358,12 +338,12 @@ export const PageDetailEditor = ({
       rootModel.id
     );
     
-    console.log('✅ Decker绘图已成功插入文档页面！', { imageBlockId, sourceId });
+    editorLogger.info('Decker绘图已插入文档页面', { imageBlockId, sourceId });
   }, []);
 
   useEffect(() => {
     if (!editor.doc) {
-      console.warn('⚠️ DocScope未初始化，无法设置readonly');
+      editorLogger.warn('DocScope未初始化，无法设置readonly');
       return;
     }
     
@@ -379,10 +359,10 @@ export const PageDetailEditor = ({
           // DeckerIntegrationManager Store已设置
         }
       } catch (storeError) {
-        console.warn('⚠️ 设置DeckerIntegrationManager Store失败:', storeError);
+        editorLogger.warn('设置DeckerIntegrationManager Store失败', storeError as Error);
       }
     } else {
-      console.warn('⚠️ 无法获取BlockSuite Store');
+      editorLogger.warn('无法获取BlockSuite Store');
     }
   }, [editor, readonly]);
 
