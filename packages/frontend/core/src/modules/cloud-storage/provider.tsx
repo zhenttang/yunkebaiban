@@ -88,6 +88,35 @@ function getSocketIOUrl(): string {
 // 本地缓存键
 const OFFLINE_OPERATIONS_KEY = 'cloud_storage_offline_operations';
 
+const awaitWithTimeout = <T>(
+  promise: Promise<T>,
+  timeoutMs: number,
+  timeoutMessage: string
+): Promise<T> => {
+  let timer: ReturnType<typeof setTimeout> | null = null;
+
+  return new Promise<T>((resolve, reject) => {
+    timer = setTimeout(() => {
+      timer = null;
+      reject(new Error(timeoutMessage));
+    }, timeoutMs);
+
+    promise
+      .then(result => {
+        if (timer !== null) {
+          clearTimeout(timer);
+        }
+        resolve(result);
+      })
+      .catch(error => {
+        if (timer !== null) {
+          clearTimeout(timer);
+        }
+        reject(error);
+      });
+  });
+};
+
 // 离线操作类型 - 严格按照YUNKE格式
 interface OfflineOperation {
   id: string;
@@ -233,6 +262,7 @@ export const CloudStorageProvider = ({
   const isOnlineRef = useRef(isOnline); // 🔧 使用 ref 存储 isOnline，避免 connectToSocket 频繁重新创建
   const serverUrlRef = useRef(serverUrl); // 🔧 使用 ref 存储 serverUrl，避免 connectToSocket 频繁重新创建
   const connectToSocketRef = useRef<(() => Promise<void>) | null>(null); // 🔧 存储 connectToSocket 引用，用于网络状态监听
+  const activeJoinAttemptRef = useRef<symbol | null>(null);
 
   const upsertSessionInfo = useCallback(
     (sessionIdRaw: string | null, clientIdRaw: string | null, _source: SessionActivityDetail['source']) => {
@@ -604,13 +634,24 @@ export const CloudStorageProvider = ({
               clientVersion: '1.0.0'
             };
             
-            // 添加超时处理
+            const joinAttemptId = Symbol('space:join');
+            activeJoinAttemptRef.current = joinAttemptId;
+            const finalizeJoinAttempt = () => {
+              if (activeJoinAttemptRef.current === joinAttemptId) {
+                activeJoinAttemptRef.current = null;
+              }
+            };
+
             const joinPromise = newSocket.emitWithAck('space:join', joinData);
-            const timeoutPromise = new Promise<never>((_, reject) => {
-              setTimeout(() => reject(new Error('space:join timeout after 10s')), 10000);
-            });
-            
-            const response = await Promise.race([joinPromise, timeoutPromise]);
+            const response = await awaitWithTimeout(
+              joinPromise,
+              10000,
+              'space:join timeout after 10s'
+            );
+
+            if (activeJoinAttemptRef.current !== joinAttemptId) {
+              return;
+            }
             
             // 处理响应 - 兼容多种响应格式
             if (typeof response === 'object' && response) {
@@ -618,6 +659,7 @@ export const CloudStorageProvider = ({
               if ('error' in response) {
                 console.error('❌ [云存储管理器] 空间加入失败:', response.error);
                 setStorageMode('error');
+                finalizeJoinAttempt();
                 return;
               }
               
@@ -638,7 +680,7 @@ export const CloudStorageProvider = ({
                 if (pendingOperations.current.length > 0) {
                   processPendingOperations();
                 }
-                
+                finalizeJoinAttempt();
                 return;
               }
               
@@ -658,7 +700,7 @@ export const CloudStorageProvider = ({
                 if (pendingOperations.current.length > 0) {
                   processPendingOperations();
                 }
-                
+                finalizeJoinAttempt();
                 return;
               }
             }
@@ -676,9 +718,13 @@ export const CloudStorageProvider = ({
             // 因为 socket 已连接，只是响应格式可能不同
             setStorageMode('cloud');
             setLastSync(new Date());
+            finalizeJoinAttempt();
             
           } catch (error) {
             console.error('❌ [云存储管理器] space:join 失败:', error);
+            if (activeJoinAttemptRef.current) {
+              activeJoinAttemptRef.current = null;
+            }
             // 🔧 修复：连接超时或失败时，设置为 error 状态
             // 重连逻辑会在 disconnect 事件或 connect_error 事件中处理
             setStorageMode('error');
@@ -694,6 +740,7 @@ export const CloudStorageProvider = ({
           console.warn('⚠️ [云存储管理器] 连接失败:', error.message);
         });
         setIsConnected(false);
+        activeJoinAttemptRef.current = null;
         isConnectingRef.current = false; // 🔧 连接失败，重置标记
         newSocket.off('space:session-ended', handleRemoteSessionEnded);
         newSocket.disconnect();
@@ -706,6 +753,7 @@ export const CloudStorageProvider = ({
       newSocket.on('disconnect', (reason) => {
         setIsConnected(false);
         clientIdRef.current = null;
+        activeJoinAttemptRef.current = null;
         isConnectingRef.current = false; // 🔧 断开连接，重置标记
         newSocket.off('space:session-ended', handleRemoteSessionEnded);
         

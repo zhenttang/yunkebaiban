@@ -461,6 +461,10 @@ class CancellablePromise<T> {
 }
 ```
 
+**修复状态** (2025-11-13):
+- ✅ 云存储连接在 `space:join` 时新增 `awaitWithTimeout` 包装和 `activeJoinAttemptRef`，超时会安全终止本次尝试，后续响应会被忽略，避免 Promise.race 遗留的悬挂任务。
+- ✅ `connect_error`/`disconnect` 事件会清理正在进行的 join 尝试，确保下一次连接不会读取过期状态。
+
 ---
 
 ## 🟢 低严重度问题（性能和代码质量）
