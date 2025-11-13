@@ -226,16 +226,21 @@ export class CloudDocStorage extends DocStorageBase<CloudDocStorageOptions> {
     const updateBase64 = await uint8ArrayToBase64(update.bin);
     const docId = this.idConverter?.newIdToOldId(update.docId) || update.docId;
 
-    // 优先使用全局云存储管理器（若可用）
-    try {
-      const cloudStorageManager = (window as any).__CLOUD_STORAGE_MANAGER__;
+    // 🔧 修复 Bug #7: Web 应用越界引用 __CLOUD_STORAGE_MANAGER__
+    // 这个全局对象只在 Electron/Mobile 应用中存在,Web 环境下应跳过
+    // 优先使用全局云存储管理器（仅在 Native 环境下可用）
+    if (BUILD_CONFIG.isElectron || BUILD_CONFIG.isMobile || BUILD_CONFIG.isAndroid || BUILD_CONFIG.isIOS) {
+      try {
+        const cloudStorageManager = (window as any).__CLOUD_STORAGE_MANAGER__;
 
-      if (cloudStorageManager && cloudStorageManager.isConnected && cloudStorageManager.pushDocUpdate) {
-        const timestamp = await cloudStorageManager.pushDocUpdate(docId, update.bin);
-        return { docId: update.docId, timestamp: new Date(timestamp) };
+        if (cloudStorageManager && cloudStorageManager.isConnected && cloudStorageManager.pushDocUpdate) {
+          const timestamp = await cloudStorageManager.pushDocUpdate(docId, update.bin);
+          return { docId: update.docId, timestamp: new Date(timestamp) };
+        }
+      } catch (error) {
+        // Native 环境下降级到 Socket.IO
+        console.warn('[CloudDocStorage] __CLOUD_STORAGE_MANAGER__ 访问失败,降级到 Socket.IO', error);
       }
-    } catch (error) {
-      // 降级到 Socket.IO
     }
 
     // 降级到原始Socket.IO方法
