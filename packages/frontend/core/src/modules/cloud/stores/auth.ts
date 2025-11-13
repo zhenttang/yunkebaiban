@@ -7,6 +7,8 @@ import type { AuthProvider } from '../provider/auth';
 import type { FetchService } from '../services/fetch';
 import type { ServerService } from '../services/server';
 
+const AUTH_DEBUG_ENABLED = process.env.NODE_ENV !== 'production';
+
 export interface AccountProfile {
   id: string;
   email: string;
@@ -24,6 +26,19 @@ export class AuthStore extends Store {
     private readonly authProvider: AuthProvider
   ) {
     super();
+  }
+
+  private debugLog(message: string, payload?: Record<string, unknown>) {
+    if (!AUTH_DEBUG_ENABLED) {
+      return;
+    }
+
+    if (payload) {
+      console.debug(`[AuthStore] ${message}`, payload);
+      return;
+    }
+
+    console.debug(`[AuthStore] ${message}`);
   }
 
   watchCachedAuthSession() {
@@ -135,24 +150,19 @@ export class AuthStore extends Store {
   }
 
   async signInMagicLink(email: string, token: string) {
-    console.log('=== AuthStore.signInMagicLink 开始 ===');
-    console.log('Magic Link 登录凭据:', { email, token });
-    
-    console.log('🔵 AUTH_STORE_STEP1: [AuthStore] 准备调用 authProvider.signInMagicLink');
-    console.log('🔵 AUTH_STORE_STEP1: [AuthStore] authProvider 类型:', typeof this.authProvider);
-    console.log('🔵 AUTH_STORE_STEP1: [AuthStore] authProvider.signInMagicLink 类型:', typeof this.authProvider.signInMagicLink);
-    
+    this.debugLog('signInMagicLink start', { email });
+
     try {
       const result = await this.authProvider.signInMagicLink(
         email,
         token,
         this.getClientNonce()
       );
-      
-      console.log('✅ AUTH_STORE_STEP2: [AuthStore] authProvider.signInMagicLink 返回结果:', result);
-      console.log('AuthProvider 返回结果:', result);
-    
-      console.log('✅ AUTH_STORE_STEP3: [AuthStore] 登录成功，存储会话信息');
+
+      this.debugLog('signInMagicLink resolved', {
+        hasUser: Boolean(result?.user),
+      });
+
       // 登录成功后，存储JWT token和用户会话信息
       if (result && result.user) {
         // 存储JWT tokens
@@ -163,10 +173,11 @@ export class AuthStore extends Store {
           token: result.token,
           expiresAt: null, // JWT的过期时间在token中
         };
-        
-        console.log('存储会话信息和JWT token到缓存:', sessionInfo);
+
         this.setCachedAuthSession(sessionInfo);
-        console.log('=== AuthStore.signInMagicLink 完成 ===');
+        this.debugLog('signInMagicLink session cached', {
+          userId: result.user.id,
+        });
       } else {
         console.warn('AuthProvider 返回空结果');
       }
@@ -193,11 +204,12 @@ export class AuthStore extends Store {
     email: string;
     code: string;
   }) {
-    console.log('=== AuthStore.signInWithCode 开始 ===');
-    console.log('验证码登录凭据:', { email: credential.email, code: credential.code });
-    
+    this.debugLog('signInWithCode start', { email: credential.email });
+
     const result = await this.authProvider.signInWithCode(credential);
-    console.log('AuthProvider 返回结果:', result);
+    this.debugLog('signInWithCode resolved', {
+      hasUser: Boolean(result?.user),
+    });
     
     // 登录成功后，存储JWT token和用户会话信息
     if (result && result.user) {
@@ -210,9 +222,10 @@ export class AuthStore extends Store {
         expiresAt: null, // JWT的过期时间在token中
       };
       
-      console.log('存储会话信息和JWT token到缓存:', sessionInfo);
       this.setCachedAuthSession(sessionInfo);
-      console.log('=== AuthStore.signInWithCode 完成 ===');
+      this.debugLog('signInWithCode session cached', {
+        userId: result.user.id,
+      });
     } else {
       console.warn('AuthProvider 返回空结果');
     }
@@ -224,11 +237,15 @@ export class AuthStore extends Store {
     verifyToken?: string;
     challenge?: string;
   }) {
-    console.log('=== AuthStore.signInPassword 开始 ===');
-    console.log('登录凭据:', { email: credential.email, hasPassword: !!credential.password });
-    
+    this.debugLog('signInPassword start', {
+      email: credential.email,
+      hasPassword: Boolean(credential.password),
+    });
+
     const result = await this.authProvider.signInPassword(credential);
-    console.log('AuthProvider 返回结果:', result);
+    this.debugLog('signInPassword resolved', {
+      hasUser: Boolean(result?.user),
+    });
     
     // 登录成功后，存储JWT token和用户会话信息
     if (result && result.user) {
@@ -241,9 +258,10 @@ export class AuthStore extends Store {
         expiresAt: null, // JWT的过期时间在token中
       };
       
-      console.log('存储会话信息和JWT token到缓存:', sessionInfo);
       this.setCachedAuthSession(sessionInfo);
-      console.log('=== AuthStore.signInPassword 完成 ===');
+      this.debugLog('signInPassword session cached', {
+        userId: result.user.id,
+      });
     } else {
       console.warn('AuthProvider 返回空结果');
     }
