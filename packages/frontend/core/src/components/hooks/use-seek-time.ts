@@ -19,6 +19,7 @@ export const useSeekTime = (
   const [seekTime, setSeekTime] = useState(0);
   useEffect(() => {
     if (!playbackState) {
+      setSeekTime(0);
       return;
     }
     const updateSeekTime = () => {
@@ -43,8 +44,17 @@ export const useSeekTime = (
       }
     };
     updateSeekTime();
-    const interval = setInterval(updateSeekTime, 16.67);
-    return () => clearInterval(interval);
+    let rafId: number | null = null;
+    const loop = () => {
+      updateSeekTime();
+      rafId = requestAnimationFrame(loop);
+    };
+    rafId = requestAnimationFrame(loop);
+    return () => {
+      if (rafId !== null) {
+        cancelAnimationFrame(rafId);
+      }
+    };
   }, [duration, playbackState]);
 
   return clamp(seekTime, 0, duration ?? Number.MAX_SAFE_INTEGER);

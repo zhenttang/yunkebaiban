@@ -743,6 +743,9 @@ useEffect(() => {
 }, [duration, playbackState]);
 ```
 
+**修复状态** (2025-11-13):
+- ✅ `useSeekTime` 现改用 `requestAnimationFrame` 循环并在无播放状态时重置为 0，可避免高频 `setInterval` 造成的堆积和性能抖动。
+
 ---
 
 ### 14. 云存储连接的复杂竞态条件
