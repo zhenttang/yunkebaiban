@@ -146,6 +146,10 @@ import DOMPurify from 'dompurify';
 // 或更安全的方式：使用React组件渲染Markdown
 ```
 
+**修复状态** (2025-11-13):
+- ✅ `packages/frontend/core/src/desktop/pages/workspace/forum/utils/sanitize.ts` 现统一通过 DOMPurify 白名单清理内容，禁止内联样式和事件属性。
+- ✅ 帖子正文与回复组件仍复用 `sanitizeText`，但其实现已升级为 DOMPurify，避免所有原 XSS 向量。
+
 ---
 
 ### 3. 不安全的Token存储方案
