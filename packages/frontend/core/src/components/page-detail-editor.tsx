@@ -2,7 +2,7 @@ import './page-detail-editor.css';
 
 import { useLiveData, useService } from '@toeverything/infra';
 import clsx from 'clsx';
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useRef } from 'react';
 
 import type { YunkeEditorContainer } from '../blocksuite/block-suite-editor';
 import { BlockSuiteEditor } from '../blocksuite/block-suite-editor';
@@ -154,6 +154,11 @@ export const PageDetailEditor = ({
 }: PageDetailEditorProps) => {
   const editor = useService(EditorService).editor;
   const mode = useLiveData(editor.mode$);
+  const modeRef = useRef(mode);
+
+  useEffect(() => {
+    modeRef.current = mode;
+  }, [mode]);
   const defaultOpenProperty = useLiveData(editor.defaultOpenProperty$);
 
   // ✅ 安全地获取 doc：Editor.doc 可能返回 null（如果 DocScope 未初始化）
@@ -223,11 +228,12 @@ export const PageDetailEditor = ({
         }
         
         console.log('开始上传GIF到白板存储系统...');
+        const currentMode = modeRef.current;
         console.log('📊 模式检测详情:', {
-          mode: mode,
-          modeType: typeof mode,
-          isEdgeless: mode === 'edgeless',
-          isPage: mode === 'page',
+          mode: currentMode,
+          modeType: typeof currentMode,
+          isEdgeless: currentMode === 'edgeless',
+          isPage: currentMode === 'page',
           editorObject: editor,
           allModes: ['page', 'edgeless']
         });
@@ -249,10 +255,10 @@ export const PageDetailEditor = ({
         console.log('自定义数据已准备，长度:', customData.length);
         
         console.log('在页面中插入图片块...');
-        console.log('当前编辑器模式:', mode);
+        console.log('当前编辑器模式:', currentMode);
         
         // 根据编辑器模式决定插入方式
-        if (mode === 'edgeless' || mode === 'page') {
+        if (currentMode === 'edgeless' || currentMode === 'page') {
           // 在Edgeless模式下，需要作为surface元素插入
           console.log('🎯 检测到Edgeless模式：插入到无限白板');
           
