@@ -1,4 +1,5 @@
 import { toast } from 'sonner';
+import Papa from 'papaparse';
 
 import { emailRegex } from '../../../utils';
 
@@ -159,23 +160,28 @@ export const processCSVFile = async (
 ) => {
   try {
     const csvContent = await file.text();
-    const rows = csvContent
-      .split('\n')
-      .filter(row => row.trim() !== '')
-      .map(row => row.split(','));
+    const { data, errors } = Papa.parse<string[]>(csvContent, {
+      skipEmptyLines: true,
+      encoding: 'utf-8',
+      transform: value => (typeof value === 'string' ? value.trim() : value),
+    });
 
-    if (rows.length < 2) {
+    if (errors.length > 0) {
+      console.warn('CSV 解析警告', errors);
+    }
+
+    if (data.length < 2) {
       toast.error('CSV 文件格式不正确或为空');
       onError();
       return;
     }
 
-    const dataRows = rows.slice(1);
+    const [, ...dataRows] = data;
 
     const users = dataRows.map(row => ({
-      name: row[0]?.trim() || null,
-      email: row[1]?.trim() || '',
-      password: row[2]?.trim() || undefined,
+      name: row[0] || null,
+      email: row[1] || '',
+      password: row[2] || undefined,
     }));
 
     const usersWithEmail = users.filter(user => user.email);

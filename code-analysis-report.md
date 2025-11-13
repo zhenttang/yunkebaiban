@@ -506,6 +506,9 @@ const parsedData = Papa.parse(csvContent, {
 return parsedData.data;
 ```
 
+**修复状态** (2025-11-13):
+- ✅ 后台用户导入工具改用 `papaparse` 解析 CSV，支持带引号的逗号/换行字段，并在解析错误时给出警告日志。
+
 ---
 
 ### 9. 重复的localStorage访问影响性能
