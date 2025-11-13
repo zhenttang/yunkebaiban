@@ -24,11 +24,30 @@ import { getSocketIOUrl } from '@yunke/config';
 
 /**
  * 将API基础URL转换为Socket.IO URL
- * 使用统一的网络配置管理，不再硬编码端口
+ * 修复 Bug #4: 使用传入的 serverBaseUrl 而不是硬编码的全局URL
  */
-function convertToSocketIOUrl(_baseUrl: string): string {
-  // 直接使用统一的网络配置管理
-  return getSocketIOUrl();
+function convertToSocketIOUrl(baseUrl: string): string {
+  try {
+    // 如果提供了自定义 serverBaseUrl，从中推导 Socket.IO URL
+    if (baseUrl) {
+      const url = new URL(baseUrl);
+
+      // 转换协议: http -> ws, https -> wss
+      url.protocol = url.protocol === 'https:' ? 'wss:' : 'ws:';
+
+      // Socket.IO 路径通常是 /socket.io
+      url.pathname = '/socket.io';
+
+      return url.toString();
+    }
+
+    // 降级到全局配置（仅当没有提供 baseUrl 时）
+    return getSocketIOUrl();
+  } catch (error) {
+    console.error('Failed to convert serverBaseUrl to Socket.IO URL:', baseUrl, error);
+    // 出错时降级到全局配置
+    return getSocketIOUrl();
+  }
 }
 
 interface CloudDocStorageOptions extends DocStorageOptions {
