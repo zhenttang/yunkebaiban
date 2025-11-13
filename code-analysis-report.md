@@ -1563,6 +1563,10 @@ override async delete(key: string, permanently: boolean) {
 }
 ```
 
+**修复状态** (2025-11-13):
+- ✅ `packages/common/nbstore/src/impls/idb/blob.ts` 引入通用事务封装 `runTransaction`，所有读写操作都会 `await trx.done`，避免尚未提交就返回导致的数据丢失。
+- ✅ `release()` 逻辑会分批执行删除，每批执行后等待事务完成，杜绝多表写入不一致问题。
+
 ---
 
 ### 24. IndexedDB 配额超限未处理导致静默失败
@@ -1630,6 +1634,10 @@ override async set(blob: BlobRecord) {
   }, 'BlobStorage.set');
 }
 ```
+
+**修复状态** (2025-11-13):
+- ✅ IndexedDB Blob 存储现在会捕获 `QuotaExceededError`，并抛出语义化的 `StorageQuotaExceededError`，上层可据此提示“本地存储空间不足”。
+- ✅ 新增 `StorageQuotaExceededError` 类型统一暴露，便于 UI 层监听并给出清理或升级指引。
 
 ---
 
@@ -1705,6 +1713,10 @@ override async release() {
   }
 }
 ```
+
+**修复状态** (2025-11-13):
+- ✅ `release()` 不再在长事务中遍历所有游标，而是先收集软删除键值、再按 50 条一批清理两个表，避免事务长时间空闲被浏览器自动提交。
+- ✅ 每批次之间短暂 yield，进一步降低大批量删除对浏览器事务调度的压力。
 
 ---
 
