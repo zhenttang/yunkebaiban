@@ -9,6 +9,7 @@ import type {
   GlobalSessionState,
   GlobalState,
 } from '../providers/global';
+import { safeJsonParse } from '../../../utils/safe-json';
 
 export class StorageMemento implements Memento {
   // eventEmitter is used for same tab event
@@ -19,6 +20,23 @@ export class StorageMemento implements Memento {
     private readonly storage: Storage,
     private readonly prefix: string
   ) {}
+
+  private storageKey(key: string) {
+    return this.prefix + key;
+  }
+
+  private readValue<T>(key: string): T | undefined {
+    const raw = this.storage.getItem(this.storageKey(key));
+    return safeJsonParse<T>(raw, {
+      onError: error => {
+        console.warn(
+          `[StorageMemento] Failed to parse key "${key}", removing corrupted entry.`,
+          error
+        );
+        this.storage.removeItem(this.storageKey(key));
+      },
+    });
+  }
 
   keys(): string[] {
     const keys: string[] = [];
@@ -32,13 +50,11 @@ export class StorageMemento implements Memento {
   }
 
   get<T>(key: string): T | undefined {
-    const json = this.storage.getItem(this.prefix + key);
-    return json ? JSON.parse(json) : undefined;
+    return this.readValue<T>(key);
   }
   watch<T>(key: string): Observable<T | undefined> {
     return new Observable<T | undefined>(subscriber => {
-      const json = this.storage.getItem(this.prefix + key);
-      const first = json ? JSON.parse(json) : undefined;
+      const first = this.readValue<T>(key);
       subscriber.next(first);
 
       const eventEmitterCb = (value: T) => {

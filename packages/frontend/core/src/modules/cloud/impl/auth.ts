@@ -3,10 +3,33 @@ import type { Framework } from '@toeverything/infra';
 import { AuthProvider } from '../provider/auth';
 import { ServerScope } from '../scopes/server';
 import { FetchService } from '../services/fetch';
+import { safeJsonParse } from '../../../utils/safe-json';
 
 export function configureDefaultAuthProvider(framework: Framework) {
   framework.scope(ServerScope).override(AuthProvider, resolver => {
     const fetchService = resolver.get(FetchService);
+    const parseResponseBody = async <T>(
+      res: Response,
+      context: string
+    ): Promise<T> => {
+      const responseText = await res.text();
+      console.log(`${context} response text:`, responseText);
+
+      if (!responseText.trim()) {
+        throw new Error(`${context}: Empty response from server`);
+      }
+
+      const data = safeJsonParse<T>(responseText, {
+        onError: error =>
+          console.error(`${context}: Failed to parse JSON response`, error),
+      });
+
+      if (!data) {
+        throw new Error(`${context}: Invalid response format from server`);
+      }
+
+      return data;
+    };
     return {
       async signInMagicLink(
         email: string,
@@ -134,20 +157,7 @@ export function configureDefaultAuthProvider(framework: Framework) {
           throw new Error(errorMessage);
         }
         
-        let data;
-        try {
-          const responseText = await res.text();
-          console.log('Login response text:', responseText);
-          
-          if (!responseText.trim()) {
-            throw new Error('Empty response from server');
-          }
-          
-          data = JSON.parse(responseText);
-        } catch (e) {
-          console.error('Failed to parse login response:', e);
-          throw new Error('Invalid response format from server');
-        }
+        const data = await parseResponseBody<any>(res, 'Password sign in');
         
         if (!data.success) {
           throw new Error(data.error || 'Password sign in failed');
@@ -218,20 +228,10 @@ export function configureDefaultAuthProvider(framework: Framework) {
           throw new Error(errorMessage);
         }
 
-        let data;
-        try {
-          const responseText = await res.text();
-          console.log('Code login response text:', responseText);
-
-          if (!responseText.trim()) {
-            throw new Error('Empty response from server');
-          }
-
-          data = JSON.parse(responseText);
-        } catch (e) {
-          console.error('Failed to parse code login response:', e);
-          throw new Error('Invalid response format from server');
-        }
+        const data = await parseResponseBody<any>(
+          res,
+          'Verification code sign in'
+        );
 
         if (!data.success) {
           throw new Error(data.error || 'Verification code sign in failed');
