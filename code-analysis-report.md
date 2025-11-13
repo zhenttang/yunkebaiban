@@ -894,6 +894,9 @@ get<T>(key: string): T | undefined {
 ```
 
 **修复状态** (2025-11-13):
+- ✅ `FetchService` 引入 5 秒的 token 缓存层，`prepareHeaders` 仅在缓存过期时读取 localStorage，避免每个请求都访问存储。
+
+**修复状态** (2025-11-13):
 - ✅ 核心前端新增 `safeJsonParse` 工具，`StorageMemento`、Auth 登录流程等关键路径使用它解析本地存储和接口响应，遇到异常会记录上下文、清理损坏数据，并向调用方返回明确错误。
 - ✅ LocalStorage Watcher 在解析失败时会自动移除坏数据，避免后续继续读取导致应用崩溃。
 

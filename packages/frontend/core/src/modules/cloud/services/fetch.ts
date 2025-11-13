@@ -189,6 +189,13 @@ function isPromiseLike<T>(value: unknown): value is Promise<T> {
 }
 
 export class FetchService extends Service {
+  private static readonly TOKEN_CACHE_TTL_MS = 5000;
+
+  private tokenCache: { value: string | null; timestamp: number } = {
+    value: null,
+    timestamp: 0,
+  };
+
   constructor(
     private readonly _serverService: ServerService
   ) {
@@ -255,20 +262,36 @@ export class FetchService extends Service {
 
     // 如果不是登录接口，尝试添加JWT token
     if (!this.isAuthEndpoint(input)) {
-      try {
-        const token = globalThis.localStorage?.getItem('yunke-admin-token') || 
-                     globalThis.localStorage?.getItem('yunke-access-token');
-        
-        if (token) {
-          headers['Authorization'] = `Bearer ${token}`;
-        }
-      } catch (error) {
-        // 如果无法获取token，继续执行
-        logger.warn('获取JWT token失败', error);
+      const token = this.getAuthToken();
+      if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
       }
     }
 
     return headers;
+  }
+  
+  private getAuthToken(): string | null {
+    const now = Date.now();
+    if (
+      now - this.tokenCache.timestamp <
+      FetchService.TOKEN_CACHE_TTL_MS
+    ) {
+      return this.tokenCache.value;
+    }
+
+    try {
+      const token =
+        globalThis.localStorage?.getItem('yunke-admin-token') ??
+        globalThis.localStorage?.getItem('yunke-access-token') ??
+        null;
+      this.tokenCache = { value: token, timestamp: now };
+      return token;
+    } catch (error) {
+      logger.warn('获取JWT token失败', error);
+      this.tokenCache = { value: null, timestamp: now };
+      return null;
+    }
   }
 
   /**
