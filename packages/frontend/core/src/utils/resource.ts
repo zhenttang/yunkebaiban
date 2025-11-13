@@ -24,13 +24,47 @@ export async function resourceUrlToBlob(
 
 export async function downloadBlob(blob: Blob, filename: string) {
   const blobUrl = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = blobUrl;
-  a.download = filename;
-  document.body.append(a);
-  a.click();
-  a.remove();
-  URL.revokeObjectURL(blobUrl);
+  const anchor = document.createElement('a');
+  anchor.href = blobUrl;
+  anchor.download = filename;
+  anchor.rel = 'noopener';
+  anchor.style.display = 'none';
+  document.body.append(anchor);
+
+  const cleanup = () => {
+    anchor.remove();
+    URL.revokeObjectURL(blobUrl);
+  };
+
+  return new Promise<void>((resolve, reject) => {
+    try {
+      let cleaned = false;
+      const resolveOnce = () => {
+        if (cleaned) {
+          return;
+        }
+        cleaned = true;
+        cleanup();
+        resolve();
+      };
+
+      anchor.addEventListener(
+        'click',
+        () => {
+          window.setTimeout(resolveOnce, 1000);
+        },
+        { once: true }
+      );
+
+      anchor.click();
+
+      // 兜底：3 秒后仍未触发 click 监听则强制回收
+      window.setTimeout(resolveOnce, 3000);
+    } catch (error) {
+      cleanup();
+      reject(error);
+    }
+  });
 }
 
 export async function downloadResourceWithUrl(url: string, filename: string) {

@@ -232,35 +232,85 @@ export class UnusedBlobs extends Entity {
     record: ListedBlobRecord,
     abortSignal?: AbortSignal
   ): Promise<HydratedBlobRecord | null> {
-    try {
-    const blob = await this.getBlob(record.key);
+    let objectUrl: string | null = null;
+    let cleanupTimer: ReturnType<typeof setTimeout> | undefined;
+    let abortHandler: (() => void) | undefined;
 
-    if (!blob || abortSignal?.aborted) {
-      return null;
-    }
+    const cleanup = () => {
+      if (cleanupTimer) {
+        clearTimeout(cleanupTimer);
+        cleanupTimer = undefined;
+      }
 
-    const fileType = await fileTypeFromBuffer(await blob.arrayBuffer());
+      if (objectUrl) {
+        URL.revokeObjectURL(objectUrl);
+        objectUrl = null;
+      }
 
-    if (abortSignal?.aborted) {
-      return null;
-    }
-
-    const mime = record.mime || fileType?.mime || '未知';
-    const url = URL.createObjectURL(new Blob([blob], { type: mime }));
-    // todo(@pengx17): the following may not be sufficient
-    const extension = fileType?.ext;
-    const type = extension ?? (mime?.startsWith('text/') ? 'txt' : '未知');
-    return {
-      ...record,
-      url,
-      extension,
-      type,
-      mime,
-      [Symbol.dispose]: () => {
-        URL.revokeObjectURL(url);
-      },
+      if (abortHandler) {
+        abortSignal?.removeEventListener('abort', abortHandler);
+        abortHandler = undefined;
+      }
     };
+
+    const registerAbortCleanup = () => {
+      if (!abortSignal || abortHandler) {
+        return;
+      }
+
+      abortHandler = () => {
+        cleanup();
+      };
+      abortSignal.addEventListener('abort', abortHandler, { once: true });
+    };
+
+    try {
+      const blob = await this.getBlob(record.key);
+
+      if (!blob || abortSignal?.aborted) {
+        return null;
+      }
+
+      const arrayBuffer = await blob.arrayBuffer();
+      const fileType = await fileTypeFromBuffer(arrayBuffer);
+
+      if (abortSignal?.aborted) {
+        return null;
+      }
+
+      const mime =
+        record.mime || fileType?.mime || blob.type || 'application/octet-stream';
+      const hydratedBlob = new Blob([arrayBuffer], { type: mime });
+      objectUrl = URL.createObjectURL(hydratedBlob);
+
+      if (abortSignal?.aborted) {
+        cleanup();
+        return null;
+      }
+
+      registerAbortCleanup();
+
+      // 自动回收：5分钟后兜底清理，防止遗忘
+      cleanupTimer = setTimeout(() => {
+        cleanup();
+      }, 5 * 60 * 1000);
+
+      const extension = fileType?.ext;
+      const type = extension ?? (mime?.startsWith('text/') ? 'txt' : 'unknown');
+
+      const dispose = () => cleanup();
+
+      return {
+        ...record,
+        url: objectUrl,
+        extension,
+        type,
+        mime,
+        dispose,
+        [Symbol.dispose]: dispose,
+      };
     } catch (err) {
+      cleanup();
       console.error(`水化blob ${record.key}失败:`, err);
       return null;
     }

@@ -1833,6 +1833,10 @@ async hydrateBlob(
 }
 ```
 
+**修复状态** (2025-11-13):
+- ✅ `hydrateBlob` 现在在创建 URL 时注册统一的 `cleanup`，在 abort、异常和定时(5分钟)到期时自动 `revokeObjectURL`，并提供 `dispose`/`[Symbol.dispose]` 便于调用方主动释放。
+- ✅ 如果 AbortSignal 在 URL 创建后触发，会立即清理资源并返回 null，避免泄漏。
+
 ---
 
 ### 27. 文件下载时 Blob URL 过早释放
@@ -1913,6 +1917,9 @@ export async function downloadBlob(blob: Blob, filename: string) {
   });
 }
 ```
+
+**修复状态** (2025-11-13):
+- ✅ 下载辅助函数现在以 Promise 形式等待点击事件，延迟 1s 后再释放 URL，并在 3s 内兜底清理，兼容 Safari/Firefox 等延迟下载的场景。
 
 ---
 
