@@ -18,8 +18,16 @@ export const DeckModal: React.FC<DeckModalProps> = ({
   onGifExport 
 }) => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
+  const readyTimerRef = useRef<number | null>(null);
   const [isReady, setIsReady] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+
+  const clearReadyTimer = useCallback(() => {
+    if (readyTimerRef.current !== null) {
+      window.clearTimeout(readyTimerRef.current);
+      readyTimerRef.current = null;
+    }
+  }, []);
 
   // 处理来自Decker的消息
   const handleMessage = useCallback((event: MessageEvent) => {
@@ -92,8 +100,15 @@ export const DeckModal: React.FC<DeckModalProps> = ({
     if (open) {
       setIsReady(false);
       setIsLoading(true);
+      clearReadyTimer();
     }
-  }, [open]);
+  }, [open, clearReadyTimer]);
+
+  useEffect(() => {
+    return () => {
+      clearReadyTimer();
+    };
+  }, [clearReadyTimer]);
 
   // 手动导出按钮点击处理
   const handleExportClick = useCallback(() => {
@@ -272,7 +287,9 @@ export const DeckModal: React.FC<DeckModalProps> = ({
             sandbox="allow-scripts allow-same-origin allow-forms"
             onLoad={() => {
               // iframe加载完成，但Decker可能还需要初始化时间
-              setTimeout(() => {
+              clearReadyTimer();
+              readyTimerRef.current = window.setTimeout(() => {
+                readyTimerRef.current = null;
                 if (!isReady) {
                   setIsReady(true);
                   setIsLoading(false);

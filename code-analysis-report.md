@@ -698,6 +698,9 @@ useEffect(() => {
 }, [isReady]);
 ```
 
+**修复状态** (2025-11-13):
+- ✅ `DeckModal` 现在通过 `useRef` 保存 timeout ID，`onLoad` 前先清理旧定时器，并在组件卸载或模态关闭时统一 `clearTimeout`，防止卸载后状态更新。
+
 ---
 
 ### 13. 高频定时器性能问题
