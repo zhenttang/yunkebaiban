@@ -807,8 +807,9 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
       // 2. 格式验证 - 如果ID格式明显不正确，尝试从当前有效工作空间列表获取
       if (trimmedId.length < 10 || trimmedId.length > 50) {
         // 尝试从当前工作空间列表中找到有效的工作空间ID
-        const workspaces = this.workspaces$.value;
-        if (workspaces && workspaces.length > 0) {
+        // 修复 Bug #1: 添加空值安全检查
+        const workspaces = this.workspaces$.value ?? [];
+        if (workspaces.length > 0) {
           const validWorkspace = workspaces[0];
           workspaceId = validWorkspace.id;
         } else {
@@ -818,19 +819,20 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
       
       // 3. 清理错误的文档-工作空间映射缓存
       const isUUID = workspaceId.match(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i);
-      
+
       if (isUUID) {
         // 检查缓存中的映射是否正确
         if (this.docWorkspaceMapping.has(workspaceId)) {
           const cachedWorkspaceId = this.docWorkspaceMapping.get(workspaceId)!;
-          
+
           // 验证缓存的工作空间ID是否在有效列表中
-          const workspaces = this.workspaces$.value;
+          // 修复 Bug #1: 添加空值安全检查，防止 workspaces 为 undefined 导致崩溃
+          const workspaces = this.workspaces$.value ?? [];
           const isCachedIdValid = workspaces.some(ws => ws.id === cachedWorkspaceId);
-          
+
           if (!isCachedIdValid) {
             this.docWorkspaceMapping.delete(workspaceId);
-            
+
             // 使用原始ID作为工作空间ID
             if (workspaces.some(ws => ws.id === workspaceId)) {
               // workspaceId 保持不变
@@ -838,6 +840,9 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
               // 使用第一个有效的工作空间ID
               if (workspaces.length > 0) {
                 workspaceId = workspaces[0].id;
+              } else {
+                // 如果没有可用的工作空间，返回默认配置
+                return this.getDefaultWorkspaceProfile();
               }
             }
           } else {
@@ -845,8 +850,14 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
           }
         } else {
           // 检查原始ID是否就是有效的工作空间ID
-          const workspaces = this.workspaces$.value;
+          // 修复 Bug #1: 添加空值安全检查
+          const workspaces = this.workspaces$.value ?? [];
           if (!workspaces.some(ws => ws.id === workspaceId)) {
+            // 如果没有可用的工作空间，直接返回默认配置
+            if (workspaces.length === 0) {
+              return this.getDefaultWorkspaceProfile();
+            }
+
             // 尝试从当前工作空间上下文获取工作空间ID
             const currentWorkspaceId = this.getCurrentWorkspaceId();
             if (currentWorkspaceId && currentWorkspaceId !== workspaceId) {
@@ -855,12 +866,8 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
               this.docWorkspaceMapping.set(id, workspaceId);
             } else {
               // 使用第一个有效工作空间
-              if (workspaces.length > 0) {
-                workspaceId = workspaces[0].id;
-                this.docWorkspaceMapping.set(id, workspaceId);
-              } else {
-                return this.getDefaultWorkspaceProfile();
-              }
+              workspaceId = workspaces[0].id;
+              this.docWorkspaceMapping.set(id, workspaceId);
             }
           }
         }
