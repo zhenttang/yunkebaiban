@@ -171,9 +171,9 @@ function OAuthProvider({ onContinue, provider }: OauthProviderProps) {
   });
 
   const onClick = useCallback(() => {
-    // 测试阶段，暂时禁用功能
-    // onContinue(provider);
-  }, []);
+    // 修复 Bug #2: 恢复 OAuth 登录回调
+    onContinue(provider);
+  }, [onContinue, provider]);
 
   return (
     <Button
@@ -182,8 +182,6 @@ function OAuthProvider({ onContinue, provider }: OauthProviderProps) {
       className={oauthStyle.placeholderButton}
       prefix={decoratedIcon}
       onClick={onClick}
-      disabled={true}
-      data-disabled
       title={`使用${label}登录`}
     />
   );
