@@ -332,6 +332,9 @@ export function unflattenObject(ob: any) {
 }
 ```
 
+**修复状态** (2025-11-13):
+- ✅ `unflattenObject` 现在跳过 `__proto__`/`constructor`/`prototype` 等危险键，并使用 `Object.create(null)` 初始化中间节点，防止原型污染。
+
 ---
 
 ### 6. any 类型滥用导致类型不安全
