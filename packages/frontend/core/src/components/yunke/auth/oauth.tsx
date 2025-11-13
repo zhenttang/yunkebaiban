@@ -95,13 +95,17 @@ export function OAuth({ redirectUrl }: { redirectUrl?: string }) {
   const urlService = useService(UrlService);
   const oauth = useLiveData(serverService.server.features$.map(r => r?.oauth));
   const auth = useService(AuthService);
-  
-  // 自定义登录方式列表
-  const customProviders = [
+
+  // 🔧 修复 Bug #5: 使用服务器返回的 OAuth 配置,而不是硬编码列表
+  // 优先使用服务器配置,如果服务器未返回则使用默认列表作为 fallback
+  const defaultProviders = [
     OAuthProviderType.Phone,
     OAuthProviderType.WeChat,
     OAuthProviderType.WeChatOfficialAccount,
   ];
+
+  // 如果服务器返回了 OAuth 配置,使用服务器配置;否则使用默认列表
+  const availableProviders = oauth && oauth.length > 0 ? oauth : defaultProviders;
 
   const onContinue = useAsyncCallback(
     async (provider: OAuthProviderType) => {
@@ -145,10 +149,11 @@ export function OAuth({ redirectUrl }: { redirectUrl?: string }) {
     [urlService, redirectUrl, serverService, auth]
   );
 
-  // 总是显示自定义登录方式，而不依赖服务器配置
+  // 🔧 修复 Bug #5: 根据服务器配置动态渲染 OAuth 按钮
+  // 只显示服务器启用的登录方式
   return (
     <div className={oauthStyle.wrapper}>
-      {customProviders.map(provider => (
+      {availableProviders.map(provider => (
         <OAuthProvider
           key={provider}
           provider={provider}
