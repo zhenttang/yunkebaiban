@@ -849,6 +849,7 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
             workspaceId = cachedWorkspaceId;
           }
         } else {
+          // 🔧 修复 Bug #6: 文档-工作区映射缓存误用
           // 检查原始ID是否就是有效的工作空间ID
           // 修复 Bug #1: 添加空值安全检查
           const workspaces = this.workspaces$.value ?? [];
@@ -858,16 +859,30 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
               return this.getDefaultWorkspaceProfile();
             }
 
-            // 尝试从当前工作空间上下文获取工作空间ID
-            const currentWorkspaceId = this.getCurrentWorkspaceId();
-            if (currentWorkspaceId && currentWorkspaceId !== workspaceId) {
-              workspaceId = currentWorkspaceId;
-              // 保存到缓存
-              this.docWorkspaceMapping.set(id, workspaceId);
-            } else {
-              // 使用第一个有效工作空间
-              workspaceId = workspaces[0].id;
-              this.docWorkspaceMapping.set(id, workspaceId);
+            // 🔧 修复 Bug #6: 不在工作空间列表中的UUID可能是文档ID
+            // 通过API验证并获取正确的工作空间ID,而不是直接假设
+            try {
+              console.log(`[🔍 Bug #6] 传入的 ID ${workspaceId} 不在工作空间列表中,尝试作为文档ID查询...`);
+              const actualWorkspaceId = await this.getWorkspaceIdFromDoc(workspaceId, signal);
+              console.log(`[✅ Bug #6] 文档 ${workspaceId} 对应的工作空间ID: ${actualWorkspaceId}`);
+              workspaceId = actualWorkspaceId;
+              // 映射已在 getWorkspaceIdFromDoc 中保存,无需重复保存
+            } catch (error) {
+              // API 查询失败,使用 fallback 逻辑
+              console.warn(`[⚠️ Bug #6] 无法通过API查询文档 ${workspaceId} 的工作空间,使用 fallback`, error);
+
+              // Fallback 1: 尝试使用当前工作空间上下文
+              const currentWorkspaceId = this.getCurrentWorkspaceId();
+              if (currentWorkspaceId && workspaces.some(ws => ws.id === currentWorkspaceId)) {
+                console.log(`[📌 Bug #6] 使用当前工作空间上下文: ${currentWorkspaceId}`);
+                workspaceId = currentWorkspaceId;
+                // ⚠️ 注意: 这里不保存到 docWorkspaceMapping,因为无法确认是正确的映射
+              } else {
+                // Fallback 2: 使用第一个有效工作空间
+                console.log(`[📌 Bug #6] 使用第一个有效工作空间: ${workspaces[0].id}`);
+                workspaceId = workspaces[0].id;
+                // ⚠️ 注意: 这里不保存到 docWorkspaceMapping,因为无法确认是正确的映射
+              }
             }
           }
         }
