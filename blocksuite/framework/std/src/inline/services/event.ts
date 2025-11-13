@@ -16,6 +16,13 @@ export class EventService<TextAttributes extends BaseTextAttributes> {
 
   private _isComposing = false;
 
+  // 🔧 修复 Bug #3: Android 输入重复检测 - 追踪最近一次输入
+  private _lastAndroidInput: {
+    data: string;
+    position: number;
+    timestamp: number;
+  } | null = null;
+
   private readonly _isRangeCompletelyInRoot = (range: Range) => {
     if (range.commonAncestorContainer.ownerDocument !== document) return false;
 
@@ -476,20 +483,32 @@ export class EventService<TextAttributes extends BaseTextAttributes> {
               if (event.data && event.data.length > 0) {
                 const inlineRange = this.editor.toInlineRange(range);
                 if (inlineRange) {
-                  // 检查是否已经有这个文本（避免重复插入）
-                  const currentText = this.editor.yTextString;
-                  const beforeText = currentText.substring(
-                    Math.max(0, inlineRange.index - event.data.length),
-                    inlineRange.index
-                  );
+                  // 🔧 修复 Bug #3: 使用时间戳和位置精确判断重复,而不是 includes()
+                  // 旧逻辑: beforeText.includes(event.data) 会误删合法的连续相同字符
+                  // 新逻辑: 检查是否是极短时间内(<100ms)在相同位置输入相同内容的重复事件
+                  const now = Date.now();
+                  const currentPosition = inlineRange.index;
+                  const inputData = event.data;
 
-                  // 如果刚插入的文本不在编辑器中，才插入
-                  if (!beforeText.includes(event.data)) {
+                  const isDuplicate =
+                    this._lastAndroidInput &&
+                    this._lastAndroidInput.data === inputData &&
+                    this._lastAndroidInput.position === currentPosition &&
+                    now - this._lastAndroidInput.timestamp < 100;
+
+                  if (!isDuplicate) {
                     this.editor.insertText(inlineRange, event.data, {} as TextAttributes);
                     this.editor.setInlineRange({
                       index: inlineRange.index + event.data.length,
                       length: 0,
                     });
+
+                    // 记录本次输入,用于下次重复检测
+                    this._lastAndroidInput = {
+                      data: inputData,
+                      position: currentPosition,
+                      timestamp: now,
+                    };
                   }
                 }
               }
