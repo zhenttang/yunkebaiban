@@ -10,7 +10,7 @@ import {
   getNodeApiBaseUrl, 
   getNodeSocketIOUrl, 
   getNodeElectronDevServerUrl 
-} from '@yunke/config/node-env';
+} from '@yunke/config';
 
 protocol.registerSchemesAsPrivileged([
   {

@@ -37,7 +37,8 @@ async function make() {
   const winstallerConfig: ElectronWinstallerOptions = {
     name: appName,
     title: appName,
-    noMsi: true,
+    // 生成 MSI 安装包（需要安装 WiX Toolset）
+    noMsi: false,
     exe: `${appName}.exe`,
     setupExe: `${appName}-${packageJSON.version} Setup.exe`,
     version: packageJSON.version,

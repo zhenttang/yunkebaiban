@@ -1,4 +1,4 @@
-import { getNodeElectronDevServerUrl } from '@yunke/config/node-env';
+import { getNodeElectronDevServerUrl } from '@yunke/config';
 
 export const mainHost = '.';
 export const anotherHost = 'another-host';

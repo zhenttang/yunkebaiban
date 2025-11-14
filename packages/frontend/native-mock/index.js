@@ -15,8 +15,8 @@ function getBaseUrlSync() {
   }
   
   // 首次调用，从环境变量读取（兼容性处理）
-  // 优先尝试从统一配置模块获取
-  if (typeof import !== 'undefined' && typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.VITE_API_BASE_URL) {
+  // 优先尝试从统一配置模块获取（基于 ESM 的 import.meta）
+  if (typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.VITE_API_BASE_URL) {
     BASE_URL = import.meta.env.VITE_API_BASE_URL;
     return BASE_URL;
   }
