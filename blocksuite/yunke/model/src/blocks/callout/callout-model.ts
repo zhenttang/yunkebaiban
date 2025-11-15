@@ -10,6 +10,8 @@ import type { BlockMeta } from '../../utils/types';
 export type CalloutProps = {
   emoji: string;
   text: Text;
+  background?: 'grey' | 'blue' | 'green' | 'yellow' | 'red' | 'orange' | 'purple' | 'magenta' | 'teal';
+  emojiSize?: 'small' | 'medium' | 'large';
 } & BlockMeta;
 
 export const CalloutBlockSchema = defineBlockSchema({
@@ -17,6 +19,8 @@ export const CalloutBlockSchema = defineBlockSchema({
   props: (internal): CalloutProps => ({
     emoji: '😀',
     text: internal.Text(),
+    background: 'grey',
+    emojiSize: 'medium',
     'meta:createdAt': undefined,
     'meta:updatedAt': undefined,
     'meta:createdBy': undefined,

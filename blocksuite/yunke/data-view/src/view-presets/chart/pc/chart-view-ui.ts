@@ -149,13 +149,15 @@ export class ChartViewUI extends DataViewUIBase<ChartViewUILogic> {
     .chart-tooltip {
       position: absolute;
       pointer-events: none;
-      background: rgba(0, 0, 0, 0.8);
-      color: #fff;
+      background: var(--yunke-background-overlay-panel-color);
+      color: var(--yunke-text-primary-color);
       font-size: 12px;
       border-radius: 6px;
       padding: 6px 8px;
       line-height: 1.4;
       white-space: nowrap;
+      box-shadow: var(--yunke-shadow-2);
+      border: 1px solid var(--yunke-border-color);
     }
     .chart-tooltip .title {
       display: flex;
@@ -169,13 +171,17 @@ export class ChartViewUI extends DataViewUIBase<ChartViewUILogic> {
       flex-shrink: 0;
     }
     .chart-tooltip .divider {
-      border-top: 1px solid rgba(255, 255, 255, 0.2);
+      border-top: 1px solid var(--yunke-border-color);
       margin: 4px 0;
     }
     .chart-tooltip .action {
-      color: #ccc;
+      color: var(--yunke-text-secondary-color);
       pointer-events: auto;
       cursor: pointer;
+      transition: color 0.2s ease;
+    }
+    .chart-tooltip .action:hover {
+      color: var(--yunke-text-emphasis-color);
     }
 
     .chart-caption {
@@ -193,17 +199,18 @@ export class ChartViewUI extends DataViewUIBase<ChartViewUILogic> {
     }
 
     dialog::backdrop {
-      background: rgba(0, 0, 0, 0.5);
+      background: var(--yunke-background-modal-color, rgba(0, 0, 0, 0.5));
     }
 
     dialog {
       border: none;
       border-radius: 8px;
-      background: #000;
-      color: #fff;
+      background: var(--yunke-background-overlay-panel-color);
+      color: var(--yunke-text-primary-color);
       padding: 0;
       min-width: 300px;
       z-index: 10;
+      box-shadow: var(--yunke-shadow-2);
     }
 
     .dialog-content {
@@ -222,12 +229,18 @@ export class ChartViewUI extends DataViewUIBase<ChartViewUILogic> {
     .dialog-content th,
     .dialog-content td {
       padding: 4px 8px;
-      border-bottom: 1px solid #333;
+      border-bottom: 1px solid var(--yunke-border-color);
       text-align: left;
+      transition: background-color 0.15s ease;
+    }
+
+    .dialog-content tr:hover td {
+      background-color: var(--yunke-hover-color);
     }
 
     .dialog-content h4 {
       margin-top: 0;
+      color: var(--yunke-text-primary-color);
     }
 
     .dialog-header {
@@ -240,6 +253,7 @@ export class ChartViewUI extends DataViewUIBase<ChartViewUILogic> {
 
     .dialog-content h1 {
       margin: 0 0 8px;
+      color: var(--yunke-text-primary-color);
     }
 
     .dialog-content yunke-database-column-stats {
@@ -249,9 +263,20 @@ export class ChartViewUI extends DataViewUIBase<ChartViewUILogic> {
     .close-btn {
       background: none;
       border: none;
-      color: #fff;
+      color: var(--yunke-text-secondary-color);
       font-size: 16px;
       cursor: pointer;
+      transition: color 0.2s ease, background-color 0.2s ease;
+      border-radius: 4px;
+      padding: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .close-btn:hover {
+      color: var(--yunke-text-primary-color);
+      background-color: var(--yunke-hover-color);
     }
   `;
 
@@ -433,12 +458,29 @@ export class ChartViewUI extends DataViewUIBase<ChartViewUILogic> {
   }
 
   /**
+   * Get theme colors from CSS variables
+   */
+  private getThemeColors() {
+    const style = window.getComputedStyle(this);
+    return {
+      textPrimary: style.getPropertyValue('--yunke-text-primary-color').trim() || 'rgba(0, 0, 0, 0.9)',
+      textSecondary: style.getPropertyValue('--yunke-text-secondary-color').trim() || 'rgba(0, 0, 0, 0.6)',
+      border: style.getPropertyValue('--yunke-border-color').trim() || 'rgba(0, 0, 0, 0.1)',
+      iconSecondary: style.getPropertyValue('--yunke-icon-secondary').trim() || 'rgba(0, 0, 0, 0.3)',
+      backgroundPrimary: style.getPropertyValue('--yunke-background-primary').trim() || '#ffffff',
+    };
+  }
+
+  /**
    * Whenever categoryCounts$ changes, rebuild the chart.
    */
   private createOrUpdateChart() {
     if (!this.canvasEl) return;
     const ctx = this.canvasEl.getContext('2d');
     if (!ctx) return;
+
+    // Get theme colors for canvas rendering
+    const themeColors = this.getThemeColors();
 
     // 1) Retrieve the raw counts & labels from logic
     const rawMap = this.logic.view.categoryCounts$.value; // e.g. { TODO: 7, 'In Progress': 3, Complete: 2, DNF: 1 }
@@ -495,14 +537,14 @@ export class ChartViewUI extends DataViewUIBase<ChartViewUILogic> {
     // 3) Build the "outer" display labels for callouts based on user preference
     const dataLabelMode =
       this.logic.view.data$.value?.dataLabels ?? 'Value (%)';
-    const displayLabels = rawLabels.map((_label, idx) => {
+    const displayLabels = rawLabels.map((label, idx) => {
       const count = dataValues[idx] || 0;
       const pct = total > 0 ? ((count / total) * 100).toFixed(1) : '0.0';
 
       if (dataLabelMode === 'Value') {
-        return `${count}`;
+        return `${label}: ${count}`;
       } else if (dataLabelMode === 'Value (%)') {
-        return `${count} (${pct}%)`;
+        return `${label}: ${count} (${pct}%)`;
       }
       return ''; // None
     });
@@ -658,9 +700,9 @@ export class ChartViewUI extends DataViewUIBase<ChartViewUILogic> {
     const axisProperty = this.logic.view.properties$.value.find(
       (prop: any) => prop.id === axisPropertyId
     );
-    const xAxisTitle = axisProperty?.name$.value ?? 'Category';
-    const yAxisTitle = 'Value';
-    const legendLabel = axisProperty?.name$.value ?? 'Category';
+    const xAxisTitle = axisProperty?.name$.value ?? '分类';
+    const yAxisTitle = '数值';
+    const legendLabel = axisProperty?.name$.value ?? '分类';
 
     //
     // ─── PLUGIN: Center Text ("13" + "Total") ─────────────────────────────────────────
@@ -680,17 +722,17 @@ export class ChartViewUI extends DataViewUIBase<ChartViewUILogic> {
         const centerX = left + width / 2;
         const centerY = top + height / 2;
 
-        // Large number (62px, weight 500, white at 0.81 opacity)
+        // Large number (62px, weight 500, use theme primary text color)
         ctx.font = '500 62px sans-serif';
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.81)';
+        ctx.fillStyle = themeColors.textPrimary;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         ctx.fillText(String(total), centerX, centerY - 12);
 
-        // "Total" label (12px, weight 400, white at 0.46 opacity)
+        // "总计" label (12px, weight 400, use theme secondary text color)
         ctx.font = '400 12px sans-serif';
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.46)';
-        ctx.fillText('Total', centerX, centerY + 30);
+        ctx.fillStyle = themeColors.textSecondary;
+        ctx.fillText('总计', centerX, centerY + 30);
 
         ctx.restore();
       },
@@ -708,12 +750,12 @@ export class ChartViewUI extends DataViewUIBase<ChartViewUILogic> {
         const ctx = chart.ctx;
         ctx.save();
 
-        // Use Notion's faint‐white for label text: 12px, rgba(255,255,255,0.282)
-        ctx.font = '12px sans-serif';
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.282)';
+        // Use theme text color for label text: 13px with medium weight for better readability
+        ctx.font = '500 13px sans-serif';
+        ctx.fillStyle = themeColors.textPrimary;
 
-        // The callout line itself is dark gray: rgba(55,55,55,1)
-        ctx.strokeStyle = 'rgba(55, 55, 55, 1)';
+        // The callout line uses theme border color
+        ctx.strokeStyle = themeColors.border;
         ctx.lineWidth = 1;
 
         meta.data.forEach((arc: any, index: number) => {
@@ -728,8 +770,8 @@ export class ChartViewUI extends DataViewUIBase<ChartViewUILogic> {
           const sx = props.x + Math.cos(angle) * props.outerRadius;
           const sy = props.y + Math.sin(angle) * props.outerRadius;
 
-          // Now we extend ~25% farther out so that "7 – 53.8%" sits well away:
-          const extension = props.outerRadius * 1.42;
+          // Now we extend ~25% farther out for better label placement:
+          const extension = props.outerRadius * 1.28;
           const ex = props.x + Math.cos(angle) * extension;
           const ey = props.y + Math.sin(angle) * extension;
 
@@ -741,8 +783,8 @@ export class ChartViewUI extends DataViewUIBase<ChartViewUILogic> {
 
           // ----- Position the text "at" the tip of this line -----
           // Compute a small "push-out" along the same angle so the text does not
-          // overlap the line itself. Adjust `labelPadding` as needed (e.g. 4px).
-          const labelPadding = 4;
+          // overlap the line itself. Adjust `labelPadding` as needed (e.g. 8px).
+          const labelPadding = 8;
           const offsetX = Math.cos(angle) * labelPadding;
           const offsetY = Math.sin(angle) * labelPadding;
 
@@ -794,7 +836,7 @@ export class ChartViewUI extends DataViewUIBase<ChartViewUILogic> {
               const strokeColor = paletteColors[0] ?? 'rgb(75, 192, 192)';
               dataset.borderColor = strokeColor;
               dataset.pointBackgroundColor = paletteColors;
-              dataset.pointBorderColor = '#ffffff';
+              dataset.pointBorderColor = themeColors.backgroundPrimary;
               dataset.pointRadius = 4;
               dataset.pointHoverRadius = 6;
               dataset.pointHoverBorderWidth = 2;
@@ -845,7 +887,7 @@ export class ChartViewUI extends DataViewUIBase<ChartViewUILogic> {
         const ctx = chart.ctx;
         ctx.save();
         ctx.font = '12px sans-serif';
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.85)';
+        ctx.fillStyle = themeColors.textPrimary;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'bottom';
         meta.data.forEach((element: any, index: number) => {
@@ -884,7 +926,7 @@ export class ChartViewUI extends DataViewUIBase<ChartViewUILogic> {
       type: type as any,
       data: {
         // For stacked bar, use a single label; for others, use category labels
-        labels: isStacked ? ['Total'] : rawLabels,
+        labels: isStacked ? ['总计'] : rawLabels,
         datasets,
       },
       options: {
@@ -900,15 +942,15 @@ export class ChartViewUI extends DataViewUIBase<ChartViewUILogic> {
                   stacked: isStacked,
                   grid: {
                     display: type === 'line' ? showVerticalGrid : false,
-                    color: 'rgba(255, 255, 255, 0.1)',
+                    color: themeColors.border,
                   },
                   ticks: {
-                    color: 'rgba(255, 255, 255, 0.46)',
+                    color: themeColors.textSecondary,
                   },
                   title: {
                     display: showXAxisTitle,
                     text: xAxisTitle,
-                    color: 'rgba(255, 255, 255, 0.46)',
+                    color: themeColors.textSecondary,
                     font: {
                       size: 12,
                       weight: 400 as const,
@@ -921,15 +963,15 @@ export class ChartViewUI extends DataViewUIBase<ChartViewUILogic> {
                   beginAtZero: true,
                   grid: {
                     display: type === 'line' ? showHorizontalGrid : true,
-                    color: 'rgba(255, 255, 255, 0.1)',
+                    color: themeColors.border,
                   },
                   ticks: {
-                    color: 'rgba(255, 255, 255, 0.46)',
+                    color: themeColors.textSecondary,
                   },
                   title: {
                     display: showYAxisTitle,
                     text: yAxisTitle,
-                    color: 'rgba(255, 255, 255, 0.46)',
+                    color: themeColors.textSecondary,
                     font: {
                       size: 12,
                       weight: 400 as const,
@@ -943,10 +985,10 @@ export class ChartViewUI extends DataViewUIBase<ChartViewUILogic> {
           // Doughnut charts need more padding for outer labels, bar/line charts need less
           padding: isDoughnut
             ? {
-                top: 80,
-                bottom: 12,
-                left: 12,
-                right: 12,
+                top: 100,
+                bottom: 40,
+                left: 80,
+                right: 80,
               }
             : {
                 top: 20,
@@ -966,8 +1008,8 @@ export class ChartViewUI extends DataViewUIBase<ChartViewUILogic> {
               boxHeight: 8,
               borderRadius: 2,
               boxBorderColor: 'transparent',
-              // Legend text = 12px, rgba(255,255,255,0.46)
-              color: 'rgba(255, 255, 255, 0.46)',
+              // Legend text uses theme secondary text color
+              color: themeColors.textSecondary,
               font: {
                 size: 12,
                 weight: 400 as const,
@@ -1068,7 +1110,7 @@ export class ChartViewUI extends DataViewUIBase<ChartViewUILogic> {
     const indexLabel = this.getLabelForIndex(dataIndex);
     const rawLabel = typeof dataPoint.label === 'string' ? dataPoint.label : '';
     const label =
-      (rawLabel && rawLabel !== 'Total' ? rawLabel : undefined) ??
+      (rawLabel && rawLabel !== '总计' ? rawLabel : undefined) ??
       datasetLabel ??
       indexLabel ??
       '';
@@ -1123,7 +1165,8 @@ export class ChartViewUI extends DataViewUIBase<ChartViewUILogic> {
 
     const actionDiv = document.createElement('div');
     actionDiv.className = 'action';
-    actionDiv.textContent = 'Click to view data';
+    actionDiv.textContent = '点击查看数据';
+    actionDiv.style.color = typeof color === 'string' ? color : 'var(--yunke-icon-secondary)';
     actionDiv.addEventListener('click', () => {
       const resolvedLabel = this.resolveCategoryLabelFromSource(
         dataPoint,
@@ -1397,7 +1440,7 @@ export class ChartViewUI extends DataViewUIBase<ChartViewUILogic> {
       typeof source.label === 'string' && source.label.trim().length > 0
         ? source.label.trim()
         : undefined;
-    if (directLabel && directLabel !== 'Total') {
+    if (directLabel && directLabel !== '总计') {
       return directLabel;
     }
     const index =

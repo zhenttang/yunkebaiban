@@ -1,3 +1,4 @@
+import { AutoSizeIcon, PaletteIcon } from '@blocksuite/icons/lit';
 import { CaptionedBlockComponent } from '@blocksuite/yunke-components/caption';
 import { createLitPortal } from '@blocksuite/yunke-components/portal';
 import { DefaultInlineManagerExtension } from '@blocksuite/yunke-inline-preset';
@@ -24,19 +25,62 @@ export class CalloutBlockComponent extends CaptionedBlockComponent<CalloutBlockM
       display: flex;
       padding: 5px 10px;
       border-radius: 8px;
-      background-color: ${unsafeCSSVarV2('block/callout/background/grey')};
+      transition: background-color 0.2s ease;
+      position: relative;
+    }
+
+    .yunke-callout-toolbar {
+      position: absolute;
+      top: 4px;
+      right: 4px;
+      display: flex;
+      gap: 4px;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+      pointer-events: none;
+    }
+
+    .yunke-callout-block-container:hover .yunke-callout-toolbar {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .yunke-callout-toolbar-button {
+      width: 28px;
+      height: 28px;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: ${unsafeCSSVarV2('layer/background/overlayPanel')};
+      border: 1px solid ${unsafeCSSVarV2('layer/insideBorder/border')};
+      cursor: pointer;
+      transition: all 0.2s ease;
+      color: ${unsafeCSSVarV2('icon/primary')};
+      flex-shrink: 0;
+      box-sizing: border-box;
+      line-height: 1;
+    }
+
+    .yunke-callout-toolbar-button:hover {
+      background: ${unsafeCSSVarV2('button/grabber/default')};
+      box-shadow: ${unsafeCSSVarV2('shadow/1')};
+    }
+
+    .yunke-callout-toolbar-button svg {
+      font-size: 20px;
+      display: block;
+      flex-shrink: 0;
     }
 
     .yunke-callout-emoji-container {
       margin-right: 10px;
       margin-top: 14px;
       user-select: none;
-      font-size: 1.2em;
-      width: 24px;
-      height: 24px;
       display: flex;
       align-items: center;
       justify-content: center;
+      transition: font-size 0.2s ease;
     }
     .yunke-callout-emoji:hover {
       cursor: pointer;
@@ -48,9 +92,30 @@ export class CalloutBlockComponent extends CaptionedBlockComponent<CalloutBlockM
       min-width: 0;
       padding-left: 10px;
     }
+
+    .emoji-size-small {
+      font-size: 1em;
+      width: 20px;
+      height: 20px;
+    }
+
+    .emoji-size-medium {
+      font-size: 1.2em;
+      width: 24px;
+      height: 24px;
+    }
+
+    .emoji-size-large {
+      font-size: 1.5em;
+      width: 30px;
+      height: 30px;
+    }
   `;
 
   private _emojiMenuAbortController: AbortController | null = null;
+  private _colorPickerAbortController: AbortController | null = null;
+  private _sizePickerAbortController: AbortController | null = null;
+
   private readonly _toggleEmojiMenu = () => {
     if (this._emojiMenuAbortController) {
       this._emojiMenuAbortController.abort();
@@ -81,6 +146,64 @@ export class CalloutBlockComponent extends CaptionedBlockComponent<CalloutBlockM
     });
   };
 
+  private readonly _toggleColorPicker = () => {
+    if (this._colorPickerAbortController) {
+      this._colorPickerAbortController.abort();
+    }
+    this._colorPickerAbortController = new AbortController();
+
+    createLitPortal({
+      template: html`<yunke-callout-color-picker
+        .selectedColor=${this.model.props.background$.value || 'grey'}
+        .onColorSelect=${(color: string) => {
+          this.model.props.background = color;
+          this._colorPickerAbortController?.abort();
+        }}
+      ></yunke-callout-color-picker>`,
+      portalStyles: {
+        zIndex: 'var(--yunke-z-index-popover)',
+      },
+      container: this.host,
+      computePosition: {
+        referenceElement: this._containerElement,
+        placement: 'bottom-start',
+        middleware: [flip(), offset(4)],
+        autoUpdate: { animationFrame: true },
+      },
+      abortController: this._colorPickerAbortController,
+      closeOnClickAway: true,
+    });
+  };
+
+  private readonly _toggleSizePicker = () => {
+    if (this._sizePickerAbortController) {
+      this._sizePickerAbortController.abort();
+    }
+    this._sizePickerAbortController = new AbortController();
+
+    createLitPortal({
+      template: html`<yunke-callout-size-picker
+        .selectedSize=${this.model.props.emojiSize$.value || 'medium'}
+        .onSizeSelect=${(size: string) => {
+          this.model.props.emojiSize = size;
+          this._sizePickerAbortController?.abort();
+        }}
+      ></yunke-callout-size-picker>`,
+      portalStyles: {
+        zIndex: 'var(--yunke-z-index-popover)',
+      },
+      container: this.host,
+      computePosition: {
+        referenceElement: this._emojiButton,
+        placement: 'bottom-end',
+        middleware: [flip(), offset(4)],
+        autoUpdate: { animationFrame: true },
+      },
+      abortController: this._sizePickerAbortController,
+      closeOnClickAway: true,
+    });
+  };
+
   get attributeRenderer() {
     return this.inlineManager.getRenderer();
   }
@@ -100,6 +223,9 @@ export class CalloutBlockComponent extends CaptionedBlockComponent<CalloutBlockM
   @query('.yunke-callout-emoji')
   private accessor _emojiButton!: HTMLElement;
 
+  @query('.yunke-callout-block-container')
+  private accessor _containerElement!: HTMLElement;
+
   override get topContenteditableElement() {
     if (this.std.get(DocModeProvider).getEditorMode() === 'edgeless') {
       return this.closest<BlockComponent>(
@@ -111,12 +237,20 @@ export class CalloutBlockComponent extends CaptionedBlockComponent<CalloutBlockM
 
   override renderBlock() {
     const emoji = this.model.props.emoji$.value;
+    const background = this.model.props.background$.value || 'grey';
+    const emojiSize = this.model.props.emojiSize$.value || 'medium';
+
     return html`
-      <div class="yunke-callout-block-container">
+      <div
+        class="yunke-callout-block-container"
+        style=${styleMap({
+          backgroundColor: `var(--yunke-v2-block-callout-background-${background})`,
+        })}
+      >
         <div
           @click=${this._toggleEmojiMenu}
           contenteditable="false"
-          class="yunke-callout-emoji-container"
+          class="yunke-callout-emoji-container emoji-size-${emojiSize}"
           style=${styleMap({
             display: emoji.length === 0 ? 'none' : undefined,
           })}
@@ -125,6 +259,22 @@ export class CalloutBlockComponent extends CaptionedBlockComponent<CalloutBlockM
         </div>
         <div class="yunke-callout-children">
           ${this.renderChildren(this.model)}
+        </div>
+        <div class="yunke-callout-toolbar" contenteditable="false">
+          <div
+            class="yunke-callout-toolbar-button"
+            @click=${this._toggleColorPicker}
+            title="选择背景颜色"
+          >
+            ${PaletteIcon()}
+          </div>
+          <div
+            class="yunke-callout-toolbar-button"
+            @click=${this._toggleSizePicker}
+            title="调整emoji大小"
+          >
+            ${AutoSizeIcon()}
+          </div>
         </div>
       </div>
     `;
