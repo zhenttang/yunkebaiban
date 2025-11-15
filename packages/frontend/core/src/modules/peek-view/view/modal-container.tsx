@@ -329,7 +329,7 @@ export const PeekViewModalContainer = forwardRef<
             opacity: animateIn ? [0, 1] : [1, 0],
             y: animateIn ? ['-2%', '0%'] : ['0%', '-2%'],
             scale: animateIn ? [0.96, 1] : [1, 0.96],
-            ease: eases.cubicBezier(0.42, 0, 0.58, 1),
+            easing: 'cubicBezier(0.42, 0, 0.58, 1)',
             duration: 230,
             onComplete: () => {
               if (!animateIn) setVtOpen(false);

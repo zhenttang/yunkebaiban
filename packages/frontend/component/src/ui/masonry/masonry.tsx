@@ -215,7 +215,7 @@ export const Masonry = ({
           setStickyGroupId(calcSticky({ scrollY, layoutMap }));
         }
       }, 50);
-      rootEl.addEventListener('scroll', handler);
+      rootEl.addEventListener('scroll', handler, { passive: true });
       return () => {
         rootEl.removeEventListener('scroll', handler);
       };

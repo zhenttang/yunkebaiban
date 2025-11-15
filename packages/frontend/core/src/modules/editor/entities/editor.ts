@@ -272,7 +272,7 @@ export class Editor extends Entity {
         this.workbenchView?.setScrollPosition(pos);
       }
     };
-    scrollViewport?.addEventListener('scroll', saveScrollPosition);
+    scrollViewport?.addEventListener('scroll', saveScrollPosition, { passive: true });
     unsubs.push(() => {
       scrollViewport?.removeEventListener('scroll', saveScrollPosition);
     });

@@ -329,6 +329,8 @@ export function createHTMLTargetConfig(
           VITE_SOCKETIO_PORT: process.env.VITE_SOCKETIO_PORT || envVars.VITE_SOCKETIO_PORT || '',
           MODE: buildConfig.debug ? 'development' : 'production'
         }),
+        // ✅ 修复：注入完整的 BUILD_CONFIG 对象
+        'BUILD_CONFIG': JSON.stringify(buildConfig),
         ...Object.entries(buildConfig).reduce(
           (def, [k, v]) => {
             def[`BUILD_CONFIG.${k}`] = JSON.stringify(v);
@@ -568,6 +570,8 @@ export function createWorkerTargetConfig(
           VITE_SOCKETIO_PORT: process.env.VITE_SOCKETIO_PORT || envVars.VITE_SOCKETIO_PORT || '',
           MODE: buildConfig.debug ? 'development' : 'production',
         }),
+        // ✅ 修复：注入完整的 BUILD_CONFIG 对象（Worker配置）
+        'BUILD_CONFIG': JSON.stringify(buildConfig),
         // 注入 BUILD_CONFIG
         ...Object.entries(buildConfig).reduce(
           (def, [k, v]) => {

@@ -15,7 +15,7 @@ export function useHasScrollTop() {
           });
         }
       }, 50);
-      container?.addEventListener('scroll', updateScrollTop);
+      container?.addEventListener('scroll', updateScrollTop, { passive: true });
       updateScrollTop();
       unsub = () => {
         container?.removeEventListener('scroll', updateScrollTop);

@@ -45,37 +45,19 @@ export async function getIdConverter(
 
   return {
     newIdToOldId(newId: string) {
-      if (newId.startsWith(`db$`)) {
-        const alreadyExpandedPrefix = `db$${spaceId}$`;
-        if (newId.startsWith(alreadyExpandedPrefix)) {
-          return newId;
-        }
-        // db$docId -> db$${spaceId}$docId
-        return newId.replace(`db$`, alreadyExpandedPrefix);
-      }
-      if (newId.startsWith(`userdata$`)) {
-        const alreadyExpandedPattern = new RegExp(
-          `^userdata\\$[\\w-]+\\$${spaceId}\\$`
-        );
-        if (alreadyExpandedPattern.test(newId)) {
-          return newId;
-        }
-        // userdata$userId$docId -> userdata$userId$spaceId$docId
-        return newId.replace(
-          new RegExp(`^(userdata\\$[\\w-]+)\\$([^\\$]+)`),
-          (_, p1, p2) => `${p1}$${spaceId}$${p2}`
-        );
+      // 🔧 修复：db$ 和 userdata$ 格式的 ID 不进行转换
+      // 这些是特殊的系统文档 ID，服务器期望接收原始格式
+      // 例如：db$docProperties 应该保持原样，不应该变成 db$${spaceId}$docProperties
+      if (newId.startsWith(`db$`) || newId.startsWith(`userdata$`)) {
+        return newId;
       }
       return newIdToOldId[newId] ?? newId;
     },
     oldIdToNewId(oldId: string) {
-      // db$${spaceId}$docId -> db$docId
-      if (oldId.startsWith(`db$${spaceId}$`)) {
-        return oldId.replace(`db$${spaceId}$`, `db$`);
-      }
-      // userdata$userId$spaceId$docId -> userdata$userId$docId
-      if (oldId.match(new RegExp(`^userdata\\$[\\w-]+\\$${spaceId}\\$`))) {
-        return oldId.replace(`$${spaceId}$`, '$');
+      // 🔧 修复：db$ 和 userdata$ 格式的 ID 不进行转换
+      // 保持与 newIdToOldId 一致，直接返回
+      if (oldId.startsWith(`db$`) || oldId.startsWith(`userdata$`)) {
+        return oldId;
       }
       return oldIdToNewId[oldId] ?? oldId;
     },

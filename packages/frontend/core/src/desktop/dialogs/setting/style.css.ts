@@ -27,8 +27,7 @@ export const centerContainer = style({
 export const content = style({
   position: 'relative',
   width: '100%',
-  marginBottom: '24px',
-  minHeight: 'min(calc(var(--setting-modal-height, 720px) - 124px), 100%)',
+  flex: '1 1 auto',
   maxWidth: 'min(720px, 100%)',
   padding: '32px clamp(16px, 4vw, 48px) 24px',
 });
@@ -59,6 +58,8 @@ export const footer = style({
   color: cssVarV2('text/tertiary'),
   flexWrap: 'wrap',
   maxWidth: 'min(720px, 100%)',
+  marginTop: 'auto',
+  width: '100%',
 });
 
 export const link = style({

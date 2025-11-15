@@ -1,0 +1,290 @@
+.storage-config-page {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.storage-config-loading {
+  text-align: center;
+  padding: 48px;
+  color: #666;
+}
+
+.storage-config-header {
+  margin-bottom: 32px;
+}
+
+.storage-config-header h1 {
+  font-size: 28px;
+  font-weight: 600;
+  margin: 0 0 8px 0;
+  color: #1a1a1a;
+}
+
+.storage-config-subtitle {
+  font-size: 14px;
+  color: #666;
+  margin: 0;
+}
+
+/* 存储统计卡片 */
+.storage-stats-card {
+  background: #f8f9fa;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 24px;
+}
+
+.storage-stats-card h3 {
+  margin: 0 0 16px 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 16px;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.stat-label {
+  font-size: 12px;
+  color: #666;
+}
+
+.stat-value {
+  font-size: 24px;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+/* 表单 */
+.storage-config-form {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+  margin-bottom: 24px;
+}
+
+.form-label {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  color: #1a1a1a;
+  margin-bottom: 8px;
+}
+
+.form-label input[type='checkbox'] {
+  margin-right: 8px;
+}
+
+.form-input,
+.form-textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+  transition: border-color 0.2s;
+}
+
+.form-input:focus,
+.form-textarea:focus {
+  outline: none;
+  border-color: #4a90e2;
+}
+
+.form-textarea {
+  resize: vertical;
+  font-family: inherit;
+}
+
+.form-help {
+  margin: 4px 0 0 0;
+  font-size: 12px;
+  color: #666;
+}
+
+/* 提供商选择 */
+.provider-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.provider-card {
+  background: white;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center;
+}
+
+.provider-card:hover {
+  border-color: #4a90e2;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.provider-card.selected {
+  border-color: #4a90e2;
+  background: #f0f7ff;
+}
+
+.provider-icon {
+  font-size: 32px;
+  margin-bottom: 8px;
+}
+
+.provider-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-bottom: 4px;
+}
+
+.provider-desc {
+  font-size: 12px;
+  color: #666;
+}
+
+/* 测试结果 */
+.test-result {
+  padding: 16px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+}
+
+.test-result.success {
+  background: #e7f5ee;
+  border: 1px solid #38c172;
+  color: #22543d;
+}
+
+.test-result.error {
+  background: #fef2f2;
+  border: 1px solid #e53e3e;
+  color: #742a2a;
+}
+
+.test-result strong {
+  display: block;
+  margin-bottom: 4px;
+}
+
+.test-result p {
+  margin: 0;
+  font-size: 14px;
+}
+
+/* 操作按钮 */
+.form-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px solid #e0e0e0;
+}
+
+.btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background: #4a90e2;
+  color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: #357abd;
+}
+
+.btn-secondary {
+  background: #f0f0f0;
+  color: #1a1a1a;
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background: #e0e0e0;
+}
+
+.btn-danger {
+  background: #e53e3e;
+  color: white;
+  margin-left: auto;
+}
+
+.btn-danger:hover:not(:disabled) {
+  background: #c53030;
+}
+
+/* 验证状态 */
+.verification-status {
+  margin-top: 16px;
+  padding: 12px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.verify-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  background: #38c172;
+  color: white;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.verify-time {
+  font-size: 12px;
+  color: #666;
+}
+
+/* 响应式 */
+@media (max-width: 768px) {
+  .storage-config-page {
+    padding: 16px;
+  }
+
+  .provider-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-actions {
+    flex-direction: column;
+  }
+
+  .btn-danger {
+    margin-left: 0;
+  }
+}

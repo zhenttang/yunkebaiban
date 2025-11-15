@@ -8,32 +8,16 @@ import {
   SocketConnection,
   uint8ArrayToBase64,
 } from './socket';
-import { getSocketIOUrl } from '@yunke/config';
+import {
+  convertToSocketIOUrl as buildSocketIOUrl,
+  getSocketIOUrl,
+} from '@yunke/config';
 
-/**
- * 将API基础URL转换为Socket.IO URL
- * 修复 Bug #4: 使用传入的 serverBaseUrl 而不是硬编码的全局URL
- */
-function convertToSocketIOUrl(baseUrl: string): string {
+function resolveSocketIOEndpoint(baseUrl: string): string {
   try {
-    // 如果提供了自定义 serverBaseUrl，从中推导 Socket.IO URL
-    if (baseUrl) {
-      const url = new URL(baseUrl);
-
-      // 转换协议: http -> ws, https -> wss
-      url.protocol = url.protocol === 'https:' ? 'wss:' : 'ws:';
-
-      // Socket.IO 路径通常是 /socket.io
-      url.pathname = '/socket.io';
-
-      return url.toString();
-    }
-
-    // 降级到全局配置（仅当没有提供 baseUrl 时）
-    return getSocketIOUrl();
+    return buildSocketIOUrl(baseUrl);
   } catch (error) {
-    console.error('Failed to convert serverBaseUrl to Socket.IO URL:', baseUrl, error);
-    // 出错时降级到全局配置
+    console.error('❌ [CloudAwarenessStorage] 构建 Socket.IO URL 失败，回退到全局配置:', error);
     return getSocketIOUrl();
   }
 }
@@ -54,7 +38,7 @@ export class CloudAwarenessStorage extends AwarenessStorageBase {
 
   connection = new SocketConnection(
     // 使用统一的端口转换逻辑
-    convertToSocketIOUrl(this.options.serverBaseUrl),
+    resolveSocketIOEndpoint(this.options.serverBaseUrl),
     this.options.isSelfHosted
   );
 
