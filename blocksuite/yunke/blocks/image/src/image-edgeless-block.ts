@@ -14,6 +14,7 @@ import { GfxViewInteractionExtension } from '@blocksuite/std/gfx';
 import { computed } from '@preact/signals-core';
 import { css, html, nothing } from 'lit';
 import { query, state } from 'lit/decorators.js';
+import { classMap } from 'lit/directives/class-map.js';
 import { styleMap } from 'lit/directives/style-map.js';
 import { when } from 'lit/directives/when.js';
 
@@ -67,6 +68,12 @@ export class ImageEdgelessBlockComponent extends GfxBlockComponent<ImageBlockMod
       pointer-events: none; /* 禁用图片的所有鼠标事件 */
       user-select: none; /* 禁止选择 */
       -webkit-user-drag: none; /* 禁止拖拽 */
+    }
+
+    yunke-edgeless-image .resizable-img img.pixelated {
+      image-rendering: pixelated;
+      image-rendering: -moz-crisp-edges;
+      image-rendering: crisp-edges;
     }
 
     yunke-edgeless-image.crop-mode .resizable-img,
@@ -1148,6 +1155,7 @@ export class ImageEdgelessBlockComponent extends GfxBlockComponent<ImageBlockMod
   override renderGfxBlock() {
     const blobUrl = this.blobUrl;
     const { rotate = 0, size = 0, caption = 'Image' } = this.model.props;
+    const imageRendering = this.model.props.imageRendering$.value ?? 'auto';
 
     const containerStyleMap = styleMap({
       display: 'flex',
@@ -1172,8 +1180,8 @@ export class ImageEdgelessBlockComponent extends GfxBlockComponent<ImageBlockMod
     const { loading, icon, description, error, needUpload } = resovledState;
 
     return html`
-      <div 
-        class="yunke-image-container ${this._cropMode ? 'crop-mode' : ''}" 
+      <div
+        class="yunke-image-container ${this._cropMode ? 'crop-mode' : ''}"
         style=${containerStyleMap}
       >
         ${when(
@@ -1181,7 +1189,10 @@ export class ImageEdgelessBlockComponent extends GfxBlockComponent<ImageBlockMod
           () => html`
             <div class="resizable-img">
               <img
-                class="drag-target"
+                class=${classMap({
+                  'drag-target': true,
+                  pixelated: imageRendering === 'pixelated',
+                })}
                 draggable="false"
                 loading="lazy"
                 src=${blobUrl}

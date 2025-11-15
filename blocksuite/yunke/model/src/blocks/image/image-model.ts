@@ -20,6 +20,7 @@ export type ImageBlockProps = {
   rotate: number;
   size?: number;
   customData?: string; // 用于存储deck数据等自定义信息
+  imageRendering?: 'auto' | 'pixelated';
 } & Omit<GfxCommonBlockProps, 'scale'> &
   BlockMeta;
 
@@ -34,6 +35,7 @@ const defaultImageProps: ImageBlockProps = {
   rotate: 0,
   size: -1,
   customData: undefined,
+  imageRendering: 'auto',
   'meta:createdAt': undefined,
   'meta:createdBy': undefined,
   'meta:updatedAt': undefined,

@@ -18,6 +18,7 @@ import type { BaseSelection } from '@blocksuite/store';
 import { computed } from '@preact/signals-core';
 import { css, html, type PropertyValues } from 'lit';
 import { property, query } from 'lit/decorators.js';
+import { classMap } from 'lit/directives/class-map.js';
 import { styleMap } from 'lit/directives/style-map.js';
 import { when } from 'lit/directives/when.js';
 
@@ -75,6 +76,12 @@ export class ImageBlockPageComponent extends SignalWatcher(
     yunke-page-image .resizable-img img {
       width: 100%;
       height: 100%;
+    }
+
+    yunke-page-image .resizable-img img.pixelated {
+      image-rendering: pixelated;
+      image-rendering: -moz-crisp-edges;
+      image-rendering: crisp-edges;
     }
   `;
 
@@ -362,11 +369,15 @@ export class ImageBlockPageComponent extends SignalWatcher(
     const blobUrl = this.block.blobUrl;
     const caption = this.block.model.props.caption$.value ?? 'Image';
     const { loading, error, icon, description, needUpload } = this.state;
+    const imageRendering = this.block.model.props.imageRendering$.value ?? 'auto';
 
     return html`
       <div class="resizable-img" style=${styleMap(imageSize)}>
         <img
-          class="drag-target"
+          class=${classMap({
+            'drag-target': true,
+            pixelated: imageRendering === 'pixelated',
+          })}
           draggable="false"
           loading="lazy"
           src=${blobUrl}

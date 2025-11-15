@@ -38,6 +38,18 @@ const builtinToolbarConfig = {
       },
     },
     {
+      id: 'b2.toggle-pixelated',
+      tooltip: '切换像素化渲染',
+      icon: '🔲',
+      run(ctx) {
+        const block = ctx.getCurrentBlockByType(ImageBlockComponent);
+        if (!block) return;
+
+        const currentMode = block.model.props.imageRendering || 'auto';
+        block.model.props.imageRendering = currentMode === 'auto' ? 'pixelated' : 'auto';
+      },
+    },
+    {
       id: 'd.decker-edit',
       tooltip: '用Decker编辑',
       icon: EditIcon(),
@@ -200,6 +212,19 @@ const builtinSurfaceToolbarConfig = {
       run(ctx) {
         const block = ctx.getCurrentBlockByType(ImageEdgelessBlockComponent);
         block?.download();
+      },
+    },
+    {
+      id: 'b2.toggle-pixelated',
+      tooltip: '切换像素化渲染',
+      icon: '🔲',
+      run(ctx) {
+        const surfaces = ctx.getSurfaceModelsByType(ImageBlockModel);
+        if (surfaces.length !== 1) return;
+
+        const model = surfaces[0];
+        const currentMode = model.props.imageRendering || 'auto';
+        model.props.imageRendering = currentMode === 'auto' ? 'pixelated' : 'auto';
       },
     },
     {
