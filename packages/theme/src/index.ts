@@ -66,6 +66,7 @@ export const baseTheme = {
 
   zIndexModal: '1000',
   zIndexPopover: '1000',
+  zIndexPeekView: '10001',
 
   paragraphSpace: '8px',
   popoverRadius: '12px',

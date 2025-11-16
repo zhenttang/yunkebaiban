@@ -1,4 +1,5 @@
 // todo(@pengx17): remove jotai
+import { notify } from '@yunke/component';
 import { UrlService } from '@yunke/core/modules/url';
 import type { UpdateMeta } from '@yunke/electron-api';
 import { apis, events } from '@yunke/electron-api';
@@ -121,8 +122,13 @@ export const useAppUpdater = () => {
     if (updateReady) {
       setAppQuitting(true);
       apis?.updater.quitAndInstall().catch(err => {
-        // TODO(@Peng): add error toast here
         console.error('安装更新时出错:', err);
+        notify.error({
+          title: '安装更新失败',
+          description:
+            err instanceof Error ? err.message : '请稍后重试或手动下载新版安装包。',
+        });
+        setAppQuitting(false);
       });
     }
   }, [updateReady]);

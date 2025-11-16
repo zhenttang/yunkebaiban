@@ -92,6 +92,7 @@ const OfflineStatus = () => {
 const useSyncEngineSyncProgress = (meta: WorkspaceMetadata) => {
   const isOnline = useSystemOnline();
   const workspace = useWorkspace(meta);
+  const t = useI18n();
 
   const engineState = useLiveData(
     useMemo(() => {
@@ -110,25 +111,31 @@ const useSyncEngineSyncProgress = (meta: WorkspaceMetadata) => {
   const syncing = engineState.syncing > 0 || engineState.syncRetrying;
 
   let content;
-  // TODO(@eyhn): add i18n
+  const progressPercent =
+    progress && Number.isFinite(progress) ? Math.floor(progress * 100) : null;
+
   if (workspace.flavour === 'local') {
     if (!BUILD_CONFIG.isElectron) {
-      content = '这是一个本地演示工作区。';
+      content = t['com.yunke.workspace.sync.local-demo']();
     } else {
-              content = '已保存到本地';
+      content = t['com.yunke.workspace.sync.local-saved']();
     }
   } else if (!isOnline) {
-          content = '连接已断开，请检查网络连接';
+    content = t['com.yunke.workspace.sync.offline']();
   } else if (engineState.syncRetrying && engineState.syncErrorMessage) {
-          content = `${engineState.syncErrorMessage}，正在重新连接。`;
+    content = t['com.yunke.workspace.sync.retry-error']({
+      message: engineState.syncErrorMessage,
+    });
   } else if (engineState.syncRetrying) {
-          content = '由于意外问题同步连接断开，正在重新连接。';
+    content = t['com.yunke.workspace.sync.retry-generic']();
   } else if (syncing) {
-          content =
-        `正在与 YUNKE 云端同步` +
-        (progress ? ` (${Math.floor(progress * 100)}%)` : '');
+    content = progressPercent
+      ? t['com.yunke.workspace.sync.cloud-syncing-progress']({
+          progress: progressPercent,
+        })
+      : t['com.yunke.workspace.sync.cloud-syncing']();
   } else {
-          content = '已与 YUNKE 云端同步';
+    content = t['com.yunke.workspace.sync.cloud-synced']();
   }
 
   const CloudWorkspaceSyncStatus = () => {

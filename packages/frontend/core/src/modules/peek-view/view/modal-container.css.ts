@@ -5,7 +5,7 @@ import { style } from '@vanilla-extract/css';
 export const modalOverlay = style({
   position: 'fixed',
   inset: 0,
-  zIndex: cssVar('zIndexModal'),
+  zIndex: cssVar('zIndexPeekView'),
   backgroundColor: cssVarV2('layer/background/modal'),
   pointerEvents: 'auto',
   selectors: {
@@ -21,7 +21,7 @@ export const modalContentWrapper = style({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  zIndex: cssVar('zIndexModal'),
+  zIndex: cssVar('zIndexPeekView'),
 });
 
 export const modalContentContainer = style({

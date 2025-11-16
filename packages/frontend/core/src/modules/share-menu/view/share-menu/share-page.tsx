@@ -1,4 +1,5 @@
-import { Divider, Skeleton } from '@yunke/component';
+import { Divider } from '@yunke/component';
+import { Loading } from '@yunke/component/ui/loading';
 import { Button } from '@yunke/component/ui/button';
 import { useGuard } from '@yunke/core/components/guard';
 import { ServerService } from '@yunke/core/modules/cloud';
@@ -16,6 +17,22 @@ import * as styles from './index.css';
 import { InviteInput } from './invite-member-editor';
 import { MembersRow } from './member-management';
 import type { ShareMenuProps } from './share-menu';
+
+const SharePageErrorFallback = ({
+  resetErrorBoundary,
+}: {
+  resetErrorBoundary: () => void;
+}) => {
+  const t = useI18n();
+  return (
+    <div className={styles.stateContainer}>
+      <div>{t['com.yunke.share-menu.load-error']()}</div>
+      <Button size="small" variant="secondary" onClick={resetErrorBoundary}>
+        {t['com.yunke.share-menu.retry']()}
+      </Button>
+    </div>
+  );
+};
 
 export const LocalSharePage = (props: ShareMenuProps) => {
   const t = useI18n();
@@ -76,16 +93,34 @@ export const YUNKESharePage = (
   const isSharedPage = useLiveData(shareInfoService.shareInfo.isShared$);
   const sharedMode = useLiveData(shareInfoService.shareInfo.sharedMode$);
   const baseUrl = serverService.server.baseUrl;
+  const shareError = useLiveData(shareInfoService.shareInfo.error$);
+  const isRevalidating = useLiveData(
+    shareInfoService.shareInfo.isRevalidating$
+  );
   const isLoading =
     isSharedPage === null || sharedMode === null || baseUrl === null;
 
   if (isLoading) {
-    // TODO(@eyhn): 加载和错误界面
     return (
-      <>
-        <Skeleton height={100} />
-        <Skeleton height={40} />
-      </>
+      <div className={styles.stateContainer}>
+        <Loading />
+        <span>{t['com.yunke.share-menu.loading']()}</span>
+      </div>
+    );
+  }
+
+  if (shareError) {
+    return (
+      <div className={styles.stateContainer}>
+        <div>{t['com.yunke.share-menu.load-error']()}</div>
+        <Button
+          size="small"
+          variant="secondary"
+          onClick={() => shareInfoService.shareInfo.revalidate()}
+        >
+          {t['com.yunke.share-menu.retry']()}
+        </Button>
+      </div>
     );
   }
 
@@ -109,6 +144,12 @@ export const YUNKESharePage = (
       </div>
       <Divider className={styles.divider} />
       <CopyLinkButton workspaceId={workspaceId} />
+      {isRevalidating ? (
+        <div className={styles.revalidateIndicator}>
+          <Loading size={12} />
+          <span>{t['com.yunke.share-menu.loading']()}</span>
+        </div>
+      ) : null}
     </div>
   );
 };
@@ -119,13 +160,20 @@ export const SharePage = (
     onClickMembers: () => void;
   }
 ) => {
+  const t = useI18n();
   if (props.workspaceMetadata.flavour === 'local') {
     return <LocalSharePage {...props} />;
   } else {
     return (
-      // TODO(@eyhn): 重构这部分
-      <ErrorBoundary fallback={null}>
-        <Suspense>
+      <ErrorBoundary FallbackComponent={SharePageErrorFallback}>
+        <Suspense
+          fallback={
+            <div className={styles.stateContainer}>
+              <Loading />
+              <span>{t['com.yunke.share-menu.loading']()}</span>
+            </div>
+          }
+        >
           <YUNKESharePage {...props} />
         </Suspense>
       </ErrorBoundary>

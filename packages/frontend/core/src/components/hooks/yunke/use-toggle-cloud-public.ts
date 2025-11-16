@@ -5,7 +5,7 @@ import { useMutation } from '../use-mutation';
 import { useMutateCloud } from './use-mutate-cloud';
 
 export function useToggleCloudPublic(workspaceId: string) {
-  const mutate = useMutateCloud();
+  const mutate = useMutateCloud(workspaceId);
   const { trigger } = useMutation({
     mutation: setWorkspacePublicByIdMutation,
   });

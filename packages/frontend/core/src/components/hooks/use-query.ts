@@ -35,7 +35,11 @@ type QueryOptions<Query extends RestApiQuery> = {
   variables?: any;
 };
 
-type QueryResponse<Query extends RestApiQuery> = any;
+type QueryResponse<Query extends RestApiQuery> = Query extends {
+  __type?: infer T;
+}
+  ? T
+  : any;
 
 type useQueryFn = <Query extends RestApiQuery>(
   options?: QueryOptions<Query>,
@@ -153,15 +157,24 @@ export function useQueryInfinite<Query extends RestApiQuery>(
 
   const loadingMore = size > 0 && data && !data[size - 1];
 
-  // TODO(@Peng): find a generic way to know whether or not there are more items to load
+  const hasMore = useMemo(() => {
+    if (!data || data.length === 0) return true;
+    const lastPage = data[data.length - 1];
+    // 约定后端返回 { hasMore: boolean } 或 data.length === pageSize 推断还有下一页
+    if (typeof lastPage === 'object' && lastPage !== null && 'hasMore' in lastPage) {
+      return Boolean((lastPage as any).hasMore);
+    }
+    return Array.isArray(lastPage) ? lastPage.length > 0 : true;
+  }, [data]);
+
   const loadMore = useCallback(() => {
-    if (loadingMore) {
+    if (loadingMore || !hasMore) {
       return;
     }
     setSize(size => size + 1).catch(err => {
       console.error(err);
     });
-  }, [loadingMore, setSize]);
+  }, [hasMore, loadingMore, setSize]);
   return {
     data,
     error,

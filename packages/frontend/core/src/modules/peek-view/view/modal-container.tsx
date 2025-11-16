@@ -242,7 +242,7 @@ export const PeekViewModalContainer = forwardRef<
       zoomAnimate(true, {
         contentWrapper: {
           opacity: [0.5, 1],
-          easing: 'cubicBezier(.46,.36,0,1)',
+          ease: 'cubic-bezier(.46,.36,0,1)',
           duration: 400,
         },
         content: {
@@ -263,14 +263,14 @@ export const PeekViewModalContainer = forwardRef<
     animateControls(false);
     zoomAnimate(false, {
       contentWrapper: {
-        easing: 'cubicBezier(.57,.25,.76,.44)',
+        ease: 'cubic-bezier(.57,.25,.76,.44)',
         opacity: [1, 0.5],
         duration: 180,
       },
       content: {
         opacity: [1, 0],
         duration: 180,
-        easing: 'ease',
+        ease: 'ease',
       },
     })
       .then(() => setVtOpen(false))
@@ -329,7 +329,7 @@ export const PeekViewModalContainer = forwardRef<
             opacity: animateIn ? [0, 1] : [1, 0],
             y: animateIn ? ['-2%', '0%'] : ['0%', '-2%'],
             scale: animateIn ? [0.96, 1] : [1, 0.96],
-            easing: 'cubicBezier(0.42, 0, 0.58, 1)',
+            ease: 'cubic-bezier(0.42, 0, 0.58, 1)',
             duration: 230,
             onComplete: () => {
               if (!animateIn) setVtOpen(false);

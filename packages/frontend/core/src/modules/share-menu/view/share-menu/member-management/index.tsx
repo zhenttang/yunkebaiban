@@ -116,7 +116,6 @@ export const MembersRow = ({ onClick }: { onClick: () => void }) => {
     );
   }
 
-  // TODO(@JimmFly): handle the case when there is only one member
   return (
     <div
       className={clsx(styles.rowContainerStyle, 'clickable')}
@@ -134,7 +133,11 @@ export const MembersRow = ({ onClick }: { onClick: () => void }) => {
               {docOwner.user.name}
             </span>
           </div>
-          <div className={styles.OwnerStyle}>{t['Owner']()}</div>
+          <div className={styles.OwnerStyle}>
+            {grantedUserCount && grantedUserCount <= 1
+              ? t['com.yunke.share-menu.member-management.only-owner']()
+              : t['Owner']()}
+          </div>
         </>
       ) : (
         <div>{t['com.yunke.share-menu.invite-editor.manage-members']()}</div>

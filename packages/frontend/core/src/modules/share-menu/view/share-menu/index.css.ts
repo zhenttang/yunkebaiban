@@ -144,3 +144,24 @@ export const generalAccessStyle = style({
   fontWeight: 500,
   height: '30px',
 });
+
+export const stateContainer = style({
+  minHeight: '140px',
+  padding: '12px 8px',
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '8px',
+  alignItems: 'center',
+  justifyContent: 'center',
+  color: cssVarV2('text/secondary'),
+  fontSize: cssVar('fontSm'),
+});
+
+export const revalidateIndicator = style({
+  display: 'flex',
+  alignItems: 'center',
+  gap: '6px',
+  color: cssVarV2('text/secondary'),
+  fontSize: cssVar('fontXs'),
+  marginTop: '4px',
+});

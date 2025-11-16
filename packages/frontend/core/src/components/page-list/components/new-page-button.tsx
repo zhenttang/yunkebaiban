@@ -56,7 +56,6 @@ export const CreateNewPagePopup = ({
           data-testid="import-button-in-all-page"
         />
       ) : null}
-      {/* TODO Import */}
     </div>
   );
 };

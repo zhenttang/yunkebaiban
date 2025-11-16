@@ -1,4 +1,4 @@
-import { Avatar } from '@yunke/component';
+import { Avatar, Skeleton } from '@yunke/component';
 import { AuthService } from '@yunke/core/modules/cloud';
 import { useLiveData, useService } from '@toeverything/infra';
 
@@ -7,8 +7,15 @@ import * as styles from './index.css';
 export const Account = () => {
   const account = useLiveData(useService(AuthService).session.account$);
   if (!account) {
-    // TODO(@JimmFly): loading ui
-    return null;
+    return (
+      <div className={styles.account}>
+        <Skeleton height={28} width={28} style={{ borderRadius: '50%' }} />
+        <div className={styles.content}>
+          <Skeleton height={18} />
+          <Skeleton height={14} />
+        </div>
+      </div>
+    );
   }
   return (
     <div data-testid="user-info-card" className={styles.account}>

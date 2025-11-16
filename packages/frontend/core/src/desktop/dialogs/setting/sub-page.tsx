@@ -53,7 +53,7 @@ export const SubPageTarget = () => {
   ));
 };
 
-const ease = 'cubicBezier(0.25, 0.36, 0.24, 0.97)';
+const ease = 'cubic-bezier(0.25, 0.36, 0.24, 0.97)';
 
 export const SubPageProvider = ({
   island,
