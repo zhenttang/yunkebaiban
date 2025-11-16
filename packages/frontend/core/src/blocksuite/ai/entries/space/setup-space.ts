@@ -5,8 +5,11 @@ import { handleInlineAskAIAction } from '../../actions/doc-handler';
 import { AIProvider } from '../../provider';
 import type { YunkeAIPanelWidget } from '../../widgets/ai-panel/ai-panel';
 
-function isSpaceEvent(event: KeyboardEvent) {
-  return event.key === ' ' && event.which === 32 && !event.isComposing;
+function isAIShortcut(event: KeyboardEvent) {
+  const isSpace =
+    event.key === ' ' && event.code === 'Space' && !event.isComposing;
+  const hasPrimaryModifier = event.ctrlKey || event.metaKey;
+  return isSpace && hasPrimaryModifier && event.shiftKey;
 }
 
 function insertSpace(host: EditorHost) {
@@ -30,20 +33,13 @@ function insertSpace(host: EditorHost) {
 }
 
 export function setupSpaceAIEntry(panel: YunkeAIPanelWidget) {
-  // Background: The keydown event triggered by a space may originate from:
-  // 1. Normal space insertion
-  // 2. Space triggered by input method confirming candidate words
-  // In scenarios like (2), some browsers (see [ISSUE](https://github.com/toeverything/YUNKE/issues/11541))
-  // and input method callbacks produce events identical to scenario (1),
-  // making it impossible to distinguish between the two.
-  //
-  // To fix this, the space-activated AI listener uses the `keypress` event:
-  // In scenario 2, `event.which !== 32` (may be `30430` or other values) can be used to differentiate from scenario 1.
+  // Use Ctrl/Cmd+Shift+Space as the trigger so plain spaces keep working.
+  // The keypress listener still filters out IME confirmation events.
   panel.handleEvent('keyPress', ctx => {
     const host = panel.host;
     const keyboardState = ctx.get('keyboardState');
     const event = keyboardState.raw;
-    if (AIProvider.actions.chat && isSpaceEvent(event)) {
+    if (AIProvider.actions.chat && isAIShortcut(event)) {
       // If the AI panel is in the input state and the input content is empty,
       // insert a space back into the editor.
       if (panel.state === 'input') {
@@ -60,12 +56,12 @@ export function setupSpaceAIEntry(panel: YunkeAIPanelWidget) {
       const selection = host.selection.find(TextSelection);
       if (selection && selection.isCollapsed() && selection.from.index === 0) {
         const block = host.view.getBlock(selection.blockId);
-        if (
-          !block?.model?.text ||
-          block.model.text?.length > 0 ||
-          block.model.flavour !== 'yunke:paragraph'
-        )
-          return;
+        const blockText = block?.model?.text?.toString() ?? '';
+        const isEmptyParagraph =
+          block?.model?.flavour === 'yunke:paragraph' &&
+          blockText.trim().length === 0;
+
+        if (!isEmptyParagraph) return;
 
         event.preventDefault();
         handleInlineAskAIAction(host);
