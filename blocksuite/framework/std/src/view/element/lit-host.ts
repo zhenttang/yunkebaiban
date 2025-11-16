@@ -44,6 +44,34 @@ export class EditorHost extends SignalWatcher(
     }
   `;
 
+  // Widgets cache to avoid recreating widgets objects on every render
+  private _widgetsCache = new Map<string, Record<string, TemplateResult>>();
+
+  private _getWidgets(flavour: string): Record<string, TemplateResult> {
+    // Check cache first
+    if (this._widgetsCache.has(flavour)) {
+      return this._widgetsCache.get(flavour)!;
+    }
+
+    // Create widgets for this flavour
+    const widgetViews = this.std.provider.getAll(WidgetViewIdentifier);
+    const widgets = Array.from(widgetViews.entries()).reduce(
+      (mapping, [key, tag]) => {
+        const [widgetFlavour, id] = key.split('|');
+        if (widgetFlavour === flavour) {
+          const template = html`<${tag} ${unsafeStatic(WIDGET_ID_ATTR)}=${id}></${tag}>`;
+          mapping[id] = template;
+        }
+        return mapping;
+      },
+      {} as Record<string, TemplateResult>
+    );
+
+    // Cache the result
+    this._widgetsCache.set(flavour, widgets);
+    return widgets;
+  }
+
   private readonly _renderModel = (model: BlockModel): TemplateResult => {
     const { flavour } = model;
     const block = this.store.getBlock(model.id);
@@ -57,18 +85,8 @@ export class EditorHost extends SignalWatcher(
       return html`${nothing}`;
     }
 
-    const widgetViews = this.std.provider.getAll(WidgetViewIdentifier);
-    const widgets = Array.from(widgetViews.entries()).reduce(
-      (mapping, [key, tag]) => {
-        const [widgetFlavour, id] = key.split('|');
-        if (widgetFlavour === flavour) {
-          const template = html`<${tag} ${unsafeStatic(WIDGET_ID_ATTR)}=${id}></${tag}>`;
-          mapping[id] = template;
-        }
-        return mapping;
-      },
-      {} as Record<string, TemplateResult>
-    );
+    // Use cached widgets instead of recreating them every time
+    const widgets = this._getWidgets(flavour);
 
     const tag = typeof view === 'function' ? view(model) : view;
     return html`<${tag}
@@ -119,12 +137,19 @@ export class EditorHost extends SignalWatcher(
       );
     }
 
+    // Clear widgets cache when component is connected to ensure fresh state
+    this._widgetsCache.clear();
+
     this.std.mount();
     this.tabIndex = 0;
   }
 
   override disconnectedCallback() {
     super.disconnectedCallback();
+
+    // Clear widgets cache when component is disconnected to free memory
+    this._widgetsCache.clear();
+
     this.std.unmount();
   }
 
