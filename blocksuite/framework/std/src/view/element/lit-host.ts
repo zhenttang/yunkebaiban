@@ -44,7 +44,33 @@ export class EditorHost extends SignalWatcher(
     }
   `;
 
-  private _updatedBlocks = new Set<string>();
+  // Widgets cache to avoid recreating widgets objects on every render
+  private _widgetsCache = new Map<string, Record<string, TemplateResult>>();
+
+  private _getWidgets(flavour: string): Record<string, TemplateResult> {
+    // Check cache first
+    if (this._widgetsCache.has(flavour)) {
+      return this._widgetsCache.get(flavour)!;
+    }
+
+    // Create widgets for this flavour
+    const widgetViews = this.std.provider.getAll(WidgetViewIdentifier);
+    const widgets = Array.from(widgetViews.entries()).reduce(
+      (mapping, [key, tag]) => {
+        const [widgetFlavour, id] = key.split('|');
+        if (widgetFlavour === flavour) {
+          const template = html`<${tag} ${unsafeStatic(WIDGET_ID_ATTR)}=${id}></${tag}>`;
+          mapping[id] = template;
+        }
+        return mapping;
+      },
+      {} as Record<string, TemplateResult>
+    );
+
+    // Cache the result
+    this._widgetsCache.set(flavour, widgets);
+    return widgets;
+  }
 
   private readonly _renderModel = (model: BlockModel): TemplateResult => {
     const { flavour } = model;
@@ -59,18 +85,8 @@ export class EditorHost extends SignalWatcher(
       return html`${nothing}`;
     }
 
-    const widgetViews = this.std.provider.getAll(WidgetViewIdentifier);
-    const widgets = Array.from(widgetViews.entries()).reduce(
-      (mapping, [key, tag]) => {
-        const [widgetFlavour, id] = key.split('|');
-        if (widgetFlavour === flavour) {
-          const template = html`<${tag} ${unsafeStatic(WIDGET_ID_ATTR)}=${id}></${tag}>`;
-          mapping[id] = template;
-        }
-        return mapping;
-      },
-      {} as Record<string, TemplateResult>
-    );
+    // Use cached widgets instead of recreating them every time
+    const widgets = this._getWidgets(flavour);
 
     const tag = typeof view === 'function' ? view(model) : view;
     return html`<${tag}
@@ -121,19 +137,8 @@ export class EditorHost extends SignalWatcher(
       );
     }
 
-    // Subscribe to block updates to track which blocks need re-rendering
-    // This is crucial for the render optimization
-    this._disposables.add(
-      this.store.slots.blockUpdated.subscribe(({ type, id }) => {
-        if (type === 'update') {
-          // Mark this block as updated
-          this._updatedBlocks.add(id);
-        } else if (type === 'delete') {
-          // Remove from tracking when block is deleted
-          this._updatedBlocks.delete(id);
-        }
-      })
-    );
+    // Clear widgets cache when component is connected to ensure fresh state
+    this._widgetsCache.clear();
 
     this.std.mount();
     this.tabIndex = 0;
@@ -141,17 +146,11 @@ export class EditorHost extends SignalWatcher(
 
   override disconnectedCallback() {
     super.disconnectedCallback();
-    // Clear update tracking on disconnect
-    this._updatedBlocks.clear();
+
+    // Clear widgets cache when component is disconnected to free memory
+    this._widgetsCache.clear();
+
     this.std.unmount();
-  }
-
-  override updated(changedProperties: Map<PropertyKey, unknown>) {
-    super.updated(changedProperties);
-
-    // Clear the updated blocks set after each render cycle
-    // This ensures the next render cycle starts fresh
-    this._updatedBlocks.clear();
   }
 
   override async getUpdateComplete(): Promise<boolean> {
