@@ -12,7 +12,6 @@ import {
 import { createContext, provide } from '@lit/context';
 import { css, LitElement, nothing, type TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
-import { cache } from 'lit/directives/cache.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { html, type StaticValue, unsafeStatic } from 'lit/static-html.js';
 
@@ -45,31 +44,7 @@ export class EditorHost extends SignalWatcher(
     }
   `;
 
-  // Track which blocks have been updated since last render
-  // This helps avoid unnecessary re-renders of unchanged child blocks
   private _updatedBlocks = new Set<string>();
-
-  /**
-   * Check if a block or any of its ancestors have been updated.
-   * This prevents unnecessary re-rendering of deep child blocks.
-   */
-  private _isBlockOrAncestorUpdated(model: BlockModel): boolean {
-    // Check if this block was updated
-    if (this._updatedBlocks.has(model.id)) {
-      return true;
-    }
-
-    // Check if any ancestor was updated (propagation)
-    let current: BlockModel | null = model.parent;
-    while (current) {
-      if (this._updatedBlocks.has(current.id)) {
-        return true;
-      }
-      current = current.parent;
-    }
-
-    return false;
-  }
 
   private readonly _renderModel = (model: BlockModel): TemplateResult => {
     const { flavour } = model;
@@ -105,37 +80,14 @@ export class EditorHost extends SignalWatcher(
     ></${tag}>`;
   };
 
-  /**
-   * Optimized renderChildren that skips rendering of unchanged deep child blocks.
-   * This dramatically reduces rendering overhead in large documents with deep nesting.
-   *
-   * Performance impact:
-   * - Before: 100 blocks × 10 levels = 1000 render calls per keystroke
-   * - After: Only renders changed blocks + their ancestors (~10-20 render calls)
-   * - Reduction: 95%+ in large documents
-   */
   renderChildren = (
     model: BlockModel,
     filter?: (model: BlockModel) => boolean
   ): TemplateResult => {
-    const children = model.children.filter(filter ?? (() => true));
-
     return html`${repeat(
-      children,
+      model.children.filter(filter ?? (() => true)),
       child => child.id,
-      child => {
-        // Optimization: Skip rendering if block and ancestors haven't been updated
-        // This prevents cascade rendering of deep child trees
-        const shouldRender = this._isBlockOrAncestorUpdated(child);
-
-        if (!shouldRender) {
-          // Return cached template or minimal placeholder
-          // Lit's repeat() will reuse the existing DOM
-          return cache(this._renderModel(child));
-        }
-
-        return this._renderModel(child);
-      }
+      child => this._renderModel(child)
     )}`;
   };
 
