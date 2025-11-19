@@ -119,6 +119,7 @@ const SharePageInner = ({
   const [page, setPage] = useState<Doc | null>(null);
   const [editor, setEditor] = useState<Editor | null>(null);
   const [noPermission, setNoPermission] = useState(false);
+  const [permissionError, setPermissionError] = useState<string | null>(null);
   const [isReadonly, setIsReadonly] = useState(true);
   const [isAppendOnlyMode, setIsAppendOnlyMode] = useState(false);
   const [hasTemporaryIdentity, setHasTemporaryIdentity] = useState(false);
@@ -148,6 +149,8 @@ const SharePageInner = ({
 
   useEffect(() => {
     // create a workspace for share page
+    const abortController = new AbortController();
+
     const { workspace } = workspacesService.open(
       {
         metadata: {
@@ -222,7 +225,8 @@ const SharePageInner = ({
                 `/api/workspaces/${workspaceId}/docs/${docId}/permissions`,
                 {
                   method: 'GET',
-                  headers: { 'Accept': 'application/json' }
+                  headers: { 'Accept': 'application/json' },
+                  signal: abortController.signal,
                 }
               );
 
@@ -252,48 +256,43 @@ const SharePageInner = ({
               });
 
               // 根据 effectiveMask 判断权限
-              // effectiveMask 是一个位掩码:
               // Read=1, Comment=2, Add=4, Modify=8, Delete=16, Export=32...
-              // 如果有 Add(4) 或 Modify(8) 权限，说明可以编辑
-              const canWrite = (effectiveMask & (4 | 8)) !== 0; // Add | Modify
-              const canRead = (effectiveMask & 1) !== 0; // Read
+              const canRead = (effectiveMask & 1) !== 0;
+              const canAdd = (effectiveMask & 4) !== 0;
+              const canModify = (effectiveMask & 8) !== 0;
 
-              // 明确区分权限模式
+              const isAppendOnly = canAdd && !canModify;
+              const canWrite = canModify || canAdd;
+
+              // 默认为只读
               let readonly = true;
-              let isAppendOnly = false;
 
               if (canWrite) {
-                // 有写权限：可以编辑
                 readonly = false;
-                isAppendOnly = false;
               } else if (canRead) {
-                // 只有读权限：只读模式
                 readonly = true;
-                isAppendOnly = false;
               } else {
-                // 没有任何权限：可能需要创建临时用户
-                // 检查文档是否是公开的 append-only 模式
-                // 这种情况下设为 append-only，等待临时身份创建
-                readonly = true;
-                isAppendOnly = true; // 假设是 append-only 模式，让临时用户组件尝试创建身份
+                setNoPermission(true);
+                setPermissionError('当前链接无权访问此文档');
+                doc.blockSuiteDoc.readonly = true;
+                return;
               }
 
               setIsAppendOnlyMode(isAppendOnly);
               setIsReadonly(readonly);
 
-              // 设置文档只读状态
-              // AppendOnly模式：如果没有临时身份，保持只读
-              // ReadOnly模式：始终只读
-              // Private模式：默认只读
-              if (isAppendOnly && !hasTemporaryIdentity) {
-                doc.blockSuiteDoc.readonly = true;
-              } else {
-                doc.blockSuiteDoc.readonly = readonly;
-              }
+              // Append-only：如仅有追加权限且无修改权限，允许界面编辑追加；否则按只读/可写处理
+              doc.blockSuiteDoc.readonly = isAppendOnly
+                ? false
+                : readonly;
             }
         } catch (error) {
+          if (error instanceof DOMException && error.name === 'AbortError') {
+            return;
+          }
           console.error('[SharePage] 获取文档权限信息失败：', error);
           console.error('[SharePage] 错误详情：', error instanceof Error ? error.message : '未知错误');
+          setPermissionError('无法获取文档权限，请稍后重试');
           // 出错时默认只读
           doc.blockSuiteDoc.readonly = true;
           setIsReadonly(true);
@@ -352,6 +351,7 @@ const SharePageInner = ({
     
     // 清理函数
     return () => {
+      abortController.abort();
       if (disposeModeChange) {
         disposeModeChange.unsubscribe();
       }
@@ -432,6 +432,25 @@ const SharePageInner = ({
     return <PageNotFound noPermission />;
   }
 
+  if (permissionError) {
+    return (
+      <AppContainer>
+        <div
+          style={{
+            color: '#fff',
+            background: 'rgba(255,255,255,0.06)',
+            border: '1px solid rgba(255,255,255,0.12)',
+            borderRadius: 16,
+            padding: 16,
+            margin: 24,
+          }}
+        >
+          {permissionError}
+        </div>
+      </AppContainer>
+    );
+  }
+
   if (!workspace || !page || !editor) {
     return null;
   }
@@ -454,6 +473,24 @@ const SharePageInner = ({
                   workspaceId={workspaceId}
                   docId={docId}
                 />
+
+                {(isAppendOnlyMode || isReadonly) && (
+                  <div
+                    style={{
+                      margin: '12px 0',
+                      padding: '10px 12px',
+                      borderRadius: 12,
+                      border: '1px solid rgba(255,255,255,0.14)',
+                      background: 'rgba(255,255,255,0.05)',
+                      color: '#e6ebff',
+                      fontSize: 13,
+                    }}
+                  >
+                    {isAppendOnlyMode
+                      ? '追加模式：可追加内容，需临时身份；缺失身份将暂时只读'
+                      : '只读模式：当前链接无写入权限'}
+                  </div>
+                )}
                 
                 {/* 匿名用户身份管理组件 */}
                 <AnonymousUserIdentity

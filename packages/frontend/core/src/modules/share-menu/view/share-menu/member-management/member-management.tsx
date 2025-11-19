@@ -32,6 +32,7 @@ export const MemberManagement = ({
   const grantedUserCount = useLiveData(
     docGrantedUsersService.grantedUserCount$
   );
+  const grantedUserError = useLiveData(docGrantedUsersService.errorMessage$);
   const docService = useService(DocService);
 
   const canManageUsers = useGuard('Doc_Users_Manage', docService.doc.id);
@@ -56,6 +57,21 @@ export const MemberManagement = ({
           memberCount: grantedUserCount?.toString() || '??',
         })}
       </div>
+      {grantedUserError ? (
+        <div
+          style={{
+            margin: '8px 12px',
+            padding: '10px 12px',
+            borderRadius: 12,
+            border: '1px solid rgba(255,255,255,0.14)',
+            background: 'rgba(255,255,255,0.05)',
+            color: '#e6ebff',
+            fontSize: 12,
+          }}
+        >
+          {grantedUserError}
+        </div>
+      ) : null}
       {grantedUserList ? (
         <MemberList
           openPaywallModal={openPaywallModal}

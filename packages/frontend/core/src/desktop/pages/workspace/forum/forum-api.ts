@@ -29,8 +29,22 @@ import type {
 
 const API_BASE_URL = '/api/forum';
 
-// Mock switch: set to true to use local mock data for all forum APIs.
-const USE_FORUM_MOCK = true;
+// Mock switch: default to real API unless显式开启
+const runtimeMockFlag =
+  typeof globalThis !== 'undefined'
+    ? (globalThis.__YUNKE_FORUM_USE_MOCK__ as boolean | undefined)
+    : undefined;
+
+const envMockFlag =
+  (import.meta.env?.VITE_FORUM_USE_MOCK ?? process.env?.VITE_FORUM_USE_MOCK) as
+    | string
+    | boolean
+    | undefined;
+
+const USE_FORUM_MOCK =
+  (typeof envMockFlag === 'string'
+    ? envMockFlag.toLowerCase() === 'true'
+    : envMockFlag === true) || runtimeMockFlag === true;
 
 // Mock DB helpers
 import { mockDB, paginate, nextPostId, nextReplyId, nextDraftId, nextAttachmentId } from './mock-db';

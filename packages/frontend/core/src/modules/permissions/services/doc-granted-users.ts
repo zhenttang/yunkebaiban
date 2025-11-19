@@ -43,6 +43,7 @@ export class DocGrantedUsersService extends Service {
   grantedUsers$ = new LiveData<GrantedUser[]>([]);
   isLoading$ = new LiveData(false);
   error$ = new LiveData<any>(null);
+  errorMessage$ = new LiveData<string | null>(null);
 
   readonly loadMore = effect(
     exhaustMap(() => {
@@ -70,6 +71,15 @@ export class DocGrantedUsersService extends Service {
           this.hasMore$.next(pageInfo.hasNextPage);
           this.nextCursor$.next(pageInfo.endCursor ?? undefined);
         }),
+        tap({
+          error: err => {
+            const message =
+              err instanceof Error
+                ? err.message
+                : '获取权限列表失败，请稍后重试';
+            this.errorMessage$.next(message);
+          },
+        }),
         smartRetry(),
         catchErrorInto(this.error$),
         onStart(() => {
@@ -87,6 +97,7 @@ export class DocGrantedUsersService extends Service {
     this.nextCursor$.setValue(undefined);
     this.isLoading$.setValue(false);
     this.error$.setValue(null);
+    this.errorMessage$.setValue(null);
     this.loadMore.reset();
   }
 
