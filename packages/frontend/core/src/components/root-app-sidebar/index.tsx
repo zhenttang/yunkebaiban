@@ -52,9 +52,9 @@ import { TemplateDocEntrance } from './template-doc-entrance';
 import { TrashButton } from './trash-button';
 import { UpdaterButton } from './updater-button';
 import UserInfo from './user-info';
-import { CommunityButton } from './community-button';
+// import { CommunityButton } from './community-button';
 import { QuickMenuButton } from './quick-menu-button';
-import { ForumButton } from './forum-button';
+// import { ForumButton } from './forum-button';
 
 export type RootAppSidebarProps = {
   isPublicWorkspace: boolean;
@@ -185,8 +185,8 @@ export const RootAppSidebar = memo((): ReactElement => {
           <AddPageButton />
         </div>
         <AllDocsButton />
-        <CommunityButton />
-        <ForumButton />
+        {/* <CommunityButton /> */}
+        {/* <ForumButton /> */}
         <AppSidebarJournalButton />
         {sessionStatus === 'authenticated' && <NotificationButton />}
         <MenuItem

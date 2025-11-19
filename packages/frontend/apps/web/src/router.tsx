@@ -120,6 +120,10 @@ export const topLevelRoutes = [
         },
       },
       {
+        path: '/workspace-dashboard-demo',
+        lazy: () => import('@yunke/core/desktop/pages/workspace/dashboard'),
+      },
+      {
         path: '/theme-editor',
         lazy: () => import('@yunke/core/desktop/pages/theme-editor'),
       },

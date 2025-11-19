@@ -15,7 +15,7 @@ export const root = style({
   userSelect: 'none',
   cursor: 'pointer',
   padding: '8px 12px',
-  fontSize: cssVar('fontSm'),
+  fontSize: '16px',
   fontWeight: '500',
   marginTop: '3px',
   marginBottom: '3px',

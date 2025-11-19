@@ -122,6 +122,10 @@ export const topLevelRoutes = [
         },
       },
       {
+        path: '/workspace-dashboard-demo',
+        lazy: () => import('./pages/workspace/dashboard'),
+      },
+      {
         path: '/theme-editor',
         lazy: () => import('./pages/theme-editor'),
       },

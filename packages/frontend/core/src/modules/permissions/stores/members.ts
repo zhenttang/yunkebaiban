@@ -58,7 +58,29 @@ export class WorkspaceMembersStore extends Store {
       }
     );
     const data = await res.json();
-    return data;
+
+    // 兼容多种后端返回格式:
+    // 1) Go/Java: { success: true, results: [ { email, success, sentSuccess?, ... } ], ... }
+    // 2) 直接返回数组: [ { email, sentSuccess, ... } ]
+    if (Array.isArray(data)) {
+      return data;
+    }
+
+    if (Array.isArray(data.results)) {
+      return data.results.map((item: any) => ({
+        // 保留原始字段，方便调试
+        ...item,
+        email: item.email,
+        // 标准化 sentSuccess 字段，供 UI 统计使用
+        sentSuccess:
+          typeof item.sentSuccess === 'boolean'
+            ? item.sentSuccess
+            : !!item.success,
+      }));
+    }
+
+    // 无法识别的格式时，返回空数组避免前端崩溃
+    return [];
   }
 
   async generateInviteLink(
