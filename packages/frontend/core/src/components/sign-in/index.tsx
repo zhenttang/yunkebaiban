@@ -4,6 +4,7 @@ import { FrameworkScope, useService } from '@toeverything/infra';
 import { useState } from 'react';
 
 import { AddSelfhostedStep } from './add-selfhosted';
+import { SignInPlaceholderStep } from './placeholder-step';
 import { SignInStep } from './sign-in';
 import { SignInWithEmailStep } from './sign-in-with-email';
 import { SignInWithPasswordStep } from './sign-in-with-password';
@@ -12,7 +13,10 @@ export type SignInStep =
   | 'signIn'
   | 'signInWithPassword'
   | 'signInWithEmail'
-  | 'addSelfhosted';
+  | 'addSelfhosted'
+  | 'signInWithMobile'
+  | 'signInWithWeChat'
+  | 'signInWithWeChatOfficial';
 
 export interface SignInState {
   step: SignInStep;
@@ -71,6 +75,24 @@ export const SignInPanel = ({
         />
       ) : step === 'addSelfhosted' ? (
         <AddSelfhostedStep state={state} changeState={setState} />
+      ) : step === 'signInWithMobile' ? (
+        <SignInPlaceholderStep
+          state={state}
+          changeState={setState}
+          title="手机号登录"
+        />
+      ) : step === 'signInWithWeChat' ? (
+        <SignInPlaceholderStep
+          state={state}
+          changeState={setState}
+          title="微信登录"
+        />
+      ) : step === 'signInWithWeChatOfficial' ? (
+        <SignInPlaceholderStep
+          state={state}
+          changeState={setState}
+          title="微信公众号登录"
+        />
       ) : null}
     </FrameworkScope>
   );

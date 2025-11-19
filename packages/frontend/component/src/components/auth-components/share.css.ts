@@ -168,33 +168,11 @@ export const signInPageContainer = style({
   padding: '72px 40px 40px',
   overflow: 'hidden',
   boxSizing: 'border-box',
-  backgroundImage:
-    'radial-gradient(circle at 20% 20%, #f0f9ff 0%, #faf5ff 55%, #ffffff 100%)',
-  backgroundColor: '#faf5ff',
+  backgroundColor: cssVar('backgroundPrimaryColor'),
   transition: 'background 0.6s ease',
   selectors: {
     '[data-theme="dark"] &': {
-      backgroundColor: '#0f172a',
-      backgroundImage:
-        'radial-gradient(circle at 20% 20%, #0f172a 0%, #1e1b4b 65%, #0b1120 100%)',
-    },
-    '&::before': {
-      content: '',
-      position: 'absolute',
-      inset: 0,
-      backgroundImage:
-        'radial-gradient(rgba(51, 102, 255, 0.12) 1px, transparent 1px)',
-      backgroundSize: '3px 3px',
-      // B：降低默认不透明度，减轻干扰
-      opacity: 0.12,
-      pointerEvents: 'none',
-      mixBlendMode: 'soft-light',
-      zIndex: 0,
-    },
-    '[data-theme="dark"] &::before': {
-      backgroundImage:
-        'radial-gradient(rgba(148, 163, 184, 0.12) 1px, transparent 1px)',
-      opacity: 0.1,
+      backgroundColor: cssVar('backgroundPrimaryColor'),
     },
   },
   '@media': {

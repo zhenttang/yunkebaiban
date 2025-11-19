@@ -130,15 +130,17 @@ export function useKeyboardShortcuts(enabled: boolean = true) {
     // 如果未启用或编辑器未初始化，不注册监听器
     if (!enabled || !editorContainer?.host?.std) return;
 
-    const std = editorContainer.host.std;
-
     const handleKeyDown = (e: KeyboardEvent) => {
+      // 有些环境下 KeyboardEvent 可能没有 key 字段，需兼容处理
+      const key = e.key?.toLowerCase?.();
+      if (!key) return;
+
       // 构建快捷键字符串
       const keys: string[] = [];
       if (e.ctrlKey || e.metaKey) keys.push('ctrl');
       if (e.altKey) keys.push('alt');
       if (e.shiftKey) keys.push('shift');
-      keys.push(e.key.toLowerCase());
+      keys.push(key);
 
       const shortcutKey = keys.join('+') as ShortcutKey;
       const shortcut = SHORTCUTS[shortcutKey];

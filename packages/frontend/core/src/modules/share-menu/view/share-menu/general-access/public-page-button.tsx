@@ -26,6 +26,13 @@ export const PublicDoc = ({ disabled }: { disabled?: boolean }) => {
   const isRevalidating = useLiveData(
     shareInfoService.shareInfo.isRevalidating$
   );
+  useEffect(() => {
+    // 日志辅助：查看分享状态和权限模式
+    console.info('[SharePage] 状态变更', {
+      isSharedPage,
+      sharedMode,
+    });
+  }, [isSharedPage, sharedMode]);
 
   useEffect(() => {
     shareInfoService.shareInfo.revalidate();

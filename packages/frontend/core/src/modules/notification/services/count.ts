@@ -10,7 +10,7 @@ import {
   Service,
   smartRetry,
 } from '@toeverything/infra';
-import { switchMap, tap, timer } from 'rxjs';
+import { tap } from 'rxjs';
 
 import { AccountChanged, type AuthService } from '../../cloud';
 import { ServerStarted } from '../../cloud/events/server-started';
@@ -34,10 +34,8 @@ export class NotificationCountService extends Service {
   readonly isLoading$ = new LiveData(false);
   readonly error$ = new LiveData<any>(null);
 
+  // 仅在特定事件时刷新一次，不再持续轮询
   revalidate = effect(
-    switchMap(() => {
-      return timer(0, 30000); // revalidate every 30 seconds
-    }),
     exhaustMapWithTrailing(() => {
       return fromPromise(signal => {
         if (!this.loggedIn$.value) {

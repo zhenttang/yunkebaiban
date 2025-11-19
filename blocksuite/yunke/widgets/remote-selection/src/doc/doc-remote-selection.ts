@@ -1,3 +1,4 @@
+import { MultiCursorDuotoneIcon } from '@blocksuite/icons/lit';
 import {
   AttachmentBlockModel,
   BookmarkBlockModel,
@@ -41,6 +42,37 @@ export class YunkeDocRemoteSelectionWidget extends WidgetComponent {
   // avoid being unable to select text by mouse click or drag
   static override styles = css`
     :host {
+      pointer-events: none;
+    }
+
+    .doc-remote-cursor__content {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+    }
+
+    .doc-remote-cursor__icon {
+      position: absolute;
+      top: -18px;
+      left: -18px;
+      pointer-events: none;
+    }
+
+    .doc-remote-username {
+      position: absolute;
+      left: -4px;
+      color: white;
+      max-width: 160px;
+      padding: 0 3px;
+      border: 1px solid var(--yunke-pure-black-20);
+      box-shadow: 0px 1px 6px 0px rgba(0, 0, 0, 0.16);
+      border-radius: 4px;
+      font-size: 12px;
+      line-height: 18px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
       pointer-events: none;
     }
   `;
@@ -383,51 +415,39 @@ export class YunkeDocRemoteSelectionWidget extends WidgetComponent {
         const color = remoteColorManager.get(selection.id);
         if (!color) return [];
         const cursorRect = this._getCursorRect(selection.selections);
+        const cursorLabelBottom = cursorRect
+          ? Math.max(cursorRect.height - 4, 0)
+          : 0;
+        const displayName = this._getUserDisplayName(selection.user);
 
         return selection.rects
           .map(r => html`<div style="${selectionStyle(r, color)}"></div>`)
           .concat([
-            html`
-              <div
-                style="${cursorRect
-                  ? cursorStyle(cursorRect, color)
-                  : styleMap({
-                      display: 'none',
-                    })}"
-              >
-                <div
-                  style="${styleMap({
-                    position: 'relative',
-                    height: '100%',
-                  })}"
-                >
-                  <div
-                    style="${styleMap({
-                      position: 'absolute',
-                      left: '-4px',
-                      bottom: `${
-                        cursorRect?.height ? cursorRect.height - 4 : 0
-                      }px`,
-                      backgroundColor: color,
-                      color: 'white',
-                      maxWidth: '160px',
-                      padding: '0 3px',
-                      border: '1px solid var(--yunke-pure-black-20)',
-                      boxShadow: '0px 1px 6px 0px rgba(0, 0, 0, 0.16)',
-                      borderRadius: '4px',
-                      fontSize: '12px',
-                      lineHeight: '18px',
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis',
-                      whiteSpace: 'nowrap',
-                      display: selection.user ? 'block' : 'none',
-                    })}"
-                  >
-                    ${this._getUserDisplayName(selection.user)}
+            cursorRect
+              ? html`
+                  <div style="${cursorStyle(cursorRect, color)}">
+                    <div class="doc-remote-cursor__content">
+                      <div class="doc-remote-cursor__icon">
+                        ${MultiCursorDuotoneIcon({
+                          width: '22px',
+                          height: '22px',
+                          style: `fill: ${color}; stroke: ${color};`,
+                        })}
+                      </div>
+                      <div
+                        class="doc-remote-username"
+                        style="${styleMap({
+                          bottom: `${cursorLabelBottom}px`,
+                          backgroundColor: color,
+                          display: selection.user ? 'block' : 'none',
+                        })}"
+                      >
+                        ${displayName}
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
-            `,
+                `
+              : nothing,
           ]);
       })}
     </div>`;

@@ -23,7 +23,6 @@ import {
   RouteLogic,
   useNavigateHelper,
 } from '../../../components/hooks/use-navigate-helper';
-import { WorkspaceNavigator } from '../../../components/workspace-selector';
 import { AuthService } from '../../../modules/cloud';
 import { AppContainer } from '../../components/app-container';
 
@@ -55,7 +54,7 @@ export const Component = ({
   const list = useLiveData(workspacesService.list.workspaces$);
   const listIsLoading = useLiveData(workspacesService.list.isRevalidating$);
 
-  const { openPage, jumpToPage } = useNavigateHelper();
+  const { openPage, jumpToPage, jumpToSignIn } = useNavigateHelper();
   const [searchParams] = useSearchParams();
 
   const createOnceRef = useRef(false);
@@ -150,27 +149,21 @@ export const Component = ({
       });
   }, [jumpToPage, openPage, workspacesService]);
 
+  // TODO(@eyhn): We need a no workspace page
+  useEffect(() => {
+    if (!navigating && !creating && !children) {
+      jumpToSignIn();
+    }
+  }, [children, creating, jumpToSignIn, navigating]);
+
   if (navigating || creating) {
     return fallback ?? <AppContainer fallback />;
   }
 
-  // TODO(@eyhn): We need a no workspace page
   return (
     children ?? (
-      <div
-        style={{
-          position: 'fixed',
-          left: 'calc(50% - 150px)',
-          top: '50%',
-        }}
-      >
-        <WorkspaceNavigator
-          open={true}
-          menuContentOptions={{
-            forceMount: true,
-          }}
-        />
-      </div>
+      // show fallback when redirecting to sign in
+      <AppContainer fallback />
     )
   );
 };

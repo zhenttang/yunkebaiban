@@ -148,9 +148,9 @@ export function configureCloudModule(framework: Framework) {
     .entity(Invoices, [InvoicesStore])
     .service(SelfhostGenerateLicenseService, [SelfhostGenerateLicenseStore])
     .store(SelfhostGenerateLicenseStore, [FetchService])
-    .store(InviteInfoStore, [])
+    .store(InviteInfoStore, [FetchService])
+    .store(AcceptInviteStore, [FetchService])
     .service(InvitationService, [AcceptInviteStore, InviteInfoStore])
-    .store(AcceptInviteStore, [])
     .service(UserSettingsService, [UserSettingsStore])
     .store(UserSettingsStore, [FetchService]);
 

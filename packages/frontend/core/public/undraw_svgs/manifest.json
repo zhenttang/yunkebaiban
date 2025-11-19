@@ -1,0 +1,1299 @@
+{
+  "01-人物": {
+    "儿童": {
+      "_files": [
+        "baby_uoep.svg",
+        "basketball-kid_a3ss.svg",
+        "children_e6ln.svg"
+      ]
+    },
+    "情侣家庭": {
+      "_files": [
+        "add-friends_v4kx.svg",
+        "coffee-with-friends_ocg2.svg",
+        "couple-photo_vr7f.svg",
+        "couple_vg5l.svg",
+        "family_6gj8.svg",
+        "friends-online_gvwz.svg",
+        "friendship_chd3.svg",
+        "friends_xscy.svg",
+        "online-friends_3kzz.svg",
+        "unexpected-friends_42mc.svg"
+      ]
+    },
+    "职业角色": {
+      "_files": [
+        "barber_utly.svg",
+        "barista_wwfa.svg",
+        "chef_yoa7.svg",
+        "professor_d7zn.svg",
+        "professor_xcrw.svg"
+      ]
+    }
+  },
+  "02-办公": {
+    "会议演示": {
+      "_files": [
+        "conference-speaker_balr.svg",
+        "conference-speaker_kl0d.svg",
+        "pitching_y6kw.svg"
+      ]
+    },
+    "团队协作": {
+      "_files": [
+        "collaborating_mayd.svg",
+        "collaborative-writing_ir40.svg",
+        "collab_h1mq.svg"
+      ]
+    },
+    "远程工作": {
+      "_files": [
+        "remotely_p27a.svg"
+      ]
+    }
+  },
+  "03-技术": {
+    "云服务": {
+      "_files": [
+        "cloud-docs_6cpw.svg",
+        "cloud-hosting_tfeh.svg",
+        "cloud-sync_h1ig.svg",
+        "clouds_bmtk.svg",
+        "server-cluster_7ugi.svg",
+        "server-down_lxs9.svg",
+        "server-error_syuz.svg",
+        "server-push_1lbi.svg",
+        "server-status_7viz.svg",
+        "server_9eix.svg"
+      ]
+    }
+  },
+  "04-社交": {
+    "社交媒体": {
+      "_files": [
+        "add-post_sp6h.svg",
+        "anonymous-feedback_wbrj.svg",
+        "blog-post_f68f.svg",
+        "card-postal_qbni.svg",
+        "favorite-post_5ylx.svg",
+        "feedback_ebmx.svg",
+        "image-post_auml.svg",
+        "like-dislike_ggjr.svg",
+        "like-post_s3wo.svg",
+        "my-feed_fo8n.svg",
+        "online-posts_avfn.svg",
+        "portfolio-feedback_4iok.svg",
+        "post-online_cjn9.svg",
+        "posting-photo_15k3.svg",
+        "posts_gpjx.svg",
+        "posts_kv5v.svg",
+        "posts_sd2r.svg",
+        "post_eok2.svg",
+        "post_gs8w.svg",
+        "post_mpa0.svg",
+        "project-feedback_lr8q.svg",
+        "publish-post_7g2z.svg",
+        "wall-post_e47r.svg"
+      ]
+    },
+    "评论反馈": {
+      "_files": [
+        "for-review_coua.svg",
+        "location-review_nzql.svg",
+        "online-review_08y6.svg",
+        "online-survey_xq2g.svg",
+        "reviewed-docs_tng3.svg"
+      ]
+    }
+  },
+  "05-应用": {
+    "用户体验": {
+      "_files": [
+        "edit-photo_tuxn.svg",
+        "nuxt-js_ge6r.svg"
+      ]
+    },
+    "界面元素": {
+      "_files": [
+        "button-style_mmk3.svg",
+        "dialog-box_4p2h.svg",
+        "dropdown-menu_qvci.svg",
+        "preferences-popup_cru5.svg"
+      ]
+    },
+    "网页设计": {
+      "_files": [
+        "about-us-page_dbh0.svg",
+        "landing-page_tsx8.svg",
+        "online-page_qiv4.svg",
+        "page-eaten_b2rt.svg",
+        "page-not-found_6wni.svg",
+        "pricing-page_88g4.svg"
+      ]
+    }
+  },
+  "06-商业": {
+    "商业决策": {
+      "_files": [
+        "growth-curve_kzjb.svg",
+        "informed-decision_2jwi.svg",
+        "investment_ojxu.svg"
+      ]
+    },
+    "营销推广": {
+      "_files": [
+        "marketing_vz5j.svg"
+      ]
+    },
+    "金融支付": {
+      "_files": [
+        "bitcoin-p2-p_pykv.svg",
+        "bitcoin_q7r1.svg",
+        "crypto-flowers_5m2p.svg",
+        "crypto-portfolio_cat6.svg"
+      ]
+    }
+  },
+  "07-教育": {
+    "在线教育": {
+      "_files": [
+        "teaching_58yg.svg",
+        "youtube-tutorial_xgp1.svg"
+      ]
+    },
+    "考试测验": {
+      "_files": [
+        "exams_d2tf.svg",
+        "online-test_cqv0.svg",
+        "speed-test_wdyh.svg",
+        "split-testing_lkzx.svg",
+        "testimonials_4c7y.svg",
+        "usability-testing_w7dd.svg"
+      ]
+    },
+    "证书成就": {
+      "_files": [
+        "awards_faq6.svg",
+        "certificate_cqps.svg",
+        "success-factors_i417.svg",
+        "successful-purchase_p2fz.svg",
+        "success_288d.svg"
+      ]
+    }
+  },
+  "08-生活": {
+    "居家生活": {
+      "_files": [
+        "at-home_y0ji.svg",
+        "back-home_3dun.svg",
+        "buy-house_an72.svg",
+        "choosing-house_u1wp.svg",
+        "coming-home_jmbc.svg",
+        "home-cinema_jdm1.svg",
+        "home-run_n1g7.svg",
+        "home-settings_lw7v.svg",
+        "house-searching_g2b8.svg",
+        "houses_owky.svg",
+        "lighthouse_x9i6.svg",
+        "living_9un5.svg",
+        "select-house_l2l0.svg",
+        "sweet-home_ezw3.svg"
+      ]
+    },
+    "日常生活": {
+      "_files": [
+        "chilling_o2zv.svg"
+      ]
+    },
+    "美食餐饮": {
+      "_files": [
+        "breakfast_rgx5.svg",
+        "coffee-break_yeby.svg",
+        "coffee-run_kfzq.svg",
+        "coffee-time_98vi.svg",
+        "cooking_j2pu.svg",
+        "drink-coffee_q0ey.svg",
+        "eating-pasta_96tb.svg",
+        "getting-coffee_rzv2.svg",
+        "order-coffee_pw24.svg",
+        "street-food_xv0c.svg"
+      ]
+    }
+  },
+  "09-娱乐": {
+    "休闲放松": {
+      "_files": [
+        "beer-celebration_ytqf.svg",
+        "birthday-cake_w9f6.svg",
+        "birthday-girl_gyj9.svg",
+        "celebration_wtm8.svg"
+      ]
+    },
+    "游戏娱乐": {
+      "_files": [
+        "gaming-controller_qzoc.svg",
+        "gaming_v7a6.svg"
+      ]
+    },
+    "音乐影视": {
+      "_files": [
+        "listening-to-podcasts_j0hm.svg",
+        "podcast-listener_dpel.svg",
+        "podcast_0ioh.svg"
+      ]
+    }
+  },
+  "10-创意": {
+    "3D建模": {
+      "_files": [
+        "3d-modeling_j8a3.svg",
+        "animating_3d6h.svg",
+        "on-the-move_3di5.svg",
+        "新建 文本文档.svg"
+      ]
+    },
+    "创作过程": {
+      "_files": [
+        "create_8val.svg",
+        "creation-process_uvp6.svg",
+        "creation_4036.svg"
+      ]
+    },
+    "摄影拍照": {
+      "_files": [
+        "fashion-photoshoot_zjiu.svg",
+        "live-photo_t8nz.svg",
+        "organize-photos_t5k9.svg",
+        "photo-album_9d6r.svg",
+        "photo-session_flr1.svg",
+        "photo-sharing_ori7.svg",
+        "photo-viewer_opso.svg",
+        "photocopy_k0g7.svg",
+        "photos_09tf.svg",
+        "photo_895y.svg",
+        "picture_lnem.svg",
+        "selfie_1xk7.svg",
+        "taking-photo_s23u.svg",
+        "taking-selfie_2b1d.svg",
+        "taking-selfie_swcs.svg"
+      ]
+    }
+  },
+  "11-系统": {
+    "设置配置": {
+      "_files": [
+        "adjust-settings_6pis.svg",
+        "adjustments_i9pi.svg",
+        "control-panel_j1wf.svg",
+        "personal-settings_8xv3.svg",
+        "preferences_2bda.svg",
+        "set-preferences_pca7.svg",
+        "settings_2quf.svg",
+        "version-control_e4yu.svg",
+        "voice-control_qghj.svg"
+      ]
+    },
+    "错误提示": {
+      "_files": [
+        "alert_w756.svg",
+        "connection_ts3f.svg",
+        "online-connection_c56e.svg",
+        "warnings_agxg.svg",
+        "warning_tl76.svg"
+      ]
+    }
+  },
+  "12-自然": {
+    "动物宠物": {
+      "_files": [
+        "cat_lqdj.svg",
+        "certification_i2m0.svg",
+        "current-location_c8qn.svg",
+        "dog-walking_w27q.svg",
+        "dog_jfxm.svg",
+        "duplicate_4ikn.svg",
+        "educator_6dgp.svg",
+        "fresh-notification_hnv2.svg",
+        "good-doggy_4ast.svg",
+        "location-search_nesh.svg",
+        "location-tracking_q3yd.svg",
+        "my-current-location_tudq.svg",
+        "my-location_dcug.svg",
+        "my-notifications_fy5v.svg",
+        "new-notification_q6lz.svg",
+        "notifications_bw0p.svg",
+        "notifications_uvwd.svg",
+        "pet-adoption_h7wv.svg",
+        "petting_xclp.svg",
+        "progress-indicator_c14b.svg",
+        "push-notifications_5z1s.svg",
+        "watch-notification_f2pp.svg",
+        "welcome-cats_tw36.svg"
+      ]
+    },
+    "天气季节": {
+      "_files": [
+        "autumn_yr1f.svg",
+        "season-change_ohe6.svg",
+        "summer_u79u.svg",
+        "weather-notification_5wuk.svg",
+        "weather_7n28.svg",
+        "winter-activities_v67l.svg",
+        "winter-magic_r5xp.svg",
+        "winter-road_hxt3.svg",
+        "winter-skating_anjy.svg",
+        "winter-walk_pc6i.svg"
+      ]
+    },
+    "户外自然": {
+      "_files": [
+        "a-day-at-the-park_9w8d.svg",
+        "among-nature_2f9e.svg",
+        "amusement-park_j8fe.svg",
+        "at-the-park_2y19.svg",
+        "beach-day_cnsv.svg",
+        "nature-benefits_ak6e.svg",
+        "nature-on-screen_5cbd.svg",
+        "nature_yf30.svg",
+        "outdoor-adventure_0xrb.svg",
+        "outdoors_3ll5.svg",
+        "through-the-park_xcqx.svg"
+      ]
+    },
+    "植物花卉": {
+      "_files": [
+        "decorate-christmas-tree_brf2.svg",
+        "empty-street_3ogh.svg",
+        "flowers_171u.svg",
+        "gardening_3tyw.svg",
+        "holding-flowers_jc03.svg",
+        "order-flowers_vauv.svg",
+        "tree-swing_5010.svg"
+      ]
+    }
+  },
+  "13-节日": {
+    "特殊活动": {
+      "_files": [
+        "events-calendar_sudy.svg",
+        "launch-event_aur1.svg",
+        "special-event_hv54.svg"
+      ]
+    },
+    "生日派对": {
+      "_files": [
+        "pancakes_5hix.svg"
+      ]
+    },
+    "节日庆祝": {
+      "_files": [
+        "christmas-mode_nebj.svg",
+        "christmas-stocking_z7i3.svg",
+        "halloween_q1b1.svg",
+        "new-year-2022_u0u4.svg",
+        "new-year-2025_1tmm.svg"
+      ]
+    }
+  },
+  "14-情感": {
+    "思考沉思": {
+      "_files": [
+        "conceptual-idea_cc76.svg",
+        "contemplating_v4x1.svg",
+        "dev-focus_dd7i.svg",
+        "focused_m9bj.svg",
+        "focus_y60l.svg",
+        "forming-ideas_3bup.svg",
+        "got-an-idea_1z3i.svg",
+        "ideas-flow_lwpa.svg",
+        "ideas_vn7a.svg",
+        "ideation_r1g5.svg",
+        "idea_hz8b.svg",
+        "image-focus_jdr2.svg",
+        "new-ideas_nk4n.svg",
+        "writing-down-ideas_h99r.svg"
+      ]
+    },
+    "情绪表达": {
+      "_files": [
+        "feeling-blue_8si6.svg",
+        "feeling-of-joy_devp.svg",
+        "intense-feeling_4i8u.svg"
+      ]
+    },
+    "成功庆祝": {
+      "_files": [
+        "feeling-proud_tdos.svg",
+        "following_ztgd.svg",
+        "growing_am8t.svg",
+        "proud-self_j8xv.svg",
+        "showing-support_ixfc.svg",
+        "starry-window_l1jg.svg",
+        "swing_7z8i.svg",
+        "through-the-window_vqvx.svg",
+        "towing_e407.svg",
+        "wind-turbine_4z2a.svg",
+        "windy-day_xe10.svg",
+        "wine-tasting_jnup.svg",
+        "winners_fre4.svg"
+      ]
+    }
+  },
+  "15-其他": {
+    "抽象概念": {
+      "_files": [
+        "abstract_gk2d.svg"
+      ]
+    },
+    "未分类": {
+      "_files": [
+        "a-better-world_y9ca.svg",
+        "a-day-off_uk4x.svg",
+        "about-me_5990.svg",
+        "absorbed_h2rt.svg",
+        "access-account_aydp.svg",
+        "access-denied_krem.svg",
+        "active-support_v6g0.svg",
+        "advanced-customization_7ms4.svg",
+        "algolia_850u.svg",
+        "algorithm-execution_rksm.svg",
+        "analysis_1k4x.svg",
+        "analyze_0hyg.svg",
+        "android_vygj.svg",
+        "annotation_rz2w.svg",
+        "ask-me-anything_v09d.svg",
+        "awesome_oikh.svg",
+        "balloons_ewoz.svg",
+        "basketball_40ga.svg",
+        "be-the-hero_bce0.svg",
+        "beer_ay8u.svg",
+        "before-dawn_8wuh.svg",
+        "best-place_dhzp.svg",
+        "blooming_g9e9.svg",
+        "body-text_b6qq.svg",
+        "both-sides_mrcf.svg",
+        "broadcast_gyxl.svg",
+        "by-the-road_178b.svg",
+        "cabin_7fei.svg",
+        "campfire_42p5.svg",
+        "celebrating_2aox.svg",
+        "circles_9tlx.svg",
+        "clean-up_af4s.svg",
+        "close-tab_jr11.svg",
+        "cms_2ulf.svg",
+        "coding_joxb.svg",
+        "cohort-analysis_nqxy.svg",
+        "coming-soon_7lvi.svg",
+        "composition_aydi.svg",
+        "confidential-letter_k1ni.svg",
+        "confident_9v38.svg",
+        "connected-world_anke.svg",
+        "connected_0xor.svg",
+        "contact-us_kcoa.svg",
+        "contract_upwc.svg",
+        "contrast_r0d4.svg",
+        "convert_dgkv.svg",
+        "cool-break_cipj.svg",
+        "coolness_xbgc.svg",
+        "correct-answer_vjt7.svg",
+        "country-side_ojgw.svg",
+        "creativity_z0ey.svg",
+        "date-night_x6ro.svg",
+        "decide_4is5.svg",
+        "deconstructed_izoh.svg",
+        "deliveries_qutl.svg",
+        "dev-environment_n5by.svg",
+        "devices_odm4.svg",
+        "diet_zdwe.svg",
+        "digital-currency_u5p6.svg",
+        "digital-nomad_xr4z.svg",
+        "discount_igfl.svg",
+        "discoverable_nq2n.svg",
+        "drag-and-drop_v4po.svg",
+        "drag_8oyk.svg",
+        "dream-world_d04w.svg",
+        "dreamer_gb41.svg",
+        "drone-race_gddk.svg",
+        "drone-surveillance_mc4g.svg",
+        "dua-lipa_bc8o.svg",
+        "easter-bunny_1v4n.svg",
+        "eco-conscious_oqny.svg",
+        "eiffel-tower_ju2s.svg",
+        "election-day_puwv.svg",
+        "elements_8i1l.svg",
+        "energizer_1ewu.svg",
+        "enter_nwx3.svg",
+        "envelope_hem0.svg",
+        "environment_9luj.svg",
+        "ethereum_5s6b.svg",
+        "ether_dnch.svg",
+        "everyday-life_5bqa.svg",
+        "exciting-news_96pg.svg",
+        "expecting_j6le.svg",
+        "experts_v2vy.svg",
+        "exploring_fzmr.svg",
+        "factory_4d61.svg",
+        "fall-is-coming_tjgw.svg",
+        "fans_icv6.svg",
+        "faq_h01d.svg",
+        "fast_y061.svg",
+        "fatherhood_eldm.svg",
+        "favourite-item_kv86.svg",
+        "festivities_q090.svg",
+        "filing-system_e3yo.svg",
+        "fill-forms_npwp.svg",
+        "filter_v54h.svg",
+        "fingerprint_kdwq.svg",
+        "firewall_cfej.svg",
+        "fish-bowl_mz4m.svg",
+        "fishing_n8vg.svg",
+        "fitting-pieces_k7hv.svg",
+        "fitting-piece_y3bi.svg",
+        "flagged_c6mx.svg",
+        "flutter-dev_c8s7.svg",
+        "flying-drone_0oms.svg",
+        "follow-me-drone_g613.svg",
+        "followers_oy4u.svg",
+        "font_cooz.svg",
+        "football-with-dad_w7m1.svg",
+        "for-sale_7qjb.svg",
+        "forms_1ciz.svg",
+        "freelancer_vibs.svg",
+        "frozen-figure_88h4.svg",
+        "futuristic-interface_sv51.svg",
+        "gatsby-js_wd5s.svg",
+        "gdpr_g020.svg",
+        "genius_jvjm.svg",
+        "gift-box_io08.svg",
+        "gifts_0twc.svg",
+        "gifts_4gy3.svg",
+        "gift_mtlf.svg",
+        "goals_0pov.svg",
+        "goal_rulh.svg",
+        "going-offline_v4oo.svg",
+        "going-up_g8av.svg",
+        "golden-gate-bridge_1c6x.svg",
+        "golf_wmi1.svg",
+        "google-docs_khfo.svg",
+        "grades_hqyk.svg",
+        "graduation_u7uc.svg",
+        "grand-slam_xvhp.svg",
+        "grandma_9rwj.svg",
+        "gravitas_ger1.svg",
+        "greek-freak_p532.svg",
+        "groceries_4via.svg",
+        "hacker-mindset_m0cp.svg",
+        "hacker-mind_j91b.svg",
+        "hamburger_falh.svg",
+        "hang-out_rxuc.svg",
+        "hello_ccwj.svg",
+        "helpful-sign_qvgg.svg",
+        "hey-by-basecamp_61xm.svg",
+        "high-five_w86k.svg",
+        "hiring_8szx.svg",
+        "hologram_wfb0.svg",
+        "hooked_0qsn.svg",
+        "hot-beverage_kimb.svg",
+        "i-can-fly_0cuj.svg",
+        "ice-cream_mhwt.svg",
+        "icons_c73l.svg",
+        "images_v4j9.svg",
+        "imagination_63cb.svg",
+        "in-real-life_8znn.svg",
+        "in-sync_3wdt.svg",
+        "in-the-pool_m83v.svg",
+        "in-the-zone_07y7.svg",
+        "in-thought_xa50.svg",
+        "inbox-cleanup_be27.svg",
+        "inbox_ctn4.svg",
+        "inflation_ht0o.svg",
+        "influencer_qtm6.svg",
+        "information-tab_6nod.svg",
+        "injured_0ynx.svg",
+        "innovative_9l1b.svg",
+        "insert_z218.svg",
+        "inspection_tyum.svg",
+        "inspiration_z6x7.svg",
+        "instant-analysis_vm8x.svg",
+        "instant-information_li5g.svg",
+        "instant-support_oav0.svg",
+        "internet-on-the-go_npa2.svg",
+        "into-the-night_nd84.svg",
+        "investing_kncz.svg",
+        "invest_t695.svg",
+        "invite-only_373f.svg",
+        "invite_ds8f.svg",
+        "japan_9ygx.svg",
+        "jewelry_39lx.svg",
+        "jogging_tf9a.svg",
+        "join_6quk.svg",
+        "judge_hyqv.svg",
+        "junior-soccer_0lib.svg",
+        "just-saying_wi2d.svg",
+        "key-points_mnrr.svg",
+        "knowledge_0ty5.svg",
+        "landing_rd2s.svg",
+        "landscape-mode_z2v5.svg",
+        "late-at-night_0fob.svg",
+        "launch-day_w9g1.svg",
+        "launching_szjw.svg",
+        "legal-counsel_kdnh.svg",
+        "letter_ombg.svg",
+        "light-the-fire_u2zp.svg",
+        "lightbulb-moment_16av.svg",
+        "link-shortener_9ro5.svg",
+        "load-more_yy5n.svg",
+        "log-out_2vod.svg",
+        "logic_bj1j.svg",
+        "lost_teip.svg",
+        "loving-it_hspq.svg",
+        "loving-story_k8gb.svg",
+        "luggage_k1gn.svg",
+        "maker-launch_fwzi.svg",
+        "master-plan_m8ym.svg",
+        "mathematics_hc2c.svg",
+        "math_ldpv.svg",
+        "mention_t7iw.svg",
+        "messaging_1s2k.svg",
+        "messaging_456i.svg",
+        "messenger_kw7z.svg",
+        "mic-drop_vscc.svg",
+        "millennial-girl_30gk.svg",
+        "mint-tea_gjmb.svg",
+        "miro_pu4s.svg",
+        "modern-life_nfjp.svg",
+        "modern-professional_6pek.svg",
+        "modern-woman_cd44.svg",
+        "moment-to-remember_s1ta.svg",
+        "moments_4a32.svg",
+        "monitor_ypga.svg",
+        "monthly-users_m84v.svg",
+        "moonlight_ctir.svg",
+        "mornings_kmib.svg",
+        "motherhood_9s9r.svg",
+        "moving_2cfm.svg",
+        "my-answer_dwu4.svg",
+        "my-universe_qqch.svg",
+        "nakamoto_uy67.svg",
+        "navigator_2ntl.svg",
+        "neighbors_z879.svg",
+        "netflix_qmju.svg",
+        "new-decade_n15d.svg",
+        "new-entries_xw4m.svg",
+        "newsletter_q7fx.svg",
+        "newspaper_ri3k.svg",
+        "news_nz1p.svg",
+        "next-js_hy59.svg",
+        "nice-to-meet-you_sqin.svg",
+        "ninja_kzfv.svg",
+        "no-signal_nqfa.svg",
+        "not-found_6bgl.svg",
+        "noted_c0zn.svg",
+        "notes_dyq8.svg",
+        "notify_rnwe.svg",
+        "observations_cv73.svg",
+        "off-road_34hg.svg",
+        "omega_aj2q.svg",
+        "on-the-way_zwi3.svg",
+        "online-ad_t56y.svg",
+        "online-cv_4iq9.svg",
+        "online-discussion_dmws.svg",
+        "online-everywhere_4t8u.svg",
+        "online-gallery_dljd.svg",
+        "online-groceries_n03y.svg",
+        "online-information_hhp2.svg",
+        "online-media_opxh.svg",
+        "online-messaging_gjnh.svg",
+        "online-organizer_1kdy.svg",
+        "online-transactions_8chx.svg",
+        "online-wishes_lwig.svg",
+        "online-world_myxf.svg",
+        "online_dhvx.svg",
+        "open-letter_xc4r.svg",
+        "open-notes_xker.svg",
+        "open-source_g069.svg",
+        "opened-tabs_ypdq.svg",
+        "opened_47gd.svg",
+        "optimize-image_q59h.svg",
+        "order-delivered_puaw.svg",
+        "organizing-projects_heze.svg",
+        "os-upgrade_ztrf.svg",
+        "our-solution_qv3b.svg",
+        "passing-by_foz7.svg",
+        "pedestrian-crossing_exov.svg",
+        "pen-tool_sbiz.svg",
+        "people_ka7y.svg",
+        "percentages_wi9e.svg",
+        "personal-goals_f9bb.svg",
+        "personal-information_h7kf.svg",
+        "personal-info_yzls.svg",
+        "personal-notes_n75r.svg",
+        "personal-site_z6pl.svg",
+        "personal-text_090t.svg",
+        "personalization_0q05.svg",
+        "physics_8tvl.svg",
+        "pilates_i5uo.svg",
+        "placeholders_pel0.svg",
+        "plans_24vv.svg",
+        "pleasant-surprise_7qtf.svg",
+        "portfolio_btd8.svg",
+        "positive-attitude_xx3v.svg",
+        "powerful_e1sw.svg",
+        "presenting_pjjk.svg",
+        "prioritise_f8db.svg",
+        "problem-solving_1kpx.svg",
+        "programmer_raqr.svg",
+        "projections_fhch.svg",
+        "public-discussion_693m.svg",
+        "pull-request_zlsu.svg",
+        "pumpkin_fgf8.svg",
+        "qa-engineers_kgp8.svg",
+        "questions_g2px.svg",
+        "random-thoughts_goca.svg",
+        "react_ytu4.svg",
+        "receipt_tzi0.svg",
+        "recording_1q6x.svg",
+        "refreshing-beverage_w8al.svg",
+        "refreshing_djbj.svg",
+        "relaunch-day_k3qo.svg",
+        "reminders_ll1x.svg",
+        "reminder_ustg.svg",
+        "respond_o54z.svg",
+        "responsiveness_rk5g.svg",
+        "responsive_csbt.svg",
+        "result_d6p8.svg",
+        "revenue_kv38.svg",
+        "right-places_6czi.svg",
+        "rising_uutn.svg",
+        "road-sign_2g9d.svg",
+        "road-to-knowledge_f9zn.svg",
+        "safe_0mei.svg",
+        "santa-claus_1z1i.svg",
+        "santa-visit_cx76.svg",
+        "saving-notes_wp71.svg",
+        "savings_uwjn.svg",
+        "science_kut5.svg",
+        "scientist_5td0.svg",
+        "sculpting_qmq5.svg",
+        "segment-analysis_cl30.svg",
+        "segmentation_gd0j.svg",
+        "segment_wfu6.svg",
+        "send-gift_jl1z.svg",
+        "services_dhxj.svg",
+        "setup_fzje.svg",
+        "ship-it_vn4g.svg",
+        "short-bio_rxu2.svg",
+        "sign-in_uva0.svg",
+        "sign-up_qamz.svg",
+        "slider_8svk.svg",
+        "small-town_76a2.svg",
+        "smiley-face_ue83.svg",
+        "snow-globe_xrk9.svg",
+        "snowman_m7tp.svg",
+        "solution-mindset_pit7.svg",
+        "sorting-thoughts_w6dr.svg",
+        "specs_2nnl.svg",
+        "speech-to-text_4kov.svg",
+        "spooky-self_eqcy.svg",
+        "stability-ball_fxne.svg",
+        "stand-out_9j2q.svg",
+        "static-assets_di5m.svg",
+        "statistics_z6y6.svg",
+        "staying-in_ot21.svg",
+        "stock-prices_8nuz.svg",
+        "subscriber_whh0.svg",
+        "subscribe_w8sz.svg",
+        "subscriptions_72tq.svg",
+        "suburbs_zzmj.svg",
+        "sunlight_m10w.svg",
+        "sunny-day_53fo.svg",
+        "super-thank-you_flq2.svg",
+        "super-woman_6nx2.svg",
+        "superhero_1qxm.svg",
+        "surfer_sf60.svg",
+        "surveillance_k6wl.svg",
+        "swipe_1puc.svg",
+        "switches_atb7.svg",
+        "synchronize_txyw.svg",
+        "sync_pe2t.svg",
+        "tabs_tlxz.svg",
+        "take-out-boxes_n094.svg",
+        "taken_mshk.svg",
+        "tasting_cd81.svg",
+        "term-sheet_70lo.svg",
+        "terms_sx63.svg",
+        "text-field_17if.svg",
+        "the-world-is-mine_wnib.svg",
+        "things-to-say_f5mi.svg",
+        "thoughts_wy7s.svg",
+        "through-the-desert_0e7j.svg",
+        "throw-away_k2t5.svg",
+        "throw-down_0fmr.svg",
+        "to-the-moon_w1wa.svg",
+        "touching-grass_6v3i.svg",
+        "town_oesm.svg",
+        "treasure_k1xi.svg",
+        "trends_gop0.svg",
+        "tweetstorm_wq1q.svg",
+        "typewriter_d4km.svg",
+        "unboxing_p8sg.svg",
+        "under-construction_c2y1.svg",
+        "unicorn_u24j.svg",
+        "up-to-date_o0j3.svg",
+        "upgrade_96mr.svg",
+        "upvote_frrh.svg",
+        "user-account_fvqa.svg",
+        "users-per-minute_eg97.svg",
+        "vault_tyfh.svg",
+        "verified_m721.svg",
+        "vibe-coding_mjme.svg",
+        "vintage_q09n.svg",
+        "visualization_zhab.svg",
+        "voice-assistant_k27k.svg",
+        "voice-interface_vo02.svg",
+        "void_wez2.svg",
+        "voting_3ygx.svg",
+        "walk-dreaming_atzd.svg",
+        "walking-outside_7jfy.svg",
+        "walking_2vhy.svg",
+        "wandering-mind_ecva.svg",
+        "wash-hands_ydq5.svg",
+        "watching-reels_53wl.svg",
+        "wedding_qt3q.svg",
+        "welcome_nk8k.svg",
+        "welcoming_42an.svg",
+        "wilderness_218l.svg",
+        "wireframing_d3cx.svg",
+        "wishes_tf5p.svg",
+        "woman_nxse.svg",
+        "women-day_aa4h.svg",
+        "word-of-mouth_9ddm.svg",
+        "wordpress_l75e.svg",
+        "world_bdnk.svg",
+        "writer_r7ca.svg",
+        "xmas-snowman_vexw.svg",
+        "xmas-surprise_71qn.svg",
+        "yacht_rrg9.svg",
+        "zoom-in_miok.svg"
+      ]
+    }
+  },
+  "16-任务管理": {
+    "待办清单": {
+      "_files": [
+        "accept-task_vzpn.svg",
+        "add-tasks_mvlb.svg",
+        "check-boxes_ewf2.svg",
+        "checking-boxes_j0im.svg",
+        "checklist_bwxa.svg",
+        "complete-task_qgwk.svg",
+        "completed-tasks_1j9z.svg",
+        "done-checking_ra6c.svg",
+        "multitasking_5lw1.svg",
+        "next-tasks_y3rm.svg",
+        "task-brief_esbq.svg",
+        "task-list_qe3p.svg",
+        "tasks_l9ct.svg"
+      ]
+    },
+    "时间管理": {
+      "_files": [
+        "calendar_8r6s.svg",
+        "digital-calendar_180l.svg",
+        "in-no-time_ax6n.svg",
+        "online-calendar_zaoc.svg",
+        "quality-time_ay6x.svg",
+        "real-time-sync_ro77.svg",
+        "schedule_ry1w.svg",
+        "screen-time_f7ev.svg",
+        "sentiment-analysis_rke9.svg",
+        "time-management_4ss6.svg",
+        "timeline_2gfy.svg"
+      ]
+    },
+    "进度跟踪": {
+      "_files": [
+        "activity-tracker_3o6r.svg",
+        "career-progress_vfq5.svg",
+        "complete-form_aarh.svg",
+        "completed-steps_ngu7.svg",
+        "completed_0sqh.svg",
+        "completion-progress_o56q.svg",
+        "in-progress_cdfz.svg",
+        "progress-overview_wl8n.svg",
+        "progress-tracking_9m3o.svg",
+        "project-completed_fwjq.svg",
+        "project-complete_1zw5.svg",
+        "track-and-field_i2au.svg"
+      ]
+    }
+  },
+  "17-交互操作": {
+    "添加编辑": {
+      "_files": [
+        "add-color_6211.svg",
+        "add-content_77x1.svg",
+        "add-information_06qr.svg",
+        "add-notes_9xls.svg",
+        "add-user_rbko.svg",
+        "address_4imv.svg",
+        "editable_y4ms.svg",
+        "investor-update_9gnf.svg",
+        "meditating_1fki.svg",
+        "meditation_vje0.svg",
+        "portfolio-update_6bro.svg",
+        "status-update_7gqz.svg",
+        "updated-resume_287i.svg",
+        "updated_aoid.svg",
+        "updates_wm27.svg",
+        "update_jvp1.svg"
+      ]
+    },
+    "点击选择": {
+      "_files": [
+        "asset-selection_jrie.svg",
+        "choose-card_es1o.svg",
+        "choose-color_qtyu.svg",
+        "choose_5kz4.svg",
+        "click-here_3vzn.svg",
+        "date-picker_8qys.svg",
+        "select-option_6wly.svg",
+        "select-option_a16s.svg",
+        "select-option_ibwz.svg",
+        "selected-box_qnrz.svg",
+        "selected-options_2x1i.svg",
+        "selecting_vzas.svg",
+        "selection_7hy6.svg",
+        "select_u1sa.svg"
+      ]
+    },
+    "确认取消": {
+      "_files": [
+        "accept-request_489a.svg",
+        "agreement_w6ua.svg",
+        "agree_g19h.svg",
+        "cancel_7zdh.svg",
+        "confirmation_31jc.svg",
+        "confirmed_c5lo.svg",
+        "confirm_rds7.svg",
+        "order-confirmed_m9e9.svg"
+      ]
+    }
+  },
+  "18-状态提示": {
+    "加载等待": {
+      "_files": [
+        "buffer_dsav.svg",
+        "fast-loading_ae60.svg",
+        "loading_3kqt.svg"
+      ]
+    },
+    "完成成功": {
+      "_files": [
+        "done_i0ak.svg",
+        "finish-line_auqi.svg",
+        "well-done_kqud.svg"
+      ]
+    },
+    "空状态": {
+      "_files": [
+        "blank-canvas_a6x5.svg",
+        "empty_4zx0.svg",
+        "fill-the-blank_n29z.svg"
+      ]
+    }
+  },
+  "19-导航定位": {
+    "地图位置": {
+      "_files": [
+        "camping_1hz9.svg",
+        "camping_q4ji.svg",
+        "escaping_aq6s.svg",
+        "opinion_bp12.svg",
+        "personal-opinions_fzy5.svg",
+        "pin-to-board_eoie.svg",
+        "prototyping-process_1thp.svg",
+        "stepping-up_4q3b.svg",
+        "typing_gcve.svg"
+      ]
+    },
+    "城市街道": {
+      "_files": [
+        "city-driver_kgk7.svg",
+        "city-girl_b84p.svg",
+        "city-life_l74x.svg",
+        "electricity_iu6d.svg",
+        "walk-in-the-city_tk65.svg"
+      ]
+    },
+    "路线导航": {
+      "_files": [
+        "directions_oehw.svg",
+        "navigation_0q48.svg",
+        "right-direction_arvo.svg"
+      ]
+    }
+  },
+  "20-内容展示": {
+    "列表网格": {
+      "_files": [
+        "bento-grid_qfc0.svg",
+        "chore-list_ylw0.svg",
+        "listening_fz9g.svg",
+        "note-list_47ij.svg",
+        "to-do-list_eoia.svg",
+        "to-do-list_o3jf.svg",
+        "wishlist_0k5w.svg"
+      ]
+    },
+    "博客文章": {
+      "_files": [
+        "blogging_38kl.svg",
+        "blog_1ca8.svg",
+        "content-creator_vuqg.svg",
+        "content-structure_0gu1.svg",
+        "content_0p18.svg",
+        "fashion-blogging_wfoz.svg",
+        "organized-content_9szr.svg",
+        "site-content_aa05.svg"
+      ]
+    },
+    "卡片布局": {
+      "_files": [
+        "gift-card_sfy8.svg",
+        "professional-card_ldgq.svg"
+      ]
+    }
+  },
+  "21-用户行为": {
+    "搜索查找": {
+      "_files": [
+        "explore_kfv3.svg",
+        "people-search_xpq4.svg",
+        "search-engines_k649.svg",
+        "searching_no1g.svg",
+        "search_vimp.svg",
+        "the-search_cjxa.svg"
+      ]
+    },
+    "收藏喜欢": {
+      "_files": [
+        "chasing-love_ny97.svg",
+        "collecting_3zyb.svg",
+        "collection_ly06.svg",
+        "cookie-love_t5px.svg",
+        "different-love_58hd.svg",
+        "donut-love_5r3x.svg",
+        "effortless-love_zg5q.svg",
+        "favorite_ons7.svg",
+        "in-love_yqu6.svg",
+        "love-it_8pc0.svg",
+        "love_qypu.svg",
+        "pure-love_cvaw.svg",
+        "spread-love_0ekp.svg",
+        "true-love_rap5.svg",
+        "with-love_rs1k.svg"
+      ]
+    },
+    "浏览查看": {
+      "_files": [
+        "browsing-online_rozb.svg",
+        "browsing_z5g5.svg",
+        "features-overview_uone.svg",
+        "interview_yz52.svg",
+        "just-browsing_0rpb.svg",
+        "performance-overview_1b4y.svg"
+      ]
+    }
+  },
+  "22-职业发展": {
+    "求职招聘": {
+      "_files": [
+        "candidate_q4my.svg",
+        "career-development_f0n6.svg",
+        "hire_hadq.svg",
+        "job-hunt_5umi.svg",
+        "job-offers_55y0.svg",
+        "online-resume_z4sp.svg",
+        "resume_jrgi.svg",
+        "screening-resumes_dh9s.svg"
+      ]
+    },
+    "职业规划": {
+      "_files": [
+        "development_s4gv.svg"
+      ]
+    }
+  },
+  "23-交通出行": {
+    "公共交通": {
+      "_files": [
+        "bus-stop_m7q9.svg",
+        "subway_66jh.svg"
+      ]
+    },
+    "自驾骑行": {
+      "_files": [
+        "bike-ride_ba0o.svg",
+        "biking_m4mb.svg",
+        "car-salesman_ni2a.svg",
+        "electric-car_vlgq.svg",
+        "indoor-bike_9lxj.svg",
+        "joyride_mb83.svg",
+        "order-a-car_x5mq.svg",
+        "order-ride_4gaq.svg",
+        "pride_u77s.svg",
+        "ride-a-bicycle_oozn.svg",
+        "ride-till-i-can-no-more_j9e9.svg",
+        "scooter_izdb.svg",
+        "toy-car_ugyu.svg"
+      ]
+    },
+    "航空航天": {
+      "_files": [
+        "astronaut_j6je.svg",
+        "outer-space_qey5.svg",
+        "space-exploration_dhu1.svg"
+      ]
+    }
+  },
+  "24-城市生活": {
+    "社区活动": {
+      "_files": [
+        "online-community_3o0l.svg",
+        "our-neighborhood_s0n2.svg"
+      ]
+    }
+  },
+  "25-兴趣爱好": {
+    "户外活动": {
+      "_files": [
+        "adventure_9my9.svg",
+        "hiking_9zta.svg"
+      ]
+    },
+    "阅读写作": {
+      "_files": [
+        "bibliophile_sbt0.svg",
+        "read-notes_7itt.svg",
+        "ready-for-waves_k5hv.svg",
+        "spreadsheets_bh6n.svg",
+        "spreadsheet_uj8z.svg"
+      ]
+    }
+  },
+  "26-科技未来": {
+    "太空探索": {
+      "_files": [
+        "alien-science_0aba.svg"
+      ]
+    },
+    "虚拟现实": {
+      "_files": [
+        "a-whole-year_aniy.svg",
+        "around-the-world_vgcy.svg",
+        "arrived_3atp.svg",
+        "augmented-reality_3ie0.svg",
+        "barbecue_k11q.svg",
+        "bear-market_dhi3.svg",
+        "breaking-barriers_4leg.svg",
+        "bull-market_4a8e.svg",
+        "counting-stars_onv6.svg",
+        "dark-alley_ykce.svg",
+        "dark-mode_lot3.svg",
+        "dashboard_p93p.svg",
+        "diary_f7r8.svg",
+        "farm-girl_cefo.svg",
+        "farming_u62j.svg",
+        "firmware_3fxd.svg",
+        "going-upwards_0y3z.svg",
+        "laravel-and-vue_fios.svg",
+        "logistics_8vri.svg",
+        "marilyn_uszj.svg",
+        "moving-forward_md35.svg",
+        "next-option_vr3u.svg",
+        "onboarding_wkl7.svg",
+        "online-popularity_25c4.svg",
+        "ordinary-day_ak4e.svg",
+        "package-arrived_twqd.svg",
+        "pizza-sharing_lu19.svg",
+        "polaroid_qqdz.svg",
+        "popular_uk9x.svg",
+        "preparation_59f0.svg",
+        "scrum-board_uqku.svg",
+        "setup-wizard_wzp9.svg",
+        "sharing-knowledge_2jx3.svg",
+        "skateboarding_i2pz.svg",
+        "skateboard_w3bz.svg",
+        "software-engineer_xv60.svg",
+        "starlink_pmv3.svg",
+        "stars_5pgw.svg",
+        "target_d6hf.svg",
+        "teddy-bear_6rqf.svg",
+        "to-the-stars_tz9v.svg",
+        "virtual-assistant_y1xf.svg",
+        "virtual-reality_4fo0.svg",
+        "walking-around_tfkb.svg",
+        "welcome-aboard_y4e9.svg",
+        "year-2022_j29u.svg"
+      ]
+    }
+  },
+  "27-情感关系": {
+    "友谊陪伴": {
+      "_files": [
+        "buddies_udt4.svg"
+      ]
+    },
+    "孤独思念": {
+      "_files": [
+        "missed-chances_5vme.svg"
+      ]
+    },
+    "爱情浪漫": {
+      "_files": [
+        "online-dating_w9n9.svg",
+        "romantic-getaway_qqwb.svg"
+      ]
+    }
+  },
+  "28-工具应用": {
+    "计算器": {
+      "_files": [
+        "calculator_21hp.svg"
+      ]
+    },
+    "颜色选择": {
+      "_files": [
+        "color-schemes_r29x.svg",
+        "palette_0vh3.svg"
+      ]
+    }
+  },
+  "29-流程步骤": {
+    "步骤指引": {
+      "_files": [
+        "instruction-manual_4hih.svg",
+        "step-to-the-sun_wp49.svg",
+        "steps_s8km.svg"
+      ]
+    },
+    "流程图示": {
+      "_files": [
+        "processing-thoughts_wakg.svg",
+        "processing_bto8.svg",
+        "process_7lkc.svg",
+        "user-flow_d1ya.svg"
+      ]
+    },
+    "选择决策": {
+      "_files": [
+        "choice_dzxz.svg",
+        "image-options_zchk.svg",
+        "multiple-choice_9n00.svg",
+        "options_mw73.svg",
+        "swipe-options_9sel.svg"
+      ]
+    }
+  }
+}

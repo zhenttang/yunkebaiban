@@ -19,16 +19,16 @@ export const pulse = keyframes({
 export const layout = style({
   width: '100%',
   maxWidth: '1060px',
-  margin: '0 auto',
+  margin: 'auto',
   display: 'flex',
-  alignItems: 'stretch',
+  alignItems: 'center',
   gap: '56px',
   position: 'relative',
   zIndex: 2,
   animation: `${fadeInUp} 0.6s ease-out`,
   '@media': {
     'screen and (max-width: 960px)': {
-      flexDirection: 'column-reverse',
+      flexDirection: 'column',
       alignItems: 'center',
       gap: '32px',
     },
@@ -43,37 +43,35 @@ export const panel = style({
   maxWidth: '420px',
   position: 'relative',
   overflow: 'hidden',
-  // 更轻量的卡片背景，降低绘制成本
-  background:
-    'linear-gradient(135deg, rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.86)) padding-box, linear-gradient(135deg, rgba(51, 102, 255, 0.25), rgba(139, 92, 246, 0.25)) border-box',
-  borderRadius: '28px',
+  // 极简风格：纯色背景，细边框
+  background: cssVar('backgroundPrimaryColor'),
+  borderRadius: '16px',
   padding: '40px 44px',
   boxSizing: 'border-box',
-  // 全局降低阴影强度
-  boxShadow:
-    '0 16px 40px rgba(15, 23, 42, 0.14), 0 8px 20px rgba(51, 102, 255, 0.10), inset 0 1px 0 rgba(255, 255, 255, 0.24)',
-  border: '1px solid transparent',
-  backgroundClip: ['padding-box', 'border-box'],
-  // 全局降级模糊半径
-  backdropFilter: 'blur(12px)',
+  boxShadow: '0 4px 24px rgba(0, 0, 0, 0.04)',
+  border: `1px solid ${cssVar('borderColor')}`,
   animation: `${fadeInUp} 0.8s ease-out 0.3s backwards`,
   selectors: {
     '[data-theme="dark"] &': {
-      background:
-        'linear-gradient(135deg, rgba(17, 24, 39, 0.92), rgba(15, 23, 42, 0.82)) padding-box, linear-gradient(135deg, rgba(79, 70, 229, 0.35), rgba(16, 185, 129, 0.22)) border-box',
-      backgroundClip: ['padding-box', 'border-box'],
-      boxShadow:
-        '0 16px 40px rgba(2, 6, 23, 0.55), 0 10px 24px rgba(79, 70, 229, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.06)',
+      background: cssVar('backgroundPrimaryColor'),
+      border: `1px solid ${cssVar('borderColor')}`,
+      boxShadow: '0 4px 24px rgba(0, 0, 0, 0.2)',
     },
   },
   '@media': {
     'screen and (max-width: 960px)': {
       maxWidth: '480px',
       padding: '32px 28px',
-      // A：小屏进一步减轻效果
-      backdropFilter: 'none',
+      // A：小屏使用半透明背景，透出底部插画
+      background: 'rgba(255, 255, 255, 0.7)',
+      backdropFilter: 'blur(12px)',
       boxShadow:
         '0 10px 24px rgba(15, 23, 42, 0.12), 0 6px 14px rgba(51, 102, 255, 0.08)',
+      selectors: {
+        '[data-theme="dark"] &': {
+          background: 'rgba(30, 41, 59, 0.7)',
+        },
+      },
     },
     'screen and (max-width: 640px)': {
       width: '100%',
@@ -93,6 +91,19 @@ export const hero = style({
   gap: '18px',
   color: cssVar('textPrimaryColor'),
   animation: `${fadeInUp} 0.8s ease-out 0.2s backwards`,
+  // 增加背景模糊效果，提升文字可读性
+  background: 'rgba(255, 255, 255, 0.6)',
+  backdropFilter: 'blur(12px)',
+  padding: '40px',
+  borderRadius: '24px',
+  boxShadow: '0 8px 32px rgba(0, 0, 0, 0.05)',
+  border: '1px solid rgba(255, 255, 255, 0.4)',
+  selectors: {
+    '[data-theme="dark"] &': {
+      background: 'rgba(0, 0, 0, 0.4)',
+      border: '1px solid rgba(255, 255, 255, 0.1)',
+    },
+  },
   '@media': {
     // 小屏时隐藏营销/宣传区域，让布局与弹窗/移动端一致
     'screen and (max-width: 960px)': {
@@ -110,10 +121,7 @@ export const heroTitle = style({
   fontWeight: 700,
   letterSpacing: '-0.02em',
   margin: 0,
-  background: 'linear-gradient(135deg, #3366ff 0%, #8b5cf6 100%)',
-  WebkitBackgroundClip: 'text',
-  WebkitTextFillColor: 'transparent',
-  backgroundClip: 'text',
+  color: cssVar('textPrimaryColor'),
 });
 
 export const heroBadge = style({
@@ -122,20 +130,14 @@ export const heroBadge = style({
   gap: '8px',
   padding: '6px 14px',
   borderRadius: '9999px',
-  background: 'linear-gradient(135deg, rgba(51, 102, 255, 0.2), rgba(139, 92, 246, 0.3))',
-  color: cssVar('blue'),
+  background: cssVar('backgroundSecondaryColor'),
+  color: cssVar('textPrimaryColor'),
+  border: `1px solid ${cssVar('borderColor')}`,
   fontSize: cssVar('fontXs'),
   fontWeight: 600,
   letterSpacing: '0.1em',
   textTransform: 'uppercase',
-  boxShadow: '0 10px 30px rgba(51, 102, 255, 0.25)',
-  selectors: {
-    '[data-theme="dark"] &': {
-      background:
-        'linear-gradient(135deg, rgba(79, 70, 229, 0.25), rgba(30, 64, 175, 0.28))',
-      boxShadow: '0 12px 32px rgba(79, 70, 229, 0.35)',
-    },
-  },
+  boxShadow: 'none',
 });
 
 export const heroSubtitle = style({
@@ -170,23 +172,3 @@ export const heroHighlight = style({
   },
 });
 
-export const heroDot = style({
-  flexShrink: 0,
-  width: '10px',
-  height: '10px',
-  borderRadius: '9999px',
-  background: cssVar('blue'),
-  boxShadow: '0 0 0 4px rgba(51, 102, 255, 0.18)',
-  marginTop: '7px',
-  animation: `${pulse} 2s ease-in-out infinite`,
-  selectors: {
-    '[data-theme="dark"] &': {
-      boxShadow: '0 0 0 4px rgba(79, 70, 229, 0.25)',
-    },
-  },
-  '@media': {
-    '(prefers-reduced-motion: reduce)': {
-      animation: 'none',
-    },
-  },
-});

@@ -44,7 +44,8 @@ export const IntegrationSetting = () => {
           </>
         }
       />
-      <ul className={list}>
+      {/* 集成列表已隐藏 */}
+      <ul className={list} style={{ display: 'none' }}>
         {integrationList.map(item => {
           const title =
             typeof item.name === 'string'

@@ -1,7 +1,13 @@
 import { Store } from '@toeverything/infra';
 import type { WorkspaceServerService } from '../../cloud';
-import type { PublicDocMode, ShareInfoType } from '../types';
-import { DocRole } from '../types';
+import {
+  DocPermission,
+  DocRole,
+  type PublicDocMode,
+  type ShareInfoType,
+  hasPermission,
+  RolePresetsMask,
+} from '../types';
 
 export class ShareStore extends Store {
   constructor(private readonly workspaceServerService: WorkspaceServerService) {
@@ -18,53 +24,29 @@ export class ShareStore extends Store {
     }
     
     try {
-      // 直接使用 GET 请求（HEAD 请求在某些权限检查场景下会返回 403）
-      // 只读取 headers，不读取 body，避免下载大文件
+      // 1. 通过 HEAD 读取 share header，避免下载正文
       const res = await this.workspaceServerService.server.fetch(
         `/api/workspaces/${workspaceId}/docs/${docId}`,
         {
-          method: 'GET',
-          headers: { 'Accept': 'application/octet-stream' },
+          method: 'HEAD',
+          headers: { Accept: 'application/octet-stream' },
           signal,
         } as RequestInit
       );
-      
-      // 检查状态码：403 或 404 表示文档未公开或不存在
+
       if (res.status === 403 || res.status === 404) {
-        // 尝试解析错误响应，获取错误码
-        try {
-          const errorBody = await res.clone().json().catch(() => null);
-          const errorCode = errorBody?.code;
-          
-          // 如果是权限相关的错误码，静默处理（这是正常行为）
-          const isPermissionError = errorCode === 'DOC_ACCESS_DENIED' || 
-                                    errorCode === 'DOC_NOT_PUBLIC' ||
-                                    errorCode === 'FORBIDDEN';
-          
-          if (!isPermissionError && res.status === 403) {
-            // 非权限错误才记录日志
-            console.warn('[ShareStore] 文档访问被拒绝:', errorCode || '未知错误码');
-          }
-        } catch (e) {
-          // 解析失败，忽略
-        }
-        
         return {
           public: false,
           mode: 'page' as PublicDocMode,
           defaultRole: DocRole.None,
         };
       }
-      
-      // 从响应头读取权限信息
-      const permissionMode = res.headers.get('permission-mode');
 
-      // 解析为ShareInfoType
-      const isPrivate = permissionMode === 'private' || permissionMode == null;
+      const permissionMode = (res.headers.get('permission-mode') || 'private').toLowerCase();
+      const isPrivate = permissionMode === 'private';
       const isAppendOnly = permissionMode === 'append-only';
-      const info: ShareInfoType = {
+      let info: ShareInfoType = {
         public: !isPrivate,
-        // 将后端header映射为前端模式（仅关心公开时的权限模式）
         mode: isAppendOnly ? ('append-only' as PublicDocMode) : ('page' as PublicDocMode),
         defaultRole: isPrivate
           ? DocRole.None
@@ -72,7 +54,72 @@ export class ShareStore extends Store {
           ? DocRole.Editor
           : DocRole.Reader,
       };
-      
+
+      // 2. 再请求默认角色，覆盖 defaultRole
+      try {
+        const defaultRoleRes = await this.workspaceServerService.server.fetch(
+          `/api/workspaces/${workspaceId}/docs/${docId}/default-role`,
+          {
+            method: 'GET',
+            signal,
+          } as RequestInit
+        );
+
+        if (defaultRoleRes.ok) {
+          const payload = await defaultRoleRes.json();
+          const roleDto = (payload?.defaultRole ?? payload) as {
+            role?: string;
+            permissionMask?: number;
+            legacyDefaultRole?: number;
+          };
+
+          const maskRole = (mask?: number): DocRole | undefined => {
+            if (typeof mask !== 'number') return undefined;
+            if (hasPermission(mask, DocPermission.Manage)) return DocRole.Manager;
+            if (hasPermission(mask, DocPermission.Modify) || hasPermission(mask, DocPermission.Add)) {
+              return DocRole.Editor;
+            }
+            if (hasPermission(mask, DocPermission.Read)) return DocRole.Reader;
+            return DocRole.None;
+          };
+
+          const nameRole = (role?: string): DocRole | undefined => {
+            switch (role?.toLowerCase()) {
+              case 'owner':
+              case 'manager':
+              case 'admin':
+                return DocRole.Manager;
+              case 'editor':
+                return DocRole.Editor;
+              case 'reader':
+              case 'viewer':
+                return DocRole.Reader;
+              case 'none':
+                return DocRole.None;
+              default:
+                return undefined;
+            }
+          };
+
+          const resolvedRole =
+            nameRole(roleDto?.role) ??
+            maskRole(roleDto?.permissionMask) ??
+            (roleDto?.legacyDefaultRole === RolePresetsMask.manager
+              ? DocRole.Manager
+              : roleDto?.legacyDefaultRole === RolePresetsMask.editor
+              ? DocRole.Editor
+              : roleDto?.legacyDefaultRole === RolePresetsMask.reader
+              ? DocRole.Reader
+              : undefined);
+
+          if (resolvedRole !== undefined) {
+            info = { ...info, defaultRole: resolvedRole };
+          }
+        }
+      } catch (err) {
+        console.warn('[ShareStore] 获取默认角色失败，使用header推测值', err);
+      }
+
       return info;
     } catch (error: any) {
       // 检查是否是网络错误（403/404）

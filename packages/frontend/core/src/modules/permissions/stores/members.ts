@@ -40,7 +40,8 @@ export class WorkspaceMembersStore extends Store {
     const data = await res.json();
     return {
       members: data.members ?? [],
-      memberCount: data.totalElements ?? (data.members?.length ?? 0),
+      memberCount:
+        data.count ?? data.totalElements ?? (data.members?.length ?? 0),
     };
   }
 

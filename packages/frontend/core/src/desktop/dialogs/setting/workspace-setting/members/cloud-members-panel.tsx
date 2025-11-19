@@ -179,16 +179,52 @@ export const CloudWorkspaceMembersPanel = ({
 
   const onGenerateInviteLink = useCallback(
     async (expireTime: WorkspaceInviteLinkExpireTime) => {
-      const { link } = await membersService.generateInviteLink(expireTime);
-      workspaceShareSettingService.sharePreview.revalidate();
-      return link;
+      const result: any = await membersService.generateInviteLink(expireTime);
+
+      // 兼容多种返回格式:
+      // 1) { success: true, inviteLink: { link: '/invite/xxx', expiresAt: '...' } }
+      // 2) { success: true, inviteLink: '/invite/xxx' }
+      // 3) 直接返回字符串 '/invite/xxx'
+      const rawInvite = result?.inviteLink ?? result;
+      const rawLink =
+        (typeof rawInvite === 'string' && rawInvite) ||
+        rawInvite?.link ||
+        '';
+
+      if (!rawLink) {
+        throw new Error('生成邀请链接失败：后端未返回链接');
+      }
+
+      const origin =
+        typeof window !== 'undefined' && window.location
+          ? window.location.origin
+          : '';
+      const fullLink = rawLink.startsWith('http')
+        ? rawLink
+        : `${origin}${rawLink}`;
+
+      const expireTimeRaw: string | undefined =
+        rawInvite?.expireTime || rawInvite?.expiresAt;
+
+      // 更新本地 sharePreview 状态，驱动 UI 显示实际邀请链接
+      workspaceShareSettingService.sharePreview.inviteLink$.setValue({
+        link: fullLink,
+        expireTime: expireTimeRaw,
+      } as any);
+
+      return fullLink;
     },
     [membersService, workspaceShareSettingService.sharePreview]
   );
 
   const onRevokeInviteLink = useCallback(async () => {
     const success = await membersService.revokeInviteLink();
-    workspaceShareSettingService.sharePreview.revalidate();
+
+    if (success) {
+      // 本地清空邀请链接状态
+      workspaceShareSettingService.sharePreview.inviteLink$.setValue(null);
+    }
+
     return success;
   }, [membersService, workspaceShareSettingService.sharePreview]);
 

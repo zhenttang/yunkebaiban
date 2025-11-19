@@ -499,6 +499,7 @@
   "com.yunke.empty.tags.description": "為您的文檔創建一個新標籤。",
   "com.yunke.empty.tags.title": "標籤管理",
   "com.yunke.emptyDesc": "仲未有頁面",
+  "com.yunke.emptyDesc.hint": "建立新文件以開始",
   "com.yunke.enableYunkeCloudModal.button.cancel": "取消",
   "com.yunke.enableYunkeCloudModal.custom-server.title": "為 {{workspaceName}} 啟用雲",
   "com.yunke.enableYunkeCloudModal.custom-server.description": "選擇一個實例。",

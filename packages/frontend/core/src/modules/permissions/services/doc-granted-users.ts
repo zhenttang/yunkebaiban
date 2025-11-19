@@ -155,6 +155,26 @@ export class DocGrantedUsersService extends Service {
     });
   }
 
+  /**
+   * 更新文档默认权限位掩码
+   *
+   * 注意：
+   * - 调用方会传入 workspaceId / docId，但这些字段在某些场景下可能是 undefined
+   *   （例如通过 ShareInfoService 间接传递），因此这里统一使用当前
+   *   WorkspaceService / DocService 中的实际 ID，避免由于参数错误导致请求路径错误。
+   */
+  async updateDocDefaultPermissionMask(input: {
+    workspaceId: string;
+    docId: string;
+    permissionMask: number;
+  }) {
+    return await this.store.updateDocDefaultPermissionMask({
+      workspaceId: this.workspaceService.workspace.id,
+      docId: this.docService.doc.id,
+      permissionMask: input.permissionMask,
+    });
+  }
+
   override dispose(): void {
     this.loadMore.unsubscribe();
   }

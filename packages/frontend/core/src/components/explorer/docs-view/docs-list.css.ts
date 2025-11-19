@@ -21,8 +21,27 @@ export const emptyState = style({
   padding: '24px',
 });
 
+export const emptyStateIcon = style({
+  marginBottom: '24px',
+  display: 'flex',
+  justifyContent: 'center',
+  color: cssVarV2.icon.secondary,
+});
+
 export const emptyStateTitle = style({
   marginBottom: '12px',
   fontSize: '16px',
+  fontWeight: 500,
+});
+
+export const emptyStateAction = style({
+  marginTop: '24px',
+  display: 'flex',
+  justifyContent: 'center',
+});
+
+export const createButton = style({
+  padding: '8px 20px',
+  fontSize: '14px',
   fontWeight: 500,
 });

@@ -92,18 +92,18 @@ export class NotificationStore extends Store {
   }
 
   async getNotificationCount(signal?: AbortSignal): Promise<number> {
+    // 关闭后台轮询的通知计数请求：
+    // 通知红点在打开列表时，会通过 listNotification 的 totalElements 自动同步，
+    // 这里不再额外请求 /api/notifications/count，避免无意义轮询。
     try {
-      const result = await this.fetchService.fetch('/api/notifications/count', {
-        method: 'GET',
-        signal,
-      });
-
-      const data: NotificationCountResponse = await result.json();
-      return data.count;
-    } catch (error) {
-      console.error('Error getting notification count:', error);
-      return 0;
+      const cached = await this.watchNotificationCountCache().firstValue();
+      if (typeof cached === 'number') {
+        return cached;
+      }
+    } catch {
+      // ignore
     }
+    return 0;
   }
 
   async listNotification(pagination: PaginationInput, signal?: AbortSignal): Promise<NotificationListResponse | null> {

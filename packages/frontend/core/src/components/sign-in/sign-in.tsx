@@ -6,7 +6,8 @@ import {
   AuthHeader,
   AuthInput,
 } from '@yunke/component/auth-components';
-import { OAuth } from '@yunke/core/components/yunke/auth/oauth';
+// import { OAuth } from '@yunke/core/components/yunke/auth/oauth';
+import { MobileIcon, WeChatIcon } from './icons';
 import { useAsyncCallback } from '@yunke/core/components/hooks/yunke-async-hooks';
 import { AuthService, ServerService } from '@yunke/core/modules/cloud';
 import type { AuthSessionStatus } from '@yunke/core/modules/cloud/entities/session';
@@ -138,7 +139,41 @@ export const SignInStep = ({
       />
 
       <AuthContent>
-        <OAuth redirectUrl={state.redirectUrl} />
+        <div className={style.oauthWrapper}>
+          <Button
+            variant="secondary"
+            size="extraLarge"
+            className={style.oauthButton}
+            prefix={<MobileIcon className={style.oauthIcon} />}
+            onClick={() =>
+              changeState(prev => ({ ...prev, step: 'signInWithMobile' }))
+            }
+            title="使用手机号登录"
+          />
+          <Button
+            variant="secondary"
+            size="extraLarge"
+            className={style.oauthButton}
+            prefix={<WeChatIcon className={style.oauthIcon} />}
+            onClick={() =>
+              changeState(prev => ({ ...prev, step: 'signInWithWeChat' }))
+            }
+            title="使用微信登录"
+          />
+          <Button
+            variant="secondary"
+            size="extraLarge"
+            className={style.oauthButton}
+            prefix={<WeChatIcon className={style.oauthIcon} />}
+            onClick={() =>
+              changeState(prev => ({
+                ...prev,
+                step: 'signInWithWeChatOfficial',
+              }))
+            }
+            title="使用微信公众号登录"
+          />
+        </div>
 
         <AuthInput
           ref={emailInputRef}
@@ -160,14 +195,14 @@ export const SignInStep = ({
           block
           loading={isMutating}
           suffix={<ArrowRightBigIcon />}
-          suffixStyle={{ width: 20, height: 20, color: cssVar('blue') }}
+          suffixStyle={{ width: 20, height: 20, color: 'currentColor' }}
           onClick={onContinue}
         >
           {t['com.yunke.auth.sign.email.continue']()}
         </Button>
       </AuthContent>
       <AuthFooter>
-        <Back changeState={changeState} />
+        {state.step !== 'signIn' && <Back changeState={changeState} />}
       </AuthFooter>
     </AuthContainer>
   );

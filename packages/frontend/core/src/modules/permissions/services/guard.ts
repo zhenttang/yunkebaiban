@@ -176,10 +176,6 @@ export class GuardService extends Service {
   );
 
   private readonly loadWorkspacePermission = async () => {
-    if (this.workspaceService.workspace.flavour === 'local') {
-      return {} as Record<WorkspacePermissionActions, boolean>;
-    }
-    
     try {
       const response = await this.guardStore.getWorkspacePermissions();
       
@@ -245,11 +241,6 @@ export class GuardService extends Service {
         [docId]: communityDocPermissions,
       });
       return communityDocPermissions;
-    }
-    
-    if (this.workspaceService.workspace.flavour === 'local') {
-      console.log('🛡️ [GuardService.loadDocPermission] 本地模式，返回空权限');
-      return {} as Record<DocPermissionActions, boolean>;
     }
     
     try {

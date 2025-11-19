@@ -1,5 +1,5 @@
 import { DebugLogger } from '@yunke/debug';
-// import type { GetWorkspaceConfigQuery, InviteLink } from '@yunke/graphql';
+// 本地定义配置类型，替代 GraphQL 类型
 import {
   catchErrorInto,
   effect,
@@ -15,9 +15,14 @@ import { exhaustMap, tap } from 'rxjs';
 import type { WorkspaceService } from '../../workspace';
 import type { WorkspaceShareSettingStore } from '../stores/share-setting';
 
-type EnableAi = GetWorkspaceConfigQuery['workspace']['enableAi'];
-type EnableUrlPreview =
-  GetWorkspaceConfigQuery['workspace']['enableUrlPreview'];
+type EnableAi = boolean;
+type EnableUrlPreview = boolean;
+
+type InviteLink = {
+  link: string;
+  // 统一使用 expireTime，内部可由后端的 expiresAt 映射而来
+  expireTime?: string;
+};
 
 const logger = new DebugLogger('yunke:workspace-permission');
 
@@ -47,9 +52,21 @@ export class WorkspaceShareSetting extends Entity {
         smartRetry(),
         tap(value => {
           if (value) {
-            this.enableAi$.next(value.enableAi);
-            this.enableUrlPreview$.next(value.enableUrlPreview);
-            this.inviteLink$.next(value.inviteLink);
+            // 后端返回 workspace 对象，包含 enableAi、enableUrlPreview、inviteLink 等字段
+            this.enableAi$.next(value.enableAi ?? null);
+            this.enableUrlPreview$.next(value.enableUrlPreview ?? null);
+
+            const rawInvite = (value as any).inviteLink;
+            if (rawInvite && rawInvite.link) {
+              const expireTime: string | undefined =
+                rawInvite.expireTime || rawInvite.expiresAt || undefined;
+              this.inviteLink$.next({
+                link: rawInvite.link,
+                expireTime,
+              });
+            } else {
+              this.inviteLink$.next(null);
+            }
           }
         }),
         catchErrorInto(this.error$, error => {

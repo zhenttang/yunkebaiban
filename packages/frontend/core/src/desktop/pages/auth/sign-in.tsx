@@ -73,6 +73,14 @@ export const SignIn = ({
     <SignInPageContainer>
       <SignInBackgroundArts />
       <div className={pageStyle.layout}>
+        <section className={pageStyle.panel}>
+          <SignInPanel
+            onSkip={handleClose}
+            onAuthenticated={handleAuthenticated}
+            initStep={initStep}
+            server={server}
+          />
+        </section>
         <section className={pageStyle.hero}>
           <span className={pageStyle.heroBadge}>YUNKE</span>
           <h1 className={pageStyle.heroTitle}>
@@ -84,19 +92,26 @@ export const SignIn = ({
           <div className={pageStyle.heroHighlights}>
             {highlightItems.map((item, index) => (
               <div key={index} className={pageStyle.heroHighlight}>
-                <span className={pageStyle.heroDot} />
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 20 20"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  style={{ flexShrink: 0 }}
+                >
+                  <path
+                    d="M16.6666 5L7.49992 14.1667L3.33325 10"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
                 <span>{item}</span>
               </div>
             ))}
           </div>
-        </section>
-        <section className={pageStyle.panel}>
-          <SignInPanel
-            onSkip={handleClose}
-            onAuthenticated={handleAuthenticated}
-            initStep={initStep}
-            server={server}
-          />
         </section>
       </div>
     </SignInPageContainer>

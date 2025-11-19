@@ -1,9 +1,10 @@
 // import { getInviteInfoQuery } from '@yunke/graphql';
 import { Store } from '@toeverything/infra';
 
+import type { FetchService } from '../services/fetch';
 
 export class InviteInfoStore extends Store {
-  constructor() {
+  constructor(private readonly fetchService: FetchService) {
     super();
   }
 
@@ -12,7 +13,7 @@ export class InviteInfoStore extends Store {
       throw new Error('无邀请ID');
     }
     try {
-      const res = await fetch(`/api/invites/${inviteId}`, {
+      const res = await this.fetchService.fetch(`/api/invites/${inviteId}`, {
         method: 'GET',
         signal,
       });

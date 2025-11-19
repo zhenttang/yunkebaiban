@@ -1,9 +1,10 @@
 // import { acceptInviteByInviteIdMutation } from '@yunke/graphql';
 import { Store } from '@toeverything/infra';
 
+import type { FetchService } from '../services/fetch';
 
 export class AcceptInviteStore extends Store {
-  constructor() {
+  constructor(private readonly fetchService: FetchService) {
     super();
   }
 
@@ -12,7 +13,7 @@ export class AcceptInviteStore extends Store {
     inviteId: string,
     signal?: AbortSignal
   ) {
-    const res = await fetch(`/api/invites/${inviteId}/accept`, {
+    const res = await this.fetchService.fetch(`/api/invites/${inviteId}/accept`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ workspaceId }),

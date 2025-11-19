@@ -126,6 +126,10 @@ export const topLevelRoutes = [
         lazy: () => import('./pages/theme-editor'),
       },
       {
+        path: '/undraw-gallery',
+        lazy: () => import('./pages/undraw-gallery'),
+      },
+      {
         path: '/template/import',
         lazy: () => import('./pages/import-template'),
       },

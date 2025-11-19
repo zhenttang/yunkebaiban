@@ -26,14 +26,14 @@ export const arts = style({
   animation: `${float} 6s ease-in-out infinite`,
   '@media': {
     'screen and (max-width: 960px)': {
-      // A：小屏不再展示动画，进一步降低不透明度
+      // A：小屏不再展示动画，但保持可见度
       transform: 'translateY(-6%) scale(0.9)',
-      opacity: 0.5,
+      opacity: 0.72,
       animation: 'none',
     },
     'screen and (max-width: 640px)': {
       transform: 'translateY(-4%) scale(0.8)',
-      opacity: 0.4,
+      opacity: 0.72,
       animation: 'none',
     },
     '(prefers-reduced-motion: reduce)': {

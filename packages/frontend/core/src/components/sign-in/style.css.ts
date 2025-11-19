@@ -100,48 +100,93 @@ export const skipSection = style({
 });
 
 export const authInput = style({
-  backgroundColor: cssVarV2.button.signinbutton.background,
-  border: '1px solid transparent',
-  borderRadius: 16,
-  transition: 'all 0.3s ease',
+  backgroundColor: cssVar('backgroundPrimaryColor'),
+  border: `1px solid ${cssVar('borderColor')}`,
+  borderRadius: 8,
+  transition: 'all 0.2s ease',
   selectors: {
     '&.default:focus-within': {
-      boxShadow: '0 0 0 3px rgba(51, 102, 255, 0.2)',
-      borderColor: cssVar('blue'),
-      backgroundColor: 'rgba(255, 255, 255, 0.98)',
+      borderColor: cssVar('textPrimaryColor'),
+      backgroundColor: cssVar('backgroundPrimaryColor'),
     },
     '[data-theme="dark"] &.default:focus-within': {
-      backgroundColor: 'rgba(15, 23, 42, 0.85)',
-      boxShadow: '0 0 0 3px rgba(99, 102, 241, 0.28)',
-      borderColor: 'rgba(99, 102, 241, 0.6)',
+      borderColor: cssVar('textPrimaryColor'),
+      backgroundColor: cssVar('backgroundPrimaryColor'),
     },
   },
 });
 
 export const signInButton = style({
   width: '100%',
-  backgroundColor: cssVarV2.button.signinbutton.background,
-  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-  boxShadow: '0 14px 36px rgba(51, 102, 255, 0.18)',
+  backgroundColor: cssVar('textPrimaryColor'),
+  color: cssVar('backgroundPrimaryColor'),
+  borderRadius: 8,
+  transition: 'all 0.2s ease',
+  boxShadow: 'none',
   selectors: {
     '&:hover': {
-      transform: 'translateY(-1px)',
-      boxShadow: '0 18px 44px rgba(51, 102, 255, 0.24)',
+      opacity: 0.9,
     },
     '&:active': {
-      transform: 'translateY(0)',
-      boxShadow: '0 12px 28px rgba(51, 102, 255, 0.22)',
+      opacity: 0.8,
     },
     '&:focus-visible': {
       outline: 'none',
-      boxShadow:
-        '0 0 0 3px rgba(51, 102, 255, 0.2), 0 14px 36px rgba(51, 102, 255, 0.18)',
-    },
-    '[data-theme="dark"] &:hover': {
-      boxShadow: '0 20px 46px rgba(99, 102, 241, 0.28)',
-    },
-    '[data-theme="dark"] &:active': {
-      boxShadow: '0 12px 28px rgba(99, 102, 241, 0.26)',
+      boxShadow: `0 0 0 2px ${cssVar('backgroundPrimaryColor')}, 0 0 0 4px ${cssVar('textPrimaryColor')}`,
     },
   },
+});
+
+export const oauthWrapper = style({
+  display: 'flex',
+  flexDirection: 'row',
+  gap: '16px',
+  justifyContent: 'center',
+  marginTop: '24px',
+});
+
+export const oauthButton = style({
+  width: '56px',
+  height: '56px',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  padding: '16px',
+  borderRadius: '16px',
+  background:
+    'linear-gradient(135deg, rgba(59, 130, 246, 0.25), rgba(14, 165, 233, 0.12)) border-box, rgba(255, 255, 255, 0.95) padding-box',
+  backgroundClip: 'padding-box, border-box',
+  color: cssVar('textSecondaryColor'),
+  cursor: 'pointer',
+  boxShadow: '0 4px 16px rgba(15, 23, 42, 0.08)',
+  border: '1px solid transparent',
+  transform: 'translateY(0)',
+  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+  selectors: {
+    '&:hover': {
+      background:
+        'linear-gradient(135deg, rgba(59, 130, 246, 0.3), rgba(14, 165, 233, 0.16)) border-box, rgba(255, 255, 255, 0.98) padding-box',
+      boxShadow: '0 8px 24px rgba(15, 23, 42, 0.12)',
+      transform: 'translateY(-2px)',
+    },
+    '[data-theme="dark"] &': {
+      background: 'rgba(17, 24, 39, 0.85)',
+      border: '1px solid rgba(99, 102, 241, 0.3)',
+      boxShadow: '0 4px 16px rgba(0, 0, 0, 0.4)',
+      color: cssVar('textSecondaryColor'),
+    },
+    '[data-theme="dark"] &:hover': {
+      background: 'rgba(17, 24, 39, 0.95)',
+      boxShadow: '0 6px 20px rgba(99, 102, 241, 0.25)',
+      transform: 'translateY(-2px)',
+    },
+  },
+});
+
+export const oauthIcon = style({
+  width: '20px',
+  height: '20px',
+  color: cssVar('textSecondaryColor'),
+  filter: 'drop-shadow(0 0 2px rgba(51, 102, 255, 0.2))',
+  transition: 'all 0.3s ease',
 });

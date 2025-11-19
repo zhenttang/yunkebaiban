@@ -19,7 +19,9 @@ export class WorkspaceShareSettingStore extends Store {
       `/api/workspaces/${workspaceId}`,
       { method: 'GET', signal }
     );
-    return await res.json();
+    const data = await res.json();
+    // 后端返回格式: { success: true, workspace: {...} } 或直接返回 workspace 对象
+    return data.workspace ?? data;
   }
 
   async updateWorkspaceEnableAi(

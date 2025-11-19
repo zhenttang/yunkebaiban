@@ -1,10 +1,14 @@
 import {
+  Button,
   Masonry,
   type MasonryGroup,
   type MasonryItem,
   useConfirmModal,
 } from '@yunke/component';
+import { usePageHelper } from '@yunke/core/blocksuite/block-suite-page-list/utils';
+import { EmptyLayout } from '@yunke/core/components/yunke/empty/layout';
 import { DocsService } from '@yunke/core/modules/doc';
+import { WorkspaceService } from '@yunke/core/modules/workspace';
 import { WorkspacePropertyService } from '@yunke/core/modules/workspace-property';
 import { Trans, useI18n } from '@yunke/i18n';
 import { useLiveData, useService } from '@toeverything/infra';
@@ -16,6 +20,7 @@ import { SystemPropertyTypes } from '../../system-property-types';
 import { WorkspacePropertyTypes } from '../../workspace-property-types';
 import { DocExplorerContext } from '../context';
 import { DocListItem } from './doc-list-item';
+import emptyStateIllustration from '../../yunke/empty/assets/empty_4zx0.svg';
 import * as styles from './docs-list.css';
 
 const GroupHeader = memo(function GroupHeader({
@@ -112,6 +117,8 @@ export const DocsExplorer = ({
   const t = useI18n();
   const contextValue = useContext(DocExplorerContext);
   const docsService = useService(DocsService);
+  const workspaceService = useService(WorkspaceService);
+  const { createPage } = usePageHelper(workspaceService.workspace.docCollection);
 
   const groupBy = useLiveData(contextValue.groupBy$);
   const groups = useLiveData(contextValue.groups$);
@@ -252,12 +259,23 @@ export const DocsExplorer = ({
         />
       ) : (
         <div className={styles.emptyState}>
-          <div>
-            <div className={styles.emptyStateTitle}>
-              {onRestore ? t['com.yunke.emptyDesc.trash']() : t['com.yunke.emptyDesc']()}
-            </div>
-            <div>{onRestore ? t['com.yunke.emptyDesc.trash.hint']() : t['com.yunke.emptyDesc.hint']()}</div>
-          </div>
+          <EmptyLayout
+            illustrationLight={emptyStateIllustration}
+            illustrationDark={emptyStateIllustration}
+            action={
+              !onRestore ? (
+                <div className={styles.emptyStateAction}>
+                  <Button
+                    variant="primary"
+                    onClick={() => createPage()}
+                    className={styles.createButton}
+                  >
+                    {t['com.yunke.emptyDesc.hint']()}
+                  </Button>
+                </div>
+              ) : null
+            }
+          />
         </div>
       )}
       {!disableMultiSelectToolbar || onRestore ? (

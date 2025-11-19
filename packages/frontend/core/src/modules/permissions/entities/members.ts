@@ -20,6 +20,32 @@ export type Member = {
   email?: string;
   avatarUrl?: string | null;
   status?: string;
+  // 权限（Owner/Admin/Collaborator），用于显示角色文案
+  permission?: string;
+};
+
+const normalizeStatus = (status?: string): string | undefined => {
+  if (!status) {
+    return 'ACCEPTED';
+  }
+  const upper = status.toUpperCase();
+  return upper;
+};
+
+const mapRoleToPermission = (role?: string): string | undefined => {
+  if (!role) return undefined;
+  const upper = role.toUpperCase();
+  switch (upper) {
+    case 'OWNER':
+      return 'Owner';
+    case 'ADMIN':
+      return 'Admin';
+    case 'MEMBER':
+    case 'COLLABORATOR':
+      return 'Collaborator';
+    default:
+      return undefined;
+  }
 };
 
 export class WorkspaceMembers extends Entity {
@@ -52,7 +78,24 @@ export class WorkspaceMembers extends Entity {
       }).pipe(
         tap(data => {
           this.memberCount$.setValue(data.memberCount);
-          this.pageMembers$.setValue(data.members);
+
+          const members: Member[] = (data.members ?? []).map((raw: any) => {
+            const id = raw.userId ?? raw.id;
+            const email: string | undefined = raw.email;
+            const name: string =
+              raw.name || email || id || '';
+
+            return {
+              id,
+              name,
+              email,
+              avatarUrl: raw.avatarUrl ?? null,
+              status: normalizeStatus(raw.status),
+              permission: mapRoleToPermission(raw.role),
+            };
+          });
+
+          this.pageMembers$.setValue(members);
         }),
         smartRetry(),
         catchErrorInto(this.error$),

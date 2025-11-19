@@ -5,7 +5,7 @@ import { useActiveBlocksuiteEditor } from '@yunke/core/components/hooks/use-bloc
 import { useNavigateHelper } from '@yunke/core/components/hooks/use-navigate-helper';
 import { PageDetailEditor } from '@yunke/core/components/page-detail-editor';
 import { AppContainer } from '@yunke/core/desktop/components/app-container';
-import { AuthService, ServerService } from '@yunke/core/modules/cloud';
+import { AuthService, ServerService, WorkspaceServerService } from '@yunke/core/modules/cloud';
 import { getBaseUrl } from '@yunke/config';
 import { CloudStorageProvider } from '@yunke/core/modules/cloud-storage';
 import { type Doc, DocsService } from '@yunke/core/modules/doc';
@@ -209,124 +209,88 @@ const SharePageInner = ({
       .then(async () => {
         const { doc } = workspace.scope.get(DocsService).open(docId);
         doc.blockSuiteDoc.load();
-        
-          // ✅ 优化：获取文档权限信息
-          // 方案：优先使用 HEAD 请求只获取头部信息，避免下载文档内容
-          // 如果 HEAD 不支持，降级到 GET 请求
+
+          // ✅ 获取文档权限信息
+          // 使用 /permissions API 获取用户对文档的有效权限
           try {
-            // 使用统一的网络服务获取权限信息
-            let permissionMode: string | null = null;
-            // let publishModeHeader: string | null = null; // ✅ 暂时保留，可能将来会用到
-            let hasPermission = false;
-            
-            if (serverService.server) {
-              // ✅ 优化：优先使用 HEAD 请求，只获取头部，不下载文档内容
-              try {
-                const response = await serverService.server.fetch(
-                  `/api/workspaces/${workspaceId}/docs/${docId}`,
-                  { 
-                    method: 'HEAD',  // ✅ 使用 HEAD 请求，只获取头部
-                    headers: { 'Accept': 'application/octet-stream' }
-                  }
-                );
-                
-                // 检查响应状态
-                if (response.status === 404) {
-                  console.error('[SharePage] 文档不存在');
-                  throw new Error('文档不存在');
-                } else if (response.status === 403) {
-                  console.error('[SharePage] 无权访问文档');
-                  throw new Error('无权访问文档');
-                } else if (response.status !== 200) {
-                  console.error('[SharePage] 获取文档权限信息失败，状态码:', response.status);
-                  throw new Error(`获取文档权限信息失败: ${response.status}`);
+            // 从 workspace.scope 中获取 WorkspaceServerService
+            const workspaceServerService = workspace.scope.get(WorkspaceServerService);
+            const server = workspaceServerService.server || serverService.server;
+
+            if (server) {
+              const response = await server.fetch(
+                `/api/workspaces/${workspaceId}/docs/${docId}/permissions`,
+                {
+                  method: 'GET',
+                  headers: { 'Accept': 'application/json' }
                 }
-                
-                permissionMode = response.headers.get('permission-mode');
-                // publishModeHeader = response.headers.get('publish-mode'); // ✅ 暂时保留，可能将来会用到
-                hasPermission = true;
-                
-                console.log('[SharePage] ✅ 权限信息获取成功 (HEAD):', {
-                  permissionMode,
-                  // publishModeHeader,
-                });
-              } catch (headError) {
-                // ⚠️ HEAD 请求可能不被支持，降级到 GET 请求
-                console.warn('[SharePage] HEAD请求失败，降级到GET请求:', headError);
-                try {
-                  const response = await serverService.server.fetch(
-                    `/api/workspaces/${workspaceId}/docs/${docId}`,
-                    { 
-                      method: 'GET',
-                      headers: { 'Accept': 'application/octet-stream' }
-                    }
-                  );
-                  
-                  if (response.status === 404) {
-                    console.error('[SharePage] 文档不存在');
-                    throw new Error('文档不存在');
-                  } else if (response.status === 403) {
-                    console.error('[SharePage] 无权访问文档');
-                    throw new Error('无权访问文档');
-                  } else if (response.status !== 200) {
-                    console.error('[SharePage] 获取文档权限信息失败，状态码:', response.status);
-                    throw new Error(`获取文档权限信息失败: ${response.status}`);
-                  }
-                  
-                  permissionMode = response.headers.get('permission-mode');
-                  // publishModeHeader = response.headers.get('publish-mode'); // ✅ 暂时保留，可能将来会用到
-                  hasPermission = true;
-                  
-                  console.log('[SharePage] ✅ 权限信息获取成功 (GET):', {
-                    permissionMode,
-                    // publishModeHeader,
-                  });
-                } catch (getError) {
-                  console.error('[SharePage] GET请求失败:', getError);
-                  throw getError;
-                }
+              );
+
+              // 检查响应状态
+              if (response.status === 404) {
+                console.error('[SharePage] 文档不存在');
+                throw new Error('文档不存在');
+              } else if (response.status === 403) {
+                console.error('[SharePage] 无权访问文档');
+                throw new Error('无权访问文档');
+              } else if (response.status !== 200) {
+                console.error('[SharePage] 获取权限信息失败，状态码:', response.status);
+                throw new Error(`获取权限信息失败: ${response.status}`);
+              }
+
+              // 解析 JSON 响应
+              const data = await response.json();
+
+              // 从响应数据中提取 effectiveMask 和 permissions
+              const effectiveMask = data?.data?.effectiveMask || 0;
+              const permissions = data?.data?.permissions || {};
+
+              console.log('[SharePage] ✅ 权限信息获取成功:', {
+                effectiveMask,
+                permissions,
+                fullData: data,
+              });
+
+              // 根据 effectiveMask 判断权限
+              // effectiveMask 是一个位掩码:
+              // Read=1, Comment=2, Add=4, Modify=8, Delete=16, Export=32...
+              // 如果有 Add(4) 或 Modify(8) 权限，说明可以编辑
+              const canWrite = (effectiveMask & (4 | 8)) !== 0; // Add | Modify
+              const canRead = (effectiveMask & 1) !== 0; // Read
+
+              // 明确区分权限模式
+              let readonly = true;
+              let isAppendOnly = false;
+
+              if (canWrite) {
+                // 有写权限：可以编辑
+                readonly = false;
+                isAppendOnly = false;
+              } else if (canRead) {
+                // 只有读权限：只读模式
+                readonly = true;
+                isAppendOnly = false;
+              } else {
+                // 没有任何权限：可能需要创建临时用户
+                // 检查文档是否是公开的 append-only 模式
+                // 这种情况下设为 append-only，等待临时身份创建
+                readonly = true;
+                isAppendOnly = true; // 假设是 append-only 模式，让临时用户组件尝试创建身份
+              }
+
+              setIsAppendOnlyMode(isAppendOnly);
+              setIsReadonly(readonly);
+
+              // 设置文档只读状态
+              // AppendOnly模式：如果没有临时身份，保持只读
+              // ReadOnly模式：始终只读
+              // Private模式：默认只读
+              if (isAppendOnly && !hasTemporaryIdentity) {
+                doc.blockSuiteDoc.readonly = true;
+              } else {
+                doc.blockSuiteDoc.readonly = readonly;
               }
             }
-            
-            // 如果没有权限，抛出错误
-            if (!hasPermission) {
-              throw new Error('无法获取文档权限信息');
-            }
-            
-            // 明确区分三种权限模式
-            let readonly = true; // 默认只读
-            let isAppendOnly = false;
-            
-            if (permissionMode === 'append-only') {
-              // AppendOnly模式：需要临时身份才能编辑
-              isAppendOnly = true;
-              readonly = true; // 先设为只读，等待临时身份创建
-            } else if (permissionMode === 'read-only') {
-              // ReadOnly模式：始终只读，不允许编辑
-              isAppendOnly = false;
-              readonly = true;
-            } else if (permissionMode === 'private') {
-              // Private模式：文档未公开，无权访问
-              throw new Error('文档未公开，无权访问');
-            } else {
-              // 未设置或未知模式：默认只读
-              isAppendOnly = false;
-              readonly = true;
-            }
-          
-          setIsAppendOnlyMode(isAppendOnly);
-          setIsReadonly(readonly);
-          
-          // 设置文档只读状态
-          // AppendOnly模式：如果没有临时身份，保持只读
-          // ReadOnly模式：始终只读
-          // Private模式：默认只读
-          if (isAppendOnly && !hasTemporaryIdentity) {
-            doc.blockSuiteDoc.readonly = true;
-          } else {
-            doc.blockSuiteDoc.readonly = readonly;
-          }
-          
         } catch (error) {
           console.error('[SharePage] 获取文档权限信息失败：', error);
           console.error('[SharePage] 错误详情：', error instanceof Error ? error.message : '未知错误');
@@ -487,6 +451,8 @@ const SharePageInner = ({
                   isTemplate={isTemplate}
                   templateName={templateName}
                   snapshotUrl={templateSnapshotUrl}
+                  workspaceId={workspaceId}
+                  docId={docId}
                 />
                 
                 {/* 匿名用户身份管理组件 */}
