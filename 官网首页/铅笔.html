@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Limitless Pen | 3D Model Viewer</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #F3F4F6;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+        
+        #canvas-container {
+            width: 100vw;
+            height: 100vh;
+            outline: none;
+        }
+
+        .ui-overlay {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 12px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 10px 20px;
+            border-radius: 100px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+            pointer-events: auto;
+        }
+
+        .color-btn {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: 2px solid white;
+            box-shadow: 0 0 0 1px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .color-btn:hover { transform: scale(1.2); }
+        .color-btn.active { box-shadow: 0 0 0 2px #2563EB; }
+
+        .instruction {
+            position: absolute;
+            top: 40px;
+            width: 100%;
+            text-align: center;
+            color: #6B7280;
+            font-size: 14px;
+            pointer-events: none;
+            letter-spacing: 1px;
+            opacity: 0.7;
+        }
+    </style>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+</head>
+<body>
+
+    <div class="instruction">DRAG TO ROTATE • SCROLL TO ZOOM</div>
+
+    <div id="canvas-container"></div>
+
+    <div class="ui-overlay">
+        <!-- 颜色切换按钮 -->
+        <div class="color-btn active" style="background: #1E293B;" onclick="changeColor(0x1E293B)" title="Slate Black"></div>
+        <div class="color-btn" style="background: #F8FAFC;" onclick="changeColor(0xF8FAFC)" title="Ceramic White"></div>
+        <div class="color-btn" style="background: #2563EB;" onclick="changeColor(0x2563EB)" title="Tech Blue"></div>
+        <div class="color-btn" style="background: #D97706;" onclick="changeColor(0xD97706)" title="Amber"></div>
+    </div>
+
+    <script>
+        // 1. 初始化场景
+        const container = document.getElementById('canvas-container');
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0xF3F4F6);
+        
+        // 添加径向渐变背景板 (用 Plane 实现，比 CSS 更融合)
+        const bgGeo = new THREE.PlaneGeometry(100, 100);
+        const bgMat = new THREE.MeshBasicMaterial({ 
+            color: 0xffffff, 
+            side: THREE.DoubleSide,
+            depthWrite: false
+        });
+        // 这里我们简单用纯色，重点在物体
+        
+        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.set(5, 5, 10); // 初始视角
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.physicallyCorrectLights = true;
+        renderer.outputEncoding = THREE.sRGBEncoding;
+        renderer.toneMapping = THREE.ACESFilmicToneMapping;
+        renderer.shadowMap.enabled = true;
+        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+        container.appendChild(renderer.domElement);
+
+        // 2. 交互控制 (OrbitControls)
+        const controls = new THREE.OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.05;
+        controls.minDistance = 5;
+        controls.maxDistance = 20;
+        controls.autoRotate = true;
+        controls.autoRotateSpeed = 2.0;
+
+        // 3. 环境光照 (Studio Lighting)
+        
+        // 生成环境贴图用于金属反射
+        const pmremGenerator = new THREE.PMREMGenerator(renderer);
+        pmremGenerator.compileEquirectangularShader();
+        const roomEnv = new THREE.Scene();
+        const boxMat = new THREE.MeshBasicMaterial({ color: 0xffffff, side: THREE.BackSide });
+        roomEnv.add(new THREE.Mesh(new THREE.BoxGeometry(10, 10, 10), boxMat));
+        // 顶部主光板
+        const light1 = new THREE.Mesh(new THREE.PlaneGeometry(5, 5), new THREE.MeshBasicMaterial({color:0xffffff}));
+        light1.position.set(0, 4.9, 0); light1.rotation.x = Math.PI/2; roomEnv.add(light1);
+        // 侧面冷暖光板
+        const light2 = new THREE.Mesh(new THREE.PlaneGeometry(2, 5), new THREE.MeshBasicMaterial({color:0xDDEEFF})); // 冷
+        light2.position.set(-4.9, 0, 0); light2.rotation.y = Math.PI/2; roomEnv.add(light2);
+        const light3 = new THREE.Mesh(new THREE.PlaneGeometry(2, 5), new THREE.MeshBasicMaterial({color:0xFFEEDD})); // 暖
+        light3.position.set(4.9, 0, 0); light3.rotation.y = -Math.PI/2; roomEnv.add(light3);
+
+        scene.environment = pmremGenerator.fromScene(roomEnv).texture;
+
+        // 场景实光
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+        scene.add(ambientLight);
+
+        const mainLight = new THREE.DirectionalLight(0xffffff, 2);
+        mainLight.position.set(5, 10, 5);
+        mainLight.castShadow = true;
+        mainLight.shadow.mapSize.width = 2048;
+        mainLight.shadow.mapSize.height = 2048;
+        mainLight.shadow.bias = -0.0001;
+        scene.add(mainLight);
+
+        const rimLight = new THREE.SpotLight(0x2563EB, 5); // 蓝色轮廓光
+        rimLight.position.set(-5, 0, -5);
+        rimLight.lookAt(0,0,0);
+        scene.add(rimLight);
+
+        // 地面阴影
+        const shadowPlane = new THREE.Mesh(
+            new THREE.PlaneGeometry(20, 20),
+            new THREE.ShadowMaterial({ opacity: 0.2, color: 0x000000 })
+        );
+        shadowPlane.rotation.x = -Math.PI / 2;
+        shadowPlane.position.y = -4; // 放在笔的下方
+        shadowPlane.receiveShadow = true;
+        scene.add(shadowPlane);
+
+
+        // 4. 铅笔建模 (High-Fidelity Pen Reconstruction)
+        // 数据来源：你的 1.html，不做简化，但材质升级
+        
+        let penBodyMesh; // 用于后续变色
+
+        function createHighFidelityPen() {
+            const g = new THREE.Group();
+            
+            // --- 材质定义 ---
+            const matBody = new THREE.MeshStandardMaterial({ 
+                color: 0x1E293B, // 默认深色
+                roughness: 0.4,  // 磨砂感
+                metalness: 0.5, 
+                envMapIntensity: 1.2
+            });
+            penBodyMesh = matBody; // 保存引用
+
+            const matGrip = new THREE.MeshStandardMaterial({
+                color: 0x111111, // 深黑橡胶
+                roughness: 0.9,  // 粗糙
+                bumpScale: 0.05
+            });
+
+            const matChrome = new THREE.MeshStandardMaterial({
+                color: 0xffffff,
+                roughness: 0.15, // 抛光金属
+                metalness: 1.0,
+                envMapIntensity: 1.5
+            });
+
+            const matNib = new THREE.MeshStandardMaterial({
+                color: 0x222222,
+                roughness: 0.8
+            });
+
+            const matLight = new THREE.MeshBasicMaterial({ color: 0x2563EB }); // 蓝色呼吸灯
+
+            // --- 几何体构建 (严格按照你的原始比例) ---
+
+            // 1. 笔尖 (Nib Tip)
+            const nibTip = new THREE.Mesh(new THREE.CylinderGeometry(0.015, 0.005, 0.05, 16), matNib);
+            nibTip.position.y = 0.025; 
+            g.add(nibTip);
+
+            // 2. 笔尖锥体 (Nib Cone - Metal)
+            const nibCone = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.015, 0.25, 32), matChrome);
+            nibCone.position.y = 0.175; 
+            nibCone.castShadow = true;
+            g.add(nibCone);
+
+            // 3. 连接环 (Ferrule - Metal) [修复了间隙问题]
+            // 之前高度是0.4 (position 0.5)，导致与Grip之间有0.2的空隙
+            // 现在高度改为0.6 (position 0.6)，完美填补空隙
+            const ferrule = new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.08, 0.6, 32), matChrome);
+            ferrule.position.y = 0.6; 
+            ferrule.castShadow = true;
+            g.add(ferrule);
+
+            // 4. 笔握 (Grip - Rubber)
+            const grip = new THREE.Mesh(new THREE.CylinderGeometry(0.21, 0.2, 1.8, 32), matGrip);
+            grip.position.y = 1.8; 
+            grip.castShadow = true;
+            g.add(grip);
+
+            // 5. 灯环 (LED Ring)
+            const ring = new THREE.Mesh(new THREE.CylinderGeometry(0.21, 0.21, 0.04, 32), matLight);
+            ring.position.y = 2.72; 
+            g.add(ring);
+
+            // 6. 笔身 (Hexagonal Body) - 你的核心设计
+            const body = new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.2, 4.5, 6), matBody);
+            body.position.y = 4.99; 
+            body.castShadow = true;
+            g.add(body);
+
+            // 7. 笔夹杆 (Clip Stem)
+            const clipStem = new THREE.Mesh(new THREE.BoxGeometry(0.06, 0.4, 0.15), matChrome);
+            clipStem.position.set(0.2, 6.5, 0); 
+            clipStem.castShadow = true;
+            g.add(clipStem);
+
+            // 8. 笔夹臂 (Clip Arm)
+            const clipArm = new THREE.Mesh(new THREE.BoxGeometry(0.04, 2.5, 0.08), matChrome);
+            clipArm.position.set(0.25, 5.5, 0); 
+            clipArm.castShadow = true;
+            g.add(clipArm);
+
+            // 9. 笔帽 (End Cap)
+            const cap = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.2, 0.3, 32), matChrome);
+            cap.position.y = 7.14; 
+            cap.castShadow = true;
+            g.add(cap);
+
+            // 整体居中优化
+            // 将整个笔向下移动一半的高度，使其围绕中心旋转
+            g.position.y = -3.5;
+            
+            return g;
+        }
+
+        const pen = createHighFidelityPen();
+        scene.add(pen);
+
+        // 5. 动画循环
+        function animate() {
+            requestAnimationFrame(animate);
+            controls.update(); // 必须调用以支持阻尼效果
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        // 6. 响应式
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        // 用户交互：当用户手动旋转时，暂停自动旋转
+        controls.addEventListener('start', () => { controls.autoRotate = false; });
+        
+        // 功能：换色
+        window.changeColor = function(hexColor) {
+            if(penBodyMesh) {
+                gsap.to(penBodyMesh.color, {
+                    r: new THREE.Color(hexColor).r,
+                    g: new THREE.Color(hexColor).g,
+                    b: new THREE.Color(hexColor).b,
+                    duration: 0.5
+                });
+                
+                // 如果选了白色，降低金属感以显出陶瓷质感
+                if(hexColor === 0xF8FAFC) {
+                    gsap.to(penBodyMesh, { roughness: 0.2, metalness: 0.1, duration: 0.5 });
+                } else {
+                    gsap.to(penBodyMesh, { roughness: 0.4, metalness: 0.5, duration: 0.5 });
+                }
+            }
+            
+            // 更新按钮UI
+            document.querySelectorAll('.color-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,414 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Limitless | The OS for Thinking</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    
+    <style>
+        :root {
+            /* 背景微调，带一点点冷灰，更显高级 */
+            --bg-color: #F1F5F9; 
+            --text-main: #0F172A;
+            --text-sub: #475569;
+            --accent: #2563EB; 
+        }
+
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            /* 径向渐变，模拟影棚背景纸效果 */
+            background: radial-gradient(circle at 60% 50%, #FFFFFF 0%, #F1F5F9 70%);
+        }
+
+        .ui-layer {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 10;
+            pointer-events: none;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .navbar {
+            padding: 24px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            pointer-events: auto;
+        }
+        .brand { font-weight: 700; font-size: 20px; letter-spacing: -0.5px; display: flex; align-items: center; gap: 8px; }
+        .brand-dot { width: 10px; height: 10px; background: var(--accent); border-radius: 2px; }
+
+        .hero-content {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            padding: 0 8%;
+            pointer-events: none;
+        }
+        
+        .text-container {
+            max-width: 600px;
+            pointer-events: auto;
+            z-index: 20;
+        }
+
+        .tag-pill {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: rgba(37, 99, 235, 0.1); color: var(--accent);
+            padding: 6px 12px; border-radius: 100px;
+            font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 600;
+            margin-bottom: 24px;
+        }
+
+        h1 {
+            font-size: clamp(3rem, 6vw, 4.5rem);
+            font-weight: 800;
+            line-height: 1.05;
+            letter-spacing: -0.03em;
+            margin: 0 0 24px 0;
+            color: var(--text-main);
+        }
+        
+        .hero-desc {
+            font-size: 1.125rem;
+            line-height: 1.6;
+            color: var(--text-sub);
+            margin-bottom: 40px;
+            max-width: 480px;
+        }
+
+        .btn-primary {
+            background: var(--text-main); color: #fff;
+            padding: 14px 32px; border-radius: 12px;
+            font-weight: 600; font-size: 15px;
+            cursor: pointer; border: none;
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.2);
+            transition: transform 0.2s;
+        }
+        .btn-primary:hover { transform: translateY(-2px); }
+
+        #canvas-container {
+            position: fixed; top: 0; right: 0; width: 100%; height: 100%; z-index: 1;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="ui-layer">
+        <nav class="navbar">
+            <div class="brand"><div class="brand-dot"></div>LIMITLESS</div>
+            <div style="font-size:14px; font-weight:500; color:var(--text-sub);">v2.0</div>
+        </nav>
+
+        <div class="hero-content">
+            <div class="text-container">
+                <div class="tag-pill">Flow Engine v2.0</div>
+                <h1>Thinking,<br><span style="color: var(--text-sub);">Unbound.</span></h1>
+                <p class="hero-desc">
+                    Break free from static whiteboards. Limitless is a spatial workspace that turns your chaotic sketches into structured knowledge.
+                </p>
+                <button class="btn-primary">Get Started Free</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="canvas-container"></div>
+
+    <script>
+        // --- 1. 场景初始化 (高画质设置) ---
+        const container = document.getElementById('canvas-container');
+        const scene = new THREE.Scene();
+        // 背景透明，透出 CSS 渐变
+        
+        const camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.set(0, 0, 25); // 标准正视角度，稍后调整
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        
+        // 开启真实物理光照模式
+        renderer.physicallyCorrectLights = true;
+        renderer.outputEncoding = THREE.sRGBEncoding;
+        renderer.toneMapping = THREE.ACESFilmicToneMapping; // 电影级色调映射
+        renderer.toneMappingExposure = 1.1;
+        renderer.shadowMap.enabled = true;
+        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+        container.appendChild(renderer.domElement);
+
+        // --- 2. 虚拟环境光 (解决金属发灰的关键) ---
+        const pmremGenerator = new THREE.PMREMGenerator(renderer);
+        pmremGenerator.compileEquirectangularShader();
+
+        const roomEnv = new THREE.Scene();
+        const boxGeo = new THREE.BoxGeometry(10, 10, 10);
+        const boxMat = new THREE.MeshBasicMaterial({ color: 0xffffff, side: THREE.BackSide });
+        roomEnv.add(new THREE.Mesh(boxGeo, boxMat));
+        // 顶部大光源
+        const topLight = new THREE.Mesh(new THREE.PlaneGeometry(6, 6), new THREE.MeshBasicMaterial({color:0xffffff, side:THREE.DoubleSide}));
+        topLight.position.set(0, 4.9, 0); topLight.rotation.x = Math.PI/2;
+        roomEnv.add(topLight);
+        // 侧面冷光条
+        const sideLight = new THREE.Mesh(new THREE.PlaneGeometry(2, 8), new THREE.MeshBasicMaterial({color:0xE0F2FE, side:THREE.DoubleSide}));
+        sideLight.position.set(-4.9, 0, 0); sideLight.rotation.y = Math.PI/2;
+        roomEnv.add(sideLight);
+        
+        const generatedEnvMap = pmremGenerator.fromScene(roomEnv).texture;
+        scene.environment = generatedEnvMap; // 全局应用环境反射
+
+        // --- 3. 灯光布局 ---
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
+        scene.add(ambientLight);
+
+        const mainLight = new THREE.DirectionalLight(0xffffff, 2.5);
+        mainLight.position.set(5, 8, 5);
+        mainLight.castShadow = true;
+        mainLight.shadow.mapSize.width = 2048;
+        mainLight.shadow.mapSize.height = 2048;
+        mainLight.shadow.radius = 4; // 柔和阴影
+        scene.add(mainLight);
+
+        const fillLight = new THREE.DirectionalLight(0xDDEEFF, 1.0);
+        fillLight.position.set(-5, 2, 2);
+        scene.add(fillLight);
+
+        // --- 4. 阴影捕捉地面 (防止悬空感) ---
+        const shadowPlane = new THREE.Mesh(
+            new THREE.PlaneGeometry(50, 50),
+            new THREE.ShadowMaterial({ opacity: 0.15, color: 0x0F172A })
+        );
+        shadowPlane.rotation.x = -Math.PI / 2;
+        shadowPlane.position.y = -4; // 放在物体下方
+        shadowPlane.receiveShadow = true;
+        scene.add(shadowPlane);
+
+        // 辅助点阵背景 (保留你原本的设计，但调淡)
+        function createDotGrid() {
+            const canvas = document.createElement('canvas');
+            canvas.width = 64; canvas.height = 64;
+            const ctx = canvas.getContext('2d');
+            ctx.fillStyle = 'transparent'; ctx.fillRect(0,0,64,64);
+            ctx.fillStyle = '#CBD5E1';
+            ctx.beginPath(); ctx.arc(32, 32, 2, 0, Math.PI*2); ctx.fill();
+            const tex = new THREE.CanvasTexture(canvas);
+            tex.wrapS = tex.wrapT = THREE.RepeatWrapping; tex.repeat.set(40, 40);
+            const geo = new THREE.PlaneGeometry(200, 200);
+            const mat = new THREE.MeshBasicMaterial({ map: tex, transparent: true, opacity: 0.4 });
+            const mesh = new THREE.Mesh(geo, mat);
+            mesh.rotation.x = -Math.PI/2;
+            mesh.position.y = -4.1;
+            return mesh;
+        }
+        scene.add(createDotGrid());
+
+
+        // --- 5. 你的原始建模 + 新材质 ---
+        
+        const heroGroup = new THREE.Group();
+        scene.add(heroGroup);
+        heroGroup.position.set(5, 0, 0);
+
+        // === 你的笔 (Hexagonal Pen) ===
+        // 几何体参数完全按照你的 1.html 还原
+        function createOriginalPen() {
+            const g = new THREE.Group();
+            
+            // [材质升级]
+            const matBody = new THREE.MeshStandardMaterial({ 
+                color: 0x1E293B, roughness: 0.3, metalness: 0.6, envMapIntensity: 1 
+            }); // 笔身
+            const matGrip = new THREE.MeshStandardMaterial({ 
+                color: 0x0F172A, roughness: 0.9, bumpScale: 0.02 
+            }); // 笔握
+            const matMetal = new THREE.MeshStandardMaterial({ 
+                color: 0xF8FAFC, roughness: 0.2, metalness: 1.0, envMapIntensity: 1.5 
+            }); // 金属件
+            const matNib = new THREE.MeshStandardMaterial({ color: 0x111111 });
+            const matLight = new THREE.MeshBasicMaterial({ color: 0x3B82F6 }); // 你的蓝色光环
+
+            // 1. NibTip
+            const nibTip = new THREE.Mesh(new THREE.CylinderGeometry(0.015, 0.005, 0.05, 8), matNib);
+            nibTip.position.y = 0.025; g.add(nibTip);
+
+            // 2. NibCone
+            const nibCone = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.015, 0.25, 16), matMetal);
+            nibCone.position.y = 0.175; nibCone.castShadow = true; g.add(nibCone);
+
+            // 3. Ferrule
+            const ferrule = new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.08, 0.4, 32), matMetal);
+            ferrule.position.y = 0.5; ferrule.castShadow = true; g.add(ferrule);
+
+            // 4. Grip
+            const grip = new THREE.Mesh(new THREE.CylinderGeometry(0.21, 0.2, 1.8, 32), matGrip);
+            grip.position.y = 1.8; grip.castShadow = true; g.add(grip);
+
+            // 5. Ring
+            const ring = new THREE.Mesh(new THREE.CylinderGeometry(0.21, 0.21, 0.04, 32), matLight);
+            ring.position.y = 2.72; g.add(ring);
+
+            // 6. Body (Hexagonal) - 你的特色
+            const body = new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.2, 4.5, 6), matBody);
+            body.position.y = 4.99; body.castShadow = true; g.add(body);
+
+            // 7. ClipStem
+            const clipStem = new THREE.Mesh(new THREE.BoxGeometry(0.06, 0.4, 0.15), matMetal);
+            clipStem.position.set(0.2, 6.5, 0); g.add(clipStem);
+
+            // 8. ClipArm
+            const clipArm = new THREE.Mesh(new THREE.BoxGeometry(0.04, 2.5, 0.08), matMetal);
+            clipArm.position.set(0.25, 5.5, 0); g.add(clipArm);
+
+            // 9. Cap
+            const cap = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.2, 0.3, 32), matMetal);
+            cap.position.y = 7.14; g.add(cap);
+
+            g.rotation.order = 'YXZ'; 
+            return g;
+        }
+        const pen = createOriginalPen();
+        heroGroup.add(pen);
+
+        // === 你的尺子 (Original Ruler) ===
+        // 几何体参数按照 1.html 还原
+        const rulerGroup = new THREE.Group();
+        
+        // [材质升级] 改为蓝色玻璃
+        const rulerMat = new THREE.MeshPhysicalMaterial({ 
+            color: 0x3B82F6, transmission: 0.5, opacity: 0.9, transparent: true, 
+            roughness: 0.1, metalness: 0.1, thickness: 1.5, clearcoat: 1 
+        });
+        // 原始尺寸: 8, 0.1, 2
+        const rulerGlass = new THREE.Mesh(new THREE.BoxGeometry(8, 0.15, 2), rulerMat); 
+        rulerGlass.castShadow = true;
+        rulerGroup.add(rulerGlass);
+
+        // 原始刻度逻辑
+        for(let i=-3.5; i<=3.5; i+=0.5) {
+            // 原始尺寸: 0.05, 0.15, 0.8
+            const t = new THREE.Mesh(new THREE.BoxGeometry(0.05, 0.16, 0.8), new THREE.MeshBasicMaterial({ color: 0xFFFFFF }));
+            t.position.set(i, 0, 0);
+            rulerGroup.add(t);
+        }
+        heroGroup.add(rulerGroup);
+
+        // === 你的橡皮 (Original Eraser) ===
+        // 几何体参数按照 1.html 还原
+        const eraserGroup = new THREE.Group();
+        
+        // [材质升级]
+        const rubber = new THREE.Mesh(
+            new THREE.BoxGeometry(4, 0.8, 1.8), // 原始尺寸
+            new THREE.MeshStandardMaterial({ color: 0xF1F5F9, roughness: 0.9 })
+        );
+        rubber.castShadow = true;
+        eraserGroup.add(rubber);
+
+        // 套筒贴图
+        const sleeveCanvas = document.createElement('canvas'); sleeveCanvas.width=512; sleeveCanvas.height=256;
+        const ctx = sleeveCanvas.getContext('2d');
+        ctx.fillStyle = '#334155'; ctx.fillRect(0,0,512,256); // 深色底
+        ctx.fillStyle = '#FFFFFF'; ctx.font='100px "Ma Shan Zheng"'; ctx.textAlign='center'; ctx.textBaseline='middle';
+        ctx.fillText("云科", 256, 128);
+        const sleeveTex = new THREE.CanvasTexture(sleeveCanvas);
+
+        const sleeve = new THREE.Mesh(
+            new THREE.BoxGeometry(2.6, 0.9, 1.9), // 原始尺寸
+            new THREE.MeshStandardMaterial({ map: sleeveTex, roughness: 0.8 })
+        );
+        sleeve.position.x = 0.5; sleeve.castShadow = true;
+        eraserGroup.add(sleeve);
+        heroGroup.add(eraserGroup);
+
+        // === 你的 Tag (Original Tag) ===
+        const tagGroup = new THREE.Group();
+        const tShape = new THREE.Shape();
+        tShape.moveTo(0,0); tShape.lineTo(3,0); tShape.lineTo(3.5, 0.5); tShape.lineTo(3, 1); tShape.lineTo(0,1);
+        const tGeo = new THREE.ExtrudeGeometry(tShape, { depth: 0.1, bevelEnabled: false });
+        const tMat = new THREE.MeshBasicMaterial({ color: 0x2563EB, transparent: true, opacity: 0.9 }); // 加深一点
+        const tMesh = new THREE.Mesh(tGeo, tMat);
+        tMesh.position.set(-1.75, -0.5, 0);
+        tagGroup.add(tMesh);
+        
+        const d1 = new THREE.Mesh(new THREE.SphereGeometry(0.15), new THREE.MeshBasicMaterial({color:0xffffff})); d1.position.set(1,0,0.2);
+        const d2 = new THREE.Mesh(new THREE.SphereGeometry(0.15), new THREE.MeshBasicMaterial({color:0xffffff})); d2.position.set(1.5,0,0.2);
+        tagGroup.add(d1); tagGroup.add(d2);
+        heroGroup.add(tagGroup);
+
+
+        // --- 6. 构图摆放 (Still Life Composition) ---
+        
+        // 笔 - 主角
+        pen.position.set(0, 0, 2);
+        pen.rotation.set(Math.PI/4, -Math.PI/6, -Math.PI/4);
+
+        // 尺子 - 背景
+        rulerGroup.position.set(-1, -2.5, -2);
+        rulerGroup.rotation.set(Math.PI/6, Math.PI/12, -Math.PI/12);
+
+        // 橡皮 - 前景
+        eraserGroup.position.set(2.5, -4, 1);
+        eraserGroup.rotation.set(Math.PI/8, -Math.PI/4, 0.1);
+
+        // Tag - 悬浮信息
+        tagGroup.position.set(2, 3, -2);
+        tagGroup.scale.set(0.7, 0.7, 0.7);
+        tagGroup.rotation.set(0.1, -0.3, 0.1);
+
+
+        // --- 7. 动画循环 ---
+        const clock = new THREE.Clock();
+
+        function animate() {
+            requestAnimationFrame(animate);
+            const t = clock.getElapsedTime();
+
+            // 缓慢的悬浮效果
+            pen.position.y = Math.sin(t * 0.5) * 0.2;
+            pen.rotation.z = -Math.PI/4 + Math.sin(t * 0.3) * 0.05;
+
+            rulerGroup.position.y = -2.5 + Math.sin(t * 0.4 + 1) * 0.15;
+            rulerGroup.rotation.x = Math.PI/6 + Math.sin(t * 0.2) * 0.02;
+
+            eraserGroup.position.y = -4 + Math.sin(t * 0.6 + 2) * 0.1;
+            
+            tagGroup.position.y = 3 + Math.sin(t * 0.5) * 0.2;
+
+            renderer.render(scene, camera);
+        }
+
+        // 入场动画
+        gsap.from(heroGroup.position, { x: 10, duration: 2.5, ease: "power3.out" });
+        gsap.from(".text-container", { y: 30, opacity: 0, duration: 1.5, delay: 0.5, ease: "power2.out" });
+
+        animate();
+
+        // 响应式
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            if(window.innerWidth < 768) {
+                heroGroup.position.set(0, 1, -4);
+                heroGroup.scale.set(0.6, 0.6, 0.6);
+            } else {
+                heroGroup.position.set(5, 0, 0);
+                heroGroup.scale.set(1, 1, 1);
+            }
+        });
+        window.dispatchEvent(new Event('resize'));
+
+    </script>
+</body>
+</html>

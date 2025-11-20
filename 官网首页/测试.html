@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Limitless | The OS for Thinking</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    
+    <style>
+        :root {
+            --bg-color: #F1F5F9; 
+            --text-main: #0F172A;
+            --text-sub: #475569;
+            --accent: #2563EB; 
+        }
+
+        body {
+            margin: 0;
+            overflow: hidden; /* 保持单屏体验 */
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            background: radial-gradient(circle at 60% 50%, #FFFFFF 0%, #F1F5F9 70%);
+        }
+
+        /* --- UI Layer --- */
+        .ui-layer {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 10;
+            pointer-events: none;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .navbar {
+            padding: 24px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            pointer-events: auto;
+            z-index: 30;
+        }
+        .brand { font-weight: 700; font-size: 20px; letter-spacing: -0.5px; display: flex; align-items: center; gap: 8px; }
+        .brand-dot { width: 10px; height: 10px; background: var(--accent); border-radius: 2px; }
+
+        .hero-content {
+            flex: 1;
+            display: flex;
+            align-items: center; /* 垂直居中 */
+            padding: 0 8%;
+            pointer-events: none;
+            position: relative;
+        }
+        
+        .text-container {
+            max-width: 600px;
+            pointer-events: auto;
+            z-index: 20;
+            position: relative;
+        }
+
+        .tag-pill {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: rgba(37, 99, 235, 0.1); color: var(--accent);
+            padding: 6px 12px; border-radius: 100px;
+            font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 600;
+            margin-bottom: 24px;
+            backdrop-filter: blur(5px); /* 增加毛玻璃防止遮挡 */
+        }
+
+        h1 {
+            font-size: clamp(3rem, 6vw, 4.5rem);
+            font-weight: 800;
+            line-height: 1.05;
+            letter-spacing: -0.03em;
+            margin: 0 0 24px 0;
+            color: var(--text-main);
+        }
+        
+        .hero-desc {
+            font-size: 1.125rem;
+            line-height: 1.6;
+            color: var(--text-sub);
+            margin-bottom: 40px;
+            max-width: 480px;
+        }
+
+        .btn-primary {
+            background: var(--text-main); color: #fff;
+            padding: 14px 32px; border-radius: 12px;
+            font-weight: 600; font-size: 15px;
+            cursor: pointer; border: none;
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.2);
+            transition: transform 0.2s;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .btn-primary:active { transform: scale(0.98); }
+
+        #canvas-container {
+            position: fixed; top: 0; right: 0; width: 100%; height: 100%; z-index: 1;
+        }
+
+        /* --- Mobile Optimizations --- */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 20px 24px;
+            }
+            
+            .hero-content {
+                flex-direction: column;
+                justify-content: flex-start; /* 内容置顶 */
+                align-items: center;
+                padding: 120px 24px 0 24px; /* 留出顶部空间 */
+                text-align: center;
+            }
+
+            .text-container {
+                width: 100%;
+                max-width: 100%;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            h1 {
+                font-size: 2.75rem; /* 移动端字体调小 */
+                margin-bottom: 16px;
+            }
+
+            .hero-desc {
+                font-size: 1rem;
+                margin-bottom: 32px;
+                max-width: 100%;
+            }
+            
+            /* 背景渐变调整，适应竖屏 */
+            body {
+                background: radial-gradient(circle at 50% 30%, #FFFFFF 0%, #F1F5F9 80%);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="ui-layer">
+        <nav class="navbar">
+            <div class="brand"><div class="brand-dot"></div>LIMITLESS</div>
+            <div style="font-size:14px; font-weight:500; color:var(--text-sub);">v2.0</div>
+        </nav>
+
+        <div class="hero-content">
+            <div class="text-container">
+                <div class="tag-pill">Flow Engine v2.0</div>
+                <h1>Thinking,<br><span style="color: var(--text-sub);">Unbound.</span></h1>
+                <p class="hero-desc">
+                    Break free from static whiteboards. Limitless is a spatial workspace that turns your chaotic sketches into structured knowledge.
+                </p>
+                <button class="btn-primary">Get Started Free</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="canvas-container"></div>
+
+    <script>
+        // --- 1. 场景初始化 ---
+        const container = document.getElementById('canvas-container');
+        const scene = new THREE.Scene();
+        
+        const camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.set(0, 0, 25);
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); // 限制像素比，优化移动端性能
+        
+        renderer.physicallyCorrectLights = true;
+        renderer.outputEncoding = THREE.sRGBEncoding;
+        renderer.toneMapping = THREE.ACESFilmicToneMapping;
+        renderer.toneMappingExposure = 1.1;
+        renderer.shadowMap.enabled = true;
+        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+        container.appendChild(renderer.domElement);
+
+        // --- 2. 环境与光照 ---
+        const pmremGenerator = new THREE.PMREMGenerator(renderer);
+        pmremGenerator.compileEquirectangularShader();
+
+        const roomEnv = new THREE.Scene();
+        const boxGeo = new THREE.BoxGeometry(10, 10, 10);
+        const boxMat = new THREE.MeshBasicMaterial({ color: 0xffffff, side: THREE.BackSide });
+        roomEnv.add(new THREE.Mesh(boxGeo, boxMat));
+        const topLight = new THREE.Mesh(new THREE.PlaneGeometry(6, 6), new THREE.MeshBasicMaterial({color:0xffffff, side:THREE.DoubleSide}));
+        topLight.position.set(0, 4.9, 0); topLight.rotation.x = Math.PI/2;
+        roomEnv.add(topLight);
+        const sideLight = new THREE.Mesh(new THREE.PlaneGeometry(2, 8), new THREE.MeshBasicMaterial({color:0xE0F2FE, side:THREE.DoubleSide}));
+        sideLight.position.set(-4.9, 0, 0); sideLight.rotation.y = Math.PI/2;
+        roomEnv.add(sideLight);
+        
+        scene.environment = pmremGenerator.fromScene(roomEnv).texture;
+
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
+        scene.add(ambientLight);
+
+        const mainLight = new THREE.DirectionalLight(0xffffff, 2.5);
+        mainLight.position.set(5, 8, 5);
+        mainLight.castShadow = true;
+        mainLight.shadow.mapSize.width = 1024; // 移动端性能优化，减小贴图尺寸
+        mainLight.shadow.mapSize.height = 1024;
+        mainLight.shadow.radius = 4;
+        scene.add(mainLight);
+
+        const fillLight = new THREE.DirectionalLight(0xDDEEFF, 1.0);
+        fillLight.position.set(-5, 2, 2);
+        scene.add(fillLight);
+
+        // 阴影地面
+        const shadowPlane = new THREE.Mesh(
+            new THREE.PlaneGeometry(50, 50),
+            new THREE.ShadowMaterial({ opacity: 0.15, color: 0x0F172A })
+        );
+        shadowPlane.rotation.x = -Math.PI / 2;
+        shadowPlane.position.y = -4;
+        shadowPlane.receiveShadow = true;
+        scene.add(shadowPlane);
+
+        // 点阵背景
+        function createDotGrid() {
+            const canvas = document.createElement('canvas');
+            canvas.width = 64; canvas.height = 64;
+            const ctx = canvas.getContext('2d');
+            ctx.fillStyle = 'transparent'; ctx.fillRect(0,0,64,64);
+            ctx.fillStyle = '#CBD5E1';
+            ctx.beginPath(); ctx.arc(32, 32, 2, 0, Math.PI*2); ctx.fill();
+            const tex = new THREE.CanvasTexture(canvas);
+            tex.wrapS = tex.wrapT = THREE.RepeatWrapping; tex.repeat.set(40, 40);
+            const geo = new THREE.PlaneGeometry(200, 200);
+            const mat = new THREE.MeshBasicMaterial({ map: tex, transparent: true, opacity: 0.4 });
+            const mesh = new THREE.Mesh(geo, mat);
+            mesh.rotation.x = -Math.PI/2;
+            mesh.position.y = -4.1;
+            return mesh;
+        }
+        scene.add(createDotGrid());
+
+
+        // --- 3. 建模资产 (保留原汁原味) ---
+        
+        const heroGroup = new THREE.Group();
+        scene.add(heroGroup);
+
+        // Pen
+        function createOriginalPen() {
+            const g = new THREE.Group();
+            const matBody = new THREE.MeshStandardMaterial({ color: 0x1E293B, roughness: 0.3, metalness: 0.6, envMapIntensity: 1 });
+            const matGrip = new THREE.MeshStandardMaterial({ color: 0x0F172A, roughness: 0.9, bumpScale: 0.02 });
+            const matMetal = new THREE.MeshStandardMaterial({ color: 0xF8FAFC, roughness: 0.2, metalness: 1.0, envMapIntensity: 1.5 });
+            const matNib = new THREE.MeshStandardMaterial({ color: 0x111111 });
+            const matLight = new THREE.MeshBasicMaterial({ color: 0x3B82F6 });
+
+            const nibTip = new THREE.Mesh(new THREE.CylinderGeometry(0.015, 0.005, 0.05, 8), matNib); nibTip.position.y = 0.025; g.add(nibTip);
+            const nibCone = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.015, 0.25, 16), matMetal); nibCone.position.y = 0.175; nibCone.castShadow = true; g.add(nibCone);
+            const ferrule = new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.08, 0.4, 32), matMetal); ferrule.position.y = 0.5; ferrule.castShadow = true; g.add(ferrule);
+            const grip = new THREE.Mesh(new THREE.CylinderGeometry(0.21, 0.2, 1.8, 32), matGrip); grip.position.y = 1.8; grip.castShadow = true; g.add(grip);
+            const ring = new THREE.Mesh(new THREE.CylinderGeometry(0.21, 0.21, 0.04, 32), matLight); ring.position.y = 2.72; g.add(ring);
+            const body = new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.2, 4.5, 6), matBody); body.position.y = 4.99; body.castShadow = true; g.add(body);
+            const clipStem = new THREE.Mesh(new THREE.BoxGeometry(0.06, 0.4, 0.15), matMetal); clipStem.position.set(0.2, 6.5, 0); g.add(clipStem);
+            const clipArm = new THREE.Mesh(new THREE.BoxGeometry(0.04, 2.5, 0.08), matMetal); clipArm.position.set(0.25, 5.5, 0); g.add(clipArm);
+            const cap = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.2, 0.3, 32), matMetal); cap.position.y = 7.14; g.add(cap);
+            g.rotation.order = 'YXZ'; 
+            return g;
+        }
+        const pen = createOriginalPen();
+        heroGroup.add(pen);
+
+        // Ruler
+        const rulerGroup = new THREE.Group();
+        const rulerMat = new THREE.MeshPhysicalMaterial({ color: 0x3B82F6, transmission: 0.5, opacity: 0.9, transparent: true, roughness: 0.1, metalness: 0.1, thickness: 1.5, clearcoat: 1 });
+        const rulerGlass = new THREE.Mesh(new THREE.BoxGeometry(8, 0.15, 2), rulerMat); 
+        rulerGlass.castShadow = true; rulerGroup.add(rulerGlass);
+        for(let i=-3.5; i<=3.5; i+=0.5) {
+            const t = new THREE.Mesh(new THREE.BoxGeometry(0.05, 0.16, 0.8), new THREE.MeshBasicMaterial({ color: 0xFFFFFF }));
+            t.position.set(i, 0, 0); rulerGroup.add(t);
+        }
+        heroGroup.add(rulerGroup);
+
+        // Eraser
+        const eraserGroup = new THREE.Group();
+        const rubber = new THREE.Mesh(new THREE.BoxGeometry(4, 0.8, 1.8), new THREE.MeshStandardMaterial({ color: 0xF1F5F9, roughness: 0.9 }));
+        rubber.castShadow = true; eraserGroup.add(rubber);
+        const sleeveCanvas = document.createElement('canvas'); sleeveCanvas.width=512; sleeveCanvas.height=256;
+        const ctx = sleeveCanvas.getContext('2d');
+        ctx.fillStyle = '#334155'; ctx.fillRect(0,0,512,256);
+        ctx.fillStyle = '#FFFFFF'; ctx.font='100px "Ma Shan Zheng"'; ctx.textAlign='center'; ctx.textBaseline='middle';
+        ctx.fillText("云科", 256, 128);
+        const sleeve = new THREE.Mesh(new THREE.BoxGeometry(2.6, 0.9, 1.9), new THREE.MeshStandardMaterial({ map: new THREE.CanvasTexture(sleeveCanvas), roughness: 0.8 }));
+        sleeve.position.x = 0.5; sleeve.castShadow = true; eraserGroup.add(sleeve);
+        heroGroup.add(eraserGroup);
+
+        // Tag
+        const tagGroup = new THREE.Group();
+        const tShape = new THREE.Shape(); tShape.moveTo(0,0); tShape.lineTo(3,0); tShape.lineTo(3.5, 0.5); tShape.lineTo(3, 1); tShape.lineTo(0,1);
+        const tGeo = new THREE.ExtrudeGeometry(tShape, { depth: 0.1, bevelEnabled: false });
+        const tMesh = new THREE.Mesh(tGeo, new THREE.MeshBasicMaterial({ color: 0x2563EB, transparent: true, opacity: 0.9 }));
+        tMesh.position.set(-1.75, -0.5, 0); tagGroup.add(tMesh);
+        const d1 = new THREE.Mesh(new THREE.SphereGeometry(0.15), new THREE.MeshBasicMaterial({color:0xffffff})); d1.position.set(1,0,0.2); tagGroup.add(d1);
+        const d2 = new THREE.Mesh(new THREE.SphereGeometry(0.15), new THREE.MeshBasicMaterial({color:0xffffff})); d2.position.set(1.5,0,0.2); tagGroup.add(d2);
+        heroGroup.add(tagGroup);
+
+
+        // --- 4. 构图与动画 ---
+        
+        // 默认初始位置（会被 resize 覆盖）
+        pen.rotation.set(Math.PI/4, -Math.PI/6, -Math.PI/4);
+        rulerGroup.rotation.set(Math.PI/6, Math.PI/12, -Math.PI/12);
+        eraserGroup.rotation.set(Math.PI/8, -Math.PI/4, 0.1);
+        tagGroup.rotation.set(0.1, -0.3, 0.1);
+
+        const clock = new THREE.Clock();
+
+        function animate() {
+            requestAnimationFrame(animate);
+            const t = clock.getElapsedTime();
+
+            // 浮动动画
+            pen.position.y = Math.sin(t * 0.5) * 0.2;
+            pen.rotation.z = -Math.PI/4 + Math.sin(t * 0.3) * 0.05;
+
+            rulerGroup.position.y = -2.5 + Math.sin(t * 0.4 + 1) * 0.15;
+            eraserGroup.position.y = -4 + Math.sin(t * 0.6 + 2) * 0.1;
+            tagGroup.position.y = 3 + Math.sin(t * 0.5) * 0.2;
+
+            renderer.render(scene, camera);
+        }
+
+        // 入场动画
+        gsap.from(heroGroup.position, { y: -10, opacity: 0, duration: 2.5, ease: "power3.out" });
+        gsap.from(".text-container", { y: 30, opacity: 0, duration: 1.5, delay: 0.5, ease: "power2.out" });
+
+        animate();
+
+
+        // --- 5. 响应式适配逻辑 (核心) ---
+        function handleResize() {
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+            
+            camera.aspect = width / height;
+            camera.updateProjectionMatrix();
+            renderer.setSize(width, height);
+
+            if(width < 768) {
+                // === Mobile Mode ===
+                // 1. 位置归中下移
+                heroGroup.position.set(0, -2, 0); 
+                // 2. 整体缩小
+                heroGroup.scale.set(0.55, 0.55, 0.55);
+                
+                // 3. 构图微调：让物体聚拢一点，避免切边
+                pen.position.set(0, 1, 2);
+                rulerGroup.position.set(0, -2, -2); // 尺子居中
+                eraserGroup.position.set(1.5, -4, 1); // 橡皮收紧
+                tagGroup.position.set(1.5, 4, -2); // Tag收紧
+                
+                // 4. 相机稍微拉远，确保不压迫
+                camera.position.z = 28;
+
+            } else {
+                // === Desktop Mode ===
+                heroGroup.position.set(5, 0, 0);
+                heroGroup.scale.set(1, 1, 1);
+                
+                // 还原构图
+                pen.position.set(0, 0, 2);
+                rulerGroup.position.set(-1, -2.5, -2);
+                eraserGroup.position.set(2.5, -4, 1);
+                tagGroup.position.set(2, 3, -2);
+                
+                camera.position.z = 25;
+            }
+        }
+
+        window.addEventListener('resize', handleResize);
+        // 初始化调用一次
+        handleResize();
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Limitless Tag | 3D Viewer</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #F3F4F6;
+            font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+        
+        #canvas-container {
+            width: 100vw;
+            height: 100vh;
+            outline: none;
+        }
+
+        .ui-overlay {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 12px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 12px 24px;
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+            backdrop-filter: blur(10px);
+            pointer-events: auto;
+            align-items: center;
+            white-space: nowrap;
+        }
+
+        .text-btn {
+            padding: 8px 16px;
+            border-radius: 8px;
+            border: 1px solid #E5E7EB;
+            background: #fff;
+            font-size: 13px;
+            font-weight: 600;
+            color: #374151;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .text-btn:hover {
+            background: #F9FAFB;
+            border-color: #D1D5DB;
+            transform: translateY(-1px);
+        }
+        .text-btn.active {
+            background: #111827;
+            color: #fff;
+            border-color: #111827;
+        }
+
+        .dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; border:1px solid rgba(0,0,0,0.1); }
+        .label { font-size: 12px; color: #9CA3AF; font-weight: 500; margin-right: 8px; text-transform: uppercase; }
+        
+        .instruction {
+            position: absolute; top: 40px; width: 100%; text-align: center;
+            color: #9CA3AF; font-size: 12px; pointer-events: none; letter-spacing: 2px; font-weight: 600;
+        }
+    </style>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <!-- 引入中文字体 -->
+    <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Sans+SC:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="instruction">INTERACTIVE TAG • DRAG TO ROTATE</div>
+
+    <div id="canvas-container"></div>
+
+    <div class="ui-overlay">
+        <span class="label">状态</span>
+        <button class="text-btn active" onclick="updateStatus('高优先级', '#EF4444')">
+            <span class="dot" style="background:#EF4444"></span> 高优先级
+        </button>
+        <button class="text-btn" onclick="updateStatus('已完成', '#10B981')">
+            <span class="dot" style="background:#10B981"></span> 已完成
+        </button>
+        <button class="text-btn" onclick="updateStatus('草稿', '#F59E0B')">
+            <span class="dot" style="background:#F59E0B"></span> 草稿
+        </button>
+    </div>
+
+    <script>
+        const container = document.getElementById('canvas-container');
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0xF3F4F6);
+        
+        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.set(0, 0, 12); // 正视特写
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.physicallyCorrectLights = true;
+        renderer.outputEncoding = THREE.sRGBEncoding;
+        renderer.toneMapping = THREE.ACESFilmicToneMapping;
+        renderer.shadowMap.enabled = true;
+        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+        container.appendChild(renderer.domElement);
+
+        const controls = new THREE.OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.05;
+        controls.autoRotate = true;
+        controls.autoRotateSpeed = 1.0;
+
+        // --- Lighting (Studio) ---
+        const pmremGenerator = new THREE.PMREMGenerator(renderer);
+        pmremGenerator.compileEquirectangularShader();
+        const roomEnv = new THREE.Scene();
+        const boxMat = new THREE.MeshBasicMaterial({ color: 0xffffff, side: THREE.BackSide });
+        roomEnv.add(new THREE.Mesh(new THREE.BoxGeometry(10, 10, 10), boxMat));
+        const light1 = new THREE.Mesh(new THREE.PlaneGeometry(5, 5), new THREE.MeshBasicMaterial({color:0xffffff}));
+        light1.position.set(0, 4.9, 0); light1.rotation.x = Math.PI/2; roomEnv.add(light1);
+        scene.environment = pmremGenerator.fromScene(roomEnv).texture;
+
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+        scene.add(ambientLight);
+
+        const mainLight = new THREE.DirectionalLight(0xffffff, 1.5);
+        mainLight.position.set(5, 8, 5);
+        mainLight.castShadow = true;
+        mainLight.shadow.mapSize.width = 2048;
+        mainLight.shadow.mapSize.height = 2048;
+        mainLight.shadow.radius = 4;
+        scene.add(mainLight);
+        
+        // 背光，增加透光感
+        const backLight = new THREE.SpotLight(0xffffff, 1.0);
+        backLight.position.set(0, 2, -5);
+        backLight.lookAt(0,0,0);
+        scene.add(backLight);
+
+        const shadowPlane = new THREE.Mesh(
+            new THREE.PlaneGeometry(30, 30),
+            new THREE.ShadowMaterial({ opacity: 0.1, color: 0x111827 })
+        );
+        shadowPlane.rotation.x = -Math.PI / 2;
+        shadowPlane.position.y = -2.5; 
+        shadowPlane.receiveShadow = true;
+        scene.add(shadowPlane);
+
+
+        // --- Tag Modeling ---
+        
+        let tagGroup, labelCanvas, labelCtx, labelTexture;
+        let statusColor = '#EF4444';
+        let statusText = '高优先级';
+
+        function createTag() {
+            const g = new THREE.Group();
+
+            // 1. 标签主体 (Extruded Shape)
+            // 形状：类似行李牌，矩形左边带切角或箭头状
+            const width = 4;
+            const height = 2.2;
+            const depth = 0.2; // 厚度
+            const holeRadius = 0.25;
+            
+            const shape = new THREE.Shape();
+            
+            // 绘制轮廓 (带圆角的矩形 + 左侧三角形)
+            const r = 0.2; // 圆角半径
+            const w = width/2;
+            const h = height/2;
+            const pointX = -w - 0.8; // 箭头尖端位置
+
+            // 从左侧尖端开始
+            shape.moveTo(pointX, 0);
+            // 左上斜线
+            shape.lineTo(-w, h);
+            // 上边 + 右上圆角
+            shape.lineTo(w - r, h);
+            shape.quadraticCurveTo(w, h, w, h - r);
+            // 右边 + 右下圆角
+            shape.lineTo(w, -h + r);
+            shape.quadraticCurveTo(w, -h, w - r, -h);
+            // 下边
+            shape.lineTo(-w, -h);
+            // 左下斜线回到尖端
+            shape.lineTo(pointX, 0);
+
+            // 挖孔 (Hole)
+            const holePath = new THREE.Path();
+            const holeX = -w + 0.2; // 孔的位置
+            holePath.absarc(holeX, 0, holeRadius, 0, Math.PI * 2, true);
+            shape.holes.push(holePath);
+
+            const extrudeSettings = {
+                steps: 1,
+                depth: depth,
+                bevelEnabled: true,
+                bevelThickness: 0.05,
+                bevelSize: 0.05,
+                bevelSegments: 4
+            };
+
+            const geometry = new THREE.ExtrudeGeometry(shape, extrudeSettings);
+            geometry.center(); // 居中
+
+            // 材质：半透明磨砂塑料 (Frosted Plastic)
+            const material = new THREE.MeshPhysicalMaterial({
+                color: 0xFFFFFF,
+                roughness: 0.4,
+                metalness: 0.1,
+                transmission: 0.6,  // 半透
+                thickness: 1.0,
+                clearcoat: 0.8,
+                clearcoatRoughness: 0.2
+            });
+
+            const mesh = new THREE.Mesh(geometry, material);
+            mesh.castShadow = true;
+            mesh.receiveShadow = true;
+            g.add(mesh);
+
+            // 2. 金属环 (Grommet) - 镶嵌在孔里
+            const grommetGeo = new THREE.TorusGeometry(holeRadius, 0.06, 16, 32);
+            const grommetMat = new THREE.MeshStandardMaterial({
+                color: 0xCCCCCC,
+                roughness: 0.2,
+                metalness: 1.0
+            });
+            const grommet1 = new THREE.Mesh(grommetGeo, grommetMat);
+            grommet1.position.set(-width/2 + 0.2, 0, depth/2 + 0.02); // 前面
+            g.add(grommet1);
+            
+            const grommet2 = new THREE.Mesh(grommetGeo, grommetMat);
+            grommet2.position.set(-width/2 + 0.2, 0, -depth/2 - 0.02); // 后面
+            g.add(grommet2);
+
+
+            // 3. 动态信息面板 (Label Surface)
+            // 这是一个贴在标签表面的薄片，用于显示文字
+            
+            labelCanvas = document.createElement('canvas');
+            labelCanvas.width = 1024;
+            labelCanvas.height = 512;
+            labelCtx = labelCanvas.getContext('2d');
+            
+            drawLabel();
+            
+            labelTexture = new THREE.CanvasTexture(labelCanvas);
+            labelTexture.anisotropy = renderer.capabilities.getMaxAnisotropy();
+
+            const labelGeo = new THREE.PlaneGeometry(3.2, 1.6); // 略小于主体
+            const labelMat = new THREE.MeshBasicMaterial({
+                map: labelTexture,
+                transparent: true,
+                opacity: 0.9,
+                // blending: THREE.AdditiveBlending // 发光效果
+            });
+
+            const labelMesh = new THREE.Mesh(labelGeo, labelMat);
+            labelMesh.position.set(0.5, 0, depth/2 + 0.06); // 浮在表面
+            g.add(labelMesh);
+            
+            // 同样的贴图放在背面
+            const labelMeshBack = labelMesh.clone();
+            labelMeshBack.rotation.y = Math.PI;
+            labelMeshBack.position.z = -depth/2 - 0.06;
+            g.add(labelMeshBack);
+
+            // 4. [已删除] 挂绳 (String)
+            // const curve = new THREE.CatmullRomCurve3([...]);
+            // const tubeGeo = new THREE.TubeGeometry(...);
+            // const tubeMat = ...;
+            // const stringMesh = new THREE.Mesh(...);
+            // g.add(stringMesh);
+
+            return g;
+        }
+
+        // --- UI Drawing Logic ---
+        function drawLabel() {
+            const ctx = labelCtx;
+            const w = 1024;
+            const h = 512;
+
+            // 清空
+            ctx.clearRect(0, 0, w, h);
+            
+            // UI 容器背景 (带圆角)
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+            roundRect(ctx, 0, 0, w, h, 40);
+            ctx.fill();
+
+            // 1. 状态色条 (左侧)
+            ctx.fillStyle = statusColor;
+            ctx.beginPath();
+            // 重新调整色条路径，使其左侧是直的，不需要圆角适配(因为背景已经是圆角了，clip可能更好，但这里手动控制)
+            // 简单画一个竖条，然后依赖背景的白色不透明度遮挡？不行，背景是0.9透明
+            // 我们直接画一个圆角矩形作为左侧色条
+            roundRect(ctx, 0, 0, 60, h, 40); // 左侧也是圆角
+            ctx.fill();
+            // 修正：让色条右侧变直
+            ctx.fillRect(30, 0, 30, h);
+            
+            // 2. 标题
+            ctx.font = 'bold 60px "Noto Sans SC", sans-serif';
+            ctx.fillStyle = '#9CA3AF';
+            ctx.textAlign = 'left';
+            ctx.fillText("云科数据中心", 100, 100);
+
+            // 3. 主状态文字 (云科 / 状态)
+            ctx.font = 'bold 140px "Ma Shan Zheng", serif';
+            ctx.fillStyle = '#111827';
+            // 文字垂直居中微调
+            ctx.fillText(statusText, 100, 250);
+
+            // 4. 元数据 (Tag Cloud)
+            drawTagPill(ctx, "研发", 100, 360, '#E5E7EB', '#374151');
+            drawTagPill(ctx, "第四季度", 300, 360, '#E5E7EB', '#374151'); // 调整位置
+            drawTagPill(ctx, "v2.0", 620, 360, statusColor, '#FFFFFF'); // 高亮Tag
+
+            if(labelTexture) labelTexture.needsUpdate = true;
+        }
+
+        function drawTagPill(ctx, text, x, y, bg, fg) {
+            ctx.font = 'bold 50px "Noto Sans SC", sans-serif';
+            const textWidth = ctx.measureText(text).width;
+            const pad = 40;
+            const height = 80;
+            
+            ctx.fillStyle = bg;
+            roundRect(ctx, x, y, textWidth + pad*2, height, height/2);
+            ctx.fill();
+            
+            ctx.fillStyle = fg;
+            ctx.fillText(text, x + pad, y + 55);
+        }
+
+        function roundRect(ctx, x, y, w, h, r) {
+            if (w < 2 * r) r = w / 2;
+            if (h < 2 * r) r = h / 2;
+            ctx.beginPath();
+            ctx.moveTo(x + r, y);
+            ctx.arcTo(x + w, y, x + w, y + h, r);
+            ctx.arcTo(x + w, y + h, x, y + h, r);
+            ctx.arcTo(x, y + h, x, y, r);
+            ctx.arcTo(x, y, x + w, y, r);
+            ctx.closePath();
+        }
+
+        const tag = createTag();
+        tagGroup = tag;
+        scene.add(tagGroup);
+
+        // 5. 动画
+        function animate() {
+            requestAnimationFrame(animate);
+            
+            // 悬浮动画
+            const t = Date.now() * 0.001;
+            tagGroup.position.y = Math.sin(t) * 0.2;
+            tagGroup.rotation.z = Math.sin(t * 0.5) * 0.05; // 轻微摇摆
+
+            controls.update();
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        controls.addEventListener('start', () => { controls.autoRotate = false; });
+
+        // UI 交互
+        window.updateStatus = function(text, color) {
+            statusText = text;
+            statusColor = color;
+            
+            // 翻转动画
+            gsap.to(tagGroup.rotation, {
+                y: tagGroup.rotation.y + Math.PI * 2,
+                duration: 0.6,
+                ease: "back.out(1.2)"
+            });
+            
+            drawLabel();
+
+            document.querySelectorAll('.text-btn').forEach(btn => btn.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+        }
+
+    </script>
+</body>
+</html>
