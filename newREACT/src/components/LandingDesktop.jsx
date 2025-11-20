@@ -258,7 +258,7 @@ const LandingDesktop = () => {
     drawnCurve.geometry.setDrawRange(0, 0);
     scene.add(drawnCurve);
 
-    const linePath = new THREE.LineCurve3(new THREE.Vector3(-4, 0.05, 1), new THREE.Vector3(4, 0.05, 1));
+    const linePath = new THREE.LineCurve3(new THREE.Vector3(-4, 1.0, 0), new THREE.Vector3(4, 1.0, 0)); // User-tuned: line Y/Z
     const linePoints = linePath.getPoints(50);
     const lineGeo = new THREE.BufferGeometry().setFromPoints(linePoints);
     const lineMat = new THREE.LineBasicMaterial({ color: CONFIG.accent, linewidth: 3 });
@@ -311,6 +311,7 @@ const LandingDesktop = () => {
       const revealWidth = progress * w;
       eraserTextureCtx.save();
       eraserTextureCtx.beginPath();
+      // Reveal from Left to Right on texture (which is now Left to Right in World)
       eraserTextureCtx.rect(0, 0, revealWidth, h);
       eraserTextureCtx.clip();
 
@@ -327,11 +328,22 @@ const LandingDesktop = () => {
       eraserTexture.needsUpdate = true;
     };
 
-    pen.position.set(0, 30, 0);
-    pen.rotation.set(Math.PI / 2, 0, 0);
-    eraser.position.set(0, 30, 0);
-    ruler.position.set(0, 30, 0);
-    tag.position.set(0, 30, 0);
+    // --- Initial Hero Positions (Floating Assembly) ---
+    // Pen: Angled on the right
+    pen.position.set(8, 0, 2);
+    pen.rotation.set(0, 0, -Math.PI / 4);
+
+  // Ruler: Horizontal on the left
+  ruler.position.set(-8, 2, 0);
+  ruler.rotation.set(Math.PI / 6, 0, 0);
+
+    // Eraser: Floating bottom left
+    eraser.position.set(-5, -4, 2);
+    eraser.rotation.set(Math.PI / 4, -0.2, 0); // Removed flip Y
+
+    // Tag: Floating top center
+    tag.position.set(2, 5, -2);
+    tag.rotation.set(0, -0.2, 0.1);
 
     const tl = gsap.timeline({
       scrollTrigger: {
@@ -342,12 +354,19 @@ const LandingDesktop = () => {
       },
     });
 
-    tl.to(cards[0], { opacity: 1, y: 0, duration: 2 }).to(cards[0], { opacity: 0, y: -50, duration: 2 }, '+=1');
+    // Scene 1: Pen Feature (Transition from Hero)
+    tl.to(cards[0], { opacity: 1, y: 0, duration: 2 })
+      .to(cards[0], { opacity: 0, y: -50, duration: 2 }, '+=1');
 
     const penState = { progress: 0 };
     tl.call(() => activateIcon(0))
+      // Move Pen to center for feature showcase
       .to(pen.position, { x: -3, y: 2, z: -1, duration: 2 })
       .to(pen.rotation, { x: Math.PI / 3.5, y: Math.PI, z: -Math.PI / 6, duration: 2 }, '<')
+      // Move others away
+      .to(ruler.position, { x: -15, y: 10, duration: 2 }, '<')
+      .to(eraser.position, { x: -15, y: -10, duration: 2 }, '<')
+      .to(tag.position, { x: 15, y: 10, duration: 2 }, '<')
       .to(cards[1], { opacity: 1, y: 0, duration: 2 }, '-=1')
       .to(pen.position, { y: 0.0, duration: 0.5 })
       .to(penState, {
@@ -368,11 +387,11 @@ const LandingDesktop = () => {
       .to(cards[1], { opacity: 0, y: -50, duration: 2 }, '<');
 
     const writeState = { p: 0 };
-    tl.call(() => activateIcon(1))
-      .call(() => updateEraserText(0))
-      .to(eraser.position, { x: 0, y: 1.5, z: 0, duration: 2 }, '-=1')
-      .to(eraser.rotation, { x: Math.PI / 4, y: 0, z: 0, duration: 2 }, '<')
-      .to(cards[2], { opacity: 1, y: 0, duration: 2 })
+  tl.call(() => activateIcon(1))
+    .call(() => updateEraserText(0))
+    .to(eraser.position, { x: 0, y: 1.5, z: 0, duration: 2 }, '-=1')
+    .to(eraser.rotation, { x: Math.PI / 4, y: 0, z: -Math.PI / 6, duration: 2 }, '<') // Tilt so exposed head faces down
+    .to(cards[2], { opacity: 1, y: 0, duration: 2 })
       .to(pen.position, { x: -1.5, y: 2.5, z: 0.8, duration: 1.5 })
       .to(pen.rotation, { x: Math.PI / 3.5, y: Math.PI / 2, z: -Math.PI / 6, duration: 1 }, '<')
       .to(writeState, {
@@ -389,29 +408,29 @@ const LandingDesktop = () => {
         },
       })
       .to(pen.position, { y: 30, duration: 1 })
-      .to(eraser.rotation, { x: 0, y: 0, z: Math.PI / 3, duration: 0.5 })
+    .to(eraser.rotation, { x: 0, y: 0, z: -Math.PI / 3, duration: 0.5 })
       .to(eraser.position, { x: -1, y: 1.8, z: -0.5, duration: 0.5 }, '<')
       .to(eraser.position, { x: 1, y: 1.85, z: 0.5, duration: 0.2, yoyo: true, repeat: 5, ease: 'power1.inOut' })
       .to(drawnCurve.material, { opacity: 0, duration: 1.0 }, '<')
       .to(eraser.position, { y: 30, duration: 2 })
       .to(cards[2], { opacity: 0, y: -50, duration: 2 }, '<');
 
-    tl.call(() => activateIcon(2))
-      .to(ruler.position, { x: 0, y: 0.2, z: 0, duration: 2 })
-      .to(cards[3], { opacity: 1, y: 0, duration: 2 })
-      .to(grid.material, { opacity: 0.6, duration: 2 }, '<')
-      .set(pen.position, { x: -4.5, y: 2, z: 1.5 })
-      .set(pen.rotation, { x: Math.PI / 3.5, y: Math.PI / 2, z: -Math.PI / 6 })
-      .to(pen.position, { y: 0.05, duration: 1 })
+  tl.call(() => activateIcon(2))
+    .to(ruler.position, { x: 0, y: 0.2, z: 0, duration: 2 })
+    .to(cards[3], { opacity: 1, y: 0, duration: 2 })
+    .to(grid.material, { opacity: 0.6, duration: 2 }, '<')
+  .set(pen.position, { x: -4.5, y: 2, z: 0 })
+    .set(pen.rotation, { x: 0.81590984938687, y: Math.PI / 2, z: -0.248798950512828 }) // User-tuned angles
+    .to(pen.position, { y: 1, z: 0, duration: 1 }) // User-tuned drop position
       .to(
         pen.position,
         {
-          x: 4.5,
-          duration: 3,
-          ease: 'power1.inOut',
-          onUpdate() {
-            straightLine.geometry.setDrawRange(0, Math.floor(this.progress() * 50));
-          },
+        x: 4.5,
+        duration: 3,
+        ease: 'power1.inOut',
+        onUpdate() {
+          straightLine.geometry.setDrawRange(0, Math.floor(this.progress() * 50));
+        },
         },
       )
       .to([ruler.position, pen.position], { y: 30, duration: 2 })
@@ -428,18 +447,30 @@ const LandingDesktop = () => {
       .to(pen.position, { x: -5, y: 2, z: 0, duration: 2 }, '<')
       .to(pen.rotation, { x: Math.PI / 4, y: 0, z: Math.PI / 4, duration: 2 }, '<')
       .to(eraser.position, { x: 5, y: 2, z: 0, duration: 2 }, '<')
-      .to(eraser.rotation, { x: Math.PI / 4, y: -0.5, z: 0, duration: 2 }, '<')
+      .to(eraser.rotation, { x: Math.PI / 4, y: -0.5, z: 0, duration: 2 }, '<') // Removed flip
       .to(ruler.position, { x: 0, y: -2, z: 2, duration: 2 }, '<')
-      .to(ruler.rotation, { x: -Math.PI / 2.5, y: 0, z: 0, duration: 2 }, '<');
+    .to(ruler.rotation, { x: -Math.PI / 2.5, y: 0, z: 0, duration: 2 }, '<');
 
     const clock = new THREE.Clock();
     let frameId;
     const animate = () => {
       const time = clock.getElapsedTime();
-      if (pen.position.y < 5 && pen.position.y > 0.1) pen.position.y += Math.sin(time * 3) * 0.0005;
-      if (eraser.position.y < 20) eraser.position.y += Math.cos(time * 2.5) * 0.001;
-      if (tag.position.y < 20) tag.position.y += Math.sin(time * 3) * 0.001;
-      if (ruler.position.y < 20) ruler.position.y += Math.cos(time * 1.5) * 0.001;
+      // Idle Animation for Hero State (when scroll is at top)
+      const scrollY = window.scrollY;
+      if (scrollY < 100) {
+        pen.position.y += Math.sin(time * 2) * 0.002;
+        ruler.position.y += Math.cos(time * 1.5) * 0.002;
+        eraser.position.y += Math.sin(time * 2.5) * 0.002;
+        tag.position.y += Math.cos(time * 2) * 0.002;
+
+        pen.rotation.z += Math.sin(time) * 0.001;
+        ruler.rotation.x += Math.cos(time) * 0.001;
+      }
+
+      if (pen.position.y < 5 && pen.position.y > 0.1 && scrollY > 100) pen.position.y += Math.sin(time * 3) * 0.0005;
+      if (eraser.position.y < 20 && scrollY > 100) eraser.position.y += Math.cos(time * 2.5) * 0.001;
+      if (tag.position.y < 20 && scrollY > 100) tag.position.y += Math.sin(time * 3) * 0.001;
+      if (ruler.position.y < 20 && scrollY > 100) ruler.position.y += Math.cos(time * 1.5) * 0.001;
 
       // Animate Living Grid
       grid.material.uniforms.uTime.value = time;
@@ -493,16 +524,16 @@ const LandingDesktop = () => {
       document.removeEventListener('mouseleave', handleLeave);
       document.body.classList.remove('dark-mode');
       document.body.style.backgroundColor = '';
-    };
-  }, []);
+  };
+}, []);
 
-  return (
-    <div className="app-shell">
-      <div className="cursor-mockup" ref={cursorRef} />
-      <Hud iconRefs={iconRefs} />
-      <div id="canvas-container" ref={canvasRef} />
-      <StoryLayer cards={FEATURE_CARDS} cardRefs={cardRefs} />
-      <div className="scroll-spacer" ref={spacerRef} />
+return (
+  <div className="app-shell">
+    <div className="cursor-mockup" ref={cursorRef} />
+    <Hud iconRefs={iconRefs} />
+    <div id="canvas-container" ref={canvasRef} />
+    <StoryLayer cards={FEATURE_CARDS} cardRefs={cardRefs} />
+    <div className="scroll-spacer" ref={spacerRef} />
     </div>
   );
 };

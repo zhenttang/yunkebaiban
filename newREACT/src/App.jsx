@@ -20,7 +20,22 @@ const VIEWS = [
 ];
 
 const App = () => {
-  const [view, setView] = useState('landing-desktop');
+  const [view, setView] = useState(window.innerWidth < 768 ? 'landing-mobile' : 'landing-desktop');
+
+  React.useEffect(() => {
+    const handleResize = () => {
+      const isMobile = window.innerWidth < 768;
+      // Only switch if currently on one of the main landing views
+      setView((prev) => {
+        if (prev === 'landing-desktop' || prev === 'landing-mobile') {
+          return isMobile ? 'landing-mobile' : 'landing-desktop';
+        }
+        return prev;
+      });
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const renderView = () => {
     switch (view) {

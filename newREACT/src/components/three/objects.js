@@ -211,16 +211,9 @@ export const createRuler = (options = {}) => {
 
   const labelFront = new THREE.Mesh(new THREE.PlaneGeometry(width, depth), baseLabelMat.clone());
   labelFront.position.set(0, height / 2 + 0.02, 0);
-  labelFront.rotation.x = Math.PI / 2;
+  labelFront.rotation.x = -Math.PI / 2; // Face upward for top view
   labelFront.renderOrder = 10;
   rulerMesh.add(labelFront);
-
-  const labelBack = new THREE.Mesh(new THREE.PlaneGeometry(width, depth), baseLabelMat.clone());
-  labelBack.position.set(0, -height / 2 - 0.02, 0);
-  labelBack.rotation.x = -Math.PI / 2;
-  labelBack.scale.x = -1;
-  labelBack.renderOrder = 10;
-  rulerMesh.add(labelBack);
 
   // Gap Plane
   const gapPlane = new THREE.Mesh(

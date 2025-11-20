@@ -94,11 +94,11 @@ const LandingMobile = () => {
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5)); // Limit DPR to 1.5 for mobile performance
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-    renderer.shadowMap.width = 1024;
-    renderer.shadowMap.height = 1024;
+    renderer.shadowMap.width = 512; // Reduced shadow map size
+    renderer.shadowMap.height = 512;
     container.appendChild(renderer.domElement);
 
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
@@ -106,8 +106,8 @@ const LandingMobile = () => {
     const mainLight = new THREE.DirectionalLight(0xffffff, 1);
     mainLight.position.set(10, 20, 10);
     mainLight.castShadow = true;
-    mainLight.shadow.mapSize.width = 1024;
-    mainLight.shadow.mapSize.height = 1024;
+    mainLight.shadow.mapSize.width = 512;
+    mainLight.shadow.mapSize.height = 512;
     scene.add(mainLight);
     const blueLight = new THREE.PointLight(CONFIG.accent, 0.5);
     blueLight.position.set(-10, 5, -10);
