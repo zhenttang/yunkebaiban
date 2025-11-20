@@ -24,9 +24,11 @@ export const editor = style({
 });
 
 export const editorWrapper = style({
-  position: 'relative',
-  width: '100%',
-  height: '100%',
+	position: 'relative',
+	width: '100%',
+	display: 'flex',
+	flex: 1,
+	minHeight: 0,
 });
 
 export const presenceBar = style({
