@@ -73,14 +73,6 @@ export const SignIn = ({
     <SignInPageContainer>
       <SignInBackgroundArts />
       <div className={pageStyle.layout}>
-        <section className={pageStyle.panel}>
-          <SignInPanel
-            onSkip={handleClose}
-            onAuthenticated={handleAuthenticated}
-            initStep={initStep}
-            server={server}
-          />
-        </section>
         <section className={pageStyle.hero}>
           <span className={pageStyle.heroBadge}>YUNKE</span>
           <h1 className={pageStyle.heroTitle}>
@@ -112,6 +104,14 @@ export const SignIn = ({
               </div>
             ))}
           </div>
+        </section>
+        <section className={pageStyle.panel}>
+          <SignInPanel
+            onSkip={handleClose}
+            onAuthenticated={handleAuthenticated}
+            initStep={initStep}
+            server={server}
+          />
         </section>
       </div>
     </SignInPageContainer>

@@ -186,6 +186,9 @@ export const colorCellColor = style({
     '&:hover': {
       transform: 'scale(1.1)',
     },
+    [`${colorCellRow}[data-custom] &`]: {
+      borderRadius: '50%',
+    },
   },
   ':before': {
     width: 16,
@@ -198,11 +201,6 @@ export const colorCellColor = style({
     border: `1px solid rgba(0,0,0,0.1)`,
     boxSizing: 'border-box',
   },
-  selectors: {
-    [`${colorCellRow}[data-custom] &`]: {
-      borderRadius: '50%',
-    },
-  },
 });
 export const colorCellValue = style({
   padding: '4px 8px',
@@ -212,4 +210,28 @@ export const colorCellValue = style({
 export const colorCellInput = style({
   width: '100%',
   height: 32,
+});
+
+export const previewPopoverContent = style({
+  padding: 16,
+  background: cssVarV2('layer/background/primary'),
+  border: `1px solid ${cssVarV2('layer/insideBorder/border')}`,
+  borderRadius: 8,
+  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+  maxWidth: 300,
+  zIndex: 100,
+});
+
+export const previewImage = style({
+  width: '100%',
+  height: 'auto',
+  borderRadius: 4,
+  marginBottom: 8,
+  border: `1px solid ${cssVarV2('layer/insideBorder/border')}`,
+});
+
+export const previewContext = style({
+  fontSize: cssVar('fontXs'),
+  color: cssVar('textSecondaryColor'),
+  lineHeight: '1.5',
 });

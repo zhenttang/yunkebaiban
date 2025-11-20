@@ -18,19 +18,21 @@ export const pulse = keyframes({
 
 export const layout = style({
   width: '100%',
-  maxWidth: '1060px',
+  maxWidth: '1200px', // Increased max-width
   margin: 'auto',
   display: 'flex',
   alignItems: 'center',
-  gap: '56px',
+  justifyContent: 'center', // Center content
+  gap: '80px', // Increased gap
   position: 'relative',
   zIndex: 2,
+  padding: '0 20px', // Add horizontal padding
   animation: `${fadeInUp} 0.6s ease-out`,
   '@media': {
     'screen and (max-width: 960px)': {
       flexDirection: 'column',
       alignItems: 'center',
-      gap: '32px',
+      gap: '40px',
     },
     '(prefers-reduced-motion: reduce)': {
       animation: 'none',
@@ -40,42 +42,30 @@ export const layout = style({
 
 export const panel = style({
   width: '100%',
-  maxWidth: '420px',
+  maxWidth: '480px', // Slightly wider panel
   position: 'relative',
   overflow: 'hidden',
-  // 极简风格：纯色背景，细边框
-  background: cssVar('backgroundPrimaryColor'),
-  borderRadius: '16px',
-  padding: '40px 44px',
+  // Glassmorphism effect
+  background: 'rgba(255, 255, 255, 0.8)',
+  backdropFilter: 'blur(20px)',
+  borderRadius: '24px', // Increased border radius
+  padding: '48px', // Increased padding
   boxSizing: 'border-box',
-  boxShadow: '0 4px 24px rgba(0, 0, 0, 0.04)',
-  border: `1px solid ${cssVar('borderColor')}`,
+  // Softer, multi-layered shadow
+  boxShadow: '0 20px 40px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.05)',
+  border: '1px solid rgba(255, 255, 255, 0.6)',
   animation: `${fadeInUp} 0.8s ease-out 0.3s backwards`,
   selectors: {
     '[data-theme="dark"] &': {
-      background: cssVar('backgroundPrimaryColor'),
-      border: `1px solid ${cssVar('borderColor')}`,
-      boxShadow: '0 4px 24px rgba(0, 0, 0, 0.2)',
+      background: 'rgba(30, 41, 59, 0.8)',
+      border: '1px solid rgba(255, 255, 255, 0.1)',
+      boxShadow: '0 20px 40px rgba(0, 0, 0, 0.3)',
     },
   },
   '@media': {
     'screen and (max-width: 960px)': {
-      maxWidth: '480px',
-      padding: '32px 28px',
-      // A：小屏使用半透明背景，透出底部插画
-      background: 'rgba(255, 255, 255, 0.7)',
-      backdropFilter: 'blur(12px)',
-      boxShadow:
-        '0 10px 24px rgba(15, 23, 42, 0.12), 0 6px 14px rgba(51, 102, 255, 0.08)',
-      selectors: {
-        '[data-theme="dark"] &': {
-          background: 'rgba(30, 41, 59, 0.7)',
-        },
-      },
-    },
-    'screen and (max-width: 640px)': {
-      width: '100%',
-      padding: '28px 20px',
+      maxWidth: '100%',
+      padding: '32px 24px',
     },
     '(prefers-reduced-motion: reduce)': {
       animation: 'none',
@@ -88,24 +78,12 @@ export const hero = style({
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
-  gap: '18px',
+  gap: '24px', // Increased gap
   color: cssVar('textPrimaryColor'),
   animation: `${fadeInUp} 0.8s ease-out 0.2s backwards`,
-  // 增加背景模糊效果，提升文字可读性
-  background: 'rgba(255, 255, 255, 0.6)',
-  backdropFilter: 'blur(12px)',
-  padding: '40px',
-  borderRadius: '24px',
-  boxShadow: '0 8px 32px rgba(0, 0, 0, 0.05)',
-  border: '1px solid rgba(255, 255, 255, 0.4)',
-  selectors: {
-    '[data-theme="dark"] &': {
-      background: 'rgba(0, 0, 0, 0.4)',
-      border: '1px solid rgba(255, 255, 255, 0.1)',
-    },
-  },
+  // Removed background for cleaner look, text stands on its own or with subtle backing
+  padding: '20px',
   '@media': {
-    // 小屏时隐藏营销/宣传区域，让布局与弹窗/移动端一致
     'screen and (max-width: 960px)': {
       display: 'none',
     },

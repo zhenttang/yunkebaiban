@@ -21,14 +21,14 @@ export const mainContainer = style({
   flexDirection: 'column',
   flex: 1, // 关键：让容器占用可用空间
   minHeight: 0, // 关键：避免 flex 子项无限扩展
-  gap: 24,
+  gap: 32, // Increased gap
   '@container': {
     'docs-body (width <= 1024px)': {
       padding: '0 32px 40px 32px',
     },
     'docs-body (width <= 768px)': {
       padding: '0 24px 32px 24px',
-      gap: 18,
+      gap: 24,
     },
     'docs-body (width <= 480px)': {
       padding: '0 16px 24px 16px',
@@ -42,31 +42,38 @@ export const banner = style({
 });
 
 export const card = style({
-  borderRadius: 12,
+  borderRadius: 20, // Increased radius
   background: cssVarV2('layer/background/primary'),
+  // Softer border or remove it if shadow is enough
   border: `1px solid ${cssVarV2('layer/outline/border')}`,
-  boxShadow: '0px 8px 24px rgba(15, 23, 42, 0.06)',
-  transition: 'background-color .2s ease, border-color .2s ease',
+  // More diffused shadow
+  boxShadow: '0px 10px 30px rgba(15, 23, 42, 0.04)',
+  transition: 'all .2s ease',
+  ':hover': {
+    transform: 'translateY(-2px)',
+    boxShadow: '0px 15px 35px rgba(15, 23, 42, 0.08)',
+  }
 });
 
 export const pinnedCard = style([
   card,
   {
-    padding: '12px 16px',
+    padding: '20px 24px', // Increased padding
     display: 'flex',
     flexDirection: 'column',
-    gap: 12,
-    background: cssVarV2('layer/background/secondary'),
+    gap: 16,
+    // Subtle gradient for pinned section
+    background: `linear-gradient(180deg, ${cssVarV2('layer/background/secondary')} 0%, ${cssVarV2('layer/background/primary')} 100%)`,
   },
 ]);
 
 export const filterCard = style([
   card,
   {
-    padding: '16px',
+    padding: '20px 24px',
     display: 'flex',
     flexDirection: 'column',
-    gap: 12,
+    gap: 16,
   },
 ]);
 
@@ -105,9 +112,9 @@ export const filters = style({
 export const documentsContainer = style([
   card,
   {
-    background: cssVarV2('layer/background/secondary'),
+    background: cssVarV2('layer/background/primary'), // Clean background
     border: `1px solid ${cssVarV2('layer/outline/floating')}`,
-    padding: '24px',
+    padding: '32px', // Increased padding
     display: 'flex',
     flexDirection: 'column',
     flex: 1, // 关键：让文档容器占用剩余空间
@@ -115,7 +122,7 @@ export const documentsContainer = style([
     overflow: 'hidden', // 关键：隐藏溢出，让内部滚动容器处理滚动
     '@container': {
       'docs-body (width <= 768px)': {
-        padding: '18px',
+        padding: '24px',
       },
       'docs-body (width <= 500px)': {
         padding: '16px',

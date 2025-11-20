@@ -79,7 +79,7 @@ export const collaboratorDot = style({
 
 export const collaboratorText = style({
   fontSize: '11px',
-  color: 'var(--yunke-success-color)',
+  color: 'var(--yunke-text-success-color)',
   fontWeight: 500,
 });
 
@@ -115,7 +115,6 @@ export const cursorLine = style({
   width: '2px',
   height: '20px',
   backgroundColor: 'var(--yunke-brand-color)',
-  animation: 'blink 1s infinite',
 });
 
 export const cursorLabel = style({
@@ -143,4 +142,4 @@ export const cursorLabelBadge = style({
   borderRadius: '2px',
   fontSize: '9px',
   color: 'white',
-}); 
+});
