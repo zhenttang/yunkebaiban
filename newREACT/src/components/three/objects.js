@@ -173,7 +173,7 @@ export const createRuler = (options = {}) => {
   ctx.fillText('云科', 0, 0);
   ctx.font = '40px "Inter"';
   ctx.globalAlpha = 0.7;
-  ctx.fillText('PRECISION INSTRUMENT', 0, 80);
+  ctx.fillText('精密标尺', 0, 80);
   ctx.restore();
 
   const texture = new THREE.CanvasTexture(canvas);

@@ -1,4 +1,6 @@
 import { SafeArea, Skeleton } from '@yunke/component';
+import { NavigateContext } from '@yunke/core/components/hooks/use-navigate-helper';
+import { useNavigate } from 'react-router-dom';
 
 import { WorkspaceSelector } from '../workspace-selector';
 
@@ -50,36 +52,42 @@ const Section = () => {
 };
 
 export const AppFallback = () => {
+  const navigate = useNavigate();
+
   return (
-    <SafeArea top bottom style={{ height: '100dvh', overflow: 'hidden' }}>
-      {/* setting */}
-      <div style={{ padding: 10, display: 'flex', justifyContent: 'end' }}>
-        <Skeleton
-          animation="wave"
-          style={{ width: 23, height: 23, borderRadius: 4 }}
-        />
-      </div>
-      {/* workspace card */}
-      <div style={{ padding: '4px 16px' }}>
-        <WorkspaceSelector />
-      </div>
-      {/* search */}
-      <div style={{ padding: '10px 16px 15px' }}>
-        <Skeleton animation="wave" style={{ height: 44, borderRadius: 10 }} />
-      </div>
-      {/* recent */}
-      <SectionTitleFallback />
-      <div style={{ padding: '16px 16px 32px 16px', display: 'flex', gap: 10 }}>
-        {[1, 2, 3].map(i => (
+    <NavigateContext.Provider value={navigate}>
+      <SafeArea top bottom style={{ height: '100dvh', overflow: 'hidden' }}>
+        {/* setting */}
+        <div style={{ padding: 10, display: 'flex', justifyContent: 'end' }}>
           <Skeleton
-            key={i}
             animation="wave"
-            style={{ width: 172, height: 210, borderRadius: 12 }}
+            style={{ width: 23, height: 23, borderRadius: 4 }}
           />
-        ))}
-      </div>
-      <Section />
-      <Section />
-    </SafeArea>
+        </div>
+        {/* workspace card */}
+        <div style={{ padding: '4px 16px' }}>
+          <WorkspaceSelector />
+        </div>
+        {/* search */}
+        <div style={{ padding: '10px 16px 15px' }}>
+          <Skeleton animation="wave" style={{ height: 44, borderRadius: 10 }} />
+        </div>
+        {/* recent */}
+        <SectionTitleFallback />
+        <div
+          style={{ padding: '16px 16px 32px 16px', display: 'flex', gap: 10 }}
+        >
+          {[1, 2, 3].map(i => (
+            <Skeleton
+              key={i}
+              animation="wave"
+              style={{ width: 172, height: 210, borderRadius: 12 }}
+            />
+          ))}
+        </div>
+        <Section />
+        <Section />
+      </SafeArea>
+    </NavigateContext.Provider>
   );
 };

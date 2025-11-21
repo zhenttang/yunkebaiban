@@ -13,48 +13,48 @@ const FEATURE_CARDS = [
     id: 'card-1',
     align: 'left',
     dark: false,
-    headline: 'Reinventing\nThe Canvas.',
-    subtext: 'Traditional whiteboards are static.\nWe built a living workspace where every tool is an intelligent engine.',
+    headline: '重塑\n创作画布。',
+    subtext: '传统白板是静态的。\n我们打造了一个有生命力的工作区，每个工具都是智能引擎。',
   },
   {
     id: 'card-2',
     align: 'right',
     dark: false,
-    tag: 'Flow Engine™ 2.0',
-    headline: 'Zero Latency.\nFluid Thought.',
-    subtext: 'Not just a pixel brush. Our Zero-G Pen uses physics simulation to stabilize your handwriting.',
+    tag: '流动引擎™ 2.0',
+    headline: '零延迟。\n思维流动。',
+    subtext: '不只是像素画笔。我们的零重力笔通过物理模拟，实时稳定你的手写。',
   },
   {
     id: 'card-3',
     align: 'left',
     dark: false,
-    tag: 'Semantic Erase',
-    headline: 'Personalized\nTools.',
-    subtext: 'Even the humblest eraser has a soul. Watch as we laser-etch your identity onto the digital sleeve.',
+    tag: '语义擦除',
+    headline: '专属\n工具。',
+    subtext: '即便是最普通的橡皮也有灵魂。看着你的身份被实时镭射在数字外套上。',
   },
   {
     id: 'card-4',
     align: 'center',
     dark: false,
-    tag: 'Intelligent Alignment',
-    headline: 'Order from Chaos.',
-    subtext: 'The Bridge System acts as an invisible grid that snaps your ideas into perfect perspective.',
+    tag: '智能对齐',
+    headline: '化乱为序。',
+    subtext: '桥接系统像一张隐形网格，自动把你的想法吸附到完美视角。',
   },
   {
     id: 'card-5',
     align: 'left',
     dark: true,
-    tag: 'Knowledge Graph',
-    headline: 'Turn Sketches\nInto Data.',
-    subtext: 'With Braille-Tags, every note has memory. Visualize deadlines and priority directly on the canvas.',
+    tag: '知识图谱',
+    headline: '把草稿\n化为数据。',
+    subtext: '借助盲文标签，每条便签都有记忆，截止日期和优先级直接在画布上可视化。',
   },
   {
     id: 'card-6',
     align: 'center',
     dark: true,
-    headline: 'Limitless.',
-    subtext: 'The complete toolkit for modern thinkers.',
-    cta: 'Start Free Trial ->',
+    headline: '无界。',
+    subtext: '为现代思考者准备的完整工具箱。',
+    cta: '开始免费试用 ->',
   },
 ];
 
@@ -353,7 +353,7 @@ const LandingMobile = () => {
 
   return (
     <div className="app-shell">
-      <Hud iconRefs={iconRefs} downloadLabel="Get App" />
+      <Hud downloadLabel="Get App" />
       <div id="canvas-container" ref={canvasRef} />
       <StoryLayer cards={FEATURE_CARDS} cardRefs={cardRefs} />
       <div className="scroll-spacer" ref={spacerRef} />

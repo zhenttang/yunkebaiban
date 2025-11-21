@@ -475,36 +475,64 @@ h1 {
   }
 
   .story-layer {
-    padding: 0 20px;
+    padding: 0 24px;
+    padding-top: env(safe-area-inset-top, 20px);
+    padding-bottom: env(safe-area-inset-bottom, 20px);
     align-items: center;
     text-align: center;
+    min-height: 100vh;
+    height: auto;
+    overflow: visible;
   }
 
   .feature-card {
     align-self: center !important;
     text-align: center !important;
-    text-shadow: 0 10px 20px var(--bg-color);
+    text-shadow: 0 2px 8px var(--bg-color);
     width: 100%;
-    max-width: 100% !important;
-    padding: 0 10px;
+    max-width: calc(100% - 32px) !important;
+    padding: 16px;
+    box-sizing: border-box;
+    overflow: visible;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
   }
 
   .headline {
-    font-size: 2rem;
-    margin-bottom: 12px;
+    font-size: clamp(1.75rem, 6vw, 2.25rem);
+    margin-bottom: 16px;
+    line-height: 1.2;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
   }
 
   .subtext {
-    font-size: 0.95rem;
-    padding: 0 5px;
+    font-size: clamp(0.9rem, 3.5vw, 1rem);
+    padding: 0 8px;
+    line-height: 1.7;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+
+  .tag {
+    font-size: 11px;
+    padding: 5px 10px;
+    margin-bottom: 14px;
+  }
+
+  .cta-pill {
+    margin-top: 24px;
+    padding: 12px 24px;
+    font-size: 14px;
   }
 
   #card-2 {
-    top: 15%;
+    top: 12%;
   }
 
   #card-3 {
-    top: 15%;
+    top: 12%;
   }
 
   .navbar {
@@ -515,7 +543,8 @@ h1 {
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    padding: 120px 24px 0 24px;
+    padding: 100px 24px 0 24px;
+    padding-top: calc(100px + env(safe-area-inset-top, 0px));
     text-align: center;
   }
 
@@ -528,13 +557,38 @@ h1 {
   }
 
   h1 {
-    font-size: 2.75rem;
+    font-size: clamp(2rem, 8vw, 2.75rem);
     margin-bottom: 16px;
+    line-height: 1.15;
   }
 
   .hero-desc {
     font-size: 1rem;
     margin-bottom: 32px;
     max-width: 100%;
+    line-height: 1.7;
+  }
+}
+
+/* 小屏幕手机额外优化 */
+@media (max-width: 375px) {
+  .headline {
+    font-size: 1.5rem;
+  }
+
+  .subtext {
+    font-size: 0.875rem;
+  }
+
+  .story-layer {
+    padding: 0 16px;
+  }
+
+  .feature-card {
+    padding: 12px;
+  }
+
+  h1 {
+    font-size: 1.875rem;
   }
 }
