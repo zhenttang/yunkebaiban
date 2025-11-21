@@ -138,47 +138,43 @@ export const signInButton = style({
 });
 
 export const oauthWrapper = style({
-  display: 'flex',
-  flexDirection: 'row',
+  display: 'grid',
+  gridTemplateColumns: 'repeat(3, 1fr)',
   gap: '16px',
-  justifyContent: 'center',
-  marginTop: '24px',
+  marginTop: '32px',
+  marginBottom: '32px',
 });
 
 export const oauthButton = style({
-  width: '56px',
-  height: '56px',
+  width: '100%',
+  height: '52px',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  padding: '16px',
-  borderRadius: '16px',
-  background:
-    'linear-gradient(135deg, rgba(59, 130, 246, 0.25), rgba(14, 165, 233, 0.12)) border-box, rgba(255, 255, 255, 0.95) padding-box',
-  backgroundClip: 'padding-box, border-box',
+  borderRadius: '14px',
+  background: 'rgba(255, 255, 255, 0.5)',
+  border: '1px solid rgba(0, 0, 0, 0.06)',
   color: cssVar('textSecondaryColor'),
   cursor: 'pointer',
-  boxShadow: '0 4px 16px rgba(15, 23, 42, 0.08)',
-  border: '1px solid transparent',
-  transform: 'translateY(0)',
-  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+  transition: 'all 0.2s cubic-bezier(0.2, 0, 0, 1)',
   selectors: {
     '&:hover': {
-      background:
-        'linear-gradient(135deg, rgba(59, 130, 246, 0.3), rgba(14, 165, 233, 0.16)) border-box, rgba(255, 255, 255, 0.98) padding-box',
-      boxShadow: '0 8px 24px rgba(15, 23, 42, 0.12)',
+      background: 'rgba(255, 255, 255, 0.8)',
       transform: 'translateY(-2px)',
+      boxShadow: '0 4px 12px rgba(0, 0, 0, 0.05)',
+      borderColor: 'rgba(0, 0, 0, 0.08)',
+    },
+    '&:active': {
+      transform: 'translateY(0)',
+      boxShadow: 'none',
     },
     '[data-theme="dark"] &': {
-      background: 'rgba(17, 24, 39, 0.85)',
-      border: '1px solid rgba(99, 102, 241, 0.3)',
-      boxShadow: '0 4px 16px rgba(0, 0, 0, 0.4)',
-      color: cssVar('textSecondaryColor'),
+      background: 'rgba(255, 255, 255, 0.05)',
+      borderColor: 'rgba(255, 255, 255, 0.1)',
     },
     '[data-theme="dark"] &:hover': {
-      background: 'rgba(17, 24, 39, 0.95)',
-      boxShadow: '0 6px 20px rgba(99, 102, 241, 0.25)',
-      transform: 'translateY(-2px)',
+      background: 'rgba(255, 255, 255, 0.1)',
+      borderColor: 'rgba(255, 255, 255, 0.2)',
     },
   },
 });

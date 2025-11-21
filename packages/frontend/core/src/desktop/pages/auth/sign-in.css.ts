@@ -18,21 +18,23 @@ export const pulse = keyframes({
 
 export const layout = style({
   width: '100%',
-  maxWidth: '1200px', // Increased max-width
-  margin: 'auto',
+  maxWidth: '1200px',
+  margin: '0 auto',
+  minHeight: '100vh',
   display: 'flex',
   alignItems: 'center',
-  justifyContent: 'center', // Center content
-  gap: '80px', // Increased gap
+  justifyContent: 'space-between',
+  gap: '120px',
   position: 'relative',
   zIndex: 2,
-  padding: '0 20px', // Add horizontal padding
+  padding: '0 60px',
   animation: `${fadeInUp} 0.6s ease-out`,
   '@media': {
-    'screen and (max-width: 960px)': {
+    'screen and (max-width: 1024px)': {
       flexDirection: 'column',
-      alignItems: 'center',
-      gap: '40px',
+      justifyContent: 'center',
+      gap: '60px',
+      padding: '40px 24px',
     },
     '(prefers-reduced-motion: reduce)': {
       animation: 'none',
@@ -42,30 +44,36 @@ export const layout = style({
 
 export const panel = style({
   width: '100%',
-  maxWidth: '480px', // Slightly wider panel
+  maxWidth: '440px',
   position: 'relative',
   overflow: 'hidden',
-  // Glassmorphism effect
-  background: 'rgba(255, 255, 255, 0.8)',
-  backdropFilter: 'blur(20px)',
-  borderRadius: '24px', // Increased border radius
-  padding: '48px', // Increased padding
+  // Enhanced Glassmorphism
+  background: 'rgba(255, 255, 255, 0.7)',
+  backdropFilter: 'blur(24px) saturate(180%)',
+  borderRadius: '32px',
+  padding: '48px',
   boxSizing: 'border-box',
-  // Softer, multi-layered shadow
-  boxShadow: '0 20px 40px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.05)',
-  border: '1px solid rgba(255, 255, 255, 0.6)',
-  animation: `${fadeInUp} 0.8s ease-out 0.3s backwards`,
+  boxShadow: `
+    0 4px 6px -1px rgba(0, 0, 0, 0.02),
+    0 10px 15px -3px rgba(0, 0, 0, 0.04),
+    0 40px 80px -12px rgba(0, 0, 0, 0.08),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.6)
+  `,
+  animation: `${fadeInUp} 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.2s backwards`,
   selectors: {
     '[data-theme="dark"] &': {
-      background: 'rgba(30, 41, 59, 0.8)',
-      border: '1px solid rgba(255, 255, 255, 0.1)',
-      boxShadow: '0 20px 40px rgba(0, 0, 0, 0.3)',
+      background: 'rgba(20, 20, 25, 0.7)',
+      boxShadow: `
+        0 4px 6px -1px rgba(0, 0, 0, 0.2),
+        0 20px 40px -8px rgba(0, 0, 0, 0.4),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.08)
+      `,
     },
   },
   '@media': {
-    'screen and (max-width: 960px)': {
-      maxWidth: '100%',
+    'screen and (max-width: 480px)': {
       padding: '32px 24px',
+      borderRadius: '24px',
     },
     '(prefers-reduced-motion: reduce)': {
       animation: 'none',

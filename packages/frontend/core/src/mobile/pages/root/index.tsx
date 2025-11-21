@@ -15,12 +15,20 @@ export const RootWrapper = () => {
       return;
     }
     const abortController = new AbortController();
+    console.info('[mobile root wrapper] waitForConfigRevalidation...');
     defaultServerService.server
       .waitForConfigRevalidation(abortController.signal)
-      .then(() => setIsServerReady(true))
-      .catch(console.error);
+      .then(() => {
+        console.info('[mobile root wrapper] server ready');
+        setIsServerReady(true);
+      })
+      .catch(err => {
+        console.error('[mobile root wrapper] server ready failed', err);
+      });
     return () => abortController.abort();
   }, [defaultServerService, isServerReady]);
+
+  console.info('[mobile root wrapper] render', { isServerReady });
 
   return (
     <FrameworkScope scope={defaultServerService.server.scope}>

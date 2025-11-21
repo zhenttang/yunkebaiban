@@ -1,6 +1,9 @@
 import { Divider, IconButton, Menu, MenuItem } from '@yunke/component';
 import { useAsyncCallback } from '@yunke/core/components/hooks/yunke-async-hooks';
-import { useNavigateHelper } from '@yunke/core/components/hooks/use-navigate-helper';
+import {
+  RouteLogic,
+  useNavigateHelper,
+} from '@yunke/core/components/hooks/use-navigate-helper';
 import { useWorkspaceInfo } from '@yunke/core/components/hooks/use-workspace-info';
 import { WorkspaceAvatar } from '@yunke/core/components/workspace-avatar';
 import {
@@ -9,7 +12,6 @@ import {
   type Server,
   ServersService,
 } from '@yunke/core/modules/cloud';
-import { GlobalDialogService } from '@yunke/core/modules/dialogs';
 import { GlobalContextService } from '@yunke/core/modules/global-context';
 import {
   type WorkspaceMetadata,
@@ -197,13 +199,12 @@ const CloudWorkSpaceList = ({
   onClickEnableCloud?: (meta: WorkspaceMetadata) => void;
 }) => {
   const globalContextService = useService(GlobalContextService);
-  const globalDialogService = useService(GlobalDialogService);
   const serverName = useLiveData(server.config$.selector(c => c.serverName));
   const authService = useService(AuthService);
   const serversService = useService(ServersService);
   const account = useLiveData(authService.session.account$);
   const accountStatus = useLiveData(authService.session.status$);
-  const navigateHelper = useNavigateHelper();
+  const { openPage, jumpToSignIn } = useNavigateHelper();
 
   const currentWorkspaceFlavour = useLiveData(
     globalContextService.globalContext.workspaceFlavour.$
@@ -215,12 +216,12 @@ const CloudWorkSpaceList = ({
     if (currentWorkspaceFlavour === server.id) {
       const otherWorkspace = workspaces.find(w => w.flavour !== server.id);
       if (otherWorkspace) {
-        navigateHelper.openPage(otherWorkspace.id, 'all');
+        openPage(otherWorkspace.id, 'all');
       }
     }
   }, [
     currentWorkspaceFlavour,
-    navigateHelper,
+    openPage,
     server.id,
     serversService,
     workspaces,
@@ -231,10 +232,10 @@ const CloudWorkSpaceList = ({
   }, [authService]);
 
   const handleSignIn = useAsyncCallback(async () => {
-    globalDialogService.open('sign-in', {
+    jumpToSignIn(undefined, RouteLogic.PUSH, undefined, {
       server: server.baseUrl,
     });
-  }, [globalDialogService, server.baseUrl]);
+  }, [jumpToSignIn, server.baseUrl]);
 
   return (
     <>
@@ -260,11 +261,13 @@ const CloudWorkSpaceList = ({
 };
 
 const AddServer = () => {
-  const globalDialogService = useService(GlobalDialogService);
+  const { jumpToSignIn } = useNavigateHelper();
 
   const onAddServer = useCallback(() => {
-    globalDialogService.open('sign-in', { step: 'addSelfhosted' });
-  }, [globalDialogService]);
+    jumpToSignIn(undefined, RouteLogic.PUSH, undefined, {
+      step: 'addSelfhosted',
+    });
+  }, [jumpToSignIn]);
 
   if (!BUILD_CONFIG.isNative) {
     return null;
@@ -309,7 +312,7 @@ export const SelectorMenu = ({ onClose }: { onClose?: () => void }) => {
   const workspacesService = useService(WorkspacesService);
   const workspaces = useLiveData(workspacesService.list.workspaces$);
   const serversService = useService(ServersService);
-  const { jumpToPage } = useNavigateHelper();
+  const { jumpToPage, jumpToSignIn } = useNavigateHelper();
 
   // 🚨 关键调试：检查工作区数据和flavour值
   console.log('🔍 SelectorMenu工作区数据调试:');
@@ -369,14 +372,13 @@ export const SelectorMenu = ({ onClose }: { onClose?: () => void }) => {
   const hasWorkspaces = workspaces.length > 0;
 
   // 处理登录
-  const globalDialogService = useService(GlobalDialogService);
   const handleSignIn = useAsyncCallback(async () => {
     if (yunkeCloudServer) {
-      globalDialogService.open('sign-in', {
+      jumpToSignIn(undefined, RouteLogic.PUSH, undefined, {
         server: yunkeCloudServer.baseUrl,
       });
     }
-  }, [yunkeCloudServer, globalDialogService]);
+  }, [jumpToSignIn, yunkeCloudServer]);
 
   // 如果未登录且没有工作区，显示简化的登录页面
   // 需要在yunke-cloud scope中检查登录状态

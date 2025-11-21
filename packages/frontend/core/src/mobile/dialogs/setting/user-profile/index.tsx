@@ -1,7 +1,7 @@
 import { Avatar } from '@yunke/component';
+import { useNavigateHelper } from '@yunke/core/components/hooks/use-navigate-helper';
 import { useSignOut } from '@yunke/core/components/hooks/yunke/use-sign-out';
 import { AuthService } from '@yunke/core/modules/cloud';
-import { GlobalDialogService } from '@yunke/core/modules/dialogs';
 import { ArrowRightSmallIcon } from '@blocksuite/icons/rc';
 import { useLiveData, useService } from '@toeverything/infra';
 import { type ReactNode } from 'react';
@@ -74,14 +74,14 @@ const AuthorizedUserProfile = () => {
 };
 
 const UnauthorizedUserProfile = () => {
-  const globalDialogService = useService(GlobalDialogService);
+  const { jumpToSignIn } = useNavigateHelper();
 
   return (
     <BaseLayout
-      onClick={() => globalDialogService.open('sign-in', {})}
+      onClick={() => jumpToSignIn()}
       avatar={<Avatar size={48} rounded={4} />}
-                title="注册 / 登录"
-          caption="与 YUNKE 云端同步"
+      title="注册 / 登录"
+      caption="与 YUNKE 云端同步"
     />
   );
 };

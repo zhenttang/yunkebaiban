@@ -15,9 +15,11 @@ function RootRouter() {
   const [ready, setReady] = useState(false);
   useEffect(() => {
     // a hack to make sure router is ready
+    console.info('[mobile router] initialize');
     setReady(true);
   }, []);
 
+  console.info('[mobile router] ready?', ready);
   return (
     ready && (
       <NavigateContext.Provider value={navigate}>

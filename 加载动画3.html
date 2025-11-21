@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>灵感织布机加载 - 极简版</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* 1. 极简浅色背景 */
+        body {
+            background-color: #f8fafc; /* Slate 50 - 柔和的灰白 */
+            background-image: 
+                radial-gradient(#cbd5e1 1px, transparent 1px); /* 淡淡的网点背景 */
+            background-size: 24px 24px;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            color: #475569; /* Slate 600 */
+        }
+
+        /* 2. 舞台容器 */
+        .stage {
+            position: relative;
+            width: 300px;
+            height: 200px;
+        }
+
+        /* SVG 画布 */
+        svg {
+            width: 100%;
+            height: 100%;
+            overflow: visible;
+        }
+
+        /* 3. 节点样式 - 沉稳低调 */
+        .node {
+            fill: #e2e8f0; /* Slate 200 - 未激活是浅灰 */
+            stroke: #94a3b8; /* Slate 400 */
+            stroke-width: 2;
+            r: 5;
+            transition: all 0.3s ease-out;
+        }
+        
+        /* 节点被激活时的样式 - 克制的色彩 */
+        .node.active {
+            fill: #6366f1; /* Indigo 500 - 激活变成实心蓝紫 */
+            stroke: #6366f1;
+            /* 移除发光滤镜，改为简单的缩放 */
+            animation: nodePulse 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes nodePulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.4); }
+            100% { transform: scale(1); }
+        }
+
+        /* 4. 连线样式 - 像铅笔线条 */
+        .link {
+            fill: none;
+            stroke: #94a3b8; /* Slate 400 */
+            stroke-width: 1.5;
+            stroke-linecap: round;
+            stroke-opacity: 0.6;
+            stroke-dasharray: 200;
+            stroke-dashoffset: 200;
+            /* 移除滤镜 */
+        }
+
+        /* 连线动画 */
+        .link.animate {
+            animation: drawLine 0.4s ease-out forwards;
+        }
+
+        @keyframes drawLine {
+            to { stroke-dashoffset: 0; }
+        }
+
+        /* 5. 协作光标 - 现代扁平风 */
+        .cursor-shuttle {
+            transform-box: fill-box;
+            transform-origin: top left;
+            /* 增加一点微弱的投影增加层次感，但不发光 */
+            filter: drop-shadow(0 2px 3px rgba(0,0,0,0.15));
+        }
+        
+        .cursor-label {
+            font-size: 10px;
+            font-family: sans-serif;
+            font-weight: 500;
+            fill: white;
+        }
+        
+        .cursor-bg {
+            rx: 4;
+            ry: 4;
+        }
+
+        /* --- 编排复杂的穿梭动画 (保持原有的流畅逻辑) --- */
+        
+        /* 光标 A 的路径 */
+        #cursor-a {
+            animation: shuttleA 3s infinite cubic-bezier(0.45, 0, 0.55, 1);
+        }
+
+        /* 光标 B 的路径 */
+        #cursor-b {
+            animation: shuttleB 3s infinite cubic-bezier(0.45, 0, 0.55, 1);
+        }
+
+        @keyframes shuttleA {
+            0% { transform: translate(30px, 30px); opacity: 0; }
+            5% { transform: translate(50px, 50px); opacity: 1; } 
+            20% { transform: translate(150px, 150px); } 
+            35% { transform: translate(250px, 50px); } 
+            50% { transform: translate(150px, 50px); } 
+            65% { transform: translate(50px, 150px); } 
+            80% { transform: translate(50px, 50px); } 
+            90% { opacity: 1; }
+            100% { transform: translate(30px, 30px); opacity: 0; }
+        }
+
+        @keyframes shuttleB {
+            0% { transform: translate(270px, 170px); opacity: 0; }
+            5% { transform: translate(250px, 150px); opacity: 1; } 
+            20% { transform: translate(150px, 50px); } 
+            35% { transform: translate(50px, 150px); } 
+            50% { transform: translate(150px, 150px); } 
+            65% { transform: translate(250px, 50px); } 
+            80% { transform: translate(250px, 150px); } 
+            90% { opacity: 1; }
+            100% { transform: translate(270px, 170px); opacity: 0; }
+        }
+
+        /* 连线出现的时机控制 */
+        #link-1 { animation-delay: 0.6s; } 
+        #link-2 { animation-delay: 0.6s; } 
+        #link-3 { animation-delay: 1.05s; } 
+        #link-4 { animation-delay: 1.05s; } 
+        #link-5 { animation-delay: 1.5s; } 
+        #link-6 { animation-delay: 1.5s; } 
+        
+        /* 节点激活时机 */
+        #node-1 { animation: nodePulse 0.5s 0.15s forwards; }
+        #node-5 { animation: nodePulse 0.5s 0.6s forwards; }
+        #node-3 { animation: nodePulse 0.5s 1.05s forwards; }
+        #node-2 { animation: nodePulse 0.5s 1.5s forwards; }
+        #node-6 { animation: nodePulse 0.5s 0.15s forwards; }
+        #node-4 { animation: nodePulse 0.5s 1.05s forwards; }
+
+        .node-anim {
+            animation-iteration-count: infinite;
+            animation-direction: alternate;
+        }
+
+        /* 底部文字 - 工程字体 */
+        .status-text {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            letter-spacing: 1px;
+            font-size: 12px;
+            color: #64748b; /* Slate 500 */
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="flex flex-col items-center">
+        
+        <div class="stage">
+            <svg>
+                <!-- 连线层 -->
+                <!-- 统一连线颜色，User 2 的线稍微带点暖色调区分，但非常克制 -->
+                <line id="link-1" class="link animate" x1="50" y1="50" x2="150" y2="150" />
+                <line id="link-3" class="link animate" x1="150" y1="150" x2="250" y2="50" />
+                <line id="link-5" class="link animate" x1="250" y1="50" x2="150" y2="50" />
+                
+                <!-- User 2 线条使用 Slate-500，稍微深一点点，不做颜色区分，只做明度区分 -->
+                <line id="link-2" class="link animate" x1="250" y1="150" x2="150" y2="50" stroke="#64748b" />
+                <line id="link-4" class="link animate" x1="150" y1="50" x2="50" y2="150" stroke="#64748b" />
+                <line id="link-6" class="link animate" x1="50" y1="150" x2="150" y2="150" stroke="#64748b" />
+
+                <!-- 节点层 -->
+                <circle id="node-1" class="node active node-anim" cx="50" cy="50" style="animation-delay: 0.1s" />
+                <circle id="node-2" class="node active node-anim" cx="150" cy="50" style="animation-delay: 1.4s" />
+                <circle id="node-3" class="node active node-anim" cx="250" cy="50" style="animation-delay: 1.0s" />
+                <circle id="node-4" class="node active node-anim" cx="50" cy="150" style="animation-delay: 1.0s" />
+                <circle id="node-5" class="node active node-anim" cx="150" cy="150" style="animation-delay: 0.5s" />
+                <circle id="node-6" class="node active node-anim" cx="250" cy="150" style="animation-delay: 0.1s" />
+
+                <!-- 光标 A (User 1) - 经典的蓝色，但饱和度适中 -->
+                <g id="cursor-a" class="cursor-shuttle">
+                    <path d="M0 0L12 4.5L4.5 12L0 0Z" fill="#3b82f6" stroke="white" stroke-width="1"/>
+                    <!-- 名字标签 -->
+                    <rect x="10" y="5" width="34" height="16" fill="#3b82f6" class="cursor-bg" />
+                    <text x="14" y="16" class="cursor-label">Alice</text>
+                </g>
+
+                <!-- 光标 B (User 2) - 经典的橙色/琥珀色，模拟协作软件常见配色 -->
+                <g id="cursor-b" class="cursor-shuttle">
+                    <path d="M0 0L12 4.5L4.5 12L0 0Z" fill="#f59e0b" stroke="white" stroke-width="1"/>
+                    <rect x="10" y="5" width="28" height="16" fill="#f59e0b" class="cursor-bg" />
+                    <text x="14" y="16" class="cursor-label">Bob</text>
+                </g>
+            </svg>
+        </div>
+
+        <!-- 底部极简进度条 + 文字 -->
+        <div class="mt-10 flex flex-col items-center gap-3 w-full">
+            <span class="status-text">SYNCING WORKSPACE</span>
+            <!-- 极细的线条进度条 -->
+            <div class="h-0.5 w-32 bg-slate-200 rounded-full overflow-hidden">
+                <div class="h-full bg-slate-400 w-full animate-[loading_2s_ease-in-out_infinite] origin-left"></div>
+            </div>
+        </div>
+
+    </div>
+
+    <style>
+        @keyframes loading {
+            0% { transform: translateX(-100%); }
+            50% { transform: translateX(0%); }
+            100% { transform: translateX(100%); }
+        }
+    </style>
+
+</body>
+</html>

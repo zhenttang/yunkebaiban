@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bento 布局构建加载</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* 1. 极简背景 */
+        body {
+            background-color: #f8fafc;
+            /* 极细的网格背景，增加精密感 */
+            background-image: linear-gradient(#e2e8f0 1px, transparent 1px), linear-gradient(90deg, #e2e8f0 1px, transparent 1px);
+            background-size: 40px 40px;
+            background-position: center center;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        /* 2. 动画容器 */
+        .loader-container {
+            width: 160px;
+            height: 160px;
+            position: relative;
+        }
+
+        /* 3. 通用模块样式 */
+        .bento-box {
+            position: absolute;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 
+                0 4px 6px -1px rgba(0, 0, 0, 0.1), 
+                0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            border: 1px solid rgba(255,255,255,0.5);
+            /* 关键：让它们从中心炸开，再收回来 */
+            animation: assemble 2.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        /* 内部骨架屏样式（模拟内容） */
+        .skeleton {
+            background: #f1f5f9;
+            border-radius: 4px;
+            width: 60%;
+            height: 6px;
+        }
+
+        /* --- 各个模块的具体定义 --- */
+
+        /* 模块 A: 左侧主区域 (如文档列表) */
+        .box-main {
+            width: 70px;
+            height: 160px; /* Full height */
+            left: 0;
+            top: 0;
+            background: linear-gradient(145deg, #ffffff, #f8fafc);
+            /* 动画延迟，错落感 */
+            animation-delay: 0.1s;
+            flex-direction: column;
+            gap: 8px;
+            align-items: flex-start;
+            padding-left: 10px;
+        }
+        .box-main .line-1 { width: 40px; height: 8px; background-color: #cbd5e1; }
+        .box-main .line-2 { width: 50px; }
+        .box-main .line-3 { width: 30px; }
+
+        /* 模块 B: 右上区域 (如统计/图片) */
+        .box-top-right {
+            width: 80px;
+            height: 70px;
+            right: 0;
+            top: 0;
+            /* 稍微加点颜色点缀 */
+            background: #eff6ff; 
+            animation-delay: 0.2s;
+        }
+        /* 模拟一个饼图或圆圈 */
+        .circle-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: 3px solid #93c5fd;
+            border-top-color: transparent;
+        }
+
+        /* 模块 C: 右下区域 (如按钮/状态) */
+        .box-bottom-right {
+            width: 80px;
+            height: 80px;
+            right: 0;
+            bottom: 0;
+            background: #f0fdf4;
+            animation-delay: 0.3s;
+        }
+        /* 模拟一个对勾或图标 */
+        .check-icon {
+            width: 20px;
+            height: 20px;
+            background: #86efac;
+            border-radius: 6px;
+        }
+
+        /* 4. 动画关键帧定义 */
+        /* 动作分解：
+           0%: 完美组合 (Hold)
+           30%: 爆炸散开 (Explode)
+           40%: 悬停 (Hover)
+           60%: 强力吸附回来 (Snap Back with Elasticity)
+           100%: 完美组合 (Hold)
+        */
+        @keyframes assemble {
+            0%, 90%, 100% {
+                transform: translate(0, 0) scale(1);
+                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+                opacity: 1;
+            }
+            35% {
+                /* 散开：不同模块往不同方向飞 */
+                transform: translate(var(--tx), var(--ty)) scale(0.9) rotate(var(--r));
+                box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+                opacity: 0.8;
+            }
+        }
+
+        /* 为每个方块设置不同的散开方向 */
+        .box-main { --tx: -40px; --ty: 0px; --r: -5deg; }
+        .box-top-right { --tx: 40px; --ty: -40px; --r: 5deg; }
+        .box-bottom-right { --tx: 40px; --ty: 40px; --r: 10deg; }
+
+        /* 5. 协作光标 (增加一点互动感) */
+        .collab-cursor {
+            position: absolute;
+            z-index: 10;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0;
+            animation: cursorAction 2.5s infinite;
+        }
+
+        @keyframes cursorAction {
+            0%, 50% { opacity: 0; transform: translate(20px, 20px); }
+            60% { opacity: 1; transform: translate(20px, 20px); } /* 出现 */
+            75% { transform: translate(-10px, -10px); } /* 移动到中心点击 */
+            80% { transform: scale(0.9) translate(-10px, -10px); } /* 点击效果 */
+            100% { opacity: 0; transform: translate(-10px, -10px); }
+        }
+
+        /* 点击时的涟漪 */
+        .click-ripple {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: rgba(59, 130, 246, 0.3);
+            border-radius: 50%;
+            top: 40%;
+            left: 40%;
+            transform: scale(0);
+            animation: ripple 2.5s infinite;
+            z-index: 5;
+        }
+
+        @keyframes ripple {
+            0%, 75% { transform: scale(0); opacity: 0; }
+            80% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(3); opacity: 0; }
+        }
+
+        /* 6. 进度条 */
+        .progress-bar-container {
+            width: 160px;
+            height: 4px;
+            background: #e2e8f0;
+            border-radius: 2px;
+            margin-top: 40px;
+            overflow: hidden;
+        }
+        .progress-bar {
+            height: 100%;
+            background: #64748b;
+            width: 0%;
+            animation: progress 5s linear infinite;
+        }
+        @keyframes progress {
+            0% { width: 0%; }
+            100% { width: 100%; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- 核心容器 -->
+    <div class="loader-container">
+        
+        <!-- 点击涟漪反馈 -->
+        <div class="click-ripple"></div>
+
+        <!-- 模块 A: 侧边栏 -->
+        <div class="bento-box box-main">
+            <div class="skeleton line-1"></div>
+            <div class="skeleton line-2"></div>
+            <div class="skeleton line-3"></div>
+            <div class="skeleton line-2" style="margin-top: auto; opacity: 0.5;"></div>
+        </div>
+
+        <!-- 模块 B: 右上 -->
+        <div class="bento-box box-top-right">
+            <div class="circle-icon"></div>
+        </div>
+
+        <!-- 模块 C: 右下 -->
+        <div class="bento-box box-bottom-right">
+            <div class="check-icon"></div>
+        </div>
+
+        <!-- 协作光标 -->
+        <div class="collab-cursor">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M5.65376 12.3673H5.46026L5.31717 12.4976L0.500002 16.8829L0.500002 1.19169L11.7841 12.3673H5.65376Z" fill="#0f172a" stroke="white"/>
+            </svg>
+        </div>
+
+    </div>
+
+    <!-- 底部极简进度条 -->
+    <div class="progress-bar-container">
+        <div class="progress-bar"></div>
+    </div>
+
+</body>
+</html>

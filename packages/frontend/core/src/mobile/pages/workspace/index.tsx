@@ -4,7 +4,8 @@ import { YunkeErrorComponent } from '@yunke/core/components/yunke/yunke-error-bo
 import { PageNotFound } from '@yunke/core/desktop/pages/404';
 import { SharePage } from '@yunke/core/desktop/pages/workspace/share/share-page';
 import { workbenchRoutes } from '@yunke/core/mobile/workbench-router';
-import { ServersService } from '@yunke/core/modules/cloud';
+import { ServersService, AuthService } from '@yunke/core/modules/cloud';
+import { RouteLogic, useNavigateHelper } from '@yunke/core/components/hooks/use-navigate-helper';
 import { WorkspacesService } from '@yunke/core/modules/workspace';
 import { FrameworkScope, useLiveData, useServices } from '@toeverything/infra';
 import {
@@ -66,14 +67,17 @@ const warpedRoutes = workbenchRoutes.map((originalRoute: RouteObject) => {
 });
 
 export const Component = () => {
-  const { workspacesService, serversService } = useServices({
+  const { workspacesService, serversService, authService } = useServices({
     WorkspacesService,
     ServersService,
+    AuthService,
   });
+  const { jumpToSignIn } = useNavigateHelper();
 
   const params = useParams();
   const location = useLocation();
   const [searchParams] = useSearchParams();
+  const authStatus = useLiveData(authService.session.status$);
 
   // todo(pengx17): dedupe the code with core
   // check if we are in detail doc route, if so, maybe render share page
@@ -149,6 +153,38 @@ export const Component = () => {
       : undefined
   );
   const server = serverFromWorkspace ?? serverFromSearchParams;
+
+  // 未登录且访问云端工作区时直接跳转登录（携带 redirect），分享页除外
+  useEffect(() => {
+    console.info('[mobile workspace route] auth check: start', {
+      authStatus,
+      path: location.pathname,
+      search: location.search,
+      workspaceId: params.workspaceId,
+      flavour: meta?.flavour,
+      serverBaseUrl: server?.baseUrl,
+      isSharePage: !!detailDocRoute,
+      hasMeta: !!meta,
+    });
+    if (!meta || location.pathname.startsWith('/sign-in')) return;
+    if (meta.flavour === 'local') return;
+    if (authStatus !== 'authenticated') {
+      const params: Record<string, string> = {
+        redirect_uri: `${location.pathname}${location.search}`,
+      };
+      if (server?.baseUrl) {
+        params.server = server.baseUrl;
+      }
+      jumpToSignIn(undefined, RouteLogic.REPLACE, undefined, params);
+    }
+  }, [
+    authStatus,
+    jumpToSignIn,
+    location.pathname,
+    location.search,
+    meta,
+    server,
+  ]);
 
   if (workspaceNotFound) {
     if (

@@ -131,7 +131,7 @@ export const WorkspaceLayout = ({
   }
 
   if (!isRootDocReady) {
-    return <AppFallback />;
+    return <AppFallback withGlobalDialogs={false} />;
   }
 
   return (

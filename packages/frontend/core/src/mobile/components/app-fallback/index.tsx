@@ -1,5 +1,6 @@
 import { SafeArea, Skeleton } from '@yunke/component';
 import { NavigateContext } from '@yunke/core/components/hooks/use-navigate-helper';
+import { GlobalDialogs } from '../../dialogs';
 import { useNavigate } from 'react-router-dom';
 
 import { WorkspaceSelector } from '../workspace-selector';
@@ -51,11 +52,17 @@ const Section = () => {
   );
 };
 
-export const AppFallback = () => {
+export const AppFallback = ({
+  withGlobalDialogs = true,
+}: {
+  withGlobalDialogs?: boolean;
+}) => {
+  console.info('[mobile app fallback] render', { withGlobalDialogs });
   const navigate = useNavigate();
 
   return (
     <NavigateContext.Provider value={navigate}>
+      {withGlobalDialogs ? <GlobalDialogs /> : null}
       <SafeArea top bottom style={{ height: '100dvh', overflow: 'hidden' }}>
         {/* setting */}
         <div style={{ padding: 10, display: 'flex', justifyContent: 'end' }}>

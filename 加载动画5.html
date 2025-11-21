@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>包豪斯几何构建加载</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* 1. 艺术画廊般的背景 */
+        body {
+            background-color: #fff1f2; /* 极淡的暖色背景 */
+            /* 噪点纹理，增加纸张质感 */
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        /* 2. 舞台容器 */
+        .canvas {
+            width: 240px;
+            height: 240px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* 3. 几何体通用样式 */
+        .shape {
+            position: absolute;
+            mix-blend-mode: multiply; /* 关键：色彩混合 */
+            opacity: 0.9;
+            filter: blur(0.5px); /* 边缘微柔化，去数码味 */
+        }
+
+        /* 动画编排：一个 4秒 的循环
+           0% - 30%: 分离与盘旋 (Orbit)
+           30% - 60%: 堆叠平衡 (Stack / Totem)
+           60% - 90%: 融合归一 (Merge)
+           100%: 炸开重置
+        */
+
+        /* --- 红色圆形 (The Soul) --- */
+        .shape-circle {
+            width: 60px;
+            height: 60px;
+            background-color: #f43f5e; /* Rose-500 */
+            border-radius: 50%;
+            animation: circle-dance 4s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
+            z-index: 3;
+        }
+
+        /* --- 蓝色方形 (The Body) --- */
+        .shape-square {
+            width: 60px;
+            height: 60px;
+            background-color: #3b82f6; /* Blue-500 */
+            border-radius: 8px; /* 微圆角 */
+            animation: square-dance 4s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
+            z-index: 2;
+        }
+
+        /* --- 黄色三角形 (The Mind) --- */
+        /*CSS画三角形通常用border，但为了方便动画变形，这里用clip-path */
+        .shape-triangle {
+            width: 60px;
+            height: 60px;
+            background-color: #fbbf24; /* Amber-400 */
+            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+            animation: triangle-dance 4s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
+            z-index: 1;
+        }
+
+        /* --- 关键帧定义 --- */
+
+        @keyframes circle-dance {
+            0% { transform: translate(-60px, -40px) scale(1); } /* 左上 */
+            30% { transform: translate(0, -65px) scale(1.1); } /* 堆叠：顶部 */
+            60% { transform: translate(0, 0) scale(1.2); border-radius: 50%; } /* 融合：中心 */
+            80% { transform: translate(0, 0) scale(0.5); border-radius: 20%; } /* 挤压 */
+            100% { transform: translate(-60px, -40px) scale(1); }
+        }
+
+        @keyframes square-dance {
+            0% { transform: translate(60px, -20px) rotate(15deg) scale(1); } /* 右上 */
+            30% { transform: translate(0, 65px) rotate(0deg) scale(1.1); } /* 堆叠：底部 */
+            60% { transform: translate(0, 0) rotate(90deg) scale(1.2); } /* 融合：中心 */
+            80% { transform: translate(0, 0) rotate(180deg) scale(0.5); } /* 挤压 */
+            100% { transform: translate(60px, -20px) rotate(15deg) scale(1); }
+        }
+
+        @keyframes triangle-dance {
+            0% { transform: translate(0, 60px) rotate(-15deg) scale(1); } /* 底部 */
+            30% { transform: translate(0, 0) rotate(0deg) scale(1.1); } /* 堆叠：中间 */
+            60% { transform: translate(0, 0) rotate(-180deg) scale(1.2); } /* 融合：中心 */
+            80% { transform: translate(0, 0) rotate(-360deg) scale(0.5); } /* 挤压 */
+            100% { transform: translate(0, 60px) rotate(-15deg) scale(1); }
+        }
+
+        /* 4. 装饰性轨道线 (增加空间感) */
+        .orbit-ring {
+            position: absolute;
+            border: 1px dashed #cbd5e1;
+            border-radius: 50%;
+            opacity: 0.5;
+            animation: spin 20s linear infinite;
+        }
+        .ring-1 { width: 180px; height: 180px; animation-direction: reverse; }
+        .ring-2 { width: 120px; height: 120px; border-style: dotted; }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* 5. 底部文字 */
+        .loading-label {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            color: #1e293b;
+        }
+        
+        .loading-sub {
+            font-family: 'Courier New', monospace;
+            color: #64748b;
+            font-size: 12px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="flex flex-col items-center gap-8">
+        
+        <div class="canvas">
+            <!-- 轨道背景 -->
+            <div class="orbit-ring ring-1"></div>
+            <div class="orbit-ring ring-2"></div>
+
+            <!-- 三原色几何体 -->
+            <div class="shape shape-circle"></div>
+            <div class="shape shape-triangle"></div>
+            <div class="shape shape-square"></div>
+        </div>
+
+        <div class="text-center">
+            <div class="loading-label text-xl mb-1">DESIGNING SPACES</div>
+            <div class="loading-sub">Compiling Assets...</div>
+        </div>
+
+    </div>
+
+</body>
+</html>

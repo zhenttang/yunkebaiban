@@ -18,7 +18,7 @@ import { getWorkerUrl } from '@yunke/env/worker';
 import { StoreManagerClient } from '@yunke/nbstore/worker/client';
 import { Framework, FrameworkRoot, getCurrentStore } from '@toeverything/infra';
 import { OpClient } from '@toeverything/infra/op';
-import { Suspense } from 'react';
+import { Suspense, useEffect } from 'react';
 import { RouterProvider } from 'react-router-dom';
 
 let storeManagerClient: StoreManagerClient;
@@ -143,9 +143,42 @@ window.addEventListener('focus', () => {
 });
 frameworkProvider.get(LifecycleService).applicationStart();
 
+const SuspenseFallbackLogger = () => {
+  console.info('[mobile app] Suspense fallback invoked');
+  return null;
+};
+
 export function App() {
+  console.info('[mobile app] render App');
+  useEffect(() => {
+    console.info('[mobile app] subscribe router');
+    const unsubscribe = router.subscribe(state => {
+      console.info('[mobile app] router state', {
+        historyAction: state.historyAction,
+        location: `${state.location?.pathname ?? ''}${state.location?.search ?? ''}`,
+        initialized: state.initialized,
+        matches: state.matches?.map(m => m.route.path ?? '(index)'),
+        navigationState: state.navigation?.state,
+        loaderState: state.loaderData ? Object.keys(state.loaderData) : [],
+        errors: state.errors,
+      });
+    });
+    const onError = (event: ErrorEvent) => {
+      console.error('[mobile app] window error', event.message);
+    };
+    const onRejection = (event: PromiseRejectionEvent) => {
+      console.error('[mobile app] unhandledrejection', event.reason);
+    };
+    window.addEventListener('error', onError);
+    window.addEventListener('unhandledrejection', onRejection);
+    return () => {
+      unsubscribe();
+      window.removeEventListener('error', onError);
+      window.removeEventListener('unhandledrejection', onRejection);
+    };
+  }, []);
   return (
-    <Suspense>
+    <Suspense fallback={<SuspenseFallbackLogger />}>
       <FrameworkRoot framework={frameworkProvider}>
         <I18nProvider>
           <YunkeContext store={getCurrentStore()}>

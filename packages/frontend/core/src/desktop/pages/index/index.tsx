@@ -59,6 +59,26 @@ export const Component = ({
 
   const createOnceRef = useRef(false);
 
+  useEffect(() => {
+    console.info('[desktop index] state', {
+      loggedIn,
+      listLength: list.length,
+      listIsLoading,
+      navigating,
+      creating,
+      search: searchParams.toString(),
+      defaultIndexRoute,
+    });
+  }, [
+    creating,
+    defaultIndexRoute,
+    list.length,
+    listIsLoading,
+    loggedIn,
+    navigating,
+    searchParams,
+  ]);
+
   const createCloudWorkspace = useCallback(() => {
     if (createOnceRef.current) return;
     createOnceRef.current = true;
@@ -80,6 +100,7 @@ export const Component = ({
     }
 
     if (listIsLoading) {
+      console.info('[desktop index] waiting list loading');
       return;
     }
 
@@ -87,6 +108,7 @@ export const Component = ({
     if (searchParams.get('initCloud') === 'true') {
       if (loggedIn) {
         if (list.every(w => w.flavour !== 'yunke-cloud')) {
+          console.info('[desktop index] initCloud createCloudWorkspace');
           createCloudWorkspace();
           return;
         }
@@ -94,12 +116,18 @@ export const Component = ({
         // open first cloud workspace
         const openWorkspace =
           list.find(w => w.flavour === 'yunke-cloud') ?? list[0];
+        console.info('[desktop index] initCloud open workspace', {
+          id: openWorkspace?.id,
+          flavour: openWorkspace?.flavour,
+        });
         openPage(openWorkspace.id, defaultIndexRoute);
       } else {
+        console.info('[desktop index] initCloud not logged in, wait');
         return;
       }
     } else {
       if (list.length === 0) {
+        console.info('[desktop index] list empty, stop navigating');
         setNavigating(false);
         return;
       }
@@ -107,6 +135,11 @@ export const Component = ({
       const lastId = localStorage.getItem('last_workspace_id');
 
       const openWorkspace = list.find(w => w.id === lastId) ?? list[0];
+      console.info('[desktop index] open last workspace', {
+        lastId,
+        openWorkspace: openWorkspace?.id,
+        flavour: openWorkspace?.flavour,
+      });
       openPage(openWorkspace.id, defaultIndexRoute, RouteLogic.REPLACE);
     }
   }, [
@@ -127,9 +160,14 @@ export const Component = ({
   }, [desktopApi]);
 
   useEffect(() => {
+    console.info('[desktop index] createFirstAppData start');
     setCreating(true);
     createFirstAppData(workspacesService)
       .then(createdWorkspace => {
+        console.info('[desktop index] createFirstAppData done', {
+          createdWorkspace: createdWorkspace?.meta.id,
+          defaultPageId: createdWorkspace?.defaultPageId,
+        });
         if (createdWorkspace) {
           if (createdWorkspace.defaultPageId) {
             jumpToPage(
@@ -145,6 +183,7 @@ export const Component = ({
         console.error('创建首个应用数据失败', err);
       })
       .finally(() => {
+        console.info('[desktop index] createFirstAppData finally');
         setCreating(false);
       });
   }, [jumpToPage, openPage, workspacesService]);
@@ -152,6 +191,7 @@ export const Component = ({
   // TODO(@eyhn): We need a no workspace page
   useEffect(() => {
     if (!navigating && !creating && !children) {
+      console.info('[desktop index] no workspace -> jumpToSignIn');
       jumpToSignIn();
     }
   }, [children, creating, jumpToSignIn, navigating]);
