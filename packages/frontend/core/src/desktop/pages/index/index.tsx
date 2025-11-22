@@ -58,6 +58,7 @@ export const Component = ({
   const [searchParams] = useSearchParams();
 
   const createOnceRef = useRef(false);
+  const createFirstDataOnceRef = useRef(false);
 
   useEffect(() => {
     console.info('[desktop index] state', {
@@ -91,7 +92,7 @@ export const Component = ({
           openPage(meta.id, defaultIndexRoute);
         }
       })
-              .catch(err => console.error('创建云端工作空间失败', err));
+      .catch(err => console.error('创建云端工作空间失败', err));
   }, [defaultIndexRoute, jumpToPage, openPage, workspacesService]);
 
   useLayoutEffect(() => {
@@ -160,6 +161,9 @@ export const Component = ({
   }, [desktopApi]);
 
   useEffect(() => {
+    if (createFirstDataOnceRef.current) return;
+    createFirstDataOnceRef.current = true;
+
     console.info('[desktop index] createFirstAppData start');
     setCreating(true);
     createFirstAppData(workspacesService)

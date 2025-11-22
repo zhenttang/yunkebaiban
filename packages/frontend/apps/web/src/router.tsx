@@ -14,7 +14,7 @@ import {
 // Web应用的导航上下文提供器
 function WebNavigateProvider() {
   const navigate = useNavigate();
-  
+
   return (
     <NavigateContext.Provider value={navigate}>
       <RootWrapper />
@@ -250,6 +250,10 @@ export const topLevelRoutes = [
       {
         path: '/open-app/:action',
         lazy: () => import('@yunke/core/desktop/pages/open-app'),
+      },
+      {
+        path: '/test-loading',
+        lazy: () => import('@yunke/core/desktop/pages/test-loading'),
       },
       {
         path: '*',

@@ -1,0 +1,301 @@
+/* LoadingWhiteboard.css */
+.whiteboard-container {
+  width: 100%;
+  height: 100%;
+  min-height: 300px;
+  /* Minimum height to ensure visibility */
+  /* 移除背景色,使其透明 */
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
+  color: #4b5563;
+  /* text-gray-600 */
+}
+
+/* 动画核心区域 */
+.animation-stage {
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+  /* max-w-lg */
+  height: 256px;
+  /* h-64 */
+}
+
+/* 2. 便利贴基础样式 */
+.sticky-note {
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 24px;
+  opacity: 0;
+  /* 初始隐藏 */
+  transition: transform 0.2s;
+}
+
+/* 微微翘起的角效果 */
+.sticky-note::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 20px;
+  height: 20px;
+  background: linear-gradient(135deg, transparent 50%, rgba(0, 0, 0, 0.05) 50%);
+  pointer-events: none;
+}
+
+/* 3. 动画关键帧 */
+
+/* 便利贴弹出动画 */
+@keyframes popIn {
+  0% {
+    transform: scale(0) rotate(0deg);
+    opacity: 0;
+  }
+
+  60% {
+    transform: scale(1.1) rotate(var(--rotation));
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(1) rotate(var(--rotation));
+    opacity: 1;
+  }
+}
+
+/* 鼠标光标移动动画 - 路径1 */
+@keyframes cursorMove1 {
+  0% {
+    transform: translate(0, 0);
+    opacity: 0;
+  }
+
+  10% {
+    opacity: 1;
+  }
+
+  30% {
+    transform: translate(120px, 50px);
+  }
+
+  60% {
+    transform: translate(80px, -40px);
+  }
+
+  90% {
+    transform: translate(-20px, 20px);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translate(0, 0);
+    opacity: 0;
+  }
+}
+
+/* 鼠标光标移动动画 - 路径2 */
+@keyframes cursorMove2 {
+  0% {
+    transform: translate(0, 0);
+    opacity: 0;
+  }
+
+  20% {
+    opacity: 1;
+    transform: translate(-100px, 80px);
+  }
+
+  50% {
+    transform: translate(-50px, -50px);
+  }
+
+  80% {
+    transform: translate(40px, 60px);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translate(0, 0);
+    opacity: 0;
+  }
+}
+
+/* 连线绘制动画 */
+@keyframes drawLine {
+  0% {
+    stroke-dashoffset: 300;
+    opacity: 0;
+  }
+
+  20% {
+    opacity: 1;
+  }
+
+  100% {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+}
+
+/* 应用动画到具体元素 */
+.note-1 {
+  background-color: #fef08a;
+  /* 黄色 */
+  --rotation: -5deg;
+  animation: popIn 0.6s ease-out forwards;
+  animation-delay: 0.2s;
+  top: 50%;
+  left: 50%;
+  margin-top: -40px;
+  margin-left: -140px;
+}
+
+.note-2 {
+  background-color: #bfdbfe;
+  /* 蓝色 */
+  --rotation: 3deg;
+  animation: popIn 0.6s ease-out forwards;
+  animation-delay: 0.8s;
+  top: 50%;
+  left: 50%;
+  margin-top: -60px;
+  margin-left: -40px;
+}
+
+.note-3 {
+  background-color: #fbcfe8;
+  /* 粉色 */
+  --rotation: -2deg;
+  animation: popIn 0.6s ease-out forwards;
+  animation-delay: 1.4s;
+  top: 50%;
+  left: 50%;
+  margin-top: -30px;
+  margin-left: 60px;
+}
+
+/* 连接线 SVG */
+.connector-lines {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 300px;
+  height: 200px;
+  pointer-events: none;
+  z-index: 0;
+  /* 在便利贴下面 */
+}
+
+.connector-path {
+  fill: none;
+  stroke: #9ca3af;
+  stroke-width: 2;
+  stroke-dasharray: 300;
+  stroke-dashoffset: 300;
+  stroke-linecap: round;
+}
+
+.path-1 {
+  animation: drawLine 1s ease-out forwards;
+  animation-delay: 0.9s;
+}
+
+.path-2 {
+  animation: drawLine 1s ease-out forwards;
+  animation-delay: 1.5s;
+}
+
+/* 光标容器 */
+.cursor-wrapper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.cursor-1 {
+  animation: cursorMove1 4s infinite ease-in-out;
+  margin-left: -160px;
+  margin-top: -60px;
+}
+
+.cursor-2 {
+  animation: cursorMove2 4s infinite ease-in-out;
+  animation-delay: 1.5s;
+  /* 错开时间 */
+  margin-left: 80px;
+  margin-top: 20px;
+}
+
+.cursor-label {
+  margin-left: 16px;
+  margin-top: -24px;
+  color: white;
+  font-size: 12px;
+  padding: 2px 8px;
+  border-radius: 9999px;
+  white-space: nowrap;
+  opacity: 0.8;
+}
+
+.cursor-label-blue {
+  background-color: #3b82f6;
+}
+
+.cursor-label-red {
+  background-color: #ef4444;
+}
+
+/* 手绘风格进度条 */
+.loader-container {
+  margin-top: 48px;
+  /* mt-12 */
+  text-align: center;
+  position: relative;
+  z-index: 20;
+}
+
+.scribble-loader {
+  stroke-dasharray: 200;
+  stroke-dashoffset: 200;
+  animation: scribble 2s linear infinite;
+}
+
+@keyframes scribble {
+  0% {
+    stroke-dashoffset: 200;
+  }
+
+  50% {
+    stroke-dashoffset: 0;
+  }
+
+  100% {
+    stroke-dashoffset: -200;
+  }
+}
+
+/* Mobile Responsive Adjustments */
+@media (max-width: 640px) {
+  .animation-stage {
+    transform: scale(0.7);
+    /* Scale down the whole stage on mobile */
+  }
+
+  .whiteboard-container {
+    background-size: 16px 16px;
+    /* Smaller grid */
+  }
+}

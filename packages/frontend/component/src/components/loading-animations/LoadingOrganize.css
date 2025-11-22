@@ -1,0 +1,449 @@
+/* LoadingOrganize.css */
+.organize-container {
+    width: 100%;
+    height: 100%;
+    min-height: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    font-family: sans-serif;
+    gap: 24px;
+}
+
+/* 2. 舞台 */
+.organize-stage {
+    width: 300px;
+    height: 200px;
+    position: relative;
+    /* border: 1px dashed #ccc; debugging */
+}
+
+/* 3. 散落的元素 (Items) */
+.item {
+    position: absolute;
+    display: flex;
+    align-items: center;
+
+    justify-content: center;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1),
+        background-color 0.3s,
+        border-color 0.3s;
+    z-index: 5;
+}
+
+/* 元素的不同形态：初始是灰色的轮廓，被选中后变成彩色实心 */
+.item-circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid #9ca3af;
+    background: white;
+}
+
+.item-rect {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    border: 2px solid #9ca3af;
+    background: white;
+}
+
+.item-poly {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    border: 2px solid #9ca3af;
+    background: white;
+    transform: rotate(45deg);
+}
+
+/* 选中激活态 (Active/Organized State) */
+.item.organized {
+    border-color: transparent;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.item-circle.organized {
+    background: #f87171;
+}
+
+/* Red */
+.item-rect.organized {
+    background: #60a5fa;
+}
+
+/* Blue */
+.item-poly.organized {
+    background: #34d399;
+    transform: rotate(0deg);
+}
+
+/* Green, reset rotation */
+
+/* --- 核心动画序列：控制元素的位置变化 --- */
+
+/* 元素 1 (圆形) */
+.item-1-anim {
+    animation: item1-move 4s infinite ease-in-out, item-color-1 4s infinite ease-in-out;
+}
+
+@keyframes item1-move {
+
+    0%,
+    15% {
+        top: 20px;
+        left: 40px;
+        transform: rotate(0deg);
+    }
+
+    /* 散乱位置 */
+    65% {
+        top: 20px;
+        left: 40px;
+    }
+
+    /* 等待被框选 */
+    75%,
+    90% {
+        top: 80px;
+        left: 70px;
+    }
+
+    /* 吸附到整齐位置 (Left) */
+    95% {
+        background: white;
+        border: 2px solid #9ca3af;
+    }
+
+    /* 重置颜色 */
+    100% {
+        top: 20px;
+        left: 40px;
+    }
+
+    /* 回到原位 */
+}
+
+/* 元素 2 (方形) */
+.item-2-anim {
+    animation: item2-move 4s infinite ease-in-out, item-color-2 4s infinite ease-in-out;
+}
+
+@keyframes item2-move {
+
+    0%,
+    15% {
+        top: 130px;
+        left: 180px;
+        transform: rotate(15deg);
+    }
+
+    65% {
+        top: 130px;
+        left: 180px;
+        transform: rotate(15deg);
+    }
+
+    75%,
+    90% {
+        top: 80px;
+        left: 130px;
+        transform: rotate(0deg);
+    }
+
+    /* 吸附到整齐位置 (Center) */
+    95% {
+        background: white;
+        border: 2px solid #9ca3af;
+    }
+
+    100% {
+        top: 130px;
+        left: 180px;
+        transform: rotate(15deg);
+    }
+}
+
+/* 元素 3 (菱形) */
+.item-3-anim {
+    animation: item3-move 4s infinite ease-in-out, item-color-3 4s infinite ease-in-out;
+}
+
+@keyframes item3-move {
+
+    0%,
+    15% {
+        top: 40px;
+        left: 220px;
+        transform: rotate(45deg);
+    }
+
+    65% {
+        top: 40px;
+        left: 220px;
+        transform: rotate(45deg);
+    }
+
+    75%,
+    90% {
+        top: 80px;
+        left: 190px;
+        transform: rotate(0deg);
+    }
+
+    /* 吸附到整齐位置 (Right) */
+    95% {
+        background: white;
+        border: 2px solid #9ca3af;
+    }
+
+    100% {
+        top: 40px;
+        left: 220px;
+        transform: rotate(45deg);
+    }
+}
+
+/* 颜色变化动画 */
+@keyframes item-color-1 {
+
+    0%,
+    60% {
+        background: white;
+        border-color: #9ca3af;
+    }
+
+    65% {
+        background: #eff6ff;
+        border-color: #3b82f6;
+    }
+
+    /* 选中高亮态 (Light Blue) */
+    75% {
+        border-color: transparent;
+    }
+
+    /* 整理态开始 */
+    75.1% {
+        background: #f87171;
+    }
+
+    /* 瞬间变色 */
+    90% {
+        background: #f87171;
+        border-color: transparent;
+    }
+
+    95% {
+        background: white;
+        border-color: #9ca3af;
+    }
+}
+
+@keyframes item-color-2 {
+
+    0%,
+    60% {
+        background: white;
+        border-color: #9ca3af;
+    }
+
+    65% {
+        background: #eff6ff;
+        border-color: #3b82f6;
+    }
+
+    75% {
+        border-color: transparent;
+    }
+
+    75.1% {
+        background: #60a5fa;
+    }
+
+    90% {
+        background: #60a5fa;
+        border-color: transparent;
+    }
+
+    95% {
+        background: white;
+        border-color: #9ca3af;
+    }
+}
+
+@keyframes item-color-3 {
+
+    0%,
+    60% {
+        background: white;
+        border-color: #9ca3af;
+    }
+
+    65% {
+        background: #eff6ff;
+        border-color: #3b82f6;
+    }
+
+    75% {
+        border-color: transparent;
+    }
+
+    75.1% {
+        background: #34d399;
+    }
+
+    90% {
+        background: #34d399;
+        border-color: transparent;
+    }
+
+    95% {
+        background: white;
+        border-color: #9ca3af;
+    }
+}
+
+
+/* 4. 光标 (Cursor) */
+.cursor-organize {
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    z-index: 20;
+    top: 0;
+    left: 0;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+    animation: cursor-action 4s infinite;
+}
+
+/* 光标路径：进入 -> 点击(左上) -> 拖拽(右下) -> 松开 -> 消失 */
+@keyframes cursor-action {
+    0% {
+        transform: translate(320px, 220px);
+        opacity: 0;
+    }
+
+    /* 屏幕外 */
+    10% {
+        transform: translate(20px, 10px);
+        opacity: 1;
+    }
+
+    /* 移动到起始点 */
+    15% {
+        transform: translate(20px, 10px) scale(0.9);
+    }
+
+    /* 点击按下 */
+    20% {
+        transform: translate(20px, 10px) scale(1);
+    }
+
+    50% {
+        transform: translate(260px, 160px);
+    }
+
+    /* 拖拽结束点 */
+    60% {
+        transform: translate(260px, 160px);
+        opacity: 1;
+    }
+
+    /* 松开 */
+    70% {
+        opacity: 0;
+    }
+
+    /* 消失，不挡视线 */
+    100% {
+        opacity: 0;
+    }
+}
+
+/* 5. 选区框 (Selection Box) */
+.selection-box {
+    position: absolute;
+    top: 10px;
+    /* 起始点Y */
+    left: 20px;
+    /* 起始点X */
+    width: 0;
+    height: 0;
+    background-color: rgba(59, 130, 246, 0.1);
+    /* Blue-500 low opacity */
+    border: 1px solid rgba(59, 130, 246, 0.5);
+    border-radius: 4px;
+    z-index: 10;
+    opacity: 0;
+    pointer-events: none;
+    animation: selection-drag 4s infinite;
+}
+
+@keyframes selection-drag {
+
+    0%,
+    15% {
+        width: 0;
+        height: 0;
+        opacity: 0;
+    }
+
+    16% {
+        opacity: 1;
+    }
+
+    /* 开始显示 */
+    50% {
+        width: 240px;
+        height: 150px;
+        opacity: 1;
+    }
+
+    /* 拖拽至最大 */
+    60% {
+        opacity: 0;
+        width: 240px;
+        height: 150px;
+    }
+
+    /* 消失 */
+    100% {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+}
+
+/* 底部文字 */
+.organize-text {
+    text-align: center;
+}
+
+.organize-title {
+    color: #334155;
+    /* slate-700 */
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin: 0;
+}
+
+.organize-subtitle {
+    color: #94a3b8;
+    /* slate-400 */
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+/* Mobile Responsive Adjustments */
+@media (max-width: 640px) {
+    .organize-stage {
+        transform: scale(0.8);
+    }
+}

@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>灵感便利贴加载动画</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #F3F4F6;
+            /* 浅灰背景 */
+            /* 经典的白板点阵背景 */
+            background-image: radial-gradient(#D1D5DB 1.5px, transparent 1.5px);
+            background-size: 24px 24px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .loader-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* 便利贴样式 */
+        .note {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background-color: #FEF3C7;
+            /* 默认黄 */
+            box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
+            /* 模拟纸张卷角 */
+            border-bottom-right-radius: 15px 2px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 8px;
+            /* 关键过渡：平滑的移动和旋转 */
+            transition: transform 0.8s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 0.5s ease;
+            will-change: transform, opacity;
+        }
+
+        /* 模拟便利贴上的手写文字线条 */
+        .note-line {
+            width: 70%;
+            height: 3px;
+            background-color: rgba(0, 0, 0, 0.08);
+            margin: 3px 0;
+            border-radius: 2px;
+        }
+
+        .note-line.short {
+            width: 40%;
+            align-self: flex-start;
+            margin-left: 15%;
+        }
+
+        /* 状态文字 */
+        .status-text {
+            position: absolute;
+            bottom: 20%;
+            font-size: 1.1rem;
+            color: #6B7280;
+            letter-spacing: 0.05em;
+            font-weight: 500;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .fade-in {
+            opacity: 1;
+        }
+
+        .fade-out {
+            opacity: 0;
+        }
+
+        /* 几种便利贴颜色 (Tailwind colors) */
+        .bg-yellow {
+            background-color: #FEF08A;
+        }
+
+        /* yellow-200 */
+        .bg-pink {
+            background-color: #FBCFE8;
+        }
+
+        /* pink-200 */
+        .bg-blue {
+            background-color: #BAE6FD;
+        }
+
+        /* blue-200 */
+        .bg-green {
+            background-color: #BBF7D0;
+        }
+
+        /* green-200 */
+        .bg-orange {
+            background-color: #FED7AA;
+        }
+
+        /* orange-200 */
+    </style>
+</head>
+
+<body>
+
+    <div class="loader-container" id="container">
+        <div id="statusText" class="status-text">收集灵感...</div>
+    </div>
+
+    <script>
+        const container = document.getElementById('container');
+        const statusText = document.getElementById('statusText');
+
+        // 配置参数
+        const GRID_SIZE = 5; // 5x5 网格
+        const TOTAL_NOTES = GRID_SIZE * GRID_SIZE;
+        const NOTE_SIZE = 60;
+        const GAP = 10;
+        const COLORS = ['bg-yellow', 'bg-pink', 'bg-blue', 'bg-green', 'bg-orange'];
+
+        let notes = [];
+
+        // 1. 初始化便利贴 DOM
+        function initNotes() {
+            for (let i = 0; i < TOTAL_NOTES; i++) {
+                const note = document.createElement('div');
+                note.classList.add('note');
+
+                // 随机分配颜色
+                const randomColor = COLORS[Math.floor(Math.random() * COLORS.length)];
+                note.classList.add(randomColor);
+
+                // 添加伪装的文字线条
+                const line1 = document.createElement('div');
+                line1.classList.add('note-line');
+                const line2 = document.createElement('div');
+                line2.classList.add('note-line');
+                const line3 = document.createElement('div');
+                line3.classList.add('note-line', 'short');
+                note.appendChild(line1);
+                note.appendChild(line2);
+                note.appendChild(line3);
+
+                container.appendChild(note);
+                notes.push(note);
+            }
+
+            // 初始位置：屏幕外随机
+            scatterNotesOutside();
+        }
+
+        // 状态：分散在屏幕外
+        function scatterNotesOutside() {
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+            const radius = Math.max(width, height) * 0.8; // 足够远的半径
+
+            notes.forEach(note => {
+                const angle = Math.random() * Math.PI * 2;
+                const r = radius + Math.random() * 200;
+                const x = Math.cos(angle) * r;
+                const y = Math.sin(angle) * r;
+                const rot = Math.random() * 180 - 90;
+
+                note.style.transform = `translate(${x}px, ${y}px) rotate(${rot}deg)`;
+                note.style.opacity = '0';
+            });
+        }
+
+        // 状态：混乱堆积在中心 (Chaos)
+        function pileNotesCenter() {
+            statusText.innerText = "头脑风暴中...";
+            statusText.classList.add('fade-in');
+
+            notes.forEach((note, index) => {
+                // 稍微延迟每一个，造成“飞入”的先后感
+                setTimeout(() => {
+                    // 围绕中心的随机小范围
+                    const spread = 150;
+                    const x = (Math.random() - 0.5) * spread;
+                    const y = (Math.random() - 0.5) * spread;
+                    const rot = Math.random() * 60 - 30; // 随机倾斜
+
+                    // 增加一点 Z-index 变化，后来的在上面
+                    note.style.zIndex = index;
+                    note.style.opacity = '1';
+                    note.style.transform = `translate(${x}px, ${y}px) rotate(${rot}deg)`;
+                }, index * 20); // 20ms 的间隔
+            });
+        }
+
+        // 状态：整齐排列 (Order)
+        function organizeNotesGrid() {
+            statusText.innerText = "整理思路...";
+
+            // 计算网格总宽高，用于居中
+            const gridWidth = GRID_SIZE * NOTE_SIZE + (GRID_SIZE - 1) * GAP;
+            const gridHeight = GRID_SIZE * NOTE_SIZE + (GRID_SIZE - 1) * GAP;
+            const startX = -gridWidth / 2 + NOTE_SIZE / 2;
+            const startY = -gridHeight / 2 + NOTE_SIZE / 2;
+
+            notes.forEach((note, index) => {
+                const row = Math.floor(index / GRID_SIZE);
+                const col = index % GRID_SIZE;
+
+                const x = startX + col * (NOTE_SIZE + GAP);
+                const y = startY + row * (NOTE_SIZE + GAP);
+
+                // 排列整齐时，旋转归零，或者保留极小的随机微动模拟自然感
+                const rot = (Math.random() - 0.5) * 2;
+
+                note.style.zIndex = 10; // 扁平化层级
+                note.style.transform = `translate(${x}px, ${y}px) rotate(${rot}deg)`;
+            });
+        }
+
+        // 状态：爆发/完成 (Explosion)
+        function explodeNotes() {
+            statusText.innerText = "准备就绪！";
+            statusText.classList.remove('fade-in'); // 淡出文字
+
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+
+            notes.forEach((note, index) => {
+                // 延迟一点点让用户看清整理好的状态
+                setTimeout(() => {
+                    // 向四周飞出，比进入时更远
+                    const angle = Math.random() * Math.PI * 2;
+                    const r = Math.max(width, height) * 0.8;
+                    const x = Math.cos(angle) * r;
+                    const y = Math.sin(angle) * r;
+                    const rot = Math.random() * 720; // 剧烈旋转
+
+                    note.style.transform = `translate(${x}px, ${y}px) rotate(${rot}deg)`;
+                    note.style.opacity = '0';
+                }, 100);
+            });
+        }
+
+        function wait(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        async function runLoop() {
+            initNotes();
+            // 稍微等待 DOM 渲染
+            await wait(100);
+
+            while (true) {
+                // 1. 飞入并混乱堆积
+                pileNotesCenter();
+                await wait(1500); // 这种状态持续多久
+
+                // 2. 整理成网格
+                organizeNotesGrid();
+                await wait(2000); // 这种状态持续多久
+
+                // 3. 爆发散开
+                explodeNotes();
+                await wait(800); // 飞出动画时间
+
+                // 4. 重置位置 (瞬移回起点，不带动画)
+                // 暂时禁用 transition 以便瞬间重置
+                notes.forEach(n => {
+                    n.style.transition = 'none';
+                    n.style.opacity = '0';
+                });
+                scatterNotesOutside();
+
+                // 强制重绘
+                container.offsetHeight;
+
+                // 恢复 transition
+                notes.forEach(n => {
+                    n.style.transition = 'transform 0.8s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 0.5s ease';
+                });
+
+                await wait(500); // 稍微休息一下再开始
+            }
+        }
+
+        window.onload = runLoop;
+
+    </script>
+</body>
+
+</html>

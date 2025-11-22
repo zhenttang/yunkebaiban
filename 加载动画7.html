@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>工作流分拣加载 - 精细版</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* 1. 场景背景：更柔和的实验室氛围 */
+        body {
+            background-color: #f1f5f9; /* Slate 100 */
+            /* 更加细腻的网格 */
+            background-image: 
+                linear-gradient(rgba(148, 163, 184, 0.15) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(148, 163, 184, 0.15) 1px, transparent 1px);
+            background-size: 20px 20px;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Inter', sans-serif;
+            overflow: hidden;
+        }
+
+        /* 2. 舞台容器 */
+        .factory-stage {
+            width: 320px;
+            height: 240px;
+            position: relative;
+            perspective: 800px; /* 开启3D透视，让卡片旋转更有质感 */
+        }
+
+        /* --- 组件：传送带系统 --- */
+
+        /* A. 主轨道 */
+        .track-container {
+            position: absolute;
+            top: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 48px; /* 稍微加宽 */
+            height: 130px;
+            background: #cbd5e1;
+            border-radius: 4px;
+            /* 增加两侧护栏的立体感 */
+            border-left: 4px solid #94a3b8;
+            border-right: 4px solid #94a3b8;
+            overflow: hidden;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+        }
+        
+        .track-surface {
+            width: 100%;
+            height: 200%;
+            background: repeating-linear-gradient(
+                0deg,
+                #e2e8f0,
+                #e2e8f0 12px,
+                #cbd5e1 12px,
+                #cbd5e1 14px
+            );
+            animation: convey-move 1s linear infinite;
+        }
+
+        @keyframes convey-move {
+            from { transform: translateY(-28px); }
+            to { transform: translateY(0); }
+        }
+
+        /* B. 扫描仪 (悬浮感增强) */
+        .scanner-bridge {
+            position: absolute;
+            top: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 70px;
+            height: 24px;
+            background: linear-gradient(to bottom, #475569, #334155);
+            border-radius: 4px;
+            z-index: 20;
+            box-shadow: 
+                0 4px 6px -1px rgba(0,0,0,0.2),
+                inset 0 1px 0 rgba(255,255,255,0.2); /* 顶部高光 */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        /* 扫描状态灯 */
+        .scanner-led {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #ef4444;
+            box-shadow: 0 0 4px #ef4444;
+            animation: led-blink 4s infinite; /* 与卡片节奏同步 */
+        }
+        /* 激光束 */
+        .laser-beam {
+            position: absolute;
+            top: 22px;
+            width: 40px;
+            height: 2px;
+            background: #ef4444;
+            box-shadow: 0 0 8px #ef4444;
+            opacity: 0;
+            animation: laser-scan 4s infinite;
+        }
+
+        /* C. 分拣挡板 (增加转轴细节) */
+        .gate-wrapper {
+            position: absolute;
+            top: 150px;
+            width: 50px;
+            height: 8px;
+            z-index: 15;
+            display: flex;
+            align-items: center;
+        }
+        .gate-left-pos { left: 86px; justify-content: flex-end; }
+        .gate-right-pos { right: 86px; justify-content: flex-start; }
+
+        .gate-bar {
+            width: 42px;
+            height: 6px;
+            background: #64748b;
+            border-radius: 3px;
+            transform-origin: center;
+            position: relative;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        /* 挡板转轴 */
+        .gate-pivot {
+            width: 10px;
+            height: 10px;
+            background: #334155;
+            border-radius: 50%;
+            position: absolute;
+            z-index: 2;
+            box-shadow: inset 0 1px 2px rgba(0,0,0,0.5);
+        }
+        .gate-left-pos .gate-pivot { right: -5px; }
+        .gate-right-pos .gate-pivot { left: -5px; }
+
+        /* 挡板动画 */
+        .gate-left-anim { animation: gate-l-flick 4s infinite cubic-bezier(0.25, 1, 0.5, 1); transform-origin: right center; }
+        .gate-right-anim { animation: gate-r-flick 4s infinite cubic-bezier(0.25, 1, 0.5, 1); transform-origin: left center; }
+
+        /* D. 接收槽 (增加立体凹陷感) */
+        .bin {
+            position: absolute;
+            bottom: 0;
+            width: 70px;
+            height: 60px;
+            background: #f8fafc;
+            border: 1px solid #cbd5e1;
+            border-top: none;
+            border-radius: 0 0 12px 12px;
+            /* 内阴影制造凹陷感 */
+            box-shadow: 
+                inset 0 -4px 6px rgba(0,0,0,0.05),
+                0 10px 15px -3px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            padding-bottom: 8px;
+            overflow: hidden; /* 遮住落入的卡片 */
+        }
+        .bin-left { left: 20px; animation: bin-shake-l 4s infinite; }
+        .bin-right { right: 20px; animation: bin-shake-r 4s infinite; }
+        
+        /* 槽口装饰线 */
+        .bin::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: rgba(0,0,0,0.05);
+        }
+
+        .bin-tag {
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .bin-left .bin-tag { background: #fee2e2; color: #ef4444; }
+        .bin-right .bin-tag { background: #dbeafe; color: #3b82f6; }
+
+        /* E. 任务卡片 (增加纹理细节) */
+        .card {
+            position: absolute;
+            width: 28px;
+            height: 36px;
+            border-radius: 4px;
+            background: white;
+            /* 细腻的投影 */
+            box-shadow: 
+                0 1px 2px rgba(0,0,0,0.1),
+                0 4px 6px rgba(0,0,0,0.05);
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 3px;
+            padding: 4px;
+        }
+        /* 卡片上的微缩纹理 */
+        .card-line { width: 100%; height: 2px; border-radius: 1px; opacity: 0.5; }
+        .card-head { width: 100%; height: 6px; border-radius: 2px; margin-bottom: 2px; }
+        
+        /* 红色任务卡 */
+        .card-urgent {
+            border-top: 3px solid #ef4444;
+            animation: path-urgent 4s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+        }
+        .card-urgent .card-head { background: #fee2e2; }
+        .card-urgent .card-line { background: #fca5a5; }
+
+        /* 蓝色任务卡 */
+        .card-normal {
+            border-top: 3px solid #3b82f6;
+            animation: path-normal 4s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+            animation-delay: 2s;
+            opacity: 0;
+        }
+        .card-normal .card-head { background: #dbeafe; }
+        .card-normal .card-line { background: #93c5fd; }
+
+
+        /* --- 重新调校的物理动画曲线 --- */
+
+        /* 红色卡片路径：直行 -> 悬停 -> 撞击 -> 抛物线坠落 */
+        @keyframes path-urgent {
+            0% { top: -40px; left: 146px; opacity: 1; transform: rotate(0deg) translateZ(0); }
+            /* 进场 */
+            15% { top: 82px; left: 146px; transform: rotate(0deg); } 
+            /* 扫描悬停 (微动) */
+            25% { top: 86px; left: 146px; transform: rotate(0deg); } 
+            /* 加速下滑 */
+            35% { top: 140px; left: 146px; transform: rotate(0deg); } 
+            /* 撞击左侧挡板，开始向左弹射 */
+            40% { top: 155px; left: 146px; transform: rotate(-15deg); } 
+            /* 抛物线顶端 */
+            48% { top: 145px; left: 80px; transform: rotate(-45deg) scale(1.05); } 
+            /* 坠入槽中 */
+            58% { top: 190px; left: 55px; transform: rotate(-90deg) scale(1); opacity: 1; }
+            /* 沉底消失 */
+            65% { top: 200px; left: 55px; transform: rotate(-90deg); opacity: 0; }
+            100% { opacity: 0; }
+        }
+
+        /* 蓝色卡片路径：对称逻辑 */
+        @keyframes path-normal {
+            0% { top: -40px; left: 146px; opacity: 1; transform: rotate(0deg); }
+            15% { top: 82px; left: 146px; }
+            25% { top: 86px; left: 146px; }
+            35% { top: 140px; left: 146px; }
+            40% { top: 155px; left: 146px; transform: rotate(15deg); }
+            48% { top: 145px; left: 212px; transform: rotate(45deg) scale(1.05); }
+            58% { top: 190px; left: 237px; transform: rotate(90deg) scale(1); opacity: 1; }
+            65% { top: 200px; left: 237px; transform: rotate(90deg); opacity: 0; }
+            100% { opacity: 0; }
+        }
+
+        /* 挡板配合动作：快速弹开，缓慢复位 (Snap) */
+        @keyframes gate-l-flick {
+            0%, 35% { transform: rotate(0deg); }
+            38% { transform: rotate(45deg); } /* 撞击瞬间 */
+            45% { transform: rotate(45deg); }
+            55%, 100% { transform: rotate(0deg); }
+        }
+        @keyframes gate-r-flick {
+            0%, 85% { transform: rotate(0deg); }
+            88% { transform: rotate(-45deg); }
+            95% { transform: rotate(-45deg); }
+            100%, 100% { transform: rotate(0deg); }
+        }
+
+        /* 接收槽的回弹反馈 (Bounce) */
+        @keyframes bin-shake-l {
+            0%, 57% { transform: translateY(0); }
+            59% { transform: translateY(4px); } /* 接住卡片下沉 */
+            63% { transform: translateY(-2px); } /* 回弹 */
+            66% { transform: translateY(0); }
+            100% { transform: translateY(0); }
+        }
+        @keyframes bin-shake-r {
+            0%, 57% { transform: translateY(0); } /* 延时处理要在path里算，这里针对蓝色卡片是+2s相位 */
+            /* 蓝色卡片是在第2秒开始跑，约2.58秒落地。所以相对于4s周期，约在 64.5% (2.58/4) 处落地？
+               不对，蓝色卡片delay了2s。所以它的动画周期是 [2s, 6s]。
+               在主时间轴上，蓝色卡片落地是 2s + (0.58 * 4s) = 4.32s。
+               这对齐起来太麻烦，简化：给bin动画也加 delay 2s。
+            */
+            59% { transform: translateY(4px); }
+            63% { transform: translateY(-2px); }
+            66% { transform: translateY(0); }
+            100% { transform: translateY(0); }
+        }
+        
+        /* 修复：给蓝色bin加 animation-delay 导致第一轮不动。
+           改为在 keyframes 里硬编码相位偏移。
+           蓝色卡片落地时刻：path-normal 的 58%。
+           58% + 50% (2s delay/4s duration) = 108% -> 8%
+        */
+        @keyframes bin-shake-r-fixed {
+            0%, 7% { transform: translateY(0); }
+            9% { transform: translateY(4px); }
+            13% { transform: translateY(-2px); }
+            16% { transform: translateY(0); }
+            100% { transform: translateY(0); }
+        }
+        .bin-right { animation: bin-shake-r-fixed 4s infinite; }
+
+
+        /* 扫描仪特效 */
+        @keyframes led-blink {
+            0%, 10% { background: #ef4444; box-shadow: 0 0 0 #ef4444; } /* 红灯待机 */
+            15%, 25% { background: #22c55e; box-shadow: 0 0 8px #22c55e; } /* 绿灯扫描 */
+            30%, 100% { background: #ef4444; box-shadow: 0 0 0 #ef4444; }
+        }
+        @keyframes laser-scan {
+            0%, 15% { opacity: 0; width: 0; left: 50%; }
+            20% { opacity: 1; width: 40px; left: 15px; } /* 展开 */
+            25% { opacity: 1; width: 40px; left: 15px; box-shadow: 0 0 12px #ef4444; } /* 高亮 */
+            30% { opacity: 0; width: 40px; left: 15px; }
+            100% { opacity: 0; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="factory-stage">
+        
+        <!-- 1. 传送系统 -->
+        <div class="track-container">
+            <div class="track-surface"></div>
+        </div>
+
+        <!-- 2. 扫描仪桥架 -->
+        <div class="scanner-bridge">
+            <!-- 装饰灯 -->
+            <div class="absolute left-2 top-2 w-1 h-1 bg-slate-400 rounded-full"></div>
+            <div class="absolute right-2 top-2 w-1 h-1 bg-slate-400 rounded-full"></div>
+            <!-- 状态灯 -->
+            <div class="scanner-led"></div>
+            <!-- 激光束 -->
+            <div class="laser-beam"></div>
+        </div>
+
+        <!-- 3. 任务卡片 -->
+        <div class="card card-urgent">
+            <div class="card-head"></div>
+            <div class="card-line"></div>
+            <div class="card-line" style="width: 80%"></div>
+            <div class="card-line" style="width: 60%"></div>
+        </div>
+        
+        <div class="card card-normal">
+            <div class="card-head"></div>
+            <div class="card-line"></div>
+            <div class="card-line" style="width: 80%"></div>
+            <div class="card-line" style="width: 50%"></div>
+        </div>
+
+        <!-- 4. 分拣系统 -->
+        <!-- 左挡板 -->
+        <div class="gate-wrapper gate-left-pos">
+            <div class="gate-pivot"></div>
+            <div class="gate-bar gate-left-anim"></div>
+        </div>
+        <!-- 右挡板 -->
+        <div class="gate-wrapper gate-right-pos">
+            <div class="gate-pivot"></div>
+            <div class="gate-bar gate-right-anim"></div>
+        </div>
+
+        <!-- 5. 接收槽 -->
+        <div class="bin bin-left">
+            <div class="bin-tag">Priority</div>
+        </div>
+        <div class="bin bin-right">
+            <div class="bin-tag">Normal</div>
+        </div>
+
+    </div>
+
+    <!-- 底部状态栏 -->
+    <div class="flex flex-col items-center mt-6">
+        <div class="flex items-center gap-2 mb-1">
+            <div class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
+            <span class="text-slate-400 text-[10px] font-mono uppercase tracking-widest">Processing Pipeline</span>
+        </div>
+        <div class="text-slate-600 text-xs font-medium">Sorting Logic & Assets...</div>
+    </div>
+
+</body>
+</html>

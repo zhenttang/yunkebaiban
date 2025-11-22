@@ -1,0 +1,281 @@
+/* LoadingMindMap.css */
+.mindmap-container {
+    width: 100%;
+    height: 100%;
+    min-height: 300px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    font-family: sans-serif;
+}
+
+/* 核心动画容器 */
+.mindmap-stage {
+    position: relative;
+    width: 300px;
+    height: 300px;
+}
+
+/* 2. 节点卡片样式 */
+.node {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: white;
+    border-radius: 12px;
+    box-shadow:
+        0 4px 6px -1px rgba(0, 0, 0, 0.1),
+        0 2px 4px -1px rgba(0, 0, 0, 0.06),
+        0 0 0 1px rgba(0, 0, 0, 0.02);
+    /* 微弱边框 */
+    z-index: 10;
+    transform: scale(0);
+    /* 初始隐藏 */
+}
+
+/* 中心主节点 */
+.node-main {
+    width: 64px;
+    height: 64px;
+    top: 50%;
+    left: 50%;
+    margin-top: -32px;
+    margin-left: -32px;
+    background: linear-gradient(135deg, #6366f1, #818cf8);
+    color: white;
+    z-index: 20;
+    animation: popMain 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* 子节点 */
+.node-child {
+    width: 48px;
+    height: 48px;
+    margin-top: -24px;
+    margin-left: -24px;
+    animation: popChild 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.node-child-rose {
+    background-color: #fff1f2;
+    border: 1px solid #ffe4e6;
+    color: #f43f5e;
+}
+
+.node-child-blue {
+    background-color: #eff6ff;
+    border: 1px solid #dbeafe;
+    color: #3b82f6;
+}
+
+.node-child-emerald {
+    background-color: #ecfdf5;
+    border: 1px solid #d1fae5;
+    color: #10b981;
+}
+
+/* 3. 连线 SVG 容器 */
+.connections {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 5;
+}
+
+.connection-line {
+    fill: none;
+    stroke: #cbd5e1;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-dasharray: 150;
+    stroke-dashoffset: 150;
+    animation: drawLine 0.8s ease-out forwards;
+}
+
+/* 流光效果：在连线上跑动的小光点 */
+.flow-dot {
+    fill: #6366f1;
+    opacity: 0;
+    animation: flowMove 2s infinite;
+}
+
+/* 4. 动画关键帧 */
+
+@keyframes popMain {
+    0% {
+        transform: scale(0);
+        box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+    }
+
+    100% {
+        transform: scale(1);
+        box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.3);
+    }
+}
+
+@keyframes popChild {
+    0% {
+        transform: scale(0);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes drawLine {
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
+@keyframes flowMove {
+    0% {
+        offset-distance: 0%;
+        opacity: 0;
+    }
+
+    10% {
+        opacity: 1;
+    }
+
+    90% {
+        opacity: 1;
+    }
+
+    100% {
+        offset-distance: 100%;
+        opacity: 0;
+    }
+}
+
+/* 浮动呼吸效果，让画面是活的 */
+.floating-group {
+    animation: float 4s ease-in-out infinite;
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+/* 具体的定位和延迟 */
+
+/* 左上 - 图片节点 */
+.pos-1 {
+    top: 30%;
+    left: 30%;
+}
+
+.delay-1 {
+    animation-delay: 0.4s;
+}
+
+.line-delay-1 {
+    animation-delay: 0.2s;
+}
+
+/* 右侧 - 文本节点 */
+.pos-2 {
+    top: 50%;
+    left: 75%;
+}
+
+.delay-2 {
+    animation-delay: 0.8s;
+}
+
+.line-delay-2 {
+    animation-delay: 0.6s;
+}
+
+/* 左下 - 图表节点 */
+.pos-3 {
+    top: 75%;
+    left: 35%;
+}
+
+.delay-3 {
+    animation-delay: 1.2s;
+}
+
+.line-delay-3 {
+    animation-delay: 1.0s;
+}
+
+/* 协作光标 */
+.cursor-pointer {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 30;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+    animation: cursorCollaborate 3s ease-in-out infinite;
+}
+
+@keyframes cursorCollaborate {
+    0% {
+        transform: translate(0, 0);
+        opacity: 0;
+    }
+
+    10% {
+        opacity: 1;
+    }
+
+    30% {
+        transform: translate(80px, -20px);
+    }
+
+    /* 去右上 */
+    60% {
+        transform: translate(-60px, 60px);
+    }
+
+    /* 去左下 */
+    90% {
+        opacity: 1;
+    }
+
+    100% {
+        transform: translate(0, 0);
+        opacity: 0;
+    }
+}
+
+.cursor-tag-sync {
+    margin-left: 16px;
+    margin-top: -20px;
+    padding: 2px 8px;
+    background-color: #f59e0b;
+    color: white;
+    font-size: 10px;
+    border-radius: 9999px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    white-space: nowrap;
+    opacity: 0.8;
+}
+
+/* Mobile Responsive Adjustments */
+@media (max-width: 640px) {
+    .mindmap-stage {
+        transform: scale(0.8);
+        /* Slightly smaller on mobile */
+    }
+}

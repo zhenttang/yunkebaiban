@@ -1,0 +1,320 @@
+/* LoadingChain.css */
+.chain-container {
+    width: 100%;
+    height: 100%;
+    min-height: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Inter', sans-serif;
+    overflow: hidden;
+}
+
+/* 2. 舞台容器 */
+.chain-stage {
+    width: 320px;
+    height: 200px;
+    position: relative;
+    /* border: 1px dashed #cbd5e1; debugging */
+}
+
+/* --- 角色定义 --- */
+
+/* A. 小球 (The Idea) */
+.ball {
+    width: 24px;
+
+    height: 24px;
+    background: #6366f1;
+    /* Indigo 500 */
+    border-radius: 50%;
+    position: absolute;
+    top: 0;
+    left: 40px;
+    box-shadow: 0 4px 6px rgba(99, 102, 241, 0.3);
+    z-index: 10;
+    /* 动画序列：掉落 -> 撞击杠杆 -> 滚落消失 */
+    animation: ball-sequence 4s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+}
+
+/* B. 杠杆 (The Process) */
+.seesaw {
+    width: 120px;
+    height: 6px;
+    background: #94a3b8;
+    /* Slate 400 */
+    border-radius: 4px;
+    position: absolute;
+    top: 120px;
+    left: 30px;
+    transform-origin: 50% 50%;
+    /* 中心支点 */
+    /* 动画序列：静止 -> 被砸倾斜 -> 回弹 */
+    animation: seesaw-sequence 4s linear infinite;
+}
+
+/* 杠杆支点 */
+.pivot {
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 16px solid #64748b;
+    position: absolute;
+    top: 126px;
+    left: 82px;
+}
+
+/* C. 方块 (The Prototype) */
+/* 放在杠杆右端，准备被弹射 */
+.block {
+    width: 24px;
+    height: 24px;
+    background: white;
+    border: 2px solid #6366f1;
+    border-radius: 4px;
+    position: absolute;
+    top: 96px;
+    /* 杠杆之上 */
+    left: 115px;
+    /* 杠杆右侧 */
+    transform-origin: center;
+    z-index: 5;
+    /* 动画序列：静止 -> 被弹飞 -> 空中变身 -> 落地展开 */
+    animation: block-sequence 4s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+}
+
+/* D. 最终卡片 (The Product) */
+.final-card {
+    position: absolute;
+    top: 60px;
+    left: 200px;
+    width: 80px;
+    height: 100px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    padding: 12px;
+    gap: 8px;
+    opacity: 0;
+    transform: scale(0);
+    transform-origin: center bottom;
+    /* 动画序列：隐藏 -> 接住方块展开 -> 展示 -> 消失 */
+    animation: card-sequence 4s ease-out infinite;
+}
+
+/* 卡片内容骨架 */
+.skeleton-line {
+    height: 4px;
+    background: #e2e8f0;
+    border-radius: 2px;
+}
+
+.w-full {
+    width: 100%;
+}
+
+.w-half {
+    width: 50%;
+}
+
+/* --- 关键帧剧本 (总时长 4s) --- */
+
+/* 1. 小球掉落剧本 */
+@keyframes ball-sequence {
+    0% {
+        top: -40px;
+        left: 40px;
+        opacity: 0;
+        transform: scale(0.8);
+    }
+
+    10% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    25% {
+        top: 100px;
+        left: 40px;
+    }
+
+    /* 撞击杠杆左侧 */
+    30% {
+        top: 110px;
+    }
+
+    /* 随杠杆下沉 */
+    40% {
+        top: 150px;
+        left: 20px;
+        opacity: 0;
+    }
+
+    /* 滚落消失 */
+    100% {
+        opacity: 0;
+    }
+}
+
+/* 2. 杠杆反应剧本 */
+@keyframes seesaw-sequence {
+
+    0%,
+    20% {
+        transform: rotate(0deg);
+    }
+
+    25% {
+        transform: rotate(-15deg);
+    }
+
+    /* 左侧被砸下，右侧翘起 */
+    35% {
+        transform: rotate(-15deg);
+    }
+
+    /* 保持一下 */
+    45% {
+        transform: rotate(5deg);
+    }
+
+    /* 回弹 */
+    55% {
+        transform: rotate(0deg);
+    }
+
+    /* 归位 */
+    100% {
+        transform: rotate(0deg);
+    }
+}
+
+/* 3. 方块弹射剧本 */
+@keyframes block-sequence {
+
+    0%,
+    25% {
+        top: 96px;
+        left: 115px;
+        transform: rotate(0deg);
+        opacity: 1;
+    }
+
+    /* 被杠杆弹起 */
+    35% {
+        top: 20px;
+        left: 150px;
+        transform: rotate(180deg) scale(1.2);
+    }
+
+    /* 抛物线落地 */
+    45% {
+        top: 110px;
+        left: 240px;
+        transform: rotate(360deg) scale(1);
+        opacity: 1;
+    }
+
+    /* 落地瞬间变成卡片 (消失) */
+    46% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+/* 4. 卡片展开剧本 */
+@keyframes card-sequence {
+
+    0%,
+    45% {
+        opacity: 0;
+        transform: scale(0);
+    }
+
+    46% {
+        opacity: 1;
+        transform: scale(0.1);
+        top: 110px;
+        left: 240px;
+        margin-left: -40px;
+    }
+
+    /* 出现点 */
+    55% {
+        transform: scale(1.1);
+        top: 60px;
+    }
+
+    /* 弹性展开 */
+    60% {
+        transform: scale(1);
+        top: 70px;
+    }
+
+    /* 悬停 */
+    90% {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    100% {
+        transform: scale(0.9);
+        opacity: 0;
+    }
+}
+
+/* 底部进度条 */
+.chain-status {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.chain-text {
+    color: #64748b;
+    /* slate-500 */
+    font-size: 12px;
+    font-family: monospace;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.progress-track {
+    width: 120px;
+    height: 2px;
+    background: #e2e8f0;
+    margin-top: 20px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    width: 100%;
+    height: 100%;
+    background: #6366f1;
+    transform-origin: left;
+    animation: progress 4s linear infinite;
+}
+
+@keyframes progress {
+    0% {
+        transform: scaleX(0);
+    }
+
+    100% {
+        transform: scaleX(1);
+    }
+}
+
+/* Mobile Responsive Adjustments */
+@media (max-width: 640px) {
+    .chain-stage {
+        transform: scale(0.8);
+    }
+}

@@ -36,3 +36,5 @@ export * from './ui/toast';
 export * from './ui/tooltip';
 export * from './utils';
 export * from './icons/yunke-icon';
+export * from './components/loading-animations';
+
