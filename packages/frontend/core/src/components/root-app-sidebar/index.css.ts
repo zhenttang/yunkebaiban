@@ -1,5 +1,8 @@
+import { cssVar } from '@toeverything/theme';
 import { cssVarV2 } from '@toeverything/theme/v2';
-import { style } from '@vanilla-extract/css';
+import { globalStyle, style } from '@vanilla-extract/css';
+
+import { label as categoryDividerLabel } from '../../modules/app-sidebar/views/category-divider/index.css';
 
 export const workspaceAndUserWrapper = style({
   display: 'flex',
@@ -33,10 +36,24 @@ export const bottomContainer = style({
   padding: '8px 0',
 });
 
+const sectionDividerBase = {
+  height: 26,
+  minHeight: 26,
+  padding: '6px 8px 0',
+};
+
 export const sectionDividerTop = style({
+  ...sectionDividerBase,
   marginTop: 0,
 });
 
 export const sectionDivider = style({
+  ...sectionDividerBase,
   marginTop: 8,
+});
+
+globalStyle(`${sectionDividerTop} ${categoryDividerLabel}, ${sectionDivider} ${categoryDividerLabel}`, {
+  fontSize: cssVar('fontSm'),
+  lineHeight: '26px',
+  letterSpacing: '0.02em',
 });
