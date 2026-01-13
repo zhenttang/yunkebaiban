@@ -5,7 +5,7 @@ import { style } from '@vanilla-extract/css';
 const baseAction = style({
   display: 'flex',
   gap: 8,
-  opacity: 0,
+  opacity: 0.6,
 });
 
 export const root = style({
