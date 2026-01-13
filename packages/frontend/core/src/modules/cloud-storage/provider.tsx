@@ -87,6 +87,8 @@ function getSocketIOUrl(): string {
 
 // 本地缓存键
 const OFFLINE_OPERATIONS_KEY = 'cloud_storage_offline_operations';
+const MAX_OFFLINE_OPERATIONS = 500;
+const MAX_OFFLINE_STORAGE_BYTES = 2 * 1024 * 1024;
 
 const awaitWithTimeout = <T>(
   promise: Promise<T>,
@@ -326,6 +328,21 @@ export const CloudStorageProvider = ({
     [updateSessionsState]
   );
 
+  const trimOfflineOperations = (operations: OfflineOperation[]) => {
+    let trimmed = operations;
+    if (trimmed.length > MAX_OFFLINE_OPERATIONS) {
+      trimmed = trimmed.slice(trimmed.length - MAX_OFFLINE_OPERATIONS);
+    }
+    let raw = JSON.stringify(trimmed);
+    if (raw.length > MAX_OFFLINE_STORAGE_BYTES) {
+      while (trimmed.length > 0 && raw.length > MAX_OFFLINE_STORAGE_BYTES) {
+        trimmed = trimmed.slice(1);
+        raw = JSON.stringify(trimmed);
+      }
+    }
+    return { trimmed, raw };
+  };
+
   // 保存离线操作 - 按照YUNKE标准格式
   const saveOfflineOperation = async (docId: string, update: Uint8Array) => {
     if (!currentWorkspaceId) return;
@@ -346,14 +363,29 @@ export const CloudStorageProvider = ({
 
     // 从safeStorage读取现有操作
     const existing = safeStorage.getItem(OFFLINE_OPERATIONS_KEY);
-    const operations: OfflineOperation[] = existing ? JSON.parse(existing) : [];
+    let operations: OfflineOperation[] = [];
+    if (existing) {
+      try {
+        operations = JSON.parse(existing);
+      } catch (error) {
+        console.warn('[cloud-storage] 解析离线操作失败，重置缓存', error);
+        operations = [];
+      }
+    }
     
     // 添加新操作
     operations.push(operation);
     
     // 保存回safeStorage
-    safeStorage.setItem(OFFLINE_OPERATIONS_KEY, JSON.stringify(operations));
-    setOfflineOperationsCount(operations.length);
+    const { trimmed, raw } = trimOfflineOperations(operations);
+    if (trimmed.length !== operations.length) {
+      console.warn(
+        '[cloud-storage] 离线操作数量过多，已裁剪至上限:',
+        MAX_OFFLINE_OPERATIONS
+      );
+    }
+    safeStorage.setItem(OFFLINE_OPERATIONS_KEY, raw);
+    setOfflineOperationsCount(trimmed.length);
     
   };
 
