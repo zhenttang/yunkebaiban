@@ -147,6 +147,12 @@ export const ViewHeader = ({ children }: React.PropsWithChildren) => {
   return <ViewIsland id={`${view.id}:header`}>{children}</ViewIsland>;
 };
 
+export const ViewHeaderNotice = ({ children }: React.PropsWithChildren) => {
+  const view = useService(ViewService).view;
+
+  return <ViewIsland id={`${view.id}:header-notice`}>{children}</ViewIsland>;
+};
+
 export const ViewHeaderTarget = forwardRef(function ViewHeaderTarget(
   {
     viewId,
@@ -155,6 +161,18 @@ export const ViewHeaderTarget = forwardRef(function ViewHeaderTarget(
   ref: React.ForwardedRef<HTMLDivElement>
 ) {
   return <ViewIslandTarget id={`${viewId}:header`} {...otherProps} ref={ref} />;
+});
+
+export const ViewHeaderNoticeTarget = forwardRef(function ViewHeaderNoticeTarget(
+  {
+    viewId,
+    ...otherProps
+  }: React.HTMLProps<HTMLDivElement> & { viewId: string },
+  ref: React.ForwardedRef<HTMLDivElement>
+) {
+  return (
+    <ViewIslandTarget id={`${viewId}:header-notice`} {...otherProps} ref={ref} />
+  );
 });
 
 export const ViewSidebarTab = ({

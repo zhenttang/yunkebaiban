@@ -14,6 +14,19 @@ export const root = style({
 
 export const header = style({
   display: 'flex',
+  flexDirection: 'column',
+  width: '100%',
+  flexShrink: 0,
+  background: cssVar('backgroundPrimaryColor'),
+  '@media': {
+    print: {
+      display: 'none',
+    },
+  },
+});
+
+export const headerRow = style({
+  display: 'flex',
   height: '52px',
   width: '100%',
   alignItems: 'center',
@@ -21,11 +34,6 @@ export const header = style({
   background: cssVar('backgroundPrimaryColor'),
   padding: '0 16px',
   contain: 'strict',
-  '@media': {
-    print: {
-      display: 'none',
-    },
-  },
 });
 
 export const viewBodyContainer = style({
@@ -62,4 +70,10 @@ export const viewHeaderContainer = style({
   width: 0,
   flexGrow: 1,
   minWidth: 12,
+});
+
+export const viewHeaderNoticeContainer = style({
+  display: 'flex',
+  flexDirection: 'column',
+  width: '100%',
 });

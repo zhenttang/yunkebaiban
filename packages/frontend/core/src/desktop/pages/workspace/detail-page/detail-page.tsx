@@ -30,6 +30,7 @@ import {
   useIsActiveView,
   ViewBody,
   ViewHeader,
+  ViewHeaderNotice,
   ViewService,
   ViewSidebarTab,
   WorkbenchService,
@@ -321,6 +322,9 @@ const DetailPageImpl = memo(function DetailPageImpl() {
 
   return (
     <FrameworkScope scope={editor.scope}>
+      <ViewHeaderNotice>
+        <TopTip pageId={doc.id} workspace={workspace} />
+      </ViewHeaderNotice>
       <ViewHeader>
         <DetailPageHeader
           page={doc.blockSuiteDoc}
@@ -336,7 +340,6 @@ const DetailPageImpl = memo(function DetailPageImpl() {
         >
           {/* Add a key to force rerender when page changed, to avoid error boundary persisting. */}
           <YunkeErrorBoundary key={doc.id}>
-            <TopTip pageId={doc.id} workspace={workspace} />
             {/* 云存储状态指示器 - 只在文档编辑页面显示 */}
             {/* <SaveStatusIndicator /> */}
 

@@ -9,8 +9,8 @@ export const browserWarningStyle = style({
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
-  position: 'absolute',
-  zIndex: 1,
+  position: 'relative',
+  zIndex: 2,
 });
 export const closeButtonStyle = style({
   width: '36px',
@@ -39,8 +39,8 @@ export const tipsContainer = style({
   justifyContent: 'space-between',
   alignItems: 'center',
   padding: '12px 16px',
-  position: 'absolute',
-  zIndex: 1,
+  position: 'relative',
+  zIndex: 2,
   gap: '16px',
   containerType: 'inline-size',
   '@media': {

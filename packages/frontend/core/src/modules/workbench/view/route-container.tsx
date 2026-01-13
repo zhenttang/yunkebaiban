@@ -12,7 +12,11 @@ import { ViewService } from '../services/view';
 import { WorkbenchService } from '../services/workbench';
 import * as styles from './route-container.css';
 import { useViewPosition } from './use-view-position';
-import { ViewBodyTarget, ViewHeaderTarget } from './view-islands';
+import {
+  ViewBodyTarget,
+  ViewHeaderNoticeTarget,
+  ViewHeaderTarget,
+} from './view-islands';
 
 export interface Props {
   route: {
@@ -56,23 +60,29 @@ export const RouteContainer = () => {
   return (
     <div className={styles.root}>
       <div className={styles.header}>
-        {!BUILD_CONFIG.isElectron && viewPosition.isFirst && (
-          <SidebarSwitch
-            show={!leftSidebarOpen}
-            className={styles.leftSidebarButton}
-          />
-        )}
-        <ViewHeaderTarget
+        <ViewHeaderNoticeTarget
           viewId={view.id}
-          className={styles.viewHeaderContainer}
+          className={styles.viewHeaderNoticeContainer}
         />
-        {!BUILD_CONFIG.isElectron && viewPosition.isLast && (
-          <ToggleButton
-            show={!sidebarOpen}
-            className={styles.rightSidebarButton}
-            onToggle={handleToggleSidebar}
+        <div className={styles.headerRow}>
+          {!BUILD_CONFIG.isElectron && viewPosition.isFirst && (
+            <SidebarSwitch
+              show={!leftSidebarOpen}
+              className={styles.leftSidebarButton}
+            />
+          )}
+          <ViewHeaderTarget
+            viewId={view.id}
+            className={styles.viewHeaderContainer}
           />
-        )}
+          {!BUILD_CONFIG.isElectron && viewPosition.isLast && (
+            <ToggleButton
+              show={!sidebarOpen}
+              className={styles.rightSidebarButton}
+              onToggle={handleToggleSidebar}
+            />
+          )}
+        </div>
       </div>
 
       <YunkeErrorBoundary>
