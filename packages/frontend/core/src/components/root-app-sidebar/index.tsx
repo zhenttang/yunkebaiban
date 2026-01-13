@@ -1,8 +1,8 @@
-// Import is already correct, no changes needed
 import {
   AddPageButton,
   AppDownloadButton,
   AppSidebar,
+  CategoryDivider,
   MenuItem,
   MenuLinkItem,
   QuickSearchInput,
@@ -41,6 +41,8 @@ import {
   bottomContainer,
   quickSearch,
   quickSearchAndNewPage,
+  sectionDivider,
+  sectionDividerTop,
   workspaceAndUserWrapper,
   workspaceWrapper,
 } from './index.css';
@@ -163,6 +165,10 @@ export const RootAppSidebar = memo((): ReactElement => {
   return (
     <AppSidebar>
       <SidebarContainer>
+        <CategoryDivider
+          label={t['com.yunke.settings.workspace']()}
+          className={sectionDividerTop}
+        />
         <div className={workspaceAndUserWrapper}>
           <div className={workspaceWrapper}>
             <WorkspaceNavigator
@@ -174,6 +180,10 @@ export const RootAppSidebar = memo((): ReactElement => {
           </div>
           <UserInfo />
         </div>
+        <CategoryDivider
+          label={t['com.yunke.cmdk.yunke.category.yunke.navigation']()}
+          className={sectionDivider}
+        />
         <div className={quickSearchAndNewPage}>
           <QuickSearchInput
             className={quickSearch}

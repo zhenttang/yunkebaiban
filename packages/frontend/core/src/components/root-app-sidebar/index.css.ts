@@ -1,3 +1,4 @@
+import { cssVarV2 } from '@toeverything/theme/v2';
 import { style } from '@vanilla-extract/css';
 
 export const workspaceAndUserWrapper = style({
@@ -5,7 +6,10 @@ export const workspaceAndUserWrapper = style({
   alignItems: 'center',
   justifyContent: 'space-between',
   gap: 12,
-  padding: '4px 0',
+  padding: '8px',
+  borderRadius: '10px',
+  backgroundColor: cssVarV2('layer/background/secondary'),
+  border: `1px solid ${cssVarV2('layer/outline/border')}`,
 });
 export const quickSearchAndNewPage = style({
   display: 'flex',
@@ -27,4 +31,12 @@ export const workspaceWrapper = style({
 export const bottomContainer = style({
   gap: 10,
   padding: '8px 0',
+});
+
+export const sectionDividerTop = style({
+  marginTop: 0,
+});
+
+export const sectionDivider = style({
+  marginTop: 8,
 });
