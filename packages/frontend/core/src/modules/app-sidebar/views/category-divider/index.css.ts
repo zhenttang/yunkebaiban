@@ -54,7 +54,8 @@ export const label = style({
   fontSize: cssVar('fontXs'),
   lineHeight: '24px',
   letterSpacing: '0.04em',
-  flexGrow: '0',
+  flexGrow: 1,
+  minWidth: 0,
   display: 'flex',
   gap: 6,
   alignItems: 'center',
@@ -62,6 +63,17 @@ export const label = style({
   cursor: 'pointer',
   transition: 'color 0.2s ease-in-out',
   selectors: {
+    '&::after': {
+      content: '""',
+      height: 1,
+      minWidth: 12,
+      flexGrow: 1,
+      display: 'block',
+      backgroundColor: cssVarV2('layer/outline/border'),
+      marginLeft: 8,
+      opacity: 0.5,
+      alignSelf: 'center',
+    },
     [`${root}:hover &`]: {
       color: cssVarV2('text/secondary'),
     },
