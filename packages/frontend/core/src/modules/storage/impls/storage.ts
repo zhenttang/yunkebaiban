@@ -15,38 +15,75 @@ export class StorageMemento implements Memento {
   // eventEmitter is used for same tab event
   private readonly eventEmitter = new EventEmitter2();
   // channel is used for cross-tab event
-  private readonly channel = new BroadcastChannel(this.prefix);
+  private readonly channel: BroadcastChannel | null;
+  private readonly memory = new Map<string, unknown>();
   constructor(
     private readonly storage: Storage,
     private readonly prefix: string
-  ) {}
+  ) {
+    this.channel =
+      typeof BroadcastChannel === 'function'
+        ? new BroadcastChannel(this.prefix)
+        : null;
+  }
 
   private storageKey(key: string) {
     return this.prefix + key;
   }
 
   private readValue<T>(key: string): T | undefined {
-    const raw = this.storage.getItem(this.storageKey(key));
-    return safeJsonParse<T>(raw, {
+    const storageKey = this.storageKey(key);
+    let raw: string | null = null;
+    try {
+      raw = this.storage.getItem(storageKey);
+    } catch (error) {
+      console.warn('[StorageMemento] Failed to read storage key:', key, error);
+      return this.memory.get(storageKey) as T | undefined;
+    }
+    if (raw === null) {
+      return this.memory.get(storageKey) as T | undefined;
+    }
+    const parsed = safeJsonParse<T>(raw, {
       onError: error => {
         console.warn(
           `[StorageMemento] Failed to parse key "${key}", removing corrupted entry.`,
           error
         );
-        this.storage.removeItem(this.storageKey(key));
+        try {
+          this.storage.removeItem(storageKey);
+        } catch (removeError) {
+          console.warn(
+            '[StorageMemento] Failed to remove corrupted storage key:',
+            key,
+            removeError
+          );
+        }
       },
     });
+    if (parsed !== undefined) {
+      this.memory.set(storageKey, parsed);
+    }
+    return parsed;
   }
 
   keys(): string[] {
-    const keys: string[] = [];
-    for (let i = 0; i < this.storage.length; i++) {
-      const key = this.storage.key(i);
-      if (key && key.startsWith(this.prefix)) {
-        keys.push(key.slice(this.prefix.length));
+    const keys = new Set<string>();
+    try {
+      for (let i = 0; i < this.storage.length; i++) {
+        const key = this.storage.key(i);
+        if (key && key.startsWith(this.prefix)) {
+          keys.add(key.slice(this.prefix.length));
+        }
+      }
+    } catch (error) {
+      console.warn('[StorageMemento] Failed to read storage keys:', error);
+    }
+    for (const key of this.memory.keys()) {
+      if (key.startsWith(this.prefix)) {
+        keys.add(key.slice(this.prefix.length));
       }
     }
-    return keys;
+    return Array.from(keys);
   }
 
   get<T>(key: string): T | undefined {
@@ -67,21 +104,41 @@ export class StorageMemento implements Memento {
           subscriber.next(event.data.value);
         }
       };
-      this.channel.addEventListener('message', channelCb);
+      this.channel?.addEventListener('message', channelCb);
       return () => {
         this.eventEmitter.off(key, eventEmitterCb);
-        this.channel.removeEventListener('message', channelCb);
+        this.channel?.removeEventListener('message', channelCb);
       };
     });
   }
   set<T>(key: string, value: T): void {
-    this.storage.setItem(this.prefix + key, JSON.stringify(value));
+    const storageKey = this.storageKey(key);
+    this.memory.set(storageKey, value);
+    try {
+      this.storage.setItem(storageKey, JSON.stringify(value));
+    } catch (error) {
+      console.warn(
+        '[StorageMemento] Failed to persist value, keep in memory:',
+        key,
+        error
+      );
+    }
     this.eventEmitter.emit(key, value);
-    this.channel.postMessage({ key, value });
+    try {
+      this.channel?.postMessage({ key, value });
+    } catch (error) {
+      console.warn('[StorageMemento] Failed to broadcast update:', key, error);
+    }
   }
 
   del(key: string): void {
-    this.storage.removeItem(this.prefix + key);
+    const storageKey = this.storageKey(key);
+    this.memory.delete(storageKey);
+    try {
+      this.storage.removeItem(storageKey);
+    } catch (error) {
+      console.warn('[StorageMemento] Failed to remove storage key:', key, error);
+    }
   }
 
   clear(): void {
@@ -122,11 +179,16 @@ export class AsyncStorageMemento implements AsyncMemento {
   // eventEmitter is used for same tab event
   private readonly eventEmitter = new EventEmitter2();
   // channel is used for cross-tab event
-  private readonly channel = new BroadcastChannel(this.dbName);
+  private readonly channel: BroadcastChannel | null;
   constructor(
     private readonly dbName: string,
     private readonly table: string
-  ) {}
+  ) {
+    this.channel =
+      typeof BroadcastChannel === 'function'
+        ? new BroadcastChannel(this.dbName)
+        : null;
+  }
 
   private _db: IDBPDatabase<any> | null = null;
 
@@ -178,11 +240,11 @@ export class AsyncStorageMemento implements AsyncMemento {
           subscriber.next(event.data.value);
         }
       };
-      this.channel.addEventListener('message', channelCb);
+      this.channel?.addEventListener('message', channelCb);
 
       return () => {
         this.eventEmitter.off(key, eventEmitterCb);
-        this.channel.removeEventListener('message', channelCb);
+        this.channel?.removeEventListener('message', channelCb);
       };
     });
   }
@@ -200,7 +262,11 @@ export class AsyncStorageMemento implements AsyncMemento {
 
     // Emit events
     this.eventEmitter.emit(key, value);
-    this.channel.postMessage({ key, value });
+    try {
+      this.channel?.postMessage({ key, value });
+    } catch (error) {
+      console.warn('[AsyncStorageMemento] Failed to broadcast update:', key, error);
+    }
   }
 
   async del(key: string): Promise<void> {
@@ -211,7 +277,11 @@ export class AsyncStorageMemento implements AsyncMemento {
 
     // Emit events
     this.eventEmitter.emit(key, undefined);
-    this.channel.postMessage({ key, value: undefined });
+    try {
+      this.channel?.postMessage({ key, value: undefined });
+    } catch (error) {
+      console.warn('[AsyncStorageMemento] Failed to broadcast update:', key, error);
+    }
   }
 
   async clear(): Promise<void> {
@@ -224,7 +294,11 @@ export class AsyncStorageMemento implements AsyncMemento {
     // Notify observers about each deleted key
     for (const key of keys) {
       this.eventEmitter.emit(key, undefined);
-      this.channel.postMessage({ key, value: undefined });
+      try {
+        this.channel?.postMessage({ key, value: undefined });
+      } catch (error) {
+        console.warn('[AsyncStorageMemento] Failed to broadcast update:', key, error);
+      }
     }
   }
 
