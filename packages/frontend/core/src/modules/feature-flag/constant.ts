@@ -157,7 +157,7 @@ export const YUNKE_FLAGS = {
     description:
       'com.yunke.settings.workspace.experimental-features.enable-local-workspace.description',
     configurable: isCanaryBuild,
-    defaultState: isDesktopEnvironment || isCanaryBuild,
+    defaultState: true,
   },
   enable_advanced_block_visibility: {
     category: 'blocksuite',

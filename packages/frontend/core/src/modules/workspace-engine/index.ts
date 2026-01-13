@@ -13,8 +13,7 @@ export { base64ToUint8Array, uint8ArrayToBase64 } from './utils/base64';
 
 export function configureBrowserWorkspaceFlavours(framework: Framework) {
   framework
-    // ❌ [纯云存储模式] 禁用本地工作区，只使用云存储
-    // .impl(WorkspaceFlavoursProvider('LOCAL'), LocalWorkspaceFlavoursProvider)
+    .impl(WorkspaceFlavoursProvider('LOCAL'), LocalWorkspaceFlavoursProvider)
     .impl(WorkspaceFlavoursProvider('CLOUD'), CloudWorkspaceFlavoursProvider, [
       GlobalState,
       ServersService,

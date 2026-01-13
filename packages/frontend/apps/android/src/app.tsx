@@ -176,9 +176,7 @@ import {
 } from '@yunke/core/modules/cloud';
 import { FeatureFlagService } from '@yunke/core/modules/feature-flag';
 import { getBaseUrl } from '@yunke/config';
-import { WorkspaceFlavoursProvider } from '@yunke/core/modules/workspace';
-import { CloudWorkspaceFlavoursProvider } from '@yunke/core/modules/workspace-engine/impls/cloud';
-import { GlobalState } from '@yunke/core/modules/storage';
+import { configureBrowserWorkspaceFlavours } from '@yunke/core/modules/workspace-engine';
 
 // 不需要再次定义BUILD_CONFIG，已经在文件开头处理了
 import { DocsService } from '@yunke/core/modules/doc';
@@ -295,12 +293,9 @@ try {
   configureLocalStorageStateStorageImpls(framework);
   console.log('✅ LocalStorageStateStorage 配置成功');
   
-  // Android专用：只配置CLOUD工作区，不使用LOCAL本地存储
-  framework.impl(WorkspaceFlavoursProvider('CLOUD'), CloudWorkspaceFlavoursProvider, [
-    GlobalState,
-    ServersService,
-  ]);
-  console.log('✅ Android CloudWorkspaceFlavours 配置成功（仅云端存储）');
+  // Android统一配置：支持本地工作区 + 云端工作区（离线优先）
+  configureBrowserWorkspaceFlavours(framework);
+  console.log('✅ Android WorkspaceFlavours 配置成功（本地优先 + 可选云端）');
   
   configureMobileModules(framework);
   console.log('✅ MobileModules 配置成功');

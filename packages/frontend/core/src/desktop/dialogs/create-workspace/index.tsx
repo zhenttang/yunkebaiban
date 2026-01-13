@@ -44,7 +44,7 @@ export const CreateWorkspaceDialog = ({
 
   const [workspaceName, setWorkspaceName] = useState('');
   const [inputServerId, setInputServerId] = useState(
-    serverId ?? 'yunke-cloud'
+    serverId ?? 'local'
   );
 
   const serversService = useService(ServersService);
