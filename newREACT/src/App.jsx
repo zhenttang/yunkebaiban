@@ -1,23 +1,44 @@
-import React, { useState, useEffect } from 'react';
-import LandingDesktop from './components/LandingDesktop';
-import LandingMobile from './components/LandingMobile';
+import React, { useEffect } from 'react'
+import Lenis from 'lenis'
+import { Scene } from './components/Scene'
 
-const App = () => {
-  const [isMobile, setIsMobile] = useState(false);
-
+function App() {
   useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
+    const lenis = new Lenis()
 
-    // Initial check
-    checkMobile();
+    function raf(time) {
+      lenis.raf(time)
+      requestAnimationFrame(raf)
+    }
 
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
+    requestAnimationFrame(raf)
+  }, [])
 
-  return isMobile ? <LandingMobile /> : <LandingDesktop />;
-};
+  return (
+    <div className="App">
+      <Scene />
 
-export default App;
+      {/* Scrollable Content */}
+      <div className="content">
+        <section className="section">
+          <h1>Welcome to the Void</h1>
+          <p>Scroll to explore</p>
+        </section>
+
+        <section className="section">
+          <h2>Deeper...</h2>
+        </section>
+
+        <section className="section">
+          <h2>Almost there</h2>
+        </section>
+
+        <section className="section">
+          <h2>The End</h2>
+        </section>
+      </div>
+    </div>
+  )
+}
+
+export default App

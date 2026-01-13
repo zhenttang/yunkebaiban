@@ -68,3 +68,5 @@ next-env.d.ts
 Thumbs.db
 packages/frontend/apps/electron/out/
 packages/frontend/apps/electron/YUNKE-canary5rXpwP/
+lusion_download/
+lusion-reverse-engineered-main/

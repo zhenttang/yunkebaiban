@@ -79,53 +79,59 @@ body {
   font-weight: 600;
 }
 
-.ui-overlay {
-  position: absolute;
-  bottom: 40px;
-  left: 50%;
-  transform: translateX(-50%);
+.ui-overl:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  color-scheme: dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #1a1a1a;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  overflow-x: hidden;
+  /* Prevent horizontal scroll */
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+body::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+body {
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
+}
+
+.section {
+  height: 100vh;
   display: flex;
-  gap: 12px;
-  background: rgba(255, 255, 255, 0.95);
-  padding: 12px 24px;
-  border-radius: 16px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
-  backdrop-filter: blur(10px);
-  pointer-events: auto;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  white-space: nowrap;
+  font-size: 2rem;
+  pointer-events: none;
+  /* Let clicks pass through to 3D scene if needed */
 }
 
-.ui-overlay.pill {
-  border-radius: 100px;
-  padding: 10px 20px;
+h1 {
+  font-size: 5rem;
+  margin: 0;
+  background: linear-gradient(to right, #ff6b6b, #4ecdc4);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
-.ui-overlay.scrollable {
-  overflow-x: auto;
-  max-width: 90vw;
-}
-
-.text-btn {
-  padding: 8px 16px;
-  border-radius: 8px;
-  border: 1px solid #e5e7eb;
-  background: #fff;
-  font-size: 13px;
-  font-weight: 600;
-  color: #374151;
-  cursor: pointer;
-  transition: all 0.2s;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  flex-shrink: 0;
-}
-
-.text-btn:hover {
-  background: #f9fafb;
-  border-color: #d1d5db;
-  transform: translateY(-1px);
+p {
+  font-size: 1.5rem;
+  opacity: 0.7;
 }
 
 .text-btn.active {
