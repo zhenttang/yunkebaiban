@@ -51,6 +51,10 @@ export const CreateWorkspaceDialog = ({
   const server = useLiveData(
     inputServerId ? serversService.server$(inputServerId) : null
   );
+  const storageHint =
+    inputServerId === 'local'
+      ? '保存位置：本机存储（可离线使用）。需要同步/协作时，可在“存储”里启用云端。'
+      : '保存位置：云端服务器（需要联网）。适合多设备同步/协作，离线使用请选择本地。';
 
   const onOpenChange = useCallback(
     (open: boolean) => {
@@ -104,11 +108,14 @@ export const CreateWorkspaceDialog = ({
       <FormSection
         label={t['com.yunke.nameWorkspace.subtitle.workspace-type']()}
         input={
-          <ServerSelector
-            className={styles.select}
-            selectedId={inputServerId}
-            onChange={setInputServerId}
-          />
+          <>
+            <ServerSelector
+              className={styles.select}
+              selectedId={inputServerId}
+              onChange={setInputServerId}
+            />
+            <div className={styles.storageHint}>{storageHint}</div>
+          </>
         }
       />
     </ConfirmModal>

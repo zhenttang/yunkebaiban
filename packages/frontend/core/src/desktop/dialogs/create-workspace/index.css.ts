@@ -49,3 +49,10 @@ export const select = style([
     padding: '10px',
   },
 ]);
+
+export const storageHint = style({
+  marginTop: 8,
+  fontSize: cssVar('fontSm'),
+  lineHeight: '20px',
+  color: cssVarV2.text.secondary,
+});

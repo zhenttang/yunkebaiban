@@ -1,5 +1,6 @@
 import {
   SettingHeader,
+  SettingRow,
   SettingWrapper,
 } from '@yunke/component/setting-components';
 import { WorkspacePermissionService } from '@yunke/core/modules/permissions';
@@ -25,6 +26,13 @@ export const WorkspaceSettingStorage = ({
   ).permission;
   const isTeam = useLiveData(workspacePermissionService.isTeam$);
   const isOwner = useLiveData(workspacePermissionService.isOwner$);
+  const isLocalWorkspace = workspace.flavour === 'local';
+  const storageLocationTitle = isLocalWorkspace
+    ? '保存位置：本地'
+    : '保存位置：云端';
+  const storageLocationDesc = isLocalWorkspace
+    ? '数据写入本机存储（IndexedDB/SQLite），离线可用；可在此页启用云端同步。'
+    : '数据写入云端服务器，需要联网；如需离线使用，请创建本地工作区。';
 
   const canExport = !isTeam || isOwner;
   return (
@@ -33,6 +41,9 @@ export const WorkspaceSettingStorage = ({
         title={t['Storage']()}
         subtitle={t['com.yunke.settings.workspace.storage.subtitle']()}
       />
+      <SettingWrapper>
+        <SettingRow name={storageLocationTitle} desc={storageLocationDesc} />
+      </SettingWrapper>
       {workspace.flavour === 'local' ? (
         <>
           <EnableCloudPanel onCloseSetting={onCloseSetting} />{' '}
