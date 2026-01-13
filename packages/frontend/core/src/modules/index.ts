@@ -43,6 +43,7 @@ import { configureOrganizeModule } from './organize';
 import { configurePDFModule } from './pdf';
 import { configurePeekViewModule } from './peek-view';
 import { configurePermissionsModule } from './permissions';
+import { configurePluginsModule } from './plugins';
 import { configureQuickSearchModule } from './quicksearch';
 import { configSearchMenuModule } from './search-menu';
 import { configureShareDocsModule } from './share-doc';
@@ -90,6 +91,7 @@ export function configureCommonModules(framework: Framework) {
   configureDocLinksModule(framework);
   configureOrganizeModule(framework);
   configureFavoriteModule(framework);
+  configurePluginsModule(framework);
   configureNavigationPanelModule(framework);
   configureThemeEditorModule(framework);
   configureEditorModule(framework);

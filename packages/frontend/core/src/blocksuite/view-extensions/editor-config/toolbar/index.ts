@@ -6,6 +6,7 @@ import {
 import { WorkspaceServerService } from '@yunke/core/modules/cloud';
 import { EditorService } from '@yunke/core/modules/editor';
 import type { EditorSettingExt } from '@yunke/core/modules/editor-setting/entities/editor-setting';
+import { PluginRuntimeService, PluginService } from '@yunke/core/modules/plugins';
 import { copyLinkToBlockStdScopeClipboard } from '@yunke/core/utils/clipboard';
 import { I18n, i18nTime } from '@yunke/i18n';
 import { track } from '@yunke/track';
@@ -211,7 +212,51 @@ function createCopyLinkToBlockMenuItem(
   };
 }
 
-function createToolbarMoreMenuConfigV2(baseUrl?: string) {
+function createPluginToolbarActionGroup(
+  framework: FrameworkProvider
+): ToolbarActionGroupGenerator | null {
+  const pluginService = framework.getOptional(PluginService);
+  const pluginRuntimeService = framework.getOptional(PluginRuntimeService);
+  if (!pluginService || !pluginRuntimeService) return null;
+
+  return {
+    placement: ActionPlacement.Start,
+    id: 'z.plugins',
+    generate(ctx) {
+      const actions: ToolbarAction[] = [];
+      const records = pluginService.registry
+        .getAll()
+        .filter(record => record.enabled);
+
+      records.forEach(record => {
+        if (!record.manifest.permissions?.includes('ui:toolbar')) return;
+        const items = record.manifest.contributes?.toolbar ?? [];
+        items.forEach(item => {
+          if (!item.command) return;
+          if (item.scope === 'page' && !ctx.isPageMode) return;
+          if (item.scope === 'edgeless' && !ctx.isEdgelessMode) return;
+          actions.push({
+            id: `plugin:${record.manifest.id}:${item.id}`,
+            tooltip: item.label,
+            icon: EditIcon(),
+            run: () => {
+              pluginRuntimeService.executeCommand(item.command);
+            },
+          });
+        });
+      });
+
+      if (!actions.length) return null;
+      return { actions };
+    },
+  };
+}
+
+function createToolbarMoreMenuConfigV2(
+  framework: FrameworkProvider,
+  baseUrl?: string
+) {
+  const pluginActions = createPluginToolbarActionGroup(framework);
   return {
     actions: [
       {
@@ -315,6 +360,7 @@ function createToolbarMoreMenuConfigV2(baseUrl?: string) {
           },
         ],
       },
+      ...(pluginActions ? [pluginActions] : []),
       {
         placement: ActionPlacement.More,
         id: 'z.block-meta',
@@ -1010,12 +1056,13 @@ const embedIframeToolbarConfig = {
 
 export const createCustomToolbarExtension = (
   settings: EditorSettingExt,
-  baseUrl: string
+  baseUrl: string,
+  framework: FrameworkProvider
 ): ExtensionType[] => {
   return [
     ToolbarModuleExtension({
       id: BlockFlavourIdentifier('custom:yunke:*'),
-      config: createToolbarMoreMenuConfigV2(baseUrl),
+      config: createToolbarMoreMenuConfigV2(framework, baseUrl),
     }),
 
     ToolbarModuleExtension({

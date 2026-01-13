@@ -92,3 +92,97 @@ export const arrowRightIcon = style({
   marginLeft: 'auto',
   marginRight: 0,
 });
+
+export const pluginSection = style({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: 12,
+});
+
+export const pluginActionRow = style({
+  display: 'flex',
+  gap: 8,
+});
+
+export const pluginList = style({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: 12,
+});
+
+export const pluginCard = style({
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'flex-start',
+  padding: 12,
+  borderRadius: 8,
+  border: `1px solid ${cssVar('borderColor')}`,
+  gap: 16,
+});
+
+export const pluginBody = style({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: 8,
+  flex: 1,
+  minWidth: 0,
+});
+
+export const pluginInfo = style({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: 4,
+});
+
+export const pluginTitle = style({
+  fontWeight: 600,
+  display: 'flex',
+  alignItems: 'center',
+  gap: 8,
+});
+
+export const pluginVersion = style({
+  color: cssVar('textSecondaryColor'),
+  fontSize: cssVar('fontXs'),
+});
+
+export const pluginMeta = style({
+  color: cssVar('textSecondaryColor'),
+  fontSize: cssVar('fontXs'),
+});
+
+export const pluginControls = style({
+  display: 'flex',
+  alignItems: 'center',
+  gap: 8,
+  alignSelf: 'flex-start',
+});
+
+export const pluginEmpty = style({
+  color: cssVar('textSecondaryColor'),
+  fontSize: cssVar('fontXs'),
+});
+
+export const pluginCommandList = style({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: 6,
+});
+
+export const pluginCommandTitle = style({
+  fontSize: cssVar('fontXs'),
+  fontWeight: 600,
+  color: cssVar('textSecondaryColor'),
+});
+
+export const pluginCommandRow = style({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  gap: 8,
+});
+
+export const pluginCommandLabel = style({
+  fontSize: cssVar('fontXs'),
+  color: cssVar('textSecondaryColor'),
+});

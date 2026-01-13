@@ -1,0 +1,15 @@
+{
+  "id": "com.yunke.sample.quick-tag",
+  "name": "Quick Tag Sample",
+  "version": "0.1.0",
+  "author": "Yunke",
+  "entry": "main.js",
+  "engine": { "minVersion": "1.0.0", "apiVersion": "1" },
+  "permissions": ["command:register", "storage:local", "ui:toolbar"],
+  "contributes": {
+    "command": [{ "id": "sample.insert-tag", "label": "Insert Tag" }],
+    "toolbar": [
+      { "id": "sample.quick-tag", "label": "Quick Tag", "icon": "tag", "command": "sample.insert-tag" }
+    ]
+  }
+}

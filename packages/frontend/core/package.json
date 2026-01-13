@@ -52,6 +52,7 @@
     "eventemitter2": "^6.4.9",
     "file-type": "^21.0.0",
     "filesize": "^10.1.6",
+    "fflate": "^0.8.2",
     "foxact": "^0.2.43",
     "fuse.js": "^7.0.0",
     "graphemer": "^1.4.0",

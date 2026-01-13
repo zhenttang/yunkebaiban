@@ -1,4 +1,4 @@
-import { Button, Checkbox, Loading, Switch, Tooltip } from '@yunke/component';
+import { Button, Checkbox, Loading, Switch, Tooltip, notify } from '@yunke/component';
 import { SettingHeader } from '@yunke/component/setting-components';
 import { useAsyncCallback } from '@yunke/core/components/hooks/yunke-async-hooks';
 import {
@@ -6,6 +6,7 @@ import {
   FeatureFlagService,
   type Flag,
 } from '@yunke/core/modules/feature-flag';
+import { PluginRuntimeService, PluginService } from '@yunke/core/modules/plugins';
 import { useI18n } from '@yunke/i18n';
 import {
   ArrowRightSmallIcon,
@@ -160,6 +161,147 @@ const ExperimentalFeaturesItem = ({
   );
 };
 
+const PluginManagerPanel = () => {
+  const { pluginService, pluginRuntimeService } = useServices({
+    PluginService,
+    PluginRuntimeService,
+  });
+  const plugins = useLiveData(pluginService.registry.plugins$) ?? [];
+
+  const handleInstallDemo = useCallback(() => {
+    pluginService.installDemoPlugin();
+    notify.success({ title: '已安装示例插件' });
+  }, [pluginService]);
+
+  const handleImportZip = useAsyncCallback(async () => {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.zip';
+    input.onchange = async () => {
+      const file = input.files?.[0];
+      if (!file) return;
+      try {
+        const manifest = await pluginService.installFromZip(file);
+        notify.success({ title: `已导入插件：${manifest.name}` });
+      } catch (error) {
+        console.error(error);
+        notify.error({ title: '插件导入失败，请检查包格式' });
+      }
+    };
+    input.click();
+  }, [pluginService]);
+
+  const handleToggle = useCallback(
+    (id: string, enabled: boolean) => {
+      if (enabled) {
+        pluginService.enable(id);
+      } else {
+        pluginService.disable(id);
+      }
+    },
+    [pluginService]
+  );
+
+  const handleUninstall = useCallback(
+    (id: string) => {
+      pluginService.uninstall(id);
+      notify.success({ title: '插件已卸载' });
+    },
+    [pluginService]
+  );
+
+  const handleRunCommand = useCallback(
+    (commandId: string) => {
+      const ok = pluginRuntimeService.executeCommand(commandId);
+      if (!ok) {
+        notify.error({ title: '命令不可用，请先启用插件' });
+      }
+    },
+    [pluginRuntimeService]
+  );
+
+  return (
+    <div className={styles.pluginSection}>
+      <div className={styles.subHeader}>插件管理（实验）</div>
+      <div className={styles.pluginActionRow}>
+        <Button size="small" variant="primary" onClick={handleImportZip}>
+          导入插件
+        </Button>
+        <Button size="small" variant="secondary" onClick={handleInstallDemo}>
+          安装示例
+        </Button>
+      </div>
+      {plugins.length === 0 ? (
+        <div className={styles.pluginEmpty}>暂无插件</div>
+      ) : (
+        <div className={styles.pluginList}>
+          {plugins.map(record => {
+            const commands = record.manifest.contributes?.command ?? [];
+            return (
+              <div key={record.manifest.id} className={styles.pluginCard}>
+                <div className={styles.pluginBody}>
+                  <div className={styles.pluginInfo}>
+                    <div className={styles.pluginTitle}>
+                      {record.manifest.name}
+                      <span className={styles.pluginVersion}>
+                        {record.manifest.version}
+                      </span>
+                    </div>
+                    <div className={styles.pluginMeta}>
+                      {record.manifest.id} ·{' '}
+                      {record.source === 'builtin' ? '内置' : '本地'}
+                    </div>
+                  </div>
+                  {commands.length > 0 ? (
+                    <div className={styles.pluginCommandList}>
+                      <div className={styles.pluginCommandTitle}>命令</div>
+                      {commands.map(command => (
+                        <div
+                          key={command.id}
+                          className={styles.pluginCommandRow}
+                        >
+                          <div className={styles.pluginCommandLabel}>
+                            {command.label}
+                          </div>
+                          <Button
+                            size="small"
+                            variant="secondary"
+                            disabled={!record.enabled}
+                            onClick={() => handleRunCommand(command.id)}
+                          >
+                            执行
+                          </Button>
+                        </div>
+                      ))}
+                    </div>
+                  ) : null}
+                </div>
+                <div className={styles.pluginControls}>
+                  <Switch
+                    checked={record.enabled}
+                    onChange={checked =>
+                      handleToggle(record.manifest.id, checked)
+                    }
+                  />
+                  {record.source !== 'builtin' ? (
+                    <Button
+                      size="small"
+                      variant="secondary"
+                      onClick={() => handleUninstall(record.manifest.id)}
+                    >
+                      卸载
+                    </Button>
+                  ) : null}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+};
+
 const ExperimentalFeaturesMain = () => {
   const t = useI18n();
   const { featureFlagService } = useServices({ FeatureFlagService });
@@ -185,6 +327,7 @@ const ExperimentalFeaturesMain = () => {
             flag={featureFlagService.flags[key as keyof YUNKE_FLAGS]}
           />
         ))}
+        <PluginManagerPanel />
       </div>
     </>
   );
