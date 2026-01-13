@@ -1,6 +1,7 @@
 import {
   loadDBFile,
   saveDBFileAs,
+  selectDBFilePath,
   selectDBFileLocation,
   setFakeDialogResult,
 } from './dialog';
@@ -14,6 +15,9 @@ export const dialogHandlers = {
   },
   selectDBFileLocation: async () => {
     return selectDBFileLocation();
+  },
+  selectDBFilePath: async (name: string, id: string) => {
+    return selectDBFilePath(name, id);
   },
   setFakeDialogResult: async (
     result: Parameters<typeof setFakeDialogResult>[0]

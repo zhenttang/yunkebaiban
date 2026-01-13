@@ -7,9 +7,11 @@ import type { Workspace } from '@yunke/core/modules/workspace';
 import { useI18n } from '@yunke/i18n';
 import { universalId } from '@yunke/nbstore';
 import track from '@yunke/track';
-import { ExportIcon } from '@blocksuite/icons/rc';
+import { DownloadIcon, ExportIcon } from '@blocksuite/icons/rc';
 import { useService } from '@toeverything/infra';
 import { useState } from 'react';
+
+import * as styles from './style.css';
 
 interface ExportPanelProps {
   workspace: Workspace;
@@ -20,6 +22,18 @@ export const DesktopExportPanel = ({ workspace }: ExportPanelProps) => {
   const [saving, setSaving] = useState(false);
   const desktopApi = useService(DesktopApiService);
   const isLocalWorkspace = workspace.flavour === 'local';
+  const fullBackupName = (
+    <div className={styles.rowTitle}>
+      <ExportIcon className={styles.rowIcon} />
+      <span>{t['Full Backup']()}</span>
+    </div>
+  );
+  const quickExportName = (
+    <div className={styles.rowTitle}>
+      <DownloadIcon className={styles.rowIcon} />
+      <span>{t['Quick Export']()}</span>
+    </div>
+  );
 
   const [fullSyncing, setFullSyncing] = useState(false);
   const [fullSynced, setFullSynced] = useState(isLocalWorkspace);
@@ -65,7 +79,7 @@ export const DesktopExportPanel = ({ workspace }: ExportPanelProps) => {
   if (fullSynced) {
     return (
       <SettingRow
-        name={t['Full Backup']()}
+        name={fullBackupName}
         desc={t['Full Backup Description']()}
       >
         <Button
@@ -83,7 +97,7 @@ export const DesktopExportPanel = ({ workspace }: ExportPanelProps) => {
   return (
     <>
       <SettingRow
-        name={t['Full Backup']()}
+        name={fullBackupName}
         desc={
           fullSynced ? t['Full Backup Description']() : t['Full Backup Hint']()
         }
@@ -100,7 +114,7 @@ export const DesktopExportPanel = ({ workspace }: ExportPanelProps) => {
         </Button>
       </SettingRow>
       <SettingRow
-        name={t['Quick Export']()}
+        name={quickExportName}
         desc={t['Quick Export Description']()}
       >
         <Button

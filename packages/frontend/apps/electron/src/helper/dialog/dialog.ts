@@ -38,6 +38,12 @@ export interface SelectDBFileLocationResult {
   canceled?: boolean;
 }
 
+export interface SelectDBFilePathResult {
+  filePath?: string;
+  error?: ErrorMessage;
+  canceled?: boolean;
+}
+
 // provide a backdoor to set dialog path for testing in playwright
 export interface FakeDialogResult {
   canceled?: boolean;
@@ -64,10 +70,16 @@ export function setFakeDialogResult(result: FakeDialogResult | undefined) {
 }
 
 const extension = 'yunke';
+const storageExtension = 'db';
 
 function getDefaultDBFileName(name: string, id: string) {
   const fileName = `${name}_${id}.${extension}`;
   // make sure fileName is a valid file name
+  return fileName.replace(/[/\\?%*:|"<>]/g, '-');
+}
+
+function getDefaultStorageFileName(name: string, id: string) {
+  const fileName = `${name}_${id}.${storageExtension}`;
   return fileName.replace(/[/\\?%*:|"<>]/g, '-');
 }
 
@@ -158,6 +170,42 @@ export async function selectDBFileLocation(): Promise<SelectDBFileLocationResult
     logger.error('selectDBFileLocation', err);
     return {
       error: (err as any).message,
+    };
+  }
+}
+
+export async function selectDBFilePath(
+  name: string,
+  id: string
+): Promise<SelectDBFilePathResult> {
+  try {
+    const ret =
+      getFakedResult() ??
+      (await mainRPC.showSaveDialog({
+        properties: ['showOverwriteConfirmation'],
+        title: '设置工作区存储文件',
+        showsTagField: false,
+        buttonLabel: '选择',
+        filters: [
+          {
+            extensions: [storageExtension, extension],
+            name: 'SQLite数据库',
+          },
+        ],
+        defaultPath: getDefaultStorageFileName(name, id),
+        message: '选择一个位置来存储工作区数据库文件',
+      }));
+    const filePath = ret.filePath;
+    if (ret.canceled || !filePath) {
+      return {
+        canceled: true,
+      };
+    }
+    return { filePath };
+  } catch (err) {
+    logger.error('selectDBFilePath', err);
+    return {
+      error: 'UNKNOWN_ERROR',
     };
   }
 }

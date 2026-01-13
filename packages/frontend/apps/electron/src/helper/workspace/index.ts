@@ -1,8 +1,12 @@
 import type { MainEventRegister } from '../type';
 import {
   deleteBackupWorkspace,
+  deleteWorkspaceStorageFile,
   deleteWorkspace,
+  getWorkspaceStoragePath,
   getDeletedWorkspaces,
+  migrateWorkspaceStoragePath,
+  showWorkspaceStorageInFolder,
   trashWorkspace,
 } from './handlers';
 
@@ -18,4 +22,8 @@ export const workspaceHandlers = {
     return getDeletedWorkspaces();
   },
   deleteBackupWorkspace: async (id: string) => deleteBackupWorkspace(id),
+  getStoragePath: getWorkspaceStoragePath,
+  showStorageInFolder: showWorkspaceStorageInFolder,
+  migrateStoragePath: migrateWorkspaceStoragePath,
+  deleteStorageFile: deleteWorkspaceStorageFile,
 };

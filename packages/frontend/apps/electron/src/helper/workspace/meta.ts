@@ -1,6 +1,7 @@
 import path from 'node:path';
 
 import { type SpaceType } from '@yunke/nbstore';
+import fs from 'fs-extra';
 
 import { isWindows } from '../../shared/utils';
 import { mainRPC } from '../main-rpc';
@@ -52,6 +53,12 @@ export async function getSpaceDBPath(
   spaceType: SpaceType,
   id: string
 ) {
+  if (peer === 'local') {
+    const meta = await readWorkspaceMetaFile(spaceType, id);
+    if (meta?.mainDBPath) {
+      return meta.mainDBPath;
+    }
+  }
   return path.join(
     await getSpaceBasePath(spaceType),
     escapeFilename(peer),
@@ -92,10 +99,32 @@ export async function getWorkspaceMeta(
   spaceType: SpaceType,
   workspaceId: string
 ): Promise<WorkspaceMeta> {
+  const meta = await readWorkspaceMetaFile(spaceType, workspaceId);
+  if (meta?.mainDBPath) {
+    return {
+      ...meta,
+      id: workspaceId,
+    };
+  }
   const dbPath = await getWorkspaceDBPath(spaceType, workspaceId);
 
   return {
     mainDBPath: dbPath,
     id: workspaceId,
   };
+}
+
+async function readWorkspaceMetaFile(
+  spaceType: SpaceType,
+  workspaceId: string
+) {
+  try {
+    const metaPath = await getWorkspaceMetaPath(spaceType, workspaceId);
+    if (!(await fs.pathExists(metaPath))) return null;
+    const meta = (await fs.readJson(metaPath)) as Partial<WorkspaceMeta>;
+    if (!meta.mainDBPath) return null;
+    return meta as WorkspaceMeta;
+  } catch {
+    return null;
+  }
 }

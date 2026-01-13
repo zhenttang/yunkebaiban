@@ -29,6 +29,23 @@ export const storageProgressBar = style({
   height: '100%',
 });
 
+export const rowTitle = style({
+  display: 'inline-flex',
+  alignItems: 'center',
+  gap: 8,
+});
+
+export const rowIcon = style({
+  width: 16,
+  height: 16,
+  color: cssVarV2('icon/secondary'),
+  flexShrink: 0,
+});
+
+export const sectionSpacing = style({
+  marginTop: 12,
+});
+
 // blob management
 
 // when no blob is selected

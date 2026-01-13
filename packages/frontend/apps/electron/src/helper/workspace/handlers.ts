@@ -3,12 +3,14 @@ import path from 'node:path';
 import { DocStorage } from '@yunke/native';
 import {
   parseUniversalId,
+  type SpaceType,
   universalId as generateUniversalId,
 } from '@yunke/nbstore';
 import fs from 'fs-extra';
 import { applyUpdate, Doc as YDoc } from 'yjs';
 
 import { logger } from '../logger';
+import { mainRPC } from '../main-rpc';
 import { getDocStoragePool } from '../nbstore';
 import { ensureSQLiteDisconnected } from '../nbstore/v1/ensure-db';
 import { WorkspaceSQLiteDB } from '../nbstore/v1/workspace-db-adapter';
@@ -178,6 +180,84 @@ async function getWorkspaceDocMeta(
     await pool.disconnect(universalId);
   }
   return null;
+}
+
+export async function getWorkspaceStoragePath(
+  peer: string,
+  spaceType: SpaceType,
+  id: string
+) {
+  return getSpaceDBPath(peer, spaceType, id);
+}
+
+export async function showWorkspaceStorageInFolder(
+  peer: string,
+  spaceType: SpaceType,
+  id: string
+) {
+  const filePath = await getSpaceDBPath(peer, spaceType, id);
+  await mainRPC.showItemInFolder(filePath);
+  return { filePath };
+}
+
+export async function migrateWorkspaceStoragePath(
+  peer: string,
+  spaceType: SpaceType,
+  id: string,
+  targetPath: string
+) {
+  if (!targetPath) {
+    return { error: 'DB_FILE_PATH_INVALID' as const };
+  }
+  const currentPath = await getSpaceDBPath(peer, spaceType, id);
+  if (path.resolve(currentPath) === path.resolve(targetPath)) {
+    return { filePath: currentPath, skipped: true };
+  }
+
+  const universalId = generateUniversalId({
+    peer,
+    type: spaceType,
+    id,
+  });
+  const pool = getDocStoragePool();
+  try {
+    await pool.connect(universalId, currentPath);
+    await pool.checkpoint(universalId);
+  } catch (error) {
+    logger.error('migrateWorkspaceStoragePath checkpoint failed', error);
+  } finally {
+    await pool.disconnect(universalId).catch(() => {});
+  }
+
+  await fs.ensureDir(path.dirname(targetPath));
+  await fs.copy(currentPath, targetPath, { overwrite: true });
+  await storeWorkspaceMeta(id, { id, mainDBPath: targetPath });
+  return { filePath: targetPath, oldPath: currentPath };
+}
+
+export async function deleteWorkspaceStorageFile(filePath: string) {
+  if (!filePath) {
+    return { error: 'DB_FILE_PATH_INVALID' as const };
+  }
+  const resolved = path.resolve(filePath);
+  const candidates = [resolved, `${resolved}-wal`, `${resolved}-shm`];
+  try {
+    const existing = await Promise.all(
+      candidates.map(async candidate => ({
+        path: candidate,
+        exists: await fs.pathExists(candidate),
+      }))
+    );
+    const targets = existing.filter(item => item.exists).map(item => item.path);
+    if (targets.length === 0) {
+      return { skipped: true };
+    }
+    await Promise.all(targets.map(target => fs.remove(target)));
+    return { deleted: true };
+  } catch (error) {
+    logger.error('deleteWorkspaceStorageFile failed', error);
+    return { error: 'UNKNOWN_ERROR' as const };
+  }
 }
 
 export async function getDeletedWorkspaces() {
