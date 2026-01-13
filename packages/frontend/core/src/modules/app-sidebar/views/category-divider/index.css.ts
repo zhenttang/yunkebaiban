@@ -65,14 +65,14 @@ export const label = style({
   selectors: {
     '&::after': {
       content: '""',
-      height: 2,
-      minWidth: 16,
+      height: 1,
+      minWidth: 24,
       flexGrow: 1,
       marginLeft: 8,
-      opacity: 1,
+      opacity: 0.28,
       alignSelf: 'center',
       borderRadius: 999,
-      background: `linear-gradient(90deg, ${cssVarV2('text/secondary')} 0%, ${cssVarV2('text/secondary')} 40%, rgba(0, 0, 0, 0) 100%)`,
+      background: `linear-gradient(90deg, ${cssVarV2('layer/outline/border')}, rgba(0, 0, 0, 0))`,
     },
     [`${root}:hover &`]: {
       color: cssVarV2('text/secondary'),
