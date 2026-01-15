@@ -1,5 +1,6 @@
 import path from 'node:path';
 
+import { appConfigSchema, defaultAppConfig } from '@toeverything/infra';
 import { type SpaceType } from '@yunke/nbstore';
 import fs from 'fs-extra';
 
@@ -7,10 +8,73 @@ import { isWindows } from '../../shared/utils';
 import { mainRPC } from '../main-rpc';
 import type { WorkspaceMeta } from '../type';
 
+const fallbackOfflineConfig = {
+  enabled: false,
+  dataPath: '',
+};
+
 let _appDataPath = '';
+let _offlineConfig:
+  | (typeof defaultAppConfig)['offline']
+  | typeof fallbackOfflineConfig
+  | null = null;
+
+async function getAppConfigPath() {
+  const userDataPath = await mainRPC.getPath('userData');
+  return path.join(userDataPath, 'config.json');
+}
+
+async function getOfflineConfig() {
+  if (_offlineConfig) {
+    return _offlineConfig;
+  }
+  try {
+    const configPath = await getAppConfigPath();
+    if (await fs.pathExists(configPath)) {
+      const raw = await fs.readJson(configPath);
+      const rawOffline = raw?.offline;
+      if (rawOffline && typeof rawOffline === 'object') {
+        _offlineConfig = {
+          ...fallbackOfflineConfig,
+          ...(defaultAppConfig as typeof fallbackOfflineConfig | any).offline,
+          enabled:
+            typeof (rawOffline as { enabled?: unknown }).enabled === 'boolean'
+              ? (rawOffline as { enabled?: boolean }).enabled ?? false
+              : fallbackOfflineConfig.enabled,
+          dataPath:
+            typeof (rawOffline as { dataPath?: unknown }).dataPath === 'string'
+              ? (rawOffline as { dataPath?: string }).dataPath ?? ''
+              : fallbackOfflineConfig.dataPath,
+        };
+        return _offlineConfig;
+      }
+      const parsed = appConfigSchema.safeParse(raw);
+      if (parsed.success) {
+        _offlineConfig =
+          parsed.data.offline ?? (defaultAppConfig as any).offline ?? fallbackOfflineConfig;
+        return _offlineConfig;
+      }
+    }
+  } catch {
+    // ignore and fallback to default
+  }
+  _offlineConfig =
+    (defaultAppConfig as any).offline ?? fallbackOfflineConfig;
+  return _offlineConfig;
+}
 
 export async function getAppDataPath() {
   if (_appDataPath) {
+    return _appDataPath;
+  }
+  const offlineConfig = await getOfflineConfig();
+  if (offlineConfig?.enabled) {
+    const configuredPath = offlineConfig.dataPath?.trim();
+    if (configuredPath) {
+      _appDataPath = configuredPath;
+      return _appDataPath;
+    }
+    _appDataPath = path.join(await mainRPC.getPath('sessionData'), 'offline');
     return _appDataPath;
   }
   _appDataPath = await mainRPC.getPath('sessionData');

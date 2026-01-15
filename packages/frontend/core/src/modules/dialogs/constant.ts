@@ -9,6 +9,7 @@ export type SettingTab =
   | 'about'
   | 'plans'
   | 'billing'
+  | 'offline'
   | 'backup' // electron only
   | 'experimental-features'
   | 'editor'

@@ -5,6 +5,7 @@ import {
   type DropTargetOptions,
   IconButton,
   Loading,
+  notify,
   useDraggable,
   useDropTarget,
 } from '@yunke/component';
@@ -13,7 +14,12 @@ import { useCatchEventCallback } from '@yunke/core/components/hooks/use-catch-ev
 import type { YunkeDNDData } from '@yunke/core/types/dnd';
 import { useI18n } from '@yunke/i18n';
 import { track } from '@yunke/track';
-import { CloseIcon, PlusIcon, RightSidebarIcon } from '@blocksuite/icons/rc';
+import {
+  CloseIcon,
+  PlusIcon,
+  RightSidebarIcon,
+  SettingsIcon,
+} from '@blocksuite/icons/rc';
 import {
   useLiveData,
   useService,
@@ -26,12 +32,14 @@ import {
   Fragment,
   type MouseEventHandler,
   type ReactNode,
+  useCallback,
   useEffect,
   useMemo,
   useState,
 } from 'react';
 
 import { AppSidebarService } from '../../app-sidebar';
+import { WorkspaceDialogService } from '../../dialogs';
 import { DesktopApiService } from '../../desktop-api';
 import { resolveLinkToDoc } from '../../navigation';
 import { iconNameToIcon } from '../../workbench/constants';
@@ -386,6 +394,7 @@ export const AppTabsHeader = ({
   const fullScreen = useIsFullScreen();
 
   const desktopApi = useService(DesktopApiService);
+  const workspaceDialogService = useServiceOptional(WorkspaceDialogService);
 
   const tabsHeaderService = useService(AppTabsHeaderService);
   const tabs = useLiveData(tabsHeaderService.tabsStatus$);
@@ -403,6 +412,17 @@ export const AppTabsHeader = ({
   const onToggleRightSidebar = useAsyncCallback(async () => {
     await tabsHeaderService.onToggleRightSidebar?.();
   }, [tabsHeaderService]);
+
+  const onOpenSettingModal = useCallback(() => {
+    track.$.navigationPanel.$.openSettings();
+    if (!workspaceDialogService) {
+      notify.error({ title: '当前页面未加载工作区，无法打开设置' });
+      return;
+    }
+    workspaceDialogService.open('setting', {
+      activeTab: BUILD_CONFIG.isElectron ? 'offline' : 'appearance',
+    });
+  }, [workspaceDialogService]);
 
   useEffect(() => {
     if (mode === 'app') {
@@ -571,6 +591,14 @@ export const AppTabsHeader = ({
         <span style={{ fontSize: '16px' }}>☁️</span>
         <span>云端已连接</span>
       </div>
+      <IconButton
+        size={24}
+        onClick={onOpenSettingModal}
+        tooltip={t['com.yunke.settingSidebar.title']?.() ?? '设置'}
+        tooltipShortcut={['$mod', ',']}
+        data-testid="app-tabs-header-settings"
+        icon={<SettingsIcon />}
+      />
       <IconButton size="24" onClick={onToggleRightSidebar}>
         <RightSidebarIcon />
       </IconButton>

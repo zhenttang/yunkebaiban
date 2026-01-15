@@ -1,8 +1,15 @@
 import { z } from 'zod';
 
+const offlineConfigSchema = z.object({
+  enabled: z.boolean().optional().default(false),
+  dataPath: z.string().optional().default(''),
+});
+
 export const appConfigSchema = z.object({
   /** 是否显示新手引导 */
   onBoarding: z.boolean().optional().default(true),
+  /** 离线配置（桌面端可选） */
+  offline: offlineConfigSchema.optional().default({}),
 });
 
 export type AppConfigSchema = z.infer<typeof appConfigSchema>;

@@ -31,10 +31,30 @@ export interface Environment {
  * 从环境变量获取配置值（必需项）
  * 如果未配置则抛出错误
  */
+function isElectronOfflineMode(): boolean {
+  const apiBase = import.meta.env?.VITE_API_BASE_URL;
+  if (apiBase && apiBase.trim() !== '') {
+    return false;
+  }
+  try {
+    // @ts-ignore 由 DefinePlugin 注入
+    if (typeof BUILD_CONFIG !== 'undefined' && BUILD_CONFIG.isElectron) {
+      return true;
+    }
+  } catch {}
+  if (typeof process !== 'undefined' && process.versions?.electron) {
+    return true;
+  }
+  return false;
+}
+
 function getRequiredEnvValue(key: string): string {
   const buildTimeValue = import.meta.env?.[key];
   if (buildTimeValue && buildTimeValue.trim() !== '') {
     return buildTimeValue.trim();
+  }
+  if (key === 'VITE_API_BASE_URL' && isElectronOfflineMode()) {
+    return '';
   }
   throw new Error(`❌ 环境变量配置缺失：请在 .env 文件中配置 ${key}`);
 }
@@ -71,9 +91,12 @@ function parseBaseUrl(baseUrl: string): { host: string; port: number; protocol: 
 // 环境配置定义
 function createEnvironments(): Record<string, Environment> {
   const apiBaseUrl = getRequiredEnvValue('VITE_API_BASE_URL');
+  const offlineMode = apiBaseUrl.trim() === '';
   const devServerPortStr = getRequiredEnvValueOrEmpty('VITE_DEV_SERVER_PORT');
   const devServerPort = devServerPortStr ? parseInt(devServerPortStr) : undefined;
-  const parsed = parseBaseUrl(apiBaseUrl);
+  const parsed = offlineMode
+    ? { host: 'localhost', port: 0, protocol: 'http' as const }
+    : parseBaseUrl(apiBaseUrl);
   const socketioPortStr = getRequiredEnvValueOrEmpty('VITE_SOCKETIO_PORT');
   const socketioPort = socketioPortStr ? parseInt(socketioPortStr) : parsed.port;
 

@@ -247,6 +247,21 @@ export function createApplicationMenu() {
       ],
     },
     {
+      label: '设置',
+      submenu: [
+        {
+          label: '打开设置',
+          accelerator: 'CommandOrControl+,',
+          click: async () => {
+            await showMainWindow();
+            applicationMenuSubjects.openInSettingModal$.next({
+              activeTab: 'offline',
+            });
+          },
+        },
+      ],
+    },
+    {
       role: 'help',
       submenu: [
         {

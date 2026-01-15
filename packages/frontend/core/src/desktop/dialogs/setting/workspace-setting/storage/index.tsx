@@ -5,6 +5,7 @@ import {
   SettingRow,
   SettingWrapper,
 } from '@yunke/component/setting-components';
+import { useAppConfigStorage } from '@yunke/core/components/hooks/use-app-config-storage';
 import { DesktopApiService } from '@yunke/core/modules/desktop-api';
 import { GlobalDialogService } from '@yunke/core/modules/dialogs';
 import { WorkspacePermissionService } from '@yunke/core/modules/permissions';
@@ -37,6 +38,7 @@ export const WorkspaceSettingStorage = ({
 }) => {
   const t = useI18n();
   const workspace = useService(WorkspaceService).workspace;
+  const [appConfig] = useAppConfigStorage();
   const workspacePermissionService = useService(
     WorkspacePermissionService
   ).permission;
@@ -44,6 +46,7 @@ export const WorkspaceSettingStorage = ({
   const isOwner = useLiveData(workspacePermissionService.isOwner$);
   const isLocalWorkspace = workspace.flavour === 'local';
   const isWebRuntime = BUILD_CONFIG.isWeb || BUILD_CONFIG.isMobileWeb;
+  const isOfflineEnabled = Boolean(appConfig.offline?.enabled);
   const showWebStorageInfo = isWebRuntime && isLocalWorkspace;
   const globalDialogService = useService(GlobalDialogService);
   const desktopApi = useServiceOptional(DesktopApiService);
@@ -162,6 +165,12 @@ export const WorkspaceSettingStorage = ({
           storageQuota ? ` / ${bytes.format(storageQuota)}` : ''
         }（浏览器估算）`
       : '暂不可用（浏览器未提供存储估算）';
+  const storagePathDesc =
+    isOfflineEnabled && BUILD_CONFIG.isElectron
+      ? '由离线模式统一管理，可在 通用 → 离线模式 中修改路径'
+      : storagePathLoading
+        ? '正在读取...'
+        : storagePath ?? '暂不可用';
 
   const handleCopyStoragePath = useCallback(async () => {
     if (!storagePath) return;
@@ -292,11 +301,7 @@ export const WorkspaceSettingStorage = ({
         {BUILD_CONFIG.isElectron && isLocalWorkspace ? (
           <SettingRow
             name={storagePathName}
-            desc={
-              storagePathLoading
-                ? '正在读取...'
-                : storagePath ?? '暂不可用'
-            }
+            desc={storagePathDesc}
           >
             <Button
               size="small"
@@ -306,23 +311,27 @@ export const WorkspaceSettingStorage = ({
             >
               打开文件夹
             </Button>
-            <Button
-              size="small"
-              variant="secondary"
-              onClick={handleCopyStoragePath}
-              disabled={!storagePath || storagePathLoading || migrating}
-            >
-              复制路径
-            </Button>
-            <Button
-              size="small"
-              variant="secondary"
-              onClick={handleMigrateStorage}
-              loading={migrating}
-              disabled={storagePathLoading}
-            >
-              迁移位置
-            </Button>
+            {isOfflineEnabled ? null : (
+              <>
+                <Button
+                  size="small"
+                  variant="secondary"
+                  onClick={handleCopyStoragePath}
+                  disabled={!storagePath || storagePathLoading || migrating}
+                >
+                  复制路径
+                </Button>
+                <Button
+                  size="small"
+                  variant="secondary"
+                  onClick={handleMigrateStorage}
+                  loading={migrating}
+                  disabled={storagePathLoading}
+                >
+                  迁移位置
+                </Button>
+              </>
+            )}
           </SettingRow>
         ) : null}
         {BUILD_CONFIG.isElectron && oldStoragePath ? (

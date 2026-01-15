@@ -9,6 +9,7 @@ import {
   FolderIcon,
   InformationIcon,
   KeyboardIcon,
+  LocalWorkspaceIcon,
   MeetingIcon,
   NotificationIcon,
   PenIcon,
@@ -27,6 +28,7 @@ import { ExperimentalFeatures } from './experimental-features';
 import { PaymentIcon, UpgradeIcon } from './icons';
 import { MeetingsSettings } from './meetings';
 import { NotificationSettings } from './notifications';
+import { OfflineSettings } from './offline';
 import { YUNKEPricingPlans } from './plans';
 import { Shortcuts } from './shortcuts';
 
@@ -124,6 +126,12 @@ export const useGeneralSettingList = (): GeneralSettingList => {
 
     if (BUILD_CONFIG.isElectron) {
       settings.push({
+        key: 'offline',
+        title: '离线',
+        icon: <LocalWorkspaceIcon />,
+        testId: 'offline-panel-trigger',
+      });
+      settings.push({
         key: 'backup',
         title: t['com.yunke.settings.workspace.backup'](),
         icon: <FolderIcon />,
@@ -185,6 +193,8 @@ export const GeneralSetting = ({
       return <ExperimentalFeatures />;
     case 'backup':
       return <BackupSettingPanel />;
+    case 'offline':
+      return <OfflineSettings />;
     default:
       return null;
   }

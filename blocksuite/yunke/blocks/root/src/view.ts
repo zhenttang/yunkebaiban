@@ -20,6 +20,7 @@ import { EdgelessClipboardController, EdgelessRootService } from './edgeless';
 import { EdgelessElementToolbarExtension } from './edgeless/configs/toolbar';
 import { EdgelessLocker } from './edgeless/edgeless-root-spec';
 import { AltCloneExtension } from './edgeless/interact-extensions/clone-ext';
+import { edgelessSearchQuickTool } from './edgeless/toolbar/quick-tool';
 import { effects } from './effects';
 import { fallbackKeymap } from './keyboard/keymap';
 
@@ -89,5 +90,6 @@ export class RootViewExtension extends ViewExtensionProvider {
       AltCloneExtension,
     ]);
     context.register(EdgelessElementToolbarExtension);
+    context.register(edgelessSearchQuickTool);
   };
 }

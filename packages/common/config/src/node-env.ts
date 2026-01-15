@@ -7,9 +7,19 @@
 /**
  * 从process.env获取环境变量（必需项）
  */
+function isElectronRuntime(): boolean {
+  return !!process.versions?.electron;
+}
+
 export function getRequiredNodeEnvValue(key: string): string {
   const value = process.env[key];
   if (!value || value.trim() === '') {
+    if (
+      isElectronRuntime() &&
+      (key === 'VITE_API_BASE_URL' || key === 'VITE_DEV_SERVER_URL')
+    ) {
+      return '';
+    }
     throw new Error(`❌ 环境变量配置缺失：请在 .env 文件中配置 ${key}`);
   }
   return value.trim();
@@ -43,6 +53,11 @@ export function getNodeSocketIOUrl(): string {
  * 获取Electron开发服务器URL（Node.js环境）
  */
 export function getNodeElectronDevServerUrl(): string {
+  const devServerUrl =
+    process.env.VITE_DEV_SERVER_URL || process.env.DEV_SERVER_URL;
+  if (devServerUrl && devServerUrl.trim() !== '') {
+    return devServerUrl.trim();
+  }
   return getRequiredNodeEnvValue('VITE_DEV_SERVER_URL');
 }
 
