@@ -87,10 +87,24 @@ export const hero = style({
   flexDirection: 'column',
   justifyContent: 'center',
   gap: '24px', // Increased gap
+  maxWidth: '520px',
+  width: '100%',
   color: cssVar('textPrimaryColor'),
   animation: `${fadeInUp} 0.8s ease-out 0.2s backwards`,
-  // Removed background for cleaner look, text stands on its own or with subtle backing
-  padding: '20px',
+  padding: '28px 32px',
+  borderRadius: '24px',
+  background: 'rgba(255, 255, 255, 0.86)',
+  backdropFilter: 'blur(10px) saturate(140%)',
+  boxShadow: '0 16px 32px rgba(0, 0, 0, 0.06)',
+  border: '1px solid rgba(255, 255, 255, 0.7)',
+  boxSizing: 'border-box',
+  selectors: {
+    '[data-theme="dark"] &': {
+      background: 'rgba(20, 20, 26, 0.72)',
+      border: '1px solid rgba(255, 255, 255, 0.08)',
+      boxShadow: '0 16px 32px rgba(0, 0, 0, 0.4)',
+    },
+  },
   '@media': {
     'screen and (max-width: 960px)': {
       display: 'none',
@@ -130,7 +144,7 @@ export const heroSubtitle = style({
   fontSize: cssVar('fontH4'),
   lineHeight: '28px',
   color: cssVar('textSecondaryColor'),
-  maxWidth: '520px',
+  maxWidth: '440px',
   margin: 0,
 });
 
@@ -139,7 +153,7 @@ export const heroHighlights = style({
   flexDirection: 'column',
   gap: '12px',
   marginTop: '12px',
-  maxWidth: '520px',
+  maxWidth: '440px',
   width: '100%',
 });
 

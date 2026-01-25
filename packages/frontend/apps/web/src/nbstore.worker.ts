@@ -7,13 +7,27 @@ import { broadcastChannelStorages } from '@yunke/nbstore/broadcast-channel';
 // import { cloudStorages } from '@yunke/nbstore/cloud';
 import { idbStorages } from '@yunke/nbstore/idb';
 import { idbV1Storages } from '@yunke/nbstore/idb/v1';
+import { bindNativeDBApis, sqliteStorages } from '@yunke/nbstore/sqlite';
+import {
+  bindNativeDBV1Apis,
+  sqliteV1Storages,
+} from '@yunke/nbstore/sqlite/v1';
 import {
   StoreManagerConsumer,
   type WorkerManagerOps,
 } from '@yunke/nbstore/worker/consumer';
 import { type MessageCommunicapable, OpConsumer } from '@toeverything/infra/op';
+import {
+  createFileNativeDBApis,
+  createFileNativeDBV1Apis,
+} from '@yunke/core/modules/storage';
+
+bindNativeDBApis(createFileNativeDBApis());
+bindNativeDBV1Apis(createFileNativeDBV1Apis());
 
 const consumer = new StoreManagerConsumer([
+  ...sqliteStorages,
+  ...sqliteV1Storages,
   ...idbStorages,
   ...idbV1Storages,
   ...broadcastChannelStorages,

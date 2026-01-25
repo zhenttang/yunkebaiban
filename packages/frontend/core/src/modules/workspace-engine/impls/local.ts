@@ -34,6 +34,7 @@ import { Observable } from 'rxjs';
 import { Doc as YDoc, encodeStateAsUpdate } from 'yjs';
 
 import { DesktopApiService } from '../../desktop-api';
+import { appConfigStorage } from '../../components/hooks/use-app-config-storage';
 import type {
   WorkspaceFlavourProvider,
   WorkspaceFlavoursProvider,
@@ -42,6 +43,7 @@ import type {
 } from '../../workspace';
 import { WorkspaceImpl } from '../../workspace/impls/workspace';
 import { getWorkspaceProfileWorker } from './out-worker';
+import { isFileSystemAccessSupported } from '../../modules/storage/offline-file-handle';
 
 export const LOCAL_WORKSPACE_LOCAL_STORAGE_KEY = 'yunke-local-workspace';
 const LOCAL_WORKSPACE_CHANGED_BROADCAST_CHANNEL_KEY =
@@ -85,6 +87,15 @@ class LocalWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
     // });
   }
 
+  private readonly fileSqliteEnabled =
+    BUILD_CONFIG.isElectron ||
+    BUILD_CONFIG.isIOS ||
+    BUILD_CONFIG.isAndroid ||
+    (BUILD_CONFIG.isWeb &&
+      isFileSystemAccessSupported() &&
+      Boolean(appConfigStorage.get('offline')?.enabled) &&
+      Boolean(appConfigStorage.get('offline')?.dataPath));
+
   readonly flavour = 'local';
   readonly notifyChannel = new BroadcastChannel(
     LOCAL_WORKSPACE_CHANGED_BROADCAST_CHANNEL_KEY
@@ -94,7 +105,7 @@ class LocalWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
     // Android Capacitor应用强制使用IndexedDB
     (BUILD_CONFIG.isAndroid && typeof window !== 'undefined' && (window as any).Capacitor) 
       ? IndexedDBDocStorage
-    : BUILD_CONFIG.isElectron || BUILD_CONFIG.isIOS || BUILD_CONFIG.isAndroid
+    : this.fileSqliteEnabled
       ? SqliteDocStorage
       : IndexedDBDocStorage;
   
@@ -107,7 +118,7 @@ class LocalWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
     // Android Capacitor应用强制使用IndexedDB
     (BUILD_CONFIG.isAndroid && typeof window !== 'undefined' && (window as any).Capacitor) 
       ? IndexedDBBlobStorage
-    : BUILD_CONFIG.isElectron || BUILD_CONFIG.isIOS || BUILD_CONFIG.isAndroid
+    : this.fileSqliteEnabled
       ? SqliteBlobStorage
       : IndexedDBBlobStorage;
   BlobStorageV1Type = BUILD_CONFIG.isElectron
@@ -119,14 +130,14 @@ class LocalWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
     // Android Capacitor应用强制使用IndexedDB
     (BUILD_CONFIG.isAndroid && typeof window !== 'undefined' && (window as any).Capacitor) 
       ? IndexedDBDocSyncStorage
-    : BUILD_CONFIG.isElectron || BUILD_CONFIG.isIOS || BUILD_CONFIG.isAndroid
+    : this.fileSqliteEnabled
       ? SqliteDocSyncStorage
       : IndexedDBDocSyncStorage;
   BlobSyncStorageType =
     // Android Capacitor应用强制使用IndexedDB
     (BUILD_CONFIG.isAndroid && typeof window !== 'undefined' && (window as any).Capacitor) 
       ? IndexedDBBlobSyncStorage
-    : BUILD_CONFIG.isElectron || BUILD_CONFIG.isIOS || BUILD_CONFIG.isAndroid
+    : this.fileSqliteEnabled
       ? SqliteBlobSyncStorage
       : IndexedDBBlobSyncStorage;
 

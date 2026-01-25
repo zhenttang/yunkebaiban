@@ -9,8 +9,14 @@ import { Switch } from '@yunke/component/ui/switch';
 import { useAppConfigStorage } from '@yunke/core/components/hooks/use-app-config-storage';
 import { GlobalDialogService } from '@yunke/core/modules/dialogs';
 import { DesktopApiService } from '@yunke/core/modules/desktop-api';
+import {
+  clearOfflineRootHandle,
+  getOfflineRootHandleName,
+  isFileSystemAccessSupported,
+  requestOfflineRootHandle,
+} from '@yunke/core/modules/storage/offline-file-handle';
 import { useService, useServiceOptional } from '@toeverything/infra';
-import { useCallback, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 const DEFAULT_OFFLINE_PATH_LABEL = '默认（应用数据目录）';
 
@@ -18,6 +24,8 @@ export const OfflineSettings = () => {
   const [config, setConfig] = useAppConfigStorage();
   const globalDialogService = useService(GlobalDialogService);
   const desktopApi = useServiceOptional(DesktopApiService);
+  const [offlineHandleName, setOfflineHandleName] = useState('');
+  const supportsFileAccess = isFileSystemAccessSupported();
 
   const offlineConfig = useMemo(
     () => ({
@@ -43,31 +51,54 @@ export const OfflineSettings = () => {
 
   const handleToggleOffline = useCallback(
     (checked: boolean) => {
+      if (checked && !BUILD_CONFIG.isElectron && !supportsFileAccess) {
+        notify.error({ title: '当前浏览器不支持离线目录选择' });
+        return;
+      }
+      if (checked && !BUILD_CONFIG.isElectron && !offlineConfig.dataPath) {
+        notify.error({ title: '请先选择离线数据目录' });
+        return;
+      }
       updateOfflineConfig({ enabled: checked });
       notify.info({
         title: '离线模式设置已更新',
         message: '重启应用后生效',
       });
     },
-    [updateOfflineConfig]
+    [offlineConfig.dataPath, supportsFileAccess, updateOfflineConfig]
   );
 
   const handleSelectPath = useCallback(async () => {
-    if (!desktopApi?.handler?.dialog?.selectDBFileLocation) {
+    if (BUILD_CONFIG.isElectron && desktopApi?.handler?.dialog?.selectDBFileLocation) {
+      const result = await desktopApi.handler.dialog.selectDBFileLocation();
+      if (result?.canceled || !result?.filePath) return;
+      updateOfflineConfig({ dataPath: result.filePath });
+      notify.success({
+        title: '已更新离线数据目录',
+        message: '重启应用后生效',
+      });
+      return;
+    }
+    if (!supportsFileAccess) {
       notify.error({ title: '当前环境不支持选择目录' });
       return;
     }
-    const result = await desktopApi.handler.dialog.selectDBFileLocation();
-    if (result?.canceled || !result?.filePath) return;
-    updateOfflineConfig({ dataPath: result.filePath });
+    const handle = await requestOfflineRootHandle();
+    if (!handle) return;
+    updateOfflineConfig({ dataPath: handle.name });
+    setOfflineHandleName(handle.name);
     notify.success({
       title: '已更新离线数据目录',
       message: '重启应用后生效',
     });
-  }, [desktopApi, updateOfflineConfig]);
+  }, [desktopApi, supportsFileAccess, updateOfflineConfig]);
 
   const handleClearPath = useCallback(() => {
     updateOfflineConfig({ dataPath: '' });
+    if (!BUILD_CONFIG.isElectron) {
+      clearOfflineRootHandle().catch(console.error);
+      setOfflineHandleName('');
+    }
     notify.info({
       title: '已恢复默认数据目录',
       message: '重启应用后生效',
@@ -75,7 +106,7 @@ export const OfflineSettings = () => {
   }, [updateOfflineConfig]);
 
   const handleCopyPath = useCallback(async () => {
-    if (!offlineConfig.dataPath) return;
+    if (!offlineConfig.dataPath || !BUILD_CONFIG.isElectron) return;
     try {
       await navigator.clipboard.writeText(offlineConfig.dataPath);
       notify.success({ title: '已复制离线数据目录' });
@@ -84,6 +115,13 @@ export const OfflineSettings = () => {
       notify.error({ title: '复制失败，请手动复制' });
     }
   }, [offlineConfig.dataPath]);
+
+  useEffect(() => {
+    if (BUILD_CONFIG.isElectron) return;
+    getOfflineRootHandleName()
+      .then(name => setOfflineHandleName(name))
+      .catch(console.error);
+  }, [config.offline]);
 
   const handleRestart = useCallback(async () => {
     if (!desktopApi?.handler?.ui?.restartApp) {
@@ -114,8 +152,8 @@ export const OfflineSettings = () => {
         <SettingRow
           name="离线数据目录"
           desc={
-            offlineConfig.dataPath
-              ? `当前路径：${offlineConfig.dataPath}（本地工作区统一根目录）`
+            (BUILD_CONFIG.isElectron ? offlineConfig.dataPath : offlineHandleName)
+              ? `当前路径：${BUILD_CONFIG.isElectron ? offlineConfig.dataPath : offlineHandleName}（本地工作区统一根目录）`
               : `当前路径：${DEFAULT_OFFLINE_PATH_LABEL}（本地工作区统一根目录）`
           }
         >
@@ -127,7 +165,7 @@ export const OfflineSettings = () => {
             <Button
               onClick={handleCopyPath}
               variant="outline"
-              disabled={!offlineConfig.dataPath}
+              disabled={!offlineConfig.dataPath || !BUILD_CONFIG.isElectron}
             >
               复制路径
             </Button>

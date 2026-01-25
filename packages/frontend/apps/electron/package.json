@@ -21,7 +21,7 @@
   },
   "scripts": {
     "start": "electron .",
-    "dev": "cross-env DEV_SERVER_URL=http://localhost:8081 DISABLE_DEV_OVERLAY=true node ../../../../tools/cli/bin/runner.js ./scripts/dev.ts",
+    "dev": "cross-env DEV_SERVER_URL=http://localhost:8080 DISABLE_DEV_OVERLAY=true node ../../../../tools/cli/bin/runner.js ./scripts/dev.ts",
     "dev:prod": "node ../../../../tools/cli/bin/runner.js ./scripts/dev.ts",
     "build": "cross-env NODE_ENV=production node ../../../../tools/cli/bin/runner.js ./scripts/build-layers.ts",
     "build:dev": "node ../../../../tools/cli/bin/runner.js ./scripts/build-layers.ts",

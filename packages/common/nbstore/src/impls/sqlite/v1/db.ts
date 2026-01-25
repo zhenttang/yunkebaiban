@@ -1,6 +1,6 @@
 import type { SpaceType } from '../../../utils/universal-id';
 
-interface NativeDBV1Apis {
+export interface NativeDBV1Apis {
   getBlob: (
     spaceType: SpaceType,
     workspaceId: string,

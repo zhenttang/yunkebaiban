@@ -7,6 +7,8 @@ let BASE_URL_PROMISE = null;
 let fs = null;
 let path = null;
 let fsp = null;
+let sqliteFactory = null;
+let sqliteAvailable = false;
 try {
   fs = require('node:fs');
   path = require('node:path');
@@ -14,12 +16,50 @@ try {
 } catch {
   // ignore in non-node environments
 }
+try {
+  sqliteFactory = require('better-sqlite3');
+  sqliteAvailable = true;
+} catch (error) {
+  console.warn(
+    '[MOCK] better-sqlite3 未安装，离线模式将回退为 JSON 存储:',
+    error?.message || error
+  );
+}
 
 const STORE_VERSION = 1;
 const storeRegistry = new Map();
+const sqliteRegistry = new Map();
+const SQLITE_SCHEMA_VERSION = 1;
 
 const isNodeRuntime =
   typeof process !== 'undefined' && !!process.versions?.node;
+
+function canUseSqlite() {
+  return isNodeRuntime && sqliteAvailable;
+}
+
+function parsePeerFromUniversalId(universalId) {
+  if (typeof universalId !== 'string') return null;
+  const start = universalId.indexOf('@peer(');
+  if (start === -1) return null;
+  const end = universalId.indexOf(');', start);
+  if (end === -1) return null;
+  return universalId.slice(start + 6, end);
+}
+
+function isLocalPeer(peer) {
+  return peer === 'local' || peer === 'deleted-local';
+}
+
+function shouldUseLocalStoreForUniversal(universalId) {
+  const peer = parsePeerFromUniversalId(universalId);
+  if (peer && isLocalPeer(peer)) return true;
+  return isLocalStoreEnabled();
+}
+
+function shouldUseDocStorageSqlite(universalId) {
+  return shouldUseLocalStoreForUniversal(universalId) && canUseSqlite();
+}
 
 function ensureObject(value) {
   return value && typeof value === 'object' ? value : {};
@@ -113,7 +153,7 @@ async function validateLocalStore(filePath) {
   if (!(await fileExists(filePath))) return false;
   const header = await readFileHeader(filePath);
   if (header.startsWith('SQLite format 3')) {
-    return false;
+    return true;
   }
   try {
     const raw = await fsp.readFile(filePath, 'utf8');
@@ -122,6 +162,426 @@ async function validateLocalStore(filePath) {
     return parsed && typeof parsed === 'object';
   } catch {
     return false;
+  }
+}
+
+function toBuffer(data) {
+  if (typeof Buffer === 'undefined') {
+    return data;
+  }
+  return Buffer.isBuffer(data) ? data : Buffer.from(data);
+}
+
+function base64ToBuffer(base64) {
+  if (typeof Buffer === 'undefined') {
+    return base64ToUint8Array(base64);
+  }
+  return Buffer.from(base64, 'base64');
+}
+
+async function getAvailableBackupPath(filePath, suffix) {
+  if (!fsp) return `${filePath}${suffix}`;
+  let candidate = `${filePath}${suffix}`;
+  let index = 1;
+  while (await fileExists(candidate)) {
+    candidate = `${filePath}${suffix}.${index}`;
+    index += 1;
+  }
+  return candidate;
+}
+
+async function moveFile(sourcePath, targetPath) {
+  if (!fsp) return;
+  try {
+    await fsp.rename(sourcePath, targetPath);
+  } catch {
+    await fsp.copyFile(sourcePath, targetPath);
+    await fsp.unlink(sourcePath);
+  }
+}
+
+function initSqliteSchema(db) {
+  db.pragma('journal_mode = WAL');
+  db.pragma('synchronous = NORMAL');
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS meta (
+      key TEXT PRIMARY KEY,
+      value TEXT
+    );
+    CREATE TABLE IF NOT EXISTS doc_updates (
+      doc_id TEXT NOT NULL,
+      ts INTEGER NOT NULL,
+      bin BLOB NOT NULL
+    );
+    CREATE INDEX IF NOT EXISTS idx_doc_updates_doc ON doc_updates(doc_id);
+    CREATE INDEX IF NOT EXISTS idx_doc_updates_doc_ts ON doc_updates(doc_id, ts);
+    CREATE TABLE IF NOT EXISTS doc_snapshots (
+      doc_id TEXT PRIMARY KEY,
+      ts INTEGER NOT NULL,
+      bin BLOB NOT NULL
+    );
+    CREATE TABLE IF NOT EXISTS doc_clocks (
+      doc_id TEXT PRIMARY KEY,
+      ts INTEGER NOT NULL
+    );
+    CREATE TABLE IF NOT EXISTS blobs (
+      key TEXT PRIMARY KEY,
+      data BLOB NOT NULL,
+      mime TEXT,
+      size INTEGER,
+      created_at INTEGER
+    );
+    CREATE TABLE IF NOT EXISTS peer_clocks (
+      peer TEXT NOT NULL,
+      type TEXT NOT NULL,
+      doc_id TEXT NOT NULL,
+      ts INTEGER NOT NULL,
+      PRIMARY KEY (peer, type, doc_id)
+    );
+    CREATE TABLE IF NOT EXISTS blob_uploaded_at (
+      peer TEXT NOT NULL,
+      blob_id TEXT NOT NULL,
+      ts INTEGER NOT NULL,
+      PRIMARY KEY (peer, blob_id)
+    );
+    CREATE TABLE IF NOT EXISTS v1_updates (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      doc_id TEXT,
+      ts INTEGER NOT NULL,
+      data BLOB NOT NULL
+    );
+    CREATE INDEX IF NOT EXISTS idx_v1_updates_doc ON v1_updates(doc_id);
+    CREATE TABLE IF NOT EXISTS v1_blobs (
+      key TEXT PRIMARY KEY,
+      ts INTEGER NOT NULL,
+      data BLOB NOT NULL
+    );
+    CREATE TABLE IF NOT EXISTS v1_server_clock (
+      key TEXT PRIMARY KEY,
+      ts INTEGER NOT NULL,
+      data BLOB NOT NULL
+    );
+    CREATE TABLE IF NOT EXISTS v1_sync_metadata (
+      key TEXT PRIMARY KEY,
+      ts INTEGER NOT NULL,
+      data BLOB NOT NULL
+    );
+    CREATE TABLE IF NOT EXISTS v1_meta (
+      key TEXT PRIMARY KEY,
+      value INTEGER
+    );
+  `);
+  const upsertMeta = db.prepare(
+    'INSERT INTO meta (key, value) VALUES (?, ?) ON CONFLICT(key) DO UPDATE SET value=excluded.value'
+  );
+  upsertMeta.run('schema_version', String(SQLITE_SCHEMA_VERSION));
+}
+
+function createSqliteStatements(db) {
+  return {
+    getMaxDocUpdateTs: db.prepare(
+      'SELECT MAX(ts) AS ts FROM doc_updates WHERE doc_id=?'
+    ),
+    insertDocUpdate: db.prepare(
+      'INSERT INTO doc_updates (doc_id, ts, bin) VALUES (?, ?, ?)'
+    ),
+    upsertDocClock: db.prepare(
+      'INSERT INTO doc_clocks (doc_id, ts) VALUES (?, ?) ON CONFLICT(doc_id) DO UPDATE SET ts=excluded.ts'
+    ),
+    getDocSnapshot: db.prepare(
+      'SELECT ts, bin FROM doc_snapshots WHERE doc_id=?'
+    ),
+    upsertDocSnapshot: db.prepare(
+      `INSERT INTO doc_snapshots (doc_id, ts, bin)
+       VALUES (?, ?, ?)
+       ON CONFLICT(doc_id) DO UPDATE SET ts=excluded.ts, bin=excluded.bin
+       WHERE excluded.ts >= doc_snapshots.ts`
+    ),
+    getDocUpdates: db.prepare(
+      'SELECT ts, bin FROM doc_updates WHERE doc_id=? ORDER BY ts ASC'
+    ),
+    deleteDocUpdatesByDoc: db.prepare(
+      'DELETE FROM doc_updates WHERE doc_id=?'
+    ),
+    deleteDocSnapshot: db.prepare(
+      'DELETE FROM doc_snapshots WHERE doc_id=?'
+    ),
+    deleteDocClock: db.prepare(
+      'DELETE FROM doc_clocks WHERE doc_id=?'
+    ),
+    getDocClocksAfter: db.prepare(
+      'SELECT doc_id AS docId, ts FROM doc_clocks WHERE ts > ?'
+    ),
+    getDocClock: db.prepare(
+      'SELECT ts FROM doc_clocks WHERE doc_id=?'
+    ),
+    getBlob: db.prepare(
+      'SELECT data, mime, size, created_at FROM blobs WHERE key=?'
+    ),
+    getBlobMeta: db.prepare('SELECT created_at FROM blobs WHERE key=?'),
+    upsertBlob: db.prepare(
+      `INSERT INTO blobs (key, data, mime, size, created_at)
+       VALUES (?, ?, ?, ?, ?)
+       ON CONFLICT(key) DO UPDATE SET data=excluded.data, mime=excluded.mime, size=excluded.size, created_at=blobs.created_at`
+    ),
+    deleteBlob: db.prepare('DELETE FROM blobs WHERE key=?'),
+    listBlobs: db.prepare(
+      'SELECT key, size, mime, created_at FROM blobs'
+    ),
+    getPeerClocks: db.prepare(
+      'SELECT doc_id AS docId, ts FROM peer_clocks WHERE peer=? AND type=?'
+    ),
+    getPeerClock: db.prepare(
+      'SELECT ts FROM peer_clocks WHERE peer=? AND type=? AND doc_id=?'
+    ),
+    upsertPeerClock: db.prepare(
+      `INSERT INTO peer_clocks (peer, type, doc_id, ts)
+       VALUES (?, ?, ?, ?)
+       ON CONFLICT(peer, type, doc_id) DO UPDATE SET ts=excluded.ts`
+    ),
+    deletePeerClocks: db.prepare('DELETE FROM peer_clocks'),
+    upsertBlobUploadedAt: db.prepare(
+      `INSERT INTO blob_uploaded_at (peer, blob_id, ts)
+       VALUES (?, ?, ?)
+       ON CONFLICT(peer, blob_id) DO UPDATE SET ts=excluded.ts`
+    ),
+    getBlobUploadedAt: db.prepare(
+      'SELECT ts FROM blob_uploaded_at WHERE peer=? AND blob_id=?'
+    ),
+    deleteBlobUploadedAt: db.prepare('DELETE FROM blob_uploaded_at'),
+    addV1Blob: db.prepare(
+      `INSERT INTO v1_blobs (key, ts, data)
+       VALUES (?, ?, ?)
+       ON CONFLICT(key) DO UPDATE SET ts=excluded.ts, data=excluded.data`
+    ),
+    getV1Blob: db.prepare(
+      'SELECT data, ts FROM v1_blobs WHERE key=?'
+    ),
+    deleteV1Blob: db.prepare('DELETE FROM v1_blobs WHERE key=?'),
+    getV1BlobKeys: db.prepare('SELECT key FROM v1_blobs'),
+    getV1UpdatesAll: db.prepare(
+      'SELECT id, ts, data, doc_id AS docId FROM v1_updates ORDER BY id ASC'
+    ),
+    getV1UpdatesByDoc: db.prepare(
+      'SELECT id, ts, data, doc_id AS docId FROM v1_updates WHERE doc_id IS ? ORDER BY id ASC'
+    ),
+    deleteV1UpdatesByDoc: db.prepare(
+      'DELETE FROM v1_updates WHERE doc_id IS ?'
+    ),
+    deleteV1UpdatesAll: db.prepare('DELETE FROM v1_updates'),
+    getV1UpdatesCountAll: db.prepare(
+      'SELECT COUNT(1) AS count FROM v1_updates'
+    ),
+    getV1UpdatesCountByDoc: db.prepare(
+      'SELECT COUNT(1) AS count FROM v1_updates WHERE doc_id IS ?'
+    ),
+    insertV1Update: db.prepare(
+      'INSERT INTO v1_updates (doc_id, ts, data) VALUES (?, ?, ?)'
+    ),
+    insertV1UpdateWithId: db.prepare(
+      'INSERT INTO v1_updates (id, doc_id, ts, data) VALUES (?, ?, ?, ?)'
+    ),
+    getV1DocTimestamps: db.prepare(
+      'SELECT doc_id AS docId, MAX(ts) AS ts FROM v1_updates WHERE doc_id IS NOT NULL GROUP BY doc_id'
+    ),
+    getV1ServerClock: db.prepare(
+      'SELECT data, ts FROM v1_server_clock WHERE key=?'
+    ),
+    setV1ServerClock: db.prepare(
+      `INSERT INTO v1_server_clock (key, ts, data)
+       VALUES (?, ?, ?)
+       ON CONFLICT(key) DO UPDATE SET ts=excluded.ts, data=excluded.data`
+    ),
+    getV1ServerClockKeys: db.prepare(
+      'SELECT key FROM v1_server_clock'
+    ),
+    clearV1ServerClock: db.prepare('DELETE FROM v1_server_clock'),
+    delV1ServerClock: db.prepare('DELETE FROM v1_server_clock WHERE key=?'),
+    getV1SyncMetadata: db.prepare(
+      'SELECT data, ts FROM v1_sync_metadata WHERE key=?'
+    ),
+    setV1SyncMetadata: db.prepare(
+      `INSERT INTO v1_sync_metadata (key, ts, data)
+       VALUES (?, ?, ?)
+       ON CONFLICT(key) DO UPDATE SET ts=excluded.ts, data=excluded.data`
+    ),
+    getV1SyncMetadataKeys: db.prepare(
+      'SELECT key FROM v1_sync_metadata'
+    ),
+    clearV1SyncMetadata: db.prepare('DELETE FROM v1_sync_metadata'),
+    delV1SyncMetadata: db.prepare('DELETE FROM v1_sync_metadata WHERE key=?'),
+    getV1Version: db.prepare(
+      'SELECT value FROM v1_meta WHERE key=?'
+    ),
+    setV1Version: db.prepare(
+      `INSERT INTO v1_meta (key, value)
+       VALUES (?, ?)
+       ON CONFLICT(key) DO UPDATE SET value=excluded.value`
+    ),
+  };
+}
+
+function importJsonToSqlite(db, store) {
+  const statements = createSqliteStatements(db);
+  const runImport = db.transaction(() => {
+    for (const [docId, doc] of Object.entries(store.docs)) {
+      if (doc?.snapshot) {
+        statements.upsertDocSnapshot.run(
+          docId,
+          doc.snapshot.ts,
+          base64ToBuffer(doc.snapshot.bin)
+        );
+      }
+      if (Array.isArray(doc?.updates)) {
+        doc.updates.forEach(update => {
+          statements.insertDocUpdate.run(
+            docId,
+            update.ts,
+            base64ToBuffer(update.bin)
+          );
+        });
+      }
+    }
+
+    for (const [docId, ts] of Object.entries(store.clocks)) {
+      if (typeof ts === 'number') {
+        statements.upsertDocClock.run(docId, ts);
+      }
+    }
+
+    for (const [key, blob] of Object.entries(store.blobs)) {
+      if (!blob?.data) continue;
+      statements.upsertBlob.run(
+        key,
+        base64ToBuffer(blob.data),
+        blob.mime ?? null,
+        blob.size ?? base64ToBuffer(blob.data).length,
+        blob.createdAt ?? Date.now()
+      );
+    }
+
+    for (const [peer, clocks] of Object.entries(store.peerClocks.remote)) {
+      for (const [docId, ts] of Object.entries(clocks)) {
+        if (typeof ts === 'number') {
+          statements.upsertPeerClock.run(peer, 'remote', docId, ts);
+        }
+      }
+    }
+    for (const [peer, clocks] of Object.entries(store.peerClocks.pulled)) {
+      for (const [docId, ts] of Object.entries(clocks)) {
+        if (typeof ts === 'number') {
+          statements.upsertPeerClock.run(peer, 'pulled', docId, ts);
+        }
+      }
+    }
+    for (const [peer, clocks] of Object.entries(store.peerClocks.pushed)) {
+      for (const [docId, ts] of Object.entries(clocks)) {
+        if (typeof ts === 'number') {
+          statements.upsertPeerClock.run(peer, 'pushed', docId, ts);
+        }
+      }
+    }
+
+    for (const [peer, entries] of Object.entries(store.blobUploadedAt)) {
+      for (const [blobId, ts] of Object.entries(entries)) {
+        if (typeof ts === 'number') {
+          statements.upsertBlobUploadedAt.run(peer, blobId, ts);
+        }
+      }
+    }
+
+    store.v1.updates.forEach(update => {
+      statements.insertV1UpdateWithId.run(
+        update.id,
+        update.docId ?? null,
+        update.ts,
+        base64ToBuffer(update.data)
+      );
+    });
+
+    for (const [key, blob] of Object.entries(store.v1.blobs)) {
+      statements.addV1Blob.run(
+        key,
+        blob.ts ?? Date.now(),
+        base64ToBuffer(blob.data)
+      );
+    }
+
+    for (const [key, clock] of Object.entries(store.v1.serverClock)) {
+      statements.setV1ServerClock.run(
+        key,
+        clock.ts ?? Date.now(),
+        base64ToBuffer(clock.data)
+      );
+    }
+
+    for (const [key, metadata] of Object.entries(store.v1.syncMetadata)) {
+      statements.setV1SyncMetadata.run(
+        key,
+        metadata.ts ?? Date.now(),
+        base64ToBuffer(metadata.data)
+      );
+    }
+
+    statements.setV1Version.run('version', store.v1.version ?? 1);
+  });
+
+  runImport();
+}
+
+async function openSqliteEntry(filePath) {
+  if (!sqliteFactory || !fsp) {
+    throw new Error('SQLite runtime unavailable');
+  }
+  await ensureDirForFile(filePath);
+
+  let pendingStore = null;
+  if (await fileExists(filePath)) {
+    const header = await readFileHeader(filePath);
+    if (!header.startsWith('SQLite format 3')) {
+      try {
+        const raw = await fsp.readFile(filePath, 'utf8');
+        pendingStore = normalizeStore(JSON.parse(raw));
+        const backupPath = await getAvailableBackupPath(filePath, '.json.bak');
+        await moveFile(filePath, backupPath);
+      } catch {
+        const corruptPath = await getAvailableBackupPath(
+          filePath,
+          '.corrupt'
+        );
+        await moveFile(filePath, corruptPath);
+      }
+    }
+  }
+
+  const db = new sqliteFactory(filePath);
+  initSqliteSchema(db);
+  if (pendingStore) {
+    importJsonToSqlite(db, pendingStore);
+  }
+  return {
+    db,
+    statements: createSqliteStatements(db),
+    refs: 0,
+  };
+}
+
+async function acquireSqliteEntry(filePath) {
+  if (!sqliteRegistry.has(filePath)) {
+    sqliteRegistry.set(filePath, await openSqliteEntry(filePath));
+  }
+  const entry = sqliteRegistry.get(filePath);
+  entry.refs += 1;
+  return entry;
+}
+
+function releaseSqliteEntry(filePath) {
+  const entry = sqliteRegistry.get(filePath);
+  if (!entry) return;
+  entry.refs -= 1;
+  if (entry.refs <= 0) {
+    entry.db.close();
+    sqliteRegistry.delete(filePath);
   }
 }
 
@@ -322,8 +782,11 @@ export class DocStorage {
   }
   
   async validate() {
+    if (await validateLocalStore(this.path)) {
+      return true;
+    }
     if (isLocalStoreEnabled()) {
-      return await validateLocalStore(this.path);
+      return false;
     }
     console.log('[MOCK->JAVA] DocStorage.validate() - checking connection to Java backend');
     try {
@@ -348,7 +811,16 @@ export class DocStoragePool {
   }
   
   async connect(universalId, filePath) {
-    if (isLocalStoreEnabled()) {
+    if (shouldUseDocStorageSqlite(universalId)) {
+      const sqlite = await acquireSqliteEntry(filePath);
+      this.connections.set(universalId, {
+        path: filePath,
+        workspaceId: universalId,
+        sqlite,
+      });
+      return;
+    }
+    if (shouldUseLocalStoreForUniversal(universalId)) {
       const store = getStore(filePath);
       await store.load(true);
       this.connections.set(universalId, {
@@ -358,16 +830,26 @@ export class DocStoragePool {
       });
       return;
     }
-    this.connections.set(universalId, { path: filePath, workspaceId: universalId });
+    this.connections.set(universalId, {
+      path: filePath,
+      workspaceId: universalId,
+    });
   }
   
   async disconnect(universalId) {
+    const connection = this.connections.get(universalId);
+    if (connection?.sqlite) {
+      releaseSqliteEntry(connection.path);
+    }
     this.connections.delete(universalId);
   }
   
   async checkpoint(universalId) {
-    if (!isLocalStoreEnabled()) return;
     const connection = this.connections.get(universalId);
+    if (connection?.sqlite) {
+      connection.sqlite.db.pragma('wal_checkpoint(TRUNCATE)');
+      return;
+    }
     if (connection?.store) {
       await connection.store.save();
     }
@@ -387,9 +869,27 @@ export class DocStoragePool {
     }
     return connection.store;
   }
+
+  getSqliteForUniversal(universalId) {
+    const connection = this.connections.get(universalId);
+    if (!connection?.sqlite) {
+      throw new Error(`SQLite not connected: ${universalId}`);
+    }
+    return connection.sqlite;
+  }
   
   async pushUpdate(universalId, docId, update) {
-    if (isLocalStoreEnabled()) {
+    const connection = this.connections.get(universalId);
+    if (connection?.sqlite) {
+      const { statements } = this.getSqliteForUniversal(universalId);
+      const now = Date.now();
+      const row = statements.getMaxDocUpdateTs.get(docId);
+      const ts = row?.ts ? Math.max(now, row.ts + 1) : now;
+      statements.insertDocUpdate.run(docId, ts, toBuffer(update));
+      statements.upsertDocClock.run(docId, ts);
+      return new Date(ts);
+    }
+    if (connection?.store) {
       const store = this.getStoreForUniversal(universalId);
       const timestamp = await store.withWrite(data => {
         const doc = getDocState(data, docId);
@@ -435,7 +935,18 @@ export class DocStoragePool {
   }
   
   async getDocSnapshot(universalId, docId) {
-    if (isLocalStoreEnabled()) {
+    const connection = this.connections.get(universalId);
+    if (connection?.sqlite) {
+      const { statements } = this.getSqliteForUniversal(universalId);
+      const row = statements.getDocSnapshot.get(docId);
+      if (!row) return null;
+      return {
+        docId,
+        bin: new Uint8Array(row.bin),
+        timestamp: new Date(row.ts),
+      };
+    }
+    if (connection?.store) {
       const store = this.getStoreForUniversal(universalId);
       const data = await store.read();
       const doc = data.docs[docId];
@@ -469,7 +980,21 @@ export class DocStoragePool {
   }
   
   async setDocSnapshot(universalId, snapshot) {
-    if (isLocalStoreEnabled()) {
+    const connection = this.connections.get(universalId);
+    if (connection?.sqlite) {
+      const { statements } = this.getSqliteForUniversal(universalId);
+      const ts =
+        snapshot.timestamp instanceof Date
+          ? snapshot.timestamp.getTime()
+          : new Date(snapshot.timestamp).getTime();
+      statements.upsertDocSnapshot.run(
+        snapshot.docId,
+        ts,
+        toBuffer(snapshot.bin)
+      );
+      return true;
+    }
+    if (connection?.store) {
       const store = this.getStoreForUniversal(universalId);
       return await store.withWrite(data => {
         const doc = getDocState(data, snapshot.docId);
@@ -494,7 +1019,17 @@ export class DocStoragePool {
   }
   
   async getDocUpdates(universalId, docId) {
-    if (isLocalStoreEnabled()) {
+    const connection = this.connections.get(universalId);
+    if (connection?.sqlite) {
+      const { statements } = this.getSqliteForUniversal(universalId);
+      const rows = statements.getDocUpdates.all(docId);
+      return rows.map(row => ({
+        docId,
+        bin: new Uint8Array(row.bin),
+        timestamp: new Date(row.ts),
+      }));
+    }
+    if (connection?.store) {
       const store = this.getStoreForUniversal(universalId);
       const data = await store.read();
       const doc = data.docs[docId];
@@ -510,7 +1045,23 @@ export class DocStoragePool {
   }
   
   async markUpdatesMerged(universalId, docId, updates) {
-    if (isLocalStoreEnabled()) {
+    const connection = this.connections.get(universalId);
+    if (connection?.sqlite) {
+      const { db } = this.getSqliteForUniversal(universalId);
+      const timestamps = updates
+        .map(item =>
+          item instanceof Date ? item.getTime() : new Date(item).getTime()
+        )
+        .filter(ts => Number.isFinite(ts));
+      if (!timestamps.length) return 0;
+      const placeholders = timestamps.map(() => '?').join(',');
+      const stmt = db.prepare(
+        `DELETE FROM doc_updates WHERE doc_id=? AND ts IN (${placeholders})`
+      );
+      const info = stmt.run(docId, ...timestamps);
+      return info.changes || 0;
+    }
+    if (connection?.store) {
       const store = this.getStoreForUniversal(universalId);
       return await store.withWrite(data => {
         const doc = getDocState(data, docId);
@@ -530,7 +1081,18 @@ export class DocStoragePool {
   }
   
   async deleteDoc(universalId, docId) {
-    if (isLocalStoreEnabled()) {
+    const connection = this.connections.get(universalId);
+    if (connection?.sqlite) {
+      const { db, statements } = this.getSqliteForUniversal(universalId);
+      const tx = db.transaction(() => {
+        statements.deleteDocUpdatesByDoc.run(docId);
+        statements.deleteDocSnapshot.run(docId);
+        statements.deleteDocClock.run(docId);
+      });
+      tx();
+      return;
+    }
+    if (connection?.store) {
       const store = this.getStoreForUniversal(universalId);
       await store.withWrite(data => {
         delete data.docs[docId];
@@ -543,7 +1105,17 @@ export class DocStoragePool {
   
   // 其他方法的模拟实现...
   async getDocClocks(universalId, after) {
-    if (isLocalStoreEnabled()) {
+    const connection = this.connections.get(universalId);
+    if (connection?.sqlite) {
+      const { statements } = this.getSqliteForUniversal(universalId);
+      const afterMs = after ? after.getTime() : 0;
+      const rows = statements.getDocClocksAfter.all(afterMs);
+      return rows.map(row => ({
+        docId: row.docId,
+        timestamp: new Date(row.ts),
+      }));
+    }
+    if (connection?.store) {
       const store = this.getStoreForUniversal(universalId);
       const data = await store.read();
       const afterMs = after ? after.getTime() : 0;
@@ -555,7 +1127,14 @@ export class DocStoragePool {
   }
 
   async getDocClock(universalId, docId) {
-    if (isLocalStoreEnabled()) {
+    const connection = this.connections.get(universalId);
+    if (connection?.sqlite) {
+      const { statements } = this.getSqliteForUniversal(universalId);
+      const row = statements.getDocClock.get(docId);
+      if (!row) return null;
+      return { docId, timestamp: new Date(row.ts) };
+    }
+    if (connection?.store) {
       const store = this.getStoreForUniversal(universalId);
       const data = await store.read();
       const ts = data.clocks[docId];
@@ -566,7 +1145,20 @@ export class DocStoragePool {
   }
 
   async getBlob(universalId, key) {
-    if (isLocalStoreEnabled()) {
+    const connection = this.connections.get(universalId);
+    if (connection?.sqlite) {
+      const { statements } = this.getSqliteForUniversal(universalId);
+      const row = statements.getBlob.get(key);
+      if (!row) return null;
+      return {
+        key,
+        data: new Uint8Array(row.data),
+        mime: row.mime ?? '',
+        size: row.size ?? row.data?.length ?? 0,
+        createdAt: new Date(row.created_at),
+      };
+    }
+    if (connection?.store) {
       const store = this.getStoreForUniversal(universalId);
       const data = await store.read();
       const blob = data.blobs[key];
@@ -583,7 +1175,22 @@ export class DocStoragePool {
   }
 
   async setBlob(universalId, blob) {
-    if (isLocalStoreEnabled()) {
+    const connection = this.connections.get(universalId);
+    if (connection?.sqlite) {
+      const { statements } = this.getSqliteForUniversal(universalId);
+      const existing = statements.getBlobMeta.get(blob.key);
+      const createdAt =
+        existing?.created_at ?? Date.now();
+      statements.upsertBlob.run(
+        blob.key,
+        toBuffer(blob.data),
+        blob.mime,
+        blob.data.length,
+        createdAt
+      );
+      return;
+    }
+    if (connection?.store) {
       const store = this.getStoreForUniversal(universalId);
       await store.withWrite(data => {
         const now = Date.now();
@@ -599,7 +1206,13 @@ export class DocStoragePool {
   }
 
   async deleteBlob(universalId, key) {
-    if (isLocalStoreEnabled()) {
+    const connection = this.connections.get(universalId);
+    if (connection?.sqlite) {
+      const { statements } = this.getSqliteForUniversal(universalId);
+      statements.deleteBlob.run(key);
+      return;
+    }
+    if (connection?.store) {
       const store = this.getStoreForUniversal(universalId);
       await store.withWrite(data => {
         delete data.blobs[key];
@@ -613,7 +1226,18 @@ export class DocStoragePool {
   }
 
   async listBlobs(universalId) {
-    if (isLocalStoreEnabled()) {
+    const connection = this.connections.get(universalId);
+    if (connection?.sqlite) {
+      const { statements } = this.getSqliteForUniversal(universalId);
+      const rows = statements.listBlobs.all();
+      return rows.map(row => ({
+        key: row.key,
+        size: row.size ?? 0,
+        mime: row.mime ?? '',
+        createdAt: new Date(row.created_at),
+      }));
+    }
+    if (connection?.store) {
       const store = this.getStoreForUniversal(universalId);
       const data = await store.read();
       return Object.entries(data.blobs).map(([key, blob]) => ({
@@ -627,7 +1251,16 @@ export class DocStoragePool {
   }
 
   async getPeerRemoteClocks(universalId, peer) {
-    if (isLocalStoreEnabled()) {
+    const connection = this.connections.get(universalId);
+    if (connection?.sqlite) {
+      const { statements } = this.getSqliteForUniversal(universalId);
+      const rows = statements.getPeerClocks.all(peer, 'remote');
+      return rows.map(row => ({
+        docId: row.docId,
+        timestamp: new Date(row.ts),
+      }));
+    }
+    if (connection?.store) {
       const store = this.getStoreForUniversal(universalId);
       const data = await store.read();
       const bucket = getPeerClockBucket(data, 'remote', peer);
@@ -640,7 +1273,14 @@ export class DocStoragePool {
   }
 
   async getPeerRemoteClock(universalId, peer, docId) {
-    if (isLocalStoreEnabled()) {
+    const connection = this.connections.get(universalId);
+    if (connection?.sqlite) {
+      const { statements } = this.getSqliteForUniversal(universalId);
+      const row = statements.getPeerClock.get(peer, 'remote', docId);
+      if (!row) return null;
+      return { docId, timestamp: new Date(row.ts) };
+    }
+    if (connection?.store) {
       const store = this.getStoreForUniversal(universalId);
       const data = await store.read();
       const bucket = getPeerClockBucket(data, 'remote', peer);
@@ -652,7 +1292,14 @@ export class DocStoragePool {
   }
 
   async setPeerRemoteClock(universalId, peer, docId, clock) {
-    if (isLocalStoreEnabled()) {
+    const connection = this.connections.get(universalId);
+    if (connection?.sqlite) {
+      const { statements } = this.getSqliteForUniversal(universalId);
+      const ts = clock instanceof Date ? clock.getTime() : clock;
+      statements.upsertPeerClock.run(peer, 'remote', docId, ts);
+      return;
+    }
+    if (connection?.store) {
       const store = this.getStoreForUniversal(universalId);
       await store.withWrite(data => {
         const bucket = getPeerClockBucket(data, 'remote', peer);
@@ -663,7 +1310,16 @@ export class DocStoragePool {
   }
 
   async getPeerPulledRemoteClocks(universalId, peer) {
-    if (isLocalStoreEnabled()) {
+    const connection = this.connections.get(universalId);
+    if (connection?.sqlite) {
+      const { statements } = this.getSqliteForUniversal(universalId);
+      const rows = statements.getPeerClocks.all(peer, 'pulled');
+      return rows.map(row => ({
+        docId: row.docId,
+        timestamp: new Date(row.ts),
+      }));
+    }
+    if (connection?.store) {
       const store = this.getStoreForUniversal(universalId);
       const data = await store.read();
       const bucket = getPeerClockBucket(data, 'pulled', peer);
@@ -676,7 +1332,14 @@ export class DocStoragePool {
   }
 
   async getPeerPulledRemoteClock(universalId, peer, docId) {
-    if (isLocalStoreEnabled()) {
+    const connection = this.connections.get(universalId);
+    if (connection?.sqlite) {
+      const { statements } = this.getSqliteForUniversal(universalId);
+      const row = statements.getPeerClock.get(peer, 'pulled', docId);
+      if (!row) return null;
+      return { docId, timestamp: new Date(row.ts) };
+    }
+    if (connection?.store) {
       const store = this.getStoreForUniversal(universalId);
       const data = await store.read();
       const bucket = getPeerClockBucket(data, 'pulled', peer);
@@ -688,7 +1351,14 @@ export class DocStoragePool {
   }
 
   async setPeerPulledRemoteClock(universalId, peer, docId, clock) {
-    if (isLocalStoreEnabled()) {
+    const connection = this.connections.get(universalId);
+    if (connection?.sqlite) {
+      const { statements } = this.getSqliteForUniversal(universalId);
+      const ts = clock instanceof Date ? clock.getTime() : clock;
+      statements.upsertPeerClock.run(peer, 'pulled', docId, ts);
+      return;
+    }
+    if (connection?.store) {
       const store = this.getStoreForUniversal(universalId);
       await store.withWrite(data => {
         const bucket = getPeerClockBucket(data, 'pulled', peer);
@@ -699,7 +1369,16 @@ export class DocStoragePool {
   }
 
   async getPeerPushedClocks(universalId, peer) {
-    if (isLocalStoreEnabled()) {
+    const connection = this.connections.get(universalId);
+    if (connection?.sqlite) {
+      const { statements } = this.getSqliteForUniversal(universalId);
+      const rows = statements.getPeerClocks.all(peer, 'pushed');
+      return rows.map(row => ({
+        docId: row.docId,
+        timestamp: new Date(row.ts),
+      }));
+    }
+    if (connection?.store) {
       const store = this.getStoreForUniversal(universalId);
       const data = await store.read();
       const bucket = getPeerClockBucket(data, 'pushed', peer);
@@ -712,7 +1391,14 @@ export class DocStoragePool {
   }
 
   async getPeerPushedClock(universalId, peer, docId) {
-    if (isLocalStoreEnabled()) {
+    const connection = this.connections.get(universalId);
+    if (connection?.sqlite) {
+      const { statements } = this.getSqliteForUniversal(universalId);
+      const row = statements.getPeerClock.get(peer, 'pushed', docId);
+      if (!row) return null;
+      return { docId, timestamp: new Date(row.ts) };
+    }
+    if (connection?.store) {
       const store = this.getStoreForUniversal(universalId);
       const data = await store.read();
       const bucket = getPeerClockBucket(data, 'pushed', peer);
@@ -724,7 +1410,14 @@ export class DocStoragePool {
   }
 
   async setPeerPushedClock(universalId, peer, docId, clock) {
-    if (isLocalStoreEnabled()) {
+    const connection = this.connections.get(universalId);
+    if (connection?.sqlite) {
+      const { statements } = this.getSqliteForUniversal(universalId);
+      const ts = clock instanceof Date ? clock.getTime() : clock;
+      statements.upsertPeerClock.run(peer, 'pushed', docId, ts);
+      return;
+    }
+    if (connection?.store) {
       const store = this.getStoreForUniversal(universalId);
       await store.withWrite(data => {
         const bucket = getPeerClockBucket(data, 'pushed', peer);
@@ -735,7 +1428,14 @@ export class DocStoragePool {
   }
 
   async clearClocks(universalId) {
-    if (isLocalStoreEnabled()) {
+    const connection = this.connections.get(universalId);
+    if (connection?.sqlite) {
+      const { statements } = this.getSqliteForUniversal(universalId);
+      statements.deletePeerClocks.run();
+      statements.deleteBlobUploadedAt.run();
+      return;
+    }
+    if (connection?.store) {
       const store = this.getStoreForUniversal(universalId);
       await store.withWrite(data => {
         data.peerClocks = { remote: {}, pulled: {}, pushed: {} };
@@ -746,7 +1446,14 @@ export class DocStoragePool {
   }
 
   async setBlobUploadedAt(universalId, peer, blobId, uploadedAt) {
-    if (isLocalStoreEnabled()) {
+    const connection = this.connections.get(universalId);
+    if (connection?.sqlite) {
+      const { statements } = this.getSqliteForUniversal(universalId);
+      const ts = uploadedAt instanceof Date ? uploadedAt.getTime() : uploadedAt;
+      statements.upsertBlobUploadedAt.run(peer, blobId, ts);
+      return;
+    }
+    if (connection?.store) {
       const store = this.getStoreForUniversal(universalId);
       await store.withWrite(data => {
         const bucket = getBlobUploadedBucket(data, peer);
@@ -758,7 +1465,14 @@ export class DocStoragePool {
   }
 
   async getBlobUploadedAt(universalId, peer, blobId) {
-    if (isLocalStoreEnabled()) {
+    const connection = this.connections.get(universalId);
+    if (connection?.sqlite) {
+      const { statements } = this.getSqliteForUniversal(universalId);
+      const row = statements.getBlobUploadedAt.get(peer, blobId);
+      if (!row) return null;
+      return new Date(row.ts);
+    }
+    if (connection?.store) {
       const store = this.getStoreForUniversal(universalId);
       const data = await store.read();
       const bucket = getBlobUploadedBucket(data, peer);
@@ -775,10 +1489,15 @@ export class SqliteConnection {
     this.path = path;
     this.isClose = false;
     this.store = isNodeRuntime ? getStore(path) : null;
+    this.sqlite = null;
     console.warn('[MOCK] SqliteConnection created at:', path);
   }
   
   async connect() {
+    if (canUseSqlite()) {
+      this.sqlite = await acquireSqliteEntry(this.path);
+      return;
+    }
     if (this.store) {
       await this.store.load(true);
       return;
@@ -802,11 +1521,20 @@ export class SqliteConnection {
   
   async close() {
     this.isClose = true;
+    if (this.sqlite) {
+      releaseSqliteEntry(this.path);
+      this.sqlite = null;
+    }
     console.warn('[MOCK] SqliteConnection.close');
   }
   
   // 其他方法的模拟实现...
   async addBlob(key, blob) {
+    if (this.sqlite) {
+      const { statements } = this.sqlite;
+      statements.addV1Blob.run(key, Date.now(), toBuffer(blob));
+      return;
+    }
     if (!this.store) return;
     await this.store.withWrite(data => {
       const now = Date.now();
@@ -818,6 +1546,16 @@ export class SqliteConnection {
   }
 
   async getBlob(key) {
+    if (this.sqlite) {
+      const { statements } = this.sqlite;
+      const row = statements.getV1Blob.get(key);
+      if (!row) return null;
+      return {
+        key,
+        data: row.data,
+        timestamp: new Date(row.ts),
+      };
+    }
     if (!this.store) return null;
     const data = await this.store.read();
     const row = data.v1.blobs[key];
@@ -830,6 +1568,11 @@ export class SqliteConnection {
   }
 
   async deleteBlob(key) {
+    if (this.sqlite) {
+      const { statements } = this.sqlite;
+      statements.deleteV1Blob.run(key);
+      return;
+    }
     if (!this.store) return;
     await this.store.withWrite(data => {
       delete data.v1.blobs[key];
@@ -837,12 +1580,28 @@ export class SqliteConnection {
   }
 
   async getBlobKeys() {
+    if (this.sqlite) {
+      const { statements } = this.sqlite;
+      return statements.getV1BlobKeys.all().map(row => row.key);
+    }
     if (!this.store) return [];
     const data = await this.store.read();
     return Object.keys(data.v1.blobs);
   }
 
   async getUpdates(docId) {
+    if (this.sqlite) {
+      const { statements } = this.sqlite;
+      const rows = docId
+        ? statements.getV1UpdatesByDoc.all(docId)
+        : statements.getV1UpdatesAll.all();
+      return rows.map(update => ({
+        id: update.id,
+        timestamp: new Date(update.ts),
+        data: update.data,
+        docId: update.docId ?? undefined,
+      }));
+    }
     if (!this.store) return [];
     const data = await this.store.read();
     const updates = data.v1.updates.filter(update =>
@@ -857,6 +1616,14 @@ export class SqliteConnection {
   }
 
   async getDocTimestamps() {
+    if (this.sqlite) {
+      const { statements } = this.sqlite;
+      const rows = statements.getV1DocTimestamps.all();
+      return rows.map(row => ({
+        docId: row.docId,
+        timestamp: new Date(row.ts),
+      }));
+    }
     if (!this.store) return [];
     const data = await this.store.read();
     const latest = new Map();
@@ -874,6 +1641,15 @@ export class SqliteConnection {
   }
 
   async deleteUpdates(docId) {
+    if (this.sqlite) {
+      const { statements } = this.sqlite;
+      if (!docId) {
+        statements.deleteV1UpdatesAll.run();
+        return;
+      }
+      statements.deleteV1UpdatesByDoc.run(docId);
+      return;
+    }
     if (!this.store) return;
     await this.store.withWrite(data => {
       if (!docId) {
@@ -885,6 +1661,13 @@ export class SqliteConnection {
   }
 
   async getUpdatesCount(docId) {
+    if (this.sqlite) {
+      const { statements } = this.sqlite;
+      const row = docId
+        ? statements.getV1UpdatesCountByDoc.get(docId)
+        : statements.getV1UpdatesCountAll.get();
+      return row?.count ?? 0;
+    }
     if (!this.store) return 0;
     const data = await this.store.read();
     if (!docId) return data.v1.updates.length;
@@ -892,6 +1675,16 @@ export class SqliteConnection {
   }
 
   async getAllUpdates() {
+    if (this.sqlite) {
+      const { statements } = this.sqlite;
+      const rows = statements.getV1UpdatesAll.all();
+      return rows.map(update => ({
+        id: update.id,
+        timestamp: new Date(update.ts),
+        data: update.data,
+        docId: update.docId ?? undefined,
+      }));
+    }
     if (!this.store) return [];
     const data = await this.store.read();
     return data.v1.updates.map(update => ({
@@ -903,6 +1696,21 @@ export class SqliteConnection {
   }
 
   async insertUpdates(updates) {
+    if (this.sqlite) {
+      const { db, statements } = this.sqlite;
+      const tx = db.transaction(() => {
+        updates.forEach(update => {
+          const ts = Date.now();
+          statements.insertV1Update.run(
+            update.docId ?? null,
+            ts,
+            toBuffer(update.data)
+          );
+        });
+      });
+      tx();
+      return;
+    }
     if (!this.store) return;
     await this.store.withWrite(data => {
       updates.forEach(update => {
@@ -919,6 +1727,27 @@ export class SqliteConnection {
   }
 
   async replaceUpdates(docId, updates) {
+    if (this.sqlite) {
+      const { db, statements } = this.sqlite;
+      const tx = db.transaction(() => {
+        if (docId) {
+          statements.deleteV1UpdatesByDoc.run(docId);
+        } else {
+          statements.deleteV1UpdatesAll.run();
+        }
+        updates.forEach(update => {
+          const ts = Date.now();
+          const resolvedDocId = update.docId ?? docId ?? null;
+          statements.insertV1Update.run(
+            resolvedDocId,
+            ts,
+            toBuffer(update.data)
+          );
+        });
+      });
+      tx();
+      return;
+    }
     if (!this.store) return;
     await this.store.withWrite(data => {
       if (docId) {
@@ -940,6 +1769,16 @@ export class SqliteConnection {
   }
 
   async getServerClock(key) {
+    if (this.sqlite) {
+      const { statements } = this.sqlite;
+      const row = statements.getV1ServerClock.get(key);
+      if (!row) return null;
+      return {
+        key,
+        data: row.data,
+        timestamp: new Date(row.ts),
+      };
+    }
     if (!this.store) return null;
     const data = await this.store.read();
     const row = data.v1.serverClock[key];
@@ -952,6 +1791,11 @@ export class SqliteConnection {
   }
 
   async setServerClock(key, dataValue) {
+    if (this.sqlite) {
+      const { statements } = this.sqlite;
+      statements.setV1ServerClock.run(key, Date.now(), toBuffer(dataValue));
+      return;
+    }
     if (!this.store) return;
     await this.store.withWrite(data => {
       data.v1.serverClock[key] = {
@@ -962,12 +1806,21 @@ export class SqliteConnection {
   }
 
   async getServerClockKeys() {
+    if (this.sqlite) {
+      const { statements } = this.sqlite;
+      return statements.getV1ServerClockKeys.all().map(row => row.key);
+    }
     if (!this.store) return [];
     const data = await this.store.read();
     return Object.keys(data.v1.serverClock);
   }
 
   async clearServerClock() {
+    if (this.sqlite) {
+      const { statements } = this.sqlite;
+      statements.clearV1ServerClock.run();
+      return;
+    }
     if (!this.store) return;
     await this.store.withWrite(data => {
       data.v1.serverClock = {};
@@ -975,6 +1828,11 @@ export class SqliteConnection {
   }
 
   async delServerClock(key) {
+    if (this.sqlite) {
+      const { statements } = this.sqlite;
+      statements.delV1ServerClock.run(key);
+      return;
+    }
     if (!this.store) return;
     await this.store.withWrite(data => {
       delete data.v1.serverClock[key];
@@ -982,6 +1840,16 @@ export class SqliteConnection {
   }
 
   async getSyncMetadata(key) {
+    if (this.sqlite) {
+      const { statements } = this.sqlite;
+      const row = statements.getV1SyncMetadata.get(key);
+      if (!row) return null;
+      return {
+        key,
+        data: row.data,
+        timestamp: new Date(row.ts),
+      };
+    }
     if (!this.store) return null;
     const data = await this.store.read();
     const row = data.v1.syncMetadata[key];
@@ -994,6 +1862,11 @@ export class SqliteConnection {
   }
 
   async setSyncMetadata(key, dataValue) {
+    if (this.sqlite) {
+      const { statements } = this.sqlite;
+      statements.setV1SyncMetadata.run(key, Date.now(), toBuffer(dataValue));
+      return;
+    }
     if (!this.store) return;
     await this.store.withWrite(data => {
       data.v1.syncMetadata[key] = {
@@ -1004,12 +1877,21 @@ export class SqliteConnection {
   }
 
   async getSyncMetadataKeys() {
+    if (this.sqlite) {
+      const { statements } = this.sqlite;
+      return statements.getV1SyncMetadataKeys.all().map(row => row.key);
+    }
     if (!this.store) return [];
     const data = await this.store.read();
     return Object.keys(data.v1.syncMetadata);
   }
 
   async clearSyncMetadata() {
+    if (this.sqlite) {
+      const { statements } = this.sqlite;
+      statements.clearV1SyncMetadata.run();
+      return;
+    }
     if (!this.store) return;
     await this.store.withWrite(data => {
       data.v1.syncMetadata = {};
@@ -1017,6 +1899,11 @@ export class SqliteConnection {
   }
 
   async delSyncMetadata(key) {
+    if (this.sqlite) {
+      const { statements } = this.sqlite;
+      statements.delV1SyncMetadata.run(key);
+      return;
+    }
     if (!this.store) return;
     await this.store.withWrite(data => {
       delete data.v1.syncMetadata[key];
@@ -1024,6 +1911,14 @@ export class SqliteConnection {
   }
 
   async initVersion() {
+    if (this.sqlite) {
+      const { statements } = this.sqlite;
+      const row = statements.getV1Version.get('version');
+      if (!row?.value) {
+        statements.setV1Version.run('version', 1);
+      }
+      return;
+    }
     if (!this.store) return;
     await this.store.withWrite(data => {
       if (!data.v1.version) {
@@ -1033,6 +1928,11 @@ export class SqliteConnection {
   }
 
   async setVersion(version) {
+    if (this.sqlite) {
+      const { statements } = this.sqlite;
+      statements.setV1Version.run('version', version);
+      return;
+    }
     if (!this.store) return;
     await this.store.withWrite(data => {
       data.v1.version = version;
@@ -1040,6 +1940,11 @@ export class SqliteConnection {
   }
 
   async getMaxVersion() {
+    if (this.sqlite) {
+      const { statements } = this.sqlite;
+      const row = statements.getV1Version.get('version');
+      return row?.value ?? 1;
+    }
     if (!this.store) return 1;
     const data = await this.store.read();
     return data.v1.version ?? 1;
@@ -1050,6 +1955,10 @@ export class SqliteConnection {
   }
 
   async checkpoint() {
+    if (this.sqlite) {
+      this.sqlite.db.pragma('wal_checkpoint(TRUNCATE)');
+      return;
+    }
     if (this.store) {
       await this.store.save();
     }

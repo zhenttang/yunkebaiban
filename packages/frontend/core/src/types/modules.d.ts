@@ -29,3 +29,8 @@ declare module '*.inline.svg' {
   const src: string;
   export default src;
 }
+
+declare module '*.wasm?url' {
+  const url: string;
+  export default url;
+}

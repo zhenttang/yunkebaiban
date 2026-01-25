@@ -4,5 +4,8 @@
   "private": true,
   "main": "index.js",
   "types": "index.d.ts",
-  "description": "Mock implementation of @yunke/native for development without Rust"
+  "description": "Mock implementation of @yunke/native for development without Rust",
+  "dependencies": {
+    "better-sqlite3": "^11.6.0"
+  }
 }

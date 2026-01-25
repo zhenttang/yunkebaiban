@@ -6,6 +6,19 @@ export {
 } from './providers/global';
 export { NbstoreProvider } from './providers/nbstore';
 export {
+  createFileNativeDBApis,
+  createFileNativeDBV1Apis,
+} from './file-native-db';
+export {
+  clearOfflineRootHandle,
+  ensureHandlePermission,
+  getOfflineRootHandleName,
+  isFileSystemAccessSupported,
+  loadOfflineRootHandle,
+  requestOfflineRootHandle,
+  saveOfflineRootHandle,
+} from './offline-file-handle';
+export {
   GlobalCacheService,
   GlobalSessionStateService,
   GlobalStateService,

@@ -31,6 +31,7 @@ import { NotificationSettings } from './notifications';
 import { OfflineSettings } from './offline';
 import { YUNKEPricingPlans } from './plans';
 import { Shortcuts } from './shortcuts';
+import { isFileSystemAccessSupported } from '../../../../modules/storage/offline-file-handle';
 
 export type GeneralSettingList = SettingSidebarItem[];
 
@@ -124,7 +125,7 @@ export const useGeneralSettingList = (): GeneralSettingList => {
       }
     }
 
-    if (BUILD_CONFIG.isElectron) {
+    if (BUILD_CONFIG.isElectron || isFileSystemAccessSupported()) {
       settings.push({
         key: 'offline',
         title: '离线',
