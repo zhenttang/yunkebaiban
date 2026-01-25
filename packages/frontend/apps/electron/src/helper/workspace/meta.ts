@@ -5,6 +5,7 @@ import { type SpaceType } from '@yunke/nbstore';
 import fs from 'fs-extra';
 
 import { isWindows } from '../../shared/utils';
+import { logger } from '../logger';
 import { mainRPC } from '../main-rpc';
 import type { WorkspaceMeta } from '../type';
 
@@ -46,12 +47,20 @@ async function getOfflineConfig() {
               ? (rawOffline as { dataPath?: string }).dataPath ?? ''
               : fallbackOfflineConfig.dataPath,
         };
+        logger.info('[offline] loaded config from file', {
+          path: configPath,
+          offline: _offlineConfig,
+        });
         return _offlineConfig;
       }
       const parsed = appConfigSchema.safeParse(raw);
       if (parsed.success) {
         _offlineConfig =
           parsed.data.offline ?? (defaultAppConfig as any).offline ?? fallbackOfflineConfig;
+        logger.info('[offline] loaded config (schema)', {
+          path: configPath,
+          offline: _offlineConfig,
+        });
         return _offlineConfig;
       }
     }
@@ -60,6 +69,7 @@ async function getOfflineConfig() {
   }
   _offlineConfig =
     (defaultAppConfig as any).offline ?? fallbackOfflineConfig;
+  logger.info('[offline] loaded config fallback', { offline: _offlineConfig });
   return _offlineConfig;
 }
 
@@ -72,12 +82,17 @@ export async function getAppDataPath() {
     const configuredPath = offlineConfig.dataPath?.trim();
     if (configuredPath) {
       _appDataPath = configuredPath;
+      logger.info('[offline] app data path (configured)', { path: _appDataPath });
       return _appDataPath;
     }
     _appDataPath = path.join(await mainRPC.getPath('sessionData'), 'offline');
+    logger.info('[offline] app data path (sessionData/offline)', {
+      path: _appDataPath,
+    });
     return _appDataPath;
   }
   _appDataPath = await mainRPC.getPath('sessionData');
+  logger.info('[offline] app data path (sessionData)', { path: _appDataPath });
   return _appDataPath;
 }
 
@@ -120,15 +135,28 @@ export async function getSpaceDBPath(
   if (peer === 'local') {
     const meta = await readWorkspaceMetaFile(spaceType, id);
     if (meta?.mainDBPath) {
+      logger.info('[offline] using meta mainDBPath', {
+        peer,
+        spaceType,
+        id,
+        path: meta.mainDBPath,
+      });
       return meta.mainDBPath;
     }
   }
-  return path.join(
+  const computed = path.join(
     await getSpaceBasePath(spaceType),
     escapeFilename(peer),
     id,
     'storage.db'
   );
+  logger.info('[offline] using computed db path', {
+    peer,
+    spaceType,
+    id,
+    path: computed,
+  });
+  return computed;
 }
 
 export async function getDeletedWorkspacesBasePath() {
@@ -187,6 +215,12 @@ async function readWorkspaceMetaFile(
     if (!(await fs.pathExists(metaPath))) return null;
     const meta = (await fs.readJson(metaPath)) as Partial<WorkspaceMeta>;
     if (!meta.mainDBPath) return null;
+    logger.info('[offline] loaded workspace meta', {
+      spaceType,
+      workspaceId,
+      metaPath,
+      mainDBPath: meta.mainDBPath,
+    });
     return meta as WorkspaceMeta;
   } catch {
     return null;

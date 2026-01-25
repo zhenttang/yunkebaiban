@@ -7,11 +7,13 @@ import {
   type Server,
   ServersService,
 } from '@yunke/core/modules/cloud';
+import { CLOUD_ENABLED_KEY } from '@yunke/core/modules/cloud/constant';
 import {
   type DialogComponentProps,
   type GLOBAL_DIALOG_SCHEMA,
   GlobalDialogService,
 } from '@yunke/core/modules/dialogs';
+import { GlobalStateService } from '@yunke/core/modules/storage/services/global';
 import { WorkspacesService } from '@yunke/core/modules/workspace';
 import { useI18n } from '@yunke/i18n';
 import { CloudWorkspaceIcon } from '@blocksuite/icons/rc';
@@ -41,6 +43,7 @@ const Dialog = ({
   const account = useLiveData(authService.session.account$);
   const loginStatus = useLiveData(useService(AuthService).session.status$);
   const globalDialogService = useService(GlobalDialogService);
+  const globalStateService = useService(GlobalStateService);
   const workspacesService = useService(WorkspacesService);
   const workspaceMeta = useLiveData(
     workspacesService.list.workspace$(workspaceId)
@@ -56,6 +59,7 @@ const Dialog = ({
       if (!workspace) return;
       if (!account) return;
 
+      globalStateService.globalState.set(CLOUD_ENABLED_KEY, true);
       const { id: newId } = await workspacesService.transformLocalToCloud(
         workspace,
         account.id,
@@ -78,6 +82,7 @@ const Dialog = ({
     openPageId,
     close,
     t,
+    globalStateService,
   ]);
 
   const openSignIn = useCallback(() => {

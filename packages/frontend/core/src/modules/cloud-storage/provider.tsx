@@ -171,16 +171,19 @@ export const useCloudStorage = () => {
 interface CloudStorageProviderProps {
   children: React.ReactNode;
   serverUrl?: string;
+  enabled?: boolean;
 }
 
 export const CloudStorageProvider = ({ 
   children, 
-  serverUrl: serverUrlProp
+  serverUrl: serverUrlProp,
+  enabled = true,
 }: CloudStorageProviderProps) => {
   // 🔧 修复：将 serverUrl 默认值计算移到组件内部，避免在函数参数中执行副作用
   const serverUrl = useMemo(() => {
     return serverUrlProp ?? getSocketIOUrl();
   }, [serverUrlProp]);
+  const cloudEnabled = enabled;
   const params = useParams();
   const sessionId = useMemo(() => getOrCreateSessionId(), []);
   const normalizedLocalSessionId = useMemo(
@@ -265,6 +268,7 @@ export const CloudStorageProvider = ({
   const serverUrlRef = useRef(serverUrl); // 🔧 使用 ref 存储 serverUrl，避免 connectToSocket 频繁重新创建
   const connectToSocketRef = useRef<(() => Promise<void>) | null>(null); // 🔧 存储 connectToSocket 引用，用于网络状态监听
   const activeJoinAttemptRef = useRef<symbol | null>(null);
+  const cloudEnabledRef = useRef(cloudEnabled);
 
   const upsertSessionInfo = useCallback(
     (sessionIdRaw: string | null, clientIdRaw: string | null, _source: SessionActivityDetail['source']) => {
@@ -416,6 +420,9 @@ export const CloudStorageProvider = ({
 
   // 🔧 修复5: 同步离线操作 - 使用useCallback
   const syncOfflineOperations = useCallback(async (): Promise<void> => {
+    if (!cloudEnabledRef.current) {
+      return;
+    }
     if (!currentWorkspaceId || !socket?.connected) {
       console.warn('⚠️ [云存储管理器] 无法同步：缺少workspace或连接');
       return;
@@ -511,6 +518,9 @@ export const CloudStorageProvider = ({
   useEffect(() => {
     isOnlineRef.current = isOnline;
   }, [isOnline]);
+  useEffect(() => {
+    cloudEnabledRef.current = cloudEnabled;
+  }, [cloudEnabled]);
   
   useEffect(() => {
     serverUrlRef.current = serverUrl;
@@ -568,6 +578,11 @@ export const CloudStorageProvider = ({
   // 🔧 修复2&3&4: 连接Socket.IO - 添加状态保护、闭包修复、日志限流
   // 🔧 必须定义在 pushDocUpdate 之前，因为 pushDocUpdate 依赖它
   const connectToSocket = useCallback(async (): Promise<void> => {
+    if (!cloudEnabledRef.current) {
+      setIsConnected(false);
+      setStorageMode('local');
+      return;
+    }
     // 🔧 防止重复连接
     if (isConnectingRef.current) {
       logThrottle.current.log('duplicate-connect', () => {
@@ -953,6 +968,23 @@ export const CloudStorageProvider = ({
   // 🔧 修复1: 统一的连接管理 - 处理组件挂载、workspaceId变化、serverUrl变化
   // 🔧 修复：移除 socket 依赖，避免循环依赖，使用 socketRef 替代
   useEffect(() => {
+    if (!cloudEnabled) {
+      const currentSocket = socketRef.current;
+      if (currentSocket) {
+        currentSocket.disconnect();
+        setSocket(null);
+        socketRef.current = null;
+      }
+      lastWorkspaceIdRef.current = null;
+      if (reconnectTimeout.current) {
+        clearTimeout(reconnectTimeout.current);
+        reconnectTimeout.current = null;
+      }
+      isConnectingRef.current = false;
+      setIsConnected(false);
+      setStorageMode('local');
+      return;
+    }
     if (!currentWorkspaceId) {
       // 如果没有workspaceId，清理现有连接
       const currentSocket = socketRef.current;
@@ -1034,7 +1066,7 @@ export const CloudStorageProvider = ({
       // 🔧 注意：不在这里断开连接，因为可能被新的连接复用
       // 只在 cleanup 时（组件卸载）才断开
     };
-  }, [serverUrl, currentWorkspaceId, connectToSocket]); // 🔧 保留 serverUrl 依赖，因为 serverUrl 变化时需要重连
+  }, [cloudEnabled, serverUrl, currentWorkspaceId, connectToSocket]); // 🔧 保留 serverUrl 依赖，因为 serverUrl 变化时需要重连
 
   useEffect(() => {
     if (typeof window === 'undefined') {

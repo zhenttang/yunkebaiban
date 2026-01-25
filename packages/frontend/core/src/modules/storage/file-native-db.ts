@@ -1,5 +1,4 @@
 import initSqlJs, { type Database, type SqlJsStatic } from 'sql.js';
-import sqlWasmUrl from 'sql.js/dist/sql-wasm.wasm?url';
 
 import {
   type BlobRecord,
@@ -19,8 +18,29 @@ import {
 } from './offline-file-handle';
 
 const SQLITE_SCHEMA_VERSION = 1;
+const OFFLINE_DEBUG =
+  typeof BUILD_CONFIG !== 'undefined' && BUILD_CONFIG.debug === true;
+
+const logInfo = (message: string, data?: Record<string, unknown>) => {
+  if (!OFFLINE_DEBUG) return;
+  if (data) {
+    console.info('[offline-db]', message, data);
+  } else {
+    console.info('[offline-db]', message);
+  }
+};
+
+const logWarn = (message: string, data?: Record<string, unknown>) => {
+  if (!OFFLINE_DEBUG) return;
+  if (data) {
+    console.warn('[offline-db]', message, data);
+  } else {
+    console.warn('[offline-db]', message);
+  }
+};
 
 let sqlInitPromise: Promise<SqlJsStatic> | null = null;
+const sqlWasmUrl = new URL('sql.js/dist/sql-wasm.wasm', import.meta.url).toString();
 
 async function getSqlJs(): Promise<SqlJsStatic> {
   if (!sqlInitPromise) {
@@ -122,10 +142,12 @@ function escapeFilename(name: string) {
 async function getDbFileHandle(universalId: string): Promise<FileSystemFileHandle> {
   const root = await loadOfflineRootHandle();
   if (!root) {
+    logWarn('offline root handle missing');
     throw new Error('离线目录未选择');
   }
   const granted = await ensureHandlePermission(root);
   if (!granted) {
+    logWarn('offline root permission denied', { root: root.name });
     throw new Error('离线目录未授权');
   }
   const { peer, type, id } = parseUniversalId(universalId);
@@ -135,7 +157,12 @@ async function getDbFileHandle(universalId: string): Promise<FileSystemFileHandl
     create: true,
   });
   const workspaceDir = await peerDir.getDirectoryHandle(id, { create: true });
-  return await workspaceDir.getFileHandle('storage.db', { create: true });
+  const handle = await workspaceDir.getFileHandle('storage.db', { create: true });
+  logInfo('resolved db handle', {
+    root: root.name,
+    path: `${spaceDirName}/${escapeFilename(peer)}/${id}/storage.db`,
+  });
+  return handle;
 }
 
 async function getV1DbFileHandle(
@@ -144,10 +171,12 @@ async function getV1DbFileHandle(
 ): Promise<FileSystemFileHandle> {
   const root = await loadOfflineRootHandle();
   if (!root) {
+    logWarn('offline root handle missing');
     throw new Error('离线目录未选择');
   }
   const granted = await ensureHandlePermission(root);
   if (!granted) {
+    logWarn('offline root permission denied', { root: root.name });
     throw new Error('离线目录未授权');
   }
   const spaceDirName = spaceType === 'userspace' ? 'userspaces' : 'workspaces';
@@ -155,7 +184,12 @@ async function getV1DbFileHandle(
   const workspaceDir = await spaceDir.getDirectoryHandle(workspaceId, {
     create: true,
   });
-  return await workspaceDir.getFileHandle('storage.db', { create: true });
+  const handle = await workspaceDir.getFileHandle('storage.db', { create: true });
+  logInfo('resolved v1 db handle', {
+    root: root.name,
+    path: `${spaceDirName}/${workspaceId}/storage.db`,
+  });
+  return handle;
 }
 
 function readFirstRow(db: Database, sql: string, params: unknown[]) {
@@ -192,6 +226,7 @@ class SqliteFileEntry {
   db: Database;
   handle: FileSystemFileHandle;
   queue: Promise<unknown> = Promise.resolve();
+  lastSize: number | null = null;
 
   constructor(db: Database, handle: FileSystemFileHandle) {
     this.db = db;
@@ -209,6 +244,13 @@ class SqliteFileEntry {
     const writable = await this.handle.createWritable();
     await writable.write(data);
     await writable.close();
+    if (data.length !== this.lastSize) {
+      logInfo('flushed db file', {
+        bytes: data.length,
+        file: this.handle.name,
+      });
+      this.lastSize = data.length;
+    }
   }
 }
 
@@ -218,6 +260,7 @@ async function openSqliteEntry(handle: FileSystemFileHandle): Promise<SqliteFile
   const buffer = file.size > 0 ? new Uint8Array(await file.arrayBuffer()) : null;
   const db = buffer ? new sql.Database(buffer) : new sql.Database();
   initSqliteSchema(db);
+  logInfo('opened db file', { file: handle.name, bytes: file.size });
   return new SqliteFileEntry(db, handle);
 }
 
@@ -225,17 +268,27 @@ export function createFileNativeDBApis(): NativeDBApis {
   const entries = new Map<string, SqliteFileEntry>();
 
   const getEntry = async (universalId: string) => {
-    let entry = entries.get(universalId);
-    if (!entry) {
-      const handle = await getDbFileHandle(universalId);
-      entry = await openSqliteEntry(handle);
-      entries.set(universalId, entry);
+    try {
+      let entry = entries.get(universalId);
+      if (!entry) {
+        const handle = await getDbFileHandle(universalId);
+        entry = await openSqliteEntry(handle);
+        entries.set(universalId, entry);
+        logInfo('created db entry', { id: universalId });
+      }
+      return entry;
+    } catch (error) {
+      logWarn('failed to open db entry', {
+        id: universalId,
+        error: error instanceof Error ? error.message : String(error),
+      });
+      throw error;
     }
-    return entry;
   };
 
   const api: NativeDBApis = {
     connect: async (id: string) => {
+      logInfo('connect', { id });
       await getEntry(id);
     },
     disconnect: async (id: string) => {
@@ -246,6 +299,7 @@ export function createFileNativeDBApis(): NativeDBApis {
         entry.db.close();
       });
       entries.delete(id);
+      logInfo('disconnect', { id });
     },
     pushUpdate: async (id: string, docId: string, update: Uint8Array) => {
       const entry = await getEntry(id);

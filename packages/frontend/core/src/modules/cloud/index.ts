@@ -107,7 +107,7 @@ export function configureCloudModule(framework: Framework) {
   configureDocProvider(framework);
 
   framework
-    .service(ServersService, [ServerListStore, ServerConfigStore])
+    .service(ServersService, [ServerListStore, ServerConfigStore, GlobalStateService])
     .service(DefaultServerService, [ServersService])
     .store(ServerListStore, [GlobalStateService])
     .store(ServerConfigStore)

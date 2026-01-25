@@ -33,9 +33,6 @@ export class BroadcastChannelAwarenessStorage extends AwarenessStorageBase {
   override readonly connection = new BroadcastChannelConnection({
     id: this.options.id,
   });
-  get channel() {
-    return this.connection.inner;
-  }
 
   constructor(
     private readonly options: BroadcastChannelAwarenessStorageOptions
@@ -51,18 +48,23 @@ export class BroadcastChannelAwarenessStorage extends AwarenessStorageBase {
     }>
   >();
 
-  override update(record: AwarenessRecord, origin?: string): Promise<void> {
+  override async update(record: AwarenessRecord, origin?: string): Promise<void> {
     const subscribers = this.subscriptions.get(record.docId);
     if (subscribers) {
       subscribers.forEach(subscriber => subscriber.onUpdate(record, origin));
     }
-    this.channel.postMessage({
-      type: 'awareness-update',
-      docId: record.docId,
-      bin: record.bin,
-      origin,
-    } satisfies ChannelMessage);
-    return Promise.resolve();
+    this.connection.connect();
+    try {
+      await this.connection.waitForConnected();
+      this.connection.inner.postMessage({
+        type: 'awareness-update',
+        docId: record.docId,
+        bin: record.bin,
+        origin,
+      } satisfies ChannelMessage);
+    } catch (error) {
+      console.error('error in broadcast channel update', error);
+    }
   }
 
   override subscribeUpdate(
@@ -106,12 +108,14 @@ export class BroadcastChannelAwarenessStorage extends AwarenessStorageBase {
         onCollect()
           .then(awareness => {
             if (awareness) {
-              this.channel.postMessage({
-                type: 'awareness-collect-feedback',
-                docId: message.data.docId,
-                bin: awareness.bin,
-                collectId: collectUniqueId,
-              } satisfies ChannelMessage);
+              if (channel) {
+                channel.postMessage({
+                  type: 'awareness-collect-feedback',
+                  docId: message.data.docId,
+                  bin: awareness.bin,
+                  collectId: collectUniqueId,
+                } satisfies ChannelMessage);
+              }
             }
           })
           .catch(error => {
@@ -130,12 +134,28 @@ export class BroadcastChannelAwarenessStorage extends AwarenessStorageBase {
       }
     };
 
-    this.channel.addEventListener('message', onChannelMessage);
-    this.channel.postMessage({
-      type: 'awareness-collect',
-      docId: id,
-      collectId: collectUniqueId,
-    } satisfies ChannelMessage);
+    let channel: BroadcastChannel | null = null;
+    let disposed = false;
+    const setupChannel = async () => {
+      this.connection.connect();
+      try {
+        await this.connection.waitForConnected();
+      } catch (error) {
+        if (!disposed) {
+          console.error('error in broadcast channel connect', error);
+        }
+        return;
+      }
+      if (disposed) return;
+      channel = this.connection.inner;
+      channel.addEventListener('message', onChannelMessage);
+      channel.postMessage({
+        type: 'awareness-collect',
+        docId: id,
+        collectId: collectUniqueId,
+      } satisfies ChannelMessage);
+    };
+    void setupChannel();
 
     const subscriber = {
       onUpdate,
@@ -145,8 +165,11 @@ export class BroadcastChannelAwarenessStorage extends AwarenessStorageBase {
     this.subscriptions.set(id, subscribers);
 
     return () => {
+      disposed = true;
       subscribers.delete(subscriber);
-      this.channel.removeEventListener('message', onChannelMessage);
+      if (channel) {
+        channel.removeEventListener('message', onChannelMessage);
+      }
     };
   }
 }

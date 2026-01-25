@@ -20,7 +20,7 @@ import { type MessageCommunicapable, OpConsumer } from '@toeverything/infra/op';
 import {
   createFileNativeDBApis,
   createFileNativeDBV1Apis,
-} from '@yunke/core/modules/storage';
+} from '@yunke/core/modules/storage/file-native-db';
 
 bindNativeDBApis(createFileNativeDBApis());
 bindNativeDBV1Apis(createFileNativeDBV1Apis());

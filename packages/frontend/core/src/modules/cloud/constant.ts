@@ -7,6 +7,8 @@
 // import { environment } from '@yunke/env/constant';
 import { getBaseUrl } from '@yunke/config';
 
+export const CLOUD_ENABLED_KEY = 'cloudEnabled';
+
 /**
  * 获取配置的基础URL（不含 /api 路径）
  * 使用@yunke/config统一管理网络配置

@@ -22,6 +22,15 @@ export function fromPromise<T>(
         subscriber.complete();
       })
       .catch(error => {
+        const message = error instanceof Error ? error.message : String(error);
+        if (
+          error === MANUALLY_STOP ||
+          message.includes(MANUALLY_STOP) ||
+          message.includes('连接已关闭')
+        ) {
+          subscriber.complete();
+          return;
+        }
         subscriber.error(error);
       });
 

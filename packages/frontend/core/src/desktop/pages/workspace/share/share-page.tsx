@@ -455,9 +455,11 @@ const SharePageInner = ({
     return null;
   }
 
+  const cloudEnabled = workspace.flavour !== 'local';
+
   return (
     <FrameworkScope scope={workspace.scope}>
-      <CloudStorageProvider>
+      <CloudStorageProvider enabled={cloudEnabled}>
         <FrameworkScope scope={page.scope}>
           <FrameworkScope scope={editor.scope}>
             <ViewIcon icon={currentMode === 'page' ? 'doc' : 'edgeless'} />

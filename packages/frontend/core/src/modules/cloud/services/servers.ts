@@ -1,36 +1,42 @@
 import { Unreachable } from '@yunke/env/constant';
 import { LiveData, ObjectPool, Service } from '@toeverything/infra';
 import { nanoid } from 'nanoid';
-import { Observable, switchMap } from 'rxjs';
+import { combineLatest, Observable, switchMap } from 'rxjs';
 
+import { GlobalStateService } from '../../storage/services/global';
 import { Server } from '../entities/server';
 import { ServerStarted } from '../events/server-started';
 import type { ServerConfigStore } from '../stores/server-config';
 import type { ServerListStore } from '../stores/server-list';
 import type { ServerConfig, ServerMetadata } from '../types';
+import { CLOUD_ENABLED_KEY } from '../constant';
 
 export class ServersService extends Service {
   constructor(
     private readonly serverListStore: ServerListStore,
-    private readonly serverConfigStore: ServerConfigStore
+    private readonly serverConfigStore: ServerConfigStore,
+    private readonly globalStateService: GlobalStateService
   ) {
     super();
   }
 
   servers$ = LiveData.from<Server[]>(
-    this.serverListStore.watchServerList().pipe(
-      switchMap(metadatas => {
+    combineLatest([
+      this.serverListStore.watchServerList(),
+      this.globalStateService.globalState.watch<boolean>(CLOUD_ENABLED_KEY),
+    ]).pipe(
+      switchMap(([metadatas, cloudEnabled]) => {
         const refs = metadatas.map(metadata => {
           const exists = this.serverPool.get(metadata.id);
           if (exists) {
+            this.startServerIfEnabled(exists.obj, cloudEnabled === true);
             return exists;
           }
           const server = this.framework.createEntity(Server, {
             serverMetadata: metadata,
           });
-          server.revalidateConfig();
-          server.scope.eventBus.emit(ServerStarted, server);
           const ref = this.serverPool.put(metadata.id, server);
+          this.startServerIfEnabled(server, cloudEnabled === true);
           return ref;
         });
 
@@ -60,10 +66,25 @@ export class ServersService extends Service {
   }
 
   private readonly serverPool = new ObjectPool<string, Server>({
-    onDelete(obj) {
+    onDelete: obj => {
+      this.startedServers.delete(obj.id);
       obj.dispose();
     },
   });
+
+  private readonly startedServers = new Set<string>();
+
+  private startServerIfEnabled(server: Server, cloudEnabled: boolean) {
+    if (!cloudEnabled) {
+      return;
+    }
+    if (this.startedServers.has(server.id)) {
+      return;
+    }
+    server.revalidateConfig();
+    server.scope.eventBus.emit(ServerStarted, server);
+    this.startedServers.add(server.id);
+  }
 
   addServer(metadata: ServerMetadata, config: ServerConfig) {
     this.serverListStore.addServer(metadata, config);

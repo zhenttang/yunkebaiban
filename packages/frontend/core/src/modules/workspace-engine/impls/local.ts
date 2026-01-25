@@ -34,7 +34,7 @@ import { Observable } from 'rxjs';
 import { Doc as YDoc, encodeStateAsUpdate } from 'yjs';
 
 import { DesktopApiService } from '../../desktop-api';
-import { appConfigStorage } from '../../components/hooks/use-app-config-storage';
+import { appConfigStorage } from '../../../components/hooks/use-app-config-storage';
 import type {
   WorkspaceFlavourProvider,
   WorkspaceFlavoursProvider,
@@ -43,7 +43,7 @@ import type {
 } from '../../workspace';
 import { WorkspaceImpl } from '../../workspace/impls/workspace';
 import { getWorkspaceProfileWorker } from './out-worker';
-import { isFileSystemAccessSupported } from '../../modules/storage/offline-file-handle';
+import { isFileSystemAccessSupported } from '../../storage/offline-file-handle';
 
 export const LOCAL_WORKSPACE_LOCAL_STORAGE_KEY = 'yunke-local-workspace';
 const LOCAL_WORKSPACE_CHANGED_BROADCAST_CHANNEL_KEY =
@@ -85,6 +85,16 @@ class LocalWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
     //   selectedDocStorageType: this.DocStorageType.name || 'IndexedDBDocStorage',
     //   selectedBlobStorageType: this.BlobStorageType.name || 'IndexedDBBlobStorage'
     // });
+    logger.info('storage selection', {
+      isElectron: BUILD_CONFIG.isElectron,
+      isWeb: BUILD_CONFIG.isWeb,
+      isIOS: BUILD_CONFIG.isIOS,
+      isAndroid: BUILD_CONFIG.isAndroid,
+      offlineConfig: appConfigStorage.get('offline'),
+      fileSqliteEnabled: this.fileSqliteEnabled,
+      docStorage: this.DocStorageType.name,
+      blobStorage: this.BlobStorageType.name,
+    });
   }
 
   private readonly fileSqliteEnabled =

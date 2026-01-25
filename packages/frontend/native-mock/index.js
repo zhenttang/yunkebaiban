@@ -34,8 +34,52 @@ const SQLITE_SCHEMA_VERSION = 1;
 const isNodeRuntime =
   typeof process !== 'undefined' && !!process.versions?.node;
 
+let offlineConfigCached = null;
+let offlineConfigLoaded = false;
+
 function canUseSqlite() {
   return isNodeRuntime && sqliteAvailable;
+}
+
+function getElectronUserDataPath() {
+  if (!isNodeRuntime) return null;
+  try {
+    const electron = require('electron');
+    if (electron?.app?.getPath) {
+      return electron.app.getPath('userData');
+    }
+    if (electron?.remote?.app?.getPath) {
+      return electron.remote.app.getPath('userData');
+    }
+  } catch {
+    // ignore
+  }
+  return null;
+}
+
+function loadOfflineEnabledFromConfig() {
+  if (offlineConfigLoaded) return offlineConfigCached;
+  offlineConfigLoaded = true;
+  if (!fs || !path || !isNodeRuntime) return null;
+  try {
+    const userDataPath = getElectronUserDataPath();
+    if (!userDataPath) return null;
+    const configPath = path.join(userDataPath, 'config.json');
+    if (!fs.existsSync(configPath)) return null;
+    const raw = fs.readFileSync(configPath, 'utf8');
+    const parsed = JSON.parse(raw);
+    const enabled = parsed?.offline?.enabled;
+    offlineConfigCached = typeof enabled === 'boolean' ? enabled : null;
+    if (offlineConfigCached !== null) {
+      console.info('[MOCK] offline config detected', {
+        enabled: offlineConfigCached,
+        configPath,
+      });
+    }
+  } catch (error) {
+    console.warn('[MOCK] failed to read offline config', error?.message || error);
+  }
+  return offlineConfigCached;
 }
 
 function parsePeerFromUniversalId(universalId) {
@@ -701,6 +745,13 @@ function getBlobUploadedBucket(data, peer) {
 }
 
 function isElectronOfflineMode() {
+  if (process?.env?.YUNKE_OFFLINE_MODE === '1') {
+    return true;
+  }
+  const offlineEnabled = loadOfflineEnabledFromConfig();
+  if (offlineEnabled === true) {
+    return true;
+  }
   const apiBase = typeof import.meta !== 'undefined' ? import.meta.env?.VITE_API_BASE_URL : '';
   if (apiBase && apiBase.trim() !== '') {
     return false;
@@ -818,6 +869,10 @@ export class DocStoragePool {
         workspaceId: universalId,
         sqlite,
       });
+      console.info('[MOCK] DocStoragePool.connect sqlite', {
+        universalId,
+        filePath,
+      });
       return;
     }
     if (shouldUseLocalStoreForUniversal(universalId)) {
@@ -828,11 +883,19 @@ export class DocStoragePool {
         workspaceId: universalId,
         store,
       });
+      console.info('[MOCK] DocStoragePool.connect json', {
+        universalId,
+        filePath,
+      });
       return;
     }
     this.connections.set(universalId, {
       path: filePath,
       workspaceId: universalId,
+    });
+    console.info('[MOCK] DocStoragePool.connect remote', {
+      universalId,
+      filePath,
     });
   }
   

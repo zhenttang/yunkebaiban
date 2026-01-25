@@ -166,6 +166,9 @@ export const Component = (): ReactElement => {
     }
     return meta;
   }, [communityRoute, meta, params.workspaceId]);
+  const cloudEnabled = Boolean(
+    effectiveMeta?.flavour && effectiveMeta.flavour !== 'local'
+  );
 
   // 如果 listLoading 为 false，我们可以显示 404 页面，否则应该显示加载页面。
   useEffect(() => {
@@ -303,7 +306,7 @@ export const Component = (): ReactElement => {
     if (communityRoute) {
       return (
         <FrameworkScope scope={server?.scope}>
-          <CloudStorageProvider>
+          <CloudStorageProvider enabled={cloudEnabled}>
             <StandaloneCommunityPage />
           </CloudStorageProvider>
         </FrameworkScope>
@@ -313,7 +316,7 @@ export const Component = (): ReactElement => {
     if (detailDocRoute) {
       return (
         <FrameworkScope scope={server?.scope}>
-          <CloudStorageProvider>
+          <CloudStorageProvider enabled={cloudEnabled}>
             <SharePage
               docId={detailDocRoute.docId}
               workspaceId={detailDocRoute.workspaceId}
@@ -325,7 +328,7 @@ export const Component = (): ReactElement => {
     
     return (
       <FrameworkScope scope={server?.scope}>
-        <CloudStorageProvider>
+        <CloudStorageProvider enabled={cloudEnabled}>
           <YunkeOtherPageLayout>
             <PageNotFound noPermission />
           </YunkeOtherPageLayout>
@@ -345,7 +348,7 @@ export const Component = (): ReactElement => {
     // 注意：这里不应该显示fallback，因为那会让用户以为还在加载
     return (
       <FrameworkScope scope={server?.scope}>
-        <CloudStorageProvider>
+        <CloudStorageProvider enabled={cloudEnabled}>
           <YunkeOtherPageLayout>
             <PageNotFound noPermission />
           </YunkeOtherPageLayout>
@@ -379,6 +382,7 @@ const WorkspacePage = ({ meta }: { meta: WorkspaceMetadata }) => {
     WorkspacesService,
     GlobalContextService,
   });
+  const cloudEnabled = meta.flavour !== 'local';
 
   const [workspace, setWorkspace] = useState<Workspace | null>(null);
 
@@ -519,7 +523,7 @@ const WorkspacePage = ({ meta }: { meta: WorkspaceMetadata }) => {
   if (!isRootDocReady) {
     return (
       <FrameworkScope scope={workspace.scope}>
-        <CloudStorageProvider>
+        <CloudStorageProvider enabled={cloudEnabled}>
           <DNDContextProvider>
             <OpenInAppGuard>
               <AppContainer fallback />
@@ -532,7 +536,7 @@ const WorkspacePage = ({ meta }: { meta: WorkspaceMetadata }) => {
 
   return (
     <FrameworkScope scope={workspace.scope}>
-      <CloudStorageProvider>
+      <CloudStorageProvider enabled={cloudEnabled}>
         <DNDContextProvider>
           <OpenInAppGuard>
             <YunkeErrorBoundary height="100vh">

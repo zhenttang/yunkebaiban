@@ -171,6 +171,11 @@ export function createHTMLTargetConfig(
           'signals-core'
         ).value,
       },
+      fallback: {
+        fs: false,
+        path: false,
+        crypto: false,
+      },
     },
     //#endregion
 
@@ -258,6 +263,7 @@ export function createHTMLTargetConfig(
               test: /\.(png|jpg|gif|svg|webp|mp4|zip)$/,
               type: 'asset/resource',
             },
+            { test: /\.wasm$/, type: 'asset/resource' },
             { test: /\.(ttf|eot|woff|woff2)$/, type: 'asset/resource' },
             { test: /\.txt$/, type: 'asset/source' },
             { test: /\.inline\.svg$/, type: 'asset/inline' },
@@ -499,6 +505,11 @@ export function createWorkerTargetConfig(
       extensionAlias: { '.js': ['.js', '.ts'], '.mjs': ['.mjs', '.mts'] },
       extensions: ['.js', '.ts'],
       alias: { yjs: ProjectRoot.join('node_modules', 'yjs').value },
+      fallback: {
+        fs: false,
+        path: false,
+        crypto: false,
+      },
     },
 
     module: {
@@ -514,6 +525,7 @@ export function createWorkerTargetConfig(
       },
       rules: [
         { test: /\.m?js?$/, resolve: { fullySpecified: false } },
+        { test: /\.wasm$/, type: 'asset/resource' },
         {
           test: /\.js$/,
           enforce: 'pre',

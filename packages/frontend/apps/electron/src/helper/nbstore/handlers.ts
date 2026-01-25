@@ -5,6 +5,7 @@ import { parseUniversalId } from '@yunke/nbstore';
 import type { NativeDBApis } from '@yunke/nbstore/sqlite';
 import fs from 'fs-extra';
 
+import { logger } from '../logger';
 import { getSpaceDBPath } from '../workspace/meta';
 
 const POOL = new DocStoragePool();
@@ -18,10 +19,20 @@ export const nbstoreHandlers: NativeDBApis = {
     const { peer, type, id } = parseUniversalId(universalId);
     const dbPath = await getSpaceDBPath(peer, type, id);
     await fs.ensureDir(path.dirname(dbPath));
+    logger.info('[offline] nbstore connect', {
+      universalId,
+      peer,
+      type,
+      id,
+      dbPath,
+    });
     await POOL.connect(universalId, dbPath);
     await POOL.setSpaceId(universalId, id);
   },
-  disconnect: POOL.disconnect.bind(POOL),
+  disconnect: async (universalId: string) => {
+    logger.info('[offline] nbstore disconnect', { universalId });
+    await POOL.disconnect(universalId);
+  },
   pushUpdate: POOL.pushUpdate.bind(POOL),
   getDocSnapshot: POOL.getDocSnapshot.bind(POOL),
   setDocSnapshot: POOL.setDocSnapshot.bind(POOL),

@@ -1,6 +1,8 @@
 import { notify, useConfirmModal } from '@yunke/component';
 import { AuthService, ServersService } from '@yunke/core/modules/cloud';
+import { CLOUD_ENABLED_KEY } from '@yunke/core/modules/cloud/constant';
 import { GlobalDialogService } from '@yunke/core/modules/dialogs';
+import { GlobalStateService } from '@yunke/core/modules/storage/services/global';
 import type { Workspace } from '@yunke/core/modules/workspace';
 import { WorkspacesService } from '@yunke/core/modules/workspace';
 import { useI18n } from '@yunke/i18n';
@@ -29,6 +31,7 @@ export const useEnableCloud = () => {
   const account = useLiveData(authService.session.account$);
   const loginStatus = useLiveData(useService(AuthService).session.status$);
   const globalDialogService = useService(GlobalDialogService);
+  const globalStateService = useService(GlobalStateService);
   const { openConfirmModal, closeConfirmModal } = useConfirmModal();
   const workspacesService = useService(WorkspacesService);
   const serversService = useService(ServersService);
@@ -41,6 +44,7 @@ export const useEnableCloud = () => {
       try {
         if (!ws) return;
         if (!account) return;
+        globalStateService.globalState.set(CLOUD_ENABLED_KEY, true);
         const { id: newId } = await workspacesService.transformLocalToCloud(
           ws,
           account.id,
@@ -55,7 +59,7 @@ export const useEnableCloud = () => {
         });
       }
     },
-    [account, jumpToPage, t, workspacesService]
+    [account, globalStateService, jumpToPage, t, workspacesService]
   );
 
   const openSignIn = useCallback(

@@ -250,9 +250,18 @@ export class DocFrontend {
       await Promise.race([
         this.storage.connection.waitForConnected(signal),
         new Promise((_, reject) => {
-          signal?.addEventListener('abort', reason => {
-            reject(reason);
-          });
+          if (!signal) return;
+          if (signal.aborted) {
+            reject(signal.reason ?? MANUALLY_STOP);
+            return;
+          }
+          signal.addEventListener(
+            'abort',
+            () => {
+              reject(signal.reason ?? MANUALLY_STOP);
+            },
+            { once: true }
+          );
         }),
       ]);
       // console.log('[DocFrontend Debug] storage 连接成功（第二次），开始主循环');
@@ -314,6 +323,10 @@ export class DocFrontend {
         this.statusUpdatedSubject$.next(docId);
       }
     } catch (error) {
+      if (signal?.aborted) {
+        // 正常停止时不输出错误日志
+        return;
+      }
       console.error('❌ [DocFrontend.mainLoop] 主循环错误:', {
         error,
         errorMessage: error instanceof Error ? error.message : String(error),
