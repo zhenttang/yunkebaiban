@@ -889,16 +889,17 @@ export const CloudStorageProvider = ({
       });
 
     // 🔧 修复：优先使用 ref 检查网络状态和连接状态，避免闭包问题
-    if (!isOnlineRef.current) {
-      await saveOfflineOperation(normalizedDocId, update);
-      return enqueuePending();
-    }
-
-    // 🔧 修复：统一使用 socketRef 检查连接状态，避免状态不同步
+    // 🔧 Bug #4 修复：统一处理离线和 socket 断开的情况，都保存到离线队列
     const currentSocket = socketRef.current;
-    if (!currentSocket?.connected) {
-      if (reconnectAttempts.current < maxReconnectAttempts) {
-        setTimeout(() => connectToSocket(), 0);
+    if (!isOnlineRef.current || !currentSocket?.connected) {
+      // 🔧 Bug #4 修复：不管是网络离线还是 socket 断开，都保存到离线队列
+      await saveOfflineOperation(normalizedDocId, update);
+      
+      // 如果 socket 断开但网络在线，尝试重连
+      if (isOnlineRef.current && !currentSocket?.connected) {
+        if (reconnectAttempts.current < maxReconnectAttempts) {
+          setTimeout(() => connectToSocket(), 0);
+        }
       }
       return enqueuePending();
     }
