@@ -23,6 +23,7 @@ const {
   progressPropertyConfig,
   ratingPropertyConfig,
   relationPropertyConfig,
+  rollupPropertyConfig,
   selectPropertyConfig,
   urlPropertyConfig,
 } = propertyPresets;
@@ -40,6 +41,7 @@ export const databaseBlockProperties = {
   progressColumnConfig: progressPropertyConfig,
   ratingColumnConfig: ratingPropertyConfig,
   relationColumnConfig: relationPropertyConfig,
+  rollupColumnConfig: rollupPropertyConfig,
   selectColumnConfig: selectPropertyConfig,
   urlColumnConfig: urlPropertyConfig,
   imageColumnConfig: propertyPresets.imagePropertyConfig,
