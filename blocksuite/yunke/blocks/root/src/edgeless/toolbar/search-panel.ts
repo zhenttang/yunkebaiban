@@ -183,6 +183,7 @@ export class EdgelessSearchPanel extends LitElement {
   override disconnectedCallback() {
     super.disconnectedCallback();
     this._debouncedSearch.cancel();
+    this._updateQueryState.cancel();
     this._clearHighlight();
   }
 
@@ -338,11 +339,20 @@ export class EdgelessSearchPanel extends LitElement {
     )}</mark>${text.slice(index + this.query.length)}`;
   }
 
-  private _onInput(event: InputEvent) {
-    const value = (event.target as HTMLInputElement).value;
-    this.query = value;
+  private _onInput(event: Event) {
+    event.stopPropagation();
+    const input = event.target as HTMLInputElement;
+    const value = input.value;
+    // 不更新 this.query 状态来避免重新渲染导致输入丢失
+    // 只在搜索时使用值
     this._debouncedSearch(value);
+    // 延迟更新 query 状态，避免输入时光标跳动
+    this._updateQueryState(value);
   }
+
+  private _updateQueryState = debounce((value: string) => {
+    this.query = value;
+  }, 300);
 
   private _stopEvent(event: Event) {
     // 只阻止传播，不阻止默认行为，以便输入框正常工作
@@ -437,17 +447,17 @@ export class EdgelessSearchPanel extends LitElement {
         @wheel=${this._stopPropagationOnly}
       >
         <div class="header">
-        <div class="input-wrapper">
+        <div class="input-wrapper" @pointerdown=${this._stopPropagationOnly} @mousedown=${this._stopPropagationOnly}>
           <span class="search-icon">${SearchIcon()}</span>
           <input
             class="input"
+            type="text"
             placeholder="搜索画布"
-            .value=${this.query}
             @input=${this._onInput}
             @keydown=${this._onKeyDown}
             @keyup=${this._stopPropagationOnly}
-            @pointerdown=${this._stopPropagationOnly}
-            @mousedown=${this._stopPropagationOnly}
+            @focus=${this._stopPropagationOnly}
+            @blur=${this._stopPropagationOnly}
           />
         </div>
         <div class="actions">
