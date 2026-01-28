@@ -2205,6 +2205,28 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@blocksuite/yunke-gfx-chart@workspace:*, @blocksuite/yunke-gfx-chart@workspace:blocksuite/yunke/gfx/chart":
+  version: 0.0.0-use.local
+  resolution: "@blocksuite/yunke-gfx-chart@workspace:blocksuite/yunke/gfx/chart"
+  dependencies:
+    "@blocksuite/global": "workspace:*"
+    "@blocksuite/icons": "npm:^2.2.12"
+    "@blocksuite/std": "workspace:*"
+    "@blocksuite/store": "workspace:*"
+    "@blocksuite/yunke-block-surface": "workspace:*"
+    "@blocksuite/yunke-components": "workspace:*"
+    "@blocksuite/yunke-ext-loader": "workspace:*"
+    "@blocksuite/yunke-model": "workspace:*"
+    "@blocksuite/yunke-shared": "workspace:*"
+    "@blocksuite/yunke-widget-edgeless-toolbar": "workspace:*"
+    "@lit/context": "npm:^1.1.2"
+    "@preact/signals-core": "npm:^1.8.0"
+    "@toeverything/theme": "workspace:packages/theme"
+    echarts: "npm:^5.5.1"
+    lit: "npm:^3.2.0"
+  languageName: unknown
+  linkType: soft
+
 "@blocksuite/yunke-gfx-connector@workspace:*, @blocksuite/yunke-gfx-connector@workspace:blocksuite/yunke/gfx/connector":
   version: 0.0.0-use.local
   resolution: "@blocksuite/yunke-gfx-connector@workspace:blocksuite/yunke/gfx/connector"
@@ -2234,6 +2256,27 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@blocksuite/yunke-gfx-emoji-reaction@workspace:*, @blocksuite/yunke-gfx-emoji-reaction@workspace:blocksuite/yunke/gfx/emoji-reaction":
+  version: 0.0.0-use.local
+  resolution: "@blocksuite/yunke-gfx-emoji-reaction@workspace:blocksuite/yunke/gfx/emoji-reaction"
+  dependencies:
+    "@blocksuite/global": "workspace:*"
+    "@blocksuite/icons": "npm:^2.2.12"
+    "@blocksuite/std": "workspace:*"
+    "@blocksuite/store": "workspace:*"
+    "@blocksuite/yunke-block-surface": "workspace:*"
+    "@blocksuite/yunke-components": "workspace:*"
+    "@blocksuite/yunke-ext-loader": "workspace:*"
+    "@blocksuite/yunke-model": "workspace:*"
+    "@blocksuite/yunke-shared": "workspace:*"
+    "@blocksuite/yunke-widget-edgeless-toolbar": "workspace:*"
+    "@lit/context": "npm:^1.1.2"
+    "@preact/signals-core": "npm:^1.8.0"
+    "@toeverything/theme": "workspace:packages/theme"
+    lit: "npm:^3.2.0"
+  languageName: unknown
+  linkType: soft
+
 "@blocksuite/yunke-gfx-group@workspace:*, @blocksuite/yunke-gfx-group@workspace:blocksuite/yunke/gfx/group":
   version: 0.0.0-use.local
   resolution: "@blocksuite/yunke-gfx-group@workspace:blocksuite/yunke/gfx/group"
@@ -2260,6 +2303,27 @@ __metadata:
     rxjs: "npm:^7.8.1"
     yjs: "npm:^13.6.21"
     zod: "npm:^3.23.8"
+  languageName: unknown
+  linkType: soft
+
+"@blocksuite/yunke-gfx-laser@workspace:*, @blocksuite/yunke-gfx-laser@workspace:blocksuite/yunke/gfx/laser":
+  version: 0.0.0-use.local
+  resolution: "@blocksuite/yunke-gfx-laser@workspace:blocksuite/yunke/gfx/laser"
+  dependencies:
+    "@blocksuite/global": "workspace:*"
+    "@blocksuite/icons": "npm:^2.2.12"
+    "@blocksuite/std": "workspace:*"
+    "@blocksuite/store": "workspace:*"
+    "@blocksuite/yunke-block-surface": "workspace:*"
+    "@blocksuite/yunke-components": "workspace:*"
+    "@blocksuite/yunke-ext-loader": "workspace:*"
+    "@blocksuite/yunke-model": "workspace:*"
+    "@blocksuite/yunke-shared": "workspace:*"
+    "@blocksuite/yunke-widget-edgeless-toolbar": "workspace:*"
+    "@lit/context": "npm:^1.1.2"
+    "@preact/signals-core": "npm:^1.8.0"
+    "@toeverything/theme": "workspace:packages/theme"
+    lit: "npm:^3.2.0"
   languageName: unknown
   linkType: soft
 
@@ -2327,6 +2391,23 @@ __metadata:
     simple-xml-to-json: "npm:^1.2.2"
     yjs: "npm:^13.6.21"
     zod: "npm:^3.23.8"
+  languageName: unknown
+  linkType: soft
+
+"@blocksuite/yunke-gfx-more-tools@workspace:*, @blocksuite/yunke-gfx-more-tools@workspace:blocksuite/yunke/gfx/more-tools":
+  version: 0.0.0-use.local
+  resolution: "@blocksuite/yunke-gfx-more-tools@workspace:blocksuite/yunke/gfx/more-tools"
+  dependencies:
+    "@blocksuite/global": "workspace:*"
+    "@blocksuite/std": "workspace:*"
+    "@blocksuite/yunke-ext-loader": "workspace:*"
+    "@blocksuite/yunke-gfx-chart": "workspace:*"
+    "@blocksuite/yunke-gfx-emoji-reaction": "workspace:*"
+    "@blocksuite/yunke-gfx-timer": "workspace:*"
+    "@blocksuite/yunke-gfx-vote": "workspace:*"
+    "@blocksuite/yunke-widget-edgeless-toolbar": "workspace:*"
+    "@preact/signals-core": "npm:^1.8.0"
+    lit: "npm:^3.2.0"
   languageName: unknown
   linkType: soft
 
@@ -2476,6 +2557,27 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@blocksuite/yunke-gfx-timer@workspace:*, @blocksuite/yunke-gfx-timer@workspace:blocksuite/yunke/gfx/timer":
+  version: 0.0.0-use.local
+  resolution: "@blocksuite/yunke-gfx-timer@workspace:blocksuite/yunke/gfx/timer"
+  dependencies:
+    "@blocksuite/global": "workspace:*"
+    "@blocksuite/icons": "npm:^2.2.12"
+    "@blocksuite/std": "workspace:*"
+    "@blocksuite/store": "workspace:*"
+    "@blocksuite/yunke-block-surface": "workspace:*"
+    "@blocksuite/yunke-components": "workspace:*"
+    "@blocksuite/yunke-ext-loader": "workspace:*"
+    "@blocksuite/yunke-model": "workspace:*"
+    "@blocksuite/yunke-shared": "workspace:*"
+    "@blocksuite/yunke-widget-edgeless-toolbar": "workspace:*"
+    "@lit/context": "npm:^1.1.2"
+    "@preact/signals-core": "npm:^1.8.0"
+    "@toeverything/theme": "workspace:packages/theme"
+    lit: "npm:^3.2.0"
+  languageName: unknown
+  linkType: soft
+
 "@blocksuite/yunke-gfx-turbo-renderer@workspace:*, @blocksuite/yunke-gfx-turbo-renderer@workspace:blocksuite/yunke/gfx/turbo-renderer":
   version: 0.0.0-use.local
   resolution: "@blocksuite/yunke-gfx-turbo-renderer@workspace:blocksuite/yunke/gfx/turbo-renderer"
@@ -2484,6 +2586,27 @@ __metadata:
     "@blocksuite/std": "workspace:*"
     "@blocksuite/store": "workspace:*"
     rxjs: "npm:^7.8.1"
+  languageName: unknown
+  linkType: soft
+
+"@blocksuite/yunke-gfx-vote@workspace:*, @blocksuite/yunke-gfx-vote@workspace:blocksuite/yunke/gfx/vote":
+  version: 0.0.0-use.local
+  resolution: "@blocksuite/yunke-gfx-vote@workspace:blocksuite/yunke/gfx/vote"
+  dependencies:
+    "@blocksuite/global": "workspace:*"
+    "@blocksuite/icons": "npm:^2.2.12"
+    "@blocksuite/std": "workspace:*"
+    "@blocksuite/store": "workspace:*"
+    "@blocksuite/yunke-block-surface": "workspace:*"
+    "@blocksuite/yunke-components": "workspace:*"
+    "@blocksuite/yunke-ext-loader": "workspace:*"
+    "@blocksuite/yunke-model": "workspace:*"
+    "@blocksuite/yunke-shared": "workspace:*"
+    "@blocksuite/yunke-widget-edgeless-toolbar": "workspace:*"
+    "@lit/context": "npm:^1.1.2"
+    "@preact/signals-core": "npm:^1.8.0"
+    "@toeverything/theme": "workspace:packages/theme"
+    lit: "npm:^3.2.0"
   languageName: unknown
   linkType: soft
 
@@ -3194,16 +3317,22 @@ __metadata:
     "@blocksuite/yunke-fragment-frame-panel": "workspace:*"
     "@blocksuite/yunke-fragment-outline": "workspace:*"
     "@blocksuite/yunke-gfx-brush": "workspace:*"
+    "@blocksuite/yunke-gfx-chart": "workspace:*"
     "@blocksuite/yunke-gfx-connector": "workspace:*"
+    "@blocksuite/yunke-gfx-emoji-reaction": "workspace:*"
     "@blocksuite/yunke-gfx-group": "workspace:*"
+    "@blocksuite/yunke-gfx-laser": "workspace:*"
     "@blocksuite/yunke-gfx-link": "workspace:*"
     "@blocksuite/yunke-gfx-mindmap": "workspace:*"
+    "@blocksuite/yunke-gfx-more-tools": "workspace:*"
     "@blocksuite/yunke-gfx-note": "workspace:*"
     "@blocksuite/yunke-gfx-pointer": "workspace:*"
     "@blocksuite/yunke-gfx-shape": "workspace:*"
     "@blocksuite/yunke-gfx-template": "workspace:*"
     "@blocksuite/yunke-gfx-text": "workspace:*"
+    "@blocksuite/yunke-gfx-timer": "workspace:*"
     "@blocksuite/yunke-gfx-turbo-renderer": "workspace:*"
+    "@blocksuite/yunke-gfx-vote": "workspace:*"
     "@blocksuite/yunke-inline-footnote": "workspace:*"
     "@blocksuite/yunke-inline-latex": "workspace:*"
     "@blocksuite/yunke-inline-link": "workspace:*"
@@ -18300,6 +18429,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"echarts@npm:^5.5.1":
+  version: 5.6.0
+  resolution: "echarts@npm:5.6.0"
+  dependencies:
+    tslib: "npm:2.3.0"
+    zrender: "npm:5.6.1"
+  checksum: 10/e73344abb777fd8401c0b89a5d83b65c7a81a11540e2047d51f4aae9419baf4dc2524a5d9561f9ca0fe8d6b432c58b7a1d518f2a4338041046506db8257a1332
+  languageName: node
+  linkType: hard
+
 "ee-first@npm:1.1.1":
   version: 1.1.1
   resolution: "ee-first@npm:1.1.1"
@@ -30491,6 +30630,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"tslib@npm:2.3.0":
+  version: 2.3.0
+  resolution: "tslib@npm:2.3.0"
+  checksum: 10/9c55c9abd5ecd94e5fd37573db27e26933fb6c33506431403fb4627dcb8aa9a45b772afa6d05dd2c25dc1de22a213193251e6303742f3bcdc179e523a9295bfd
+  languageName: node
+  linkType: hard
+
 "tslib@npm:^1.11.1":
   version: 1.14.1
   resolution: "tslib@npm:1.14.1"
@@ -32518,6 +32664,15 @@ __metadata:
   version: 3.25.76
   resolution: "zod@npm:3.25.76"
   checksum: 10/f0c963ec40cd96858451d1690404d603d36507c1fc9682f2dae59ab38b578687d542708a7fdbf645f77926f78c9ed558f57c3d3aa226c285f798df0c4da16995
+  languageName: node
+  linkType: hard
+
+"zrender@npm:5.6.1":
+  version: 5.6.1
+  resolution: "zrender@npm:5.6.1"
+  dependencies:
+    tslib: "npm:2.3.0"
+  checksum: 10/25dfd476be243f051614f131675855d184eb05e8b9a39dc41146a3a553a17aad5ceba77e166d525be9c4adc2bb237c56dfdfb3456667940bbeddb05eef3deac7
   languageName: node
   linkType: hard
 

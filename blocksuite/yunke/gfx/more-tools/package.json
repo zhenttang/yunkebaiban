@@ -1,0 +1,36 @@
+{
+  "name": "@blocksuite/yunke-gfx-more-tools",
+  "description": "More tools button for BlockSuite whiteboard.",
+  "type": "module",
+  "scripts": {
+    "build": "tsc"
+  },
+  "sideEffects": false,
+  "keywords": [],
+  "author": "toeverything",
+  "license": "MIT",
+  "dependencies": {
+    "@blocksuite/global": "workspace:*",
+    "@blocksuite/std": "workspace:*",
+    "@blocksuite/yunke-ext-loader": "workspace:*",
+    "@blocksuite/yunke-gfx-chart": "workspace:*",
+    "@blocksuite/yunke-gfx-emoji-reaction": "workspace:*",
+    "@blocksuite/yunke-gfx-timer": "workspace:*",
+    "@blocksuite/yunke-gfx-vote": "workspace:*",
+    "@blocksuite/yunke-widget-edgeless-toolbar": "workspace:*",
+    "@preact/signals-core": "^1.8.0",
+    "lit": "^3.2.0"
+  },
+  "exports": {
+    ".": "./src/index.ts",
+    "./view": "./src/view.ts",
+    "./effects": "./src/effects.ts"
+  },
+  "files": [
+    "src",
+    "dist",
+    "!src/__tests__",
+    "!dist/__tests__"
+  ],
+  "version": "0.21.0"
+}

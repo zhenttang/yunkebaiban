@@ -32,6 +32,7 @@ import { ConnectorViewExtension } from '@blocksuite/yunke-gfx-connector/view';
 import { GroupViewExtension } from '@blocksuite/yunke-gfx-group/view';
 import { LinkViewExtension as GfxLinkViewExtension } from '@blocksuite/yunke-gfx-link/view';
 import { MindmapViewExtension } from '@blocksuite/yunke-gfx-mindmap/view';
+import { MoreToolsViewExtension } from '@blocksuite/yunke-gfx-more-tools/view';
 import { NoteViewExtension as GfxNoteViewExtension } from '@blocksuite/yunke-gfx-note/view';
 import { PointerViewExtension } from '@blocksuite/yunke-gfx-pointer/view';
 import { ShapeViewExtension } from '@blocksuite/yunke-gfx-shape/view';
@@ -75,6 +76,9 @@ export function getInternalViewExtensions() {
     TextViewExtension,
     TemplateViewExtension,
     GfxLinkViewExtension,
+
+    // 演示与协作工具（合并到"更多工具"按钮）
+    MoreToolsViewExtension,
 
     // 块组件
     AttachmentViewExtension,
