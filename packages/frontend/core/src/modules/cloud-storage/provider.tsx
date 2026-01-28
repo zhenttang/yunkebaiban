@@ -384,6 +384,16 @@ export const CloudStorageProvider = ({
       }
     }
     
+    // 🔧 Bug #7 修复：限制同一 docId 的操作数量，避免重复存储
+    const MAX_OPERATIONS_PER_DOC = 10;
+    const sameDocOperations = operations.filter(op => op.docId === normalizedDocId);
+    if (sameDocOperations.length >= MAX_OPERATIONS_PER_DOC) {
+      // 移除该 docId 最旧的操作
+      const oldestSameDocOp = sameDocOperations.sort((a, b) => a.timestamp - b.timestamp)[0];
+      operations = operations.filter(op => op.id !== oldestSameDocOp.id);
+      console.debug('[cloud-storage] 同一文档操作过多，移除最旧操作:', normalizedDocId);
+    }
+    
     // 添加新操作
     operations.push(operation);
     
