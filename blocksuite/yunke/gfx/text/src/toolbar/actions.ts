@@ -240,7 +240,7 @@ export function createTextActions<
         return html`
           <edgeless-color-picker-button
             class="text-color"
-            .label="${'Text color'}"
+            .label="${'文字颜色'}"
             .pick=${onPick}
             .color=${color}
             .theme=${theme}
