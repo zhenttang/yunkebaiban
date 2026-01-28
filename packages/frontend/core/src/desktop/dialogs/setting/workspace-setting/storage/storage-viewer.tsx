@@ -7,9 +7,21 @@ import {
 } from '@yunke/component/setting-components';
 import { WorkspaceService } from '@yunke/core/modules/workspace';
 import { useLiveData, useService } from '@toeverything/infra';
-import { DatabaseTableViewIcon, FolderIcon, FileIcon } from '@blocksuite/icons/rc';
+import {
+  Database,
+  Key,
+  HardDrive,
+  FileText,
+  Table2,
+  AlertTriangle,
+  ChevronDown,
+  ChevronRight,
+} from 'lucide-react';
 import bytes from 'bytes';
 import { useCallback, useEffect, useState } from 'react';
+
+// 图标统一尺寸
+const ICON_SIZE = 16;
 
 interface StorageStats {
   dbName: string;
@@ -367,6 +379,7 @@ export const StorageViewer = () => {
           <select
             value={selectedDb || ''}
             onChange={(e) => setSelectedDb(e.target.value || null)}
+            aria-label="选择数据库"
             style={{
               width: '100%',
               padding: '8px 12px',
@@ -394,8 +407,9 @@ export const StorageViewer = () => {
               borderRadius: '8px',
               marginBottom: '12px',
             }}>
-              <div style={{ fontWeight: 600, marginBottom: '8px' }}>
-                📊 数据库: {dbStats.dbName}
+              <div style={{ fontWeight: 600, marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <Database size={ICON_SIZE} />
+                <span>数据库: {dbStats.dbName}</span>
               </div>
               <div style={{ fontSize: '13px', color: 'var(--yunke-text-secondary-color)' }}>
                 估算大小: {bytes.format(dbStats.totalSize)} | 
@@ -425,13 +439,13 @@ export const StorageViewer = () => {
                   }}
                 >
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <DatabaseTableViewIcon />
+                    <Table2 size={ICON_SIZE} />
                     <span style={{ fontWeight: 500 }}>{table.name}</span>
                   </div>
-                  <div style={{ fontSize: '13px', color: 'var(--yunke-text-secondary-color)' }}>
-                    {table.count} 条记录 | ~{bytes.format(table.estimatedSize)}
-                    <span style={{ marginLeft: '8px' }}>
-                      {expandedTables.has(table.name) ? '▼' : '▶'}
+                  <div style={{ fontSize: '13px', color: 'var(--yunke-text-secondary-color)', display: 'flex', alignItems: 'center' }}>
+                    <span>{table.count} 条记录 | ~{bytes.format(table.estimatedSize)}</span>
+                    <span style={{ marginLeft: '8px', display: 'flex', alignItems: 'center' }}>
+                      {expandedTables.has(table.name) ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
                     </span>
                   </div>
                 </div>
@@ -464,8 +478,12 @@ export const StorageViewer = () => {
                               fontSize: '12px',
                               color: 'var(--yunke-brand-color)',
                               wordBreak: 'break-all',
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: '4px',
                             }}>
-                              🔑 {record.key}
+                              <Key size={12} style={{ flexShrink: 0 }} />
+                              <span>{record.key}</span>
                             </div>
                             <div style={{ 
                               fontSize: '11px', 
@@ -543,9 +561,12 @@ export const StorageViewer = () => {
                     fontSize: '12px',
                     color: 'var(--yunke-brand-color)',
                     wordBreak: 'break-all',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '4px',
                   }}>
-                    <FolderIcon style={{ marginRight: '4px' }} />
-                    {item.key}
+                    <HardDrive size={12} style={{ flexShrink: 0 }} />
+                    <span>{item.key}</span>
                   </div>
                   <div style={{ fontSize: '11px', color: 'var(--yunke-text-secondary-color)' }}>
                     {bytes.format(item.size)}
@@ -600,9 +621,12 @@ export const StorageViewer = () => {
                     fontFamily: 'monospace', 
                     fontSize: '12px',
                     color: 'var(--yunke-brand-color)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '4px',
                   }}>
-                    <FileIcon style={{ marginRight: '4px' }} />
-                    {item.key}
+                    <FileText size={12} style={{ flexShrink: 0 }} />
+                    <span>{item.key}</span>
                   </div>
                   <div style={{ fontSize: '11px', color: 'var(--yunke-text-secondary-color)' }}>
                     {bytes.format(item.size)}
@@ -632,7 +656,10 @@ export const StorageViewer = () => {
       <SettingWrapper title="存储位置说明">
         <div style={{ padding: '16px', fontSize: '13px', lineHeight: '1.8' }}>
           <div style={{ marginBottom: '16px' }}>
-            <strong>📦 IndexedDB 数据库</strong>
+            <strong style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <Database size={ICON_SIZE} />
+              <span>IndexedDB 数据库</span>
+            </strong>
             <div style={{ color: 'var(--yunke-text-secondary-color)', marginTop: '4px' }}>
               位置: 浏览器内部存储<br/>
               路径格式: <code style={{ backgroundColor: 'var(--yunke-background-tertiary-color)', padding: '2px 6px', borderRadius: '4px' }}>
@@ -645,7 +672,10 @@ export const StorageViewer = () => {
           </div>
           
           <div style={{ marginBottom: '16px' }}>
-            <strong>💾 LocalStorage</strong>
+            <strong style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <HardDrive size={ICON_SIZE} />
+              <span>LocalStorage</span>
+            </strong>
             <div style={{ color: 'var(--yunke-text-secondary-color)', marginTop: '4px' }}>
               位置: 浏览器 LocalStorage<br/>
               常用键:
@@ -659,7 +689,10 @@ export const StorageViewer = () => {
           </div>
           
           <div style={{ marginBottom: '16px' }}>
-            <strong>🔑 数据表说明</strong>
+            <strong style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <Table2 size={ICON_SIZE} />
+              <span>数据表说明</span>
+            </strong>
             <div style={{ color: 'var(--yunke-text-secondary-color)', marginTop: '4px' }}>
               <ul style={{ margin: '4px 0', paddingLeft: '20px' }}>
                 <li><code>snapshots</code> - 文档完整快照 (Yjs 状态)</li>
@@ -678,8 +711,14 @@ export const StorageViewer = () => {
             backgroundColor: 'var(--yunke-background-warning-color)', 
             borderRadius: '8px',
             marginTop: '16px',
+            display: 'flex',
+            alignItems: 'flex-start',
+            gap: '8px',
           }}>
-            ⚠️ <strong>注意:</strong> 清除浏览器数据会删除所有本地工作区内容！建议定期导出备份。
+            <AlertTriangle size={ICON_SIZE} style={{ flexShrink: 0, marginTop: '2px' }} />
+            <div>
+              <strong>注意:</strong> 清除浏览器数据会删除所有本地工作区内容！建议定期导出备份。
+            </div>
           </div>
         </div>
       </SettingWrapper>
