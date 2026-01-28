@@ -276,6 +276,18 @@ export const CloudStorageProvider = ({
   const syncOfflineOperationsRef = useRef<(() => Promise<void>) | null>(null); // 🔧 存储 syncOfflineOperations 引用，用于网络恢复时同步
   const activeJoinAttemptRef = useRef<symbol | null>(null);
   const cloudEnabledRef = useRef(cloudEnabled);
+  // 🔧 Bug #8 修复：存储 socket 事件处理函数引用，用于正确清理监听器
+  const socketEventHandlersRef = useRef<{
+    handleConnect: (() => void) | null;
+    handleConnectError: ((error: Error) => void) | null;
+    handleDisconnect: ((reason: string) => void) | null;
+    handleSessionEnded: ((message: { spaceId?: string; sessionId?: string }) => void) | null;
+  }>({
+    handleConnect: null,
+    handleConnectError: null,
+    handleDisconnect: null,
+    handleSessionEnded: null,
+  });
 
   const upsertSessionInfo = useCallback(
     (sessionIdRaw: string | null, clientIdRaw: string | null, _source: SessionActivityDetail['source']) => {
@@ -698,7 +710,8 @@ export const CloudStorageProvider = ({
         // 同时在query参数中传递token（后端支持从query获取）
         query: authToken ? { token: authToken } : {}
       });
-      const handleRemoteSessionEnded = (message: { spaceId?: string; sessionId?: string }) => {
+      // 🔧 Bug #8 修复：定义事件处理函数并存储到 ref，以便正确清理
+      const handleSessionEnded = (message: { spaceId?: string; sessionId?: string }) => {
         if (!message?.sessionId) {
           return;
         }
@@ -707,10 +720,33 @@ export const CloudStorageProvider = ({
         }
         removeSessionInfo(message.sessionId);
       };
-      newSocket.on('space:session-ended', handleRemoteSessionEnded);
 
-      // 连接成功
-      newSocket.on('connect', () => {
+      // 🔧 Bug #8 修复：清理所有 socket 事件监听器的辅助函数
+      const cleanupSocketListeners = (socket: Socket) => {
+        const handlers = socketEventHandlersRef.current;
+        if (handlers.handleConnect) {
+          socket.off('connect', handlers.handleConnect);
+        }
+        if (handlers.handleConnectError) {
+          socket.off('connect_error', handlers.handleConnectError);
+        }
+        if (handlers.handleDisconnect) {
+          socket.off('disconnect', handlers.handleDisconnect);
+        }
+        if (handlers.handleSessionEnded) {
+          socket.off('space:session-ended', handlers.handleSessionEnded);
+        }
+        // 重置 ref
+        socketEventHandlersRef.current = {
+          handleConnect: null,
+          handleConnectError: null,
+          handleDisconnect: null,
+          handleSessionEnded: null,
+        };
+      };
+
+      // 连接成功处理函数
+      const handleConnect = () => {
         setIsConnected(true);
         setSocket(newSocket);
         socketRef.current = newSocket; // 🔧 同步更新 ref
@@ -838,30 +874,32 @@ export const CloudStorageProvider = ({
             newSocket.disconnect();
           }
         })();
-      });
+      };
 
-      // 连接失败
-      newSocket.on('connect_error', (error) => {
+      // 连接失败处理函数
+      const handleConnectError = (error: Error) => {
         logThrottle.current.log('connect-error', () => {
           console.warn('⚠️ [云存储管理器] 连接失败:', error.message);
         });
         setIsConnected(false);
         activeJoinAttemptRef.current = null;
         isConnectingRef.current = false; // 🔧 连接失败，重置标记
-        newSocket.off('space:session-ended', handleRemoteSessionEnded);
+        // 🔧 Bug #8 修复：清理所有监听器
+        cleanupSocketListeners(newSocket);
         newSocket.disconnect();
         
         // 智能重连：指数退避
         scheduleReconnect();
-      });
+      };
 
-      // 连接断开
-      newSocket.on('disconnect', (reason) => {
+      // 连接断开处理函数
+      const handleDisconnect = (reason: string) => {
         setIsConnected(false);
         clientIdRef.current = null;
         activeJoinAttemptRef.current = null;
         isConnectingRef.current = false; // 🔧 断开连接，重置标记
-        newSocket.off('space:session-ended', handleRemoteSessionEnded);
+        // 🔧 Bug #8 修复：清理所有监听器
+        cleanupSocketListeners(newSocket);
         
         // 🔧 清理 ref
         if (socketRef.current === newSocket) {
@@ -874,7 +912,21 @@ export const CloudStorageProvider = ({
         } else {
           setStorageMode('local');
         }
-      });
+      };
+
+      // 🔧 Bug #8 修复：存储事件处理函数引用
+      socketEventHandlersRef.current = {
+        handleConnect,
+        handleConnectError,
+        handleDisconnect,
+        handleSessionEnded: handleSessionEnded,
+      };
+
+      // 注册事件监听器
+      newSocket.on('space:session-ended', handleSessionEnded);
+      newSocket.on('connect', handleConnect);
+      newSocket.on('connect_error', handleConnectError);
+      newSocket.on('disconnect', handleDisconnect);
 
       // 设置连接超时
       setTimeout(() => {
@@ -1152,14 +1204,36 @@ export const CloudStorageProvider = ({
   }, [normalizedLocalSessionId, upsertSessionInfo]);
 
   // 🔧 添加组件卸载时的清理逻辑
+  // 🔧 Bug #8 修复：确保所有 socket 事件监听器在组件卸载时被清理
   useEffect(() => {
     return () => {
-      // 组件卸载时清理连接
+      // 组件卸载时清理连接和事件监听器
       const currentSocket = socketRef.current;
       if (currentSocket) {
+        // 🔧 Bug #8 修复：清理所有 socket 事件监听器
+        const handlers = socketEventHandlersRef.current;
+        if (handlers.handleConnect) {
+          currentSocket.off('connect', handlers.handleConnect);
+        }
+        if (handlers.handleConnectError) {
+          currentSocket.off('connect_error', handlers.handleConnectError);
+        }
+        if (handlers.handleDisconnect) {
+          currentSocket.off('disconnect', handlers.handleDisconnect);
+        }
+        if (handlers.handleSessionEnded) {
+          currentSocket.off('space:session-ended', handlers.handleSessionEnded);
+        }
         currentSocket.disconnect();
         socketRef.current = null;
       }
+      // 重置事件处理函数引用
+      socketEventHandlersRef.current = {
+        handleConnect: null,
+        handleConnectError: null,
+        handleDisconnect: null,
+        handleSessionEnded: null,
+      };
       lastWorkspaceIdRef.current = null;
       if (reconnectTimeout.current) {
         clearTimeout(reconnectTimeout.current);
