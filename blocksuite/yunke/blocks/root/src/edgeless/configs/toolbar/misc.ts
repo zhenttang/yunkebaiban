@@ -450,42 +450,26 @@ export const builtinLockedToolbarConfig = {
             style="
               display: flex;
               align-items: center;
-              gap: 10px;
-              padding: 6px 12px;
-              background: var(--yunke-background-overlay-panel-color);
-              border: 1px solid var(--yunke-border-color);
-              border-radius: 20px;
+              gap: 8px;
+              padding: 4px 8px;
               cursor: pointer;
               user-select: none;
-              backdrop-filter: blur(8px);
-              box-shadow: var(--yunke-shadow-2);
               transition: all 0.2s ease;
-              min-width: 100px;
+              min-width: 90px;
             "
             @pointerdown=${handlePointerDown}
             @contextmenu=${(e: Event) => e.preventDefault()}
-            @mouseenter=${(e: Event) => {
-              const target = e.currentTarget as HTMLElement;
-              target.style.transform = 'scale(1.02)';
-              target.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.15)';
-            }}
-            @mouseleave=${(e: Event) => {
-              const target = e.currentTarget as HTMLElement;
-              target.style.transform = 'scale(1)';
-              target.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.1)';
-            }}
           >
-            <!-- 图标 - 使用简单的🔓 emoji -->
+            <!-- 图标 -->
             <div style="
-              width: 18px; 
-              height: 18px; 
+              width: 16px; 
+              height: 16px; 
               display: flex; 
               align-items: center; 
               justify-content: center;
-              opacity: 0.8;
-              font-size: 14px;
+              color: var(--yunke-icon-color);
             ">
-              🔓
+              ${icon}
             </div>
             
             <!-- 进度条和文字 -->
@@ -493,7 +477,7 @@ export const builtinLockedToolbarConfig = {
               flex: 1;
               display: flex;
               flex-direction: column;
-              gap: 4px;
+              gap: 3px;
             ">
               <!-- 文字 -->
               <div
@@ -501,7 +485,7 @@ export const builtinLockedToolbarConfig = {
                 style="
                   font-size: 12px;
                   font-weight: 500;
-                  color: #374151;
+                  color: var(--yunke-text-primary-color);
                   line-height: 1;
                   transition: color 0.2s ease;
                 "
@@ -510,11 +494,10 @@ export const builtinLockedToolbarConfig = {
               <!-- 进度条背景 -->
               <div style="
                 width: 100%;
-                height: 4px;
-                background: var(--yunke-border-color);
+                height: 3px;
+                background: var(--yunke-hover-color);
                 border-radius: 2px;
                 overflow: hidden;
-                position: relative;
               ">
                 <!-- 进度条填充 -->
                 <div
@@ -522,10 +505,9 @@ export const builtinLockedToolbarConfig = {
                   style="
                     height: 100%;
                     width: 0%;
-                    background: linear-gradient(90deg, #10b981, #34d399);
+                    background: var(--yunke-primary-color);
                     border-radius: 2px;
-                    transition: width 0.15s ease-out;
-                    position: relative;
+                    transition: width 0.1s linear;
                   "
                 ></div>
               </div>
@@ -536,11 +518,11 @@ export const builtinLockedToolbarConfig = {
               class="progress-text"
               style="
                 font-size: 11px;
-                color: #6b7280;
-                font-weight: 600;
-                min-width: 28px;
+                color: var(--yunke-text-secondary-color);
+                font-weight: 500;
+                min-width: 26px;
                 text-align: right;
-                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', monospace;
+                font-variant-numeric: tabular-nums;
               "
             >0%</div>
           </div>
