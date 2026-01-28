@@ -7,7 +7,7 @@ import { property } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { repeat } from 'lit/directives/repeat.js';
 
-import { createUniComponentFromWebComponent } from '../../../core/utils/uni-component/index.js';
+import { createUniComponentFromWebComponent, renderUniLit } from '../../../core/utils/uni-component/index.js';
 import { DataViewUIBase, DataViewUILogicBase } from '../../../core/view/data-view-base.js';
 import type { CalendarSingleView, CalendarEvent } from '../calendar-view-manager.js';
 
@@ -511,8 +511,14 @@ export class CalendarViewUI extends DataViewUIBase<CalendarViewUILogic> {
     const weekStartDay = this.logic.weekStartDay$.value;
     const weekdays = weekStartDay === 0 ? WEEKDAYS : WEEKDAYS_FROM_MONDAY;
 
+    // 渲染数据库头部（包含视图切换器）
+    const headerWidget = renderUniLit(this.logic.root.config.headerWidget, {
+      dataViewLogic: this.logic,
+    });
+
     if (!datePropertyId) {
       return html`
+        ${headerWidget}
         <div class="no-date-property">
           <div class="no-date-property-icon">📅</div>
           <div class="no-date-property-text">
@@ -525,6 +531,7 @@ export class CalendarViewUI extends DataViewUIBase<CalendarViewUILogic> {
     const grid = this.logic.calendarGrid$.value;
 
     return html`
+      ${headerWidget}
       <div class="calendar-header">
         <div class="calendar-title">${this.logic.headerTitle$.value}</div>
         <div class="calendar-nav">
