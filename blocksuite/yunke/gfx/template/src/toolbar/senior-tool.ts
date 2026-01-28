@@ -5,7 +5,7 @@ export const templateSeniorTool = SeniorToolExtension(
   'template',
   ({ block }) => {
     return {
-      name: 'Template',
+      name: '模板',
       content: html`<edgeless-template-button .edgeless=${block}>
       </edgeless-template-button>`,
     };
