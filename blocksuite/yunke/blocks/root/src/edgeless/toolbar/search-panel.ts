@@ -187,7 +187,10 @@ export class EdgelessSearchPanel extends LitElement {
   }
 
   override firstUpdated() {
-    this.inputElement?.focus();
+    // 延迟聚焦确保输入框已经渲染完成
+    requestAnimationFrame(() => {
+      this.inputElement?.focus();
+    });
   }
 
   private _performSearch(value: string) {
@@ -342,6 +345,12 @@ export class EdgelessSearchPanel extends LitElement {
   }
 
   private _stopEvent(event: Event) {
+    // 只阻止传播，不阻止默认行为，以便输入框正常工作
+    event.stopPropagation();
+  }
+
+  private _stopPropagationOnly(event: Event) {
+    // 只阻止传播到父组件，保持输入框交互正常
     event.stopPropagation();
   }
 
@@ -424,21 +433,21 @@ export class EdgelessSearchPanel extends LitElement {
     return html`
       <div
         class="panel"
-        @pointerdown=${this._stopEvent}
-        @mousedown=${this._stopEvent}
-        @click=${this._stopEvent}
-        @wheel=${this._stopEvent}
+        @click=${this._stopPropagationOnly}
+        @wheel=${this._stopPropagationOnly}
       >
         <div class="header">
         <div class="input-wrapper">
           <span class="search-icon">${SearchIcon()}</span>
           <input
             class="input"
-            placeholder="Search canvas"
+            placeholder="搜索画布"
             .value=${this.query}
             @input=${this._onInput}
             @keydown=${this._onKeyDown}
-            @keyup=${this._stopEvent}
+            @keyup=${this._stopPropagationOnly}
+            @pointerdown=${this._stopPropagationOnly}
+            @mousedown=${this._stopPropagationOnly}
           />
         </div>
         <div class="actions">
