@@ -24,6 +24,7 @@ import {
   JournalIcon,
   SettingsIcon,
 } from '@blocksuite/icons/rc';
+import { Cloud, HardDrive, Loader2 } from 'lucide-react';
 import { useLiveData, useService, useServices } from '@toeverything/infra';
 import type { ReactElement } from 'react';
 import { memo, useCallback } from 'react';
@@ -238,6 +239,7 @@ export const RootAppSidebar = memo((): ReactElement => {
       </SidebarScrollableContainer>
       <SidebarContainer className={bottomContainer}>
         {/* 云端连接状态指示器 - 根据实际连接状态显示 */}
+        <style>{`@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }`}</style>
         <div style={{
           display: 'flex',
           alignItems: 'center',
@@ -264,7 +266,13 @@ export const RootAppSidebar = memo((): ReactElement => {
               : '#6b7280',
           cursor: 'pointer',
         }} title={`云端连接状态：${isConnected ? '已连接' : storageMode === 'detecting' ? '连接中...' : '本地模式'}`}>
-          <span style={{ fontSize: '12px' }}>{isConnected ? '☁️' : storageMode === 'detecting' ? '🔄' : '💾'}</span>
+          {isConnected ? (
+            <Cloud size={14} />
+          ) : storageMode === 'detecting' ? (
+            <Loader2 size={14} style={{ animation: 'spin 1s linear infinite' }} />
+          ) : (
+            <HardDrive size={14} />
+          )}
           <span>{isConnected ? '云端已连接' : storageMode === 'detecting' ? '连接中...' : '本地模式'}</span>
         </div>
         <SidebarAudioPlayer />
