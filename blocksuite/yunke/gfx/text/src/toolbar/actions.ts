@@ -378,7 +378,7 @@ export function createTextActions<
         };
 
         return renderMenu({
-          label: 'Alignment',
+          label: '对齐',
           items: TEXT_ALIGN_LIST,
           currentValue: textAlign,
           onPick,
