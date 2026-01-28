@@ -27,6 +27,7 @@ import { EnableCloudPanel } from '../preference/enable-cloud';
 import { BlobManagementPanel } from './blob-management';
 import { DocSizePanel } from './doc-size-panel';
 import { DesktopExportPanel } from './export';
+import { StorageViewer } from './storage-viewer';
 import { WebExportPanel } from './web-export';
 import { WorkspaceQuotaPanel } from './workspace-quota';
 import * as styles from './style.css';
@@ -402,6 +403,13 @@ export const WorkspaceSettingStorage = ({
           </SettingWrapper>
         </>
       )}
+      
+      {/* 存储结构查看器 - 仅 Web 环境显示 */}
+      {showWebStorageInfo ? (
+        <div className={styles.sectionSpacing}>
+          <StorageViewer />
+        </div>
+      ) : null}
     </>
   );
 };
