@@ -48,15 +48,15 @@ import {
 
 const FONT_WEIGHT_LIST = [
   {
-    key: 'Light',
+    key: '细体',
     value: FontWeight.Light,
   },
   {
-    key: 'Regular',
+    key: '常规',
     value: FontWeight.Regular,
   },
   {
-    key: 'Semibold',
+    key: '粗体',
     value: FontWeight.SemiBold,
   },
 ] as const satisfies MenuItem<FontWeight>[];
@@ -66,7 +66,7 @@ const FONT_STYLE_LIST = [
     value: FontStyle.Normal,
   },
   {
-    key: 'Italic',
+    key: '斜体',
     value: FontStyle.Italic,
   },
 ] as const satisfies MenuItem<FontStyle>[];
@@ -82,17 +82,17 @@ const FONT_SIZE_LIST = [
 
 const TEXT_ALIGN_LIST = [
   {
-    key: 'Left',
+    key: '左对齐',
     value: TextAlign.Left,
     icon: TextAlignLeftIcon(),
   },
   {
-    key: 'Center',
+    key: '居中',
     value: TextAlign.Center,
     icon: TextAlignCenterIcon(),
   },
   {
-    key: 'Right',
+    key: '右对齐',
     value: TextAlign.Right,
     icon: TextAlignRightIcon(),
   },

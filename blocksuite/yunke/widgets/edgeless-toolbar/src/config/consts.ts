@@ -4,12 +4,12 @@ import type { MenuItem } from './types';
 
 export const LINE_STYLE_LIST = [
   {
-    key: 'General',
+    key: '标准',
     value: false,
     icon: StyleGeneralIcon(),
   },
   {
-    key: 'Scribbled',
+    key: '手绘',
     value: true,
     icon: StyleScribbleIcon(),
   },

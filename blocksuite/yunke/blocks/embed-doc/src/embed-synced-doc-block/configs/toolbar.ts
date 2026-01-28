@@ -77,7 +77,7 @@ const openDocActions = [
   {
     mode: 'open-in-active-view',
     id: 'a.open-in-active-view',
-    label: 'Open this doc',
+    label: '打开文档',
     icon: ExpandFullIcon(),
   },
 ] as const satisfies (Pick<ToolbarAction, 'id' | 'label' | 'icon'> & {
@@ -231,7 +231,7 @@ const builtinToolbarConfig = {
       actions: [
         {
           id: 'copy',
-          label: 'Copy',
+          label: '复制',
           icon: CopyIcon(),
           run(ctx) {
             const model = ctx.getCurrentModelByType(EmbedSyncedDocModel);
@@ -246,7 +246,7 @@ const builtinToolbarConfig = {
         },
         {
           id: 'duplicate',
-          label: 'Duplicate',
+          label: '复制副本',
           icon: DuplicateIcon(),
           run(ctx) {
             const model = ctx.getCurrentModelByType(EmbedSyncedDocModel);
@@ -264,7 +264,7 @@ const builtinToolbarConfig = {
     {
       placement: ActionPlacement.More,
       id: 'c.delete',
-      label: 'Delete',
+      label: '删除',
       icon: DeleteIcon(),
       variant: 'destructive',
       run(ctx) {

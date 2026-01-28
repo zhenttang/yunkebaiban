@@ -6,8 +6,8 @@ export const booleanFilter = [
     name: 'isChecked',
     self: t.boolean.instance(),
     args: [],
-    label: 'Is checked',
-    shortString: () => ': Checked',
+    label: '已勾选',
+    shortString: () => ': 已勾选',
     impl: value => {
       return !!value;
     },
@@ -17,8 +17,8 @@ export const booleanFilter = [
     name: 'isUnchecked',
     self: t.boolean.instance(),
     args: [],
-    label: 'Is unchecked',
-    shortString: () => ': Unchecked',
+    label: '未勾选',
+    shortString: () => ': 未勾选',
     impl: value => {
       return !value;
     },

@@ -7,13 +7,13 @@ export type NumberCellFormat = {
 };
 
 export const numberFormats: NumberCellFormat[] = [
-  { type: 'number', label: 'Number', symbol: '#' },
-  { type: 'numberWithCommas', label: 'Number With Commas', symbol: '#' },
-  { type: 'percent', label: 'Percent', symbol: '%' },
-  { type: 'currencyYen', label: 'Japanese Yen', symbol: '¥' },
+  { type: 'number', label: '数字', symbol: '#' },
+  { type: 'numberWithCommas', label: '千分位数字', symbol: '#' },
+  { type: 'percent', label: '百分比', symbol: '%' },
+  { type: 'currencyYen', label: '日元', symbol: '¥' },
   { type: 'currencyCNY', label: '人民币', symbol: '¥' },
-  { type: 'currencyINR', label: 'Indian Rupee', symbol: '₹' },
-  { type: 'currencyUSD', label: 'US Dollar', symbol: '$' },
-  { type: 'currencyEUR', label: 'Euro', symbol: '€' },
-  { type: 'currencyGBP', label: 'British Pound', symbol: '£' },
+  { type: 'currencyINR', label: '印度卢比', symbol: '₹' },
+  { type: 'currencyUSD', label: '美元', symbol: '$' },
+  { type: 'currencyEUR', label: '欧元', symbol: '€' },
+  { type: 'currencyGBP', label: '英镑', symbol: '£' },
 ];

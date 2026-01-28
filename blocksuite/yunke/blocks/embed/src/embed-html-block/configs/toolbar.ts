@@ -30,7 +30,7 @@ const trackBaseProps = {
 const openDocAction = {
   id: 'a.open-doc',
   icon: ExpandFullIcon(),
-  tooltip: 'Open this doc',
+  tooltip: '打开文档',
   run(ctx) {
     const block = ctx.getCurrentBlockByType(EmbedHtmlBlockComponent);
     block?.open();

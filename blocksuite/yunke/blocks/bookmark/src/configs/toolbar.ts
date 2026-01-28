@@ -364,12 +364,12 @@ const builtinSurfaceToolbarConfig = {
       actions: [
         {
           id: 'card',
-          label: 'Card view',
+          label: '卡片视图',
           disabled: true,
         },
         {
           id: 'embed',
-          label: 'Embed view',
+          label: '嵌入视图',
           run(ctx) {
             const model = ctx.getCurrentModelByType(BookmarkBlockModel);
             if (!model) return;
@@ -486,19 +486,19 @@ const builtinSurfaceToolbarConfig = {
         [
           {
             id: 'horizontal',
-            label: 'Large horizontal style',
+            label: '大横向样式',
           },
           {
             id: 'list',
-            label: 'Small horizontal style',
+            label: '小横向样式',
           },
           {
             id: 'vertical',
-            label: 'Large vertical style',
+            label: '大纵向样式',
           },
           {
             id: 'cube',
-            label: 'Small vertical style',
+            label: '小纵向样式',
           },
         ] as const
       ).filter(action => BookmarkStyles.includes(action.id)),

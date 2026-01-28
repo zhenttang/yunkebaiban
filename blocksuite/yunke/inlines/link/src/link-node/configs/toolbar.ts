@@ -332,7 +332,7 @@ export const builtinInlineLinkToolbarConfig = {
     {
       placement: ActionPlacement.More,
       id: 'b.remove-link',
-      label: 'Remove link',
+      label: '移除链接',
       icon: UnlinkIcon(),
       run(ctx) {
         const target = ctx.message$.peek()?.element;

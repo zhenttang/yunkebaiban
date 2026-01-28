@@ -18,17 +18,17 @@ export type LineDetailType =
 
 const LINE_STYLE_LIST = [
   {
-    key: 'Solid',
+    key: '实线',
     value: StrokeStyle.Solid,
     icon: StraightLineIcon(),
   },
   {
-    key: 'Dash',
+    key: '虚线',
     value: StrokeStyle.Dash,
     icon: DashLineIcon(),
   },
   {
-    key: 'None',
+    key: '无',
     value: StrokeStyle.None,
     icon: BanIcon(),
   },

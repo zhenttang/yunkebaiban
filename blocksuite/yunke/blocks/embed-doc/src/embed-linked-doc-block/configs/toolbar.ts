@@ -108,7 +108,7 @@ const openDocActions = [
   {
     mode: 'open-in-active-view',
     id: 'a.open-in-active-view',
-    label: 'Open this doc',
+    label: '打开文档',
     icon: ExpandFullIcon(),
   },
 ] as const satisfies (Pick<ToolbarAction, 'id' | 'label' | 'icon'> & {

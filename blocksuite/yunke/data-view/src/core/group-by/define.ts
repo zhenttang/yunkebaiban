@@ -32,7 +32,7 @@ export const createGroupByConfig = <
   return config as never as GroupByConfig;
 };
 export const ungroups = {
-  key: 'Ungroups',
+  key: '未分组',
   value: null,
 };
 

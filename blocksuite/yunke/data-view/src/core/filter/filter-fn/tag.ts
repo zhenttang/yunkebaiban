@@ -11,7 +11,7 @@ export const tagFilter = [
     vars: [tVar(optionName, t.tag.instance())] as const,
     self: tRef(optionName),
     args: [ct.array.instance(tRef(optionName))] as const,
-    label: 'Is one of',
+    label: '属于其中之一',
     shortString: v =>
       v ? `: ${tagToString(v.value, v.type.element)}` : undefined,
     impl: (self, value) => {
@@ -30,9 +30,9 @@ export const tagFilter = [
     vars: [tVar(optionName, t.tag.instance())] as const,
     self: tRef(optionName),
     args: [ct.array.instance(tRef(optionName))] as const,
-    label: 'Is not one of',
+    label: '不属于其中之一',
     shortString: v =>
-      v ? `: Not ${tagToString(v.value, v.type.element)}` : undefined,
+      v ? `: 非 ${tagToString(v.value, v.type.element)}` : undefined,
     impl: (self, value) => {
       if (!value.length) {
         return true;

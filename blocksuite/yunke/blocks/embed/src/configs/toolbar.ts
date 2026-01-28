@@ -97,7 +97,7 @@ function createBuiltinToolbarConfigForExternal(
         actions: [
           {
             id: 'inline',
-            label: 'Inline view',
+            label: '内联视图',
             run(ctx) {
               const model = ctx.getCurrentModel();
               if (!model || !isExternalEmbedModel(model)) return;
@@ -354,7 +354,7 @@ function createBuiltinToolbarConfigForExternal(
         actions: [
           {
             id: 'copy',
-            label: 'Copy',
+            label: '复制',
             icon: CopyIcon(),
             run(ctx) {
               const model = ctx.getCurrentBlockByType(klass)?.model;
@@ -369,7 +369,7 @@ function createBuiltinToolbarConfigForExternal(
           },
           {
             id: 'duplicate',
-            label: 'Duplicate',
+            label: '复制副本',
             icon: DuplicateIcon(),
             run(ctx) {
               const model = ctx.getCurrentBlockByType(klass)?.model;
@@ -397,7 +397,7 @@ function createBuiltinToolbarConfigForExternal(
       {
         placement: ActionPlacement.More,
         id: 'c.delete',
-        label: 'Delete',
+        label: '删除',
         icon: DeleteIcon(),
         variant: 'destructive',
         run(ctx) {
@@ -430,7 +430,7 @@ const createBuiltinSurfaceToolbarConfigForExternal = (
         actions: [
           {
             id: 'card',
-            label: 'Card view',
+            label: '卡片视图',
             run(ctx) {
               const model = ctx.getCurrentBlockByType(klass)?.model;
               if (!model || !isExternalEmbedModel(model)) return;
@@ -475,7 +475,7 @@ const createBuiltinSurfaceToolbarConfigForExternal = (
           },
           {
             id: 'embed',
-            label: 'Embed view',
+            label: '嵌入视图',
             disabled: true,
           },
         ],
@@ -525,19 +525,19 @@ const createBuiltinSurfaceToolbarConfigForExternal = (
           [
             {
               id: 'horizontal',
-              label: 'Large horizontal style',
+              label: '大横向样式',
             },
             {
               id: 'list',
-              label: 'Small horizontal style',
+              label: '小横向样式',
             },
             {
               id: 'vertical',
-              label: 'Large vertical style',
+              label: '大纵向样式',
             },
             {
               id: 'cube',
-              label: 'Small vertical style',
+              label: '小纵向样式',
             },
           ] as const
         ).filter(action => EmbedGithubStyles.includes(action.id)),

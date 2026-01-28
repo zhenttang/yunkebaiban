@@ -62,7 +62,7 @@ const openLinkAction = (id: string): ToolbarAction => {
   return {
     id,
     when: showWhenUrlExists,
-    tooltip: 'Original',
+    tooltip: '打开原链接',
     icon: OpenInNewIcon(),
     run(ctx) {
       const component = ctx.getCurrentBlockByType(EmbedIframeBlockComponent);
@@ -384,7 +384,7 @@ export const builtinSurfaceToolbarConfig = {
         },
         {
           id: 'embed',
-          label: 'Embed view',
+          label: '嵌入视图',
           disabled: true,
         },
       ],

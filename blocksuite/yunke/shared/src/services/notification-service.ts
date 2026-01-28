@@ -106,7 +106,7 @@ function notifyWithUndoActionImpl(
     actions: [
       {
         key: 'notification-card-undo',
-        label: 'Undo',
+        label: '撤销',
         onClick: () => {
           store.undo();
           abortController.abort();

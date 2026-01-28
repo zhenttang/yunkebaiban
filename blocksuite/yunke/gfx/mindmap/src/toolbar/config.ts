@@ -46,19 +46,19 @@ const MINDMAP_STYLE_LIST = [
 
 const MINDMAP_LAYOUT_LIST = [
   {
-    key: 'Left',
+    key: '左侧',
     value: LayoutType.LEFT,
     icon: RightLayoutIcon({
       style: 'transform: rotate(0.5turn); transform-origin: center;',
     }),
   },
   {
-    key: 'Radial',
+    key: '径向',
     value: LayoutType.BALANCE,
     icon: RadiantIcon(),
   },
   {
-    key: 'Right',
+    key: '右侧',
     value: LayoutType.RIGHT,
     icon: RightLayoutIcon(),
   },
@@ -77,7 +77,7 @@ export const createMindmapStyleActionMenu = (
   };
 
   return renderMenu({
-    label: 'Style',
+    label: '样式',
     icon: StyleIcon(),
     items: MINDMAP_STYLE_LIST,
     currentValue: style,
@@ -100,7 +100,7 @@ export const createMindmapLayoutActionMenu = (
   };
 
   return renderMenu({
-    label: 'Layout',
+    label: '布局',
     items: MINDMAP_LAYOUT_LIST,
     currentValue: layoutType,
     onPick,

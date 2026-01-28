@@ -71,7 +71,7 @@ export const groupToolbarConfig = {
     },
     {
       id: 'b.rename',
-      tooltip: 'Rename',
+      tooltip: '重命名',
       icon: EditIcon(),
       when: ctx => ctx.getSurfaceModelsByType(GroupElementModel).length === 1,
       run(ctx) {
@@ -86,7 +86,7 @@ export const groupToolbarConfig = {
     },
     {
       id: 'b.ungroup',
-      tooltip: 'Ungroup',
+      tooltip: '取消分组',
       icon: UngroupIcon(),
       run(ctx) {
         const models = ctx.getSurfaceModelsByType(GroupElementModel);

@@ -13946,6 +13946,7 @@ __metadata:
     lit: "npm:^3.2.1"
     lodash-es: "npm:^4.17.21"
     lottie-react: "npm:^2.4.0"
+    lucide-react: "npm:^0.563.0"
     mp4-muxer: "npm:^5.2.1"
     nanoid: "npm:^5.0.9"
     next-themes: "npm:^0.4.4"
@@ -23774,6 +23775,15 @@ __metadata:
   peerDependencies:
     react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
   checksum: 10/08844cbfc01bffe6dd13daa3099fd5e36fd692f351bfc04065e83170a61ec039e8f2b07dd8901a5652b7b136ebe62441c05f8e8cee74965ff4efc87ebeafffcf
+  languageName: node
+  linkType: hard
+
+"lucide-react@npm:^0.563.0":
+  version: 0.563.0
+  resolution: "lucide-react@npm:0.563.0"
+  peerDependencies:
+    react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
+  checksum: 10/7d7b95d496f031cf2c6a1281ecc1f8d68a511d4100a14186e888a231d57c0824f8951143a0a45884c727f4d53b46bbc4388d27eac29bfb9030ef081f82ee391e
   languageName: node
   linkType: hard
 

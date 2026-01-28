@@ -21,7 +21,7 @@ const SHADOWS: Shadow[] = [
     light: {},
     dark: {},
     style: {},
-    tooltip: 'No shadow',
+    tooltip: '无阴影',
   },
   {
     type: NoteShadow.Box,
@@ -37,7 +37,7 @@ const SHADOWS: Shadow[] = [
       boxShadow:
         '0px 0.109px 2.621px var(--note-box-shadow-color-1), 0px 0px 0.874px var(--note-box-shadow-color-2)',
     },
-    tooltip: 'Box shadow',
+    tooltip: '盒阴影',
   },
   {
     type: NoteShadow.Sticker,
@@ -53,7 +53,7 @@ const SHADOWS: Shadow[] = [
       boxShadow:
         '0px 5.243px 5.68px var(--note-sticker-shadow-color-1), 0px 5.68px 3.932px var(--note-sticker-shadow-color-2)',
     },
-    tooltip: 'Sticker shadow',
+    tooltip: '贴纸阴影',
   },
   {
     type: NoteShadow.Paper,
@@ -69,7 +69,7 @@ const SHADOWS: Shadow[] = [
       border: '2px solid var(--note-paper-shadow-color-2)',
       boxShadow: '0px 0.655px 1.311px var(--note-paper-shadow-color-1)',
     },
-    tooltip: 'Paper shadow',
+    tooltip: '纸张阴影',
   },
   {
     type: NoteShadow.Float,
@@ -85,7 +85,7 @@ const SHADOWS: Shadow[] = [
       boxShadow:
         '0px 2.84px 6.554px var(--note-float-shadow-color-1), 0px 0px 0.218px var(--note-float-shadow-color-2)',
     },
-    tooltip: 'Floating shadow',
+    tooltip: '浮动阴影',
   },
   {
     type: NoteShadow.Film,
@@ -101,7 +101,7 @@ const SHADOWS: Shadow[] = [
       border: '1px solid var(--note-film-shadow-color-1)',
       boxShadow: '2px 2px 0px var(--note-film-shadow-color-2)',
     },
-    tooltip: 'Film shadow',
+    tooltip: '胶片阴影',
   },
 ];
 
