@@ -1,0 +1,16 @@
+export {
+  ACTION_TYPE_LABELS,
+  AutomationEngine,
+  CONDITION_OPERATOR_LABELS,
+  getAutomationEngine,
+  TRIGGER_TYPE_LABELS,
+  type ActionType,
+  type AutomationAction,
+  type AutomationActionConfig,
+  type AutomationCondition,
+  type AutomationContext,
+  type AutomationRule,
+  type AutomationTrigger,
+  type ConditionOperator,
+  type TriggerType,
+} from './automation-engine.js';
