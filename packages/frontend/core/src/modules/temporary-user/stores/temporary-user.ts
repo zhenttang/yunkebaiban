@@ -193,9 +193,27 @@ export class TemporaryUserStore extends Store {
   }
 
   /**
+   * 检查云同步是否启用
+   */
+  private isCloudSyncEnabled(): boolean {
+    try {
+      const stored = localStorage.getItem('yunke:cloud-sync:enabled');
+      // 默认为 false（离线模式）
+      return stored === 'true';
+    } catch {
+      return false;
+    }
+  }
+
+  /**
    * 验证当前会话
    */
   async validateSession(): Promise<ValidateSessionResponse> {
+    // 如果云同步未启用（离线模式），跳过验证
+    if (!this.isCloudSyncEnabled()) {
+      return { valid: false };
+    }
+
     try {
       // 统一使用 network-config.ts 的配置
       const apiBaseUrl = getApiBaseUrl();
@@ -220,6 +238,11 @@ export class TemporaryUserStore extends Store {
    * 延长会话有效期
    */
   async extendSession(userId: string): Promise<ExtendSessionResponse> {
+    // 如果云同步未启用（离线模式），跳过
+    if (!this.isCloudSyncEnabled()) {
+      return { success: false };
+    }
+
     try {
       // 统一使用 network-config.ts 的配置
       const apiBaseUrl = getApiBaseUrl();
@@ -244,6 +267,11 @@ export class TemporaryUserStore extends Store {
    * 注销临时用户
    */
   async logout(): Promise<{ success: boolean }> {
+    // 如果云同步未启用（离线模式），直接返回成功
+    if (!this.isCloudSyncEnabled()) {
+      return { success: true };
+    }
+
     try {
       // 统一使用 network-config.ts 的配置
       const apiBaseUrl = getApiBaseUrl();
@@ -268,6 +296,11 @@ export class TemporaryUserStore extends Store {
    * 获取当前临时用户信息
    */
   async getCurrentUser(): Promise<{ user?: TemporaryUserInfo }> {
+    // 如果云同步未启用（离线模式），返回空
+    if (!this.isCloudSyncEnabled()) {
+      return {};
+    }
+
     try {
       // 统一使用 network-config.ts 的配置
       const apiBaseUrl = getApiBaseUrl();
