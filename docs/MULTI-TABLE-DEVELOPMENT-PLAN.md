@@ -11,12 +11,12 @@
 ### 阶段一：基础字段扩展（预计 3-5 天）
 | 序号 | 功能 | 状态 | 开发日期 |
 |-----|------|------|---------|
-| 1.1 | 评分字段（星级） | ⬜ 待开发 | |
+| 1.1 | 评分字段（星级） | ✅ 已完成 | 2026-01-28 |
 | 1.2 | 系统字段（创建人/时间、修改人/时间） | ⬜ 待开发 | |
 | 1.3 | 附件字段 | ⬜ 待开发 | |
-| 1.4 | URL 链接字段 | ⬜ 待开发 | |
-| 1.5 | 电话字段 | ⬜ 待开发 | |
-| 1.6 | 邮箱字段 | ⬜ 待开发 | |
+| 1.4 | URL 链接字段 | ✅ 已完成 | 2026-01-28 |
+| 1.5 | 电话字段 | ✅ 已完成 | 2026-01-28 |
+| 1.6 | 邮箱字段 | ✅ 已完成 | 2026-01-28 |
 
 ### 阶段二：高级字段（预计 5-7 天）
 | 序号 | 功能 | 状态 | 开发日期 |
@@ -592,11 +592,14 @@ export const {field}PropertyType = propertyType('{field-type}', {
 ### 2026-01-28
 - [x] 创建开发计划文档
 - [x] 完成评分字段（rating）开发
-  - `property-presets/rating/define.ts` - 类型定义
-  - `property-presets/rating/cell-renderer.ts` - 单元格渲染器
-  - `property-presets/rating/cell-renderer-css.ts` - 样式
-  - 支持 1-10 星配置、半星、自定义颜色
-- [ ] 开始开发 URL 链接字段
+  - `property-presets/rating/` - 支持 1-10 星配置、半星、自定义颜色
+- [x] 完成 URL 链接字段（url）开发
+  - `property-presets/url/` - 支持点击跳转、自动格式化显示
+- [x] 完成电话字段（phone）开发
+  - `property-presets/phone/` - 支持 tel: 协议拨打、中国手机号格式化
+- [x] 完成邮箱字段（email）开发
+  - `property-presets/email/` - 支持 mailto: 协议、邮箱格式验证
+- [ ] 开始开发系统字段
 
 ---
 

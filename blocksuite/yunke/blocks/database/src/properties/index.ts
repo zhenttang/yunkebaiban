@@ -9,24 +9,28 @@ export * from './converts.js';
 const {
   checkboxPropertyConfig,
   datePropertyConfig,
-  dateRangePropertyConfig, // 🆕 添加日期范围属性
+  dateRangePropertyConfig,
+  emailPropertyConfig,
   multiSelectPropertyConfig,
   numberPropertyConfig,
+  phonePropertyConfig,
   progressPropertyConfig,
-  ratingPropertyConfig, // 🆕 添加评分属性
+  ratingPropertyConfig,
   selectPropertyConfig,
-  urlPropertyConfig, // 🆕 添加 URL 属性
+  urlPropertyConfig,
 } = propertyPresets;
 export const databaseBlockProperties = {
   checkboxColumnConfig: checkboxPropertyConfig,
   dateColumnConfig: datePropertyConfig,
-  dateRangeColumnConfig: dateRangePropertyConfig, // 🆕 添加日期范围属性配置
+  dateRangeColumnConfig: dateRangePropertyConfig,
+  emailColumnConfig: emailPropertyConfig,
   multiSelectColumnConfig: multiSelectPropertyConfig,
   numberColumnConfig: numberPropertyConfig,
+  phoneColumnConfig: phonePropertyConfig,
   progressColumnConfig: progressPropertyConfig,
-  ratingColumnConfig: ratingPropertyConfig, // 🆕 添加评分属性配置
+  ratingColumnConfig: ratingPropertyConfig,
   selectColumnConfig: selectPropertyConfig,
-  urlColumnConfig: urlPropertyConfig, // 🆕 添加 URL 属性配置
+  urlColumnConfig: urlPropertyConfig,
   imageColumnConfig: propertyPresets.imagePropertyConfig,
   linkColumnConfig,
   richTextColumnConfig,

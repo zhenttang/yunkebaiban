@@ -4,11 +4,13 @@ import { propertyPresets } from '@blocksuite/data-view/property-presets';
 
 export const queryBlockColumns = [
   propertyPresets.datePropertyConfig,
-  propertyPresets.dateRangePropertyConfig, // 🆕 添加日期范围属性
+  propertyPresets.dateRangePropertyConfig,
   propertyPresets.numberPropertyConfig,
   propertyPresets.progressPropertyConfig,
-  propertyPresets.ratingPropertyConfig, // 🆕 添加评分属性
-  propertyPresets.urlPropertyConfig, // 🆕 添加 URL 属性
+  propertyPresets.ratingPropertyConfig,
+  propertyPresets.urlPropertyConfig,
+  propertyPresets.phonePropertyConfig,
+  propertyPresets.emailPropertyConfig,
   propertyPresets.selectPropertyConfig,
   propertyPresets.multiSelectPropertyConfig,
   propertyPresets.checkboxPropertyConfig,
