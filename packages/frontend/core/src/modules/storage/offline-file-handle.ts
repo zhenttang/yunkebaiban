@@ -75,8 +75,11 @@ export async function loadOfflineRootHandle(): Promise<FileSystemDirectoryHandle
     const handle = await withStore('readonly', store => store.get(ROOT_HANDLE_KEY));
     logInfo('loaded root handle', { name: handle?.name ?? '' });
     return handle ?? null;
-  } catch {
-    logWarn('failed to load root handle');
+  } catch (error) {
+    // 🔧 Bug #17 修复：记录具体错误，便于调试离线存储问题
+    logWarn('failed to load root handle', {
+      error: error instanceof Error ? error.message : String(error),
+    });
     return null;
   }
 }

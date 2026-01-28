@@ -235,22 +235,71 @@ class SqliteFileEntry {
 
   async runExclusive<T>(action: () => Promise<T>): Promise<T> {
     const task = this.queue.then(action);
-    this.queue = task.catch(() => {});
+    // 🔧 Bug #14 修复：记录队列执行错误，便于调试离线存储问题
+    this.queue = task.catch((error) => {
+      logWarn('队列任务执行失败', {
+        file: this.handle.name,
+        error: error instanceof Error ? error.message : String(error),
+      });
+    });
     return task;
   }
 
-  async flush() {
+  /**
+   * 🔧 Bug #16 修复：添加错误处理和重试逻辑
+   * 确保离线数据不会因写入失败而丢失
+   */
+  async flush(maxRetries = 3): Promise<void> {
     const data = this.db.export();
-    const writable = await this.handle.createWritable();
-    await writable.write(data);
-    await writable.close();
-    if (data.length !== this.lastSize) {
-      logInfo('flushed db file', {
-        bytes: data.length,
-        file: this.handle.name,
-      });
-      this.lastSize = data.length;
+    let lastError: Error | null = null;
+
+    for (let attempt = 0; attempt < maxRetries; attempt++) {
+      let writable: FileSystemWritableFileStream | null = null;
+      try {
+        writable = await this.handle.createWritable();
+        await writable.write(data);
+        await writable.close();
+        
+        if (data.length !== this.lastSize) {
+          logInfo('flushed db file', {
+            bytes: data.length,
+            file: this.handle.name,
+          });
+          this.lastSize = data.length;
+        }
+        return; // 成功，退出
+      } catch (error) {
+        lastError = error instanceof Error ? error : new Error(String(error));
+        logWarn('flush 失败，准备重试', {
+          file: this.handle.name,
+          attempt: attempt + 1,
+          maxRetries,
+          error: lastError.message,
+        });
+        
+        // 确保关闭 writable（如果已打开）
+        if (writable) {
+          try {
+            await writable.abort();
+          } catch {
+            // 忽略 abort 错误
+          }
+        }
+        
+        // 如果不是最后一次尝试，等待后重试
+        if (attempt < maxRetries - 1) {
+          await new Promise(resolve => setTimeout(resolve, 100 * Math.pow(2, attempt)));
+        }
+      }
     }
+
+    // 所有重试都失败
+    logWarn('flush 最终失败，数据可能未保存', {
+      file: this.handle.name,
+      error: lastError?.message ?? 'Unknown error',
+    });
+    // 不抛出错误，避免阻塞其他操作，但记录严重警告
+    console.error('[离线存储] 数据写入失败，可能导致数据丢失:', lastError);
   }
 }
 

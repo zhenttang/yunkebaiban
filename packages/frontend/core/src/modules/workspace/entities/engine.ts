@@ -97,8 +97,9 @@ export class WorkspaceEngine extends Entity<{
       this.disposables.push(() => this.doc.stop());
 
       // fully migrate blobs from v1 to v2, its won't do anything if v1 storage is not exist
-      store.blobFrontend.fullDownload('v1').catch(() => {
-        // should never reach here
+      // 🔧 Bug #15 修复：记录 v1 blob 迁移错误，便于调试
+      store.blobFrontend.fullDownload('v1').catch((error) => {
+        console.warn('[WorkspaceEngine] V1 blob 迁移失败:', error);
       });
     } catch (error) {
       this.started = false;
