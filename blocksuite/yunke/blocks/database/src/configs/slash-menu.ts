@@ -7,6 +7,7 @@ import {
   DatabaseKanbanViewIcon,
   DatabaseTableViewIcon,
   DateTimeIcon, // 用作甘特图图标
+  TodayIcon, // 用作日历图标
 } from '@blocksuite/icons/lit';
 
 import { insertDatabaseBlockCommand } from '../commands';
@@ -130,6 +131,38 @@ export const databaseSlashMenuConfig: SlashMenuConfig = {
           .pipe(getSelectedModelsCommand)
           .pipe(insertDatabaseBlockCommand, {
             viewType: viewPresets.chartViewMeta.type,
+            place: 'after',
+            removeEmptyLine: true,
+          })
+          .pipe(({ insertedDatabaseBlockId }) => {
+            if (insertedDatabaseBlockId) {
+              const telemetry = std.getOptional(TelemetryProvider);
+              telemetry?.track('BlockCreated', {
+                blockType: 'yunke:database',
+              });
+            }
+          })
+          .run();
+      },
+    },
+
+    {
+      name: 'Calendar View',
+      description: '以日历格式显示日期数据。',
+      searchAlias: ['calendar', '日历', 'schedule', '日程'],
+      icon: TodayIcon(),
+      tooltip: {
+        caption: 'Calendar View',
+      },
+      group: '7_Database@3',
+      when: ({ model }) =>
+        !isInsideBlockByFlavour(model.store, model, 'yunke:edgeless-text'),
+      action: ({ std }) => {
+        std.command
+          .chain()
+          .pipe(getSelectedModelsCommand)
+          .pipe(insertDatabaseBlockCommand, {
+            viewType: viewPresets.calendarViewMeta.type,
             place: 'after',
             removeEmptyLine: true,
           })
