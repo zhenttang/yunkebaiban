@@ -27,7 +27,7 @@ const SharePageErrorFallback = ({
   return (
     <div className={styles.stateContainer}>
       <div>{t['com.yunke.share-menu.load-error']()}</div>
-      <Button size="small" variant="secondary" onClick={resetErrorBoundary}>
+      <Button size="default" variant="secondary" onClick={resetErrorBoundary}>
         {t['com.yunke.share-menu.retry']()}
       </Button>
     </div>
@@ -114,7 +114,7 @@ export const YUNKESharePage = (
       <div className={styles.stateContainer}>
         <div>{t['com.yunke.share-menu.load-error']()}</div>
         <Button
-          size="small"
+          size="default"
           variant="secondary"
           onClick={() => shareInfoService.shareInfo.revalidate()}
         >

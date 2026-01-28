@@ -153,7 +153,7 @@ const StandaloneCommunityDetail = ({ workspaceId, docId }: { workspaceId: string
     <div style={{ maxWidth: '960px', margin: '0 auto', padding: '32px 20px' }}>
       <Button
         variant="plain"
-        size="small"
+        size="default"
         onClick={() => navigate(`/workspace/${workspaceId}/community`)}
         style={{ marginBottom: '16px', display: 'inline-flex', alignItems: 'center', gap: '4px' }}
       >

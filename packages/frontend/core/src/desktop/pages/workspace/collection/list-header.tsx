@@ -101,7 +101,7 @@ export const CollectionListHeader = ({
       <div className={styles.headerActions}>
         <Button onClick={handleEdit}>{t['Edit']()}</Button>
         <PageListNewPageButton
-          size="small"
+          size="default"
           data-testid="new-page-button-trigger"
           onCreateDoc={onCreateDoc}
           onCreateEdgeless={onCreateEdgeless}

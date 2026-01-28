@@ -357,7 +357,7 @@ export const StorageViewer = () => {
             : '加载中...'
           }
         >
-          <Button size="small" variant="secondary" onClick={loadDatabases} loading={loading}>
+          <Button size="default" variant="secondary" onClick={loadDatabases} loading={loading}>
             刷新
           </Button>
         </SettingRow>

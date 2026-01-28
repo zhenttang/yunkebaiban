@@ -73,7 +73,7 @@ export const CommunityDocDetailPage = () => {
       <ViewHeader>
         <Button
           variant="plain"
-          size="small"
+          size="default"
           onClick={handleBack}
           style={{ marginRight: '8px' }}
         >

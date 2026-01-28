@@ -305,7 +305,7 @@ export const WorkspaceSettingStorage = ({
             desc={storagePathDesc}
           >
             <Button
-              size="small"
+              size="default"
               variant="secondary"
               onClick={handleOpenStorageFolder}
               disabled={!storagePath || storagePathLoading || migrating}
@@ -315,7 +315,7 @@ export const WorkspaceSettingStorage = ({
             {isOfflineEnabled ? null : (
               <>
                 <Button
-                  size="small"
+                  size="default"
                   variant="secondary"
                   onClick={handleCopyStoragePath}
                   disabled={!storagePath || storagePathLoading || migrating}
@@ -323,7 +323,7 @@ export const WorkspaceSettingStorage = ({
                   复制路径
                 </Button>
                 <Button
-                  size="small"
+                  size="default"
                   variant="secondary"
                   onClick={handleMigrateStorage}
                   loading={migrating}
@@ -341,7 +341,7 @@ export const WorkspaceSettingStorage = ({
             desc={oldStoragePath}
           >
             <Button
-              size="small"
+              size="default"
               variant="secondary"
               onClick={handleCleanupOldStorage}
             >
@@ -355,7 +355,7 @@ export const WorkspaceSettingStorage = ({
             desc="从本地 SQLite 文件导入工作区"
           >
             <Button
-              size="small"
+              size="default"
               variant="secondary"
               onClick={handleImportWorkspace}
             >

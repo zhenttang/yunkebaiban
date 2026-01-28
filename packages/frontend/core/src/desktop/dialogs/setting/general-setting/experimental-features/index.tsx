@@ -224,10 +224,10 @@ const PluginManagerPanel = () => {
     <div className={styles.pluginSection}>
       <div className={styles.subHeader}>插件管理（实验）</div>
       <div className={styles.pluginActionRow}>
-        <Button size="small" variant="primary" onClick={handleImportZip}>
+        <Button size="default" variant="primary" onClick={handleImportZip}>
           导入插件
         </Button>
-        <Button size="small" variant="secondary" onClick={handleInstallDemo}>
+        <Button size="default" variant="secondary" onClick={handleInstallDemo}>
           安装示例
         </Button>
       </div>
@@ -264,7 +264,7 @@ const PluginManagerPanel = () => {
                             {command.label}
                           </div>
                           <Button
-                            size="small"
+                            size="default"
                             variant="secondary"
                             disabled={!record.enabled}
                             onClick={() => handleRunCommand(command.id)}
@@ -285,7 +285,7 @@ const PluginManagerPanel = () => {
                   />
                   {record.source !== 'builtin' ? (
                     <Button
-                      size="small"
+                      size="default"
                       variant="secondary"
                       onClick={() => handleUninstall(record.manifest.id)}
                     >

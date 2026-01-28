@@ -427,7 +427,7 @@ export const AllPage = () => {
                 {tempFilters === null ? (
                   <Button
                     variant="plain"
-                    size="small"
+                    size="default"
                     onClick={() => {
                       const baseFilters = selectedCollectionInfo?.rules.filters ?? [];
                       setTempFilters([...baseFilters]);

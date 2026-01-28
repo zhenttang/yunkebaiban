@@ -237,7 +237,7 @@ export const Component = () => {
           {isError ? (
             <Button
               variant="primary"
-              size="small"
+              size="default"
               onClick={() => setRetryKey(i => i + 1)}
             >
               重新尝试

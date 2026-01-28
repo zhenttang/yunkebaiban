@@ -100,7 +100,7 @@ export const AllDocsHeader = ({
 
         <div className={styles.actionGroup}>
           <PageListNewPageButton
-            size="small"
+            size="default"
             onCreateEdgeless={e => createEdgeless({ at: inferOpenMode(e) })}
             onCreatePage={e => createPage('page', { at: inferOpenMode(e) })}
             onCreateDoc={e => createPage(undefined, { at: inferOpenMode(e) })}
