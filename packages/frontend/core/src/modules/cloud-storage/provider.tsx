@@ -90,6 +90,33 @@ const OFFLINE_OPERATIONS_KEY = 'cloud_storage_offline_operations';
 const MAX_OFFLINE_OPERATIONS = 500;
 const MAX_OFFLINE_STORAGE_BYTES = 2 * 1024 * 1024;
 
+// 🔧 云同步开关存储键
+const CLOUD_SYNC_ENABLED_KEY = 'yunke_cloud_sync_enabled';
+
+/**
+ * 获取云同步开关状态
+ * 默认为 false（离线模式），用户需要手动开启云同步
+ */
+export function isCloudSyncEnabled(): boolean {
+  try {
+    const value = safeStorage.getItem(CLOUD_SYNC_ENABLED_KEY);
+    return value === 'true';
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * 设置云同步开关状态
+ */
+export function setCloudSyncEnabled(enabled: boolean): void {
+  try {
+    safeStorage.setItem(CLOUD_SYNC_ENABLED_KEY, enabled ? 'true' : 'false');
+  } catch (error) {
+    console.warn('[云同步] 保存开关状态失败:', error);
+  }
+}
+
 const awaitWithTimeout = <T>(
   promise: Promise<T>,
   timeoutMs: number,
@@ -159,6 +186,9 @@ export interface CloudStorageStatus {
   // 🔧 Bug #6 修复：添加同步状态通知
   syncStatus: 'idle' | 'syncing' | 'success' | 'error';
   syncError: string | null;
+  // 🔧 云同步开关
+  cloudSyncEnabled: boolean;
+  setCloudSyncEnabled: (enabled: boolean) => void;
 }
 
 const CloudStorageContext = createContext<CloudStorageStatus | null>(null);
@@ -174,19 +204,30 @@ export const useCloudStorage = () => {
 interface CloudStorageProviderProps {
   children: React.ReactNode;
   serverUrl?: string;
+  /** 
+   * 是否启用云同步。默认从 localStorage 读取，如果未设置则为 false（离线模式）
+   * 用户可通过 setCloudSyncEnabled(true) 手动开启
+   */
   enabled?: boolean;
 }
 
 export const CloudStorageProvider = ({ 
   children, 
   serverUrl: serverUrlProp,
-  enabled = true,
+  enabled,
 }: CloudStorageProviderProps) => {
   // 🔧 修复：将 serverUrl 默认值计算移到组件内部，避免在函数参数中执行副作用
   const serverUrl = useMemo(() => {
     return serverUrlProp ?? getSocketIOUrl();
   }, [serverUrlProp]);
-  const cloudEnabled = enabled;
+  
+  // 🔧 云同步开关：优先使用 prop，否则从 localStorage 读取，默认为 false（离线模式）
+  const cloudEnabled = useMemo(() => {
+    if (enabled !== undefined) {
+      return enabled;
+    }
+    return isCloudSyncEnabled();
+  }, [enabled]);
   const params = useParams();
   const sessionId = useMemo(() => getOrCreateSessionId(), []);
   const normalizedLocalSessionId = useMemo(
@@ -194,7 +235,10 @@ export const CloudStorageProvider = ({
     [sessionId]
   );
   const [isConnected, setIsConnected] = useState(false);
-  const [storageMode, setStorageMode] = useState<CloudStorageStatus['storageMode']>('detecting');
+  // 🔧 如果云同步未启用，直接设置为 local 模式，避免尝试连接
+  const [storageMode, setStorageMode] = useState<CloudStorageStatus['storageMode']>(
+    () => cloudEnabled ? 'detecting' : 'local'
+  );
   const [lastSync, setLastSync] = useState<Date | null>(null);
   // 🔧 Bug #6 修复：添加同步状态通知
   const [syncStatus, setSyncStatus] = useState<'idle' | 'syncing' | 'success' | 'error'>('idle');
@@ -566,6 +610,19 @@ export const CloudStorageProvider = ({
   }, [isOnline]);
   useEffect(() => {
     cloudEnabledRef.current = cloudEnabled;
+    // 🔧 当云同步被禁用时，立即切换到本地模式，并断开现有连接
+    if (!cloudEnabled) {
+      setStorageMode('local');
+      setIsConnected(false);
+      // 断开现有 socket 连接
+      const currentSocket = socketRef.current;
+      if (currentSocket) {
+        currentSocket.disconnect();
+        socketRef.current = null;
+        setSocket(null);
+      }
+      console.log('☁️ [云存储] 云同步已禁用，使用本地模式');
+    }
   }, [cloudEnabled]);
   
   useEffect(() => {
@@ -1242,6 +1299,22 @@ export const CloudStorageProvider = ({
       isConnectingRef.current = false;
     };
   }, []); // 只在组件卸载时执行
+
+  // 🔧 云同步开关处理函数
+  const handleSetCloudSyncEnabled = useCallback((enabled: boolean) => {
+    setCloudSyncEnabled(enabled);
+    if (enabled) {
+      // 启用云同步：尝试连接
+      setStorageMode('detecting');
+      reconnectAttempts.current = 0;
+      if (connectToSocketRef.current) {
+        connectToSocketRef.current();
+      }
+      console.log('☁️ [云存储] 云同步已启用，开始连接...');
+    }
+    // 禁用的情况已经在 cloudEnabled 的 useEffect 中处理了
+  }, []);
+
   // 🔧 修复：优化 useMemo 依赖项
   // 注意：socket 状态仍然保留，因为某些组件可能依赖它，但我们已经减少了不必要的依赖
   const value = useMemo<CloudStorageStatus>(() => ({
@@ -1262,6 +1335,9 @@ export const CloudStorageProvider = ({
     // 🔧 Bug #6 修复：添加同步状态通知
     syncStatus,
     syncError,
+    // 🔧 云同步开关
+    cloudSyncEnabled: cloudEnabled,
+    setCloudSyncEnabled: handleSetCloudSyncEnabled,
   }), [
     isConnected,
     storageMode,
@@ -1278,6 +1354,9 @@ export const CloudStorageProvider = ({
     // 🔧 Bug #6 修复：添加同步状态依赖
     syncStatus,
     syncError,
+    // 🔧 云同步开关
+    cloudEnabled,
+    handleSetCloudSyncEnabled,
   ]);
 
   // 将云存储管理器暴露到全局对象，供CloudDocStorage使用
