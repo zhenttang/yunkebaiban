@@ -43,17 +43,19 @@ export class EdgelessSearchModal extends SignalWatcher(
       position: fixed !important;
       top: 0 !important;
       left: 0 !important;
-      width: 100vw !important;
-      height: 100vh !important;
-      z-index: 999999 !important;
+      right: 0 !important;
+      bottom: 0 !important;
+      width: 100% !important;
+      height: 100% !important;
+      z-index: 2147483647 !important;
       display: flex !important;
-      justify-content: center;
-      align-items: flex-start;
-      padding-top: 100px;
-      box-sizing: border-box;
+      justify-content: center !important;
+      align-items: flex-start !important;
+      padding-top: 100px !important;
+      box-sizing: border-box !important;
       font-family: ${unsafeCSS(baseTheme.fontSansFamily)};
-      animation: yunke-modal-fade-in 0.15s ease;
-      pointer-events: auto;
+      pointer-events: auto !important;
+      background: rgba(0, 0, 0, 0.5) !important;
     }
 
     @keyframes yunke-modal-fade-in {
@@ -66,12 +68,7 @@ export class EdgelessSearchModal extends SignalWatcher(
     }
 
     .backdrop {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.3);
+      display: none;
     }
 
     .modal {
