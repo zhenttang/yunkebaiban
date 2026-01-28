@@ -14,6 +14,7 @@ import {
   stopPropagation,
 } from '@blocksuite/yunke-shared/utils';
 import { SignalWatcher, WithDisposable } from '@blocksuite/global/lit';
+import { nextTick } from '@blocksuite/global/utils';
 import { baseTheme } from '@toeverything/theme';
 import { css, html, LitElement, unsafeCSS } from 'lit';
 import { property, query, state } from 'lit/decorators.js';
@@ -40,22 +41,18 @@ export class EdgelessSearchModal extends SignalWatcher(
 ) {
   static override styles = css`
     :host {
-      position: fixed !important;
-      top: 0 !important;
-      left: 0 !important;
-      right: 0 !important;
-      bottom: 0 !important;
-      width: 100% !important;
-      height: 100% !important;
-      z-index: 2147483647 !important;
-      display: flex !important;
-      justify-content: center !important;
-      align-items: flex-start !important;
-      padding-top: 100px !important;
-      box-sizing: border-box !important;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 9999;
+      display: flex;
+      justify-content: center;
+      padding-top: 100px;
+      box-sizing: border-box;
       font-family: ${unsafeCSS(baseTheme.fontSansFamily)};
-      pointer-events: auto !important;
-      background: rgba(0, 0, 0, 0.5) !important;
+      animation: yunke-modal-fade-in 0.15s ease;
     }
 
     @keyframes yunke-modal-fade-in {
@@ -68,7 +65,12 @@ export class EdgelessSearchModal extends SignalWatcher(
     }
 
     .backdrop {
-      display: none;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.3);
     }
 
     .modal {
@@ -260,7 +262,6 @@ export class EdgelessSearchModal extends SignalWatcher(
 
   override connectedCallback() {
     super.connectedCallback();
-    console.log('[Search] Modal connectedCallback');
     this.setAttribute(RANGE_SYNC_EXCLUDE_ATTR, 'true');
   }
 
@@ -275,10 +276,15 @@ export class EdgelessSearchModal extends SignalWatcher(
       this._inputElement?.focus();
     });
 
-    // 点击外部关闭
-    this.disposables.add(
-      listenClickAway(this.shadowRoot!.querySelector('.modal')!, this._hide)
-    );
+    // 点击外部关闭 - 延迟添加监听器，避免当前点击事件立即触发关闭
+    nextTick()
+      .then(() => {
+        const modal = this.shadowRoot?.querySelector('.modal');
+        if (modal) {
+          this.disposables.add(listenClickAway(modal as HTMLElement, this._hide));
+        }
+      })
+      .catch(console.error);
 
     // 阻止事件传播
     this.disposables.addFromEvent(this, 'keydown', this._onGlobalKeyDown);
@@ -517,7 +523,6 @@ export class EdgelessSearchModal extends SignalWatcher(
   }
 
   override render() {
-    console.log('[Search] Modal render called');
     const hasResults = this._results.length > 0;
     const counter = hasResults
       ? `${this._activeIndex + 1}/${this._results.length}`
@@ -606,8 +611,6 @@ export function openEdgelessSearchModal(
   edgeless: BlockComponent,
   onClose?: () => void
 ) {
-  console.log('[Search] Opening modal, edgeless:', edgeless);
-  
   // 移除已存在的弹窗
   document.body.querySelector('edgeless-search-modal')?.remove();
 
@@ -616,13 +619,9 @@ export function openEdgelessSearchModal(
     'edgeless-search-modal'
   ) as EdgelessSearchModal;
   
-  console.log('[Search] Created modal element:', modal);
-  
   modal.edgeless = edgeless;
   modal.onClose = onClose;
   document.body.appendChild(modal);
-  
-  console.log('[Search] Modal appended to body');
 
   return modal;
 }

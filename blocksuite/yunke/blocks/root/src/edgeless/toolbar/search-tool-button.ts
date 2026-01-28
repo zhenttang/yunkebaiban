@@ -62,7 +62,6 @@ export class EdgelessSearchToolButton extends QuickToolMixin(LitElement) {
   }
 
   private readonly _handleClick = () => {
-    console.log('[Search] Button clicked, isModalOpen:', this._isModalOpen);
     if (this._isModalOpen) {
       this._closeModal();
     } else {
