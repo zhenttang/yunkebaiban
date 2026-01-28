@@ -30,6 +30,21 @@ export class KeyboardControl {
     if (event.isComposing) {
       return false;
     }
+
+    // 忽略来自原生输入框的键盘事件，让输入框正常工作
+    // 注意：不忽略 contentEditable，因为编辑器主体使用 contentEditable
+    const target = event.target as HTMLElement;
+    if (target) {
+      const tagName = target.tagName?.toUpperCase();
+      if (tagName === 'INPUT' || tagName === 'TEXTAREA') {
+        // 但保留全局快捷键（如 Escape 关闭面板）
+        if (event.key === 'Escape') {
+          return true;
+        }
+        return false;
+      }
+    }
+
     const mod = IS_MAC ? event.metaKey : event.ctrlKey;
     if (
       ['c', 'v', 'x'].includes(event.key) &&
