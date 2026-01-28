@@ -420,11 +420,14 @@ export const CloudStorageProvider = ({
   };
 
   // 🔧 修复5: 同步离线操作 - 使用useCallback
+  // 🔧 Bug #3 修复：使用 socketRef.current 替代 socket 状态，避免闭包问题
   const syncOfflineOperations = useCallback(async (): Promise<void> => {
     if (!cloudEnabledRef.current) {
       return;
     }
-    if (!currentWorkspaceId || !socket?.connected) {
+    // 🔧 Bug #3 修复：使用 socketRef.current 获取最新 socket 实例
+    const currentSocket = socketRef.current;
+    if (!currentWorkspaceId || !currentSocket?.connected) {
       console.warn('⚠️ [云存储管理器] 无法同步：缺少workspace或连接');
       return;
     }
@@ -459,7 +462,8 @@ export const CloudStorageProvider = ({
             null,
           source: 'local',
         });
-        const result = await socket.emitWithAck('space:push-doc-update', {
+        // 🔧 Bug #3 修复：使用 currentSocket 发送请求
+        const result = await currentSocket.emitWithAck('space:push-doc-update', {
           spaceType: operation.spaceType || 'workspace',
           spaceId: operation.spaceId,
           docId: normalizeDocId(operation.docId),
@@ -507,7 +511,7 @@ export const CloudStorageProvider = ({
     logThrottle.current.log('offline-sync-scheduled', () => {
       console.warn('⚠️ [云存储管理器] 离线同步失败，计划', delay, 'ms后重试');
     });
-  }, [currentWorkspaceId, socket, sessionId, normalizedLocalSessionId]);
+  }, [currentWorkspaceId, sessionId, normalizedLocalSessionId]); // 🔧 Bug #3 修复：移除 socket 依赖
 
   // 初始化时读取离线操作数量
   useEffect(() => {
