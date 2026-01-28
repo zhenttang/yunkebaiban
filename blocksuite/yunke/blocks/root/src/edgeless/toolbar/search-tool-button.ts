@@ -1,9 +1,12 @@
 import { SearchIcon } from '@blocksuite/icons/lit';
 import { QuickToolMixin } from '@blocksuite/yunke-widget-edgeless-toolbar';
 import { css, html, LitElement } from 'lit';
-import { property } from 'lit/decorators.js';
+import { state } from 'lit/decorators.js';
 
-import type { EdgelessSearchPanel } from './search-panel';
+import {
+  type EdgelessSearchModal,
+  openEdgelessSearchModal,
+} from './search-panel';
 
 export class EdgelessSearchToolButton extends QuickToolMixin(LitElement) {
   static override styles = css`
@@ -14,8 +17,10 @@ export class EdgelessSearchToolButton extends QuickToolMixin(LitElement) {
     }
   `;
 
-  @property({ attribute: false })
-  accessor panel: EdgelessSearchPanel | null = null;
+  @state()
+  private accessor _isModalOpen = false;
+
+  private _modal: EdgelessSearchModal | null = null;
 
   override firstUpdated() {
     if (!this.edgeless) {
@@ -24,61 +29,55 @@ export class EdgelessSearchToolButton extends QuickToolMixin(LitElement) {
     this.edgeless.bindHotKey(
       {
         '$mod+shift+f': () => {
-          this._togglePanel();
+          this._toggleModal();
         },
       },
       { global: true }
     );
   }
 
-  private readonly _handlePanelClose = () => {
-    this._closePanel();
-  };
-
-  private _openPanel() {
-    const popper = this.createPopper('edgeless-search-panel', this, {
-      setProps: panel => {
-        panel.edgeless = this.edgeless;
-        panel.addEventListener('closepanel', this._handlePanelClose);
-        this.panel = panel;
-      },
-      onDispose: () => {
-        if (this.panel) {
-          this.panel.removeEventListener('closepanel', this._handlePanelClose);
-        }
-        this.panel = null;
-        this.requestUpdate();
-      },
-    });
-    popper.element.edgeless = this.edgeless;
-    this.requestUpdate();
+  override disconnectedCallback() {
+    super.disconnectedCallback();
+    this._closeModal();
   }
 
-  private _closePanel() {
-    if (this.popper) {
-      this.popper.dispose();
-    }
-  }
-
-  private _togglePanel() {
-    if (this.popper) {
-      this._closePanel();
+  private _openModal() {
+    if (this._isModalOpen) {
       return;
     }
-    this._openPanel();
+
+    this._modal = openEdgelessSearchModal(this.edgeless, () => {
+      this._isModalOpen = false;
+      this._modal = null;
+    });
+    this._isModalOpen = true;
+  }
+
+  private _closeModal() {
+    if (this._modal) {
+      this._modal.remove();
+      this._modal = null;
+    }
+    this._isModalOpen = false;
+  }
+
+  private _toggleModal() {
+    if (this._isModalOpen) {
+      this._closeModal();
+    } else {
+      this._openModal();
+    }
   }
 
   override render() {
-    const active = !!this.popper;
-
     return html`<edgeless-tool-icon-button
       .iconContainerPadding=${6}
       .tooltip=${html`<yunke-tooltip-content-with-shortcut
-        data-tip="${'Canvas search'}"
+        data-tip="${'搜索画布'}"
       ></yunke-tooltip-content-with-shortcut>`}
       .tooltipOffset=${17}
-      ?active=${active}
-      @click=${this._togglePanel}
+      ?active=${this._isModalOpen}
+      @click=${this._toggleModal}
     >
       <span class="search-icon">${SearchIcon()}</span>
     </edgeless-tool-icon-button>`;

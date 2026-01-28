@@ -9,6 +9,11 @@ import { GfxControllerIdentifier, type GfxModel } from '@blocksuite/std/gfx';
 import { RANGE_SYNC_EXCLUDE_ATTR } from '@blocksuite/std/inline';
 import type { BlockModel, Store, Text } from '@blocksuite/store';
 import { HighlightSelection } from '@blocksuite/yunke-shared/selection';
+import {
+  listenClickAway,
+  stopPropagation,
+} from '@blocksuite/yunke-shared/utils';
+import { SignalWatcher, WithDisposable } from '@blocksuite/global/lit';
 import { baseTheme } from '@toeverything/theme';
 import { css, html, LitElement, unsafeCSS } from 'lit';
 import { property, query, state } from 'lit/decorators.js';
@@ -27,185 +32,273 @@ type SearchResult = {
 const MAX_RESULTS = 50;
 const SNIPPET_PADDING = 20;
 
-const styles = css`
-  :host {
-    display: block;
-    font-family: ${unsafeCSS(baseTheme.fontSansFamily)};
-    background: var(--yunke-background-overlay-panel-color);
-    border: 1px solid var(--yunke-border-color);
-    border-radius: 12px;
-    padding: 10px;
-    box-shadow: var(--yunke-shadow-2);
-  }
+/**
+ * 全屏搜索弹窗组件 - 挂载到 document.body 以避免焦点问题
+ */
+export class EdgelessSearchModal extends SignalWatcher(
+  WithDisposable(LitElement)
+) {
+  static override styles = css`
+    :host {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 9999;
+      display: flex;
+      justify-content: center;
+      padding-top: 120px;
+      font-family: ${unsafeCSS(baseTheme.fontSansFamily)};
+      animation: yunke-modal-fade-in 0.15s ease;
+    }
 
-  .header {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
+    @keyframes yunke-modal-fade-in {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
 
-  .input-wrapper {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    flex: 1;
-    padding: 6px 8px;
-    background: var(--yunke-hover-color);
-    border-radius: 8px;
-  }
+    .backdrop {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.3);
+    }
 
-  .search-icon {
-    display: inline-flex;
-    width: 18px;
-    height: 18px;
-  }
+    .modal {
+      position: relative;
+      width: 560px;
+      max-width: 90vw;
+      max-height: 70vh;
+      background: var(--yunke-background-overlay-panel-color, #fff);
+      border: 1px solid var(--yunke-border-color, #e0e0e0);
+      border-radius: 12px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
 
-  .input {
-    flex: 1;
-    border: none;
-    outline: none;
-    background: transparent;
-    font-size: var(--yunke-font-sm);
-    color: var(--yunke-text-primary-color);
-  }
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 16px;
+      border-bottom: 1px solid var(--yunke-border-color, #e0e0e0);
+    }
 
-  .input::placeholder {
-    color: var(--yunke-placeholder-color);
-  }
+    .input-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex: 1;
+      padding: 8px 12px;
+      background: var(--yunke-hover-color, #f5f5f5);
+      border-radius: 8px;
+    }
 
-  .actions {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-  }
+    .search-icon {
+      display: inline-flex;
+      width: 20px;
+      height: 20px;
+      color: var(--yunke-text-secondary-color, #666);
+    }
 
-  .action-button {
-    border: none;
-    background: transparent;
-    padding: 4px;
-    border-radius: 6px;
-    cursor: pointer;
-    color: var(--yunke-text-secondary-color);
-  }
+    .input {
+      flex: 1;
+      border: none;
+      outline: none;
+      background: transparent;
+      font-size: 16px;
+      color: var(--yunke-text-primary-color, #333);
+    }
 
-  .action-button[disabled] {
-    cursor: not-allowed;
-    color: var(--yunke-text-disable-color);
-  }
+    .input::placeholder {
+      color: var(--yunke-placeholder-color, #999);
+    }
 
-  .action-button:not([disabled]):hover {
-    background: var(--yunke-hover-color);
-  }
+    .actions {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
 
-  .counter {
-    min-width: 44px;
-    text-align: right;
-    font-size: var(--yunke-font-xs);
-    color: var(--yunke-text-secondary-color);
-  }
+    .action-button {
+      border: none;
+      background: transparent;
+      padding: 6px;
+      border-radius: 6px;
+      cursor: pointer;
+      color: var(--yunke-text-secondary-color, #666);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
 
-  .results {
-    margin-top: 8px;
-    max-height: 240px;
-    overflow: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-  }
+    .action-button[disabled] {
+      cursor: not-allowed;
+      color: var(--yunke-text-disable-color, #ccc);
+    }
 
-  .result-item {
-    padding: 6px 8px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: var(--yunke-font-sm);
-    color: var(--yunke-text-primary-color);
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
+    .action-button:not([disabled]):hover {
+      background: var(--yunke-hover-color, #f0f0f0);
+    }
 
-  .result-item:hover {
-    background: var(--yunke-hover-color);
-  }
+    .counter {
+      min-width: 50px;
+      text-align: right;
+      font-size: 13px;
+      color: var(--yunke-text-secondary-color, #666);
+    }
 
-  .result-item.active {
-    background: var(--yunke-hover-color);
-  }
+    .results {
+      flex: 1;
+      overflow-y: auto;
+      padding: 8px;
+    }
 
-  .result-text {
-    flex: 1;
-    min-width: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
+    .result-item {
+      padding: 10px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      color: var(--yunke-text-primary-color, #333);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
 
-  .result-meta {
-    font-size: var(--yunke-font-xs);
-    color: var(--yunke-text-secondary-color);
-  }
+    .result-item:hover {
+      background: var(--yunke-hover-color, #f5f5f5);
+    }
 
-  mark {
-    background: transparent;
-    color: var(--yunke-primary-color);
-    font-weight: 600;
-  }
+    .result-item.active {
+      background: var(--yunke-hover-color-filled, #e8f4ff);
+    }
 
-  .empty {
-    padding: 12px;
-    text-align: center;
-    color: var(--yunke-text-secondary-color);
-    font-size: var(--yunke-font-xs);
-  }
-`;
+    .result-text {
+      flex: 1;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
 
-export class EdgelessSearchPanel extends LitElement {
-  static override styles = styles;
+    .result-meta {
+      font-size: 12px;
+      color: var(--yunke-text-secondary-color, #999);
+      padding: 2px 6px;
+      background: var(--yunke-hover-color, #f0f0f0);
+      border-radius: 4px;
+    }
+
+    mark {
+      background: transparent;
+      color: var(--yunke-primary-color, #1890ff);
+      font-weight: 600;
+    }
+
+    .empty {
+      padding: 40px;
+      text-align: center;
+      color: var(--yunke-text-secondary-color, #999);
+      font-size: 14px;
+    }
+
+    .shortcut-hint {
+      padding: 12px 16px;
+      border-top: 1px solid var(--yunke-border-color, #e0e0e0);
+      font-size: 12px;
+      color: var(--yunke-text-secondary-color, #999);
+      display: flex;
+      gap: 16px;
+    }
+
+    .shortcut-hint kbd {
+      display: inline-block;
+      padding: 2px 6px;
+      background: var(--yunke-hover-color, #f0f0f0);
+      border-radius: 4px;
+      font-family: monospace;
+      font-size: 11px;
+    }
+  `;
 
   @property({ attribute: false })
   accessor edgeless!: BlockComponent;
 
   @state()
-  private accessor query = '';
+  private accessor _query = '';
 
   @state()
-  private accessor results: SearchResult[] = [];
+  private accessor _results: SearchResult[] = [];
 
   @state()
-  private accessor activeIndex = -1;
+  private accessor _activeIndex = -1;
 
-  @query('input')
-  private accessor inputElement!: HTMLInputElement;
+  @query('.input')
+  private accessor _inputElement!: HTMLInputElement;
 
   private readonly _debouncedSearch = debounce((value: string) => {
     this._performSearch(value);
-  }, 200);
+  }, 150);
+
+  private _hide = () => {
+    this._clearHighlight();
+    this.remove();
+    this.onClose?.();
+  };
+
+  @property({ attribute: false })
+  accessor onClose: (() => void) | undefined = undefined;
 
   override connectedCallback() {
     super.connectedCallback();
-    // 排除此组件，让焦点管理系统不会抢夺输入框焦点
     this.setAttribute(RANGE_SYNC_EXCLUDE_ATTR, 'true');
   }
 
   override disconnectedCallback() {
     super.disconnectedCallback();
     this._debouncedSearch.cancel();
-    this._updateQueryState.cancel();
-    this._clearHighlight();
   }
 
   override firstUpdated() {
-    // 延迟聚焦确保输入框已经渲染完成
+    // 聚焦输入框
     requestAnimationFrame(() => {
-      this.inputElement?.focus();
+      this._inputElement?.focus();
     });
+
+    // 点击外部关闭
+    this.disposables.add(
+      listenClickAway(this.shadowRoot!.querySelector('.modal')!, this._hide)
+    );
+
+    // 阻止事件传播
+    this.disposables.addFromEvent(this, 'keydown', this._onGlobalKeyDown);
+    this.disposables.addFromEvent(this, 'pointerdown', stopPropagation);
+    this.disposables.addFromEvent(this, 'mousedown', stopPropagation);
+    this.disposables.addFromEvent(this, 'click', stopPropagation);
   }
+
+  private _onGlobalKeyDown = (e: KeyboardEvent) => {
+    e.stopPropagation();
+    if (e.key === 'Escape') {
+      e.preventDefault();
+      this._hide();
+    }
+  };
 
   private _performSearch(value: string) {
     const query = value.trim();
     if (!query || !this.edgeless) {
-      this.results = [];
-      this.activeIndex = -1;
+      this._results = [];
+      this._activeIndex = -1;
       this._clearHighlight();
       return;
     }
@@ -226,8 +319,13 @@ export class EdgelessSearchPanel extends LitElement {
       );
     }
 
-    this.results = results;
-    this.activeIndex = results.length ? 0 : -1;
+    this._results = results;
+    this._activeIndex = results.length ? 0 : -1;
+
+    // 自动高亮第一个结果
+    if (this._activeIndex >= 0) {
+      this._highlight(results[0]);
+    }
   }
 
   private _collectElementMatches(query: string, limit: number) {
@@ -331,49 +429,31 @@ export class EdgelessSearchPanel extends LitElement {
   }
 
   private _renderHighlighted(text: string) {
-    if (!this.query) {
+    if (!this._query) {
       return text;
     }
     const lowerText = text.toLowerCase();
-    const lowerQuery = this.query.toLowerCase();
+    const lowerQuery = this._query.toLowerCase();
     const index = lowerText.indexOf(lowerQuery);
     if (index === -1) {
       return text;
     }
     return html`${text.slice(0, index)}<mark>${text.slice(
       index,
-      index + this.query.length
-    )}</mark>${text.slice(index + this.query.length)}`;
+      index + this._query.length
+    )}</mark>${text.slice(index + this._query.length)}`;
   }
 
-  private _onInput(event: Event) {
-    // 完全阻止事件传播到 edgeless 键盘管理器
+  private _onInput = (event: Event) => {
     event.stopPropagation();
-    event.stopImmediatePropagation();
-    
     const input = event.target as HTMLInputElement;
-    const value = input.value;
-    // 直接搜索
-    this._debouncedSearch(value);
-    // 延迟更新 query 状态用于高亮显示
-    this._updateQueryState(value);
-  }
+    this._query = input.value;
+    this._debouncedSearch(input.value);
+  };
 
-  private _updateQueryState = debounce((value: string) => {
-    this.query = value;
-  }, 300);
-
-  private _preventEdgelessCapture(event: Event) {
-    // 阻止事件冒泡和传播到 edgeless 的全局键盘监听器
+  private _onKeyDown = (event: KeyboardEvent) => {
     event.stopPropagation();
-    event.stopImmediatePropagation();
-  }
 
-  private _onKeyDown(event: KeyboardEvent) {
-    // 完全阻止事件传播到 edgeless 键盘管理器
-    event.stopPropagation();
-    event.stopImmediatePropagation();
-    
     if (event.key === 'Enter') {
       event.preventDefault();
       this._jumpToActive();
@@ -381,35 +461,35 @@ export class EdgelessSearchPanel extends LitElement {
     }
     if (event.key === 'ArrowDown') {
       event.preventDefault();
-      this._jumpTo(this.activeIndex + 1);
+      this._jumpTo(this._activeIndex + 1);
       return;
     }
     if (event.key === 'ArrowUp') {
       event.preventDefault();
-      this._jumpTo(this.activeIndex - 1);
+      this._jumpTo(this._activeIndex - 1);
       return;
     }
     if (event.key === 'Escape') {
       event.preventDefault();
-      this._closePanel();
+      this._hide();
     }
-  }
+  };
 
   private _jumpToActive() {
-    if (!this.results.length || this.activeIndex < 0) {
+    if (!this._results.length || this._activeIndex < 0) {
       return;
     }
-    this._jumpTo(this.activeIndex);
+    this._jumpTo(this._activeIndex);
   }
 
   private _jumpTo(index: number) {
-    if (!this.results.length) {
+    if (!this._results.length) {
       return;
     }
     const nextIndex =
-      index < 0 ? this.results.length - 1 : index % this.results.length;
-    this.activeIndex = nextIndex;
-    const result = this.results[nextIndex];
+      index < 0 ? this._results.length - 1 : index % this._results.length;
+    this._activeIndex = nextIndex;
+    const result = this._results[nextIndex];
     if (!result) {
       return;
     }
@@ -435,94 +515,109 @@ export class EdgelessSearchPanel extends LitElement {
     this.edgeless?.std.selection.clear(['highlight']);
   }
 
-  private _closePanel() {
-    this._clearHighlight();
-    this.dispatchEvent(
-      new CustomEvent('closepanel', { bubbles: true, composed: true })
-    );
-  }
-
   override render() {
-    const hasResults = this.results.length > 0;
+    const hasResults = this._results.length > 0;
     const counter = hasResults
-      ? `${this.activeIndex + 1}/${this.results.length}`
+      ? `${this._activeIndex + 1}/${this._results.length}`
       : '0/0';
 
     return html`
-      <div
-        class="panel"
-        @click=${this._preventEdgelessCapture}
-        @wheel=${this._preventEdgelessCapture}
-        @pointerdown=${this._preventEdgelessCapture}
-        @mousedown=${this._preventEdgelessCapture}
-        @keydown=${this._preventEdgelessCapture}
-        @keyup=${this._preventEdgelessCapture}
-        @keypress=${this._preventEdgelessCapture}
-      >
+      <div class="backdrop" @click=${this._hide}></div>
+      <div class="modal">
         <div class="header">
-        <div class="input-wrapper">
-          <span class="search-icon">${SearchIcon()}</span>
-          <input
-            class="input"
-            type="text"
-            placeholder="搜索画布"
-            @input=${this._onInput}
-            @keydown=${this._onKeyDown}
-            @keyup=${this._preventEdgelessCapture}
-            @keypress=${this._preventEdgelessCapture}
-            @focus=${this._preventEdgelessCapture}
-            @blur=${this._preventEdgelessCapture}
-          />
+          <div class="input-wrapper">
+            <span class="search-icon">${SearchIcon()}</span>
+            <input
+              class="input"
+              type="text"
+              placeholder="搜索画布内容..."
+              .value=${this._query}
+              @input=${this._onInput}
+              @keydown=${this._onKeyDown}
+            />
+          </div>
+          <div class="actions">
+            <button
+              class="action-button"
+              ?disabled=${!hasResults}
+              @click=${() => this._jumpTo(this._activeIndex - 1)}
+              title="上一个"
+            >
+              ${ArrowUpSmallIcon({ width: '18px', height: '18px' })}
+            </button>
+            <button
+              class="action-button"
+              ?disabled=${!hasResults}
+              @click=${() => this._jumpTo(this._activeIndex + 1)}
+              title="下一个"
+            >
+              ${ArrowDownSmallIcon({ width: '18px', height: '18px' })}
+            </button>
+            <button class="action-button" @click=${this._hide} title="关闭">
+              ${CloseIcon({ width: '18px', height: '18px' })}
+            </button>
+          </div>
+          <div class="counter">${counter}</div>
         </div>
-        <div class="actions">
-          <button
-            class="action-button"
-            ?disabled=${!hasResults}
-            @click=${() => this._jumpTo(this.activeIndex - 1)}
-          >
-            ${ArrowUpSmallIcon({ width: '16px', height: '16px' })}
-          </button>
-          <button
-            class="action-button"
-            ?disabled=${!hasResults}
-            @click=${() => this._jumpTo(this.activeIndex + 1)}
-          >
-            ${ArrowDownSmallIcon({ width: '16px', height: '16px' })}
-          </button>
-          <button class="action-button" @click=${this._closePanel}>
-            ${CloseIcon({ width: '16px', height: '16px' })}
-          </button>
+        <div class="results">
+          ${this._results.length
+            ? repeat(
+                this._results,
+                item => item.sourceId ?? item.id,
+                (item, index) => html`
+                  <div
+                    class="result-item ${index === this._activeIndex
+                      ? 'active'
+                      : ''}"
+                    @click=${() => this._jumpTo(index)}
+                  >
+                    <div class="result-text">
+                      ${this._renderHighlighted(item.text)}
+                    </div>
+                    <div class="result-meta">
+                      ${item.sourceType === 'element' ? '图形' : '文本'}
+                    </div>
+                  </div>
+                `
+              )
+            : html`<div class="empty">
+                ${this._query ? '没有找到匹配的内容' : '输入关键词开始搜索'}
+              </div>`}
         </div>
-        <div class="counter">${counter}</div>
-      </div>
-      <div class="results">
-        ${this.results.length
-          ? repeat(
-              this.results,
-              item => item.sourceId ?? item.id,
-              (item, index) => html`
-                <div
-                  class="result-item ${index === this.activeIndex ? 'active' : ''}"
-                  @click=${() => this._jumpTo(index)}
-                >
-                  <div class="result-text">
-                    ${this._renderHighlighted(item.text)}
-                  </div>
-                  <div class="result-meta">
-                    ${item.sourceType === 'element' ? 'Element' : 'Text'}
-                  </div>
-                </div>
-              `
-            )
-          : html`<div class="empty">No matches</div>`}
-      </div>
+        <div class="shortcut-hint">
+          <span><kbd>↑</kbd><kbd>↓</kbd> 切换结果</span>
+          <span><kbd>Enter</kbd> 定位</span>
+          <span><kbd>Esc</kbd> 关闭</span>
+        </div>
       </div>
     `;
   }
 }
 
+// 保留旧的类名以兼容现有代码
+export class EdgelessSearchPanel extends EdgelessSearchModal {}
+
+/**
+ * 打开搜索弹窗
+ */
+export function openEdgelessSearchModal(
+  edgeless: BlockComponent,
+  onClose?: () => void
+) {
+  // 移除已存在的弹窗
+  document.body.querySelector('edgeless-search-modal')?.remove();
+
+  const modal = new EdgelessSearchModal();
+  modal.edgeless = edgeless;
+  modal.onClose = onClose;
+  document.body.appendChild(modal);
+
+  return modal;
+}
+
 declare global {
   interface HTMLElementTagNameMap {
     'edgeless-search-panel': EdgelessSearchPanel;
+    'edgeless-search-modal': EdgelessSearchModal;
   }
 }
