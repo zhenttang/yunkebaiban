@@ -24,7 +24,7 @@ import {
   registerYunkeCommand,
   registerYunkeCreationCommands,
   registerYunkeHelpCommands,
-  registerYunkeLanguageCommands,
+  // registerYunkeLanguageCommands, // 语言切换已禁用
   registerYunkeLayoutCommands,
   registerYunkeNavigationCommands,
   registerYunkeQuickMenuCommands,
@@ -142,16 +142,17 @@ export function useRegisterWorkspaceCommands() {
     };
   }, [editorSettingService, store, t, theme]);
 
-  useEffect(() => {
-    const unsub = registerYunkeLanguageCommands({
-      i18n,
-      t,
-    });
-
-    return () => {
-      unsub();
-    };
-  }, [i18n, t]);
+  // 语言切换命令已禁用 - 云客白板默认使用中文
+  // useEffect(() => {
+  //   const unsub = registerYunkeLanguageCommands({
+  //     i18n,
+  //     t,
+  //   });
+  //
+  //   return () => {
+  //     unsub();
+  //   };
+  // }, [i18n, t]);
 
   // register YunkeLayoutCommands
   useEffect(() => {
