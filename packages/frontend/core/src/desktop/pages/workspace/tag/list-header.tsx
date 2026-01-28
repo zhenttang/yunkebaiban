@@ -115,7 +115,7 @@ const TagSelectorMenu = ({
         <RowInput
           value={inputValue}
           onChange={setInputValue}
-          placeholder={t['Search tags']()}
+          placeholder={t['com.yunke.selector-tag.search.placeholder']()}
         />
       </header>
       <Divider size="thinner" />
