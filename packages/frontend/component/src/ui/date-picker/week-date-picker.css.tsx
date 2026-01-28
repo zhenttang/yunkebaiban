@@ -29,7 +29,7 @@ export const dayCell = style({
   width: 0,
   flexGrow: 1,
   flexShrink: 1, // 允许收缩
-  minWidth: 24, // 减小最小宽度
+  minWidth: 28, // 保证能显示"周X"
   maxWidth: 130,
 
   cursor: 'pointer',
@@ -39,7 +39,7 @@ export const dayCell = style({
   alignItems: 'center',
   justifyContent: 'center',
 
-  padding: '2px 2px 1px 2px', // 减小内边距
+  padding: '2px 3px 1px 3px',
   borderRadius: 4,
 
   fontFamily: cssVar('fontFamily'),

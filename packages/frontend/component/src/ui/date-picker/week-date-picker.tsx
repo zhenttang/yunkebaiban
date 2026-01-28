@@ -126,12 +126,12 @@ export const WeekDatePicker = memo(function WeekDatePicker({
       if (!width) return;
 
       // 根据宽度动态调整显示
-      const minWidth = 24; // 减小最小宽度
+      const minWidth = 28; // 保证能显示"周X"
       const gap = 4;
       const viewPortCount = Math.floor(width / (minWidth + gap));
       setViewPortSize(Math.max(1, Math.min(viewPortCount, 7)));
-      // 更早进入紧凑模式
-      setDense(width < 250);
+      // 只在非常窄时才进入紧凑模式（只显示首字母）
+      setDense(width < 200);
     });
   }, []);
 
