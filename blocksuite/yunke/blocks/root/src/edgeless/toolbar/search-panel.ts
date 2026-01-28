@@ -6,6 +6,7 @@ import {
 } from '@blocksuite/icons/lit';
 import type { BlockComponent } from '@blocksuite/std';
 import { GfxControllerIdentifier, type GfxModel } from '@blocksuite/std/gfx';
+import { RANGE_SYNC_EXCLUDE_ATTR } from '@blocksuite/std/inline';
 import type { BlockModel, Store, Text } from '@blocksuite/store';
 import { HighlightSelection } from '@blocksuite/yunke-shared/selection';
 import { baseTheme } from '@toeverything/theme';
@@ -179,6 +180,12 @@ export class EdgelessSearchPanel extends LitElement {
   private readonly _debouncedSearch = debounce((value: string) => {
     this._performSearch(value);
   }, 200);
+
+  override connectedCallback() {
+    super.connectedCallback();
+    // 排除此组件，让焦点管理系统不会抢夺输入框焦点
+    this.setAttribute(RANGE_SYNC_EXCLUDE_ATTR, 'true');
+  }
 
   override disconnectedCallback() {
     super.disconnectedCallback();
