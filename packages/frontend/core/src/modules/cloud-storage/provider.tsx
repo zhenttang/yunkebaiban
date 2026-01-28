@@ -156,6 +156,9 @@ export interface CloudStorageStatus {
   sessionId: string;
   clientId: string | null;
   sessions: SessionDisplayInfo[];
+  // 🔧 Bug #6 修复：添加同步状态通知
+  syncStatus: 'idle' | 'syncing' | 'success' | 'error';
+  syncError: string | null;
 }
 
 const CloudStorageContext = createContext<CloudStorageStatus | null>(null);
@@ -193,6 +196,9 @@ export const CloudStorageProvider = ({
   const [isConnected, setIsConnected] = useState(false);
   const [storageMode, setStorageMode] = useState<CloudStorageStatus['storageMode']>('detecting');
   const [lastSync, setLastSync] = useState<Date | null>(null);
+  // 🔧 Bug #6 修复：添加同步状态通知
+  const [syncStatus, setSyncStatus] = useState<'idle' | 'syncing' | 'success' | 'error'>('idle');
+  const [syncError, setSyncError] = useState<string | null>(null);
   const [socket, setSocket] = useState<Socket | null>(null);
   const reconnectAttempts = useRef(0);
   const maxReconnectAttempts = 5; // 增加最大重连次数
@@ -421,6 +427,7 @@ export const CloudStorageProvider = ({
 
   // 🔧 修复5: 同步离线操作 - 使用useCallback
   // 🔧 Bug #3 修复：使用 socketRef.current 替代 socket 状态，避免闭包问题
+  // 🔧 Bug #6 修复：添加同步状态通知
   const syncOfflineOperations = useCallback(async (): Promise<void> => {
     if (!cloudEnabledRef.current) {
       return;
@@ -449,6 +456,10 @@ export const CloudStorageProvider = ({
       offlineSyncStatsRef.current = { failures: 0, nextRetryAt: 0 };
       return;
     }
+
+    // 🔧 Bug #6 修复：开始同步，设置状态
+    setSyncStatus('syncing');
+    setSyncError(null);
 
     const failedOperationIds = new Set<string>();
 
@@ -488,6 +499,10 @@ export const CloudStorageProvider = ({
       clearOfflineOperations();
       setLastSync(new Date());
       offlineSyncStatsRef.current = { failures: 0, nextRetryAt: 0 };
+      // 🔧 Bug #6 修复：同步成功
+      setSyncStatus('success');
+      // 3秒后重置状态
+      setTimeout(() => setSyncStatus('idle'), 3000);
       return;
     }
 
@@ -507,6 +522,10 @@ export const CloudStorageProvider = ({
       failures: nextFailures,
       nextRetryAt: Date.now() + delay,
     };
+
+    // 🔧 Bug #6 修复：同步失败，设置错误状态和消息
+    setSyncStatus('error');
+    setSyncError(`${failedOperationIds.size} 个离线操作同步失败，将在 ${Math.round(delay / 1000)} 秒后重试`);
 
     logThrottle.current.log('offline-sync-scheduled', () => {
       console.warn('⚠️ [云存储管理器] 离线同步失败，计划', delay, 'ms后重试');
@@ -1156,6 +1175,9 @@ export const CloudStorageProvider = ({
     sessionId: normalizedLocalSessionId,
     clientId: sanitizeSessionIdentifier(clientIdRef.current),
     sessions,
+    // 🔧 Bug #6 修复：添加同步状态通知
+    syncStatus,
+    syncError,
   }), [
     isConnected,
     storageMode,
@@ -1169,6 +1191,9 @@ export const CloudStorageProvider = ({
     syncOfflineOperations,
     normalizedLocalSessionId,
     sessions,
+    // 🔧 Bug #6 修复：添加同步状态依赖
+    syncStatus,
+    syncError,
   ]);
 
   // 将云存储管理器暴露到全局对象，供CloudDocStorage使用
