@@ -22,6 +22,7 @@ const {
   phonePropertyConfig,
   progressPropertyConfig,
   ratingPropertyConfig,
+  relationPropertyConfig,
   selectPropertyConfig,
   urlPropertyConfig,
 } = propertyPresets;
@@ -38,6 +39,7 @@ export const databaseBlockProperties = {
   phoneColumnConfig: phonePropertyConfig,
   progressColumnConfig: progressPropertyConfig,
   ratingColumnConfig: ratingPropertyConfig,
+  relationColumnConfig: relationPropertyConfig,
   selectColumnConfig: selectPropertyConfig,
   urlColumnConfig: urlPropertyConfig,
   imageColumnConfig: propertyPresets.imagePropertyConfig,

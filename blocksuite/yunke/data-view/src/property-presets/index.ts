@@ -11,6 +11,7 @@ import { personPropertyConfig } from './person/cell-renderer.js';
 import { phonePropertyConfig } from './phone/cell-renderer.js';
 import { progressPropertyConfig } from './progress/cell-renderer.js';
 import { ratingPropertyConfig } from './rating/cell-renderer.js';
+import { relationPropertyConfig } from './relation/cell-renderer.js';
 import { selectPropertyConfig } from './select/cell-renderer.js';
 import { textPropertyConfig } from './text/cell-renderer.js';
 import { urlPropertyConfig } from './url/cell-renderer.js';
@@ -34,6 +35,7 @@ export const propertyPresets = {
   phonePropertyConfig,
   progressPropertyConfig,
   ratingPropertyConfig,
+  relationPropertyConfig,
   selectPropertyConfig,
   textPropertyConfig,
   urlPropertyConfig,
