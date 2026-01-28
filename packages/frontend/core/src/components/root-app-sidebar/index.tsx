@@ -11,6 +11,7 @@ import {
 } from '@yunke/core/modules/app-sidebar/views';
 import { ExternalMenuLinkItem } from '@yunke/core/modules/app-sidebar/views/menu-item/external-menu-link-item';
 import { AuthService } from '@yunke/core/modules/cloud';
+import { useCloudStorage } from '@yunke/core/modules/cloud-storage';
 import { WorkspaceDialogService } from '@yunke/core/modules/dialogs';
 import { CMDKQuickSearchService } from '@yunke/core/modules/quicksearch/services/cmdk';
 import type { Workspace } from '@yunke/core/modules/workspace';
@@ -104,6 +105,9 @@ export const RootAppSidebar = memo((): ReactElement => {
       AuthService,
     }
   );
+
+  // 获取云端连接状态
+  const { isConnected, storageMode } = useCloudStorage();
 
   const sessionStatus = useLiveData(authService.session.status$);
   const t = useI18n();
@@ -233,7 +237,7 @@ export const RootAppSidebar = memo((): ReactElement => {
         </CollapsibleSection>
       </SidebarScrollableContainer>
       <SidebarContainer className={bottomContainer}>
-        {/* 云端连接状态指示器 */}
+        {/* 云端连接状态指示器 - 根据实际连接状态显示 */}
         <div style={{
           display: 'flex',
           alignItems: 'center',
@@ -241,15 +245,27 @@ export const RootAppSidebar = memo((): ReactElement => {
           padding: '6px 12px',
           margin: '4px 8px',
           borderRadius: '6px',
-          backgroundColor: 'rgba(16, 185, 129, 0.1)',
-          border: '1px solid rgba(16, 185, 129, 0.3)',
+          backgroundColor: isConnected 
+            ? 'rgba(16, 185, 129, 0.1)' 
+            : storageMode === 'detecting' 
+              ? 'rgba(251, 191, 36, 0.1)' 
+              : 'rgba(107, 114, 128, 0.1)',
+          border: `1px solid ${isConnected 
+            ? 'rgba(16, 185, 129, 0.3)' 
+            : storageMode === 'detecting' 
+              ? 'rgba(251, 191, 36, 0.3)' 
+              : 'rgba(107, 114, 128, 0.3)'}`,
           fontSize: '11px',
           fontWeight: '500',
-          color: '#10b981',
+          color: isConnected 
+            ? '#10b981' 
+            : storageMode === 'detecting' 
+              ? '#f59e0b' 
+              : '#6b7280',
           cursor: 'pointer',
-        }} title="云端连接状态：已连接">
-          <span style={{ fontSize: '12px' }}>☁️</span>
-          <span>云端已连接</span>
+        }} title={`云端连接状态：${isConnected ? '已连接' : storageMode === 'detecting' ? '连接中...' : '本地模式'}`}>
+          <span style={{ fontSize: '12px' }}>{isConnected ? '☁️' : storageMode === 'detecting' ? '🔄' : '💾'}</span>
+          <span>{isConnected ? '云端已连接' : storageMode === 'detecting' ? '连接中...' : '本地模式'}</span>
         </div>
         <SidebarAudioPlayer />
         {BUILD_CONFIG.isElectron ? <UpdaterButton /> : <AppDownloadButton />}
