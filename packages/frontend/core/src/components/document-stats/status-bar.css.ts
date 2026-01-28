@@ -1,12 +1,14 @@
 import { style } from '@vanilla-extract/css';
 
 export const statusBar = style({
-  // 嵌入式布局，不再悬浮
+  // 固定在底部
+  position: 'absolute',
+  bottom: '16px',
+  left: '50%',
+  transform: 'translateX(-50%)',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  width: 'fit-content',
-  margin: '16px auto 24px',
   height: '32px',
   padding: '0 16px',
   backgroundColor: 'var(--yunke-v2-layer-background-secondary, rgba(0, 0, 0, 0.04))',
@@ -14,6 +16,7 @@ export const statusBar = style({
   border: '1px solid var(--yunke-v2-layer-border-primary, rgba(0, 0, 0, 0.06))',
   fontSize: '13px',
   color: 'var(--yunke-v2-text-secondary, #8E8D91)',
+  zIndex: 5,
   cursor: 'pointer',
   transition: 'all 0.2s ease',
   userSelect: 'none',
@@ -29,7 +32,7 @@ export const statusBar = style({
       height: '28px',
       padding: '0 12px',
       fontSize: '11px',
-      margin: '12px auto 16px',
+      bottom: '12px',
       borderRadius: '14px',
     },
   },
