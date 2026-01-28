@@ -6,6 +6,7 @@ import { FormulaCell } from './formula/cell-renderer.js';
 import { ImageCell } from './image/cell-renderer.js';
 import { MultiSelectCell } from './multi-select/cell-renderer.js';
 import { NumberCell } from './number/cell-renderer.js';
+import { PersonCell } from './person/cell-renderer.js';
 import { PhoneCell } from './phone/cell-renderer.js';
 import { ProgressCell } from './progress/cell-renderer.js';
 import { RatingCell } from './rating/cell-renderer.js';
@@ -22,6 +23,7 @@ export function propertyPresetsEffects() {
   customElements.define('yunke-database-image-cell', ImageCell);
   customElements.define('yunke-database-multi-select-cell', MultiSelectCell);
   customElements.define('yunke-database-number-cell', NumberCell);
+  customElements.define('yunke-database-person-cell', PersonCell);
   customElements.define('yunke-database-phone-cell', PhoneCell);
   customElements.define('yunke-database-progress-cell', ProgressCell);
   customElements.define('yunke-database-rating-cell', RatingCell);

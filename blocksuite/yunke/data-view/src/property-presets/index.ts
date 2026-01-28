@@ -7,6 +7,7 @@ import { formulaPropertyConfig } from './formula/cell-renderer.js';
 import { imagePropertyConfig } from './image/cell-renderer.js';
 import { multiSelectPropertyConfig } from './multi-select/cell-renderer.js';
 import { numberPropertyConfig } from './number/cell-renderer.js';
+import { personPropertyConfig } from './person/cell-renderer.js';
 import { phonePropertyConfig } from './phone/cell-renderer.js';
 import { progressPropertyConfig } from './progress/cell-renderer.js';
 import { ratingPropertyConfig } from './rating/cell-renderer.js';
@@ -29,6 +30,7 @@ export const propertyPresets = {
   imagePropertyConfig,
   multiSelectPropertyConfig,
   numberPropertyConfig,
+  personPropertyConfig,
   phonePropertyConfig,
   progressPropertyConfig,
   ratingPropertyConfig,

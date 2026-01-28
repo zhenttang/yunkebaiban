@@ -13,6 +13,7 @@ export const queryBlockColumns = [
   propertyPresets.emailPropertyConfig,
   propertyPresets.attachmentPropertyConfig,
   propertyPresets.formulaPropertyConfig,
+  propertyPresets.personPropertyConfig,
   propertyPresets.selectPropertyConfig,
   propertyPresets.multiSelectPropertyConfig,
   propertyPresets.checkboxPropertyConfig,
