@@ -1,4 +1,5 @@
 import { Entity, LiveData } from '@toeverything/infra';
+import { EMPTY, switchMap } from 'rxjs';
 
 import type { DocScope } from '../../doc';
 import type { DocsSearchService } from '../../docs-search';
@@ -23,18 +24,17 @@ export class DocBacklinks extends Entity {
   }
 
   private get docId() {
-    const docId = this.docScope.props?.docId;
-    if (!docId) {
-      throw new Error(
-        'DocScope props is undefined. ' +
-        'DocBacklinks must be resolved within a DocScope created with props.'
-      );
-    }
-    return docId;
+    return this.docScope.props?.docId;
   }
 
+  // 使用延迟计算，避免在 docScope.props 未初始化时抛出错误
   backlinks$ = LiveData.from<Backlink[]>(
-    this.docsSearchService.watchRefsTo(this.docId),
+    new LiveData(this.docId).pipe(
+      switchMap(docId => {
+        if (!docId) return EMPTY;
+        return this.docsSearchService.watchRefsTo(docId);
+      })
+    ),
     []
   );
 }
