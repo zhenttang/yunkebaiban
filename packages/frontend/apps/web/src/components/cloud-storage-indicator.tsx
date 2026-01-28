@@ -94,11 +94,15 @@ export const CloudStorageIndicator = () => {
     setIsAutoHidden(false);
     setIsManuallyHidden(false);
 
-    // 如果是成功连接状态（cloud），5秒后自动隐藏
-    if (variant === 'cloud' && pendingOperationsCount === 0) {
+    // 成功状态或本地模式，几秒后自动隐藏
+    // cloud: 5秒后隐藏（表示连接成功）
+    // local: 3秒后隐藏（表示使用本地模式，用户知道就行）
+    const autoHideDelay = variant === 'cloud' ? 5000 : variant === 'local' ? 3000 : 0;
+    
+    if (autoHideDelay > 0 && pendingOperationsCount === 0) {
       const timer = setTimeout(() => {
         setIsAutoHidden(true);
-      }, 5000);
+      }, autoHideDelay);
 
       return () => clearTimeout(timer);
     }
