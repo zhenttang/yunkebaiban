@@ -573,16 +573,19 @@ export const CloudStorageProvider = ({
   }, [currentWorkspaceId]); // 🔧 移除 isConnected 依赖，使用 socketRef 检查连接状态
 
   // 处理排队的操作
+  // 🔧 Bug #5 修复：失败时保存到离线队列，避免数据丢失
   const processPendingOperations = async () => {
     const operations = [...pendingOperations.current];
     pendingOperations.current = [];
-
 
     for (const operation of operations) {
       try {
         const timestamp = await pushDocUpdate(operation.docId, operation.update);
         operation.resolve(timestamp);
       } catch (error) {
+        // 🔧 Bug #5 修复：失败时保存到离线队列，而不是直接丢弃
+        console.warn('[cloud-storage] processPendingOperations 失败，保存到离线队列:', operation.docId);
+        await saveOfflineOperation(operation.docId, operation.update);
         operation.reject(error);
       }
     }
