@@ -7,12 +7,14 @@ import { createRoot } from 'react-dom/client';
 
 import { App } from './app';
 
-function main() {
+async function main() {
   // 为electron加载持久化配置
   // TODO(@Peng): 应该是同步的，但目前不是必需的
-  appConfigProxy
-    .getSync()
-    .catch(() => console.error('加载应用配置失败'));
+  try {
+    await appConfigProxy.getSync();
+  } catch (error) {
+    console.error('加载应用配置失败', error);
+  }
 
   mountApp();
 }
@@ -28,8 +30,6 @@ function mountApp() {
   );
 }
 
-try {
-  main();
-} catch (err) {
-      console.error('应用启动失败', err);
-}
+main().catch(err => {
+  console.error('应用启动失败', err);
+});

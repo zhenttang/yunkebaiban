@@ -11,25 +11,8 @@ export const SaveStatusIndicator = () => {
     // 从路由参数获取workspaceId和docId
     const workspaceId = params.workspaceId;
     const docId = params.pageId; // 在YUNKE中，pageId就是docId
-    // 调试信息 - 显示所有可能的参数
-    // console.log('🔍 [SaveStatusIndicator] 路由参数调试:', {
-    //   allParams: params,
-    //   workspaceId: params.workspaceId,
-    //   pageId: params.pageId,
-    //   docId: params.docId,
-    //   id: params.id,
-    //   pathname: window.location.pathname,
-    //   search: window.location.search,
-    //   hash: window.location.hash,
-    //   href: window.location.href
-    // });
     // 尝试从URL路径中解析docId
     const pathSegments = window.location.pathname.split('/').filter(Boolean);
-    // console.log('🔍 [SaveStatusIndicator] URL路径分析:', {
-    //   pathSegments,
-    //   potentialDocId: pathSegments[pathSegments.length - 1],
-    //   isWorkspacePath: pathSegments[0] === 'workspace'
-    // });
     // 智能获取docId
     const finalDocId = useMemo(() => {
         if (docId)
@@ -38,19 +21,12 @@ export const SaveStatusIndicator = () => {
         if (pathSegments.length >= 3 && pathSegments[0] === 'workspace') {
             // URL格式: /workspace/{workspaceId}/{docId}
             const urlDocId = pathSegments[2];
-            console.log('🔍 [SaveStatusIndicator] 从URL路径解析docId:', urlDocId);
             return urlDocId;
         }
         // 使用备用docId
         const fallbackDocId = 'LpaTmZqNPqWRY7M2R63MM';
-        console.log('🔍 [SaveStatusIndicator] 使用备用docId:', fallbackDocId);
         return fallbackDocId;
     }, [docId, window.location.pathname]);
-    // 不要隐藏组件，而是显示调试信息
-    // if (!workspaceId || !docId) {
-    //   console.log('⚠️ [SaveStatusIndicator] 缺少必要参数，隐藏组件:', { workspaceId, docId });
-    //   return null;
-    // }
     // 创建模拟的YJS更新数据
     const createMockYjsUpdate = useCallback((content) => {
         const encoder = new TextEncoder();
@@ -68,20 +44,8 @@ export const SaveStatusIndicator = () => {
         const actualDocId = finalDocId || 'LpaTmZqNPqWRY7M2R63MM';
         if (!finalWorkspaceId || !actualDocId) {
             console.error('❌ [保存状态指示器] 缺少docId或workspaceId');
-            console.log('  🔍 当前参数:', {
-                docId: actualDocId,
-                workspaceId: finalWorkspaceId,
-                allParams: params,
-                usingFallback: !workspaceId || !finalDocId
-            });
             return;
         }
-        console.log('  📊 路由参数:', {
-            workspaceId: finalWorkspaceId,
-            docId: actualDocId,
-            allParams: params,
-            usingFallback: !workspaceId || !finalDocId
-        });
         setIsManualSaving(true);
         setSaveStatus('saving');
         try {
@@ -91,36 +55,16 @@ export const SaveStatusIndicator = () => {
                 document.querySelector('[contenteditable]')?.textContent ||
                 document.querySelector('.ProseMirror')?.textContent ||
                 `手动保存测试内容 - ${new Date().toISOString()}`;
-            console.log('  📄 最终选择的内容:', pageContent.substring(0, 200) + '...');
-            console.log('  📊 内容长度:', pageContent.length, '字符');
             // 创建YJS更新数据
             const updateData = createMockYjsUpdate(pageContent);
-            console.log('  📊 原始内容:', pageContent);
-            console.log('  📦 更新数据大小:', updateData.length, '字节');
-            console.log('  🔍 更新数据前20字节:', Array.from(updateData.slice(0, 20)).map(b => b.toString(16).padStart(2, '0')).join(' '));
             // 转换为Base64看看
             const updateBase64 = Array.from(updateData, byte => String.fromCharCode(byte)).join('');
             const base64String = btoa(updateBase64);
-            console.log('  📝 Base64编码:', base64String.substring(0, 100) + '...');
-            console.log('  📊 Base64长度:', base64String.length, '字符');
             // 使用云存储管理器推送更新
-            console.log(`  📊 传递给pushDocUpdate的参数:`);
-            console.log(`    docId: "${actualDocId}"`);
-            console.log(`    updateData类型: ${updateData.constructor.name}`);
-            console.log(`    updateData长度: ${updateData.length}字节`);
-            console.log(`    updateData前20字节: [${Array.from(updateData.slice(0, 20)).join(', ')}]`);
-            console.log(`    updateData十六进制: ${Array.from(updateData.slice(0, 20)).map(b => b.toString(16).padStart(2, '0')).join(' ')}`);
             // 记录实际传递的原始内容
-            console.log(`  📄 原始页面内容片段: "${pageContent.substring(0, 100)}..."`);
-            console.log(`  📊 原始内容长度: ${pageContent.length}字符`);
             // 验证YJS更新数据的创建过程
             const mockHeader = new Uint8Array([0x01, 0x02, 0x03, 0x04]);
             const contentBytes = new TextEncoder().encode(pageContent);
-            console.log(`  🔧 Mock创建过程验证:`);
-            console.log(`    header: [${Array.from(mockHeader).join(', ')}]`);
-            console.log(`    contentBytes长度: ${contentBytes.length}`);
-            console.log(`    contentBytes前10字节: [${Array.from(contentBytes.slice(0, 10)).join(', ')}]`);
-            console.log(`    最终updateData是否=header+content: ${updateData.length === mockHeader.length + contentBytes.length}`);
             const timestamp = await cloudStorage.pushDocUpdate(actualDocId, updateData);
             setSaveStatus('saved');
             setLastSaveTime(new Date(timestamp));

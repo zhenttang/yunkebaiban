@@ -83,13 +83,7 @@ export function isValidYjsUpdate(base64: string): boolean {
  * 日志记录辅助函数
  */
 export function logYjsUpdateInfo(label: string, binary: Uint8Array, base64?: string) {
-  console.log(`🔍 [YJS-${label}] 数据信息:`);
-  console.log(`  📊 二进制长度: ${binary.byteLength} 字节`);
-  console.log(`  🔢 前8字节: [${Array.from(binary.slice(0, 8)).join(', ')}]`);
-  console.log(`  🌟 是否为空更新: ${isEmptyUpdate(binary)}`);
-  
-  if (base64) {
-    console.log(`  📝 Base64长度: ${base64.length} 字符`);
-    console.log(`  ✅ Base64有效性: ${isValidYjsUpdate(base64)}`);
-  }
+  void label;
+  void binary;
+  void base64;
 }

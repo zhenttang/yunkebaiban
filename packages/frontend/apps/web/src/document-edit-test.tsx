@@ -36,18 +36,9 @@ export const DocumentEditTest = () => {
       const docId = 'test-doc-edit-' + Date.now();
       const yjsUpdate = createMockYjsUpdate(docContent);
       
-      console.log('🧪 [文档编辑测试] 开始保存文档:', {
-        docId,
-        content: docContent,
-        updateSize: yjsUpdate.length,
-        storageMode,
-        isConnected
-      });
-
       const timestamp = await pushDocUpdate(docId, yjsUpdate);
       
       setLastSaveTime(new Date(timestamp));
-      console.log('✅ [文档编辑测试] 保存成功:', timestamp);
       
     } catch (error) {
       console.error('❌ [文档编辑测试] 保存失败:', error);
@@ -60,7 +51,6 @@ export const DocumentEditTest = () => {
   const handleSyncOffline = async () => {
     try {
       await syncOfflineOperations();
-      console.log('✅ [文档编辑测试] 离线操作同步完成');
     } catch (error) {
       console.error('❌ [文档编辑测试] 离线操作同步失败:', error);
     }

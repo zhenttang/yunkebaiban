@@ -17,7 +17,7 @@ import { StoreManagerClient } from '@yunke/nbstore/worker/client';
 import { CacheProvider } from '@emotion/react';
 import { Framework, FrameworkRoot, getCurrentStore } from '@toeverything/infra';
 import { OpClient } from '@toeverything/infra/op';
-import { Suspense, useEffect } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { RouterProvider, type RouterProviderProps } from 'react-router-dom';
 
 import { CloudStorageProvider } from '@yunke/core/modules/cloud-storage';
@@ -51,7 +51,14 @@ function RouterProviderWrapper(props: RouterProviderProps) {
 
 const cache = createEmotionCache();
 
-let storeManagerClient: StoreManagerClient;
+type FrameworkProviderRef = ReturnType<Framework['provider']>;
+
+type BootstrapState =
+  | { status: 'loading' }
+  | { status: 'ready'; frameworkProvider: FrameworkProviderRef }
+  | { status: 'error'; error: unknown };
+
+let storeManagerClient: StoreManagerClient | null = null;
 
 const workerUrl = getWorkerUrl('nbstore');
 
@@ -88,7 +95,6 @@ function createWorkerWithTimeout(
         
         // Worker成功创建
         clearTimeout(timeoutId);
-        console.log('✅ Worker创建成功:', url);
         resolve(worker);
       }
     } catch (error) {
@@ -103,72 +109,6 @@ function createWorkerWithTimeout(
 const useSharedWorker =
   window.SharedWorker &&
   localStorage.getItem('disableSharedWorker') !== 'true';
-
-createWorkerWithTimeout(workerUrl, useSharedWorker)
-  .then(worker => {
-    try {
-      if (useSharedWorker) {
-        storeManagerClient = new StoreManagerClient(
-          new OpClient((worker as SharedWorker).port)
-        );
-      } else {
-        storeManagerClient = new StoreManagerClient(new OpClient(worker as Worker));
-      }
-
-    } catch (clientError) {
-      console.error('❌ [Worker] StoreManagerClient 创建失败:', clientError);
-      throw clientError;
-    }
-  })
-  .catch(error => {
-    console.error('❌ [Worker] Worker初始化失败，应用可能无法正常使用:', error);
-    console.error('💥 [Worker] 错误详情:', {
-      message: error?.message,
-      stack: error?.stack,
-      name: error?.name,
-      workerUrl,
-      useSharedWorker,
-      supportsSharedWorker: !!window.SharedWorker
-    });
-
-    // 显示用户友好的错误提示
-    const errorDiv = document.createElement('div');
-    errorDiv.style.cssText = `
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: #ff4d4f;
-      color: white;
-      padding: 20px 30px;
-      border-radius: 8px;
-      z-index: 999999;
-      font-family: system-ui, -apple-system, sans-serif;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-      max-width: 500px;
-    `;
-    errorDiv.innerHTML = `
-      <h3 style="margin: 0 0 10px 0;">⚠️ 应用初始化失败</h3>
-      <p style="margin: 0 0 10px 0;">无法加载核心存储模块，请尝试：</p>
-      <ol style="margin: 0; padding-left: 20px;">
-        <li>刷新页面（Ctrl+F5）</li>
-        <li>清除浏览器缓存</li>
-        <li>检查网络连接</li>
-        <li>联系技术支持</li>
-      </ol>
-      <button onclick="location.reload()" style="
-        margin-top: 15px;
-        padding: 8px 16px;
-        background: white;
-        color: #ff4d4f;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        font-weight: bold;
-      ">立即刷新</button>
-    `;
-    document.body.appendChild(errorDiv);
-  });
 
 // 🔧 修复：添加全局错误处理，捕获未处理的 Promise rejection
 window.addEventListener('unhandledrejection', (event) => {
@@ -185,7 +125,6 @@ window.addEventListener('unhandledrejection', (event) => {
     
     // 如果是 fetch 超时，记录详细信息但不阻止页面渲染
     if (errorMessage.includes('fetchError') || errorMessage.includes('Request timeout')) {
-      console.warn('⚠️ [全局错误处理] fetch 请求超时，但不应该阻塞页面渲染');
       // 不阻止默认行为，让应用继续运行
       // event.preventDefault(); // 如果需要阻止默认错误处理，取消注释
     }
@@ -198,159 +137,195 @@ window.addEventListener('unhandledrejection', (event) => {
   }
 });
 
-window.addEventListener('beforeunload', () => {
-  if (storeManagerClient) {
-    storeManagerClient.dispose();
-  }
-});
-
 const future = {
   v7_startTransition: true,
 } as const;
 
-let frameworkProvider: FrameworkProvider | null = null;
+let bootstrapPromise: Promise<BootstrapState> | null = null;
 
-try {
-  const framework = new Framework();
+function getBootstrapPromise(): Promise<BootstrapState> {
+  if (bootstrapPromise) {
+    return bootstrapPromise;
+  }
 
-  configureCommonModules(framework);
-  configureBrowserWorkbenchModule(framework);
-  configureLocalStorageStateStorageImpls(framework);
-  configureBrowserWorkspaceFlavours(framework);
+  bootstrapPromise = (async () => {
+    const worker = await createWorkerWithTimeout(workerUrl, useSharedWorker);
+    if (useSharedWorker) {
+      storeManagerClient = new StoreManagerClient(
+        new OpClient((worker as SharedWorker).port)
+      );
+    } else {
+      storeManagerClient = new StoreManagerClient(new OpClient(worker as Worker));
+    }
 
-  framework.impl(NbstoreProvider, {
-    openStore(key, options) {
-      if (!storeManagerClient) {
-        throw new Error('StoreManagerClient not initialized');
-      }
-      return storeManagerClient.open(key, options);
-    },
+    const framework = new Framework();
+
+    configureCommonModules(framework);
+    configureBrowserWorkbenchModule(framework);
+    configureLocalStorageStateStorageImpls(framework);
+    configureBrowserWorkspaceFlavours(framework);
+
+    framework.impl(NbstoreProvider, {
+      openStore(key, options) {
+        if (!storeManagerClient) {
+          throw new Error('StoreManagerClient not initialized');
+        }
+        return storeManagerClient.open(key, options);
+      },
+    });
+
+    framework.impl(PopupWindowProvider, {
+      open: (target: string) => {
+        const targetUrl = new URL(target);
+
+        let url: string;
+        // safe to open directly if in the same origin
+        if (targetUrl.origin === location.origin) {
+          url = target;
+        } else {
+          const redirectProxy = location.origin + '/redirect-proxy';
+          const search = new URLSearchParams({
+            redirect_uri: target,
+          });
+
+          url = `${redirectProxy}?${search.toString()}`;
+        }
+        return window.open(url, '_blank', 'popup noreferrer noopener');
+      },
+    });
+
+    const frameworkProvider = framework.provider();
+
+    // setup application lifecycle events, and emit application start event
+    window.addEventListener('focus', () => {
+      frameworkProvider.get(LifecycleService).applicationFocus();
+    });
+
+    frameworkProvider.get(LifecycleService).applicationStart();
+
+    window.addEventListener('beforeunload', () => {
+      storeManagerClient?.dispose();
+    });
+
+    return { status: 'ready', frameworkProvider };
+  })().catch(error => {
+    console.error('❌ [Worker/Framework] 初始化失败:', error);
+    console.error('💥 [Worker/Framework] 错误详情:', {
+      message: error?.message,
+      stack: error?.stack,
+      name: error?.name,
+      workerUrl,
+      useSharedWorker,
+      supportsSharedWorker: !!window.SharedWorker,
+    });
+    return { status: 'error', error };
   });
 
-  framework.impl(PopupWindowProvider, {
-    open: (target: string) => {
-      const targetUrl = new URL(target);
-
-      let url: string;
-      // safe to open directly if in the same origin
-      if (targetUrl.origin === location.origin) {
-        url = target;
-      } else {
-        const redirectProxy = location.origin + '/redirect-proxy';
-        const search = new URLSearchParams({
-          redirect_uri: target,
-        });
-
-        url = `${redirectProxy}?${search.toString()}`;
-      }
-      return window.open(url, '_blank', 'popup noreferrer noopener');
-    },
-  });
-
-  frameworkProvider = framework.provider();
-
-  // setup application lifecycle events, and emit application start event
-  window.addEventListener('focus', () => {
-    frameworkProvider!.get(LifecycleService).applicationFocus();
-  });
-
-  frameworkProvider!.get(LifecycleService).applicationStart();
-
-} catch (frameworkError) {
-  console.error('💥 [Framework] 框架初始化失败:', frameworkError);
-  console.error('💥 [Framework] 框架错误详情:', {
-    message: frameworkError?.message,
-    stack: frameworkError?.stack,
-    name: frameworkError?.name
-  });
-
-  // 显示框架初始化失败错误
-  document.body.innerHTML = `
-    <div style="
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      font-family: system-ui, -apple-system, sans-serif;
-      background: #fff3cd;
-      margin: 0;
-      padding: 20px;
-    ">
-      <h2 style="color: #856404; margin-bottom: 16px;">⚠️ 框架初始化失败</h2>
-      <p style="color: #856404; margin-bottom: 20px; text-align: center; max-width: 500px;">
-        应用框架在初始化过程中遇到错误，这通常是由于依赖模块加载失败导致的。
-      </p>
-      <div style="
-        background: #fff;
-        padding: 16px;
-        border-radius: 8px;
-        border-left: 4px solid #ffc107;
-        margin-bottom: 20px;
-        max-width: 600px;
-        width: 100%;
-      ">
-        <h4 style="margin: 0 0 8px 0; color: #856404;">错误详情:</h4>
-        <pre style="
-          margin: 0;
-          padding: 8px;
-          background: #f8f9fa;
-          border-radius: 4px;
-          font-size: 12px;
-          overflow: auto;
-          color: #d63384;
-        ">${frameworkError?.message || String(frameworkError)}</pre>
-      </div>
-      <button onclick="location.reload()" style="
-        padding: 12px 24px;
-        background: #ffc107;
-        color: #000;
-        border: none;
-        border-radius: 6px;
-        cursor: pointer;
-        font-size: 14px;
-        font-weight: 500;
-      ">🔄 刷新页面</button>
-    </div>
-  `;
-
-  throw frameworkError;
+  return bootstrapPromise;
 }
 
-export function App() {
+function BootstrapError({ error }: { error: unknown }) {
+  const message = (error as Error | undefined)?.message ?? String(error);
 
-  // 检查框架是否初始化成功
-  if (!frameworkProvider) {
-    console.error('❌ [App] FrameworkProvider 未初始化，无法渲染应用');
-    return (
-      <div style={{
+  return (
+    <div
+      style={{
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
         height: '100vh',
-        fontSize: '16px',
-        color: '#e74c3c',
-        fontFamily: 'system-ui, sans-serif'
-      }}>
-        <h2>⚠️ 框架初始化失败</h2>
-        <p>应用框架未能正确初始化，请刷新页面重试</p>
-        <button
-          onClick={() => window.location.reload()}
+        fontFamily: 'system-ui, -apple-system, sans-serif',
+        background: '#fff3cd',
+        margin: 0,
+        padding: '20px',
+      }}
+    >
+      <h2 style={{ color: '#856404', marginBottom: '16px' }}>
+        ⚠️ 应用初始化失败
+      </h2>
+      <p
+        style={{
+          color: '#856404',
+          marginBottom: '20px',
+          textAlign: 'center',
+          maxWidth: '500px',
+        }}
+      >
+        应用在启动过程中遇到错误，请刷新页面重试。
+        如果问题持续存在，请联系技术支持。
+      </p>
+      <div
+        style={{
+          background: '#fff',
+          padding: '16px',
+          borderRadius: '8px',
+          borderLeft: '4px solid #ffc107',
+          marginBottom: '20px',
+          maxWidth: '600px',
+          width: '100%',
+        }}
+      >
+        <h4 style={{ margin: '0 0 8px 0', color: '#856404' }}>错误详情:</h4>
+        <pre
           style={{
-            padding: '12px 24px',
-            background: '#e74c3c',
-            color: 'white',
-            border: 'none',
-            borderRadius: '6px',
-            cursor: 'pointer',
-            fontSize: '14px'
+            margin: 0,
+            padding: '8px',
+            background: '#f8f9fa',
+            borderRadius: '4px',
+            fontSize: '12px',
+            overflow: 'auto',
+            color: '#d63384',
           }}
         >
-          刷新页面
-        </button>
+          {message}
+        </pre>
       </div>
-    );
+      <button
+        onClick={() => window.location.reload()}
+        style={{
+          padding: '12px 24px',
+          background: '#ffc107',
+          color: '#000',
+          border: 'none',
+          borderRadius: '6px',
+          cursor: 'pointer',
+          fontSize: '14px',
+          fontWeight: 500,
+        }}
+      >
+        🔄 刷新页面
+      </button>
+    </div>
+  );
+}
+
+export function App() {
+  const [bootstrapState, setBootstrapState] = useState<BootstrapState>({
+    status: 'loading',
+  });
+
+  useEffect(() => {
+    let cancelled = false;
+
+    getBootstrapPromise().then(state => {
+      if (cancelled) {
+        return;
+      }
+      setBootstrapState(state);
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  if (bootstrapState.status === 'loading') {
+    return <AppLoading />;
+  }
+
+  if (bootstrapState.status === 'error') {
+    return <BootstrapError error={bootstrapState.error} />;
   }
 
   const currentStore = getCurrentStore();
@@ -358,7 +333,7 @@ export function App() {
 
   return (
     <Suspense fallback={<AppLoading />}>
-      <FrameworkRoot framework={frameworkProvider}>
+      <FrameworkRoot framework={bootstrapState.frameworkProvider}>
         <CacheProvider value={cache}>
           <I18nProvider>
             <YunkeContext store={currentStore}>
