@@ -15,17 +15,20 @@ export function effects() {
   registerRootComponents();
 }
 
+function safeDefine(name: string, constructor: CustomElementConstructor) {
+  if (!customElements.get(name)) {
+    customElements.define(name, constructor);
+  }
+}
+
 function registerRootComponents() {
-  customElements.define('yunke-page-root', PageRootBlockComponent);
-  customElements.define('yunke-preview-root', PreviewRootBlockComponent);
-  customElements.define('yunke-edgeless-root', EdgelessRootBlockComponent);
-  customElements.define(
-    'yunke-edgeless-root-preview',
-    EdgelessRootPreviewBlockComponent
-  );
-  customElements.define('edgeless-search-modal', EdgelessSearchModal);
-  customElements.define('edgeless-search-panel', EdgelessSearchPanel);
-  customElements.define('edgeless-search-tool-button', EdgelessSearchToolButton);
+  safeDefine('yunke-page-root', PageRootBlockComponent);
+  safeDefine('yunke-preview-root', PreviewRootBlockComponent);
+  safeDefine('yunke-edgeless-root', EdgelessRootBlockComponent);
+  safeDefine('yunke-edgeless-root-preview', EdgelessRootPreviewBlockComponent);
+  safeDefine('edgeless-search-modal', EdgelessSearchModal);
+  safeDefine('edgeless-search-panel', EdgelessSearchPanel);
+  safeDefine('edgeless-search-tool-button', EdgelessSearchToolButton);
 }
 
 declare global {

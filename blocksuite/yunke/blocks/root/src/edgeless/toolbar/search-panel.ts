@@ -607,7 +607,10 @@ export function openEdgelessSearchModal(
   // 移除已存在的弹窗
   document.body.querySelector('edgeless-search-modal')?.remove();
 
-  const modal = new EdgelessSearchModal();
+  // 使用 document.createElement 确保 Web Component 正确实例化
+  const modal = document.createElement(
+    'edgeless-search-modal'
+  ) as EdgelessSearchModal;
   modal.edgeless = edgeless;
   modal.onClose = onClose;
   document.body.appendChild(modal);
