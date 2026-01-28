@@ -1,4 +1,4 @@
-import { TelephoneIcon } from '@blocksuite/icons/lit';
+import { PhonePanelIcon } from '@blocksuite/icons/lit';
 import { html } from 'lit';
 import { state } from 'lit/decorators.js';
 
@@ -118,7 +118,7 @@ export class PhoneCell extends BaseCellRenderer<string, string> {
           href=${isValid ? `tel:${phone.replace(/\D/g, '')}` : '#'}
           @click=${this._handlePhoneClick}
         >
-          <span class="${phoneIconStyle}">${TelephoneIcon()}</span>
+          <span class="${phoneIconStyle}">${PhonePanelIcon()}</span>
           <span class="${phoneTextStyle}">${displayPhone}</span>
         </a>
       </div>
@@ -130,7 +130,7 @@ export class PhoneCell extends BaseCellRenderer<string, string> {
 }
 
 export const phonePropertyConfig = phonePropertyModelConfig.createPropertyMeta({
-  icon: createIcon('TelephoneIcon'),
+  icon: createIcon('PhonePanelIcon'),
   cellRenderer: {
     view: createFromBaseCellRenderer(PhoneCell),
   },

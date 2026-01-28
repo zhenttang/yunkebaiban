@@ -1,4 +1,4 @@
-import { LocationIcon } from '@blocksuite/icons/lit';
+import { LocateIcon } from '@blocksuite/icons/lit';
 import { html, nothing } from 'lit';
 import { state } from 'lit/decorators.js';
 
@@ -140,7 +140,7 @@ export class LocationCell extends BaseCellRenderer<
               class="${locationButtonStyle}"
               @click=${() => this._getCurrentLocation()}
             >
-              <span class="${locationIconStyle}">${LocationIcon()}</span>
+              <span class="${locationIconStyle}">${LocateIcon()}</span>
               获取当前位置
             </button>
           </div>
@@ -172,7 +172,7 @@ export class LocationCell extends BaseCellRenderer<
             this._handleOpenMap();
           }}
         >
-          <span class="${locationIconStyle}">${LocationIcon()}</span>
+          <span class="${locationIconStyle}">${LocateIcon()}</span>
           <span class="${locationTextStyle}">${displayText}</span>
         </a>
         ${!hasAddress
@@ -192,7 +192,7 @@ export class LocationCell extends BaseCellRenderer<
 }
 
 export const locationPropertyConfig = locationPropertyModelConfig.createPropertyMeta({
-  icon: createIcon('LocationIcon'),
+  icon: createIcon('LocateIcon'),
   cellRenderer: {
     view: createFromBaseCellRenderer(LocationCell),
   },
