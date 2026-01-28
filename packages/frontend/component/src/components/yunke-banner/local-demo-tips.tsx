@@ -11,6 +11,7 @@ type LocalDemoTipsProps = {
   onLogin: () => void;
   onEnableCloud: () => void;
   onClose: () => void;
+  onDismissForWeek?: () => void;
 };
 
 export const LocalDemoTips = ({
@@ -18,6 +19,7 @@ export const LocalDemoTips = ({
   isLoggedIn,
   onLogin,
   onEnableCloud,
+  onDismissForWeek,
 }: LocalDemoTipsProps) => {
   const t = useI18n();
   const buttonLabel = isLoggedIn
@@ -38,6 +40,15 @@ export const LocalDemoTips = ({
       </div>
 
       <div className={styles.tipsRightItem}>
+        {onDismissForWeek && (
+          <Button
+            variant="plain"
+            style={{ color: cssVar('textSecondaryColor'), marginRight: '8px' }}
+            onClick={onDismissForWeek}
+          >
+            本周不再提示
+          </Button>
+        )}
         <Button style={{ background: cssVar('white') }} onClick={handleClick}>
           {buttonLabel}
         </Button>
