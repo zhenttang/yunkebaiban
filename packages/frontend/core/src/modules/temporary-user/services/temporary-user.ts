@@ -11,6 +11,8 @@ import type { TemporaryUserInfo } from '../entities/temporary-user-session';
 @OnEvent(ApplicationFocused, e => e.onApplicationFocused)
 export class TemporaryUserService extends Service {
   session: TemporaryUserSession;
+  // 🔧 Bug #10 修复：存储 interval ID 以便清理
+  private cleanupIntervalId: ReturnType<typeof setInterval> | null = null;
 
   constructor(
     private readonly store: TemporaryUserStore,
@@ -178,7 +180,8 @@ export class TemporaryUserService extends Service {
     // 每小时清理一次安全数据
     const CLEANUP_INTERVAL = 60 * 60 * 1000; // 1小时
 
-    setInterval(() => {
+    // 🔧 Bug #10 修复：存储 interval ID 以便在 dispose 中清理
+    this.cleanupIntervalId = setInterval(() => {
       this.performSecurityCleanup();
     }, CLEANUP_INTERVAL);
   }
@@ -309,6 +312,11 @@ export class TemporaryUserService extends Service {
   }
 
   override dispose(): void {
+    // 🔧 Bug #10 修复：清理 interval 避免内存泄漏
+    if (this.cleanupIntervalId) {
+      clearInterval(this.cleanupIntervalId);
+      this.cleanupIntervalId = null;
+    }
     this.session.dispose();
   }
 } 
