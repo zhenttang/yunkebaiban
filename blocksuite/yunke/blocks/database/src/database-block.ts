@@ -274,6 +274,21 @@ export class DatabaseBlockComponent extends CaptionedBlockComponent<DatabaseBloc
       widgetPresets.tools.viewOptions,
       widgetPresets.tools.tableAddRow,
     ],
+    calendar: [
+      widgetPresets.tools.filter,
+      widgetPresets.tools.search,
+      widgetPresets.tools.viewOptions,
+    ],
+    gantt: [
+      widgetPresets.tools.filter,
+      widgetPresets.tools.sort,
+      widgetPresets.tools.search,
+      widgetPresets.tools.viewOptions,
+    ],
+    chart: [
+      widgetPresets.tools.filter,
+      widgetPresets.tools.viewOptions,
+    ],
   });
 
   private readonly viewSelection$ = computed(() => {
