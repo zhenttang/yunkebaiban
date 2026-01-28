@@ -57,6 +57,8 @@ export const test = base.extend<TestFixtures>({
       /\[HMR\]/i,
       /socket\.io.*reconnect/i,
       /Warning: ReactDOM\.render/i,
+      /NetworkError: A network error occurred/i, // 本地测试无后端时的预期错误
+      /Failed to fetch/i, // 网络请求失败（无后端）
     ];
 
     const getCriticalErrors = () => {
