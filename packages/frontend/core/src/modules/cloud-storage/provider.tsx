@@ -738,6 +738,10 @@ export const CloudStorageProvider = ({
                 if (pendingOperations.current.length > 0) {
                   processPendingOperations();
                 }
+                // 🔧 Bug #2 修复：连接成功后同步离线操作
+                if (syncOfflineOperationsRef.current) {
+                  syncOfflineOperationsRef.current();
+                }
                 finalizeJoinAttempt();
                 return;
               }
@@ -758,6 +762,10 @@ export const CloudStorageProvider = ({
                 if (pendingOperations.current.length > 0) {
                   processPendingOperations();
                 }
+                // 🔧 Bug #2 修复：连接成功后同步离线操作
+                if (syncOfflineOperationsRef.current) {
+                  syncOfflineOperationsRef.current();
+                }
                 finalizeJoinAttempt();
                 return;
               }
@@ -776,6 +784,10 @@ export const CloudStorageProvider = ({
             // 因为 socket 已连接，只是响应格式可能不同
             setStorageMode('cloud');
             setLastSync(new Date());
+            // 🔧 Bug #2 修复：连接成功后同步离线操作
+            if (syncOfflineOperationsRef.current) {
+              syncOfflineOperationsRef.current();
+            }
             finalizeJoinAttempt();
             
           } catch (error) {
