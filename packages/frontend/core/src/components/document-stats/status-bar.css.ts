@@ -1,32 +1,26 @@
 import { style } from '@vanilla-extract/css';
 
 export const statusBar = style({
-  position: 'fixed',
-  bottom: '24px',
-  left: '50%',
-  transform: 'translateX(-50%)',
-  height: '36px',
+  // 嵌入式布局，不再悬浮
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  padding: '0 20px',
-  backgroundColor: 'rgba(255, 255, 255, 0.95)',
-  backdropFilter: 'blur(10px)',
-  borderRadius: '18px',
-  border: '1px solid rgba(0, 0, 0, 0.08)',
-  boxShadow: '0 2px 12px rgba(0, 0, 0, 0.08)',
+  width: 'fit-content',
+  margin: '16px auto 24px',
+  height: '32px',
+  padding: '0 16px',
+  backgroundColor: 'var(--yunke-v2-layer-background-secondary, rgba(0, 0, 0, 0.04))',
+  borderRadius: '16px',
+  border: '1px solid var(--yunke-v2-layer-border-primary, rgba(0, 0, 0, 0.06))',
   fontSize: '13px',
-  color: '#8E8D91',
-  zIndex: 10,
+  color: 'var(--yunke-v2-text-secondary, #8E8D91)',
   cursor: 'pointer',
   transition: 'all 0.2s ease',
   userSelect: 'none',
 
   ':hover': {
-    backgroundColor: 'rgba(255, 255, 255, 1)',
-    boxShadow: '0 4px 16px rgba(0, 0, 0, 0.12)',
-    transform: 'translateX(-50%) translateY(-2px)',
-    color: '#1E1E1E',
+    backgroundColor: 'var(--yunke-v2-layer-background-hoverOverlay, rgba(0, 0, 0, 0.08))',
+    color: 'var(--yunke-v2-text-primary, #1E1E1E)',
   },
 
   // 移动端适配
@@ -35,9 +29,8 @@ export const statusBar = style({
       height: '28px',
       padding: '0 12px',
       fontSize: '11px',
-      bottom: '16px',
+      margin: '12px auto 16px',
       borderRadius: '14px',
-      boxShadow: '0 1px 8px rgba(0, 0, 0, 0.08)',
     },
   },
 });

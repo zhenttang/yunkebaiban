@@ -360,6 +360,13 @@ const DetailPageImpl = memo(function DetailPageImpl() {
                 )}
               >
                 <PageDetailEditor onLoad={onLoad} readonly={readonly} />
+                {/* 📊 字数统计状态栏 - 嵌入在编辑器底部 */}
+                {mode === 'page' && !isInTrash && appSettings.enableDocumentStats && (
+                  <DocumentStatsStatusBar
+                    doc={doc}
+                    onToggleDetail={() => setShowStatsDetail(!showStatsDetail)}
+                  />
+                )}
               </Scrollable.Viewport>
               <Scrollable.Scrollbar
                 className={clsx({
@@ -375,14 +382,6 @@ const DetailPageImpl = memo(function DetailPageImpl() {
 
             {/* 📌 可选显示的侧边栏 - 默认隐藏，Ctrl+Shift+/ 切换 */}
             {mode === 'page' && showCommandSidebar && <BlockCommandsSidebar />}
-
-            {/* 📊 字数统计状态栏 - 固定在底部 */}
-            {mode === 'page' && !isInTrash && appSettings.enableDocumentStats && (
-              <DocumentStatsStatusBar
-                doc={doc}
-                onToggleDetail={() => setShowStatsDetail(!showStatsDetail)}
-              />
-            )}
 
             {/* 📊 字数统计详细面板 - 弹出式 */}
             {mode === 'page' && !isInTrash && appSettings.enableDocumentStats && showStatsDetail && (
