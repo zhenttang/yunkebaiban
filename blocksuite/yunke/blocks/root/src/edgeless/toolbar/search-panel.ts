@@ -340,13 +340,15 @@ export class EdgelessSearchPanel extends LitElement {
   }
 
   private _onInput(event: Event) {
+    // 完全阻止事件传播到 edgeless 键盘管理器
     event.stopPropagation();
+    event.stopImmediatePropagation();
+    
     const input = event.target as HTMLInputElement;
     const value = input.value;
-    // 不更新 this.query 状态来避免重新渲染导致输入丢失
-    // 只在搜索时使用值
+    // 直接搜索
     this._debouncedSearch(value);
-    // 延迟更新 query 状态，避免输入时光标跳动
+    // 延迟更新 query 状态用于高亮显示
     this._updateQueryState(value);
   }
 
@@ -354,18 +356,17 @@ export class EdgelessSearchPanel extends LitElement {
     this.query = value;
   }, 300);
 
-  private _stopEvent(event: Event) {
-    // 只阻止传播，不阻止默认行为，以便输入框正常工作
+  private _preventEdgelessCapture(event: Event) {
+    // 阻止事件冒泡和传播到 edgeless 的全局键盘监听器
     event.stopPropagation();
-  }
-
-  private _stopPropagationOnly(event: Event) {
-    // 只阻止传播到父组件，保持输入框交互正常
-    event.stopPropagation();
+    event.stopImmediatePropagation();
   }
 
   private _onKeyDown(event: KeyboardEvent) {
+    // 完全阻止事件传播到 edgeless 键盘管理器
     event.stopPropagation();
+    event.stopImmediatePropagation();
+    
     if (event.key === 'Enter') {
       event.preventDefault();
       this._jumpToActive();
@@ -443,11 +444,16 @@ export class EdgelessSearchPanel extends LitElement {
     return html`
       <div
         class="panel"
-        @click=${this._stopPropagationOnly}
-        @wheel=${this._stopPropagationOnly}
+        @click=${this._preventEdgelessCapture}
+        @wheel=${this._preventEdgelessCapture}
+        @pointerdown=${this._preventEdgelessCapture}
+        @mousedown=${this._preventEdgelessCapture}
+        @keydown=${this._preventEdgelessCapture}
+        @keyup=${this._preventEdgelessCapture}
+        @keypress=${this._preventEdgelessCapture}
       >
         <div class="header">
-        <div class="input-wrapper" @pointerdown=${this._stopPropagationOnly} @mousedown=${this._stopPropagationOnly}>
+        <div class="input-wrapper">
           <span class="search-icon">${SearchIcon()}</span>
           <input
             class="input"
@@ -455,9 +461,10 @@ export class EdgelessSearchPanel extends LitElement {
             placeholder="搜索画布"
             @input=${this._onInput}
             @keydown=${this._onKeyDown}
-            @keyup=${this._stopPropagationOnly}
-            @focus=${this._stopPropagationOnly}
-            @blur=${this._stopPropagationOnly}
+            @keyup=${this._preventEdgelessCapture}
+            @keypress=${this._preventEdgelessCapture}
+            @focus=${this._preventEdgelessCapture}
+            @blur=${this._preventEdgelessCapture}
           />
         </div>
         <div class="actions">
