@@ -21,7 +21,7 @@
 ### 阶段二：高级字段（预计 5-7 天）
 | 序号 | 功能 | 状态 | 开发日期 |
 |-----|------|------|---------|
-| 2.1 | 公式字段 | ⬜ 待开发 | |
+| 2.1 | 公式字段 | ✅ 已完成 | 2026-01-28 |
 | 2.2 | 人员字段 | ⬜ 待开发 | |
 | 2.3 | 关联字段（单向） | ⬜ 待开发 | |
 | 2.4 | 关联字段（双向） | ⬜ 待开发 | |
@@ -606,7 +606,10 @@ export const {field}PropertyType = propertyType('{field-type}', {
   - `blocks/database/src/properties/modified-by/` - 修改人（只读，显示头像和名称）
 - [x] 完成附件字段（attachment）开发
   - `property-presets/attachment/` - 支持多文件上传、缩略图预览、文件大小显示
-- [ ] 开始开发阶段二：高级字段
+- [x] 完成公式字段（formula）开发
+  - `property-presets/formula/` - 支持字段引用 {字段名}、数学/文本/日期/逻辑函数
+  - 内置函数：SUM, AVERAGE, MAX, MIN, CONCAT, IF, NOW, TODAY 等
+- [ ] 继续开发人员字段
 
 ---
 

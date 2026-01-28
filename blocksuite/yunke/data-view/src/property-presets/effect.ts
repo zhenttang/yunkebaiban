@@ -2,6 +2,7 @@ import { AttachmentCell } from './attachment/cell-renderer.js';
 import { CheckboxCell } from './checkbox/cell-renderer.js';
 import { DateCell } from './date/cell-renderer.js';
 import { EmailCell } from './email/cell-renderer.js';
+import { FormulaCell } from './formula/cell-renderer.js';
 import { ImageCell } from './image/cell-renderer.js';
 import { MultiSelectCell } from './multi-select/cell-renderer.js';
 import { NumberCell } from './number/cell-renderer.js';
@@ -17,6 +18,7 @@ export function propertyPresetsEffects() {
   customElements.define('yunke-database-checkbox-cell', CheckboxCell);
   customElements.define('yunke-database-date-cell', DateCell);
   customElements.define('yunke-database-email-cell', EmailCell);
+  customElements.define('yunke-database-formula-cell', FormulaCell);
   customElements.define('yunke-database-image-cell', ImageCell);
   customElements.define('yunke-database-multi-select-cell', MultiSelectCell);
   customElements.define('yunke-database-number-cell', NumberCell);

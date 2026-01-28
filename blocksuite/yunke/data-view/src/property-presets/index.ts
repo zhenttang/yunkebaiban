@@ -3,6 +3,7 @@ import { checkboxPropertyConfig } from './checkbox/cell-renderer.js';
 import { datePropertyConfig } from './date/cell-renderer.js';
 import { dateRangePropertyConfig } from './date-range/cell-renderer.js';
 import { emailPropertyConfig } from './email/cell-renderer.js';
+import { formulaPropertyConfig } from './formula/cell-renderer.js';
 import { imagePropertyConfig } from './image/cell-renderer.js';
 import { multiSelectPropertyConfig } from './multi-select/cell-renderer.js';
 import { numberPropertyConfig } from './number/cell-renderer.js';
@@ -24,6 +25,7 @@ export const propertyPresets = {
   datePropertyConfig,
   dateRangePropertyConfig,
   emailPropertyConfig,
+  formulaPropertyConfig,
   imagePropertyConfig,
   multiSelectPropertyConfig,
   numberPropertyConfig,
