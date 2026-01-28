@@ -132,6 +132,10 @@ export const useGeneralSettingList = (): GeneralSettingList => {
         icon: <LocalWorkspaceIcon />,
         testId: 'offline-panel-trigger',
       });
+    }
+    
+    // backup 功能依赖 DesktopApiService，只在 Electron 桌面版本可用
+    if (BUILD_CONFIG.isElectron) {
       settings.push({
         key: 'backup',
         title: t['com.yunke.settings.workspace.backup'](),
