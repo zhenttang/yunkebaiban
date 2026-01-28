@@ -40,17 +40,20 @@ export class EdgelessSearchModal extends SignalWatcher(
 ) {
   static override styles = css`
     :host {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      z-index: 9999;
-      display: flex;
+      position: fixed !important;
+      top: 0 !important;
+      left: 0 !important;
+      width: 100vw !important;
+      height: 100vh !important;
+      z-index: 999999 !important;
+      display: flex !important;
       justify-content: center;
-      padding-top: 120px;
+      align-items: flex-start;
+      padding-top: 100px;
+      box-sizing: border-box;
       font-family: ${unsafeCSS(baseTheme.fontSansFamily)};
       animation: yunke-modal-fade-in 0.15s ease;
+      pointer-events: auto;
     }
 
     @keyframes yunke-modal-fade-in {
@@ -260,6 +263,7 @@ export class EdgelessSearchModal extends SignalWatcher(
 
   override connectedCallback() {
     super.connectedCallback();
+    console.log('[Search] Modal connectedCallback');
     this.setAttribute(RANGE_SYNC_EXCLUDE_ATTR, 'true');
   }
 
@@ -516,6 +520,7 @@ export class EdgelessSearchModal extends SignalWatcher(
   }
 
   override render() {
+    console.log('[Search] Modal render called');
     const hasResults = this._results.length > 0;
     const counter = hasResults
       ? `${this._activeIndex + 1}/${this._results.length}`
