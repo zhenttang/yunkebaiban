@@ -267,6 +267,7 @@ export const CloudStorageProvider = ({
   const isOnlineRef = useRef(isOnline); // 🔧 使用 ref 存储 isOnline，避免 connectToSocket 频繁重新创建
   const serverUrlRef = useRef(serverUrl); // 🔧 使用 ref 存储 serverUrl，避免 connectToSocket 频繁重新创建
   const connectToSocketRef = useRef<(() => Promise<void>) | null>(null); // 🔧 存储 connectToSocket 引用，用于网络状态监听
+  const syncOfflineOperationsRef = useRef<(() => Promise<void>) | null>(null); // 🔧 存储 syncOfflineOperations 引用，用于网络恢复时同步
   const activeJoinAttemptRef = useRef<symbol | null>(null);
   const cloudEnabledRef = useRef(cloudEnabled);
 
@@ -526,6 +527,11 @@ export const CloudStorageProvider = ({
     serverUrlRef.current = serverUrl;
   }, [serverUrl]);
 
+  // 🔧 Bug #1 修复：同步 syncOfflineOperationsRef
+  useEffect(() => {
+    syncOfflineOperationsRef.current = syncOfflineOperations;
+  }, [syncOfflineOperations]);
+
   // 🔧 修复：网络状态监听 - 使用 ref 避免闭包问题
   useEffect(() => {
     const handleOnline = () => {
@@ -538,6 +544,11 @@ export const CloudStorageProvider = ({
         // 使用 ref 中的 connectToSocket，避免闭包问题
         if (connectToSocketRef.current) {
           connectToSocketRef.current();
+        }
+      } else if (currentSocket?.connected) {
+        // 🔧 Bug #1 修复：网络恢复且已连接时，立即同步离线操作
+        if (syncOfflineOperationsRef.current) {
+          syncOfflineOperationsRef.current();
         }
       }
     };
