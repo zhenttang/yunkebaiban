@@ -39,7 +39,7 @@
 ### 阶段四：数据导入导出（预计 2-3 天）
 | 序号 | 功能 | 状态 | 开发日期 |
 |-----|------|------|---------|
-| 4.1 | CSV 导出 | ⬜ 待开发 | |
+| 4.1 | CSV 导出 | ✅ 已完成 | 2026-01-28 |
 | 4.2 | CSV 导入 | ⬜ 待开发 | |
 | 4.3 | Excel 导出 | ⬜ 待开发 | |
 | 4.4 | Excel 导入 | ⬜ 待开发 | |
@@ -613,7 +613,10 @@ export const {field}PropertyType = propertyType('{field-type}', {
   - `property-presets/person/` - 支持单选/多选成员、头像显示、搜索成员
 - [x] 完成关联字段（relation）开发
   - `property-presets/relation/` - 支持单向/双向关联、多选关联、搜索记录
-- [ ] 继续开发汇总字段和地理位置字段
+- [x] 完成 CSV/JSON 导出功能
+  - `widget-presets/tools/presets/export/` - 支持 CSV 和 JSON 格式导出
+  - 已集成到视图设置菜单中
+- [ ] 继续开发数据导入和其他功能
 
 ---
 

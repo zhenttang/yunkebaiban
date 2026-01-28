@@ -11,6 +11,7 @@ import {
   ArrowRightSmallIcon,
   DeleteIcon,
   DuplicateIcon,
+  ExportIcon,
   FilterIcon,
   GroupingIcon,
   InfoIcon,
@@ -40,6 +41,7 @@ import { createSortUtils } from '../../../../core/sort/utils.js';
 import { WidgetBase } from '../../../../core/widget/widget-base.js';
 import { popFilterRoot } from '../../../quick-setting-bar/filter/root-panel-view.js';
 import { popSortRoot } from '../../../quick-setting-bar/sort/root-panel.js';
+import { createExportMenuItems } from '../export/index.js';
 import type { ChartSingleView } from '../../../../view-presets/chart/chart-view-manager.js';
 
 type ChartType = 'pie' | 'bar' | 'horizontal-bar' | 'stacked-bar' | 'line';
@@ -647,6 +649,15 @@ export const popViewOptions = (
       items: createSettingMenus(target, dataViewLogic, reopen),
     })
   );
+  // 导出菜单
+  items.push(
+    menu.group({
+      items: [
+        createExportMenuItems(target, dataViewLogic, reopen),
+      ],
+    })
+  );
+
   items.push(
     menu.group({
       items: [
