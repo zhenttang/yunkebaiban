@@ -181,7 +181,7 @@ export class DataViewHeaderViews extends WidgetBase {
               menu.action({
                 name: '编辑视图',
                 prefix: InfoIcon(),
-                select: (ele) => {
+                select: () => {
                   // Close the parent menu first
                   try {
                     menuHandler.close();
@@ -198,12 +198,11 @@ export class DataViewHeaderViews extends WidgetBase {
                         if (this.viewManager.currentViewId$.value !== id) {
                           this.viewManager.setCurrentView(id);
                         }
-                        // Create a new target from the clicked element to avoid nesting
-                        const newTarget = popupTargetFromElement(ele as HTMLElement);
-                        // Get the current view's logic
+                        // Use the original target instead of the clicked menu button element
+                        // because the menu button is removed from DOM after menu closes
                         const currentLogic = this.dataViewLogic;
                         if (currentLogic) {
-                          popViewOptions(newTarget, currentLogic);
+                          popViewOptions(target, currentLogic);
                         }
                       } catch (e) {
                         console.error('Error opening view options:', e);

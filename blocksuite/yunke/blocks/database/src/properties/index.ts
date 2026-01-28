@@ -13,7 +13,9 @@ const {
   multiSelectPropertyConfig,
   numberPropertyConfig,
   progressPropertyConfig,
+  ratingPropertyConfig, // 🆕 添加评分属性
   selectPropertyConfig,
+  urlPropertyConfig, // 🆕 添加 URL 属性
 } = propertyPresets;
 export const databaseBlockProperties = {
   checkboxColumnConfig: checkboxPropertyConfig,
@@ -22,7 +24,9 @@ export const databaseBlockProperties = {
   multiSelectColumnConfig: multiSelectPropertyConfig,
   numberColumnConfig: numberPropertyConfig,
   progressColumnConfig: progressPropertyConfig,
+  ratingColumnConfig: ratingPropertyConfig, // 🆕 添加评分属性配置
   selectColumnConfig: selectPropertyConfig,
+  urlColumnConfig: urlPropertyConfig, // 🆕 添加 URL 属性配置
   imageColumnConfig: propertyPresets.imagePropertyConfig,
   linkColumnConfig,
   richTextColumnConfig,

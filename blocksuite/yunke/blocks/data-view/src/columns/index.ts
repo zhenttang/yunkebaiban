@@ -7,6 +7,8 @@ export const queryBlockColumns = [
   propertyPresets.dateRangePropertyConfig, // 🆕 添加日期范围属性
   propertyPresets.numberPropertyConfig,
   propertyPresets.progressPropertyConfig,
+  propertyPresets.ratingPropertyConfig, // 🆕 添加评分属性
+  propertyPresets.urlPropertyConfig, // 🆕 添加 URL 属性
   propertyPresets.selectPropertyConfig,
   propertyPresets.multiSelectPropertyConfig,
   propertyPresets.checkboxPropertyConfig,

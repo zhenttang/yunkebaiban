@@ -446,6 +446,9 @@ export const createPopup = (
     options?.onClose?.();
   };
   const modal = createModal(target.root);
+  // IMPORTANT: Append content to modal BEFORE calling autoUpdate
+  // so that computePosition can correctly determine the offsetParent
+  modal.append(content);
   autoUpdate(target.targetRect, content, () => {
     computePosition(target.targetRect, content, {
       middleware: options?.middleware ?? [shift({ crossAxis: true })],
@@ -458,7 +461,6 @@ export const createPopup = (
       })
       .catch(console.error);
   });
-  modal.append(content);
 
   modal.onpointerdown = ev => {
     if (ev.target === modal) {
@@ -549,6 +551,7 @@ export const popMenu = (
         ],
       }),
       offset(4),
+      shift({ crossAxis: true, padding: 8 }),
     ],
     container: props.container,
   });
