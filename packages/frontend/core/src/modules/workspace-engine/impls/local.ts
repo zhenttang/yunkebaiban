@@ -154,15 +154,53 @@ class LocalWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
   async deleteWorkspace(id: string): Promise<void> {
     setLocalWorkspaceIds(ids => ids.filter(x => x !== id));
 
-    // TODO(@forehalo): indexeddb工作区的删除逻辑
+    // 🔧 Bug #12 修复：实现 IndexedDB 工作区删除逻辑
     if (BUILD_CONFIG.isElectron) {
       const electronApi = this.framework.get(DesktopApiService);
       await electronApi.handler.workspace.moveToTrash(
         universalId({ peer: 'local', type: 'workspace', id })
       );
+    } else {
+      // Web 环境：删除 IndexedDB 数据库
+      try {
+        // 主数据库名格式: ${flavour}:${type}:${id}
+        const dbName = `${this.flavour}:workspace:${id}`;
+        await this.deleteIndexedDB(dbName);
+        
+        // 兼容旧版本的 blob 数据库 (v1)
+        const blobDbName = `${id}_blob`;
+        await this.deleteIndexedDB(blobDbName);
+        
+        console.log(`[LocalWorkspace] 已删除工作区 IndexedDB: ${id}`);
+      } catch (error) {
+        console.warn(`[LocalWorkspace] 删除 IndexedDB 失败:`, error);
+        // 不抛出错误，因为工作区 ID 已从列表中移除
+      }
     }
     // notify all browser tabs, so they can update their workspace list
     this.notifyChannel.postMessage(id);
+  }
+
+  /**
+   * 删除指定的 IndexedDB 数据库
+   * 🔧 Bug #12 修复：辅助方法
+   */
+  private deleteIndexedDB(dbName: string): Promise<void> {
+    return new Promise((resolve, reject) => {
+      if (typeof indexedDB === 'undefined') {
+        resolve();
+        return;
+      }
+      
+      const request = indexedDB.deleteDatabase(dbName);
+      request.onsuccess = () => resolve();
+      request.onerror = () => reject(request.error);
+      request.onblocked = () => {
+        console.warn(`[LocalWorkspace] IndexedDB 删除被阻塞: ${dbName}`);
+        // 即使被阻塞，也视为成功（数据库会在其他连接关闭后删除）
+        resolve();
+      };
+    });
   }
   async createWorkspace(
     initial: (

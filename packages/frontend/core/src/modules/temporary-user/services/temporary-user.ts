@@ -57,9 +57,9 @@ export class TemporaryUserService extends Service {
   }
 
   private onApplicationFocused() {
-    // 暂时注释掉，防止无限循环
-    // 当应用获得焦点时验证会话状态
-    // this.session.validateSession();
+    // 🔧 Bug #11 修复：恢复会话验证
+    // validateSession() 已有防抖 + 断路器机制 (500ms防抖, 5秒内>10次断路)
+    this.session.validateSession();
   }
 
   /**

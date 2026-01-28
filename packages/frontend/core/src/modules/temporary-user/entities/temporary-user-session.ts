@@ -77,6 +77,11 @@ export class TemporaryUserSession {
   isCreating$ = new LiveData(false);
   isValidating$ = new LiveData(false);
 
+  // 🔧 Bug #11 修复：添加防抖机制防止无限循环
+  private lastValidateTime = 0;
+  private validateCallCount = 0;
+  private validateResetTimeout: NodeJS.Timeout | null = null;
+
   constructor(private readonly store: TemporaryUserStore) {
     // 初始化
   }
@@ -111,8 +116,31 @@ export class TemporaryUserSession {
 
   /**
    * 验证当前会话
+   * 🔧 Bug #11 修复：添加防抖和断路器机制防止无限循环
    */
   async validateSession(): Promise<void> {
+    // 防抖：500ms 内不重复验证
+    const now = Date.now();
+    if (now - this.lastValidateTime < 500) {
+      return;
+    }
+
+    // 断路器：5秒内超过10次调用，跳过验证
+    this.validateCallCount++;
+    this.lastValidateTime = now;
+
+    if (this.validateResetTimeout) {
+      clearTimeout(this.validateResetTimeout);
+    }
+    this.validateResetTimeout = setTimeout(() => {
+      this.validateCallCount = 0;
+    }, 5000);
+
+    if (this.validateCallCount > 10) {
+      console.warn('[TemporaryUserSession] 验证调用过于频繁，触发断路器');
+      return;
+    }
+
     this.isValidating$.next(true);
     
     try {

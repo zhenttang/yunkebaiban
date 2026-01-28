@@ -75,8 +75,9 @@ export class AuthService extends Service {
   }
 
   private onApplicationFocused() {
-    // 暂时注释掉，防止无限循环
-    // this.session.revalidate();
+    // 🔧 Bug #11 修复：恢复会话验证
+    // session.revalidate() 已有防无限循环机制：500ms防抖 + 断路器(5秒内>10次)
+    this.session.revalidate();
   }
 
   async signInWithCode(credential: {
