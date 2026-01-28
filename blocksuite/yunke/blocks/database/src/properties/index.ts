@@ -10,6 +10,7 @@ import { titleColumnConfig } from './title/cell-renderer.js';
 
 export * from './converts.js';
 const {
+  attachmentPropertyConfig,
   checkboxPropertyConfig,
   datePropertyConfig,
   dateRangePropertyConfig,
@@ -23,6 +24,7 @@ const {
   urlPropertyConfig,
 } = propertyPresets;
 export const databaseBlockProperties = {
+  attachmentColumnConfig: attachmentPropertyConfig,
   checkboxColumnConfig: checkboxPropertyConfig,
   dateColumnConfig: datePropertyConfig,
   dateRangeColumnConfig: dateRangePropertyConfig,

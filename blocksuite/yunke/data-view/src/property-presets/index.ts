@@ -1,3 +1,4 @@
+import { attachmentPropertyConfig } from './attachment/cell-renderer.js';
 import { checkboxPropertyConfig } from './checkbox/cell-renderer.js';
 import { datePropertyConfig } from './date/cell-renderer.js';
 import { dateRangePropertyConfig } from './date-range/cell-renderer.js';
@@ -18,6 +19,7 @@ export * from './select/define.js';
 export * from './date-range/index.js';
 
 export const propertyPresets = {
+  attachmentPropertyConfig,
   checkboxPropertyConfig,
   datePropertyConfig,
   dateRangePropertyConfig,

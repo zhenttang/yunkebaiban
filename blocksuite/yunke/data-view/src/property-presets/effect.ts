@@ -1,3 +1,4 @@
+import { AttachmentCell } from './attachment/cell-renderer.js';
 import { CheckboxCell } from './checkbox/cell-renderer.js';
 import { DateCell } from './date/cell-renderer.js';
 import { EmailCell } from './email/cell-renderer.js';
@@ -12,6 +13,7 @@ import { TextCell } from './text/cell-renderer.js';
 import { UrlCell } from './url/cell-renderer.js';
 
 export function propertyPresetsEffects() {
+  customElements.define('yunke-database-attachment-cell', AttachmentCell);
   customElements.define('yunke-database-checkbox-cell', CheckboxCell);
   customElements.define('yunke-database-date-cell', DateCell);
   customElements.define('yunke-database-email-cell', EmailCell);

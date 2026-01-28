@@ -13,7 +13,7 @@
 |-----|------|------|---------|
 | 1.1 | 评分字段（星级） | ✅ 已完成 | 2026-01-28 |
 | 1.2 | 系统字段（创建人/时间、修改人/时间） | ✅ 已完成 | 2026-01-28 |
-| 1.3 | 附件字段 | ⬜ 待开发 | |
+| 1.3 | 附件字段 | ✅ 已完成 | 2026-01-28 |
 | 1.4 | URL 链接字段 | ✅ 已完成 | 2026-01-28 |
 | 1.5 | 电话字段 | ✅ 已完成 | 2026-01-28 |
 | 1.6 | 邮箱字段 | ✅ 已完成 | 2026-01-28 |
@@ -604,7 +604,9 @@ export const {field}PropertyType = propertyType('{field-type}', {
   - `blocks/database/src/properties/modified-time/` - 修改时间（只读）
   - `blocks/database/src/properties/created-by/` - 创建人（只读，显示头像和名称）
   - `blocks/database/src/properties/modified-by/` - 修改人（只读，显示头像和名称）
-- [ ] 开始开发附件字段
+- [x] 完成附件字段（attachment）开发
+  - `property-presets/attachment/` - 支持多文件上传、缩略图预览、文件大小显示
+- [ ] 开始开发阶段二：高级字段
 
 ---
 
