@@ -8,23 +8,28 @@ export const weekDatePicker = style({
 
   height: '100%',
   maxHeight: '39px',
+  minWidth: 0, // 允许 flex 子项收缩
+  overflow: 'hidden', // 防止溢出
 });
 
 export const weekDatePickerContent = style({
   width: 0,
   flex: 1,
+  minWidth: 0, // 允许收缩
   display: 'flex',
   alignItems: 'stretch',
-  justifyContent: 'space-between',
+  justifyContent: 'center', // 居中显示
   gap: 4,
   userSelect: 'none',
+  overflow: 'hidden', // 防止溢出
 });
 
 export const dayCell = style({
   position: 'relative',
   width: 0,
   flexGrow: 1,
-  minWidth: 30,
+  flexShrink: 1, // 允许收缩
+  minWidth: 24, // 减小最小宽度
   maxWidth: 130,
 
   cursor: 'pointer',
@@ -34,7 +39,7 @@ export const dayCell = style({
   alignItems: 'center',
   justifyContent: 'center',
 
-  padding: '2px 4px 1px 4px',
+  padding: '2px 2px 1px 2px', // 减小内边距
   borderRadius: 4,
 
   fontFamily: cssVar('fontFamily'),
