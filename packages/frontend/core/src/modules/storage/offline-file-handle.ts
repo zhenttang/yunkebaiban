@@ -49,12 +49,20 @@ async function withStore<T>(
     const tx = db.transaction(STORE_NAME, mode);
     const store = tx.objectStore(STORE_NAME);
     const request = fn(store);
+    // 🔧 Bug #19 修复：确保所有情况下都关闭数据库连接
     request.onsuccess = () => resolve(request.result as T);
-    request.onerror = () => reject(request.error);
+    request.onerror = () => {
+      db.close(); // 请求失败时也要关闭
+      reject(request.error);
+    };
     tx.oncomplete = () => db.close();
     tx.onerror = () => {
       db.close();
       reject(tx.error);
+    };
+    tx.onabort = () => {
+      db.close(); // 事务被中止时也要关闭
+      reject(new Error('IndexedDB 事务被中止'));
     };
   });
 }

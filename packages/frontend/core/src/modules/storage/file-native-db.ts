@@ -316,6 +316,52 @@ async function openSqliteEntry(handle: FileSystemFileHandle): Promise<SqliteFile
 export function createFileNativeDBApis(): NativeDBApis {
   const entries = new Map<string, SqliteFileEntry>();
 
+  // 🔧 Bug #18 修复：添加页面卸载时的数据保存机制
+  const flushAllEntries = async () => {
+    const flushPromises: Promise<void>[] = [];
+    for (const [id, entry] of entries) {
+      flushPromises.push(
+        entry.runExclusive(async () => {
+          try {
+            await entry.flush(1); // 快速模式，只重试一次
+          } catch (error) {
+            logWarn('页面卸载时 flush 失败', {
+              id,
+              error: error instanceof Error ? error.message : String(error),
+            });
+          }
+        })
+      );
+    }
+    await Promise.allSettled(flushPromises);
+  };
+
+  // 监听页面卸载事件，确保数据保存
+  if (typeof window !== 'undefined') {
+    const handleBeforeUnload = () => {
+      // 同步版本：使用 Promise 但不等待（因为 beforeunload 必须同步）
+      flushAllEntries().catch((error) => {
+        console.error('[离线存储] 页面卸载时保存失败:', error);
+      });
+    };
+
+    // 使用 pagehide 事件（更可靠，尤其在移动端）
+    const handlePageHide = (event: PageTransitionEvent) => {
+      if (event.persisted) {
+        // 页面被缓存（bfcache），不需要保存
+        return;
+      }
+      flushAllEntries().catch((error) => {
+        console.error('[离线存储] 页面隐藏时保存失败:', error);
+      });
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    window.addEventListener('pagehide', handlePageHide);
+    
+    logInfo('已注册页面卸载事件监听器');
+  }
+
   const getEntry = async (universalId: string) => {
     try {
       let entry = entries.get(universalId);
