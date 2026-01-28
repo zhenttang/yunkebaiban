@@ -62,7 +62,12 @@ export class GuardStore extends Store {
         const permissions = await response.json();
         return permissions as Record<WorkspacePermissionActions, boolean>;
       }
-    } catch {}
+      // 🔧 Bug #9 修复：记录非 ok 响应状态
+      console.warn('⚠️ [GuardStore.getWorkspacePermissions] 非正常响应:', response.status);
+    } catch (error) {
+      // 🔧 Bug #9 修复：记录错误而不是静默吞掉
+      console.warn('⚠️ [GuardStore.getWorkspacePermissions] 获取权限失败，使用默认权限:', error);
+    }
 
     // 返回默认权限，避免应用崩溃
     const defaultPermissions = {
@@ -106,7 +111,12 @@ export class GuardStore extends Store {
         const maybeMap = body?.permissions || body;
         return maybeMap as Record<DocPermissionActions, boolean>;
       }
-    } catch {}
+      // 🔧 Bug #9 修复：记录非 ok 响应状态
+      console.warn('⚠️ [GuardStore.getDocPermissions] 非正常响应:', response.status);
+    } catch (error) {
+      // 🔧 Bug #9 修复：记录错误而不是静默吞掉
+      console.warn('⚠️ [GuardStore.getDocPermissions] 获取权限失败，使用默认权限:', error);
+    }
 
     // 返回默认文档权限，避免应用崩溃
     const defaultPermissions = {

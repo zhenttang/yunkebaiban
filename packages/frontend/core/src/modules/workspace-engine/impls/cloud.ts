@@ -1396,9 +1396,15 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
     try {
       if ((this as any).fetchService?.waitForCriticalRequests) {
         // 最多等待5秒，避免卡住退出流程
-        (this as any).fetchService.waitForCriticalRequests({ timeoutMs: 5000 }).catch(() => {});
+        (this as any).fetchService.waitForCriticalRequests({ timeoutMs: 5000 }).catch((error: unknown) => {
+          // 🔧 Bug #9 修复：记录销毁时的错误，但不阻止销毁流程
+          console.debug('[CloudWorkspaceFlavourProvider.dispose] 等待请求完成失败:', error);
+        });
       }
-    } catch {}
+    } catch (error) {
+      // 🔧 Bug #9 修复：销毁时静默错误是预期的，但记录以便调试
+      console.debug('[CloudWorkspaceFlavourProvider.dispose] 销毁时发生错误:', error);
+    }
     this.revalidate.unsubscribe();
     this.unsubscribeAccountChanged();
   }
