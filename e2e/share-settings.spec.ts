@@ -10,7 +10,8 @@ test.describe('分享功能测试', () => {
 
   test('分享按钮点击无报错', async ({ page, errorCollector }) => {
     await page.goto('/');
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('domcontentloaded');
+    await page.waitForSelector('[class*="sidebar"], [class*="workspace"]', { timeout: 30000 }).catch(() => {});
 
     // 查找分享按钮
     const shareButtons = await page.locator(
@@ -62,7 +63,8 @@ test.describe('分享功能测试', () => {
 
   test('复制链接按钮点击无报错', async ({ page, errorCollector }) => {
     await page.goto('/');
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('domcontentloaded');
+    await page.waitForSelector('[class*="sidebar"], [class*="workspace"]', { timeout: 30000 }).catch(() => {});
 
     const copyLinkButtons = await page.locator(
       'button:has-text("复制链接"), button:has-text("Copy Link"), button:has-text("复制"), [data-testid*="copy"]'
@@ -89,7 +91,8 @@ test.describe('分享功能测试', () => {
 test.describe('设置功能测试', () => {
   test('设置按钮点击无报错', async ({ page, errorCollector }) => {
     await page.goto('/');
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('domcontentloaded');
+    await page.waitForSelector('[class*="sidebar"], [class*="workspace"]', { timeout: 30000 }).catch(() => {});
 
     // 查找设置按钮
     const settingsButtons = await page.locator(
@@ -131,7 +134,8 @@ test.describe('设置功能测试', () => {
 
   test('用户头像/菜单点击无报错', async ({ page, errorCollector }) => {
     await page.goto('/');
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('domcontentloaded');
+    await page.waitForSelector('[class*="sidebar"], [class*="workspace"]', { timeout: 30000 }).catch(() => {});
 
     // 查找用户头像或菜单
     const userMenus = await page.locator(

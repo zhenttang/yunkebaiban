@@ -586,6 +586,11 @@ export class Store {
     this._provider.getAll(BlockSchemaIdentifier).forEach(schema => {
       this._schema.register([schema]);
     });
+    
+    // 🔧 Bug #13 修复：注册 affine:* -> yunke:* flavour 别名
+    // 确保旧版本数据（使用 affine:* 前缀）能被正确加载
+    this._registerAffineAliases();
+    
     this._doc = this._provider.get(DocIdentifier);
     this._crud = new DocCRUD(this._yBlocks, this._schema);
     if (readonly !== undefined) {
@@ -697,6 +702,45 @@ export class Store {
     } catch (e) {
       console.error('An error occurred while adding block:');
       console.error(e);
+    }
+  }
+
+  /**
+   * 🔧 Bug #13 修复：注册 affine:* -> yunke:* flavour 别名
+   * 确保旧版本数据（使用 affine:* 前缀）能被正确加载
+   */
+  private _registerAffineAliases() {
+    const FLAVOUR_ALIAS_MAP: Record<string, string> = {
+      'affine:page': 'yunke:page',
+      'affine:surface': 'yunke:surface',
+      'affine:note': 'yunke:note',
+      'affine:paragraph': 'yunke:paragraph',
+      'affine:list': 'yunke:list',
+      'affine:code': 'yunke:code',
+      'affine:divider': 'yunke:divider',
+      'affine:image': 'yunke:image',
+      'affine:bookmark': 'yunke:bookmark',
+      'affine:attachment': 'yunke:attachment',
+      'affine:embed-linked-doc': 'yunke:embed-linked-doc',
+      'affine:embed-synced-doc': 'yunke:embed-synced-doc',
+      'affine:embed-html': 'yunke:embed-html',
+      'affine:embed-github': 'yunke:embed-github',
+      'affine:embed-youtube': 'yunke:embed-youtube',
+      'affine:embed-figma': 'yunke:embed-figma',
+      'affine:embed-loom': 'yunke:embed-loom',
+      'affine:database': 'yunke:database',
+      'affine:data-view': 'yunke:data-view',
+      'affine:frame': 'yunke:frame',
+      'affine:callout': 'yunke:callout',
+      'affine:latex': 'yunke:latex',
+      'affine:edgeless-text': 'yunke:edgeless-text',
+    };
+
+    for (const [affineFlavour, yunkeFlavour] of Object.entries(FLAVOUR_ALIAS_MAP)) {
+      const yunkeSchema = this._schema.flavourSchemaMap.get(yunkeFlavour);
+      if (yunkeSchema && !this._schema.flavourSchemaMap.has(affineFlavour)) {
+        this._schema.flavourSchemaMap.set(affineFlavour, yunkeSchema);
+      }
     }
   }
 

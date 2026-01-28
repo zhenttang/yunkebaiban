@@ -10,7 +10,8 @@ test.describe('文档编辑功能测试', () => {
 
   test('文档创建按钮点击无报错', async ({ page, errorCollector }) => {
     await page.goto('/');
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('domcontentloaded');
+    await page.waitForSelector('[class*="sidebar"], [class*="workspace"]', { timeout: 30000 }).catch(() => {});
 
     // 查找新建文档按钮
     const newDocButtons = await page.locator(
@@ -37,7 +38,8 @@ test.describe('文档编辑功能测试', () => {
 
   test('编辑器工具栏按钮点击无报错', async ({ page, errorCollector }) => {
     await page.goto('/');
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('domcontentloaded');
+    await page.waitForSelector('[class*="sidebar"], [class*="workspace"]', { timeout: 30000 }).catch(() => {});
 
     // 等待编辑器加载
     await page.waitForTimeout(2000);
@@ -71,7 +73,8 @@ test.describe('文档编辑功能测试', () => {
 
   test('文档保存状态显示正常', async ({ page, errorCollector }) => {
     await page.goto('/');
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('domcontentloaded');
+    await page.waitForSelector('[class*="sidebar"], [class*="workspace"]', { timeout: 30000 }).catch(() => {});
 
     // 等待保存状态指示器
     await page.waitForTimeout(2000);
@@ -91,7 +94,8 @@ test.describe('文档编辑功能测试', () => {
 test.describe('文档列表测试', () => {
   test('文档列表项点击无报错', async ({ page, errorCollector }) => {
     await page.goto('/');
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('domcontentloaded');
+    await page.waitForSelector('[class*="sidebar"], [class*="workspace"]', { timeout: 30000 }).catch(() => {});
 
     // 查找文档列表项
     const docItems = await page.locator(

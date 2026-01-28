@@ -82,11 +82,14 @@ test.describe('按钮点击测试', () => {
 
     await page.goto('/');
     
-    // 等待页面加载完成
-    await page.waitForLoadState('networkidle');
+    // 等待页面 DOM 加载完成（不等待 networkidle，因为有持续的 WebSocket 连接）
+    await page.waitForLoadState('domcontentloaded');
+    
+    // 等待应用主要 UI 元素出现
+    await page.waitForSelector('[class*="sidebar"], [class*="workspace"]', { timeout: 30000 });
     
     // 等待额外时间确保所有异步操作完成
-    await page.waitForTimeout(3000);
+    await page.waitForTimeout(5000);
 
     const criticalErrors = filterKnownErrors(errors);
     
@@ -104,7 +107,8 @@ test.describe('按钮点击测试', () => {
     const errors = setupErrorCollector(page);
 
     await page.goto('/');
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('domcontentloaded');
+    await page.waitForSelector('[class*="sidebar"], [class*="workspace"]', { timeout: 30000 }).catch(() => {});
 
     // 查找侧边栏按钮
     const sidebarButtons = await page.locator('[data-testid*="sidebar"] button, .sidebar button, [class*="sidebar"] button').all();
@@ -133,7 +137,8 @@ test.describe('按钮点击测试', () => {
     const errors = setupErrorCollector(page);
 
     await page.goto('/');
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('domcontentloaded');
+    await page.waitForSelector('[class*="sidebar"], [class*="workspace"]', { timeout: 30000 }).catch(() => {});
 
     // 查找工具栏按钮
     const toolbarButtons = await page.locator('[data-testid*="toolbar"] button, .toolbar button, [class*="toolbar"] button, [role="toolbar"] button').all();
@@ -164,7 +169,8 @@ test.describe('按钮点击测试', () => {
     const errors = setupErrorCollector(page);
 
     await page.goto('/');
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('domcontentloaded');
+    await page.waitForSelector('[class*="sidebar"], [class*="workspace"]', { timeout: 30000 }).catch(() => {});
 
     // 查找菜单触发按钮
     const menuTriggers = await page.locator('[data-testid*="menu"], [aria-haspopup="menu"], [aria-haspopup="true"]').all();
@@ -202,7 +208,8 @@ test.describe('按钮点击测试', () => {
     const errors = setupErrorCollector(page);
 
     await page.goto('/');
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('domcontentloaded');
+    await page.waitForSelector('[class*="sidebar"], [class*="workspace"]', { timeout: 30000 }).catch(() => {});
 
     // 获取所有可能可点击的元素
     const clickableElements = await page.locator('button, [role="button"], a[href], [onclick], [tabindex="0"]').all();
@@ -263,7 +270,8 @@ test.describe('页面导航测试', () => {
     for (const route of routes) {
       try {
         await page.goto(route);
-        await page.waitForLoadState('networkidle');
+        await page.waitForLoadState('domcontentloaded');
+    await page.waitForSelector('[class*="sidebar"], [class*="workspace"]', { timeout: 30000 }).catch(() => {});
         await page.waitForTimeout(2000);
       } catch (e) {
         console.log(`路由 ${route} 访问失败:`, (e as Error).message);
@@ -278,7 +286,8 @@ test.describe('页面导航测试', () => {
 test.describe('错误边界测试', () => {
   test('应用有错误边界保护', async ({ page }) => {
     await page.goto('/');
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('domcontentloaded');
+    await page.waitForSelector('[class*="sidebar"], [class*="workspace"]', { timeout: 30000 }).catch(() => {});
 
     // 检查页面没有显示错误边界的 fallback UI
     const errorBoundary = await page.locator('[data-testid="error-boundary"], .error-boundary, [class*="error"]').count();

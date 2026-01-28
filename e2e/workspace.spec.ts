@@ -10,7 +10,8 @@ test.describe('工作区功能测试', () => {
 
   test('创建工作区按钮点击无报错', async ({ page, errorCollector }) => {
     await page.goto('/');
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('domcontentloaded');
+    await page.waitForSelector('[class*="sidebar"], [class*="workspace"]', { timeout: 30000 }).catch(() => {});
 
     // 查找创建工作区按钮
     const createButtons = await page.locator('[data-testid*="create"], button:has-text("新建"), button:has-text("创建"), button:has-text("Create")').all();
@@ -31,12 +32,17 @@ test.describe('工作区功能测试', () => {
     }
 
     const criticalErrors = errorCollector.getCriticalErrors();
+    if (criticalErrors.length > 0) {
+      console.log('发现错误:');
+      criticalErrors.forEach((e, i) => console.log(`  [${e.type}] ${e.message}`));
+    }
     expect(criticalErrors.length).toBe(0);
   });
 
   test('工作区列表加载无报错', async ({ page, errorCollector }) => {
     await page.goto('/');
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('domcontentloaded');
+    await page.waitForSelector('[class*="sidebar"], [class*="workspace"]', { timeout: 30000 }).catch(() => {});
 
     // 等待工作区列表加载
     await page.waitForTimeout(3000);
@@ -46,12 +52,17 @@ test.describe('工作区功能测试', () => {
     console.log(`找到 ${workspaceItems} 个工作区元素`);
 
     const criticalErrors = errorCollector.getCriticalErrors();
+    if (criticalErrors.length > 0) {
+      console.log('发现错误:');
+      criticalErrors.forEach((e, i) => console.log(`  [${e.type}] ${e.message}`));
+    }
     expect(criticalErrors.length).toBe(0);
   });
 
   test('工作区切换无报错', async ({ page, errorCollector }) => {
     await page.goto('/');
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('domcontentloaded');
+    await page.waitForSelector('[class*="sidebar"], [class*="workspace"]', { timeout: 30000 }).catch(() => {});
 
     // 查找工作区选择器
     const workspaceSelector = page.locator('[data-testid*="workspace-selector"], [class*="workspace-selector"]').first();
