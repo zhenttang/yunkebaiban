@@ -16,6 +16,7 @@ export const queryBlockColumns = [
   propertyPresets.personPropertyConfig,
   propertyPresets.relationPropertyConfig,
   propertyPresets.rollupPropertyConfig,
+  propertyPresets.locationPropertyConfig,
   propertyPresets.selectPropertyConfig,
   propertyPresets.multiSelectPropertyConfig,
   propertyPresets.checkboxPropertyConfig,

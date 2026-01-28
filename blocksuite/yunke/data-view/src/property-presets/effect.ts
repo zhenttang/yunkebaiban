@@ -4,6 +4,7 @@ import { DateCell } from './date/cell-renderer.js';
 import { EmailCell } from './email/cell-renderer.js';
 import { FormulaCell } from './formula/cell-renderer.js';
 import { ImageCell } from './image/cell-renderer.js';
+import { LocationCell } from './location/cell-renderer.js';
 import { MultiSelectCell } from './multi-select/cell-renderer.js';
 import { NumberCell } from './number/cell-renderer.js';
 import { PersonCell } from './person/cell-renderer.js';
@@ -23,6 +24,7 @@ export function propertyPresetsEffects() {
   customElements.define('yunke-database-email-cell', EmailCell);
   customElements.define('yunke-database-formula-cell', FormulaCell);
   customElements.define('yunke-database-image-cell', ImageCell);
+  customElements.define('yunke-database-location-cell', LocationCell);
   customElements.define('yunke-database-multi-select-cell', MultiSelectCell);
   customElements.define('yunke-database-number-cell', NumberCell);
   customElements.define('yunke-database-person-cell', PersonCell);

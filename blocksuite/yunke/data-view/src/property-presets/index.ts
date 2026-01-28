@@ -5,6 +5,7 @@ import { dateRangePropertyConfig } from './date-range/cell-renderer.js';
 import { emailPropertyConfig } from './email/cell-renderer.js';
 import { formulaPropertyConfig } from './formula/cell-renderer.js';
 import { imagePropertyConfig } from './image/cell-renderer.js';
+import { locationPropertyConfig } from './location/cell-renderer.js';
 import { multiSelectPropertyConfig } from './multi-select/cell-renderer.js';
 import { numberPropertyConfig } from './number/cell-renderer.js';
 import { personPropertyConfig } from './person/cell-renderer.js';
@@ -30,6 +31,7 @@ export const propertyPresets = {
   emailPropertyConfig,
   formulaPropertyConfig,
   imagePropertyConfig,
+  locationPropertyConfig,
   multiSelectPropertyConfig,
   numberPropertyConfig,
   personPropertyConfig,
