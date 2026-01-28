@@ -29,7 +29,7 @@ export class EdgelessSearchToolButton extends QuickToolMixin(LitElement) {
     this.edgeless.bindHotKey(
       {
         '$mod+shift+f': () => {
-          this._toggleModal();
+          this._handleClick();
         },
       },
       { global: true }
@@ -61,13 +61,14 @@ export class EdgelessSearchToolButton extends QuickToolMixin(LitElement) {
     this._isModalOpen = false;
   }
 
-  private _toggleModal() {
+  private readonly _handleClick = () => {
+    console.log('[Search] Button clicked, isModalOpen:', this._isModalOpen);
     if (this._isModalOpen) {
       this._closeModal();
     } else {
       this._openModal();
     }
-  }
+  };
 
   override render() {
     return html`<edgeless-tool-icon-button
@@ -77,7 +78,7 @@ export class EdgelessSearchToolButton extends QuickToolMixin(LitElement) {
       ></yunke-tooltip-content-with-shortcut>`}
       .tooltipOffset=${17}
       ?active=${this._isModalOpen}
-      @click=${this._toggleModal}
+      @click=${this._handleClick}
     >
       <span class="search-icon">${SearchIcon()}</span>
     </edgeless-tool-icon-button>`;

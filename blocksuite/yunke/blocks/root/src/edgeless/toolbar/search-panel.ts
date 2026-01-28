@@ -604,6 +604,8 @@ export function openEdgelessSearchModal(
   edgeless: BlockComponent,
   onClose?: () => void
 ) {
+  console.log('[Search] Opening modal, edgeless:', edgeless);
+  
   // 移除已存在的弹窗
   document.body.querySelector('edgeless-search-modal')?.remove();
 
@@ -611,9 +613,14 @@ export function openEdgelessSearchModal(
   const modal = document.createElement(
     'edgeless-search-modal'
   ) as EdgelessSearchModal;
+  
+  console.log('[Search] Created modal element:', modal);
+  
   modal.edgeless = edgeless;
   modal.onClose = onClose;
   document.body.appendChild(modal);
+  
+  console.log('[Search] Modal appended to body');
 
   return modal;
 }
