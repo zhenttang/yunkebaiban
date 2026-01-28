@@ -1,13 +1,14 @@
 import type { InsertToPosition } from '@blocksuite/yunke-shared/utils';
 import { SignalWatcher, WithDisposable } from '@blocksuite/global/lit';
 import { ShadowlessElement } from '@blocksuite/std';
-import { computed, type ReadonlySignal } from '@preact/signals-core';
-import { css, html, nothing } from 'lit';
+import { computed } from '@preact/signals-core';
+import { css, html, nothing, type TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { repeat } from 'lit/directives/repeat.js';
 
-import { DataViewUILogicBase } from '../../../core/view/data-view-base.js';
+import { createUniComponentFromWebComponent } from '../../../core/utils/uni-component/index.js';
+import { DataViewUIBase, DataViewUILogicBase } from '../../../core/view/data-view-base.js';
 import type { CalendarSingleView, CalendarEvent } from '../calendar-view-manager.js';
 
 const WEEKDAYS = ['日', '一', '二', '三', '四', '五', '六'];
@@ -49,6 +50,8 @@ export class CalendarViewUILogic extends DataViewUILogicBase<CalendarSingleView>
   get rootUILogic() {
     return this.root;
   }
+
+  renderer = createUniComponentFromWebComponent(CalendarViewUI);
 
   currentDate$ = computed(() => {
     return this.view.calendarConfig?.currentDate ?? Date.now();
@@ -235,13 +238,6 @@ export class CalendarViewUILogic extends DataViewUILogicBase<CalendarSingleView>
       return `${date.getFullYear()}年${date.getMonth() + 1}月${date.getDate()}日`;
     }
   });
-
-  override get renderer() {
-    return {
-      view: this,
-      template: html`<calendar-view-ui .logic="${this}"></calendar-view-ui>`,
-    };
-  }
 }
 
 interface CalendarDay {
@@ -255,9 +251,7 @@ interface CalendarDay {
 /**
  * 日历视图 UI 组件
  */
-export class CalendarViewUI extends SignalWatcher(
-  WithDisposable(ShadowlessElement)
-) {
+export class CalendarViewUI extends DataViewUIBase<CalendarViewUILogic> {
   static override styles = css`
     calendar-view-ui {
       display: flex;
@@ -480,9 +474,6 @@ export class CalendarViewUI extends SignalWatcher(
       font-size: 14px;
     }
   `;
-
-  @property({ attribute: false })
-  accessor logic!: CalendarViewUILogic;
 
   private handlePrevious = () => {
     this.logic.view.navigatePrevious();
