@@ -42,6 +42,7 @@ import { WidgetBase } from '../../../../core/widget/widget-base.js';
 import { popFilterRoot } from '../../../quick-setting-bar/filter/root-panel-view.js';
 import { popSortRoot } from '../../../quick-setting-bar/sort/root-panel.js';
 import { createExportMenuItems } from '../export/index.js';
+import { createImportMenuItems } from '../import/index.js';
 import type { ChartSingleView } from '../../../../view-presets/chart/chart-view-manager.js';
 
 type ChartType = 'pie' | 'bar' | 'horizontal-bar' | 'stacked-bar' | 'line';
@@ -649,10 +650,11 @@ export const popViewOptions = (
       items: createSettingMenus(target, dataViewLogic, reopen),
     })
   );
-  // 导出菜单
+  // 导入导出菜单
   items.push(
     menu.group({
       items: [
+        createImportMenuItems(dataViewLogic),
         createExportMenuItems(target, dataViewLogic, reopen),
       ],
     })
