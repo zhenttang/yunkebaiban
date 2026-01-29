@@ -1,3 +1,4 @@
+import { DEFAULT_WORKSPACE_NAME } from '@yunke/env/constant';
 import { DesktopApiService } from '@yunke/core/modules/desktop-api';
 import { WorkspacesService } from '@yunke/core/modules/workspace';
 import {
@@ -192,13 +193,32 @@ export const Component = ({
       });
   }, [jumpToPage, openPage, workspacesService]);
 
-  // TODO(@eyhn): We need a no workspace page
+  // 🔧 修复：没有工作区时，创建本地工作区而不是跳转登录
+  // 这符合"默认离线模式"的设计原则
   useEffect(() => {
-    if (!navigating && !creating && !children) {
-      console.info('[desktop index] no workspace -> jumpToSignIn');
-      jumpToSignIn();
+    if (!navigating && !creating && !children && list.length === 0) {
+      console.info('[desktop index] no workspace -> creating local workspace');
+      // 强制创建本地工作区，即使 is-first-open 已存在
+      setCreating(true);
+      buildShowcaseWorkspace(workspacesService, 'local', DEFAULT_WORKSPACE_NAME)
+        .then(({ meta, defaultDocId }) => {
+          console.info('[desktop index] local workspace created', { id: meta.id, defaultDocId });
+          if (defaultDocId) {
+            jumpToPage(meta.id, defaultDocId);
+          } else {
+            openPage(meta.id, defaultIndexRoute);
+          }
+        })
+        .catch(err => {
+          console.error('[desktop index] 创建本地工作区失败', err);
+          // 只有在创建失败且用户需要登录云端功能时才跳转登录
+          // 否则保持在当前页面显示错误
+        })
+        .finally(() => {
+          setCreating(false);
+        });
     }
-  }, [children, creating, jumpToSignIn, navigating]);
+  }, [children, creating, jumpToPage, navigating, list.length, openPage, workspacesService, defaultIndexRoute]);
 
   if (navigating || creating) {
     return fallback ?? <AppContainer fallback />;

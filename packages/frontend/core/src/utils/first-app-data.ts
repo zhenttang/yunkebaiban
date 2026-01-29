@@ -67,16 +67,40 @@ export async function buildShowcaseWorkspace(
 
 const logger = new DebugLogger('createFirstAppData');
 
-export async function createFirstAppData(workspacesService: WorkspacesService) {
-  if (localStorage.getItem('is-first-open') !== null) {
+/**
+ * 创建首个应用数据（本地工作区）
+ * 
+ * 🔧 逻辑说明：
+ * - 首次打开：创建本地工作区
+ * - 非首次但无工作区：也应创建（由 index.tsx 处理）
+ * - 这符合"默认离线模式"的设计原则
+ * 
+ * @param workspacesService 工作区服务
+ * @param force 是否强制创建（忽略 is-first-open 标记）
+ */
+export async function createFirstAppData(
+  workspacesService: WorkspacesService,
+  force = false
+) {
+  // 检查是否需要创建
+  const isFirstOpen = localStorage.getItem('is-first-open') === null;
+  
+  if (!isFirstOpen && !force) {
+    logger.info('非首次打开且未强制创建，跳过');
     return;
   }
+  
+  // 标记已打开过
   localStorage.setItem('is-first-open', 'false');
+  
+  logger.info('开始创建首个本地工作区...', { isFirstOpen, force });
+  
   const { meta, defaultDocId } = await buildShowcaseWorkspace(
     workspacesService,
     'local',
     DEFAULT_WORKSPACE_NAME
   );
-  logger.info('创建首个工作区', defaultDocId);
+  
+  logger.info('首个工作区创建成功', { id: meta.id, defaultDocId });
   return { meta, defaultPageId: defaultDocId };
 }

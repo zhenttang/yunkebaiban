@@ -306,27 +306,47 @@ const BlockSuiteEditorImpl = ({
     const disposableGroup = new DisposableGroup();
     let canceled = false;
 
+    // 🔧 安全检查：确保 editor 存在
+    if (!editor) {
+      console.warn('[BlockSuiteEditor] editor 未就绪，跳过初始化');
+      return;
+    }
+
     // provide image proxy endpoint to blocksuite
     const imageProxyUrl = new URL(
       BUILD_CONFIG.imageProxyUrl,
       server.baseUrl
     ).toString();
 
-    editor.std.clipboard.use(customImageProxyMiddleware(imageProxyUrl));
+    // 🔧 安全检查：确保 editor.std 存在
+    if (editor.std?.clipboard) {
+      editor.std.clipboard.use(customImageProxyMiddleware(imageProxyUrl));
+    } else {
+      console.warn('[BlockSuiteEditor] editor.std.clipboard 未就绪，跳过 imageProxy 配置');
+    }
     page.get(ImageProxyService).setImageProxyURL(imageProxyUrl);
 
-    editor.updateComplete
-      .then(() => {
-        if (onEditorReady && !canceled) {
-          const dispose = onEditorReady(editor);
-          if (dispose) {
-            disposableGroup.add(dispose);
+    // 🔧 安全检查：确保 updateComplete 存在
+    if (editor.updateComplete) {
+      editor.updateComplete
+        .then(() => {
+          if (onEditorReady && !canceled) {
+            const dispose = onEditorReady(editor);
+            if (dispose) {
+              disposableGroup.add(dispose);
+            }
           }
-        }
-      })
-      .catch(error => {
-        console.error('编辑器更新错误', error);
-      });
+        })
+        .catch(error => {
+          console.error('编辑器更新错误', error);
+        });
+    } else if (onEditorReady && !canceled) {
+      // 如果 updateComplete 不存在，直接调用
+      const dispose = onEditorReady(editor);
+      if (dispose) {
+        disposableGroup.add(dispose);
+      }
+    }
 
     return () => {
       canceled = true;

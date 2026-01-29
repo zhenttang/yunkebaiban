@@ -7,6 +7,10 @@ import {
 import { Button } from '@yunke/component/ui/button';
 import { Switch } from '@yunke/component/ui/switch';
 import { useAppConfigStorage } from '@yunke/core/components/hooks/use-app-config-storage';
+import {
+  isCloudSyncEnabled,
+  setCloudSyncEnabled,
+} from '@yunke/core/modules/cloud-storage';
 import { GlobalDialogService } from '@yunke/core/modules/dialogs';
 import { DesktopApiService } from '@yunke/core/modules/desktop-api';
 import {
@@ -16,6 +20,7 @@ import {
   requestOfflineRootHandle,
 } from '@yunke/core/modules/storage/offline-file-handle';
 import { useService, useServiceOptional } from '@toeverything/infra';
+import { Cloud, HardDrive } from 'lucide-react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 const DEFAULT_OFFLINE_PATH_LABEL = '默认（应用数据目录）';
@@ -26,6 +31,10 @@ export const OfflineSettings = () => {
   const desktopApi = useServiceOptional(DesktopApiService);
   const [offlineHandleName, setOfflineHandleName] = useState('');
   const supportsFileAccess = isFileSystemAccessSupported();
+  
+  // 🔧 云同步开关状态
+  const [cloudSyncEnabledState, setCloudSyncEnabledState] = useState(() => isCloudSyncEnabled());
+  const [cloudSyncPending, setCloudSyncPending] = useState(false);
 
   const offlineConfig = useMemo(
     () => ({
@@ -60,7 +69,7 @@ export const OfflineSettings = () => {
         return;
       }
       updateOfflineConfig({ enabled: checked });
-      notify.info({
+      notify.success({
         title: '离线模式设置已更新',
         message: '重启应用后生效',
       });
@@ -99,7 +108,7 @@ export const OfflineSettings = () => {
       clearOfflineRootHandle().catch(console.error);
       setOfflineHandleName('');
     }
-    notify.info({
+    notify.success({
       title: '已恢复默认数据目录',
       message: '重启应用后生效',
     });
@@ -135,14 +144,92 @@ export const OfflineSettings = () => {
     globalDialogService.open('create-workspace', { serverId: 'local' });
   }, [globalDialogService]);
 
+  // 🔧 云同步开关切换处理
+  const handleToggleCloudSync = useCallback(
+    async (checked: boolean) => {
+      setCloudSyncPending(true);
+      
+      try {
+        // 设置开关状态
+        setCloudSyncEnabled(checked);
+        setCloudSyncEnabledState(checked);
+        
+        notify.success({
+          title: checked ? '云同步已开启' : '云同步已关闭',
+          message: '重新加载页面后生效',
+        });
+        
+        // 询问是否立即重新加载
+        const shouldReload = window.confirm(
+          checked
+            ? '云同步已开启，本地数据将自动同步到云端。\n是否立即重新加载页面？'
+            : '云同步已关闭，数据将仅保存在本地。\n是否立即重新加载页面？'
+        );
+        
+        if (shouldReload) {
+          window.location.reload();
+        }
+      } catch (error) {
+        console.error('云同步开关切换失败:', error);
+        notify.error({ title: '操作失败' });
+        // 恢复状态
+        setCloudSyncEnabledState(!checked);
+      } finally {
+        setCloudSyncPending(false);
+      }
+    },
+    []
+  );
+
   return (
     <>
       <SettingHeader
-        title="离线模式"
-        subtitle="用于无后端环境下的本地存储与数据管理。"
+        title="数据同步设置"
+        subtitle="管理数据的存储位置和同步方式。默认为离线模式，数据仅保存在本地。"
       />
 
-      <SettingWrapper title="离线配置">
+      {/* 🔧 云同步开关 - 核心功能 */}
+      <SettingWrapper title="云同步">
+        <SettingRow
+          name={
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+              {cloudSyncEnabledState ? (
+                <Cloud size={18} style={{ color: 'var(--yunke-brand-color)' }} />
+              ) : (
+                <HardDrive size={18} style={{ color: 'var(--yunke-text-secondary-color)' }} />
+              )}
+              <span>云同步</span>
+            </div>
+          }
+          desc={
+            cloudSyncEnabledState
+              ? '已开启 - 数据自动同步到云端，支持多设备访问'
+              : '已关闭 - 数据仅保存在本地（离线模式）'
+          }
+        >
+          <Switch
+            checked={cloudSyncEnabledState}
+            onChange={handleToggleCloudSync}
+            disabled={cloudSyncPending}
+          />
+        </SettingRow>
+        
+        {!cloudSyncEnabledState && (
+          <SettingRow
+            name=""
+            desc="⚠️ 离线模式下，数据不会同步到云端。如需多设备访问或数据备份，请开启云同步。"
+          />
+        )}
+        
+        {cloudSyncEnabledState && (
+          <SettingRow
+            name=""
+            desc="✅ 云同步已开启，您的数据将自动备份到云端，并可在多设备间同步。"
+          />
+        )}
+      </SettingWrapper>
+
+      <SettingWrapper title="离线存储配置">
         <SettingRow
           name="启用离线模式"
           desc="启用后本地数据将存储在离线目录中，不依赖后端服务。"
@@ -159,12 +246,12 @@ export const OfflineSettings = () => {
         >
           <div style={{ display: 'flex', gap: 8 }}>
             <Button onClick={handleSelectPath}>选择文件夹</Button>
-            <Button onClick={handleClearPath} variant="outline">
+            <Button onClick={handleClearPath} variant="secondary">
               恢复默认
             </Button>
             <Button
               onClick={handleCopyPath}
-              variant="outline"
+              variant="secondary"
               disabled={!offlineConfig.dataPath || !BUILD_CONFIG.isElectron}
             >
               复制路径
@@ -175,7 +262,7 @@ export const OfflineSettings = () => {
           name="重启应用"
           desc="修改离线设置后需要重启应用才能生效。"
         >
-          <Button onClick={handleRestart} variant="outline">
+          <Button onClick={handleRestart} variant="secondary">
             立即重启
           </Button>
         </SettingRow>
@@ -183,7 +270,7 @@ export const OfflineSettings = () => {
           name="创建本地工作区"
           desc="离线模式下的数据将以本地SQLite工作区保存。"
         >
-          <Button onClick={handleCreateLocalWorkspace} variant="outline">
+          <Button onClick={handleCreateLocalWorkspace} variant="secondary">
             创建本地工作区
           </Button>
         </SettingRow>

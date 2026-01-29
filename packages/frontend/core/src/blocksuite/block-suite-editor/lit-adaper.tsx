@@ -42,6 +42,7 @@ import {
   useEffect,
   useMemo,
   useRef,
+  useState,
 } from 'react';
 
 import {
@@ -299,6 +300,39 @@ const BlocksuiteEdgelessEditorComponent = forwardRef<
   const [specs, portals] = usePatchSpecs('edgeless');
   const editorRef = useRef<EdgelessEditor | null>(null);
   const renderCountRef = useRef(0);
+  const [isReady, setIsReady] = useState(false);
+
+  // 🔧 确保文档有 surface block，否则 edgeless 模式无法工作
+  useEffect(() => {
+    const ensureSurfaceBlock = () => {
+      try {
+        const surfaces = page.getBlocksByFlavour('yunke:surface');
+        if (surfaces.length === 0) {
+          console.warn('[Edgeless] 文档缺少 surface block，正在创建...');
+          // 找到根块
+          const rootBlock = page.root;
+          if (rootBlock) {
+            // 使用事务来添加 surface block
+            page.transact(() => {
+              page.addBlock('yunke:surface', {}, rootBlock.id);
+            });
+            console.log('[Edgeless] surface block 创建成功');
+          } else {
+            console.error('[Edgeless] 无法创建 surface block：找不到根块');
+          }
+        }
+        // 延迟一帧确保 DOM 更新
+        requestAnimationFrame(() => {
+          setIsReady(true);
+        });
+      } catch (error) {
+        console.error('[Edgeless] 确保 surface block 时出错:', error);
+        setIsReady(true); // 仍然尝试渲染
+      }
+    };
+
+    ensureSurfaceBlock();
+  }, [page]);
 
   useEffect(() => {
     renderCountRef.current++;
@@ -336,6 +370,17 @@ const BlocksuiteEdgelessEditorComponent = forwardRef<
         .catch(console.error);
     }
   }, []);
+
+  // 等待 surface block 准备就绪
+  if (!isReady) {
+    return (
+      <div className={styles.yunkeEdgelessDocViewport}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%' }}>
+          正在初始化画板...
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.yunkeEdgelessDocViewport}>

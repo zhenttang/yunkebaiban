@@ -232,12 +232,24 @@ export class EdgelessCopilotWidget extends WidgetComponent<RootBlockModel> {
   override connectedCallback(): void {
     super.connectedCallback();
 
-    const CopilotSelectionTool = this.gfx.tool.get(CopilotTool);
+    // 🔧 安全检查：如果 CopilotTool 未注册（AI 未启用），则跳过初始化
+    let CopilotSelectionTool: CopilotTool | null = null;
+    try {
+      CopilotSelectionTool = this.gfx.tool.get(CopilotTool);
+    } catch (e) {
+      // CopilotTool 未注册，AI 功能未启用，跳过 copilot widget 初始化
+      console.debug('[EdgelessCopilotWidget] CopilotTool 未注册，跳过初始化');
+      return;
+    }
+
+    if (!CopilotSelectionTool) {
+      return;
+    }
 
     this._disposables.add(
       CopilotSelectionTool.draggingAreaUpdated.subscribe(shouldShowPanel => {
         this._visible = true;
-        this._updateSelection(CopilotSelectionTool.area);
+        this._updateSelection(CopilotSelectionTool!.area);
         if (shouldShowPanel) {
           this._showCopilotInput();
           this._watchClickOutside();
@@ -251,7 +263,7 @@ export class EdgelessCopilotWidget extends WidgetComponent<RootBlockModel> {
       this.gfx.viewport.viewportUpdated.subscribe(() => {
         if (!this._visible) return;
 
-        this._updateSelection(CopilotSelectionTool.area);
+        this._updateSelection(CopilotSelectionTool!.area);
       })
     );
 
