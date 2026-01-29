@@ -62,6 +62,17 @@ if (!process.env.SKIP_WEB_BUILD) {
   // Use copy instead of move so source files remain for future builds
   await fs.copy(yunkeWebOutDir, publicYunkeOutDir, { overwrite: true });
   console.log(`✓ Copied frontend resources from ${yunkeWebOutDir} to ${publicYunkeOutDir}`);
+
+  // Copy onboarding template for first-launch experience
+  const templatesDir = path.join(repoRootDir, 'packages', 'frontend', 'templates');
+  const onboardingZip = path.join(templatesDir, 'onboarding', 'onboarding.zip');
+  const onboardingDest = path.join(publicYunkeOutDir, 'onboarding.zip');
+  if (await fs.pathExists(onboardingZip)) {
+    await fs.copy(onboardingZip, onboardingDest, { overwrite: true });
+    console.log(`✓ Copied onboarding template to ${onboardingDest}`);
+  } else {
+    console.warn(`⚠ Onboarding template not found at ${onboardingZip}`);
+  }
 }
 
 // step 2: update app-updater.yml content with build type in resources folder

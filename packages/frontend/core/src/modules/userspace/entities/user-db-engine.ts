@@ -46,6 +46,25 @@ export class UserDBEngine extends Entity<{
     const serverBaseUrl = serverService.server.serverMetadata.baseUrl;
     const isSelfHosted = serverService.server.serverMetadata.type === ServerDeploymentType.Selfhosted;
 
+    // 🔧 检查云同步是否启用（Electron 离线模式）
+    const isCloudEnabled = (() => {
+      try {
+        if (typeof window !== 'undefined') {
+          const storage = (window as any).__sharedStorage?.globalState;
+          if (storage) {
+            return storage.get('yunke_cloud_sync_enabled') === 'true';
+          }
+          return localStorage?.getItem('yunke_cloud_sync_enabled') === 'true';
+        }
+        return false;
+      } catch {
+        return false;
+      }
+    })();
+
+    // 🔧 Electron 离线模式：不配置云存储
+    const shouldUseCloud = !BUILD_CONFIG.isElectron || isCloudEnabled;
+
     const { store, dispose } = this.nbstoreService.openStore(
       `userspace:${serverService.server.id},${this.userId}`,
       {
@@ -67,8 +86,8 @@ export class UserDBEngine extends Entity<{
             },
           },
         },
-        // ✅ UserDB 也使用云端存储
-        remotes: {
+        // 🔧 只在云同步启用时配置云端存储
+        remotes: shouldUseCloud ? {
           [`cloud:${serverService.server.id}`]: {
             doc: {
               name: 'CloudDocStorage',
@@ -80,7 +99,7 @@ export class UserDBEngine extends Entity<{
               },
             },
           },
-        },
+        } : {},
       }
     );
     this.client = store;

@@ -37,8 +37,9 @@ async function make() {
   const winstallerConfig: ElectronWinstallerOptions = {
     name: appName,
     title: appName,
-    // 生成 MSI 安装包（需要安装 WiX Toolset）
-    noMsi: false,
+    // 禁用 MSI（Squirrel 要求 SemVer 三段版本，与 WiX 四段版本冲突）
+    // 如需 MSI，请使用 make-nsis 命令
+    noMsi: true,
     exe: `${appName}.exe`,
     setupExe: `${appName}-${packageJSON.version} Setup.exe`,
     version: packageJSON.version,

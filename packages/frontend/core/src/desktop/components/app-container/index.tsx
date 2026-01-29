@@ -62,6 +62,26 @@ const DesktopLayout = ({
 }: PropsWithChildren<{ fallback?: boolean }>) => {
   const workspaceService = useServiceOptional(WorkspaceService);
   const isInWorkspace = !!workspaceService;
+  
+  // fallback 模式下使用简化的 UI，不依赖 Framework 服务
+  if (fallback) {
+    return (
+      <div className={styles.desktopAppViewContainer}>
+        <div className={styles.desktopTabsHeader}>
+          {/* fallback 模式：简化的加载状态 */}
+          <div style={{ height: '52px', display: 'flex', alignItems: 'center', padding: '0 16px' }}>
+            <span style={{ color: '#666' }}>加载中...</span>
+          </div>
+        </div>
+        <div className={styles.desktopAppViewMain}>
+          {/* 简化的侧边栏骨架 */}
+          <div style={{ width: '248px', background: 'var(--affine-background-secondary-color, #f5f5f5)' }} />
+          <div style={{ flex: 1 }}>{children}</div>
+        </div>
+      </div>
+    );
+  }
+  
   return (
     <div className={styles.desktopAppViewContainer}>
       <div className={styles.desktopTabsHeader}>
@@ -75,11 +95,7 @@ const DesktopLayout = ({
         />
       </div>
       <div className={styles.desktopAppViewMain}>
-        {fallback ? (
-          <AppSidebarFallback />
-        ) : (
-          isInWorkspace && <RootAppSidebar />
-        )}
+        {isInWorkspace && <RootAppSidebar />}
         <MainContainer>{children}</MainContainer>
       </div>
     </div>

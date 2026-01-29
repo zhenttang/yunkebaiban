@@ -1293,7 +1293,59 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
       };
     }
     
-    // 🌐 [纯云存储模式] 标准浏览器环境配置
+    // 🔧 [离线优先模式] Electron 桌面端默认使用本地存储，不连接云端
+    // 检查云同步是否启用
+    const isCloudEnabled = (() => {
+      try {
+        // 从 localStorage 或 sharedStorage 读取云同步开关状态
+        if (typeof window !== 'undefined') {
+          const storage = (window as any).__sharedStorage?.globalState;
+          if (storage) {
+            return storage.get('yunke_cloud_sync_enabled') === 'true';
+          }
+          return localStorage.getItem('yunke_cloud_sync_enabled') === 'true';
+        }
+        return false;
+      } catch {
+        return false;
+      }
+    })();
+    
+    // Electron 环境默认使用本地存储
+    if (BUILD_CONFIG.isElectron && !isCloudEnabled) {
+      console.log('💾 [CloudWorkspaceFlavourProvider] Electron 离线模式，使用本地存储（不连接云端）');
+      return {
+        local: {
+          doc: {
+            name: this.DocStorageType.identifier || 'SqliteDocStorage',
+            opts: {
+              flavour: this.flavour,
+              type: 'workspace',
+              id: workspaceId,
+            },
+          },
+          blob: {
+            name: this.BlobStorageType.identifier || 'SqliteBlobStorage',
+            opts: {
+              flavour: this.flavour,
+              type: 'workspace',
+              id: workspaceId,
+            },
+          },
+          awareness: {
+            name: 'BroadcastChannelAwarenessStorage',
+            opts: {
+              id: `${this.flavour}:${workspaceId}`,
+            },
+          },
+        },
+        // 🔧 离线模式：不配置 remotes，不会尝试连接服务器
+        remotes: {},
+      };
+    }
+    
+    // 🌐 [云存储模式] 云同步已启用，使用云存储配置
+    console.log('☁️ [CloudWorkspaceFlavourProvider] 云同步已启用，配置云存储');
     
     return {
       local: {

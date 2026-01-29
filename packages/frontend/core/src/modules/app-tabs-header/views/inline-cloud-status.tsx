@@ -7,32 +7,18 @@ interface InlineCloudStatusProps {
   className?: string;
 }
 
-// 模拟 useCloudStorage hook - 为桌面应用提供假数据
-const useCloudStorageMock = () => {
-  return {
-    storageMode: 'cloud' as 'cloud' | 'local' | 'detecting' | 'error',
-    isConnected: true,
-    isOnline: true,
-    lastSync: new Date(Date.now() - 30000), // 30秒前
-    pendingOperationsCount: 0,
-    reconnect: () => {}
-  };
-};
-
 /**
  * 内联云端连接状态组件 - 集成到应用标签栏
- * 替代原有的固定位置状态显示
+ * 默认显示本地模式，避免依赖 CloudStorageProvider
  */
 export const InlineCloudStatus: React.FC<InlineCloudStatusProps> = ({ className }) => {
-  // 临时使用模拟数据，实际使用时替换为真实的 useCloudStorage
-  const {
-    storageMode,
-    isConnected,
-    isOnline,
-    lastSync,
-    pendingOperationsCount,
-    reconnect
-  } = useCloudStorageMock();
+  // 默认本地模式，不依赖 CloudStorageProvider
+  const storageMode = 'local' as const;
+  const isConnected = false;
+  const isOnline = true;
+  const lastSync = null;
+  const pendingOperationsCount = 0;
+  const reconnect = () => {};
 
   const getStatusIcon = () => {
     if (!isOnline) return '🚫';

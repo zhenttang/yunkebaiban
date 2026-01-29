@@ -196,7 +196,27 @@ const CloudStorageContext = createContext<CloudStorageStatus | null>(null);
 export const useCloudStorage = () => {
   const context = useContext(CloudStorageContext);
   if (!context) {
-    throw new Error('useCloudStorage must be used within CloudStorageProvider');
+    // 返回安全的默认值，而不是抛出错误，防止页面崩溃
+    return {
+      isConnected: false,
+      storageMode: 'local' as const,
+      lastSync: null,
+      socket: null,
+      reconnect: async () => {},
+      pushDocUpdate: async () => 0,
+      currentWorkspaceId: null,
+      isOnline: false,
+      pendingOperationsCount: 0,
+      offlineOperationsCount: 0,
+      syncOfflineOperations: async () => {},
+      sessionId: '',
+      clientId: null,
+      sessions: [],
+      syncStatus: 'idle' as const,
+      syncError: null,
+      cloudSyncEnabled: false,
+      setCloudSyncEnabled: () => {},
+    } as CloudStorageStatus;
   }
   return context;
 };
