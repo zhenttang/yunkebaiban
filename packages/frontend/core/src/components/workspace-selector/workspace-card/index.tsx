@@ -314,30 +314,24 @@ export const WorkspaceCard = forwardRef<
         {...props}
       >
         <div className={clsx(styles.infoContainer, infoClassName)}>
-          {information ? (
-            <WorkspaceAvatar
-              meta={workspaceMetadata}
-              rounded={3}
-              data-testid="workspace-avatar"
-              size={avatarSize}
-              name={name}
-              colorfulFallback
-            />
-          ) : (
-            <Skeleton width={avatarSize} height={avatarSize} />
-          )}
+          <WorkspaceAvatar
+            meta={workspaceMetadata}
+            rounded={3}
+            data-testid="workspace-avatar"
+            size={avatarSize}
+            name={name}
+            colorfulFallback
+          />
           <div className={styles.workspaceTitleContainer}>
-            {information ? (
-              showSyncStatus ? (
-                <WorkspaceSyncInfo
-                  workspaceProfile={information}
-                  workspaceMetadata={workspaceMetadata}
-                />
-              ) : (
-                <span className={styles.workspaceName}>{information.name}</span>
-              )
+            {showSyncStatus && information ? (
+              <WorkspaceSyncInfo
+                workspaceProfile={information}
+                workspaceMetadata={workspaceMetadata}
+              />
             ) : (
-              <Skeleton width={100} />
+              <span className={styles.workspaceName}>
+                {information?.name || name}
+              </span>
             )}
           </div>
           <div className={styles.showOnCardHover}>

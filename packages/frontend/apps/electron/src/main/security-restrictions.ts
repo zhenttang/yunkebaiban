@@ -2,7 +2,16 @@ import { app, shell } from 'electron';
 
 app.on('web-contents-created', (_, contents) => {
   const isInternalUrl = (url: string) => {
-    return url.startsWith('file://.');
+    // 内部 URL 包括：
+    // 1. file:// 协议（本地文件）
+    // 2. yunke:// 协议（应用协议）
+    // 3. 开发服务器 URL（localhost）
+    // 4. about: 协议
+    if (url.startsWith('file://')) return true;
+    if (url.startsWith('yunke://') || url.startsWith('yunke-canary://') || url.startsWith('yunke-dev://')) return true;
+    if (url.startsWith('http://localhost') || url.startsWith('http://127.0.0.1')) return true;
+    if (url.startsWith('about:')) return true;
+    return false;
   };
   /**
    * Block navigation to origins not on the allowlist.
