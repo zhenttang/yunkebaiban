@@ -9,7 +9,6 @@ import {
   FolderIcon,
   InformationIcon,
   KeyboardIcon,
-  LocalWorkspaceIcon,
   MeetingIcon,
   NotificationIcon,
   PenIcon,
@@ -28,10 +27,8 @@ import { ExperimentalFeatures } from './experimental-features';
 import { PaymentIcon, UpgradeIcon } from './icons';
 import { MeetingsSettings } from './meetings';
 import { NotificationSettings } from './notifications';
-import { OfflineSettings } from './offline';
 import { YUNKEPricingPlans } from './plans';
 import { Shortcuts } from './shortcuts';
-import { isFileSystemAccessSupported } from '../../../../modules/storage/offline-file-handle';
 
 export type GeneralSettingList = SettingSidebarItem[];
 
@@ -125,14 +122,7 @@ export const useGeneralSettingList = (): GeneralSettingList => {
       }
     }
 
-    if (BUILD_CONFIG.isElectron || isFileSystemAccessSupported()) {
-      settings.push({
-        key: 'offline',
-        title: '离线',
-        icon: <LocalWorkspaceIcon />,
-        testId: 'offline-panel-trigger',
-      });
-    }
+    // 离线/存储设置统一在"工作区设置 → 储存"中管理，不再单独显示
     
     // backup 功能依赖 DesktopApiService，只在 Electron 桌面版本可用
     if (BUILD_CONFIG.isElectron) {
@@ -198,8 +188,6 @@ export const GeneralSetting = ({
       return <ExperimentalFeatures />;
     case 'backup':
       return <BackupSettingPanel />;
-    case 'offline':
-      return <OfflineSettings />;
     default:
       return null;
   }

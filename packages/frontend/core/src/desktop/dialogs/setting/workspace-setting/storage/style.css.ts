@@ -255,3 +255,65 @@ export const docSizeNote = style({
   color: cssVarV2('text/secondary'),
   verticalAlign: 'middle',
 });
+
+// 存储路径区域样式
+export const storagePathSection = style({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '12px',
+});
+
+export const storagePathDisplay = style({
+  padding: '8px 12px',
+  borderRadius: '6px',
+  backgroundColor: cssVarV2('layer/background/secondary'),
+  fontSize: cssVar('fontXs'),
+  fontFamily: 'monospace',
+  wordBreak: 'break-all',
+  color: cssVarV2('text/primary'),
+  border: `1px solid ${cssVarV2('layer/insideBorder/border')}`,
+});
+
+export const storagePathButtons = style({
+  display: 'flex',
+  gap: '8px',
+  flexWrap: 'wrap',
+});
+
+// 迁移流程步骤样式
+export const migrationSteps = style({
+  display: 'flex',
+  gap: '8px',
+  alignItems: 'center',
+  padding: '12px',
+  borderRadius: '8px',
+  backgroundColor: cssVarV2('layer/background/secondary'),
+  marginTop: '8px',
+});
+
+export const migrationStep = style({
+  display: 'flex',
+  alignItems: 'center',
+  gap: '6px',
+  fontSize: cssVar('fontXs'),
+  color: cssVarV2('text/secondary'),
+});
+
+export const migrationStepNumber = style({
+  width: '20px',
+  height: '20px',
+  borderRadius: '50%',
+  backgroundColor: cssVarV2('button/primary'),
+  color: '#fff',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  fontSize: '11px',
+  fontWeight: 600,
+  flexShrink: 0,
+});
+
+export const migrationStepArrow = style({
+  color: cssVarV2('icon/secondary'),
+  fontSize: '14px',
+});

@@ -153,9 +153,12 @@ class ViewProvider {
           mixpanel.track(eventName, props);
         },
       },
+      // Electron 环境下使用 CDN URL，Web 环境下使用本地路径
       fontConfig: YunkeCanvasTextFonts.map(font => ({
         ...font,
-        url: environment.publicPath + 'fonts/' + font.url.split('/').pop(),
+        url: BUILD_CONFIG.isElectron
+          ? font.url // Electron: 使用原始 CDN URL
+          : environment.publicPath + 'fonts/' + font.url.split('/').pop(),
       })),
       peekView: !peekViewService
         ? undefined

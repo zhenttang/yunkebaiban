@@ -365,7 +365,8 @@ export function createHTMLPlugins(
   }
 
   // 🔥 性能优化：启用资源预加载和defer
-  if (!BUILD_CONFIG.debug) {
+  // Electron 环境下跳过字体预加载（file:// 协议下无法正确解析）
+  if (!BUILD_CONFIG.debug && BUILD_CONFIG.distribution !== 'desktop') {
     plugins.push(PerformanceOptimizationPlugin);
   }
 

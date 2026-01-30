@@ -71,7 +71,10 @@ export class FontLoaderService extends LifeCycleWatcher {
       ...fonts.map(font => {
         const fontFace = initFontFace(font);
         document.fonts.add(fontFace);
-        fontFace.load().catch(console.error);
+        // 静默处理字体加载错误，不打印到控制台
+        fontFace.load().catch(() => {
+          // 字体加载失败时静默忽略，使用系统默认字体作为后备
+        });
         return fontFace;
       })
     );

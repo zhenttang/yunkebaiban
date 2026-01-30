@@ -20,6 +20,7 @@ import {
   getSpaceDBPath,
   getWorkspaceBasePathV1,
   getWorkspaceMeta,
+  getWorkspacesBasePath,
 } from './meta';
 
 async function deleteWorkspaceV1(workspaceId: string) {
@@ -188,6 +189,111 @@ export async function getWorkspaceStoragePath(
   id: string
 ) {
   return getSpaceDBPath(peer, spaceType, id);
+}
+
+/**
+ * 获取默认数据存储目录
+ */
+export async function getDefaultDataPath() {
+  try {
+    const basePath = await getWorkspacesBasePath();
+    logger.info('[getDefaultDataPath] 获取数据目录', { basePath });
+    return {
+      path: basePath,
+      localPath: path.join(basePath, 'local'),
+    };
+  } catch (error) {
+    logger.error('[getDefaultDataPath] 获取数据目录失败', error);
+    // 返回一个默认值，避免前端显示"暂不可用"
+    const fallbackPath = path.join(
+      process.env.APPDATA || process.env.HOME || '',
+      'YUNKE-canary',
+      'workspaces'
+    );
+    return {
+      path: fallbackPath,
+      localPath: path.join(fallbackPath, 'local'),
+    };
+  }
+}
+
+/**
+ * 迁移所有本地数据到新目录
+ * 流程：
+ * 1. 复制数据到新目录
+ * 2. 更新配置文件（config.json）
+ * 3. 返回结果，提示用户重启
+ */
+export async function migrateAllDataToPath(targetPath: string) {
+  if (!targetPath) {
+    return { error: 'TARGET_PATH_INVALID' as const, message: '目标路径无效' };
+  }
+  
+  const currentBasePath = await getWorkspacesBasePath();
+  const targetBasePath = path.join(targetPath, 'workspaces');
+  
+  if (path.resolve(currentBasePath) === path.resolve(targetBasePath)) {
+    return { skipped: true, message: '目标路径与当前路径相同' };
+  }
+  
+  try {
+    // 1. 复制数据到新目录（如果当前有数据）
+    if (await fs.pathExists(currentBasePath)) {
+      logger.info('[migrate] 开始复制数据', {
+        from: currentBasePath,
+        to: targetBasePath,
+      });
+      
+      await fs.ensureDir(targetBasePath);
+      await fs.copy(currentBasePath, targetBasePath, { overwrite: true });
+      
+      logger.info('[migrate] 数据复制完成');
+    } else {
+      logger.info('[migrate] 当前目录没有数据，仅更新配置');
+      await fs.ensureDir(targetBasePath);
+    }
+    
+    // 2. 更新配置文件
+    const userDataPath = await mainRPC.getPath('userData');
+    const configPath = path.join(userDataPath, 'config.json');
+    
+    let config: Record<string, any> = {};
+    if (await fs.pathExists(configPath)) {
+      try {
+        config = await fs.readJson(configPath);
+      } catch {
+        config = {};
+      }
+    }
+    
+    // 更新 offline 配置
+    config.offline = {
+      ...config.offline,
+      enabled: true,
+      dataPath: targetPath,
+    };
+    
+    await fs.writeJson(configPath, config, { spaces: 2 });
+    
+    logger.info('[migrate] 配置文件已更新', {
+      configPath,
+      newDataPath: targetPath,
+    });
+    
+    return {
+      success: true,
+      fromPath: currentBasePath,
+      toPath: targetBasePath,
+      configUpdated: true,
+      message: '数据迁移完成，请重启应用使设置生效',
+    };
+  } catch (error) {
+    logger.error('[migrate] 数据迁移失败', error);
+    return {
+      error: 'MIGRATION_FAILED' as const,
+      message: (error as Error).message,
+    };
+  }
 }
 
 export async function showWorkspaceStorageInFolder(

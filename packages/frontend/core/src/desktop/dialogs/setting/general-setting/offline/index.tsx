@@ -20,10 +20,8 @@ import {
   requestOfflineRootHandle,
 } from '@yunke/core/modules/storage/offline-file-handle';
 import { useService, useServiceOptional } from '@toeverything/infra';
-import { Cloud, HardDrive } from 'lucide-react';
+import { Cloud, HardDrive, FolderOpen } from 'lucide-react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-
-const DEFAULT_OFFLINE_PATH_LABEL = '默认（应用数据目录）';
 
 export const OfflineSettings = () => {
   const [config, setConfig] = useAppConfigStorage();
@@ -35,6 +33,10 @@ export const OfflineSettings = () => {
   // 🔧 云同步开关状态
   const [cloudSyncEnabledState, setCloudSyncEnabledState] = useState(() => isCloudSyncEnabled());
   const [cloudSyncPending, setCloudSyncPending] = useState(false);
+  
+  // 🔧 默认数据路径
+  const [defaultDataPath, setDefaultDataPath] = useState('');
+  const [isMigrating, setIsMigrating] = useState(false);
 
   const offlineConfig = useMemo(
     () => ({
@@ -77,10 +79,52 @@ export const OfflineSettings = () => {
     [offlineConfig.dataPath, supportsFileAccess, updateOfflineConfig]
   );
 
+  // 🔧 数据迁移处理 - 必须在 handleSelectPath 之前定义
+  const handleMigrateData = useCallback(async (targetPath: string) => {
+    if (!desktopApi?.handler?.workspace?.migrateAllDataToPath) {
+      notify.error({ title: '当前环境不支持数据迁移' });
+      return false;
+    }
+    
+    setIsMigrating(true);
+    try {
+      const result = await desktopApi.handler.workspace.migrateAllDataToPath(targetPath);
+      if (result.error) {
+        notify.error({ title: '数据迁移失败', message: result.message || result.error });
+        return false;
+      }
+      if (result.skipped) {
+        notify.info({ title: result.message || '无需迁移' });
+        return true;
+      }
+      notify.success({ title: '数据迁移成功', message: `已迁移到 ${result.toPath}` });
+      return true;
+    } catch (error) {
+      console.error('数据迁移失败:', error);
+      notify.error({ title: '数据迁移失败' });
+      return false;
+    } finally {
+      setIsMigrating(false);
+    }
+  }, [desktopApi]);
+
   const handleSelectPath = useCallback(async () => {
     if (BUILD_CONFIG.isElectron && desktopApi?.handler?.dialog?.selectDBFileLocation) {
       const result = await desktopApi.handler.dialog.selectDBFileLocation();
       if (result?.canceled || !result?.filePath) return;
+      
+      // 询问是否迁移现有数据
+      const shouldMigrate = window.confirm(
+        '是否将现有数据迁移到新目录？\n\n' +
+        '选择"确定"将复制所有现有数据到新位置。\n' +
+        '选择"取消"仅更改存储位置（新数据将保存到新位置，现有数据保留在原位置）。'
+      );
+      
+      if (shouldMigrate) {
+        const migrated = await handleMigrateData(result.filePath);
+        if (!migrated) return;
+      }
+      
       updateOfflineConfig({ dataPath: result.filePath });
       notify.success({
         title: '已更新离线数据目录',
@@ -100,7 +144,7 @@ export const OfflineSettings = () => {
       title: '已更新离线数据目录',
       message: '重启应用后生效',
     });
-  }, [desktopApi, supportsFileAccess, updateOfflineConfig]);
+  }, [desktopApi, supportsFileAccess, updateOfflineConfig, handleMigrateData]);
 
   const handleClearPath = useCallback(() => {
     updateOfflineConfig({ dataPath: '' });
@@ -131,6 +175,37 @@ export const OfflineSettings = () => {
       .then(name => setOfflineHandleName(name))
       .catch(console.error);
   }, [config.offline]);
+
+  // 🔧 获取默认数据路径
+  useEffect(() => {
+    if (!BUILD_CONFIG.isElectron || !desktopApi?.handler?.workspace?.getDefaultDataPath) return;
+    desktopApi.handler.workspace.getDefaultDataPath()
+      .then((result: { path: string; localPath: string }) => {
+        setDefaultDataPath(result.path);
+      })
+      .catch(console.error);
+  }, [desktopApi]);
+
+  // 🔧 在资源管理器中打开数据目录
+  const handleOpenDataFolder = useCallback(async () => {
+    const pathToOpen = offlineConfig.dataPath || defaultDataPath;
+    if (!pathToOpen) {
+      notify.error({ title: '无法获取数据目录路径' });
+      return;
+    }
+    try {
+      if (desktopApi?.handler?.ui?.showItemInFolder) {
+        await desktopApi.handler.ui.showItemInFolder(pathToOpen);
+      } else {
+        // 复制路径到剪贴板作为后备
+        await navigator.clipboard.writeText(pathToOpen);
+        notify.success({ title: '路径已复制到剪贴板', message: pathToOpen });
+      }
+    } catch (error) {
+      console.error(error);
+      notify.error({ title: '无法打开目录' });
+    }
+  }, [offlineConfig.dataPath, defaultDataPath, desktopApi]);
 
   const handleRestart = useCallback(async () => {
     if (!desktopApi?.handler?.ui?.restartApp) {
@@ -237,24 +312,39 @@ export const OfflineSettings = () => {
           <Switch checked={offlineConfig.enabled} onChange={handleToggleOffline} />
         </SettingRow>
         <SettingRow
-          name="离线数据目录"
+          name="数据存储位置"
           desc={
-            (BUILD_CONFIG.isElectron ? offlineConfig.dataPath : offlineHandleName)
-              ? `当前路径：${BUILD_CONFIG.isElectron ? offlineConfig.dataPath : offlineHandleName}（本地工作区统一根目录）`
-              : `当前路径：${DEFAULT_OFFLINE_PATH_LABEL}（本地工作区统一根目录）`
+            <div>
+              <div style={{ marginBottom: 4 }}>
+                {BUILD_CONFIG.isElectron && offlineConfig.dataPath
+                  ? `自定义路径：${offlineConfig.dataPath}`
+                  : BUILD_CONFIG.isElectron && defaultDataPath
+                  ? `默认路径：${defaultDataPath}`
+                  : offlineHandleName
+                  ? `当前路径：${offlineHandleName}`
+                  : '默认路径：应用数据目录'
+                }
+              </div>
+              <div style={{ fontSize: 12, color: 'var(--yunke-text-secondary-color)' }}>
+                所有本地工作区的数据将保存在此目录下
+              </div>
+            </div>
           }
         >
-          <div style={{ display: 'flex', gap: 8 }}>
-            <Button onClick={handleSelectPath}>选择文件夹</Button>
-            <Button onClick={handleClearPath} variant="secondary">
+          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+            <Button onClick={handleSelectPath} disabled={isMigrating}>
+              {isMigrating ? '迁移中...' : '更改位置'}
+            </Button>
+            <Button onClick={handleClearPath} variant="secondary" disabled={isMigrating}>
               恢复默认
             </Button>
             <Button
-              onClick={handleCopyPath}
+              onClick={handleOpenDataFolder}
               variant="secondary"
-              disabled={!offlineConfig.dataPath || !BUILD_CONFIG.isElectron}
+              disabled={!defaultDataPath && !offlineConfig.dataPath}
+              title="在文件管理器中打开"
             >
-              复制路径
+              <FolderOpen size={16} />
             </Button>
           </div>
         </SettingRow>

@@ -3,8 +3,10 @@ import {
   deleteBackupWorkspace,
   deleteWorkspaceStorageFile,
   deleteWorkspace,
+  getDefaultDataPath,
   getWorkspaceStoragePath,
   getDeletedWorkspaces,
+  migrateAllDataToPath,
   migrateWorkspaceStoragePath,
   showWorkspaceStorageInFolder,
   trashWorkspace,
@@ -26,4 +28,6 @@ export const workspaceHandlers = {
   showStorageInFolder: showWorkspaceStorageInFolder,
   migrateStoragePath: migrateWorkspaceStoragePath,
   deleteStorageFile: deleteWorkspaceStorageFile,
+  getDefaultDataPath: getDefaultDataPath,
+  migrateAllDataToPath: migrateAllDataToPath,
 };

@@ -153,6 +153,10 @@ export const uiHandlers = {
   openExternal(_, url: string) {
     return shell.openExternal(url);
   },
+  showItemInFolder(_, path: string) {
+    // 如果是目录，直接打开目录；如果是文件，在资源管理器中显示文件
+    return shell.openPath(path);
+  },
 
   // tab handlers
   isActiveTab: async e => {
