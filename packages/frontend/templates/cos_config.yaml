@@ -1,3 +1,5 @@
+# ⚠️ 此文件为模板，请复制为 cos_config.local.yaml 并填入真实密钥
+# 不要将真实密钥提交到 git 仓库
 cos:
   base:
     secretid: YOUR_SECRET_ID
@@ -5,7 +7,7 @@ cos:
     sessiontoken: ""
     protocol: https
   buckets:
-    - name: yckeji0316-1312042802
+    - name: YOUR_BUCKET_NAME
       alias: main
       region: ap-beijing
       endpoint: ""

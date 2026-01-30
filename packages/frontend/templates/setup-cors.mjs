@@ -10,9 +10,10 @@ async function setupCORS() {
     // 加载COS SDK
     const COS = require('../../../node_modules/cos-nodejs-sdk-v5');
     
+    // ⚠️ 请使用环境变量或从配置文件读取，不要硬编码密钥
     const cos = new COS({
-      SecretId: 'YOUR_SECRET_ID',
-      SecretKey: 'YOUR_SECRET_KEY',
+      SecretId: process.env.COS_SECRET_ID || 'YOUR_SECRET_ID',
+      SecretKey: process.env.COS_SECRET_KEY || 'YOUR_SECRET_KEY',
     });
 
     const corsConfig = {

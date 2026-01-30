@@ -33,6 +33,13 @@ dist/
 .env.production.local
 .env
 
+# 敏感配置文件
+**/cos_config.local.yaml
+**/*secret*
+**/*credential*
+**/*.key
+**/*.pem
+
 # Logs
 logs
 *.log
