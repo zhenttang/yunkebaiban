@@ -1,14 +1,23 @@
 pluginManagement {
     repositories {
-        google {
-            content {
-                includeGroupByRegex("com\\.android.*")
-                includeGroupByRegex("com\\.google.*")
-                includeGroupByRegex("androidx.*")
-            }
-        }
+        // 官方仓库优先（KSP 等插件）
+        google()
         mavenCentral()
         gradlePluginPortal()
+        // 阿里云镜像备选
+        maven { url 'https://maven.aliyun.com/repository/google' }
+        maven { url 'https://maven.aliyun.com/repository/central' }
+        maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
+    }
+}
+
+dependencyResolutionManagement {
+    repositories {
+        // 阿里云镜像优先（依赖下载）
+        maven { url 'https://maven.aliyun.com/repository/google' }
+        maven { url 'https://maven.aliyun.com/repository/central' }
+        google()
+        mavenCentral()
     }
 }
 

@@ -1,14 +1,13 @@
 buildscript {
     repositories {
-        google {
-            content {
-                includeGroupByRegex("com\\.android.*")
-                includeGroupByRegex("com\\.google.*")
-                includeGroupByRegex("androidx.*")
-            }
-        }
+        // 官方仓库优先（插件下载）
+        google()
         mavenCentral()
         gradlePluginPortal()
+        // 阿里云镜像备选
+        maven { url 'https://maven.aliyun.com/repository/google' }
+        maven { url 'https://maven.aliyun.com/repository/central' }
+        maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
     }
     dependencies {
         classpath libs.android.gradle.plugin
@@ -38,6 +37,10 @@ apply from: "${project.rootDir}/buildscripts/toml-updater-config.gradle"
 
 allprojects {
     repositories {
+        // 阿里云镜像（国内加速）
+        maven { url 'https://maven.aliyun.com/repository/google' }
+        maven { url 'https://maven.aliyun.com/repository/central' }
+        maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
         google {
             content {
                 includeGroupByRegex("com\\.android.*")
@@ -47,5 +50,19 @@ allprojects {
         }
         mavenCentral()
         gradlePluginPortal()
+    }
+}
+
+// 强制所有模块使用 Java 17
+subprojects {
+    afterEvaluate { project ->
+        if (project.hasProperty('android')) {
+            android {
+                compileOptions {
+                    sourceCompatibility JavaVersion.VERSION_17
+                    targetCompatibility JavaVersion.VERSION_17
+                }
+            }
+        }
     }
 }
