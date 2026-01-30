@@ -9,6 +9,55 @@ import { Doc as YDoc, encodeStateAsUpdate, applyUpdate } from 'yjs';
 
 // ============ 辅助函数 ============
 
+// 并发控制：限制同时执行的 Promise 数量
+async function runWithConcurrency<T>(
+  items: T[],
+  fn: (item: T) => Promise<unknown>,
+  concurrency: number
+): Promise<void> {
+  const executing: Promise<unknown>[] = [];
+  
+  for (const item of items) {
+    const promise = fn(item).then(() => {
+      executing.splice(executing.indexOf(promise), 1);
+    });
+    executing.push(promise);
+    
+    if (executing.length >= concurrency) {
+      await Promise.race(executing);
+    }
+  }
+  
+  await Promise.all(executing);
+}
+
+// 并发映射：限制并发数并返回结果
+async function mapWithConcurrency<T, R>(
+  items: T[],
+  fn: (item: T) => Promise<R | null>,
+  concurrency: number
+): Promise<R[]> {
+  const results: R[] = [];
+  const executing: Promise<void>[] = [];
+  
+  for (const item of items) {
+    const promise = fn(item).then(result => {
+      if (result !== null) {
+        results.push(result);
+      }
+      executing.splice(executing.indexOf(promise), 1);
+    });
+    executing.push(promise);
+    
+    if (executing.length >= concurrency) {
+      await Promise.race(executing);
+    }
+  }
+  
+  await Promise.all(executing);
+  return results;
+}
+
 // 分块处理大数据的 Base64 转换，避免栈溢出
 function arrayBufferToBase64Chunk(buffer: Uint8Array): string {
   const bytes = new Uint8Array(buffer);
@@ -96,69 +145,79 @@ export async function exportWorkspaceSnapshot(
     console.log(`[WorkspaceSync] 从内存读取根文档: ${rootDoc.guid}, 大小: ${rootDocData.byteLength} bytes`);
   }
   
-  // 2. 导出所有页面文档
-  const docs: Array<{ id: string; guid: string; data: Uint8Array }> = [];
-  const allDocs = workspace.docs;
+  // 2. 导出所有页面文档（并发处理，限制并发数为 10）
+  const allDocs = Array.from(workspace.docs);
+  const DOC_CONCURRENCY = 10;
   
-  for (const [docId, doc] of allDocs) {
-    try {
-      const store = doc.getStore();
-      const guid = store?.spaceDoc?.guid || docId;
-      
-      let docData: Uint8Array;
-      if (docStorage) {
-        // 从存储读取（更可靠）
-        const docRecord = await docStorage.getDoc(guid);
-        if (docRecord?.bin) {
-          docData = docRecord.bin;
-          console.log(`[WorkspaceSync] 从存储读取文档: ${docId}, guid: ${guid}, 大小: ${docData.byteLength} bytes`);
+  const docs = await mapWithConcurrency(
+    allDocs,
+    async ([docId, doc]): Promise<{ id: string; guid: string; data: Uint8Array } | null> => {
+      try {
+        const store = doc.getStore();
+        const guid = store?.spaceDoc?.guid || docId;
+        
+        let docData: Uint8Array;
+        if (docStorage) {
+          // 从存储读取（更可靠）
+          const docRecord = await docStorage.getDoc(guid);
+          if (docRecord?.bin) {
+            docData = docRecord.bin;
+            console.log(`[WorkspaceSync] 从存储读取文档: ${docId}, guid: ${guid}, 大小: ${docData.byteLength} bytes`);
+          } else {
+            // 存储中没有，尝试从内存读取
+            docData = store?.spaceDoc ? encodeStateAsUpdate(store.spaceDoc) : new Uint8Array(0);
+            console.log(`[WorkspaceSync] 存储中无数据，从内存读取文档: ${docId}, 大小: ${docData.byteLength} bytes`);
+          }
         } else {
-          // 存储中没有，尝试从内存读取
+          // 从内存读取
           docData = store?.spaceDoc ? encodeStateAsUpdate(store.spaceDoc) : new Uint8Array(0);
-          console.log(`[WorkspaceSync] 存储中无数据，从内存读取文档: ${docId}, 大小: ${docData.byteLength} bytes`);
         }
-      } else {
-        // 从内存读取
-        docData = store?.spaceDoc ? encodeStateAsUpdate(store.spaceDoc) : new Uint8Array(0);
+        
+        if (docData.byteLength > 2) {  // 过滤空文档（空 Yjs 更新通常是 2 bytes）
+          return { id: docId, guid, data: docData };
+        } else {
+          console.warn(`[WorkspaceSync] 跳过空文档: ${docId}, 大小: ${docData.byteLength} bytes`);
+          return null;
+        }
+      } catch (e) {
+        console.warn(`[WorkspaceSync] 无法导出文档 ${docId}:`, e);
+        return null;
       }
-      
-      if (docData.byteLength > 2) {  // 过滤空文档（空 Yjs 更新通常是 2 bytes）
-        docs.push({
-          id: docId,
-          guid,
-          data: docData,
-        });
-      } else {
-        console.warn(`[WorkspaceSync] 跳过空文档: ${docId}, 大小: ${docData.byteLength} bytes`);
-      }
-    } catch (e) {
-      console.warn(`[WorkspaceSync] 无法导出文档 ${docId}:`, e);
-    }
-  }
+    },
+    DOC_CONCURRENCY
+  );
   
-  // 2. 导出所有 Blob 数据（图片、附件等）
-  const blobs: Array<{ key: string; data: string; type: string }> = [];
+  // 3. 导出所有 Blob 数据（图片、附件等）- 并发处理，限制并发数为 5
+  const BLOB_CONCURRENCY = 5;
+  let blobs: Array<{ key: string; data: string; type: string }> = [];
+  
   try {
     const blobKeys = await workspace.blobSync.list();
     console.log(`[WorkspaceSync] 发现 ${blobKeys.length} 个 Blob`);
     
-    for (const key of blobKeys) {
-      try {
-        const blob = await workspace.blobSync.get(key);
-        if (blob) {
-          // 将 Blob 转换为 Base64
-          const arrayBuffer = await blob.arrayBuffer();
-          const base64 = arrayBufferToBase64Chunk(new Uint8Array(arrayBuffer));
-          blobs.push({
-            key,
-            data: base64,
-            type: blob.type || 'application/octet-stream',
-          });
+    blobs = await mapWithConcurrency(
+      blobKeys,
+      async (key): Promise<{ key: string; data: string; type: string } | null> => {
+        try {
+          const blob = await workspace.blobSync.get(key);
+          if (blob) {
+            // 将 Blob 转换为 Base64
+            const arrayBuffer = await blob.arrayBuffer();
+            const base64 = arrayBufferToBase64Chunk(new Uint8Array(arrayBuffer));
+            return {
+              key,
+              data: base64,
+              type: blob.type || 'application/octet-stream',
+            };
+          }
+          return null;
+        } catch (e) {
+          console.warn(`[WorkspaceSync] 无法导出 Blob ${key}:`, e);
+          return null;
         }
-      } catch (e) {
-        console.warn(`[WorkspaceSync] 无法导出 Blob ${key}:`, e);
-      }
-    }
+      },
+      BLOB_CONCURRENCY
+    );
   } catch (e) {
     console.warn('[WorkspaceSync] 无法获取 Blob 列表:', e);
   }
@@ -342,18 +401,24 @@ export async function importWorkspaceSnapshot(workspace: Workspace, snapshot: Wo
   console.log(`[WorkspaceSync] 等待数据持久化...`);
   await new Promise(resolve => setTimeout(resolve, 200));
   
-  // 3. 导入所有 Blob 数据
+  // 3. 导入所有 Blob 数据（并发处理，限制并发数为 5）
+  const BLOB_IMPORT_CONCURRENCY = 5;
   let importedBlobCount = 0;
-  for (const blobData of snapshot.blobs) {
-    try {
-      const arrayBuffer = base64ToArrayBuffer(blobData.data);
-      const blob = new Blob([arrayBuffer], { type: blobData.type });
-      await workspace.blobSync.set(blobData.key, blob);
-      importedBlobCount++;
-    } catch (e) {
-      console.warn(`[WorkspaceSync] 无法导入 Blob ${blobData.key}:`, e);
-    }
-  }
+  
+  await runWithConcurrency(
+    snapshot.blobs,
+    async (blobData) => {
+      try {
+        const arrayBuffer = base64ToArrayBuffer(blobData.data);
+        const blob = new Blob([arrayBuffer], { type: blobData.type });
+        await workspace.blobSync.set(blobData.key, blob);
+        importedBlobCount++;
+      } catch (e) {
+        console.warn(`[WorkspaceSync] 无法导入 Blob ${blobData.key}:`, e);
+      }
+    },
+    BLOB_IMPORT_CONCURRENCY
+  );
   
   console.log(`[WorkspaceSync] 导入完成: ${importedDocCount}/${snapshot.docCount} 个文档, ${importedBlobCount}/${snapshot.blobCount} 个 Blob`);
 }
