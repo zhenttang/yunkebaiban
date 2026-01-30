@@ -58,10 +58,36 @@ function getRequiredEnvValue(key: string): string {
     if (isElectronOfflineMode()) {
       return '';
     }
+    
+    // 🔧 Android 离线模式：检测 BUILD_CONFIG.isAndroid 或 Capacitor 环境
+    // 包括 Worker 环境（没有 window 对象）
+    try {
+      // @ts-ignore 由 DefinePlugin 注入
+      if (typeof BUILD_CONFIG !== 'undefined' && (BUILD_CONFIG.isAndroid || BUILD_CONFIG.isCapacitor)) {
+        console.log('🤖 Android 离线模式：VITE_API_BASE_URL 未配置，使用本地存储');
+        return '';
+      }
+      // Worker 环境中检查 globalThis
+      if (typeof globalThis !== 'undefined') {
+        const config = (globalThis as any).BUILD_CONFIG;
+        if (config?.isAndroid || config?.isCapacitor || config?._originalIsAndroid) {
+          console.log('🤖 Android Worker 离线模式：VITE_API_BASE_URL 未配置，使用本地存储');
+          return '';
+        }
+      }
+    } catch {}
+    
     // Web 端本地开发时，如果没有配置 API URL，使用空字符串（离线模式）
     if (typeof window !== 'undefined' && 
         (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')) {
       console.warn('⚠️ VITE_API_BASE_URL 未配置，Web 端将以离线模式运行');
+      return '';
+    }
+    
+    // 🔧 Worker 环境中没有 window，但可能是 Android WebView
+    // 如果是 Worker 且没有配置环境变量，默认使用离线模式
+    if (typeof window === 'undefined' && typeof self !== 'undefined') {
+      console.log('🤖 Worker 离线模式：VITE_API_BASE_URL 未配置，使用本地存储');
       return '';
     }
   }

@@ -1,5 +1,6 @@
 import { openDB } from 'idb';
-import { getSocketIOUrl } from '@yunke/config';
+// 🔧 Android 离线模式：不导入 getSocketIOUrl，避免触发环境变量检查
+// import { getSocketIOUrl } from '@yunke/config';
 
 /**
  * the below code includes the custom fetch and xmlhttprequest implementation for ios webview.
@@ -19,24 +20,10 @@ globalThis.fetch = async (input: RequestInfo | URL, init?: RequestInit) => {
   return rawFetch(request);
 };
 
-// 🔧 添加Socket.IO服务检测和降级策略
-async function checkSocketIOAvailability() {
-  try {
-    const response = await fetch(getSocketIOUrl() + '/socket.io/');
-    console.log('✅ Socket.IO服务可用');
-    return true;
-  } catch (error) {
-    console.warn('⚠️ Socket.IO服务不可用，切换到本地模式:', error);
-    // 通知应用禁用云同步
-    window.dispatchEvent(new CustomEvent('socketio-unavailable'));
-    return false;
-  }
-}
-
-// 检查Socket.IO可用性
-setTimeout(() => {
-  checkSocketIOAvailability();
-}, 1000);
+// 🔧 Android 离线模式：禁用 Socket.IO 检测
+// 不再在启动时检查 Socket.IO 可用性，避免网络请求超时卡顿
+// 用户需要云同步时，使用设置中的外部存储（S3）功能
+console.log('🔧 Android 离线模式：已禁用 Socket.IO 自动检测');
 
 // 🔧 临时禁用XMLHttpRequest拦截器，因为它阻塞了Socket.IO
 // 但先添加一个调试拦截器来确认请求类型

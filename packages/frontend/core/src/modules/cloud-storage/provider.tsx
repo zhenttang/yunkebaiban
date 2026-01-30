@@ -236,18 +236,26 @@ export const CloudStorageProvider = ({
   serverUrl: serverUrlProp,
   enabled,
 }: CloudStorageProviderProps) => {
-  // 🔧 修复：将 serverUrl 默认值计算移到组件内部，避免在函数参数中执行副作用
-  const serverUrl = useMemo(() => {
-    return serverUrlProp ?? getSocketIOUrl();
-  }, [serverUrlProp]);
-  
   // 🔧 云同步开关：优先使用 prop，否则从 localStorage 读取，默认为 false（离线模式）
+  // 必须在 serverUrl 之前计算，因为 serverUrl 依赖它
   const cloudEnabled = useMemo(() => {
     if (enabled !== undefined) {
       return enabled;
     }
     return isCloudSyncEnabled();
   }, [enabled]);
+  
+  // 🔧 修复：只在云同步启用时才获取 Socket.IO URL，避免不必要的网络请求和环境变量检查
+  const serverUrl = useMemo(() => {
+    if (serverUrlProp) {
+      return serverUrlProp;
+    }
+    // 🔧 Android 离线优化：云同步未启用时不调用 getSocketIOUrl()，避免首次启动卡顿
+    if (!cloudEnabled) {
+      return ''; // 离线模式不需要 serverUrl
+    }
+    return getSocketIOUrl();
+  }, [serverUrlProp, cloudEnabled]);
   const params = useParams();
   const sessionId = useMemo(() => getOrCreateSessionId(), []);
   const normalizedLocalSessionId = useMemo(

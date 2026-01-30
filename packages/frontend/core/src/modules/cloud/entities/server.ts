@@ -78,8 +78,49 @@ export class Server extends Entity<{
     return config ? config.credentialsRequirement : null;
   });
 
+  // 🔧 检测是否为有效的服务器 URL（离线模式使用 localhost:0）
+  private isValidServerUrl(): boolean {
+    try {
+      const url = new URL(this.baseUrl);
+      // 端口为 0 表示离线模式
+      if (url.port === '0') {
+        return false;
+      }
+      // 没有有效的主机名
+      if (!url.hostname || url.hostname === 'localhost' && url.port === '0') {
+        return false;
+      }
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
   readonly revalidateConfig = effect(
     exhaustMap(() => {
+      // 🔧 离线模式：跳过服务器配置获取，直接使用默认配置
+      if (!this.isValidServerUrl()) {
+        console.log('🤖 [Server] 离线模式：跳过服务器配置获取，使用默认配置');
+        // 直接设置默认配置
+        const defaultConfig = {
+          credentialsRequirement: { password: { minLength: 8, maxLength: 256 } },
+          features: ['copilot'] as any[],
+          oauthProviders: [],
+          serverName: 'YUNKE Local',
+          type: 'selfhosted' as const,
+          version: '1.0.0',
+          initialized: true,
+        };
+        this.serverListStore.updateServerConfig(this.serverMetadata.id, defaultConfig);
+        this.isConfigRevalidating$.next(false);
+        // 返回空的 observable
+        return fromPromise(async () => defaultConfig).pipe(
+          onComplete(() => {
+            this.isConfigRevalidating$.next(false);
+          })
+        );
+      }
+      
       return fromPromise(signal =>
         this.serverConfigStore.fetchServerConfig(this.baseUrl, signal)
       ).pipe(

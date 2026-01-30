@@ -1336,29 +1336,75 @@ export class Store {
     });
   }
 
-  // 🔧 性能优化：批处理 Yjs 事件，减少频繁更新
-  private _pendingYEvents: Y.YEvent<YBlock | Y.Text>[] = [];
+  // 🔧 修复 Yjs 事件处理：必须同步处理，因为 event.keys 只能在事件处理程序内访问
+  // 之前的批处理实现会导致 "You must not compute changes after the event-handler fired" 错误
+  // 
+  // 提取事件数据的方式处理：在收集时提取 keys 数据，避免延迟访问
+  private _pendingYEventData: Array<{
+    target: Y.YEvent<YBlock | Y.Text>['target'];
+    keys: Map<string, { action: 'add' | 'update' | 'delete'; oldValue?: any }>;
+    isLocal: boolean;
+  }> = [];
   private _yEventsBatchScheduled = false;
 
   private readonly _handleYEvents = (events: Y.YEvent<YBlock | Y.Text>[]) => {
-    // 收集事件到待处理队列
-    this._pendingYEvents.push(...events);
+    // 🔧 关键修复：在事件处理程序内立即提取 keys 数据
+    for (const event of events) {
+      if (event.target !== this._yBlocks) {
+        continue;
+      }
+      
+      const isLocal =
+        !event.transaction.origin ||
+        !this._yBlocks.doc ||
+        event.transaction.origin instanceof Y.UndoManager ||
+        event.transaction.origin.proxy
+          ? true
+          : event.transaction.origin === this._yBlocks.doc.clientID;
+      
+      // 立即复制 keys 数据，避免在微任务中访问
+      const keys = new Map<string, { action: 'add' | 'update' | 'delete'; oldValue?: any }>();
+      event.keys.forEach((value, id) => {
+        keys.set(id, { action: value.action, oldValue: value.oldValue });
+      });
+      
+      this._pendingYEventData.push({
+        target: event.target,
+        keys,
+        isLocal,
+      });
+    }
 
     // 如果已经调度了批处理，直接返回
     if (this._yEventsBatchScheduled) {
       return;
     }
 
-    // 使用微任务批处理，在当前事件循环结束时处理所有累积的事件
-    // 这比 requestAnimationFrame 延迟更小，适合编辑器场景
+    // 使用微任务批处理
     this._yEventsBatchScheduled = true;
     queueMicrotask(() => {
       this._yEventsBatchScheduled = false;
-      const eventsToProcess = this._pendingYEvents;
-      this._pendingYEvents = [];
+      const dataToProcess = this._pendingYEventData;
+      this._pendingYEventData = [];
 
-      // 批量处理所有事件
-      eventsToProcess.forEach(event => this._handleYEvent(event));
+      // 批量处理所有事件（使用预先提取的数据）
+      for (const { keys, isLocal } of dataToProcess) {
+        keys.forEach((value, id) => {
+          try {
+            if (value.action === 'add') {
+              this._handleYBlockAdd(id, isLocal);
+              return;
+            }
+            if (value.action === 'delete') {
+              this._handleYBlockDelete(id, isLocal);
+              return;
+            }
+          } catch (e) {
+            console.error('An error occurred while handling Yjs event:');
+            console.error(e);
+          }
+        });
+      }
     });
   };
 }

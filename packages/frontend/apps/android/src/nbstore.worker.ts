@@ -1,80 +1,47 @@
 import './setup-worker';
 
 import { broadcastChannelStorages } from '@yunke/nbstore/broadcast-channel';
-import {
-  cloudStorages,
-  configureSocketAuthMethod,
-} from '@yunke/nbstore/cloud';
-import { idbStorages } from '@yunke/nbstore/idb';
-// SQLite相关导入已移除：Android使用纯Web方案
+// 云存储模块条件加载：仅在启用云同步时才加载
 // import {
-//   bindNativeDBApis,
-//   type NativeDBApis,
-//   sqliteStorages,
-// } from '@yunke/nbstore/sqlite';
+//   cloudStorages,
+//   configureSocketAuthMethod,
+// } from '@yunke/nbstore/cloud';
+import { idbStorages } from '@yunke/nbstore/idb';
 import {
   StoreManagerConsumer,
   type WorkerManagerOps,
 } from '@yunke/nbstore/worker/consumer';
 import { type MessageCommunicapable, OpConsumer } from '@toeverything/infra/op';
-// AsyncCall 导入已移除：Android不再需要RPC调用原生API
-// import { AsyncCall } from 'async-call-rpc';
 
-import { readEndpointToken } from './proxy';
-
-configureSocketAuthMethod((endpoint, cb) => {
-  readEndpointToken(endpoint)
-    .then(token => {
-      cb({ token });
-    })
-    .catch(e => {
-      console.error(e);
-    });
-});
-
-// 原生数据库API绑定已禁用：Android使用纯Web方案
-// globalThis.addEventListener('message', e => {
-//   if (e.data.type === 'native-db-api-channel') {
-//     const port = e.ports[0] as MessagePort;
-//     const rpc = AsyncCall<NativeDBApis>(
-//       {},
-//       {
-//         channel: {
-//           on(listener) {
-//             const f = (e: MessageEvent<any>) => {
-//               listener(e.data);
-//             };
-//             port.addEventListener('message', f);
-//             return () => {
-//               port.removeEventListener('message', f);
-//             };
-//           },
-//           send(data) {
-//             port.postMessage(data);
-//           },
-//         },
-//       }
-//     );
-//     bindNativeDBApis(rpc);
-//     port.start();
-//   }
+// 🔧 Android 默认离线模式：不配置 Socket 认证，不加载云存储
+// 这样可以避免首次启动时的网络请求超时卡顿
+// configureSocketAuthMethod((endpoint, cb) => {
+//   readEndpointToken(endpoint)
+//     .then(token => {
+//       cb({ token });
+//     })
+//     .catch(e => {
+//       console.error(e);
+//     });
 // });
 
 const consumer = new OpConsumer<WorkerManagerOps>(
   globalThis as MessageCommunicapable
 );
 
-// Android环境使用Web存储方案：IndexedDB + BroadcastChannel + Cloud
-// 与BUILD_CONFIG配置保持一致，确保存储后端选择正确
+// 🔧 Android 默认离线模式：仅使用本地存储
+// IndexedDB + BroadcastChannel，不加载 cloudStorages
+// 用户需要云同步时，可以在设置中配置外部存储（S3等）
 const storeManager = new StoreManagerConsumer([
-  ...idbStorages,        // IndexedDB作为主要本地存储
-  ...broadcastChannelStorages, // 跨Tab通信
-  ...cloudStorages,      // 云端同步存储
+  ...idbStorages,              // IndexedDB 作为主要本地存储
+  ...broadcastChannelStorages, // 跨 Tab 通信
+  // 云存储已禁用，使用外部存储服务（S3）代替
 ]);
 
-console.log('🔧 Android Worker存储配置:', {
-  storageTypes: ['IndexedDB', 'BroadcastChannel', 'Cloud'],
-  buildConfig: (globalThis as any).BUILD_CONFIG
+console.log('🔧 Android Worker 存储配置（离线模式）:', {
+  storageTypes: ['IndexedDB', 'BroadcastChannel'],
+  mode: 'offline-first',
+  note: '云同步请使用设置中的外部存储功能'
 });
 
 storeManager.bindConsumer(consumer);

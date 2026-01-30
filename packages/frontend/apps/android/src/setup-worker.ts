@@ -1,19 +1,22 @@
-// Worker环境统一配置：与主线程保持一致，使用Web存储方案
+// 🔧 Android Worker 环境配置
+// 使用轻量级 Worker bootstrap，避免加载 @yunke/config（会触发环境变量检查）
+
 if (typeof globalThis !== 'undefined') {
   const originalIsAndroid = (globalThis as any).BUILD_CONFIG?.isAndroid || false;
   
-  // 🔧 关键修复：与主线程保持完全一致的配置
   (globalThis as any).BUILD_CONFIG = {
     ...(globalThis as any).BUILD_CONFIG,
-    isAndroid: false,       // 与主线程保持一致：使用IndexedDB存储
-    isWeb: true,           // 与主线程保持一致：Web存储后端
-    isMobileWeb: true,     // 与主线程保持一致：移动Web环境
-    isMobileEdition: true, // 保持移动版特性
-    _originalIsAndroid: originalIsAndroid // 保存原始值
+    isAndroid: true,
+    isCapacitor: true,
+    isWeb: true,
+    isMobileWeb: true,
+    isMobileEdition: true,
+    _originalIsAndroid: originalIsAndroid,
+    _isWorker: true
   };
   
-  console.log('🔧 Android Worker BUILD_CONFIG统一配置:', (globalThis as any).BUILD_CONFIG);
+  console.log('🔧 Android Worker BUILD_CONFIG:', (globalThis as any).BUILD_CONFIG);
 }
 
-import '@yunke/core/bootstrap/browser';
-import './proxy';
+// 🔧 使用轻量级 Worker bootstrap（不会触发 @yunke/config）
+import '@yunke/core/bootstrap/worker';
