@@ -186,6 +186,51 @@ export const AllPage = () => {
   // 使用 ref 保存当前的 groups，用于在切换时保留数据
   const currentGroupsRef = useRef<Array<{ key: string; items: string[] }>>([]);
 
+  // 🔧 性能优化：稳定 watchParams 引用，避免对象每次渲染都重新创建
+  const watchParams = useMemo(() => {
+    const extraFilters = [
+      {
+        type: 'system' as const,
+        key: 'empty-journal',
+        method: 'is' as const,
+        value: 'false',
+      },
+      {
+        type: 'system' as const,
+        key: 'trash',
+        method: 'is' as const,
+        value: 'false',
+      },
+    ];
+
+    if (selectedCollectionInfo) {
+      return {
+        filters: selectedCollectionInfo.rules.filters,
+        groupBy,
+        orderBy,
+        extraAllowList: selectedCollectionInfo.allowList,
+        extraFilters,
+      };
+    }
+
+    return {
+      filters:
+        tempFilters && tempFilters.length > 0
+          ? tempFilters
+          : [
+              {
+                type: 'system' as const,
+                key: 'trash',
+                method: 'is' as const,
+                value: 'false',
+              },
+            ],
+      groupBy,
+      orderBy,
+      extraFilters,
+    };
+  }, [groupBy, orderBy, selectedCollectionInfo, tempFilters]);
+
   useEffect(() => {
     // 先取消旧的订阅
     if (subscriptionRef.current) {
@@ -200,59 +245,7 @@ export const AllPage = () => {
     }
 
     const subscription = collectionRulesService
-      .watch(
-        selectedCollectionInfo
-          ? {
-              filters: selectedCollectionInfo.rules.filters,
-              groupBy,
-              orderBy,
-              extraAllowList: selectedCollectionInfo.allowList,
-              extraFilters: [
-                {
-                  type: 'system',
-                  key: 'empty-journal',
-                  method: 'is',
-                  value: 'false',
-                },
-                {
-                  type: 'system',
-                  key: 'trash',
-                  method: 'is',
-                  value: 'false',
-                },
-              ],
-            }
-          : {
-              filters:
-                tempFilters && tempFilters.length > 0
-                  ? tempFilters
-                  : [
-                      // if no filters are present, match all non-trash documents
-                      {
-                        type: 'system',
-                        key: 'trash',
-                        method: 'is',
-                        value: 'false',
-                      },
-                    ],
-              groupBy,
-              orderBy,
-              extraFilters: [
-                {
-                  type: 'system',
-                  key: 'empty-journal',
-                  method: 'is',
-                  value: 'false',
-                },
-                {
-                  type: 'system',
-                  key: 'trash',
-                  method: 'is',
-                  value: 'false',
-                },
-              ],
-            }
-      )
+      .watch(watchParams)
       .subscribe({
         next: result => {
           // 订阅返回数据时立即更新，确保视图切换时数据及时更新
@@ -275,15 +268,8 @@ export const AllPage = () => {
         subscriptionRef.current = null;
       }
     };
-  }, [
-    collectionRulesService,
-    explorerContextValue,
-    groupBy,
-    orderBy,
-    selectedCollection,
-    selectedCollectionInfo,
-    tempFilters,
-  ]);
+    // 🔧 性能优化：watchParams 已 memoized，只在实际参数变化时触发
+  }, [collectionRulesService, explorerContextValue, watchParams]);
 
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
