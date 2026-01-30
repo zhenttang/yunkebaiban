@@ -1,5 +1,6 @@
 import { rmSync } from 'node:fs';
 import { cpus } from 'node:os';
+import https from 'node:https';
 
 import { Logger } from '@yunke-tools/utils/logger';
 import { Package } from '@yunke-tools/utils/workspace';
@@ -256,6 +257,76 @@ const defaultDevServerConfig: DevServerConfiguration = {
       target: process.env.VITE_SOCKETIO_URL || process.env.VITE_API_BASE_URL || '',
       ws: true,
       logLevel: httpProxyMiddlewareLogLevel,
+    },
+    // 外部存储代理 - 解决 S3/OSS 跨域问题
+    // URL 格式: /external-storage-proxy/{base64编码的完整目标URL}
+    {
+      context: '/external-storage-proxy',
+      target: 'https://placeholder.com', // 会被 router 动态覆盖
+      changeOrigin: true,
+      secure: false,
+      timeout: 60000, // 60秒超时
+      proxyTimeout: 60000,
+      logLevel: 'debug', // 开启调试日志
+      agent: new https.Agent({ rejectUnauthorized: false }), // HTTPS 代理
+      router: (req: { url?: string }) => {
+        const url = req.url || '';
+        const match = url.match(/^\/external-storage-proxy\/([A-Za-z0-9+/=]+)/);
+        if (match) {
+          try {
+            const targetUrl = Buffer.from(match[1], 'base64').toString('utf-8');
+            const parsed = new URL(targetUrl);
+            console.log(`[Proxy] 转发到: ${parsed.protocol}//${parsed.host}`);
+            return `${parsed.protocol}//${parsed.host}`;
+          } catch (e) {
+            console.error('[Proxy] 解析目标 URL 失败:', e);
+            return 'https://placeholder.com';
+          }
+        }
+        return 'https://placeholder.com';
+      },
+      pathRewrite: (path: string) => {
+        const match = path.match(/^\/external-storage-proxy\/([A-Za-z0-9+/=]+)/);
+        if (match) {
+          try {
+            const targetUrl = Buffer.from(match[1], 'base64').toString('utf-8');
+            const parsed = new URL(targetUrl);
+            const result = parsed.pathname + parsed.search;
+            console.log(`[Proxy] 路径重写: ${result}`);
+            return result;
+          } catch (e) {
+            console.error('[Proxy] 路径重写失败:', e);
+            return path;
+          }
+        }
+        return path;
+      },
+      onProxyReq: (proxyReq: import('http').ClientRequest, req: import('http').IncomingMessage) => {
+        const url = req.url || '';
+        const match = url.match(/^\/external-storage-proxy\/([A-Za-z0-9+/=]+)/);
+        if (match) {
+          try {
+            const targetUrl = Buffer.from(match[1], 'base64').toString('utf-8');
+            const parsed = new URL(targetUrl);
+            // 设置正确的 Host 头
+            proxyReq.setHeader('Host', parsed.host);
+            console.log(`[Proxy] 请求: ${req.method} ${targetUrl}`);
+            console.log(`[Proxy] 请求头:`, Object.fromEntries(
+              Object.entries(req.headers).filter(([k]) => !k.startsWith('sec-') && k !== 'cookie')
+            ));
+          } catch (e) {
+            console.error('[Proxy] onProxyReq 错误:', e);
+          }
+        }
+      },
+      onProxyRes: (proxyRes: import('http').IncomingMessage, req: import('http').IncomingMessage) => {
+        console.log(`[Proxy] 响应: ${proxyRes.statusCode} ${req.url}`);
+      },
+      onError: (err: Error, req: import('http').IncomingMessage, res: import('http').ServerResponse) => {
+        console.error(`[Proxy] 错误: ${err.message}`, err);
+        res.writeHead(502, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ error: 'Proxy Error', message: err.message }));
+      },
     },
   ],
 };

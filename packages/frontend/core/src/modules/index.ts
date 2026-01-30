@@ -24,6 +24,7 @@ import { configureDocLinksModule } from './doc-link';
 import { configureDocsSearchModule } from './docs-search';
 import { configureEditorModule } from './editor';
 import { configureEditorSettingModule } from './editor-setting';
+import { configureExternalStorageModule } from './external-storage';
 import { configureFavoriteModule } from './favorite';
 import { configureFeatureFlagModule } from './feature-flag';
 import { configureFlowchartModule } from './flowchart';
@@ -97,6 +98,7 @@ export function configureCommonModules(framework: Framework) {
   configureEditorModule(framework);
   configureSystemFontFamilyModule(framework);
   configureEditorSettingModule(framework);
+  configureExternalStorageModule(framework);
   configureImportTemplateModule(framework);
   configureUserspaceModule(framework);
   configureAppSidebarModule(framework);

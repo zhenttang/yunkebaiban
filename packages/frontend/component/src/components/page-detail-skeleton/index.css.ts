@@ -10,13 +10,15 @@ export const pageDetailSkeletonStyle = style({
   alignItems: 'center',
 });
 export const blockSuiteEditorStyle = style({
-  margin: 'auto 2rem',
+  margin: 'auto',
   padding: '0 24px',
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
   alignItems: 'center',
   height: '100%',
+  width: '100%',
+  maxWidth: '400px',
 });
 export const illustration = style({
   maxWidth: '100%',

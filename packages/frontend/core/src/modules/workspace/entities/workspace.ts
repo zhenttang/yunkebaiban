@@ -46,7 +46,14 @@ export class Workspace extends Entity {
             return;
           },
           list: async () => {
-            return [];
+            // 从 engine.blob.storage 获取真实的 blob 列表
+            try {
+              const blobList = await this.engine.blob.storage.list();
+              return blobList.map(b => b.key);
+            } catch (e) {
+              console.warn('[Workspace] 获取 blob 列表失败:', e);
+              return [];
+            }
           },
           set: async (id, blob) => {
             await this.engine.blob.set({

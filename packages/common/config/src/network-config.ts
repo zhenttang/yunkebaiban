@@ -53,8 +53,17 @@ function getRequiredEnvValue(key: string): string {
   if (buildTimeValue && buildTimeValue.trim() !== '') {
     return buildTimeValue.trim();
   }
-  if (key === 'VITE_API_BASE_URL' && isElectronOfflineMode()) {
-    return '';
+  // Electron 离线模式或 Web 本地开发模式，允许空值
+  if (key === 'VITE_API_BASE_URL') {
+    if (isElectronOfflineMode()) {
+      return '';
+    }
+    // Web 端本地开发时，如果没有配置 API URL，使用空字符串（离线模式）
+    if (typeof window !== 'undefined' && 
+        (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')) {
+      console.warn('⚠️ VITE_API_BASE_URL 未配置，Web 端将以离线模式运行');
+      return '';
+    }
   }
   throw new Error(`❌ 环境变量配置缺失：请在 .env 文件中配置 ${key}`);
 }

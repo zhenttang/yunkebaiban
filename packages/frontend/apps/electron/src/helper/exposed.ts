@@ -1,4 +1,5 @@
 import { dialogHandlers } from './dialog';
+import { externalStorageHandlers } from './external-storage';
 import { fileHandlers } from './file';
 import { dbEventsV1, dbHandlersV1, nbstoreHandlers } from './nbstore';
 import { provideExposed } from './provide';
@@ -10,6 +11,7 @@ export const handlers = {
   workspace: workspaceHandlers,
   dialog: dialogHandlers,
   file: fileHandlers,
+  externalStorage: externalStorageHandlers,
 };
 
 export const events = {

@@ -317,3 +317,124 @@ export const migrationStepArrow = style({
   color: cssVarV2('icon/secondary'),
   fontSize: '14px',
 });
+
+// 外部存储配置样式
+export const externalStorageSection = style({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '16px',
+});
+
+export const storageTypeSelector = style({
+  display: 'flex',
+  gap: '8px',
+  flexWrap: 'wrap',
+});
+
+export const storageTypeOption = style({
+  padding: '8px 16px',
+  borderRadius: '8px',
+  border: `1px solid ${cssVarV2('layer/insideBorder/border')}`,
+  backgroundColor: cssVarV2('layer/background/secondary'),
+  cursor: 'pointer',
+  display: 'flex',
+  alignItems: 'center',
+  gap: '8px',
+  fontSize: cssVar('fontSm'),
+  transition: 'all 0.2s ease',
+  selectors: {
+    '&:hover': {
+      backgroundColor: cssVarV2('layer/background/hoverOverlay'),
+    },
+    '&[data-active="true"]': {
+      borderColor: cssVarV2('button/primary'),
+      backgroundColor: cssVarV2('button/primary'),
+      color: '#fff',
+    },
+  },
+});
+
+export const storageConfigForm = style({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '12px',
+  padding: '16px',
+  borderRadius: '8px',
+  backgroundColor: cssVarV2('layer/background/secondary'),
+  border: `1px solid ${cssVarV2('layer/insideBorder/border')}`,
+});
+
+export const formField = style({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '4px',
+});
+
+export const formLabel = style({
+  fontSize: cssVar('fontXs'),
+  color: cssVarV2('text/secondary'),
+  fontWeight: 500,
+});
+
+export const formInput = style({
+  padding: '8px 12px',
+  borderRadius: '6px',
+  border: `1px solid ${cssVarV2('layer/insideBorder/border')}`,
+  backgroundColor: cssVarV2('layer/background/primary'),
+  fontSize: cssVar('fontSm'),
+  outline: 'none',
+  transition: 'border-color 0.2s ease',
+  ':focus': {
+    borderColor: cssVarV2('button/primary'),
+  },
+  '::placeholder': {
+    color: cssVarV2('text/placeholder'),
+  },
+});
+
+export const formInputPassword = style([
+  formInput,
+  {
+    fontFamily: 'monospace',
+  },
+]);
+
+export const formActions = style({
+  display: 'flex',
+  gap: '8px',
+  marginTop: '8px',
+});
+
+export const storageStatusBadge = style({
+  display: 'inline-flex',
+  alignItems: 'center',
+  gap: '4px',
+  padding: '2px 8px',
+  borderRadius: '4px',
+  fontSize: cssVar('fontXs'),
+  fontWeight: 500,
+});
+
+export const storageStatusConnected = style([
+  storageStatusBadge,
+  {
+    backgroundColor: 'rgba(34, 197, 94, 0.1)',
+    color: 'rgb(34, 197, 94)',
+  },
+]);
+
+export const storageStatusDisconnected = style([
+  storageStatusBadge,
+  {
+    backgroundColor: 'rgba(239, 68, 68, 0.1)',
+    color: 'rgb(239, 68, 68)',
+  },
+]);
+
+export const storageStatusPending = style([
+  storageStatusBadge,
+  {
+    backgroundColor: 'rgba(234, 179, 8, 0.1)',
+    color: 'rgb(234, 179, 8)',
+  },
+]);
