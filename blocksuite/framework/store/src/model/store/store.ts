@@ -1336,7 +1336,29 @@ export class Store {
     });
   }
 
+  // 🔧 性能优化：批处理 Yjs 事件，减少频繁更新
+  private _pendingYEvents: Y.YEvent<YBlock | Y.Text>[] = [];
+  private _yEventsBatchScheduled = false;
+
   private readonly _handleYEvents = (events: Y.YEvent<YBlock | Y.Text>[]) => {
-    events.forEach(event => this._handleYEvent(event));
+    // 收集事件到待处理队列
+    this._pendingYEvents.push(...events);
+
+    // 如果已经调度了批处理，直接返回
+    if (this._yEventsBatchScheduled) {
+      return;
+    }
+
+    // 使用微任务批处理，在当前事件循环结束时处理所有累积的事件
+    // 这比 requestAnimationFrame 延迟更小，适合编辑器场景
+    this._yEventsBatchScheduled = true;
+    queueMicrotask(() => {
+      this._yEventsBatchScheduled = false;
+      const eventsToProcess = this._pendingYEvents;
+      this._pendingYEvents = [];
+
+      // 批量处理所有事件
+      eventsToProcess.forEach(event => this._handleYEvent(event));
+    });
   };
 }
