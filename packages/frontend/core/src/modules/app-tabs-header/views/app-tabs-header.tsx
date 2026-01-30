@@ -571,29 +571,6 @@ export const AppTabsHeader = ({
           icon={<PlusIcon />}
         />
       </div>
-      {/* 云端状态指示器 - 默认显示本地模式 */}
-      <div 
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '4px',
-          padding: '8px 12px',
-          borderRadius: '6px',
-          backgroundColor: '#6b7280',
-          border: '2px solid #4b5563',
-          fontSize: '14px',
-          fontWeight: '600',
-          color: 'white',
-          cursor: 'default',
-          marginRight: '8px',
-          zIndex: 9999,
-          position: 'relative'
-        }} 
-        title="本地模式"
-      >
-        <span style={{ fontSize: '16px' }}>💾</span>
-        <span>本地模式</span>
-      </div>
       <IconButton
         size={24}
         onClick={onOpenSettingModal}

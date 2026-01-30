@@ -27,11 +27,34 @@ try {
     const betterSqlitePath = require('node:path').join(process.resourcesPath, 'better-sqlite3');
     console.info('[MOCK] Trying to load from:', betterSqlitePath);
     try {
+      // Add resources directory to module search paths for 'bindings' and other dependencies
+      const Module = require('module');
+      const resourcesPath = process.resourcesPath;
+      // Add resources to global paths so require('bindings') can find it
+      if (Module.globalPaths && !Module.globalPaths.includes(resourcesPath)) {
+        Module.globalPaths.unshift(resourcesPath);
+        console.info('[MOCK] Added resourcesPath to Module.globalPaths:', resourcesPath);
+      }
+      // Also try setting up custom resolution
+      const originalRequire = Module.prototype.require;
+      Module.prototype.require = function(id) {
+        if (id === 'bindings' || id === 'file-uri-to-path') {
+          const customPath = require('node:path').join(resourcesPath, id);
+          try {
+            return originalRequire.call(this, customPath);
+          } catch (e) {
+            // Fall through to original
+          }
+        }
+        return originalRequire.call(this, id);
+      };
+      
       sqliteFactory = require(betterSqlitePath);
       sqliteAvailable = true;
       console.info('[MOCK] ✅ better-sqlite3 从 resources 加载成功:', betterSqlitePath);
     } catch (resourcesErr) {
       console.warn('[MOCK] Failed to load from resources:', resourcesErr?.message);
+      console.warn('[MOCK] Stack:', resourcesErr?.stack);
       // Fallback to regular require
       sqliteFactory = require('better-sqlite3');
       sqliteAvailable = true;

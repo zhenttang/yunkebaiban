@@ -197,25 +197,9 @@ export class Workbench extends Entity {
       }
     }
 
-    // 检查当前是否在 workspace 路由中
-    const currentLocation = window.location.pathname;
-    const workspaceMatch = currentLocation.match(/^\/workspace\/([^\/]+)\//);
-    
-    if (workspaceMatch) {
-      // 如果在 workspace 路由中，构建完整的 workspace URL
-      const workspaceId = workspaceMatch[1];
-      const fullWorkspaceUrl = `/workspace/${workspaceId}/${docId}${query}`;
-      
-      // 使用浏览器的 history API 进行页面级导航
-      window.history.pushState(null, '', fullWorkspaceUrl);
-      
-      // 触发 popstate 事件，让 React Router 感知到变化
-      window.dispatchEvent(new PopStateEvent('popstate'));
-    } else {
-      // 如果在 workbench 路由中，使用原有逻辑
-      const finalUrl = `/${docId}${query}`;
-      this.open(finalUrl, options);
-    }
+    // 直接使用 workbench 路由系统，让 React Router 正确响应
+    const finalUrl = `/${docId}${query}`;
+    this.open(finalUrl, options);
   }
 
   openAttachment(

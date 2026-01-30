@@ -19,21 +19,15 @@ export const nbstoreHandlers: NativeDBApis = {
     const { peer, type, id } = parseUniversalId(universalId);
     const dbPath = await getSpaceDBPath(peer, type, id);
     await fs.ensureDir(path.dirname(dbPath));
-    logger.info('[offline] nbstore connect', {
-      universalId,
-      peer,
-      type,
-      id,
-      dbPath,
-    });
     await POOL.connect(universalId, dbPath);
     await POOL.setSpaceId(universalId, id);
   },
   disconnect: async (universalId: string) => {
-    logger.info('[offline] nbstore disconnect', { universalId });
     await POOL.disconnect(universalId);
   },
-  pushUpdate: POOL.pushUpdate.bind(POOL),
+  pushUpdate: async (universalId: string, docId: string, update: Uint8Array) => {
+    return await POOL.pushUpdate(universalId, docId, update);
+  },
   getDocSnapshot: POOL.getDocSnapshot.bind(POOL),
   setDocSnapshot: POOL.setDocSnapshot.bind(POOL),
   getDocUpdates: POOL.getDocUpdates.bind(POOL),

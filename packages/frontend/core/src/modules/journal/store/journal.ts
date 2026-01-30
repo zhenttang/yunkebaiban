@@ -58,10 +58,12 @@ export class JournalStore extends Store {
   }
   docsByJournalDate$(date: string) {
     return LiveData.computed(get => {
-      return get(this.docsService.list.docs$).filter(doc => {
+      const allDocs = get(this.docsService.list.docs$);
+      const result = allDocs.filter(doc => {
         const journal = get(doc.properties$.selector(p => p.journal));
         return journal === date;
       });
+      return result;
     });
   }
 }

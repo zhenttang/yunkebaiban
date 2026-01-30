@@ -48,7 +48,9 @@ export class JournalService extends Service {
     const title = day.format(JOURNAL_DATE_FORMAT);
     const docRecord = this.docsService.createDoc({
       title,
+      primaryMode: 'page', // 强制使用 page 模式，避免 edgeless 初始化问题
     });
+    
     // set created date to match the journal date
     docRecord.setMeta({
       createDate: dayjs()
@@ -65,6 +67,7 @@ export class JournalService extends Service {
       this.templateDocService.setting.pageTemplateDocId$.value;
     const journalTemplateDocId =
       this.templateDocService.setting.journalTemplateDocId$.value;
+    
     // if journal template configured
     if (journalTemplateDocId) {
       this.docsService

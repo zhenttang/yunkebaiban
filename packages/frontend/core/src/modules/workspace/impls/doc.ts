@@ -156,7 +156,11 @@ export class DocImpl implements Doc {
   }
 
   load(initFn?: () => void): this {
-    if (this.ready) {
+    // 🔧 修复：即使 ready=true，如果 YDoc 数据为空，也需要重新连接到存储
+    // 这处理了文档从 pool 中被 GC 后重新打开的情况
+    const needReconnect = this.ready && this._yBlocks?.size === 0;
+    
+    if (this.ready && !needReconnect) {
       return this;
     }
 
