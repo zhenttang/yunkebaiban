@@ -496,7 +496,7 @@ const [pinned, unpinned] = useMemo(
 | 5 | 缺少 Webpack 缓存 | webpack/index.ts | 130-474 | 🔴高 | ✅ 已修复 |
 | 6 | observeDeep 无批处理 | store.ts | 603 | 🔴高 | ✅ 已修复 |
 | 7 | T1.5 选择性渲染优化 | lit-host.ts | 99-108 | 🟡中 | ✅ 已修复 |
-| 8 | Context 依赖项过多 | provider.tsx | 1340-1380 | 🟡中 | 📋 [设计完成](design/CLOUD-STORAGE-CONTEXT-REFACTOR.md) |
+| 8 | Context 依赖项过多 | provider.tsx + hooks.ts | 1340-1380 | 🟡中 | ✅ 阶段一完成 - 新增细粒度 Hooks |
 | 9 | WorkbenchTab 缺少 memo | app-tabs-header.tsx | 218-357 | 🟡中 | ✅ 已修复 |
 | 10 | useEffect 依赖项过多 | all-page.tsx | 189-286 | 🟡中 | ✅ 已修复 |
 | 11 | 并行编译配置错误 | bundle.ts | 363-364 | 🟡中 | ✅ 已修复 |
