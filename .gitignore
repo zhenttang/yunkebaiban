@@ -67,6 +67,7 @@ next-env.d.ts
 .cache
 .eslintcache
 .stylelintcache
+.webpack-cache
 
 # Local history
 .history

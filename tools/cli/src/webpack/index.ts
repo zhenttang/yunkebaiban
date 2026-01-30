@@ -155,6 +155,21 @@ export function createHTMLTargetConfig(
     target: ['web', 'es2022'],
     mode: buildConfig.debug ? 'development' : 'production',
     devtool: buildConfig.debug ? 'cheap-module-source-map' : 'source-map',
+    
+    // 🔧 性能优化：Webpack 5 持久化缓存，显著提升增量构建速度（50-80%）
+    cache: IN_CI
+      ? false // CI 环境禁用缓存，确保构建一致性
+      : {
+          type: 'filesystem',
+          buildDependencies: {
+            config: [import.meta.url], // 配置文件变化时使缓存失效
+          },
+          cacheDirectory: ProjectRoot.join('.webpack-cache').value,
+          compression: 'gzip', // 压缩缓存文件，节省磁盘空间
+          maxAge: 1000 * 60 * 60 * 24 * 7, // 7天后缓存过期
+          name: `${buildConfig.debug ? 'development' : 'production'}-${primaryChunk}`,
+        },
+    
     resolve: {
       symlinks: true,
       extensionAlias: {

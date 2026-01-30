@@ -360,8 +360,11 @@ export class BundleCommand extends PackageCommand {
     rmSync(pkg.distPath.value, { recursive: true, force: true });
 
     const config = getBundleConfigs(pkg);
-    // @ts-expect-error allow
-    config.parallelism = cpus().length;
+    // 🔧 性能优化：为每个配置设置并行度
+    const parallelism = cpus().length;
+    config.forEach(cfg => {
+      cfg.parallelism = parallelism;
+    });
 
     const compiler = webpack(config);
 
@@ -387,8 +390,11 @@ export class BundleCommand extends PackageCommand {
     logger.info(`Starting dev server for ${pkg.name}...`);
 
     const config = getBundleConfigs(pkg);
-    // @ts-expect-error allow
-    config.parallelism = cpus().length;
+    // 🔧 性能优化：为每个配置设置并行度
+    const parallelism = cpus().length;
+    config.forEach(cfg => {
+      cfg.parallelism = parallelism;
+    });
 
     const compiler = webpack(config);
 
