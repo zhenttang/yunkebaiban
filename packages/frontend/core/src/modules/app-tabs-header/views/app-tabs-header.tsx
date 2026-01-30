@@ -30,6 +30,7 @@ import clsx from 'clsx';
 import { partition } from 'lodash-es';
 import {
   Fragment,
+  memo,
   type MouseEventHandler,
   type ReactNode,
   useCallback,
@@ -215,7 +216,8 @@ const WorkbenchView = ({
   );
 };
 
-const WorkbenchTab = ({
+// 🔧 性能优化：使用 memo 避免不必要的重新渲染
+const WorkbenchTab = memo(function WorkbenchTab({
   workbench,
   active: tabActive,
   tabsLength,
@@ -227,7 +229,7 @@ const WorkbenchTab = ({
   tabsLength: number;
   dnd?: boolean;
   onDrop?: (data: DropTargetDropEvent<YunkeDNDData>) => void;
-}) => {
+}) {
   useServiceOptional(DesktopStateSynchronizer);
   const tabsHeaderService = useService(AppTabsHeaderService);
   const activeViewIndex = workbench.activeViewIndex ?? 0;
@@ -354,7 +356,7 @@ const WorkbenchTab = ({
       <div className={styles.dropIndicator} data-edge={closestEdge} />
     </div>
   );
-};
+});
 
 const useIsFullScreen = () => {
   const desktopApi = useServiceOptional(DesktopApiService);
@@ -399,7 +401,11 @@ export const AppTabsHeader = ({
   const tabsHeaderService = useService(AppTabsHeaderService);
   const tabs = useLiveData(tabsHeaderService.tabsStatus$);
 
-  const [pinned, unpinned] = partition(tabs, tab => tab.pinned);
+  // 🔧 性能优化：使用 useMemo 缓存 partition 结果，避免每次渲染重新计算
+  const [pinned, unpinned] = useMemo(
+    () => partition(tabs, tab => tab.pinned),
+    [tabs]
+  );
 
   const onAddTab = useAsyncCallback(async () => {
     await tabsHeaderService.onAddTab?.();
