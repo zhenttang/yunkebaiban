@@ -298,14 +298,16 @@ config.parallelism = cpus().length;   // ❌ 数组没有 parallelism 属性
 ### 🟡 中优先级
 
 5. ~~**T1.5 选择性渲染** - 为 `renderChildren` 添加选择性渲染~~ ✅
-6. **React Context 拆分** - 拆分 `CloudStorageContext`
-7. **WorkbenchTab memo** - 添加 React.memo
+6. **React Context 拆分** - 拆分 `CloudStorageContext`（📋 需重构，影响范围大）
+7. ~~**WorkbenchTab memo** - 添加 React.memo~~ ✅
 8. ~~**修复并行编译配置**~~ ✅
+9. ~~**useEffect 依赖优化** - memoize watchParams~~ ✅
+10. ~~**partition memoize** - 添加 useMemo~~ ✅
 
 ### 🟢 低优先级
 
-9. 读写分离（file-native-db.ts）
-10. Base64 转换优化
+11. 读写分离（file-native-db.ts）
+12. Base64 转换优化
 11. 代码分割配置优化
 12. 内存管理优化
 
@@ -458,33 +460,23 @@ const ConfigContext = createContext<StorageConfig | null>(null);
 const ActionsContext = createContext<StorageActions | null>(null);
 ```
 
-### 4.7 WorkbenchTab memo 优化
+### 4.7 WorkbenchTab memo 优化（已实现）✅
 
 **文件**：`packages/frontend/core/src/modules/app-tabs-header/views/app-tabs-header.tsx`
 
 ```typescript
-// 优化前
-const WorkbenchTab = ({ workbench, active, ... }) => {
-  // ...
-};
-
-// 优化后
-const WorkbenchTab = memo(function WorkbenchTab({ 
-  workbench, 
-  active,
-  ...
-}) => {
-  // ...
-}, (prevProps, nextProps) => {
-  // 自定义比较函数，只比较需要的属性
-  return (
-    prevProps.active === nextProps.active &&
-    prevProps.workbench.id === nextProps.workbench.id &&
-    prevProps.workbench.pinned === nextProps.workbench.pinned
-  );
+// 🔧 性能优化：使用 memo 避免不必要的重新渲染
+const WorkbenchTab = memo(function WorkbenchTab({
+  workbench,
+  active: tabActive,
+  tabsLength,
+  dnd,
+  onDrop,
+}) {
+  // ... 组件实现
 });
 
-// partition 也需要 memoize
+// 🔧 性能优化：使用 useMemo 缓存 partition 结果
 const [pinned, unpinned] = useMemo(
   () => partition(tabs, tab => tab.pinned),
   [tabs]
@@ -504,11 +496,11 @@ const [pinned, unpinned] = useMemo(
 | 5 | 缺少 Webpack 缓存 | webpack/index.ts | 130-474 | 🔴高 | ✅ 已修复 |
 | 6 | observeDeep 无批处理 | store.ts | 603 | 🔴高 | ✅ 已修复 |
 | 7 | T1.5 选择性渲染优化 | lit-host.ts | 99-108 | 🟡中 | ✅ 已修复 |
-| 8 | Context 依赖项过多 | provider.tsx | 1340-1380 | 🟡中 | 待修复 |
-| 9 | WorkbenchTab 缺少 memo | app-tabs-header.tsx | 218-357 | 🟡中 | 待修复 |
-| 10 | useEffect 依赖项过多 | all-page.tsx | 189-286 | 🟡中 | 待修复 |
+| 8 | Context 依赖项过多 | provider.tsx | 1340-1380 | 🟡中 | 📋 需重构 |
+| 9 | WorkbenchTab 缺少 memo | app-tabs-header.tsx | 218-357 | 🟡中 | ✅ 已修复 |
+| 10 | useEffect 依赖项过多 | all-page.tsx | 189-286 | 🟡中 | ✅ 已修复 |
 | 11 | 并行编译配置错误 | bundle.ts | 363-364 | 🟡中 | ✅ 已修复 |
-| 12 | partition 未 memoized | app-tabs-header.tsx | 402 | 🟢低 | 待修复 |
+| 12 | partition 未 memoized | app-tabs-header.tsx | 402 | 🟢低 | ✅ 已修复 |
 
 ---
 
