@@ -175,9 +175,13 @@ export default {
       : undefined,
     // We need the following line for updater
     // Also include web-static outside of asar so Electron can load HTML files
+    // And better-sqlite3 native module (can't be loaded from asar)
     extraResource: [
       './resources/app-update.yml',
       './resources/web-static',
+      './node_modules/better-sqlite3',
+      './node_modules/bindings',
+      './node_modules/file-uri-to-path',
       ...(platform === 'linux' ? ['./resources/yunke.metainfo.xml'] : []),
     ],
     protocols: [
@@ -188,29 +192,49 @@ export default {
     ],
     executableName: productName,
     asar: {
-      unpack: '**/*.node'
+      unpack: '{**/*.node,**/better-sqlite3/**}'
     },
+    // Skip pruning - all deps are bundled in dist/*.js
+    prune: false,
     ignore: (filePath) => {
       // IMPORTANT: Since electron-updater and other deps are bundled in dist/main.js,
       // we DON'T need to package node_modules. This avoids conflicts.
       
+      // Normalize path separators for cross-platform compatibility
+      const normalizedPath = filePath.replace(/\\/g, '/');
+      
       // 排除临时构建目录（最重要！防止打包临时文件导致超过 4GB）
-      if (/\/YUNKE-canary[^/]*$/i.test(filePath)) return true;
-      if (filePath.includes('/temp_asar')) return true;
-      if (filePath.includes('/out/')) return true;
+      if (/\/YUNKE-canary[^/]*$/i.test(normalizedPath)) return true;
+      if (normalizedPath.includes('/temp_asar')) return true;
+      if (normalizedPath.includes('/out/')) return true;
       
       // Include the dist directory (contains bundled code)
-      if (filePath.includes('/dist/')) return false;
+      if (normalizedPath.includes('/dist/')) return false;
       
       // EXCLUDE resources/web-static from asar (it's added via extraResource)
       // This allows Electron to load HTML files directly
-      if (filePath.includes('/resources/web-static')) return true;
+      if (normalizedPath.includes('/resources/web-static')) return true;
       
       // Include other resources (like app-update.yml)
-      if (filePath.includes('/resources/')) return false;
+      if (normalizedPath.includes('/resources/')) return false;
       
-      // Exclude everything else: node_modules, source files, etc.
-      if (filePath.includes('node_modules')) return true;
+      // Handle node_modules - only include specific packages for offline storage
+      if (normalizedPath.includes('node_modules')) {
+        // Allow scanning of node_modules directory itself
+        if (normalizedPath === '/node_modules') return false;
+        if (normalizedPath === '/node_modules/@yunke') return false;
+        
+        // Exclude better-sqlite3 and its dependencies from asar (they're in extraResource)
+        if (normalizedPath.startsWith('/node_modules/better-sqlite3')) return true;
+        if (normalizedPath.startsWith('/node_modules/bindings')) return true;
+        if (normalizedPath.startsWith('/node_modules/file-uri-to-path')) return true;
+        
+        // Include @yunke/native stub
+        if (normalizedPath.startsWith('/node_modules/@yunke/native')) return false;
+        
+        // Exclude all other node_modules content
+        return true;
+      }
       if (filePath.includes('/src/')) return true;
       if (filePath.includes('/scripts/')) return true;
       if (filePath.match(/\.(ts|tsx|map|spec\.(js|ts))$/)) return true;
@@ -257,6 +281,65 @@ export default {
           console.warn('If you see EBUSY errors, please close any running Electron apps and try again.');
         }
       }
+
+      // Copy better-sqlite3 from root node_modules to local node_modules
+      // This is required because yarn workspace hoists dependencies
+      const rootNodeModules = path.resolve(__dirname, '../../../../node_modules');
+      const localNodeModules = path.join(__dirname, 'node_modules');
+      const betterSqliteSrc = path.join(rootNodeModules, 'better-sqlite3');
+      const betterSqliteDst = path.join(localNodeModules, 'better-sqlite3');
+      const bindingsSrc = path.join(rootNodeModules, 'bindings');
+      const bindingsDst = path.join(localNodeModules, 'bindings');
+      const fileUriSrc = path.join(rootNodeModules, 'file-uri-to-path');
+      const fileUriDst = path.join(localNodeModules, 'file-uri-to-path');
+      
+      const { mkdir, cp: fsCp, writeFile } = await import('node:fs/promises');
+      await mkdir(localNodeModules, { recursive: true });
+      
+      if (existsSync(betterSqliteSrc)) {
+        console.log('Copying better-sqlite3 native module...');
+        
+        // Copy better-sqlite3
+        if (existsSync(betterSqliteDst)) {
+          rmSync(betterSqliteDst, { recursive: true, force: true });
+        }
+        await fsCp(betterSqliteSrc, betterSqliteDst, { recursive: true });
+        console.log('✓ better-sqlite3 copied');
+        
+        // Copy bindings (dependency of better-sqlite3)
+        if (existsSync(bindingsSrc)) {
+          if (existsSync(bindingsDst)) {
+            rmSync(bindingsDst, { recursive: true, force: true });
+          }
+          await fsCp(bindingsSrc, bindingsDst, { recursive: true });
+          console.log('✓ bindings copied');
+        }
+        
+        // Copy file-uri-to-path (dependency of bindings)
+        if (existsSync(fileUriSrc)) {
+          if (existsSync(fileUriDst)) {
+            rmSync(fileUriDst, { recursive: true, force: true });
+          }
+          await fsCp(fileUriSrc, fileUriDst, { recursive: true });
+          console.log('✓ file-uri-to-path copied');
+        }
+      } else {
+        console.warn('Warning: better-sqlite3 not found in root node_modules');
+      }
+      
+      // Create a stub for @yunke/native to satisfy flora-colossus
+      // The actual code is bundled in helper.js
+      const yunkeNativeDst = path.join(localNodeModules, '@yunke', 'native');
+      await mkdir(yunkeNativeDst, { recursive: true });
+      await writeFile(
+        path.join(yunkeNativeDst, 'package.json'),
+        JSON.stringify({ name: '@yunke/native', version: '0.21.0', main: 'index.js' })
+      );
+      await writeFile(
+        path.join(yunkeNativeDst, 'index.js'),
+        '// Stub - actual code is bundled in helper.js\nmodule.exports = {};'
+      );
+      console.log('✓ @yunke/native stub created');
 
       // Ensure web assets are generated and copied to resources/web-static
       console.log('Generating assets (frontend HTML/JS/CSS + electron build)...');

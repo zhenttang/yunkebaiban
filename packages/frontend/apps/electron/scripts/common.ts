@@ -92,6 +92,10 @@ export const config = (): BuildOptions => {
     // available inside app.asar without needing node_modules at runtime.
     external: ['electron'],
     format: 'cjs',
+    alias: {
+      // Force use native-mock instead of any stub that might exist in local node_modules
+      '@yunke/native': resolve(electronDir, '../../native-mock/index.js'),
+    },
     loader: {
       '.node': 'copy',
     },

@@ -14178,6 +14178,7 @@ __metadata:
     "@yunke/nbstore": "workspace:*"
     app-builder-lib: "npm:^26.0.0"
     async-call-rpc: "npm:^6.4.2"
+    better-sqlite3: "npm:^11.6.0"
     builder-util-runtime: "npm:^9.2.10"
     cross-env: "npm:^7.0.3"
     debug: "npm:^4.4.0"

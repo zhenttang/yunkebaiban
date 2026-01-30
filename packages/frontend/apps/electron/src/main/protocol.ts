@@ -40,6 +40,8 @@ protocol.registerSchemesAsPrivileged([
 ]);
 
 const webStaticDir = join(resourcesPath, 'web-static');
+logger.info(`[Protocol] webStaticDir: ${webStaticDir}`);
+logger.info(`[Protocol] resourcesPath: ${resourcesPath}`);
 
 async function handleFileRequest(request: Request) {
   const urlObject = new URL(request.url);

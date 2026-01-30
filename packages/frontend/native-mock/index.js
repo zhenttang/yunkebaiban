@@ -1,5 +1,9 @@
 // Mock implementation of @yunke/native that delegates to Java backend APIs
 
+// Define isNodeRuntime early since it's needed for better-sqlite3 loading
+const isNodeRuntime =
+  typeof process !== 'undefined' && !!process.versions?.node;
+
 // 统一从配置模块读取基础地址
 // 注意：这个文件在运行时动态加载，需要异步获取配置
 let BASE_URL = '';
@@ -17,13 +21,33 @@ try {
   // ignore in non-node environments
 }
 try {
-  sqliteFactory = require('better-sqlite3');
-  sqliteAvailable = true;
+  // In packaged Electron app, better-sqlite3 is in resources directory
+  console.info('[MOCK] Attempting to load better-sqlite3, isNodeRuntime:', isNodeRuntime, 'resourcesPath:', process?.resourcesPath);
+  if (isNodeRuntime && process?.resourcesPath) {
+    const betterSqlitePath = require('node:path').join(process.resourcesPath, 'better-sqlite3');
+    console.info('[MOCK] Trying to load from:', betterSqlitePath);
+    try {
+      sqliteFactory = require(betterSqlitePath);
+      sqliteAvailable = true;
+      console.info('[MOCK] ✅ better-sqlite3 从 resources 加载成功:', betterSqlitePath);
+    } catch (resourcesErr) {
+      console.warn('[MOCK] Failed to load from resources:', resourcesErr?.message);
+      // Fallback to regular require
+      sqliteFactory = require('better-sqlite3');
+      sqliteAvailable = true;
+      console.info('[MOCK] ✅ better-sqlite3 从 node_modules 加载成功');
+    }
+  } else {
+    sqliteFactory = require('better-sqlite3');
+    sqliteAvailable = true;
+    console.info('[MOCK] ✅ better-sqlite3 加载成功');
+  }
 } catch (error) {
   console.warn(
-    '[MOCK] better-sqlite3 未安装，离线模式将回退为 JSON 存储:',
+    '[MOCK] ❌ better-sqlite3 未安装，离线模式将回退为 JSON 存储:',
     error?.message || error
   );
+  console.warn('[MOCK] Stack trace:', error?.stack);
 }
 
 const STORE_VERSION = 1;
@@ -31,8 +55,7 @@ const storeRegistry = new Map();
 const sqliteRegistry = new Map();
 const SQLITE_SCHEMA_VERSION = 1;
 
-const isNodeRuntime =
-  typeof process !== 'undefined' && !!process.versions?.node;
+// isNodeRuntime is defined at the top of the file
 
 let offlineConfigCached = null;
 let offlineConfigLoaded = false;
@@ -97,17 +120,10 @@ function getElectronUserDataPath() {
 function loadOfflineEnabledFromConfig() {
   if (offlineConfigLoaded) return offlineConfigCached;
   offlineConfigLoaded = true;
-  if (!fs || !path || !isNodeRuntime) {
-    console.warn('[MOCK] loadOfflineEnabledFromConfig: not in node runtime', { fs: !!fs, path: !!path, isNodeRuntime });
-    return null;
-  }
+  if (!fs || !path || !isNodeRuntime) return null;
   try {
     const userDataPath = getElectronUserDataPath();
-    console.info('[MOCK] loadOfflineEnabledFromConfig: userDataPath =', userDataPath);
-    if (!userDataPath) {
-      console.warn('[MOCK] loadOfflineEnabledFromConfig: userDataPath is null');
-      return null;
-    }
+    if (!userDataPath) return null;
     const configPath = path.join(userDataPath, 'config.json');
     if (!fs.existsSync(configPath)) return null;
     const raw = fs.readFileSync(configPath, 'utf8');
@@ -146,7 +162,18 @@ function shouldUseLocalStoreForUniversal(universalId) {
 }
 
 function shouldUseDocStorageSqlite(universalId) {
-  return shouldUseLocalStoreForUniversal(universalId) && canUseSqlite();
+  const useLocal = shouldUseLocalStoreForUniversal(universalId);
+  const canSqlite = canUseSqlite();
+  const result = useLocal && canSqlite;
+  console.info('[MOCK] shouldUseDocStorageSqlite:', {
+    universalId: universalId?.substring(0, 50),
+    useLocal,
+    canSqlite,
+    result,
+    sqliteAvailable,
+    isNodeRuntime,
+  });
+  return result;
 }
 
 function ensureObject(value) {
@@ -618,10 +645,13 @@ function importJsonToSqlite(db, store) {
 }
 
 async function openSqliteEntry(filePath) {
+  console.info('[MOCK] openSqliteEntry 开始:', { filePath, sqliteFactory: !!sqliteFactory, fsp: !!fsp });
   if (!sqliteFactory || !fsp) {
+    console.error('[MOCK] openSqliteEntry 失败: SQLite runtime unavailable');
     throw new Error('SQLite runtime unavailable');
   }
   await ensureDirForFile(filePath);
+  console.info('[MOCK] openSqliteEntry 目录已创建:', { filePath });
 
   let pendingStore = null;
   if (await fileExists(filePath)) {
@@ -642,11 +672,13 @@ async function openSqliteEntry(filePath) {
     }
   }
 
+  console.info('[MOCK] openSqliteEntry 创建 SQLite 数据库:', { filePath });
   const db = new sqliteFactory(filePath);
   initSqliteSchema(db);
   if (pendingStore) {
     importJsonToSqlite(db, pendingStore);
   }
+  console.info('[MOCK] openSqliteEntry ✅ 完成:', { filePath });
   return {
     db,
     statements: createSqliteStatements(db),
@@ -789,28 +821,20 @@ function getBlobUploadedBucket(data, peer) {
 }
 
 function isElectronOfflineMode() {
-  // 🔍 调试：检查离线模式判断
   if (process?.env?.YUNKE_OFFLINE_MODE === '1') {
-    console.info('[MOCK] isElectronOfflineMode: true (env YUNKE_OFFLINE_MODE)');
     return true;
   }
   const offlineEnabled = loadOfflineEnabledFromConfig();
-  console.info('[MOCK] isElectronOfflineMode: offlineEnabled from config =', offlineEnabled);
   if (offlineEnabled === true) {
-    console.info('[MOCK] isElectronOfflineMode: true (config)');
     return true;
   }
   const apiBase = typeof import.meta !== 'undefined' ? import.meta.env?.VITE_API_BASE_URL : '';
-  console.info('[MOCK] isElectronOfflineMode: apiBase =', apiBase);
   if (apiBase && apiBase.trim() !== '') {
-    console.info('[MOCK] isElectronOfflineMode: false (has apiBase)');
     return false;
   }
   if (typeof process !== 'undefined' && process.versions?.electron) {
-    console.info('[MOCK] isElectronOfflineMode: true (electron process)');
     return true;
   }
-  console.info('[MOCK] isElectronOfflineMode: false (default)');
   return false;
 }
 
@@ -914,19 +938,8 @@ export class DocStoragePool {
   }
   
   async connect(universalId, filePath) {
-    // 🔍 调试：打印存储选择的详细信息
     const useSqlite = shouldUseDocStorageSqlite(universalId);
     const useLocal = shouldUseLocalStoreForUniversal(universalId);
-    const canSqlite = canUseSqlite();
-    console.info('[MOCK] DocStoragePool.connect 选择存储方式', {
-      universalId,
-      filePath,
-      useSqlite,
-      useLocal,
-      canSqlite,
-      sqliteAvailable,
-      isNodeRuntime,
-    });
     
     if (useSqlite) {
       const sqlite = await acquireSqliteEntry(filePath);
@@ -935,7 +948,7 @@ export class DocStoragePool {
         workspaceId: universalId,
         sqlite,
       });
-      console.info('[MOCK] DocStoragePool.connect ✅ 使用 SQLite', {
+      console.info('[MOCK] DocStoragePool.connect sqlite', {
         universalId,
         filePath,
       });
@@ -949,7 +962,7 @@ export class DocStoragePool {
         workspaceId: universalId,
         store,
       });
-      console.info('[MOCK] DocStoragePool.connect ⚠️ 使用 JSON（SQLite不可用）', {
+      console.info('[MOCK] DocStoragePool.connect json', {
         universalId,
         filePath,
       });
@@ -959,7 +972,7 @@ export class DocStoragePool {
       path: filePath,
       workspaceId: universalId,
     });
-    console.info('[MOCK] DocStoragePool.connect ❌ 使用远程（非离线模式）', {
+    console.info('[MOCK] DocStoragePool.connect remote', {
       universalId,
       filePath,
     });

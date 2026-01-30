@@ -8,11 +8,7 @@ import fs from 'fs-extra';
 import { logger } from '../logger';
 import { getSpaceDBPath } from '../workspace/meta';
 
-// 🔍 调试：打印 native-mock 状态
-logger.info('[offline] DocStoragePool imported from @yunke/native');
-
 const POOL = new DocStoragePool();
-logger.info('[offline] DocStoragePool created');
 
 export function getDocStoragePool() {
   return POOL;
@@ -21,33 +17,17 @@ export function getDocStoragePool() {
 export const nbstoreHandlers: NativeDBApis = {
   connect: async (universalId: string) => {
     const { peer, type, id } = parseUniversalId(universalId);
-    logger.info('[offline] nbstore connect 开始', {
+    const dbPath = await getSpaceDBPath(peer, type, id);
+    await fs.ensureDir(path.dirname(dbPath));
+    logger.info('[offline] nbstore connect', {
       universalId,
       peer,
       type,
       id,
-    });
-    const dbPath = await getSpaceDBPath(peer, type, id);
-    logger.info('[offline] nbstore connect dbPath 计算完成', {
       dbPath,
-      dirExists: await fs.pathExists(path.dirname(dbPath)),
-    });
-    await fs.ensureDir(path.dirname(dbPath));
-    logger.info('[offline] nbstore connect 目录已创建', {
-      dbPath,
-      dirExists: await fs.pathExists(path.dirname(dbPath)),
     });
     await POOL.connect(universalId, dbPath);
-    logger.info('[offline] nbstore connect POOL.connect 完成', {
-      universalId,
-      dbPath,
-    });
     await POOL.setSpaceId(universalId, id);
-    logger.info('[offline] nbstore connect 全部完成', {
-      universalId,
-      dbPath,
-      fileExists: await fs.pathExists(dbPath),
-    });
   },
   disconnect: async (universalId: string) => {
     logger.info('[offline] nbstore disconnect', { universalId });

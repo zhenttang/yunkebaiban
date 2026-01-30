@@ -41,10 +41,45 @@ import { globalStateStorage } from '../shared-storage/storage';
 import { getMainWindow, MainWindowManager } from './main-window';
 
 async function getAdditionalArguments() {
+  logger.info('[DEBUG] getAdditionalArguments: starting');
   const { getExposedMeta } = await import('../exposed');
   const mainExposedMeta = getExposedMeta();
+  logger.info('[DEBUG] getAdditionalArguments: mainExposedMeta obtained');
   const helperProcessManager = await ensureHelperProcess();
-  const helperExposedMeta = await helperProcessManager.rpc?.getMeta();
+  logger.info(`[DEBUG] getAdditionalArguments: helper ready, rpc exists: ${!!helperProcessManager.rpc}`);
+  
+  // Wait a bit for helper process to fully initialize its RPC handler
+  // The spawn event fires before the helper process code executes
+  await new Promise(resolve => setTimeout(resolve, 500));
+  
+  // Retry getMeta with timeout
+  let helperExposedMeta;
+  const maxRetries = 3;
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    try {
+      logger.info(`[DEBUG] getAdditionalArguments: getMeta attempt ${attempt}/${maxRetries}`);
+      const timeoutPromise = new Promise((_, reject) => 
+        setTimeout(() => reject(new Error(`RPC getMeta timeout after 3s (attempt ${attempt})`)), 3000)
+      );
+      helperExposedMeta = await Promise.race([
+        helperProcessManager.rpc?.getMeta(),
+        timeoutPromise
+      ]);
+      logger.info(`[DEBUG] getAdditionalArguments: helperExposedMeta obtained: ${!!helperExposedMeta}`);
+      break; // Success
+    } catch (error) {
+      logger.warn(`[DEBUG] getAdditionalArguments: getMeta attempt ${attempt} failed:`, error);
+      if (attempt < maxRetries) {
+        // Wait before retry
+        await new Promise(resolve => setTimeout(resolve, 500));
+      } else {
+        logger.error('[DEBUG] getAdditionalArguments: All getMeta attempts failed, using fallback');
+        // Use empty meta as fallback
+        helperExposedMeta = { handlers: [], events: [] };
+      }
+    }
+  }
+  
   return [
     `--main-exposed-meta=` + JSON.stringify(mainExposedMeta),
     `--helper-exposed-meta=` + JSON.stringify(helperExposedMeta),
@@ -476,16 +511,24 @@ export class WebContentViewsManager {
     const stack = new Error().stack;
     logger.info(`[DEBUG] loadTab called for ${id}, call stack:\n${stack}`);
     
+    logger.info(`[DEBUG] tabViewsMeta.workbenches count: ${this.tabViewsMeta.workbenches.length}`);
+    logger.info(`[DEBUG] workbench ids: ${this.tabViewsMeta.workbenches.map(w => w.id).join(', ')}`);
+    
     if (!this.tabViewsMeta.workbenches.some(w => w.id === id)) {
+      logger.warn(`[DEBUG] No workbench found for id ${id}, returning early`);
       return;
     }
 
     let view = this.tabViewsMap.get(id);
+    logger.info(`[DEBUG] Existing view for ${id}: ${!!view}`);
     if (!view) {
+      logger.info(`[DEBUG] Creating new view for ${id}`);
       view = await this.createAndAddView('app', id);
+      logger.info(`[DEBUG] View created: ${!!view}`);
     }
     const workbench = this.tabViewsMeta.workbenches.find(w => w.id === id);
     const viewMeta = workbench?.views[workbench.activeViewIndex];
+    logger.info(`[DEBUG] workbench: ${!!workbench}, viewMeta: ${!!viewMeta}, activeViewIndex: ${workbench?.activeViewIndex}`);
     if (workbench && viewMeta) {
       const url = new URL(
         workbench.basename + (viewMeta.path?.pathname ?? ''),
@@ -495,6 +538,8 @@ export class WebContentViewsManager {
       url.search = viewMeta.path?.search ?? '';
       logger.info(`⏩ loading tab ${id} at ${url.href}`);
       view.webContents.loadURL(url.href).catch(err => logger.error(err));
+    } else {
+      logger.warn(`[DEBUG] Skipping loadURL - missing workbench or viewMeta`);
     }
     return view;
   };

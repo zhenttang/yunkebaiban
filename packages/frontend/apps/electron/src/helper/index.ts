@@ -3,6 +3,8 @@ import { AsyncCall } from 'async-call-rpc';
 import type { RendererToHelper } from '../shared/type';
 import { events, handlers } from './exposed';
 import { logger } from './logger';
+// Import main-rpc to set up RPC channel with main process
+import './main-rpc';
 
 function setupRendererConnection(rendererPort: Electron.MessagePortMain) {
   const flattenedHandlers = Object.entries(handlers).flatMap(
@@ -70,13 +72,20 @@ function setupRendererConnection(rendererPort: Electron.MessagePortMain) {
 }
 
 function main() {
+  logger.info('[helper] main() starting, parentPort exists:', !!process.parentPort);
+  
   process.parentPort.on('message', e => {
+    logger.info('[helper] received message from main:', e.data?.channel || 'unknown');
     if (e.data.channel === 'renderer-connect' && e.ports.length === 1) {
       const rendererPort = e.ports[0];
       setupRendererConnection(rendererPort);
-      logger.debug('[helper] renderer connected');
+      logger.info('[helper] renderer connected');
     }
   });
+  
+  logger.info('[helper] main() initialized, waiting for messages');
 }
 
+logger.info('[helper] index.ts loaded, calling main()');
 main();
+logger.info('[helper] main() called');

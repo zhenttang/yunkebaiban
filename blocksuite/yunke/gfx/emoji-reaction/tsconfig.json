@@ -5,5 +5,16 @@
     "outDir": "./dist"
   },
   "include": ["src"],
-  "references": []
+  "references": [
+    { "path": "../../../framework/global" },
+    { "path": "../../../framework/std" },
+    { "path": "../../../framework/store" },
+    { "path": "../../blocks/surface" },
+    { "path": "../../components" },
+    { "path": "../../ext-loader" },
+    { "path": "../../model" },
+    { "path": "../../shared" },
+    { "path": "../../widgets/edgeless-toolbar" },
+    { "path": "../../../../packages/theme" }
+  ]
 }

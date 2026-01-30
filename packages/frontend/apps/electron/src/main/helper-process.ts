@@ -39,7 +39,7 @@ function pickAndBind<T extends object, U extends keyof T>(
 
 class HelperProcessManager {
   ready: Promise<void>;
-  readonly #process: UtilityProcess;
+  private readonly _process: UtilityProcess;
 
   // a rpc server for the main process -> helper process
   rpc?: _AsyncVersionOf<HelperToMain>;
@@ -59,11 +59,22 @@ class HelperProcessManager {
       execArgv: isDev ? ['--inspect=40894'] : [],
       serviceName: 'yunke-helper',
     });
-    this.#process = helperProcess;
+    this._process = helperProcess;
+    
+    // Add event listeners to track process state
+    helperProcess.on('exit', (code) => {
+      logger.info('[helper] Process exited with code:', code);
+    });
+    
+    helperProcess.on('message', (msg) => {
+      logger.info('[helper] Received message from helper:', JSON.stringify(msg).slice(0, 100));
+    });
+    
     this.ready = new Promise((resolve, reject) => {
       helperProcess.once('spawn', () => {
         try {
           logger.info('[helper] forked', helperProcess.pid);
+          logger.info('[helper] _process.pid after spawn:', this._process.pid);
           resolve();
         } catch (err) {
           logger.error('[helper] connectMain error', err);
@@ -73,15 +84,32 @@ class HelperProcessManager {
     });
 
     beforeAppQuit(() => {
-      this.#process.kill();
+      this._process.kill();
     });
+  }
+
+  // Get process reference (for debugging)
+  getProcess() {
+    logger.info('[helper] getProcess: _instance:', !!HelperProcessManager._instance, 'this:', !!this, '_process:', !!this._process);
+    return this._process;
+  }
+  
+  // Send test message (for debugging)  
+  sendTestMessage() {
+    logger.info('[helper] sendTestMessage: _instance:', !!HelperProcessManager._instance);
+    logger.info('[helper] sendTestMessage: this._process:', !!this._process, 'pid:', this._process?.pid);
+    if (this._process) {
+      this._process.postMessage({ channel: 'test-message', data: 'hello from sendTestMessage' });
+    } else {
+      logger.error('[helper] sendTestMessage: _process is null/undefined!');
+    }
   }
 
   // bridge renderer <-> helper process
   connectRenderer(renderer: WebContents) {
     // connect to the helper process
     const { port1: helperPort, port2: rendererPort } = new MessageChannelMain();
-    this.#process.postMessage({ channel: 'renderer-connect' }, [helperPort]);
+    this._process.postMessage({ channel: 'renderer-connect' }, [helperPort]);
     renderer.postMessage('helper-connection', null, [rendererPort]);
 
     return () => {
@@ -97,6 +125,12 @@ class HelperProcessManager {
   // bridge main <-> helper process
   // also set up the RPC to the helper process
   connectMain(window: BaseWindow) {
+    logger.info('[helper] connectMain called');
+    logger.info('[helper] connectMain: process pid:', this._process?.pid, 'exists:', !!this._process);
+    // Enable MessageEventChannel logging
+    MessageEventChannel.enableLogging(logger);
+    const helperProcess = this._process; // Capture reference
+    logger.info('[helper] connectMain: helperProcess pid:', helperProcess?.pid, 'same as this._process:', helperProcess === this._process);
     const dialogMethods = {
       showOpenDialog: async (opts: OpenDialogOptions) => {
         return dialog.showOpenDialog(window, opts);
@@ -124,9 +158,29 @@ class HelperProcessManager {
         // restrict to only JSONRPC messages
         unknownMessage: false,
       },
-      channel: new MessageEventChannel(this.#process),
+      channel: new MessageEventChannel(this._process),
       log: false,
     });
+    logger.info('[helper] RPC initialized');
+    
+    // TEST: Send a test message directly to helper
+    const savedPid = helperProcess?.pid;
+    logger.info('[helper] Saved pid for later:', savedPid);
+    
+    setTimeout(() => {
+      logger.info('[helper] Sending test message directly to helper process');
+      // Access from instance again
+      const currentProcess = HelperProcessManager.instance.getProcess();
+      logger.info('[helper] Instance process pid:', currentProcess?.pid);
+      logger.info('[helper] helperProcess (local var) pid:', helperProcess?.pid, 'saved pid:', savedPid);
+      try {
+        // Use instance method to send
+        HelperProcessManager.instance.sendTestMessage();
+        logger.info('[helper] Test message sent via instance');
+      } catch (err) {
+        logger.error('[helper] Failed to send test message:', err);
+      }
+    }, 1000);
   }
 }
 

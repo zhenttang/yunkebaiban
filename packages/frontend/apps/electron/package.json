@@ -78,6 +78,7 @@
   "dependencies": {
     "@yunke/native": "workspace:*",
     "async-call-rpc": "^6.4.2",
+    "better-sqlite3": "^11.6.0",
     "electron-updater": "^6.3.9",
     "link-preview-js": "^3.0.12",
     "next-themes": "^0.4.4",
@@ -86,6 +87,16 @@
     "yjs": "^13.6.21"
   },
   "build": {
+    "appId": "pro.yunke.yunke-canary",
+    "productName": "YUNKE-canary",
+    "directories": {
+      "output": "out/canary/make/nsis.windows/x64"
+    },
+    "nsis": {
+      "oneClick": true,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": false
+    },
     "protocols": [
       {
         "name": "yunke",

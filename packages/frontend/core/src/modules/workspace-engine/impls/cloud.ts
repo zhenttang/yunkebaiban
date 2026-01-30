@@ -186,9 +186,20 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
 
   // 修复Android环境下存储类型的动态加载问题
   DocStorageType = (() => {
+    // 检测 Electron 开发模式
+    // 在开发模式下，渲染进程从 localhost 加载，Worker 使用 IndexedDB
+    const isElectronDevMode = BUILD_CONFIG.isElectron && 
+      typeof window !== 'undefined' && 
+      window.location?.hostname === 'localhost';
+    
     // Android Capacitor应用强制使用IndexedDB
     if (BUILD_CONFIG.isAndroid && typeof window !== 'undefined' && (window as any).Capacitor) {
       console.log('🤖 [CloudWorkspaceFlavourProvider] Android Capacitor环境，使用IndexedDB');
+      return IndexedDBDocStorage;
+    }
+    // Electron 开发模式使用 IndexedDB（避免 File System Access API 权限问题）
+    if (isElectronDevMode) {
+      console.log('🖥️ [CloudWorkspaceFlavourProvider] Electron 开发模式，使用IndexedDB');
       return IndexedDBDocStorage;
     }
     if (BUILD_CONFIG.isElectron || BUILD_CONFIG.isIOS) {
@@ -202,16 +213,34 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
     return IndexedDBDocStorage;
   })();
   
-  DocStorageV1Type = BUILD_CONFIG.isElectron
-    ? SqliteV1DocStorage
-    : BUILD_CONFIG.isWeb || BUILD_CONFIG.isMobileWeb || BUILD_CONFIG.isAndroid
-      ? IndexedDBV1DocStorage
-      : undefined;
+  DocStorageV1Type = (() => {
+    const isElectronDevMode = BUILD_CONFIG.isElectron && 
+      typeof window !== 'undefined' && 
+      window.location?.hostname === 'localhost';
+    // Electron 开发模式使用 IndexedDB
+    if (isElectronDevMode) {
+      return IndexedDBV1DocStorage;
+    }
+    if (BUILD_CONFIG.isElectron) {
+      return SqliteV1DocStorage;
+    }
+    if (BUILD_CONFIG.isWeb || BUILD_CONFIG.isMobileWeb || BUILD_CONFIG.isAndroid) {
+      return IndexedDBV1DocStorage;
+    }
+    return undefined;
+  })();
       
   BlobStorageType = (() => {
+    const isElectronDevMode = BUILD_CONFIG.isElectron && 
+      typeof window !== 'undefined' && 
+      window.location?.hostname === 'localhost';
     // Android Capacitor应用强制使用IndexedDB
     if (BUILD_CONFIG.isAndroid && typeof window !== 'undefined' && (window as any).Capacitor) {
       console.log('🤖 [CloudWorkspaceFlavourProvider] Android Capacitor环境，使用IndexedDB');
+      return IndexedDBBlobStorage;
+    }
+    // Electron 开发模式使用 IndexedDB
+    if (isElectronDevMode) {
       return IndexedDBBlobStorage;
     }
     if (BUILD_CONFIG.isElectron || BUILD_CONFIG.isIOS) {
@@ -225,15 +254,33 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
     return IndexedDBBlobStorage;
   })();
   
-  BlobStorageV1Type = BUILD_CONFIG.isElectron
-    ? SqliteV1BlobStorage
-    : BUILD_CONFIG.isWeb || BUILD_CONFIG.isMobileWeb || BUILD_CONFIG.isAndroid
-      ? IndexedDBV1BlobStorage
-      : undefined;
+  BlobStorageV1Type = (() => {
+    const isElectronDevMode = BUILD_CONFIG.isElectron && 
+      typeof window !== 'undefined' && 
+      window.location?.hostname === 'localhost';
+    // Electron 开发模式使用 IndexedDB
+    if (isElectronDevMode) {
+      return IndexedDBV1BlobStorage;
+    }
+    if (BUILD_CONFIG.isElectron) {
+      return SqliteV1BlobStorage;
+    }
+    if (BUILD_CONFIG.isWeb || BUILD_CONFIG.isMobileWeb || BUILD_CONFIG.isAndroid) {
+      return IndexedDBV1BlobStorage;
+    }
+    return undefined;
+  })();
       
   DocSyncStorageType = (() => {
+    const isElectronDevMode = BUILD_CONFIG.isElectron && 
+      typeof window !== 'undefined' && 
+      window.location?.hostname === 'localhost';
     // Android Capacitor应用强制使用IndexedDB
     if (BUILD_CONFIG.isAndroid && typeof window !== 'undefined' && (window as any).Capacitor) {
+      return IndexedDBDocSyncStorage;
+    }
+    // Electron 开发模式使用 IndexedDB
+    if (isElectronDevMode) {
       return IndexedDBDocSyncStorage;
     }
     if (BUILD_CONFIG.isElectron || BUILD_CONFIG.isIOS) {
@@ -247,8 +294,15 @@ class CloudWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
   })();
   
   BlobSyncStorageType = (() => {
+    const isElectronDevMode = BUILD_CONFIG.isElectron && 
+      typeof window !== 'undefined' && 
+      window.location?.hostname === 'localhost';
     // Android Capacitor应用强制使用IndexedDB
     if (BUILD_CONFIG.isAndroid && typeof window !== 'undefined' && (window as any).Capacitor) {
+      return IndexedDBBlobSyncStorage;
+    }
+    // Electron 开发模式使用 IndexedDB
+    if (isElectronDevMode) {
       return IndexedDBBlobSyncStorage;
     }
     if (BUILD_CONFIG.isElectron || BUILD_CONFIG.isIOS) {

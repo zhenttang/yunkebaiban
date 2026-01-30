@@ -85,16 +85,22 @@ export const PackageList = [
       'blocksuite/yunke/fragments/frame-panel',
       'blocksuite/yunke/fragments/outline',
       'blocksuite/yunke/gfx/brush',
+      'blocksuite/yunke/gfx/chart',
       'blocksuite/yunke/gfx/connector',
+      'blocksuite/yunke/gfx/emoji-reaction',
       'blocksuite/yunke/gfx/group',
+      'blocksuite/yunke/gfx/laser',
       'blocksuite/yunke/gfx/link',
       'blocksuite/yunke/gfx/mindmap',
+      'blocksuite/yunke/gfx/more-tools',
       'blocksuite/yunke/gfx/note',
       'blocksuite/yunke/gfx/pointer',
       'blocksuite/yunke/gfx/shape',
       'blocksuite/yunke/gfx/template',
       'blocksuite/yunke/gfx/text',
+      'blocksuite/yunke/gfx/timer',
       'blocksuite/yunke/gfx/turbo-renderer',
+      'blocksuite/yunke/gfx/vote',
       'blocksuite/yunke/inlines/footnote',
       'blocksuite/yunke/inlines/latex',
       'blocksuite/yunke/inlines/link',
@@ -684,6 +690,22 @@ export const PackageList = [
     ],
   },
   {
+    location: 'blocksuite/yunke/gfx/chart',
+    name: '@blocksuite/yunke-gfx-chart',
+    workspaceDependencies: [
+      'blocksuite/framework/global',
+      'blocksuite/framework/std',
+      'blocksuite/framework/store',
+      'blocksuite/yunke/blocks/surface',
+      'blocksuite/yunke/components',
+      'blocksuite/yunke/ext-loader',
+      'blocksuite/yunke/model',
+      'blocksuite/yunke/shared',
+      'blocksuite/yunke/widgets/edgeless-toolbar',
+      'packages/theme',
+    ],
+  },
+  {
     location: 'blocksuite/yunke/gfx/connector',
     name: '@blocksuite/yunke-gfx-connector',
     workspaceDependencies: [
@@ -702,6 +724,22 @@ export const PackageList = [
     ],
   },
   {
+    location: 'blocksuite/yunke/gfx/emoji-reaction',
+    name: '@blocksuite/yunke-gfx-emoji-reaction',
+    workspaceDependencies: [
+      'blocksuite/framework/global',
+      'blocksuite/framework/std',
+      'blocksuite/framework/store',
+      'blocksuite/yunke/blocks/surface',
+      'blocksuite/yunke/components',
+      'blocksuite/yunke/ext-loader',
+      'blocksuite/yunke/model',
+      'blocksuite/yunke/shared',
+      'blocksuite/yunke/widgets/edgeless-toolbar',
+      'packages/theme',
+    ],
+  },
+  {
     location: 'blocksuite/yunke/gfx/group',
     name: '@blocksuite/yunke-gfx-group',
     workspaceDependencies: [
@@ -714,6 +752,22 @@ export const PackageList = [
       'blocksuite/yunke/gfx/text',
       'blocksuite/yunke/model',
       'blocksuite/yunke/rich-text',
+      'blocksuite/yunke/shared',
+      'blocksuite/yunke/widgets/edgeless-toolbar',
+      'packages/theme',
+    ],
+  },
+  {
+    location: 'blocksuite/yunke/gfx/laser',
+    name: '@blocksuite/yunke-gfx-laser',
+    workspaceDependencies: [
+      'blocksuite/framework/global',
+      'blocksuite/framework/std',
+      'blocksuite/framework/store',
+      'blocksuite/yunke/blocks/surface',
+      'blocksuite/yunke/components',
+      'blocksuite/yunke/ext-loader',
+      'blocksuite/yunke/model',
       'blocksuite/yunke/shared',
       'blocksuite/yunke/widgets/edgeless-toolbar',
       'packages/theme',
@@ -761,6 +815,20 @@ export const PackageList = [
       'blocksuite/yunke/shared',
       'blocksuite/yunke/widgets/edgeless-toolbar',
       'packages/theme',
+    ],
+  },
+  {
+    location: 'blocksuite/yunke/gfx/more-tools',
+    name: '@blocksuite/yunke-gfx-more-tools',
+    workspaceDependencies: [
+      'blocksuite/framework/global',
+      'blocksuite/framework/std',
+      'blocksuite/yunke/ext-loader',
+      'blocksuite/yunke/gfx/chart',
+      'blocksuite/yunke/gfx/emoji-reaction',
+      'blocksuite/yunke/gfx/timer',
+      'blocksuite/yunke/gfx/vote',
+      'blocksuite/yunke/widgets/edgeless-toolbar',
     ],
   },
   {
@@ -854,12 +922,44 @@ export const PackageList = [
     ],
   },
   {
+    location: 'blocksuite/yunke/gfx/timer',
+    name: '@blocksuite/yunke-gfx-timer',
+    workspaceDependencies: [
+      'blocksuite/framework/global',
+      'blocksuite/framework/std',
+      'blocksuite/framework/store',
+      'blocksuite/yunke/blocks/surface',
+      'blocksuite/yunke/components',
+      'blocksuite/yunke/ext-loader',
+      'blocksuite/yunke/model',
+      'blocksuite/yunke/shared',
+      'blocksuite/yunke/widgets/edgeless-toolbar',
+      'packages/theme',
+    ],
+  },
+  {
     location: 'blocksuite/yunke/gfx/turbo-renderer',
     name: '@blocksuite/yunke-gfx-turbo-renderer',
     workspaceDependencies: [
       'blocksuite/framework/global',
       'blocksuite/framework/std',
       'blocksuite/framework/store',
+    ],
+  },
+  {
+    location: 'blocksuite/yunke/gfx/vote',
+    name: '@blocksuite/yunke-gfx-vote',
+    workspaceDependencies: [
+      'blocksuite/framework/global',
+      'blocksuite/framework/std',
+      'blocksuite/framework/store',
+      'blocksuite/yunke/blocks/surface',
+      'blocksuite/yunke/components',
+      'blocksuite/yunke/ext-loader',
+      'blocksuite/yunke/model',
+      'blocksuite/yunke/shared',
+      'blocksuite/yunke/widgets/edgeless-toolbar',
+      'packages/theme',
     ],
   },
   {
@@ -1561,16 +1661,22 @@ export type PackageName =
   | '@blocksuite/yunke-fragment-frame-panel'
   | '@blocksuite/yunke-fragment-outline'
   | '@blocksuite/yunke-gfx-brush'
+  | '@blocksuite/yunke-gfx-chart'
   | '@blocksuite/yunke-gfx-connector'
+  | '@blocksuite/yunke-gfx-emoji-reaction'
   | '@blocksuite/yunke-gfx-group'
+  | '@blocksuite/yunke-gfx-laser'
   | '@blocksuite/yunke-gfx-link'
   | '@blocksuite/yunke-gfx-mindmap'
+  | '@blocksuite/yunke-gfx-more-tools'
   | '@blocksuite/yunke-gfx-note'
   | '@blocksuite/yunke-gfx-pointer'
   | '@blocksuite/yunke-gfx-shape'
   | '@blocksuite/yunke-gfx-template'
   | '@blocksuite/yunke-gfx-text'
+  | '@blocksuite/yunke-gfx-timer'
   | '@blocksuite/yunke-gfx-turbo-renderer'
+  | '@blocksuite/yunke-gfx-vote'
   | '@blocksuite/yunke-inline-footnote'
   | '@blocksuite/yunke-inline-latex'
   | '@blocksuite/yunke-inline-link'
