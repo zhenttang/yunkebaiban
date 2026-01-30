@@ -1,4 +1,3 @@
-import { FlexWrapper } from '@yunke/component';
 import { EmptyCollectionDetail } from '@yunke/core/components/yunke/empty/collection-detail';
 import {
   createDocExplorerContext,
@@ -112,12 +111,14 @@ export const CollectionDetail = ({
         />
       </ViewHeader>
       <ViewBody>
-        <FlexWrapper flexDirection="column" alignItems="stretch" width="100%">
-          <CollectionListHeader collection={collection} />
-          <div className={styles.scrollArea}>
-            <DocsExplorer disableMultiDelete={!isAdmin && !isOwner} />
+        <div className={styles.body}>
+          <div className={styles.mainContainer}>
+            <CollectionListHeader collection={collection} />
+            <div className={styles.scrollArea}>
+              <DocsExplorer disableMultiDelete={!isAdmin && !isOwner} />
+            </div>
           </div>
-        </FlexWrapper>
+        </div>
       </ViewBody>
     </DocExplorerContext.Provider>
   );

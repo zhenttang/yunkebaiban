@@ -133,13 +133,15 @@ export const TagDetail = ({ tagId }: { tagId?: string }) => {
       </ViewHeader>
       <ViewBody>
         <div className={styles.body}>
-          <TagListHeader tag={currentTag} />
-          <div className={styles.scrollArea}>
-            {isEmpty ? (
-              <EmptyPageList type="all" tagId={tagId} />
-            ) : (
-              <DocsExplorer disableMultiDelete={!isAdmin && !isOwner} />
-            )}
+          <div className={styles.mainContainer}>
+            <TagListHeader tag={currentTag} />
+            <div className={styles.scrollArea}>
+              {isEmpty ? (
+                <EmptyPageList type="all" tagId={tagId} />
+              ) : (
+                <DocsExplorer disableMultiDelete={!isAdmin && !isOwner} />
+              )}
+            </div>
           </div>
         </div>
       </ViewBody>
