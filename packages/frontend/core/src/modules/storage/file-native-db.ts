@@ -227,6 +227,11 @@ class SqliteFileEntry {
   handle: FileSystemFileHandle;
   queue: Promise<unknown> = Promise.resolve();
   lastSize: number | null = null;
+  
+  // 🔧 性能优化：防抖 flush 机制，避免频繁写入磁盘
+  private flushTimer: ReturnType<typeof setTimeout> | null = null;
+  private flushDebounceMs = 500; // 500ms 防抖延迟
+  private pendingFlush = false;
 
   constructor(db: Database, handle: FileSystemFileHandle) {
     this.db = db;
@@ -243,6 +248,46 @@ class SqliteFileEntry {
       });
     });
     return task;
+  }
+
+  /**
+   * 🔧 性能优化：防抖 flush，延迟写入磁盘
+   * 多次快速写入会被合并为一次磁盘写入，显著提升性能
+   */
+  scheduleFlush(): void {
+    this.pendingFlush = true;
+    
+    if (this.flushTimer) {
+      clearTimeout(this.flushTimer);
+    }
+    
+    this.flushTimer = setTimeout(() => {
+      this.flushTimer = null;
+      if (this.pendingFlush) {
+        this.pendingFlush = false;
+        this.runExclusive(async () => {
+          await this.flush();
+        }).catch((error) => {
+          logWarn('scheduled flush 失败', {
+            file: this.handle.name,
+            error: error instanceof Error ? error.message : String(error),
+          });
+        });
+      }
+    }, this.flushDebounceMs);
+  }
+
+  /**
+   * 🔧 性能优化：立即 flush，用于关键操作（如 disconnect）
+   * 取消待处理的防抖 flush，立即执行
+   */
+  async flushNow(): Promise<void> {
+    if (this.flushTimer) {
+      clearTimeout(this.flushTimer);
+      this.flushTimer = null;
+    }
+    this.pendingFlush = false;
+    await this.flush();
   }
 
   /**
@@ -390,7 +435,7 @@ export function createFileNativeDBApis(): NativeDBApis {
       const entry = entries.get(id);
       if (!entry) return;
       await entry.runExclusive(async () => {
-        await entry.flush();
+        await entry.flushNow(); // 关键操作，立即 flush
         entry.db.close();
       });
       entries.delete(id);
@@ -416,7 +461,7 @@ export function createFileNativeDBApis(): NativeDBApis {
           'INSERT INTO doc_clocks (doc_id, ts) VALUES (?, ?) ON CONFLICT(doc_id) DO UPDATE SET ts=excluded.ts',
           [docId, ts]
         );
-        await entry.flush();
+        entry.scheduleFlush(); // 使用防抖 flush，提升性能
         return new Date(ts);
       });
     },
@@ -447,7 +492,7 @@ export function createFileNativeDBApis(): NativeDBApis {
            WHERE excluded.ts >= doc_snapshots.ts`,
           [snapshot.docId, snapshot.timestamp.getTime(), snapshot.bin]
         );
-        await entry.flush();
+        entry.scheduleFlush(); // 使用防抖 flush，提升性能
         return true;
       });
     },
@@ -478,7 +523,7 @@ export function createFileNativeDBApis(): NativeDBApis {
           );
         });
         entry.db.exec('COMMIT');
-        await entry.flush();
+        entry.scheduleFlush(); // 使用防抖 flush，提升性能
         return updates.length;
       });
     },
@@ -502,7 +547,7 @@ export function createFileNativeDBApis(): NativeDBApis {
           [docId]
         );
         entry.db.exec('COMMIT');
-        await entry.flush();
+        entry.scheduleFlush(); // 使用防抖 flush，提升性能
       });
     },
     getDocClocks: async (id: string, after?: Date | null) => {
@@ -577,14 +622,14 @@ export function createFileNativeDBApis(): NativeDBApis {
             createdAt,
           ]
         );
-        await entry.flush();
+        entry.scheduleFlush(); // 使用防抖 flush，提升性能
       });
     },
     deleteBlob: async (id: string, key: string) => {
       const entry = await getEntry(id);
       await entry.runExclusive(async () => {
         execStatement(entry.db, 'DELETE FROM blobs WHERE key=?', [key]);
-        await entry.flush();
+        entry.scheduleFlush(); // 使用防抖 flush，提升性能
       });
     },
     releaseBlobs: async () => {
@@ -642,7 +687,7 @@ export function createFileNativeDBApis(): NativeDBApis {
            ON CONFLICT(peer, type, doc_id) DO UPDATE SET ts=excluded.ts`,
           [peer, 'remote', docId, clock.getTime()]
         );
-        await entry.flush();
+        entry.scheduleFlush(); // 使用防抖 flush，提升性能
       });
     },
     getPeerPulledRemoteClocks: async (id: string, peer: string) => {
@@ -690,7 +735,7 @@ export function createFileNativeDBApis(): NativeDBApis {
            ON CONFLICT(peer, type, doc_id) DO UPDATE SET ts=excluded.ts`,
           [peer, 'pulled', docId, clock.getTime()]
         );
-        await entry.flush();
+        entry.scheduleFlush(); // 使用防抖 flush，提升性能
       });
     },
     getPeerPushedClocks: async (id: string, peer: string) => {
@@ -738,7 +783,7 @@ export function createFileNativeDBApis(): NativeDBApis {
            ON CONFLICT(peer, type, doc_id) DO UPDATE SET ts=excluded.ts`,
           [peer, 'pushed', docId, clock.getTime()]
         );
-        await entry.flush();
+        entry.scheduleFlush(); // 使用防抖 flush，提升性能
       });
     },
     clearClocks: async (id: string) => {
@@ -746,7 +791,7 @@ export function createFileNativeDBApis(): NativeDBApis {
       await entry.runExclusive(async () => {
         execStatement(entry.db, 'DELETE FROM peer_clocks', []);
         execStatement(entry.db, 'DELETE FROM blob_uploaded_at', []);
-        await entry.flush();
+        entry.scheduleFlush(); // 使用防抖 flush，提升性能
       });
     },
     setBlobUploadedAt: async (
@@ -765,7 +810,7 @@ export function createFileNativeDBApis(): NativeDBApis {
            ON CONFLICT(peer, blob_id) DO UPDATE SET ts=excluded.ts`,
           [peer, blobId, ts]
         );
-        await entry.flush();
+        entry.scheduleFlush(); // 使用防抖 flush，提升性能
       });
     },
     getBlobUploadedAt: async (id: string, peer: string, blobId: string) => {
