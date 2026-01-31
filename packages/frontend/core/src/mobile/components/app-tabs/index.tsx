@@ -7,6 +7,7 @@ import { createPortal } from 'react-dom';
 
 import { VirtualKeyboardService } from '../../modules/virtual-keyboard/services/virtual-keyboard';
 import { type AppTabLink, tabs } from './data';
+import { useNavigationSyncContext } from './navigation-context';
 import * as styles from './styles.css';
 import { TabItem } from './tab-item';
 
@@ -28,9 +29,8 @@ export const AppTabs = ({
       bottomOffset={2}
       data-fixed={fixed}
       style={{
-        ...assignInlineVars({
-          [styles.appTabsBackground]: background,
-        }),
+        // 🎨 只有明确指定 background 时才覆盖主题默认值
+        ...(background ? assignInlineVars({ [styles.appTabsBackground]: background }) : {}),
         visibility: virtualKeyboardVisible ? 'hidden' : 'visible',
       }}
     >
@@ -55,6 +55,7 @@ export const AppTabs = ({
 
 const AppTabLink = ({ route }: { route: AppTabLink }) => {
   const Link = route.LinkComponent || WorkbenchLink;
+  const { markUserNavigation } = useNavigationSyncContext();
 
   return (
     <Link
@@ -62,6 +63,7 @@ const AppTabLink = ({ route }: { route: AppTabLink }) => {
       to={route.to}
       key={route.to}
       replaceHistory
+      onClick={markUserNavigation} // 🔧 标记用户主动点击链接
     >
       <TabItem id={route.key} label={route.to.slice(1)}>
         <route.Icon />

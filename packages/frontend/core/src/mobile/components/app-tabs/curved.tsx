@@ -14,6 +14,7 @@ import { createPortal } from 'react-dom';
 
 import { VirtualKeyboardService } from '../../modules/virtual-keyboard/services/virtual-keyboard';
 import { tabs, type AppTabLink, type Tab } from './data';
+import { useNavigationSyncContext } from './navigation-context';
 import * as s from './curved.css';
 
 type Direction = 'ltr' | 'rtl';
@@ -57,7 +58,7 @@ function buildPath(width: number, height: number, pos: number, len: number, dir:
 }
 
 export const CurvedAppTabs = ({
-  background = 'linear-gradient(135deg, #d4fc79 0%, #96e6a1 100%)',
+  background,
   fixed = true,
 }: {
   background?: string;
@@ -267,7 +268,8 @@ export const CurvedAppTabs = ({
       className={s.curvedTabs}
       data-fixed={fixed}
       style={{
-        ...assignInlineVars({ [s.curvedTabsBackground]: background }),
+        // 🎨 只有明确指定 background 时才覆盖主题默认值
+        ...(background ? assignInlineVars({ [s.curvedTabsBackground]: background }) : {}),
         visibility: virtualKeyboardVisible ? 'hidden' : 'visible',
       }}
     >
@@ -339,12 +341,19 @@ export const CurvedAppTabs = ({
 const LinkTab = ({ route }: { route: AppTabLink }) => {
   const Link = route.LinkComponent || WorkbenchLink;
   const cache = useService(GlobalCacheService).globalCache;
+  const { markUserNavigation } = useNavigationSyncContext();
+  
   const handleClick = useCallback(() => {
+    console.log(`[CurvedTabs] 点击链接标签: ${route.key}`);
+    
+    // 🔧 标记用户主动导航
+    markUserNavigation();
+    
     const prevId = (cache.get('activeAppTabId') as string) ?? 'home';
     const fromIndex = Math.max(0, tabs.findIndex(t => t.key === prevId));
     cache.set('appTabsFromIndex', fromIndex);
     cache.set('activeAppTabId', route.key);
-  }, [cache, route.key]);
+  }, [cache, route.key, markUserNavigation]);
 
   return (
     <Link to={route.to} replaceHistory onClick={handleClick}>
@@ -361,8 +370,14 @@ const JournalButton: React.FC = () => {
   const journalService = useService(JournalService);
   const workbench = useService(WorkbenchService).workbench as any;
   const cache = useService(GlobalCacheService).globalCache;
+  const { markUserNavigation } = useNavigationSyncContext();
 
   const handleOpenToday = useCallback(() => {
+    console.log(`[CurvedTabs] 点击日记标签`);
+    
+    // 🔧 标记用户主动导航
+    markUserNavigation();
+    
     const prevId = (cache.get('activeAppTabId') as string) ?? 'home';
     const fromIndex = Math.max(0, tabs.findIndex(t => t.key === prevId));
     cache.set('appTabsFromIndex', fromIndex);
@@ -387,9 +402,15 @@ const CreateButton: React.FC = () => {
   const currentWorkspace = workspaceService.workspace;
   const pageHelper = usePageHelper((currentWorkspace as any).docCollection);
   const cache = useService(GlobalCacheService).globalCache;
+  const { markUserNavigation } = useNavigationSyncContext();
 
   const handleCreate = useCallback(async () => {
     try {
+      console.log(`[CurvedTabs] 点击创建标签`);
+      
+      // 🔧 标记用户主动导航
+      markUserNavigation();
+      
       const prevId = (cache.get('activeAppTabId') as string) ?? 'home';
       const fromIndex = Math.max(0, tabs.findIndex(t => t.key === prevId));
       cache.set('appTabsFromIndex', fromIndex);

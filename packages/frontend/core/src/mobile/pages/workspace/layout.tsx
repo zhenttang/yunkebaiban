@@ -147,7 +147,7 @@ export const WorkspaceLayout = ({
             <uniReactRoot.Root />
             <WorkspaceSideEffects />
             {children}
-            <CurvedAppTabs background={`linear-gradient(135deg, #d4fc79 0%, #96e6a1 100%)`} />
+            <CurvedAppTabs />
           </SWRConfigProvider>
         </YunkeErrorBoundary>
       </FrameworkScope>

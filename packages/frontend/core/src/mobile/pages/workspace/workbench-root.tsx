@@ -7,6 +7,9 @@ import { useLiveData, useService } from '@toeverything/infra';
 import { useEffect } from 'react';
 import { type RouteObject, useLocation } from 'react-router-dom';
 
+import { useNavigationSync } from '../../components/app-tabs/navigation-sync';
+import { NavigationSyncProvider } from '../../components/app-tabs/navigation-context';
+
 export const MobileWorkbenchRoot = ({ routes }: { routes: RouteObject[] }) => {
   const workbench = useService(WorkbenchService).workbench;
 
@@ -20,9 +23,16 @@ export const MobileWorkbenchRoot = ({ routes }: { routes: RouteObject[] }) => {
 
   useBindWorkbenchToBrowserRouter(workbench, basename);
 
+  // 🔄 底部导航状态同步
+  const navigationSync = useNavigationSync();
+
   useEffect(() => {
     workbench.updateBasename(basename);
   }, [basename, workbench]);
 
-  return <ViewRoot routes={routes} view={views[0]} />;
+  return (
+    <NavigationSyncProvider markUserNavigation={navigationSync.markUserNavigation}>
+      <ViewRoot routes={routes} view={views[0]} />
+    </NavigationSyncProvider>
+  );
 };

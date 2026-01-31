@@ -11,6 +11,7 @@ import { useLiveData, useService } from '@toeverything/infra';
 import { useCallback } from 'react';
 
 import type { AppTabCustomFCProps } from './data';
+import { useNavigationSyncContext } from './navigation-context';
 import { TabItem } from './tab-item';
 
 export const AppTabCreate = ({ tab }: AppTabCustomFCProps) => {
@@ -19,6 +20,7 @@ export const AppTabCreate = ({ tab }: AppTabCustomFCProps) => {
   const templateDocService = useService(TemplateDocService);
   const docsService = useService(DocsService);
   const { openConfirmModal } = useConfirmModal();
+  const { markUserNavigation } = useNavigationSyncContext();
 
   const currentWorkspace = workspaceService.workspace;
   const pageHelper = usePageHelper(currentWorkspace.docCollection);
@@ -73,6 +75,11 @@ export const AppTabCreate = ({ tab }: AppTabCustomFCProps) => {
     async (isActive: boolean) => {
       if (isActive) return;
       
+      console.log(`[Create] 创建新页面，当前激活状态: ${isActive}`);
+      
+      // 🔧 标记用户主动导航
+      markUserNavigation();
+      
       // 如果不是使用模板，检查是否存在空白文档
       if (!enablePageTemplate || !pageTemplateDocId) {
         const existingBlankDoc = findExistingBlankDoc();
@@ -99,7 +106,7 @@ export const AppTabCreate = ({ tab }: AppTabCustomFCProps) => {
       }
       track.$.navigationPanel.$.createDoc();
     },
-    [docsService, enablePageTemplate, pageHelper, pageTemplateDocId, workbench, findExistingBlankDoc, showBlankDocConfirm]
+    [docsService, enablePageTemplate, pageHelper, pageTemplateDocId, workbench, findExistingBlankDoc, showBlankDocConfirm, markUserNavigation]
   );
 
   return (
