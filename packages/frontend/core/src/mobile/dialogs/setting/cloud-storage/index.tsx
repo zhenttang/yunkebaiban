@@ -295,6 +295,9 @@ export const CloudStorageGroup = () => {
       // 更新云端工作区列表
       setCloudWorkspaces(cloudResult.workspaces || []);
       
+      console.log(`[CloudStorage] 云端工作区列表:`, cloudResult.workspaces);
+      console.log(`[CloudStorage] 当前 Android 工作区ID: ${workspaceId}`);
+      
       // 检查当前工作区是否在云端存在
       const currentInCloud = cloudResult.workspaces?.find(w => w.id === workspaceId);
       
@@ -302,12 +305,13 @@ export const CloudStorageGroup = () => {
         if ((cloudResult.workspaces?.length || 0) === 0) {
           setStatusMessage({
             type: 'info',
-            message: '云端暂无任何工作区数据，请先上传数据到云端',
+            message: '云端暂无任何工作区数据，请先从桌面端上传数据',
           });
         } else {
+          // 🔧 显示桌面端和Android端的工作区ID差异问题
           setStatusMessage({
             type: 'info',
-            message: `当前工作区 (${workspaceId}) 在云端不存在。云端有 ${cloudResult.workspaces?.length} 个其他工作区，可从列表中选择下载。`,
+            message: `⚠️ 工作区ID不匹配问题\n\n当前 Android 工作区: ${workspaceId}\n\n云端工作区列表:\n${cloudResult.workspaces?.map(w => `• ${w.id}`).join('\n') || '无'}\n\n这是正常现象！桌面端和移动端使用不同的工作区ID。\n请从下方列表选择桌面端上传的工作区进行下载。`,
           });
         }
         return;
@@ -405,28 +409,45 @@ export const CloudStorageGroup = () => {
     }
   }, [externalStorageService, isConfigured]);
 
-  // 下载指定的云端工作区
+  // 下载指定的云端工作区（支持跨工作区导入）
   const handleDownloadSpecific = useCallback(async (cloudWorkspaceId: string) => {
     if (!externalStorageService || !workspace.docCollection) return;
     
     setDownloading(true);
-    setStatusMessage({ type: 'info', message: `正在下载工作区 ${cloudWorkspaceId}...` });
+    const isMatchingWorkspace = cloudWorkspaceId === workspaceId;
+    
+    setStatusMessage({ 
+      type: 'info', 
+      message: isMatchingWorkspace 
+        ? `正在下载工作区 ${cloudWorkspaceId}...`
+        : `正在跨工作区导入 ${cloudWorkspaceId} → ${workspaceId}...`
+    });
     
     try {
+      console.log(`[CloudStorage] 开始下载: 云端=${cloudWorkspaceId}, 本地=${workspaceId}, 匹配=${isMatchingWorkspace}`);
+      
       const result = await externalStorageService.syncWorkspaceFromCloud(
         workspace.docCollection,
-        cloudWorkspaceId
+        cloudWorkspaceId  // 使用云端工作区ID下载
       );
       
       if (result.success) {
+        const successMessage = isMatchingWorkspace
+          ? `${result.message}\n\n✅ 同工作区数据已同步，刷新页面查看最新内容`
+          : `${result.message}\n\n✅ 跨工作区数据已导入到当前工作区，刷新页面查看导入的文档`;
+        
         setStatusMessage({
           type: 'success',
-          message: `${result.message}\n\n✅ 数据已导入当前工作区，刷新页面查看最新内容`,
+          message: successMessage,
         });
         
         // 🔧 导入成功后提示用户刷新页面
         setTimeout(() => {
-          if (confirm(`工作区 "${cloudWorkspaceId}" 下载成功！\n\n数据已导入到当前工作区中，需要重新加载页面以查看导入的内容。\n\n是否立即重新加载？`)) {
+          const confirmMessage = isMatchingWorkspace
+            ? `工作区 "${cloudWorkspaceId}" 同步成功！\n\n需要重新加载页面以查看最新数据。`
+            : `跨工作区导入成功！\n\n桌面端工作区 "${cloudWorkspaceId}" 的数据已导入到当前 Android 工作区。\n\n需要重新加载页面以查看导入的文档。`;
+          
+          if (confirm(`${confirmMessage}\n\n是否立即重新加载？`)) {
             window.location.reload();
           }
         }, 1000);
@@ -446,7 +467,7 @@ export const CloudStorageGroup = () => {
     } finally {
       setDownloading(false);
     }
-  }, [externalStorageService, workspace.docCollection]);
+  }, [externalStorageService, workspace.docCollection, workspaceId]);
 
   // 配置变更时加载云端列表
   useEffect(() => {
@@ -563,15 +584,15 @@ export const CloudStorageGroup = () => {
           {/* 云端工作区列表 */}
           {cloudWorkspaces.length > 0 && (
             <div className={styles.cloudWorkspaceList}>
-              <div className={styles.syncTitle}>云端已有的工作区（点击下载）</div>
+              <div className={styles.syncTitle}>桌面端上传的工作区（点击导入到当前设备）</div>
               {cloudWorkspaces.map(ws => (
                 <div key={ws.id} className={styles.cloudWorkspaceItem}>
                   <div className={styles.cloudWorkspaceInfo}>
                     <div className={styles.cloudWorkspaceName}>
-                      {ws.id === workspaceId ? `${workspaceName} (当前)` : ws.id.substring(0, 12) + '...'}
+                      {ws.id === workspaceId ? `${workspaceName} (当前设备)` : `桌面端工作区`}
                     </div>
                     <div className={styles.cloudWorkspaceMeta}>
-                      {(ws.size / 1024).toFixed(1)} KB · {new Date(ws.lastModified).toLocaleString()}
+                      ID: {ws.id.substring(0, 8)}... · {(ws.size / 1024).toFixed(1)} KB · {new Date(ws.lastModified).toLocaleString()}
                     </div>
                   </div>
                   <button
@@ -579,7 +600,7 @@ export const CloudStorageGroup = () => {
                     onClick={() => handleDownloadSpecific(ws.id)}
                     disabled={downloading}
                   >
-                    {downloading ? '...' : '下载'}
+                    {downloading ? '导入中' : '导入文档'}
                   </button>
                 </div>
               ))}
@@ -588,7 +609,12 @@ export const CloudStorageGroup = () => {
 
           {cloudWorkspaces.length === 0 && !loadingWorkspaces && (
             <div className={styles.emptyState}>
-              云端暂无工作区数据，点击"上传到云端"开始同步
+              <p>云端暂无工作区数据</p>
+              <p style={{ marginTop: 8, fontSize: 13, color: 'var(--yunke-text-secondary-color)' }}>
+                💡 使用方法：<br/>
+                1. 从桌面端上传工作区到云端<br/>
+                2. 在此处下载并导入到 Android 设备
+              </p>
             </div>
           )}
 

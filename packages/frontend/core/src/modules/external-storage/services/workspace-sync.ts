@@ -331,6 +331,14 @@ export async function importWorkspaceSnapshot(workspace: Workspace, snapshot: Wo
   console.log(`[WorkspaceSync] 开始导入快照: workspaceId=${snapshot.workspaceId}, docCount=${snapshot.docCount}, blobCount=${snapshot.blobCount}`);
   console.log(`[WorkspaceSync] 当前工作区 ID: ${workspace.id}`);
   
+  // 🔧 跨工作区导入支持：检查工作区ID是否匹配
+  const isMatchingWorkspace = snapshot.workspaceId === workspace.id;
+  console.log(`[WorkspaceSync] 工作区ID匹配: ${isMatchingWorkspace}`);
+  
+  if (!isMatchingWorkspace) {
+    console.log(`[WorkspaceSync] 跨工作区导入: ${snapshot.workspaceId} → ${workspace.id}`);
+  }
+  
   const rootDoc = workspace.doc;
   
   // 打印导入前的状态
@@ -339,8 +347,52 @@ export async function importWorkspaceSnapshot(workspace: Workspace, snapshot: Wo
   console.log(`[WorkspaceSync] 导入前文档数: ${pagesBefore ? (pagesBefore as any).length : 0}`);
   
   // 1. 应用根文档更新（工作区元数据，包含 meta.pages 文档列表）
-  console.log(`[WorkspaceSync] 应用根文档更新, rootDoc 大小: ${snapshot.rootDoc.byteLength} bytes, rootDoc.guid: ${rootDoc.guid}`);
-  applyUpdate(rootDoc, snapshot.rootDoc);
+  console.log(`[WorkspaceSync] 应用根文档更新, rootDoc 大小: ${snapshot.rootDoc.byteLength} bytes, 当前 rootDoc.guid: ${rootDoc.guid}`);
+  
+  try {
+    if (isMatchingWorkspace) {
+      // 🔧 同一工作区：直接应用更新
+      applyUpdate(rootDoc, snapshot.rootDoc);
+      console.log(`[WorkspaceSync] 同工作区导入，直接应用根文档更新`);
+    } else {
+      // 🔧 跨工作区导入：需要特殊处理，只导入文档列表信息
+      console.log(`[WorkspaceSync] 跨工作区导入，解析快照中的文档列表`);
+      
+      // 创建临时 YDoc 来解析快照内容
+      const tempDoc = new YDoc();
+      applyUpdate(tempDoc, snapshot.rootDoc);
+      
+      const tempMetaMap = tempDoc.getMap('meta');
+      const snapshotPages = tempMetaMap?.get('pages');
+      
+      if (snapshotPages && Array.isArray(snapshotPages)) {
+        console.log(`[WorkspaceSync] 快照中的文档列表: ${snapshotPages.length} 个`);
+        
+        // 🔧 将快照中的文档列表添加到当前工作区的meta中
+        // 但保留当前工作区的其他元数据
+        const currentPages = metaMap?.get('pages') || [];
+        const mergedPages = [...currentPages];
+        
+        // 添加快照中的页面（避免重复）
+        for (const page of snapshotPages) {
+          const pageId = typeof page === 'object' && page ? (page as any).id : page;
+          if (pageId && !mergedPages.some(p => (typeof p === 'object' && p ? (p as any).id : p) === pageId)) {
+            mergedPages.push(page);
+            console.log(`[WorkspaceSync] 添加页面到工作区: ${pageId}`);
+          }
+        }
+        
+        // 更新当前工作区的页面列表
+        metaMap?.set('pages', mergedPages);
+        console.log(`[WorkspaceSync] 跨工作区导入完成，总页面数: ${mergedPages.length}`);
+      }
+      
+      tempDoc.destroy();
+    }
+  } catch (rootUpdateError) {
+    console.error(`[WorkspaceSync] 根文档更新失败:`, rootUpdateError);
+    // 继续执行文档导入，即使根文档更新失败
+  }
   
   // 打印导入后的状态
   const pagesAfter = metaMap?.get('pages');
