@@ -193,8 +193,15 @@ export function responseToCreateImage(host: EditorHost, place: Place) {
   const aiPanel = getAIPanelWidget(host);
   const { answer } = aiPanel;
   if (!answer) return;
+  
+  // 🔧 安全检查：确保 std.clipboard 存在（Android 环境可能延迟初始化）
+  if (!host.std?.clipboard) {
+    console.warn('[AI Page Response] host.std.clipboard 未就绪，跳过创建图片功能');
+    return;
+  }
+  
   const filename = 'image';
-  const imageProxy = host.std.clipboard.configs.get('imageProxy');
+  const imageProxy = host.std?.clipboard?.configs.get('imageProxy');
 
   fetchImageToFile(answer, filename, imageProxy)
     .then(file => {

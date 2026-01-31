@@ -65,7 +65,15 @@ function createCopyLinkToBlockMenuItem(
       const type = model.flavour;
       const page = editor.editorContainer$.value;
 
-      copyLinkToBlockStdScopeClipboard(str, page?.host?.std.clipboard)
+      // 🔧 安全检查：确保 clipboard 存在（Android 环境可能延迟初始化）
+      const clipboard = page?.host?.std?.clipboard;
+      if (!clipboard) {
+        console.warn('[Database] clipboard 未就绪，跳过复制链接功能');
+        notify.error({ title: '复制功能暂不可用，请稍后再试' });
+        return;
+      }
+
+      copyLinkToBlockStdScopeClipboard(str, clipboard)
         .then(success => {
           if (!success) return;
 

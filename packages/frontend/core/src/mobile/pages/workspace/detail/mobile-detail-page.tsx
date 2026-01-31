@@ -165,16 +165,21 @@ const DetailPageImpl = () => {
         server.baseUrl
       ).toString();
 
-      editorContainer.std.clipboard.use(
-        customImageProxyMiddleware(imageProxyUrl)
-      );
+      // 🔧 安全检查：确保 std.clipboard 存在（Android 环境可能延迟初始化）
+      if (editorContainer.std?.clipboard) {
+        editorContainer.std.clipboard.use(
+          customImageProxyMiddleware(imageProxyUrl)
+        );
+      } else {
+        console.warn('[MobileDetailPage] editorContainer.std.clipboard 未就绪，跳过 imageProxy 配置');
+      }
       editorContainer.doc
         .get(ImageProxyService)
         .setImageProxyURL(imageProxyUrl);
 
       // provide page mode and updated date to blocksuite
-      const refNodeService =
-        editorContainer.std.getOptional(RefNodeSlotsProvider);
+      // 🔧 安全检查：确保 std 存在
+      const refNodeService = editorContainer.std?.getOptional?.(RefNodeSlotsProvider);
       const disposable = new DisposableGroup();
       if (refNodeService) {
         disposable.add(

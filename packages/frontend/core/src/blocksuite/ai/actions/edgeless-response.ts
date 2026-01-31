@@ -318,6 +318,12 @@ function responseToCreateImage(host: EditorHost) {
   const data = aiPanel.answer;
   if (!data) return;
 
+  // 🔧 安全检查：确保 std.clipboard 存在（Android 环境可能延迟初始化）
+  if (!host.std?.clipboard) {
+    console.warn('[AI Edgeless Response] host.std.clipboard 未就绪，跳过创建图片功能');
+    return;
+  }
+
   const edgelessCopilot = getEdgelessCopilotWidget(host);
   const bounds = edgelessCopilot.determineInsertionBounds();
   const selectedElements = getCopilotSelectedElems(host);
@@ -332,7 +338,7 @@ function responseToCreateImage(host: EditorHost) {
   aiPanel.hide();
 
   const filename = 'image';
-  const imageProxy = host.std.clipboard.configs.get('imageProxy');
+  const imageProxy = host.std?.clipboard?.configs.get('imageProxy');
 
   fetchImageToFile(data, filename, imageProxy)
     .then(img => {

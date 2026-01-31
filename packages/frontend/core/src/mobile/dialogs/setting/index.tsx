@@ -9,6 +9,7 @@ import { useEffect, useRef } from 'react';
 
 import { AboutGroup } from './about';
 import { AppearanceGroup } from './appearance';
+import { CloudStorageGroup } from './cloud-storage';
 import { ExperimentalFeatureSetting } from './experimental';
 import { OthersGroup } from './others';
 import { PaymentGroup } from './payment';
@@ -37,6 +38,7 @@ const MobileSetting = () => {
     <div className={styles.root}>
       <UserProfile />
       <UserUsage />
+      <CloudStorageGroup />
       <PaymentGroup />
       <AppearanceGroup />
       <AboutGroup />

@@ -193,6 +193,12 @@ export const copyTextAnswer = async (panel: YunkeAIPanelWidget) => {
 };
 
 export const copyText = async (host: EditorHost, text: string) => {
+  // 🔧 安全检查：确保 std.clipboard 存在（Android 环境可能延迟初始化）
+  if (!host.std?.clipboard) {
+    console.warn('[AI Actions] host.std.clipboard 未就绪，跳过复制文本功能');
+    return false;
+  }
+
   const previewDoc = await markDownToDoc(
     host.std.store.provider,
     host.std.store.schema,

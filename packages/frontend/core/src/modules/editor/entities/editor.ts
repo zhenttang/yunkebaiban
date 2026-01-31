@@ -119,7 +119,8 @@ export class Editor extends Entity {
    */
   bindWorkbenchView(view: WorkbenchView) {
     if (this.workbenchView) {
-      throw new Error('已绑定');
+      console.warn('[Editor] bindWorkbenchView: 已绑定，返回空的清理函数');
+      return () => {}; // 返回空的清理函数
     }
     this.workbenchView = view;
     const savedScrollPosition = view.getScrollPosition() ?? null;
@@ -203,7 +204,9 @@ export class Editor extends Entity {
     scrollViewport?: HTMLElement | null
   ) {
     if (this.editorContainer$.value) {
-      throw new Error('已绑定');
+      console.warn('[Editor] bindEditorContainer: 已绑定，清理之前的绑定后重新绑定');
+      // 清理之前的绑定
+      this.editorContainer$.next(null);
     }
 
     this.editorContainer$.next(editorContainer);

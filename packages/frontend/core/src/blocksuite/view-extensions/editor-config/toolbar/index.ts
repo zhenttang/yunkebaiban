@@ -196,6 +196,14 @@ function createCopyLinkToBlockMenuItem(
         return;
       }
 
+      // 🔧 安全检查：确保 std.clipboard 存在（Android 环境可能延迟初始化）
+      if (!ctx.std?.clipboard) {
+        console.warn('[Toolbar] ctx.std.clipboard 未就绪，跳过复制链接功能');
+        notify.error({ title: '复制功能暂不可用，请稍后再试' });
+        ctx.close();
+        return;
+      }
+
       const success = await copyLinkToBlockStdScopeClipboard(
         str,
         ctx.std.clipboard
@@ -309,6 +317,13 @@ function createToolbarMoreMenuConfigV2(
               return gfx.selection.selectedElements.length === 1;
             },
             run({ isPageMode, std, store, gfx, workspace, editorMode }) {
+              // 🔧 安全检查：确保 std.clipboard 存在（Android 环境可能延迟初始化）
+              if (!std?.clipboard) {
+                console.warn('[Toolbar CopyLink] std.clipboard 未就绪，跳过复制链接功能');
+                notify.error({ title: '复制功能暂不可用，请稍后再试' });
+                return;
+              }
+
               const pageId = store.doc.id;
               const mode = editorMode;
               const workspaceId = workspace.id;
@@ -709,6 +724,14 @@ function createSurfaceRefToolbarConfig(baseUrl?: string): ToolbarModuleConfig {
               if (!refModel) return;
 
               const { store, workspace, std } = ctx;
+              
+              // 🔧 安全检查：确保 std.clipboard 存在（Android 环境可能延迟初始化）
+              if (!std?.clipboard) {
+                console.warn('[Toolbar SurfaceRef] std.clipboard 未就绪，跳过复制链接功能');
+                notify.error({ title: '复制功能暂不可用，请稍后再试' });
+                return;
+              }
+
               const pageId = store.doc.id;
               const workspaceId = workspace.id;
               const options: UseSharingUrl = {
