@@ -355,8 +355,12 @@ export async function importWorkspaceSnapshot(workspace: Workspace, snapshot: Wo
   
   // 2. 应用所有页面文档更新
   let importedDocCount = 0;
+  
+  // 🔧 批量处理文档导入，确保数据完整性
   for (const docData of snapshot.docs) {
     try {
+      console.log(`[WorkspaceSync] 处理文档: ${docData.id}, guid: ${docData.guid}, 数据大小: ${docData.data.byteLength} bytes`);
+      
       // 尝试获取已存在的文档
       let doc = workspace.getDoc(docData.id);
       
@@ -365,6 +369,16 @@ export async function importWorkspaceSnapshot(workspace: Workspace, snapshot: Wo
         console.log(`[WorkspaceSync] 创建新文档: ${docData.id}`);
         try {
           doc = workspace.createDoc(docData.id);
+          
+          // 🔧 等待文档初始化完成
+          if (doc && typeof (doc as any).load === 'function') {
+            try {
+              await (doc as any).load();
+              console.log(`[WorkspaceSync] 文档 ${docData.id} 初始化完成`);
+            } catch (loadErr) {
+              console.warn(`[WorkspaceSync] 文档 ${docData.id} 初始化失败:`, loadErr);
+            }
+          }
         } catch (createErr) {
           console.warn(`[WorkspaceSync] 创建文档 ${docData.id} 失败:`, createErr);
           continue;
@@ -374,32 +388,76 @@ export async function importWorkspaceSnapshot(workspace: Workspace, snapshot: Wo
       if (doc) {
         const store = doc.getStore();
         if (store && store.spaceDoc) {
-          console.log(`[WorkspaceSync] 应用文档更新: docId=${docData.id}, spaceDoc.guid=${store.spaceDoc.guid}, snapshotGuid=${docData.guid}, 数据大小=${docData.data.byteLength} bytes`);
+          console.log(`[WorkspaceSync] 应用文档更新: docId=${docData.id}, spaceDoc.guid=${store.spaceDoc.guid}, snapshotGuid=${docData.guid}`);
           
           // 检查更新前的状态
           const beforeBlocks = store.spaceDoc.getMap('blocks');
           console.log(`[WorkspaceSync] 更新前 blocks 数量: ${beforeBlocks?.size || 0}`);
           
+          // 🔧 应用 Yjs 更新
           applyUpdate(store.spaceDoc, docData.data);
           
           // 检查更新后的状态
           const afterBlocks = store.spaceDoc.getMap('blocks');
           console.log(`[WorkspaceSync] 更新后 blocks 数量: ${afterBlocks?.size || 0}`);
           
+          // 🔧 手动触发存储同步（Android 环境重要）
+          try {
+            if (store.spaceDoc.store && typeof (store.spaceDoc.store as any).connect === 'function') {
+              (store.spaceDoc.store as any).connect();
+            }
+          } catch (syncErr) {
+            console.warn(`[WorkspaceSync] 触发文档存储同步失败:`, syncErr);
+          }
+          
           importedDocCount++;
           console.log(`[WorkspaceSync] 导入文档成功: ${docData.id}`);
         } else {
-          console.warn(`[WorkspaceSync] 文档 ${docData.id} 没有 spaceDoc, store:`, !!store);
+          console.warn(`[WorkspaceSync] 文档 ${docData.id} 没有 spaceDoc, store:`, !!store, 'spaceDoc:', !!store?.spaceDoc);
         }
+      } else {
+        console.error(`[WorkspaceSync] 无法创建或获取文档: ${docData.id}`);
       }
     } catch (e) {
-      console.warn(`[WorkspaceSync] 无法导入文档 ${docData.id}:`, e);
+      console.error(`[WorkspaceSync] 无法导入文档 ${docData.id}:`, e);
     }
   }
   
-  // 等待 200ms 让数据同步到存储
-  console.log(`[WorkspaceSync] 等待数据持久化...`);
-  await new Promise(resolve => setTimeout(resolve, 200));
+  // 🔧 强制触发文档存储同步（Android 环境重要）
+  console.log(`[WorkspaceSync] 强制同步文档到存储...`);
+  
+  try {
+    // 尝试手动触发存储同步
+    if (docStorage && typeof (docStorage as any).sync === 'function') {
+      console.log(`[WorkspaceSync] 调用 docStorage.sync()`);
+      await (docStorage as any).sync();
+    }
+    
+    // 对于每个导入的文档，强制保存到存储
+    for (const docData of snapshot.docs) {
+      const doc = workspace.getDoc(docData.id);
+      if (doc) {
+        const store = doc.getStore();
+        if (store?.spaceDoc && docStorage && typeof (docStorage as any).setDoc === 'function') {
+          try {
+            console.log(`[WorkspaceSync] 强制保存文档到存储: ${docData.id}`);
+            await (docStorage as any).setDoc(docData.guid, {
+              bin: docData.data,
+              timestamp: new Date()
+            });
+          } catch (e) {
+            console.warn(`[WorkspaceSync] 保存文档 ${docData.id} 到存储失败:`, e);
+          }
+        }
+      }
+    }
+  } catch (e) {
+    console.warn('[WorkspaceSync] 强制同步失败:', e);
+  }
+  
+  // 等待额外时间让数据完全持久化
+  console.log(`[WorkspaceSync] 等待数据持久化完成...`);
+  await new Promise(resolve => setTimeout(resolve, 1000));
   
   // 3. 导入所有 Blob 数据（并发处理，限制并发数为 5）
   const BLOB_IMPORT_CONCURRENCY = 5;
@@ -421,4 +479,22 @@ export async function importWorkspaceSnapshot(workspace: Workspace, snapshot: Wo
   );
   
   console.log(`[WorkspaceSync] 导入完成: ${importedDocCount}/${snapshot.docCount} 个文档, ${importedBlobCount}/${snapshot.blobCount} 个 Blob`);
+  
+  // 🔧 最终强制刷新工作区状态
+  try {
+    // 触发工作区重新扫描文档
+    if (workspace.slots?.docListUpdated) {
+      workspace.slots.docListUpdated.next();
+      console.log(`[WorkspaceSync] 触发工作区文档列表更新`);
+    }
+    
+    // 如果有 reload 方法，调用它
+    if (typeof (workspace as any).reload === 'function') {
+      await (workspace as any).reload();
+      console.log(`[WorkspaceSync] 工作区重新加载完成`);
+    }
+    
+  } catch (e) {
+    console.warn('[WorkspaceSync] 最终刷新失败:', e);
+  }
 }

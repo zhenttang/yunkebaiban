@@ -6,9 +6,31 @@
 
 import type { S3Config, ListFilesResult, TestConnectionResult } from '../types';
 
-// 是否使用开发代理（在开发环境下启用）
-const USE_DEV_PROXY = typeof window !== 'undefined' && 
-  (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+// 是否使用开发代理（仅在 Web 开发环境下启用）
+// 🔧 Android/iOS 环境下禁用代理，直接请求 S3，避免代理路径处理问题
+const USE_DEV_PROXY = (() => {
+  try {
+    const isLocalhost = typeof window !== 'undefined' && 
+      (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+    
+    if (!isLocalhost) return false;
+    
+    // 检查是否在移动环境下
+    if (typeof BUILD_CONFIG !== 'undefined') {
+      return !BUILD_CONFIG.isAndroid && !BUILD_CONFIG.isIOS && !BUILD_CONFIG.isCapacitor;
+    }
+    
+    // 如果 BUILD_CONFIG 不可用，通过其他方式检测
+    const userAgent = navigator.userAgent.toLowerCase();
+    const isMobile = /android|ios|capacitor/i.test(userAgent) || 
+                     typeof window.Capacitor !== 'undefined';
+    
+    return !isMobile;
+  } catch {
+    // 发生任何错误时，默认不使用代理（更安全）
+    return false;
+  }
+})();
 
 /**
  * 将 URL 转换为代理 URL（开发环境）

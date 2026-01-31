@@ -211,15 +211,46 @@ export const CloudStorageGroup = () => {
 
   // 上传到云端
   const handleUpload = useCallback(async () => {
-    if (!externalStorageService || !workspace.docCollection) return;
+    if (!externalStorageService || !workspace.docCollection) {
+      setStatusMessage({ type: 'error', message: '工作区或存储服务未初始化' });
+      return;
+    }
     
     setUploading(true);
-    setStatusMessage(null);
+    setStatusMessage({ type: 'info', message: '正在检查工作区数据...' });
     
     try {
+      // 🔧 预检查工作区数据
+      const docCollection = workspace.docCollection;
+      const docsArray = Array.from(docCollection.docs);
+      const docStorage = workspace.engine?.doc?.storage;
+      
+      console.log(`[CloudStorage] 工作区数据检查:`, {
+        workspaceId,
+        workspaceName,
+        docCollectionId: docCollection.id,
+        docsCount: docsArray.length,
+        hasEngine: !!workspace.engine,
+        hasDocStorage: !!docStorage,
+        blobSyncAvailable: !!docCollection.blobSync,
+      });
+      
+      // 检查是否有实际数据
+      if (docsArray.length === 0) {
+        setStatusMessage({ 
+          type: 'error', 
+          message: '工作区没有文档数据，请先创建一些内容再上传' 
+        });
+        return;
+      }
+      
+      setStatusMessage({ type: 'info', message: '正在导出工作区数据...' });
+      
+      // 🔧 获取文档存储接口，确保从存储读取完整数据
       const result = await externalStorageService.syncWorkspaceToCloud(
-        workspace.docCollection,
-        workspaceId
+        docCollection,
+        workspaceId,
+        docStorage // 🔧 传递文档存储接口，确保数据完整性
       );
       
       setStatusMessage({
@@ -293,9 +324,17 @@ export const CloudStorageGroup = () => {
       if (result.success) {
         setStatusMessage({
           type: 'success',
-          message: `${result.message}\n\n建议刷新页面以查看最新数据。`,
+          message: `${result.message}\n\n✅ 数据已导入，刷新页面查看最新内容`,
         });
-        notify.success({ title: '下载成功', message: '请刷新页面查看更新' });
+        
+        // 🔧 导入成功后提示用户刷新页面
+        setTimeout(() => {
+          if (confirm('数据下载成功！需要重新加载页面以查看导入的内容，是否立即重新加载？')) {
+            window.location.reload();
+          }
+        }, 1000);
+        
+        notify.success({ title: '下载成功', message: '点击确定重新加载页面' });
       } else {
         setStatusMessage({
           type: 'error',
@@ -311,6 +350,43 @@ export const CloudStorageGroup = () => {
       setDownloading(false);
     }
   }, [externalStorageService, workspace.docCollection, workspaceId]);
+
+  // 测试工作区数据导出（仅调试用）
+  const handleTestExport = useCallback(async () => {
+    if (!workspace.docCollection) {
+      setStatusMessage({ type: 'error', message: 'docCollection 不存在' });
+      return;
+    }
+
+    try {
+      setStatusMessage({ type: 'info', message: '正在测试导出...' });
+      
+      const { exportWorkspaceSnapshot } = await import('@yunke/core/modules/external-storage');
+      const docStorage = workspace.engine?.doc?.storage;
+      
+      const snapshot = await exportWorkspaceSnapshot(workspace.docCollection, docStorage);
+      
+      const summary = {
+        workspaceId: snapshot.workspaceId,
+        version: snapshot.version,
+        docCount: snapshot.docCount,
+        blobCount: snapshot.blobCount,
+        rootDocSize: snapshot.rootDoc.byteLength,
+        totalDocsSize: snapshot.docs.reduce((sum, doc) => sum + doc.data.byteLength, 0),
+        totalBlobsSize: snapshot.blobs.reduce((sum, blob) => sum + blob.data.length, 0) / 1.33, // Base64 约为原始大小的 1.33 倍
+      };
+      
+      setStatusMessage({
+        type: 'success',
+        message: `导出测试成功!\n工作区: ${summary.workspaceId}\n文档数: ${summary.docCount}\nBlob数: ${summary.blobCount}\n根文档: ${summary.rootDocSize} bytes\n文档总大小: ${summary.totalDocsSize} bytes\nBlob总大小: ${Math.round(summary.totalBlobsSize)} bytes`,
+      });
+    } catch (error) {
+      setStatusMessage({
+        type: 'error',
+        message: `导出测试失败: ${String(error)}`,
+      });
+    }
+  }, [workspace]);
 
   // 加载云端工作区列表
   const loadCloudWorkspaces = useCallback(async () => {
@@ -345,9 +421,17 @@ export const CloudStorageGroup = () => {
       if (result.success) {
         setStatusMessage({
           type: 'success',
-          message: `${result.message}\n\n建议刷新页面以查看最新数据。`,
+          message: `${result.message}\n\n✅ 数据已导入当前工作区，刷新页面查看最新内容`,
         });
-        notify.success({ title: '下载成功', message: '请刷新页面查看更新' });
+        
+        // 🔧 导入成功后提示用户刷新页面
+        setTimeout(() => {
+          if (confirm(`工作区 "${cloudWorkspaceId}" 下载成功！\n\n数据已导入到当前工作区中，需要重新加载页面以查看导入的内容。\n\n是否立即重新加载？`)) {
+            window.location.reload();
+          }
+        }, 1000);
+        
+        notify.success({ title: '下载成功', message: '点击确定重新加载页面' });
       } else {
         setStatusMessage({
           type: 'error',
@@ -508,14 +592,25 @@ export const CloudStorageGroup = () => {
             </div>
           )}
 
-          {/* 刷新列表按钮 */}
-          <button
-            className={`${styles.secondaryButton} ${styles.refreshButton}`}
-            onClick={loadCloudWorkspaces}
-            disabled={loadingWorkspaces}
-          >
-            {loadingWorkspaces ? '刷新中...' : '刷新云端列表'}
-          </button>
+          {/* 工具按钮组 */}
+          <div className={styles.buttonGroup}>
+            <button
+              className={styles.secondaryButton}
+              onClick={loadCloudWorkspaces}
+              disabled={loadingWorkspaces}
+            >
+              {loadingWorkspaces ? '刷新中...' : '刷新云端列表'}
+            </button>
+            {showDebug && (
+              <button
+                className={styles.primaryButton}
+                onClick={handleTestExport}
+                disabled={uploading || downloading}
+              >
+                测试导出
+              </button>
+            )}
+          </div>
 
           {/* 调试信息 */}
           <button
@@ -529,12 +624,20 @@ export const CloudStorageGroup = () => {
             <div className={`${styles.statusInfo} ${styles.debugInfo}`}>
               <div><strong>调试信息</strong></div>
               <div>工作区 ID: {workspaceId}</div>
+              <div>工作区名称: {workspaceName}</div>
               <div>存储类型: {storageType}</div>
               <div>已配置: {isConfigured ? '是' : '否'}</div>
               <div>S3 Endpoint: {s3Config.endpoint || '未配置'}</div>
               <div>S3 Bucket: {s3Config.bucket || '未配置'}</div>
               <div>云端工作区数: {cloudWorkspaces.length}</div>
               <div>云端路径: yunke-workspaces/{workspaceId}/snapshot.json</div>
+              <hr style={{ margin: '8px 0' }} />
+              <div><strong>工作区数据检查</strong></div>
+              <div>docCollection: {workspace.docCollection ? '✅' : '❌'}</div>
+              <div>docCollection.id: {workspace.docCollection?.id || '未获取'}</div>
+              <div>engine: {workspace.engine ? '✅' : '❌'}</div>
+              <div>doc.storage: {workspace.engine?.doc?.storage ? '✅' : '❌'}</div>
+              <div>文档数量: {workspace.docCollection ? Array.from(workspace.docCollection.docs).length : 0}</div>
             </div>
           )}
         </div>
