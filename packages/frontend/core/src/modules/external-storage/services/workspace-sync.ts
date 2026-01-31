@@ -58,33 +58,52 @@ async function mapWithConcurrency<T, R>(
   return results;
 }
 
-// 分块处理大数据的 Base64 转换，避免栈溢出
+// 将 Uint8Array 转换为 Base64 字符串（安全的实现，避免栈溢出）
 function arrayBufferToBase64Chunk(buffer: Uint8Array): string {
+  // 使用更安全的方法，避免 String.fromCharCode.apply 的栈溢出问题
   const bytes = new Uint8Array(buffer);
-  const chunkSize = 8192;
   let binary = '';
-  for (let i = 0; i < bytes.byteLength; i += chunkSize) {
-    const chunk = bytes.slice(i, Math.min(i + chunkSize, bytes.byteLength));
-    binary += String.fromCharCode.apply(null, Array.from(chunk));
+  
+  // 分块处理，避免大数据导致的性能问题
+  for (let i = 0; i < bytes.length; i++) {
+    binary += String.fromCharCode(bytes[i]);
   }
-  return btoa(binary);
+  
+  const base64 = btoa(binary);
+  
+  // 🔧 验证编码结果
+  console.log(`[Base64Encode] 输入大小: ${bytes.length} bytes, 输出大小: ${base64.length} chars`);
+  
+  return base64;
 }
 
-// 分块处理大 Base64 字符串的解码，避免栈溢出
+// 将 Base64 字符串转换为 Uint8Array（安全的实现）
 function base64ToArrayBuffer(base64: string): Uint8Array {
-  const binaryString = atob(base64);
-  const len = binaryString.length;
-  const bytes = new Uint8Array(len);
-  
-  // 分块处理，避免大字符串导致的性能问题
-  const chunkSize = 8192;
-  for (let i = 0; i < len; i += chunkSize) {
-    const end = Math.min(i + chunkSize, len);
-    for (let j = i; j < end; j++) {
-      bytes[j] = binaryString.charCodeAt(j);
+  try {
+    const binaryString = atob(base64);
+    const len = binaryString.length;
+    const bytes = new Uint8Array(len);
+    
+    for (let i = 0; i < len; i++) {
+      bytes[i] = binaryString.charCodeAt(i);
     }
+    
+    // 🔧 验证解码结果
+    console.log(`[Base64Decode] 输入大小: ${base64.length} chars, 输出大小: ${bytes.length} bytes`);
+    
+    // 🔧 验证 Yjs 数据格式（Yjs 更新数据通常以特定字节开头）
+    if (bytes.length > 0) {
+      const hexPreview = Array.from(bytes.slice(0, Math.min(10, bytes.length)))
+        .map(b => b.toString(16).padStart(2, '0'))
+        .join(' ');
+      console.log(`[Base64Decode] 数据预览 (hex): ${hexPreview}`);
+    }
+    
+    return bytes;
+  } catch (error) {
+    console.error(`[Base64Decode] 解码失败:`, error);
+    throw new Error(`Base64 解码失败: ${error}`);
   }
-  return bytes;
 }
 
 // ============ 类型定义 ============
@@ -157,23 +176,55 @@ export async function exportWorkspaceSnapshot(
         const guid = store?.spaceDoc?.guid || docId;
         
         let docData: Uint8Array;
+        let dataSource = 'unknown';
+        
         if (docStorage) {
           // 从存储读取（更可靠）
           const docRecord = await docStorage.getDoc(guid);
-          if (docRecord?.bin) {
+          if (docRecord?.bin && docRecord.bin.byteLength > 2) {
             docData = docRecord.bin;
+            dataSource = 'storage';
             console.log(`[WorkspaceSync] 从存储读取文档: ${docId}, guid: ${guid}, 大小: ${docData.byteLength} bytes`);
           } else {
-            // 存储中没有，尝试从内存读取
-            docData = store?.spaceDoc ? encodeStateAsUpdate(store.spaceDoc) : new Uint8Array(0);
-            console.log(`[WorkspaceSync] 存储中无数据，从内存读取文档: ${docId}, 大小: ${docData.byteLength} bytes`);
+            // 存储中没有或数据为空，尝试从内存读取
+            if (store?.spaceDoc) {
+              docData = encodeStateAsUpdate(store.spaceDoc);
+              dataSource = 'memory';
+              console.log(`[WorkspaceSync] 存储中无数据，从内存读取文档: ${docId}, 大小: ${docData.byteLength} bytes`);
+            } else {
+              docData = new Uint8Array(0);
+              dataSource = 'empty';
+            }
           }
         } else {
           // 从内存读取
           docData = store?.spaceDoc ? encodeStateAsUpdate(store.spaceDoc) : new Uint8Array(0);
+          dataSource = 'memory';
         }
         
-        if (docData.byteLength > 2) {  // 过滤空文档（空 Yjs 更新通常是 2 bytes）
+        // 🔧 验证导出的数据
+        if (docData.byteLength > 2) {
+          const hexPreview = Array.from(docData.slice(0, 10))
+            .map(b => b.toString(16).padStart(2, '0'))
+            .join(' ');
+          console.log(`[WorkspaceSync] 导出文档: ${docId}, guid: ${guid}, 来源: ${dataSource}, 大小: ${docData.byteLength}, hex预览: ${hexPreview}`);
+          
+          // 🔧 验证 Yjs 数据有效性 - 尝试解析
+          try {
+            const testDoc = new YDoc();
+            applyUpdate(testDoc, docData);
+            const testBlocks = testDoc.getMap('blocks');
+            const blocksCount = testBlocks?.size || 0;
+            console.log(`[WorkspaceSync] 数据验证: ${docId}, blocks数量: ${blocksCount}`);
+            testDoc.destroy();
+            
+            if (blocksCount === 0 && docData.byteLength > 100) {
+              console.warn(`[WorkspaceSync] ⚠️ 警告: 文档 ${docId} 数据较大但 blocks 为空，可能是元数据文档`);
+            }
+          } catch (verifyErr) {
+            console.error(`[WorkspaceSync] 数据验证失败: ${docId}`, verifyErr);
+          }
+          
           return { id: docId, guid, data: docData };
         } else {
           console.warn(`[WorkspaceSync] 跳过空文档: ${docId}, 大小: ${docData.byteLength} bytes`);
@@ -265,22 +316,57 @@ export function serializeSnapshot(snapshot: WorkspaceSnapshot): ArrayBuffer {
  * 从二进制反序列化快照
  */
 export function deserializeSnapshot(data: ArrayBuffer): WorkspaceSnapshot {
+  console.log(`[WorkspaceSync] 开始反序列化快照, 原始数据大小: ${data.byteLength} bytes`);
+  
   const decoder = new TextDecoder();
   const jsonString = decoder.decode(data);
+  
+  console.log(`[WorkspaceSync] JSON 字符串长度: ${jsonString.length}`);
+  
   const jsonData = JSON.parse(jsonString);
+  
+  console.log(`[WorkspaceSync] 解析 JSON 成功:`, {
+    version: jsonData.version,
+    workspaceId: jsonData.workspaceId,
+    docCount: jsonData.docCount || jsonData.subDocs?.length || jsonData.docs?.length,
+    blobCount: jsonData.blobCount || 0,
+    hasRootDoc: !!jsonData.rootDoc,
+    rootDocBase64Length: jsonData.rootDoc?.length || 0,
+  });
+  
+  // 🔧 验证每个文档的 Base64 数据
+  const validateDoc = (doc: { id?: string; guid: string; data: string }, index: number) => {
+    const decodedData = base64ToArrayBuffer(doc.data);
+    console.log(`[WorkspaceSync] 文档 ${index}: id=${doc.id || doc.guid}, guid=${doc.guid}, base64长度=${doc.data.length}, 解码后大小=${decodedData.byteLength}`);
+    
+    // 验证解码后的数据
+    if (decodedData.byteLength > 0) {
+      const hexPreview = Array.from(decodedData.slice(0, 10))
+        .map(b => b.toString(16).padStart(2, '0'))
+        .join(' ');
+      console.log(`[WorkspaceSync] 文档 ${index} hex预览: ${hexPreview}`);
+    }
+    
+    return {
+      id: doc.id || doc.guid,
+      guid: doc.guid,
+      data: decodedData,
+    };
+  };
   
   // 兼容旧版本格式
   if (jsonData.version === 1 && jsonData.subDocs) {
+    const rootDoc = base64ToArrayBuffer(jsonData.rootDoc);
+    console.log(`[WorkspaceSync] V1 格式, rootDoc 大小: ${rootDoc.byteLength}`);
+    
     return {
       version: 1,
       workspaceId: jsonData.workspaceId,
       timestamp: jsonData.timestamp,
-      rootDoc: base64ToArrayBuffer(jsonData.rootDoc),
-      docs: jsonData.subDocs.map((doc: { guid: string; data: string }) => ({
-        id: doc.guid,
-        guid: doc.guid,
-        data: base64ToArrayBuffer(doc.data),
-      })),
+      rootDoc,
+      docs: jsonData.subDocs.map((doc: { guid: string; data: string }, i: number) => 
+        validateDoc(doc, i)
+      ),
       blobs: [],
       docCount: jsonData.subDocs.length,
       blobCount: 0,
@@ -289,32 +375,35 @@ export function deserializeSnapshot(data: ArrayBuffer): WorkspaceSnapshot {
   
   // 版本 2 兼容（没有 blobs）
   if (jsonData.version === 2 && !jsonData.blobs) {
+    const rootDoc = base64ToArrayBuffer(jsonData.rootDoc);
+    console.log(`[WorkspaceSync] V2 格式, rootDoc 大小: ${rootDoc.byteLength}`);
+    
     return {
       version: 2,
       workspaceId: jsonData.workspaceId,
       timestamp: jsonData.timestamp,
-      rootDoc: base64ToArrayBuffer(jsonData.rootDoc),
-      docs: jsonData.docs.map((doc: { id: string; guid: string; data: string }) => ({
-        id: doc.id,
-        guid: doc.guid,
-        data: base64ToArrayBuffer(doc.data),
-      })),
+      rootDoc,
+      docs: jsonData.docs.map((doc: { id: string; guid: string; data: string }, i: number) => 
+        validateDoc(doc, i)
+      ),
       blobs: [],
       docCount: jsonData.docCount,
       blobCount: 0,
     };
   }
   
+  // 版本 3（当前版本）
+  const rootDoc = base64ToArrayBuffer(jsonData.rootDoc);
+  console.log(`[WorkspaceSync] V3 格式, rootDoc 大小: ${rootDoc.byteLength}`);
+  
   return {
     version: jsonData.version,
     workspaceId: jsonData.workspaceId,
     timestamp: jsonData.timestamp,
-    rootDoc: base64ToArrayBuffer(jsonData.rootDoc),
-    docs: jsonData.docs.map((doc: { id: string; guid: string; data: string }) => ({
-      id: doc.id,
-      guid: doc.guid,
-      data: base64ToArrayBuffer(doc.data),
-    })),
+    rootDoc,
+    docs: jsonData.docs.map((doc: { id: string; guid: string; data: string }, i: number) => 
+      validateDoc(doc, i)
+    ),
     blobs: jsonData.blobs || [],
     docCount: jsonData.docCount,
     blobCount: jsonData.blobCount || 0,
@@ -322,12 +411,28 @@ export function deserializeSnapshot(data: ArrayBuffer): WorkspaceSnapshot {
 }
 
 /**
+ * 文档存储接口（用于写入）
+ * 使用 pushDocUpdate 而不是 setDocSnapshot，因为 setDocSnapshot 是 protected 方法
+ */
+interface DocStorageWriteInterface {
+  pushDocUpdate(update: { docId: string; bin: Uint8Array }): Promise<{ docId: string; timestamp: Date }>;
+}
+
+/**
  * 将快照导入到工作区
  * 
  * 重要：导入后必须刷新页面才能看到更新的文档
  * 数据会先被写入存储（IndexedDB/SQLite），刷新后重新加载
+ * 
+ * @param workspace - BlockSuite 工作区 (docCollection)
+ * @param snapshot - 要导入的快照数据
+ * @param docStorage - 可选的文档存储接口，用于将数据持久化到 IndexedDB/SQLite
  */
-export async function importWorkspaceSnapshot(workspace: Workspace, snapshot: WorkspaceSnapshot): Promise<void> {
+export async function importWorkspaceSnapshot(
+  workspace: Workspace, 
+  snapshot: WorkspaceSnapshot,
+  docStorage?: DocStorageWriteInterface
+): Promise<void> {
   console.log(`[WorkspaceSync] 开始导入快照: workspaceId=${snapshot.workspaceId}, docCount=${snapshot.docCount}, blobCount=${snapshot.blobCount}`);
   console.log(`[WorkspaceSync] 当前工作区 ID: ${workspace.id}`);
   
@@ -442,16 +547,50 @@ export async function importWorkspaceSnapshot(workspace: Workspace, snapshot: Wo
         if (store && store.spaceDoc) {
           console.log(`[WorkspaceSync] 应用文档更新: docId=${docData.id}, spaceDoc.guid=${store.spaceDoc.guid}, snapshotGuid=${docData.guid}`);
           
+          // 🔧 验证快照数据的有效性
+          const dataHexPreview = Array.from(docData.data.slice(0, 20))
+            .map(b => b.toString(16).padStart(2, '0'))
+            .join(' ');
+          console.log(`[WorkspaceSync] 快照数据预览 (hex): ${dataHexPreview}, 总大小: ${docData.data.byteLength} bytes`);
+          
           // 检查更新前的状态
           const beforeBlocks = store.spaceDoc.getMap('blocks');
-          console.log(`[WorkspaceSync] 更新前 blocks 数量: ${beforeBlocks?.size || 0}`);
+          const beforeSize = beforeBlocks?.size || 0;
+          console.log(`[WorkspaceSync] 更新前 blocks 数量: ${beforeSize}`);
           
-          // 🔧 应用 Yjs 更新
-          applyUpdate(store.spaceDoc, docData.data);
+          // 🔧 验证数据是否为有效的 Yjs 更新
+          // Yjs 更新数据通常以特定格式开始，非空更新不应该只有 2 bytes
+          if (docData.data.byteLength <= 2) {
+            console.warn(`[WorkspaceSync] 跳过空/无效数据: ${docData.id}, 大小=${docData.data.byteLength}`);
+            continue;
+          }
           
-          // 检查更新后的状态
-          const afterBlocks = store.spaceDoc.getMap('blocks');
-          console.log(`[WorkspaceSync] 更新后 blocks 数量: ${afterBlocks?.size || 0}`);
+          try {
+            // 🔧 应用 Yjs 更新
+            applyUpdate(store.spaceDoc, docData.data);
+            
+            // 检查更新后的状态
+            const afterBlocks = store.spaceDoc.getMap('blocks');
+            const afterSize = afterBlocks?.size || 0;
+            console.log(`[WorkspaceSync] 更新后 blocks 数量: ${afterSize}`);
+            
+            // 🔧 诊断：如果更新前后 blocks 数量没变化，可能数据有问题
+            if (afterSize === beforeSize && afterSize === 0 && docData.data.byteLength > 100) {
+              console.warn(`[WorkspaceSync] ⚠️ 警告: 应用更新后 blocks 仍为空，数据可能有问题`);
+              
+              // 尝试创建临时 YDoc 来验证数据
+              const testDoc = new YDoc();
+              applyUpdate(testDoc, docData.data);
+              const testBlocks = testDoc.getMap('blocks');
+              console.log(`[WorkspaceSync] 测试文档 blocks 数量: ${testBlocks?.size || 0}`);
+              testDoc.destroy();
+            }
+            
+            importedDocCount++;
+            console.log(`[WorkspaceSync] 导入文档成功: ${docData.id}, blocks: ${beforeSize} → ${afterSize}`);
+          } catch (applyErr) {
+            console.error(`[WorkspaceSync] applyUpdate 失败: ${docData.id}`, applyErr);
+          }
           
           // 🔧 手动触发存储同步（Android 环境重要）
           try {
@@ -461,9 +600,6 @@ export async function importWorkspaceSnapshot(workspace: Workspace, snapshot: Wo
           } catch (syncErr) {
             console.warn(`[WorkspaceSync] 触发文档存储同步失败:`, syncErr);
           }
-          
-          importedDocCount++;
-          console.log(`[WorkspaceSync] 导入文档成功: ${docData.id}`);
         } else {
           console.warn(`[WorkspaceSync] 文档 ${docData.id} 没有 spaceDoc, store:`, !!store, 'spaceDoc:', !!store?.spaceDoc);
         }
@@ -475,41 +611,62 @@ export async function importWorkspaceSnapshot(workspace: Workspace, snapshot: Wo
     }
   }
   
-  // 🔧 强制触发文档存储同步（Android 环境重要）
-  console.log(`[WorkspaceSync] 强制同步文档到存储...`);
+  // 🔧 Android重要：强制保存到 IndexedDB（使用 pushDocUpdate 公共方法）
+  console.log(`[WorkspaceSync] 强制保存到 IndexedDB...`);
+  console.log(`[WorkspaceSync] docStorage 参数可用: ${!!docStorage}, pushDocUpdate方法: ${!!(docStorage && typeof docStorage.pushDocUpdate === 'function')}`);
   
   try {
-    // 尝试手动触发存储同步
-    if (docStorage && typeof (docStorage as any).sync === 'function') {
-      console.log(`[WorkspaceSync] 调用 docStorage.sync()`);
-      await (docStorage as any).sync();
-    }
-    
-    // 对于每个导入的文档，强制保存到存储
-    for (const docData of snapshot.docs) {
-      const doc = workspace.getDoc(docData.id);
-      if (doc) {
-        const store = doc.getStore();
-        if (store?.spaceDoc && docStorage && typeof (docStorage as any).setDoc === 'function') {
-          try {
-            console.log(`[WorkspaceSync] 强制保存文档到存储: ${docData.id}`);
-            await (docStorage as any).setDoc(docData.guid, {
-              bin: docData.data,
-              timestamp: new Date()
-            });
-          } catch (e) {
-            console.warn(`[WorkspaceSync] 保存文档 ${docData.id} 到存储失败:`, e);
-          }
+    if (docStorage && typeof docStorage.pushDocUpdate === 'function') {
+      // 🔧 使用 pushDocUpdate 公共方法保存数据（不是 protected 的 setDocSnapshot）
+      console.log(`[WorkspaceSync] 开始保存 ${snapshot.docs.length} 个文档到存储...`);
+      
+      for (const docData of snapshot.docs) {
+        const doc = workspace.getDoc(docData.id);
+        const store = doc?.getStore();
+        
+        // 获取当前文档的 guid（用于本设备打开文档时查找）
+        const currentGuid = store?.spaceDoc?.guid || docData.id;
+        const originalGuid = docData.guid;
+        
+        console.log(`[WorkspaceSync] 文档 ${docData.id}: originalGuid=${originalGuid}, currentGuid=${currentGuid}, 原始数据大小=${docData.data.byteLength} bytes`);
+        
+        // 🔧 使用 pushDocUpdate 保存到存储
+        const docUpdate = {
+          docId: currentGuid,
+          bin: docData.data,  // ✅ 直接使用原始快照数据
+        };
+        const saveResult = await docStorage.pushDocUpdate(docUpdate);
+        console.log(`[WorkspaceSync] 保存成功 (currentGuid): ${docData.id} → ${currentGuid}, timestamp=${saveResult.timestamp}, 大小=${docData.data.byteLength}`);
+        
+        // 🔧 如果原始 guid 与当前 guid 不同，也保存一份到原始 guid（兼容性）
+        if (originalGuid && originalGuid !== currentGuid) {
+          const originalDocUpdate = {
+            docId: originalGuid,
+            bin: docData.data,
+          };
+          const originalSaveResult = await docStorage.pushDocUpdate(originalDocUpdate);
+          console.log(`[WorkspaceSync] 保存成功 (originalGuid): ${docData.id} → ${originalGuid}, timestamp=${originalSaveResult.timestamp}, 大小=${docData.data.byteLength}`);
         }
       }
+      
+      // 保存根文档（使用原始快照数据）
+      const rootUpdate = {
+        docId: workspace.doc.guid,
+        bin: snapshot.rootDoc,  // ✅ 直接使用原始快照数据
+      };
+      const rootSaveResult = await docStorage.pushDocUpdate(rootUpdate);
+      console.log(`[WorkspaceSync] 保存根文档: ${workspace.doc.guid}, timestamp=${rootSaveResult.timestamp}, 大小=${snapshot.rootDoc.byteLength}`);
+    } else {
+      console.warn(`[WorkspaceSync] ⚠️ docStorage 不可用或没有 pushDocUpdate 方法，数据无法持久化！`);
+      console.warn(`[WorkspaceSync] docStorage: ${docStorage}, pushDocUpdate: ${docStorage ? typeof (docStorage as any).pushDocUpdate : 'N/A'}`);
     }
-  } catch (e) {
-    console.warn('[WorkspaceSync] 强制同步失败:', e);
+  } catch (saveErr) {
+    console.error(`[WorkspaceSync] 强制保存失败:`, saveErr);
   }
   
-  // 等待额外时间让数据完全持久化
-  console.log(`[WorkspaceSync] 等待数据持久化完成...`);
-  await new Promise(resolve => setTimeout(resolve, 1000));
+  // 等待 IndexedDB 写入完成
+  console.log(`[WorkspaceSync] 等待 IndexedDB 写入完成...`);
+  await new Promise(resolve => setTimeout(resolve, 2000));
   
   // 3. 导入所有 Blob 数据（并发处理，限制并发数为 5）
   const BLOB_IMPORT_CONCURRENCY = 5;

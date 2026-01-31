@@ -271,7 +271,7 @@ export const CloudStorageGroup = () => {
     } finally {
       setUploading(false);
     }
-  }, [externalStorageService, workspace.docCollection, workspaceId]);
+  }, [externalStorageService, workspace.docCollection, workspace.engine, workspaceId]);
 
   // 从云端下载
   const handleDownload = useCallback(async () => {
@@ -320,9 +320,14 @@ export const CloudStorageGroup = () => {
       // 确认下载
       setStatusMessage({ type: 'info', message: '正在下载数据...' });
       
+      // 🔧 获取 docStorage 用于持久化
+      const docStorage = workspace.engine?.doc?.storage;
+      console.log(`[CloudStorage] handleDownload: docStorage可用=${!!docStorage}`);
+      
       const result = await externalStorageService.syncWorkspaceFromCloud(
         workspace.docCollection,
-        workspaceId
+        workspaceId,
+        docStorage as any  // 🔧 传递 docStorage 用于持久化
       );
       
       if (result.success) {
@@ -353,7 +358,7 @@ export const CloudStorageGroup = () => {
     } finally {
       setDownloading(false);
     }
-  }, [externalStorageService, workspace.docCollection, workspaceId]);
+  }, [externalStorageService, workspace.docCollection, workspace.engine, workspaceId]);
 
   // 测试工作区数据导出（仅调试用）
   const handleTestExport = useCallback(async () => {
@@ -424,11 +429,14 @@ export const CloudStorageGroup = () => {
     });
     
     try {
-      console.log(`[CloudStorage] 开始下载: 云端=${cloudWorkspaceId}, 本地=${workspaceId}, 匹配=${isMatchingWorkspace}`);
+      // 🔧 获取 docStorage 用于持久化数据到 IndexedDB
+      const docStorage = workspace.engine?.doc?.storage;
+      console.log(`[CloudStorage] 开始下载: 云端=${cloudWorkspaceId}, 本地=${workspaceId}, 匹配=${isMatchingWorkspace}, docStorage可用=${!!docStorage}`);
       
       const result = await externalStorageService.syncWorkspaceFromCloud(
         workspace.docCollection,
-        cloudWorkspaceId  // 使用云端工作区ID下载
+        cloudWorkspaceId,  // 使用云端工作区ID下载
+        docStorage as any  // 🔧 传递 docStorage 用于持久化
       );
       
       if (result.success) {
@@ -467,7 +475,7 @@ export const CloudStorageGroup = () => {
     } finally {
       setDownloading(false);
     }
-  }, [externalStorageService, workspace.docCollection, workspaceId]);
+  }, [externalStorageService, workspace.docCollection, workspace.engine, workspaceId]);
 
   // 配置变更时加载云端列表
   useEffect(() => {

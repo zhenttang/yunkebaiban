@@ -470,16 +470,50 @@ class WorkerDocStorage implements DocStorage {
   }
 
   async getDoc(docId: string) {
-    // 如果配置了云端存储，必须使用云端存储
-    if (this.cloudStoragePromise) {
-      const cloudStorage = await this.getCloudStorage();
-      if (!cloudStorage) {
-        throw new Error('❌ 云端存储未初始化，无法读取文档');
+    // 🔧 本地优先策略：先从 IndexedDB 读取，没有再从云端获取
+    
+    // 1. 先尝试从本地 IndexedDB 读取（通过 Worker）
+    try {
+      const localDoc = await this.client.call('docStorage.getDoc', docId);
+      if (localDoc && localDoc.bin && localDoc.bin.byteLength > 0) {
+        console.log(`✅ [WorkerDocStorage] 从本地 IndexedDB 读取成功: ${docId}, 大小=${localDoc.bin.byteLength}`);
+        return localDoc;
       }
-      return await cloudStorage.getDoc(docId);
+    } catch (localError) {
+      console.warn(`⚠️ [WorkerDocStorage] 本地 IndexedDB 读取失败:`, localError);
     }
-    // 未配置云端存储，使用 Worker 端本地存储
-    return await this.client.call('docStorage.getDoc', docId);
+    
+    // 2. 本地没有数据，尝试从云端获取
+    if (this.cloudStoragePromise) {
+      try {
+        const cloudStorage = await this.getCloudStorage();
+        if (cloudStorage) {
+          const cloudDoc = await cloudStorage.getDoc(docId);
+          if (cloudDoc && cloudDoc.bin && cloudDoc.bin.byteLength > 0) {
+            console.log(`✅ [WorkerDocStorage] 从云端读取成功: ${docId}, 大小=${cloudDoc.bin.byteLength}`);
+            
+            // 3. 将云端数据缓存到本地 IndexedDB
+            try {
+              await this.client.call('docStorage.pushDocUpdate', {
+                update: { docId: cloudDoc.docId, bin: cloudDoc.bin },
+                origin: 'cloud-cache'
+              });
+              console.log(`✅ [WorkerDocStorage] 云端数据已缓存到本地: ${docId}`);
+            } catch (cacheError) {
+              console.warn(`⚠️ [WorkerDocStorage] 缓存到本地失败:`, cacheError);
+            }
+            
+            return cloudDoc;
+          }
+        }
+      } catch (cloudError) {
+        console.error(`❌ [WorkerDocStorage] 云端读取失败:`, cloudError);
+      }
+    }
+    
+    // 4. 本地和云端都没有，返回 null
+    console.warn(`⚠️ [WorkerDocStorage] 文档未找到: ${docId}`);
+    return null;
   }
 
   async getDocDiff(docId: string, state?: Uint8Array) {
@@ -496,16 +530,41 @@ class WorkerDocStorage implements DocStorage {
   }
 
   async pushDocUpdate(update: DocUpdate, origin?: string) {
-    // 如果配置了云端存储，必须使用云端存储
-    if (this.cloudStoragePromise) {
-      const cloudStorage = await this.getCloudStorage();
-      if (!cloudStorage) {
-        throw new Error('❌ 云端存储未初始化，无法保存文档');
-      }
-      return await cloudStorage.pushDocUpdate(update, origin);
+    // 🔧 双写机制：同时写入云端和本地 IndexedDB
+    // 确保离线时数据仍然可用
+    
+    // 1. 始终先写入本地 IndexedDB（通过 Worker）
+    let localResult: { docId: string; timestamp: Date } | null = null;
+    try {
+      localResult = await this.client.call('docStorage.pushDocUpdate', { update, origin });
+      console.log(`✅ [WorkerDocStorage] 本地 IndexedDB 写入成功: ${update.docId}`);
+    } catch (localError) {
+      console.error(`⚠️ [WorkerDocStorage] 本地 IndexedDB 写入失败:`, localError);
+      // 本地写入失败不阻塞，继续尝试云端
     }
-    // 未配置云端存储，使用 Worker 端本地存储
-    return await this.client.call('docStorage.pushDocUpdate', { update, origin });
+    
+    // 2. 如果配置了云端存储，也写入云端
+    if (this.cloudStoragePromise) {
+      try {
+        const cloudStorage = await this.getCloudStorage();
+        if (cloudStorage) {
+          const cloudResult = await cloudStorage.pushDocUpdate(update, origin);
+          console.log(`✅ [WorkerDocStorage] 云端存储写入成功: ${update.docId}`);
+          // 优先返回云端结果（时间戳更准确）
+          return cloudResult;
+        }
+      } catch (cloudError) {
+        console.error(`⚠️ [WorkerDocStorage] 云端存储写入失败:`, cloudError);
+        // 云端失败时，返回本地结果
+      }
+    }
+    
+    // 返回本地结果（如果云端不可用或失败）
+    if (localResult) {
+      return localResult;
+    }
+    
+    throw new Error('❌ 文档保存失败：本地和云端存储都不可用');
   }
 
   async getDocTimestamp(docId: string) {

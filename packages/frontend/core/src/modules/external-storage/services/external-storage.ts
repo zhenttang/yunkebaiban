@@ -195,10 +195,15 @@ export class ExternalStorageService extends Service {
   /**
    * 从云端下载工作区数据 - 统一格式，全平台互通
    * 包含：文档数据 + Blob 数据（图片、附件等）
+   * 
+   * @param workspace - BlockSuite 工作区 (docCollection)
+   * @param workspaceId - 工作区 ID
+   * @param docStorage - 可选的文档存储接口，用于保存导入的数据到本地存储
    */
   async syncWorkspaceFromCloud(
     workspace: Workspace,
-    workspaceId: string
+    workspaceId: string,
+    docStorage?: { pushDocUpdate(update: { docId: string; bin: Uint8Array }): Promise<{ docId: string; timestamp: Date }> }
   ): Promise<TestConnectionResult> {
     if (!this._config || this._config.type === 'local') {
       return { success: false, message: '未配置外部存储' };
@@ -213,9 +218,9 @@ export class ExternalStorageService extends Service {
         return { success: false, message: result.message || '云端没有找到该工作区的数据' };
       }
       
-      // 反序列化并导入
+      // 反序列化并导入（传递 docStorage 用于持久化）
       const snapshot = deserializeSnapshot(result.data);
-      await importWorkspaceSnapshot(workspace, snapshot);
+      await importWorkspaceSnapshot(workspace, snapshot, docStorage);
       
       return { 
         success: true, 
