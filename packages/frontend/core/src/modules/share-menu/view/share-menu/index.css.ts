@@ -35,7 +35,7 @@ export const menuTriggerStyle = style({
 });
 export const exportItemStyle = style({
   padding: '4px',
-  transition: 'all 0.3s',
+  transition: 'background-color 0.3s, color 0.3s',
   gap: '0px',
 });
 globalStyle(`${exportItemStyle} > div:first-child`, {
