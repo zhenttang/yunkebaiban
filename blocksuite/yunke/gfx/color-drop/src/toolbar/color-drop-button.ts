@@ -253,7 +253,20 @@ export class ColorDropToolButton extends LitElement {
         if (this._panelElement) return;
 
         const panel = document.createElement('div');
-        panel.className = 'color-panel';
+        panel.id = 'color-drop-panel-portal';
+        panel.style.cssText = `
+            position: fixed;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 0.5px solid rgba(0, 0, 0, 0.1);
+            border-radius: 16px;
+            box-shadow: 0 12px 48px rgba(0, 0, 0, 0.15);
+            padding: 16px;
+            z-index: 99999;
+            display: none;
+            min-width: 280px;
+        `;
         panel.innerHTML = this._getPanelHTML();
         document.body.appendChild(panel);
         this._panelElement = panel;
@@ -270,43 +283,101 @@ export class ColorDropToolButton extends LitElement {
     }
 
     private _getPanelHTML(): string {
-        const colorsHTML = PRESET_COLORS.map(color => `
-            <div class="color-item ${color === this.selectedColor ? 'selected' : ''}" 
+        const colorsHTML = PRESET_COLORS.map(color => {
+            const isSelected = color === this.selectedColor;
+            return `
+            <div class="color-item" 
                  data-color="${color}" 
-                 style="background: ${color};"
+                 style="
+                    width: 40px;
+                    height: 40px;
+                    border-radius: 50%;
+                    border: 2px solid white;
+                    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+                    cursor: grab;
+                    transition: all 0.2s;
+                    position: relative;
+                    background: ${color};
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    ${isSelected ? 'box-shadow: 0 0 0 2px #1e96eb, 0 2px 8px rgba(0, 0, 0, 0.15);' : ''}
+                 "
                  title="拖动填充: ${color}">
+                 ${isSelected ? '<span style="color: white; text-shadow: 0 1px 2px rgba(0,0,0,0.5); font-weight: bold;">✓</span>' : ''}
             </div>
-        `).join('');
+        `}).join('');
 
         return `
-            <div class="panel-header">
-                <div class="panel-title">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid rgba(0, 0, 0, 0.06);">
+                <div style="display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 700; color: #333;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/>
                     </svg>
                     <span>拖放填色</span>
                 </div>
-                <button class="close-btn" id="close-color-panel">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <button id="close-color-panel" style="
+                    width: 28px;
+                    height: 28px;
+                    border: none;
+                    border-radius: 8px;
+                    background: transparent;
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    color: #999;
+                ">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                         <path d="M18 6L6 18M6 6l12 12"/>
                     </svg>
                 </button>
             </div>
-            <div class="color-grid">
+            <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-bottom: 16px;">
                 ${colorsHTML}
             </div>
-            <div class="custom-color-section">
-                <div class="custom-color-row">
-                    <input type="text" class="custom-color-input" id="custom-color-input" 
-                           value="${this.customColor}" placeholder="#1e96eb"/>
-                    <div class="custom-color-preview" id="custom-color-preview" 
-                         style="background: ${this.customColor};"
+            <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(0, 0, 0, 0.06);">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <input type="text" id="custom-color-input" 
+                           value="${this.customColor}" 
+                           placeholder="#1e96eb"
+                           style="
+                               flex: 1;
+                               height: 36px;
+                               border: 1px solid rgba(0, 0, 0, 0.1);
+                               border-radius: 8px;
+                               padding: 0 12px;
+                               font-size: 13px;
+                               outline: none;
+                           "/>
+                    <div id="custom-color-preview" 
+                         style="
+                            width: 36px;
+                            height: 36px;
+                            border-radius: 8px;
+                            border: 2px solid white;
+                            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+                            cursor: grab;
+                            background: ${this.customColor};
+                            flex-shrink: 0;
+                         "
                          title="拖动填充自定义颜色">
                     </div>
                 </div>
             </div>
-            <div class="panel-tip">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <div style="
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                padding: 10px 12px;
+                background: rgba(30, 150, 235, 0.08);
+                border-radius: 8px;
+                font-size: 11px;
+                color: #666;
+                line-height: 1.4;
+                margin-top: 12px;
+            ">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1e96eb" stroke-width="2" style="flex-shrink: 0;">
                     <circle cx="12" cy="12" r="10"/>
                     <path d="M12 16v-4M12 8h.01"/>
                 </svg>
@@ -417,16 +488,18 @@ export class ColorDropToolButton extends LitElement {
                 this._panelElement.style.bottom = `${window.innerHeight - rect.top + 10}px`;
             }
             
-            this._panelElement.classList.add('open');
+            this._panelElement.style.display = 'block';
             this.isPanelOpen = true;
+            console.log('[ColorDrop] 面板已打开');
         }
     }
 
     private _closePanel(): void {
         if (this._panelElement) {
-            this._panelElement.classList.remove('open');
+            this._panelElement.style.display = 'none';
         }
         this.isPanelOpen = false;
+        console.log('[ColorDrop] 面板已关闭');
     }
 
     override render() {

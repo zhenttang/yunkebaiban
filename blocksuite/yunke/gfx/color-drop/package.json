@@ -18,12 +18,12 @@
     "./effects": "./src/effects.ts"
   },
   "dependencies": {
+    "@blocksuite/global": "workspace:*",
+    "@blocksuite/std": "workspace:*",
+    "@blocksuite/yunke-ext-loader": "workspace:*",
     "@blocksuite/yunke-model": "workspace:*",
     "@blocksuite/yunke-shared": "workspace:*",
-    "@blocksuite/yunke-ext-loader": "workspace:*",
     "@blocksuite/yunke-widget-edgeless-toolbar": "workspace:*",
-    "@blocksuite/std": "workspace:*",
-    "@blocksuite/global": "workspace:*",
     "lit": "^3.2.1"
   },
   "devDependencies": {
