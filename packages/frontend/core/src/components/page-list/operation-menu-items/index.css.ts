@@ -11,5 +11,6 @@ globalStyle(`${moveToTrashStyle}:hover svg`, {
   color: cssVar('errorColor'),
 });
 export const transitionStyle = style({
-  transition: 'all 0.3s',
+  // 只对背景色和颜色应用过渡，避免位置变化时产生飞行动画
+  transition: 'background-color 0.2s, color 0.2s',
 });
