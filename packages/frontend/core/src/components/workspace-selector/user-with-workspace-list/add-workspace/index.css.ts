@@ -3,15 +3,17 @@ import { cssVarV2 } from '@toeverything/theme/v2';
 import { style } from '@vanilla-extract/css';
 
 export const ItemContainer = style({
-  display: 'flex',
-  alignItems: 'center',
+  display: 'flex !important',
+  flexDirection: 'row !important',
+  alignItems: 'center !important',
   justifyContent: 'flex-start !important',
-  padding: '6px 16px 6px 11px',
+  padding: '6px 16px 6px 11px !important',
   gap: '12px !important',
   cursor: 'pointer',
   borderRadius: '8px',
   transition: 'background-color 0.2s',
   fontSize: '24px',
+  width: '100%',
 });
 export const prefixIcon = style({
   width: 24,
