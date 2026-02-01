@@ -41,6 +41,7 @@ import { TextViewExtension } from '@blocksuite/yunke-gfx-text/view';
 import { AnimationViewExtension } from '@blocksuite/yunke-gfx-animation/view';
 import { AnimationProViewExtension } from '@blocksuite/yunke-gfx-animation-pro/view';
 import { ColorDropViewExtension } from '@blocksuite/yunke-gfx-color-drop/view';
+import { FilledPolygonViewExtension } from '@blocksuite/yunke-gfx-filled-polygon/view';
 import { FootnoteViewExtension } from '@blocksuite/yunke-inline-footnote/view';
 import { LatexViewExtension as InlineLatexViewExtension } from '@blocksuite/yunke-inline-latex/view';
 import { LinkViewExtension } from '@blocksuite/yunke-inline-link/view';
@@ -86,6 +87,9 @@ export function getInternalViewExtensions() {
 
     // 拖放填色工具
     ColorDropViewExtension,
+
+    // 填充多边形（ColorDrop 使用）
+    FilledPolygonViewExtension,
 
     // 演示与协作工具（合并到"更多工具"按钮）
     MoreToolsViewExtension,

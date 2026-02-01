@@ -51,6 +51,7 @@
     "@blocksuite/yunke-gfx-brush": "workspace:*",
     "@blocksuite/yunke-gfx-chart": "workspace:*",
     "@blocksuite/yunke-gfx-color-drop": "workspace:*",
+    "@blocksuite/yunke-gfx-filled-polygon": "workspace:*",
     "@blocksuite/yunke-gfx-connector": "workspace:*",
     "@blocksuite/yunke-gfx-emoji-reaction": "workspace:*",
     "@blocksuite/yunke-gfx-group": "workspace:*",

@@ -664,10 +664,7 @@ export class ColorDropManager {
     /**
      * 创建填充多边形
      * 
-     * 使用扫描线填充算法：
-     * 1. 计算多边形的边界
-     * 2. 生成水平扫描线
-     * 3. 创建填充画笔元素
+     * 使用 FilledPolygon 元素实现真正的内部填充
      */
     private _createFillPolygon(
         originalElement: any, 
@@ -676,7 +673,7 @@ export class ColorDropManager {
         autoClose: boolean
     ): { success: boolean; notClosed?: boolean; reason?: string } {
         try {
-            console.log('[ColorDrop] 开始填充，点数:', points.length);
+            console.log('[ColorDrop] 开始创建填充多边形，点数:', points.length);
             
             const elementBound = originalElement.xywh 
                 ? Bound.deserialize(originalElement.xywh) 
@@ -686,39 +683,42 @@ export class ColorDropManager {
                 return { success: false, reason: '无法获取元素边界' };
             }
 
-            // 使用扫描线算法生成填充路径
-            const fillPaths = this._generateScanLineFill(points, elementBound);
-            
             let fillCreated = false;
-            
-            if (fillPaths.length > 0 && this._gfx?.surface) {
-                // 创建填充画笔（使用扫描线路径）
-                for (const path of fillPaths) {
-                    if (path.length < 2) continue;
+
+            // 使用 FilledPolygon 元素创建填充
+            if (this._gfx && this._gfx.surface) {
+                try {
+                    // 简化路径点
+                    const simplifiedPoints = this._simplifyPath(points, 3);
                     
-                    try {
-                        const fillId = this._gfx.surface.addElement({
-                            type: 'brush',
-                            points: path,
-                            color: color,
-                            lineWidth: 3, // 扫描线宽度
-                        });
-                        
-                        if (fillId) {
-                            fillCreated = true;
-                            this._onFillCreated?.(fillId, originalElement.id);
-                        }
-                    } catch (e) {
-                        // 继续处理其他扫描线
+                    // 转换为绝对坐标
+                    const absolutePoints = simplifiedPoints.map(([x, y]) => [
+                        elementBound.x + x,
+                        elementBound.y + y
+                    ]);
+
+                    // 创建 FilledPolygon 元素
+                    const fillElementId = this._gfx.surface.addElement({
+                        type: 'filled-polygon',
+                        points: absolutePoints,
+                        fillColor: color,
+                        strokeColor: color,
+                        strokeWidth: 0,
+                        opacity: 1,
+                    });
+
+                    if (fillElementId) {
+                        fillCreated = true;
+                        console.log('[ColorDrop] ✅ 已创建 FilledPolygon:', fillElementId);
+                        this._onFillCreated?.(fillElementId, originalElement.id);
                     }
-                }
-                
-                if (fillCreated) {
-                    console.log('[ColorDrop] ✅ 已创建扫描线填充，共', fillPaths.length, '条');
+                } catch (e) {
+                    console.warn('[ColorDrop] 创建 FilledPolygon 失败，尝试备用方案:', e);
+                    // 备用方案：直接修改画笔颜色
                 }
             }
 
-            // 更新原画笔颜色
+            // 同时更新原画笔的线条颜色
             const colorUpdated = this._updateElementColor(originalElement, color);
 
             if (fillCreated || colorUpdated) {
@@ -728,86 +728,9 @@ export class ColorDropManager {
 
             return { success: false, reason: '无法创建填充' };
         } catch (e) {
-            console.error('[ColorDrop] 创建填充失败:', e);
+            console.error('[ColorDrop] 填充失败:', e);
             return { success: false, reason: String(e) };
         }
-    }
-
-    /**
-     * 扫描线填充算法
-     * 生成水平扫描线来填充多边形内部
-     */
-    private _generateScanLineFill(points: number[][], bound: Bound): number[][][] {
-        const fillPaths: number[][][] = [];
-        
-        // 简化路径
-        const polygon = this._simplifyPath(points, 3);
-        if (polygon.length < 3) return fillPaths;
-
-        // 闭合多边形
-        const closedPolygon = [...polygon];
-        if (polygon[0][0] !== polygon[polygon.length - 1][0] || 
-            polygon[0][1] !== polygon[polygon.length - 1][1]) {
-            closedPolygon.push([polygon[0][0], polygon[0][1]]);
-        }
-
-        // 计算边界
-        let minY = Infinity, maxY = -Infinity;
-        for (const [, y] of closedPolygon) {
-            minY = Math.min(minY, y);
-            maxY = Math.max(maxY, y);
-        }
-
-        // 扫描线间隔（越小填充越密）
-        const scanInterval = 4;
-
-        // 生成扫描线
-        for (let y = minY + scanInterval / 2; y < maxY; y += scanInterval) {
-            // 找到扫描线与多边形的交点
-            const intersections = this._findScanLineIntersections(closedPolygon, y);
-            
-            // 排序交点
-            intersections.sort((a, b) => a - b);
-
-            // 成对处理交点，生成填充线段
-            for (let i = 0; i < intersections.length - 1; i += 2) {
-                const x1 = intersections[i];
-                const x2 = intersections[i + 1];
-                
-                if (x2 - x1 > 2) {
-                    // 转换为绝对坐标
-                    fillPaths.push([
-                        [bound.x + x1, bound.y + y],
-                        [bound.x + x2, bound.y + y]
-                    ]);
-                }
-            }
-        }
-
-        return fillPaths;
-    }
-
-    /**
-     * 找到扫描线与多边形的所有交点
-     */
-    private _findScanLineIntersections(polygon: number[][], scanY: number): number[] {
-        const intersections: number[] = [];
-        const n = polygon.length;
-
-        for (let i = 0; i < n - 1; i++) {
-            const [x1, y1] = polygon[i];
-            const [x2, y2] = polygon[i + 1];
-
-            // 检查扫描线是否与边相交
-            if ((y1 <= scanY && y2 > scanY) || (y2 <= scanY && y1 > scanY)) {
-                // 计算交点 x 坐标
-                const t = (scanY - y1) / (y2 - y1);
-                const x = x1 + t * (x2 - x1);
-                intersections.push(x);
-            }
-        }
-
-        return intersections;
     }
 
     /**
