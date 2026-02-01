@@ -664,10 +664,10 @@ export class ColorDropManager {
     /**
      * 创建填充多边形
      * 
-     * 使用画笔路径创建填充效果：
-     * 1. 创建一个新的画笔元素，使用相同的闭合路径
-     * 2. 设置较大的线宽来覆盖内部区域
-     * 3. 将填充画笔放在原画笔下方
+     * 使用扫描线填充算法：
+     * 1. 计算多边形的边界
+     * 2. 生成水平扫描线
+     * 3. 创建填充画笔元素
      */
     private _createFillPolygon(
         originalElement: any, 
@@ -676,9 +676,8 @@ export class ColorDropManager {
         autoClose: boolean
     ): { success: boolean; notClosed?: boolean; reason?: string } {
         try {
-            console.log('[ColorDrop] 开始填充，元素类型:', originalElement.type, '点数:', points.length);
+            console.log('[ColorDrop] 开始填充，点数:', points.length);
             
-            // 获取原元素信息
             const elementBound = originalElement.xywh 
                 ? Bound.deserialize(originalElement.xywh) 
                 : null;
@@ -687,62 +686,40 @@ export class ColorDropManager {
                 return { success: false, reason: '无法获取元素边界' };
             }
 
+            // 使用扫描线算法生成填充路径
+            const fillPaths = this._generateScanLineFill(points, elementBound);
+            
             let fillCreated = false;
-
-            // 方案：创建填充画笔（使用闭合路径 + 大线宽）
-            if (this._gfx && this._gfx.surface) {
-                try {
-                    // 1. 闭合路径点（确保首尾相连）
-                    let fillPoints = [...points];
-                    const firstPoint = fillPoints[0];
-                    const lastPoint = fillPoints[fillPoints.length - 1];
+            
+            if (fillPaths.length > 0 && this._gfx?.surface) {
+                // 创建填充画笔（使用扫描线路径）
+                for (const path of fillPaths) {
+                    if (path.length < 2) continue;
                     
-                    // 如果首尾不相连，添加闭合点
-                    const dx = lastPoint[0] - firstPoint[0];
-                    const dy = lastPoint[1] - firstPoint[1];
-                    const distance = Math.sqrt(dx * dx + dy * dy);
-                    
-                    if (distance > 5) {
-                        // 添加从终点回到起点的路径
-                        const steps = Math.ceil(distance / 10);
-                        for (let i = 1; i <= steps; i++) {
-                            const t = i / steps;
-                            fillPoints.push([
-                                lastPoint[0] + (firstPoint[0] - lastPoint[0]) * t,
-                                lastPoint[1] + (firstPoint[1] - lastPoint[1]) * t
-                            ]);
+                    try {
+                        const fillId = this._gfx.surface.addElement({
+                            type: 'brush',
+                            points: path,
+                            color: color,
+                            lineWidth: 3, // 扫描线宽度
+                        });
+                        
+                        if (fillId) {
+                            fillCreated = true;
+                            this._onFillCreated?.(fillId, originalElement.id);
                         }
+                    } catch (e) {
+                        // 继续处理其他扫描线
                     }
-
-                    // 2. 生成内部填充点（螺旋式向内填充）
-                    const fillPathPoints = this._generateFillPath(fillPoints);
-                    
-                    // 3. 转换为绝对坐标
-                    const absolutePoints = fillPathPoints.map(([x, y]) => [
-                        x + elementBound.x,
-                        y + elementBound.y
-                    ]);
-
-                    // 4. 创建填充画笔元素
-                    const fillElementId = this._gfx.surface.addElement({
-                        type: 'brush',
-                        points: absolutePoints,
-                        color: color,
-                        lineWidth: originalElement.lineWidth || 4,
-                    });
-
-                    if (fillElementId) {
-                        fillCreated = true;
-                        console.log('[ColorDrop] ✅ 已创建填充画笔:', fillElementId);
-                        this._onFillCreated?.(fillElementId, originalElement.id);
-                    }
-                } catch (e) {
-                    console.warn('[ColorDrop] 创建填充画笔失败:', e);
+                }
+                
+                if (fillCreated) {
+                    console.log('[ColorDrop] ✅ 已创建扫描线填充，共', fillPaths.length, '条');
                 }
             }
 
-            // 同时更新原画笔的线条颜色
-            let colorUpdated = this._updateElementColor(originalElement, color);
+            // 更新原画笔颜色
+            const colorUpdated = this._updateElementColor(originalElement, color);
 
             if (fillCreated || colorUpdated) {
                 this._onColorApplied?.(originalElement.id, color);
@@ -751,50 +728,86 @@ export class ColorDropManager {
 
             return { success: false, reason: '无法创建填充' };
         } catch (e) {
-            console.error('[ColorDrop] 创建填充多边形失败:', e);
+            console.error('[ColorDrop] 创建填充失败:', e);
             return { success: false, reason: String(e) };
         }
     }
 
     /**
-     * 生成填充路径（螺旋式向内填充）
+     * 扫描线填充算法
+     * 生成水平扫描线来填充多边形内部
      */
-    private _generateFillPath(boundaryPoints: number[][]): number[][] {
-        const fillPath: number[][] = [];
+    private _generateScanLineFill(points: number[][], bound: Bound): number[][][] {
+        const fillPaths: number[][][] = [];
         
-        // 计算中心点
-        let centerX = 0, centerY = 0;
-        for (const [x, y] of boundaryPoints) {
-            centerX += x;
-            centerY += y;
-        }
-        centerX /= boundaryPoints.length;
-        centerY /= boundaryPoints.length;
+        // 简化路径
+        const polygon = this._simplifyPath(points, 3);
+        if (polygon.length < 3) return fillPaths;
 
-        // 生成螺旋式填充路径
-        const maxIterations = 15; // 填充层数
-        const shrinkFactor = 0.9; // 每层缩小比例
-
-        for (let i = 0; i < maxIterations; i++) {
-            const scale = Math.pow(shrinkFactor, i);
-            
-            // 缩小边界点向中心
-            const scaledPoints = boundaryPoints.map(([x, y]) => [
-                centerX + (x - centerX) * scale,
-                centerY + (y - centerY) * scale
-            ]);
-            
-            // 添加到填充路径
-            fillPath.push(...scaledPoints);
-            
-            // 如果缩小到很小就停止
-            if (scale < 0.1) break;
+        // 闭合多边形
+        const closedPolygon = [...polygon];
+        if (polygon[0][0] !== polygon[polygon.length - 1][0] || 
+            polygon[0][1] !== polygon[polygon.length - 1][1]) {
+            closedPolygon.push([polygon[0][0], polygon[0][1]]);
         }
 
-        // 添加中心点
-        fillPath.push([centerX, centerY]);
+        // 计算边界
+        let minY = Infinity, maxY = -Infinity;
+        for (const [, y] of closedPolygon) {
+            minY = Math.min(minY, y);
+            maxY = Math.max(maxY, y);
+        }
 
-        return fillPath;
+        // 扫描线间隔（越小填充越密）
+        const scanInterval = 4;
+
+        // 生成扫描线
+        for (let y = minY + scanInterval / 2; y < maxY; y += scanInterval) {
+            // 找到扫描线与多边形的交点
+            const intersections = this._findScanLineIntersections(closedPolygon, y);
+            
+            // 排序交点
+            intersections.sort((a, b) => a - b);
+
+            // 成对处理交点，生成填充线段
+            for (let i = 0; i < intersections.length - 1; i += 2) {
+                const x1 = intersections[i];
+                const x2 = intersections[i + 1];
+                
+                if (x2 - x1 > 2) {
+                    // 转换为绝对坐标
+                    fillPaths.push([
+                        [bound.x + x1, bound.y + y],
+                        [bound.x + x2, bound.y + y]
+                    ]);
+                }
+            }
+        }
+
+        return fillPaths;
+    }
+
+    /**
+     * 找到扫描线与多边形的所有交点
+     */
+    private _findScanLineIntersections(polygon: number[][], scanY: number): number[] {
+        const intersections: number[] = [];
+        const n = polygon.length;
+
+        for (let i = 0; i < n - 1; i++) {
+            const [x1, y1] = polygon[i];
+            const [x2, y2] = polygon[i + 1];
+
+            // 检查扫描线是否与边相交
+            if ((y1 <= scanY && y2 > scanY) || (y2 <= scanY && y1 > scanY)) {
+                // 计算交点 x 坐标
+                const t = (scanY - y1) / (y2 - y1);
+                const x = x1 + t * (x2 - x1);
+                intersections.push(x);
+            }
+        }
+
+        return intersections;
     }
 
     /**
