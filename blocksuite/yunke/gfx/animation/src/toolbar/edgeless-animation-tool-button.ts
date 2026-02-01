@@ -5,12 +5,75 @@
  * 1. 读取画板上的所有 Frame（按演示顺序排列）
  * 2. 每个 Frame 就是动画的一帧
  * 3. 播放时依次将视口切换到每个 Frame
+ * 4. 专业模式支持关键帧补间动画
  */
 
 import type { GfxController } from '@blocksuite/std/gfx';
 import { Bound } from '@blocksuite/global/gfx';
 import { LitElement, css, html, nothing } from 'lit';
 import { property, state } from 'lit/decorators.js';
+
+// 缓动函数类型
+type EasingType = 'linear' | 'easeIn' | 'easeOut' | 'easeInOut' | 'easeInCubic' | 'easeOutCubic' | 'easeInOutCubic' | 'easeInBack' | 'easeOutBack' | 'easeInOutBack' | 'easeInElastic' | 'easeOutElastic' | 'easeOutBounce';
+
+// 关键帧数据
+interface KeyframeData {
+    elementId: string;
+    frameIndex: number;
+    properties: {
+        x?: number;
+        y?: number;
+        rotation?: number;
+        scaleX?: number;
+        scaleY?: number;
+        opacity?: number;
+    };
+    easing: EasingType;
+}
+
+// 缓动函数实现
+const EASING_FUNCTIONS: Record<EasingType, (t: number) => number> = {
+    'linear': t => t,
+    'easeIn': t => t * t,
+    'easeOut': t => t * (2 - t),
+    'easeInOut': t => t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t,
+    'easeInCubic': t => t * t * t,
+    'easeOutCubic': t => (--t) * t * t + 1,
+    'easeInOutCubic': t => t < 0.5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1,
+    'easeInBack': t => {
+        const c1 = 1.70158;
+        const c3 = c1 + 1;
+        return c3 * t * t * t - c1 * t * t;
+    },
+    'easeOutBack': t => {
+        const c1 = 1.70158;
+        const c3 = c1 + 1;
+        return 1 + c3 * Math.pow(t - 1, 3) + c1 * Math.pow(t - 1, 2);
+    },
+    'easeInOutBack': t => {
+        const c1 = 1.70158;
+        const c2 = c1 * 1.525;
+        return t < 0.5
+            ? (Math.pow(2 * t, 2) * ((c2 + 1) * 2 * t - c2)) / 2
+            : (Math.pow(2 * t - 2, 2) * ((c2 + 1) * (t * 2 - 2) + c2) + 2) / 2;
+    },
+    'easeInElastic': t => {
+        if (t === 0 || t === 1) return t;
+        return -Math.pow(2, 10 * t - 10) * Math.sin((t * 10 - 10.75) * ((2 * Math.PI) / 3));
+    },
+    'easeOutElastic': t => {
+        if (t === 0 || t === 1) return t;
+        return Math.pow(2, -10 * t) * Math.sin((t * 10 - 0.75) * ((2 * Math.PI) / 3)) + 1;
+    },
+    'easeOutBounce': t => {
+        const n1 = 7.5625;
+        const d1 = 2.75;
+        if (t < 1 / d1) return n1 * t * t;
+        if (t < 2 / d1) return n1 * (t -= 1.5 / d1) * t + 0.75;
+        if (t < 2.5 / d1) return n1 * (t -= 2.25 / d1) * t + 0.9375;
+        return n1 * (t -= 2.625 / d1) * t + 0.984375;
+    },
+};
 
 // Frame 类型定义
 interface FrameModel {
@@ -210,7 +273,19 @@ export class EdgelessAnimationToolButton extends LitElement {
     accessor loopPlay = true; // true = 循环播放，false = 播放一次
 
     @state()
+    accessor isProMode = false; // 专业模式：显示时间轴和关键帧编辑
+
+    @state()
     accessor selectedFrame: FrameModel | null = null;
+
+    @state()
+    accessor selectedElementId: string | null = null; // 当前选中的元素（用于关键帧编辑）
+
+    @state()
+    accessor currentEasing: EasingType = 'easeOutCubic'; // 当前缓动曲线
+
+    @state()
+    accessor enableTweenAnimation = false; // 是否启用补间动画
 
     // Frame 列表和当前 Frame 内的子帧列表
     private _frames: FrameModel[] = [];
@@ -220,6 +295,12 @@ export class EdgelessAnimationToolButton extends LitElement {
     
     // 关键：存储每一帧包含的元素 ID 列表
     private _frameElementsMap: Map<number, string[]> = new Map();
+    
+    // 关键帧存储：elementId -> frameIndex -> KeyframeData
+    private _keyframes: Map<string, Map<number, KeyframeData>> = new Map();
+    
+    // 元素初始状态缓存（用于补间动画）
+    private _elementInitialStates: Map<string, { x: number; y: number; rotation: number; scaleX: number; scaleY: number; opacity: number }> = new Map();
     
     // 帧的固定大小（每帧的宽高）
     private readonly FRAME_WIDTH = 300;
@@ -322,6 +403,15 @@ export class EdgelessAnimationToolButton extends LitElement {
     private _updatePanelContent(): void {
         if (!this._panelContainer) return;
 
+        // 专业模式：显示高级时间轴编辑器
+        if (this.isProMode && this.selectedFrame) {
+            this._renderProModePanel();
+            if (!this.isPlaying) {
+                this._applyOnionSkin();
+            }
+            return;
+        }
+
         // 如果已选择 Frame，显示子帧控制
         if (this.selectedFrame) {
             this._renderSubFramePlayerToContainer();
@@ -413,10 +503,31 @@ export class EdgelessAnimationToolButton extends LitElement {
         const subFrameCount = this._frameElementsMap.size;
         const currentFrame = this.currentFrameIndex + 1;
 
-        this._panelContainer.style.flexDirection = 'row';
-        this._panelContainer.style.alignItems = 'center';
-        this._panelContainer.style.flexWrap = 'nowrap';
-        this._panelContainer.style.whiteSpace = 'nowrap';
+        // 重置面板样式（从专业模式切换回来时需要）
+        this._panelContainer.style.cssText = `
+            position: fixed;
+            top: 64px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 0.5px solid rgba(0, 0, 0, 0.1);
+            border-radius: 16px;
+            box-shadow: 0 12px 48px rgba(0, 0, 0, 0.12);
+            padding: 8px 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 99999;
+            min-width: 320px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            flex-direction: row;
+            flex-wrap: nowrap;
+            white-space: nowrap;
+            width: auto;
+            max-width: none;
+        `;
         
         this._panelContainer.innerHTML = `
             <button id="back-btn" style="flex-shrink: 0; display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border: none; border-radius: 10px; background: transparent; cursor: pointer; transition: background 0.2s;" onmouseover="this.style.background='rgba(0,0,0,0.05)'" onmouseout="this.style.background='transparent'">
@@ -490,6 +601,15 @@ export class EdgelessAnimationToolButton extends LitElement {
                     <span>${this.showOnionSkin ? '👁️' : '👓'}</span>
                     <span>洋葱皮</span>
                 </button>
+
+                <button id="pro-mode-btn" style="display: flex; align-items: center; gap: 4px; padding: 6px 10px; border: none; border-radius: 8px; background: ${this.isProMode ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' : 'rgba(0,0,0,0.04)'}; cursor: pointer; font-size: 11px; font-weight: 700; color: ${this.isProMode ? '#fff' : '#4a4a4a'}; transition: all 0.2s; box-shadow: ${this.isProMode ? '0 2px 8px rgba(102, 126, 234, 0.4)' : 'none'};" title="专业模式：关键帧动画编辑">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="12" height="12">
+                        <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                        <path d="M2 17l10 5 10-5"/>
+                        <path d="M2 12l10 5 10-5"/>
+                    </svg>
+                    <span>专业</span>
+                </button>
             </div>
         `;
 
@@ -551,6 +671,434 @@ export class EdgelessAnimationToolButton extends LitElement {
             if (!this.isPlaying) {
                 this._applyOnionSkin();
             }
+        });
+        this._panelContainer.querySelector('#pro-mode-btn')?.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            this.isProMode = !this.isProMode;
+            this._updatePanelContent();
+        });
+    }
+
+    /**
+     * 渲染专业模式面板 - 时间轴和关键帧编辑
+     */
+    private _renderProModePanel(): void {
+        if (!this._panelContainer || !this.selectedFrame) return;
+
+        const title = this.selectedFrame.props?.title?.toString() || '未命名动画';
+        const subFrameCount = this._frameElementsMap.size;
+        const currentFrame = this.currentFrameIndex + 1;
+
+        // 专业面板更大，显示时间轴
+        this._panelContainer.style.cssText = `
+            position: fixed;
+            top: 64px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 0.5px solid rgba(0, 0, 0, 0.1);
+            border-radius: 16px;
+            box-shadow: 0 12px 48px rgba(0, 0, 0, 0.15);
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            z-index: 99999;
+            width: 680px;
+            max-width: 90vw;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        `;
+
+        // 生成时间轴帧
+        let timelineFramesHtml = '';
+        for (let i = 0; i < Math.max(subFrameCount, 1); i++) {
+            const isActive = i === this.currentFrameIndex;
+            const hasContent = this._frameElementsMap.has(i);
+            timelineFramesHtml += `
+                <div class="timeline-frame" data-index="${i}" style="
+                    flex-shrink: 0;
+                    width: 60px;
+                    height: 60px;
+                    border: 2px solid ${isActive ? '#007AFF' : 'rgba(0,0,0,0.1)'};
+                    border-radius: 8px;
+                    background: ${isActive ? 'rgba(0, 122, 255, 0.1)' : hasContent ? '#fff' : 'rgba(0,0,0,0.02)'};
+                    cursor: pointer;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 2px;
+                    transition: all 0.2s;
+                    position: relative;
+                ">
+                    <span style="font-size: 16px; font-weight: 700; color: ${isActive ? '#007AFF' : '#666'};">${i + 1}</span>
+                    <span style="font-size: 9px; color: #999;">${hasContent ? (this._frameElementsMap.get(i)?.length || 0) + '个元素' : '空帧'}</span>
+                    ${isActive ? '<div style="position: absolute; bottom: -8px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 6px solid transparent; border-right: 6px solid transparent; border-top: 6px solid #007AFF;"></div>' : ''}
+                </div>
+            `;
+        }
+
+        this._panelContainer.innerHTML = `
+            <!-- 标题栏 -->
+            <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; border-bottom: 1px solid rgba(0,0,0,0.06); background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <button id="back-btn" style="display: flex; align-items: center; justify-content: center; width: 28px; height: 28px; border: none; border-radius: 6px; background: rgba(255,255,255,0.2); cursor: pointer; transition: all 0.2s; color: #fff;">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                            <path d="M19 12H5M12 19l-7-7 7-7"/>
+                        </svg>
+                    </button>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18">
+                            <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                            <path d="M2 17l10 5 10-5"/>
+                            <path d="M2 12l10 5 10-5"/>
+                        </svg>
+                        <span style="font-size: 14px; font-weight: 700; color: #fff;">专业动画 - ${title}</span>
+                    </div>
+                </div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <button id="exit-pro-btn" style="display: flex; align-items: center; gap: 4px; padding: 6px 12px; border: none; border-radius: 6px; background: rgba(255,255,255,0.2); cursor: pointer; font-size: 11px; font-weight: 600; color: #fff; transition: all 0.2s;">
+                        <span>简易模式</span>
+                    </button>
+                    <button id="close-panel-btn" style="display: flex; align-items: center; justify-content: center; width: 28px; height: 28px; border: none; border-radius: 6px; background: rgba(255,255,255,0.2); cursor: pointer; color: #fff; transition: all 0.2s;">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                            <path d="M18 6L6 18M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 播放控制栏 -->
+            <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; border-bottom: 1px solid rgba(0,0,0,0.06);">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <button id="first-frame-btn" class="pro-btn" style="width: 32px; height: 32px; border: none; border-radius: 8px; background: rgba(0,0,0,0.04); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s;">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                            <polygon points="19 20 9 12 19 4 19 20"></polygon>
+                            <line x1="5" y1="19" x2="5" y2="5"></line>
+                        </svg>
+                    </button>
+                    <button id="prev-btn" class="pro-btn" style="width: 32px; height: 32px; border: none; border-radius: 8px; background: rgba(0,0,0,0.04); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s;">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                            <path d="m15 18-6-6 6-6"/>
+                        </svg>
+                    </button>
+                    <button id="play-btn" style="width: 44px; height: 44px; border: none; border-radius: 50%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); cursor: pointer; display: flex; align-items: center; justify-content: center; color: #fff; box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4); transition: all 0.2s;">
+                        ${this.isPlaying 
+                            ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" width="20" height="20"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>'
+                            : '<svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M8 5.14v14c0 .86.84 1.4 1.58.97l12-7a1.12 1.12 0 0 0 0-1.94l-12-7c-.74-.43-1.58.11-1.58.97Z"/></svg>'}
+                    </button>
+                    <button id="next-btn" class="pro-btn" style="width: 32px; height: 32px; border: none; border-radius: 8px; background: rgba(0,0,0,0.04); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s;">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                            <path d="m9 18 6-6-6-6"/>
+                        </svg>
+                    </button>
+                    <button id="last-frame-btn" class="pro-btn" style="width: 32px; height: 32px; border: none; border-radius: 8px; background: rgba(0,0,0,0.04); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s;">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                            <polygon points="5 4 15 12 5 20 5 4"></polygon>
+                            <line x1="19" y1="5" x2="19" y2="19"></line>
+                        </svg>
+                    </button>
+                </div>
+                
+                <div style="display: flex; align-items: center; gap: 16px;">
+                    <div style="display: flex; align-items: center; gap: 6px; padding: 6px 12px; background: rgba(0,0,0,0.04); border-radius: 8px;">
+                        <span style="font-size: 24px; font-weight: 700; color: #667eea;">${currentFrame}</span>
+                        <span style="font-size: 13px; color: #999;">/ ${Math.max(subFrameCount, currentFrame)}</span>
+                    </div>
+                    
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <select id="fps-select" style="padding: 6px 28px 6px 10px; border: 1px solid rgba(0,0,0,0.1); border-radius: 8px; background: #fff; font-size: 12px; font-weight: 600; cursor: pointer; outline: none; appearance: none;">
+                            ${[1, 2, 4, 6, 8, 12, 15, 24, 30].map(f => `<option value="${f}" ${f === this.fps ? 'selected' : ''}>${f} FPS</option>`).join('')}
+                        </select>
+                        
+                        <button id="loop-btn" style="padding: 6px 12px; border: 1px solid ${this.loopPlay ? '#667eea' : 'rgba(0,0,0,0.1)'}; border-radius: 8px; background: ${this.loopPlay ? 'rgba(102, 126, 234, 0.1)' : '#fff'}; cursor: pointer; font-size: 11px; font-weight: 600; color: ${this.loopPlay ? '#667eea' : '#666'}; transition: all 0.2s;">
+                            ${this.loopPlay ? '🔁 循环' : '▶️ 单次'}
+                        </button>
+                        
+                        <button id="onion-btn" style="padding: 6px 12px; border: 1px solid ${this.showOnionSkin ? '#f59e0b' : 'rgba(0,0,0,0.1)'}; border-radius: 8px; background: ${this.showOnionSkin ? 'rgba(245, 158, 11, 0.1)' : '#fff'}; cursor: pointer; font-size: 11px; font-weight: 600; color: ${this.showOnionSkin ? '#d97706' : '#666'}; transition: all 0.2s;">
+                            ${this.showOnionSkin ? '👁️ 洋葱皮' : '👓 洋葱皮'}
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 时间轴区域 -->
+            <div style="padding: 16px; background: rgba(0,0,0,0.02);">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+                    <span style="font-size: 12px; font-weight: 700; color: #666; text-transform: uppercase; letter-spacing: 0.5px;">时间轴</span>
+                    <button id="add-frame-btn" style="display: flex; align-items: center; gap: 6px; padding: 6px 12px; border: none; border-radius: 8px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; cursor: pointer; font-size: 11px; font-weight: 600; transition: all 0.2s; box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="14" height="14">
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg>
+                        <span>新建帧</span>
+                    </button>
+                </div>
+                <div id="timeline-container" style="display: flex; gap: 8px; overflow-x: auto; padding: 8px 4px 16px 4px; min-height: 80px;">
+                    ${timelineFramesHtml}
+                </div>
+            </div>
+
+            <!-- 关键帧编辑区域 -->
+            <div style="padding: 16px; border-top: 1px solid rgba(0,0,0,0.06);">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16" style="color: #667eea;">
+                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                        </svg>
+                        <span style="font-size: 12px; font-weight: 700; color: #333; text-transform: uppercase; letter-spacing: 0.5px;">关键帧补间</span>
+                    </div>
+                    <button id="tween-toggle-btn" style="
+                        display: flex; align-items: center; gap: 6px; padding: 6px 12px;
+                        border: 1px solid ${this.enableTweenAnimation ? '#10b981' : 'rgba(0,0,0,0.1)'};
+                        border-radius: 8px;
+                        background: ${this.enableTweenAnimation ? 'rgba(16, 185, 129, 0.1)' : '#fff'};
+                        cursor: pointer; font-size: 11px; font-weight: 600;
+                        color: ${this.enableTweenAnimation ? '#059669' : '#666'};
+                        transition: all 0.2s;
+                    ">
+                        <div style="width: 32px; height: 18px; border-radius: 9px; background: ${this.enableTweenAnimation ? '#10b981' : '#ddd'}; position: relative; transition: all 0.2s;">
+                            <div style="position: absolute; top: 2px; ${this.enableTweenAnimation ? 'right: 2px' : 'left: 2px'}; width: 14px; height: 14px; border-radius: 50%; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.2); transition: all 0.2s;"></div>
+                        </div>
+                        <span>${this.enableTweenAnimation ? '已启用' : '未启用'}</span>
+                    </button>
+                </div>
+
+                ${this.enableTweenAnimation ? `
+                    <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                        <!-- 缓动曲线选择 -->
+                        <div style="flex: 1; min-width: 200px;">
+                            <label style="display: block; font-size: 11px; font-weight: 600; color: #666; margin-bottom: 6px;">缓动曲线</label>
+                            <select id="easing-select" style="width: 100%; padding: 8px 12px; border: 1px solid rgba(0,0,0,0.1); border-radius: 8px; background: #fff; font-size: 12px; cursor: pointer; outline: none;">
+                                <optgroup label="基础">
+                                    <option value="linear" ${this.currentEasing === 'linear' ? 'selected' : ''}>线性 (Linear)</option>
+                                    <option value="easeIn" ${this.currentEasing === 'easeIn' ? 'selected' : ''}>渐入 (Ease In)</option>
+                                    <option value="easeOut" ${this.currentEasing === 'easeOut' ? 'selected' : ''}>渐出 (Ease Out)</option>
+                                    <option value="easeInOut" ${this.currentEasing === 'easeInOut' ? 'selected' : ''}>渐入渐出 (Ease In Out)</option>
+                                </optgroup>
+                                <optgroup label="三次方">
+                                    <option value="easeInCubic" ${this.currentEasing === 'easeInCubic' ? 'selected' : ''}>渐入三次方</option>
+                                    <option value="easeOutCubic" ${this.currentEasing === 'easeOutCubic' ? 'selected' : ''}>渐出三次方</option>
+                                    <option value="easeInOutCubic" ${this.currentEasing === 'easeInOutCubic' ? 'selected' : ''}>渐入渐出三次方</option>
+                                </optgroup>
+                                <optgroup label="回弹">
+                                    <option value="easeInBack" ${this.currentEasing === 'easeInBack' ? 'selected' : ''}>回弹渐入</option>
+                                    <option value="easeOutBack" ${this.currentEasing === 'easeOutBack' ? 'selected' : ''}>回弹渐出</option>
+                                    <option value="easeInOutBack" ${this.currentEasing === 'easeInOutBack' ? 'selected' : ''}>回弹渐入渐出</option>
+                                </optgroup>
+                                <optgroup label="弹性">
+                                    <option value="easeInElastic" ${this.currentEasing === 'easeInElastic' ? 'selected' : ''}>弹性渐入</option>
+                                    <option value="easeOutElastic" ${this.currentEasing === 'easeOutElastic' ? 'selected' : ''}>弹性渐出</option>
+                                    <option value="easeOutBounce" ${this.currentEasing === 'easeOutBounce' ? 'selected' : ''}>弹跳</option>
+                                </optgroup>
+                            </select>
+                        </div>
+
+                        <!-- 缓动曲线预览 -->
+                        <div style="width: 80px; height: 80px; background: #f5f5f5; border-radius: 8px; position: relative; overflow: hidden;">
+                            <svg viewBox="0 0 100 100" style="width: 100%; height: 100%;">
+                                <path d="M 10 90 ${this._getEasingPath(this.currentEasing)} L 90 10" fill="none" stroke="#667eea" stroke-width="3" stroke-linecap="round"/>
+                                <circle cx="10" cy="90" r="4" fill="#667eea"/>
+                                <circle cx="90" cy="10" r="4" fill="#667eea"/>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <!-- 当前帧元素 -->
+                    <div style="margin-top: 12px;">
+                        <label style="display: block; font-size: 11px; font-weight: 600; color: #666; margin-bottom: 6px;">当前帧元素 (帧 ${currentFrame})</label>
+                        <div id="frame-elements-list" style="display: flex; flex-wrap: wrap; gap: 6px; max-height: 80px; overflow-y: auto;">
+                            ${this._renderFrameElementsList()}
+                        </div>
+                    </div>
+
+                    <!-- 操作提示 -->
+                    <div style="margin-top: 12px; padding: 8px 12px; background: rgba(102, 126, 234, 0.05); border-radius: 8px; border-left: 3px solid #667eea;">
+                        <div style="font-size: 11px; color: #666; line-height: 1.5;">
+                            💡 <strong>使用方法：</strong>选择元素，在不同帧调整位置/大小/旋转，播放时自动补间。
+                        </div>
+                    </div>
+                ` : `
+                    <div style="padding: 16px; text-align: center; color: #999; font-size: 12px;">
+                        启用补间动画后，可以为元素设置关键帧，自动生成平滑的过渡动画。
+                    </div>
+                `}
+            </div>
+        `;
+
+        // 绑定事件
+        this._bindProModePanelEvents();
+    }
+
+    /**
+     * 生成缓动曲线的 SVG 路径
+     */
+    private _getEasingPath(easing: EasingType): string {
+        const easingFn = EASING_FUNCTIONS[easing] || EASING_FUNCTIONS['linear'];
+        const points: string[] = [];
+        const steps = 20;
+        
+        for (let i = 0; i <= steps; i++) {
+            const t = i / steps;
+            const y = easingFn(t);
+            const x = 10 + t * 80;
+            const svgY = 90 - y * 80;
+            points.push(`L ${x.toFixed(1)} ${svgY.toFixed(1)}`);
+        }
+        
+        return points.join(' ');
+    }
+
+    /**
+     * 渲染当前帧的元素列表
+     */
+    private _renderFrameElementsList(): string {
+        const elementIds = this._frameElementsMap.get(this.currentFrameIndex) || [];
+        
+        if (elementIds.length === 0) {
+            return '<div style="color: #999; font-size: 11px; padding: 8px;">当前帧没有元素</div>';
+        }
+        
+        return elementIds.map((id, index) => {
+            const isSelected = this.selectedElementId === id;
+            const hasKeyframe = this._keyframes.get(id)?.has(this.currentFrameIndex);
+            return `
+                <button class="element-item" data-element-id="${id}" style="
+                    display: flex; align-items: center; gap: 4px;
+                    padding: 4px 8px;
+                    border: 1px solid ${isSelected ? '#667eea' : hasKeyframe ? '#f59e0b' : 'rgba(0,0,0,0.1)'};
+                    border-radius: 6px;
+                    background: ${isSelected ? 'rgba(102, 126, 234, 0.1)' : hasKeyframe ? 'rgba(245, 158, 11, 0.1)' : '#fff'};
+                    cursor: pointer;
+                    font-size: 10px;
+                    font-weight: 500;
+                    color: ${isSelected ? '#667eea' : '#666'};
+                    transition: all 0.2s;
+                ">
+                    ${hasKeyframe ? '<span style="color: #f59e0b;">◆</span>' : '<span style="color: #ccc;">○</span>'}
+                    <span>元素 ${index + 1}</span>
+                </button>
+            `;
+        }).join('');
+    }
+
+    /**
+     * 绑定专业模式面板事件
+     */
+    private _bindProModePanelEvents(): void {
+        if (!this._panelContainer) return;
+
+        // 返回按钮
+        this._panelContainer.querySelector('#back-btn')?.addEventListener('click', () => {
+            this._backToFrameList();
+        });
+
+        // 退出专业模式
+        this._panelContainer.querySelector('#exit-pro-btn')?.addEventListener('click', () => {
+            this.isProMode = false;
+            this._updatePanelContent();
+        });
+
+        // 关闭面板
+        this._panelContainer.querySelector('#close-panel-btn')?.addEventListener('click', () => {
+            this._closePanel();
+        });
+
+        // 播放控制
+        this._panelContainer.querySelector('#first-frame-btn')?.addEventListener('click', () => {
+            this.currentFrameIndex = 0;
+            this._applyOnionSkin();
+            this._updatePanelContent();
+        });
+        this._panelContainer.querySelector('#prev-btn')?.addEventListener('click', () => this._gotoPrevFrame());
+        this._panelContainer.querySelector('#play-btn')?.addEventListener('click', () => this._togglePlay());
+        this._panelContainer.querySelector('#next-btn')?.addEventListener('click', () => this._gotoNextFrame());
+        this._panelContainer.querySelector('#last-frame-btn')?.addEventListener('click', () => {
+            const maxFrame = Math.max(this._frameElementsMap.size - 1, 0);
+            this.currentFrameIndex = maxFrame;
+            this._applyOnionSkin();
+            this._updatePanelContent();
+        });
+
+        // 帧率
+        this._panelContainer.querySelector('#fps-select')?.addEventListener('change', (e) => {
+            this.fps = parseInt((e.target as HTMLSelectElement).value);
+            if (this.isPlaying) {
+                this._stopAnimation();
+                this._startAnimation();
+            }
+        });
+
+        // 循环/单次
+        this._panelContainer.querySelector('#loop-btn')?.addEventListener('click', () => {
+            this.loopPlay = !this.loopPlay;
+            this._updatePanelContent();
+        });
+
+        // 洋葱皮
+        this._panelContainer.querySelector('#onion-btn')?.addEventListener('click', () => {
+            this.showOnionSkin = !this.showOnionSkin;
+            if (!this.isPlaying) this._applyOnionSkin();
+            this._updatePanelContent();
+        });
+
+        // 新建帧
+        this._panelContainer.querySelector('#add-frame-btn')?.addEventListener('click', () => {
+            this._addNewFrame();
+        });
+
+        // 时间轴帧点击
+        this._panelContainer.querySelectorAll('.timeline-frame').forEach((frame) => {
+            frame.addEventListener('click', () => {
+                const index = parseInt(frame.getAttribute('data-index') || '0');
+                this.currentFrameIndex = index;
+                this._applyOnionSkin();
+                this._updatePanelContent();
+            });
+        });
+
+        // 补间动画开关
+        this._panelContainer.querySelector('#tween-toggle-btn')?.addEventListener('click', () => {
+            this.enableTweenAnimation = !this.enableTweenAnimation;
+            this._updatePanelContent();
+        });
+
+        // 缓动曲线选择
+        this._panelContainer.querySelector('#easing-select')?.addEventListener('change', (e) => {
+            this.currentEasing = (e.target as HTMLSelectElement).value as EasingType;
+            this._updatePanelContent();
+        });
+
+        // 元素选择
+        this._panelContainer.querySelectorAll('.element-item').forEach((item) => {
+            item.addEventListener('click', () => {
+                const elementId = item.getAttribute('data-element-id');
+                if (elementId) {
+                    this.selectedElementId = this.selectedElementId === elementId ? null : elementId;
+                    this._updatePanelContent();
+                    
+                    // 高亮选中的元素
+                    if (this.selectedElementId && this.gfx) {
+                        const element = this.gfx.getElementById(this.selectedElementId);
+                        if (element) {
+                            // 记录初始状态（如果还没记录）
+                            if (!this._elementInitialStates.has(this.selectedElementId)) {
+                                const bound = Bound.deserialize((element as any).xywh);
+                                this._elementInitialStates.set(this.selectedElementId, {
+                                    x: bound.x,
+                                    y: bound.y,
+                                    rotation: (element as any).rotate || 0,
+                                    scaleX: 1,
+                                    scaleY: 1,
+                                    opacity: 1,
+                                });
+                            }
+                        }
+                    }
+                }
+            });
         });
     }
 
@@ -1006,6 +1554,12 @@ export class EdgelessAnimationToolButton extends LitElement {
 
         this.isPlaying = true;
         this.currentFrameIndex = 0;
+
+        // 如果启用了补间动画，使用平滑播放
+        if (this.enableTweenAnimation && this.isProMode) {
+            this._startTweenAnimation();
+            return;
+        }
         
         if (this.keepFrames) {
             // 叠加模式：先隐藏所有帧，然后依次累加显示
@@ -1053,6 +1607,126 @@ export class EdgelessAnimationToolButton extends LitElement {
         }, interval);
     }
 
+    // 补间动画相关状态
+    private _tweenAnimationId: number | null = null;
+    private _tweenStartTime: number = 0;
+
+    /**
+     * 开始补间动画播放（使用 requestAnimationFrame 实现平滑补间）
+     */
+    private _startTweenAnimation(): void {
+        const frameCount = this._frameElementsMap.size;
+        const frameDuration = 1000 / this.fps; // 每帧持续时间
+        const totalDuration = frameDuration * frameCount; // 总动画时间
+
+        // 缓存所有元素的初始状态
+        this._cacheAllElementStates();
+
+        // 显示所有元素（补间动画模式下都可见）
+        this._showAllSubFrames();
+
+        this._tweenStartTime = performance.now();
+
+        const animate = (currentTime: number) => {
+            if (!this.isPlaying) return;
+
+            const elapsed = currentTime - this._tweenStartTime;
+            let progress = elapsed / totalDuration;
+
+            // 循环或停止
+            if (progress >= 1) {
+                if (this.loopPlay) {
+                    this._tweenStartTime = currentTime;
+                    progress = 0;
+                } else {
+                    this._stopAnimation();
+                    this._updatePanelContent();
+                    return;
+                }
+            }
+
+            // 计算当前帧和帧内进度
+            const totalProgress = progress * frameCount;
+            const currentFrame = Math.floor(totalProgress);
+            const frameProgress = totalProgress - currentFrame;
+
+            this.currentFrameIndex = Math.min(currentFrame, frameCount - 1);
+
+            // 应用补间变换 - 通过透明度实现帧过渡
+            this._applyTweenFade(this.currentFrameIndex, frameProgress);
+
+            // 更新帧计数器
+            this._updateFrameCounter();
+
+            this._tweenAnimationId = requestAnimationFrame(animate);
+        };
+
+        this._tweenAnimationId = requestAnimationFrame(animate);
+    }
+
+    /**
+     * 缓存所有元素的初始状态
+     */
+    private _cacheAllElementStates(): void {
+        if (!this.gfx) return;
+
+        this._elementInitialStates.clear();
+
+        // 遍历所有帧的所有元素
+        this._frameElementsMap.forEach((elementIds) => {
+            for (const elementId of elementIds) {
+                if (this._elementInitialStates.has(elementId)) continue;
+
+                const element = this.gfx!.getElementById(elementId) as any;
+                if (element && element.xywh) {
+                    const bound = Bound.deserialize(element.xywh);
+                    this._elementInitialStates.set(elementId, {
+                        x: bound.x,
+                        y: bound.y,
+                        rotation: element.rotate || 0,
+                        scaleX: 1,
+                        scaleY: 1,
+                        opacity: 1,
+                    });
+                }
+            }
+        });
+    }
+
+    /**
+     * 应用补间淡入淡出效果
+     */
+    private _applyTweenFade(currentFrame: number, frameProgress: number): void {
+        if (!this.gfx) return;
+
+        const easingFn = EASING_FUNCTIONS[this.currentEasing] || EASING_FUNCTIONS['linear'];
+        const easedProgress = easingFn(frameProgress);
+        const frameCount = this._frameElementsMap.size;
+
+        // 隐藏所有帧
+        for (let i = 0; i < frameCount; i++) {
+            const elementIds = this._frameElementsMap.get(i) || [];
+            for (const id of elementIds) {
+                const element = this.gfx.getElementById(id) as any;
+                if (element) {
+                    // 当前帧：从完全可见淡出
+                    // 下一帧：淡入到完全可见
+                    let opacity = 0;
+                    
+                    if (i === currentFrame) {
+                        // 当前帧淡出
+                        opacity = 1 - easedProgress;
+                    } else if (i === (currentFrame + 1) % frameCount) {
+                        // 下一帧淡入
+                        opacity = easedProgress;
+                    }
+                    
+                    element.opacity = opacity;
+                }
+            }
+        }
+    }
+
     /**
      * 只更新帧数显示，不重建整个面板（解决播放时暂停按钮不灵敏的问题）
      */
@@ -1069,17 +1743,44 @@ export class EdgelessAnimationToolButton extends LitElement {
      * 停止播放动画
      */
     private _stopAnimation(): void {
+        // 停止普通动画
         if (this._playInterval !== null) {
             clearInterval(this._playInterval);
             this._playInterval = null;
         }
+        
+        // 停止补间动画
+        if (this._tweenAnimationId !== null) {
+            cancelAnimationFrame(this._tweenAnimationId);
+            this._tweenAnimationId = null;
+        }
+        
         this.isPlaying = false;
+        
+        // 恢复所有元素的透明度
+        this._restoreElementOpacity();
         
         // 停止播放后，显示所有帧（所有元素都可见）
         this._showAllSubFrames();
         
         // 回到第一帧的编辑状态（便于重新播放或编辑）
         this.currentFrameIndex = 0;
+    }
+
+    /**
+     * 恢复所有元素的原始透明度
+     */
+    private _restoreElementOpacity(): void {
+        if (!this.gfx) return;
+        
+        this._frameElementsMap.forEach((elementIds) => {
+            for (const id of elementIds) {
+                const element = this.gfx!.getElementById(id) as any;
+                if (element) {
+                    element.opacity = 1;
+                }
+            }
+        });
     }
 
     /**
