@@ -2338,6 +2338,20 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@blocksuite/yunke-gfx-filled-polygon@workspace:*, @blocksuite/yunke-gfx-filled-polygon@workspace:blocksuite/yunke/gfx/filled-polygon":
+  version: 0.0.0-use.local
+  resolution: "@blocksuite/yunke-gfx-filled-polygon@workspace:blocksuite/yunke/gfx/filled-polygon"
+  dependencies:
+    "@blocksuite/global": "workspace:*"
+    "@blocksuite/std": "workspace:*"
+    "@blocksuite/yunke-block-surface": "workspace:*"
+    "@blocksuite/yunke-ext-loader": "workspace:*"
+    "@blocksuite/yunke-model": "workspace:*"
+    lit: "npm:^3.2.1"
+    typescript: "npm:^5.7.2"
+  languageName: unknown
+  linkType: soft
+
 "@blocksuite/yunke-gfx-group@workspace:*, @blocksuite/yunke-gfx-group@workspace:blocksuite/yunke/gfx/group":
   version: 0.0.0-use.local
   resolution: "@blocksuite/yunke-gfx-group@workspace:blocksuite/yunke/gfx/group"
@@ -3384,6 +3398,7 @@ __metadata:
     "@blocksuite/yunke-gfx-color-drop": "workspace:*"
     "@blocksuite/yunke-gfx-connector": "workspace:*"
     "@blocksuite/yunke-gfx-emoji-reaction": "workspace:*"
+    "@blocksuite/yunke-gfx-filled-polygon": "workspace:*"
     "@blocksuite/yunke-gfx-group": "workspace:*"
     "@blocksuite/yunke-gfx-laser": "workspace:*"
     "@blocksuite/yunke-gfx-link": "workspace:*"

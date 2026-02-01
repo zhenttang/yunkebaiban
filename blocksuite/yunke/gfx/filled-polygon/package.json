@@ -18,11 +18,11 @@
     "./effects": "./src/effects.ts"
   },
   "dependencies": {
-    "@blocksuite/yunke-model": "workspace:*",
+    "@blocksuite/global": "workspace:*",
+    "@blocksuite/std": "workspace:*",
     "@blocksuite/yunke-block-surface": "workspace:*",
     "@blocksuite/yunke-ext-loader": "workspace:*",
-    "@blocksuite/std": "workspace:*",
-    "@blocksuite/global": "workspace:*",
+    "@blocksuite/yunke-model": "workspace:*",
     "lit": "^3.2.1"
   },
   "devDependencies": {
