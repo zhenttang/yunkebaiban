@@ -664,9 +664,10 @@ export class ColorDropManager {
     /**
      * 创建填充多边形
      * 
-     * 实现类似 Procreate 的效果：
-     * 1. 先创建一个填充形状（在画笔下方）
-     * 2. 然后修改画笔的线条颜色
+     * 使用画笔路径创建填充效果：
+     * 1. 创建一个新的画笔元素，使用相同的闭合路径
+     * 2. 设置较大的线宽来覆盖内部区域
+     * 3. 将填充画笔放在原画笔下方
      */
     private _createFillPolygon(
         originalElement: any, 
@@ -677,7 +678,7 @@ export class ColorDropManager {
         try {
             console.log('[ColorDrop] 开始填充，元素类型:', originalElement.type, '点数:', points.length);
             
-            // 获取原元素的边界信息
+            // 获取原元素信息
             const elementBound = originalElement.xywh 
                 ? Bound.deserialize(originalElement.xywh) 
                 : null;
@@ -686,101 +687,150 @@ export class ColorDropManager {
                 return { success: false, reason: '无法获取元素边界' };
             }
 
-            // 步骤1：创建填充形状（在画笔下方显示）
             let fillCreated = false;
+
+            // 方案：创建填充画笔（使用闭合路径 + 大线宽）
             if (this._gfx && this._gfx.surface) {
                 try {
-                    // 简化路径点用于创建多边形
-                    const simplifiedPoints = this._simplifyPath(points, 5);
+                    // 1. 闭合路径点（确保首尾相连）
+                    let fillPoints = [...points];
+                    const firstPoint = fillPoints[0];
+                    const lastPoint = fillPoints[fillPoints.length - 1];
                     
-                    // 计算简化后的边界
-                    let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
-                    for (const [x, y] of simplifiedPoints) {
-                        minX = Math.min(minX, x);
-                        minY = Math.min(minY, y);
-                        maxX = Math.max(maxX, x);
-                        maxY = Math.max(maxY, y);
+                    // 如果首尾不相连，添加闭合点
+                    const dx = lastPoint[0] - firstPoint[0];
+                    const dy = lastPoint[1] - firstPoint[1];
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    
+                    if (distance > 5) {
+                        // 添加从终点回到起点的路径
+                        const steps = Math.ceil(distance / 10);
+                        for (let i = 1; i <= steps; i++) {
+                            const t = i / steps;
+                            fillPoints.push([
+                                lastPoint[0] + (firstPoint[0] - lastPoint[0]) * t,
+                                lastPoint[1] + (firstPoint[1] - lastPoint[1]) * t
+                            ]);
+                        }
                     }
-                    
-                    // 添加元素的原始位置偏移
-                    const offsetX = elementBound.x;
-                    const offsetY = elementBound.y;
-                    
-                    const fillBound = new Bound(
-                        offsetX + minX - 2,
-                        offsetY + minY - 2,
-                        (maxX - minX) + 4,
-                        (maxY - minY) + 4
-                    );
 
-                    // 创建填充形状
+                    // 2. 生成内部填充点（螺旋式向内填充）
+                    const fillPathPoints = this._generateFillPath(fillPoints);
+                    
+                    // 3. 转换为绝对坐标
+                    const absolutePoints = fillPathPoints.map(([x, y]) => [
+                        x + elementBound.x,
+                        y + elementBound.y
+                    ]);
+
+                    // 4. 创建填充画笔元素
                     const fillElementId = this._gfx.surface.addElement({
-                        type: 'shape',
-                        shapeType: 'rect',
-                        xywh: fillBound.serialize(),
-                        fillColor: color,
-                        filled: true,
-                        strokeColor: 'transparent',
-                        strokeWidth: 0,
-                        opacity: 0.85, // 稍微透明，让画笔线条可见
+                        type: 'brush',
+                        points: absolutePoints,
+                        color: color,
+                        lineWidth: originalElement.lineWidth || 4,
                     });
 
                     if (fillElementId) {
                         fillCreated = true;
-                        console.log('[ColorDrop] ✅ 已创建填充形状:', fillElementId);
+                        console.log('[ColorDrop] ✅ 已创建填充画笔:', fillElementId);
                         this._onFillCreated?.(fillElementId, originalElement.id);
-                        
-                        // 尝试将填充形状移到画笔下方
-                        // （如果支持层级调整的话）
                     }
                 } catch (e) {
-                    console.warn('[ColorDrop] 创建填充形状失败:', e);
+                    console.warn('[ColorDrop] 创建填充画笔失败:', e);
                 }
             }
 
-            // 步骤2：同时修改画笔的线条颜色（让边缘更明显）
-            let colorUpdated = false;
-            
-            // 方式1：通过 gfx.updateElement
-            if (this._gfx && typeof this._gfx.updateElement === 'function') {
-                try {
-                    this._gfx.updateElement(originalElement, { color: color });
-                    colorUpdated = true;
-                    console.log('[ColorDrop] ✅ 已更新线条颜色');
-                } catch (e) {
-                    console.warn('[ColorDrop] updateElement 失败:', e);
-                }
-            }
+            // 同时更新原画笔的线条颜色
+            let colorUpdated = this._updateElementColor(originalElement, color);
 
-            // 方式2：通过 store.updateBlock
-            if (!colorUpdated && originalElement.store?.updateBlock) {
-                try {
-                    originalElement.store.updateBlock(originalElement, { color: color });
-                    colorUpdated = true;
-                    console.log('[ColorDrop] ✅ 已通过 store 更新线条颜色');
-                } catch (e) {
-                    console.warn('[ColorDrop] store.updateBlock 失败:', e);
-                }
-            }
-
-            // 方式3：直接赋值
-            if (!colorUpdated && typeof originalElement.color !== 'undefined') {
-                originalElement.color = color;
-                colorUpdated = true;
-                console.log('[ColorDrop] ✅ 已直接设置颜色属性');
-            }
-
-            // 只要填充形状或颜色有一个成功就算成功
             if (fillCreated || colorUpdated) {
                 this._onColorApplied?.(originalElement.id, color);
                 return { success: true };
             }
 
-            return { success: false, reason: '无法创建填充或更新颜色' };
+            return { success: false, reason: '无法创建填充' };
         } catch (e) {
             console.error('[ColorDrop] 创建填充多边形失败:', e);
             return { success: false, reason: String(e) };
         }
+    }
+
+    /**
+     * 生成填充路径（螺旋式向内填充）
+     */
+    private _generateFillPath(boundaryPoints: number[][]): number[][] {
+        const fillPath: number[][] = [];
+        
+        // 计算中心点
+        let centerX = 0, centerY = 0;
+        for (const [x, y] of boundaryPoints) {
+            centerX += x;
+            centerY += y;
+        }
+        centerX /= boundaryPoints.length;
+        centerY /= boundaryPoints.length;
+
+        // 生成螺旋式填充路径
+        const maxIterations = 15; // 填充层数
+        const shrinkFactor = 0.9; // 每层缩小比例
+
+        for (let i = 0; i < maxIterations; i++) {
+            const scale = Math.pow(shrinkFactor, i);
+            
+            // 缩小边界点向中心
+            const scaledPoints = boundaryPoints.map(([x, y]) => [
+                centerX + (x - centerX) * scale,
+                centerY + (y - centerY) * scale
+            ]);
+            
+            // 添加到填充路径
+            fillPath.push(...scaledPoints);
+            
+            // 如果缩小到很小就停止
+            if (scale < 0.1) break;
+        }
+
+        // 添加中心点
+        fillPath.push([centerX, centerY]);
+
+        return fillPath;
+    }
+
+    /**
+     * 更新元素颜色
+     */
+    private _updateElementColor(element: any, color: string): boolean {
+        // 方式1：通过 gfx.updateElement
+        if (this._gfx && typeof this._gfx.updateElement === 'function') {
+            try {
+                this._gfx.updateElement(element, { color: color });
+                console.log('[ColorDrop] ✅ 已更新线条颜色');
+                return true;
+            } catch (e) {
+                // 继续尝试其他方式
+            }
+        }
+
+        // 方式2：通过 store.updateBlock
+        if (element.store?.updateBlock) {
+            try {
+                element.store.updateBlock(element, { color: color });
+                console.log('[ColorDrop] ✅ 已通过 store 更新颜色');
+                return true;
+            } catch (e) {
+                // 继续尝试
+            }
+        }
+
+        // 方式3：直接赋值
+        if (typeof element.color !== 'undefined') {
+            element.color = color;
+            console.log('[ColorDrop] ✅ 已直接设置颜色');
+            return true;
+        }
+
+        return false;
     }
 
     /**
