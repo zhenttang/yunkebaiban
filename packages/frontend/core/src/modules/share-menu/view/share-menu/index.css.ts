@@ -36,7 +36,8 @@ export const menuTriggerStyle = style({
 export const exportItemStyle = style({
   padding: '4px',
   transition: 'background-color 0.3s, color 0.3s',
-  gap: '0px',
+  gap: '8px',
+  width: '100%',
 });
 globalStyle(`${exportItemStyle} > div:first-child`, {
   alignItems: 'center',
