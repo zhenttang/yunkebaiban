@@ -5,9 +5,9 @@ import { style } from '@vanilla-extract/css';
 export const ItemContainer = style({
   display: 'flex',
   alignItems: 'center',
-  justifyContent: 'flex-start',
+  justifyContent: 'flex-start !important',
   padding: '6px 16px 6px 11px',
-  gap: '12px',
+  gap: '12px !important',
   cursor: 'pointer',
   borderRadius: '8px',
   transition: 'background-color 0.2s',
