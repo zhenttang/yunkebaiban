@@ -23,6 +23,9 @@ export class FrameTool extends BaseTool {
   static override toolName = 'frame';
 
   private _frame: FrameBlockModel | null = null;
+  
+  // 保存已创建的 frame id，防止重复创建
+  private _createdFrameId: string | null = null;
 
   private _startPoint: IVec | null = null;
 
@@ -55,6 +58,7 @@ export class FrameTool extends BaseTool {
     }
 
     this._frame = null;
+    this._createdFrameId = null;
     this._startPoint = null;
     this.frameOverlay.clear();
   }
@@ -63,9 +67,22 @@ export class FrameTool extends BaseTool {
     if (!this._startPoint) return;
 
     const currentPoint = this._toModelCoord(e.point);
-    if (Vec.dist(this._startPoint, currentPoint) < 8 && !this._frame) return;
+    if (Vec.dist(this._startPoint, currentPoint) < 8 && !this._frame && !this._createdFrameId) return;
 
-    if (!this._frame) {
+    // 如果已经创建了 frame 但还没获取到引用，尝试再次获取
+    if (!this._frame && this._createdFrameId) {
+      const frame = this.gfx.getElementById(this._createdFrameId) as FrameBlockModel | null;
+      if (frame) {
+        this._frame = frame;
+        try {
+          this._frame.stash('xywh');
+        } catch {
+          // stash 可能已经调用过了
+        }
+      }
+    }
+
+    if (!this._frame && !this._createdFrameId) {
       const frames = this.gfx.layer.blocks.filter(
         block => block.flavour === 'yunke:frame'
       ) as FrameBlockModel[];
@@ -80,6 +97,7 @@ export class FrameTool extends BaseTool {
         });
 
       const id = this.doc.addBlock('yunke:frame', props, this.gfx.surface);
+      this._createdFrameId = id; // 保存 id，防止重复创建
 
       this.std.getOptional(TelemetryProvider)?.track('CanvasElementAdded', {
         control: 'canvas:draw',
@@ -88,16 +106,22 @@ export class FrameTool extends BaseTool {
         segment: 'toolbar',
         type: 'frame',
       });
-      this._frame = this.gfx.getElementById(id) as FrameBlockModel;
-      this._frame.stash('xywh');
+      
+      const frame = this.gfx.getElementById(id) as FrameBlockModel | null;
+      if (frame) {
+        this._frame = frame;
+        this._frame.stash('xywh');
+      }
       return;
     }
 
-    this.gfx.doc.updateBlock(this._frame, {
-      xywh: Bound.fromPoints([this._startPoint, currentPoint]).serialize(),
-    });
+    if (this._frame) {
+      this.gfx.doc.updateBlock(this._frame, {
+        xywh: Bound.fromPoints([this._startPoint, currentPoint]).serialize(),
+      });
 
-    this.frameOverlay.highlight(this._frame, true);
+      this.frameOverlay.highlight(this._frame, true);
+    }
   }
 
   override dragStart(e: PointerEventState): void {

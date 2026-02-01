@@ -1,0 +1,1087 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animation Assist Demo - 动画协助演示</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #1a1a2e;
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* 头部 */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 20px;
+            background: #16213e;
+            border-bottom: 1px solid #0f3460;
+        }
+
+        .header h1 {
+            font-size: 18px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .header h1 span {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+
+        .stats {
+            display: flex;
+            gap: 16px;
+            font-size: 13px;
+            color: #94a3b8;
+        }
+
+        .stats strong {
+            color: #22d3ee;
+        }
+
+        /* 主画布区域 */
+        .canvas-container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+        }
+
+        #drawingCanvas {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            cursor: crosshair;
+        }
+
+        #onionCanvas {
+            position: absolute;
+            pointer-events: none;
+            border-radius: 12px;
+        }
+
+        /* 工具栏 */
+        .toolbar {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            background: #16213e;
+            padding: 12px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .tool-btn {
+            width: 44px;
+            height: 44px;
+            border: none;
+            border-radius: 8px;
+            background: transparent;
+            color: #94a3b8;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .tool-btn:hover {
+            background: #0f3460;
+            color: #fff;
+        }
+
+        .tool-btn.active {
+            background: #667eea;
+            color: #fff;
+        }
+
+        .tool-btn svg {
+            width: 22px;
+            height: 22px;
+        }
+
+        .color-picker {
+            width: 36px;
+            height: 36px;
+            border: 2px solid #0f3460;
+            border-radius: 50%;
+            cursor: pointer;
+            margin: 0 4px;
+        }
+
+        .stroke-width {
+            width: 36px;
+            text-align: center;
+            background: #0f3460;
+            border: none;
+            color: #fff;
+            padding: 6px;
+            border-radius: 6px;
+            margin: 0 4px;
+        }
+
+        /* 时间线 */
+        .timeline {
+            background: #16213e;
+            border-top: 1px solid #0f3460;
+            padding: 12px 20px;
+        }
+
+        .timeline-controls {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .control-btn {
+            width: 36px;
+            height: 36px;
+            border: none;
+            border-radius: 8px;
+            background: #0f3460;
+            color: #94a3b8;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .control-btn:hover {
+            background: #1e3a5f;
+            color: #fff;
+        }
+
+        .control-btn.primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+        }
+
+        .control-btn.primary:hover {
+            transform: scale(1.05);
+        }
+
+        .control-btn svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .frame-counter {
+            font-size: 14px;
+            color: #94a3b8;
+            min-width: 80px;
+        }
+
+        .frame-counter strong {
+            color: #22d3ee;
+        }
+
+        .divider {
+            width: 1px;
+            height: 24px;
+            background: #0f3460;
+        }
+
+        .setting-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .setting-group label {
+            font-size: 12px;
+            color: #94a3b8;
+        }
+
+        .setting-group select,
+        .setting-group input[type="number"] {
+            background: #0f3460;
+            border: none;
+            color: #fff;
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+        }
+
+        .toggle-btn {
+            padding: 6px 12px;
+            border: 1px solid #0f3460;
+            border-radius: 6px;
+            background: transparent;
+            color: #94a3b8;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .toggle-btn.active {
+            background: #667eea;
+            border-color: #667eea;
+            color: #fff;
+        }
+
+        /* 帧列表 */
+        .frames-list {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            padding: 8px 0;
+        }
+
+        .frames-list::-webkit-scrollbar {
+            height: 6px;
+        }
+
+        .frames-list::-webkit-scrollbar-track {
+            background: #0f3460;
+            border-radius: 3px;
+        }
+
+        .frames-list::-webkit-scrollbar-thumb {
+            background: #667eea;
+            border-radius: 3px;
+        }
+
+        .frame-item {
+            flex-shrink: 0;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .frame-item .thumbnail {
+            width: 80px;
+            height: 60px;
+            background: #0f3460;
+            border: 2px solid #0f3460;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: all 0.2s;
+        }
+
+        .frame-item .thumbnail img,
+        .frame-item .thumbnail canvas {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .frame-item.active .thumbnail {
+            border-color: #667eea;
+            box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.3);
+        }
+
+        .frame-item:hover .thumbnail {
+            border-color: #667eea;
+        }
+
+        .frame-item .index {
+            text-align: center;
+            font-size: 11px;
+            color: #94a3b8;
+            margin-top: 4px;
+        }
+
+        .frame-item.active .index {
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        .add-frame-btn {
+            flex-shrink: 0;
+            width: 80px;
+            height: 60px;
+            border: 2px dashed #0f3460;
+            border-radius: 8px;
+            background: transparent;
+            color: #94a3b8;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .add-frame-btn:hover {
+            border-color: #667eea;
+            color: #667eea;
+        }
+
+        /* 性能监视器 */
+        .perf-monitor {
+            position: fixed;
+            top: 70px;
+            right: 20px;
+            background: rgba(22, 33, 62, 0.95);
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 12px;
+            color: #94a3b8;
+            min-width: 150px;
+        }
+
+        .perf-monitor h4 {
+            color: #fff;
+            margin-bottom: 8px;
+            font-size: 13px;
+        }
+
+        .perf-item {
+            display: flex;
+            justify-content: space-between;
+            margin: 4px 0;
+        }
+
+        .perf-item span:last-child {
+            color: #22d3ee;
+            font-weight: 600;
+        }
+
+        .perf-item.warning span:last-child {
+            color: #fbbf24;
+        }
+
+        .perf-item.danger span:last-child {
+            color: #ef4444;
+        }
+    </style>
+</head>
+<body>
+    <!-- 头部 -->
+    <div class="header">
+        <h1>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/>
+                <path d="M10 8l6 4-6 4V8z"/>
+            </svg>
+            Animation Assist Demo
+            <span>v1.0</span>
+        </h1>
+        <div class="stats">
+            <span>画布: <strong id="canvasSize">800x600</strong></span>
+            <span>帧数: <strong id="totalFrames">0</strong></span>
+        </div>
+    </div>
+
+    <!-- 主画布区域 -->
+    <div class="canvas-container">
+        <canvas id="onionCanvas"></canvas>
+        <canvas id="drawingCanvas"></canvas>
+
+        <!-- 工具栏 -->
+        <div class="toolbar">
+            <button class="tool-btn active" data-tool="brush" title="画笔">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M7 14c-1.66 0-3 1.34-3 3 0 1.31-1.16 2-2 2 .92 1.22 2.49 2 4 2 2.21 0 4-1.79 4-4 0-1.66-1.34-3-3-3zm13.71-9.37l-1.34-1.34a.996.996 0 00-1.41 0L9 12.25 11.75 15l8.96-8.96a.996.996 0 000-1.41z"/>
+                </svg>
+            </button>
+            <button class="tool-btn" data-tool="eraser" title="橡皮擦">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M15.14 3c-.51 0-1.02.2-1.41.59L2.59 14.73c-.78.78-.78 2.05 0 2.83l3.85 3.85c.39.39.9.59 1.41.59h8.29c.53 0 1.04-.21 1.41-.59l4.27-4.27c.78-.78.78-2.05 0-2.83L15.55 3.59c-.39-.39-.9-.59-1.41-.59zM7.85 19H6.59L4 16.41 10.59 9.83l3.59 3.59L7.85 19z"/>
+                </svg>
+            </button>
+            <button class="tool-btn" data-tool="clear" title="清空画布">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
+                </svg>
+            </button>
+            <div style="height: 1px; background: #0f3460; margin: 4px 0;"></div>
+            <input type="color" class="color-picker" id="brushColor" value="#000000" title="颜色">
+            <input type="number" class="stroke-width" id="strokeWidth" value="4" min="1" max="50" title="线宽">
+        </div>
+    </div>
+
+    <!-- 性能监视器 -->
+    <div class="perf-monitor">
+        <h4>性能监视</h4>
+        <div class="perf-item">
+            <span>FPS</span>
+            <span id="perfFps">60</span>
+        </div>
+        <div class="perf-item">
+            <span>帧时间</span>
+            <span id="perfFrameTime">16ms</span>
+        </div>
+        <div class="perf-item">
+            <span>内存</span>
+            <span id="perfMemory">0 MB</span>
+        </div>
+        <div class="perf-item">
+            <span>绘制调用</span>
+            <span id="perfDrawCalls">0</span>
+        </div>
+    </div>
+
+    <!-- 时间线 -->
+    <div class="timeline">
+        <div class="timeline-controls">
+            <!-- 播放控制 -->
+            <button class="control-btn" id="btnFirst" title="第一帧">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M18 5v14l-7-7 7-7zm-8 0H8v14h2V5z"/>
+                </svg>
+            </button>
+            <button class="control-btn" id="btnPrev" title="上一帧">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M15 5v14l-9-7 9-7z"/>
+                </svg>
+            </button>
+            <button class="control-btn primary" id="btnPlay" title="播放/暂停">
+                <svg viewBox="0 0 24 24" fill="currentColor" id="playIcon">
+                    <path d="M8 5v14l11-7L8 5z"/>
+                </svg>
+            </button>
+            <button class="control-btn" id="btnNext" title="下一帧">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M9 5v14l9-7-9-7z"/>
+                </svg>
+            </button>
+            <button class="control-btn" id="btnLast" title="最后一帧">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M6 5v14l7-7-7-7zm8 0h2v14h-2V5z"/>
+                </svg>
+            </button>
+
+            <span class="frame-counter">
+                <strong id="currentFrame">1</strong> / <span id="frameCount">1</span>
+            </span>
+
+            <div class="divider"></div>
+
+            <!-- FPS -->
+            <div class="setting-group">
+                <label>FPS:</label>
+                <select id="fpsSelect">
+                    <option value="6">6</option>
+                    <option value="8">8</option>
+                    <option value="10">10</option>
+                    <option value="12" selected>12</option>
+                    <option value="15">15</option>
+                    <option value="24">24</option>
+                    <option value="30">30</option>
+                    <option value="60">60</option>
+                </select>
+            </div>
+
+            <div class="divider"></div>
+
+            <!-- 播放模式 -->
+            <div class="setting-group">
+                <label>模式:</label>
+                <button class="toggle-btn active" data-mode="loop">循环</button>
+                <button class="toggle-btn" data-mode="pingpong">来回</button>
+                <button class="toggle-btn" data-mode="oneshot">单次</button>
+            </div>
+
+            <div class="divider"></div>
+
+            <!-- 洋葱皮 -->
+            <div class="setting-group">
+                <button class="toggle-btn active" id="onionSkinToggle">洋葱皮</button>
+                <label>帧数:</label>
+                <input type="number" id="onionFrames" value="2" min="1" max="5" style="width: 50px;">
+            </div>
+
+            <div class="divider"></div>
+
+            <!-- 导出 -->
+            <button class="toggle-btn" id="btnExportGif">导出 GIF</button>
+            <button class="toggle-btn" id="btnExportPng">导出 PNG</button>
+        </div>
+
+        <!-- 帧列表 -->
+        <div class="frames-list" id="framesList">
+            <!-- 帧缩略图会在这里动态生成 -->
+        </div>
+    </div>
+
+    <script>
+        // ==================== 配置 ====================
+        const CONFIG = {
+            canvasWidth: 800,
+            canvasHeight: 600,
+            defaultFps: 12,
+            defaultPlayMode: 'loop',
+            onionSkin: {
+                enabled: true,
+                frames: 2,
+                opacityBehind: 0.3,
+                opacityAhead: 0.2,
+                colorBehind: 'rgba(255, 100, 100, 0.5)',
+                colorAhead: 'rgba(100, 200, 100, 0.5)'
+            }
+        };
+
+        // ==================== 状态 ====================
+        const state = {
+            frames: [],          // 帧数据 [{id, imageData, thumbnail}]
+            currentFrameIndex: 0,
+            isPlaying: false,
+            fps: CONFIG.defaultFps,
+            playMode: CONFIG.defaultPlayMode,
+            onionSkin: { ...CONFIG.onionSkin },
+            currentTool: 'brush',
+            brushColor: '#000000',
+            strokeWidth: 4,
+            isDrawing: false,
+            lastX: 0,
+            lastY: 0,
+            // 性能统计
+            perf: {
+                fps: 60,
+                frameTime: 0,
+                drawCalls: 0,
+                lastTime: performance.now(),
+                frameCount: 0
+            }
+        };
+
+        // ==================== DOM 元素 ====================
+        const canvas = document.getElementById('drawingCanvas');
+        const ctx = canvas.getContext('2d');
+        const onionCanvas = document.getElementById('onionCanvas');
+        const onionCtx = onionCanvas.getContext('2d');
+
+        // 设置画布尺寸
+        canvas.width = CONFIG.canvasWidth;
+        canvas.height = CONFIG.canvasHeight;
+        onionCanvas.width = CONFIG.canvasWidth;
+        onionCanvas.height = CONFIG.canvasHeight;
+
+        // 定位洋葱皮画布
+        const canvasRect = canvas.getBoundingClientRect();
+        onionCanvas.style.position = 'absolute';
+
+        // ==================== 工具函数 ====================
+        function generateId() {
+            return Math.random().toString(36).substr(2, 9);
+        }
+
+        function clearCanvas() {
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+        }
+
+        function generateThumbnail(imageData) {
+            const thumbCanvas = document.createElement('canvas');
+            thumbCanvas.width = 80;
+            thumbCanvas.height = 60;
+            const thumbCtx = thumbCanvas.getContext('2d');
+            
+            // 创建临时 canvas 来绘制 imageData
+            const tempCanvas = document.createElement('canvas');
+            tempCanvas.width = imageData.width;
+            tempCanvas.height = imageData.height;
+            const tempCtx = tempCanvas.getContext('2d');
+            tempCtx.putImageData(imageData, 0, 0);
+            
+            // 缩放绘制到缩略图
+            thumbCtx.drawImage(tempCanvas, 0, 0, 80, 60);
+            
+            return thumbCanvas.toDataURL('image/png', 0.6);
+        }
+
+        // ==================== 帧管理 ====================
+        function captureFrame() {
+            const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            const thumbnail = generateThumbnail(imageData);
+            
+            const frame = {
+                id: generateId(),
+                imageData,
+                thumbnail
+            };
+            
+            state.frames.push(frame);
+            updateFramesList();
+            updateStats();
+            
+            return frame;
+        }
+
+        function addEmptyFrame() {
+            clearCanvas();
+            captureFrame();
+            state.currentFrameIndex = state.frames.length - 1;
+            goToFrame(state.currentFrameIndex);
+        }
+
+        function duplicateFrame(index) {
+            const source = state.frames[index];
+            if (!source) return;
+            
+            const newFrame = {
+                id: generateId(),
+                imageData: new ImageData(
+                    new Uint8ClampedArray(source.imageData.data),
+                    source.imageData.width,
+                    source.imageData.height
+                ),
+                thumbnail: source.thumbnail
+            };
+            
+            state.frames.splice(index + 1, 0, newFrame);
+            updateFramesList();
+            updateStats();
+        }
+
+        function deleteFrame(index) {
+            if (state.frames.length <= 1) return;
+            
+            state.frames.splice(index, 1);
+            
+            if (state.currentFrameIndex >= state.frames.length) {
+                state.currentFrameIndex = state.frames.length - 1;
+            }
+            
+            goToFrame(state.currentFrameIndex);
+            updateFramesList();
+            updateStats();
+        }
+
+        function updateCurrentFrame() {
+            if (state.frames[state.currentFrameIndex]) {
+                const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                state.frames[state.currentFrameIndex].imageData = imageData;
+                state.frames[state.currentFrameIndex].thumbnail = generateThumbnail(imageData);
+                updateFramesList();
+            }
+        }
+
+        function goToFrame(index) {
+            if (index < 0 || index >= state.frames.length) return;
+            
+            state.currentFrameIndex = index;
+            const frame = state.frames[index];
+            
+            if (frame) {
+                ctx.putImageData(frame.imageData, 0, 0);
+            }
+            
+            updateOnionSkin();
+            updateUI();
+        }
+
+        // ==================== 洋葱皮 ====================
+        function updateOnionSkin() {
+            onionCtx.clearRect(0, 0, onionCanvas.width, onionCanvas.height);
+            
+            if (!state.onionSkin.enabled) return;
+            
+            const currentIndex = state.currentFrameIndex;
+            const frames = state.frames;
+            const numFrames = state.onionSkin.frames;
+            
+            // 渲染前面的帧（红色调）
+            for (let i = 1; i <= numFrames; i++) {
+                const idx = currentIndex - i;
+                if (idx < 0) continue;
+                
+                const opacity = state.onionSkin.opacityBehind * (1 - i / (numFrames + 1));
+                renderOnionFrame(frames[idx], state.onionSkin.colorBehind, opacity);
+            }
+            
+            // 渲染后面的帧（绿色调）
+            for (let i = 1; i <= numFrames; i++) {
+                const idx = currentIndex + i;
+                if (idx >= frames.length) continue;
+                
+                const opacity = state.onionSkin.opacityAhead * (1 - i / (numFrames + 1));
+                renderOnionFrame(frames[idx], state.onionSkin.colorAhead, opacity);
+            }
+        }
+
+        function renderOnionFrame(frame, tintColor, opacity) {
+            if (!frame) return;
+            
+            // 创建临时 canvas
+            const tempCanvas = document.createElement('canvas');
+            tempCanvas.width = canvas.width;
+            tempCanvas.height = canvas.height;
+            const tempCtx = tempCanvas.getContext('2d');
+            
+            // 绘制帧
+            tempCtx.putImageData(frame.imageData, 0, 0);
+            
+            // 应用着色
+            tempCtx.globalCompositeOperation = 'source-atop';
+            tempCtx.fillStyle = tintColor;
+            tempCtx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
+            
+            // 绘制到洋葱皮层
+            onionCtx.globalAlpha = opacity;
+            onionCtx.drawImage(tempCanvas, 0, 0);
+            onionCtx.globalAlpha = 1;
+        }
+
+        // ==================== 播放控制 ====================
+        let playbackTimer = null;
+        let lastPlayTime = 0;
+
+        function play() {
+            if (state.isPlaying || state.frames.length < 2) return;
+            
+            state.isPlaying = true;
+            lastPlayTime = performance.now();
+            updatePlayButton();
+            playbackLoop();
+        }
+
+        function pause() {
+            state.isPlaying = false;
+            updatePlayButton();
+        }
+
+        function stop() {
+            pause();
+            goToFrame(0);
+        }
+
+        function togglePlay() {
+            if (state.isPlaying) {
+                pause();
+            } else {
+                play();
+            }
+        }
+
+        function playbackLoop() {
+            if (!state.isPlaying) return;
+            
+            const now = performance.now();
+            const frameInterval = 1000 / state.fps;
+            
+            if (now - lastPlayTime >= frameInterval) {
+                advanceFrame();
+                lastPlayTime = now;
+                
+                // 更新性能统计
+                state.perf.frameCount++;
+            }
+            
+            requestAnimationFrame(playbackLoop);
+        }
+
+        function advanceFrame() {
+            const frameCount = state.frames.length;
+            let nextIndex;
+            
+            switch (state.playMode) {
+                case 'loop':
+                    nextIndex = (state.currentFrameIndex + 1) % frameCount;
+                    break;
+                    
+                case 'pingpong':
+                    if (!state._direction) state._direction = 1;
+                    nextIndex = state.currentFrameIndex + state._direction;
+                    if (nextIndex >= frameCount - 1 || nextIndex <= 0) {
+                        state._direction *= -1;
+                    }
+                    nextIndex = Math.max(0, Math.min(frameCount - 1, nextIndex));
+                    break;
+                    
+                case 'oneshot':
+                    if (state.currentFrameIndex >= frameCount - 1) {
+                        pause();
+                        return;
+                    }
+                    nextIndex = state.currentFrameIndex + 1;
+                    break;
+                    
+                default:
+                    nextIndex = (state.currentFrameIndex + 1) % frameCount;
+            }
+            
+            goToFrame(nextIndex);
+        }
+
+        // ==================== 绘图 ====================
+        function startDrawing(e) {
+            state.isDrawing = true;
+            const rect = canvas.getBoundingClientRect();
+            state.lastX = e.clientX - rect.left;
+            state.lastY = e.clientY - rect.top;
+        }
+
+        function draw(e) {
+            if (!state.isDrawing) return;
+            
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            ctx.beginPath();
+            ctx.moveTo(state.lastX, state.lastY);
+            ctx.lineTo(x, y);
+            
+            if (state.currentTool === 'eraser') {
+                ctx.strokeStyle = '#ffffff';
+                ctx.lineWidth = state.strokeWidth * 3;
+            } else {
+                ctx.strokeStyle = state.brushColor;
+                ctx.lineWidth = state.strokeWidth;
+            }
+            
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+            ctx.stroke();
+            
+            state.lastX = x;
+            state.lastY = y;
+            state.perf.drawCalls++;
+        }
+
+        function stopDrawing() {
+            if (state.isDrawing) {
+                state.isDrawing = false;
+                updateCurrentFrame();
+            }
+        }
+
+        // ==================== UI 更新 ====================
+        function updateUI() {
+            document.getElementById('currentFrame').textContent = state.currentFrameIndex + 1;
+            document.getElementById('frameCount').textContent = state.frames.length;
+            
+            // 更新帧列表选中状态
+            document.querySelectorAll('.frame-item').forEach((item, index) => {
+                item.classList.toggle('active', index === state.currentFrameIndex);
+            });
+        }
+
+        function updatePlayButton() {
+            const icon = document.getElementById('playIcon');
+            if (state.isPlaying) {
+                icon.innerHTML = '<path d="M6 5h4v14H6V5zm8 0h4v14h-4V5z"/>';
+            } else {
+                icon.innerHTML = '<path d="M8 5v14l11-7L8 5z"/>';
+            }
+        }
+
+        function updateFramesList() {
+            const container = document.getElementById('framesList');
+            container.innerHTML = '';
+            
+            state.frames.forEach((frame, index) => {
+                const item = document.createElement('div');
+                item.className = `frame-item ${index === state.currentFrameIndex ? 'active' : ''}`;
+                item.innerHTML = `
+                    <div class="thumbnail">
+                        <img src="${frame.thumbnail}" alt="Frame ${index + 1}">
+                    </div>
+                    <div class="index">${index + 1}</div>
+                `;
+                item.onclick = () => goToFrame(index);
+                item.ondblclick = () => duplicateFrame(index);
+                item.oncontextmenu = (e) => {
+                    e.preventDefault();
+                    if (confirm(`删除第 ${index + 1} 帧?`)) {
+                        deleteFrame(index);
+                    }
+                };
+                container.appendChild(item);
+            });
+            
+            // 添加帧按钮
+            const addBtn = document.createElement('button');
+            addBtn.className = 'add-frame-btn';
+            addBtn.innerHTML = '<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>';
+            addBtn.onclick = addEmptyFrame;
+            container.appendChild(addBtn);
+        }
+
+        function updateStats() {
+            document.getElementById('totalFrames').textContent = state.frames.length;
+        }
+
+        // ==================== 性能监控 ====================
+        function updatePerfMonitor() {
+            const now = performance.now();
+            const delta = now - state.perf.lastTime;
+            
+            if (delta >= 1000) {
+                state.perf.fps = Math.round((state.perf.frameCount * 1000) / delta);
+                state.perf.frameTime = Math.round(delta / Math.max(1, state.perf.frameCount));
+                state.perf.frameCount = 0;
+                state.perf.lastTime = now;
+                
+                // 更新 UI
+                const fpsEl = document.getElementById('perfFps');
+                fpsEl.textContent = state.perf.fps;
+                fpsEl.parentElement.className = 'perf-item' + 
+                    (state.perf.fps < 30 ? ' warning' : '') +
+                    (state.perf.fps < 15 ? ' danger' : '');
+                
+                document.getElementById('perfFrameTime').textContent = state.perf.frameTime + 'ms';
+                document.getElementById('perfDrawCalls').textContent = state.perf.drawCalls;
+                
+                // 内存（如果支持）
+                if (performance.memory) {
+                    const mb = Math.round(performance.memory.usedJSHeapSize / 1024 / 1024);
+                    document.getElementById('perfMemory').textContent = mb + ' MB';
+                }
+                
+                state.perf.drawCalls = 0;
+            }
+            
+            requestAnimationFrame(updatePerfMonitor);
+        }
+
+        // ==================== 导出 ====================
+        async function exportAsGif() {
+            alert('GIF 导出功能需要 gif.js 库支持。\n\n在实际项目中，这里会生成动画 GIF 文件。');
+        }
+
+        async function exportAsPng() {
+            const link = document.createElement('a');
+            link.download = `frame_${state.currentFrameIndex + 1}.png`;
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        }
+
+        // ==================== 事件绑定 ====================
+        // 画布事件
+        canvas.addEventListener('mousedown', startDrawing);
+        canvas.addEventListener('mousemove', draw);
+        canvas.addEventListener('mouseup', stopDrawing);
+        canvas.addEventListener('mouseout', stopDrawing);
+
+        // 触摸支持
+        canvas.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            const touch = e.touches[0];
+            startDrawing({ clientX: touch.clientX, clientY: touch.clientY });
+        });
+        canvas.addEventListener('touchmove', (e) => {
+            e.preventDefault();
+            const touch = e.touches[0];
+            draw({ clientX: touch.clientX, clientY: touch.clientY });
+        });
+        canvas.addEventListener('touchend', stopDrawing);
+
+        // 工具按钮
+        document.querySelectorAll('.tool-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const tool = btn.dataset.tool;
+                if (tool === 'clear') {
+                    clearCanvas();
+                    updateCurrentFrame();
+                    return;
+                }
+                state.currentTool = tool;
+                document.querySelectorAll('.tool-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+            });
+        });
+
+        // 颜色和线宽
+        document.getElementById('brushColor').addEventListener('input', (e) => {
+            state.brushColor = e.target.value;
+        });
+        document.getElementById('strokeWidth').addEventListener('input', (e) => {
+            state.strokeWidth = parseInt(e.target.value) || 4;
+        });
+
+        // 播放控制按钮
+        document.getElementById('btnFirst').addEventListener('click', () => goToFrame(0));
+        document.getElementById('btnPrev').addEventListener('click', () => goToFrame(state.currentFrameIndex - 1));
+        document.getElementById('btnPlay').addEventListener('click', togglePlay);
+        document.getElementById('btnNext').addEventListener('click', () => goToFrame(state.currentFrameIndex + 1));
+        document.getElementById('btnLast').addEventListener('click', () => goToFrame(state.frames.length - 1));
+
+        // FPS
+        document.getElementById('fpsSelect').addEventListener('change', (e) => {
+            state.fps = parseInt(e.target.value);
+        });
+
+        // 播放模式
+        document.querySelectorAll('[data-mode]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                state.playMode = btn.dataset.mode;
+                document.querySelectorAll('[data-mode]').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+            });
+        });
+
+        // 洋葱皮
+        document.getElementById('onionSkinToggle').addEventListener('click', (e) => {
+            state.onionSkin.enabled = !state.onionSkin.enabled;
+            e.target.classList.toggle('active', state.onionSkin.enabled);
+            updateOnionSkin();
+        });
+        document.getElementById('onionFrames').addEventListener('input', (e) => {
+            state.onionSkin.frames = parseInt(e.target.value) || 2;
+            updateOnionSkin();
+        });
+
+        // 导出
+        document.getElementById('btnExportGif').addEventListener('click', exportAsGif);
+        document.getElementById('btnExportPng').addEventListener('click', exportAsPng);
+
+        // 键盘快捷键
+        document.addEventListener('keydown', (e) => {
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
+            
+            switch (e.key) {
+                case ' ':
+                    e.preventDefault();
+                    togglePlay();
+                    break;
+                case 'ArrowLeft':
+                    e.preventDefault();
+                    goToFrame(state.currentFrameIndex - 1);
+                    break;
+                case 'ArrowRight':
+                    e.preventDefault();
+                    goToFrame(state.currentFrameIndex + 1);
+                    break;
+                case 'n':
+                case 'N':
+                    addEmptyFrame();
+                    break;
+                case 'd':
+                case 'D':
+                    duplicateFrame(state.currentFrameIndex);
+                    break;
+            }
+        });
+
+        // ==================== 初始化 ====================
+        function init() {
+            clearCanvas();
+            captureFrame();
+            updateFramesList();
+            updateStats();
+            updatePerfMonitor();
+            
+            console.log('Animation Assist Demo 已初始化');
+            console.log('快捷键: 空格=播放/暂停, 左右箭头=切换帧, N=新建帧, D=复制帧');
+        }
+
+        init();
+    </script>
+</body>
+</html>

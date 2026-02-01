@@ -75,7 +75,7 @@ next-env.d.ts
 # System files
 Thumbs.db
 packages/frontend/apps/electron/out/
-packages/frontend/apps/electron/YUNKE-canary5rXpwP/
+packages/frontend/apps/electron/YUNKE-canary*/
 lusion_download/
 lusion-reverse-engineered-main/
 PixPin_*.png

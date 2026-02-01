@@ -1,0 +1,3307 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Animation System Demo</title>
+    <style>
+        :root {
+            --bg-primary: #1a1a2e;
+            --bg-secondary: #16213e;
+            --bg-tertiary: #0f3460;
+            --accent: #e94560;
+            --accent-light: #ff6b6b;
+            --text-primary: #eee;
+            --text-secondary: #aaa;
+            --border: rgba(255, 255, 255, 0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* 头部工具栏 */
+        .toolbar {
+            height: 48px;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            gap: 12px;
+        }
+        
+        .toolbar-group {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 0 8px;
+            border-right: 1px solid var(--border);
+        }
+        
+        .toolbar-btn {
+            width: 36px;
+            height: 36px;
+            border: none;
+            background: transparent;
+            color: var(--text-primary);
+            cursor: pointer;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+        
+        .toolbar-btn:hover {
+            background: var(--bg-tertiary);
+        }
+        
+        .toolbar-btn.active {
+            background: var(--accent);
+        }
+        
+        .toolbar-btn svg {
+            width: 20px;
+            height: 20px;
+        }
+        
+        /* 主区域 */
+        .main {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+        }
+        
+        /* 左侧面板 - 图层 */
+        .panel-left {
+            width: 260px;
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .panel-header {
+            height: 40px;
+            padding: 0 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border);
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .panel-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 8px;
+        }
+        
+        /* 图层项 */
+        .layer-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .layer-item:hover {
+            background: var(--bg-tertiary);
+        }
+        
+        .layer-item.active {
+            background: var(--accent);
+        }
+        
+        .layer-thumb {
+            width: 40px;
+            height: 40px;
+            background: var(--bg-primary);
+            border-radius: 4px;
+            border: 1px solid var(--border);
+        }
+        
+        .layer-info {
+            flex: 1;
+        }
+        
+        .layer-name {
+            font-size: 13px;
+            font-weight: 500;
+        }
+        
+        .layer-type {
+            font-size: 11px;
+            color: var(--text-secondary);
+        }
+        
+        /* 画布区域 */
+        .canvas-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: var(--bg-primary);
+        }
+        
+        .canvas-wrapper {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        #mainCanvas {
+            background: white;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            cursor: crosshair;
+        }
+        
+        /* 右侧面板 - 笔刷设置 */
+        .panel-right {
+            width: 280px;
+            background: var(--bg-secondary);
+            border-left: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* 设置区块 */
+        .settings-section {
+            padding: 12px;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .settings-title {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+        }
+        
+        .slider-group {
+            margin-bottom: 12px;
+        }
+        
+        .slider-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            margin-bottom: 6px;
+        }
+        
+        .slider-value {
+            color: var(--accent-light);
+            font-weight: 500;
+        }
+        
+        input[type="range"] {
+            width: 100%;
+            height: 4px;
+            -webkit-appearance: none;
+            background: var(--bg-tertiary);
+            border-radius: 2px;
+            outline: none;
+        }
+        
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 14px;
+            height: 14px;
+            background: var(--accent);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+        }
+        
+        /* 颜色选择器 */
+        .color-picker {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+        
+        .color-preview {
+            width: 48px;
+            height: 48px;
+            border-radius: 8px;
+            border: 2px solid var(--border);
+            cursor: pointer;
+        }
+        
+        .color-presets {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 6px;
+        }
+        
+        .color-preset {
+            width: 28px;
+            height: 28px;
+            border-radius: 4px;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .color-preset:hover {
+            transform: scale(1.1);
+        }
+        
+        .color-preset.active {
+            border-color: white;
+        }
+        
+        /* 底部时间轴 */
+        .timeline {
+            height: 180px;
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .timeline-controls {
+            height: 44px;
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            gap: 16px;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .playback-controls {
+            display: flex;
+            gap: 4px;
+        }
+        
+        .play-btn {
+            width: 36px;
+            height: 36px;
+            border: none;
+            background: var(--accent);
+            color: white;
+            cursor: pointer;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+        
+        .play-btn:hover {
+            background: var(--accent-light);
+            transform: scale(1.05);
+        }
+        
+        .frame-info {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+        
+        .frame-info strong {
+            color: var(--text-primary);
+            font-size: 16px;
+        }
+        
+        .timeline-options {
+            margin-left: auto;
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+        
+        .fps-select {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+        }
+        
+        .toggle-btn {
+            padding: 6px 12px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.2s;
+        }
+        
+        .toggle-btn.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: white;
+        }
+        
+        /* 帧轨道 */
+        .frame-track {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            gap: 8px;
+            overflow-x: auto;
+        }
+        
+        .frame-thumbnail {
+            width: 80px;
+            height: 80px;
+            flex-shrink: 0;
+            background: var(--bg-primary);
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.2s;
+        }
+        
+        .frame-thumbnail:hover {
+            border-color: var(--text-secondary);
+        }
+        
+        .frame-thumbnail.active {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px rgba(233, 69, 96, 0.3);
+        }
+        
+        .frame-thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .frame-number {
+            position: absolute;
+            bottom: 4px;
+            left: 4px;
+            font-size: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+        
+        .add-frame-btn {
+            width: 80px;
+            height: 80px;
+            flex-shrink: 0;
+            background: transparent;
+            border: 2px dashed var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            color: var(--text-secondary);
+            font-size: 24px;
+            transition: all 0.2s;
+        }
+        
+        .add-frame-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+        
+        /* 性能监视器 */
+        .perf-monitor {
+            position: fixed;
+            top: 60px;
+            right: 296px;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 11px;
+            font-family: 'Monaco', monospace;
+            color: #4ade80;
+            z-index: 100;
+        }
+        
+        .perf-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 24px;
+            margin-bottom: 4px;
+        }
+        
+        /* 洋葱皮画布 */
+        #onionCanvas {
+            position: absolute;
+            pointer-events: none;
+            opacity: 0.4;
+        }
+        
+        /* 响应式 */
+        @media (max-width: 1200px) {
+            .panel-left, .panel-right {
+                width: 220px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 头部工具栏 -->
+    <div class="toolbar">
+        <div class="toolbar-group">
+            <button class="toolbar-btn active" id="brushTool" title="画笔 (B)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 19l7-7 3 3-7 7-3-3z"/>
+                    <path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/>
+                    <path d="M2 2l7.586 7.586"/>
+                </svg>
+            </button>
+            <button class="toolbar-btn" id="eraserTool" title="橡皮擦 (E)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M20 20H7L3 16c-.78-.78-.78-2.05 0-2.83L14.17 2h0a4 4 0 015.66 0l2.83 2.83a4 4 0 010 5.66L11.83 21.32"/>
+                </svg>
+            </button>
+            <button class="toolbar-btn" id="selectTool" title="选择 (V)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M5 9l4 4-4 4"/>
+                    <path d="M12 4v16"/>
+                </svg>
+            </button>
+        </div>
+        
+        <div class="toolbar-group">
+            <button class="toolbar-btn" id="undoBtn" title="撤销 (Ctrl+Z)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 7v6h6"/>
+                    <path d="M21 17a9 9 0 00-9-9 9 9 0 00-6 2.3L3 13"/>
+                </svg>
+            </button>
+            <button class="toolbar-btn" id="redoBtn" title="重做 (Ctrl+Y)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 7v6h-6"/>
+                    <path d="M3 17a9 9 0 019-9 9 9 0 016 2.3l3 2.7"/>
+                </svg>
+            </button>
+        </div>
+        
+        <div class="toolbar-group">
+            <button class="toolbar-btn" id="zoomInBtn" title="放大">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"/>
+                    <path d="M21 21l-4.35-4.35"/>
+                    <path d="M11 8v6"/>
+                    <path d="M8 11h6"/>
+                </svg>
+            </button>
+            <button class="toolbar-btn" id="zoomOutBtn" title="缩小">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"/>
+                    <path d="M21 21l-4.35-4.35"/>
+                    <path d="M8 11h6"/>
+                </svg>
+            </button>
+        </div>
+        
+        <div style="margin-left: auto; display: flex; gap: 8px;">
+            <button class="toolbar-btn" id="exportBtn" title="导出">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+                    <polyline points="7 10 12 15 17 10"/>
+                    <line x1="12" y1="15" x2="12" y2="3"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+    
+    <!-- 主区域 -->
+    <div class="main">
+        <!-- 左侧面板 -->
+        <div class="panel-left">
+            <div class="panel-header">
+                <span>图层</span>
+                <button class="toolbar-btn" style="width: 24px; height: 24px;" id="addLayerBtn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 5v14M5 12h14"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="panel-content" id="layerList">
+                <!-- 图层列表 -->
+            </div>
+        </div>
+        
+        <!-- 画布区域 -->
+        <div class="canvas-area">
+            <div class="canvas-wrapper">
+                <canvas id="onionCanvas"></canvas>
+                <canvas id="mainCanvas" width="1280" height="720"></canvas>
+            </div>
+        </div>
+        
+        <!-- 右侧面板 -->
+        <div class="panel-right">
+            <div class="settings-section">
+                <div class="settings-title">颜色</div>
+                <div class="color-picker">
+                    <div class="color-preview" id="colorPreview" style="background: #000000;"></div>
+                    <div class="color-presets">
+                        <div class="color-preset active" style="background: #000000;" data-color="#000000"></div>
+                        <div class="color-preset" style="background: #ffffff;" data-color="#ffffff"></div>
+                        <div class="color-preset" style="background: #e94560;" data-color="#e94560"></div>
+                        <div class="color-preset" style="background: #ff6b6b;" data-color="#ff6b6b"></div>
+                        <div class="color-preset" style="background: #4ade80;" data-color="#4ade80"></div>
+                        <div class="color-preset" style="background: #60a5fa;" data-color="#60a5fa"></div>
+                        <div class="color-preset" style="background: #f59e0b;" data-color="#f59e0b"></div>
+                        <div class="color-preset" style="background: #a855f7;" data-color="#a855f7"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="settings-section">
+                <div class="settings-title">笔刷设置</div>
+                
+                <div class="slider-group">
+                    <div class="slider-label">
+                        <span>大小</span>
+                        <span class="slider-value" id="sizeValue">20px</span>
+                    </div>
+                    <input type="range" id="sizeSlider" min="1" max="200" value="20">
+                </div>
+                
+                <div class="slider-group">
+                    <div class="slider-label">
+                        <span>透明度</span>
+                        <span class="slider-value" id="opacityValue">100%</span>
+                    </div>
+                    <input type="range" id="opacitySlider" min="1" max="100" value="100">
+                </div>
+                
+                <div class="slider-group">
+                    <div class="slider-label">
+                        <span>硬度</span>
+                        <span class="slider-value" id="hardnessValue">80%</span>
+                    </div>
+                    <input type="range" id="hardnessSlider" min="0" max="100" value="80">
+                </div>
+                
+                <div class="slider-group">
+                    <div class="slider-label">
+                        <span>平滑</span>
+                        <span class="slider-value" id="smoothingValue">50%</span>
+                    </div>
+                    <input type="range" id="smoothingSlider" min="0" max="100" value="50">
+                </div>
+            </div>
+            
+            <div class="settings-section">
+                <div class="settings-title">洋葱皮</div>
+                
+                <div class="slider-group">
+                    <div class="slider-label">
+                        <span>前帧数</span>
+                        <span class="slider-value" id="onionAheadValue">2</span>
+                    </div>
+                    <input type="range" id="onionAheadSlider" min="0" max="5" value="2">
+                </div>
+                
+                <div class="slider-group">
+                    <div class="slider-label">
+                        <span>后帧数</span>
+                        <span class="slider-value" id="onionBehindValue">2</span>
+                    </div>
+                    <input type="range" id="onionBehindSlider" min="0" max="5" value="2">
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 底部时间轴 -->
+    <div class="timeline">
+        <div class="timeline-controls">
+            <div class="playback-controls">
+                <button class="toolbar-btn" id="prevFrameBtn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polygon points="19 20 9 12 19 4 19 20"/>
+                        <line x1="5" y1="19" x2="5" y2="5"/>
+                    </svg>
+                </button>
+                <button class="play-btn" id="playBtn">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <polygon points="5 3 19 12 5 21 5 3"/>
+                    </svg>
+                </button>
+                <button class="toolbar-btn" id="nextFrameBtn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polygon points="5 4 15 12 5 20 5 4"/>
+                        <line x1="19" y1="5" x2="19" y2="19"/>
+                    </svg>
+                </button>
+            </div>
+            
+            <div class="frame-info">
+                帧 <strong id="currentFrameNum">1</strong> / <span id="totalFrames">1</span>
+            </div>
+            
+            <div class="timeline-options">
+                <select class="fps-select" id="fpsSelect">
+                    <option value="12">12 FPS</option>
+                    <option value="24" selected>24 FPS</option>
+                    <option value="30">30 FPS</option>
+                    <option value="60">60 FPS</option>
+                </select>
+                
+                <button class="toggle-btn active" id="onionSkinToggle">洋葱皮</button>
+                <button class="toggle-btn" id="loopToggle">循环</button>
+            </div>
+        </div>
+        
+        <div class="frame-track" id="frameTrack">
+            <!-- 帧缩略图 -->
+        </div>
+    </div>
+    
+    <!-- 性能监视器 -->
+    <div class="perf-monitor" id="perfMonitor">
+        <div class="perf-row">
+            <span>FPS:</span>
+            <span id="perfFps">60</span>
+        </div>
+        <div class="perf-row">
+            <span>内存:</span>
+            <span id="perfMemory">0 MB</span>
+        </div>
+        <div class="perf-row">
+            <span>绘制调用:</span>
+            <span id="perfDrawCalls">0</span>
+        </div>
+        <div style="margin-top: 8px; padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.2);">
+            <button onclick="runBenchmark()" style="
+                background: var(--accent, #e94560);
+                border: none;
+                color: white;
+                padding: 4px 8px;
+                border-radius: 4px;
+                cursor: pointer;
+                font-size: 11px;
+                width: 100%;
+                margin-bottom: 6px;
+            ">运行基准测试</button>
+            <button onclick="playBasketballAnimation()" style="
+                background: linear-gradient(135deg, #ff6b6b, #ffa500);
+                border: none;
+                color: white;
+                padding: 4px 8px;
+                border-radius: 4px;
+                cursor: pointer;
+                font-size: 11px;
+                width: 100%;
+                margin-bottom: 6px;
+            ">🏀 篮球动画演示</button>
+            <button onclick="openKeyframeMode()" style="
+                background: linear-gradient(135deg, #00d9ff, #00ff88);
+                border: none;
+                color: #1a1a2e;
+                padding: 4px 8px;
+                border-radius: 4px;
+                cursor: pointer;
+                font-size: 11px;
+                width: 100%;
+                font-weight: bold;
+            ">✨ 关键帧动画模式</button>
+        </div>
+    </div>
+    
+    <!-- 测试结果面板 -->
+    <div id="testResultsPanel" style="
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: var(--bg-secondary, #1e1e2e);
+        border: 1px solid var(--border, rgba(255,255,255,0.1));
+        border-radius: 12px;
+        padding: 20px;
+        max-width: 600px;
+        max-height: 80vh;
+        overflow-y: auto;
+        z-index: 1000;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+    ">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+            <h3 style="margin: 0;">基准测试结果</h3>
+            <button onclick="closeTestResults()" style="
+                background: transparent;
+                border: none;
+                color: var(--text-secondary, #aaa);
+                cursor: pointer;
+                font-size: 20px;
+            ">✕</button>
+        </div>
+        <pre id="testResultsContent" style="
+            font-family: 'Monaco', monospace;
+            font-size: 11px;
+            white-space: pre-wrap;
+            color: var(--text-primary, #fff);
+            background: var(--bg-primary, #1a1a2e);
+            padding: 12px;
+            border-radius: 6px;
+            margin: 0;
+        "></pre>
+    </div>
+    
+    <script>
+        // ==================== 专业动画系统演示 ====================
+        
+        class AnimationDemo {
+            constructor() {
+                // 画布
+                this.canvas = document.getElementById('mainCanvas');
+                this.ctx = this.canvas.getContext('2d');
+                this.onionCanvas = document.getElementById('onionCanvas');
+                this.onionCtx = this.onionCanvas.getContext('2d');
+                
+                // 设置洋葱皮画布大小
+                this.onionCanvas.width = this.canvas.width;
+                this.onionCanvas.height = this.canvas.height;
+                
+                // 帧数据
+                this.frames = [this.createEmptyFrame()];
+                this.currentFrameIndex = 0;
+                
+                // 图层
+                this.layers = [
+                    { id: 'layer1', name: '图层 1', visible: true, opacity: 1, data: null }
+                ];
+                this.activeLayerId = 'layer1';
+                
+                // 笔刷状态
+                this.brush = {
+                    size: 20,
+                    opacity: 1,
+                    hardness: 0.8,
+                    smoothing: 50,
+                    color: '#000000',
+                };
+                
+                // 平滑状态
+                this.smoothingState = {
+                    anchor: null,
+                    stringLength: 0,
+                };
+                
+                // 洋葱皮设置
+                this.onionSkin = {
+                    enabled: true,
+                    framesAhead: 2,
+                    framesBehind: 2,
+                    colorAhead: 'rgba(0, 200, 100, 0.3)',
+                    colorBehind: 'rgba(200, 100, 0, 0.3)',
+                };
+                
+                // 播放状态
+                this.isPlaying = false;
+                this.fps = 24;
+                this.loop = false;
+                this.playbackTimer = null;
+                
+                // 绘制状态
+                this.isDrawing = false;
+                this.lastPoint = null;
+                this.strokeHistory = [];
+                this.currentTool = 'brush';
+                
+                // 性能统计
+                this.perfStats = {
+                    fps: 0,
+                    frameTime: 0,
+                    drawCalls: 0,
+                    lastTime: performance.now(),
+                    frameCount: 0,
+                };
+                
+                this.init();
+            }
+            
+            init() {
+                this.setupEventListeners();
+                this.updateUI();
+                this.startPerfMonitor();
+                this.render();
+            }
+            
+            createEmptyFrame() {
+                const imageData = this.ctx.createImageData(this.canvas.width, this.canvas.height);
+                // 填充白色背景
+                for (let i = 0; i < imageData.data.length; i += 4) {
+                    imageData.data[i] = 255;
+                    imageData.data[i + 1] = 255;
+                    imageData.data[i + 2] = 255;
+                    imageData.data[i + 3] = 255;
+                }
+                return imageData;
+            }
+            
+            setupEventListeners() {
+                // 画布事件
+                this.canvas.addEventListener('pointerdown', (e) => this.onPointerDown(e));
+                this.canvas.addEventListener('pointermove', (e) => this.onPointerMove(e));
+                this.canvas.addEventListener('pointerup', (e) => this.onPointerUp(e));
+                this.canvas.addEventListener('pointerleave', (e) => this.onPointerUp(e));
+                
+                // 工具按钮
+                document.getElementById('brushTool').onclick = () => this.setTool('brush');
+                document.getElementById('eraserTool').onclick = () => this.setTool('eraser');
+                
+                // 撤销/重做
+                document.getElementById('undoBtn').onclick = () => this.undo();
+                document.getElementById('redoBtn').onclick = () => this.redo();
+                
+                // 滑块
+                document.getElementById('sizeSlider').oninput = (e) => {
+                    this.brush.size = parseInt(e.target.value);
+                    document.getElementById('sizeValue').textContent = `${this.brush.size}px`;
+                };
+                
+                document.getElementById('opacitySlider').oninput = (e) => {
+                    this.brush.opacity = parseInt(e.target.value) / 100;
+                    document.getElementById('opacityValue').textContent = `${e.target.value}%`;
+                };
+                
+                document.getElementById('hardnessSlider').oninput = (e) => {
+                    this.brush.hardness = parseInt(e.target.value) / 100;
+                    document.getElementById('hardnessValue').textContent = `${e.target.value}%`;
+                };
+                
+                document.getElementById('smoothingSlider').oninput = (e) => {
+                    this.brush.smoothing = parseInt(e.target.value);
+                    document.getElementById('smoothingValue').textContent = `${e.target.value}%`;
+                };
+                
+                // 洋葱皮
+                document.getElementById('onionAheadSlider').oninput = (e) => {
+                    this.onionSkin.framesAhead = parseInt(e.target.value);
+                    document.getElementById('onionAheadValue').textContent = e.target.value;
+                    this.renderOnionSkin();
+                };
+                
+                document.getElementById('onionBehindSlider').oninput = (e) => {
+                    this.onionSkin.framesBehind = parseInt(e.target.value);
+                    document.getElementById('onionBehindValue').textContent = e.target.value;
+                    this.renderOnionSkin();
+                };
+                
+                document.getElementById('onionSkinToggle').onclick = (e) => {
+                    this.onionSkin.enabled = !this.onionSkin.enabled;
+                    e.target.classList.toggle('active');
+                    this.renderOnionSkin();
+                };
+                
+                // 颜色选择
+                document.querySelectorAll('.color-preset').forEach(el => {
+                    el.onclick = () => {
+                        document.querySelectorAll('.color-preset').forEach(p => p.classList.remove('active'));
+                        el.classList.add('active');
+                        this.brush.color = el.dataset.color;
+                        document.getElementById('colorPreview').style.background = this.brush.color;
+                    };
+                });
+                
+                // 播放控制
+                document.getElementById('playBtn').onclick = () => this.togglePlay();
+                document.getElementById('prevFrameBtn').onclick = () => this.prevFrame();
+                document.getElementById('nextFrameBtn').onclick = () => this.nextFrame();
+                
+                document.getElementById('fpsSelect').onchange = (e) => {
+                    this.fps = parseInt(e.target.value);
+                };
+                
+                document.getElementById('loopToggle').onclick = (e) => {
+                    this.loop = !this.loop;
+                    e.target.classList.toggle('active');
+                };
+                
+                // 添加图层
+                document.getElementById('addLayerBtn').onclick = () => this.addLayer();
+                
+                // 键盘快捷键
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'b') this.setTool('brush');
+                    if (e.key === 'e') this.setTool('eraser');
+                    if (e.ctrlKey && e.key === 'z') this.undo();
+                    if (e.ctrlKey && e.key === 'y') this.redo();
+                    if (e.key === ' ') { e.preventDefault(); this.togglePlay(); }
+                    if (e.key === 'ArrowLeft') this.prevFrame();
+                    if (e.key === 'ArrowRight') this.nextFrame();
+                });
+            }
+            
+            // ==================== 绘制 ====================
+            
+            onPointerDown(e) {
+                this.isDrawing = true;
+                this.canvas.setPointerCapture(e.pointerId);
+                
+                const point = this.getPointerPosition(e);
+                point.pressure = e.pressure || 0.5;
+                
+                // 初始化平滑锚点
+                this.smoothingState.anchor = { x: point.x, y: point.y };
+                this.smoothingState.stringLength = this.brush.smoothing * 0.5;
+                
+                this.lastPoint = point;
+                
+                // 保存当前帧用于撤销
+                this.saveState();
+                
+                this.drawDab(point);
+            }
+            
+            onPointerMove(e) {
+                if (!this.isDrawing) return;
+                
+                const point = this.getPointerPosition(e);
+                point.pressure = e.pressure || 0.5;
+                
+                // 应用 Pulled-String 平滑
+                const smoothedPoint = this.applySmoothing(point);
+                
+                if (smoothedPoint) {
+                    this.drawLine(this.lastPoint, smoothedPoint);
+                    this.lastPoint = smoothedPoint;
+                }
+            }
+            
+            onPointerUp(e) {
+                if (!this.isDrawing) return;
+                
+                this.isDrawing = false;
+                this.canvas.releasePointerCapture(e.pointerId);
+                
+                // 保存帧数据
+                this.frames[this.currentFrameIndex] = this.ctx.getImageData(
+                    0, 0, this.canvas.width, this.canvas.height
+                );
+                
+                // 更新缩略图
+                this.updateFrameTrack();
+                
+                // 重置平滑状态
+                this.smoothingState.anchor = null;
+            }
+            
+            getPointerPosition(e) {
+                const rect = this.canvas.getBoundingClientRect();
+                const scaleX = this.canvas.width / rect.width;
+                const scaleY = this.canvas.height / rect.height;
+                
+                return {
+                    x: (e.clientX - rect.left) * scaleX,
+                    y: (e.clientY - rect.top) * scaleY,
+                };
+            }
+            
+            applySmoothing(point) {
+                const { anchor, stringLength } = this.smoothingState;
+                
+                if (!anchor || stringLength <= 0) {
+                    return point;
+                }
+                
+                const dx = point.x - anchor.x;
+                const dy = point.y - anchor.y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                
+                if (distance <= stringLength) {
+                    return null;
+                }
+                
+                const ratio = stringLength / distance;
+                const outputX = point.x - dx * ratio;
+                const outputY = point.y - dy * ratio;
+                
+                this.smoothingState.anchor.x = outputX;
+                this.smoothingState.anchor.y = outputY;
+                
+                return {
+                    x: outputX,
+                    y: outputY,
+                    pressure: point.pressure,
+                };
+            }
+            
+            drawDab(point) {
+                const size = this.brush.size * (this.currentTool === 'eraser' ? 2 : 1);
+                const radius = size * point.pressure * 0.5;
+                
+                if (this.currentTool === 'eraser') {
+                    this.ctx.globalCompositeOperation = 'destination-out';
+                } else {
+                    this.ctx.globalCompositeOperation = 'source-over';
+                }
+                
+                this.ctx.fillStyle = this.brush.color;
+                this.ctx.globalAlpha = this.brush.opacity * point.pressure;
+                
+                // 绘制圆形 dab
+                const gradient = this.ctx.createRadialGradient(
+                    point.x, point.y, 0,
+                    point.x, point.y, radius
+                );
+                
+                const hardness = this.brush.hardness;
+                gradient.addColorStop(0, this.brush.color);
+                gradient.addColorStop(hardness, this.brush.color);
+                gradient.addColorStop(1, 'transparent');
+                
+                this.ctx.fillStyle = gradient;
+                this.ctx.beginPath();
+                this.ctx.arc(point.x, point.y, radius, 0, Math.PI * 2);
+                this.ctx.fill();
+                
+                this.ctx.globalCompositeOperation = 'source-over';
+                this.ctx.globalAlpha = 1;
+            }
+            
+            drawLine(from, to) {
+                const dx = to.x - from.x;
+                const dy = to.y - from.y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                
+                const spacing = this.brush.size * 0.1;
+                const steps = Math.ceil(distance / spacing);
+                
+                for (let i = 0; i <= steps; i++) {
+                    const t = i / steps;
+                    const point = {
+                        x: from.x + dx * t,
+                        y: from.y + dy * t,
+                        pressure: from.pressure + (to.pressure - from.pressure) * t,
+                    };
+                    this.drawDab(point);
+                }
+            }
+            
+            // ==================== 工具 ====================
+            
+            setTool(tool) {
+                this.currentTool = tool;
+                document.querySelectorAll('.toolbar-group:first-child .toolbar-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                document.getElementById(`${tool}Tool`).classList.add('active');
+            }
+            
+            // ==================== 历史 ====================
+            
+            saveState() {
+                this.strokeHistory.push(this.ctx.getImageData(0, 0, this.canvas.width, this.canvas.height));
+                if (this.strokeHistory.length > 50) {
+                    this.strokeHistory.shift();
+                }
+            }
+            
+            undo() {
+                if (this.strokeHistory.length > 0) {
+                    const state = this.strokeHistory.pop();
+                    this.ctx.putImageData(state, 0, 0);
+                    this.frames[this.currentFrameIndex] = state;
+                    this.updateFrameTrack();
+                }
+            }
+            
+            redo() {
+                // 简化实现
+            }
+            
+            // ==================== 帧管理 ====================
+            
+            addFrame() {
+                const newFrame = this.createEmptyFrame();
+                this.frames.splice(this.currentFrameIndex + 1, 0, newFrame);
+                this.currentFrameIndex++;
+                this.goToFrame(this.currentFrameIndex);
+                this.updateFrameTrack();
+            }
+            
+            prevFrame() {
+                if (this.currentFrameIndex > 0) {
+                    this.goToFrame(this.currentFrameIndex - 1);
+                }
+            }
+            
+            nextFrame() {
+                if (this.currentFrameIndex < this.frames.length - 1) {
+                    this.goToFrame(this.currentFrameIndex + 1);
+                } else if (this.isPlaying) {
+                    // 添加新帧或循环
+                    if (this.loop) {
+                        this.goToFrame(0);
+                    } else {
+                        this.addFrame();
+                    }
+                }
+            }
+            
+            goToFrame(index) {
+                // 保存当前帧
+                this.frames[this.currentFrameIndex] = this.ctx.getImageData(
+                    0, 0, this.canvas.width, this.canvas.height
+                );
+                
+                this.currentFrameIndex = index;
+                
+                // 加载新帧
+                this.ctx.putImageData(this.frames[index], 0, 0);
+                
+                this.updateUI();
+                this.renderOnionSkin();
+            }
+            
+            // ==================== 播放 ====================
+            
+            togglePlay() {
+                this.isPlaying = !this.isPlaying;
+                
+                const btn = document.getElementById('playBtn');
+                btn.innerHTML = this.isPlaying
+                    ? '<svg viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>'
+                    : '<svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>';
+                
+                if (this.isPlaying) {
+                    this.play();
+                } else {
+                    this.stop();
+                }
+            }
+            
+            play() {
+                const frameInterval = 1000 / this.fps;
+                
+                this.playbackTimer = setInterval(() => {
+                    if (this.currentFrameIndex < this.frames.length - 1) {
+                        this.goToFrame(this.currentFrameIndex + 1);
+                    } else if (this.loop) {
+                        this.goToFrame(0);
+                    } else {
+                        this.stop();
+                    }
+                }, frameInterval);
+            }
+            
+            stop() {
+                this.isPlaying = false;
+                if (this.playbackTimer) {
+                    clearInterval(this.playbackTimer);
+                    this.playbackTimer = null;
+                }
+                
+                const btn = document.getElementById('playBtn');
+                btn.innerHTML = '<svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>';
+            }
+            
+            // ==================== 洋葱皮 ====================
+            
+            renderOnionSkin() {
+                this.onionCtx.clearRect(0, 0, this.onionCanvas.width, this.onionCanvas.height);
+                
+                if (!this.onionSkin.enabled) return;
+                
+                // 绘制后面的帧
+                for (let i = 1; i <= this.onionSkin.framesBehind; i++) {
+                    const frameIndex = this.currentFrameIndex - i;
+                    if (frameIndex >= 0) {
+                        const frame = this.frames[frameIndex];
+                        const opacity = 0.3 / i;
+                        
+                        this.onionCtx.globalAlpha = opacity;
+                        this.onionCtx.putImageData(frame, 0, 0);
+                        
+                        // 着色
+                        this.onionCtx.globalCompositeOperation = 'multiply';
+                        this.onionCtx.fillStyle = this.onionSkin.colorBehind;
+                        this.onionCtx.fillRect(0, 0, this.onionCanvas.width, this.onionCanvas.height);
+                        this.onionCtx.globalCompositeOperation = 'source-over';
+                    }
+                }
+                
+                // 绘制前面的帧
+                for (let i = 1; i <= this.onionSkin.framesAhead; i++) {
+                    const frameIndex = this.currentFrameIndex + i;
+                    if (frameIndex < this.frames.length) {
+                        const frame = this.frames[frameIndex];
+                        const opacity = 0.3 / i;
+                        
+                        this.onionCtx.globalAlpha = opacity;
+                        this.onionCtx.putImageData(frame, 0, 0);
+                        
+                        // 着色
+                        this.onionCtx.globalCompositeOperation = 'multiply';
+                        this.onionCtx.fillStyle = this.onionSkin.colorAhead;
+                        this.onionCtx.fillRect(0, 0, this.onionCanvas.width, this.onionCanvas.height);
+                        this.onionCtx.globalCompositeOperation = 'source-over';
+                    }
+                }
+                
+                this.onionCtx.globalAlpha = 1;
+            }
+            
+            // ==================== 图层 ====================
+            
+            addLayer() {
+                const id = `layer${this.layers.length + 1}`;
+                this.layers.push({
+                    id,
+                    name: `图层 ${this.layers.length + 1}`,
+                    visible: true,
+                    opacity: 1,
+                    data: null,
+                });
+                this.activeLayerId = id;
+                this.updateLayerList();
+            }
+            
+            updateLayerList() {
+                const list = document.getElementById('layerList');
+                list.innerHTML = this.layers.map((layer, i) => `
+                    <div class="layer-item ${layer.id === this.activeLayerId ? 'active' : ''}" data-id="${layer.id}">
+                        <div class="layer-thumb"></div>
+                        <div class="layer-info">
+                            <div class="layer-name">${layer.name}</div>
+                            <div class="layer-type">光栅图层</div>
+                        </div>
+                    </div>
+                `).reverse().join('');
+                
+                list.querySelectorAll('.layer-item').forEach(item => {
+                    item.onclick = () => {
+                        this.activeLayerId = item.dataset.id;
+                        this.updateLayerList();
+                    };
+                });
+            }
+            
+            // ==================== UI 更新 ====================
+            
+            updateUI() {
+                document.getElementById('currentFrameNum').textContent = this.currentFrameIndex + 1;
+                document.getElementById('totalFrames').textContent = this.frames.length;
+                this.updateFrameTrack();
+                this.updateLayerList();
+            }
+            
+            updateFrameTrack() {
+                const track = document.getElementById('frameTrack');
+                
+                let html = this.frames.map((frame, i) => {
+                    const isActive = i === this.currentFrameIndex;
+                    return `
+                        <div class="frame-thumbnail ${isActive ? 'active' : ''}" data-index="${i}">
+                            <canvas width="80" height="80"></canvas>
+                            <div class="frame-number">${i + 1}</div>
+                        </div>
+                    `;
+                }).join('');
+                
+                html += '<button class="add-frame-btn" id="addFrameBtn">+</button>';
+                
+                track.innerHTML = html;
+                
+                // 绘制缩略图
+                track.querySelectorAll('.frame-thumbnail canvas').forEach((canvas, i) => {
+                    const ctx = canvas.getContext('2d');
+                    const frame = this.frames[i];
+                    
+                    // 缩放绘制
+                    const tempCanvas = document.createElement('canvas');
+                    tempCanvas.width = this.canvas.width;
+                    tempCanvas.height = this.canvas.height;
+                    tempCanvas.getContext('2d').putImageData(frame, 0, 0);
+                    
+                    ctx.drawImage(tempCanvas, 0, 0, 80, 80);
+                });
+                
+                // 点击事件
+                track.querySelectorAll('.frame-thumbnail').forEach(thumb => {
+                    thumb.onclick = () => this.goToFrame(parseInt(thumb.dataset.index));
+                });
+                
+                document.getElementById('addFrameBtn').onclick = () => this.addFrame();
+            }
+            
+            // ==================== 性能监控 ====================
+            
+            startPerfMonitor() {
+                const update = () => {
+                    const now = performance.now();
+                    this.perfStats.frameCount++;
+                    
+                    if (now - this.perfStats.lastTime >= 1000) {
+                        this.perfStats.fps = this.perfStats.frameCount;
+                        this.perfStats.frameCount = 0;
+                        this.perfStats.lastTime = now;
+                        
+                        document.getElementById('perfFps').textContent = this.perfStats.fps;
+                        
+                        if (performance.memory) {
+                            const mb = (performance.memory.usedJSHeapSize / 1024 / 1024).toFixed(1);
+                            document.getElementById('perfMemory').textContent = `${mb} MB`;
+                        }
+                    }
+                    
+                    requestAnimationFrame(update);
+                };
+                
+                update();
+            }
+            
+            render() {
+                // 主渲染循环 - 仅在需要时更新
+                // 注释掉无限循环，避免性能浪费
+                // requestAnimationFrame(() => this.render());
+            }
+        }
+        
+        // 启动演示
+        const demo = new AnimationDemo();
+        
+        // ==================== 基准测试 ====================
+        
+        async function runBenchmark() {
+            const panel = document.getElementById('testResultsPanel');
+            const content = document.getElementById('testResultsContent');
+            
+            panel.style.display = 'block';
+            content.textContent = '正在运行基准测试...\n\n';
+            
+            const canvas = document.createElement('canvas');
+            canvas.width = 1920;
+            canvas.height = 1080;
+            const ctx = canvas.getContext('2d');
+            
+            const results = [];
+            const tests = [
+                {
+                    name: '纯色填充 (1080p)',
+                    fn: () => {
+                        ctx.fillStyle = '#ff0000';
+                        ctx.fillRect(0, 0, 1920, 1080);
+                    },
+                    threshold: 0.5,
+                },
+                {
+                    name: '渐变填充 (1080p)',
+                    fn: () => {
+                        const gradient = ctx.createLinearGradient(0, 0, 1920, 1080);
+                        gradient.addColorStop(0, '#ff0000');
+                        gradient.addColorStop(1, '#0000ff');
+                        ctx.fillStyle = gradient;
+                        ctx.fillRect(0, 0, 1920, 1080);
+                    },
+                    threshold: 1,
+                },
+                {
+                    name: '1000 点路径',
+                    fn: () => {
+                        ctx.beginPath();
+                        ctx.moveTo(0, 0);
+                        for (let i = 0; i < 1000; i++) {
+                            ctx.lineTo(Math.random() * 1920, Math.random() * 1080);
+                        }
+                        ctx.stroke();
+                    },
+                    threshold: 5,
+                },
+                {
+                    name: '500 圆形绘制',
+                    fn: () => {
+                        for (let i = 0; i < 500; i++) {
+                            ctx.beginPath();
+                            ctx.arc(Math.random() * 1920, Math.random() * 1080, 10 + Math.random() * 40, 0, Math.PI * 2);
+                            ctx.fill();
+                        }
+                    },
+                    threshold: 10,
+                },
+                {
+                    name: 'ImageData 读取',
+                    fn: () => {
+                        ctx.getImageData(0, 0, 1920, 1080);
+                    },
+                    threshold: 5,
+                },
+                {
+                    name: 'ImageData 写入',
+                    fn: () => {
+                        const data = ctx.createImageData(1920, 1080);
+                        ctx.putImageData(data, 0, 0);
+                    },
+                    threshold: 5,
+                },
+            ];
+            
+            for (const test of tests) {
+                content.textContent += `测试: ${test.name}...`;
+                
+                // 预热
+                for (let i = 0; i < 5; i++) {
+                    test.fn();
+                }
+                
+                // 正式测试
+                const times = [];
+                for (let i = 0; i < 50; i++) {
+                    const start = performance.now();
+                    test.fn();
+                    times.push(performance.now() - start);
+                }
+                
+                const avg = times.reduce((a, b) => a + b, 0) / times.length;
+                const min = Math.min(...times);
+                const max = Math.max(...times);
+                const passed = avg <= test.threshold;
+                const score = passed ? Math.round(100 * (1 - avg / test.threshold / 2)) : Math.round(50 * test.threshold / avg);
+                
+                results.push({
+                    name: test.name,
+                    avg,
+                    min,
+                    max,
+                    passed,
+                    score: Math.min(100, Math.max(0, score)),
+                    threshold: test.threshold,
+                });
+                
+                content.textContent += ` ${avg.toFixed(3)}ms ${passed ? '✅' : '❌'}\n`;
+                
+                // 让 UI 更新
+                await new Promise(r => setTimeout(r, 10));
+            }
+            
+            // 生成报告
+            let report = '\n═══════════════════════════════════════════\n';
+            report += '         基准测试完成报告\n';
+            report += '═══════════════════════════════════════════\n\n';
+            
+            for (const r of results) {
+                const status = r.passed ? '✅' : '❌';
+                report += `${status} ${r.name} [${r.score}/100]\n`;
+                report += `   平均: ${r.avg.toFixed(3)}ms (阈值: ${r.threshold}ms)\n`;
+                report += `   范围: ${r.min.toFixed(3)} - ${r.max.toFixed(3)}ms\n\n`;
+            }
+            
+            const totalScore = Math.round(results.reduce((sum, r) => sum + r.score, 0) / results.length);
+            const passedCount = results.filter(r => r.passed).length;
+            
+            report += '═══════════════════════════════════════════\n';
+            report += `   总评分: ${totalScore}/100\n`;
+            report += `   通过率: ${passedCount}/${results.length}\n`;
+            report += '═══════════════════════════════════════════\n';
+            
+            content.textContent += report;
+        }
+        
+        function closeTestResults() {
+            document.getElementById('testResultsPanel').style.display = 'none';
+        }
+        
+        // ==================== 关键帧动画模式 ====================
+        
+        let keyframeMode = {
+            active: false,
+            keyframes: [],  // 存储关键帧 { frameIndex, imageData }
+            currentKeyframe: 0,
+            totalFrames: 24,  // 默认 24 帧 (1秒 @ 24fps)
+            fps: 24,
+            playing: false,
+            playInterval: null,
+            generatedFrames: [],
+        };
+        
+        function openKeyframeMode() {
+            // 停止主页面的篮球动画
+            if (basketballAnimationId) {
+                cancelAnimationFrame(basketballAnimationId);
+                basketballAnimationId = null;
+            }
+            
+            keyframeMode.active = true;
+            keyframeMode.keyframes = [];
+            keyframeMode.generatedFrames = [];
+            keyframeMode.currentKeyframe = 0;
+            
+            // 创建关键帧模式 UI
+            const panel = document.createElement('div');
+            panel.id = 'keyframeModePanel';
+            panel.innerHTML = `
+                <div style="
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: var(--bg-primary, #1a1a2e);
+                    z-index: 2000;
+                    display: flex;
+                    flex-direction: column;
+                ">
+                    <!-- 顶部工具栏 -->
+                    <div style="
+                        padding: 12px 20px;
+                        background: var(--bg-secondary, #1e1e2e);
+                        border-bottom: 1px solid var(--border, rgba(255,255,255,0.1));
+                        display: flex;
+                        align-items: center;
+                        gap: 20px;
+                    ">
+                        <h3 style="margin: 0; color: #00ff88;">✨ 关键帧动画模式</h3>
+                        <span style="color: var(--text-secondary, #aaa); font-size: 13px;">
+                            只需画 3-5 个关键帧，系统自动补间生成完整动画！
+                        </span>
+                        <div style="flex: 1;"></div>
+                        <button onclick="closeKeyframeMode()" style="
+                            background: #e94560;
+                            border: none;
+                            color: white;
+                            padding: 8px 16px;
+                            border-radius: 6px;
+                            cursor: pointer;
+                        ">关闭</button>
+                    </div>
+                    
+                    <!-- 主内容区 -->
+                    <div style="flex: 1; display: flex; padding: 20px; gap: 20px; overflow: hidden;">
+                        <!-- 左侧：绘图区 -->
+                        <div style="flex: 1; display: flex; flex-direction: column; gap: 12px;">
+                            <div style="
+                                display: flex;
+                                align-items: center;
+                                gap: 12px;
+                                padding: 10px 15px;
+                                background: var(--bg-secondary, #1e1e2e);
+                                border-radius: 8px;
+                            ">
+                                <span style="color: #00d9ff; font-weight: bold;">
+                                    关键帧 #<span id="kfCurrentIndex">1</span>
+                                </span>
+                                <span style="color: var(--text-secondary, #aaa);">|</span>
+                                <span style="color: var(--text-secondary, #aaa);">
+                                    已保存: <span id="kfSavedCount">0</span> 帧
+                                </span>
+                                <div style="flex: 1;"></div>
+                                <label style="color: var(--text-secondary, #aaa); font-size: 12px;">
+                                    总帧数:
+                                    <select id="kfTotalFrames" onchange="updateTotalFrames()" style="
+                                        background: var(--bg-primary, #1a1a2e);
+                                        border: 1px solid var(--border, rgba(255,255,255,0.1));
+                                        color: white;
+                                        padding: 4px 8px;
+                                        border-radius: 4px;
+                                        margin-left: 8px;
+                                    ">
+                                        <option value="12">12帧 (0.5秒)</option>
+                                        <option value="24" selected>24帧 (1秒)</option>
+                                        <option value="48">48帧 (2秒)</option>
+                                        <option value="72">72帧 (3秒)</option>
+                                    </select>
+                                </label>
+                            </div>
+                            
+                            <div style="
+                                flex: 1;
+                                background: white;
+                                border-radius: 8px;
+                                position: relative;
+                                overflow: hidden;
+                            ">
+                                <canvas id="kfCanvas" width="640" height="480" style="
+                                    width: 100%;
+                                    height: 100%;
+                                    cursor: crosshair;
+                                "></canvas>
+                                
+                                <!-- 洋葱皮提示 -->
+                                <div id="onionSkinHint" style="
+                                    position: absolute;
+                                    top: 10px;
+                                    left: 10px;
+                                    background: rgba(0,0,0,0.7);
+                                    color: #00ff88;
+                                    padding: 6px 12px;
+                                    border-radius: 4px;
+                                    font-size: 12px;
+                                    display: none;
+                                ">
+                                    👻 洋葱皮：显示上一帧参考
+                                </div>
+                            </div>
+                            
+                            <!-- 绘图工具 -->
+                            <div style="
+                                display: flex;
+                                gap: 10px;
+                                padding: 10px 15px;
+                                background: var(--bg-secondary, #1e1e2e);
+                                border-radius: 8px;
+                            ">
+                                <button onclick="kfClear()" style="
+                                    background: var(--bg-primary, #1a1a2e);
+                                    border: 1px solid var(--border, rgba(255,255,255,0.1));
+                                    color: white;
+                                    padding: 8px 16px;
+                                    border-radius: 6px;
+                                    cursor: pointer;
+                                ">🗑️ 清空</button>
+                                <button onclick="kfSaveKeyframe()" style="
+                                    background: #00d9ff;
+                                    border: none;
+                                    color: #1a1a2e;
+                                    padding: 8px 16px;
+                                    border-radius: 6px;
+                                    cursor: pointer;
+                                    font-weight: bold;
+                                ">💾 保存关键帧</button>
+                                <div style="flex: 1;"></div>
+                                <label style="display: flex; align-items: center; gap: 8px; color: var(--text-secondary, #aaa);">
+                                    <input type="checkbox" id="kfOnionSkin" onchange="toggleOnionSkin()" checked>
+                                    👻 洋葱皮
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 8px; color: var(--text-secondary, #aaa);">
+                                    笔刷大小:
+                                    <input type="range" id="kfBrushSize" min="2" max="30" value="5" style="width: 80px;">
+                                </label>
+                                <input type="color" id="kfColor" value="#333333" title="颜色">
+                            </div>
+                        </div>
+                        
+                        <!-- 右侧：关键帧列表和预览 -->
+                        <div style="width: 280px; display: flex; flex-direction: column; gap: 12px;">
+                            <div style="
+                                padding: 10px 15px;
+                                background: var(--bg-secondary, #1e1e2e);
+                                border-radius: 8px;
+                                color: white;
+                                font-weight: bold;
+                            ">
+                                📋 关键帧列表
+                            </div>
+                            
+                            <div id="kfList" style="
+                                flex: 1;
+                                background: var(--bg-secondary, #1e1e2e);
+                                border-radius: 8px;
+                                padding: 10px;
+                                overflow-y: auto;
+                                display: flex;
+                                flex-direction: column;
+                                gap: 8px;
+                            ">
+                                <div style="
+                                    color: var(--text-secondary, #aaa);
+                                    text-align: center;
+                                    padding: 20px;
+                                    font-size: 13px;
+                                ">
+                                    还没有关键帧<br>
+                                    在画布上绘制后点击"保存关键帧"
+                                </div>
+                            </div>
+                            
+                            <!-- 演示按钮 -->
+                            <button onclick="kfBasketballDemo()" style="
+                                background: linear-gradient(135deg, #ff6b6b, #ffa500);
+                                border: none;
+                                color: white;
+                                padding: 10px;
+                                border-radius: 6px;
+                                cursor: pointer;
+                                font-size: 13px;
+                                margin-bottom: 8px;
+                            ">🏀 一键生成篮球动画演示</button>
+                            
+                            <!-- 生成和播放 -->
+                            <button onclick="kfGenerate()" style="
+                                background: linear-gradient(135deg, #00ff88, #00d9ff);
+                                border: none;
+                                color: #1a1a2e;
+                                padding: 12px;
+                                border-radius: 8px;
+                                cursor: pointer;
+                                font-weight: bold;
+                                font-size: 14px;
+                            ">🎬 生成补间动画</button>
+                            
+                            <div style="
+                                display: flex;
+                                gap: 8px;
+                            ">
+                                <button onclick="kfPlay()" id="kfPlayBtn" style="
+                                    flex: 1;
+                                    background: #e94560;
+                                    border: none;
+                                    color: white;
+                                    padding: 10px;
+                                    border-radius: 6px;
+                                    cursor: pointer;
+                                " disabled>▶️ 播放</button>
+                                <button onclick="kfStop()" style="
+                                    background: var(--bg-primary, #1a1a2e);
+                                    border: 1px solid var(--border, rgba(255,255,255,0.1));
+                                    color: white;
+                                    padding: 10px 16px;
+                                    border-radius: 6px;
+                                    cursor: pointer;
+                                ">⏹️ 停止</button>
+                            </div>
+                            
+                            <!-- 帧预览 -->
+                            <div style="
+                                padding: 10px;
+                                background: var(--bg-secondary, #1e1e2e);
+                                border-radius: 8px;
+                                text-align: center;
+                            ">
+                                <div style="color: var(--text-secondary, #aaa); font-size: 12px; margin-bottom: 8px;">
+                                    预览帧: <span id="kfPreviewFrame">-</span>
+                                </div>
+                                <canvas id="kfPreviewCanvas" width="240" height="180" style="
+                                    background: white;
+                                    border-radius: 4px;
+                                    width: 100%;
+                                "></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(panel);
+            
+            // 初始化画布
+            initKeyframeCanvas();
+        }
+        
+        function closeKeyframeMode() {
+            keyframeMode.active = false;
+            kfStop();
+            const panel = document.getElementById('keyframeModePanel');
+            if (panel) panel.remove();
+        }
+        
+        function initKeyframeCanvas() {
+            const canvas = document.getElementById('kfCanvas');
+            const ctx = canvas.getContext('2d');
+            
+            // 清空画布（白色背景）
+            ctx.fillStyle = 'white';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // 绘制辅助网格
+            ctx.strokeStyle = '#f0f0f0';
+            ctx.lineWidth = 1;
+            for (let x = 0; x < canvas.width; x += 40) {
+                ctx.beginPath();
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, canvas.height);
+                ctx.stroke();
+            }
+            for (let y = 0; y < canvas.height; y += 40) {
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(canvas.width, y);
+                ctx.stroke();
+            }
+            
+            // 绘画逻辑
+            let drawing = false;
+            let lastX = 0, lastY = 0;
+            
+            canvas.onmousedown = (e) => {
+                drawing = true;
+                const rect = canvas.getBoundingClientRect();
+                const scaleX = canvas.width / rect.width;
+                const scaleY = canvas.height / rect.height;
+                lastX = (e.clientX - rect.left) * scaleX;
+                lastY = (e.clientY - rect.top) * scaleY;
+            };
+            
+            canvas.onmousemove = (e) => {
+                if (!drawing) return;
+                
+                const rect = canvas.getBoundingClientRect();
+                const scaleX = canvas.width / rect.width;
+                const scaleY = canvas.height / rect.height;
+                const x = (e.clientX - rect.left) * scaleX;
+                const y = (e.clientY - rect.top) * scaleY;
+                
+                ctx.strokeStyle = document.getElementById('kfColor').value;
+                ctx.lineWidth = parseInt(document.getElementById('kfBrushSize').value);
+                ctx.lineCap = 'round';
+                ctx.lineJoin = 'round';
+                
+                ctx.beginPath();
+                ctx.moveTo(lastX, lastY);
+                ctx.lineTo(x, y);
+                ctx.stroke();
+                
+                lastX = x;
+                lastY = y;
+            };
+            
+            canvas.onmouseup = () => drawing = false;
+            canvas.onmouseleave = () => drawing = false;
+        }
+        
+        function kfClear() {
+            const canvas = document.getElementById('kfCanvas');
+            const ctx = canvas.getContext('2d');
+            
+            // 白色背景
+            ctx.fillStyle = 'white';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // 绘制辅助网格
+            ctx.strokeStyle = '#f0f0f0';
+            ctx.lineWidth = 1;
+            for (let x = 0; x < canvas.width; x += 40) {
+                ctx.beginPath();
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, canvas.height);
+                ctx.stroke();
+            }
+            for (let y = 0; y < canvas.height; y += 40) {
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(canvas.width, y);
+                ctx.stroke();
+            }
+            
+            // 如果有洋葱皮，显示上一帧
+            showOnionSkin();
+        }
+        
+        function showOnionSkin() {
+            if (!document.getElementById('kfOnionSkin').checked) return;
+            if (keyframeMode.keyframes.length === 0) return;
+            
+            const canvas = document.getElementById('kfCanvas');
+            const ctx = canvas.getContext('2d');
+            
+            // 获取上一帧
+            const lastKeyframe = keyframeMode.keyframes[keyframeMode.keyframes.length - 1];
+            
+            // 半透明绘制
+            ctx.globalAlpha = 0.3;
+            ctx.drawImage(lastKeyframe.canvas, 0, 0);
+            ctx.globalAlpha = 1.0;
+            
+            document.getElementById('onionSkinHint').style.display = 'block';
+        }
+        
+        function toggleOnionSkin() {
+            const hint = document.getElementById('onionSkinHint');
+            if (document.getElementById('kfOnionSkin').checked && keyframeMode.keyframes.length > 0) {
+                kfClear();
+            } else {
+                hint.style.display = 'none';
+                kfClear();
+            }
+        }
+        
+        function kfSaveKeyframe() {
+            const canvas = document.getElementById('kfCanvas');
+            
+            // 创建关键帧副本
+            const frameCanvas = document.createElement('canvas');
+            frameCanvas.width = canvas.width;
+            frameCanvas.height = canvas.height;
+            frameCanvas.getContext('2d').drawImage(canvas, 0, 0);
+            
+            // 计算这个关键帧应该在哪一帧
+            const frameIndex = keyframeMode.keyframes.length === 0 ? 0 :
+                Math.round(keyframeMode.totalFrames * keyframeMode.keyframes.length / 
+                    (keyframeMode.keyframes.length + 1));
+            
+            keyframeMode.keyframes.push({
+                frameIndex: keyframeMode.keyframes.length === 0 ? 0 : 
+                    (keyframeMode.keyframes.length === 1 ? keyframeMode.totalFrames - 1 : frameIndex),
+                canvas: frameCanvas,
+            });
+            
+            // 自动分配帧位置
+            redistributeKeyframes();
+            
+            // 更新 UI
+            updateKeyframeList();
+            
+            // 准备下一帧
+            document.getElementById('kfCurrentIndex').textContent = keyframeMode.keyframes.length + 1;
+            document.getElementById('kfSavedCount').textContent = keyframeMode.keyframes.length;
+            
+            // 清空画布准备下一帧，显示洋葱皮
+            kfClear();
+        }
+        
+        function redistributeKeyframes() {
+            const count = keyframeMode.keyframes.length;
+            const total = keyframeMode.totalFrames;
+            
+            for (let i = 0; i < count; i++) {
+                if (count === 1) {
+                    keyframeMode.keyframes[i].frameIndex = 0;
+                } else {
+                    keyframeMode.keyframes[i].frameIndex = Math.round(i * (total - 1) / (count - 1));
+                }
+            }
+        }
+        
+        function updateKeyframeList() {
+            const list = document.getElementById('kfList');
+            
+            if (keyframeMode.keyframes.length === 0) {
+                list.innerHTML = `
+                    <div style="
+                        color: var(--text-secondary, #aaa);
+                        text-align: center;
+                        padding: 20px;
+                        font-size: 13px;
+                    ">
+                        还没有关键帧<br>
+                        在画布上绘制后点击"保存关键帧"
+                    </div>
+                `;
+                return;
+            }
+            
+            list.innerHTML = keyframeMode.keyframes.map((kf, i) => `
+                <div style="
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    padding: 8px;
+                    background: var(--bg-primary, #1a1a2e);
+                    border-radius: 6px;
+                ">
+                    <canvas id="kfThumb${i}" width="60" height="45" style="
+                        background: white;
+                        border-radius: 4px;
+                    "></canvas>
+                    <div style="flex: 1;">
+                        <div style="color: white; font-size: 13px;">关键帧 #${i + 1}</div>
+                        <div style="color: var(--text-secondary, #aaa); font-size: 11px;">
+                            位于第 ${kf.frameIndex + 1} 帧
+                        </div>
+                    </div>
+                    <button onclick="kfDeleteKeyframe(${i})" style="
+                        background: transparent;
+                        border: none;
+                        color: #e94560;
+                        cursor: pointer;
+                        padding: 4px;
+                    ">🗑️</button>
+                </div>
+            `).join('');
+            
+            // 绘制缩略图
+            setTimeout(() => {
+                keyframeMode.keyframes.forEach((kf, i) => {
+                    const thumb = document.getElementById(`kfThumb${i}`);
+                    if (thumb) {
+                        const ctx = thumb.getContext('2d');
+                        ctx.drawImage(kf.canvas, 0, 0, thumb.width, thumb.height);
+                    }
+                });
+            }, 10);
+        }
+        
+        function kfDeleteKeyframe(index) {
+            keyframeMode.keyframes.splice(index, 1);
+            redistributeKeyframes();
+            updateKeyframeList();
+            document.getElementById('kfSavedCount').textContent = keyframeMode.keyframes.length;
+        }
+        
+        function updateTotalFrames() {
+            keyframeMode.totalFrames = parseInt(document.getElementById('kfTotalFrames').value);
+            redistributeKeyframes();
+            updateKeyframeList();
+        }
+        
+        function kfGenerate() {
+            if (keyframeMode.keyframes.length < 2) {
+                alert('至少需要 2 个关键帧才能生成补间动画！');
+                return;
+            }
+            
+            const total = keyframeMode.totalFrames;
+            keyframeMode.generatedFrames = [];
+            
+            // 为每一帧生成图像
+            for (let frame = 0; frame < total; frame++) {
+                // 找到前后关键帧
+                let prevKf = keyframeMode.keyframes[0];
+                let nextKf = keyframeMode.keyframes[keyframeMode.keyframes.length - 1];
+                
+                for (let i = 0; i < keyframeMode.keyframes.length - 1; i++) {
+                    if (keyframeMode.keyframes[i].frameIndex <= frame && 
+                        keyframeMode.keyframes[i + 1].frameIndex >= frame) {
+                        prevKf = keyframeMode.keyframes[i];
+                        nextKf = keyframeMode.keyframes[i + 1];
+                        break;
+                    }
+                }
+                
+                // 计算插值比例
+                const range = nextKf.frameIndex - prevKf.frameIndex;
+                const t = range === 0 ? 0 : (frame - prevKf.frameIndex) / range;
+                
+                // 创建帧画布
+                const frameCanvas = document.createElement('canvas');
+                frameCanvas.width = prevKf.canvas.width;
+                frameCanvas.height = prevKf.canvas.height;
+                const ctx = frameCanvas.getContext('2d');
+                
+                // 交叉溶解补间 - 不预填充背景，直接混合两帧
+                // 先绘制前一帧作为基础（完全不透明）
+                ctx.globalAlpha = 1;
+                ctx.drawImage(prevKf.canvas, 0, 0);
+                
+                // 再用透明度叠加后一帧实现渐变过渡
+                ctx.globalAlpha = t;
+                ctx.drawImage(nextKf.canvas, 0, 0);
+                
+                ctx.globalAlpha = 1;
+                
+                keyframeMode.generatedFrames.push(frameCanvas);
+            }
+            
+            // 启用播放按钮
+            const playBtn = document.getElementById('kfPlayBtn');
+            if (playBtn) playBtn.disabled = false;
+            
+            // 使用非阻塞提示
+            console.log(`✅ 已生成 ${total} 帧动画！你只画了 ${keyframeMode.keyframes.length} 个关键帧。`);
+        }
+        
+        function kfPlay() {
+            if (keyframeMode.generatedFrames.length === 0) return;
+            
+            // 先停止之前的播放，防止多个定时器同时运行
+            kfStop();
+            
+            keyframeMode.playing = true;
+            let currentFrame = 0;
+            
+            const preview = document.getElementById('kfPreviewCanvas');
+            if (!preview) return;
+            const previewCtx = preview.getContext('2d');
+            const frameLabel = document.getElementById('kfPreviewFrame');
+            
+            // 同时在主画布播放
+            const mainCanvas = document.getElementById('kfCanvas');
+            if (!mainCanvas) return;
+            const mainCtx = mainCanvas.getContext('2d');
+            
+            const interval = 1000 / keyframeMode.fps;
+            
+            keyframeMode.playInterval = setInterval(() => {
+                if (!keyframeMode.playing || !keyframeMode.generatedFrames.length) {
+                    kfStop();
+                    return;
+                }
+                
+                const frame = keyframeMode.generatedFrames[currentFrame];
+                if (!frame) return;
+                
+                // 更新预览
+                previewCtx.drawImage(frame, 0, 0, preview.width, preview.height);
+                
+                // 更新主画布
+                mainCtx.drawImage(frame, 0, 0);
+                
+                if (frameLabel) {
+                    frameLabel.textContent = `${currentFrame + 1} / ${keyframeMode.generatedFrames.length}`;
+                }
+                
+                currentFrame = (currentFrame + 1) % keyframeMode.generatedFrames.length;
+            }, interval);
+        }
+        
+        function kfStop() {
+            keyframeMode.playing = false;
+            if (keyframeMode.playInterval) {
+                clearInterval(keyframeMode.playInterval);
+                keyframeMode.playInterval = null;
+            }
+        }
+        
+        // ==================== 篮球关键帧演示 ====================
+        
+        function kfBasketballDemo() {
+            // 清空现有关键帧
+            keyframeMode.keyframes = [];
+            keyframeMode.generatedFrames = [];
+            keyframeMode.totalFrames = 48;  // 2秒动画
+            document.getElementById('kfTotalFrames').value = '48';
+            
+            const width = 640;
+            const height = 480;
+            
+            // 绘制人物的辅助函数
+            function drawStickman(ctx, x, y, pose) {
+                const headY = y - 60;
+                const bodyY = y;
+                const footY = y + 80;
+                
+                ctx.lineCap = 'round';
+                ctx.lineJoin = 'round';
+                
+                // 头
+                ctx.fillStyle = '#ffcc99';
+                ctx.strokeStyle = '#333';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.arc(x, headY, 20, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.stroke();
+                
+                // 头发
+                ctx.fillStyle = '#333';
+                ctx.beginPath();
+                ctx.arc(x, headY - 5, 20, Math.PI, 0);
+                ctx.fill();
+                
+                // 眼睛
+                ctx.fillStyle = '#333';
+                ctx.beginPath();
+                ctx.arc(x - 6, headY - 3, 2, 0, Math.PI * 2);
+                ctx.arc(x + 6, headY - 3, 2, 0, Math.PI * 2);
+                ctx.fill();
+                
+                // 笑容
+                ctx.strokeStyle = '#333';
+                ctx.lineWidth = 1.5;
+                ctx.beginPath();
+                ctx.arc(x, headY + 5, 6, 0.1 * Math.PI, 0.9 * Math.PI);
+                ctx.stroke();
+                
+                // 身体（球衣）
+                ctx.strokeStyle = '#e94560';
+                ctx.lineWidth = 8;
+                ctx.beginPath();
+                ctx.moveTo(x, headY + 20);
+                ctx.lineTo(x, bodyY + 20);
+                ctx.stroke();
+                
+                // 号码
+                ctx.fillStyle = '#fff';
+                ctx.font = 'bold 12px Arial';
+                ctx.textAlign = 'center';
+                ctx.fillText('2', x, bodyY);
+                
+                // 根据姿势绘制手臂和腿
+                ctx.strokeStyle = '#ffcc99';
+                ctx.lineWidth = 5;
+                
+                if (pose === 'stand') {
+                    // 站立：手下垂
+                    ctx.beginPath();
+                    ctx.moveTo(x, headY + 25);
+                    ctx.lineTo(x - 25, bodyY + 30);
+                    ctx.stroke();
+                    ctx.beginPath();
+                    ctx.moveTo(x, headY + 25);
+                    ctx.lineTo(x + 25, bodyY + 30);
+                    ctx.stroke();
+                    
+                    // 腿
+                    ctx.strokeStyle = '#333';
+                    ctx.beginPath();
+                    ctx.moveTo(x, bodyY + 20);
+                    ctx.lineTo(x - 15, footY);
+                    ctx.stroke();
+                    ctx.beginPath();
+                    ctx.moveTo(x, bodyY + 20);
+                    ctx.lineTo(x + 15, footY);
+                    ctx.stroke();
+                    
+                    return { ballX: x + 30, ballY: bodyY + 40 };
+                    
+                } else if (pose === 'dribble') {
+                    // 运球：右手向下
+                    ctx.beginPath();
+                    ctx.moveTo(x, headY + 25);
+                    ctx.lineTo(x - 20, bodyY + 10);
+                    ctx.stroke();
+                    ctx.beginPath();
+                    ctx.moveTo(x, headY + 25);
+                    ctx.lineTo(x + 30, bodyY + 50);
+                    ctx.stroke();
+                    
+                    // 腿：跑步姿势
+                    ctx.strokeStyle = '#333';
+                    ctx.beginPath();
+                    ctx.moveTo(x, bodyY + 20);
+                    ctx.lineTo(x - 25, footY - 10);
+                    ctx.stroke();
+                    ctx.beginPath();
+                    ctx.moveTo(x, bodyY + 20);
+                    ctx.lineTo(x + 20, footY);
+                    ctx.stroke();
+                    
+                    return { ballX: x + 35, ballY: bodyY + 70 };
+                    
+                } else if (pose === 'jump') {
+                    // 起跳：手举起
+                    ctx.beginPath();
+                    ctx.moveTo(x, headY + 25);
+                    ctx.lineTo(x - 30, headY);
+                    ctx.stroke();
+                    ctx.beginPath();
+                    ctx.moveTo(x, headY + 25);
+                    ctx.lineTo(x + 35, headY - 20);
+                    ctx.stroke();
+                    
+                    // 腿：收起
+                    ctx.strokeStyle = '#333';
+                    ctx.beginPath();
+                    ctx.moveTo(x, bodyY + 20);
+                    ctx.lineTo(x - 20, bodyY + 50);
+                    ctx.lineTo(x - 10, bodyY + 70);
+                    ctx.stroke();
+                    ctx.beginPath();
+                    ctx.moveTo(x, bodyY + 20);
+                    ctx.lineTo(x + 20, bodyY + 50);
+                    ctx.lineTo(x + 10, bodyY + 70);
+                    ctx.stroke();
+                    
+                    return { ballX: x + 45, ballY: headY - 40 };
+                    
+                } else if (pose === 'shoot') {
+                    // 投篮：手向前伸
+                    ctx.beginPath();
+                    ctx.moveTo(x, headY + 25);
+                    ctx.lineTo(x - 25, bodyY);
+                    ctx.stroke();
+                    ctx.beginPath();
+                    ctx.moveTo(x, headY + 25);
+                    ctx.lineTo(x + 50, headY - 10);
+                    ctx.stroke();
+                    
+                    // 腿：落地
+                    ctx.strokeStyle = '#333';
+                    ctx.beginPath();
+                    ctx.moveTo(x, bodyY + 20);
+                    ctx.lineTo(x - 15, footY);
+                    ctx.stroke();
+                    ctx.beginPath();
+                    ctx.moveTo(x, bodyY + 20);
+                    ctx.lineTo(x + 15, footY);
+                    ctx.stroke();
+                    
+                    return { ballX: x + 80, ballY: headY - 30 };
+                    
+                } else if (pose === 'celebrate') {
+                    // 庆祝：双手举起
+                    ctx.beginPath();
+                    ctx.moveTo(x, headY + 25);
+                    ctx.lineTo(x - 35, headY - 30);
+                    ctx.stroke();
+                    ctx.beginPath();
+                    ctx.moveTo(x, headY + 25);
+                    ctx.lineTo(x + 35, headY - 30);
+                    ctx.stroke();
+                    
+                    // 腿
+                    ctx.strokeStyle = '#333';
+                    ctx.beginPath();
+                    ctx.moveTo(x, bodyY + 20);
+                    ctx.lineTo(x - 20, footY);
+                    ctx.stroke();
+                    ctx.beginPath();
+                    ctx.moveTo(x, bodyY + 20);
+                    ctx.lineTo(x + 20, footY);
+                    ctx.stroke();
+                    
+                    return { ballX: x + 150, ballY: footY + 20 };
+                }
+            }
+            
+            // 绘制篮球
+            function drawBall(ctx, x, y, size = 18) {
+                ctx.fillStyle = '#ff8c00';
+                ctx.strokeStyle = '#cc5500';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.arc(x, y, size, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.stroke();
+                
+                // 篮球纹路
+                ctx.strokeStyle = '#993300';
+                ctx.lineWidth = 1.5;
+                ctx.beginPath();
+                ctx.moveTo(x - size, y);
+                ctx.lineTo(x + size, y);
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.moveTo(x, y - size);
+                ctx.lineTo(x, y + size);
+                ctx.stroke();
+            }
+            
+            // 绘制篮筐
+            function drawHoop(ctx, x, y) {
+                // 篮板
+                ctx.fillStyle = '#fff';
+                ctx.strokeStyle = '#333';
+                ctx.lineWidth = 2;
+                ctx.fillRect(x - 40, y - 60, 80, 50);
+                ctx.strokeRect(x - 40, y - 60, 80, 50);
+                
+                // 篮筐
+                ctx.strokeStyle = '#e94560';
+                ctx.lineWidth = 4;
+                ctx.beginPath();
+                ctx.moveTo(x - 25, y - 10);
+                ctx.lineTo(x + 25, y - 10);
+                ctx.stroke();
+                
+                // 篮网
+                ctx.strokeStyle = '#ccc';
+                ctx.lineWidth = 1;
+                for (let i = -20; i <= 20; i += 8) {
+                    ctx.beginPath();
+                    ctx.moveTo(x + i, y - 10);
+                    ctx.quadraticCurveTo(x + i, y + 20, x + i * 0.3, y + 35);
+                    ctx.stroke();
+                }
+            }
+            
+            // 绘制地面
+            function drawGround(ctx) {
+                ctx.fillStyle = '#d4a574';
+                ctx.fillRect(0, height - 60, width, 60);
+                
+                ctx.strokeStyle = '#fff';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.arc(width / 2, height - 60, 50, Math.PI, 0);
+                ctx.stroke();
+            }
+            
+            // 绘制文字
+            function drawText(ctx, text, x, y) {
+                ctx.font = 'bold 20px Arial';
+                ctx.textAlign = 'center';
+                ctx.fillStyle = '#e94560';
+                ctx.strokeStyle = '#fff';
+                ctx.lineWidth = 3;
+                ctx.strokeText(text, x, y);
+                ctx.fillText(text, x, y);
+            }
+            
+            // 蔡徐坤风格：运球 + 跳舞
+            const poses = [
+                { name: '外八站立', pose: 'ikun_stand', personX: width/2, personY: height - 140, text: '🏀 Music～' },
+                { name: '胯下运球', pose: 'ikun_dribble1', personX: width/2, personY: height - 140, text: '胯下运球！' },
+                { name: '扭腰', pose: 'ikun_dance1', personX: width/2, personY: height - 130, text: '～只因你太美～' },
+                { name: '摆臀', pose: 'ikun_dance2', personX: width/2, personY: height - 130, text: '～Baby～' },
+                { name: '手指天', pose: 'ikun_point', personX: width/2, personY: height - 140, text: '✨ 鸡你太美！' },
+            ];
+            
+            const hoopX = 520;
+            const hoopY = height - 180;
+            
+            // 重写人物绘制函数 - 蔡徐坤风格
+            function drawIkun(ctx, x, y, pose) {
+                ctx.lineCap = 'round';
+                ctx.lineJoin = 'round';
+                
+                const headY = y - 70;
+                const shoulderY = y - 40;
+                const hipY = y + 10;
+                const footY = y + 90;
+                
+                // 身体倾斜角度
+                let bodyTilt = 0;
+                let hipTilt = 0;
+                
+                if (pose === 'ikun_dance1') {
+                    bodyTilt = -15;  // 向左扭
+                    hipTilt = 20;
+                } else if (pose === 'ikun_dance2') {
+                    bodyTilt = 15;   // 向右扭
+                    hipTilt = -20;
+                }
+                
+                ctx.save();
+                ctx.translate(x, y);
+                ctx.rotate(bodyTilt * Math.PI / 180);
+                ctx.translate(-x, -y);
+                
+                // 头
+                ctx.fillStyle = '#ffcc99';
+                ctx.strokeStyle = '#333';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.arc(x, headY, 22, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.stroke();
+                
+                // 标志性发型（中分偏分）
+                ctx.fillStyle = '#222';
+                ctx.beginPath();
+                ctx.moveTo(x - 22, headY);
+                ctx.quadraticCurveTo(x - 15, headY - 28, x, headY - 22);
+                ctx.quadraticCurveTo(x + 15, headY - 28, x + 22, headY);
+                ctx.fill();
+                
+                // 眼睛（媚眼）
+                ctx.fillStyle = '#333';
+                ctx.beginPath();
+                ctx.ellipse(x - 7, headY - 2, 3, 2, -0.2, 0, Math.PI * 2);
+                ctx.ellipse(x + 7, headY - 2, 3, 2, 0.2, 0, Math.PI * 2);
+                ctx.fill();
+                
+                // 笑容
+                ctx.strokeStyle = '#333';
+                ctx.lineWidth = 1.5;
+                ctx.beginPath();
+                ctx.arc(x, headY + 8, 8, 0.1 * Math.PI, 0.9 * Math.PI);
+                ctx.stroke();
+                
+                ctx.restore();
+                
+                // 身体（红色背心）
+                ctx.save();
+                ctx.translate(x, hipY);
+                ctx.rotate(hipTilt * Math.PI / 180);
+                ctx.translate(-x, -hipY);
+                
+                ctx.strokeStyle = '#e94560';
+                ctx.lineWidth = 12;
+                ctx.beginPath();
+                ctx.moveTo(x, headY + 22);
+                ctx.lineTo(x, hipY);
+                ctx.stroke();
+                
+                // 号码 2
+                ctx.fillStyle = '#fff';
+                ctx.font = 'bold 14px Arial';
+                ctx.textAlign = 'center';
+                ctx.fillText('2', x, shoulderY + 20);
+                
+                ctx.restore();
+                
+                // 根据姿势画手臂和腿
+                let ballPos = { x: x + 30, y: hipY + 50 };
+                
+                if (pose === 'ikun_stand') {
+                    // 外八字站立，手拿球
+                    ctx.strokeStyle = '#ffcc99';
+                    ctx.lineWidth = 6;
+                    // 左手叉腰
+                    ctx.beginPath();
+                    ctx.moveTo(x, shoulderY);
+                    ctx.lineTo(x - 25, hipY - 10);
+                    ctx.lineTo(x - 15, hipY + 5);
+                    ctx.stroke();
+                    // 右手托球
+                    ctx.beginPath();
+                    ctx.moveTo(x, shoulderY);
+                    ctx.lineTo(x + 30, shoulderY + 20);
+                    ctx.stroke();
+                    
+                    // 外八字腿
+                    ctx.strokeStyle = '#333';
+                    ctx.lineWidth = 7;
+                    ctx.beginPath();
+                    ctx.moveTo(x, hipY);
+                    ctx.lineTo(x - 30, footY);
+                    ctx.stroke();
+                    ctx.beginPath();
+                    ctx.moveTo(x, hipY);
+                    ctx.lineTo(x + 30, footY);
+                    ctx.stroke();
+                    
+                    // 鞋子（外八）
+                    ctx.fillStyle = '#e94560';
+                    ctx.save();
+                    ctx.translate(x - 30, footY);
+                    ctx.rotate(-0.4);
+                    ctx.beginPath();
+                    ctx.ellipse(0, 0, 18, 8, 0, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.restore();
+                    ctx.save();
+                    ctx.translate(x + 30, footY);
+                    ctx.rotate(0.4);
+                    ctx.beginPath();
+                    ctx.ellipse(0, 0, 18, 8, 0, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.restore();
+                    
+                    ballPos = { x: x + 40, y: shoulderY + 10 };
+                    
+                } else if (pose === 'ikun_dribble1') {
+                    // 胯下运球
+                    ctx.strokeStyle = '#ffcc99';
+                    ctx.lineWidth = 6;
+                    // 左手张开
+                    ctx.beginPath();
+                    ctx.moveTo(x, shoulderY);
+                    ctx.lineTo(x - 40, shoulderY + 30);
+                    ctx.stroke();
+                    // 右手向下运球
+                    ctx.beginPath();
+                    ctx.moveTo(x, shoulderY);
+                    ctx.lineTo(x + 20, hipY + 30);
+                    ctx.stroke();
+                    
+                    // 弯腰的腿
+                    ctx.strokeStyle = '#333';
+                    ctx.lineWidth = 7;
+                    ctx.beginPath();
+                    ctx.moveTo(x, hipY);
+                    ctx.quadraticCurveTo(x - 40, hipY + 30, x - 35, footY - 10);
+                    ctx.stroke();
+                    ctx.beginPath();
+                    ctx.moveTo(x, hipY);
+                    ctx.quadraticCurveTo(x + 40, hipY + 30, x + 35, footY - 10);
+                    ctx.stroke();
+                    
+                    ctx.fillStyle = '#e94560';
+                    ctx.beginPath();
+                    ctx.ellipse(x - 35, footY - 10, 16, 7, -0.3, 0, Math.PI * 2);
+                    ctx.ellipse(x + 35, footY - 10, 16, 7, 0.3, 0, Math.PI * 2);
+                    ctx.fill();
+                    
+                    ballPos = { x: x, y: footY + 10 };  // 胯下
+                    
+                } else if (pose === 'ikun_dance1') {
+                    // 扭腰向左
+                    ctx.strokeStyle = '#ffcc99';
+                    ctx.lineWidth = 6;
+                    // 双手抬起
+                    ctx.beginPath();
+                    ctx.moveTo(x - 5, shoulderY);
+                    ctx.lineTo(x - 45, shoulderY - 20);
+                    ctx.stroke();
+                    ctx.beginPath();
+                    ctx.moveTo(x - 5, shoulderY);
+                    ctx.lineTo(x + 30, shoulderY - 30);
+                    ctx.stroke();
+                    
+                    // S形腿
+                    ctx.strokeStyle = '#333';
+                    ctx.lineWidth = 7;
+                    ctx.beginPath();
+                    ctx.moveTo(x + 10, hipY + 10);
+                    ctx.quadraticCurveTo(x - 20, hipY + 50, x - 25, footY);
+                    ctx.stroke();
+                    ctx.beginPath();
+                    ctx.moveTo(x + 10, hipY + 10);
+                    ctx.quadraticCurveTo(x + 30, hipY + 50, x + 20, footY);
+                    ctx.stroke();
+                    
+                    ctx.fillStyle = '#e94560';
+                    ctx.beginPath();
+                    ctx.ellipse(x - 25, footY, 15, 7, 0, 0, Math.PI * 2);
+                    ctx.ellipse(x + 20, footY, 15, 7, 0, 0, Math.PI * 2);
+                    ctx.fill();
+                    
+                    ballPos = { x: x - 60, y: hipY + 30 };
+                    
+                } else if (pose === 'ikun_dance2') {
+                    // 扭腰向右 + 摆臀
+                    ctx.strokeStyle = '#ffcc99';
+                    ctx.lineWidth = 6;
+                    // 性感手势
+                    ctx.beginPath();
+                    ctx.moveTo(x + 5, shoulderY);
+                    ctx.lineTo(x + 45, shoulderY - 10);
+                    ctx.stroke();
+                    ctx.beginPath();
+                    ctx.moveTo(x + 5, shoulderY);
+                    ctx.lineTo(x - 20, headY - 10);  // 手摸头
+                    ctx.stroke();
+                    
+                    // 交叉腿
+                    ctx.strokeStyle = '#333';
+                    ctx.lineWidth = 7;
+                    ctx.beginPath();
+                    ctx.moveTo(x - 10, hipY + 10);
+                    ctx.quadraticCurveTo(x + 20, hipY + 50, x + 25, footY);
+                    ctx.stroke();
+                    ctx.beginPath();
+                    ctx.moveTo(x - 10, hipY + 10);
+                    ctx.quadraticCurveTo(x - 30, hipY + 50, x - 10, footY);
+                    ctx.stroke();
+                    
+                    ctx.fillStyle = '#e94560';
+                    ctx.beginPath();
+                    ctx.ellipse(x + 25, footY, 15, 7, 0, 0, Math.PI * 2);
+                    ctx.ellipse(x - 10, footY, 15, 7, 0, 0, Math.PI * 2);
+                    ctx.fill();
+                    
+                    ballPos = { x: x + 60, y: hipY + 30 };
+                    
+                } else if (pose === 'ikun_point') {
+                    // 手指天 经典动作
+                    ctx.strokeStyle = '#ffcc99';
+                    ctx.lineWidth = 6;
+                    // 右手指天！
+                    ctx.beginPath();
+                    ctx.moveTo(x, shoulderY);
+                    ctx.lineTo(x + 20, headY - 50);
+                    ctx.stroke();
+                    // 画手指
+                    ctx.lineWidth = 3;
+                    ctx.beginPath();
+                    ctx.moveTo(x + 20, headY - 50);
+                    ctx.lineTo(x + 22, headY - 65);
+                    ctx.stroke();
+                    
+                    // 左手叉腰
+                    ctx.lineWidth = 6;
+                    ctx.beginPath();
+                    ctx.moveTo(x, shoulderY);
+                    ctx.lineTo(x - 25, hipY - 10);
+                    ctx.stroke();
+                    
+                    // 站立腿
+                    ctx.strokeStyle = '#333';
+                    ctx.lineWidth = 7;
+                    ctx.beginPath();
+                    ctx.moveTo(x, hipY);
+                    ctx.lineTo(x - 20, footY);
+                    ctx.stroke();
+                    ctx.beginPath();
+                    ctx.moveTo(x, hipY);
+                    ctx.lineTo(x + 25, footY);
+                    ctx.stroke();
+                    
+                    ctx.fillStyle = '#e94560';
+                    ctx.beginPath();
+                    ctx.ellipse(x - 20, footY, 15, 7, -0.2, 0, Math.PI * 2);
+                    ctx.ellipse(x + 25, footY, 15, 7, 0.2, 0, Math.PI * 2);
+                    ctx.fill();
+                    
+                    ballPos = { x: x - 50, y: footY + 10 };
+                }
+                
+                return ballPos;
+            }
+            
+            for (const frame of poses) {
+                const canvas = document.createElement('canvas');
+                canvas.width = width;
+                canvas.height = height;
+                const ctx = canvas.getContext('2d');
+                
+                // 渐变背景（舞台感）
+                const bgGradient = ctx.createLinearGradient(0, 0, 0, height);
+                bgGradient.addColorStop(0, '#1a1a2e');
+                bgGradient.addColorStop(1, '#16213e');
+                ctx.fillStyle = bgGradient;
+                ctx.fillRect(0, 0, width, height);
+                
+                // 舞台灯光效果
+                ctx.fillStyle = 'rgba(233, 69, 96, 0.1)';
+                ctx.beginPath();
+                ctx.arc(width/2, 0, 300, 0, Math.PI);
+                ctx.fill();
+                
+                // 地面（舞台地板）
+                ctx.fillStyle = '#2a2a4a';
+                ctx.fillRect(0, height - 70, width, 70);
+                ctx.strokeStyle = 'rgba(255,255,255,0.2)';
+                ctx.lineWidth = 1;
+                for (let i = 0; i < width; i += 40) {
+                    ctx.beginPath();
+                    ctx.moveTo(i, height - 70);
+                    ctx.lineTo(i, height);
+                    ctx.stroke();
+                }
+                
+                // 人物 - 使用蔡徐坤风格
+                const ballPos = drawIkun(ctx, frame.personX, frame.personY, frame.pose);
+                
+                // 篮球
+                drawBall(ctx, ballPos.x, ballPos.y, 16);
+                
+                // 文字（发光效果）
+                ctx.save();
+                ctx.shadowColor = '#e94560';
+                ctx.shadowBlur = 20;
+                ctx.font = 'bold 28px Arial';
+                ctx.textAlign = 'center';
+                ctx.fillStyle = '#fff';
+                ctx.fillText(frame.text, width / 2, 50);
+                ctx.restore();
+                
+                // 帧标记
+                ctx.font = '12px Arial';
+                ctx.fillStyle = 'rgba(255,255,255,0.5)';
+                ctx.textAlign = 'left';
+                ctx.fillText(`关键帧: ${frame.name}`, 10, 20);
+                
+                // 音符装饰
+                if (frame.pose.includes('dance')) {
+                    ctx.font = '24px Arial';
+                    ctx.fillStyle = 'rgba(255,255,255,0.6)';
+                    ctx.fillText('♪', width/2 - 100, 100);
+                    ctx.fillText('♫', width/2 + 80, 120);
+                    ctx.fillText('♪', width/2 + 120, 80);
+                }
+                
+                // 添加到关键帧
+                keyframeMode.keyframes.push({
+                    frameIndex: 0,  // 稍后重新分配
+                    canvas: canvas,
+                });
+            }
+            
+            // 重新分配帧位置
+            redistributeKeyframes();
+            
+            // 更新 UI
+            updateKeyframeList();
+            document.getElementById('kfSavedCount').textContent = keyframeMode.keyframes.length;
+            document.getElementById('kfCurrentIndex').textContent = keyframeMode.keyframes.length + 1;
+            
+            // 显示第一帧在主画布
+            const mainCanvas = document.getElementById('kfCanvas');
+            mainCanvas.getContext('2d').drawImage(keyframeMode.keyframes[0].canvas, 0, 0);
+            
+            // 自动生成补间
+            setTimeout(() => {
+                kfGenerate();
+                // 自动播放
+                setTimeout(() => {
+                    kfPlay();
+                }, 500);
+            }, 300);
+        }
+        
+        // ==================== 篮球动画 ====================
+        
+        let basketballAnimationId = null;
+        
+        function playBasketballAnimation() {
+            // 获取画布
+            const canvas = document.getElementById('mainCanvas');
+            const ctx = canvas.getContext('2d');
+            
+            // 停止之前的动画
+            if (basketballAnimationId) {
+                cancelAnimationFrame(basketballAnimationId);
+            }
+            
+            // 清空帧
+            demo.frames = [];
+            demo.currentFrame = 0;
+            
+            // 动画参数
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            let frame = 0;
+            const totalFrames = 120; // 2秒 @ 60fps
+            
+            // 篮球参数
+            let ballX = centerX;
+            let ballY = centerY + 50;
+            let ballVelX = 0;
+            let ballVelY = 0;
+            let ballRotation = 0;
+            
+            // 人物关节位置
+            const person = {
+                headX: centerX - 100,
+                headY: centerY - 80,
+                shoulderY: centerY - 40,
+                leftHandX: centerX - 140,
+                leftHandY: centerY,
+                rightHandX: centerX - 60,
+                rightHandY: centerY,
+                hipY: centerY + 40,
+                leftFootX: centerX - 120,
+                leftFootY: centerY + 120,
+                rightFootX: centerX - 80,
+                rightFootY: centerY + 120,
+                leftKneeY: centerY + 80,
+                rightKneeY: centerY + 80,
+            };
+            
+            // 动画状态
+            const phases = [
+                { name: '准备', start: 0, end: 20 },
+                { name: '运球1', start: 20, end: 40 },
+                { name: '运球2', start: 40, end: 60 },
+                { name: '起跳', start: 60, end: 75 },
+                { name: '扣篮', start: 75, end: 90 },
+                { name: '落地', start: 90, end: 110 },
+                { name: '庆祝', start: 110, end: 120 },
+            ];
+            
+            function easeInOut(t) {
+                return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+            }
+            
+            function drawPerson(ctx, p, jumpOffset = 0, armAngle = 0, legBend = 0, celebration = false, walkPhase = 0) {
+                ctx.save();
+                
+                // 身体颜色
+                ctx.strokeStyle = '#333';
+                ctx.lineWidth = 4;
+                ctx.lineCap = 'round';
+                ctx.lineJoin = 'round';
+                
+                // 计算跳跃后的身体位置
+                const bodyY = -jumpOffset;
+                
+                // 头
+                ctx.fillStyle = '#ffdbac';
+                ctx.beginPath();
+                ctx.arc(p.headX, p.headY + bodyY, 25, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.stroke();
+                
+                // 头发 (标志性发型)
+                ctx.fillStyle = '#222';
+                ctx.beginPath();
+                ctx.arc(p.headX, p.headY - 10 + bodyY, 25, Math.PI, 0);
+                ctx.fill();
+                
+                // 眼睛
+                ctx.fillStyle = '#333';
+                ctx.beginPath();
+                ctx.arc(p.headX - 8, p.headY - 5 + bodyY, 3, 0, Math.PI * 2);
+                ctx.arc(p.headX + 8, p.headY - 5 + bodyY, 3, 0, Math.PI * 2);
+                ctx.fill();
+                
+                // 笑容
+                ctx.strokeStyle = '#333';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                if (celebration) {
+                    ctx.arc(p.headX, p.headY + 5 + bodyY, 10, 0, Math.PI);
+                } else {
+                    ctx.arc(p.headX, p.headY + 8 + bodyY, 6, 0.1 * Math.PI, 0.9 * Math.PI);
+                }
+                ctx.stroke();
+                
+                // 身体
+                ctx.strokeStyle = '#e94560';
+                ctx.lineWidth = 8;
+                ctx.beginPath();
+                ctx.moveTo(p.headX, p.headY + 25 + bodyY);
+                ctx.lineTo(p.headX, p.hipY + bodyY);
+                ctx.stroke();
+                
+                // 球衣号码
+                ctx.fillStyle = '#fff';
+                ctx.font = 'bold 16px Arial';
+                ctx.textAlign = 'center';
+                ctx.fillText('2', p.headX, p.shoulderY + 25 + bodyY);
+                
+                // 手臂
+                ctx.strokeStyle = '#ffdbac';
+                ctx.lineWidth = 6;
+                
+                // 左手
+                const leftArmAngle = -0.3 + armAngle * 0.5;
+                ctx.beginPath();
+                ctx.moveTo(p.headX, p.shoulderY + bodyY);
+                ctx.lineTo(p.headX - 40 * Math.cos(leftArmAngle), p.shoulderY + 40 * Math.sin(leftArmAngle) + 40 + bodyY);
+                ctx.stroke();
+                
+                // 右手 (持球)
+                const rightArmAngle = 0.3 - armAngle;
+                const rightHandEndX = p.headX + 40 * Math.cos(rightArmAngle);
+                const rightHandEndY = p.shoulderY + 40 * Math.sin(rightArmAngle) + 40 + bodyY;
+                ctx.beginPath();
+                ctx.moveTo(p.headX, p.shoulderY + bodyY);
+                ctx.lineTo(rightHandEndX, rightHandEndY);
+                ctx.stroke();
+                
+                // ========== 腿部动画 ==========
+                ctx.strokeStyle = '#333';
+                ctx.lineWidth = 6;
+                
+                // 地面 Y 坐标
+                const groundY = p.leftFootY;
+                
+                // 走路/跑步相位（交替腿部）
+                const leftLegPhase = Math.sin(walkPhase);
+                const rightLegPhase = Math.sin(walkPhase + Math.PI);
+                
+                // 髋部位置（跟随身体）
+                const hipX = p.headX;
+                const hipY = p.hipY + bodyY;
+                
+                // 跳跃时腿部收起
+                const legLift = jumpOffset > 0 ? Math.min(jumpOffset * 0.5, 40) : 0;
+                
+                // 左腿
+                let leftKneeX, leftKneeY, leftFootX, leftFootY;
+                if (jumpOffset > 50) {
+                    // 跳跃中：腿收起
+                    leftKneeX = hipX - 25 - legBend * 20;
+                    leftKneeY = hipY + 30 + legBend * 10;
+                    leftFootX = hipX - 15 - legBend * 10;
+                    leftFootY = hipY + 60 + legBend * 20;
+                } else if (walkPhase !== 0) {
+                    // 走路中：交替摆动
+                    leftKneeX = hipX - 15 + leftLegPhase * 20;
+                    leftKneeY = hipY + 40;
+                    leftFootX = hipX - 20 + leftLegPhase * 35;
+                    leftFootY = groundY - Math.abs(leftLegPhase) * 15;
+                } else {
+                    // 站立
+                    leftKneeX = hipX - 20 - legBend * 10;
+                    leftKneeY = hipY + 40 + legBend * 15;
+                    leftFootX = hipX - 20;
+                    leftFootY = groundY;
+                }
+                
+                ctx.beginPath();
+                ctx.moveTo(hipX, hipY);
+                ctx.lineTo(leftKneeX, leftKneeY);
+                ctx.lineTo(leftFootX, leftFootY);
+                ctx.stroke();
+                
+                // 右腿
+                let rightKneeX, rightKneeY, rightFootX, rightFootY;
+                if (jumpOffset > 50) {
+                    // 跳跃中：腿收起
+                    rightKneeX = hipX + 25 + legBend * 20;
+                    rightKneeY = hipY + 30 + legBend * 10;
+                    rightFootX = hipX + 15 + legBend * 10;
+                    rightFootY = hipY + 60 + legBend * 20;
+                } else if (walkPhase !== 0) {
+                    // 走路中：交替摆动
+                    rightKneeX = hipX + 15 + rightLegPhase * 20;
+                    rightKneeY = hipY + 40;
+                    rightFootX = hipX + 20 + rightLegPhase * 35;
+                    rightFootY = groundY - Math.abs(rightLegPhase) * 15;
+                } else {
+                    // 站立
+                    rightKneeX = hipX + 20 + legBend * 10;
+                    rightKneeY = hipY + 40 + legBend * 15;
+                    rightFootX = hipX + 20;
+                    rightFootY = groundY;
+                }
+                
+                ctx.beginPath();
+                ctx.moveTo(hipX, hipY);
+                ctx.lineTo(rightKneeX, rightKneeY);
+                ctx.lineTo(rightFootX, rightFootY);
+                ctx.stroke();
+                
+                // 鞋子
+                ctx.fillStyle = '#e94560';
+                ctx.beginPath();
+                ctx.ellipse(leftFootX, leftFootY, 15, 8, leftLegPhase * 0.3, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.beginPath();
+                ctx.ellipse(rightFootX, rightFootY, 15, 8, rightLegPhase * 0.3, 0, Math.PI * 2);
+                ctx.fill();
+                
+                ctx.restore();
+                
+                return { handX: rightHandEndX, handY: rightHandEndY };
+            }
+            
+            function drawBasketball(ctx, x, y, rotation, size = 25) {
+                ctx.save();
+                ctx.translate(x, y);
+                ctx.rotate(rotation);
+                
+                // 篮球本体
+                const gradient = ctx.createRadialGradient(-5, -5, 0, 0, 0, size);
+                gradient.addColorStop(0, '#ff8c00');
+                gradient.addColorStop(0.8, '#e65c00');
+                gradient.addColorStop(1, '#cc4400');
+                
+                ctx.fillStyle = gradient;
+                ctx.beginPath();
+                ctx.arc(0, 0, size, 0, Math.PI * 2);
+                ctx.fill();
+                
+                // 篮球纹路
+                ctx.strokeStyle = '#333';
+                ctx.lineWidth = 2;
+                
+                // 水平线
+                ctx.beginPath();
+                ctx.moveTo(-size, 0);
+                ctx.lineTo(size, 0);
+                ctx.stroke();
+                
+                // 垂直线
+                ctx.beginPath();
+                ctx.moveTo(0, -size);
+                ctx.lineTo(0, size);
+                ctx.stroke();
+                
+                // 弧线
+                ctx.beginPath();
+                ctx.arc(-size * 0.5, 0, size * 0.7, -Math.PI * 0.4, Math.PI * 0.4);
+                ctx.stroke();
+                
+                ctx.beginPath();
+                ctx.arc(size * 0.5, 0, size * 0.7, Math.PI * 0.6, Math.PI * 1.4);
+                ctx.stroke();
+                
+                ctx.restore();
+            }
+            
+            function drawBasketHoop(ctx, x, y) {
+                // 篮板
+                ctx.fillStyle = '#fff';
+                ctx.strokeStyle = '#333';
+                ctx.lineWidth = 3;
+                ctx.fillRect(x - 60, y - 80, 120, 80);
+                ctx.strokeRect(x - 60, y - 80, 120, 80);
+                
+                // 篮板内框
+                ctx.strokeStyle = '#e94560';
+                ctx.lineWidth = 2;
+                ctx.strokeRect(x - 30, y - 50, 60, 40);
+                
+                // 篮筐
+                ctx.strokeStyle = '#e94560';
+                ctx.lineWidth = 5;
+                ctx.beginPath();
+                ctx.moveTo(x - 35, y);
+                ctx.lineTo(x + 35, y);
+                ctx.stroke();
+                
+                // 篮网
+                ctx.strokeStyle = '#ccc';
+                ctx.lineWidth = 1;
+                for (let i = -30; i <= 30; i += 10) {
+                    ctx.beginPath();
+                    ctx.moveTo(x + i, y);
+                    ctx.quadraticCurveTo(x + i, y + 40, x + i * 0.3, y + 60);
+                    ctx.stroke();
+                }
+                // 横线
+                for (let j = 15; j <= 45; j += 15) {
+                    ctx.beginPath();
+                    ctx.moveTo(x - 30 + j * 0.5, y + j);
+                    ctx.lineTo(x + 30 - j * 0.5, y + j);
+                    ctx.stroke();
+                }
+            }
+            
+            function drawGround(ctx) {
+                // 地板
+                ctx.fillStyle = '#d4a574';
+                ctx.fillRect(0, canvas.height - 100, canvas.width, 100);
+                
+                // 地板线条
+                ctx.strokeStyle = '#c49464';
+                ctx.lineWidth = 2;
+                for (let i = 0; i < canvas.width; i += 50) {
+                    ctx.beginPath();
+                    ctx.moveTo(i, canvas.height - 100);
+                    ctx.lineTo(i, canvas.height);
+                    ctx.stroke();
+                }
+                
+                // 球场线
+                ctx.strokeStyle = '#fff';
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                ctx.arc(canvas.width / 2, canvas.height - 100, 80, Math.PI, 0);
+                ctx.stroke();
+            }
+            
+            function drawText(ctx, text, x, y, size = 24) {
+                ctx.save();
+                ctx.font = `bold ${size}px Arial`;
+                ctx.textAlign = 'center';
+                ctx.fillStyle = '#e94560';
+                ctx.strokeStyle = '#fff';
+                ctx.lineWidth = 3;
+                ctx.strokeText(text, x, y);
+                ctx.fillText(text, x, y);
+                ctx.restore();
+            }
+            
+            function animate() {
+                frame++;
+                
+                if (frame > totalFrames) {
+                    frame = 0; // 循环播放
+                }
+                
+                // 清空画布
+                ctx.fillStyle = '#1a1a2e';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                // 绘制地面
+                drawGround(ctx);
+                
+                // 绘制篮筐
+                const hoopX = centerX + 150;
+                const hoopY = centerY - 50;
+                drawBasketHoop(ctx, hoopX, hoopY);
+                
+                // 计算动画状态
+                let jumpOffset = 0;
+                let armAngle = 0;
+                let legBend = 0;
+                let celebration = false;
+                let showText = '';
+                let walkPhase = 0;  // 走路相位
+                
+                // 准备阶段
+                if (frame < 20) {
+                    const t = frame / 20;
+                    armAngle = Math.sin(t * Math.PI * 2) * 0.2;
+                    ballY = centerY + 50 + Math.sin(t * Math.PI * 4) * 5;
+                    walkPhase = t * Math.PI * 2;  // 原地踏步
+                    showText = '🏀 准备中...';
+                }
+                // 运球1
+                else if (frame < 40) {
+                    const t = (frame - 20) / 20;
+                    ballY = centerY + 30 + Math.abs(Math.sin(t * Math.PI * 2)) * 60;
+                    ballRotation += 0.2;
+                    armAngle = Math.sin(t * Math.PI * 2) * 0.5;
+                    person.headX = centerX - 100 + t * 50;
+                    ballX = person.headX + 40;
+                    walkPhase = t * Math.PI * 6;  // 快速走动
+                    showText = '运球！';
+                }
+                // 运球2
+                else if (frame < 60) {
+                    const t = (frame - 40) / 20;
+                    ballY = centerY + 30 + Math.abs(Math.sin(t * Math.PI * 2)) * 60;
+                    ballRotation += 0.25;
+                    armAngle = Math.sin(t * Math.PI * 2) * 0.5;
+                    person.headX = centerX - 50 + t * 80;
+                    ballX = person.headX + 40;
+                    walkPhase = t * Math.PI * 8;  // 更快跑动
+                    showText = '突破！';
+                }
+                // 起跳
+                else if (frame < 75) {
+                    const t = (frame - 60) / 15;
+                    const jumpT = easeInOut(t);
+                    jumpOffset = jumpT * 180;
+                    armAngle = jumpT * 1.5;
+                    legBend = jumpT * 0.8;
+                    person.headX = centerX + 30 + t * 50;
+                    ballX = person.headX + 30 - t * 60;
+                    ballY = centerY + 30 - jumpOffset - t * 30;
+                    ballRotation += 0.15;
+                    walkPhase = 0;  // 跳跃时不走路
+                    showText = '起飞！！';
+                }
+                // 扣篮
+                else if (frame < 90) {
+                    const t = (frame - 75) / 15;
+                    jumpOffset = 180 - t * 50;
+                    armAngle = 1.5 - t * 0.5;
+                    legBend = 0.8 - t * 0.3;
+                    
+                    // 球飞向篮筐
+                    ballX = centerX + 80 + t * (hoopX - centerX - 80);
+                    ballY = centerY - 150 + t * (hoopY - centerY + 150);
+                    ballRotation += 0.3;
+                    walkPhase = 0;  // 空中
+                    
+                    if (t > 0.6) {
+                        showText = '💥 进了！！！';
+                    } else {
+                        showText = '扣篮！！！';
+                    }
+                }
+                // 落地
+                else if (frame < 110) {
+                    const t = (frame - 90) / 20;
+                    jumpOffset = 130 * (1 - easeInOut(t));
+                    armAngle = 1.0 - t;
+                    legBend = 0.5 * (1 - t);
+                    
+                    // 球落下
+                    ballX = hoopX + (t - 0.5) * 30;
+                    ballY = hoopY + 60 + t * 80;
+                    ballRotation += 0.1;
+                    walkPhase = 0;  // 落地中
+                    
+                    showText = '✨ 漂亮！';
+                }
+                // 庆祝
+                else {
+                    const t = (frame - 110) / 10;
+                    armAngle = Math.sin(t * Math.PI * 4) * 0.3;
+                    celebration = true;
+                    walkPhase = t * Math.PI * 8;  // 庆祝跳动
+                    
+                    ballX = hoopX;
+                    ballY = centerY + 80 + Math.sin(t * Math.PI * 2) * 10;
+                    
+                    showText = '🎉 只因你太美～';
+                }
+                
+                // 绘制人物
+                const handPos = drawPerson(ctx, person, jumpOffset, armAngle, legBend, celebration, walkPhase);
+                
+                // 绘制篮球
+                drawBasketball(ctx, ballX, ballY, ballRotation);
+                
+                // 绘制提示文字
+                if (showText) {
+                    drawText(ctx, showText, canvas.width / 2, 60, 32);
+                }
+                
+                // 绘制标题
+                ctx.font = '16px Arial';
+                ctx.fillStyle = 'rgba(255,255,255,0.5)';
+                ctx.textAlign = 'left';
+                ctx.fillText(`帧: ${frame}/${totalFrames}`, 20, 30);
+                
+                // 保存帧到演示
+                if (frame <= totalFrames && demo.frames.length < totalFrames) {
+                    const frameData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                    demo.frames.push(frameData);
+                }
+                
+                basketballAnimationId = requestAnimationFrame(animate);
+            }
+            
+            // 开始动画
+            animate();
+            
+            // 显示提示
+            console.log('🏀 篮球动画开始播放！');
+        }
+    </script>
+</body>
+</html>

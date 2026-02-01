@@ -38,6 +38,8 @@ import { PointerViewExtension } from '@blocksuite/yunke-gfx-pointer/view';
 import { ShapeViewExtension } from '@blocksuite/yunke-gfx-shape/view';
 import { TemplateViewExtension } from '@blocksuite/yunke-gfx-template/view';
 import { TextViewExtension } from '@blocksuite/yunke-gfx-text/view';
+import { AnimationViewExtension } from '@blocksuite/yunke-gfx-animation/view';
+import { AnimationProViewExtension } from '@blocksuite/yunke-gfx-animation-pro/view';
 import { FootnoteViewExtension } from '@blocksuite/yunke-inline-footnote/view';
 import { LatexViewExtension as InlineLatexViewExtension } from '@blocksuite/yunke-inline-latex/view';
 import { LinkViewExtension } from '@blocksuite/yunke-inline-link/view';
@@ -76,6 +78,10 @@ export function getInternalViewExtensions() {
     TextViewExtension,
     TemplateViewExtension,
     GfxLinkViewExtension,
+
+    // 动画工具
+    AnimationViewExtension,
+    AnimationProViewExtension,
 
     // 演示与协作工具（合并到"更多工具"按钮）
     MoreToolsViewExtension,
