@@ -13,7 +13,11 @@ import { Bound } from '@blocksuite/global/gfx';
 export interface ColorDropOptions {
     gfx: GfxController;
     onColorApplied?: (elementId: string, color: string) => void;
+    onClosedCheckFailed?: (elementId: string) => void;
 }
+
+// 封闭检测阈值（像素）
+const CLOSED_PATH_THRESHOLD = 20;
 
 export class ColorDropManager {
     private _gfx: GfxController;
@@ -21,10 +25,79 @@ export class ColorDropManager {
     private _currentColor: string = '#000000';
     private _previewElement: HTMLDivElement | null = null;
     private _onColorApplied?: (elementId: string, color: string) => void;
+    private _onClosedCheckFailed?: (elementId: string) => void;
 
     constructor(options: ColorDropOptions) {
         this._gfx = options.gfx;
         this._onColorApplied = options.onColorApplied;
+        this._onClosedCheckFailed = options.onClosedCheckFailed;
+    }
+
+    /**
+     * 检测画笔路径是否封闭
+     * @param points 路径点数组 [[x, y], [x, y], ...]
+     * @returns { isClosed: boolean, distance: number }
+     */
+    private _checkPathClosed(points: number[][]): { isClosed: boolean; distance: number } {
+        if (!points || points.length < 3) {
+            return { isClosed: false, distance: Infinity };
+        }
+
+        const firstPoint = points[0];
+        const lastPoint = points[points.length - 1];
+
+        // 计算起点和终点的距离
+        const dx = lastPoint[0] - firstPoint[0];
+        const dy = lastPoint[1] - firstPoint[1];
+        const distance = Math.sqrt(dx * dx + dy * dy);
+
+        return {
+            isClosed: distance <= CLOSED_PATH_THRESHOLD,
+            distance
+        };
+    }
+
+    /**
+     * 显示未封闭提示
+     */
+    private _showNotClosedTip(x: number, y: number): void {
+        const tip = document.createElement('div');
+        tip.style.cssText = `
+            position: fixed;
+            left: ${x}px;
+            top: ${y - 60}px;
+            transform: translateX(-50%);
+            background: rgba(255, 59, 48, 0.95);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            box-shadow: 0 4px 12px rgba(255, 59, 48, 0.3);
+            pointer-events: none;
+            z-index: 999999;
+            animation: tipFadeInOut 2s ease-out forwards;
+            white-space: nowrap;
+        `;
+        tip.textContent = '路径未封闭，无法填充';
+
+        // 添加动画样式
+        if (!document.getElementById('color-drop-tip-styles')) {
+            const style = document.createElement('style');
+            style.id = 'color-drop-tip-styles';
+            style.textContent = `
+                @keyframes tipFadeInOut {
+                    0% { opacity: 0; transform: translateX(-50%) translateY(10px); }
+                    15% { opacity: 1; transform: translateX(-50%) translateY(0); }
+                    85% { opacity: 1; transform: translateX(-50%) translateY(0); }
+                    100% { opacity: 0; transform: translateX(-50%) translateY(-10px); }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+
+        document.body.appendChild(tip);
+        setTimeout(() => tip.remove(), 2000);
     }
 
     /**
@@ -114,8 +187,22 @@ export class ColorDropManager {
             // 检测是否悬停在可填充元素上
             const targetElement = this._findTargetElement(x, y);
             if (targetElement) {
-                this._previewElement.style.transform = 'translate(-50%, -50%) scale(1.2)';
-                this._previewElement.style.boxShadow = '0 6px 24px rgba(0, 0, 0, 0.4), 0 0 0 2px rgba(0, 122, 255, 0.5)';
+                // 检查是否是画笔元素且未封闭
+                let canFill = true;
+                if ((targetElement.flavour?.includes('brush') || targetElement.type === 'brush') && targetElement.points) {
+                    const { isClosed } = this._checkPathClosed(targetElement.points);
+                    canFill = isClosed;
+                }
+                
+                if (canFill) {
+                    // 可以填充 - 蓝色高亮
+                    this._previewElement.style.transform = 'translate(-50%, -50%) scale(1.2)';
+                    this._previewElement.style.boxShadow = '0 6px 24px rgba(0, 0, 0, 0.4), 0 0 0 2px rgba(0, 122, 255, 0.5)';
+                } else {
+                    // 未封闭 - 红色警告
+                    this._previewElement.style.transform = 'translate(-50%, -50%) scale(1.1)';
+                    this._previewElement.style.boxShadow = '0 6px 24px rgba(0, 0, 0, 0.4), 0 0 0 2px rgba(255, 59, 48, 0.5)';
+                }
             } else {
                 this._previewElement.style.transform = 'translate(-50%, -50%) scale(1)';
                 this._previewElement.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(0, 0, 0, 0.1)';
@@ -178,14 +265,15 @@ export class ColorDropManager {
 
     /**
      * 应用颜色到元素
+     * @returns { success: boolean, notClosed?: boolean }
      */
-    private _applyColorToElement(element: any, color: string): boolean {
-        if (!element) return false;
+    private _applyColorToElement(element: any, color: string): { success: boolean; notClosed?: boolean } {
+        if (!element) return { success: false };
         
         try {
             // 根据元素类型应用颜色
             if (element.flavour?.includes('shape') || element.type === 'shape') {
-                // 形状元素 - 设置填充颜色
+                // 形状元素 - 本身就是封闭的，直接填充
                 if (element.store && typeof element.store.updateBlock === 'function') {
                     element.store.updateBlock(element, {
                         fillColor: color,
@@ -197,9 +285,21 @@ export class ColorDropManager {
                 }
                 console.log('[ColorDrop] ✅ 已填充形状颜色:', color);
                 this._onColorApplied?.(element.id, color);
-                return true;
+                return { success: true };
             } else if (element.flavour?.includes('brush') || element.type === 'brush') {
-                // 画笔元素 - 设置颜色
+                // 画笔元素 - 需要检测是否封闭
+                const points = element.points;
+                if (points && Array.isArray(points)) {
+                    const { isClosed, distance } = this._checkPathClosed(points);
+                    
+                    if (!isClosed) {
+                        console.log('[ColorDrop] ⚠️ 画笔路径未封闭，距离:', distance.toFixed(2), 'px');
+                        this._onClosedCheckFailed?.(element.id);
+                        return { success: false, notClosed: true };
+                    }
+                }
+                
+                // 路径封闭，可以填充
                 if (element.store && typeof element.store.updateBlock === 'function') {
                     element.store.updateBlock(element, {
                         color: color,
@@ -207,15 +307,15 @@ export class ColorDropManager {
                 } else if (typeof element.color !== 'undefined') {
                     element.color = color;
                 }
-                console.log('[ColorDrop] ✅ 已填充画笔颜色:', color);
+                console.log('[ColorDrop] ✅ 已填充封闭画笔颜色:', color);
                 this._onColorApplied?.(element.id, color);
-                return true;
+                return { success: true };
             }
         } catch (e) {
             console.warn('[ColorDrop] 应用颜色失败:', e);
         }
         
-        return false;
+        return { success: false };
     }
 
     /**
@@ -271,10 +371,13 @@ export class ColorDropManager {
         // 查找目标元素并应用颜色
         const targetElement = this._findTargetElement(x, y);
         if (targetElement) {
-            const success = this._applyColorToElement(targetElement, this._currentColor);
-            if (success) {
+            const result = this._applyColorToElement(targetElement, this._currentColor);
+            if (result.success) {
                 // 显示成功动画
                 this._showSuccessAnimation(x, y);
+            } else if (result.notClosed) {
+                // 显示未封闭提示
+                this._showNotClosedTip(x, y);
             }
         }
         
