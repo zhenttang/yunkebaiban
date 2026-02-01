@@ -70,6 +70,7 @@ export const menuItem = style({
   selectors: {
     '&.block': {
       maxWidth: '100%',
+      width: '100%',
     },
     '&[data-disabled], &.disabled': {
       vars: {
