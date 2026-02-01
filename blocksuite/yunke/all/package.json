@@ -48,6 +48,7 @@
     "@blocksuite/yunke-fragment-outline": "workspace:*",
     "@blocksuite/yunke-gfx-animation": "workspace:*",
     "@blocksuite/yunke-gfx-animation-pro": "workspace:*",
+    "@blocksuite/yunke-gfx-color-drop": "workspace:*",
     "@blocksuite/yunke-gfx-brush": "workspace:*",
     "@blocksuite/yunke-gfx-chart": "workspace:*",
     "@blocksuite/yunke-gfx-connector": "workspace:*",

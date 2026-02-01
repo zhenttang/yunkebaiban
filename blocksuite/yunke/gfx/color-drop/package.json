@@ -1,0 +1,30 @@
+{
+  "name": "@blocksuite/yunke-gfx-color-drop",
+  "version": "0.0.1",
+  "description": "ColorDrop - Drag and drop color fill for Yunke whiteboard",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AFFiNE/AFFiNE.git",
+    "directory": "blocksuite/yunke/gfx/color-drop"
+  },
+  "scripts": {
+    "build": "tsc --build",
+    "dev": "tsc --build --watch"
+  },
+  "exports": {
+    ".": "./src/index.ts",
+    "./view": "./src/view.ts",
+    "./effects": "./src/effects.ts"
+  },
+  "dependencies": {
+    "@blocksuite/yunke-model": "workspace:*",
+    "@blocksuite/yunke-shared": "workspace:*",
+    "@blocksuite/std": "workspace:*",
+    "@blocksuite/global": "workspace:*",
+    "lit": "^3.2.1"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.2"
+  }
+}
