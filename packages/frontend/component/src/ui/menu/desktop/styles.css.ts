@@ -29,8 +29,9 @@ export const contentAnimation = style({
   selectors: {
     '&[data-state="closed"]': {
       pointerEvents: 'none',
-      animation: `${slideUp} 150ms cubic-bezier(0.42, 0, 0.58, 1)`,
-      animationFillMode: 'forwards',
+      // 禁用关闭动画，防止图标飞行
+      opacity: 0,
+      visibility: 'hidden',
     },
   },
 });
