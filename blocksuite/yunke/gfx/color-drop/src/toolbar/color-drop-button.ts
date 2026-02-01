@@ -221,6 +221,9 @@ export class ColorDropToolButton extends LitElement {
     `;
 
     @property({ attribute: false })
+    accessor edgeless: any = null;
+
+    @property({ attribute: false })
     accessor gfx: GfxController | null = null;
 
     @state()
