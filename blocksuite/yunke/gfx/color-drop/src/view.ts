@@ -8,6 +8,7 @@ import {
 } from '@blocksuite/yunke-ext-loader';
 
 import { effects } from './effects.js';
+import { colorDropSeniorTool } from './toolbar/color-drop-senior-tool.js';
 
 export class ColorDropViewExtension extends ViewExtensionProvider {
     override name = 'yunke-color-drop-gfx';
@@ -19,6 +20,7 @@ export class ColorDropViewExtension extends ViewExtensionProvider {
 
     override setup(context: ViewExtensionContext) {
         super.setup(context);
-        console.log('[ColorDrop] View extension setup complete');
+        // 注册填色工具到工具栏
+        context.register(colorDropSeniorTool);
     }
 }
