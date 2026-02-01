@@ -20,13 +20,15 @@ export interface ColorDropOptions {
 // 封闭检测配置
 const CLOSED_PATH_CONFIG = {
     // 起点终点距离阈值（模型坐标）
-    distanceThreshold: 30,
+    distanceThreshold: 50,
     // 最小点数（至少需要3个点才能形成封闭区域）
-    minPoints: 3,
+    minPoints: 10,
     // 最小面积（太小的区域不填充）
-    minArea: 100,
+    minArea: 200,
     // 自动闭合：如果距离在此范围内，自动连接起点终点
-    autoCloseThreshold: 50,
+    autoCloseThreshold: 80,
+    // 自交叉检测的采样间隔（每隔多少点检测一次）
+    intersectionSampleInterval: 3,
 };
 
 export class ColorDropManager {
@@ -49,7 +51,13 @@ export class ColorDropManager {
     // ==================== 封闭检测算法 ====================
 
     /**
-     * 综合封闭检测
+     * 综合封闭检测（支持多种封闭方式）
+     * 
+     * 封闭方式：
+     * 1. 起点终点相连（传统封闭）
+     * 2. 路径自交叉形成封闭区域（如"8"字形）
+     * 3. 面积足够大的近似封闭区域
+     * 
      * @param points 路径点数组 [[x, y], [x, y], ...]
      * @returns 检测结果
      */
@@ -58,6 +66,8 @@ export class ColorDropManager {
         distance: number;
         area: number;
         canAutoClose: boolean;
+        hasSelfIntersection: boolean;
+        intersectionPoints: number[][];
         reason?: string;
     } {
         // 基本验证
@@ -67,6 +77,8 @@ export class ColorDropManager {
                 distance: Infinity,
                 area: 0,
                 canAutoClose: false,
+                hasSelfIntersection: false,
+                intersectionPoints: [],
                 reason: `点数不足（需要至少 ${CLOSED_PATH_CONFIG.minPoints} 个点）`
             };
         }
@@ -79,23 +91,43 @@ export class ColorDropManager {
         const dy = lastPoint[1] - firstPoint[1];
         const distance = Math.sqrt(dx * dx + dy * dy);
 
-        // 2. 计算多边形面积（使用 Shoelace 公式）
-        const area = this._calculatePolygonArea(points);
+        // 2. 检测自交叉
+        const intersectionResult = this._findSelfIntersections(points);
+        const hasSelfIntersection = intersectionResult.intersections.length > 0;
 
-        // 3. 判断是否可以自动闭合
+        // 3. 计算面积
+        let area = 0;
+        if (hasSelfIntersection && intersectionResult.closedRegion) {
+            // 如果有自交叉形成的封闭区域，计算该区域面积
+            area = this._calculatePolygonArea(intersectionResult.closedRegion);
+        } else {
+            // 否则计算整体路径面积
+            area = this._calculatePolygonArea(points);
+        }
+
+        // 4. 判断是否可以自动闭合
         const canAutoClose = distance <= CLOSED_PATH_CONFIG.autoCloseThreshold;
 
-        // 4. 综合判断是否封闭
+        // 5. 综合判断是否封闭
         const isDistanceClosed = distance <= CLOSED_PATH_CONFIG.distanceThreshold;
         const hasEnoughArea = Math.abs(area) >= CLOSED_PATH_CONFIG.minArea;
 
-        let isClosed = isDistanceClosed && hasEnoughArea;
-        let reason: string | undefined;
+        // 封闭条件：
+        // A) 起点终点相连 且 面积足够
+        // B) 有自交叉形成封闭区域 且 面积足够
+        // C) 面积很大（说明是近似封闭的大图形）
+        const isClosed = 
+            (isDistanceClosed && hasEnoughArea) ||
+            (hasSelfIntersection && hasEnoughArea) ||
+            (Math.abs(area) >= CLOSED_PATH_CONFIG.minArea * 3); // 大面积直接认为封闭
 
-        if (!isDistanceClosed) {
-            reason = `起点终点距离过大（${distance.toFixed(1)}px > ${CLOSED_PATH_CONFIG.distanceThreshold}px）`;
-        } else if (!hasEnoughArea) {
-            reason = `封闭面积过小（${Math.abs(area).toFixed(1)} < ${CLOSED_PATH_CONFIG.minArea}）`;
+        let reason: string | undefined;
+        if (!isClosed) {
+            if (!isDistanceClosed && !hasSelfIntersection) {
+                reason = `路径未封闭（起点终点距离 ${distance.toFixed(0)}px，无自交叉）`;
+            } else if (!hasEnoughArea) {
+                reason = `封闭面积过小（${Math.abs(area).toFixed(0)}px²）`;
+            }
         }
 
         return {
@@ -103,8 +135,81 @@ export class ColorDropManager {
             distance,
             area: Math.abs(area),
             canAutoClose,
+            hasSelfIntersection,
+            intersectionPoints: intersectionResult.intersections,
             reason
         };
+    }
+
+    /**
+     * 检测路径自交叉
+     * 使用线段相交算法找到所有交叉点
+     */
+    private _findSelfIntersections(points: number[][]): {
+        intersections: number[][];
+        closedRegion: number[][] | null;
+    } {
+        const intersections: number[][] = [];
+        const n = points.length;
+        const interval = CLOSED_PATH_CONFIG.intersectionSampleInterval;
+
+        // 遍历所有线段对，检测相交
+        for (let i = 0; i < n - 1; i += interval) {
+            const p1 = points[i];
+            const p2 = points[Math.min(i + interval, n - 1)];
+
+            // 跳过相邻的线段，从 i+2*interval 开始检测
+            for (let j = i + 2 * interval; j < n - 1; j += interval) {
+                const p3 = points[j];
+                const p4 = points[Math.min(j + interval, n - 1)];
+
+                const intersection = this._lineSegmentIntersection(p1, p2, p3, p4);
+                if (intersection) {
+                    intersections.push(intersection);
+
+                    // 找到第一个交叉点后，提取封闭区域
+                    if (intersections.length === 1) {
+                        // 封闭区域是从 i 到 j 之间的点
+                        const closedRegion = points.slice(i, j + 1);
+                        closedRegion.push(intersection); // 添加交叉点闭合
+                        return { intersections, closedRegion };
+                    }
+                }
+            }
+        }
+
+        return { intersections, closedRegion: null };
+    }
+
+    /**
+     * 计算两条线段的交点
+     * 使用参数方程求解
+     */
+    private _lineSegmentIntersection(
+        p1: number[], p2: number[], 
+        p3: number[], p4: number[]
+    ): number[] | null {
+        const x1 = p1[0], y1 = p1[1];
+        const x2 = p2[0], y2 = p2[1];
+        const x3 = p3[0], y3 = p3[1];
+        const x4 = p4[0], y4 = p4[1];
+
+        const denom = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
+        
+        // 平行线段
+        if (Math.abs(denom) < 0.0001) return null;
+
+        const t = ((x1 - x3) * (y3 - y4) - (y1 - y3) * (x3 - x4)) / denom;
+        const u = -((x1 - x2) * (y1 - y3) - (y1 - y2) * (x1 - x3)) / denom;
+
+        // 检查交点是否在两条线段上
+        if (t >= 0 && t <= 1 && u >= 0 && u <= 1) {
+            const x = x1 + t * (x2 - x1);
+            const y = y1 + t * (y2 - y1);
+            return [x, y];
+        }
+
+        return null;
     }
 
     /**
@@ -367,15 +472,25 @@ export class ColorDropManager {
             if (targetElement) {
                 // 检查是否是画笔元素且未封闭
                 let canFill = true;
+                let hasIntersection = false;
+                
                 if ((targetElement.flavour?.includes('brush') || targetElement.type === 'brush') && targetElement.points) {
-                    const { isClosed } = this._checkPathClosed(targetElement.points);
-                    canFill = isClosed;
+                    const checkResult = this._checkPathClosed(targetElement.points);
+                    canFill = checkResult.isClosed;
+                    hasIntersection = checkResult.hasSelfIntersection;
                 }
                 
                 if (canFill) {
-                    // 可以填充 - 蓝色高亮
-                    this._previewElement.style.transform = 'translate(-50%, -50%) scale(1.2)';
-                    this._previewElement.style.boxShadow = '0 6px 24px rgba(0, 0, 0, 0.4), 0 0 0 2px rgba(0, 122, 255, 0.5)';
+                    // 可以填充
+                    if (hasIntersection) {
+                        // 自交叉封闭 - 绿色高亮
+                        this._previewElement.style.transform = 'translate(-50%, -50%) scale(1.2)';
+                        this._previewElement.style.boxShadow = '0 6px 24px rgba(0, 0, 0, 0.4), 0 0 0 2px rgba(52, 199, 89, 0.6)';
+                    } else {
+                        // 正常封闭 - 蓝色高亮
+                        this._previewElement.style.transform = 'translate(-50%, -50%) scale(1.2)';
+                        this._previewElement.style.boxShadow = '0 6px 24px rgba(0, 0, 0, 0.4), 0 0 0 2px rgba(0, 122, 255, 0.5)';
+                    }
                 } else {
                     // 未封闭 - 红色警告
                     this._previewElement.style.transform = 'translate(-50%, -50%) scale(1.1)';
@@ -507,7 +622,13 @@ export class ColorDropManager {
 
         // 检测是否封闭
         const checkResult = this._checkPathClosed(points);
-        console.log('[ColorDrop] 封闭检测结果:', checkResult);
+        console.log('[ColorDrop] 封闭检测结果:', {
+            isClosed: checkResult.isClosed,
+            distance: checkResult.distance.toFixed(1),
+            area: checkResult.area.toFixed(0),
+            hasSelfIntersection: checkResult.hasSelfIntersection,
+            intersectionCount: checkResult.intersectionPoints.length
+        });
 
         if (!checkResult.isClosed) {
             // 检查是否可以自动闭合
@@ -522,6 +643,11 @@ export class ColorDropManager {
                 notClosed: true,
                 reason: checkResult.reason 
             };
+        }
+
+        // 如果有自交叉，使用交叉点形成的封闭区域
+        if (checkResult.hasSelfIntersection && checkResult.intersectionPoints.length > 0) {
+            console.log('[ColorDrop] 检测到自交叉封闭区域，使用交叉点填充');
         }
 
         // 创建填充多边形
