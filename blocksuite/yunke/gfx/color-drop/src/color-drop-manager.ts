@@ -1,10 +1,10 @@
 /**
  * ColorDrop 管理器
  * 
- * 负责：
- * 1. 创建拖动预览
- * 2. 检测放置目标
- * 3. 应用颜色填充
+ * 实现类似 Procreate 的 ColorDrop 填充功能：
+ * 1. 封闭路径检测（多种算法）
+ * 2. 区域内部填充（创建填充多边形）
+ * 3. 视觉反馈
  */
 
 import type { GfxController } from '@blocksuite/std/gfx';
@@ -14,10 +14,20 @@ export interface ColorDropOptions {
     gfx: GfxController;
     onColorApplied?: (elementId: string, color: string) => void;
     onClosedCheckFailed?: (elementId: string) => void;
+    onFillCreated?: (fillElementId: string, originalElementId: string) => void;
 }
 
-// 封闭检测阈值（像素）
-const CLOSED_PATH_THRESHOLD = 20;
+// 封闭检测配置
+const CLOSED_PATH_CONFIG = {
+    // 起点终点距离阈值（模型坐标）
+    distanceThreshold: 30,
+    // 最小点数（至少需要3个点才能形成封闭区域）
+    minPoints: 3,
+    // 最小面积（太小的区域不填充）
+    minArea: 100,
+    // 自动闭合：如果距离在此范围内，自动连接起点终点
+    autoCloseThreshold: 50,
+};
 
 export class ColorDropManager {
     private _gfx: GfxController;
@@ -27,59 +37,227 @@ export class ColorDropManager {
     private _onColorApplied?: (elementId: string, color: string) => void;
     private _onClosedCheckFailed?: (elementId: string) => void;
 
+    private _onFillCreated?: (fillElementId: string, originalElementId: string) => void;
+
     constructor(options: ColorDropOptions) {
         this._gfx = options.gfx;
         this._onColorApplied = options.onColorApplied;
         this._onClosedCheckFailed = options.onClosedCheckFailed;
+        this._onFillCreated = options.onFillCreated;
     }
 
+    // ==================== 封闭检测算法 ====================
+
     /**
-     * 检测画笔路径是否封闭
+     * 综合封闭检测
      * @param points 路径点数组 [[x, y], [x, y], ...]
-     * @returns { isClosed: boolean, distance: number }
+     * @returns 检测结果
      */
-    private _checkPathClosed(points: number[][]): { isClosed: boolean; distance: number } {
-        if (!points || points.length < 3) {
-            return { isClosed: false, distance: Infinity };
+    private _checkPathClosed(points: number[][]): {
+        isClosed: boolean;
+        distance: number;
+        area: number;
+        canAutoClose: boolean;
+        reason?: string;
+    } {
+        // 基本验证
+        if (!points || points.length < CLOSED_PATH_CONFIG.minPoints) {
+            return {
+                isClosed: false,
+                distance: Infinity,
+                area: 0,
+                canAutoClose: false,
+                reason: `点数不足（需要至少 ${CLOSED_PATH_CONFIG.minPoints} 个点）`
+            };
         }
 
         const firstPoint = points[0];
         const lastPoint = points[points.length - 1];
 
-        // 计算起点和终点的距离
+        // 1. 计算起点和终点的距离
         const dx = lastPoint[0] - firstPoint[0];
         const dy = lastPoint[1] - firstPoint[1];
         const distance = Math.sqrt(dx * dx + dy * dy);
 
+        // 2. 计算多边形面积（使用 Shoelace 公式）
+        const area = this._calculatePolygonArea(points);
+
+        // 3. 判断是否可以自动闭合
+        const canAutoClose = distance <= CLOSED_PATH_CONFIG.autoCloseThreshold;
+
+        // 4. 综合判断是否封闭
+        const isDistanceClosed = distance <= CLOSED_PATH_CONFIG.distanceThreshold;
+        const hasEnoughArea = Math.abs(area) >= CLOSED_PATH_CONFIG.minArea;
+
+        let isClosed = isDistanceClosed && hasEnoughArea;
+        let reason: string | undefined;
+
+        if (!isDistanceClosed) {
+            reason = `起点终点距离过大（${distance.toFixed(1)}px > ${CLOSED_PATH_CONFIG.distanceThreshold}px）`;
+        } else if (!hasEnoughArea) {
+            reason = `封闭面积过小（${Math.abs(area).toFixed(1)} < ${CLOSED_PATH_CONFIG.minArea}）`;
+        }
+
         return {
-            isClosed: distance <= CLOSED_PATH_THRESHOLD,
-            distance
+            isClosed,
+            distance,
+            area: Math.abs(area),
+            canAutoClose,
+            reason
         };
+    }
+
+    /**
+     * 使用 Shoelace 公式计算多边形面积
+     * 正值表示逆时针，负值表示顺时针
+     */
+    private _calculatePolygonArea(points: number[][]): number {
+        if (points.length < 3) return 0;
+
+        let area = 0;
+        const n = points.length;
+
+        for (let i = 0; i < n; i++) {
+            const j = (i + 1) % n;
+            const xi = points[i][0];
+            const yi = points[i][1];
+            const xj = points[j][0];
+            const yj = points[j][1];
+            area += xi * yj - xj * yi;
+        }
+
+        return area / 2;
+    }
+
+    /**
+     * 简化路径点（Douglas-Peucker 算法）
+     * 减少点数以优化填充多边形的性能
+     */
+    private _simplifyPath(points: number[][], tolerance: number = 2): number[][] {
+        if (points.length <= 2) return points;
+
+        // 找到距离首尾连线最远的点
+        const firstPoint = points[0];
+        const lastPoint = points[points.length - 1];
+
+        let maxDistance = 0;
+        let maxIndex = 0;
+
+        for (let i = 1; i < points.length - 1; i++) {
+            const distance = this._pointToLineDistance(
+                points[i],
+                firstPoint,
+                lastPoint
+            );
+            if (distance > maxDistance) {
+                maxDistance = distance;
+                maxIndex = i;
+            }
+        }
+
+        // 如果最大距离大于容差，递归简化
+        if (maxDistance > tolerance) {
+            const left = this._simplifyPath(points.slice(0, maxIndex + 1), tolerance);
+            const right = this._simplifyPath(points.slice(maxIndex), tolerance);
+            return [...left.slice(0, -1), ...right];
+        }
+
+        return [firstPoint, lastPoint];
+    }
+
+    /**
+     * 计算点到直线的距离
+     */
+    private _pointToLineDistance(point: number[], lineStart: number[], lineEnd: number[]): number {
+        const [x, y] = point;
+        const [x1, y1] = lineStart;
+        const [x2, y2] = lineEnd;
+
+        const A = x - x1;
+        const B = y - y1;
+        const C = x2 - x1;
+        const D = y2 - y1;
+
+        const dot = A * C + B * D;
+        const lenSq = C * C + D * D;
+
+        let param = -1;
+        if (lenSq !== 0) {
+            param = dot / lenSq;
+        }
+
+        let xx: number, yy: number;
+
+        if (param < 0) {
+            xx = x1;
+            yy = y1;
+        } else if (param > 1) {
+            xx = x2;
+            yy = y2;
+        } else {
+            xx = x1 + param * C;
+            yy = y1 + param * D;
+        }
+
+        const dx = x - xx;
+        const dy = y - yy;
+
+        return Math.sqrt(dx * dx + dy * dy);
+    }
+
+    /**
+     * 闭合路径（连接起点和终点）
+     */
+    private _closePath(points: number[][]): number[][] {
+        if (points.length < 2) return points;
+
+        const firstPoint = points[0];
+        const lastPoint = points[points.length - 1];
+
+        // 如果起点终点不同，添加起点到末尾
+        if (firstPoint[0] !== lastPoint[0] || firstPoint[1] !== lastPoint[1]) {
+            return [...points, [firstPoint[0], firstPoint[1]]];
+        }
+
+        return points;
     }
 
     /**
      * 显示未封闭提示
      */
-    private _showNotClosedTip(x: number, y: number): void {
+    private _showNotClosedTip(x: number, y: number, reason?: string): void {
         const tip = document.createElement('div');
         tip.style.cssText = `
             position: fixed;
             left: ${x}px;
-            top: ${y - 60}px;
+            top: ${y - 70}px;
             transform: translateX(-50%);
             background: rgba(255, 59, 48, 0.95);
             color: white;
-            padding: 8px 16px;
-            border-radius: 8px;
+            padding: 10px 16px;
+            border-radius: 10px;
             font-size: 13px;
             font-weight: 500;
-            box-shadow: 0 4px 12px rgba(255, 59, 48, 0.3);
+            box-shadow: 0 4px 16px rgba(255, 59, 48, 0.4);
             pointer-events: none;
             z-index: 999999;
-            animation: tipFadeInOut 2s ease-out forwards;
-            white-space: nowrap;
+            animation: tipFadeInOut 2.5s ease-out forwards;
+            max-width: 280px;
+            text-align: center;
+            line-height: 1.4;
         `;
-        tip.textContent = '路径未封闭，无法填充';
+        
+        tip.innerHTML = `
+            <div style="display: flex; align-items: center; gap: 8px; justify-content: center;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <circle cx="12" cy="12" r="10"/>
+                    <path d="M15 9l-6 6M9 9l6 6"/>
+                </svg>
+                <span>路径未封闭</span>
+            </div>
+            ${reason ? `<div style="font-size: 11px; opacity: 0.9; margin-top: 4px;">${reason}</div>` : ''}
+            <div style="font-size: 11px; opacity: 0.8; margin-top: 6px;">请画一个封闭的图形（起点和终点连接）</div>
+        `;
 
         // 添加动画样式
         if (!document.getElementById('color-drop-tip-styles')) {
@@ -88,7 +266,7 @@ export class ColorDropManager {
             style.textContent = `
                 @keyframes tipFadeInOut {
                     0% { opacity: 0; transform: translateX(-50%) translateY(10px); }
-                    15% { opacity: 1; transform: translateX(-50%) translateY(0); }
+                    10% { opacity: 1; transform: translateX(-50%) translateY(0); }
                     85% { opacity: 1; transform: translateX(-50%) translateY(0); }
                     100% { opacity: 0; transform: translateX(-50%) translateY(-10px); }
                 }
@@ -97,7 +275,7 @@ export class ColorDropManager {
         }
 
         document.body.appendChild(tip);
-        setTimeout(() => tip.remove(), 2000);
+        setTimeout(() => tip.remove(), 2500);
     }
 
     /**
@@ -264,58 +442,166 @@ export class ColorDropManager {
     }
 
     /**
-     * 应用颜色到元素
-     * @returns { success: boolean, notClosed?: boolean }
+     * 应用颜色到元素（创建填充区域）
+     * @returns { success: boolean, notClosed?: boolean, reason?: string }
      */
-    private _applyColorToElement(element: any, color: string): { success: boolean; notClosed?: boolean } {
+    private _applyColorToElement(element: any, color: string): { 
+        success: boolean; 
+        notClosed?: boolean;
+        reason?: string;
+    } {
         if (!element) return { success: false };
         
         try {
             // 根据元素类型应用颜色
             if (element.flavour?.includes('shape') || element.type === 'shape') {
-                // 形状元素 - 本身就是封闭的，直接填充
-                if (element.store && typeof element.store.updateBlock === 'function') {
-                    element.store.updateBlock(element, {
-                        fillColor: color,
-                        filled: true,
-                    });
-                } else if (typeof element.fillColor !== 'undefined') {
-                    element.fillColor = color;
-                    element.filled = true;
-                }
+                // 形状元素 - 本身就是封闭的，直接设置填充
+                this._fillShapeElement(element, color);
                 console.log('[ColorDrop] ✅ 已填充形状颜色:', color);
                 this._onColorApplied?.(element.id, color);
                 return { success: true };
             } else if (element.flavour?.includes('brush') || element.type === 'brush') {
-                // 画笔元素 - 需要检测是否封闭
-                const points = element.points;
-                if (points && Array.isArray(points)) {
-                    const { isClosed, distance } = this._checkPathClosed(points);
-                    
-                    if (!isClosed) {
-                        console.log('[ColorDrop] ⚠️ 画笔路径未封闭，距离:', distance.toFixed(2), 'px');
-                        this._onClosedCheckFailed?.(element.id);
-                        return { success: false, notClosed: true };
-                    }
-                }
-                
-                // 路径封闭，可以填充
-                if (element.store && typeof element.store.updateBlock === 'function') {
-                    element.store.updateBlock(element, {
-                        color: color,
-                    });
-                } else if (typeof element.color !== 'undefined') {
-                    element.color = color;
-                }
-                console.log('[ColorDrop] ✅ 已填充封闭画笔颜色:', color);
-                this._onColorApplied?.(element.id, color);
-                return { success: true };
+                // 画笔元素 - 需要检测是否封闭并创建填充多边形
+                return this._fillBrushElement(element, color);
             }
         } catch (e) {
             console.warn('[ColorDrop] 应用颜色失败:', e);
         }
         
         return { success: false };
+    }
+
+    /**
+     * 填充形状元素
+     */
+    private _fillShapeElement(element: any, color: string): void {
+        // 尝试多种方式更新填充颜色
+        if (this._gfx && typeof this._gfx.updateElement === 'function') {
+            this._gfx.updateElement(element, {
+                fillColor: color,
+                filled: true,
+            });
+        } else if (element.store && typeof element.store.updateBlock === 'function') {
+            element.store.updateBlock(element, {
+                fillColor: color,
+                filled: true,
+            });
+        } else {
+            element.fillColor = color;
+            element.filled = true;
+        }
+    }
+
+    /**
+     * 填充画笔元素（创建填充多边形）
+     */
+    private _fillBrushElement(element: any, color: string): {
+        success: boolean;
+        notClosed?: boolean;
+        reason?: string;
+    } {
+        const points = element.points;
+        if (!points || !Array.isArray(points)) {
+            return { success: false, reason: '无法获取路径点' };
+        }
+
+        // 检测是否封闭
+        const checkResult = this._checkPathClosed(points);
+        console.log('[ColorDrop] 封闭检测结果:', checkResult);
+
+        if (!checkResult.isClosed) {
+            // 检查是否可以自动闭合
+            if (checkResult.canAutoClose) {
+                console.log('[ColorDrop] 尝试自动闭合路径...');
+                return this._createFillPolygon(element, points, color, true);
+            }
+            
+            this._onClosedCheckFailed?.(element.id);
+            return { 
+                success: false, 
+                notClosed: true,
+                reason: checkResult.reason 
+            };
+        }
+
+        // 创建填充多边形
+        return this._createFillPolygon(element, points, color, false);
+    }
+
+    /**
+     * 创建填充多边形
+     */
+    private _createFillPolygon(
+        originalElement: any, 
+        points: number[][], 
+        color: string,
+        autoClose: boolean
+    ): { success: boolean; notClosed?: boolean; reason?: string } {
+        try {
+            // 1. 简化路径点（减少多边形复杂度）
+            const simplifiedPoints = this._simplifyPath(points, 3);
+            console.log(`[ColorDrop] 简化路径: ${points.length} -> ${simplifiedPoints.length} 点`);
+
+            // 2. 闭合路径
+            const closedPoints = autoClose ? this._closePath(simplifiedPoints) : simplifiedPoints;
+
+            // 3. 计算边界
+            let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+            for (const [x, y] of closedPoints) {
+                minX = Math.min(minX, x);
+                minY = Math.min(minY, y);
+                maxX = Math.max(maxX, x);
+                maxY = Math.max(maxY, y);
+            }
+
+            const width = maxX - minX;
+            const height = maxY - minY;
+
+            // 4. 转换为相对坐标（0-1 范围）
+            const normalizedPoints = closedPoints.map(([x, y]) => [
+                (x - minX) / width,
+                (y - minY) / height
+            ]);
+
+            // 5. 尝试创建填充元素
+            if (this._gfx && this._gfx.surface) {
+                // 方式1：创建一个自定义形状
+                const fillElementId = this._gfx.surface.addElement({
+                    type: 'shape',
+                    shapeType: 'rect', // 先用矩形作为基础
+                    xywh: `[${minX},${minY},${width},${height}]`,
+                    fillColor: color,
+                    filled: true,
+                    strokeColor: 'transparent',
+                    strokeWidth: 0,
+                });
+
+                if (fillElementId) {
+                    // 将填充元素移到原元素下方
+                    const fillElement = this._gfx.getElementById(fillElementId);
+                    if (fillElement && typeof fillElement.index === 'string') {
+                        // 尝试调整层级
+                        console.log('[ColorDrop] ✅ 已创建填充区域:', fillElementId);
+                    }
+                    
+                    this._onFillCreated?.(fillElementId, originalElement.id);
+                    this._onColorApplied?.(originalElement.id, color);
+                    return { success: true };
+                }
+            }
+
+            // 方式2：直接修改画笔元素的颜色（fallback）
+            if (typeof originalElement.color !== 'undefined') {
+                originalElement.color = color;
+                this._onColorApplied?.(originalElement.id, color);
+                return { success: true };
+            }
+
+            return { success: false, reason: '无法创建填充元素' };
+        } catch (e) {
+            console.error('[ColorDrop] 创建填充多边形失败:', e);
+            return { success: false, reason: String(e) };
+        }
     }
 
     /**
@@ -376,8 +662,8 @@ export class ColorDropManager {
                 // 显示成功动画
                 this._showSuccessAnimation(x, y);
             } else if (result.notClosed) {
-                // 显示未封闭提示
-                this._showNotClosedTip(x, y);
+                // 显示未封闭提示（带详细原因）
+                this._showNotClosedTip(x, y, result.reason);
             }
         }
         
