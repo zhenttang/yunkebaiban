@@ -21,7 +21,6 @@ import { DocDisplayMetaService } from '@yunke/core/modules/doc-display-meta';
 import { EditorService } from '@yunke/core/modules/editor';
 import { JournalService } from '@yunke/core/modules/journal';
 import { SharePageButton } from '@yunke/core/modules/share-menu';
-import { CommunityShareButton } from './community-share-button';
 import { TemplateDocService } from '@yunke/core/modules/template-doc';
 import { ViewIcon, ViewTitle } from '@yunke/core/modules/workbench';
 import type { Workspace } from '@yunke/core/modules/workspace';
@@ -182,14 +181,6 @@ export function NormalPageHeader({ page, workspace }: PageHeaderProps) {
 
       {page && !hideShare ? (
         <SharePageButton workspace={workspace} page={page} />
-      ) : null}
-
-      {page && !hideShare ? (
-        <CommunityShareButton 
-          docId={page.id} 
-          workspaceId={workspace.id} 
-          docTitle={page.meta?.title || 'Untitled'} 
-        />
       ) : null}
 
       {showDivider ? (
