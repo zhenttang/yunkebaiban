@@ -287,6 +287,12 @@ export class EdgelessAnimationToolButton extends LitElement {
     @state()
     accessor enableTweenAnimation = false; // 是否启用补间动画
 
+    @state()
+    accessor brushSmoothing = 50; // 笔刷平滑度 0-100
+
+    @state()
+    accessor brushSmoothingMode: 'pulled-string' | 'moving-average' | 'catmull-rom' | 'bezier' = 'pulled-string'; // 平滑算法
+
     // Frame 列表和当前 Frame 内的子帧列表
     private _frames: FrameModel[] = [];
     private _subFrames: SubFrame[] = [];
@@ -926,6 +932,65 @@ export class EdgelessAnimationToolButton extends LitElement {
                     </div>
                 `}
             </div>
+
+            <!-- 笔刷设置区域 -->
+            <div style="padding: 16px; border-top: 1px solid rgba(0,0,0,0.06);">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16" style="color: #10b981;">
+                            <path d="M12 19l7-7 3 3-7 7-3-3z"></path>
+                            <path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path>
+                            <path d="M2 2l7.586 7.586"></path>
+                            <circle cx="11" cy="11" r="2"></circle>
+                        </svg>
+                        <span style="font-size: 12px; font-weight: 700; color: #333; text-transform: uppercase; letter-spacing: 0.5px;">笔刷增强</span>
+                    </div>
+                    <div style="font-size: 10px; color: #10b981; background: rgba(16, 185, 129, 0.1); padding: 2px 8px; border-radius: 10px;">
+                        ✓ 已启用压感
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 16px; flex-wrap: wrap;">
+                    <!-- 平滑度滑块 -->
+                    <div style="flex: 1; min-width: 150px;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+                            <label style="font-size: 11px; font-weight: 600; color: #666;">平滑度</label>
+                            <span style="font-size: 11px; font-weight: 700; color: #10b981;">${this.brushSmoothing}%</span>
+                        </div>
+                        <input type="range" id="brush-smoothing-slider" min="0" max="100" value="${this.brushSmoothing}" style="
+                            width: 100%;
+                            height: 6px;
+                            -webkit-appearance: none;
+                            background: linear-gradient(to right, #10b981 0%, #10b981 ${this.brushSmoothing}%, #e5e5e5 ${this.brushSmoothing}%, #e5e5e5 100%);
+                            border-radius: 3px;
+                            outline: none;
+                            cursor: pointer;
+                        "/>
+                    </div>
+
+                    <!-- 平滑算法选择 -->
+                    <div style="flex: 1; min-width: 150px;">
+                        <label style="display: block; font-size: 11px; font-weight: 600; color: #666; margin-bottom: 6px;">平滑算法</label>
+                        <select id="smoothing-mode-select" style="width: 100%; padding: 6px 10px; border: 1px solid rgba(0,0,0,0.1); border-radius: 6px; background: #fff; font-size: 11px; cursor: pointer; outline: none;">
+                            <option value="pulled-string" ${this.brushSmoothingMode === 'pulled-string' ? 'selected' : ''}>拉绳平滑 (推荐)</option>
+                            <option value="moving-average" ${this.brushSmoothingMode === 'moving-average' ? 'selected' : ''}>移动平均</option>
+                            <option value="catmull-rom" ${this.brushSmoothingMode === 'catmull-rom' ? 'selected' : ''}>Catmull-Rom 样条</option>
+                            <option value="bezier" ${this.brushSmoothingMode === 'bezier' ? 'selected' : ''}>贝塞尔曲线</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- 平滑效果说明 -->
+                <div style="margin-top: 12px; padding: 8px 10px; background: rgba(16, 185, 129, 0.05); border-radius: 6px; font-size: 10px; color: #666; line-height: 1.5;">
+                    ${this.brushSmoothingMode === 'pulled-string' 
+                        ? '🎯 <strong>拉绳平滑</strong>：模拟绳子拖拽效果，产生非常流畅的曲线，适合签名和手写'
+                        : this.brushSmoothingMode === 'moving-average'
+                        ? '📊 <strong>移动平均</strong>：使用加权平均算法，响应较快，适合快速绘制'
+                        : this.brushSmoothingMode === 'catmull-rom'
+                        ? '🔄 <strong>Catmull-Rom</strong>：数学样条曲线，产生自然的曲线过渡'
+                        : '📐 <strong>贝塞尔曲线</strong>：经典平滑算法，适合精细绘制'}
+                </div>
+            </div>
         `;
 
         // 绑定事件
@@ -1100,6 +1165,51 @@ export class EdgelessAnimationToolButton extends LitElement {
                 }
             });
         });
+
+        // 笔刷平滑度滑块
+        this._panelContainer.querySelector('#brush-smoothing-slider')?.addEventListener('input', (e) => {
+            this.brushSmoothing = parseInt((e.target as HTMLInputElement).value);
+            // 更新滑块背景
+            const slider = e.target as HTMLInputElement;
+            slider.style.background = `linear-gradient(to right, #10b981 0%, #10b981 ${this.brushSmoothing}%, #e5e5e5 ${this.brushSmoothing}%, #e5e5e5 100%)`;
+            // 更新显示的数值
+            const valueSpan = this._panelContainer?.querySelector('#brush-smoothing-slider')?.parentElement?.querySelector('span:last-child');
+            if (valueSpan) {
+                valueSpan.textContent = `${this.brushSmoothing}%`;
+            }
+            // 应用到笔刷
+            this._applyBrushSmoothing();
+        });
+
+        // 平滑算法选择
+        this._panelContainer.querySelector('#smoothing-mode-select')?.addEventListener('change', (e) => {
+            this.brushSmoothingMode = (e.target as HTMLSelectElement).value as any;
+            this._updatePanelContent();
+            this._applyBrushSmoothing();
+        });
+    }
+
+    /**
+     * 应用笔刷平滑设置到画布
+     */
+    private _applyBrushSmoothing(): void {
+        // 这里可以将平滑设置应用到 BrushTool
+        // 由于 BlockSuite 的笔刷工具封装较深，需要通过事件或全局状态传递
+        console.log('[Animation] 笔刷平滑设置:', {
+            smoothing: this.brushSmoothing,
+            mode: this.brushSmoothingMode
+        });
+        
+        // 保存设置到 localStorage，供 BrushTool 读取
+        try {
+            localStorage.setItem('yunke-brush-smoothing', JSON.stringify({
+                amount: this.brushSmoothing,
+                mode: this.brushSmoothingMode,
+                enabled: this.brushSmoothing > 0
+            }));
+        } catch (e) {
+            // 忽略存储错误
+        }
     }
 
     /**
@@ -1664,37 +1774,56 @@ export class EdgelessAnimationToolButton extends LitElement {
         this._tweenAnimationId = requestAnimationFrame(animate);
     }
 
+    // 每帧元素状态缓存：frameIndex -> elementIndex -> state
+    private _frameElementStates: Map<number, Map<number, { x: number; y: number; w: number; h: number; rotation: number }>> = new Map();
+
     /**
-     * 缓存所有元素的初始状态
+     * 缓存所有元素的初始状态（按帧和元素索引）
      */
     private _cacheAllElementStates(): void {
         if (!this.gfx) return;
 
         this._elementInitialStates.clear();
+        this._frameElementStates.clear();
 
-        // 遍历所有帧的所有元素
-        this._frameElementsMap.forEach((elementIds) => {
-            for (const elementId of elementIds) {
-                if (this._elementInitialStates.has(elementId)) continue;
-
+        // 遍历所有帧，记录每个帧中每个元素的状态
+        this._frameElementsMap.forEach((elementIds, frameIndex) => {
+            const frameStates = new Map<number, { x: number; y: number; w: number; h: number; rotation: number }>();
+            
+            elementIds.forEach((elementId, elementIndex) => {
                 const element = this.gfx!.getElementById(elementId) as any;
                 if (element && element.xywh) {
                     const bound = Bound.deserialize(element.xywh);
-                    this._elementInitialStates.set(elementId, {
+                    frameStates.set(elementIndex, {
                         x: bound.x,
                         y: bound.y,
+                        w: bound.w,
+                        h: bound.h,
                         rotation: element.rotate || 0,
-                        scaleX: 1,
-                        scaleY: 1,
-                        opacity: 1,
                     });
+                    
+                    // 也缓存到 elementInitialStates（保持兼容）
+                    if (!this._elementInitialStates.has(elementId)) {
+                        this._elementInitialStates.set(elementId, {
+                            x: bound.x,
+                            y: bound.y,
+                            rotation: element.rotate || 0,
+                            scaleX: 1,
+                            scaleY: 1,
+                            opacity: 1,
+                        });
+                    }
                 }
-            }
+            });
+            
+            this._frameElementStates.set(frameIndex, frameStates);
         });
+        
+        console.log('[Animation] 缓存帧状态:', this._frameElementStates.size, '帧');
     }
 
     /**
-     * 应用补间淡入淡出效果
+     * 应用补间变换（位置 + 透明度）
      */
     private _applyTweenFade(currentFrame: number, frameProgress: number): void {
         if (!this.gfx) return;
@@ -1702,29 +1831,93 @@ export class EdgelessAnimationToolButton extends LitElement {
         const easingFn = EASING_FUNCTIONS[this.currentEasing] || EASING_FUNCTIONS['linear'];
         const easedProgress = easingFn(frameProgress);
         const frameCount = this._frameElementsMap.size;
+        const nextFrame = (currentFrame + 1) % frameCount;
 
-        // 隐藏所有帧
+        // 获取当前帧和下一帧的元素
+        const currentElementIds = this._frameElementsMap.get(currentFrame) || [];
+        const nextElementIds = this._frameElementsMap.get(nextFrame) || [];
+        const currentFrameStates = this._frameElementStates.get(currentFrame);
+        const nextFrameStates = this._frameElementStates.get(nextFrame);
+
+        // 隐藏所有帧的元素
         for (let i = 0; i < frameCount; i++) {
+            if (i === currentFrame || i === nextFrame) continue;
             const elementIds = this._frameElementsMap.get(i) || [];
             for (const id of elementIds) {
                 const element = this.gfx.getElementById(id) as any;
                 if (element) {
-                    // 当前帧：从完全可见淡出
-                    // 下一帧：淡入到完全可见
-                    let opacity = 0;
-                    
-                    if (i === currentFrame) {
-                        // 当前帧淡出
-                        opacity = 1 - easedProgress;
-                    } else if (i === (currentFrame + 1) % frameCount) {
-                        // 下一帧淡入
-                        opacity = easedProgress;
-                    }
-                    
-                    element.opacity = opacity;
+                    element.opacity = 0;
                 }
             }
         }
+
+        // 对当前帧的元素应用补间
+        currentElementIds.forEach((elementId, elementIndex) => {
+            const element = this.gfx!.getElementById(elementId) as any;
+            if (!element) return;
+
+            const currentState = currentFrameStates?.get(elementIndex);
+            const nextState = nextFrameStates?.get(elementIndex);
+
+            if (currentState && nextState) {
+                // 有对应的下一帧状态，进行位置补间
+                const tweenedX = currentState.x + (nextState.x - currentState.x) * easedProgress;
+                const tweenedY = currentState.y + (nextState.y - currentState.y) * easedProgress;
+                const tweenedW = currentState.w + (nextState.w - currentState.w) * easedProgress;
+                const tweenedH = currentState.h + (nextState.h - currentState.h) * easedProgress;
+
+                // 更新元素位置
+                const newXywh = new Bound(tweenedX, tweenedY, tweenedW, tweenedH).serialize();
+                
+                try {
+                    // 直接更新 xywh（这是 GfxModel 的属性）
+                    if (element.xywh !== newXywh) {
+                        element.xywh = newXywh;
+                    }
+                } catch (e) {
+                    // 忽略错误
+                }
+
+                // 当前帧元素淡出
+                element.opacity = 1 - easedProgress;
+            } else {
+                // 没有对应的下一帧，只做淡出
+                element.opacity = 1 - easedProgress;
+            }
+        });
+
+        // 对下一帧的元素应用补间
+        nextElementIds.forEach((elementId, elementIndex) => {
+            const element = this.gfx!.getElementById(elementId) as any;
+            if (!element) return;
+
+            const currentState = currentFrameStates?.get(elementIndex);
+            const nextState = nextFrameStates?.get(elementIndex);
+
+            if (currentState && nextState) {
+                // 有对应的当前帧状态，进行位置补间（从当前位置过渡）
+                const tweenedX = currentState.x + (nextState.x - currentState.x) * easedProgress;
+                const tweenedY = currentState.y + (nextState.y - currentState.y) * easedProgress;
+                const tweenedW = currentState.w + (nextState.w - currentState.w) * easedProgress;
+                const tweenedH = currentState.h + (nextState.h - currentState.h) * easedProgress;
+
+                const newXywh = new Bound(tweenedX, tweenedY, tweenedW, tweenedH).serialize();
+                
+                try {
+                    if (element.xywh !== newXywh) {
+                        element.xywh = newXywh;
+                    }
+                } catch (e) {
+                    // 忽略错误
+                }
+
+                // 下一帧元素淡入
+                element.opacity = easedProgress;
+            } else {
+                // 没有对应的当前帧，只做淡入
+                element.opacity = easedProgress;
+            }
+        });
     }
 
     /**
@@ -1768,18 +1961,38 @@ export class EdgelessAnimationToolButton extends LitElement {
     }
 
     /**
-     * 恢复所有元素的原始透明度
+     * 恢复所有元素的原始状态（透明度和位置）
      */
     private _restoreElementOpacity(): void {
         if (!this.gfx) return;
         
-        this._frameElementsMap.forEach((elementIds) => {
-            for (const id of elementIds) {
-                const element = this.gfx!.getElementById(id) as any;
-                if (element) {
-                    element.opacity = 1;
+        // 恢复每个帧元素的原始位置和透明度
+        this._frameElementStates.forEach((frameStates, frameIndex) => {
+            const elementIds = this._frameElementsMap.get(frameIndex) || [];
+            
+            elementIds.forEach((elementId, elementIndex) => {
+                const element = this.gfx!.getElementById(elementId) as any;
+                if (!element) return;
+                
+                // 恢复透明度
+                element.opacity = 1;
+                
+                // 恢复位置
+                const originalState = frameStates.get(elementIndex);
+                if (originalState) {
+                    try {
+                        const originalXywh = new Bound(
+                            originalState.x,
+                            originalState.y,
+                            originalState.w,
+                            originalState.h
+                        ).serialize();
+                        element.xywh = originalXywh;
+                    } catch (e) {
+                        // 忽略错误
+                    }
                 }
-            }
+            });
         });
     }
 
