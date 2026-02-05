@@ -6,7 +6,7 @@ import { DocsService } from '@yunke/core/modules/doc';
 import { EditorService } from '@yunke/core/modules/editor';
 import { WorkspaceService } from '@yunke/core/modules/workspace';
 import { track } from '@yunke/track';
-import { useLiveData, useService } from '@toeverything/infra';
+import { useLiveData, useService, useServiceOptional } from '@toeverything/infra';
 import clsx from 'clsx';
 import type { HTMLAttributes } from 'react';
 
@@ -26,16 +26,18 @@ export const BlocksuiteHeaderTitle = (props: BlockSuiteHeaderTitleProps) => {
   const workspaceService = useService(WorkspaceService);
   const isSharedMode = workspaceService.workspace.openOptions.isSharedMode;
   const docsService = useService(DocsService);
-  const editorService = useService(EditorService);
+  // 使用 useServiceOptional 避免在没有 EditorScope 时报错
+  const editorService = useServiceOptional(EditorService);
   
   // ✅ 安全地获取文档ID：使用可选链和 try-catch 保护
-  const editor = editorService.editor;
+  const editor = editorService?.editor;
   let docId: string | undefined;
   
   // 尝试安全地访问 editor.doc.id
   try {
     // editor.doc 是 getter，可能会抛出错误如果 DocScope 未初始化
-    docId = editor.doc?.id;
+    // 使用可选链处理 editor 可能为 undefined 的情况
+    docId = editor?.doc?.id;
   } catch (error) {
     // Editor.doc 访问失败（DocScope 未初始化），docId 保持 undefined
     // 这是正常的，组件会在 DocScope 初始化后重新渲染

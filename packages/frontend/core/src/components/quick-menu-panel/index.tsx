@@ -73,7 +73,7 @@ export const QuickMenuPanel = memo(({ workspaceId, onClose }: QuickMenuPanelProp
     },
     {
       icon: <TagsIcon />,
-      title: t['com.yunke.tags.header']?.() || 'Tags',
+      title: t['com.yunke.rootAppSidebar.tags']?.() || '标签',
       description: t['com.yunke.quick-menu.tags.description']?.() || 'View all tags',
       onClick: () => {
         track.$.quickMenu.$.navigate({ to: 'tags' });

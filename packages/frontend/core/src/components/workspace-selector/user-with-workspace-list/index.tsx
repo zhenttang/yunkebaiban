@@ -6,7 +6,7 @@ import { FeatureFlagService } from '@yunke/core/modules/feature-flag';
 import { type WorkspaceMetadata } from '@yunke/core/modules/workspace';
 import { useI18n } from '@yunke/i18n';
 import { track } from '@yunke/track';
-import { Logo1Icon, SettingsIcon } from '@blocksuite/icons/rc';
+import { CloudWorkspaceIcon, Logo1Icon, SettingsIcon } from '@blocksuite/icons/rc';
 import { useLiveData, useService } from '@toeverything/infra';
 import { useCallback } from 'react';
 
@@ -120,6 +120,12 @@ export const UserWithWorkspaceList = ({
     onEventEnd?.();
   }, [onEventEnd, workspaceDialogService]);
 
+  const onSignInCloud = useCallback(() => {
+    track.$.navigationPanel.workspaceList.requestSignIn();
+    globalDialogService.open('sign-in', {});
+    onEventEnd?.();
+  }, [globalDialogService, onEventEnd]);
+
   return (
     <>
       <ScrollableContainer
@@ -139,6 +145,21 @@ export const UserWithWorkspaceList = ({
           onAddWorkspace={onAddWorkspace}
           onNewWorkspace={onNewWorkspace}
         />
+        {/* 未登录时显示登录云端按钮 */}
+        {!isAuthenticated && (
+          <MenuItem
+            block={true}
+            prefixIcon={<CloudWorkspaceIcon />}
+            prefixIconClassName={addWorkspaceStyles.prefixIcon}
+            onClick={onSignInCloud}
+            data-testid="workspace-list-sign-in-cloud"
+            className={addWorkspaceStyles.ItemContainer}
+          >
+            <div className={addWorkspaceStyles.ItemText}>
+              {t['com.yunke.workspace.cloud.auth']?.() ?? '登录云端'}
+            </div>
+          </MenuItem>
+        )}
         <MenuItem
           block={true}
           prefixIcon={<SettingsIcon />}

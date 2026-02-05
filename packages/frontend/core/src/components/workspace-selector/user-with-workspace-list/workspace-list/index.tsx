@@ -171,6 +171,12 @@ const CloudWorkSpaceList = ({
     });
   }, [globalDialogService, server.baseUrl]);
 
+  // 如果没有云端工作区且未登录，不显示这个服务器区块
+  // 登录入口会移到底部的 footer 中
+  if (workspaces.length === 0 && accountStatus === 'unauthenticated') {
+    return null;
+  }
+
   return (
     <>
       <WorkspaceServerInfo
