@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>行书连笔字帖</title>
+    <style>
+        @font-face {
+            font-family: 'XingShu';
+            src: url('https://cdn.jsdelivr.net/gh/AlanLee-Phy/free-font-collection@main/fonts/%E8%A1%8C%E4%B9%A6%E5%AD%97%E4%BD%93/%E9%82%AF%E9%83%B8%E5%8D%97%E6%B5%B7%E8%A1%8C%E4%B9%A6.ttf') format('truetype');
+        }
+        
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #f8f5f0 0%, #ece6db 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container { max-width: 460px; margin: 0 auto; }
+        
+        h1 { text-align: center; color: #3d3d3d; margin-bottom: 6px; font-size: 22px; }
+        .subtitle { text-align: center; color: #888; margin-bottom: 20px; font-size: 13px; }
+        
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+            margin-bottom: 16px;
+        }
+        
+        .mode-tabs {
+            display: flex;
+            background: #f0ebe5;
+            border-radius: 10px;
+            padding: 4px;
+            margin-bottom: 16px;
+        }
+        
+        .mode-tab {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            background: transparent;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            color: #888;
+            transition: all 0.2s;
+        }
+        
+        .mode-tab.active {
+            background: white;
+            color: #333;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .input-row {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+        
+        .char-input {
+            flex: 1;
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 22px;
+            text-align: center;
+            font-family: 'XingShu', serif;
+        }
+        
+        .char-input:focus { outline: none; border-color: #8b5a2b; }
+        
+        .btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #8b5a2b, #6b4423);
+            color: white;
+        }
+        
+        .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(139,90,43,0.3); }
+        
+        .btn-secondary {
+            background: #f0ebe5;
+            color: #6b5a4a;
+        }
+        
+        .btn-secondary:hover { background: #e5ddd3; }
+        
+        .btn-danger {
+            background: #e74c3c;
+            color: white;
+        }
+        
+        .btn-success {
+            background: #27ae60;
+            color: white;
+        }
+        
+        .quick-chars {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 16px;
+            justify-content: center;
+        }
+        
+        .quick-btn {
+            width: 44px;
+            height: 44px;
+            border: 2px solid #e8e0d8;
+            border-radius: 8px;
+            background: #faf8f5;
+            font-size: 22px;
+            font-family: 'XingShu', serif;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .quick-btn:hover { border-color: #8b5a2b; background: #f5f0e8; }
+        .quick-btn.active { border-color: #8b5a2b; background: #8b5a2b; color: white; }
+        
+        .canvas-wrapper {
+            position: relative;
+            width: 360px;
+            height: 360px;
+            margin: 0 auto 16px;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 2px solid #d8d0c8;
+        }
+        
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            touch-action: none;
+        }
+        
+        #bgCanvas { z-index: 1; }
+        #refCanvas { z-index: 2; opacity: 0.15; }
+        #mainCanvas { z-index: 3; }
+        
+        .ref-char {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 280px;
+            font-family: 'XingShu', serif;
+            color: rgba(0,0,0,0.08);
+            pointer-events: none;
+            z-index: 2;
+            line-height: 1;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 5px;
+            background: #eee;
+            border-radius: 3px;
+            margin-bottom: 16px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #8b5a2b, #c9a66b);
+            width: 0%;
+            transition: width 0.05s;
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+        }
+        
+        .options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 14px;
+            border-top: 1px solid #eee;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .opt-group {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .opt-label { font-size: 12px; color: #888; }
+        
+        select {
+            padding: 6px 10px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            background: #faf8f5;
+            font-size: 13px;
+        }
+        
+        .toggle-btn {
+            padding: 6px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            background: #faf8f5;
+            font-size: 12px;
+            cursor: pointer;
+        }
+        
+        .toggle-btn.active { background: #8b5a2b; border-color: #8b5a2b; color: white; }
+        
+        .tip {
+            text-align: center;
+            color: #999;
+            font-size: 12px;
+            margin-top: 12px;
+            line-height: 1.5;
+        }
+        
+        .tip strong { color: #8b5a2b; }
+        
+        .record-indicator {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 10px;
+            background: #fff5f5;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            color: #e74c3c;
+            font-size: 14px;
+        }
+        
+        .record-indicator.active { display: flex; }
+        
+        .record-dot {
+            width: 10px;
+            height: 10px;
+            background: #e74c3c;
+            border-radius: 50%;
+            animation: pulse 1s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+        
+        .saved-list {
+            max-height: 150px;
+            overflow-y: auto;
+            margin-top: 12px;
+            border-top: 1px solid #eee;
+            padding-top: 12px;
+        }
+        
+        .saved-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 10px;
+            background: #f8f5f0;
+            border-radius: 8px;
+            margin-bottom: 6px;
+        }
+        
+        .saved-item-char {
+            font-family: 'XingShu', serif;
+            font-size: 20px;
+        }
+        
+        .saved-item-btns {
+            display: flex;
+            gap: 6px;
+        }
+        
+        .saved-item-btn {
+            padding: 4px 10px;
+            border: none;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>✍️ 行书连笔字帖</h1>
+        <p class="subtitle">录制你的连笔书写 · 播放动画教学</p>
+        
+        <div class="card">
+            <!-- 模式切换 -->
+            <div class="mode-tabs">
+                <button class="mode-tab active" data-mode="play">📺 播放模式</button>
+                <button class="mode-tab" data-mode="record">🎬 录制模式</button>
+            </div>
+            
+            <!-- 输入 -->
+            <div class="input-row">
+                <input type="text" class="char-input" id="charInput" maxlength="1" value="永">
+                <button class="btn btn-primary" id="loadBtn">设置</button>
+            </div>
+            
+            <!-- 快捷 -->
+            <div class="quick-chars" id="quickChars"></div>
+            
+            <!-- 录制指示器 -->
+            <div class="record-indicator" id="recordIndicator">
+                <div class="record-dot"></div>
+                <span>正在录制... 在格子内书写</span>
+            </div>
+            
+            <!-- 画布 -->
+            <div class="canvas-wrapper">
+                <canvas id="bgCanvas" width="360" height="360"></canvas>
+                <div class="ref-char" id="refChar">永</div>
+                <canvas id="mainCanvas" width="360" height="360"></canvas>
+            </div>
+            
+            <!-- 进度 -->
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress"></div>
+            </div>
+            
+            <!-- 播放控制 -->
+            <div class="controls" id="playControls">
+                <button class="btn btn-primary" id="playBtn">▶ 播放</button>
+                <button class="btn btn-secondary" id="resetBtn">↺ 重置</button>
+            </div>
+            
+            <!-- 录制控制 -->
+            <div class="controls" id="recordControls" style="display:none;">
+                <button class="btn btn-danger" id="startRecordBtn">⏺ 开始录制</button>
+                <button class="btn btn-secondary" id="clearRecordBtn">🗑 清除</button>
+                <button class="btn btn-success" id="saveRecordBtn">💾 保存</button>
+            </div>
+            
+            <!-- 选项 -->
+            <div class="options">
+                <div class="opt-group">
+                    <span class="opt-label">速度:</span>
+                    <select id="speedSelect">
+                        <option value="0.5">0.5x</option>
+                        <option value="1" selected>1x</option>
+                        <option value="1.5">1.5x</option>
+                        <option value="2">2x</option>
+                    </select>
+                </div>
+                <div class="opt-group">
+                    <span class="opt-label">笔宽:</span>
+                    <select id="widthSelect">
+                        <option value="4">细</option>
+                        <option value="8" selected>中</option>
+                        <option value="14">粗</option>
+                    </select>
+                </div>
+                <button class="toggle-btn active" id="gridBtn">格子</button>
+                <button class="toggle-btn active" id="refBtn">参考</button>
+            </div>
+            
+            <p class="tip" id="tip">
+                <strong>播放模式</strong>：选择已录制的字，点击播放观看连笔动画<br>
+                <strong>录制模式</strong>：在格子内书写，保存你的连笔笔迹
+            </p>
+            
+            <!-- 已保存列表 -->
+            <div class="saved-list" id="savedList"></div>
+        </div>
+    </div>
+
+    <script>
+        // ===== 配置 =====
+        const QUICK_CHARS = ['永', '人', '大', '天', '书', '法', '龙', '爱', '春', '福'];
+        const STORAGE_KEY = 'xingshu_recordings';
+        
+        // ===== 状态 =====
+        let currentChar = '永';
+        let currentMode = 'play';
+        let speed = 1;
+        let strokeWidth = 8;
+        let showGrid = true;
+        let showRef = true;
+        let isPlaying = false;
+        let isRecording = false;
+        let animationId = null;
+        
+        // 录制数据: { char: string, strokes: [{x, y, t, p}[]] }
+        let currentRecording = { char: '', strokes: [] };
+        let currentStroke = [];
+        let recordings = {}; // char -> recording
+        
+        // ===== DOM =====
+        const bgCanvas = document.getElementById('bgCanvas');
+        const mainCanvas = document.getElementById('mainCanvas');
+        const bgCtx = bgCanvas.getContext('2d');
+        const mainCtx = mainCanvas.getContext('2d');
+        const progressEl = document.getElementById('progress');
+        const refChar = document.getElementById('refChar');
+        const charInput = document.getElementById('charInput');
+        const quickChars = document.getElementById('quickChars');
+        const tipEl = document.getElementById('tip');
+        const savedList = document.getElementById('savedList');
+        const recordIndicator = document.getElementById('recordIndicator');
+        
+        // ===== 初始化 =====
+        function init() {
+            // 加载已保存的录制
+            loadRecordings();
+            
+            // 生成快捷按钮
+            QUICK_CHARS.forEach(c => {
+                const btn = document.createElement('button');
+                btn.className = 'quick-btn' + (c === currentChar ? ' active' : '');
+                btn.textContent = c;
+                btn.onclick = () => setChar(c);
+                quickChars.appendChild(btn);
+            });
+            
+            // 模式切换
+            document.querySelectorAll('.mode-tab').forEach(tab => {
+                tab.onclick = function() {
+                    document.querySelectorAll('.mode-tab').forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    setMode(this.dataset.mode);
+                };
+            });
+            
+            // 事件
+            document.getElementById('loadBtn').onclick = () => setChar(charInput.value.trim());
+            charInput.onkeypress = e => { if (e.key === 'Enter') setChar(charInput.value.trim()); };
+            
+            document.getElementById('playBtn').onclick = togglePlay;
+            document.getElementById('resetBtn').onclick = reset;
+            
+            document.getElementById('startRecordBtn').onclick = toggleRecord;
+            document.getElementById('clearRecordBtn').onclick = clearRecording;
+            document.getElementById('saveRecordBtn').onclick = saveRecording;
+            
+            document.getElementById('speedSelect').onchange = e => speed = parseFloat(e.target.value);
+            document.getElementById('widthSelect').onchange = e => {
+                strokeWidth = parseInt(e.target.value);
+                if (!isPlaying && !isRecording) redraw();
+            };
+            
+            document.getElementById('gridBtn').onclick = function() {
+                showGrid = !showGrid;
+                this.classList.toggle('active', showGrid);
+                drawGrid();
+            };
+            
+            document.getElementById('refBtn').onclick = function() {
+                showRef = !showRef;
+                this.classList.toggle('active', showRef);
+                refChar.style.display = showRef ? 'block' : 'none';
+            };
+            
+            // 画布事件
+            mainCanvas.addEventListener('pointerdown', onPointerDown);
+            mainCanvas.addEventListener('pointermove', onPointerMove);
+            mainCanvas.addEventListener('pointerup', onPointerUp);
+            mainCanvas.addEventListener('pointerleave', onPointerUp);
+            
+            // 初始绘制
+            drawGrid();
+            updateSavedList();
+            
+            // 加载内置示例（如果有的话）
+            loadBuiltinExamples();
+        }
+        
+        // ===== 内置示例 =====
+        function loadBuiltinExamples() {
+            // 预设一些简单的连笔数据作为示例
+            if (!recordings['一']) {
+                recordings['一'] = {
+                    char: '一',
+                    strokes: [[
+                        {x:0.15,y:0.5,t:0,p:0.3},{x:0.2,y:0.49,t:50,p:0.6},{x:0.3,y:0.48,t:100,p:0.8},
+                        {x:0.4,y:0.49,t:150,p:0.9},{x:0.5,y:0.5,t:200,p:0.9},{x:0.6,y:0.51,t:250,p:0.85},
+                        {x:0.7,y:0.5,t:300,p:0.7},{x:0.8,y:0.49,t:350,p:0.5},{x:0.85,y:0.5,t:400,p:0.3}
+                    ]]
+                };
+            }
+            saveRecordings();
+            updateSavedList();
+        }
+        
+        // ===== 模式切换 =====
+        function setMode(mode) {
+            currentMode = mode;
+            stopAll();
+            
+            document.getElementById('playControls').style.display = mode === 'play' ? 'flex' : 'none';
+            document.getElementById('recordControls').style.display = mode === 'record' ? 'flex' : 'none';
+            
+            if (mode === 'play') {
+                tipEl.innerHTML = '<strong>播放模式</strong>：选择已录制的字，点击播放观看连笔动画';
+            } else {
+                tipEl.innerHTML = '<strong>录制模式</strong>：点击"开始录制"，然后在格子内书写连笔';
+            }
+            
+            reset();
+        }
+        
+        // ===== 设置字符 =====
+        function setChar(char) {
+            if (!char) return;
+            currentChar = char;
+            charInput.value = char;
+            refChar.textContent = char;
+            
+            document.querySelectorAll('.quick-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.textContent === char);
+            });
+            
+            currentRecording = { char, strokes: [] };
+            reset();
+        }
+        
+        // ===== 绘制米字格 =====
+        function drawGrid() {
+            const ctx = bgCtx;
+            const w = bgCanvas.width;
+            const h = bgCanvas.height;
+            
+            ctx.clearRect(0, 0, w, h);
+            ctx.fillStyle = '#fffef8';
+            ctx.fillRect(0, 0, w, h);
+            
+            if (!showGrid) return;
+            
+            ctx.strokeStyle = '#e0d8d0';
+            ctx.lineWidth = 1;
+            ctx.setLineDash([8, 6]);
+            
+            ctx.beginPath();
+            ctx.moveTo(0, h/2); ctx.lineTo(w, h/2);
+            ctx.moveTo(w/2, 0); ctx.lineTo(w/2, h);
+            ctx.stroke();
+            
+            ctx.strokeStyle = '#f0e0e0';
+            ctx.beginPath();
+            ctx.moveTo(0, 0); ctx.lineTo(w, h);
+            ctx.moveTo(w, 0); ctx.lineTo(0, h);
+            ctx.stroke();
+            
+            ctx.setLineDash([]);
+        }
+        
+        // ===== 录制相关 =====
+        function toggleRecord() {
+            if (isRecording) {
+                stopRecording();
+            } else {
+                startRecording();
+            }
+        }
+        
+        function startRecording() {
+            isRecording = true;
+            currentRecording = { char: currentChar, strokes: [] };
+            currentStroke = [];
+            mainCtx.clearRect(0, 0, mainCanvas.width, mainCanvas.height);
+            progressEl.style.width = '0%';
+            
+            document.getElementById('startRecordBtn').textContent = '⏹ 停止录制';
+            document.getElementById('startRecordBtn').className = 'btn btn-secondary';
+            recordIndicator.classList.add('active');
+        }
+        
+        function stopRecording() {
+            isRecording = false;
+            if (currentStroke.length > 0) {
+                currentRecording.strokes.push([...currentStroke]);
+                currentStroke = [];
+            }
+            
+            document.getElementById('startRecordBtn').textContent = '⏺ 开始录制';
+            document.getElementById('startRecordBtn').className = 'btn btn-danger';
+            recordIndicator.classList.remove('active');
+            
+            if (currentRecording.strokes.length > 0) {
+                tipEl.innerHTML = `已录制 <strong>${currentRecording.strokes.length}</strong> 笔，点击"保存"存储`;
+            }
+        }
+        
+        function clearRecording() {
+            stopRecording();
+            currentRecording = { char: currentChar, strokes: [] };
+            mainCtx.clearRect(0, 0, mainCanvas.width, mainCanvas.height);
+            tipEl.innerHTML = '<strong>录制模式</strong>：点击"开始录制"，然后在格子内书写连笔';
+        }
+        
+        function saveRecording() {
+            if (currentRecording.strokes.length === 0) {
+                alert('请先录制内容');
+                return;
+            }
+            
+            recordings[currentRecording.char] = JSON.parse(JSON.stringify(currentRecording));
+            saveRecordings();
+            updateSavedList();
+            
+            tipEl.innerHTML = `<strong>"${currentRecording.char}"</strong> 已保存！`;
+        }
+        
+        // ===== 指针事件 =====
+        let isDrawing = false;
+        let startTime = 0;
+        
+        function onPointerDown(e) {
+            if (currentMode !== 'record' || !isRecording) return;
+            
+            isDrawing = true;
+            startTime = performance.now();
+            currentStroke = [];
+            
+            const rect = mainCanvas.getBoundingClientRect();
+            const x = (e.clientX - rect.left) / rect.width;
+            const y = (e.clientY - rect.top) / rect.height;
+            const p = e.pressure || 0.5;
+            
+            currentStroke.push({ x, y, t: 0, p });
+            
+            mainCtx.beginPath();
+            mainCtx.moveTo(e.clientX - rect.left, e.clientY - rect.top);
+        }
+        
+        function onPointerMove(e) {
+            if (!isDrawing) return;
+            
+            const rect = mainCanvas.getBoundingClientRect();
+            const x = (e.clientX - rect.left) / rect.width;
+            const y = (e.clientY - rect.top) / rect.height;
+            const t = performance.now() - startTime;
+            const p = e.pressure || 0.5;
+            
+            currentStroke.push({ x, y, t, p });
+            
+            // 实时绘制
+            const px = e.clientX - rect.left;
+            const py = e.clientY - rect.top;
+            
+            mainCtx.lineCap = 'round';
+            mainCtx.lineJoin = 'round';
+            mainCtx.strokeStyle = '#1a1a1a';
+            mainCtx.lineWidth = strokeWidth * (0.5 + p);
+            mainCtx.lineTo(px, py);
+            mainCtx.stroke();
+            mainCtx.beginPath();
+            mainCtx.moveTo(px, py);
+        }
+        
+        function onPointerUp() {
+            if (!isDrawing) return;
+            isDrawing = false;
+            
+            if (currentStroke.length > 2) {
+                currentRecording.strokes.push([...currentStroke]);
+            }
+            currentStroke = [];
+        }
+        
+        // ===== 播放相关 =====
+        function togglePlay() {
+            if (isPlaying) {
+                pause();
+            } else {
+                play();
+            }
+        }
+        
+        function play() {
+            const rec = recordings[currentChar];
+            if (!rec || rec.strokes.length === 0) {
+                tipEl.innerHTML = `<strong>"${currentChar}"</strong> 尚未录制，请切换到录制模式`;
+                return;
+            }
+            
+            isPlaying = true;
+            document.getElementById('playBtn').textContent = '⏸ 暂停';
+            
+            // 计算总时长
+            let totalDuration = 0;
+            rec.strokes.forEach(stroke => {
+                if (stroke.length > 0) {
+                    totalDuration += stroke[stroke.length - 1].t + 200; // 笔画间隔
+                }
+            });
+            
+            const playStartTime = performance.now();
+            mainCtx.clearRect(0, 0, mainCanvas.width, mainCanvas.height);
+            
+            function animate() {
+                if (!isPlaying) return;
+                
+                const elapsed = (performance.now() - playStartTime) * speed;
+                const progress = Math.min(1, elapsed / totalDuration);
+                progressEl.style.width = (progress * 100) + '%';
+                
+                // 绘制
+                mainCtx.clearRect(0, 0, mainCanvas.width, mainCanvas.height);
+                
+                let accTime = 0;
+                for (const stroke of rec.strokes) {
+                    drawStrokePartial(stroke, elapsed - accTime);
+                    if (stroke.length > 0) {
+                        accTime += stroke[stroke.length - 1].t + 200;
+                    }
+                }
+                
+                if (progress < 1) {
+                    animationId = requestAnimationFrame(animate);
+                } else {
+                    isPlaying = false;
+                    document.getElementById('playBtn').textContent = '▶ 重播';
+                }
+            }
+            
+            animate();
+        }
+        
+        function pause() {
+            isPlaying = false;
+            if (animationId) cancelAnimationFrame(animationId);
+            document.getElementById('playBtn').textContent = '▶ 继续';
+        }
+        
+        function drawStrokePartial(stroke, elapsedTime) {
+            if (elapsedTime <= 0 || stroke.length < 2) return;
+            
+            const w = mainCanvas.width;
+            const h = mainCanvas.height;
+            
+            mainCtx.lineCap = 'round';
+            mainCtx.lineJoin = 'round';
+            
+            for (let i = 1; i < stroke.length; i++) {
+                const pt = stroke[i];
+                if (pt.t > elapsedTime) break;
+                
+                const prev = stroke[i - 1];
+                const x1 = prev.x * w;
+                const y1 = prev.y * h;
+                const x2 = pt.x * w;
+                const y2 = pt.y * h;
+                const p = (prev.p + pt.p) / 2;
+                
+                mainCtx.strokeStyle = `rgba(26, 26, 26, ${0.8 + p * 0.2})`;
+                mainCtx.lineWidth = strokeWidth * (0.5 + p);
+                
+                mainCtx.beginPath();
+                mainCtx.moveTo(x1, y1);
+                mainCtx.lineTo(x2, y2);
+                mainCtx.stroke();
+            }
+        }
+        
+        function reset() {
+            stopAll();
+            mainCtx.clearRect(0, 0, mainCanvas.width, mainCanvas.height);
+            progressEl.style.width = '0%';
+            document.getElementById('playBtn').textContent = '▶ 播放';
+        }
+        
+        function stopAll() {
+            isPlaying = false;
+            isRecording = false;
+            isDrawing = false;
+            if (animationId) cancelAnimationFrame(animationId);
+            recordIndicator.classList.remove('active');
+            document.getElementById('startRecordBtn').textContent = '⏺ 开始录制';
+            document.getElementById('startRecordBtn').className = 'btn btn-danger';
+        }
+        
+        function redraw() {
+            const rec = recordings[currentChar];
+            if (!rec) return;
+            
+            mainCtx.clearRect(0, 0, mainCanvas.width, mainCanvas.height);
+            rec.strokes.forEach(stroke => drawStrokePartial(stroke, Infinity));
+        }
+        
+        // ===== 存储 =====
+        function loadRecordings() {
+            try {
+                const data = localStorage.getItem(STORAGE_KEY);
+                if (data) recordings = JSON.parse(data);
+            } catch (e) {
+                console.error('加载失败', e);
+            }
+        }
+        
+        function saveRecordings() {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(recordings));
+            } catch (e) {
+                console.error('保存失败', e);
+            }
+        }
+        
+        function updateSavedList() {
+            const chars = Object.keys(recordings);
+            if (chars.length === 0) {
+                savedList.innerHTML = '<div style="text-align:center;color:#999;font-size:13px;">暂无录制，切换到录制模式开始</div>';
+                return;
+            }
+            
+            savedList.innerHTML = '<div style="font-size:12px;color:#888;margin-bottom:8px;">已保存的连笔字：</div>';
+            chars.forEach(c => {
+                const item = document.createElement('div');
+                item.className = 'saved-item';
+                item.innerHTML = `
+                    <span class="saved-item-char">${c}</span>
+                    <div class="saved-item-btns">
+                        <button class="saved-item-btn btn-primary" onclick="playChar('${c}')">播放</button>
+                        <button class="saved-item-btn" style="background:#eee;" onclick="deleteChar('${c}')">删除</button>
+                    </div>
+                `;
+                savedList.appendChild(item);
+            });
+        }
+        
+        window.playChar = function(c) {
+            setMode('play');
+            document.querySelectorAll('.mode-tab').forEach(t => t.classList.toggle('active', t.dataset.mode === 'play'));
+            setChar(c);
+            setTimeout(play, 100);
+        };
+        
+        window.deleteChar = function(c) {
+            if (confirm(`删除"${c}"的录制？`)) {
+                delete recordings[c];
+                saveRecordings();
+                updateSavedList();
+            }
+        };
+        
+        // 初始化
+        init();
+    </script>
+</body>
+</html>
