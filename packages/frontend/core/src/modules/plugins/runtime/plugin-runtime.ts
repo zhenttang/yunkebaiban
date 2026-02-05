@@ -1,6 +1,6 @@
 import { notify } from '@yunke/component';
 
-import type { PluginRecord } from '../types';
+import type { PluginPermission, PluginRecord } from '../types';
 
 type WorkerCallMessage = {
   type: 'call';
@@ -9,6 +9,22 @@ type WorkerCallMessage = {
   args?: unknown;
 };
 
+// 🔧 安全修复：API 方法到权限的映射表
+const PERMISSION_MAP: Record<string, PluginPermission> = {
+  'ui.showToast': 'ui:toolbar',
+  'command.register': 'command:register',
+  'command.execute': 'command:register',
+  'storage.get': 'storage:local',
+  'storage.set': 'storage:local',
+  'storage.remove': 'storage:local',
+  'doc.getSnapshot': 'doc:read',
+  'doc.write': 'doc:write',
+  'net.fetch': 'net:fetch',
+};
+
+// 🔧 安全修复：存储配额限制（每个插件 5MB）
+const STORAGE_QUOTA_BYTES = 5 * 1024 * 1024;
+
 export class PluginRuntime {
   private worker: Worker | null = null;
   private objectUrl: string | null = null;
@@ -16,6 +32,61 @@ export class PluginRuntime {
 
   constructor(private readonly record: PluginRecord) {
     this.storagePrefix = `yunke:plugin:${record.manifest.id}:`;
+  }
+
+  /**
+   * 🔧 安全修复：检查插件是否具有调用指定 API 的权限
+   */
+  private checkPermission(method: string): void {
+    const requiredPermission = PERMISSION_MAP[method];
+    if (!requiredPermission) {
+      // 未知方法，由 dispatchHostCall 处理
+      return;
+    }
+
+    const hasPermission = this.record.manifest.permissions.includes(requiredPermission);
+    if (!hasPermission) {
+      const pluginId = this.record.manifest.id;
+      console.error(
+        `[plugins] 权限不足: 插件 "${pluginId}" 调用 "${method}" 需要 "${requiredPermission}" 权限`
+      );
+      throw new Error(`权限不足: 调用 "${method}" 需要 "${requiredPermission}" 权限`);
+    }
+  }
+
+  /**
+   * 🔧 安全修复：计算插件当前存储使用量
+   */
+  private getStorageUsage(): number {
+    let totalSize = 0;
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key && key.startsWith(this.storagePrefix)) {
+        const value = localStorage.getItem(key);
+        if (value) {
+          totalSize += key.length + value.length;
+        }
+      }
+    }
+    return totalSize * 2; // UTF-16 编码，每个字符 2 字节
+  }
+
+  /**
+   * 🔧 安全修复：检查存储配额
+   */
+  private checkStorageQuota(key: string, value: string): void {
+    const newItemSize = (this.storagePrefix + key).length + value.length;
+    const currentUsage = this.getStorageUsage();
+    const projectedUsage = currentUsage + newItemSize * 2;
+
+    if (projectedUsage > STORAGE_QUOTA_BYTES) {
+      const pluginId = this.record.manifest.id;
+      const quotaMB = (STORAGE_QUOTA_BYTES / 1024 / 1024).toFixed(1);
+      console.error(
+        `[plugins] 存储配额超限: 插件 "${pluginId}" 已使用 ${(currentUsage / 1024).toFixed(1)}KB，配额 ${quotaMB}MB`
+      );
+      throw new Error(`存储配额超限: 插件存储上限为 ${quotaMB}MB`);
+    }
   }
 
   start() {
@@ -164,6 +235,9 @@ export class PluginRuntime {
   }
 
   private dispatchHostCall(method: string, args: unknown) {
+    // 🔧 安全修复：执行权限检查
+    this.checkPermission(method);
+
     switch (method) {
       case 'ui.showToast': {
         const title =
@@ -196,6 +270,8 @@ export class PluginRuntime {
       }
       case 'storage.set': {
         const payload = args as { key: string; value: string };
+        // 🔧 安全修复：检查存储配额
+        this.checkStorageQuota(payload.key, payload.value);
         localStorage.setItem(this.storagePrefix + payload.key, payload.value);
         return null;
       }
