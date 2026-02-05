@@ -258,10 +258,74 @@ const getSkeleton = (back: boolean) => (
     <PageDetailLoading />
   </>
 );
+// 🔧 P1 修复：移动端 404 页面
+const MobileNotFoundContent = ({ onBack }: { onBack?: () => void }) => {
+  return (
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: 'calc(100vh - 60px)',
+        padding: '20px',
+        textAlign: 'center',
+      }}
+    >
+      <div
+        style={{
+          fontSize: '72px',
+          marginBottom: '16px',
+          opacity: 0.6,
+        }}
+      >
+        📄
+      </div>
+      <h2
+        style={{
+          fontSize: '20px',
+          fontWeight: 600,
+          marginBottom: '8px',
+          color: 'var(--affine-text-primary-color)',
+        }}
+      >
+        页面不存在
+      </h2>
+      <p
+        style={{
+          fontSize: '14px',
+          color: 'var(--affine-text-secondary-color)',
+          marginBottom: '24px',
+          maxWidth: '280px',
+        }}
+      >
+        该页面可能已被删除或移动到其他位置
+      </p>
+      {onBack && (
+        <button
+          onClick={onBack}
+          style={{
+            padding: '10px 24px',
+            fontSize: '14px',
+            fontWeight: 500,
+            color: 'white',
+            backgroundColor: 'var(--affine-primary-color)',
+            border: 'none',
+            borderRadius: '8px',
+            cursor: 'pointer',
+          }}
+        >
+          返回首页
+        </button>
+      )}
+    </div>
+  );
+};
+
 const getNotFound = (back: boolean) => (
   <>
     <PageHeader back={back} className={styles.header} />
-    Page Not Found (TODO)
+    <MobileNotFoundContent />
   </>
 );
 const skeleton = getSkeleton(false);
