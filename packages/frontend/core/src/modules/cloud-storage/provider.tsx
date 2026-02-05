@@ -11,6 +11,16 @@ import {
 } from '@yunke/nbstore';
 import { uint8ArrayToBase64, isEmptyUpdate, isValidYjsUpdate, logYjsUpdateInfo } from './utils';
 import { getSocketIOUrl as getUnifiedSocketIOUrl } from '@yunke/config';
+import type { StorageErrorEvent } from '../storage/file-native-db';
+
+// 发送存储错误通知（从 file-native-db 复制，避免循环依赖）
+const emitStorageError = (error: StorageErrorEvent) => {
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(
+      new CustomEvent('yunke-storage-error', { detail: error })
+    );
+  }
+};
 
 // 安全的 Storage 访问包装器（兼容 Electron sandbox）
 const safeStorage = {
@@ -484,10 +494,20 @@ export const CloudStorageProvider = ({
     // 保存回safeStorage
     const { trimmed, raw } = trimOfflineOperations(operations);
     if (trimmed.length !== operations.length) {
+      const discardedCount = operations.length - trimmed.length;
       console.warn(
         '[cloud-storage] 离线操作数量过多，已裁剪至上限:',
         MAX_OFFLINE_OPERATIONS
       );
+      // 🔧 Bug Fix: 通知用户离线操作被裁剪
+      emitStorageError({
+        type: 'offline-overflow',
+        message: `离线操作队列已满，${discardedCount} 条旧操作已被丢弃。建议尽快连接网络同步数据。`,
+        details: {
+          discardedCount,
+          maxOperations: MAX_OFFLINE_OPERATIONS,
+        },
+      });
     }
     safeStorage.setItem(OFFLINE_OPERATIONS_KEY, raw);
     setOfflineOperationsCount(trimmed.length);

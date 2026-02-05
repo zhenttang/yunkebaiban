@@ -21,6 +21,28 @@ const SQLITE_SCHEMA_VERSION = 1;
 const OFFLINE_DEBUG =
   typeof BUILD_CONFIG !== 'undefined' && BUILD_CONFIG.debug === true;
 
+// 全局存储错误事件类型
+export interface StorageErrorEvent {
+  type: 'write-failure' | 'data-loss' | 'offline-overflow';
+  message: string;
+  details?: Record<string, unknown>;
+}
+
+declare global {
+  interface WindowEventMap {
+    'yunke-storage-error': CustomEvent<StorageErrorEvent>;
+  }
+}
+
+// 发送存储错误通知
+const emitStorageError = (error: StorageErrorEvent) => {
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(
+      new CustomEvent('yunke-storage-error', { detail: error })
+    );
+  }
+};
+
 const logInfo = (message: string, data?: Record<string, unknown>) => {
   if (!OFFLINE_DEBUG) return;
   if (data) {
@@ -345,6 +367,16 @@ class SqliteFileEntry {
     });
     // 不抛出错误，避免阻塞其他操作，但记录严重警告
     console.error('[离线存储] 数据写入失败，可能导致数据丢失:', lastError);
+    
+    // 🔧 Bug Fix: 通知用户数据写入失败
+    emitStorageError({
+      type: 'write-failure',
+      message: '数据保存失败，可能导致数据丢失。请检查存储空间并重试保存。',
+      details: {
+        file: this.handle.name,
+        error: lastError?.message,
+      },
+    });
   }
 }
 
