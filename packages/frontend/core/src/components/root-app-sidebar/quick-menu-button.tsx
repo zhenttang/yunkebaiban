@@ -37,6 +37,8 @@ export const QuickMenuButton = memo(() => {
         title={t['com.yunke.quick-menu.title']?.() || 'Quick Menu'}
         role="button"
         tabIndex={0}
+        aria-expanded={isOpen ? 'true' : 'false'}
+        aria-haspopup="menu"
         onKeyDown={(e) => {
           if (e.key === 'Enter' || e.key === ' ') {
             e.preventDefault();

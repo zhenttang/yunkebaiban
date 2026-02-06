@@ -265,7 +265,13 @@ export class PluginRuntime {
     this.worker.postMessage({ type: 'invoke', id: commandId });
   }
 
+  // M-16 修复：验证 Worker 消息结构，防止畸形消息导致崩溃
   private async handleWorkerCall(message: WorkerCallMessage) {
+    // 验证消息结构
+    if (!message || typeof message.requestId !== 'string' || typeof message.method !== 'string') {
+      console.warn('[plugins] 收到畸形 Worker 消息，已忽略', message);
+      return;
+    }
     const { requestId, method, args } = message;
     try {
       const result = await this.dispatchHostCall(method, args);
@@ -306,6 +312,13 @@ export class PluginRuntime {
     try {
       // 生成快照
       const update = encodeStateAsUpdate(yDoc);
+
+      // M-15 修复：限制快照大小，防止超大文档导致内存爆炸
+      const MAX_SNAPSHOT_SIZE = 50 * 1024 * 1024; // 50MB
+      if (update.byteLength > MAX_SNAPSHOT_SIZE) {
+        console.warn(`[plugins] doc.getSnapshot: 文档过大 (${(update.byteLength / 1024 / 1024).toFixed(1)}MB > 50MB)`);
+        throw new Error(`文档快照超过大小限制 (${(update.byteLength / 1024 / 1024).toFixed(1)}MB > 50MB)`);
+      }
       
       // 转换为 Base64（插件 Worker 中无法直接传递 Uint8Array）
       const base64 = this.uint8ArrayToBase64(update);

@@ -67,14 +67,21 @@ export class CollectionService extends Service {
     return this.store.updateCollectionInfo(id, collectionInfo);
   }
 
+  // M-14 修复：集合不存在时抛出错误而非静默失败
   addDocToCollection(collectionId: string, docId: string) {
     const collection = this.collection$(collectionId).value;
-    collection?.addDoc(docId);
+    if (!collection) {
+      throw new Error(`集合 ${collectionId} 不存在`);
+    }
+    collection.addDoc(docId);
   }
 
   removeDocFromCollection(collectionId: string, docId: string) {
     const collection = this.collection$(collectionId).value;
-    collection?.removeDoc(docId);
+    if (!collection) {
+      throw new Error(`集合 ${collectionId} 不存在`);
+    }
+    collection.removeDoc(docId);
   }
 
   deleteCollection(id: string) {
