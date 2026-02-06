@@ -334,8 +334,9 @@ export class PluginRuntime {
       console.log(`[plugins] doc.getSnapshot: 成功生成快照 (docId: ${docId}, size: ${update.byteLength} bytes)`);
       return result;
     } catch (error) {
+      // L-16 修复：抛出错误而非返回 null，让调用方知道发生了什么
       console.error('[plugins] doc.getSnapshot: 生成快照失败', error);
-      return null;
+      throw new Error(`生成快照失败: ${error instanceof Error ? error.message : String(error)}`);
     }
   }
 

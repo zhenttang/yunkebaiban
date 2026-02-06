@@ -365,14 +365,13 @@ export const WorkspaceSettingStorage = ({
 
   // 外部存储配置处理
   
+  // L-10 修复：移除冗余条件（type 参数是新值，永远 !== 旧值）
   const handleExternalStorageTypeChange = useCallback((type: ExternalStorageType) => {
     setExternalStorageType(type);
     setExternalStorageStatus('disconnected');
     // 切换类型时清空配置
-    if (type !== externalStorageType) {
-      setExternalStorageConfig({});
-    }
-  }, [externalStorageType]);
+    setExternalStorageConfig({});
+  }, []);
 
   const handleExternalStorageConfigChange = useCallback((key: string, value: string) => {
     setExternalStorageConfig(prev => ({

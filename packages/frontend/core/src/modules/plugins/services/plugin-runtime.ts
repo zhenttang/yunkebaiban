@@ -49,6 +49,11 @@ export class PluginRuntimeService extends Service {
       },
       
       getYDoc: (docId: string) => {
+        // L-19 修复：验证 docId 参数
+        if (!docId || typeof docId !== 'string') {
+          console.warn('[plugins] DocAccessor.getYDoc: docId 参数无效');
+          return null;
+        }
         try {
           const workspaceService = this.framework.getOptional(WorkspaceService);
           if (!workspaceService) {
