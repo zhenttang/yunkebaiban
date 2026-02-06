@@ -3,6 +3,11 @@
  * 严格按照 YUNKE 原版实现，确保完全兼容
  */
 
+import { DebugLogger } from '@yunke/debug';
+
+// 统一日志器
+const logger = new DebugLogger('yunke:yjs-utils');
+
 /**
  * 将 Uint8Array 编码为 Base64 字符串
  * 严格按照 YUNKE 原版实现，确保 100% 兼容
@@ -83,14 +88,18 @@ export function isValidYjsUpdate(base64: string): boolean {
  * 日志记录辅助函数
  */
 export function logYjsUpdateInfo(label: string, binary: Uint8Array, base64?: string) {
-  console.log(`🔍 [YJS-${label}] 数据信息:`);
-  console.log(`  📊 二进制长度: ${binary.byteLength} 字节`);
-  console.log(`  🔢 前8字节: [${Array.from(binary.slice(0, 8)).join(', ')}]`);
-  console.log(`  🌟 是否为空更新: ${isEmptyUpdate(binary)}`);
+  const info: Record<string, unknown> = {
+    label,
+    binaryLength: binary.byteLength,
+    first8Bytes: Array.from(binary.slice(0, 8)),
+    isEmptyUpdate: isEmptyUpdate(binary),
+  };
   
   if (base64) {
-    console.log(`  📝 Base64长度: ${base64.length} 字符`);
-    console.log(`  ✅ Base64有效性: ${isValidYjsUpdate(base64)}`);
+    info.base64Length = base64.length;
+    info.isValidBase64 = isValidYjsUpdate(base64);
   }
+  
+  logger.debug(`[YJS-${label}] 数据信息`, info);
 }
 

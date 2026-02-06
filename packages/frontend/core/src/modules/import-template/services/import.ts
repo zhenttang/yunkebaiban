@@ -14,6 +14,12 @@ export class ImportTemplateService extends Service {
     super();
   }
 
+  /**
+   * H-6 修复：使用 try-finally 确保 disposeWorkspace 一定被调用
+   * 
+   * 旧实现在 ZipTransformer.importDocs 抛异常或 importedDoc 为空时，
+   * disposeWorkspace() 不会被调用，导致工作区资源泄漏。
+   */
   async importToWorkspace(
     workspaceMetadata: WorkspaceMetadata,
     docBinary: Uint8Array,
@@ -23,22 +29,23 @@ export class ImportTemplateService extends Service {
       this.workspacesService.open({
         metadata: workspaceMetadata,
       });
-    await workspace.engine.doc.waitForDocReady(workspace.id); // wait for root doc ready
-    const [importedDoc] = await ZipTransformer.importDocs(
-      workspace.docCollection,
-      getYUNKEWorkspaceSchema(),
-      new Blob([docBinary], {
-        type: 'application/zip',
-      })
-    );
-    const docsService = workspace.scope.get(DocsService);
-    if (importedDoc) {
-      // only support page mode for now
+    try {
+      await workspace.engine.doc.waitForDocReady(workspace.id);
+      const [importedDoc] = await ZipTransformer.importDocs(
+        workspace.docCollection,
+        getYUNKEWorkspaceSchema(),
+        new Blob([docBinary], {
+          type: 'application/zip',
+        })
+      );
+      if (!importedDoc) {
+        throw new Error('导入文档失败');
+      }
+      const docsService = workspace.scope.get(DocsService);
       docsService.list.setPrimaryMode(importedDoc.id, mode);
-      disposeWorkspace();
       return importedDoc.id;
-    } else {
-      throw new Error('导入文档失败');
+    } finally {
+      disposeWorkspace();
     }
   }
 

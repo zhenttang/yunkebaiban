@@ -9,9 +9,27 @@ import {
   sanitizeSessionIdentifier,
   type SessionActivityDetail,
 } from '@yunke/nbstore';
+import { DebugLogger } from '@yunke/debug';
 import { uint8ArrayToBase64, isEmptyUpdate, isValidYjsUpdate, logYjsUpdateInfo } from './utils';
 import { getSocketIOUrl as getUnifiedSocketIOUrl } from '@yunke/config';
 import type { StorageErrorEvent } from '../storage/file-native-db';
+import * as styles from './session-overlay.css';
+
+// 统一日志管理
+const logger = new DebugLogger('yunke:cloud-storage');
+import {
+  type OfflineOperation,
+  saveOfflineOperationIDB,
+  getOfflineOperationsIDB,
+  clearOfflineOperationsIDB,
+  getDocOperationsCountIDB,
+  deleteOldestDocOperationIDB,
+  trimOfflineOperationsIDB,
+  migrateFromLocalStorage,
+  initOfflineStorage,
+  isIndexedDBStorageAvailable,
+  MAX_OFFLINE_OPERATIONS_IDB,
+} from './utils/offline-storage';
 
 // 发送存储错误通知（从 file-native-db 复制，避免循环依赖）
 const emitStorageError = (error: StorageErrorEvent) => {
@@ -22,45 +40,72 @@ const emitStorageError = (error: StorageErrorEvent) => {
   }
 };
 
+/**
+ * Electron SharedStorage 类型声明（用于跨进程状态共享）
+ */
+interface SharedStorageGlobal {
+  __sharedStorage?: {
+    globalState?: {
+      get: (key: string) => string | null;
+      set: (key: string, value: string) => void;
+      del: (key: string) => void;
+    };
+  };
+}
+
+/**
+ * 获取 Electron SharedStorage（类型安全）
+ */
+function getSharedStorage(): SharedStorageGlobal['__sharedStorage'] | null {
+  if (typeof window === 'undefined') {
+    return null;
+  }
+  const windowWithShared = window as unknown as SharedStorageGlobal;
+  return windowWithShared.__sharedStorage ?? null;
+}
+
 // 安全的 Storage 访问包装器（兼容 Electron sandbox）
 const safeStorage = {
   getItem: (key: string): string | null => {
     try {
       // 优先使用 Electron 的 sharedStorage (globalState)
-      if (typeof window !== 'undefined' && (window as any).__sharedStorage?.globalState) {
-        return (window as any).__sharedStorage.globalState.get(key) ?? null;
+      const sharedStorage = getSharedStorage();
+      if (sharedStorage?.globalState) {
+        return sharedStorage.globalState.get(key) ?? null;
       }
       // 回退到 localStorage
       return localStorage?.getItem(key) ?? null;
     } catch (error) {
-      console.warn('[SafeStorage] getItem 失败:', key, error);
+      logger.warn('SafeStorage getItem 失败', { key, error });
       return null;
     }
   },
   setItem: (key: string, value: string): void => {
     try {
       // 优先使用 Electron 的 sharedStorage (globalState)
-      if (typeof window !== 'undefined' && (window as any).__sharedStorage?.globalState) {
-        (window as any).__sharedStorage.globalState.set(key, value);
+      const sharedStorage = getSharedStorage();
+      if (sharedStorage?.globalState) {
+        sharedStorage.globalState.set(key, value);
         return;
       }
       // 回退到 localStorage
       localStorage?.setItem(key, value);
     } catch (error) {
-      console.warn('[SafeStorage] setItem 失败:', key, error);
+      logger.warn('SafeStorage setItem 失败', { key, error });
     }
   },
   removeItem: (key: string): void => {
     try {
       // 优先使用 Electron 的 sharedStorage (globalState)
-      if (typeof window !== 'undefined' && (window as any).__sharedStorage?.globalState) {
-        (window as any).__sharedStorage.globalState.del(key);
+      const sharedStorage = getSharedStorage();
+      if (sharedStorage?.globalState) {
+        sharedStorage.globalState.del(key);
         return;
       }
       // 回退到 localStorage
       localStorage?.removeItem(key);
     } catch (error) {
-      console.warn('[SafeStorage] removeItem 失败:', key, error);
+      logger.warn('SafeStorage removeItem 失败', { key, error });
     }
   }
 };
@@ -123,11 +168,11 @@ export function setCloudSyncEnabled(enabled: boolean): void {
   try {
     safeStorage.setItem(CLOUD_SYNC_ENABLED_KEY, enabled ? 'true' : 'false');
   } catch (error) {
-    console.warn('[云同步] 保存开关状态失败:', error);
+    logger.warn('保存开关状态失败', error);
   }
 }
 
-const awaitWithTimeout = <T>(
+const awaitWithTimeout = <T,>(
   promise: Promise<T>,
   timeoutMs: number,
   timeoutMessage: string
@@ -156,17 +201,7 @@ const awaitWithTimeout = <T>(
   });
 };
 
-// 离线操作类型 - 严格按照YUNKE格式
-interface OfflineOperation {
-  id: string;
-  docId: string;
-  update: string; // Base64编码的更新数据
-  timestamp: number;
-  spaceId: string; // 使用spaceId而不是workspaceId
-  spaceType: 'workspace' | 'userspace'; // 添加空间类型
-  sessionId: string;
-  clientId?: string | null;
-}
+// OfflineOperation 类型已从 ./utils/offline-storage 导入
 
 interface SessionDisplayInfo {
   sessionId: string;
@@ -174,6 +209,21 @@ interface SessionDisplayInfo {
   clientId: string | null;
   isLocal: boolean;
   lastSeen: number;
+}
+
+/**
+ * 全局调试变量类型声明（用于 DevTools 调试）
+ */
+interface CloudStorageDebugWindow {
+  __CLOUD_STORAGE_MANAGER__?: CloudStorageStatus;
+  __NBSTORE_SESSION_ID__?: string;
+}
+
+/**
+ * 获取类型安全的调试 window 对象
+ */
+function getDebugWindow(): CloudStorageDebugWindow {
+  return window as unknown as CloudStorageDebugWindow;
 }
 
 const SESSION_ACTIVITY_TTL = 5 * 60 * 1000;
@@ -296,7 +346,7 @@ export const CloudStorageProvider = ({
     docId: string;
     update: Uint8Array;
     resolve: (value: number) => void;
-    reject: (reason: any) => void;
+    reject: (reason: unknown) => void;
   }>>([]);
   const offlineSyncStatsRef = useRef<{ failures: number; nextRetryAt: number }>({
     failures: 0,
@@ -448,7 +498,7 @@ export const CloudStorageProvider = ({
     return { trimmed, raw };
   };
 
-  // 保存离线操作 - 按照YUNKE标准格式
+  // 🔧 P1 优化：使用 IndexedDB 保存离线操作，支持更大容量
   const saveOfflineOperation = async (docId: string, update: Uint8Array) => {
     if (!currentWorkspaceId) return;
 
@@ -463,43 +513,72 @@ export const CloudStorageProvider = ({
       spaceId: currentWorkspaceId,
       spaceType: 'workspace',
       sessionId: sanitizeSessionIdentifier(sessionId) ?? sessionId,
-      clientId: sanitizeSessionIdentifier(clientIdRef.current),
+      clientId: sanitizeSessionIdentifier(clientIdRef.current) ?? undefined,
     };
 
-    // 从safeStorage读取现有操作
+    // 🔧 P1 优化：优先使用 IndexedDB
+    if (isIndexedDBStorageAvailable()) {
+      try {
+        // 限制同一 docId 的操作数量
+        const MAX_OPERATIONS_PER_DOC = 50; // IndexedDB 支持更多
+        const docCount = await getDocOperationsCountIDB(normalizedDocId);
+        if (docCount >= MAX_OPERATIONS_PER_DOC) {
+          await deleteOldestDocOperationIDB(normalizedDocId);
+          logger.debug('同一文档操作过多，移除最旧操作', normalizedDocId);
+        }
+
+        // 保存操作
+        await saveOfflineOperationIDB(operation);
+
+        // 检查并修剪超出限制的操作
+        const trimmedCount = await trimOfflineOperationsIDB();
+        if (trimmedCount > 0) {
+          emitStorageError({
+            type: 'offline-overflow',
+            message: `离线操作队列已满，${trimmedCount} 条旧操作已被丢弃。建议尽快连接网络同步数据。`,
+            details: {
+              discardedCount: trimmedCount,
+              maxOperations: MAX_OFFLINE_OPERATIONS_IDB,
+            },
+          });
+        }
+
+        // 更新计数
+        const operations = await getOfflineOperationsIDB();
+        setOfflineOperationsCount(operations.length);
+        return;
+      } catch (error) {
+        logger.warn('IndexedDB 保存失败，回退到 localStorage', error);
+      }
+    }
+
+    // 回退到 localStorage（旧逻辑）
     const existing = safeStorage.getItem(OFFLINE_OPERATIONS_KEY);
     let operations: OfflineOperation[] = [];
     if (existing) {
       try {
         operations = JSON.parse(existing);
       } catch (error) {
-        console.warn('[cloud-storage] 解析离线操作失败，重置缓存', error);
+        logger.warn('解析离线操作失败，重置缓存', error);
         operations = [];
       }
     }
     
-    // 🔧 Bug #7 修复：限制同一 docId 的操作数量，避免重复存储
+    // 限制同一 docId 的操作数量
     const MAX_OPERATIONS_PER_DOC = 10;
     const sameDocOperations = operations.filter(op => op.docId === normalizedDocId);
     if (sameDocOperations.length >= MAX_OPERATIONS_PER_DOC) {
-      // 移除该 docId 最旧的操作
       const oldestSameDocOp = sameDocOperations.sort((a, b) => a.timestamp - b.timestamp)[0];
       operations = operations.filter(op => op.id !== oldestSameDocOp.id);
-      console.debug('[cloud-storage] 同一文档操作过多，移除最旧操作:', normalizedDocId);
+      logger.debug('同一文档操作过多，移除最旧操作', normalizedDocId);
     }
     
-    // 添加新操作
     operations.push(operation);
     
-    // 保存回safeStorage
     const { trimmed, raw } = trimOfflineOperations(operations);
     if (trimmed.length !== operations.length) {
       const discardedCount = operations.length - trimmed.length;
-      console.warn(
-        '[cloud-storage] 离线操作数量过多，已裁剪至上限:',
-        MAX_OFFLINE_OPERATIONS
-      );
-      // 🔧 Bug Fix: 通知用户离线操作被裁剪
+      logger.warn('离线操作数量过多，已裁剪至上限', MAX_OFFLINE_OPERATIONS);
       emitStorageError({
         type: 'offline-overflow',
         message: `离线操作队列已满，${discardedCount} 条旧操作已被丢弃。建议尽快连接网络同步数据。`,
@@ -511,10 +590,26 @@ export const CloudStorageProvider = ({
     }
     safeStorage.setItem(OFFLINE_OPERATIONS_KEY, raw);
     setOfflineOperationsCount(trimmed.length);
-    
   };
 
-  const getOfflineOperations = (): OfflineOperation[] => {
+  // 🔧 P1 优化：从 IndexedDB 获取离线操作
+  const getOfflineOperations = async (): Promise<OfflineOperation[]> => {
+    // 优先使用 IndexedDB
+    if (isIndexedDBStorageAvailable()) {
+      try {
+        const operations = await getOfflineOperationsIDB();
+        return operations.map(op => ({
+          ...op,
+          docId: normalizeDocId(op.docId),
+          sessionId: sanitizeSessionIdentifier(op.sessionId) ?? sessionId,
+          clientId: sanitizeSessionIdentifier(op.clientId) ?? undefined,
+        }));
+      } catch (error) {
+        logger.warn('IndexedDB 读取失败，回退到 localStorage', error);
+      }
+    }
+
+    // 回退到 localStorage
     const existing = safeStorage.getItem(OFFLINE_OPERATIONS_KEY);
     if (!existing) {
       return [];
@@ -525,16 +620,26 @@ export const CloudStorageProvider = ({
         ...op,
         docId: normalizeDocId(op.docId),
         sessionId: sanitizeSessionIdentifier(op.sessionId) ?? sessionId,
-        clientId: sanitizeSessionIdentifier(op.clientId),
+        clientId: sanitizeSessionIdentifier(op.clientId) ?? undefined,
       }));
     } catch (error) {
-      console.warn('[cloud-storage] 解析离线操作失败，重置缓存', error);
+      logger.warn('解析离线操作失败，重置缓存', error);
       safeStorage.removeItem(OFFLINE_OPERATIONS_KEY);
       return [];
     }
   };
 
-  const clearOfflineOperations = () => {
+  // 🔧 P1 优化：清空 IndexedDB 和 localStorage 中的离线操作
+  const clearOfflineOperations = async () => {
+    // 清空 IndexedDB
+    if (isIndexedDBStorageAvailable()) {
+      try {
+        await clearOfflineOperationsIDB();
+      } catch (error) {
+        logger.warn('IndexedDB 清空失败', error);
+      }
+    }
+    // 同时清空 localStorage（确保完全清理）
     safeStorage.removeItem(OFFLINE_OPERATIONS_KEY);
     setOfflineOperationsCount(0);
   };
@@ -549,7 +654,7 @@ export const CloudStorageProvider = ({
     // 🔧 Bug #3 修复：使用 socketRef.current 获取最新 socket 实例
     const currentSocket = socketRef.current;
     if (!currentWorkspaceId || !currentSocket?.connected) {
-      console.warn('⚠️ [云存储管理器] 无法同步：缺少workspace或连接');
+      logger.warn('无法同步：缺少workspace或连接');
       return;
     }
 
@@ -557,12 +662,13 @@ export const CloudStorageProvider = ({
     if (offlineSyncStatsRef.current.nextRetryAt > now) {
       const waitMs = offlineSyncStatsRef.current.nextRetryAt - now;
       logThrottle.current.log('offline-sync-backoff', () => {
-        console.warn('⚠️ [云存储管理器] 离线同步等待退避窗口，剩余(ms):', waitMs);
+        logger.warn('离线同步等待退避窗口', { waitMs });
       });
       return;
     }
 
-    const operations = getOfflineOperations()
+    const allOperations = await getOfflineOperations();
+    const operations = allOperations
       .filter(op => op.spaceId === currentWorkspaceId)
       .sort((a, b) => a.timestamp - b.timestamp);
 
@@ -605,7 +711,7 @@ export const CloudStorageProvider = ({
         }
       } catch (error) {
         failedOperationIds.add(operation.id);
-        console.error(`❌ [云存储管理器] 离线操作同步失败: ${operation.id}`, error);
+        logger.error(`离线操作同步失败: ${operation.id}`, error);
       }
     }
 
@@ -621,13 +727,29 @@ export const CloudStorageProvider = ({
     }
 
     const attemptedIds = new Set(operations.map(op => op.id));
-    const remainingOperations = getOfflineOperations().filter(op => {
+    const latestOperations = await getOfflineOperations();
+    const remainingOperations = latestOperations.filter(op => {
       const attempted = attemptedIds.has(op.id);
       const failed = failedOperationIds.has(op.id);
       return !attempted || failed;
     });
 
-    safeStorage.setItem(OFFLINE_OPERATIONS_KEY, JSON.stringify(remainingOperations));
+    // 🔧 P1 优化：同步成功后清理已处理的操作
+    if (isIndexedDBStorageAvailable()) {
+      try {
+        // 清空所有已成功同步的操作，保留失败的
+        await clearOfflineOperationsIDB();
+        // 重新保存失败的操作
+        for (const op of remainingOperations) {
+          await saveOfflineOperationIDB(op);
+        }
+      } catch (error) {
+        logger.warn('IndexedDB 更新失败，回退到 localStorage', error);
+        safeStorage.setItem(OFFLINE_OPERATIONS_KEY, JSON.stringify(remainingOperations));
+      }
+    } else {
+      safeStorage.setItem(OFFLINE_OPERATIONS_KEY, JSON.stringify(remainingOperations));
+    }
     setOfflineOperationsCount(remainingOperations.length);
 
     const nextFailures = Math.min(offlineSyncStatsRef.current.failures + 1, 5);
@@ -642,14 +764,22 @@ export const CloudStorageProvider = ({
     setSyncError(`${failedOperationIds.size} 个离线操作同步失败，将在 ${Math.round(delay / 1000)} 秒后重试`);
 
     logThrottle.current.log('offline-sync-scheduled', () => {
-      console.warn('⚠️ [云存储管理器] 离线同步失败，计划', delay, 'ms后重试');
+      logger.warn('离线同步失败，计划重试', { delay });
     });
   }, [currentWorkspaceId, sessionId, normalizedLocalSessionId]); // 🔧 Bug #3 修复：移除 socket 依赖
 
-  // 初始化时读取离线操作数量
+  // 🔧 P1 优化：初始化时读取离线操作数量并执行迁移
   useEffect(() => {
-    const operations = getOfflineOperations();
-    setOfflineOperationsCount(operations.length);
+    const initStorage = async () => {
+      // 初始化 IndexedDB 并迁移旧数据
+      await initOfflineStorage();
+      await migrateFromLocalStorage(OFFLINE_OPERATIONS_KEY, safeStorage);
+      
+      // 读取操作数量
+      const operations = await getOfflineOperations();
+      setOfflineOperationsCount(operations.length);
+    };
+    initStorage();
   }, []);
 
   // 🔧 修复：同步 isOnlineRef 和 serverUrlRef
@@ -669,7 +799,7 @@ export const CloudStorageProvider = ({
         socketRef.current = null;
         setSocket(null);
       }
-      console.log('☁️ [云存储] 云同步已禁用，使用本地模式');
+      logger.info('云同步已禁用，使用本地模式');
     }
   }, [cloudEnabled]);
   
@@ -730,7 +860,7 @@ export const CloudStorageProvider = ({
         operation.resolve(timestamp);
       } catch (error) {
         // 🔧 Bug #5 修复：失败时保存到离线队列，而不是直接丢弃
-        console.warn('[cloud-storage] processPendingOperations 失败，保存到离线队列:', operation.docId);
+        logger.warn('processPendingOperations 失败，保存到离线队列', { docId: operation.docId });
         await saveOfflineOperation(operation.docId, operation.update);
         operation.reject(error);
       }
@@ -750,7 +880,7 @@ export const CloudStorageProvider = ({
     // 🔧 防止重复连接
     if (isConnectingRef.current) {
       logThrottle.current.log('duplicate-connect', () => {
-        console.warn('⚠️ [云存储管理器] 连接进行中，跳过重复连接');
+        logger.warn('连接进行中，跳过重复连接');
       });
       return;
     }
@@ -769,7 +899,7 @@ export const CloudStorageProvider = ({
 
     if (!currentWorkspaceId) {
       logThrottle.current.log('no-workspace', () => {
-        console.warn('⚠️ [云存储管理器] 无法连接：缺少workspaceId');
+        logger.warn('无法连接：缺少workspaceId');
       });
       setStorageMode('local');
       return;
@@ -778,7 +908,7 @@ export const CloudStorageProvider = ({
     // 如果网络离线，不尝试连接 - 使用 ref 获取最新值
     if (!isOnlineRef.current) {
       logThrottle.current.log('offline', () => {
-        console.warn('⚠️ [云存储管理器] 网络离线，跳过连接');
+        logger.warn('网络离线，跳过连接');
       });
       setStorageMode('local');
       return;
@@ -787,7 +917,7 @@ export const CloudStorageProvider = ({
     // 检查是否超过最大重连次数
     if (reconnectAttempts.current >= maxReconnectAttempts) {
       logThrottle.current.log('max-retries', () => {
-        console.warn('⚠️ [云存储管理器] 超过最大重连次数，切换到本地模式');
+        logger.warn('超过最大重连次数，切换到本地模式');
       });
       setStorageMode('local');
       return;
@@ -892,7 +1022,7 @@ export const CloudStorageProvider = ({
             if (typeof response === 'object' && response) {
               // 格式1: { error: ... }
               if ('error' in response) {
-                console.error('❌ [云存储管理器] 空间加入失败:', response.error);
+                logger.error('空间加入失败', response.error);
                 setStorageMode('error');
                 finalizeJoinAttempt();
                 return;
@@ -950,7 +1080,7 @@ export const CloudStorageProvider = ({
             
             // 未知响应格式 - 但 socket 已连接，设置为 cloud 模式
             logThrottle.current.log('space-join-unknown-format', () => {
-              console.warn('⚠️ [云存储管理器] space:join 响应格式未知，但 socket 已连接，设置为 cloud 模式', {
+              logger.warn('space:join 响应格式未知，但 socket 已连接，设置为 cloud 模式', {
                 response,
                 responseType: typeof response,
                 isObject: typeof response === 'object',
@@ -968,7 +1098,7 @@ export const CloudStorageProvider = ({
             finalizeJoinAttempt();
             
           } catch (error) {
-            console.error('❌ [云存储管理器] space:join 失败:', error);
+            logger.error('space:join 失败', error);
             if (activeJoinAttemptRef.current) {
               activeJoinAttemptRef.current = null;
             }
@@ -984,7 +1114,7 @@ export const CloudStorageProvider = ({
       // 连接失败处理函数
       const handleConnectError = (error: Error) => {
         logThrottle.current.log('connect-error', () => {
-          console.warn('⚠️ [云存储管理器] 连接失败:', error.message);
+          logger.warn('连接失败', { message: error.message });
         });
         setIsConnected(false);
         activeJoinAttemptRef.current = null;
@@ -1037,7 +1167,7 @@ export const CloudStorageProvider = ({
       setTimeout(() => {
         if (!newSocket.connected) {
           logThrottle.current.log('connect-timeout', () => {
-            console.warn('⏰ [云存储管理器] 连接超时');
+            logger.warn('连接超时');
           });
           isConnectingRef.current = false; // 🔧 超时，重置标记
           newSocket.disconnect();
@@ -1046,7 +1176,7 @@ export const CloudStorageProvider = ({
       }, 5000);
 
     } catch (error) {
-      console.error('❌ [云存储管理器] 初始化失败:', error);
+      logger.error('初始化失败', error);
       isConnectingRef.current = false; // 🔧 异常，重置标记
       scheduleReconnect();
     }
@@ -1064,7 +1194,7 @@ export const CloudStorageProvider = ({
 
     if (!currentWorkspaceId) {
       const error = new Error('No current workspace available');
-      console.error('[cloud-storage] pushDocUpdate failed:', error.message);
+      logger.error('pushDocUpdate failed', { message: error.message });
       throw error;
     }
 
@@ -1122,14 +1252,14 @@ export const CloudStorageProvider = ({
       setLastSync(new Date(timestamp));
 
       const latency = performance.now() - start;
-      console.debug('[cloud-storage] pushDocUpdate success', {
+      logger.debug('pushDocUpdate success', {
         docId: normalizedDocId,
         latency: Math.round(latency),
       });
 
       return timestamp;
     } catch (error) {
-      console.warn('[cloud-storage] pushDocUpdate failed, enqueue offline', error);
+      logger.warn('pushDocUpdate failed, enqueue offline', error);
       await saveOfflineOperation(normalizedDocId, update);
       throw error;
     }
@@ -1139,7 +1269,7 @@ export const CloudStorageProvider = ({
   const scheduleReconnect = useCallback(() => {
     if (reconnectAttempts.current >= maxReconnectAttempts) {
       logThrottle.current.log('max-reconnect', () => {
-        console.error('❌ [云存储管理器] 超过最大重连次数，停止重连');
+        logger.error('超过最大重连次数，停止重连');
       });
       setStorageMode('local');
       return;
@@ -1358,7 +1488,7 @@ export const CloudStorageProvider = ({
       if (connectToSocketRef.current) {
         connectToSocketRef.current();
       }
-      console.log('☁️ [云存储] 云同步已启用，开始连接...');
+      logger.info('云同步已启用，开始连接...');
     }
     // 禁用的情况已经在 cloudEnabled 的 useEffect 中处理了
   }, []);
@@ -1407,20 +1537,22 @@ export const CloudStorageProvider = ({
     handleSetCloudSyncEnabled,
   ]);
 
-  // 将云存储管理器暴露到全局对象，供CloudDocStorage使用
+  // 将云存储管理器暴露到全局对象，供 CloudDocStorage 使用（调试用）
   useEffect(() => {
-    (window as any).__CLOUD_STORAGE_MANAGER__ = value;
+    const debugWindow = getDebugWindow();
+    debugWindow.__CLOUD_STORAGE_MANAGER__ = value;
     
     return () => {
-      delete (window as any).__CLOUD_STORAGE_MANAGER__;
+      delete debugWindow.__CLOUD_STORAGE_MANAGER__;
     };
   }, [value]);
 
   useEffect(() => {
-    (window as any).__NBSTORE_SESSION_ID__ = normalizedLocalSessionId;
+    const debugWindow = getDebugWindow();
+    debugWindow.__NBSTORE_SESSION_ID__ = normalizedLocalSessionId;
     return () => {
-      if ((window as any).__NBSTORE_SESSION_ID__ === normalizedLocalSessionId) {
-        delete (window as any).__NBSTORE_SESSION_ID__;
+      if (debugWindow.__NBSTORE_SESSION_ID__ === normalizedLocalSessionId) {
+        delete debugWindow.__NBSTORE_SESSION_ID__;
       }
     };
   }, [normalizedLocalSessionId]);
@@ -1432,58 +1564,19 @@ export const CloudStorageProvider = ({
     }
 
     return (
-      <div
-        style={{
-          position: 'fixed',
-          right: 16,
-          bottom: 72,
-          zIndex: 9999,
-          background: 'rgba(17, 24, 39, 0.86)',
-          color: '#fff',
-          padding: '12px 16px',
-          borderRadius: 12,
-          boxShadow: '0 16px 32px rgba(15, 23, 42, 0.35)',
-          pointerEvents: 'none',
-          maxWidth: 280,
-          fontSize: 12,
-          lineHeight: 1.5,
-        }}
-      >
-        <div
-          style={{
-            fontWeight: 600,
-            fontSize: 13,
-            marginBottom: 6,
-            letterSpacing: '0.02em',
-          }}
-        >
+      <div className={styles.overlayContainer}>
+        <div className={styles.overlayTitle}>
           实时协作者
         </div>
         {sessions.map(session => (
           <div
             key={session.sessionId}
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              gap: 12,
-              padding: '4px 0',
-              opacity: session.isLocal ? 0.78 : 1,
-            }}
+            className={session.isLocal ? styles.sessionItemLocal : styles.sessionItem}
           >
-            <span
-              style={{
-                fontWeight: session.isLocal ? 500 : 600,
-              }}
-            >
+            <span className={session.isLocal ? styles.sessionLabelLocal : styles.sessionLabel}>
               {session.label}
             </span>
-            <span
-              style={{
-                fontFamily:
-                  'SFMono-Regular, ui-monospace, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
-                opacity: 0.65,
-              }}
-            >
+            <span className={styles.sessionId}>
               {session.sessionId.slice(-6)}
             </span>
           </div>
