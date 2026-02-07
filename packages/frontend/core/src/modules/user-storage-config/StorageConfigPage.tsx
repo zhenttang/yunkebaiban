@@ -1,3 +1,4 @@
+import { notify } from '@yunke/component';
 import React, { useEffect, useState } from 'react';
 import { UserStorageConfigService } from './service';
 import {
@@ -58,9 +59,9 @@ export const StorageConfigPage: React.FC = () => {
       setSaving(true);
       const saved = await UserStorageConfigService.saveConfig(config);
       setConfig(saved);
-      alert('保存成功！');
+      notify.success({ title: '保存成功' });
     } catch (error) {
-      alert('保存失败: ' + (error instanceof Error ? error.message : '未知错误'));
+      notify.error({ title: '保存失败', message: error instanceof Error ? error.message : '未知错误' });
     } finally {
       setSaving(false);
     }
@@ -93,9 +94,9 @@ export const StorageConfigPage: React.FC = () => {
         enabled: false,
         provider: StorageProvider.LOCAL,
       });
-      alert('配置已删除，将使用系统默认配置');
+      notify.success({ title: '配置已删除', message: '将使用系统默认配置' });
     } catch (error) {
-      alert('删除失败: ' + (error instanceof Error ? error.message : '未知错误'));
+      notify.error({ title: '删除失败', message: error instanceof Error ? error.message : '未知错误' });
     }
   };
 

@@ -3,6 +3,7 @@ import { getPendingReports, handleReport } from '../forum-api';
 import type { HandleReportRequest, ReportDTO } from '../types';
 import forReviewIllustration from './for-review_coua.svg';
 import wellDoneIllustration from './well-done_kqud.svg';
+import { notify } from '@yunke/component';
 
 export function Component() {
   const [reports, setReports] = useState<ReportDTO[]>([]);
@@ -19,7 +20,7 @@ export function Component() {
       .then(setReports)
       .catch(err => {
         console.error(err);
-        alert('加载举报列表失败');
+        notify.error({ title: '加载举报列表失败' });
       })
       .finally(() => setLoading(false));
   };
@@ -31,11 +32,11 @@ export function Component() {
   ) => {
     try {
       await handleReport(reportId, { status, handleNote: note || undefined });
-      alert('处理成功');
+      notify.success({ title: '处理成功' });
       loadReports();
     } catch (error) {
       console.error(error);
-      alert('处理失败');
+      notify.error({ title: '处理失败' });
     }
   };
 

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import type { PaginatedResponse, PostDTO } from '../types';
 import { getMyCollections, type MyCollectionItemDTO, uncollectPost } from '../forum-api';
 import collectionIllustration from './collection_ly06.svg';
+import { notify } from '@yunke/component';
 
 export function Component() {
   const [collections, setCollections] = useState<PaginatedResponse<MyCollectionItemDTO>>({
@@ -24,7 +25,7 @@ export function Component() {
       .then(data => setCollections(data))
       .catch(err => {
         console.error(err);
-        alert(err?.message || '加载失败');
+        notify.error({ title: '加载失败', message: err?.message });
       })
       .finally(() => setLoading(false));
   }, [page]);
@@ -40,7 +41,7 @@ export function Component() {
       setCollections(data);
     } catch (err: any) {
       console.error(err);
-      alert(err?.message || '取消收藏失败');
+      notify.error({ title: '取消收藏失败', message: err?.message });
     } finally {
       setUncollectLoadingIds(prev => ({ ...prev, [post.id]: false }));
     }
