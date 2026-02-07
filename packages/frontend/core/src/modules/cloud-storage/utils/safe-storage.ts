@@ -1,5 +1,7 @@
 import { DebugLogger } from '@yunke/debug';
 
+import { isBrowser } from '@yunke/env/global';
+
 import type { SharedStorageGlobal } from '../types';
 
 const logger = new DebugLogger('yunke:cloud-storage:safe-storage');
@@ -8,7 +10,7 @@ const logger = new DebugLogger('yunke:cloud-storage:safe-storage');
  * 获取 Electron SharedStorage（类型安全）
  */
 function getSharedStorage(): SharedStorageGlobal['__sharedStorage'] | null {
-  if (typeof window === 'undefined') {
+  if (!isBrowser) {
     return null;
   }
   const windowWithShared = window as unknown as SharedStorageGlobal;

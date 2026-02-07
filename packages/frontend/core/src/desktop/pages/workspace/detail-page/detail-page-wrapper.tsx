@@ -20,6 +20,28 @@ import {
 import { useSearchParams } from 'react-router-dom';
 import queryString from 'query-string';
 
+/** 对目标元素播放脉冲高亮动画（2.5s），用于块定位后的视觉反馈 */
+function applyPulseHighlight(element: HTMLElement): void {
+  const originalBg = element.style.backgroundColor;
+  const styleSheet = document.createElement('style');
+  styleSheet.textContent = `
+    @keyframes pulse-highlight {
+      0% { background-color: ${originalBg || 'transparent'}; transform: scale(1); box-shadow: none; }
+      15% { background-color: #ffd700; transform: scale(1.05); box-shadow: 0 0 20px rgba(255, 215, 0, 0.8); }
+      30% { background-color: #ffd700; transform: scale(1.02); box-shadow: 0 0 15px rgba(255, 215, 0, 0.6); }
+      45% { background-color: #ffd700; transform: scale(1.05); box-shadow: 0 0 25px rgba(255, 215, 0, 0.9); }
+      60% { background-color: #ffd700; transform: scale(1.03); box-shadow: 0 0 18px rgba(255, 215, 0, 0.7); }
+      100% { background-color: ${originalBg || 'transparent'}; transform: scale(1); box-shadow: none; }
+    }
+  `;
+  document.head.appendChild(styleSheet);
+  element.style.animation = 'pulse-highlight 2.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards';
+  setTimeout(() => {
+    element.style.animation = '';
+    if (styleSheet.parentNode) document.head.removeChild(styleSheet);
+  }, 2500);
+}
+
 // Android专用服务包装器
 const AndroidEditorsServiceWrapper = {
   createEditorSafe: async (docScope: any, viewService: any) => {
@@ -559,62 +581,10 @@ export const DetailPageWrapper = ({
                   })
                 ]);
                 
-                // 添加超流畅脉冲高亮动画
+                // 脉冲高亮动画
                 setTimeout(() => {
-                  const blockElement = host.querySelector(`[data-block-id="${blockId}"]`);
-                  
-                  if (blockElement instanceof HTMLElement) {
-                    const originalBg = blockElement.style.backgroundColor;
-                    const originalTransform = blockElement.style.transform;
-                    const originalBoxShadow = blockElement.style.boxShadow;
-                    
-                    // 创建CSS关键帧动画
-                    const styleSheet = document.createElement('style');
-                    styleSheet.textContent = `
-                      @keyframes pulse-highlight {
-                        0% { 
-                          background-color: ${originalBg || 'transparent'};
-                          transform: scale(1);
-                          box-shadow: none;
-                        }
-                        15% { 
-                          background-color: #ffd700;
-                          transform: scale(1.05);
-                          box-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
-                        }
-                        30% { 
-                          background-color: #ffd700;
-                          transform: scale(1.02);
-                          box-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
-                        }
-                        45% { 
-                          background-color: #ffd700;
-                          transform: scale(1.05);
-                          box-shadow: 0 0 25px rgba(255, 215, 0, 0.9);
-                        }
-                        60% { 
-                          background-color: #ffd700;
-                          transform: scale(1.03);
-                          box-shadow: 0 0 18px rgba(255, 215, 0, 0.7);
-                        }
-                        100% { 
-                          background-color: ${originalBg || 'transparent'};
-                          transform: scale(1);
-                          box-shadow: none;
-                        }
-                      }
-                    `;
-                    document.head.appendChild(styleSheet);
-                    
-                    // 应用动画
-                    blockElement.style.animation = 'pulse-highlight 2.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards';
-                    
-                    // 清理
-                    setTimeout(() => {
-                      blockElement.style.animation = '';
-                      document.head.removeChild(styleSheet);
-                    }, 2500);
-                  }
+                  const el = host.querySelector(`[data-block-id="${blockId}"]`);
+                  if (el instanceof HTMLElement) applyPulseHighlight(el);
                 }, 150);
               }
             }
@@ -689,58 +659,9 @@ export const DetailPageWrapper = ({
                     })
                   ]);
                   
-                  // 添加超流畅脉冲高亮动画
+                  // 脉冲高亮动画
                   setTimeout(() => {
-                    const originalBg = blockElement.style.backgroundColor;
-                    const originalTransform = blockElement.style.transform;
-                    const originalBoxShadow = blockElement.style.boxShadow;
-                    
-                    // 创建CSS关键帧动画
-                    const styleSheet = document.createElement('style');
-                    styleSheet.textContent = `
-                      @keyframes pulse-highlight {
-                        0% { 
-                          background-color: ${originalBg || 'transparent'};
-                          transform: scale(1);
-                          box-shadow: none;
-                        }
-                        15% { 
-                          background-color: #ffd700;
-                          transform: scale(1.05);
-                          box-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
-                        }
-                        30% { 
-                          background-color: #ffd700;
-                          transform: scale(1.02);
-                          box-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
-                        }
-                        45% { 
-                          background-color: #ffd700;
-                          transform: scale(1.05);
-                          box-shadow: 0 0 25px rgba(255, 215, 0, 0.9);
-                        }
-                        60% { 
-                          background-color: #ffd700;
-                          transform: scale(1.03);
-                          box-shadow: 0 0 18px rgba(255, 215, 0, 0.7);
-                        }
-                        100% { 
-                          background-color: ${originalBg || 'transparent'};
-                          transform: scale(1);
-                          box-shadow: none;
-                        }
-                      }
-                    `;
-                    document.head.appendChild(styleSheet);
-                    
-                    // 应用动画
-                    blockElement.style.animation = 'pulse-highlight 2.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards';
-                    
-                    // 清理
-                    setTimeout(() => {
-                      blockElement.style.animation = '';
-                      document.head.removeChild(styleSheet);
-                    }, 2500);
+                    if (blockElement instanceof HTMLElement) applyPulseHighlight(blockElement);
                   }, 150);
                 }
               }
