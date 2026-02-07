@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { getMyDrafts, deleteDraft, publishDraft } from '../forum-api';
 import type { DraftDTO, PaginatedResponse } from '../types';
 import creationIllustration from './creation_4036.svg';
+import { notify } from '@yunke/component';
 
 export function Component() {
   const navigate = useNavigate();
@@ -33,7 +34,7 @@ export function Component() {
       setDrafts(data);
     } catch (err) {
       console.error(err);
-      alert('删除失败');
+      notify.error({ title: '删除失败' });
     }
   };
 
@@ -43,7 +44,7 @@ export function Component() {
       navigate(`/forum/${post.forumId}/post/${post.id}`);
     } catch (err) {
       console.error(err);
-      alert('发布失败');
+      notify.error({ title: '发布失败' });
     }
   };
 

@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { createPost, saveDraft, getDraft, publishDraft, uploadAttachment } from '../forum-api';
 import { useToast } from '../hooks/useToast';
+import { notify } from '@yunke/component';
 
 export function Component() {
   const { showError, showSuccess, ToastContainer } = useToast();
@@ -46,7 +47,7 @@ export function Component() {
       }
       next.push(f);
     });
-    if (errors.length) alert(errors.join('\n'));
+    if (errors.length) notify.warning({ title: errors.join('\n') });
     setFiles(prev => [...prev, ...next]);
     // 允许选择相同文件
     e.currentTarget.value = '';
@@ -92,11 +93,11 @@ export function Component() {
 
   const handleSaveDraft = async (isAuto = false) => {
     if (!forumId) {
-      alert('缺少板块ID');
+      notify.warning({ title: '缺少板块ID' });
       return;
     }
     if (!title.trim() && !content.trim()) {
-      if (!isAuto) alert('请输入标题或内容后再保存草稿');
+      if (!isAuto) notify.warning({ title: '请输入标题或内容后再保存草稿' });
       return;
     }
 
@@ -134,7 +135,7 @@ export function Component() {
 
   const handleSubmit = async () => {
     if (!forumId || !title.trim() || !content.trim()) {
-      alert('请填写标题和内容');
+      notify.warning({ title: '请填写标题和内容' });
       return;
     }
 

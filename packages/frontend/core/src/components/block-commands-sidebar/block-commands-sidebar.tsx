@@ -88,7 +88,7 @@ export function BlockCommandsSidebar() {
     navigator.clipboard.writeText(text).then(() => {
       showToast(`已复制到剪贴板: ${text}`);
     }).catch(() => {
-      alert(`无法插入文本，请手动输入: ${text}`);
+      showToast(`无法插入文本，请手动输入: ${text}`);
     });
   }, [showToast]);
 
@@ -159,34 +159,34 @@ export function BlockCommandsSidebar() {
                 navigator.clipboard.writeText(selection.toString()).then(() => {
                   showToast('已复制到剪贴板');
                 }).catch(() => {
-                  alert('复制失败');
+                  showToast('复制失败');
                 });
               } else {
-                alert('请先选中要复制的内容');
+                showToast('请先选中要复制的内容');
               }
             }
           } catch (error) {
             console.error('复制失败:', error);
-            alert('复制失败，请先选中要复制的内容');
+            showToast('复制失败，请先选中要复制的内容');
           }
           break;
         }
         case 'duplicate': {
           const currentModel = getCurrentSelectedBlock(std);
           if (!currentModel) {
-            alert('请先选中一个块');
+            showToast('请先选中一个块');
             return;
           }
 
           const parent = std.store.getParent(currentModel);
           if (!parent) {
-            alert('无法复制顶级块');
+            showToast('无法复制顶级块');
             return;
           }
 
           const currentIndex = parent.children.indexOf(currentModel);
           if (currentIndex === -1) {
-            alert('获取块位置失败');
+            showToast('获取块位置失败');
             return;
           }
 
@@ -209,31 +209,31 @@ export function BlockCommandsSidebar() {
             showToast('已复制块');
             console.log('成功复制块');
           } else {
-            alert('复制块失败');
+            showToast('复制块失败');
           }
           break;
         }
         case 'move-up': {
           const currentModel = getCurrentSelectedBlock(std);
           if (!currentModel) {
-            alert('请先选中一个块');
+            showToast('请先选中一个块');
             return;
           }
 
           const parent = std.store.getParent(currentModel);
           if (!parent) {
-            alert('无法移动顶级块');
+            showToast('无法移动顶级块');
             return;
           }
 
           const currentIndex = parent.children.indexOf(currentModel);
           if (currentIndex === -1) {
-            alert('获取块位置失败');
+            showToast('获取块位置失败');
             return;
           }
 
           if (currentIndex === 0) {
-            alert('已经是第一个块了');
+            showToast('已经是第一个块了');
             return;
           }
 
@@ -248,24 +248,24 @@ export function BlockCommandsSidebar() {
         case 'move-down': {
           const currentModel = getCurrentSelectedBlock(std);
           if (!currentModel) {
-            alert('请先选中一个块');
+            showToast('请先选中一个块');
             return;
           }
 
           const parent = std.store.getParent(currentModel);
           if (!parent) {
-            alert('无法移动顶级块');
+            showToast('无法移动顶级块');
             return;
           }
 
           const currentIndex = parent.children.indexOf(currentModel);
           if (currentIndex === -1) {
-            alert('获取块位置失败');
+            showToast('获取块位置失败');
             return;
           }
 
           if (currentIndex === parent.children.length - 1) {
-            alert('已经是最后一个块了');
+            showToast('已经是最后一个块了');
             return;
           }
 
@@ -282,7 +282,7 @@ export function BlockCommandsSidebar() {
           if (confirmed) {
             const currentModel = getCurrentSelectedBlock(std);
             if (!currentModel) {
-              alert('请先选中一个块');
+              showToast('请先选中一个块');
               return;
             }
 
@@ -295,11 +295,11 @@ export function BlockCommandsSidebar() {
           break;
         }
         default:
-          alert(`命令 "${commandName}" 暂未实现，这是演示功能。`);
+          showToast(`命令 "${commandName}" 暂未实现，这是演示功能。`);
       }
     } catch (error) {
       console.error(`执行操作命令失败: ${commandName}`, error);
-      alert(`操作失败: ${error}`);
+      showToast(`操作失败: ${error}`);
     }
   }, [getCurrentSelectedBlock, showToast]);
 
@@ -309,7 +309,7 @@ export function BlockCommandsSidebar() {
       
       if (!editorContainer?.host?.std) {
         console.warn('编辑器未准备好');
-        alert('编辑器未准备好，请稍后再试');
+        showToast('编辑器未准备好，请稍后再试');
         return;
       }
 
@@ -325,7 +325,7 @@ export function BlockCommandsSidebar() {
           console.log(`成功转换为 ${commandName}`);
         } else {
           console.warn(`转换失败: ${commandName}`);
-          alert(`转换失败，请确保当前有选中的文本或块`);
+          showToast(`转换失败，请确保当前有选中的文本或块`);
         }
       } else {
         switch (commandName) {
@@ -351,7 +351,7 @@ export function BlockCommandsSidebar() {
       }
     } catch (error) {
       console.error('执行命令失败:', error);
-      alert(`执行命令失败: ${error}`);
+      showToast(`执行命令失败: ${error}`);
     }
   }, [editorContainer, insertTextInEditor, executeActionCommand]);
 

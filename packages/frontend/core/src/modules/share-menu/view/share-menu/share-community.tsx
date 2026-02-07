@@ -1,3 +1,4 @@
+import { notify } from '@yunke/component';
 import { Button } from '@yunke/component/ui/button';
 import { DocService } from '@yunke/core/modules/doc';
 import { WorkspaceService } from '@yunke/core/modules/workspace';
@@ -107,7 +108,7 @@ export const ShareCommunity = () => {
 
   const handleShare = useCallback(async () => {
     if (!title.trim()) {
-      alert('请输入标题');
+      notify.warning({ title: '请输入标题' });
       return;
     }
 
@@ -123,7 +124,7 @@ export const ShareCommunity = () => {
       setShowForm(false);
     } catch (error) {
       console.error('分享失败:', error);
-      alert(error instanceof Error ? error.message : '网络错误，请重试');
+      notify.error({ title: '分享失败', message: error instanceof Error ? error.message : '网络错误，请重试' });
     } finally {
       setLoading(false);
     }
@@ -140,7 +141,7 @@ export const ShareCommunity = () => {
       setIsShared(false);
     } catch (error) {
       console.error('取消分享失败:', error);
-      alert(error instanceof Error ? error.message : '网络错误，请重试');
+      notify.error({ title: '取消分享失败', message: error instanceof Error ? error.message : '网络错误，请重试' });
     } finally {
       setLoading(false);
     }

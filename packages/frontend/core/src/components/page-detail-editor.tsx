@@ -1,5 +1,6 @@
 import './page-detail-editor.css';
 
+import { notify } from '@yunke/component';
 import { useLiveData, useService } from '@toeverything/infra';
 import { DebugLogger } from '@yunke/debug';
 import clsx from 'clsx';
@@ -381,7 +382,7 @@ export const PageDetailEditor = ({
 
         if (!blockSuiteDoc || !blockSuiteDoc.blobSync) {
           editorLogger.error('无法获取白板存储系统');
-          alert('上传失败：无法访问白板存储系统');
+          notify.error({ title: '上传失败', message: '无法访问白板存储系统' });
           return;
         }
 
@@ -410,7 +411,7 @@ export const PageDetailEditor = ({
 
           if (surfaces.length === 0) {
             editorLogger.warn('未找到surface块');
-            alert('插入失败：无法找到无限白板surface');
+            notify.error({ title: '插入失败', message: '无法找到无限白板surface' });
             return;
           }
 
@@ -448,11 +449,11 @@ export const PageDetailEditor = ({
         setIsDeckModalOpen(false);
 
         // 显示成功提示
-        alert(`🎉 Decker绘图已成功插入白板！\n文件大小: ${Math.round(gifBlob.size / 1024)}KB`);
+        notify.success({ title: 'Decker 绘图已成功插入白板', message: `文件大小: ${Math.round(gifBlob.size / 1024)}KB` });
 
       } catch (error: any) {
         editorLogger.error('处理Decker导出失败', error);
-        alert(`上传失败: ${error?.message || '未知错误'}`);
+        notify.error({ title: '上传失败', message: error?.message || '未知错误' });
       }
     };
 
@@ -476,7 +477,7 @@ export const PageDetailEditor = ({
 
     if (!rootModel) {
       editorLogger.error('未找到根模型');
-      alert('插入失败：无法找到页面根模型');
+      notify.error({ title: '插入失败', message: '无法找到页面根模型' });
       return;
     }
 
