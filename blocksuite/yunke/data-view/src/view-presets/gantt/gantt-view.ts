@@ -13,15 +13,20 @@ import {
   escapeHtml,
   getStatusDisplayName,
   getPriorityDisplayName,
-  adjustColorBrightness,
-  getTaskBarColorByStatus,
-  getTaskBorderColorByStatus,
+  getTaskBarColor,
+  getTaskBorderColor,
   isSameDay,
-  getWeekNumber,
   getWeekStart,
 } from './gantt-utils.js';
 import { openTaskConfigPanel } from './gantt-task-config.js';
 import { showTaskContextMenu } from './gantt-context-menu.js';
+import {
+  generateTimelineUnits,
+  calculateTaskPosition,
+  calculateTaskWidth,
+  calculateTodayPosition,
+  type TimelineUnit,
+} from './gantt-timeline.js';
 
 /**
  * 甘特图主视图组件
@@ -1068,9 +1073,9 @@ export class GanttView extends LitElement {
       const timeline = this.view?.timeline$?.value;
       if (!timeline) return;
       
-      const timelineUnits = this.generateTimelineUnits(timeline);
+      const timelineUnits = generateTimelineUnits(timeline);
       const totalWidth = timelineUnits.reduce((sum, unit) => sum + unit.width, 0);
-      const todayPosition = this.calculateTodayPosition(timeline, totalWidth);
+      const todayPosition = calculateTodayPosition(timeline, totalWidth);
       
       if (todayPosition >= 0) {
         // 同时控制时间轴头部和甘特图主体的滚动
@@ -1332,9 +1337,9 @@ export class GanttView extends LitElement {
     if (!timeline) return html`<div class="gantt-content">Loading...</div>`;
 
     // 使用用户选择的时间单位，不再强制周显示
-    const timelineUnits = this.generateTimelineUnits(timeline);
+    const timelineUnits = generateTimelineUnits(timeline);
     const totalWidth = timelineUnits.reduce((sum, unit) => sum + unit.width, 0);
-    const todayPosition = this.calculateTodayPosition(timeline, totalWidth);
+    const todayPosition = calculateTodayPosition(timeline, totalWidth);
 
     logger.debug('🎯 [GanttView] 渲染专业甘特图 (动态单位):', {
       taskCount: tasks.length,
@@ -1437,12 +1442,12 @@ export class GanttView extends LitElement {
     }
 
     // 精确计算任务条在时间轴上的位置，确保与时间轴对齐
-    const left = this.calculateTaskPosition(taskStart, timeline, totalWidth);
-    const width = this.calculateTaskWidth(taskStart, taskEnd, timeline, totalWidth);
+    const left = calculateTaskPosition(taskStart, timeline, totalWidth);
+    const width = calculateTaskWidth(taskStart, taskEnd, timeline, totalWidth);
 
     // 根据任务状态和优先级确定颜色
-    const taskColor = this.getTaskBarColor(task);
-    const taskBorderColor = this.getTaskBorderColor(task);
+    const taskColor = getTaskBarColor(task.status, task.priority);
+    const taskBorderColor = getTaskBorderColor(task.priority);
 
     // 计算任务持续天数
     const taskDuration = taskEnd.getTime() - taskStart.getTime();
@@ -1538,325 +1543,8 @@ export class GanttView extends LitElement {
     `;
   }
 
-  /**
-   * 根据任务状态获取任务条颜色
-   */
-  private getTaskBarColor(task: GanttTask): string {
-    // 首先根据状态确定基础颜色
-    let baseColor: string;
-    
-    switch (task.status) {
-      case 'completed':
-        baseColor = '#10b981'; // 绿色 - 已完成
-        break;
-      case 'in_progress':
-        baseColor = '#3b82f6'; // 蓝色 - 进行中
-        break;
-      case 'paused':
-        baseColor = '#f59e0b'; // 橙色 - 已暂停
-        break;
-      case 'not_started':
-      default:
-        baseColor = '#6b7280'; // 灰色 - 未开始
-        break;
-    }
-    
-    // 根据优先级调整颜色亮度
-    switch (task.priority) {
-      case 'urgent':
-        return task.status === 'completed' ? baseColor : '#ef4444'; // 紧急任务用红色（除非已完成）
-      case 'high':
-        return adjustColorBrightness(baseColor, -0.1); // 稍微深一点
-      case 'low':
-        return adjustColorBrightness(baseColor, 0.2); // 稍微亮一点
-      case 'medium':
-      default:
-        return baseColor;
-    }
-  }
-
-  /**
-   * 获取任务边框颜色（用于优先级指示）
-   */
-  private getTaskBorderColor(task: GanttTask): string {
-    switch (task.priority) {
-      case 'urgent':
-        return '#dc2626'; // 深红色
-      case 'high':
-        return '#ea580c'; // 深橙色
-      case 'medium':
-        return '#059669'; // 深绿色
-      case 'low':
-      default:
-        return '#4b5563'; // 深灰色
-    }
-  }
-
-  /**
-   * 精确计算任务开始位置，确保与时间轴单位边界对齐
-   */
-  private calculateTaskPosition(taskStart: Date, timeline: TimelineConfig, totalWidth: number): number {
-    // 生成与时间轴显示完全一致的单位边界
-    const timelineUnits = this.generateTimelineUnits(timeline);
-    
-    logger.debug('🔍 [任务位置计算] 开始计算任务位置:', {
-      taskStartDate: taskStart.toLocaleDateString('zh-CN'),
-      taskStartTime: taskStart.getTime(),
-      timelineUnit: timeline.unit,
-      totalUnits: timelineUnits.length
-    });
-    
-    // 查找任务开始时间所在的时间单位
-    let accumulatedWidth = 0;
-    for (let i = 0; i < timelineUnits.length; i++) {
-      const unit = timelineUnits[i];
-      const unitStartDate = unit.date;
-      
-      // 计算当前单位的结束时间
-      let unitEndDate: Date;
-      if (i < timelineUnits.length - 1) {
-        unitEndDate = timelineUnits[i + 1].date;
-      } else {
-        // 最后一个单位，根据单位类型计算结束时间
-        unitEndDate = new Date(unitStartDate);
-        switch (timeline.unit) {
-          case 'day':
-            unitEndDate.setDate(unitStartDate.getDate() + 1);
-            break;
-          case 'week':
-            unitEndDate.setDate(unitStartDate.getDate() + 7);
-            break;
-          case 'month':
-            unitEndDate.setMonth(unitStartDate.getMonth() + 1);
-            break;
-          default:
-            unitEndDate.setDate(unitStartDate.getDate() + 1);
-        }
-      }
-      
-      logger.debug(`🔍 [单位${i}] 检查单位:`, {
-        unitLabel: unit.label,
-        unitStart: unitStartDate.toLocaleDateString('zh-CN'),
-        unitEnd: unitEndDate.toLocaleDateString('zh-CN'),
-        accumulatedWidth: Math.round(accumulatedWidth),
-        taskInRange: taskStart >= unitStartDate && taskStart < unitEndDate
-      });
-      
-      // 检查任务开始时间是否在当前单位范围内
-      if (taskStart >= unitStartDate && taskStart < unitEndDate) {
-        // 在单位内计算精确位置
-        const unitSpan = unitEndDate.getTime() - unitStartDate.getTime();
-        const taskOffsetInUnit = taskStart.getTime() - unitStartDate.getTime();
-        const relativePosition = taskOffsetInUnit / unitSpan;
-        
-        const finalPosition = accumulatedWidth + (relativePosition * unit.width);
-        
-        logger.debug('🎯 [任务位置计算] 找到匹配单位:', {
-          匹配单位: unit.label,
-          单位开始: unitStartDate.toLocaleDateString('zh-CN'),
-          单位结束: unitEndDate.toLocaleDateString('zh-CN'),
-          任务在单位内偏移: `${Math.round(taskOffsetInUnit / (24*60*60*1000) * 10) / 10}天`,
-          相对位置: Math.round(relativePosition * 100) / 100,
-          累计宽度: Math.round(accumulatedWidth),
-          单位宽度: unit.width,
-          最终位置: Math.round(finalPosition)
-        });
-        
-        return finalPosition;
-      }
-      
-      accumulatedWidth += unit.width;
-    }
-    
-    // 如果任务在所有单位范围外，使用线性计算作为后备
-    const timelineStart = new Date(timeline.startDate);
-    const timelineEnd = new Date(timeline.endDate);
-    const timelineSpan = timelineEnd.getTime() - timelineStart.getTime();
-    const taskStartOffset = Math.max(0, taskStart.getTime() - timelineStart.getTime());
-    const fallbackPosition = (taskStartOffset / timelineSpan) * totalWidth;
-    
-    logger.debug('⚠️ [任务位置计算] 使用后备线性计算:', {
-      taskStartDate: taskStart.toLocaleDateString('zh-CN'),
-      timelineStart: timelineStart.toLocaleDateString('zh-CN'),
-      timelineEnd: timelineEnd.toLocaleDateString('zh-CN'),
-      fallbackPosition: Math.round(fallbackPosition)
-    });
-    
-    return fallbackPosition;
-  }
-  
-  /**
-   * 精确计算任务宽度，确保与时间轴单位边界对齐
-   */
-  private calculateTaskWidth(taskStart: Date, taskEnd: Date, timeline: TimelineConfig, totalWidth: number): number {
-    const timelineStart = new Date(timeline.startDate);
-    const timelineEnd = new Date(timeline.endDate);
-    
-    // 限制任务时间在时间轴范围内
-    const effectiveStart = new Date(Math.max(taskStart.getTime(), timelineStart.getTime()));
-    const effectiveEnd = new Date(Math.min(taskEnd.getTime(), timelineEnd.getTime()));
-    
-    // 如果任务完全在时间轴范围外，返回最小宽度
-    if (effectiveStart >= effectiveEnd) {
-      return 40;
-    }
-    
-    // 使用相同的单位边界逻辑计算开始和结束位置
-    const startPosition = this.calculateTaskPosition(effectiveStart, timeline, totalWidth);
-    const endPosition = this.calculateTaskPosition(effectiveEnd, timeline, totalWidth);
-    
-    // 返回宽度，最小40px保证可见性
-    const calculatedWidth = Math.max(40, endPosition - startPosition);
-    
-    logger.debug('📏 [任务宽度计算] 基于单位边界:', {
-      effectiveStart: effectiveStart.toLocaleDateString('zh-CN'),
-      effectiveEnd: effectiveEnd.toLocaleDateString('zh-CN'),
-      startPosition: Math.round(startPosition),
-      endPosition: Math.round(endPosition),
-      calculatedWidth: Math.round(calculatedWidth)
-    });
-    
-    return calculatedWidth;
-  }
-
-  // adjustColorBrightness, getStatusDisplayName, getPriorityDisplayName 已迁移到 gantt-utils.ts
-
-  /**
-   * 生成时间轴单位 - 动态根据用户选择的时间单位显示
-   */
-  private generateTimelineUnits(timeline: TimelineConfig) {
-    const units: Array<{
-      date: Date;
-      label: string;
-      width: number;
-      isToday: boolean;
-      tooltip: string;
-    }> = [];
-
-    const startDate = new Date(timeline.startDate);
-    const endDate = new Date(timeline.endDate);
-    const unitWidth = timeline.unitWidth || 120; // 增加默认宽度以适应周显示
-    
-    let current = new Date(startDate);
-    const today = new Date();
-
-    // 根据用户选择的时间单位生成时间轴（动态切换）
-    while (current <= endDate) {
-      let label: string;
-      let nextDate: Date;
-      let isToday = false;
-      let unitDate: Date; // 单位的实际日期
-
-      switch (timeline.unit) {
-        case 'day':
-          label = current.toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' });
-          nextDate = new Date(current);
-          nextDate.setDate(current.getDate() + 1);
-          isToday = isSameDay(current, today);
-          unitDate = new Date(current);
-          break;
-        case 'week':
-          // 获取周的开始日期（周一）- 按周显示模式
-          const weekStart = getWeekStart(current);
-          const weekEnd = new Date(weekStart);
-          weekEnd.setDate(weekStart.getDate() + 6);
-          
-          // 周显示格式：月日-日 (例如: 1月15-21日)
-          const startMonth = weekStart.getMonth() + 1;
-          const endMonth = weekEnd.getMonth() + 1;
-          
-          if (startMonth === endMonth) {
-            // 同一个月
-            label = `${startMonth}月${weekStart.getDate()}-${weekEnd.getDate()}日`;
-          } else {
-            // 跨月
-            label = `${startMonth}月${weekStart.getDate()}日-${endMonth}月${weekEnd.getDate()}日`;
-          }
-          
-          nextDate = new Date(weekStart);
-          nextDate.setDate(weekStart.getDate() + 7);
-          
-          // 检查今天是否在这一周内
-          isToday = today >= weekStart && today <= weekEnd;
-          unitDate = new Date(weekStart); // 使用周开始日期
-          current = nextDate; // 移到下一周开始
-          break;
-        case 'month':
-          label = current.toLocaleDateString('zh-CN', { year: 'numeric', month: 'short' });
-          nextDate = new Date(current);
-          nextDate.setMonth(current.getMonth() + 1);
-          nextDate.setDate(1); // 月初
-          
-          // 检查今天是否在这个月内
-          isToday = today.getFullYear() === current.getFullYear() && 
-                   today.getMonth() === current.getMonth();
-          unitDate = new Date(current);
-          break;
-        default:
-          // 默认按天显示
-          label = current.toLocaleDateString('zh-CN');
-          nextDate = new Date(current);
-          nextDate.setDate(current.getDate() + 1);
-          isToday = isSameDay(current, today);
-          unitDate = new Date(current);
-      }
-
-      units.push({
-        date: unitDate,
-        label,
-        width: unitWidth,
-        isToday,
-        tooltip: unitDate.toLocaleDateString('zh-CN', { 
-          year: 'numeric', 
-          month: 'long', 
-          day: 'numeric',
-          weekday: 'long'
-        })
-      });
-
-      // 对于非周模式，移动到下一个单位
-      if (timeline.unit !== 'week') {
-        current = nextDate;
-      }
-    }
-
-    logger.debug('🗺️ [GanttView] 生成时间轴单位:', {
-      unit: timeline.unit,
-      totalUnits: units.length,
-      totalWidth: units.reduce((sum, u) => sum + u.width, 0),
-      firstUnit: units[0]?.label + ' (' + units[0]?.date.toLocaleDateString('zh-CN') + ')',
-      lastUnit: units[units.length - 1]?.label + ' (' + units[units.length - 1]?.date.toLocaleDateString('zh-CN') + ')',
-      todayUnits: units.filter(u => u.isToday).length,
-      allUnits: units.map(u => ({ 
-        label: u.label, 
-        date: u.date.toLocaleDateString('zh-CN'),
-        isToday: u.isToday 
-      }))
-    });
-
-    return units;
-  }
-
-  // getWeekStart 已迁移到 gantt-utils.ts
-
-  /**
-   * 计算今天线的位置
-   */
-  private calculateTodayPosition(timeline: TimelineConfig, totalWidth: number): number {
-    const startDate = new Date(timeline.startDate);
-    const endDate = new Date(timeline.endDate);
-    const today = new Date();
-    
-    // 如果今天不在时间轴范围内，返回-1表示不显示
-    if (today < startDate || today > endDate) {
-      return -1;
-    }
-    
-    const timelineSpan = endDate.getTime() - startDate.getTime();
-    const todayOffset = today.getTime() - startDate.getTime();
-    
-    return (todayOffset / timelineSpan) * totalWidth;
-  }
+  // getTaskBarColor, getTaskBorderColor 宸茶縼绉诲埌 gantt-utils.ts
+  // calculateTaskPosition 绛夊凡杩佺Щ鍒?gantt-timeline.ts
 
   /**
    * 处理任务名称更改
@@ -1918,7 +1606,7 @@ export class GanttView extends LitElement {
     }
     
     // 使用当前的时间轴配置，不再强制周显示
-    const timelineUnits = this.generateTimelineUnits(timeline);
+    const timelineUnits = generateTimelineUnits(timeline);
     const totalWidth = timelineUnits.reduce((sum, unit) => sum + unit.width, 0);
     
     logger.debug('📊 [修复] 时间轴信息（使用当前单位）:', { 
@@ -1974,7 +1662,7 @@ export class GanttView extends LitElement {
     if (!timeline) return;
     
     // 使用当前的时间轴配置，不再强制周显示
-    const timelineUnits = this.generateTimelineUnits(timeline);
+    const timelineUnits = generateTimelineUnits(timeline);
     const totalWidth = timelineUnits.reduce((sum, unit) => sum + unit.width, 0);
     
     // 获取当前点击的元素
@@ -2017,7 +1705,7 @@ export class GanttView extends LitElement {
     if (!timeline) return;
     
     // 使用当前的时间轴配置，不再强制周显示
-    const timelineUnits = this.generateTimelineUnits(timeline);
+    const timelineUnits = generateTimelineUnits(timeline);
     const totalWidth = timelineUnits.reduce((sum, unit) => sum + unit.width, 0);
     
     // 获取当前点击的元素
@@ -2250,7 +1938,7 @@ export class GanttView extends LitElement {
       const timelineSpan = timelineEnd.getTime() - timelineStart.getTime();
       // 使用当前时间轴配置，不强制周显示
       const currentTimeline = this.view?.timeline$?.value;
-      const timelineUnits = currentTimeline ? this.generateTimelineUnits(currentTimeline) : [];
+      const timelineUnits = currentTimeline ? generateTimelineUnits(currentTimeline) : [];
       const totalWidth = timelineUnits.reduce((sum, unit) => sum + unit.width, 0);
       
       const taskStartOffset = Math.max(0, finalStartDate - timelineStart.getTime());
@@ -2322,7 +2010,7 @@ export class GanttView extends LitElement {
     const timelineSpan = timelineEnd.getTime() - timelineStart.getTime();
     
     // 使用当前时间轴配置生成时间单位，不强制周显示
-    const timelineUnits = this.generateTimelineUnits(timeline);
+    const timelineUnits = generateTimelineUnits(timeline);
     const totalWidth = timelineUnits.reduce((sum, unit) => sum + unit.width, 0);
     
     const taskStartOffset = Math.max(0, newStartDate - timelineStart.getTime());
