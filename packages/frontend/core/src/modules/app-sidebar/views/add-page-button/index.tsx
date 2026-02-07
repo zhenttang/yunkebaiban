@@ -85,30 +85,41 @@ function AddPageWithAsk({ className, style }: AddPageButtonProps) {
   const workbench = useService(WorkbenchService).workbench;
   const docsService = useService(DocsService);
 
+  // M-8 修复：所有创建操作添加 try-catch + 错误提示
   const createPage = useCallback(
     (e?: MouseEvent) => {
-      console.log('🚀 [AddPageButton.createPage] 用户点击新建页面按钮');
-      createDoc(e, 'page');
-      track.$.navigationPanel.$.createDoc();
-      track.$.sidebar.newDoc.quickStart({ with: 'page' });
+      try {
+        createDoc(e, 'page');
+        track.$.navigationPanel.$.createDoc();
+        track.$.sidebar.newDoc.quickStart({ with: 'page' });
+      } catch (error) {
+        console.error('[AddPageButton] createPage failed:', error);
+      }
     },
     [createDoc]
   );
   const createEdgeless = useCallback(
     (e?: MouseEvent) => {
-      console.log('🚀 [AddPageButton.createEdgeless] 用户点击新建白板按钮');
-      createDoc(e, 'edgeless');
-      track.$.navigationPanel.$.createDoc();
-      track.$.sidebar.newDoc.quickStart({ with: 'edgeless' });
+      try {
+        createDoc(e, 'edgeless');
+        track.$.navigationPanel.$.createDoc();
+        track.$.sidebar.newDoc.quickStart({ with: 'edgeless' });
+      } catch (error) {
+        console.error('[AddPageButton] createEdgeless failed:', error);
+      }
     },
     [createDoc]
   );
 
   const createDocFromTemplate = useAsyncCallback(
     async (templateId: string) => {
-      const docId = await docsService.duplicateFromTemplate(templateId);
-      workbench.openDoc(docId);
-      track.$.sidebar.newDoc.quickStart({ with: 'template' });
+      try {
+        const docId = await docsService.duplicateFromTemplate(templateId);
+        workbench.openDoc(docId);
+        track.$.sidebar.newDoc.quickStart({ with: 'template' });
+      } catch (error) {
+        console.error('[AddPageButton] createDocFromTemplate failed:', error);
+      }
     },
     [docsService, workbench]
   );

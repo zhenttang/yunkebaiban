@@ -169,21 +169,26 @@ export const OfflineSettings = () => {
     }
   }, [offlineConfig.dataPath]);
 
+  // M-11 修复：添加取消标志，防止组件卸载后 setState
   useEffect(() => {
     if (BUILD_CONFIG.isElectron) return;
+    let cancelled = false;
     getOfflineRootHandleName()
-      .then(name => setOfflineHandleName(name))
+      .then(name => { if (!cancelled) setOfflineHandleName(name); })
       .catch(console.error);
+    return () => { cancelled = true; };
   }, [config.offline]);
 
-  // 🔧 获取默认数据路径
+  // 🔧 获取默认数据路径（M-11 修复：添加取消标志）
   useEffect(() => {
     if (!BUILD_CONFIG.isElectron || !desktopApi?.handler?.workspace?.getDefaultDataPath) return;
+    let cancelled = false;
     desktopApi.handler.workspace.getDefaultDataPath()
       .then((result: { path: string; localPath: string }) => {
-        setDefaultDataPath(result.path);
+        if (!cancelled) setDefaultDataPath(result.path);
       })
       .catch(console.error);
+    return () => { cancelled = true; };
   }, [desktopApi]);
 
   // 🔧 在资源管理器中打开数据目录

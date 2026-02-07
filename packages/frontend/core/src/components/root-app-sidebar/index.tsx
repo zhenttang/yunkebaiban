@@ -27,7 +27,7 @@ import {
 import { Cloud, HardDrive, Loader2 } from 'lucide-react';
 import { useLiveData, useService, useServices } from '@toeverything/infra';
 import type { ReactElement } from 'react';
-import { memo, useCallback } from 'react';
+import { memo, useCallback, useMemo } from 'react';
 
 import {
   CollapsibleSection,
@@ -109,6 +109,36 @@ export const RootAppSidebar = memo((): ReactElement => {
 
   // 获取云端连接状态
   const { isConnected, storageMode } = useCloudStorage();
+
+  // M-5 修复：提取 style 为 useMemo，避免每次渲染重建对象
+  const statusIndicatorStyle = useMemo(() => ({
+    display: 'flex' as const,
+    alignItems: 'center' as const,
+    gap: '6px',
+    padding: '6px 12px',
+    margin: '4px 8px',
+    borderRadius: '6px',
+    backgroundColor: isConnected
+      ? 'rgba(16, 185, 129, 0.1)'
+      : storageMode === 'detecting'
+        ? 'rgba(251, 191, 36, 0.1)'
+        : 'rgba(107, 114, 128, 0.1)',
+    border: `1px solid ${isConnected
+      ? 'rgba(16, 185, 129, 0.3)'
+      : storageMode === 'detecting'
+        ? 'rgba(251, 191, 36, 0.3)'
+        : 'rgba(107, 114, 128, 0.3)'}`,
+    fontSize: '11px',
+    fontWeight: '500' as const,
+    color: isConnected
+      ? '#10b981'
+      : storageMode === 'detecting'
+        ? '#f59e0b'
+        : '#6b7280',
+    cursor: 'pointer' as const,
+  }), [isConnected, storageMode]);
+
+  const spinAnimationStyle = useMemo(() => ({ animation: 'spin 1s linear infinite' }), []);
 
   const sessionStatus = useLiveData(authService.session.status$);
   const t = useI18n();
@@ -238,38 +268,19 @@ export const RootAppSidebar = memo((): ReactElement => {
         </CollapsibleSection>
       </SidebarScrollableContainer>
       <SidebarContainer className={bottomContainer}>
-        {/* 云端连接状态指示器 - 根据实际连接状态显示 */}
+        {/* 云端连接状态指示器 - M-5 修复：提取 style 避免每次渲染重建；M-6 修复：添加 ARIA 属性 */}
         <style>{`@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }`}</style>
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '6px',
-          padding: '6px 12px',
-          margin: '4px 8px',
-          borderRadius: '6px',
-          backgroundColor: isConnected 
-            ? 'rgba(16, 185, 129, 0.1)' 
-            : storageMode === 'detecting' 
-              ? 'rgba(251, 191, 36, 0.1)' 
-              : 'rgba(107, 114, 128, 0.1)',
-          border: `1px solid ${isConnected 
-            ? 'rgba(16, 185, 129, 0.3)' 
-            : storageMode === 'detecting' 
-              ? 'rgba(251, 191, 36, 0.3)' 
-              : 'rgba(107, 114, 128, 0.3)'}`,
-          fontSize: '11px',
-          fontWeight: '500',
-          color: isConnected 
-            ? '#10b981' 
-            : storageMode === 'detecting' 
-              ? '#f59e0b' 
-              : '#6b7280',
-          cursor: 'pointer',
-        }} title={`云端连接状态：${isConnected ? '已连接' : storageMode === 'detecting' ? '连接中...' : '本地模式'}`}>
+        <div
+          role="status"
+          aria-live="polite"
+          aria-label={`云端连接状态：${isConnected ? '已连接' : storageMode === 'detecting' ? '连接中' : '本地模式'}`}
+          style={statusIndicatorStyle}
+          title={`云端连接状态：${isConnected ? '已连接' : storageMode === 'detecting' ? '连接中...' : '本地模式'}`}
+        >
           {isConnected ? (
             <Cloud size={14} />
           ) : storageMode === 'detecting' ? (
-            <Loader2 size={14} style={{ animation: 'spin 1s linear infinite' }} />
+            <Loader2 size={14} style={spinAnimationStyle} />
           ) : (
             <HardDrive size={14} />
           )}

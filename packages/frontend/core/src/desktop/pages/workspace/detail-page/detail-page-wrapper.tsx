@@ -426,20 +426,26 @@ export const DetailPageWrapper = ({
       queryString.parse(searchParams.toString(), paramsParseOptions)
     );
 
+    let scrollTimer: ReturnType<typeof setTimeout> | null = null;
+
     // 如果有 blockIds，直接进行文本定位和滚动
     if (params.blockIds?.length) {
       const blockId = params.blockIds[0];
       
       // 延迟执行，确保编辑器已完全渲染
-      setTimeout(() => {
+      scrollTimer = setTimeout(() => {
         locateAndScrollToBlock(blockId, editor);
-      }, 1000); // 增加延迟到 1000ms
+      }, 1000);
       
       // 同时设置 editor selector（用于 BlockSuite 的内部处理）
       editor.selector$.next(params);
     } else if (params.elementIds?.length || params.mode) {
       editor.selector$.next(params);
     }
+
+    return () => {
+      if (scrollTimer) clearTimeout(scrollTimer);
+    };
   }, [editor, searchParams.toString()]);
 
   // 文本定位和滚动的核心函数

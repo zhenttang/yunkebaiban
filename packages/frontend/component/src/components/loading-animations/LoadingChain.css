@@ -68,7 +68,8 @@
 
 /* C. 方块 (The Prototype) */
 /* 放在杠杆右端，准备被弹射 */
-.block {
+/* 注意：类名改为 chain-block，避免和 MenuItem 的 .block 类冲突 */
+.chain-block {
     width: 24px;
     height: 24px;
     background: white;

@@ -345,44 +345,66 @@ export class DocSyncPeer {
           //   peerId: this.peerId
           // });
 
-          try {
-            // 添加超时控制：30秒超时
-            const pushPromise = this.remote.pushDocUpdate(
-              {
+          // 🔧 P0 修复：添加指数退避重试机制
+          const MAX_RETRIES = 3;
+          const BASE_DELAY_MS = 1000;
+          let lastError: Error | null = null;
+
+          for (let attempt = 0; attempt < MAX_RETRIES; attempt++) {
+            try {
+              // 添加超时控制：30秒超时
+              const pushPromise = this.remote.pushDocUpdate(
+                {
+                  docId,
+                  bin: merged,
+                },
+                this.uniqueId
+              );
+              
+              const timeoutPromise = new Promise<never>((_, reject) => {
+                setTimeout(() => reject(new Error('Push timeout after 30s')), 30000);
+              });
+              
+              const { timestamp } = await Promise.race([pushPromise, timeoutPromise]);
+
+              // console.log('✅ [DocSyncPeer.push] 远程推送成功:', {
+              //   docId,
+              //   timestamp,
+              //   peerId: this.peerId,
+              //   attempt: attempt + 1
+              // });
+
+              this.schedule({
+                type: 'save',
                 docId,
-                bin: merged,
-              },
-              this.uniqueId
+                remoteClock: timestamp,
+              });
+              
+              // 推送成功，跳出重试循环
+              lastError = null;
+              break;
+            } catch (error) {
+              lastError = error instanceof Error ? error : new Error(String(error));
+              
+              // 如果不是最后一次尝试，等待后重试
+              if (attempt < MAX_RETRIES - 1) {
+                const delay = BASE_DELAY_MS * Math.pow(2, attempt); // 指数退避: 1s, 2s, 4s
+                console.warn(
+                  `[DocSyncPeer.push] 推送失败，${delay}ms 后重试 (${attempt + 1}/${MAX_RETRIES}):`,
+                  { docId, error: lastError.message }
+                );
+                await new Promise(resolve => setTimeout(resolve, delay));
+              }
+            }
+          }
+
+          // 所有重试都失败，记录错误
+          if (lastError) {
+            console.error(
+              `[DocSyncPeer.push] 推送最终失败 (已重试 ${MAX_RETRIES} 次):`,
+              { docId, error: lastError.message, peerId: this.peerId }
             );
-            
-            const timeoutPromise = new Promise<never>((_, reject) => {
-              setTimeout(() => reject(new Error('Push timeout after 30s')), 30000);
-            });
-            
-            const { timestamp } = await Promise.race([pushPromise, timeoutPromise]);
-
-            // console.log('✅ [DocSyncPeer.push] 远程推送成功:', {
-            //   docId,
-            //   timestamp,
-            //   peerId: this.peerId
-            // });
-
-            this.schedule({
-              type: 'save',
-              docId,
-              remoteClock: timestamp,
-            });
-          } catch (error) {
-            // 推送失败，记录错误但不中断整个同步流程
-            // console.error('❌ [DocSyncPeer.push] 推送失败，跳过此文档:', {
-            //   docId,
-            //   error: error instanceof Error ? error.message : String(error),
-            //   peerId: this.peerId
-            // });
-            
-            // 不抛出错误，让同步继续其他文档
-            // 但记录到状态中
-            this.status.errorMessage = `Push failed for ${docId}: ${error instanceof Error ? error.message : String(error)}`;
+            this.status.errorMessage = `Push failed for ${docId} after ${MAX_RETRIES} retries: ${lastError.message}`;
           }
         }
         throwIfAborted(signal);

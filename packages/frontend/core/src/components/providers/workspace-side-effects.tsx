@@ -10,6 +10,7 @@ import {
 } from '@yunke/core/blocksuite/ai';
 import { useRegisterFindInPageCommands } from '@yunke/core/components/hooks/yunke/use-register-find-in-page-commands';
 import { useRegisterWorkspaceCommands } from '@yunke/core/components/hooks/use-register-workspace-commands';
+import { useStorageErrorListener } from '@yunke/core/components/hooks/use-storage-error-listener';
 import { OverCapacityNotification } from '@yunke/core/components/over-capacity';
 import {
   AuthService,
@@ -165,6 +166,9 @@ export const WorkspaceSideEffects = () => {
   useRegisterWorkspaceCommands();
   useRegisterNavigationCommands();
   useRegisterFindInPageCommands();
+  
+  // 🔧 监听存储错误事件，通知用户
+  useStorageErrorListener();
 
   return (
     <>

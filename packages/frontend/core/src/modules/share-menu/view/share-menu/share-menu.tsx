@@ -33,6 +33,7 @@ import {
 import * as styles from './index.css';
 import { InviteMemberEditor } from './invite-member-editor/invite-member-editor';
 import { MemberManagement } from './member-management';
+import { ShareCommunity } from './share-community';
 import { ShareExport } from './share-export';
 import { SharePage } from './share-page';
 
@@ -48,6 +49,7 @@ export interface ShareMenuProps extends PropsWithChildren {
 export enum ShareMenuTab {
   Share = 'share',
   Export = 'export',
+  Community = 'community',
   Invite = 'invite',
   Members = 'members',
 }
@@ -173,6 +175,15 @@ export const ShareMenuContent = (props: ShareMenuProps) => {
           >
             {t['com.yunke.share-menu.tab.export']() || '导出'}
           </Tabs.Trigger>
+          <Tabs.Trigger
+            value={ShareMenuTab.Community}
+            className={styles.tab}
+            style={{
+              display: BUILD_CONFIG.isMobileEdition ? 'none' : undefined,
+            }}
+          >
+            社区
+          </Tabs.Trigger>
           <Tabs.Trigger value={ShareMenuTab.Invite} style={{ display: 'none' }}>
             邀请
           </Tabs.Trigger>
@@ -198,6 +209,9 @@ export const ShareMenuContent = (props: ShareMenuProps) => {
         </Tabs.Content>
         <Tabs.Content value={ShareMenuTab.Export}>
           <ShareExport />
+        </Tabs.Content>
+        <Tabs.Content value={ShareMenuTab.Community}>
+          <ShareCommunity />
         </Tabs.Content>
         <Tabs.Content value={ShareMenuTab.Invite}>
           <div>null</div>

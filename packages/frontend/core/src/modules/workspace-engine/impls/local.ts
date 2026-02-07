@@ -45,6 +45,27 @@ import { WorkspaceImpl } from '../../workspace/impls/workspace';
 import { getWorkspaceProfileWorker } from './out-worker';
 import { isFileSystemAccessSupported } from '../../storage/offline-file-handle';
 
+/**
+ * Capacitor 类型声明（用于 Android/iOS 原生应用检测）
+ */
+interface CapacitorGlobal {
+  Capacitor?: {
+    isNativePlatform?: () => boolean;
+    getPlatform?: () => string;
+  };
+}
+
+/**
+ * 检查是否运行在 Capacitor 原生应用环境中
+ */
+function isCapacitorApp(): boolean {
+  if (!BUILD_CONFIG.isAndroid || typeof window === 'undefined') {
+    return false;
+  }
+  const windowWithCapacitor = window as unknown as CapacitorGlobal;
+  return Boolean(windowWithCapacitor.Capacitor);
+}
+
 export const LOCAL_WORKSPACE_LOCAL_STORAGE_KEY = 'yunke-local-workspace';
 const LOCAL_WORKSPACE_CHANGED_BROADCAST_CHANNEL_KEY =
   'yunke-local-workspace-changed';
@@ -111,10 +132,11 @@ class LocalWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
     LOCAL_WORKSPACE_CHANGED_BROADCAST_CHANNEL_KEY
   );
 
-  DocStorageType =
-    // Android Capacitor应用强制使用IndexedDB
-    (BUILD_CONFIG.isAndroid && typeof window !== 'undefined' && (window as any).Capacitor) 
-      ? IndexedDBDocStorage
+  // Android Capacitor 应用强制使用 IndexedDB（类型安全检测）
+  private readonly isCapacitorNative = isCapacitorApp();
+
+  DocStorageType = this.isCapacitorNative
+    ? IndexedDBDocStorage
     : this.fileSqliteEnabled
       ? SqliteDocStorage
       : IndexedDBDocStorage;
@@ -124,29 +146,27 @@ class LocalWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
     : BUILD_CONFIG.isWeb || BUILD_CONFIG.isMobileWeb
       ? IndexedDBV1DocStorage
       : undefined;
-  BlobStorageType =
-    // Android Capacitor应用强制使用IndexedDB
-    (BUILD_CONFIG.isAndroid && typeof window !== 'undefined' && (window as any).Capacitor) 
-      ? IndexedDBBlobStorage
+
+  BlobStorageType = this.isCapacitorNative
+    ? IndexedDBBlobStorage
     : this.fileSqliteEnabled
       ? SqliteBlobStorage
       : IndexedDBBlobStorage;
+
   BlobStorageV1Type = BUILD_CONFIG.isElectron
     ? SqliteV1BlobStorage
     : BUILD_CONFIG.isWeb || BUILD_CONFIG.isMobileWeb
       ? IndexedDBV1BlobStorage
       : undefined;
-  DocSyncStorageType =
-    // Android Capacitor应用强制使用IndexedDB
-    (BUILD_CONFIG.isAndroid && typeof window !== 'undefined' && (window as any).Capacitor) 
-      ? IndexedDBDocSyncStorage
+
+  DocSyncStorageType = this.isCapacitorNative
+    ? IndexedDBDocSyncStorage
     : this.fileSqliteEnabled
       ? SqliteDocSyncStorage
       : IndexedDBDocSyncStorage;
-  BlobSyncStorageType =
-    // Android Capacitor应用强制使用IndexedDB
-    (BUILD_CONFIG.isAndroid && typeof window !== 'undefined' && (window as any).Capacitor) 
-      ? IndexedDBBlobSyncStorage
+
+  BlobSyncStorageType = this.isCapacitorNative
+    ? IndexedDBBlobSyncStorage
     : this.fileSqliteEnabled
       ? SqliteBlobSyncStorage
       : IndexedDBBlobSyncStorage;
@@ -279,6 +299,15 @@ class LocalWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
       // notify all browser tabs, so they can update their workspace list
       this.notifyChannel.postMessage(id);
     } finally {
+      // 🔧 P2 修复：释放所有 YDoc 资源，避免内存泄漏
+      for (const doc of docList) {
+        try {
+          doc.destroy();
+        } catch {
+          // ignore destroy errors
+        }
+      }
+      docList.clear();
       docCollection.dispose();
     }
 
@@ -368,6 +397,10 @@ class LocalWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
     };
   }
 
+  /**
+   * 🔧 P1 修复：所有临时 storage 连接在使用后必须 disconnect
+   * 旧实现 connect 后从不 disconnect，每次调用都会泄漏一个连接
+   */
   async getWorkspaceBlob(id: string, blobKey: string): Promise<Blob | null> {
     const storage = new this.BlobStorageType({
       id: id,
@@ -376,8 +409,12 @@ class LocalWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
     });
     storage.connection.connect();
     await storage.connection.waitForConnected();
-    const blob = await storage.get(blobKey);
-    return blob ? new Blob([blob.data], { type: blob.mime }) : null;
+    try {
+      const blob = await storage.get(blobKey);
+      return blob ? new Blob([blob.data], { type: blob.mime }) : null;
+    } finally {
+      storage.connection.disconnect();
+    }
   }
 
   async listBlobs(id: string): Promise<ListedBlobRecord[]> {
@@ -388,8 +425,11 @@ class LocalWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
     });
     storage.connection.connect();
     await storage.connection.waitForConnected();
-
-    return storage.list();
+    try {
+      return await storage.list();
+    } finally {
+      storage.connection.disconnect();
+    }
   }
 
   async deleteBlob(
@@ -404,7 +444,11 @@ class LocalWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
     });
     storage.connection.connect();
     await storage.connection.waitForConnected();
-    await storage.delete(blob, permanent);
+    try {
+      await storage.delete(blob, permanent);
+    } finally {
+      storage.connection.disconnect();
+    }
   }
 
   getEngineWorkerInitOptions(workspaceId: string): WorkerInitOptions {

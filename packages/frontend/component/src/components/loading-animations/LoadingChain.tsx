@@ -12,7 +12,7 @@ export const LoadingChain: React.FC = () => {
                 <div className="pivot"></div>
                 <div className="seesaw"></div>
 
-                <div className="block"></div>
+                <div className="chain-block"></div>
 
                 {/* 结果组件 */}
                 <div className="final-card">

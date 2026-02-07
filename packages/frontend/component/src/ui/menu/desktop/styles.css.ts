@@ -1,36 +1,20 @@
-import { keyframes, style } from '@vanilla-extract/css';
+import { globalStyle, style } from '@vanilla-extract/css';
 
-const slideDown = keyframes({
-  from: {
-    opacity: 0,
-    transform: 'translateY(-10px)',
-    pointerEvents: 'none',
-  },
-  to: {
-    opacity: 1,
-    transform: 'translateY(0)',
-    pointerEvents: 'none',
-  },
-});
-
-const slideUp = keyframes({
-  to: {
-    opacity: 0,
-    transform: 'translateY(-10px)',
-  },
-  from: {
-    opacity: 1,
-    transform: 'translateY(0)',
-  },
-});
-
+// 完全禁用菜单动画，防止图标飞行效果
 export const contentAnimation = style({
-  animation: `${slideDown} 150ms cubic-bezier(0.42, 0, 0.58, 1)`,
+  // 无动画
+  animation: 'none !important',
+  transition: 'none !important',
   selectors: {
     '&[data-state="closed"]': {
       pointerEvents: 'none',
-      animation: `${slideUp} 150ms cubic-bezier(0.42, 0, 0.58, 1)`,
-      animationFillMode: 'forwards',
+      display: 'none !important',
     },
   },
+});
+
+// 禁用菜单内所有子元素的动画和过渡
+globalStyle(`${contentAnimation} *`, {
+  animation: 'none !important',
+  transition: 'none !important',
 });

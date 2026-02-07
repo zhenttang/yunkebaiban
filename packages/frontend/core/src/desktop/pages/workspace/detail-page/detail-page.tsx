@@ -103,9 +103,13 @@ const DetailPageImpl = memo(function DetailPageImpl() {
     // 组件会在 DocScope 初始化后重新渲染
   }
   
-  // ✅ 如果 doc 未初始化，返回加载状态
+  // L-1 修复：DocScope 未初始化时显示 loading 而非空白
   if (!doc) {
-    return null; // 等待 DocScope 初始化
+    return (
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%', opacity: 0.5 }}>
+        <span>加载中...</span>
+      </div>
+    );
   }
 
   const mode = useLiveData(editor.mode$);

@@ -30,6 +30,8 @@ export type FrameBlockProps = {
   background: Color;
   childElementIds?: Record<string, boolean>;
   presentationIndex?: string;
+  // 动画帧数据：JSON 字符串，格式 {"frames": [["elementId1", "elementId2"], ["elementId3"], ...]}
+  animationFrames?: string;
 } & GfxCompatibleProps;
 
 export const FrameZodSchema = z
@@ -50,9 +52,10 @@ export const FrameBlockSchema = defineBlockSchema({
     childElementIds: Object.create(null),
     presentationIndex: generateKeyBetweenV2(null, null),
     lockedBySelf: false,
+    animationFrames: undefined, // 动画帧数据
   }),
   metadata: {
-    version: 1,
+    version: 2, // 版本升级
     role: 'content',
     parent: ['yunke:surface'],
     children: [],
