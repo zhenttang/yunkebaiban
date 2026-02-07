@@ -1,5 +1,21 @@
 import { UaHelper } from './ua-helper.js';
 
+// ====== 基础环境检测常量 ======
+// 替代散落在代码各处的 typeof window === 'undefined' 检查
+
+/** 是否在浏览器环境中（有 window 对象） */
+export const isBrowser = typeof window !== 'undefined';
+
+/** 是否在服务端/Worker 环境（无 window 对象） */
+export const isServer = typeof window === 'undefined';
+
+/** 是否有 navigator（浏览器或 Service Worker） */
+export const hasNavigator = typeof navigator !== 'undefined';
+
+/** 当前是否在线（无 navigator 时默认 true） */
+export const isOnline = (): boolean =>
+  hasNavigator ? navigator.onLine : true;
+
 interface Environment {
   isLinux: boolean;
   isMacOs: boolean;
