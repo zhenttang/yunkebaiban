@@ -6,8 +6,20 @@ import type { DataViewManager } from '../../core/view-manager/view-manager.js';
 
 import { GanttSingleView } from './gantt-view-manager.js';
 import type { GanttViewData, GanttTask, TimelineConfig } from './define.js';
-import { GanttTimelineHeader } from './components/gantt-timeline-header.js'; // 引入时间轴头部组件
-import './components/gantt-task-bar.js'; // 引入任务条组件
+import { GanttTimelineHeader } from './components/gantt-timeline-header.js';
+import './components/gantt-task-bar.js';
+import {
+  ganttLogger as logger,
+  escapeHtml,
+  getStatusDisplayName,
+  getPriorityDisplayName,
+  adjustColorBrightness,
+  getTaskBarColorByStatus,
+  getTaskBorderColorByStatus,
+  isSameDay,
+  getWeekNumber,
+  getWeekStart,
+} from './gantt-utils.js';
 
 /**
  * 甘特图主视图组件
@@ -533,11 +545,11 @@ export class GanttView extends LitElement {
   private readonly tasks$ = computed(() => {
     // 访问_forceRefresh确保每次都重新计算
     const refreshFlag = this._forceRefresh;
-    console.log('🔍 [GanttView] Computing tasks... (refresh flag:', refreshFlag, ', timestamp:', Date.now(), ')');
+    logger.debug('🔍 [GanttView] Computing tasks... (refresh flag:', refreshFlag, ', timestamp:', Date.now(), ')');
     
     try {
       if (!this.view) {
-        console.log('❌ [GanttView] No view available');
+        logger.debug('❌ [GanttView] No view available');
         return [];
       }
 
@@ -547,16 +559,16 @@ export class GanttView extends LitElement {
       const dataSourceRows = this.view.dataSource.rows$.value || [];
       const dataSourceProperties = this.view.dataSource.properties$.value || [];
       
-      console.log('📊 [GanttView] Found rows:', rows.length, rows);
-      console.log('🔄 [GanttView] DataSource rows:', dataSourceRows.length);
-      console.log('🔄 [GanttView] DataSource properties:', dataSourceProperties.length);
+      logger.debug('📊 [GanttView] Found rows:', rows.length, rows);
+      logger.debug('🔄 [GanttView] DataSource rows:', dataSourceRows.length);
+      logger.debug('🔄 [GanttView] DataSource properties:', dataSourceProperties.length);
       
       if (rows.length === 0) {
-        console.log('❌ [GanttView] No rows found');
+        logger.debug('❌ [GanttView] No rows found');
         return [];
       }
 
-      console.log('🏷️ [GanttView] Available properties:', properties.map(p => ({ 
+      logger.debug('🏷️ [GanttView] Available properties:', properties.map(p => ({ 
         id: p.id, 
         type: this.view.dataSource.propertyTypeGet(p.id),
         name: p.name$?.value || 'unnamed'
@@ -567,8 +579,8 @@ export class GanttView extends LitElement {
       for (const row of rows) {
         try {
           const rowId = row.rowId; // 使用正确的属性名
-          console.log('🔍 [GanttView] Processing row ID:', rowId);
-          console.log('📝 [GanttView] Got row object:', row);
+          logger.debug('🔍 [GanttView] Processing row ID:', rowId);
+          logger.debug('📝 [GanttView] Got row object:', row);
           
           // 安全地获取属性
           const titleProperty = properties.find(
@@ -576,7 +588,7 @@ export class GanttView extends LitElement {
               try {
                 return this.view.dataSource.propertyTypeGet(p.id) === 'title';
               } catch (e) {
-                console.warn('⚠️ [GanttView] Error getting property type for', p.id, e);
+                logger.warn('⚠️ [GanttView] Error getting property type for', p.id, e);
                 return false;
               }
             }
@@ -587,25 +599,25 @@ export class GanttView extends LitElement {
               try {
                 return this.view.dataSource.propertyTypeGet(p.id) === 'date-range';
               } catch (e) {
-                console.warn('⚠️ [GanttView] Error getting property type for', p.id, e);
+                logger.warn('⚠️ [GanttView] Error getting property type for', p.id, e);
                 return false;
               }
             }
           );
 
-          console.log('🏷️ [GanttView] Title property:', titleProperty?.id);
-          console.log('📅 [GanttView] Date range property:', dateRangeProperty?.id);
+          logger.debug('🏷️ [GanttView] Title property:', titleProperty?.id);
+          logger.debug('📅 [GanttView] Date range property:', dateRangeProperty?.id);
 
           // 如果没有标题属性，跳过
           if (!titleProperty) {
-            console.log('❌ [GanttView] No title property found, skipping row');
+            logger.debug('❌ [GanttView] No title property found, skipping row');
             continue;
           }
 
           let name: string;
           try {
             const titleValue = this.view.dataSource.cellValueGet(row.rowId, titleProperty.id);
-            console.log('🔍 [GanttView] Title value structure:', titleValue, typeof titleValue);
+            logger.debug('🔍 [GanttView] Title value structure:', titleValue, typeof titleValue);
             
             // 更完善的标题值处理逻辑
             if (typeof titleValue === 'string' && titleValue.trim()) {
@@ -652,11 +664,11 @@ export class GanttView extends LitElement {
               name = `任务 ${String(row.rowId).slice(-4)}`;
             }
           } catch (e) {
-            console.warn('⚠️ [GanttView] Error getting title value:', e);
+            logger.warn('⚠️ [GanttView] Error getting title value:', e);
             name = `任务 ${String(row.rowId).slice(-4)}`;
           }
           
-          console.log('📝 [GanttView] Task name:', name);
+          logger.debug('📝 [GanttView] Task name:', name);
 
           // 处理日期范围 - 增强读取逻辑确保能读取拖拽保存的数据
           let startDate: number, endDate: number, workingDays: number[];
@@ -664,7 +676,7 @@ export class GanttView extends LitElement {
           if (dateRangeProperty) {
             try {
               const dateRangeValue = this.view.dataSource.cellValueGet(row.rowId, dateRangeProperty.id);
-              console.log('📅 [GanttView] 读取日期范围数据:', {
+              logger.debug('📅 [GanttView] 读取日期范围数据:', {
                 rowId: row.rowId,
                 rawValue: dateRangeValue,
                 valueType: typeof dateRangeValue
@@ -678,13 +690,13 @@ export class GanttView extends LitElement {
                 if (dateRangeValue.value && typeof dateRangeValue.value === 'object') {
                   if (dateRangeValue.value.startDate && dateRangeValue.value.endDate) {
                     dateRange = dateRangeValue.value;
-                    console.log('🎯 [GanttView] 使用嵌套value结构');
+                    logger.debug('🎯 [GanttView] 使用嵌套value结构');
                   }
                 }
                 // 优先级2: 直接结构 {startDate, endDate, workingDays}
                 else if (dateRangeValue.startDate && dateRangeValue.endDate) {
                   dateRange = dateRangeValue;
-                  console.log('🎯 [GanttView] 使用直接结构');
+                  logger.debug('🎯 [GanttView] 使用直接结构');
                 }
                 // 优先级3: 可能的其他嵌套结构
                 else if (typeof dateRangeValue === 'object') {
@@ -708,12 +720,12 @@ export class GanttView extends LitElement {
                   
                   dateRange = searchForDates(dateRangeValue);
                   if (dateRange) {
-                    console.log('🎯 [GanttView] 通过深层搜索找到日期数据');
+                    logger.debug('🎯 [GanttView] 通过深层搜索找到日期数据');
                   }
                 }
               }
               
-              console.log('🔍 [GanttView] 解析后的日期范围:', dateRange);
+              logger.debug('🔍 [GanttView] 解析后的日期范围:', dateRange);
               
               if (dateRange?.startDate && dateRange?.endDate) {
                 // 验证日期数据的有效性
@@ -728,7 +740,7 @@ export class GanttView extends LitElement {
                   workingDays = Array.isArray(dateRange.workingDays) ? 
                     dateRange.workingDays : [1, 2, 3, 4, 5];
                   
-                  console.log('✅ [GanttView] 成功使用保存的日期范围:', {
+                  logger.debug('✅ [GanttView] 成功使用保存的日期范围:', {
                     rowId: row.rowId,
                     startDate: new Date(startDate).toLocaleDateString('zh-CN'),
                     endDate: new Date(endDate).toLocaleDateString('zh-CN'),
@@ -743,7 +755,7 @@ export class GanttView extends LitElement {
               }
               
             } catch (e) {
-              console.warn('⚠️ [GanttView] 读取保存的日期范围失败，使用默认值:', {
+              logger.warn('⚠️ [GanttView] 读取保存的日期范围失败，使用默认值:', {
                 rowId: row.rowId,
                 error: e.message
               });
@@ -760,7 +772,7 @@ export class GanttView extends LitElement {
             startDate = now;
             endDate = now + 7 * 24 * 60 * 60 * 1000; // 7天后
             workingDays = [1, 2, 3, 4, 5];
-            console.log('⚠️ [GanttView] No date-range property, using default dates');
+            logger.debug('⚠️ [GanttView] No date-range property, using default dates');
           }
 
           const task: GanttTask = {
@@ -775,18 +787,18 @@ export class GanttView extends LitElement {
             status: this.getTaskStatus(row) || 'not_started',
           };
 
-          console.log('✅ [GanttView] Created task:', task);
+          logger.debug('✅ [GanttView] Created task:', task);
           tasks.push(task);
         } catch (e) {
-          console.error('❌ [GanttView] Error processing row:', row.rowId, e);
+          logger.error('❌ [GanttView] Error processing row:', row.rowId, e);
           // 继续处理下一行
         }
       }
 
-      console.log('🎉 [GanttView] Final tasks:', tasks.length);
+      logger.debug('🎉 [GanttView] Final tasks:', tasks.length);
       return tasks;
     } catch (e) {
-      console.error('❌ [GanttView] Fatal error in tasks$ computed:', e);
+      logger.error('❌ [GanttView] Fatal error in tasks$ computed:', e);
       return [];
     }
   });
@@ -812,7 +824,7 @@ export class GanttView extends LitElement {
         return typeof value === 'number' ? value : 0;
       }
     } catch (e) {
-      console.warn('⚠️ [GanttView] Error getting task progress:', e);
+      logger.warn('⚠️ [GanttView] Error getting task progress:', e);
     }
     
     return 0;
@@ -842,7 +854,7 @@ export class GanttView extends LitElement {
         }
       }
     } catch (e) {
-      console.warn('⚠️ [GanttView] Error getting task color:', e);
+      logger.warn('⚠️ [GanttView] Error getting task color:', e);
     }
     
     return '#6366f1';
@@ -871,7 +883,7 @@ export class GanttView extends LitElement {
         }
       }
     } catch (e) {
-      console.warn('⚠️ [GanttView] Error getting task priority:', e);
+      logger.warn('⚠️ [GanttView] Error getting task priority:', e);
     }
     
     return 'medium';
@@ -900,7 +912,7 @@ export class GanttView extends LitElement {
         }
       }
     } catch (e) {
-      console.warn('⚠️ [GanttView] Error getting task status:', e);
+      logger.warn('⚠️ [GanttView] Error getting task status:', e);
     }
     
     return 'not_started';
@@ -912,20 +924,20 @@ export class GanttView extends LitElement {
   private handleAddTask = (e: MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    console.log('➕ [GanttView] Add task clicked');
+    logger.debug('➕ [GanttView] Add task clicked');
     
     if (this.view && !this.readonly) {
       try {
         const newRowId = this.view.rowAdd({ before: false });
-        console.log('✅ [GanttView] Added new task row:', newRowId);
+        logger.debug('✅ [GanttView] Added new task row:', newRowId);
         
         // 强制重新渲染
         this.requestUpdate();
       } catch (error) {
-        console.error('❌ [GanttView] Error adding task:', error);
+        logger.error('❌ [GanttView] Error adding task:', error);
       }
     } else {
-      console.warn('⚠️ [GanttView] Cannot add task: view not available or readonly');
+      logger.warn('⚠️ [GanttView] Cannot add task: view not available or readonly');
     }
   };
 
@@ -935,7 +947,7 @@ export class GanttView extends LitElement {
   private handleAddColumn = (e: MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    console.log('📋 [GanttView] Add column clicked');
+    logger.debug('📋 [GanttView] Add column clicked');
     
     if (this.view && !this.readonly) {
       try {
@@ -944,15 +956,15 @@ export class GanttView extends LitElement {
           type: 'date-range',
           name: '任务时间'
         });
-        console.log('✅ [GanttView] Added new column:', columnId);
+        logger.debug('✅ [GanttView] Added new column:', columnId);
         
         // 强制重新渲染
         this.requestUpdate();
       } catch (error) {
-        console.error('❌ [GanttView] Error adding column:', error);
+        logger.error('❌ [GanttView] Error adding column:', error);
       }
     } else {
-      console.warn('⚠️ [GanttView] Cannot add column: view not available or readonly');
+      logger.warn('⚠️ [GanttView] Cannot add column: view not available or readonly');
     }
   };
 
@@ -962,7 +974,7 @@ export class GanttView extends LitElement {
   private handleTodayClick = (e: MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    console.log('📅 [GanttView] Today clicked - 定位到今天');
+    logger.debug('📅 [GanttView] Today clicked - 定位到今天');
     
     if (this.view) {
       try {
@@ -983,7 +995,7 @@ export class GanttView extends LitElement {
           case 'week':
             // 周视图：显示包含今天的周为中心的时间范围
             const oneWeek = 7 * 24 * 60 * 60 * 1000;
-            const startOfWeek = this.getWeekStart(new Date(now)).getTime();
+            const startOfWeek = getWeekStart(new Date(now)).getTime();
             startDate = startOfWeek - 2 * oneWeek; // 今天前2周
             endDate = startOfWeek + 6 * oneWeek;   // 今天后6周
             break;
@@ -998,7 +1010,7 @@ export class GanttView extends LitElement {
           default:
             // 默认按周处理
             const defaultOneWeek = 7 * 24 * 60 * 60 * 1000;
-            const defaultStartOfWeek = this.getWeekStart(new Date(now)).getTime();
+            const defaultStartOfWeek = getWeekStart(new Date(now)).getTime();
             startDate = defaultStartOfWeek - 2 * defaultOneWeek;
             endDate = defaultStartOfWeek + 6 * defaultOneWeek;
         }
@@ -1009,7 +1021,7 @@ export class GanttView extends LitElement {
           endDate,
         });
         
-        console.log('✅ [GanttView] 今日定位完成:', {
+        logger.debug('✅ [GanttView] 今日定位完成:', {
           unit: timeline?.unit || 'week',
           startDate: new Date(startDate).toLocaleDateString('zh-CN'),
           endDate: new Date(endDate).toLocaleDateString('zh-CN'),
@@ -1023,7 +1035,7 @@ export class GanttView extends LitElement {
         
         this.requestUpdate();
       } catch (error) {
-        console.error('❌ [GanttView] Error scrolling to today:', error);
+        logger.error('❌ [GanttView] Error scrolling to today:', error);
       }
     }
   };
@@ -1058,7 +1070,7 @@ export class GanttView extends LitElement {
             ganttChartArea.scrollLeft = scrollLeft;
           }
           
-          console.log('📍 [GanttView] 滚动到今天位置（独立滚动）:', {
+          logger.debug('📍 [GanttView] 滚动到今天位置（独立滚动）:', {
             todayPosition: `${Math.round(todayPosition)}px`,
             scrollLeft: `${Math.round(scrollLeft)}px`,
             containerWidth: `${containerWidth}px`,
@@ -1066,11 +1078,11 @@ export class GanttView extends LitElement {
             ganttChartAreaFound: !!ganttChartArea
           });
         } else {
-          console.warn('⚠️ [GanttView] 时间轴头部或甘特图区域未找到');
+          logger.warn('⚠️ [GanttView] 时间轴头部或甘特图区域未找到');
         }
       }
     } catch (error) {
-      console.error('❌ [GanttView] Error scrolling to today position:', error);
+      logger.error('❌ [GanttView] Error scrolling to today position:', error);
     }
   }
 
@@ -1078,7 +1090,7 @@ export class GanttView extends LitElement {
    * 处理时间单位变更
    **/
   private handleTimeUnitChange = (unit: 'day' | 'week' | 'month') => {
-    console.log('🕒 [GanttView] Time unit changed to:', unit);
+    logger.debug('🕒 [GanttView] Time unit changed to:', unit);
     
     if (this.view) {
       try {
@@ -1100,12 +1112,12 @@ export class GanttView extends LitElement {
           unit,
           unitWidth 
         });
-        console.log('✅ [GanttView] Updated timeline unit to:', unit);
+        logger.debug('✅ [GanttView] Updated timeline unit to:', unit);
         
         // 强制重新渲染
         this.requestUpdate();
       } catch (error) {
-        console.error('❌ [GanttView] Error updating time unit:', error);
+        logger.error('❌ [GanttView] Error updating time unit:', error);
       }
     }
   };
@@ -1116,18 +1128,18 @@ export class GanttView extends LitElement {
   private handleZoomIn = (e: MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    console.log('🔍 [GanttView] Zoom in clicked');
+    logger.debug('🔍 [GanttView] Zoom in clicked');
     
     if (this.view) {
       try {
         const currentWidth = this.view.timeline$.value?.unitWidth || 60;
         const newWidth = Math.min(currentWidth * 1.2, 200); // 最大200px
         this.view.updateTimeline({ unitWidth: newWidth });
-        console.log('✅ [GanttView] Zoomed in, new width:', newWidth);
+        logger.debug('✅ [GanttView] Zoomed in, new width:', newWidth);
         
         this.requestUpdate();
       } catch (error) {
-        console.error('❌ [GanttView] Error zooming in:', error);
+        logger.error('❌ [GanttView] Error zooming in:', error);
       }
     }
   };
@@ -1135,18 +1147,18 @@ export class GanttView extends LitElement {
   private handleZoomOut = (e: MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    console.log('🔍 [GanttView] Zoom out clicked');
+    logger.debug('🔍 [GanttView] Zoom out clicked');
     
     if (this.view) {
       try {
         const currentWidth = this.view.timeline$.value?.unitWidth || 60;
         const newWidth = Math.max(currentWidth * 0.8, 20); // 最小20px
         this.view.updateTimeline({ unitWidth: newWidth });
-        console.log('✅ [GanttView] Zoomed out, new width:', newWidth);
+        logger.debug('✅ [GanttView] Zoomed out, new width:', newWidth);
         
         this.requestUpdate();
       } catch (error) {
-        console.error('❌ [GanttView] Error zooming out:', error);
+        logger.error('❌ [GanttView] Error zooming out:', error);
       }
     }
   };
@@ -1157,7 +1169,7 @@ export class GanttView extends LitElement {
   private handleTaskClick = (task: GanttTask, event: MouseEvent) => {
     event.preventDefault();
     event.stopPropagation();
-    console.log('👆 [GanttView] Task clicked:', task.name);
+    logger.debug('👆 [GanttView] Task clicked:', task.name);
     
     if (event.ctrlKey || event.metaKey) {
       // 多选模式
@@ -1181,7 +1193,7 @@ export class GanttView extends LitElement {
   private handleTaskDoubleClick = (task: GanttTask, event: MouseEvent) => {
     event.preventDefault();
     event.stopPropagation();
-    console.log('👆👆 [GanttView] Task double clicked:', task.name);
+    logger.debug('👆👆 [GanttView] Task double clicked:', task.name);
     
     // 打开任务配置面板
     this.openTaskConfigPanel(task);
@@ -1191,7 +1203,7 @@ export class GanttView extends LitElement {
    * 打开任务配置面板
    */
   private openTaskConfigPanel(task: GanttTask) {
-    console.log('⚙️ [GanttView] Opening task config panel for:', task.name);
+    logger.debug('⚙️ [GanttView] Opening task config panel for:', task.name);
     
     // 移除已存在的配置面板
     const existingPanel = document.querySelector('.task-config-panel');
@@ -1247,7 +1259,7 @@ export class GanttView extends LitElement {
         }
       }
     } catch (e) {
-      console.warn('⚠️ [GanttView] Error getting current status:', e);
+      logger.warn('⚠️ [GanttView] Error getting current status:', e);
     }
     
     // 获取当前进度
@@ -1268,7 +1280,7 @@ export class GanttView extends LitElement {
         }
       }
     } catch (e) {
-      console.warn('⚠️ [GanttView] Error getting current progress:', e);
+      logger.warn('⚠️ [GanttView] Error getting current progress:', e);
     }
     
     // 获取当前优先级
@@ -1289,10 +1301,10 @@ export class GanttView extends LitElement {
         }
       }
     } catch (e) {
-      console.warn('⚠️ [GanttView] Error getting current priority:', e);
+      logger.warn('⚠️ [GanttView] Error getting current priority:', e);
     }
     
-    console.log('🔧 [GanttView] Creating config panel with current values:', {
+    logger.debug('🔧 [GanttView] Creating config panel with current values:', {
       name: task.name,
       startDate: startDate.toISOString().split('T')[0],
       endDate: endDate.toISOString().split('T')[0],
@@ -1312,7 +1324,7 @@ export class GanttView extends LitElement {
           <div class="task-config-body">
             <div class="config-row">
               <label>任务名称：</label>
-              <input type="text" class="task-name-input" value="${task.name}" placeholder="请输入任务名称">
+              <input type="text" class="task-name-input" value="${escapeHtml(task.name)}" placeholder="请输入任务名称">
             </div>
             
             <div class="config-row">
@@ -1613,7 +1625,7 @@ export class GanttView extends LitElement {
       if (progressDisplay) {
         progressDisplay.textContent = `${progressSlider.value}%`;
       }
-      console.log('📏 [GanttView] Progress slider updated:', progressSlider.value);
+      logger.debug('📏 [GanttView] Progress slider updated:', progressSlider.value);
     });
     
     // 保存配置
@@ -1636,7 +1648,7 @@ export class GanttView extends LitElement {
    */
   private saveTaskConfig(panel: HTMLElement, task: GanttTask) {
     try {
-      console.log('💾 [GanttView] Starting to save task config for:', task.name);
+      logger.debug('💾 [GanttView] Starting to save task config for:', task.name);
       
       // 获取表单数据
       const nameInput = panel.querySelector('.task-name-input') as HTMLInputElement;
@@ -1655,7 +1667,7 @@ export class GanttView extends LitElement {
         }
       });
       
-      console.log('📝 [GanttView] Form data collected:', {
+      logger.debug('📝 [GanttView] Form data collected:', {
         name: nameInput?.value,
         startDate: startDateInput?.value,
         endDate: endDateInput?.value,
@@ -1667,7 +1679,7 @@ export class GanttView extends LitElement {
       
       // 更新任务数据到数据源
       const properties = this.view?.properties$?.value || [];
-      console.log('🏷️ [GanttView] Available properties:', properties.map(p => ({ 
+      logger.debug('🏷️ [GanttView] Available properties:', properties.map(p => ({ 
         id: p.id, 
         type: this.view.dataSource.propertyTypeGet(p.id),
         name: p.name$?.value 
@@ -1683,13 +1695,13 @@ export class GanttView extends LitElement {
       });
       
       if (titleProperty && nameInput?.value?.trim()) {
-        console.log('📝 [GanttView] Updating title:', nameInput.value.trim());
+        logger.debug('📝 [GanttView] Updating title:', nameInput.value.trim());
         this.view.dataSource.cellValueChange(task.id, titleProperty.id, nameInput.value.trim());
         
         // 立即验证更新是否成功
         setTimeout(() => {
           const verifyTitle = this.view.dataSource.cellValueGet(task.id, titleProperty.id);
-          console.log('✅ [GanttView] Title verification:', verifyTitle);
+          logger.debug('✅ [GanttView] Title verification:', verifyTitle);
         }, 10);
       }
       
@@ -1706,7 +1718,7 @@ export class GanttView extends LitElement {
         const startDate = new Date(startDateInput.value).getTime();
         const endDate = new Date(endDateInput.value).getTime();
         
-        console.log('📅 [GanttView] Updating date range:', {
+        logger.debug('📅 [GanttView] Updating date range:', {
           startDate: new Date(startDate).toLocaleDateString(),
           endDate: new Date(endDate).toLocaleDateString(),
           workingDays
@@ -1723,7 +1735,7 @@ export class GanttView extends LitElement {
         // 立即验证更新是否成功
         setTimeout(() => {
           const verifyDateRange = this.view.dataSource.cellValueGet(task.id, dateRangeProperty.id);
-          console.log('✅ [GanttView] Date range verification:', verifyDateRange);
+          logger.debug('✅ [GanttView] Date range verification:', verifyDateRange);
         }, 10);
       }
       
@@ -1738,7 +1750,7 @@ export class GanttView extends LitElement {
       });
       
       if (statusProperty && statusSelect?.value) {
-        console.log('📊 [GanttView] Updating status:', statusSelect.value);
+        logger.debug('📊 [GanttView] Updating status:', statusSelect.value);
         this.view.dataSource.cellValueChange(task.id, statusProperty.id, {
           value: statusSelect.value
         });
@@ -1746,7 +1758,7 @@ export class GanttView extends LitElement {
         // 立即验证更新是否成功
         setTimeout(() => {
           const verifyStatus = this.view.dataSource.cellValueGet(task.id, statusProperty.id);
-          console.log('✅ [GanttView] Status verification:', verifyStatus);
+          logger.debug('✅ [GanttView] Status verification:', verifyStatus);
         }, 10);
       }
       
@@ -1762,7 +1774,7 @@ export class GanttView extends LitElement {
       
       if (progressProperty && progressSlider?.value !== undefined) {
         const progressValue = parseInt(progressSlider.value);
-        console.log('📈 [GanttView] Updating progress:', progressValue);
+        logger.debug('📈 [GanttView] Updating progress:', progressValue);
         this.view.dataSource.cellValueChange(task.id, progressProperty.id, {
           value: progressValue
         });
@@ -1770,7 +1782,7 @@ export class GanttView extends LitElement {
         // 立即验证更新是否成功
         setTimeout(() => {
           const verifyProgress = this.view.dataSource.cellValueGet(task.id, progressProperty.id);
-          console.log('✅ [GanttView] Progress verification:', verifyProgress);
+          logger.debug('✅ [GanttView] Progress verification:', verifyProgress);
         }, 10);
       }
       
@@ -1786,7 +1798,7 @@ export class GanttView extends LitElement {
       
       // 如果没有找到状态属性，尝试创建一个
       if (!statusProperty && statusSelect?.value) {
-        console.log('🆕 [GanttView] Creating status property');
+        logger.debug('🆕 [GanttView] Creating status property');
         try {
           const statusPropertyId = this.view.propertyAdd('end', {
             type: 'select',
@@ -1799,13 +1811,13 @@ export class GanttView extends LitElement {
             });
           }
         } catch (e) {
-          console.warn('⚠️ [GanttView] Failed to create status property:', e);
+          logger.warn('⚠️ [GanttView] Failed to create status property:', e);
         }
       }
       
       // 如果没有找到进度属性，尝试创建一个
       if (!progressProperty && progressSlider?.value !== undefined) {
-        console.log('🆕 [GanttView] Creating progress property');
+        logger.debug('🆕 [GanttView] Creating progress property');
         try {
           const progressPropertyId = this.view.propertyAdd('end', {
             type: 'number',
@@ -1818,13 +1830,13 @@ export class GanttView extends LitElement {
             });
           }
         } catch (e) {
-          console.warn('⚠️ [GanttView] Failed to create progress property:', e);
+          logger.warn('⚠️ [GanttView] Failed to create progress property:', e);
         }
       }
       
       // 如果没有找到优先级属性，尝试创建一个
       if (!priorityProperty && prioritySelect?.value) {
-        console.log('🆕 [GanttView] Creating priority property');
+        logger.debug('🆕 [GanttView] Creating priority property');
         try {
           const priorityPropertyId = this.view.propertyAdd('end', {
             type: 'select',
@@ -1836,11 +1848,11 @@ export class GanttView extends LitElement {
             });
           }
         } catch (e) {
-          console.warn('⚠️ [GanttView] Failed to create priority property:', e);
+          logger.warn('⚠️ [GanttView] Failed to create priority property:', e);
         }
       }
       
-      console.log('✅ [GanttView] Task configuration saved successfully:', {
+      logger.debug('✅ [GanttView] Task configuration saved successfully:', {
         taskId: task.id,
         name: nameInput?.value,
         startDate: startDateInput?.value,
@@ -1852,18 +1864,18 @@ export class GanttView extends LitElement {
       });
       
       // 强制重新渲染视图和重新计算任务数据
-      console.log('🔄 [GanttView] Force triggering view update...');
+      logger.debug('🔄 [GanttView] Force triggering view update...');
       
       // 1. 立即更新_forceRefresh以触发computed重新计算
       this._forceRefresh = Date.now();
-      console.log('🔄 [GanttView] Force refresh flag updated to:', this._forceRefresh);
+      logger.debug('🔄 [GanttView] Force refresh flag updated to:', this._forceRefresh);
       
       // 2. 立即强制重新渲染
       this.requestUpdate();
       
       // 3. 创建一个完全新的任务更新机制
       const forceTasksUpdate = () => {
-        console.log('🔄 [GanttView] Forcing tasks recalculation...');
+        logger.debug('🔄 [GanttView] Forcing tasks recalculation...');
         
         // 强制触发所有相关的signal读取
         if (this.view) {
@@ -1872,7 +1884,7 @@ export class GanttView extends LitElement {
           const properties = this.view.properties$?.value;
           const dataSourceRows = this.view.dataSource.rows$.value;
           
-          console.log('📊 [GanttView] Force accessing signals:', {
+          logger.debug('📊 [GanttView] Force accessing signals:', {
             rowsCount: rows?.length,
             propertiesCount: properties?.length,
             dataSourceRowsCount: dataSourceRows?.length
@@ -1880,12 +1892,12 @@ export class GanttView extends LitElement {
           
           // 访问computed让它重新计算
           const updatedTasks = this.tasks$.value;
-          console.log('🔄 [GanttView] Forced tasks calculation result:', updatedTasks.length);
+          logger.debug('🔄 [GanttView] Forced tasks calculation result:', updatedTasks.length);
           
           // 查找更新的任务
           const updatedTask = updatedTasks.find(t => t.id === task.id);
           if (updatedTask) {
-            console.log('✅ [GanttView] Found updated task after force recalc:', {
+            logger.debug('✅ [GanttView] Found updated task after force recalc:', {
               name: updatedTask.name,
               status: updatedTask.status,
               progress: updatedTask.progress,
@@ -1893,7 +1905,7 @@ export class GanttView extends LitElement {
               endDate: new Date(updatedTask.endDate).toLocaleDateString()
             });
           } else {
-            console.warn('⚠️ [GanttView] Task still not found after force recalc');
+            logger.warn('⚠️ [GanttView] Task still not found after force recalc');
           }
         }
         
@@ -1907,22 +1919,22 @@ export class GanttView extends LitElement {
       
       // 5. 使用多重更新策略确保更新生效
       Promise.resolve().then(() => {
-        console.log('🔄 [GanttView] Microtask force update');
+        logger.debug('🔄 [GanttView] Microtask force update');
         forceTasksUpdate();
       });
       
       setTimeout(() => {
-        console.log('⏰ [GanttView] Delayed force update (50ms)');
+        logger.debug('⏰ [GanttView] Delayed force update (50ms)');
         forceTasksUpdate();
       }, 50);
       
       setTimeout(() => {
-        console.log('⏰ [GanttView] Final force update (200ms)');
+        logger.debug('⏰ [GanttView] Final force update (200ms)');
         forceTasksUpdate();
       }, 200);
       
     } catch (error) {
-      console.error('❌ [GanttView] Error saving task config:', error);
+      logger.error('❌ [GanttView] Error saving task config:', error);
       alert('保存任务配置时出错，请稍后重试。');
     }
   }
@@ -1935,11 +1947,11 @@ export class GanttView extends LitElement {
       if (this.view) {
         // 使用正确的方法名和参数格式
         this.view.rowsDelete([task.id]);
-        console.log('✅ [GanttView] Task deleted:', task.id);
+        logger.debug('✅ [GanttView] Task deleted:', task.id);
         this.requestUpdate();
       }
     } catch (error) {
-      console.error('❌ [GanttView] Error deleting task:', error);
+      logger.error('❌ [GanttView] Error deleting task:', error);
       alert('删除任务时出错，请稍后重试。');
     }
   }
@@ -1950,7 +1962,7 @@ export class GanttView extends LitElement {
   private handleTaskRightClick = (task: GanttTask, event: MouseEvent) => {
     event.preventDefault();
     event.stopPropagation();
-    console.log('🖱️ [GanttView] Task right clicked:', task.name);
+    logger.debug('🖱️ [GanttView] Task right clicked:', task.name);
     
     this.showTaskContextMenu(task, event);
   };
@@ -1959,7 +1971,7 @@ export class GanttView extends LitElement {
    * 显示任务右键菜单
    */
   private showTaskContextMenu(task: GanttTask, event: MouseEvent) {
-    console.log('📝 [GanttView] Showing context menu for task:', task.name);
+    logger.debug('📝 [GanttView] Showing context menu for task:', task.name);
     
     // 移除之前的菜单
     const existingMenu = document.querySelector('.task-context-menu');
@@ -2022,7 +2034,7 @@ export class GanttView extends LitElement {
 
     document.body.appendChild(menu);
     
-    console.log('✅ [GanttView] Context menu added to DOM at position:', { x: event.clientX, y: event.clientY });
+    logger.debug('✅ [GanttView] Context menu added to DOM at position:', { x: event.clientX, y: event.clientY });
 
     // 添加菜单项事件（使用事件委托）
     menu.addEventListener('click', (e) => {
@@ -2032,13 +2044,13 @@ export class GanttView extends LitElement {
       if (!menuItem) return;
       
       const action = menuItem.getAttribute('data-action');
-      console.log('👆 [GanttView] Context menu item clicked:', action);
+      logger.debug('👆 [GanttView] Context menu item clicked:', action);
       
       if (action === 'edit') {
-        console.log('✏️ [GanttView] Opening edit panel for task:', task.name);
+        logger.debug('✏️ [GanttView] Opening edit panel for task:', task.name);
         this.openTaskConfigPanel(task);
       } else if (action === 'delete') {
-        console.log('🗑️ [GanttView] Attempting to delete task:', task.name);
+        logger.debug('🗑️ [GanttView] Attempting to delete task:', task.name);
         if (confirm(`确定要删除任务"${task.name}"吗？`)) {
           this.deleteTask(task);
         }
@@ -2050,7 +2062,7 @@ export class GanttView extends LitElement {
     // 点击其他地方关闭菜单
     const closeMenu = (e: Event) => {
       if (!menu.contains(e.target as Node)) {
-        console.log('🚫 [GanttView] Closing context menu (clicked outside)');
+        logger.debug('🚫 [GanttView] Closing context menu (clicked outside)');
         menu.remove();
         document.removeEventListener('click', closeMenu);
       }
@@ -2153,7 +2165,7 @@ export class GanttView extends LitElement {
     const totalWidth = timelineUnits.reduce((sum, unit) => sum + unit.width, 0);
     const todayPosition = this.calculateTodayPosition(timeline, totalWidth);
 
-    console.log('🎯 [GanttView] 渲染专业甘特图 (动态单位):', {
+    logger.debug('🎯 [GanttView] 渲染专业甘特图 (动态单位):', {
       taskCount: tasks.length,
       timelineWidth: totalWidth,
       timelineUnit: timeline.unit, // 显示当前时间单位
@@ -2249,7 +2261,7 @@ export class GanttView extends LitElement {
 
     // 如果任务在时间轴范围外，不显示
     if (taskEnd < startDate || taskStart > endDate) {
-      console.log('⚠️ [GanttView] 任务超出时间轴范围，不显示:', task.name);
+      logger.debug('⚠️ [GanttView] 任务超出时间轴范围，不显示:', task.name);
       return html``;
     }
 
@@ -2265,7 +2277,7 @@ export class GanttView extends LitElement {
     const taskDuration = taskEnd.getTime() - taskStart.getTime();
     const durationDays = Math.ceil(taskDuration / (24 * 60 * 60 * 1000));
 
-    console.log('📊 [GanttView] 任务条位置计算 (精确对齐时间轴):', {
+    logger.debug('📊 [GanttView] 任务条位置计算 (精确对齐时间轴):', {
       taskName: task.name,
       left: `${Math.round(left)}px`,
       width: `${Math.round(width)}px`,
@@ -2295,7 +2307,7 @@ export class GanttView extends LitElement {
           user-select: none;
         "
         @mousedown=${(e: MouseEvent) => {
-          console.log('🖱️ Task mousedown triggered:', task.name);
+          logger.debug('🖱️ Task mousedown triggered:', task.name);
           if (e.button === 0) { // 只处理左键
             this.handleTaskDragStart(task, e);
           }
@@ -2311,7 +2323,7 @@ export class GanttView extends LitElement {
           }
         }}
         @contextmenu=${(e: MouseEvent) => this.handleTaskRightClick(task, e)}
-        title="${task.name}: ${taskStart.toLocaleDateString('zh-CN')} - ${taskEnd.toLocaleDateString('zh-CN')} (${durationDays}天)\n状态: ${this.getStatusDisplayName(task.status)}\n优先级: ${this.getPriorityDisplayName(task.priority)}\n进度: ${task.progress}%\n🖱️ 拖拽任务条中间移动，拖拽两端调整时间"
+        title="${task.name}: ${taskStart.toLocaleDateString('zh-CN')} - ${taskEnd.toLocaleDateString('zh-CN')} (${durationDays}天)\n状态: ${getStatusDisplayName(task.status)}\n优先级: ${getPriorityDisplayName(task.priority)}\n进度: ${task.progress}%\n🖱️ 拖拽任务条中间移动，拖拽两端调整时间"
       >
         <!-- 左侧调整手柄（调整开始时间）-->
         <div 
@@ -2319,7 +2331,7 @@ export class GanttView extends LitElement {
           @mousedown=${(e: MouseEvent) => {
             e.preventDefault();
             e.stopPropagation();
-            console.log('🔧 Left resize handle clicked:', task.name);
+            logger.debug('🔧 Left resize handle clicked:', task.name);
             if (e.button === 0) {
               this.handleTaskResizeStartDrag(task, e);
             }
@@ -2344,7 +2356,7 @@ export class GanttView extends LitElement {
           @mousedown=${(e: MouseEvent) => {
             e.preventDefault();
             e.stopPropagation();
-            console.log('🔧 Right resize handle clicked:', task.name);
+            logger.debug('🔧 Right resize handle clicked:', task.name);
             if (e.button === 0) {
               this.handleTaskResizeEndDrag(task, e);
             }
@@ -2383,9 +2395,9 @@ export class GanttView extends LitElement {
       case 'urgent':
         return task.status === 'completed' ? baseColor : '#ef4444'; // 紧急任务用红色（除非已完成）
       case 'high':
-        return this.adjustColorBrightness(baseColor, -0.1); // 稍微深一点
+        return adjustColorBrightness(baseColor, -0.1); // 稍微深一点
       case 'low':
-        return this.adjustColorBrightness(baseColor, 0.2); // 稍微亮一点
+        return adjustColorBrightness(baseColor, 0.2); // 稍微亮一点
       case 'medium':
       default:
         return baseColor;
@@ -2416,7 +2428,7 @@ export class GanttView extends LitElement {
     // 生成与时间轴显示完全一致的单位边界
     const timelineUnits = this.generateTimelineUnits(timeline);
     
-    console.log('🔍 [任务位置计算] 开始计算任务位置:', {
+    logger.debug('🔍 [任务位置计算] 开始计算任务位置:', {
       taskStartDate: taskStart.toLocaleDateString('zh-CN'),
       taskStartTime: taskStart.getTime(),
       timelineUnit: timeline.unit,
@@ -2451,7 +2463,7 @@ export class GanttView extends LitElement {
         }
       }
       
-      console.log(`🔍 [单位${i}] 检查单位:`, {
+      logger.debug(`🔍 [单位${i}] 检查单位:`, {
         unitLabel: unit.label,
         unitStart: unitStartDate.toLocaleDateString('zh-CN'),
         unitEnd: unitEndDate.toLocaleDateString('zh-CN'),
@@ -2468,7 +2480,7 @@ export class GanttView extends LitElement {
         
         const finalPosition = accumulatedWidth + (relativePosition * unit.width);
         
-        console.log('🎯 [任务位置计算] 找到匹配单位:', {
+        logger.debug('🎯 [任务位置计算] 找到匹配单位:', {
           匹配单位: unit.label,
           单位开始: unitStartDate.toLocaleDateString('zh-CN'),
           单位结束: unitEndDate.toLocaleDateString('zh-CN'),
@@ -2492,7 +2504,7 @@ export class GanttView extends LitElement {
     const taskStartOffset = Math.max(0, taskStart.getTime() - timelineStart.getTime());
     const fallbackPosition = (taskStartOffset / timelineSpan) * totalWidth;
     
-    console.log('⚠️ [任务位置计算] 使用后备线性计算:', {
+    logger.debug('⚠️ [任务位置计算] 使用后备线性计算:', {
       taskStartDate: taskStart.toLocaleDateString('zh-CN'),
       timelineStart: timelineStart.toLocaleDateString('zh-CN'),
       timelineEnd: timelineEnd.toLocaleDateString('zh-CN'),
@@ -2525,7 +2537,7 @@ export class GanttView extends LitElement {
     // 返回宽度，最小40px保证可见性
     const calculatedWidth = Math.max(40, endPosition - startPosition);
     
-    console.log('📏 [任务宽度计算] 基于单位边界:', {
+    logger.debug('📏 [任务宽度计算] 基于单位边界:', {
       effectiveStart: effectiveStart.toLocaleDateString('zh-CN'),
       effectiveEnd: effectiveEnd.toLocaleDateString('zh-CN'),
       startPosition: Math.round(startPosition),
@@ -2536,52 +2548,7 @@ export class GanttView extends LitElement {
     return calculatedWidth;
   }
 
-  /**
-   * 调整颜色亮度
-   */
-  private adjustColorBrightness(hex: string, factor: number): string {
-    // 移除 # 号
-    hex = hex.replace('#', '');
-    
-    // 转换为 RGB
-    const r = parseInt(hex.substr(0, 2), 16);
-    const g = parseInt(hex.substr(2, 2), 16);
-    const b = parseInt(hex.substr(4, 2), 16);
-    
-    // 调整亮度
-    const newR = Math.round(Math.min(255, Math.max(0, r + (255 - r) * factor)));
-    const newG = Math.round(Math.min(255, Math.max(0, g + (255 - g) * factor)));
-    const newB = Math.round(Math.min(255, Math.max(0, b + (255 - b) * factor)));
-    
-    // 转换回十六进制
-    return `#${newR.toString(16).padStart(2, '0')}${newG.toString(16).padStart(2, '0')}${newB.toString(16).padStart(2, '0')}`;
-  }
-
-  /**
-   * 获取状态显示名称
-   */
-  private getStatusDisplayName(status: GanttTask['status']): string {
-    switch (status) {
-      case 'not_started': return '未开始';
-      case 'in_progress': return '进行中';
-      case 'completed': return '已完成';
-      case 'paused': return '已暂停';
-      default: return '未知';
-    }
-  }
-
-  /**
-   * 获取优先级显示名称
-   */
-  private getPriorityDisplayName(priority: GanttTask['priority']): string {
-    switch (priority) {
-      case 'low': return '低';
-      case 'medium': return '中';
-      case 'high': return '高';
-      case 'urgent': return '紧急';
-      default: return '中';
-    }
-  }
+  // adjustColorBrightness, getStatusDisplayName, getPriorityDisplayName 已迁移到 gantt-utils.ts
 
   /**
    * 生成时间轴单位 - 动态根据用户选择的时间单位显示
@@ -2614,12 +2581,12 @@ export class GanttView extends LitElement {
           label = current.toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' });
           nextDate = new Date(current);
           nextDate.setDate(current.getDate() + 1);
-          isToday = this.isSameDay(current, today);
+          isToday = isSameDay(current, today);
           unitDate = new Date(current);
           break;
         case 'week':
           // 获取周的开始日期（周一）- 按周显示模式
-          const weekStart = this.getWeekStart(current);
+          const weekStart = getWeekStart(current);
           const weekEnd = new Date(weekStart);
           weekEnd.setDate(weekStart.getDate() + 6);
           
@@ -2659,7 +2626,7 @@ export class GanttView extends LitElement {
           label = current.toLocaleDateString('zh-CN');
           nextDate = new Date(current);
           nextDate.setDate(current.getDate() + 1);
-          isToday = this.isSameDay(current, today);
+          isToday = isSameDay(current, today);
           unitDate = new Date(current);
       }
 
@@ -2682,7 +2649,7 @@ export class GanttView extends LitElement {
       }
     }
 
-    console.log('🗺️ [GanttView] 生成时间轴单位:', {
+    logger.debug('🗺️ [GanttView] 生成时间轴单位:', {
       unit: timeline.unit,
       totalUnits: units.length,
       totalWidth: units.reduce((sum, u) => sum + u.width, 0),
@@ -2699,15 +2666,7 @@ export class GanttView extends LitElement {
     return units;
   }
 
-  /**
-   * 获取周的开始日期（周一）
-   */
-  private getWeekStart(date: Date): Date {
-    const d = new Date(date);
-    const day = d.getDay();
-    const diff = d.getDate() - day + (day === 0 ? -6 : 1); // 调整为周一开始
-    return new Date(d.setDate(diff));
-  }
+  // getWeekStart 已迁移到 gantt-utils.ts
 
   /**
    * 计算今天线的位置
@@ -2736,7 +2695,7 @@ export class GanttView extends LitElement {
     const newName = input.value.trim();
     
     if (newName && newName !== task.name) {
-      console.log('📝 [GanttView] Updating task name:', task.id, newName);
+      logger.debug('📝 [GanttView] Updating task name:', task.id, newName);
       
       // 找到标题属性并更新
       const properties = this.view?.properties$?.value || [];
@@ -2747,9 +2706,9 @@ export class GanttView extends LitElement {
       if (titleProperty) {
         try {
           this.view.dataSource.cellValueChange(task.id, titleProperty.id, newName);
-          console.log('✅ [GanttView] Task name updated successfully');
+          logger.debug('✅ [GanttView] Task name updated successfully');
         } catch (error) {
-          console.error('❌ [GanttView] Error updating task name:', error);
+          logger.error('❌ [GanttView] Error updating task name:', error);
         }
       }
     }
@@ -2776,14 +2735,14 @@ export class GanttView extends LitElement {
    * 处理任务条拖拽开始 - 使用当前时间轴配置
    */
   private handleTaskDragStart = (task: GanttTask, event: MouseEvent) => {
-    console.log('🚚 [GanttView] 任务拖拽开始（使用当前时间轴）:', task.name, event.button);
+    logger.debug('🚚 [GanttView] 任务拖拽开始（使用当前时间轴）:', task.name, event.button);
     
     event.preventDefault();
     event.stopPropagation();
     
     const timeline = this.view?.timeline$?.value;
     if (!timeline) {
-      console.log('❌ No timeline available');
+      logger.debug('❌ No timeline available');
       return;
     }
     
@@ -2791,7 +2750,7 @@ export class GanttView extends LitElement {
     const timelineUnits = this.generateTimelineUnits(timeline);
     const totalWidth = timelineUnits.reduce((sum, unit) => sum + unit.width, 0);
     
-    console.log('📊 [修复] 时间轴信息（使用当前单位）:', { 
+    logger.debug('📊 [修复] 时间轴信息（使用当前单位）:', { 
       unit: timeline.unit,
       totalWidth, 
       units: timelineUnits.length,
@@ -2800,7 +2759,7 @@ export class GanttView extends LitElement {
     
     // 获取当前点击的元素
     const targetElement = event.currentTarget as HTMLElement;
-    console.log('🎯 Target element:', targetElement, targetElement.dataset.taskId);
+    logger.debug('🎯 Target element:', targetElement, targetElement.dataset.taskId);
     
     this._draggedTask = {
       task,
@@ -2813,7 +2772,7 @@ export class GanttView extends LitElement {
       element: targetElement // 保存元素引用
     };
     
-    console.log('✅ [修复] 拖拽状态设置（时间轴一致性）:', {
+    logger.debug('✅ [修复] 拖拽状态设置（时间轴一致性）:', {
       taskName: task.name,
       timelineUnit: timeline.unit,
       totalWidth,
@@ -2829,7 +2788,7 @@ export class GanttView extends LitElement {
     targetElement.style.cursor = 'grabbing';
     targetElement.style.zIndex = '1000';
     
-    console.log('🎯 [修复] 拖拽监听器已添加，使用当前时间轴配置');
+    logger.debug('🎯 [修复] 拖拽监听器已添加，使用当前时间轴配置');
   };
 
   /**
@@ -2838,7 +2797,7 @@ export class GanttView extends LitElement {
   private handleTaskResizeStartDrag = (task: GanttTask, event: MouseEvent) => {
     event.preventDefault();
     event.stopPropagation();
-    console.log('🔧 [GanttView] Task resize start drag (使用当前时间轴):', task.name);
+    logger.debug('🔧 [GanttView] Task resize start drag (使用当前时间轴):', task.name);
     
     const timeline = this.view?.timeline$?.value;
     if (!timeline) return;
@@ -2868,7 +2827,7 @@ export class GanttView extends LitElement {
     // 改变鼠标样式
     document.body.style.cursor = 'ew-resize';
     
-    console.log('✅ [修复] 左侧调整手柄拖拽设置（使用当前时间轴）:', {
+    logger.debug('✅ [修复] 左侧调整手柄拖拽设置（使用当前时间轴）:', {
       taskName: task.name,
       timelineUnit: timeline.unit,
       totalWidth
@@ -2881,7 +2840,7 @@ export class GanttView extends LitElement {
   private handleTaskResizeEndDrag = (task: GanttTask, event: MouseEvent) => {
     event.preventDefault();
     event.stopPropagation();
-    console.log('🔧 [GanttView] Task resize end drag (使用当前时间轴):', task.name);
+    logger.debug('🔧 [GanttView] Task resize end drag (使用当前时间轴):', task.name);
     
     const timeline = this.view?.timeline$?.value;
     if (!timeline) return;
@@ -2910,7 +2869,7 @@ export class GanttView extends LitElement {
     
     document.body.style.cursor = 'ew-resize';
     
-    console.log('✅ [修复] 右侧调整手柄拖拽设置（使用当前时间轴）:', {
+    logger.debug('✅ [修复] 右侧调整手柄拖拽设置（使用当前时间轴）:', {
       taskName: task.name,
       timelineUnit: timeline.unit,
       totalWidth
@@ -2922,7 +2881,7 @@ export class GanttView extends LitElement {
    */
   private handleTaskDragMove = (event: MouseEvent) => {
     if (!this._draggedTask) {
-      console.log('⚠️ No drag state available');
+      logger.debug('⚠️ No drag state available');
       return;
     }
     
@@ -2962,7 +2921,7 @@ export class GanttView extends LitElement {
           newStartDate = timelineStart.getTime();
         }
         
-        console.log('🔧 [调整开始时间]:', {
+        logger.debug('🔧 [调整开始时间]:', {
           原开始: new Date(originalStartDate).toLocaleDateString('zh-CN'),
           新开始: new Date(newStartDate).toLocaleDateString('zh-CN'),
           结束: new Date(newEndDate).toLocaleDateString('zh-CN'),
@@ -2986,7 +2945,7 @@ export class GanttView extends LitElement {
           newEndDate = timelineEnd.getTime();
         }
         
-        console.log('🔧 [调整结束时间]:', {
+        logger.debug('🔧 [调整结束时间]:', {
           开始: new Date(newStartDate).toLocaleDateString('zh-CN'),
           原结束: new Date(originalEndDate).toLocaleDateString('zh-CN'),
           新结束: new Date(newEndDate).toLocaleDateString('zh-CN'),
@@ -3012,7 +2971,7 @@ export class GanttView extends LitElement {
           newStartDate = newEndDate - taskDuration;
         }
         
-        console.log('🚚 [移动任务]:', {
+        logger.debug('🚚 [移动任务]:', {
           原开始: new Date(originalStartDate).toLocaleDateString('zh-CN'),
           新开始: new Date(newStartDate).toLocaleDateString('zh-CN'),
           原结束: new Date(originalEndDate).toLocaleDateString('zh-CN'),
@@ -3036,7 +2995,7 @@ export class GanttView extends LitElement {
       element.style.transform = 'translateY(-2px)';
       element.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.3)';
       
-      console.log('✅ [更新元素位置]:', { 
+      logger.debug('✅ [更新元素位置]:', { 
         操作类型: dragType,
         拖拽像素: deltaX,
         left: `${Math.round(left)}px`, 
@@ -3044,7 +3003,7 @@ export class GanttView extends LitElement {
         时间偏移天数: Math.round(baseTimeOffset / (24 * 60 * 60 * 1000) * 10) / 10
       });
     } else {
-      console.log('⚠️ Element reference lost or removed from DOM');
+      logger.debug('⚠️ Element reference lost or removed from DOM');
     }
     
     // 保存计算结果到拖拽状态，以便在拖拽结束时使用
@@ -3057,12 +3016,12 @@ export class GanttView extends LitElement {
    */
   private handleTaskDragEnd = (event: MouseEvent) => {
     if (!this._draggedTask) {
-      console.log('⚠️ No drag state to end');
+      logger.debug('⚠️ No drag state to end');
       return;
     }
     
     event.preventDefault();
-    console.log('🏁 [GanttView] 任务拖拽结束（支持调整大小）');
+    logger.debug('🏁 [GanttView] 任务拖拽结束（支持调整大小）');
     
     const { task, dragType, currentStartDate, currentEndDate, element } = this._draggedTask;
     
@@ -3097,7 +3056,7 @@ export class GanttView extends LitElement {
       }
     }
     
-    console.log('💾 [GanttView] 拖拽结束，保存调整后的时间:', {
+    logger.debug('💾 [GanttView] 拖拽结束，保存调整后的时间:', {
       taskId: task.id,
       taskName: task.name,
       dragType,
@@ -3142,7 +3101,7 @@ export class GanttView extends LitElement {
       element.setAttribute('data-final-left', `${finalLeft}`);
       element.setAttribute('data-final-width', `${finalWidth}`);
       
-      console.log('🔒 [GanttView] 锁定调整后的最终位置:', {
+      logger.debug('🔒 [GanttView] 锁定调整后的最终位置:', {
         dragType,
         finalLeft: `${Math.round(finalLeft)}px`,
         finalWidth: `${Math.round(finalWidth)}px`,
@@ -3160,12 +3119,12 @@ export class GanttView extends LitElement {
           element.removeAttribute('data-drag-final-position');
           element.removeAttribute('data-final-left');
           element.removeAttribute('data-final-width');
-          console.log('🔓 [GanttView] 解除位置锁定，调整大小数据保存完成');
+          logger.debug('🔓 [GanttView] 解除位置锁定，调整大小数据保存完成');
         }
       }, 100);
     }, 0);
     
-    console.log('✅ [GanttView] 任务调整完成（支持调整大小）');
+    logger.debug('✅ [GanttView] 任务调整完成（支持调整大小）');
   };
 
   /**
@@ -3176,10 +3135,10 @@ export class GanttView extends LitElement {
     const taskBarElement = this.querySelector(`.task-bar[data-task-id="${taskId}"]`) as HTMLElement;
     
     if (!taskBarElement) {
-      console.log('⚠️ Task bar element not found:', taskId);
+      logger.debug('⚠️ Task bar element not found:', taskId);
       // 尝试通过任务名称查找
       const allTaskBars = this.querySelectorAll('.task-bar');
-      console.log('🔍 Available task bars:', Array.from(allTaskBars).map(el => (el as HTMLElement).dataset.taskId));
+      logger.debug('🔍 Available task bars:', Array.from(allTaskBars).map(el => (el as HTMLElement).dataset.taskId));
       return;
     }
     
@@ -3207,7 +3166,7 @@ export class GanttView extends LitElement {
     taskBarElement.style.transform = 'translateY(-2px)';
     taskBarElement.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.3)';
     
-    console.log('✅ Updated visual position successfully:', { 
+    logger.debug('✅ Updated visual position successfully:', { 
       taskId,
       left: `${Math.round(left)}px`, 
       width: `${Math.round(width)}px` 
@@ -3219,7 +3178,7 @@ export class GanttView extends LitElement {
    */
   private updateTaskDateRange(taskId: string, startDate: number, endDate: number, workingDays: number[]) {
     try {
-      console.log('💾 [GanttView] 开始更新任务日期范围（修复时序）:', {
+      logger.debug('💾 [GanttView] 开始更新任务日期范围（修复时序）:', {
         taskId,
         startDate: new Date(startDate).toLocaleDateString('zh-CN'),
         endDate: new Date(endDate).toLocaleDateString('zh-CN'),
@@ -3237,11 +3196,11 @@ export class GanttView extends LitElement {
       });
       
       if (!dateRangeProperty) {
-        console.error('❌ [GanttView] 找不到日期范围属性，无法保存拖拽位置');
+        logger.error('❌ [GanttView] 找不到日期范围属性，无法保存拖拽位置');
         return;
       }
       
-      console.log('🏷️ [GanttView] 找到日期范围属性:', dateRangeProperty.id);
+      logger.debug('🏷️ [GanttView] 找到日期范围属性:', dateRangeProperty.id);
       
       // 直接同步保存数据，不使用setTimeout避免时序问题
       const dateRangeData = {
@@ -3250,23 +3209,23 @@ export class GanttView extends LitElement {
         workingDays
       };
       
-      console.log('📤 [GanttView] 直接同步保存数据（避免时序问题）:', dateRangeData);
+      logger.debug('📤 [GanttView] 直接同步保存数据（避免时序问题）:', dateRangeData);
       
       // 使用直接格式保存，这个格式在读取时兼容性最好
       this.view.dataSource.cellValueChange(taskId, dateRangeProperty.id, dateRangeData);
       
       // 立即验证是否保存成功
       const verifyData = this.view.dataSource.cellValueGet(taskId, dateRangeProperty.id);
-      console.log('🔍 [GanttView] 立即验证保存结果:', verifyData);
+      logger.debug('🔍 [GanttView] 立即验证保存结果:', verifyData);
       
       if (verifyData && verifyData.startDate && verifyData.endDate) {
-        console.log('✅ [GanttView] 数据同步保存成功:', {
+        logger.debug('✅ [GanttView] 数据同步保存成功:', {
           startDate: new Date(verifyData.startDate).toLocaleDateString('zh-CN'),
           endDate: new Date(verifyData.endDate).toLocaleDateString('zh-CN'),
           workingDays: verifyData.workingDays
         });
       } else {
-        console.warn('⚠️ [GanttView] 数据保存验证失败，尝试嵌套格式');
+        logger.warn('⚠️ [GanttView] 数据保存验证失败，尝试嵌套格式');
         
         // 如果直接格式失败，尝试嵌套格式
         const nestedData = {
@@ -3278,7 +3237,7 @@ export class GanttView extends LitElement {
         };
         
         this.view.dataSource.cellValueChange(taskId, dateRangeProperty.id, nestedData);
-        console.log('📤 [GanttView] 尝试嵌套格式保存:', nestedData);
+        logger.debug('📤 [GanttView] 尝试嵌套格式保存:', nestedData);
       }
       
       // 延迟很短时间再触发更新，确保数据已写入
@@ -3287,7 +3246,7 @@ export class GanttView extends LitElement {
       }, 10); // 只延迟10ms，最小化时序问题
       
     } catch (error) {
-      console.error('❌ [GanttView] 更新任务日期范围时发生错误:', error);
+      logger.error('❌ [GanttView] 更新任务日期范围时发生错误:', error);
     }
   }
   
@@ -3295,7 +3254,7 @@ export class GanttView extends LitElement {
    * 强制触发任务数据更新 - 优化版本，减少震动
    */
   private forceTasksDataUpdate() {
-    console.log('🔄 [GanttView] 优化强制触发任务数据更新（减少震动）...');
+    logger.debug('🔄 [GanttView] 优化强制触发任务数据更新（减少震动）...');
     
     // 1. 更新强制刷新标志
     this._forceRefresh = Date.now() + Math.random();
@@ -3306,7 +3265,7 @@ export class GanttView extends LitElement {
       const properties = this.view.properties$?.value;
       const dataSourceRows = this.view.dataSource.rows$.value;
       
-      console.log('📊 [GanttView] 优化强制访问信号:', {
+      logger.debug('📊 [GanttView] 优化强制访问信号:', {
         rowsCount: rows?.length,
         propertiesCount: properties?.length,
         dataSourceRowsCount: dataSourceRows?.length,
@@ -3316,12 +3275,12 @@ export class GanttView extends LitElement {
     
     // 3. 触发computed重新计算
     const updatedTasks = this.tasks$.value;
-    console.log('🎯 [GanttView] 优化强制重新计算任务数量:', updatedTasks.length);
+    logger.debug('🎯 [GanttView] 优化强制重新计算任务数量:', updatedTasks.length);
     
     // 4. 只进行一次重新渲染，避免多次渲染造成震动
     this.requestUpdate();
     
-    console.log('✅ [GanttView] 优化数据更新完成，避免多次渲染震动');
+    logger.debug('✅ [GanttView] 优化数据更新完成，避免多次渲染震动');
   }
 
   /**
@@ -3337,20 +3296,7 @@ export class GanttView extends LitElement {
       taskBarElement.style.cursor = '';
     }
   }
-  private isSameDay(date1: Date, date2: Date): boolean {
-    return date1.getFullYear() === date2.getFullYear() &&
-           date1.getMonth() === date2.getMonth() &&
-           date1.getDate() === date2.getDate();
-  }
-
-  /**
-   * 获取周数
-   */
-  private getWeekNumber(date: Date): number {
-    const start = new Date(date.getFullYear(), 0, 1);
-    const days = Math.floor((date.getTime() - start.getTime()) / (24 * 60 * 60 * 1000));
-    return Math.ceil((days + start.getDay() + 1) / 7);
-  }
+  // isSameDay 和 getWeekNumber 已迁移到 gantt-utils.ts
 
   /**
    * 渲染空状态
@@ -3419,14 +3365,14 @@ export class GanttView extends LitElement {
     const rowsSignal = this.view.rows$?.value; // 访问行数据
     const propertiesSignal = this.view.properties$?.value; // 访问属性数据
     
-    console.log('🎨 [GanttView] Render called with refresh flag:', forceRefreshFlag);
-    console.log('🔄 [GanttView] View data signal:', viewDataSignal ? 'available' : 'null');
-    console.log('📊 [GanttView] Rows signal:', rowsSignal?.length || 0);
-    console.log('🏷️ [GanttView] Properties signal:', propertiesSignal?.length || 0);
+    logger.debug('🎨 [GanttView] Render called with refresh flag:', forceRefreshFlag);
+    logger.debug('🔄 [GanttView] View data signal:', viewDataSignal ? 'available' : 'null');
+    logger.debug('📊 [GanttView] Rows signal:', rowsSignal?.length || 0);
+    logger.debug('🏷️ [GanttView] Properties signal:', propertiesSignal?.length || 0);
 
     const tasks = this.tasks$.value;
     
-    console.log('🎯 [GanttView] Rendering with tasks count:', tasks.length);
+    logger.debug('🎯 [GanttView] Rendering with tasks count:', tasks.length);
 
     if (tasks.length === 0) {
       return html`
@@ -3446,9 +3392,9 @@ export class GanttView extends LitElement {
    */
   override connectedCallback() {
     super.connectedCallback();
-    console.log('🔗 [GanttView] Connected callback called');
-    console.log('📊 [GanttView] View prop:', this.view);
-    console.log('🔒 [GanttView] Readonly prop:', this.readonly);
+    logger.debug('🔗 [GanttView] Connected callback called');
+    logger.debug('📊 [GanttView] View prop:', this.view);
+    logger.debug('🔒 [GanttView] Readonly prop:', this.readonly);
   }
 
   /**
@@ -3456,9 +3402,9 @@ export class GanttView extends LitElement {
    */
   override willUpdate(changedProperties: Map<string, unknown>) {
     super.willUpdate(changedProperties);
-    console.log('🔄 [GanttView] Will update called with changes:', changedProperties);
+    logger.debug('🔄 [GanttView] Will update called with changes:', changedProperties);
     if (changedProperties.has('view')) {
-      console.log('👁️ [GanttView] View changed to:', this.view);
+      logger.debug('👁️ [GanttView] View changed to:', this.view);
     }
   }
 
@@ -3466,7 +3412,7 @@ export class GanttView extends LitElement {
    * 移除滚动同步功能 - 恢复简单独立滚动
    */
   private syncScroll() {
-    console.log('🔄 [GanttView] 使用独立滚动，无需同步功能');
+    logger.debug('🔄 [GanttView] 使用独立滚动，无需同步功能');
     // 不需要复杂的滚动同步，每个区域独立滚动即可
   }
   
@@ -3475,7 +3421,7 @@ export class GanttView extends LitElement {
   private _currentTaskListScrollHandler?: () => void;
 
   override firstUpdated() {
-    console.log('🎯 [GanttView] First updated - setting up scroll sync');
+    logger.debug('🎯 [GanttView] First updated - setting up scroll sync');
     // 延迟一点确保DOM完全渲染
     setTimeout(() => {
       this.syncScroll();
@@ -3487,7 +3433,7 @@ export class GanttView extends LitElement {
     
     // 每次更新后重新设置滚动同步，确保DOM更新后同步功能正常
     if (changedProperties.has('view') || changedProperties.has('_forceRefresh')) {
-      console.log('🔄 [GanttView] View updated - re-syncing scroll');
+      logger.debug('🔄 [GanttView] View updated - re-syncing scroll');
       setTimeout(() => {
         this.syncScroll();
       }, 100); // 增加延迟确保DOM完全更新

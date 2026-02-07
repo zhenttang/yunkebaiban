@@ -22,12 +22,10 @@ const SQLITE_SCHEMA_VERSION = 1;
 const OFFLINE_DEBUG =
   typeof BUILD_CONFIG !== 'undefined' && BUILD_CONFIG.debug === true;
 
-// 全局存储错误事件类型
-export interface StorageErrorEvent {
-  type: 'write-failure' | 'data-loss' | 'offline-overflow' | 'storage-low' | 'integrity-error';
-  message: string;
-  details?: Record<string, unknown>;
-}
+// 从共享模块导入，避免重复定义
+export type { StorageErrorEvent } from './storage-events';
+import { emitStorageError } from './storage-events';
+export { emitStorageError };
 
 // 存储空间状态
 export interface StorageQuotaStatus {
@@ -46,15 +44,6 @@ declare global {
     'yunke-storage-error': CustomEvent<StorageErrorEvent>;
   }
 }
-
-// 发送存储错误通知
-const emitStorageError = (error: StorageErrorEvent) => {
-  if (typeof window !== 'undefined') {
-    window.dispatchEvent(
-      new CustomEvent('yunke-storage-error', { detail: error })
-    );
-  }
-};
 
 /**
  * 🔧 P0 优化：检查存储配额

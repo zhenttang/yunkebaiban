@@ -64,6 +64,21 @@ function filterKnownErrors(errors: PageError[]): PageError[] {
     /socket\.io.*reconnect/i,
     // 开发模式警告
     /Warning: ReactDOM\.render/i,
+    // 无后端时的预期网络错误
+    /NetworkError: A network error occurred/i,
+    /Failed to fetch/i,
+    /net::ERR_CONNECTION_REFUSED/i,
+    /ERR_NAME_NOT_RESOLVED/i,
+    /Load failed/i,
+    // 认证相关（未登录状态下的正常行为）
+    /401|403|Unauthorized|token/i,
+    /auth.*fail|login.*required/i,
+    // 404 路由（SPA 路由在无后端时的正常行为）
+    /404|Not Found/i,
+    /Cannot (GET|POST|PUT|DELETE)/i,
+    // WebSocket 连接失败（无后端时预期）
+    /WebSocket.*failed|ws:\/\//i,
+    /ECONNREFUSED/i,
   ];
 
   return errors.filter(error => {
