@@ -15,7 +15,7 @@ function createMixpanel() {
     mixpanelBrowser.init(BUILD_CONFIG.MIXPANEL_TOKEN || '', {
       track_pageview: true,
       persistence: 'localStorage',
-      api_host: 'https://telemetry.yunke.run',
+      api_host: BUILD_CONFIG.TELEMETRY_HOST || 'https://telemetry.yunke.run',
       ignore_dnt: true,
     });
     mixpanel = mixpanelBrowser;

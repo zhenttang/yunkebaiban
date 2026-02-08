@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { isBrowser } from '@yunke/env/global';
 import {
   NBSTORE_SESSION_ACTIVITY_EVENT,
   sanitizeSessionIdentifier,
@@ -99,7 +100,7 @@ export function useSessionManagement(normalizedLocalSessionId: string) {
 
   // 监听会话活动事件
   useEffect(() => {
-    if (typeof window === 'undefined') {
+    if (!isBrowser) {
       return;
     }
 

@@ -1,4 +1,4 @@
-import { DebugLogger } from '@affine/debug';
+import { DebugLogger } from '@yunke/debug';
 import { Store } from '@toeverything/infra';
 
 import type { FetchService } from '../services/fetch';

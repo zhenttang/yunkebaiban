@@ -320,6 +320,11 @@ export class EmbedIframeBlockComponent extends CaptionedBlockComponent<EmbedIfra
     `;
   };
 
+  // 🔧 离线占位符
+  private _isOffline() {
+    return typeof navigator !== 'undefined' && !navigator.onLine;
+  }
+
   private readonly _renderContent = () => {
     if (this.isIdle$.value) {
       return html`<embed-iframe-idle-card
@@ -343,6 +348,21 @@ export class EmbedIframeBlockComponent extends CaptionedBlockComponent<EmbedIfra
         .inSurface=${this.inSurface}
         .options=${this._statusCardOptions}
       ></embed-iframe-error-card>`;
+    }
+
+    // 🔧 离线时显示占位符而非加载失败的 iframe
+    if (this._isOffline()) {
+      return html`
+        <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;background:var(--yunke-background-secondary-color);border-radius:8px;min-height:120px;gap:8px;">
+          <div style="font-size:28px;">🌐</div>
+          <div style="font-size:13px;font-weight:600;color:var(--yunke-text-primary-color);">
+            ${this.model.props.title || '嵌入内容'}
+          </div>
+          <div style="font-size:12px;color:var(--yunke-text-secondary-color);">
+            需要网络连接才能加载此内容
+          </div>
+        </div>
+      `;
     }
 
     return this._renderIframe();

@@ -7,7 +7,8 @@ import {
 } from '@yunke/nbstore';
 import { DebugLogger } from '@yunke/debug';
 
-import { uint8ArrayToBase64 } from '../utils';
+import { uint8ArrayToBase64, base64ToUint8Array } from '../utils/yjs-utils';
+import { mergeUpdates } from 'yjs';
 import { emitStorageError } from '../../storage/storage-events';
 import {
   type OfflineOperation,
@@ -116,15 +117,35 @@ export function useOfflineOperations({
       // 优先使用 IndexedDB
       if (isIndexedDBStorageAvailable()) {
         try {
+          // BUG-7 修复：尝试合并同一文档的最新操作，减少冗余数据
           const MAX_OPERATIONS_PER_DOC = 50;
           const docCount =
             await getDocOperationsCountIDB(normalizedDocId);
+
           if (docCount >= MAX_OPERATIONS_PER_DOC) {
-            await deleteOldestDocOperationIDB(normalizedDocId);
-            logger.debug(
-              '同一文档操作过多，移除最旧操作',
-              normalizedDocId
-            );
+            // 达到上限时，尝试将新 update 与最新操作合并
+            try {
+              const existingOps = await getOfflineOperationsIDB();
+              const sameDocOps = existingOps
+                .filter(op => op.docId === normalizedDocId)
+                .sort((a, b) => b.timestamp - a.timestamp);
+
+              if (sameDocOps.length > 0) {
+                const latestOp = sameDocOps[0];
+                const existingUpdate = base64ToUint8Array(latestOp.update);
+                const merged = mergeUpdates([existingUpdate, update]);
+                const mergedBase64 = await uint8ArrayToBase64(merged);
+
+                // 更新最新操作为合并后的版本
+                operation.id = latestOp.id; // 覆盖旧记录
+                operation.update = mergedBase64;
+                operation.timestamp = Date.now();
+                logger.debug('BUG-7: 已合并同文档更新', normalizedDocId);
+              }
+            } catch (mergeError) {
+              logger.warn('合并更新失败，回退到删除旧操作', mergeError);
+              await deleteOldestDocOperationIDB(normalizedDocId);
+            }
           }
 
           await saveOfflineOperationIDB(operation);
@@ -161,22 +182,35 @@ export function useOfflineOperations({
         }
       }
 
+      // BUG-7 修复：localStorage 路径也尝试合并同文档更新
       const MAX_OPERATIONS_PER_DOC = 10;
       const sameDocOps = operations.filter(
         op => op.docId === normalizedDocId
       );
       if (sameDocOps.length >= MAX_OPERATIONS_PER_DOC) {
-        const oldest = sameDocOps.sort(
-          (a, b) => a.timestamp - b.timestamp
-        )[0];
-        operations = operations.filter(op => op.id !== oldest.id);
-        logger.debug(
-          '同一文档操作过多，移除最旧操作',
-          normalizedDocId
-        );
-      }
+        // 尝试合并最新的两个操作
+        try {
+          const latest = sameDocOps.sort((a, b) => b.timestamp - a.timestamp)[0];
+          const existingUpdate = base64ToUint8Array(latest.update);
+          const merged = mergeUpdates([existingUpdate, update]);
+          const mergedBase64 = await uint8ArrayToBase64(merged);
 
-      operations.push(operation);
+          // 替换最新操作为合并后的版本
+          const idx = operations.findIndex(op => op.id === latest.id);
+          if (idx >= 0) {
+            operations[idx] = { ...operations[idx], update: mergedBase64, timestamp: Date.now() };
+            logger.debug('BUG-7: 已合并同文档更新 (localStorage)', normalizedDocId);
+          }
+        } catch {
+          // 合并失败，回退到删除最旧
+          const oldest = sameDocOps.sort((a, b) => a.timestamp - b.timestamp)[0];
+          operations = operations.filter(op => op.id !== oldest.id);
+          operations.push(operation);
+          logger.debug('同一文档操作过多，移除最旧操作', normalizedDocId);
+        }
+      } else {
+        operations.push(operation);
+      }
 
       const { trimmed, raw } = trimOfflineOperationsLS(operations);
       if (trimmed.length !== operations.length) {

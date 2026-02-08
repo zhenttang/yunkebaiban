@@ -10,6 +10,15 @@ import {
   migrateWorkspaceStoragePath,
   showWorkspaceStorageInFolder,
   trashWorkspace,
+  // NEW-2: 自动备份
+  createWorkspaceBackup,
+  createAllWorkspaceBackups,
+  listWorkspaceBackups,
+  restoreWorkspaceFromBackup,
+  deleteWorkspaceBackup as deleteWsBackup,
+  startAutoBackup,
+  stopAutoBackup,
+  getAutoBackupStatus,
 } from './handlers';
 
 export * from './handlers';
@@ -30,4 +39,13 @@ export const workspaceHandlers = {
   deleteStorageFile: deleteWorkspaceStorageFile,
   getDefaultDataPath: getDefaultDataPath,
   migrateAllDataToPath: migrateAllDataToPath,
+  // NEW-2: 自动备份 API
+  createBackup: async (workspaceId: string) => createWorkspaceBackup(workspaceId),
+  createAllBackups: async () => createAllWorkspaceBackups(),
+  listBackups: async (workspaceId?: string) => listWorkspaceBackups(workspaceId),
+  restoreFromBackup: async (backupId: string) => restoreWorkspaceFromBackup(backupId),
+  deleteBackup: async (backupId: string) => deleteWsBackup(backupId),
+  startAutoBackup: async () => startAutoBackup(),
+  stopAutoBackup: async () => stopAutoBackup(),
+  getAutoBackupStatus: async () => getAutoBackupStatus(),
 };

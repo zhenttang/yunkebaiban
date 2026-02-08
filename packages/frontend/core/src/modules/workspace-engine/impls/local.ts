@@ -362,6 +362,7 @@ class LocalWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
     this.notifyChannel.postMessage(null);
   }
 
+  // 🔧 Issue-15 修复：使用 try-finally 确保连接在异常时也能关闭
   async getWorkspaceProfile(
     id: string
   ): Promise<WorkspaceProfileInfo | undefined> {
@@ -371,30 +372,32 @@ class LocalWorkspaceFlavourProvider implements WorkspaceFlavourProvider {
       type: 'workspace',
       readonlyMode: true,
     });
-    docStorage.connection.connect();
-    await docStorage.connection.waitForConnected();
-    const localData = await docStorage.getDoc(id);
+    try {
+      docStorage.connection.connect();
+      await docStorage.connection.waitForConnected();
+      const localData = await docStorage.getDoc(id);
 
-    docStorage.connection.disconnect();
+      if (!localData) {
+        return {
+          isOwner: true,
+        };
+      }
 
-    if (!localData) {
+      const client = getWorkspaceProfileWorker();
+
+      const result = await client.call(
+        'renderWorkspaceProfile',
+        [localData.bin].filter(Boolean) as Uint8Array[]
+      );
+
       return {
+        name: result.name,
+        avatar: result.avatar,
         isOwner: true,
       };
+    } finally {
+      docStorage.connection.disconnect();
     }
-
-    const client = getWorkspaceProfileWorker();
-
-    const result = await client.call(
-      'renderWorkspaceProfile',
-      [localData.bin].filter(Boolean) as Uint8Array[]
-    );
-
-    return {
-      name: result.name,
-      avatar: result.avatar,
-      isOwner: true,
-    };
   }
 
   /**

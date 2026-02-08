@@ -315,11 +315,14 @@ export class ImageBlockComponent extends CaptionedBlockComponent<ImageBlockModel
   };
 
   private _removeGlobalModal() {
-    // 移除自定义元素模态框
+    // 🔧 Issue-6 修复：移除模态框前先清理事件监听器，防止泄漏
     const existingModal = document.querySelector('image-crop-modal[data-global="true"]');
     if (existingModal) {
+      existingModal.removeEventListener('crop-save', this._handleCropSave);
+      existingModal.removeEventListener('crop-cancel', this._handleCropCancel);
+      existingModal.removeEventListener('crop-error', this._handleCropError);
       existingModal.remove();
-      console.log('Global modal removed from body');
+      console.log('Global modal removed from body (listeners cleaned)');
     }
     
     // 移除简单模态框

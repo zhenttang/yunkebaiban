@@ -13,13 +13,14 @@ import {
 } from '@yunke/core/modules/cloud-storage';
 import { GlobalDialogService } from '@yunke/core/modules/dialogs';
 import { DesktopApiService } from '@yunke/core/modules/desktop-api';
+import { BackupService, type BackupInfo } from '@yunke/core/modules/backup/services';
 import {
   clearOfflineRootHandle,
   getOfflineRootHandleName,
   isFileSystemAccessSupported,
   requestOfflineRootHandle,
 } from '@yunke/core/modules/storage/offline-file-handle';
-import { useService, useServiceOptional } from '@toeverything/infra';
+import { LiveData, useLiveData, useService, useServiceOptional } from '@toeverything/infra';
 import { Cloud, HardDrive, FolderOpen } from 'lucide-react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
@@ -370,6 +371,257 @@ export const OfflineSettings = () => {
           </Button>
         </SettingRow>
       </SettingWrapper>
+
+      {/* 功能4: 本地存储管理 */}
+      <LocalStorageManagement />
+
+      {/* NEW-2: 数据备份管理 */}
+      {BUILD_CONFIG.isElectron && <BackupSection />}
     </>
+  );
+};
+
+// ====== 功能4: 本地存储管理组件 ======
+
+const LocalStorageManagement = () => {
+  const [storageInfo, setStorageInfo] = useState<{
+    usage: number;
+    quota: number;
+    percentage: number;
+  } | null>(null);
+  const [isClearing, setIsClearing] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+    const checkStorage = async () => {
+      try {
+        if ('storage' in navigator && 'estimate' in navigator.storage) {
+          const estimate = await navigator.storage.estimate();
+          if (!cancelled) {
+            const usage = estimate.usage ?? 0;
+            const quota = estimate.quota ?? 0;
+            setStorageInfo({
+              usage,
+              quota,
+              percentage: quota > 0 ? Math.round((usage / quota) * 100) : 0,
+            });
+          }
+        }
+      } catch {
+        // 浏览器不支持 storage.estimate
+      }
+    };
+    checkStorage();
+    return () => { cancelled = true; };
+  }, [isClearing]);
+
+  const handleClearCache = useCallback(async () => {
+    setIsClearing(true);
+    try {
+      // 清理 Service Worker 缓存
+      if ('caches' in window) {
+        const keys = await caches.keys();
+        await Promise.all(keys.map(key => caches.delete(key)));
+      }
+      notify.success({ title: '缓存已清理' });
+    } catch (error) {
+      notify.error({ title: '清理失败', message: String(error) });
+    } finally {
+      setIsClearing(false);
+    }
+  }, []);
+
+  return (
+    <SettingWrapper title="本地存储">
+      <SettingRow
+        name="存储使用量"
+        desc={
+          storageInfo
+            ? `已使用 ${formatBytes(storageInfo.usage)} / ${formatBytes(storageInfo.quota)}（${storageInfo.percentage}%）`
+            : '正在获取存储信息...'
+        }
+      >
+        {storageInfo && (
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, minWidth: 200 }}>
+            <div style={{
+              flex: 1, height: 8, borderRadius: 4,
+              backgroundColor: 'var(--yunke-background-tertiary-color)',
+              overflow: 'hidden',
+            }}>
+              <div style={{
+                width: `${Math.min(storageInfo.percentage, 100)}%`,
+                height: '100%', borderRadius: 4,
+                backgroundColor: storageInfo.percentage > 80
+                  ? 'var(--yunke-error-color)'
+                  : storageInfo.percentage > 60
+                    ? 'var(--yunke-warning-color)'
+                    : 'var(--yunke-primary-color)',
+                transition: 'width 0.3s ease',
+              }} />
+            </div>
+            <span style={{ fontSize: 12, color: 'var(--yunke-text-secondary-color)', flexShrink: 0 }}>
+              {storageInfo.percentage}%
+            </span>
+          </div>
+        )}
+      </SettingRow>
+      <SettingRow
+        name="清理缓存"
+        desc="清理 Service Worker 缓存的静态资源。文档数据不受影响。"
+      >
+        <Button onClick={handleClearCache} variant="secondary" disabled={isClearing}>
+          {isClearing ? '清理中...' : '清理缓存'}
+        </Button>
+      </SettingRow>
+    </SettingWrapper>
+  );
+};
+
+// ====== NEW-2: 备份管理组件 ======
+
+function formatBytes(bytes: number): string {
+  if (bytes === 0) return '0 B';
+  const k = 1024;
+  const sizes = ['B', 'KB', 'MB', 'GB'];
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+  return `${(bytes / Math.pow(k, i)).toFixed(1)} ${sizes[i]}`;
+}
+
+function formatDate(timestamp: number): string {
+  return new Date(timestamp).toLocaleString('zh-CN', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+}
+
+const emptyBackups = new LiveData<BackupInfo[]>([]);
+const falseLD = new LiveData(false);
+
+const BackupSection = () => {
+  const backupService = useServiceOptional(BackupService);
+  const backups = useLiveData(backupService?.dbBackups$ ?? emptyBackups);
+  const autoBackupEnabled = useLiveData(backupService?.autoBackupEnabled$ ?? falseLD);
+  const [isBackingUp, setIsBackingUp] = useState(false);
+
+  useEffect(() => {
+    if (!backupService) return;
+    backupService.refreshBackupList();
+    backupService.refreshAutoBackupStatus();
+  }, [backupService]);
+
+  const handleCreateBackup = useCallback(async () => {
+    if (!backupService) return;
+    setIsBackingUp(true);
+    try {
+      const result = await backupService.createAllBackups();
+      if (result.succeeded > 0) {
+        notify.success({ title: `已备份 ${result.succeeded} 个工作区` });
+      } else {
+        notify.warning({ title: '没有需要备份的工作区' });
+      }
+    } catch {
+      notify.error({ title: '备份失败' });
+    } finally {
+      setIsBackingUp(false);
+    }
+  }, [backupService]);
+
+  const handleToggleAutoBackup = useCallback(async (enabled: boolean) => {
+    if (!backupService) return;
+    await backupService.setAutoBackup(enabled);
+    notify.success({
+      title: enabled ? '已开启自动备份（每日）' : '已关闭自动备份',
+    });
+  }, [backupService]);
+
+  const handleDeleteBackup = useCallback(async (backupId: string) => {
+    if (!backupService) return;
+    await backupService.deleteBackup(backupId);
+    notify.success({ title: '备份已删除' });
+  }, [backupService]);
+
+  const handleRestoreBackup = useCallback(async (backupId: string) => {
+    if (!backupService) return;
+    const result = await backupService.restoreFromBackup(backupId);
+    if (result.success) {
+      notify.success({ title: '恢复成功，请重启应用' });
+    } else {
+      notify.error({ title: `恢复失败: ${result.error}` });
+    }
+  }, [backupService]);
+
+  if (!backupService) return null;
+
+  return (
+    <SettingWrapper title="数据备份">
+      <SettingRow
+        name="自动备份"
+        desc="每 24 小时自动备份所有工作区数据库，保留最近 7 份。"
+      >
+        <Switch
+          checked={autoBackupEnabled}
+          onChange={handleToggleAutoBackup}
+        />
+      </SettingRow>
+      <SettingRow
+        name="立即备份"
+        desc="手动备份所有工作区的数据库文件。"
+      >
+        <Button
+          onClick={handleCreateBackup}
+          variant="secondary"
+          disabled={isBackingUp}
+        >
+          {isBackingUp ? '备份中...' : '立即备份'}
+        </Button>
+      </SettingRow>
+      {backups.length > 0 && (
+        <SettingRow
+          name={`备份记录（${backups.length} 份）`}
+          desc="点击恢复可将工作区数据回滚到备份时的状态。"
+        >
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 6, maxHeight: 200, overflow: 'auto', width: '100%' }}>
+            {backups.slice(0, 10).map(backup => (
+              <div
+                key={backup.id}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 8,
+                  padding: '4px 8px',
+                  borderRadius: 4,
+                  backgroundColor: 'var(--yunke-background-secondary-color)',
+                  fontSize: 12,
+                }}
+              >
+                <span style={{ flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                  {formatDate(backup.timestamp)}
+                </span>
+                <span style={{ color: 'var(--yunke-text-secondary-color)', flexShrink: 0 }}>
+                  {formatBytes(backup.size)}
+                </span>
+                <Button
+                  onClick={() => handleRestoreBackup(backup.id)}
+                  variant="secondary"
+                  style={{ padding: '2px 8px', fontSize: 11, height: 24 }}
+                >
+                  恢复
+                </Button>
+                <Button
+                  onClick={() => handleDeleteBackup(backup.id)}
+                  variant="secondary"
+                  style={{ padding: '2px 8px', fontSize: 11, height: 24, color: 'var(--yunke-error-color)' }}
+                >
+                  删除
+                </Button>
+              </div>
+            ))}
+          </div>
+        </SettingRow>
+      )}
+    </SettingWrapper>
   );
 };
