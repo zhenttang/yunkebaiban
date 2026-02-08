@@ -10,7 +10,7 @@ import {
   ViewLayersIcon,
 } from '@blocksuite/icons/rc';
 import { useService } from '@toeverything/infra';
-import { memo, useCallback, useEffect, useState } from 'react';
+import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 
 import { useNavigateHelper } from '../hooks/use-navigate-helper';
 import { WorkspaceDialogService } from '../../modules/dialogs';
@@ -30,7 +30,8 @@ export const QuickMenuPanel = memo(({ workspaceId, onClose }: QuickMenuPanelProp
   const workbenchService = useService(WorkbenchService);
   const [activeIndex, setActiveIndex] = useState(0);
 
-  const menuItems = [
+  // M-9 修复：useMemo 包裹 menuItems，避免每次渲染重建导致 handleKeyDown 和事件监听器反复注册
+  const menuItems = useMemo(() => [
     {
       icon: <AllDocsIcon />,
       title: t['com.yunke.workspaceSubPath.all']?.() || 'All Docs',
@@ -73,7 +74,7 @@ export const QuickMenuPanel = memo(({ workspaceId, onClose }: QuickMenuPanelProp
     },
     {
       icon: <TagsIcon />,
-      title: t['com.yunke.tags.header']?.() || 'Tags',
+      title: t['com.yunke.rootAppSidebar.tags']?.() || '标签',
       description: t['com.yunke.quick-menu.tags.description']?.() || 'View all tags',
       onClick: () => {
         track.$.quickMenu.$.navigate({ to: 'tags' });
@@ -103,7 +104,7 @@ export const QuickMenuPanel = memo(({ workspaceId, onClose }: QuickMenuPanelProp
         onClose();
       },
     },
-  ];
+  ], [t, navigationHelper, workspaceId, workbenchService, workspaceDialogService, onClose]);
 
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
@@ -133,8 +134,9 @@ export const QuickMenuPanel = memo(({ workspaceId, onClose }: QuickMenuPanelProp
 
   return (
     <>
-      <div className={styles.quickMenuOverlay} onClick={onClose} />
-      <div className={styles.quickMenuPanel}>
+      {/* M-10 修复：添加 ARIA 属性提升无障碍支持 */}
+      <div className={styles.quickMenuOverlay} onClick={onClose} role="presentation" />
+      <div className={styles.quickMenuPanel} role="dialog" aria-label="快速菜单">
         <div className={styles.quickMenuHeader}>
           {t['com.yunke.quick-menu.title']?.() || 'Quick Menu'}
         </div>

@@ -1,6 +1,7 @@
 import { notify } from '@yunke/component';
+import { encodeStateAsUpdate } from 'yjs';
 
-import type { PluginRecord } from '../types';
+import type { PluginPermission, PluginRecord } from '../types';
 
 type WorkerCallMessage = {
   type: 'call';
@@ -9,13 +10,129 @@ type WorkerCallMessage = {
   args?: unknown;
 };
 
+/**
+ * 🔧 P3 补全：文档快照选项
+ */
+export type DocSnapshotOptions = {
+  /** 目标文档 ID，不指定则使用当前活动文档 */
+  docId?: string;
+  /** 是否包含子文档 */
+  includeSubdocs?: boolean;
+  /** 输出格式 */
+  format?: 'base64' | 'binary';
+};
+
+/**
+ * 🔧 P3 补全：文档快照结果
+ */
+export type DocSnapshotResult = {
+  /** 文档 ID */
+  docId: string;
+  /** 文档标题 */
+  title?: string;
+  /** Yjs 更新数据（Base64 编码） */
+  snapshot: string;
+  /** 快照大小（字节） */
+  size: number;
+  /** 生成时间戳 */
+  timestamp: number;
+};
+
+/**
+ * 🔧 P3 补全：文档访问器接口
+ */
+export interface DocAccessor {
+  /** 获取当前活动文档 ID */
+  getActiveDocId(): string | null;
+  /** 获取指定文档的 Yjs Doc 对象 */
+  getYDoc(docId: string): import('yjs').Doc | null;
+  /** 获取文档标题 */
+  getDocTitle(docId: string): string | undefined;
+}
+
+// 🔧 安全修复：API 方法到权限的映射表
+const PERMISSION_MAP: Record<string, PluginPermission> = {
+  'ui.showToast': 'ui:toolbar',
+  'command.register': 'command:register',
+  'command.execute': 'command:register',
+  'storage.get': 'storage:local',
+  'storage.set': 'storage:local',
+  'storage.remove': 'storage:local',
+  'doc.getSnapshot': 'doc:read',
+  'doc.write': 'doc:write',
+  'net.fetch': 'net:fetch',
+};
+
+// 🔧 安全修复：存储配额限制（每个插件 5MB）
+const STORAGE_QUOTA_BYTES = 5 * 1024 * 1024;
+
 export class PluginRuntime {
   private worker: Worker | null = null;
   private objectUrl: string | null = null;
   private readonly storagePrefix: string;
+  // H-5 修复：简单锁防止并发写入超配额
+  private storageWriteLock = false;
 
-  constructor(private readonly record: PluginRecord) {
+  constructor(
+    private readonly record: PluginRecord,
+    private readonly docAccessor?: DocAccessor
+  ) {
     this.storagePrefix = `yunke:plugin:${record.manifest.id}:`;
+  }
+
+  /**
+   * 🔧 安全修复：检查插件是否具有调用指定 API 的权限
+   */
+  private checkPermission(method: string): void {
+    const requiredPermission = PERMISSION_MAP[method];
+    if (!requiredPermission) {
+      // 未知方法，由 dispatchHostCall 处理
+      return;
+    }
+
+    const hasPermission = this.record.manifest.permissions.includes(requiredPermission);
+    if (!hasPermission) {
+      const pluginId = this.record.manifest.id;
+      console.error(
+        `[plugins] 权限不足: 插件 "${pluginId}" 调用 "${method}" 需要 "${requiredPermission}" 权限`
+      );
+      throw new Error(`权限不足: 调用 "${method}" 需要 "${requiredPermission}" 权限`);
+    }
+  }
+
+  /**
+   * 🔧 安全修复：计算插件当前存储使用量
+   */
+  private getStorageUsage(): number {
+    let totalSize = 0;
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key && key.startsWith(this.storagePrefix)) {
+        const value = localStorage.getItem(key);
+        if (value) {
+          totalSize += key.length + value.length;
+        }
+      }
+    }
+    return totalSize * 2; // UTF-16 编码，每个字符 2 字节
+  }
+
+  /**
+   * 🔧 安全修复：检查存储配额
+   */
+  private checkStorageQuota(key: string, value: string): void {
+    const newItemSize = (this.storagePrefix + key).length + value.length;
+    const currentUsage = this.getStorageUsage();
+    const projectedUsage = currentUsage + newItemSize * 2;
+
+    if (projectedUsage > STORAGE_QUOTA_BYTES) {
+      const pluginId = this.record.manifest.id;
+      const quotaMB = (STORAGE_QUOTA_BYTES / 1024 / 1024).toFixed(1);
+      console.error(
+        `[plugins] 存储配额超限: 插件 "${pluginId}" 已使用 ${(currentUsage / 1024).toFixed(1)}KB，配额 ${quotaMB}MB`
+      );
+      throw new Error(`存储配额超限: 插件存储上限为 ${quotaMB}MB`);
+    }
   }
 
   start() {
@@ -148,7 +265,13 @@ export class PluginRuntime {
     this.worker.postMessage({ type: 'invoke', id: commandId });
   }
 
+  // M-16 修复：验证 Worker 消息结构，防止畸形消息导致崩溃
   private async handleWorkerCall(message: WorkerCallMessage) {
+    // 验证消息结构
+    if (!message || typeof message.requestId !== 'string' || typeof message.method !== 'string') {
+      console.warn('[plugins] 收到畸形 Worker 消息，已忽略', message);
+      return;
+    }
     const { requestId, method, args } = message;
     try {
       const result = await this.dispatchHostCall(method, args);
@@ -163,7 +286,76 @@ export class PluginRuntime {
     }
   }
 
+  /**
+   * 🔧 P3 补全：处理 doc.getSnapshot 请求
+   */
+  private handleDocGetSnapshot(options?: DocSnapshotOptions): DocSnapshotResult | null {
+    if (!this.docAccessor) {
+      console.warn('[plugins] doc.getSnapshot: DocAccessor 未配置');
+      return null;
+    }
+
+    // 确定目标文档 ID
+    const docId = options?.docId ?? this.docAccessor.getActiveDocId();
+    if (!docId) {
+      console.warn('[plugins] doc.getSnapshot: 无法确定目标文档 ID');
+      return null;
+    }
+
+    // 获取 Yjs Doc 对象
+    const yDoc = this.docAccessor.getYDoc(docId);
+    if (!yDoc) {
+      console.warn(`[plugins] doc.getSnapshot: 文档未找到 (docId: ${docId})`);
+      return null;
+    }
+
+    try {
+      // 生成快照
+      const update = encodeStateAsUpdate(yDoc);
+
+      // M-15 修复：限制快照大小，防止超大文档导致内存爆炸
+      const MAX_SNAPSHOT_SIZE = 50 * 1024 * 1024; // 50MB
+      if (update.byteLength > MAX_SNAPSHOT_SIZE) {
+        console.warn(`[plugins] doc.getSnapshot: 文档过大 (${(update.byteLength / 1024 / 1024).toFixed(1)}MB > 50MB)`);
+        throw new Error(`文档快照超过大小限制 (${(update.byteLength / 1024 / 1024).toFixed(1)}MB > 50MB)`);
+      }
+      
+      // 转换为 Base64（插件 Worker 中无法直接传递 Uint8Array）
+      const base64 = this.uint8ArrayToBase64(update);
+
+      const result: DocSnapshotResult = {
+        docId,
+        title: this.docAccessor.getDocTitle(docId),
+        snapshot: base64,
+        size: update.byteLength,
+        timestamp: Date.now(),
+      };
+
+      console.log(`[plugins] doc.getSnapshot: 成功生成快照 (docId: ${docId}, size: ${update.byteLength} bytes)`);
+      return result;
+    } catch (error) {
+      // L-16 修复：抛出错误而非返回 null，让调用方知道发生了什么
+      console.error('[plugins] doc.getSnapshot: 生成快照失败', error);
+      throw new Error(`生成快照失败: ${error instanceof Error ? error.message : String(error)}`);
+    }
+  }
+
+  /**
+   * 🔧 P3 补全：Uint8Array 转 Base64
+   */
+  private uint8ArrayToBase64(bytes: Uint8Array): string {
+    let binary = '';
+    const len = bytes.byteLength;
+    for (let i = 0; i < len; i++) {
+      binary += String.fromCharCode(bytes[i]);
+    }
+    return btoa(binary);
+  }
+
   private dispatchHostCall(method: string, args: unknown) {
+    // 🔧 安全修复：执行权限检查
+    this.checkPermission(method);
+
     switch (method) {
       case 'ui.showToast': {
         const title =
@@ -196,7 +388,17 @@ export class PluginRuntime {
       }
       case 'storage.set': {
         const payload = args as { key: string; value: string };
-        localStorage.setItem(this.storagePrefix + payload.key, payload.value);
+        // H-5 修复：原子性检查配额 + 写入，防止并发超配额
+        if (this.storageWriteLock) {
+          throw new Error('存储写入冲突，请稍后重试');
+        }
+        this.storageWriteLock = true;
+        try {
+          this.checkStorageQuota(payload.key, payload.value);
+          localStorage.setItem(this.storagePrefix + payload.key, payload.value);
+        } finally {
+          this.storageWriteLock = false;
+        }
         return null;
       }
       case 'storage.remove': {
@@ -205,8 +407,7 @@ export class PluginRuntime {
         return null;
       }
       case 'doc.getSnapshot': {
-        console.warn('[plugins] doc.getSnapshot 尚未实现');
-        return null;
+        return this.handleDocGetSnapshot(args as DocSnapshotOptions | undefined);
       }
       default:
         throw new Error(`未知方法: ${method}`);

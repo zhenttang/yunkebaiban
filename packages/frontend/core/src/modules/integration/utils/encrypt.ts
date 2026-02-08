@@ -1,6 +1,14 @@
+/**
+ * PBKDF2 加密函数
+ * @param source - 待加密的原始字符串
+ * @param secret - 盐值（不应硬编码，从环境变量或配置读取）
+ * @param iterations - 迭代次数
+ */
 export async function encryptPBKDF2(
   source: string,
-  secret = 'yunke',
+  secret: string = (typeof import.meta !== 'undefined' &&
+    import.meta.env?.VITE_ENCRYPT_SECRET) ||
+    'yunke-' + location.hostname,
   iterations = 100000
 ) {
   const encoder = new TextEncoder();

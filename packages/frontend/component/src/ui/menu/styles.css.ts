@@ -14,6 +14,14 @@ globalStyle('[data-radix-dropdown-menu-backdrop]', {
   opacity: '0 !important',
 });
 
+// 禁用菜单关闭时的所有 transition 动画，防止图标飞行效果
+globalStyle('[data-radix-menu-content] *', {
+  transition: 'none !important',
+});
+globalStyle('[data-radix-dropdown-menu-content] *', {
+  transition: 'none !important',
+});
+
 export const menuContent = style({
   minWidth: '180px',
   borderRadius: '8px',
@@ -27,6 +35,8 @@ export const menuContent = style({
   display: 'flex',
   flexDirection: 'column',
   gap: 4,
+  // 禁用 transition 防止关闭时飞行动画
+  transition: 'none !important',
   selectors: {
     '&.mobile': {
       padding: 0,
@@ -43,6 +53,8 @@ export const menuItem = style({
   },
   color: labelColor,
   backgroundColor: bgColor,
+  // 禁用 transition 防止关闭时图标飞行动画
+  transition: 'none !important',
 
   display: 'flex',
   alignItems: 'center',
@@ -103,6 +115,8 @@ export const menuSpan = style({
   textOverflow: 'ellipsis',
   whiteSpace: 'nowrap',
   textAlign: 'left',
+  // 禁用 transition 防止关闭时飞行动画
+  transition: 'none !important',
 });
 export const menuItemIcon = style({
   display: 'flex',
@@ -111,6 +125,8 @@ export const menuItemIcon = style({
   color: iconColor,
   width: 20,
   height: 20,
+  // 禁用 transition 防止关闭时图标飞行动画
+  transition: 'none !important',
 });
 
 export const menuSeparator = style({

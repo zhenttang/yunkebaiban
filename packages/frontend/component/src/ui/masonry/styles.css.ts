@@ -1,3 +1,4 @@
+import { cssVarV2 } from '@toeverything/theme/v2';
 import { style } from '@vanilla-extract/css';
 
 export const root = style({
@@ -14,15 +15,13 @@ export const groupHeader = style({
 });
 
 export const stickyGroupHeader = style({
-  zIndex: 10, // 提高 z-index，确保 sticky header 在最上层
+  zIndex: 10,
   position: 'absolute',
   left: 0,
   top: 0,
   width: '100%',
-  // 添加背景色，避免透过下方内容
-  backgroundColor: 'var(--affine-background-primary-color)',
-  // 添加轻微阴影，增强视觉区分度
-  boxShadow: '0 1px 3px rgba(0, 0, 0, 0.05)',
+  // 使用和页面一致的背景色，避免透明导致内容重叠
+  backgroundColor: cssVarV2('layer/background/primary'),
 });
 export const scrollbar = style({
   zIndex: 1,

@@ -1,29 +1,58 @@
+import { DebugLogger } from '@yunke/debug';
+
+/**
+ * File System Access API 类型声明
+ * 用于支持离线文件存储功能
+ */
+interface FileSystemAccessWindow {
+  showDirectoryPicker?: () => Promise<FileSystemDirectoryHandle>;
+}
+
 const DB_NAME = 'yunke-offline-storage';
 const STORE_NAME = 'handles';
 const ROOT_HANDLE_KEY = 'offline-root';
 const OFFLINE_DEBUG =
   typeof BUILD_CONFIG !== 'undefined' && BUILD_CONFIG.debug === true;
 
+// 统一日志器
+const logger = new DebugLogger('yunke:offline-handle');
+
 const logInfo = (message: string, data?: Record<string, unknown>) => {
   if (!OFFLINE_DEBUG) return;
   if (data) {
-    console.info('[offline-handle]', message, data);
+    logger.info(message, data);
   } else {
-    console.info('[offline-handle]', message);
+    logger.info(message);
   }
 };
 
 const logWarn = (message: string, data?: Record<string, unknown>) => {
   if (!OFFLINE_DEBUG) return;
   if (data) {
-    console.warn('[offline-handle]', message, data);
+    logger.warn(message, data);
   } else {
-    console.warn('[offline-handle]', message);
+    logger.warn(message);
   }
 };
 
+/**
+ * 🔧 P1 修复：缓存 IndexedDB 连接，避免每次操作都新建连接
+ * 
+ * 旧实现每次 withStore 调用都 open + close，频繁操作时性能差。
+ * 现在缓存连接，添加 onclose/onerror 自动重连。
+ */
+let cachedHandleDb: IDBDatabase | null = null;
+let handleDbPromise: Promise<IDBDatabase> | null = null;
+
 function openDb(): Promise<IDBDatabase> {
-  return new Promise((resolve, reject) => {
+  if (cachedHandleDb) {
+    return Promise.resolve(cachedHandleDb);
+  }
+  if (handleDbPromise) {
+    return handleDbPromise;
+  }
+  
+  handleDbPromise = new Promise<IDBDatabase>((resolve, reject) => {
     if (typeof indexedDB === 'undefined') {
       reject(new Error('IndexedDB unavailable'));
       return;
@@ -35,9 +64,36 @@ function openDb(): Promise<IDBDatabase> {
         db.createObjectStore(STORE_NAME);
       }
     };
-    request.onsuccess = () => resolve(request.result);
-    request.onerror = () => reject(request.error);
+    request.onsuccess = () => {
+      const db = request.result;
+      // 监控连接关闭，自动重置缓存
+      db.onclose = () => {
+        cachedHandleDb = null;
+        handleDbPromise = null;
+      };
+      db.onerror = () => {
+        cachedHandleDb = null;
+        handleDbPromise = null;
+      };
+      db.onversionchange = () => {
+        db.close();
+        cachedHandleDb = null;
+        handleDbPromise = null;
+      };
+      cachedHandleDb = db;
+      resolve(db);
+    };
+    request.onerror = () => {
+      handleDbPromise = null;
+      reject(request.error);
+    };
   });
+  
+  handleDbPromise.catch(() => {
+    handleDbPromise = null;
+  });
+  
+  return handleDbPromise;
 }
 
 async function withStore<T>(
@@ -49,26 +105,23 @@ async function withStore<T>(
     const tx = db.transaction(STORE_NAME, mode);
     const store = tx.objectStore(STORE_NAME);
     const request = fn(store);
-    // 🔧 Bug #19 修复：确保所有情况下都关闭数据库连接
     request.onsuccess = () => resolve(request.result as T);
     request.onerror = () => {
-      db.close(); // 请求失败时也要关闭
       reject(request.error);
     };
-    tx.oncomplete = () => db.close();
     tx.onerror = () => {
-      db.close();
       reject(tx.error);
     };
     tx.onabort = () => {
-      db.close(); // 事务被中止时也要关闭
       reject(new Error('IndexedDB 事务被中止'));
     };
+    // 🔧 P1 修复：不再在每次事务后 close 连接，连接由缓存管理
   });
 }
 
 export function isFileSystemAccessSupported(): boolean {
-  return typeof (globalThis as any).showDirectoryPicker === 'function';
+  const windowWithFSA = globalThis as unknown as FileSystemAccessWindow;
+  return typeof windowWithFSA.showDirectoryPicker === 'function';
 }
 
 export async function saveOfflineRootHandle(
@@ -112,8 +165,8 @@ export async function ensureHandlePermission(
 
 export async function requestOfflineRootHandle(): Promise<FileSystemDirectoryHandle | null> {
   if (!isFileSystemAccessSupported()) return null;
-  const picker = (globalThis as any).showDirectoryPicker as () => Promise<FileSystemDirectoryHandle>;
-  const handle = await picker();
+  const windowWithFSA = globalThis as unknown as FileSystemAccessWindow;
+  const handle = await windowWithFSA.showDirectoryPicker!();
   await saveOfflineRootHandle(handle);
   return handle;
 }

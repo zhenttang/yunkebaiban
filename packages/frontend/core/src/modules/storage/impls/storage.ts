@@ -2,6 +2,7 @@ import type { AsyncMemento, Memento } from '@toeverything/infra';
 import EventEmitter2 from 'eventemitter2';
 import { type IDBPDatabase, openDB } from 'idb';
 import { Observable } from 'rxjs';
+import { DebugLogger } from '@yunke/debug';
 
 import type {
   CacheStorage,
@@ -10,6 +11,9 @@ import type {
   GlobalState,
 } from '../providers/global';
 import { safeJsonParse } from '../../../utils/safe-json';
+
+// 统一日志管理
+const logger = new DebugLogger('yunke:storage-memento');
 
 export class StorageMemento implements Memento {
   // eventEmitter is used for same tab event
@@ -37,7 +41,7 @@ export class StorageMemento implements Memento {
     try {
       raw = this.storage.getItem(storageKey);
     } catch (error) {
-      console.warn('[StorageMemento] Failed to read storage key:', key, error);
+      logger.warn('Failed to read storage key', { key, error });
       return this.memory.get(storageKey) as T | undefined;
     }
     if (raw === null) {
@@ -45,18 +49,11 @@ export class StorageMemento implements Memento {
     }
     const parsed = safeJsonParse<T>(raw, {
       onError: error => {
-        console.warn(
-          `[StorageMemento] Failed to parse key "${key}", removing corrupted entry.`,
-          error
-        );
+        logger.warn(`Failed to parse key "${key}", removing corrupted entry`, error);
         try {
           this.storage.removeItem(storageKey);
         } catch (removeError) {
-          console.warn(
-            '[StorageMemento] Failed to remove corrupted storage key:',
-            key,
-            removeError
-          );
+          logger.warn('Failed to remove corrupted storage key', { key, error: removeError });
         }
       },
     });
@@ -76,7 +73,7 @@ export class StorageMemento implements Memento {
         }
       }
     } catch (error) {
-      console.warn('[StorageMemento] Failed to read storage keys:', error);
+      logger.warn('Failed to read storage keys', error);
     }
     for (const key of this.memory.keys()) {
       if (key.startsWith(this.prefix)) {
@@ -117,8 +114,7 @@ export class StorageMemento implements Memento {
     try {
       this.storage.setItem(storageKey, JSON.stringify(value));
     } catch (error) {
-      console.warn(
-        '[StorageMemento] Failed to persist value, keep in memory:',
+      logger.warn('Failed to persist value, keep in memory',
         key,
         error
       );
@@ -127,7 +123,7 @@ export class StorageMemento implements Memento {
     try {
       this.channel?.postMessage({ key, value });
     } catch (error) {
-      console.warn('[StorageMemento] Failed to broadcast update:', key, error);
+      logger.warn('Failed to broadcast update', { key, error });
     }
   }
 
@@ -137,7 +133,7 @@ export class StorageMemento implements Memento {
     try {
       this.storage.removeItem(storageKey);
     } catch (error) {
-      console.warn('[StorageMemento] Failed to remove storage key:', key, error);
+      logger.warn('Failed to remove storage key', { key, error });
     }
   }
 
@@ -191,19 +187,48 @@ export class AsyncStorageMemento implements AsyncMemento {
   }
 
   private _db: IDBPDatabase<any> | null = null;
+  private _dbPromise: Promise<IDBPDatabase<any>> | null = null;
 
+  /**
+   * 🔧 P2 修复：处理连接断开情况
+   * 
+   * 旧实现缓存连接但不处理 close/error 事件，
+   * 移动端浏览器回收连接后后续操作全部失败。
+   */
   private async getDB() {
-    const { dbName, table } = this;
-    if (!this._db) {
-      this._db = await openDB(dbName, 1, {
-        upgrade(db) {
-          if (!db.objectStoreNames.contains(table)) {
-            db.createObjectStore(table, { keyPath: 'key' });
-          }
-        },
-      });
+    if (this._db) {
+      return this._db;
     }
-    return this._db;
+    if (this._dbPromise) {
+      return this._dbPromise;
+    }
+    
+    const { dbName, table } = this;
+    this._dbPromise = openDB(dbName, 1, {
+      upgrade(db) {
+        if (!db.objectStoreNames.contains(table)) {
+          db.createObjectStore(table, { keyPath: 'key' });
+        }
+      },
+    }).then(db => {
+      // 监控连接关闭，重置缓存以允许重连
+      const rawDb = db as unknown as { addEventListener?: (type: string, listener: () => void) => void };
+      if (rawDb.addEventListener) {
+        rawDb.addEventListener('close', () => {
+          this._db = null;
+          this._dbPromise = null;
+        });
+      }
+      this._db = db;
+      return db;
+    });
+    
+    this._dbPromise.catch(() => {
+      this._db = null;
+      this._dbPromise = null;
+    });
+    
+    return this._dbPromise;
   }
 
   async get<T>(key: string): Promise<T | undefined> {
@@ -222,7 +247,7 @@ export class AsyncStorageMemento implements AsyncMemento {
           subscriber.next(value);
         },
         error => {
-          console.error('获取初始值错误:', error);
+          logger.error('获取初始值错误', error);
           subscriber.next(undefined);
         }
       );
@@ -265,7 +290,7 @@ export class AsyncStorageMemento implements AsyncMemento {
     try {
       this.channel?.postMessage({ key, value });
     } catch (error) {
-      console.warn('[AsyncStorageMemento] Failed to broadcast update:', key, error);
+      logger.warn('AsyncStorageMemento: Failed to broadcast update', { key, error });
     }
   }
 
@@ -280,7 +305,7 @@ export class AsyncStorageMemento implements AsyncMemento {
     try {
       this.channel?.postMessage({ key, value: undefined });
     } catch (error) {
-      console.warn('[AsyncStorageMemento] Failed to broadcast update:', key, error);
+      logger.warn('AsyncStorageMemento: Failed to broadcast update', { key, error });
     }
   }
 
@@ -297,7 +322,7 @@ export class AsyncStorageMemento implements AsyncMemento {
       try {
         this.channel?.postMessage({ key, value: undefined });
       } catch (error) {
-        console.warn('[AsyncStorageMemento] Failed to broadcast update:', key, error);
+        logger.warn('AsyncStorageMemento: Failed to broadcast update', { key, error });
       }
     }
   }

@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
+import DOMPurify from 'dompurify';
 import { quickSearch } from '../forum-api';
 import type { SearchResultDTO } from '../types';
 import searchingIllustration from './searching_no1g.svg';
@@ -16,9 +17,8 @@ export function Component() {
     setLoading(true);
     quickSearch(keyword, 'ALL')
       .then(setResults)
-      .catch(err => {
-        console.error(err);
-        alert('搜索失败');
+      .catch(() => {
+        setResults([]);
       })
       .finally(() => setLoading(false));
   }, [keyword]);
@@ -30,7 +30,12 @@ export function Component() {
   }, [results]);
 
   const highlightHtml = (fallback: string, highlight?: string) => {
-    return { __html: highlight || fallback };
+    return {
+      __html: DOMPurify.sanitize(highlight || fallback, {
+        ALLOWED_TAGS: ['em', 'mark', 'strong', 'b', 'i', 'span'],
+        ALLOWED_ATTR: ['class', 'style'],
+      }),
+    };
   };
 
   if (!keyword) {

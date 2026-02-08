@@ -1,5 +1,6 @@
 import type { Workspace } from '@blocksuite/affine/store';
 import { Service } from '@toeverything/infra';
+import { DebugLogger } from '@yunke/debug';
 
 import type {
   ExternalStorageConfig,
@@ -23,6 +24,9 @@ import {
 
 const STORAGE_CONFIG_KEY = 'yunke:external-storage-config';
 
+// 统一日志管理
+const logger = new DebugLogger('yunke:external-storage');
+
 export class ExternalStorageService extends Service {
   private _config: ExternalStorageConfig | null = null;
 
@@ -38,7 +42,7 @@ export class ExternalStorageService extends Service {
         this._config = JSON.parse(stored);
       }
     } catch (error) {
-      console.error('[ExternalStorage] 加载配置失败:', error);
+      logger.error('加载配置失败', error);
     }
   }
 
@@ -59,7 +63,7 @@ export class ExternalStorageService extends Service {
     try {
       localStorage.setItem(STORAGE_CONFIG_KEY, JSON.stringify(config));
     } catch (error) {
-      console.error('[ExternalStorage] 保存配置失败:', error);
+      logger.error('保存配置失败', error);
     }
   }
 
@@ -68,7 +72,7 @@ export class ExternalStorageService extends Service {
     try {
       localStorage.removeItem(STORAGE_CONFIG_KEY);
     } catch (error) {
-      console.error('[ExternalStorage] 清除配置失败:', error);
+      logger.error('清除配置失败', error);
     }
   }
 

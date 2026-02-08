@@ -266,6 +266,7 @@ export const QuickDeletePermanently = memo(
     );
     const { openConfirmModal } = useConfirmModal();
 
+    // M-13 修复：操作失败时 toast 通知用户，而非只 console.error
     const handleDeletePermanently = useCallback(() => {
       guardService
         .can('Doc_Delete', doc.id)
@@ -279,6 +280,7 @@ export const QuickDeletePermanently = memo(
         })
         .catch(e => {
           console.error(e);
+          toast(t['com.yunke.no-permission']?.() || '操作失败，请重试');
         });
     }, [doc.id, guardService, permanentlyDeletePage, t]);
 
@@ -335,6 +337,7 @@ export const QuickRestore = memo(
         onClick?.(e);
         e.stopPropagation();
         e.preventDefault();
+        // M-13 修复：恢复操作失败时 toast 通知用户
         guardService
           .can('Doc_Delete', doc.id)
           .then(can => {
@@ -351,6 +354,7 @@ export const QuickRestore = memo(
           })
           .catch(e => {
             console.error(e);
+            toast(t['com.yunke.no-permission']?.() || '操作失败，请重试');
           });
       },
       [doc.id, doc.title$, guardService, onClick, restoreFromTrash, t]

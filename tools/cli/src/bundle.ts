@@ -39,6 +39,13 @@ function getBaseWorkerConfigs(pkg: Package) {
         'blocksuite/view-extensions/turbo-renderer/turbo-painter.worker.ts'
       ).value
     ),
+    // 🔧 P2 优化：文档合并 Worker
+    createWorkerTargetConfig(
+      pkg,
+      core.srcPath.join(
+        'modules/cloud-storage/workers/merge-update.worker.ts'
+      ).value
+    ),
   ];
 }
 

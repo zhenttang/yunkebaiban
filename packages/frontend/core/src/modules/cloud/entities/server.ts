@@ -1,13 +1,3 @@
-// import type { ServerFeature } from '@yunke/graphql';
-
-// Temporary placeholder enum since GraphQL backend removed
-enum ServerFeature {
-  Captcha = 'captcha',
-  Copilot = 'copilot',
-  OAuth = 'oauth',
-  Payment = 'payment',
-}
-
 import {
   backoffRetry,
   effect,
@@ -22,10 +12,9 @@ import { exhaustMap, map, tap } from 'rxjs';
 import { ServerScope } from '../scopes/server';
 import { AuthService } from '../services/auth';
 import { FetchService } from '../services/fetch';
-// import { GraphQLService } from '../services/graphql'; // 已移除GraphQL支持
-import { ServerConfigStore } from '../stores/server-config';
+import { ServerConfigStore, type ServerConfigType } from '../stores/server-config';
 import type { ServerListStore } from '../stores/server-list';
-import type { ServerConfig, ServerMetadata } from '../types';
+import type { ServerConfig, ServerFeature, ServerMetadata } from '../types';
 
 type LowercaseServerFeature = Lowercase<ServerFeature>;
 type ServerFeatureRecord = {
@@ -53,21 +42,25 @@ export class Server extends Entity<{
     super();
   }
 
-  readonly config$ = LiveData.from<ServerConfig>(
+  readonly config$ = LiveData.from<ServerConfig | null>(
     this.serverListStore.watchServerConfig(this.serverMetadata.id).pipe(
       map(config => {
         if (!config) {
-          throw new Error('加载服务器配置失败');
+          // 返回 null 而不是抛出错误，让调用方处理
+          return null;
         }
         return config;
       })
     ),
-    null as any
+    null
   );
 
   readonly isConfigRevalidating$ = new LiveData(false);
 
   readonly features$ = this.config$.map(config => {
+    if (!config) {
+      return {} as ServerFeatureRecord;
+    }
     return Array.from(new Set(config.features)).reduce((acc, cur) => {
       acc[cur.toLowerCase() as LowercaseServerFeature] = true;
       return acc;
@@ -102,12 +95,12 @@ export class Server extends Entity<{
       if (!this.isValidServerUrl()) {
         console.log('🤖 [Server] 离线模式：跳过服务器配置获取，使用默认配置');
         // 直接设置默认配置
-        const defaultConfig = {
+        const defaultConfig: ServerConfig = {
           credentialsRequirement: { password: { minLength: 8, maxLength: 256 } },
-          features: ['copilot'] as any[],
+          features: [],
           oauthProviders: [],
           serverName: 'YUNKE Local',
-          type: 'selfhosted' as const,
+          type: 'selfhosted',
           version: '1.0.0',
           initialized: true,
         };
@@ -127,19 +120,19 @@ export class Server extends Entity<{
         backoffRetry({
           count: Infinity,
         }),
-        tap(config => {
+        tap((config: ServerConfigType | null) => {
           if (!config) {
             console.warn('[Server.revalidateConfig] 空的服务器配置');
             return;
           }
           this.serverListStore.updateServerConfig(this.serverMetadata.id, {
-            credentialsRequirement: (config as any)?.credentialsRequirement ?? {},
-            features: (config as any)?.features ?? [],
-            oauthProviders: (config as any)?.oauthProviders ?? [],
-            serverName: (config as any)?.name ?? 'Server',
-            type: (config as any)?.type ?? 'selfhosted',
-            version: (config as any)?.version ?? '0.0.0',
-            initialized: (config as any)?.initialized ?? true,
+            credentialsRequirement: config.credentialsRequirement ?? { password: { minLength: 8, maxLength: 256 } },
+            features: (config.features ?? []) as ServerFeature[],
+            oauthProviders: config.oauthProviders ?? [],
+            serverName: config.name ?? 'Server',
+            type: config.type ?? 'selfhosted',
+            version: config.version ?? '0.0.0',
+            initialized: config.initialized ?? true,
           });
         }),
         onStart(() => {

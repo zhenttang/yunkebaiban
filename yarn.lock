@@ -2251,6 +2251,27 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@blocksuite/yunke-gfx-calligraphy@workspace:*, @blocksuite/yunke-gfx-calligraphy@workspace:blocksuite/yunke/gfx/calligraphy":
+  version: 0.0.0-use.local
+  resolution: "@blocksuite/yunke-gfx-calligraphy@workspace:blocksuite/yunke/gfx/calligraphy"
+  dependencies:
+    "@blocksuite/global": "workspace:*"
+    "@blocksuite/icons": "npm:^2.2.12"
+    "@blocksuite/std": "workspace:*"
+    "@blocksuite/store": "workspace:*"
+    "@blocksuite/yunke-block-surface": "workspace:*"
+    "@blocksuite/yunke-components": "workspace:*"
+    "@blocksuite/yunke-ext-loader": "workspace:*"
+    "@blocksuite/yunke-model": "workspace:*"
+    "@blocksuite/yunke-shared": "workspace:*"
+    "@blocksuite/yunke-widget-edgeless-toolbar": "workspace:*"
+    "@lit/context": "npm:^1.1.2"
+    "@preact/signals-core": "npm:^1.8.0"
+    "@toeverything/theme": "workspace:packages/theme"
+    lit: "npm:^3.2.0"
+  languageName: unknown
+  linkType: soft
+
 "@blocksuite/yunke-gfx-chart@workspace:*, @blocksuite/yunke-gfx-chart@workspace:blocksuite/yunke/gfx/chart":
   version: 0.0.0-use.local
   resolution: "@blocksuite/yunke-gfx-chart@workspace:blocksuite/yunke/gfx/chart"
@@ -3394,6 +3415,7 @@ __metadata:
     "@blocksuite/yunke-gfx-animation": "workspace:*"
     "@blocksuite/yunke-gfx-animation-pro": "workspace:*"
     "@blocksuite/yunke-gfx-brush": "workspace:*"
+    "@blocksuite/yunke-gfx-calligraphy": "workspace:*"
     "@blocksuite/yunke-gfx-chart": "workspace:*"
     "@blocksuite/yunke-gfx-color-drop": "workspace:*"
     "@blocksuite/yunke-gfx-connector": "workspace:*"

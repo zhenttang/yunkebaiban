@@ -44,6 +44,18 @@ export const RootWrapper = () => {
     };
   }, [cloudEnabled, defaultServerService, isServerReady]);
 
+  // H-3 修复：云同步启用但服务器未就绪时显示 loading，而非空白页面
+  if (cloudEnabled && !isServerReady) {
+    return (
+      <FrameworkScope scope={defaultServerService.server.scope}>
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+          <div style={{ width: 32, height: 32, border: '3px solid #e5e7eb', borderTopColor: '#3b82f6', borderRadius: '50%', animation: 'yunke-spin 0.8s linear infinite' }} />
+          <style>{`@keyframes yunke-spin { to { transform: rotate(360deg); } }`}</style>
+        </div>
+      </FrameworkScope>
+    );
+  }
+
   return (
     <FrameworkScope scope={defaultServerService.server.scope}>
       <GlobalDialogs />

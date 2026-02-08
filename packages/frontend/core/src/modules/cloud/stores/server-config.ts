@@ -1,6 +1,8 @@
 import { Store } from '@toeverything/infra';
 
-// 临时替代serverConfig的类型定义，直到REST API就位
+import type { CredentialsRequirementType, OAuthProviderType } from '../types';
+
+// 服务器配置类型定义
 export interface ServerConfigType {
   initialized: boolean;
   version: string;
@@ -8,8 +10,8 @@ export interface ServerConfigType {
   flavor: string;
   deployment: string;
   features: string[];
-  credentialsRequirement: any;
-  oauthProviders: any[];
+  credentialsRequirement: CredentialsRequirementType;
+  oauthProviders: OAuthProviderType[];
   type: string;
 }
 

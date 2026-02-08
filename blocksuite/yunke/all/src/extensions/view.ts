@@ -40,6 +40,7 @@ import { TemplateViewExtension } from '@blocksuite/yunke-gfx-template/view';
 import { TextViewExtension } from '@blocksuite/yunke-gfx-text/view';
 import { AnimationViewExtension } from '@blocksuite/yunke-gfx-animation/view';
 import { AnimationProViewExtension } from '@blocksuite/yunke-gfx-animation-pro/view';
+import { CalligraphyViewExtension } from '@blocksuite/yunke-gfx-calligraphy/view';
 import { ColorDropViewExtension } from '@blocksuite/yunke-gfx-color-drop/view';
 import { FilledPolygonViewExtension } from '@blocksuite/yunke-gfx-filled-polygon/view';
 import { FootnoteViewExtension } from '@blocksuite/yunke-inline-footnote/view';
@@ -84,6 +85,9 @@ export function getInternalViewExtensions() {
     // 动画工具
     AnimationViewExtension,
     AnimationProViewExtension,
+
+    // 连笔字帖
+    CalligraphyViewExtension,
 
     // 拖放填色工具
     ColorDropViewExtension,

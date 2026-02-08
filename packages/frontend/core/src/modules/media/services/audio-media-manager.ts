@@ -84,8 +84,13 @@ export class AudioMediaManagerService extends Service {
       })
     );
 
-    window.addEventListener('beforeunload', () => {
+    // L-17 修复：保存引用以便在 dispose 时移除监听器
+    const handleBeforeUnload = () => {
       this.stopAllMedia();
+    };
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    this.disposables.push(() => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
     });
   }
 

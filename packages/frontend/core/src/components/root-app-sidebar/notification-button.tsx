@@ -5,7 +5,7 @@ import { useI18n } from '@yunke/i18n';
 import { track } from '@yunke/track';
 import { NotificationIcon } from '@blocksuite/icons/rc';
 import { useLiveData, useService } from '@toeverything/infra';
-import { useCallback, useState } from 'react';
+import { memo, useCallback, useState } from 'react';
 
 import { NotificationList } from '../notification/list';
 import * as styles from './notification-button.style.css';
@@ -21,7 +21,8 @@ const Badge = ({ count, onClick }: { count: number; onClick?: () => void }) => {
   );
 };
 
-export const NotificationButton = () => {
+// M-7 修复：memo 包裹避免不必要的重渲染
+export const NotificationButton = memo(() => {
   const notificationCountService = useService(NotificationCountService);
   const notificationCount = useLiveData(notificationCountService.count$);
 
@@ -65,4 +66,6 @@ export const NotificationButton = () => {
       </MenuItem>
     </Menu>
   );
-};
+});
+
+NotificationButton.displayName = 'NotificationButton';

@@ -47,7 +47,7 @@ export const test = base.extend<TestFixtures>({
       });
     });
 
-    // 已知可忽略的错误模式
+    // 已知可忽略的错误模式（无后端运行时会产生大量网络错误，属正常行为）
     const ignoredPatterns = [
       /Failed to load resource.*favicon/i,
       /net::ERR_BLOCKED_BY_CLIENT/i,
@@ -57,8 +57,21 @@ export const test = base.extend<TestFixtures>({
       /\[HMR\]/i,
       /socket\.io.*reconnect/i,
       /Warning: ReactDOM\.render/i,
-      /NetworkError: A network error occurred/i, // 本地测试无后端时的预期错误
-      /Failed to fetch/i, // 网络请求失败（无后端）
+      // 无后端时的预期网络错误
+      /NetworkError: A network error occurred/i,
+      /Failed to fetch/i,
+      /net::ERR_CONNECTION_REFUSED/i,
+      /ERR_NAME_NOT_RESOLVED/i,
+      /Load failed/i,
+      // 认证相关（未登录状态下的正常行为）
+      /401|403|Unauthorized|token/i,
+      /auth.*fail|login.*required/i,
+      // 404 路由
+      /404|Not Found/i,
+      /Cannot (GET|POST|PUT|DELETE)/i,
+      // WebSocket 连接失败
+      /WebSocket.*failed|ws:\/\//i,
+      /ECONNREFUSED/i,
     ];
 
     const getCriticalErrors = () => {

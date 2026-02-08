@@ -33,3 +33,12 @@ export {
 
 export * from './utils/yjs-utils';
 
+// 🔧 P2 优化：文档合并 Worker
+export {
+  mergeUpdates,
+  batchMergeUpdates,
+  validateUpdate,
+  getUpdateStats,
+  getMergeStats,
+  isWorkerAvailable,
+} from './workers';

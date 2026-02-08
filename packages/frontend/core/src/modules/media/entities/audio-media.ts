@@ -91,8 +91,11 @@ export class AudioMedia extends Entity<AudioSource> {
         this.audioElement.removeEventListener('pause', onPause);
         this.audioElement.removeEventListener('ended', onEnded);
 
-        // Revoke blob URL if it exists
-        if (
+        // H-7 修复：revoke 追踪的 Blob URL
+        if (this.currentBlobUrl) {
+          URL.revokeObjectURL(this.currentBlobUrl);
+          this.currentBlobUrl = null;
+        } else if (
           this.audioElement.src &&
           this.audioElement.src.startsWith('blob:')
         ) {
@@ -173,13 +176,24 @@ export class AudioMedia extends Entity<AudioSource> {
     return new Blob([uint8Array]);
   }
 
+  /**
+   * H-7 修复：追踪 Blob URL，在错误路径和重新加载时 revoke
+   */
+  private currentBlobUrl: string | null = null;
+
   readonly revalidateBuffer = effect(
     switchMap(() => {
       return fromPromise(async () => {
         return this.loadAudioBuffer();
       }).pipe(
         mergeMap(async blob => {
+          // H-7 修复：revoke 旧的 Blob URL 防止泄漏
+          if (this.currentBlobUrl) {
+            URL.revokeObjectURL(this.currentBlobUrl);
+            this.currentBlobUrl = null;
+          }
           const url = URL.createObjectURL(blob);
+          this.currentBlobUrl = url;
           // Set the audio element source
           this.audioElement.src = url;
           // If the media is playing, resume the playback
@@ -415,13 +429,23 @@ export class AudioMedia extends Entity<AudioSource> {
     return this.playbackState$.getValue();
   }
 
+  /**
+   * H-8 修复：AudioContext 使用后必须 close()，否则持续占用系统音频资源
+   */
   private async calculateStatsFromBuffer(buffer: Blob) {
     const audioContext = new AudioContext();
-    const audioBuffer = await audioContext.decodeAudioData(
-      await buffer.arrayBuffer()
-    );
-    const waveform = await this.calculateWaveform(audioBuffer);
-    return { waveform };
+    try {
+      const audioBuffer = await audioContext.decodeAudioData(
+        await buffer.arrayBuffer()
+      );
+      const waveform = await this.calculateWaveform(audioBuffer);
+      return { waveform };
+    } finally {
+      // H-8 修复：确保 AudioContext 被关闭
+      audioContext.close().catch(() => {
+        // ignore close errors
+      });
+    }
   }
 
   /**
