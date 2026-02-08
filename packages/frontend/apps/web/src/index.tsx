@@ -7,6 +7,36 @@ import { createRoot } from 'react-dom/client';
 
 import { App } from './app';
 
+async function cleanupLegacyServiceWorkers() {
+  if (typeof navigator === 'undefined' || !('serviceWorker' in navigator)) {
+    return;
+  }
+
+  try {
+    const registrations = await navigator.serviceWorker.getRegistrations();
+    await Promise.all(registrations.map(reg => reg.unregister()));
+  } catch (error) {
+    console.warn('[SW] 清理历史 service worker 失败:', error);
+  }
+
+  if (typeof caches === 'undefined') {
+    return;
+  }
+
+  try {
+    const keys = await caches.keys();
+    const staleKeys = keys.filter(
+      key =>
+        key.startsWith('yunke-v') ||
+        key.startsWith('workbox-precache') ||
+        key.startsWith('workbox-runtime')
+    );
+    await Promise.all(staleKeys.map(key => caches.delete(key)));
+  } catch (error) {
+    console.warn('[SW] 清理历史缓存失败:', error);
+  }
+}
+
 function mountApp() {
   // 确保 React 全局可用（某些第三方库可能需要）
   if (typeof window !== 'undefined' && typeof window.React === 'undefined') {
@@ -30,49 +60,10 @@ function mountApp() {
   }
 }
 
-// NEW-5/8: 注册 Service Worker（仅 Web 端生产环境）
-function registerServiceWorker() {
-  if (
-    typeof navigator === 'undefined' ||
-    !('serviceWorker' in navigator) ||
-    BUILD_CONFIG.isElectron
-  ) {
-    return;
-  }
-
-  window.addEventListener('load', () => {
-    navigator.serviceWorker
-      .register('/sw.js')
-      .then(registration => {
-        console.log('[SW] 注册成功，scope:', registration.scope);
-
-        // 检测更新
-        registration.addEventListener('updatefound', () => {
-          const newWorker = registration.installing;
-          if (!newWorker) return;
-
-          newWorker.addEventListener('statechange', () => {
-            if (
-              newWorker.state === 'installed' &&
-              navigator.serviceWorker.controller
-            ) {
-              // 新版本可用，通知用户
-              console.log('[SW] 新版本可用');
-              // 自动激活新版本（用户下次刷新时生效）
-              newWorker.postMessage('skipWaiting');
-            }
-          });
-        });
-      })
-      .catch(error => {
-        console.warn('[SW] 注册失败:', error);
-      });
-  });
-}
-
 try {
+  // 已移除 SW 功能；启动时做一次清理，防止历史 worker 残留导致刷新抖动
+  void cleanupLegacyServiceWorkers();
   mountApp();
-  registerServiceWorker();
 } catch (err) {
   console.error('💥 [index] 应用启动失败:', err);
 

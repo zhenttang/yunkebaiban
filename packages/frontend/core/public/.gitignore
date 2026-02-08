@@ -1,5 +1,4 @@
 *.js
-!sw.js
 *.map
 
 plugins
