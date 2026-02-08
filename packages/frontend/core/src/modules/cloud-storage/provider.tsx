@@ -141,6 +141,7 @@ export const CloudStorageProvider = ({
   const lastWorkspaceIdRef = useRef<string | null>(null);
   const lastServerUrlRef = useRef<string | null>(null);
   const isOnlineRef = useRef(isOnline);
+  const isConnectedRef = useRef(isConnected); // BUG-6 修复：使用 ref 追踪连接状态避免闭包陈旧值
   const serverUrlRef = useRef(serverUrl);
   const connectToSocketRef = useRef<(() => Promise<void>) | null>(null);
   const activeJoinAttemptRef = useRef<symbol | null>(null);
@@ -196,6 +197,7 @@ export const CloudStorageProvider = ({
 
   // ====== Ref 同步 effects ======
   useEffect(() => { isOnlineRef.current = isOnline; }, [isOnline]);
+  useEffect(() => { isConnectedRef.current = isConnected; }, [isConnected]); // BUG-6 修复
   useEffect(() => { serverUrlRef.current = serverUrl; }, [serverUrl]);
   useEffect(() => {
     cloudEnabledRef.current = cloudEnabled;
@@ -261,7 +263,8 @@ export const CloudStorageProvider = ({
     }
     const cs = socketRef.current;
     if (cs?.connected && currentWorkspaceId === lastWorkspaceIdRef.current) {
-      if (!isConnected) setTimeout(() => setIsConnected(true), 0);
+      // BUG-6 修复：使用 ref 避免闭包中 isConnected 过期
+      if (!isConnectedRef.current) setTimeout(() => setIsConnected(true), 0);
       return;
     }
     if (!currentWorkspaceId) {
@@ -419,7 +422,8 @@ export const CloudStorageProvider = ({
       isConnectingRef.current = false;
       scheduleReconnect();
     }
-  }, [currentWorkspaceId, normalizedLocalSessionId, removeSessionInfo, isConnected, syncOfflineOperationsRef]);
+  // BUG-6 修复：移除 isConnected 依赖（改用 isConnectedRef），减少不必要的重创建
+  }, [currentWorkspaceId, normalizedLocalSessionId, removeSessionInfo, syncOfflineOperationsRef]);
 
   useEffect(() => { connectToSocketRef.current = connectToSocket; }, [connectToSocket]);
 
@@ -536,6 +540,46 @@ export const CloudStorageProvider = ({
       if (reconnectTimeout.current) { clearTimeout(reconnectTimeout.current); reconnectTimeout.current = null; }
     };
   }, [cloudEnabled, serverUrl, currentWorkspaceId, connectToSocket, isConnected, storageMode]);
+
+  // ====== RISK-1 修复：页面隐藏/关闭时 flush pending operations ======
+  useEffect(() => {
+    const flushPendingToOffline = async () => {
+      const ops = [...pendingOperations.current];
+      if (ops.length === 0) return;
+      // 将内存中的 pending 操作保存到持久化离线队列
+      for (const op of ops) {
+        try {
+          await saveOfflineOperation(op.docId, op.update);
+        } catch {
+          // 尽力而为，忽略错误
+        }
+      }
+      logger.info(`页面隐藏/关闭：已将 ${ops.length} 个 pending 操作保存到离线队列`);
+    };
+
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'hidden') {
+        flushPendingToOffline();
+      }
+    };
+
+    const handleBeforeUnload = () => {
+      // beforeunload 中尽力而为（同步环境）
+      const ops = [...pendingOperations.current];
+      if (ops.length > 0) {
+        // 触发异步保存（浏览器可能不会等待完成）
+        flushPendingToOffline();
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, [saveOfflineOperation]);
 
   // ====== 组件卸载清理 ======
   useEffect(() => {

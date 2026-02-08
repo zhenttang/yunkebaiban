@@ -28,6 +28,7 @@ import {
   ViewIcon,
   ViewTitle,
 } from '../../../modules/workbench';
+import { YunkeErrorBoundary } from '../../../components/yunke/yunke-error-boundary';
 import { EmptyPageList } from './page-list-empty';
 import * as styles from './trash-page.css';
 
@@ -344,6 +345,11 @@ export const TrashPage = () => {
   );
 };
 
+// M-4 修复：添加错误边界，防止 TrashPage 崩溃导致白屏
 export const Component = () => {
-  return <TrashPage />;
+  return (
+    <YunkeErrorBoundary>
+      <TrashPage />
+    </YunkeErrorBoundary>
+  );
 };

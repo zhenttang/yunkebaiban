@@ -26,6 +26,30 @@ import {
  */
 @customElement('gantt-view')
 export class GanttView extends LitElement {
+  // 🔧 M-1 修复：上下文菜单清理回调
+  private _contextMenuCleanup: (() => void) | null = null;
+
+  // 🔧 P-1 修复：虚拟滚动状态
+  private _taskListScrollTop = 0;
+  private _taskListViewportHeight = 600;
+
+  private _handleTaskListScroll = (e: Event) => {
+    const target = e.target as HTMLElement;
+    this._taskListScrollTop = target.scrollTop;
+    this._taskListViewportHeight = target.clientHeight;
+    this.requestUpdate();
+  };
+
+  override disconnectedCallback() {
+    super.disconnectedCallback();
+    // 清理上下文菜单
+    this._contextMenuCleanup?.();
+    // 清理拖拽事件
+    document.removeEventListener('mousemove', this.handleTaskDragMove);
+    document.removeEventListener('mouseup', this.handleTaskDragEnd);
+    document.body.style.cursor = '';
+  }
+
   static {
   }
   static override styles = css`
@@ -1596,51 +1620,60 @@ export class GanttView extends LitElement {
     const progressDisplay = panel.querySelector('.progress-display') as HTMLSpanElement;
     const overlay = panel.querySelector('.task-config-overlay') as HTMLElement;
     
-    // 关闭面板
-    const closePanel = () => {
-      panel.remove();
-    };
-    
-    closeBtn?.addEventListener('click', closePanel);
-    cancelBtn?.addEventListener('click', closePanel);
-    
-    // 点击遮罩关闭
-    overlay?.addEventListener('click', (e) => {
-      if (e.target === overlay) {
-        closePanel();
-      }
-    });
-    
-    // ESC键关闭
+    // 🔧 P-1 修复：统一清理所有监听器，防止泄漏
     const handleKeydown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        closePanel();
-        document.removeEventListener('keydown', handleKeydown);
-      }
+      if (e.key === 'Escape') closePanel();
     };
-    document.addEventListener('keydown', handleKeydown);
-    
-    // 进度滑块更新 - 实时更新显示
-    progressSlider?.addEventListener('input', () => {
-      if (progressDisplay) {
+
+    const handleOverlayClick = (e: Event) => {
+      if (e.target === overlay) closePanel();
+    };
+
+    const handleProgressInput = () => {
+      if (progressDisplay && progressSlider) {
         progressDisplay.textContent = `${progressSlider.value}%`;
       }
-      logger.debug('📏 [GanttView] Progress slider updated:', progressSlider.value);
-    });
-    
-    // 保存配置
-    saveBtn?.addEventListener('click', () => {
-      this.saveTaskConfig(panel, task);
+    };
+
+    const handleSave = () => {
+      try {
+        this.saveTaskConfig(panel, task);
+      } catch (error) {
+        logger.error('保存任务配置失败:', error);
+      }
       closePanel();
-    });
-    
-    // 删除任务
-    deleteBtn?.addEventListener('click', () => {
+    };
+
+    const handleDelete = () => {
       if (confirm(`确定要删除任务"${task.name}"吗？`)) {
-        this.deleteTask(task);
+        try {
+          this.deleteTask(task);
+        } catch (error) {
+          logger.error('删除任务失败:', error);
+        }
         closePanel();
       }
-    });
+    };
+
+    // 关闭面板 — 统一清理所有事件监听器
+    const closePanel = () => {
+      document.removeEventListener('keydown', handleKeydown);
+      closeBtn?.removeEventListener('click', closePanel);
+      cancelBtn?.removeEventListener('click', closePanel);
+      overlay?.removeEventListener('click', handleOverlayClick);
+      progressSlider?.removeEventListener('input', handleProgressInput);
+      saveBtn?.removeEventListener('click', handleSave);
+      deleteBtn?.removeEventListener('click', handleDelete);
+      panel.remove();
+    };
+
+    closeBtn?.addEventListener('click', closePanel);
+    cancelBtn?.addEventListener('click', closePanel);
+    overlay?.addEventListener('click', handleOverlayClick);
+    document.addEventListener('keydown', handleKeydown);
+    progressSlider?.addEventListener('input', handleProgressInput);
+    saveBtn?.addEventListener('click', handleSave);
+    deleteBtn?.addEventListener('click', handleDelete);
   }
 
   /**
@@ -2059,18 +2092,38 @@ export class GanttView extends LitElement {
       menu.remove();
     });
 
-    // 点击其他地方关闭菜单
+    // 🔧 M-1 修复：确保上下文菜单监听器在所有路径下都被清理
     const closeMenu = (e: Event) => {
       if (!menu.contains(e.target as Node)) {
         logger.debug('🚫 [GanttView] Closing context menu (clicked outside)');
         menu.remove();
         document.removeEventListener('click', closeMenu);
+        document.removeEventListener('keydown', closeMenuOnEsc);
+        this._contextMenuCleanup = null;
       }
+    };
+
+    const closeMenuOnEsc = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        menu.remove();
+        document.removeEventListener('click', closeMenu);
+        document.removeEventListener('keydown', closeMenuOnEsc);
+        this._contextMenuCleanup = null;
+      }
+    };
+
+    // 存储清理回调，供 disconnectedCallback / dispose 使用
+    this._contextMenuCleanup = () => {
+      menu.remove();
+      document.removeEventListener('click', closeMenu);
+      document.removeEventListener('keydown', closeMenuOnEsc);
+      this._contextMenuCleanup = null;
     };
     
     // 延迟添加监听器，避免立即被关闭
     setTimeout(() => {
       document.addEventListener('click', closeMenu);
+      document.addEventListener('keydown', closeMenuOnEsc);
     }, 0);
   }
 
@@ -2182,17 +2235,36 @@ export class GanttView extends LitElement {
           <!-- 左侧任务列表列（300px固定宽度）-->
           <div class="task-list-column">
             <div class="task-list-header">任务名称</div>
-            <div class="task-list-body">
-              ${tasks.map((task, index) => html`
-                <div class="task-row" style="border-bottom: 1px solid var(--yunke-border-color);">
-                  <div class="task-name-display" 
-                       @click=${() => this.openTaskConfigPanel(task)}
-                       @contextmenu=${(e: MouseEvent) => this.handleTaskRightClick(task, e)}
-                       title="双击编辑任务">
-                    ${task.name}
+            <div class="task-list-body" @scroll=${this._handleTaskListScroll}>
+              ${(() => {
+                // 🔧 P-1 修复：虚拟滚动 — 只渲染可见任务 + 缓冲区
+                const ROW_HEIGHT = 40;
+                const BUFFER = 5;
+                const scrollTop = this._taskListScrollTop ?? 0;
+                const viewportHeight = this._taskListViewportHeight ?? 600;
+                const startIdx = Math.max(0, Math.floor(scrollTop / ROW_HEIGHT) - BUFFER);
+                const endIdx = Math.min(tasks.length, Math.ceil((scrollTop + viewportHeight) / ROW_HEIGHT) + BUFFER);
+                const totalHeight = tasks.length * ROW_HEIGHT;
+                const offsetY = startIdx * ROW_HEIGHT;
+                const visibleTasks = tasks.slice(startIdx, endIdx);
+
+                return html`
+                  <div style="height: ${totalHeight}px; position: relative;">
+                    <div style="transform: translateY(${offsetY}px);">
+                      ${visibleTasks.map((task) => html`
+                        <div class="task-row" style="height: ${ROW_HEIGHT}px; border-bottom: 1px solid var(--yunke-border-color);">
+                          <div class="task-name-display" 
+                               @click=${() => this.openTaskConfigPanel(task)}
+                               @contextmenu=${(e: MouseEvent) => this.handleTaskRightClick(task, e)}
+                               title="双击编辑任务">
+                            ${task.name}
+                          </div>
+                        </div>
+                      `)}
+                    </div>
                   </div>
-                </div>
-              `)}
+                `;
+              })()}
             </div>
           </div>
 
@@ -2218,15 +2290,19 @@ export class GanttView extends LitElement {
               <div class="gantt-chart-container" style="width: ${totalWidth}px; min-width: ${totalWidth}px;">
                 <!-- 垂直网格线（按时间单位分隔）-->
                 <div class="grid-lines">
-                  ${timelineUnits.map((unit, index) => {
-                    const leftPosition = timelineUnits.slice(0, index + 1).reduce((sum, u) => sum + u.width, 0);
-                    return html`
-                      <div 
-                        class="grid-line"
-                        style="left: ${leftPosition}px;"
-                      ></div>
-                    `;
-                  })}
+                  ${(() => {
+                    // 🔧 P-3 修复：预计算累积位置，O(n) 替代 O(n²)
+                    let cumLeft = 0;
+                    return timelineUnits.map(unit => {
+                      cumLeft += unit.width;
+                      return html`
+                        <div 
+                          class="grid-line"
+                          style="left: ${cumLeft}px;"
+                        ></div>
+                      `;
+                    });
+                  })()}
                 </div>
 
                 <!-- 红色当前时间线（今日线）-->

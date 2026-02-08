@@ -220,6 +220,10 @@ export class DocFrontend {
     })
   );
 
+  // NEW-1 修复：页面关闭/隐藏时的事件处理器引用
+  private _handleVisibilityChange: (() => void) | null = null;
+  private _handleBeforeUnload: (() => void) | null = null;
+
   start() {
     if (this.abort.signal.aborted) {
       throw new Error('doc frontend can only start once');
@@ -227,10 +231,73 @@ export class DocFrontend {
     this.mainLoop(this.abort.signal).catch(error => {
       console.error(error);
     });
+    // NEW-1 修复：注册页面关闭/隐藏时的 flush 监听
+    this._registerPageLifecycleListeners();
   }
 
   stop() {
+    // NEW-1 修复：注销页面生命周期监听
+    this._unregisterPageLifecycleListeners();
     this.abort.abort(MANUALLY_STOP);
+  }
+
+  /**
+   * NEW-1 修复：立即 flush 所有 pending updates 到存储
+   *
+   * 当页面隐藏（visibilitychange）或即将关闭（beforeunload）时调用，
+   * 确保 100ms 防抖窗口内尚未保存的编辑数据不会丢失。
+   */
+  flushAllPendingUpdates() {
+    for (const [docGuid, updates] of this.pendingUpdates.entries()) {
+      if (!updates || updates.length === 0) continue;
+
+      // 取消该文档的防抖定时器
+      const timer = this.saveTimers.get(docGuid);
+      if (timer) {
+        clearTimeout(timer);
+        this.saveTimers.delete(docGuid);
+      }
+
+      // 合并并调度保存
+      const mergedUpdate = this.mergeUpdates(updates);
+      this.pendingUpdates.delete(docGuid);
+
+      this.schedule({
+        type: 'save',
+        docId: docGuid,
+        update: mergedUpdate,
+      });
+    }
+  }
+
+  private _registerPageLifecycleListeners() {
+    if (typeof document === 'undefined') return;
+
+    this._handleVisibilityChange = () => {
+      if (document.visibilityState === 'hidden') {
+        this.flushAllPendingUpdates();
+      }
+    };
+
+    this._handleBeforeUnload = () => {
+      this.flushAllPendingUpdates();
+    };
+
+    document.addEventListener('visibilitychange', this._handleVisibilityChange);
+    window.addEventListener('beforeunload', this._handleBeforeUnload);
+  }
+
+  private _unregisterPageLifecycleListeners() {
+    if (typeof document === 'undefined') return;
+
+    if (this._handleVisibilityChange) {
+      document.removeEventListener('visibilitychange', this._handleVisibilityChange);
+      this._handleVisibilityChange = null;
+    }
+    if (this._handleBeforeUnload) {
+      window.removeEventListener('beforeunload', this._handleBeforeUnload);
+      this._handleBeforeUnload = null;
+    }
   }
 
   private async mainLoop(signal?: AbortSignal) {

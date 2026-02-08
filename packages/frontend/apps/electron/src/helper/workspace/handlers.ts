@@ -417,3 +417,377 @@ export async function deleteBackupWorkspace(id: string) {
     `Deleted backup workspace: ${workspacePath}`
   );
 }
+
+// ====== NEW-2：自动备份机制 ======
+
+const MAX_BACKUPS_PER_WORKSPACE = 7;
+const BACKUP_DIR_NAME = 'backups';
+
+/**
+ * 获取备份根目录
+ */
+async function getBackupsBasePath() {
+  const { getAppDataPath } = await import('./meta');
+  return path.join(await getAppDataPath(), BACKUP_DIR_NAME);
+}
+
+/**
+ * 获取指定工作区的备份目录
+ */
+async function getWorkspaceBackupPath(workspaceId: string) {
+  return path.join(await getBackupsBasePath(), workspaceId);
+}
+
+export interface BackupInfo {
+  id: string;
+  workspaceId: string;
+  timestamp: number;
+  size: number;
+  filename: string;
+  path: string;
+}
+
+/**
+ * 创建工作区的数据库备份
+ */
+export async function createWorkspaceBackup(
+  workspaceId: string
+): Promise<BackupInfo | null> {
+  try {
+    // 查找工作区的 storage.db 文件
+    const workspacesBase = await getWorkspacesBasePath();
+    let dbPath = '';
+
+    // 遍历 peer 目录查找 storage.db
+    if (await fs.pathExists(workspacesBase)) {
+      const peers = await fs.readdir(workspacesBase);
+      for (const peer of peers) {
+        const candidate = path.join(
+          workspacesBase,
+          peer,
+          workspaceId,
+          'storage.db'
+        );
+        if (await fs.pathExists(candidate)) {
+          dbPath = candidate;
+          break;
+        }
+      }
+    }
+
+    if (!dbPath) {
+      logger.warn('createWorkspaceBackup: storage.db not found', {
+        workspaceId,
+      });
+      return null;
+    }
+
+    const backupDir = await getWorkspaceBackupPath(workspaceId);
+    await fs.ensureDir(backupDir);
+
+    const timestamp = Date.now();
+    const filename = `backup_${timestamp}.db`;
+    const backupPath = path.join(backupDir, filename);
+
+    // 复制数据库文件
+    await fs.copy(dbPath, backupPath);
+
+    // 同时复制 WAL 文件（如果存在）
+    const walPath = dbPath + '-wal';
+    if (await fs.pathExists(walPath)) {
+      await fs.copy(walPath, backupPath + '-wal');
+    }
+
+    const stats = await fs.stat(backupPath);
+
+    logger.info('createWorkspaceBackup: success', {
+      workspaceId,
+      backupPath,
+      size: stats.size,
+    });
+
+    // 清理旧备份
+    await cleanOldBackups(workspaceId);
+
+    return {
+      id: `${workspaceId}_${timestamp}`,
+      workspaceId,
+      timestamp,
+      size: stats.size,
+      filename,
+      path: backupPath,
+    };
+  } catch (error) {
+    logger.error('createWorkspaceBackup failed', error);
+    return null;
+  }
+}
+
+/**
+ * 备份所有工作区
+ */
+export async function createAllWorkspaceBackups(): Promise<{
+  succeeded: number;
+  failed: number;
+  backups: BackupInfo[];
+}> {
+  const workspacesBase = await getWorkspacesBasePath();
+  const backups: BackupInfo[] = [];
+  let failed = 0;
+
+  if (!(await fs.pathExists(workspacesBase))) {
+    return { succeeded: 0, failed: 0, backups };
+  }
+
+  const peers = await fs.readdir(workspacesBase).catch(() => [] as string[]);
+  const workspaceIds = new Set<string>();
+
+  for (const peer of peers) {
+    const peerPath = path.join(workspacesBase, peer);
+    const peerStat = await fs.stat(peerPath).catch(() => null);
+    if (!peerStat?.isDirectory()) continue;
+
+    const ids = await fs.readdir(peerPath).catch(() => [] as string[]);
+    for (const id of ids) {
+      const dbPath = path.join(peerPath, id, 'storage.db');
+      if (await fs.pathExists(dbPath)) {
+        workspaceIds.add(id);
+      }
+    }
+  }
+
+  for (const wsId of workspaceIds) {
+    const backup = await createWorkspaceBackup(wsId);
+    if (backup) {
+      backups.push(backup);
+    } else {
+      failed++;
+    }
+  }
+
+  logger.info('createAllWorkspaceBackups', {
+    succeeded: backups.length,
+    failed,
+  });
+
+  return { succeeded: backups.length, failed, backups };
+}
+
+/**
+ * 列出工作区的所有备份
+ */
+export async function listWorkspaceBackups(
+  workspaceId?: string
+): Promise<BackupInfo[]> {
+  const backupsBase = await getBackupsBasePath();
+  if (!(await fs.pathExists(backupsBase))) {
+    return [];
+  }
+
+  const results: BackupInfo[] = [];
+  const dirs = workspaceId
+    ? [workspaceId]
+    : await fs.readdir(backupsBase).catch(() => [] as string[]);
+
+  for (const wsId of dirs) {
+    const wsBackupDir = path.join(backupsBase, wsId);
+    if (!(await fs.pathExists(wsBackupDir))) continue;
+
+    const stat = await fs.stat(wsBackupDir).catch(() => null);
+    if (!stat?.isDirectory()) continue;
+
+    const files = await fs.readdir(wsBackupDir).catch(() => [] as string[]);
+    for (const file of files) {
+      if (!file.startsWith('backup_') || !file.endsWith('.db')) continue;
+      // 排除 WAL/SHM 文件
+      if (file.endsWith('-wal') || file.endsWith('-shm')) continue;
+
+      const match = file.match(/^backup_(\d+)\.db$/);
+      if (!match) continue;
+
+      const timestamp = parseInt(match[1], 10);
+      const filePath = path.join(wsBackupDir, file);
+      const fileStat = await fs.stat(filePath).catch(() => null);
+
+      results.push({
+        id: `${wsId}_${timestamp}`,
+        workspaceId: wsId,
+        timestamp,
+        size: fileStat?.size ?? 0,
+        filename: file,
+        path: filePath,
+      });
+    }
+  }
+
+  return results.sort((a, b) => b.timestamp - a.timestamp);
+}
+
+/**
+ * 从备份恢复工作区
+ */
+export async function restoreWorkspaceFromBackup(
+  backupId: string
+): Promise<{ success: boolean; error?: string }> {
+  try {
+    const [workspaceId, timestampStr] = backupId.split('_');
+    if (!workspaceId || !timestampStr) {
+      return { success: false, error: '无效的备份 ID' };
+    }
+
+    const backupDir = await getWorkspaceBackupPath(workspaceId);
+    const backupPath = path.join(backupDir, `backup_${timestampStr}.db`);
+
+    if (!(await fs.pathExists(backupPath))) {
+      return { success: false, error: '备份文件不存在' };
+    }
+
+    // 查找目标 storage.db
+    const workspacesBase = await getWorkspacesBasePath();
+    let targetDbPath = '';
+
+    const peers = await fs.readdir(workspacesBase).catch(() => [] as string[]);
+    for (const peer of peers) {
+      const candidate = path.join(
+        workspacesBase,
+        peer,
+        workspaceId,
+        'storage.db'
+      );
+      if (await fs.pathExists(candidate)) {
+        targetDbPath = candidate;
+        break;
+      }
+    }
+
+    if (!targetDbPath) {
+      return { success: false, error: '找不到目标工作区' };
+    }
+
+    // 先断开数据库连接
+    try {
+      await ensureSQLiteDisconnected('workspace', workspaceId);
+    } catch {
+      // 忽略断开连接错误
+    }
+
+    // 创建当前数据库的安全备份
+    const safetyBackup = targetDbPath + `.pre-restore-${Date.now()}`;
+    await fs.copy(targetDbPath, safetyBackup);
+
+    // 用备份文件覆盖
+    await fs.copy(backupPath, targetDbPath, { overwrite: true });
+
+    // 如果有 WAL 文件也恢复
+    const walBackup = backupPath + '-wal';
+    if (await fs.pathExists(walBackup)) {
+      await fs.copy(walBackup, targetDbPath + '-wal', { overwrite: true });
+    } else {
+      // 删除旧的 WAL 文件（防止不一致）
+      await fs.remove(targetDbPath + '-wal').catch(() => {});
+      await fs.remove(targetDbPath + '-shm').catch(() => {});
+    }
+
+    logger.info('restoreWorkspaceFromBackup: success', {
+      backupId,
+      from: backupPath,
+      to: targetDbPath,
+    });
+
+    return { success: true };
+  } catch (error) {
+    logger.error('restoreWorkspaceFromBackup failed', error);
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : String(error),
+    };
+  }
+}
+
+/**
+ * 删除指定备份
+ */
+export async function deleteWorkspaceBackup(
+  backupId: string
+): Promise<boolean> {
+  try {
+    const [workspaceId, timestampStr] = backupId.split('_');
+    if (!workspaceId || !timestampStr) return false;
+
+    const backupDir = await getWorkspaceBackupPath(workspaceId);
+    const backupPath = path.join(backupDir, `backup_${timestampStr}.db`);
+    const walPath = backupPath + '-wal';
+    const shmPath = backupPath + '-shm';
+
+    await fs.remove(backupPath).catch(() => {});
+    await fs.remove(walPath).catch(() => {});
+    await fs.remove(shmPath).catch(() => {});
+
+    logger.info('deleteWorkspaceBackup', { backupId });
+    return true;
+  } catch (error) {
+    logger.error('deleteWorkspaceBackup failed', error);
+    return false;
+  }
+}
+
+/**
+ * 清理旧备份，保留最近 N 份
+ */
+async function cleanOldBackups(workspaceId: string) {
+  const backups = await listWorkspaceBackups(workspaceId);
+  if (backups.length <= MAX_BACKUPS_PER_WORKSPACE) return;
+
+  const toDelete = backups.slice(MAX_BACKUPS_PER_WORKSPACE);
+  for (const backup of toDelete) {
+    await deleteWorkspaceBackup(backup.id);
+    logger.info('cleanOldBackups: removed old backup', {
+      id: backup.id,
+      timestamp: backup.timestamp,
+    });
+  }
+}
+
+// ====== 自动备份调度 ======
+let autoBackupTimer: ReturnType<typeof setInterval> | null = null;
+const AUTO_BACKUP_INTERVAL_MS = 24 * 60 * 60 * 1000; // 24 小时
+
+/**
+ * 启动自动备份调度
+ */
+export function startAutoBackup() {
+  if (autoBackupTimer) return;
+  logger.info('startAutoBackup: scheduling every 24h');
+
+  autoBackupTimer = setInterval(async () => {
+    logger.info('autoBackup: running scheduled backup');
+    await createAllWorkspaceBackups();
+  }, AUTO_BACKUP_INTERVAL_MS);
+
+  // 首次启动延迟 5 分钟后执行一次
+  setTimeout(async () => {
+    logger.info('autoBackup: running initial backup (5min after start)');
+    await createAllWorkspaceBackups();
+  }, 5 * 60 * 1000);
+}
+
+/**
+ * 停止自动备份调度
+ */
+export function stopAutoBackup() {
+  if (autoBackupTimer) {
+    clearInterval(autoBackupTimer);
+    autoBackupTimer = null;
+    logger.info('stopAutoBackup: stopped');
+  }
+}
+
+/**
+ * 获取自动备份状态
+ */
+export function getAutoBackupStatus() {
+  return {
+    enabled: autoBackupTimer !== null,
+    intervalMs: AUTO_BACKUP_INTERVAL_MS,
+  };
+}

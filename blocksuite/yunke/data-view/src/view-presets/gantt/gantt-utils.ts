@@ -1,10 +1,24 @@
-import { DebugLogger } from '@blocksuite/global/utils';
+import { ConsoleLogger } from '@blocksuite/global/utils';
 
 /**
  * 甘特图模块统一日志实例
  * 替代散落在代码各处的 console.log/warn/error
  */
-export const ganttLogger = new DebugLogger('yunke:gantt-view');
+const ganttConsoleLogger = new ConsoleLogger();
+
+/**
+ * 带命名空间前缀的甘特图日志，兼容 debug/info/warn/error 接口
+ */
+export const ganttLogger = {
+  debug: (message: string, ...args: unknown[]) =>
+    ganttConsoleLogger.debug(`[yunke:gantt-view] ${message}`, ...args),
+  info: (message: string, ...args: unknown[]) =>
+    ganttConsoleLogger.info(`[yunke:gantt-view] ${message}`, ...args),
+  warn: (message: string, ...args: unknown[]) =>
+    ganttConsoleLogger.warn(`[yunke:gantt-view] ${message}`, ...args),
+  error: (message: string, ...args: unknown[]) =>
+    ganttConsoleLogger.error(`[yunke:gantt-view] ${message}`, ...args),
+};
 
 /**
  * 对字符串进行 HTML 转义，防止 XSS 注入

@@ -142,13 +142,50 @@ export class PluginRuntime {
     }
     if (this.worker) return;
 
+    // C-1 安全加固：沙箱脚本 — 冻结全局对象 + 限制危险 API + 执行超时
     const script = `
+      "use strict";
+
+      // === C-1 安全加固：限制 Worker 全局作用域 ===
+      // 删除/覆盖危险 API，防止插件逃逸
+      const _postMessage = self.postMessage.bind(self);
+      const _setTimeout = self.setTimeout.bind(self);
+      const _clearTimeout = self.clearTimeout.bind(self);
+      const _setInterval = self.setInterval.bind(self);
+      const _clearInterval = self.clearInterval.bind(self);
+
+      // 禁用网络访问 API
+      delete self.fetch;
+      delete self.XMLHttpRequest;
+      delete self.WebSocket;
+      delete self.EventSource;
+      self.fetch = undefined;
+      self.XMLHttpRequest = undefined;
+      self.WebSocket = undefined;
+      self.EventSource = undefined;
+
+      // 禁用 importScripts（防止加载外部脚本）
+      delete self.importScripts;
+      self.importScripts = undefined;
+
+      // 禁用 eval（双重保护）
+      self.eval = undefined;
+
+      // 禁用 Blob/URL 创建能力（防止创建可执行 URL）
+      delete self.Blob;
+      delete self.URL;
+      self.Blob = undefined;
+      self.URL = undefined;
+
+      // 执行超时限制（30 秒）
+      const EXECUTION_TIMEOUT_MS = 30000;
+
       const pending = new Map();
       const makeId = () => Math.random().toString(36).slice(2);
       const call = (method, args) => new Promise((resolve, reject) => {
         const requestId = makeId();
         pending.set(requestId, { resolve, reject });
-        self.postMessage({ type: 'call', requestId, method, args });
+        _postMessage({ type: 'call', requestId, method, args });
       });
       const commandHandlers = new Map();
       const host = {
@@ -185,11 +222,60 @@ export class PluginRuntime {
         const exports = {};
         const module = { exports };
         const normalized = normalizeSource(source);
-        const fn = new Function('exports', 'module', 'host', 'self', normalized);
-        fn(exports, module, host, self);
-        const activate = module.exports.activate || exports.activate || self.activate;
-        if (typeof activate === 'function') {
-          activate(host);
+        // C-1 加固：传入受限的 self 代理，隐藏危险属性
+        const safeSelf = Object.freeze({
+          postMessage: _postMessage,
+          setTimeout: _setTimeout,
+          clearTimeout: _clearTimeout,
+          setInterval: _setInterval,
+          clearInterval: _clearInterval,
+          console: self.console,
+          Math: self.Math,
+          Date: self.Date,
+          JSON: self.JSON,
+          String: self.String,
+          Number: self.Number,
+          Boolean: self.Boolean,
+          Array: self.Array,
+          Object: self.Object,
+          Map: self.Map,
+          Set: self.Set,
+          Promise: self.Promise,
+          Symbol: self.Symbol,
+          RegExp: self.RegExp,
+          Error: self.Error,
+          TypeError: self.TypeError,
+          RangeError: self.RangeError,
+          parseInt: self.parseInt,
+          parseFloat: self.parseFloat,
+          isNaN: self.isNaN,
+          isFinite: self.isFinite,
+          encodeURIComponent: self.encodeURIComponent,
+          decodeURIComponent: self.decodeURIComponent,
+          atob: self.atob,
+          btoa: self.btoa,
+          TextEncoder: self.TextEncoder,
+          TextDecoder: self.TextDecoder,
+          crypto: self.crypto,
+        });
+        // C-1 加固：使用超时保护执行
+        let timedOut = false;
+        const timeoutId = _setTimeout(() => {
+          timedOut = true;
+          _postMessage({ type: 'error', id: 'timeout', message: '插件执行超时 (30s)' });
+          self.close();
+        }, EXECUTION_TIMEOUT_MS);
+        try {
+          const fn = new Function('exports', 'module', 'host', 'self', normalized);
+          fn(exports, module, host, safeSelf);
+          const activate = module.exports.activate || exports.activate;
+          if (typeof activate === 'function') {
+            activate(host);
+          }
+        } finally {
+          if (!timedOut) {
+            _clearTimeout(timeoutId);
+          }
         }
       };
       self.onmessage = (event) => {
@@ -199,10 +285,10 @@ export class PluginRuntime {
             try {
               executeEntry(message.entrySource);
             } catch (error) {
-              self.postMessage({ type: 'error', id: message.id, message: String(error) });
+              _postMessage({ type: 'error', id: message.id, message: String(error) });
             }
           }
-          self.postMessage({ type: 'ready', id: message.id });
+          _postMessage({ type: 'ready', id: message.id });
           return;
         }
         if (message.type === 'result') {
@@ -222,13 +308,13 @@ export class PluginRuntime {
             try {
               handler();
             } catch (error) {
-              self.postMessage({ type: 'error', id: message.id, message: String(error) });
+              _postMessage({ type: 'error', id: message.id, message: String(error) });
             }
           }
           return;
         }
         if (message.type === 'stop') {
-          self.postMessage({ type: 'stopped', id: message.id });
+          _postMessage({ type: 'stopped', id: message.id });
           self.close();
         }
       };
@@ -251,6 +337,14 @@ export class PluginRuntime {
       if (message.type === 'call') {
         this.handleWorkerCall(message as WorkerCallMessage);
       }
+    };
+
+    // C-4 安全修复：Worker 异常时自动 terminate，防止僵尸线程
+    this.worker.onerror = (event) => {
+      console.error(`[plugins] Worker 崩溃: ${this.record.manifest.id}`, event);
+      event.preventDefault();
+      // 终止崩溃的 Worker，释放资源
+      this.stop();
     };
 
     this.worker.postMessage({

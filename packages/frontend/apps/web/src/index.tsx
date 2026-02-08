@@ -30,8 +30,49 @@ function mountApp() {
   }
 }
 
+// NEW-5/8: 注册 Service Worker（仅 Web 端生产环境）
+function registerServiceWorker() {
+  if (
+    typeof navigator === 'undefined' ||
+    !('serviceWorker' in navigator) ||
+    BUILD_CONFIG.isElectron
+  ) {
+    return;
+  }
+
+  window.addEventListener('load', () => {
+    navigator.serviceWorker
+      .register('/sw.js')
+      .then(registration => {
+        console.log('[SW] 注册成功，scope:', registration.scope);
+
+        // 检测更新
+        registration.addEventListener('updatefound', () => {
+          const newWorker = registration.installing;
+          if (!newWorker) return;
+
+          newWorker.addEventListener('statechange', () => {
+            if (
+              newWorker.state === 'installed' &&
+              navigator.serviceWorker.controller
+            ) {
+              // 新版本可用，通知用户
+              console.log('[SW] 新版本可用');
+              // 自动激活新版本（用户下次刷新时生效）
+              newWorker.postMessage('skipWaiting');
+            }
+          });
+        });
+      })
+      .catch(error => {
+        console.warn('[SW] 注册失败:', error);
+      });
+  });
+}
+
 try {
   mountApp();
+  registerServiceWorker();
 } catch (err) {
   console.error('💥 [index] 应用启动失败:', err);
 

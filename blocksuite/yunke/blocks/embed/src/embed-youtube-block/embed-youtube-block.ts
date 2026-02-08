@@ -95,7 +95,40 @@ export class EmbedYoutubeBlockComponent extends EmbedBlockComponent<
     });
   }
 
+  // 离线占位符：检测网络状态
+  private _isOffline() {
+    return typeof navigator !== 'undefined' && !navigator.onLine;
+  }
+
   override renderBlock() {
+    // 🔧 离线占位符：离线时显示友好提示，不渲染 iframe
+    if (this._isOffline()) {
+      return this.renderEmbed(
+        () => html`
+          <div
+            class=${classMap({
+              'yunke-embed-youtube-block': true,
+              selected: this.selected$.value,
+            })}
+            @click=${this._handleClick}
+          >
+            <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px;background:var(--yunke-background-secondary-color);border-radius:8px;min-height:200px;gap:12px;">
+              <div style="font-size:36px;">📺</div>
+              <div style="font-size:14px;font-weight:600;color:var(--yunke-text-primary-color);">
+                ${this.model.props.title || 'YouTube 视频'}
+              </div>
+              <div style="font-size:12px;color:var(--yunke-text-secondary-color);text-align:center;">
+                需要网络连接才能播放视频
+              </div>
+              <div style="font-size:11px;color:var(--yunke-text-disable-color);word-break:break-all;max-width:300px;text-align:center;">
+                ${this.model.props.url}
+              </div>
+            </div>
+          </div>
+        `
+      );
+    }
+
     const {
       image,
       title = 'YouTube',
