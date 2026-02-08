@@ -10,6 +10,8 @@ export const workspaceScrollAreaViewport = style({
 });
 export const workspaceFooter = style({
   padding: '0px 8px 10px 8px',
+  marginTop: 'auto',
+  flexShrink: 0,
 });
 export const scrollbar = style({
   width: 9,
