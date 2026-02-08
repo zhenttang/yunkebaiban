@@ -13,13 +13,20 @@ import {
   escapeHtml,
   getStatusDisplayName,
   getPriorityDisplayName,
-  adjustColorBrightness,
-  getTaskBarColorByStatus,
-  getTaskBorderColorByStatus,
+  getTaskBarColor,
+  getTaskBorderColor,
   isSameDay,
-  getWeekNumber,
   getWeekStart,
 } from './gantt-utils.js';
+import { openTaskConfigPanel } from './gantt-task-config.js';
+import { showTaskContextMenu } from './gantt-context-menu.js';
+import {
+  generateTimelineUnits,
+  calculateTaskPosition,
+  calculateTaskWidth,
+  calculateTodayPosition,
+  type TimelineUnit,
+} from './gantt-timeline.js';
 
 /**
  * 甘特图主视图组件
@@ -542,6 +549,24 @@ export class GanttView extends LitElement {
   /**
    * 甘特图任务数据 - 使用强制重新计算机制和数据源监听
    */
+
+  /** 打开任务配置面板（委托给 gantt-task-config.ts） */
+  private _openConfig(task: GanttTask) {
+    openTaskConfigPanel(task, this.view, {
+      onSave: () => {},
+      onDelete: (t: GanttTask) => this.deleteTask(t),
+      onForceUpdate: () => this.forceTasksDataUpdate(),
+    });
+  }
+
+  /** 显示任务右键菜单（委托给 gantt-context-menu.ts） */
+  private _showContextMenu(task: GanttTask, event: MouseEvent) {
+    showTaskContextMenu(task, event, {
+      onEdit: (t: GanttTask) => this._openConfig(t),
+      onDelete: (t: GanttTask) => this.deleteTask(t),
+    });
+  }
+
   private readonly tasks$ = computed(() => {
     // 访问_forceRefresh确保每次都重新计算
     const refreshFlag = this._forceRefresh;
@@ -1048,9 +1073,9 @@ export class GanttView extends LitElement {
       const timeline = this.view?.timeline$?.value;
       if (!timeline) return;
       
-      const timelineUnits = this.generateTimelineUnits(timeline);
+      const timelineUnits = generateTimelineUnits(timeline);
       const totalWidth = timelineUnits.reduce((sum, unit) => sum + unit.width, 0);
-      const todayPosition = this.calculateTodayPosition(timeline, totalWidth);
+      const todayPosition = calculateTodayPosition(timeline, totalWidth);
       
       if (todayPosition >= 0) {
         // 同时控制时间轴头部和甘特图主体的滚动
@@ -1196,765 +1221,8 @@ export class GanttView extends LitElement {
     logger.debug('👆👆 [GanttView] Task double clicked:', task.name);
     
     // 打开任务配置面板
-    this.openTaskConfigPanel(task);
+    this._openConfig(task);
   };
-
-  /**
-   * 打开任务配置面板
-   */
-  private openTaskConfigPanel(task: GanttTask) {
-    logger.debug('⚙️ [GanttView] Opening task config panel for:', task.name);
-    
-    // 移除已存在的配置面板
-    const existingPanel = document.querySelector('.task-config-panel');
-    if (existingPanel) {
-      existingPanel.remove();
-    }
-    
-    // 创建任务配置面板
-    const configPanel = this.createTaskConfigPanel(task);
-    
-    // 添加到文档中
-    document.body.appendChild(configPanel);
-    
-    // 自动聚焦到第一个输入框
-    setTimeout(() => {
-      const firstInput = configPanel.querySelector('input') as HTMLInputElement;
-      if (firstInput) {
-        firstInput.focus();
-        firstInput.select();
-      }
-    }, 100); // 延迟确保DOM已渲染
-  }
-
-  /**
-   * 创建任务配置面板
-   */
-  private createTaskConfigPanel(task: GanttTask): HTMLElement {
-    const panel = document.createElement('div');
-    panel.className = 'task-config-panel';
-    
-    // 获取任务的当前数据
-    const startDate = new Date(task.startDate);
-    const endDate = new Date(task.endDate);
-    
-    // 获取当前任务的实际数据（从数据源获取）
-    const properties = this.view?.properties$?.value || [];
-    
-    // 获取当前状态
-    let currentStatus = task.status;
-    try {
-      const statusProperty = properties.find(p => {
-        try {
-          const name = p.name$?.value;
-          return name === '状态' || name === 'Status' || this.view.dataSource.propertyTypeGet(p.id) === 'select';
-        } catch (e) {
-          return false;
-        }
-      });
-      if (statusProperty) {
-        const statusValue = this.view.dataSource.cellValueGet(task.id, statusProperty.id);
-        if (statusValue?.value) {
-          currentStatus = statusValue.value;
-        }
-      }
-    } catch (e) {
-      logger.warn('⚠️ [GanttView] Error getting current status:', e);
-    }
-    
-    // 获取当前进度
-    let currentProgress = task.progress;
-    try {
-      const progressProperty = properties.find(p => {
-        try {
-          const name = p.name$?.value;
-          return name === '进度' || name === 'Progress' || this.view.dataSource.propertyTypeGet(p.id) === 'progress';
-        } catch (e) {
-          return false;
-        }
-      });
-      if (progressProperty) {
-        const progressValue = this.view.dataSource.cellValueGet(task.id, progressProperty.id);
-        if (progressValue?.value !== undefined) {
-          currentProgress = progressValue.value;
-        }
-      }
-    } catch (e) {
-      logger.warn('⚠️ [GanttView] Error getting current progress:', e);
-    }
-    
-    // 获取当前优先级
-    let currentPriority = task.priority;
-    try {
-      const priorityProperty = properties.find(p => {
-        try {
-          const name = p.name$?.value;
-          return name === '优先级' || name === 'Priority';
-        } catch (e) {
-          return false;
-        }
-      });
-      if (priorityProperty) {
-        const priorityValue = this.view.dataSource.cellValueGet(task.id, priorityProperty.id);
-        if (priorityValue?.value) {
-          currentPriority = priorityValue.value;
-        }
-      }
-    } catch (e) {
-      logger.warn('⚠️ [GanttView] Error getting current priority:', e);
-    }
-    
-    logger.debug('🔧 [GanttView] Creating config panel with current values:', {
-      name: task.name,
-      startDate: startDate.toISOString().split('T')[0],
-      endDate: endDate.toISOString().split('T')[0],
-      status: currentStatus,
-      progress: currentProgress,
-      priority: currentPriority
-    });
-    
-    panel.innerHTML = `
-      <div class="task-config-overlay">
-        <div class="task-config-content">
-          <div class="task-config-header">
-            <h3>任务配置</h3>
-            <button class="task-config-close" aria-label="关闭">×</button>
-          </div>
-          
-          <div class="task-config-body">
-            <div class="config-row">
-              <label>任务名称：</label>
-              <input type="text" class="task-name-input" value="${escapeHtml(task.name)}" placeholder="请输入任务名称">
-            </div>
-            
-            <div class="config-row">
-              <label>开始时间：</label>
-              <input type="date" class="task-start-date" value="${startDate.toISOString().split('T')[0]}">
-            </div>
-            
-            <div class="config-row">
-              <label>结束时间：</label>
-              <input type="date" class="task-end-date" value="${endDate.toISOString().split('T')[0]}">
-            </div>
-            
-            <div class="config-row">
-              <label>任务状态：</label>
-              <select class="task-status-select">
-                <option value="not_started" ${currentStatus === 'not_started' ? 'selected' : ''}>未开始</option>
-                <option value="in_progress" ${currentStatus === 'in_progress' ? 'selected' : ''}>进行中</option>
-                <option value="completed" ${currentStatus === 'completed' ? 'selected' : ''}>已完成</option>
-                <option value="paused" ${currentStatus === 'paused' ? 'selected' : ''}>已暂停</option>
-              </select>
-            </div>
-            
-            <div class="config-row">
-              <label>完成进度：</label>
-              <input type="range" class="task-progress-slider" min="0" max="100" value="${currentProgress}" step="5">
-              <span class="progress-display">${currentProgress}%</span>
-            </div>
-            
-            <div class="config-row">
-              <label>优先级：</label>
-              <select class="task-priority-select">
-                <option value="low" ${currentPriority === 'low' ? 'selected' : ''}>低</option>
-                <option value="medium" ${currentPriority === 'medium' ? 'selected' : ''}>中</option>
-                <option value="high" ${currentPriority === 'high' ? 'selected' : ''}>高</option>
-                <option value="urgent" ${currentPriority === 'urgent' ? 'selected' : ''}>紧急</option>
-              </select>
-            </div>
-            
-            <div class="config-row">
-              <label>工作日：</label>
-              <div class="working-days">
-                ${['周一', '周二', '周三', '周四', '周五', '周六', '周日'].map((day, index) => `
-                  <label class="day-checkbox">
-                    <input type="checkbox" value="${index + 1}" ${task.workingDays.includes(index + 1) ? 'checked' : ''}>
-                    ${day}
-                  </label>
-                `).join('')}
-              </div>
-            </div>
-          </div>
-          
-          <div class="task-config-footer">
-            <button class="config-btn cancel-btn">取消</button>
-            <button class="config-btn save-btn">保存</button>
-            <button class="config-btn delete-btn">删除任务</button>
-          </div>
-        </div>
-      </div>
-    `;
-    
-    // 添加样式
-    const style = document.createElement('style');
-    style.textContent = `
-      .task-config-panel {
-        position: fixed !important;
-        top: 0 !important;
-        left: 0 !important;
-        right: 0 !important;
-        bottom: 0 !important;
-        z-index: 999999 !important;
-        pointer-events: auto !important;
-      }
-      
-      .task-config-overlay {
-        position: fixed !important;
-        top: 0 !important;
-        left: 0 !important;
-        right: 0 !important;
-        bottom: 0 !important;
-        background: rgba(0, 0, 0, 0.5) !important;
-        backdrop-filter: blur(4px) !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        z-index: 999999 !important;
-        pointer-events: auto !important;
-      }
-      
-      .task-config-content {
-        background: var(--yunke-background-primary-color, white) !important;
-        border-radius: 12px !important;
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15) !important;
-        max-width: 500px !important;
-        width: 90vw !important;
-        max-height: 80vh !important;
-        overflow: hidden !important;
-        display: flex !important;
-        flex-direction: column !important;
-        z-index: 1000000 !important;
-        pointer-events: auto !important;
-      }
-      
-      .task-config-header {
-        padding: 20px 24px 16px !important;
-        border-bottom: 1px solid var(--yunke-border-color, #e0e0e0) !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: space-between !important;
-        background: var(--yunke-background-secondary-color, #f9f9f9) !important;
-      }
-      
-      .task-config-header h3 {
-        margin: 0 !important;
-        font-size: 18px !important;
-        font-weight: 600 !important;
-        color: var(--yunke-text-primary-color, #333) !important;
-      }
-      
-      .task-config-close {
-        background: none !important;
-        border: none !important;
-        font-size: 24px !important;
-        cursor: pointer !important;
-        color: var(--yunke-text-secondary-color, #666) !important;
-        width: 32px !important;
-        height: 32px !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        border-radius: 6px !important;
-        transition: background 0.2s !important;
-      }
-      
-      .task-config-close:hover {
-        background: var(--yunke-hover-color, #f0f0f0) !important;
-      }
-      
-      .task-config-body {
-        padding: 20px 24px !important;
-        overflow-y: auto !important;
-        flex: 1 !important;
-      }
-      
-      .config-row {
-        margin-bottom: 16px !important;
-        display: flex !important;
-        flex-direction: column !important;
-        gap: 6px !important;
-      }
-      
-      .config-row label {
-        font-weight: 500 !important;
-        color: var(--yunke-text-primary-color, #333) !important;
-        font-size: 14px !important;
-      }
-      
-      .config-row input, .config-row select {
-        padding: 8px 12px !important;
-        border: 1px solid var(--yunke-border-color, #e0e0e0) !important;
-        border-radius: 6px !important;
-        font-size: 14px !important;
-        background: var(--yunke-background-primary-color, white) !important;
-        color: var(--yunke-text-primary-color, #333) !important;
-        transition: border-color 0.2s !important;
-      }
-      
-      .config-row input:focus, .config-row select:focus {
-        outline: none !important;
-        border-color: var(--yunke-primary-color, #007bff) !important;
-        box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25) !important;
-      }
-      
-      .task-progress-slider {
-        margin-right: 12px !important;
-        flex: 1 !important;
-      }
-      
-      .progress-display {
-        font-weight: 600 !important;
-        color: var(--yunke-primary-color, #007bff) !important;
-        min-width: 40px !important;
-      }
-      
-      .working-days {
-        display: flex !important;
-        flex-wrap: wrap !important;
-        gap: 8px !important;
-      }
-      
-      .day-checkbox {
-        display: flex !important;
-        align-items: center !important;
-        gap: 4px !important;
-        font-size: 13px !important;
-        cursor: pointer !important;
-      }
-      
-      .day-checkbox input {
-        margin: 0 !important;
-        width: auto !important;
-      }
-      
-      .task-config-footer {
-        padding: 16px 24px !important;
-        border-top: 1px solid var(--yunke-border-color, #e0e0e0) !important;
-        display: flex !important;
-        gap: 12px !important;
-        justify-content: flex-end !important;
-        background: var(--yunke-background-secondary-color, #f9f9f9) !important;
-      }
-      
-      .config-btn {
-        padding: 8px 16px !important;
-        border: 1px solid var(--yunke-border-color, #e0e0e0) !important;
-        border-radius: 6px !important;
-        font-size: 14px !important;
-        font-weight: 500 !important;
-        cursor: pointer !important;
-        transition: all 0.2s !important;
-      }
-      
-      .cancel-btn {
-        background: var(--yunke-background-primary-color, white) !important;
-        color: var(--yunke-text-secondary-color, #666) !important;
-      }
-      
-      .cancel-btn:hover {
-        background: var(--yunke-hover-color, #f0f0f0) !important;
-      }
-      
-      .save-btn {
-        background: var(--yunke-primary-color, #007bff) !important;
-        color: white !important;
-        border-color: var(--yunke-primary-color, #007bff) !important;
-      }
-      
-      .save-btn:hover {
-        background: var(--yunke-primary-color-hover, #0056b3) !important;
-      }
-      
-      .delete-btn {
-        background: #dc3545 !important;
-        color: white !important;
-        border-color: #dc3545 !important;
-      }
-      
-      .delete-btn:hover {
-        background: #c82333 !important;
-      }
-    `;
-    
-    panel.appendChild(style);
-    
-    // 添加事件监听器
-    this.addConfigPanelEventListeners(panel, task);
-    
-    return panel;
-  }
-
-  /**
-   * 为配置面板添加事件监听器
-   */
-  private addConfigPanelEventListeners(panel: HTMLElement, task: GanttTask) {
-    const closeBtn = panel.querySelector('.task-config-close') as HTMLButtonElement;
-    const cancelBtn = panel.querySelector('.cancel-btn') as HTMLButtonElement;
-    const saveBtn = panel.querySelector('.save-btn') as HTMLButtonElement;
-    const deleteBtn = panel.querySelector('.delete-btn') as HTMLButtonElement;
-    const progressSlider = panel.querySelector('.task-progress-slider') as HTMLInputElement;
-    const progressDisplay = panel.querySelector('.progress-display') as HTMLSpanElement;
-    const overlay = panel.querySelector('.task-config-overlay') as HTMLElement;
-    
-    // 关闭面板
-    const closePanel = () => {
-      panel.remove();
-    };
-    
-    closeBtn?.addEventListener('click', closePanel);
-    cancelBtn?.addEventListener('click', closePanel);
-    
-    // 点击遮罩关闭
-    overlay?.addEventListener('click', (e) => {
-      if (e.target === overlay) {
-        closePanel();
-      }
-    });
-    
-    // ESC键关闭
-    const handleKeydown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        closePanel();
-        document.removeEventListener('keydown', handleKeydown);
-      }
-    };
-    document.addEventListener('keydown', handleKeydown);
-    
-    // 进度滑块更新 - 实时更新显示
-    progressSlider?.addEventListener('input', () => {
-      if (progressDisplay) {
-        progressDisplay.textContent = `${progressSlider.value}%`;
-      }
-      logger.debug('📏 [GanttView] Progress slider updated:', progressSlider.value);
-    });
-    
-    // 保存配置
-    saveBtn?.addEventListener('click', () => {
-      this.saveTaskConfig(panel, task);
-      closePanel();
-    });
-    
-    // 删除任务
-    deleteBtn?.addEventListener('click', () => {
-      if (confirm(`确定要删除任务"${task.name}"吗？`)) {
-        this.deleteTask(task);
-        closePanel();
-      }
-    });
-  }
-
-  /**
-   * 保存任务配置
-   */
-  private saveTaskConfig(panel: HTMLElement, task: GanttTask) {
-    try {
-      logger.debug('💾 [GanttView] Starting to save task config for:', task.name);
-      
-      // 获取表单数据
-      const nameInput = panel.querySelector('.task-name-input') as HTMLInputElement;
-      const startDateInput = panel.querySelector('.task-start-date') as HTMLInputElement;
-      const endDateInput = panel.querySelector('.task-end-date') as HTMLInputElement;
-      const statusSelect = panel.querySelector('.task-status-select') as HTMLSelectElement;
-      const progressSlider = panel.querySelector('.task-progress-slider') as HTMLInputElement;
-      const prioritySelect = panel.querySelector('.task-priority-select') as HTMLSelectElement;
-      const workingDayCheckboxes = panel.querySelectorAll('.day-checkbox input[type="checkbox"]') as NodeListOf<HTMLInputElement>;
-      
-      // 收集工作日
-      const workingDays: number[] = [];
-      workingDayCheckboxes.forEach((checkbox) => {
-        if (checkbox.checked) {
-          workingDays.push(parseInt(checkbox.value));
-        }
-      });
-      
-      logger.debug('📝 [GanttView] Form data collected:', {
-        name: nameInput?.value,
-        startDate: startDateInput?.value,
-        endDate: endDateInput?.value,
-        status: statusSelect?.value,
-        progress: progressSlider?.value,
-        priority: prioritySelect?.value,
-        workingDays
-      });
-      
-      // 更新任务数据到数据源
-      const properties = this.view?.properties$?.value || [];
-      logger.debug('🏷️ [GanttView] Available properties:', properties.map(p => ({ 
-        id: p.id, 
-        type: this.view.dataSource.propertyTypeGet(p.id),
-        name: p.name$?.value 
-      })));
-      
-      // 1. 更新标题
-      const titleProperty = properties.find(p => {
-        try {
-          return this.view.dataSource.propertyTypeGet(p.id) === 'title';
-        } catch (e) {
-          return false;
-        }
-      });
-      
-      if (titleProperty && nameInput?.value?.trim()) {
-        logger.debug('📝 [GanttView] Updating title:', nameInput.value.trim());
-        this.view.dataSource.cellValueChange(task.id, titleProperty.id, nameInput.value.trim());
-        
-        // 立即验证更新是否成功
-        setTimeout(() => {
-          const verifyTitle = this.view.dataSource.cellValueGet(task.id, titleProperty.id);
-          logger.debug('✅ [GanttView] Title verification:', verifyTitle);
-        }, 10);
-      }
-      
-      // 2. 更新日期范围
-      const dateRangeProperty = properties.find(p => {
-        try {
-          return this.view.dataSource.propertyTypeGet(p.id) === 'date-range';
-        } catch (e) {
-          return false;
-        }
-      });
-      
-      if (dateRangeProperty && startDateInput?.value && endDateInput?.value) {
-        const startDate = new Date(startDateInput.value).getTime();
-        const endDate = new Date(endDateInput.value).getTime();
-        
-        logger.debug('📅 [GanttView] Updating date range:', {
-          startDate: new Date(startDate).toLocaleDateString(),
-          endDate: new Date(endDate).toLocaleDateString(),
-          workingDays
-        });
-        
-        this.view.dataSource.cellValueChange(task.id, dateRangeProperty.id, {
-          value: {
-            startDate,
-            endDate,
-            workingDays
-          }
-        });
-        
-        // 立即验证更新是否成功
-        setTimeout(() => {
-          const verifyDateRange = this.view.dataSource.cellValueGet(task.id, dateRangeProperty.id);
-          logger.debug('✅ [GanttView] Date range verification:', verifyDateRange);
-        }, 10);
-      }
-      
-      // 3. 更新状态属性
-      const statusProperty = properties.find(p => {
-        try {
-          const name = p.name$?.value;
-          return name === '状态' || name === 'Status' || this.view.dataSource.propertyTypeGet(p.id) === 'select';
-        } catch (e) {
-          return false;
-        }
-      });
-      
-      if (statusProperty && statusSelect?.value) {
-        logger.debug('📊 [GanttView] Updating status:', statusSelect.value);
-        this.view.dataSource.cellValueChange(task.id, statusProperty.id, {
-          value: statusSelect.value
-        });
-        
-        // 立即验证更新是否成功
-        setTimeout(() => {
-          const verifyStatus = this.view.dataSource.cellValueGet(task.id, statusProperty.id);
-          logger.debug('✅ [GanttView] Status verification:', verifyStatus);
-        }, 10);
-      }
-      
-      // 4. 更新进度属性
-      const progressProperty = properties.find(p => {
-        try {
-          const name = p.name$?.value;
-          return name === '进度' || name === 'Progress' || this.view.dataSource.propertyTypeGet(p.id) === 'progress';
-        } catch (e) {
-          return false;
-        }
-      });
-      
-      if (progressProperty && progressSlider?.value !== undefined) {
-        const progressValue = parseInt(progressSlider.value);
-        logger.debug('📈 [GanttView] Updating progress:', progressValue);
-        this.view.dataSource.cellValueChange(task.id, progressProperty.id, {
-          value: progressValue
-        });
-        
-        // 立即验证更新是否成功
-        setTimeout(() => {
-          const verifyProgress = this.view.dataSource.cellValueGet(task.id, progressProperty.id);
-          logger.debug('✅ [GanttView] Progress verification:', verifyProgress);
-        }, 10);
-      }
-      
-      // 5. 更新优先级属性
-      const priorityProperty = properties.find(p => {
-        try {
-          const name = p.name$?.value;
-          return name === '优先级' || name === 'Priority';
-        } catch (e) {
-          return false;
-        }
-      });
-      
-      // 如果没有找到状态属性，尝试创建一个
-      if (!statusProperty && statusSelect?.value) {
-        logger.debug('🆕 [GanttView] Creating status property');
-        try {
-          const statusPropertyId = this.view.propertyAdd('end', {
-            type: 'select',
-            name: '状态'
-          });
-          if (statusPropertyId) {
-            // 设置状态值
-            this.view.dataSource.cellValueChange(task.id, statusPropertyId, {
-              value: statusSelect.value
-            });
-          }
-        } catch (e) {
-          logger.warn('⚠️ [GanttView] Failed to create status property:', e);
-        }
-      }
-      
-      // 如果没有找到进度属性，尝试创建一个
-      if (!progressProperty && progressSlider?.value !== undefined) {
-        logger.debug('🆕 [GanttView] Creating progress property');
-        try {
-          const progressPropertyId = this.view.propertyAdd('end', {
-            type: 'number',
-            name: '进度'
-          });
-          if (progressPropertyId) {
-            const progressValue = parseInt(progressSlider.value);
-            this.view.dataSource.cellValueChange(task.id, progressPropertyId, {
-              value: progressValue
-            });
-          }
-        } catch (e) {
-          logger.warn('⚠️ [GanttView] Failed to create progress property:', e);
-        }
-      }
-      
-      // 如果没有找到优先级属性，尝试创建一个
-      if (!priorityProperty && prioritySelect?.value) {
-        logger.debug('🆕 [GanttView] Creating priority property');
-        try {
-          const priorityPropertyId = this.view.propertyAdd('end', {
-            type: 'select',
-            name: '优先级'
-          });
-          if (priorityPropertyId) {
-            this.view.dataSource.cellValueChange(task.id, priorityPropertyId, {
-              value: prioritySelect.value
-            });
-          }
-        } catch (e) {
-          logger.warn('⚠️ [GanttView] Failed to create priority property:', e);
-        }
-      }
-      
-      logger.debug('✅ [GanttView] Task configuration saved successfully:', {
-        taskId: task.id,
-        name: nameInput?.value,
-        startDate: startDateInput?.value,
-        endDate: endDateInput?.value,
-        status: statusSelect?.value,
-        progress: progressSlider?.value,
-        priority: prioritySelect?.value,
-        workingDays
-      });
-      
-      // 强制重新渲染视图和重新计算任务数据
-      logger.debug('🔄 [GanttView] Force triggering view update...');
-      
-      // 1. 立即更新_forceRefresh以触发computed重新计算
-      this._forceRefresh = Date.now();
-      logger.debug('🔄 [GanttView] Force refresh flag updated to:', this._forceRefresh);
-      
-      // 2. 立即强制重新渲染
-      this.requestUpdate();
-      
-      // 3. 创建一个完全新的任务更新机制
-      const forceTasksUpdate = () => {
-        logger.debug('🔄 [GanttView] Forcing tasks recalculation...');
-        
-        // 强制触发所有相关的signal读取
-        if (this.view) {
-          // 访问所有可能影响tasks$的signals
-          const rows = this.view.rows$?.value;
-          const properties = this.view.properties$?.value;
-          const dataSourceRows = this.view.dataSource.rows$.value;
-          
-          logger.debug('📊 [GanttView] Force accessing signals:', {
-            rowsCount: rows?.length,
-            propertiesCount: properties?.length,
-            dataSourceRowsCount: dataSourceRows?.length
-          });
-          
-          // 访问computed让它重新计算
-          const updatedTasks = this.tasks$.value;
-          logger.debug('🔄 [GanttView] Forced tasks calculation result:', updatedTasks.length);
-          
-          // 查找更新的任务
-          const updatedTask = updatedTasks.find(t => t.id === task.id);
-          if (updatedTask) {
-            logger.debug('✅ [GanttView] Found updated task after force recalc:', {
-              name: updatedTask.name,
-              status: updatedTask.status,
-              progress: updatedTask.progress,
-              startDate: new Date(updatedTask.startDate).toLocaleDateString(),
-              endDate: new Date(updatedTask.endDate).toLocaleDateString()
-            });
-          } else {
-            logger.warn('⚠️ [GanttView] Task still not found after force recalc');
-          }
-        }
-        
-        // 强制再次更新UI
-        this._forceRefresh = Date.now() + Math.random(); // 确保值发生变化
-        this.requestUpdate();
-      };
-      
-      // 4. 立即执行一次强制更新
-      forceTasksUpdate();
-      
-      // 5. 使用多重更新策略确保更新生效
-      Promise.resolve().then(() => {
-        logger.debug('🔄 [GanttView] Microtask force update');
-        forceTasksUpdate();
-      });
-      
-      setTimeout(() => {
-        logger.debug('⏰ [GanttView] Delayed force update (50ms)');
-        forceTasksUpdate();
-      }, 50);
-      
-      setTimeout(() => {
-        logger.debug('⏰ [GanttView] Final force update (200ms)');
-        forceTasksUpdate();
-      }, 200);
-      
-    } catch (error) {
-      logger.error('❌ [GanttView] Error saving task config:', error);
-      alert('保存任务配置时出错，请稍后重试。');
-    }
-  }
-
-  /**
-   * 删除任务
-   */
-  private deleteTask(task: GanttTask) {
-    try {
-      if (this.view) {
-        // 使用正确的方法名和参数格式
-        this.view.rowsDelete([task.id]);
-        logger.debug('✅ [GanttView] Task deleted:', task.id);
-        this.requestUpdate();
-      }
-    } catch (error) {
-      logger.error('❌ [GanttView] Error deleting task:', error);
-      alert('删除任务时出错，请稍后重试。');
-    }
-  }
 
   /**
    * 处理任务右键菜单
@@ -1964,116 +1232,24 @@ export class GanttView extends LitElement {
     event.stopPropagation();
     logger.debug('🖱️ [GanttView] Task right clicked:', task.name);
     
-    this.showTaskContextMenu(task, event);
+    this._showContextMenu(task, event);
   };
 
   /**
-   * 显示任务右键菜单
+   * 删除任务
    */
-  private showTaskContextMenu(task: GanttTask, event: MouseEvent) {
-    logger.debug('📝 [GanttView] Showing context menu for task:', task.name);
-    
-    // 移除之前的菜单
-    const existingMenu = document.querySelector('.task-context-menu');
-    if (existingMenu) {
-      existingMenu.remove();
+  private deleteTask(task: GanttTask) {
+    try {
+      if (this.view) {
+        this.view.rowsDelete([task.id]);
+        logger.debug('Task deleted:', task.id);
+        this.requestUpdate();
+      }
+    } catch (error) {
+      logger.error('Error deleting task:', error);
+      alert('删除任务时出错，请稍后重试。');
     }
-
-    const menu = document.createElement('div');
-    menu.className = 'task-context-menu';
-    menu.innerHTML = `
-      <div class="context-menu-item edit-item" data-action="edit">
-        <span>⚙️</span> 编辑任务
-      </div>
-      <div class="context-menu-item delete-item" data-action="delete">
-        <span>🗑️</span> 删除任务
-      </div>
-    `;
-
-    // 添加样式
-    const style = document.createElement('style');
-    style.textContent = `
-      .task-context-menu {
-        position: fixed !important;
-        background: var(--yunke-background-primary-color, white) !important;
-        border: 1px solid var(--yunke-border-color, #e0e0e0) !important;
-        border-radius: 8px !important;
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15) !important;
-        z-index: 999999 !important;
-        min-width: 120px !important;
-        padding: 4px 0 !important;
-        font-size: 13px !important;
-        pointer-events: auto !important;
-      }
-      
-      .context-menu-item {
-        padding: 8px 12px !important;
-        cursor: pointer !important;
-        transition: background 0.2s !important;
-        display: flex !important;
-        align-items: center !important;
-        gap: 8px !important;
-        color: var(--yunke-text-primary-color, #333) !important;
-      }
-      
-      .context-menu-item:hover {
-        background: var(--yunke-hover-color, #f0f0f0) !important;
-      }
-      
-      .context-menu-item.delete-item:hover {
-        background: #fee !important;
-        color: #dc3545 !important;
-      }
-    `;
-    
-    menu.appendChild(style);
-
-    // 设置菜单位置
-    menu.style.left = `${event.clientX}px`;
-    menu.style.top = `${event.clientY}px`;
-
-    document.body.appendChild(menu);
-    
-    logger.debug('✅ [GanttView] Context menu added to DOM at position:', { x: event.clientX, y: event.clientY });
-
-    // 添加菜单项事件（使用事件委托）
-    menu.addEventListener('click', (e) => {
-      const target = e.target as HTMLElement;
-      const menuItem = target.closest('.context-menu-item') as HTMLElement;
-      
-      if (!menuItem) return;
-      
-      const action = menuItem.getAttribute('data-action');
-      logger.debug('👆 [GanttView] Context menu item clicked:', action);
-      
-      if (action === 'edit') {
-        logger.debug('✏️ [GanttView] Opening edit panel for task:', task.name);
-        this.openTaskConfigPanel(task);
-      } else if (action === 'delete') {
-        logger.debug('🗑️ [GanttView] Attempting to delete task:', task.name);
-        if (confirm(`确定要删除任务"${task.name}"吗？`)) {
-          this.deleteTask(task);
-        }
-      }
-      
-      menu.remove();
-    });
-
-    // 点击其他地方关闭菜单
-    const closeMenu = (e: Event) => {
-      if (!menu.contains(e.target as Node)) {
-        logger.debug('🚫 [GanttView] Closing context menu (clicked outside)');
-        menu.remove();
-        document.removeEventListener('click', closeMenu);
-      }
-    };
-    
-    // 延迟添加监听器，避免立即被关闭
-    setTimeout(() => {
-      document.addEventListener('click', closeMenu);
-    }, 0);
   }
-
 
   /**
    * 渲染头部工具栏
@@ -2161,9 +1337,9 @@ export class GanttView extends LitElement {
     if (!timeline) return html`<div class="gantt-content">Loading...</div>`;
 
     // 使用用户选择的时间单位，不再强制周显示
-    const timelineUnits = this.generateTimelineUnits(timeline);
+    const timelineUnits = generateTimelineUnits(timeline);
     const totalWidth = timelineUnits.reduce((sum, unit) => sum + unit.width, 0);
-    const todayPosition = this.calculateTodayPosition(timeline, totalWidth);
+    const todayPosition = calculateTodayPosition(timeline, totalWidth);
 
     logger.debug('🎯 [GanttView] 渲染专业甘特图 (动态单位):', {
       taskCount: tasks.length,
@@ -2186,7 +1362,7 @@ export class GanttView extends LitElement {
               ${tasks.map((task, index) => html`
                 <div class="task-row" style="border-bottom: 1px solid var(--yunke-border-color);">
                   <div class="task-name-display" 
-                       @click=${() => this.openTaskConfigPanel(task)}
+                       @click=${() => this._openConfig(task)}
                        @contextmenu=${(e: MouseEvent) => this.handleTaskRightClick(task, e)}
                        title="双击编辑任务">
                     ${task.name}
@@ -2266,12 +1442,12 @@ export class GanttView extends LitElement {
     }
 
     // 精确计算任务条在时间轴上的位置，确保与时间轴对齐
-    const left = this.calculateTaskPosition(taskStart, timeline, totalWidth);
-    const width = this.calculateTaskWidth(taskStart, taskEnd, timeline, totalWidth);
+    const left = calculateTaskPosition(taskStart, timeline, totalWidth);
+    const width = calculateTaskWidth(taskStart, taskEnd, timeline, totalWidth);
 
     // 根据任务状态和优先级确定颜色
-    const taskColor = this.getTaskBarColor(task);
-    const taskBorderColor = this.getTaskBorderColor(task);
+    const taskColor = getTaskBarColor(task.status, task.priority);
+    const taskBorderColor = getTaskBorderColor(task.priority);
 
     // 计算任务持续天数
     const taskDuration = taskEnd.getTime() - taskStart.getTime();
@@ -2367,325 +1543,8 @@ export class GanttView extends LitElement {
     `;
   }
 
-  /**
-   * 根据任务状态获取任务条颜色
-   */
-  private getTaskBarColor(task: GanttTask): string {
-    // 首先根据状态确定基础颜色
-    let baseColor: string;
-    
-    switch (task.status) {
-      case 'completed':
-        baseColor = '#10b981'; // 绿色 - 已完成
-        break;
-      case 'in_progress':
-        baseColor = '#3b82f6'; // 蓝色 - 进行中
-        break;
-      case 'paused':
-        baseColor = '#f59e0b'; // 橙色 - 已暂停
-        break;
-      case 'not_started':
-      default:
-        baseColor = '#6b7280'; // 灰色 - 未开始
-        break;
-    }
-    
-    // 根据优先级调整颜色亮度
-    switch (task.priority) {
-      case 'urgent':
-        return task.status === 'completed' ? baseColor : '#ef4444'; // 紧急任务用红色（除非已完成）
-      case 'high':
-        return adjustColorBrightness(baseColor, -0.1); // 稍微深一点
-      case 'low':
-        return adjustColorBrightness(baseColor, 0.2); // 稍微亮一点
-      case 'medium':
-      default:
-        return baseColor;
-    }
-  }
-
-  /**
-   * 获取任务边框颜色（用于优先级指示）
-   */
-  private getTaskBorderColor(task: GanttTask): string {
-    switch (task.priority) {
-      case 'urgent':
-        return '#dc2626'; // 深红色
-      case 'high':
-        return '#ea580c'; // 深橙色
-      case 'medium':
-        return '#059669'; // 深绿色
-      case 'low':
-      default:
-        return '#4b5563'; // 深灰色
-    }
-  }
-
-  /**
-   * 精确计算任务开始位置，确保与时间轴单位边界对齐
-   */
-  private calculateTaskPosition(taskStart: Date, timeline: TimelineConfig, totalWidth: number): number {
-    // 生成与时间轴显示完全一致的单位边界
-    const timelineUnits = this.generateTimelineUnits(timeline);
-    
-    logger.debug('🔍 [任务位置计算] 开始计算任务位置:', {
-      taskStartDate: taskStart.toLocaleDateString('zh-CN'),
-      taskStartTime: taskStart.getTime(),
-      timelineUnit: timeline.unit,
-      totalUnits: timelineUnits.length
-    });
-    
-    // 查找任务开始时间所在的时间单位
-    let accumulatedWidth = 0;
-    for (let i = 0; i < timelineUnits.length; i++) {
-      const unit = timelineUnits[i];
-      const unitStartDate = unit.date;
-      
-      // 计算当前单位的结束时间
-      let unitEndDate: Date;
-      if (i < timelineUnits.length - 1) {
-        unitEndDate = timelineUnits[i + 1].date;
-      } else {
-        // 最后一个单位，根据单位类型计算结束时间
-        unitEndDate = new Date(unitStartDate);
-        switch (timeline.unit) {
-          case 'day':
-            unitEndDate.setDate(unitStartDate.getDate() + 1);
-            break;
-          case 'week':
-            unitEndDate.setDate(unitStartDate.getDate() + 7);
-            break;
-          case 'month':
-            unitEndDate.setMonth(unitStartDate.getMonth() + 1);
-            break;
-          default:
-            unitEndDate.setDate(unitStartDate.getDate() + 1);
-        }
-      }
-      
-      logger.debug(`🔍 [单位${i}] 检查单位:`, {
-        unitLabel: unit.label,
-        unitStart: unitStartDate.toLocaleDateString('zh-CN'),
-        unitEnd: unitEndDate.toLocaleDateString('zh-CN'),
-        accumulatedWidth: Math.round(accumulatedWidth),
-        taskInRange: taskStart >= unitStartDate && taskStart < unitEndDate
-      });
-      
-      // 检查任务开始时间是否在当前单位范围内
-      if (taskStart >= unitStartDate && taskStart < unitEndDate) {
-        // 在单位内计算精确位置
-        const unitSpan = unitEndDate.getTime() - unitStartDate.getTime();
-        const taskOffsetInUnit = taskStart.getTime() - unitStartDate.getTime();
-        const relativePosition = taskOffsetInUnit / unitSpan;
-        
-        const finalPosition = accumulatedWidth + (relativePosition * unit.width);
-        
-        logger.debug('🎯 [任务位置计算] 找到匹配单位:', {
-          匹配单位: unit.label,
-          单位开始: unitStartDate.toLocaleDateString('zh-CN'),
-          单位结束: unitEndDate.toLocaleDateString('zh-CN'),
-          任务在单位内偏移: `${Math.round(taskOffsetInUnit / (24*60*60*1000) * 10) / 10}天`,
-          相对位置: Math.round(relativePosition * 100) / 100,
-          累计宽度: Math.round(accumulatedWidth),
-          单位宽度: unit.width,
-          最终位置: Math.round(finalPosition)
-        });
-        
-        return finalPosition;
-      }
-      
-      accumulatedWidth += unit.width;
-    }
-    
-    // 如果任务在所有单位范围外，使用线性计算作为后备
-    const timelineStart = new Date(timeline.startDate);
-    const timelineEnd = new Date(timeline.endDate);
-    const timelineSpan = timelineEnd.getTime() - timelineStart.getTime();
-    const taskStartOffset = Math.max(0, taskStart.getTime() - timelineStart.getTime());
-    const fallbackPosition = (taskStartOffset / timelineSpan) * totalWidth;
-    
-    logger.debug('⚠️ [任务位置计算] 使用后备线性计算:', {
-      taskStartDate: taskStart.toLocaleDateString('zh-CN'),
-      timelineStart: timelineStart.toLocaleDateString('zh-CN'),
-      timelineEnd: timelineEnd.toLocaleDateString('zh-CN'),
-      fallbackPosition: Math.round(fallbackPosition)
-    });
-    
-    return fallbackPosition;
-  }
-  
-  /**
-   * 精确计算任务宽度，确保与时间轴单位边界对齐
-   */
-  private calculateTaskWidth(taskStart: Date, taskEnd: Date, timeline: TimelineConfig, totalWidth: number): number {
-    const timelineStart = new Date(timeline.startDate);
-    const timelineEnd = new Date(timeline.endDate);
-    
-    // 限制任务时间在时间轴范围内
-    const effectiveStart = new Date(Math.max(taskStart.getTime(), timelineStart.getTime()));
-    const effectiveEnd = new Date(Math.min(taskEnd.getTime(), timelineEnd.getTime()));
-    
-    // 如果任务完全在时间轴范围外，返回最小宽度
-    if (effectiveStart >= effectiveEnd) {
-      return 40;
-    }
-    
-    // 使用相同的单位边界逻辑计算开始和结束位置
-    const startPosition = this.calculateTaskPosition(effectiveStart, timeline, totalWidth);
-    const endPosition = this.calculateTaskPosition(effectiveEnd, timeline, totalWidth);
-    
-    // 返回宽度，最小40px保证可见性
-    const calculatedWidth = Math.max(40, endPosition - startPosition);
-    
-    logger.debug('📏 [任务宽度计算] 基于单位边界:', {
-      effectiveStart: effectiveStart.toLocaleDateString('zh-CN'),
-      effectiveEnd: effectiveEnd.toLocaleDateString('zh-CN'),
-      startPosition: Math.round(startPosition),
-      endPosition: Math.round(endPosition),
-      calculatedWidth: Math.round(calculatedWidth)
-    });
-    
-    return calculatedWidth;
-  }
-
-  // adjustColorBrightness, getStatusDisplayName, getPriorityDisplayName 已迁移到 gantt-utils.ts
-
-  /**
-   * 生成时间轴单位 - 动态根据用户选择的时间单位显示
-   */
-  private generateTimelineUnits(timeline: TimelineConfig) {
-    const units: Array<{
-      date: Date;
-      label: string;
-      width: number;
-      isToday: boolean;
-      tooltip: string;
-    }> = [];
-
-    const startDate = new Date(timeline.startDate);
-    const endDate = new Date(timeline.endDate);
-    const unitWidth = timeline.unitWidth || 120; // 增加默认宽度以适应周显示
-    
-    let current = new Date(startDate);
-    const today = new Date();
-
-    // 根据用户选择的时间单位生成时间轴（动态切换）
-    while (current <= endDate) {
-      let label: string;
-      let nextDate: Date;
-      let isToday = false;
-      let unitDate: Date; // 单位的实际日期
-
-      switch (timeline.unit) {
-        case 'day':
-          label = current.toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' });
-          nextDate = new Date(current);
-          nextDate.setDate(current.getDate() + 1);
-          isToday = isSameDay(current, today);
-          unitDate = new Date(current);
-          break;
-        case 'week':
-          // 获取周的开始日期（周一）- 按周显示模式
-          const weekStart = getWeekStart(current);
-          const weekEnd = new Date(weekStart);
-          weekEnd.setDate(weekStart.getDate() + 6);
-          
-          // 周显示格式：月日-日 (例如: 1月15-21日)
-          const startMonth = weekStart.getMonth() + 1;
-          const endMonth = weekEnd.getMonth() + 1;
-          
-          if (startMonth === endMonth) {
-            // 同一个月
-            label = `${startMonth}月${weekStart.getDate()}-${weekEnd.getDate()}日`;
-          } else {
-            // 跨月
-            label = `${startMonth}月${weekStart.getDate()}日-${endMonth}月${weekEnd.getDate()}日`;
-          }
-          
-          nextDate = new Date(weekStart);
-          nextDate.setDate(weekStart.getDate() + 7);
-          
-          // 检查今天是否在这一周内
-          isToday = today >= weekStart && today <= weekEnd;
-          unitDate = new Date(weekStart); // 使用周开始日期
-          current = nextDate; // 移到下一周开始
-          break;
-        case 'month':
-          label = current.toLocaleDateString('zh-CN', { year: 'numeric', month: 'short' });
-          nextDate = new Date(current);
-          nextDate.setMonth(current.getMonth() + 1);
-          nextDate.setDate(1); // 月初
-          
-          // 检查今天是否在这个月内
-          isToday = today.getFullYear() === current.getFullYear() && 
-                   today.getMonth() === current.getMonth();
-          unitDate = new Date(current);
-          break;
-        default:
-          // 默认按天显示
-          label = current.toLocaleDateString('zh-CN');
-          nextDate = new Date(current);
-          nextDate.setDate(current.getDate() + 1);
-          isToday = isSameDay(current, today);
-          unitDate = new Date(current);
-      }
-
-      units.push({
-        date: unitDate,
-        label,
-        width: unitWidth,
-        isToday,
-        tooltip: unitDate.toLocaleDateString('zh-CN', { 
-          year: 'numeric', 
-          month: 'long', 
-          day: 'numeric',
-          weekday: 'long'
-        })
-      });
-
-      // 对于非周模式，移动到下一个单位
-      if (timeline.unit !== 'week') {
-        current = nextDate;
-      }
-    }
-
-    logger.debug('🗺️ [GanttView] 生成时间轴单位:', {
-      unit: timeline.unit,
-      totalUnits: units.length,
-      totalWidth: units.reduce((sum, u) => sum + u.width, 0),
-      firstUnit: units[0]?.label + ' (' + units[0]?.date.toLocaleDateString('zh-CN') + ')',
-      lastUnit: units[units.length - 1]?.label + ' (' + units[units.length - 1]?.date.toLocaleDateString('zh-CN') + ')',
-      todayUnits: units.filter(u => u.isToday).length,
-      allUnits: units.map(u => ({ 
-        label: u.label, 
-        date: u.date.toLocaleDateString('zh-CN'),
-        isToday: u.isToday 
-      }))
-    });
-
-    return units;
-  }
-
-  // getWeekStart 已迁移到 gantt-utils.ts
-
-  /**
-   * 计算今天线的位置
-   */
-  private calculateTodayPosition(timeline: TimelineConfig, totalWidth: number): number {
-    const startDate = new Date(timeline.startDate);
-    const endDate = new Date(timeline.endDate);
-    const today = new Date();
-    
-    // 如果今天不在时间轴范围内，返回-1表示不显示
-    if (today < startDate || today > endDate) {
-      return -1;
-    }
-    
-    const timelineSpan = endDate.getTime() - startDate.getTime();
-    const todayOffset = today.getTime() - startDate.getTime();
-    
-    return (todayOffset / timelineSpan) * totalWidth;
-  }
+  // getTaskBarColor, getTaskBorderColor 宸茶縼绉诲埌 gantt-utils.ts
+  // calculateTaskPosition 绛夊凡杩佺Щ鍒?gantt-timeline.ts
 
   /**
    * 处理任务名称更改
@@ -2747,7 +1606,7 @@ export class GanttView extends LitElement {
     }
     
     // 使用当前的时间轴配置，不再强制周显示
-    const timelineUnits = this.generateTimelineUnits(timeline);
+    const timelineUnits = generateTimelineUnits(timeline);
     const totalWidth = timelineUnits.reduce((sum, unit) => sum + unit.width, 0);
     
     logger.debug('📊 [修复] 时间轴信息（使用当前单位）:', { 
@@ -2803,7 +1662,7 @@ export class GanttView extends LitElement {
     if (!timeline) return;
     
     // 使用当前的时间轴配置，不再强制周显示
-    const timelineUnits = this.generateTimelineUnits(timeline);
+    const timelineUnits = generateTimelineUnits(timeline);
     const totalWidth = timelineUnits.reduce((sum, unit) => sum + unit.width, 0);
     
     // 获取当前点击的元素
@@ -2846,7 +1705,7 @@ export class GanttView extends LitElement {
     if (!timeline) return;
     
     // 使用当前的时间轴配置，不再强制周显示
-    const timelineUnits = this.generateTimelineUnits(timeline);
+    const timelineUnits = generateTimelineUnits(timeline);
     const totalWidth = timelineUnits.reduce((sum, unit) => sum + unit.width, 0);
     
     // 获取当前点击的元素
@@ -3079,7 +1938,7 @@ export class GanttView extends LitElement {
       const timelineSpan = timelineEnd.getTime() - timelineStart.getTime();
       // 使用当前时间轴配置，不强制周显示
       const currentTimeline = this.view?.timeline$?.value;
-      const timelineUnits = currentTimeline ? this.generateTimelineUnits(currentTimeline) : [];
+      const timelineUnits = currentTimeline ? generateTimelineUnits(currentTimeline) : [];
       const totalWidth = timelineUnits.reduce((sum, unit) => sum + unit.width, 0);
       
       const taskStartOffset = Math.max(0, finalStartDate - timelineStart.getTime());
@@ -3151,7 +2010,7 @@ export class GanttView extends LitElement {
     const timelineSpan = timelineEnd.getTime() - timelineStart.getTime();
     
     // 使用当前时间轴配置生成时间单位，不强制周显示
-    const timelineUnits = this.generateTimelineUnits(timeline);
+    const timelineUnits = generateTimelineUnits(timeline);
     const totalWidth = timelineUnits.reduce((sum, unit) => sum + unit.width, 0);
     
     const taskStartOffset = Math.max(0, newStartDate - timelineStart.getTime());
