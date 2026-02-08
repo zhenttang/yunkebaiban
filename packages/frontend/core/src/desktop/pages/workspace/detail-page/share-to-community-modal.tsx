@@ -7,6 +7,7 @@ import {
 } from '../community/types';
 import { shareDocToCommunity } from '../community/api';
 import * as styles from './styles/share-modal.css';
+import { notify } from '@yunke/component';
 
 interface ShareToCommunityModalProps {
   docId: string;
@@ -70,7 +71,7 @@ export const ShareToCommunityModal = ({
       }
 
       showToast(errorMessage, 'error');
-      alert(errorMessage);
+      notify.error({ title: errorMessage });
     } finally {
       setLoading(false);
     }

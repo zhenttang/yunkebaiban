@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { getUserPoints, signIn } from '../forum-api';
 import type { UserPointDTO } from '../types';
+import { notify } from '@yunke/component';
 
 export function Component() {
   const { userId } = useParams<{ userId: string }>();
@@ -24,10 +25,10 @@ export function Component() {
     try {
       const updated = await signIn(parseInt(userId));
       setUserPoints(updated);
-      alert('签到成功');
+      notify.success({ title: '签到成功' });
     } catch (error: any) {
       console.error(error);
-      alert(error?.message || '签到失败');
+      notify.error({ title: '签到失败', message: error?.message });
     } finally {
       setSigningIn(false);
     }
