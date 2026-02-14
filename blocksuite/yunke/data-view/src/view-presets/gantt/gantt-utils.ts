@@ -55,31 +55,40 @@ export function adjustColorBrightness(
   return `#${((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1)}`;
 }
 
-/** 任务条颜色映射 */
-const TASK_BAR_COLORS: Record<string, string> = {
-  completed: '#10b981',
-  in_progress: '#6366f1',
-  not_started: '#94a3b8',
-  on_hold: '#f59e0b',
-  paused: '#f59e0b',
-  cancelled: '#ef4444',
-};
-
-const TASK_BORDER_COLORS: Record<string, string> = {
-  completed: '#059669',
-  in_progress: '#4f46e5',
-  not_started: '#64748b',
-  on_hold: '#d97706',
-  paused: '#d97706',
-  cancelled: '#dc2626',
-};
-
-export function getTaskBarColorByStatus(status: string): string {
-  return TASK_BAR_COLORS[status] ?? '#6366f1';
+/**
+ * 获取任务条颜色（综合状态 + 优先级）
+ */
+export function getTaskBarColor(
+  status: string,
+  priority: string
+): string {
+  let baseColor: string;
+  switch (status) {
+    case 'completed': baseColor = '#10b981'; break;
+    case 'in_progress': baseColor = '#3b82f6'; break;
+    case 'paused': baseColor = '#f59e0b'; break;
+    case 'not_started':
+    default: baseColor = '#6b7280'; break;
+  }
+  switch (priority) {
+    case 'urgent': return status === 'completed' ? baseColor : '#ef4444';
+    case 'high': return adjustColorBrightness(baseColor, -30);
+    case 'low': return adjustColorBrightness(baseColor, 40);
+    default: return baseColor;
+  }
 }
 
-export function getTaskBorderColorByStatus(status: string): string {
-  return TASK_BORDER_COLORS[status] ?? '#4f46e5';
+/**
+ * 获取任务边框颜色（按优先级）
+ */
+export function getTaskBorderColor(priority: string): string {
+  switch (priority) {
+    case 'urgent': return '#dc2626';
+    case 'high': return '#ea580c';
+    case 'medium': return '#059669';
+    case 'low':
+    default: return '#4b5563';
+  }
 }
 
 // ====== 日期工具 ======
